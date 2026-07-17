@@ -80,14 +80,6 @@ The following table explains the expected funding arrival date based on the fund
 
 You can send funds from an external bank account to fund your financial account. Each currency in your financial account has its own local account details and supported inbound payment methods.
 
-| Currency | Account details | Supported inbound payment methods | Funding availability |
-| --- | --- | --- | --- |
-| USD | Routing number + account number | ACH Credit, Fedwire, International ACH Transaction (IAT) | - ACH: 0–3 business days
-- Wire transfer: Same day |
-| GBP | Sort code + account number | Faster Payments (FPS), CHAPS | Same day |
-| EUR | IBAN + BIC | SEPA Credit Transfer, SEPA Instant | - Credit Transfer: Same day
-- Instant: Within 10 seconds |
-
 1. On the [Balances](https://dashboard.stripe.com/balances) page, click **Add funds**.
 2. Select the financial account to add money to.
 3. Select **Manually transfer from your bank** and click **Continue**.

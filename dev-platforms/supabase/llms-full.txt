@@ -108,7 +108,7 @@ Supabase Database gives you a full Postgres database with no compromises. It is 
 - **Read Replicas**: distribute read traffic across replicas in multiple regions for lower latency and higher throughput
 - **Realtime**: subscribe to INSERT, UPDATE, DELETE, and other changes via WebSockets
 - **Database Webhooks**: trigger Edge Functions or external HTTP endpoints on table events
-- **Supabase Pipelines**: create managed replication pipelines that stream Postgres changes to external data warehouses in near real time
+- **Supabase Pipelines**: move published Postgres data to supported analytical destinations in near real time
 
 ## Technical Details
 
@@ -60237,7 +60237,7 @@ categories:
 ---
 Today we're introducing **Supabase Pipelines**: managed change-data-capture pipelines that replicate your Postgres tables to analytical destinations in near real time.
 
-Pipelines reads changes from your Postgres database and writes them to external destinations. It uses logical replication to capture inserts, updates, deletes, and truncates as they happen. **Setup takes minutes in the Supabase Dashboard.**
+Pipelines reads changes from your Postgres database and writes them to supported destination systems. It uses logical replication to capture inserts, updates, deletes, and truncates as they happen. **Setup takes minutes in the Supabase Dashboard.**
 
 The first supported destination is Google BigQuery.
 
@@ -60253,7 +60253,7 @@ Analytical systems are designed for this. They can aggregate massive datasets **
 
 ## How it works
 
-Pipelines captures every change in your Postgres database and delivers it to your analytics destination in near real time.
+Pipelines captures the changes selected by your Postgres publication and delivers them to your analytics destination in near real time.
 
 Here's how:
 
@@ -60267,7 +60267,7 @@ Here's how:
 
 1. Your data is available for querying in the destination
 
-The pipeline starts with an initial copy of your selected tables, then switches to streaming mode. **Your analytics stay fresh with latency measured in milliseconds to seconds.**
+The pipeline starts with an initial sync of your selected tables, then begins ongoing replication. Changes are batched, so replication latency depends on source activity, network conditions, and destination throughput.
 
 ## Setting up Pipelines
 
@@ -60333,7 +60333,7 @@ Read replicas and Pipelines solve different problems.
 
 Read replicas help when you need to scale concurrent queries, but they're still Postgres. They don't make analytics faster.
 
-Pipelines moves your data to systems built for analytics. You get **faster queries on large datasets**, **lower storage costs** through compression, and **complete separation** between your production workload and analytics.
+Pipelines moves your data to systems built for analytics, keeping heavy analytical queries away from your production database. Query performance, storage format, compression, and destination costs depend on the destination you choose.
 
 You can use both: read replicas for application read scaling, Pipelines for analytics.
 
@@ -60341,22 +60341,22 @@ You can use both: read replicas for application read scaling, Pipelines for anal
 
 Replication with Pipelines has a few constraints to be aware of:
 
-- Tables must have primary keys (this is a Postgres logical replication requirement)
+- BigQuery requires every source table to have a primary key, and the publication must include its columns
 - Generated columns are not supported
 - Custom data types are replicated as strings
-- Schema changes are not automatically propagated to destinations
+- Schema change support is currently in beta and limited to the supported BigQuery changes
 - Data is replicated as-is, without transformation
-- During the initial copy phase, changes accumulate in the WAL and are replayed once streaming begins
+- During the initial sync, changes continue accumulating in the WAL and are applied as each table catches up
 
-We're working on schema change support and additional destinations, and evaluating different streaming techniques to improve flexibility and performance.
+BigQuery is currently available. You can [request early access to ClickHouse, Snowflake, and DuckLake](/go/supabase-pipelines-new-destinations) while we expand destination support.
 
 ## Pricing
 
-Pipelines pricing is still being finalized during alpha. You can request access now; we'll announce pricing later and notify you before any charges apply.
+Pipelines is billed for configured pipeline hours, initial sync data, and ongoing replication data. See [Pipelines pricing](/docs/guides/platform/manage-your-usage/pipelines) for current rates and billing examples. Destination-provider charges, such as BigQuery charges from Google Cloud, are separate.
 
 ## Get started
 
-**Pipelines is currently in alpha.** Alpha features can be unstable and may introduce breaking changes while we evaluate the product direction, refine the feature set, and incorporate customer feedback. To request access, contact your account manager or fill out the form in the Dashboard.
+**Supabase Pipelines is currently in public alpha.** Features and behavior may change as we continue developing the product. If Pipelines isn't available for your organization yet, request access in the Dashboard or contact your account manager.
 
 If you want to dive into the code, **the underlying Supabase ETL engine is open source** and written in Rust. Check out the repository at [github.com/supabase/etl](https://github.com/supabase/etl).
 
@@ -64110,42 +64110,42 @@ Postgres Changes uses temporary replication slots. When no clients are subscribe
 
 The Realtime team built it this way on purpose. Guaranteed delivery requires persistent state tracking, message queuing, and acknowledgment protocols. Those things add latency and complexity that would make Realtime worse at its actual job: delivering live updates as fast as possible.
 
-If you need every change to arrive at its destination, no matter what, Realtime is not the right tool.
+If another system needs a durable, recoverable copy of selected database data, Realtime is not the right tool.
 
 ## What Pipelines does
 
-Pipelines creates managed change-data-capture (CDC) pipelines. A pipeline reads every INSERT, UPDATE, DELETE, and TRUNCATE from your Postgres tables and writes them to a supported destination.
+Pipelines creates managed change-data-capture (CDC) pipelines. A pipeline reads the operations, rows, and columns selected by your Postgres publication and writes them to a supported destination.
 
-Pipelines replicates your data 1-to-1 in near real time. If your destination disconnects or has problems, the pipeline does not skip over data.
+Pipelines keeps the current state of selected Postgres data synchronized with a supported destination in near real time. It maps source names and values to destination-compatible representations and retries transient delivery failures.
 
 ### How Pipelines works
 
-When you create a pipeline, it connects to your database through a permanent replication slot. First, it performs a full copy of your existing data. Then it switches to streaming mode and captures every change as it happens, with latency measured in milliseconds to seconds based on configuration parameters, data size, and destination type.
+When you create a pipeline, it connects to your database through a persistent replication slot. First, it performs an initial sync of the existing rows in the publication. It then begins ongoing replication, processing changes in batches. Latency depends on source activity, network conditions, pipeline configuration, and destination throughput.
 
-It's important to note that Pipelines doesn't respect Row-Level Security. A pipeline reads every piece of data in its publication. If you need to filter data, you should use publication filters.
+Row Level Security does not apply to Pipelines. A pipeline can read all rows and columns selected by its publication. Use publication row filters and column lists to limit the replicated data.
 
-Changes are batched and written to your destination. If the pipeline crashes, it restarts from the last acknowledged position. No data changes are lost. Note that schema changes (adding or removing columns) do not propagate automatically and require manual handling.
+Changes are batched and written to your destination. After a restart, the pipeline resumes from its last acknowledged position while Postgres still retains the required WAL. BigQuery supports a limited set of schema changes in beta; other changes require manual handling.
 
 ### What Pipelines guarantees
 
-Pipelines provides at-least-once delivery. Every change that happens in your database will reach the destination at least once. In rare cases (like a crash during a long-running transaction), a change might be delivered more than once. Exactly-once processing is handled by the destination.
+Pipelines uses at-least-once processing. A retry or restart can process the same change more than once, so destination writes must be idempotent. BigQuery uses the replicated source primary key to apply current-state upserts and deletes.
 
-Pipelines uses permanent replication slots. This means Postgres holds onto WAL data until the pipeline confirms it has been processed. If you stop the pipeline for maintenance and restart it later, it picks up exactly where it left off. Be aware that while the pipeline is paused, Postgres continues to retain WAL data. Extended pauses can lead to significant disk growth, and depending on your Postgres configuration, the pipeline may fail if the WAL retention limit is exceeded.
+Pipelines uses persistent replication slots. Postgres retains WAL until the pipeline confirms it has been processed, subject to the database's WAL retention limit. If you stop and restart a pipeline while its slot remains valid, it continues from the retained WAL. A long stop can increase disk usage or invalidate the slot; recovering from a lost slot requires a new initial sync.
 
-This is the opposite of Realtime's approach. Pipelines trades speed for reliability. It may not deliver changes to your warehouse in the same millisecond they happen, but it will deliver every single one.
+This is the opposite of Realtime's approach. Pipelines prioritizes durable progress tracking and recovery over millisecond delivery to end users.
 
 ## The key differences
 
 ### Delivery guarantees
 
-|                         | **Realtime** | **Pipelines**         |
-| ----------------------- | ------------ | --------------------- |
-| Guarantee               | Best effort  | At-least-once         |
-| Missed changes          | Lost forever | Replayed on reconnect |
-| Replication slot        | Temporary    | Permanent             |
-| Resume after disconnect | No           | Yes                   |
+|                         | **Realtime** | **Pipelines**                                       |
+| ----------------------- | ------------ | --------------------------------------------------- |
+| Guarantee               | Best effort  | At-least-once                                       |
+| Disconnected changes    | Not replayed | Read from retained WAL while the slot remains valid |
+| Replication slot        | Temporary    | Permanent                                           |
+| Resume after disconnect | No           | Yes, while the replication slot remains valid       |
 
-This is the most important difference. If you need every change to arrive, use Pipelines. If you need changes to arrive fast and can tolerate occasional gaps, use Realtime.
+This is the most important difference. Use Pipelines when another system needs a durable, monitored copy of your selected data. Use Realtime when client applications need live updates and can tolerate gaps while disconnected.
 
 ### Where data goes
 
@@ -64187,13 +64187,11 @@ The common thread: a human is watching and needs to see changes as they happen.
 Use Pipelines when you need reliable data movement to analytical systems:
 
 - **Analytics and reporting.** Move production data to an analytical destination for querying without impacting your production database.
-- **Audit trails.** Maintain a complete changelog of every INSERT, UPDATE, and DELETE. Nothing is lost.
 - **Data warehousing.** Replicate your operational data to a columnar format optimized for analytical queries.
-- **Compliance.** Maintain a complete, verifiable history of all data changes.
 - **ML pipelines.** Feed fresh data to training or feature stores without querying production.
 - **Workload isolation.** Run heavy analytical queries against your warehouse instead of your production database.
 
-The common thread: a system needs a complete, reliable copy of your data.
+The common thread: a system needs the current state of selected production data in an analytical destination. Pipelines does not automatically create a queryable history of every row version.
 
 ## The mistake we see most often
 
@@ -64203,7 +64201,7 @@ It works great in development. It even works fine in production for a while. The
 
 The problem is not that Realtime is broken. The problem is that Realtime was not designed for this job.
 
-If you are piping database changes into another system and you need every change to arrive, use Pipelines. That is exactly what it was built for.
+If you are maintaining a durable copy of database data in another system, use Pipelines. It persists replication progress and resumes from Postgres WAL after reconnecting.
 
 ## Can I use both?
 
@@ -64227,7 +64225,7 @@ Realtime handles the live experience. Pipelines handles the analytical pipeline.
 | Database required   | Only for Postgres Changes and Broadcast from Database                | Yes, always                                            |
 | Processing          | Sequential per-change with per-subscriber authorization              | Batched with configurable parallelism                  |
 | Latency             | Typically under 100ms                                                | Seconds (batched)                                      |
-| Best for            | Human users watching live data                                       | Systems consuming complete data                        |
+| Best for            | Human users watching live data                                       | Systems consuming current replicated data              |
 | Built with          | Elixir (Phoenix)                                                     | Rust                                                   |
 | Open source         | [github.com/supabase/realtime](https://github.com/supabase/realtime) | [Supabase ETL engine](https://github.com/supabase/etl) |
 
@@ -64235,7 +64233,7 @@ Realtime handles the live experience. Pipelines handles the analytical pipeline.
 
 Realtime is available on all Supabase projects. Check out the [Realtime documentation](/docs/guides/realtime) to get started.
 
-Pipelines is currently in alpha. Alpha features can be unstable and may introduce breaking changes while we evaluate the product direction, refine the feature set, and incorporate customer feedback. You can request access through the Supabase Dashboard or contact your account manager. Read the [Pipelines announcement](/blog/introducing-supabase-pipelines) for more details on how it works.
+Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product. If Pipelines isn't available for your organization yet, request access through the Supabase Dashboard or contact your account manager. Read the [Pipelines announcement](/blog/introducing-supabase-pipelines) for more details on how it works.
 
 
 ---
@@ -69868,18 +69866,18 @@ Compute is billed hourly. Each project runs its own instance. Pro and Team plans
 
 ### Database
 
-| Feature                     | Free                                      | Pro                                                                                  | Team                                                                                 | Enterprise                                                        |
-| --------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| Dedicated Postgres Database | Included                                  | Included                                                                             | Included                                                                             | Included                                                          |
-| Unlimited API requests      | Included                                  | Included                                                                             | Included                                                                             | Included                                                          |
-| Database size               | 500 MB database size per project included | 8 GB disk size per project included, then $0.125 per GB                              | 8 GB disk size per project included, then $0.125 per GB                              | Custom                                                            |
-| Advanced disk config        | Not included                              | Included                                                                             | Included                                                                             | Included                                                          |
-| Automatic backups           | Not included                              | 7 days                                                                               | 14 days                                                                              | Custom                                                            |
-| Point in time recovery      | Not included                              | $100 per month per 7 days retention                                                  | $100 per month per 7 days retention                                                  | $100 per month per 7 days retention, >28 days retention available |
-| Pausing                     | After 1 week of inactivity                | Never                                                                                | Never                                                                                | Never                                                             |
-| Branching                   | Not included                              | $0.01344 per branch, per hour                                                        | $0.01344 per branch, per hour                                                        | Custom                                                            |
-| Egress                      | 5 GB included                             | 250 GB included, then $0.09 per GB                                                   | 250 GB included, then $0.09 per GB                                                   | Custom                                                            |
-| Pipelines                   | Not included                              | $39 per pipeline per month, $3.00 per GB replicated data, $0.60 per GB backfill data | $39 per pipeline per month, $3.00 per GB replicated data, $0.60 per GB backfill data | Custom                                                            |
+| Feature                     | Free                                      | Pro                                                                                                 | Team                                                                                                | Enterprise                                                        |
+| --------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Dedicated Postgres Database | Included                                  | Included                                                                                            | Included                                                                                            | Included                                                          |
+| Unlimited API requests      | Included                                  | Included                                                                                            | Included                                                                                            | Included                                                          |
+| Database size               | 500 MB database size per project included | 8 GB disk size per project included, then $0.125 per GB                                             | 8 GB disk size per project included, then $0.125 per GB                                             | Custom                                                            |
+| Advanced disk config        | Not included                              | Included                                                                                            | Included                                                                                            | Included                                                          |
+| Automatic backups           | Not included                              | 7 days                                                                                              | 14 days                                                                                             | Custom                                                            |
+| Point in time recovery      | Not included                              | $100 per month per 7 days retention                                                                 | $100 per month per 7 days retention                                                                 | $100 per month per 7 days retention, >28 days retention available |
+| Pausing                     | After 1 week of inactivity                | Never                                                                                               | Never                                                                                               | Never                                                             |
+| Branching                   | Not included                              | $0.01344 per branch, per hour                                                                       | $0.01344 per branch, per hour                                                                       | Custom                                                            |
+| Egress                      | 5 GB included                             | 250 GB included, then $0.09 per GB                                                                  | 250 GB included, then $0.09 per GB                                                                  | Custom                                                            |
+| Pipelines                   | Not included                              | $0.053 per pipeline per hour, $3.00 per GB ongoing replication data, $0.60 per GB initial sync data | $0.053 per pipeline per hour, $3.00 per GB ongoing replication data, $0.60 per GB initial sync data | Custom                                                            |
 
 ### Auth
 
@@ -115845,7 +115843,7 @@ An introduction to database replication and change data capture.
 
 Compare read replicas, Supabase Pipelines, and manual replication.
 
-Replication is the process of copying changes from your database to another location. It's also referred to as change data capture (CDC): capturing all the changes that occur to your data.
+Replication keeps data synchronized with another location. Logical replication products such as Supabase Pipelines use change data capture (CDC) to read database changes and apply them to a destination.
 
 ## Use cases
 
@@ -115853,7 +115851,7 @@ You might use database replication for:
 
 - **Analytics and data warehousing**: Replicate your operational database to analytics platforms for complex analysis without impacting your application's performance.
 - **Data integration**: Keep your data synchronized across different systems and services in your tech stack.
-- **Backup and disaster recovery**: Maintain up-to-date copies of your data in different locations.
+- **Operational reporting**: Maintain a copy of selected application data that you can query in another system.
 
 ## Replication methods
 
@@ -115867,19 +115865,21 @@ Read replicas are additional Supabase Postgres databases kept in sync with your 
 
 ### Pipelines
 
-Caution: Supabase Pipelines is currently in private alpha. Private alpha features can be unstable and may introduce breaking changes while we evaluate the product direction, refine the feature set, and incorporate customer feedback.
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
 
-Pipelines is a managed CDC feature for creating replication pipelines from Supabase Postgres to destination systems. It uses Postgres logical replication under the hood with the open-source [Supabase ETL engine](https://github.com/supabase/etl). A destination is where your replicated data is stored; the pipeline is the managed process that continuously streams database changes to that destination.
+Supabase Pipelines is a managed CDC product for moving data from Supabase Postgres to supported destination systems. It uses Postgres logical replication with the open-source [Supabase ETL engine](https://github.com/supabase/etl). A destination is where your replicated data is stored; a pipeline first performs an initial sync of existing rows, then uses ongoing replication (CDC) to send subsequent database changes to that destination.
 
 - [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines)
 
 #### Supported destinations
 
-Pipelines currently supports BigQuery as the managed destination. We are working on new destinations, and this table will be updated as support expands.
+Pipelines currently supports BigQuery as the managed destination. You can [request early access to ClickHouse, Snowflake, and DuckLake](https://supabase.com/go/supabase-pipelines-new-destinations) while we expand destination support.
 
-| Destination                                                                | Insert      | Update      | Delete      | Truncate    | Schema change | Description                                                         |
-| -------------------------------------------------------------------------- | ----------- | ----------- | ----------- | ----------- | ------------- | ------------------------------------------------------------------- |
-| [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery) | ✅ Supported | ✅ Supported | ✅ Supported | ✅ Supported | ✅ Supported   | Managed replication to Google BigQuery for analytics and reporting. |
+Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. Choose destination resources as close as possible to Frankfurt to reduce network latency and replication lag.
+
+| Destination                                                                | Insert      | Update      | Delete      | Truncate    | Schema change  | Description                                                         |
+| -------------------------------------------------------------------------- | ----------- | ----------- | ----------- | ----------- | -------------- | ------------------------------------------------------------------- |
+| [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery) | ✅ Supported | ✅ Supported | ✅ Supported | ✅ Supported | Beta (limited) | Managed replication to Google BigQuery for analytics and reporting. |
 
 ### Manual replication
 
@@ -115941,7 +115941,7 @@ Replicate Supabase Postgres tables to BigQuery.
 
 Configure BigQuery as a Supabase Pipelines destination.
 
-Caution: Supabase Pipelines is currently in private alpha. Private alpha features can be unstable and may introduce breaking changes while we evaluate the product direction, refine the feature set, and incorporate customer feedback.
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
 
 [BigQuery](https://cloud.google.com/bigquery) is Google's fully managed data warehouse. You can replicate your database tables to BigQuery for analytics and reporting.
 
@@ -115949,21 +115949,26 @@ Caution: Supabase Pipelines is currently in private alpha. Private alpha feature
 
 Before configuring BigQuery as a destination, set up the following in Google Cloud Platform:
 
-1. **Google Cloud Platform (GCP) account**: [Sign up for GCP](https://cloud.google.com/gcp) if you don't have one
+1. **Google Cloud Platform (GCP) account**: [Sign up for GCP](https://cloud.google.com/gcp) if you don't have one. In the destination project, make sure the [BigQuery API and BigQuery Storage API](https://cloud.google.com/bigquery/docs/service-dependencies) are enabled.
 
 2. **BigQuery dataset**: Create a [BigQuery dataset](https://cloud.google.com/bigquery/docs/datasets-intro) in your GCP project
    - Open the BigQuery console in GCP
    - Select your project
    - Click **Create Dataset**
    - Provide a dataset ID, for example `supabase_replication`
+   - Choose the [dataset location](https://cloud.google.com/bigquery/docs/locations) intentionally. Supabase Pipelines run in **AWS `eu-central-1` (Frankfurt)**, so choose the closest available BigQuery location to reduce network latency. You can't change a dataset's location after it is created, and Pipelines doesn't infer it from your Supabase project or copy Postgres partitioning settings.
 
 3. **GCP service account key**: Create a [service account](https://cloud.google.com/iam/docs/keys-create-delete) with appropriate permissions
+
    - Go to **IAM & Admin > Service Accounts**
    - Click **Create Service Account**
-   - Grant the "BigQuery Data Editor" and "BigQuery Job User" roles
+   - Grant **BigQuery Data Editor** on the destination dataset
+   - Grant **BigQuery Job User** on the GCP project
    - Create and download the JSON key file
 
-Required permissions:
+   Treat the downloaded JSON as a secret. Don't commit or share it, and [rotate or revoke the key](https://cloud.google.com/iam/docs/key-rotation) if it is exposed.
+
+These roles provide the permissions Pipelines needs to inspect and manage destination tables, write data through the Storage Write API, and run BigQuery jobs. If you use a custom IAM role, it must provide:
 
 - `bigquery.datasets.get`
 - `bigquery.jobs.create`
@@ -115974,8 +115979,6 @@ Required permissions:
 - `bigquery.tables.list`
 - `bigquery.tables.update`
 - `bigquery.tables.updateData`
-- `bigquery.routines.get`
-- `bigquery.routines.list`
 
 ## Configure BigQuery as a destination
 
@@ -115983,12 +115986,14 @@ Required permissions:
 
 2. Click **Add destination**
 
-3. Configure the general settings:
+3. Select **BigQuery** as the destination type
+
+4. Configure the destination details:
    - **Destination name**: A name to identify this destination, for example "BigQuery Warehouse"
    - **Publication**: The publication to replicate data from
-   - **Destination type**: Select **BigQuery**
+   - **Region**: Managed Pipelines run in the fixed **AWS `eu-central-1` (Frankfurt)** region. This is separate from your BigQuery dataset location and can't be changed.
 
-4. Configure BigQuery-specific settings:
+5. Configure the BigQuery settings:
    - **Project ID**: Your BigQuery project identifier, found in the GCP Console
 
    - **Dataset ID**: The name of your BigQuery dataset, without the project ID
@@ -115997,25 +116002,33 @@ Required permissions:
 
    - **Service Account Key**: Your GCP service account key in JSON format
 
-5. Optionally expand **Advanced settings** for BigQuery-specific performance tuning:
+![BigQuery destination form with pipeline details and BigQuery credentials](https://supabase.com/docs/img/database/replication/pipelines-bigquery-configuration.png)
 
-   | Setting                  | Default            | Description                                                                                                                                                                |
-   | ------------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **Connection pool size** | `4` connections    | Size of the BigQuery Storage Write API connection pool. More connections allow more parallel writes, but consume more resources.                                           |
-   | **Maximum staleness**    | No staleness limit | Maximum allowed age, in minutes, for BigQuery cached metadata before reading base tables. Lower values improve freshness. Higher values can reduce query cost and latency. |
+6. Optionally expand **Advanced settings** for pipeline and BigQuery-specific tuning:
 
-6. Click **Create and start pipeline** to begin replication
+   The general batch, initial-sync concurrency, and invalidated-slot settings are described in [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#step-3-configure-a-destination). BigQuery adds these settings:
 
-Your replication pipeline now starts copying data from your database to BigQuery.
+   | Setting                  | Default          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+   | ------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **Connection pool size** | `4` connections  | Number of BigQuery Storage Write API connections used for destination writes. More connections can increase write throughput, but consume more pipeline and BigQuery resources.                                                                                                                                                                                                                                                                                                                                       |
+   | **Maximum staleness**    | Freshest results | Maximum acceptable staleness, in whole minutes, of table data returned by queries while BigQuery applies CDC `UPSERT` and `DELETE` changes in the background. Leave unset for the freshest table data. A larger number of minutes allows BigQuery to return older data, which can reduce query-time CDC merge cost and latency. For example, `15` allows data to be up to 15 minutes stale. This value is applied when Pipelines creates or recreates a table; changing it doesn't alter existing destination tables. |
+
+7. Review the [source table requirements](#source-table-requirements), then click **Create and start pipeline** to begin replication
+
+The pipeline begins the initial sync from your database to BigQuery.
+
+Supabase Pipelines charges and Google Cloud charges are separate. BigQuery can charge for Storage Write API ingestion, storage, and the compute used to apply CDC changes. See [BigQuery CDC pricing](https://cloud.google.com/bigquery/docs/change-data-capture#pricing).
 
 ## How it works
 
 Once configured, replication to BigQuery:
 
-1. Captures changes from your Postgres database (INSERT, UPDATE, DELETE, TRUNCATE operations)
+1. Captures the `INSERT`, `UPDATE`, `DELETE`, and `TRUNCATE` operations included by your Postgres publication
 2. Optimizes delivery automatically
-3. Creates BigQuery tables automatically to match your Postgres schema
+3. Creates destination tables from the replicated source schema using BigQuery-compatible names and types
 4. Streams data to BigQuery
+
+Pipelines keeps a current-state table that you can query for each replicated source table and may replace its destination data during a truncate or new initial sync. It does not provide a history of every row version that you can query.
 
 ## Source table requirements
 
@@ -116029,15 +116042,15 @@ Source tables must also use a BigQuery-compatible Postgres `REPLICA IDENTITY` se
 | ------------------------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `REPLICA IDENTITY DEFAULT` with a primary key    | Supported        | Recommended for most tables. BigQuery uses the replicated source primary key to apply upserts and deletes.                                                      |
 | `REPLICA IDENTITY FULL`                          | Supported        | Recommended for tables with large `text`, `jsonb`, `bytea`, or other values that Postgres may store out-of-line using TOAST, especially when those rows update. |
-| `REPLICA IDENTITY USING INDEX`                   | Not supported    | BigQuery change data capture (CDC) rows are keyed by the source primary key, not by an alternative unique index.                                                |
-| `REPLICA IDENTITY NOTHING`                       | Not supported    | Updates and deletes do not include enough row identity for BigQuery to apply them safely.                                                                       |
+| `REPLICA IDENTITY USING INDEX`                   | Limited          | Supported only when the selected unique index contains exactly the source primary-key columns. An alternative unique-key identity is not supported.             |
+| `REPLICA IDENTITY NOTHING`                       | Insert-only      | Inserts can be replicated, but updates and deletes do not include enough row identity for BigQuery to apply them safely.                                        |
 | `REPLICA IDENTITY DEFAULT` without a primary key | Not supported    | BigQuery requires a source primary key.                                                                                                                         |
 
 For a general explanation of how replica identity affects update and delete events, see [How does replica identity affect updates and deletes?](https://supabase.com/docs/guides/database/replication/pipelines-faq#how-does-replica-identity-affect-updates-and-deletes).
 
 For updates, Postgres does not always send a complete old row through logical replication. It can also mark unchanged toasted values as `unchanged toast` instead of resending the value. BigQuery change data capture (CDC) upserts require a complete new row because omitted columns are not preserved in the destination. The replication pipeline can reconstruct a complete update when the old row image contains the missing value, which is reliable with `REPLICA IDENTITY FULL`.
 
-If a BigQuery pipeline fails with an error about a partial update row, set `REPLICA IDENTITY FULL` on the affected source table and restart the pipeline. Changing replica identity only affects new WAL records, so a retained update that was written before the change may still need to be skipped by recreating the pipeline or re-copying the affected table.
+If a BigQuery pipeline fails with an error about a partial update row, set `REPLICA IDENTITY FULL` on the affected source table and restart the pipeline. Changing replica identity only affects new WAL records, so a retained update that was written before the change may still need to be skipped by recreating the pipeline or restarting the affected table's initial sync.
 
 Check a table's current replica identity:
 
@@ -116062,23 +116075,13 @@ alter table public.your_table replica identity full;
 
 `REPLICA IDENTITY FULL` increases WAL volume because Postgres logs the full old row for updates and deletes. Use it on tables where update correctness is more important than the extra replication overhead.
 
-## How tables are structured
-
-Due to BigQuery limitations, replicated tables use a versioned structure:
-
-- The table you query is a **view**, for example `users`
-- The actual data is stored in versioned tables with a `_version` suffix, for example `users_version`
-- When a table is truncated in your database, a new version is created and the view automatically points to the latest version
-
-This structure handles table truncations while maintaining query compatibility.
-
 ## Schema change support
 
 Schema change support for BigQuery is currently in beta. Pipelines supports a limited set of schema changes for BigQuery while the feature is developed further.
 
 Supported schema changes:
 
-- Adding a nullable column
+- Adding a scalar, top-level column (created as `NULLABLE` in BigQuery)
 - Removing a column
 - Renaming a column
 - Dropping a `NOT NULL` constraint
@@ -116091,16 +116094,24 @@ Unsupported or limited schema changes:
 - Filling existing rows for `ADD COLUMN ... DEFAULT`
 - Unsupported default expressions
 
-BigQuery requires added columns to be nullable. When a replicated `ADD COLUMN` includes a default, Pipelines can apply supported default metadata for future rows, but BigQuery does not backfill existing rows through that DDL. Existing destination rows remain `NULL` unless you run a separate backfill.
+When the initial sync creates a BigQuery table, Pipelines preserves whether each scalar, non-array source column allows `NULL`: Postgres `NOT NULL` columns become `REQUIRED`, and nullable columns become `NULLABLE`. BigQuery represents Postgres arrays as `REPEATED` fields instead of using `REQUIRED` or `NULLABLE` mode.
 
-Supported defaults are best-effort translations to BigQuery SQL. Unsupported defaults are skipped with a warning instead of failing replication.
+After the table exists, BigQuery requires every newly added scalar, top-level column to be `NULLABLE`. If Postgres adds a `NOT NULL` column, Pipelines adds it as `NULLABLE` in BigQuery and logs a warning. Postgres remains the source of truth and rejects new `NULL` values before they reach the destination.
+
+For Postgres `DROP NOT NULL`, Pipelines relaxes an existing BigQuery column from `REQUIRED` to `NULLABLE`. For Postgres `SET NOT NULL`, BigQuery cannot change an existing `NULLABLE` column to `REQUIRED`, so Pipelines leaves the destination column nullable and logs a warning.
+
+Column defaults are handled independently from whether the column allows `NULL`. BigQuery does not support `ADD COLUMN ... DEFAULT` on an existing table, so Pipelines first adds the nullable column and then applies supported default metadata with a separate statement. This is destination metadata for future BigQuery writes that omit the column; pipeline writes already contain the value evaluated by Postgres, and the metadata doesn't populate existing destination rows. Unsupported defaults, including defaults on destination primary-key columns, are skipped with a warning instead of failing replication.
 
 ## Limitations
 
 - **Row size**: Limited to 10 MB per row due to BigQuery Storage Write API constraints
 - **Primary keys**: Source tables must have a primary key, the replicated primary key can contain at most 16 columns, and BigQuery does not enforce key uniqueness
-- **Replica identity**: Source tables must use primary-key replica identity or `REPLICA IDENTITY FULL`
-- **Table names**: Source table names cannot start or end with `_` when replicating to BigQuery
+- **Columns**: BigQuery CDC supports at most 2,000 top-level columns
+- **Replica identity**: Updates and deletes require a supported primary-key identity or `REPLICA IDENTITY FULL`
+- **Schema and table names**: Source schema and table names can't start or end with `_` or contain `"` or `;` when replicating to BigQuery
+- **Arrays and numeric values**: Arrays can't contain `NULL` elements. Numeric values with more than 38 fractional digits and exact JSON integer values outside BigQuery's supported range can't be replicated.
+- **BigQuery CDC tables**: While CDC is active, BigQuery doesn't support mutating DML (`UPDATE`, `DELETE`, or `MERGE`), wildcard table queries, or search indexes on the destination table. See [BigQuery CDC limitations](https://cloud.google.com/bigquery/docs/change-data-capture#limitations) for the complete list.
+- **Managed destination objects**: Don't delete or modify tables or views created by Pipelines. Doing so can stop replication and may require a new, billable initial sync.
 - **Schema changes**: Limited to the supported schema changes listed above
 
 ## Additional resources
@@ -116289,10 +116300,6 @@ You can follow those steps with the following modifications:
 1. Use the `postgres` user
 2. Select `logical replication` as the replication method (`xmin` is possible, but not recommended)
 
-### Troubleshooting
-
-Airbyte has a known [issue](https://discuss.airbyte.io/t/postgres-source-replication-slot-safe-wal-size-only-reset-when-a-change-occurs/3263/7) where it does not clear WAL files on each successful sync. The recommended workaround is to have a `heartbeat` table that you write changes to once an hour.>
-
 **Estuary**
 
 Estuary has the following [documentation](https://docs.estuary.dev/reference/Connectors/capture-connectors/PostgreSQL/Supabase/) for setting up Postgres as a source.
@@ -116342,29 +116349,29 @@ You can follow those steps with the following modifications:
 
 # Pipelines FAQ
 
-Common questions and answers about managed replication pipelines.
+Common questions and answers about Supabase Pipelines.
 
 Frequently asked questions about Supabase Pipelines.
 
-Caution: Supabase Pipelines is currently in private alpha. Private alpha features can be unstable and may introduce breaking changes while we evaluate the product direction, refine the feature set, and incorporate customer feedback.
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
 
 ## What destinations are supported?
 
 Pipelines currently supports **BigQuery** as the managed destination. See the [BigQuery destination guide](https://supabase.com/docs/guides/database/replication/bigquery) for configuration details.
 
-We are working on new destinations. Supported destinations can be Supabase-managed or third-party systems as support expands. Availability may continue to vary based on the planned roll-out strategy.
+You can [request early access to ClickHouse, Snowflake, and DuckLake](https://supabase.com/go/supabase-pipelines-new-destinations). Supported destinations can be Supabase-managed or third-party systems as support expands.
 
 ## Does the destination's region affect performance?
 
 Yes. The further apart your source database, the pipeline, and your destination are, the more network latency is added to replication, which increases replication lag and reduces throughput.
 
-Pipelines run out of **eu-central-1 (Frankfurt)**. For the best performance, place both your source project and your destination as close to this region as possible.
+Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. For the best performance, place both your source project and destination as close to Frankfurt as possible. When configuring a destination provider such as BigQuery, choose its closest available region.
 
 If you can only optimize one side, prioritize placing your **destination** close to the pipeline's region. Replicated data continuously streams out to the destination, so latency on that leg has a bigger impact on overall replication lag than latency between the pipeline and the source.
 
 ## Which plans support Pipelines?
 
-Pipelines is available on the Pro, Team, and Enterprise plans.
+Pipelines requires a Pro, Team, or Enterprise plan. During public alpha, access is being rolled out gradually, so an eligible plan does not guarantee that Pipelines is enabled for every organization yet. If it is not available, request access from the **Database > Replication** page or contact your account manager.
 
 ## What happened to Analytics Buckets replication?
 
@@ -116379,7 +116386,7 @@ When you enable Pipelines, Supabase installs database objects that help track re
 - An event trigger that runs on every `ALTER TABLE` statement. Supabase uses this to support schema change handling.
 - A set of tables in the `etl` schema. These tables track replication state for your pipelines.
 
-The replication state tables are not updated very often, especially after the initial copy phase is complete.
+The replication state tables are not updated very often, especially after the initial sync is complete.
 
 ## What schema changes are supported?
 
@@ -116387,19 +116394,19 @@ Schema change support is currently in beta and limited to the BigQuery destinati
 
 Supported schema changes:
 
-- Adding a nullable column
+- Adding a scalar, top-level column (created as `NULLABLE` in BigQuery)
 - Removing a column
 - Renaming a column
 - Dropping a `NOT NULL` constraint
 - Setting or dropping supported column default metadata
 
-Pipelines does not currently support changing column data types, adding `NOT NULL` with `SET NOT NULL`, or filling existing destination rows for `ADD COLUMN ... DEFAULT`. Supported defaults are applied as destination metadata for future rows where BigQuery can represent them. See [BigQuery schema change support](https://supabase.com/docs/guides/database/replication/bigquery#schema-change-support) for details.
+Initial BigQuery table creation preserves whether each scalar, non-array Postgres column allows `NULL`. Arrays use BigQuery's `REPEATED` mode. For later changes, `DROP NOT NULL` relaxes a BigQuery `REQUIRED` column to `NULLABLE`, while `SET NOT NULL` leaves an existing BigQuery column nullable and logs a warning. Newly added scalar, top-level columns are always nullable in BigQuery. Supported defaults are applied separately as destination metadata and do not populate existing destination rows. Pipelines does not currently support changing column data types. See [BigQuery schema change support](https://supabase.com/docs/guides/database/replication/bigquery#schema-change-support) for details.
 
 ## What happens when you disable Pipelines?
 
 Disabling Pipelines removes the database objects that were installed in your source database, including the replication state tables in the `etl` schema and the DDL event trigger.
 
-To remove Pipelines from a project, delete all replication pipelines first. After all pipelines are deleted, the disable action becomes available. For the Dashboard steps, see [Disabling Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#disabling-pipelines).
+To remove Pipelines from a project, delete all Pipelines destinations first. After all destinations are deleted, the disable action becomes available. For the Dashboard steps, see [Disabling Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#disabling-pipelines).
 
 Disabling Pipelines stops Supabase from managing replication for the project. It does not delete tables or data that were already written to your destination.
 
@@ -116407,7 +116414,7 @@ Disabling Pipelines stops Supabase from managing replication for the project. It
 
 Common reasons:
 
-- **Missing primary key**: Tables must have a primary key to be replicated (Postgres logical replication requirement)
+- **Missing primary key**: BigQuery requires each source table to have a primary key and requires the publication to include its columns. This is a BigQuery Pipelines requirement, not a general requirement for publishing Postgres inserts.
 - **Not in publication**: Ensure the table is included in your Postgres publication
 - **Generated columns**: Generated columns are skipped during replication
 
@@ -116425,51 +116432,15 @@ See [Partitioned tables](https://supabase.com/docs/guides/database/replication/p
 
 ## How does replica identity affect updates and deletes?
 
-If inserts replicate but updates or deletes fail, check the table's `REPLICA IDENTITY` setting.
+If inserts replicate but updates or deletes fail, the source table might not be sending enough old-row identity through Postgres logical replication.
 
-Postgres logical replication uses `REPLICA IDENTITY` to decide what old-row data to include in WAL for `UPDATE` and `DELETE` events. This is based on logical WAL being enabled, not whether a replication consumer is connected at that moment. Replica identity does not affect the row data Postgres logs for `INSERT` events.
-
-Downstream destinations use old-row data to find the row that changed, handle primary-key changes, and apply deletes.
-
-Postgres supports these replica identity modes:
-
-- `DEFAULT`: uses the table's primary key. Updates and deletes require a primary key when those operations are published.
-- `FULL`: logs the full old row for updates and deletes. Postgres flattens toasted old values when needed.
-- `USING INDEX`: uses a selected unique index as the replica identity.
-- `NOTHING`: logs no old-row identity. If the table is in a publication that publishes updates or deletes, Postgres rejects those statements because there is no row identity to publish.
-
-With `DEFAULT` or `USING INDEX`, Postgres logs only the replica-identity columns. For updates, Postgres includes that old identity when it needs it, such as when an identity column changes or an identity column contains external toasted data. For deletes, Postgres includes the old identity so consumers can identify the deleted row.
-
-Large values such as `text`, `jsonb`, and `bytea` can be stored out-of-line by Postgres using TOAST. During an update, if a toasted value did not change, Postgres may send a marker that means "the value is unchanged" instead of sending the value again. The replication pipeline can only reconstruct that value when the logical replication event includes enough old-row data. If the pipeline cannot reconstruct an unchanged toasted value, the update is treated as partial.
-
-You can check a table's current setting with:
-
-```sql
-select
-  n.nspname as schema_name,
-  c.relname as table_name,
-  c.relreplident as replica_identity
-from
-  pg_class as c
-  join pg_namespace as n on n.oid = c.relnamespace
-where n.nspname = 'public' and c.relname = 'your_table';
-```
-
-The `replica_identity` value is `d` for default, `f` for full, `i` for index, and `n` for nothing.
-
-For tables with toasted columns that need reliable updates, or for destinations that need complete old-row images, set `REPLICA IDENTITY FULL`:
+Every table sent to BigQuery must have a primary key, and every primary-key column must be included in the publication. For updates and deletes, use the primary key replica identity or `REPLICA IDENTITY FULL`. Full replica identity is also recommended for tables with large `text`, `jsonb`, `bytea`, or other values that Postgres can store out of line.
 
 ```sql
 alter table public.your_table replica identity full;
 ```
 
-`REPLICA IDENTITY FULL` increases WAL volume because Postgres logs the full old row for updates and deletes. Use it when correctness for updates and deletes is more important than the extra replication overhead.
-
-Changing replica identity only affects WAL records generated after the change. If a retained update was written while the table used `DEFAULT`, restarting replication does not decode that older record as `FULL`. Postgres logical decoding uses historic catalog snapshots, and the old tuple or key data must already be present in the WAL record.
-
-Destination-specific requirements can be stricter than Postgres itself. For BigQuery, see [BigQuery source table requirements](https://supabase.com/docs/guides/database/replication/bigquery#source-table-requirements).
-
-After changing replica identity, restart each pipeline that includes the affected tables so the pipeline refreshes relation metadata and applies the new setting to future changes. If the pipeline is already failed, change the replica identity and then restart the pipeline.
+Full replica identity increases WAL volume and only affects new WAL records. Fix the setting before generating more changes. If the failing update is already retained in WAL, restarting may fail again; recreate the pipeline or restart the affected table's initial sync. See [BigQuery source table requirements](https://supabase.com/docs/guides/database/replication/bigquery#source-table-requirements) for details.
 
 ## Why aren't publication changes reflected after adding or removing tables?
 
@@ -116477,7 +116448,7 @@ After modifying your Postgres publication, you must restart the replication pipe
 
 ## Why is a pipeline in failed state?
 
-Pipeline failures occur during the streaming phase when an error happens while replicating live data. This prevents data loss. To recover:
+A pipeline enters **Failed** when it encounters a non-retryable pipeline-level error during startup or ongoing replication. The pipeline stops instead of silently skipping the failure. To recover:
 
 1. Check the error message by hovering over the **Failed** status
 2. Click **View pipeline** for detailed information
@@ -116488,15 +116459,14 @@ See [Handling errors](https://supabase.com/docs/guides/database/replication/pipe
 
 ## Why was the pipeline stopped?
 
-Supabase may automatically stop a pipeline if it encounters too many errors in a short period of time. This protects your source database, your destination, and the Pipelines system from a pipeline repeatedly retrying a failing operation.
-
-Automatic stopping is a safety mechanism. It prevents repeated pipeline errors from consuming resources or causing wider instability while preserving the pipeline's replication position so you can investigate the underlying issue.
+A pipeline is stopped when you select **Stop pipeline**, when its project becomes inactive, or while an operation requires it to restart. A non-retryable configuration, schema, or data error can instead put the pipeline in **Failed** state. Transient connection and destination errors retry automatically when possible.
 
 To recover:
 
-1. Check the pipeline error details and replication logs
-2. Fix the underlying issue, such as destination connectivity, schema mismatches, permissions, or rate limits
-3. Restart the pipeline manually from the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard
+1. Check whether the pipeline is **Stopped**, **Stopping**, or **Failed**
+2. If it failed, review the error details and [replication logs](https://supabase.com/dashboard/project/_/logs/replication-logs)
+3. Fix the underlying issue, such as destination connectivity, schema mismatches, permissions, or rate limits
+4. Start or restart the pipeline from [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication)
 
 If the same error continues after restart, the pipeline may stop again. Review [Monitor pipeline status](https://supabase.com/docs/guides/database/replication/pipelines-monitoring) for troubleshooting steps.
 
@@ -116504,19 +116474,19 @@ If the same error continues after restart, the pipeline may stop again. Review [
 
 Lag increases when Postgres produces WAL faster than the pipeline can confirm it has processed. Common causes include a slow or rate-limited destination, a pipeline issue, heavy source database activity, long transactions, network latency between the pipeline and source database, or a stopped/disconnected pipeline.
 
-Open [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication), click **View pipeline**, and check **Waiting to sync**, **Room before pausing**, **Last check-in**, **Connected**, and **Slot status**. See [Dealing with replication lag](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#dealing-with-replication-lag) for the full investigation and response flow.
+Open [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication), click **View pipeline**, and check **Waiting to sync**, **WAL retention remaining**, **Last check-in**, **Connected**, and **Slot status**. See [Dealing with replication lag](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#dealing-with-replication-lag) for the full investigation and response flow.
 
 ## What does a `Lost` slot status mean?
 
 `Lost` means Postgres has already removed WAL files that the pipeline's replication slot needed. The pipeline cannot continue from that slot.
 
-You can recreate the pipeline, or open the pipeline's **Advanced settings**, set **Invalidated slot behavior** to **Recreate**, and restart the pipeline. On restart, the pipeline creates a new replication slot and starts replication from scratch for all tables. This is required for consistency because the old slot can no longer provide every change the pipeline missed.
+You can recreate the pipeline, or open the pipeline's **Advanced settings**, set **Invalidated slot behavior** to **Recreate**, and start the pipeline again. The pipeline resets its saved table-sync state, creates a new replication slot, and replaces each destination table through a new initial sync. This destructive restart is required for consistency because the old slot can no longer provide every change the pipeline missed, and the new initial sync is billed as initial sync data.
 
 See [Slot statuses](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#slot-statuses) for all slot states and what to do next.
 
 ## Why is a table in error state?
 
-Table errors occur during the copy phase. To recover, click **View pipeline**, find the affected table, and reset the table state. This will restart the table copy from the beginning.
+Table errors occur during the initial sync. To recover, click **View pipeline**, find the affected table, and click its restart action. This restarts that table's initial sync from the beginning, deletes its existing destination data, and bills the copied data as new initial sync data.
 
 ## How to verify replication is working
 
@@ -116529,11 +116499,13 @@ Check the [**Database > Replication**](https://supabase.com/dashboard/project/_/
 
 See [Monitor pipeline status](https://supabase.com/docs/guides/database/replication/pipelines-monitoring) for comprehensive monitoring instructions.
 
-## How to stop or pause replication
+## How to stop replication
 
 You can manage your pipeline using the actions menu in the destinations list. See [Managing your pipeline](https://supabase.com/docs/guides/database/replication/pipelines#managing-your-pipeline) for details on available actions.
 
 Note: Stopping replication causes changes to queue up in the WAL.
+
+Stopping requests a graceful shutdown, so the pipeline can remain **Stopping** for up to five minutes while in-flight work finishes. Configured pipeline-hour billing continues while the pipeline is stopped. Delete the destination to end that charge.
 
 ## What happens if a project becomes inactive?
 
@@ -116547,15 +116519,15 @@ When a project is downgraded to the Free Plan, all replication pipelines created
 
 ## What happens if a table is deleted at the destination?
 
-If a table is deleted downstream at the destination, the behavior depends on the destination. In general, the replication pipeline will try to recreate the missing table so that all tables in your publication can continue replicating.
+Don't delete or modify tables or views managed by Pipelines. For BigQuery, deleting a managed object can stop replication and may require a new, billable initial sync. Pipelines does not guarantee that it will automatically repair or fully resynchronize a destination object that was removed manually.
 
 **To permanently remove a table from your destination you have two options:**
 
-**Option 1: Pause the pipeline first**
+**Option 1: End replication permanently**
 
-1. Pause or delete your replication pipeline
+1. Delete the destination to permanently end replication and pipeline-hour billing. Stopping the pipeline alone does not end pipeline-hour billing.
 2. Delete the table at your destination
-3. The table will not be recreated since the pipeline is not running
+3. Don't restart the pipeline while the table remains in its publication
 
 **Option 2: Remove from publication first**
 
@@ -116565,25 +116537,15 @@ If a table is deleted downstream at the destination, the behavior depends on the
 
 Note: Removing a table from the publication and restarting the pipeline does not delete the table downstream, it only stops replicating new changes to it.
 
-## Can data duplicates occur during pipeline operations?
+## Can data be processed more than once?
 
-Yes, data duplicates can occur in certain scenarios when stopping a pipeline.
+Yes. Pipelines uses at-least-once processing. If a destination accepted a batch but the pipeline did not persist its checkpoint before a retry, restart, or interruption, that batch can be processed again.
 
-When you stop a pipeline (for restarts or updates), the replication process tries to finish processing any transactions that are currently being sent to your destination. The pipeline waits up to a few minutes to allow these in-progress transactions to complete cleanly before stopping.
-
-However, if a transaction in your database takes longer than this waiting period to complete, the pipeline will stop before that entire transaction has been fully processed. When the pipeline starts again, it must restart the incomplete transaction from the beginning to maintain transaction boundaries, which results in some data being sent twice to your destination.
-
-### Understanding transaction boundaries
-
-A transaction is a group of database changes that happen together (for example, all changes within a `BEGIN...COMMIT` block). Postgres logical replication must process entire transactions - it cannot process part of a transaction, stop, and then continue from the middle. This means if a transaction is interrupted, the whole transaction must be replayed when the pipeline resumes.
-
-**Example scenario**: Suppose you have a large operation that updates 10,000 rows within a single transaction. If this operation takes 10 minutes to complete and you stop the pipeline after 5 minutes (when 5,000 rows have been processed), the pipeline cannot resume from row 5,001. Instead, when it restarts, it must reprocess all 10,000 rows from the beginning, resulting in the first 5,000 rows being sent to your destination twice.
-
-Caution: There are currently no plans to implement automatic deduplication. If your use case requires guaranteed exactly-once delivery, you should implement deduplication logic in your downstream systems based on primary keys or other unique identifiers.
+BigQuery uses the replicated source primary key and CDC ordering metadata to converge on the current table state. Pipelines does not provide a history of each delivery attempt that you can query or guarantee exactly-once event processing.
 
 ## Where to find replication logs
 
-Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/explorer) section of the Dashboard to see all pipeline logs. Logs contain diagnostic information. If you're experiencing issues, contact support with your error details.
+Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) section of the Dashboard to see all pipeline logs. Logs contain diagnostic information. If you're experiencing issues, contact support with your error details.
 
 ## How to get help
 
@@ -116602,36 +116564,36 @@ Track replication status, view logs, and troubleshoot issues.
 
 Monitor the status and health of pipelines created with Supabase Pipelines.
 
-Caution: Supabase Pipelines is currently in private alpha. Private alpha features can be unstable and may introduce breaking changes while we evaluate the product direction, refine the feature set, and incorporate customer feedback.
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
 
-After setting up Pipelines, you can monitor the status and health of your replication pipelines directly from the Dashboard. The pipeline is the active Postgres replication process that continuously streams changes from your database to your destination.
+After setting up Supabase Pipelines, you can monitor the status and health of your pipelines directly from the Dashboard. A pipeline first performs an initial sync of existing rows, then uses ongoing replication (CDC) to send subsequent database changes to your destination.
 
 ### Viewing pipeline status
 
-To monitor your replication pipelines:
+To monitor your pipelines:
 
 1. Navigate to the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard
 2. You'll see a list of all your destinations with their pipeline status
-
-![Destinations List](https://supabase.com/docs/img/database/replication/replication-destinations-list.png)
 
 #### Pipeline states
 
 Each destination shows its pipeline in one of these states:
 
-| State        | Description                                                                     |
-| ------------ | ------------------------------------------------------------------------------- |
-| **Stopped**  | Pipeline is not running                                                         |
-| **Starting** | Pipeline is being started                                                       |
-| **Running**  | Pipeline is actively replicating data                                           |
-| **Stopping** | Pipeline is being stopped                                                       |
-| **Failed**   | Pipeline has encountered an error (hover over the status to view error details) |
+| State          | Description                                                                     |
+| -------------- | ------------------------------------------------------------------------------- |
+| **Stopped**    | Pipeline is not running                                                         |
+| **Starting**   | Pipeline is being started                                                       |
+| **Running**    | Pipeline is actively replicating data                                           |
+| **Stopping**   | Pipeline is being stopped                                                       |
+| **Restarting** | Pipeline settings or table state are being applied before replication restarts  |
+| **Failed**     | Pipeline has encountered an error (hover over the status to view error details) |
+| **Unknown**    | The Dashboard can't currently determine the pipeline status                     |
 
 ### Viewing detailed pipeline metrics
 
 For detailed information about a specific pipeline, click **View pipeline** on the destination. This opens the pipeline status page where you can monitor replication performance and table states.
 
-![Pipeline status view](https://supabase.com/docs/img/database/replication/replication-view-status.png)
+![Running pipeline status page showing replication metrics and a live table](https://supabase.com/docs/img/database/replication/pipelines-metrics.png)
 
 #### Replication lag metrics
 
@@ -116641,17 +116603,17 @@ The destinations list also shows a compact lag value. This value is byte-based: 
 
 The detailed status page shows:
 
-| Metric                  | What it means                                                                                                                                                       | What to watch for                                                                                                                                         |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Waiting to sync**     | Bytes of WAL between the pipeline's confirmed flush position and the current Postgres WAL position. This is the main byte-based replication lag.                    | A value that keeps growing means the pipeline is receiving changes more slowly than Postgres produces them.                                               |
-| **Room before pausing** | How much WAL can still accumulate before Postgres can no longer safely keep all WAL needed by the replication slot. This is controlled by `max_slot_wal_keep_size`. | A small or shrinking value means the slot is getting closer to being invalidated. `Unlimited` means Postgres is not reporting a slot WAL retention limit. |
-| **Last check-in**       | How long it has been since the pipeline last sent replication feedback to Postgres.                                                                                 | An old value can mean the pipeline is stopped, disconnected, overloaded, or unable to make progress.                                                      |
-| **Connected**           | Whether the pipeline's replication slot is active and currently being used.                                                                                         | `Not connected` while the pipeline should be running usually means you should check pipeline status and logs.                                             |
-| **Slot status**         | How safely Postgres is keeping the WAL files the pipeline still needs.                                                                                              | `Unreserved` and `Lost` require action. See [Slot statuses](#slot-statuses).                                                                              |
+| Metric                      | What it means                                                                                                                                    | What to watch for                                                                                                                                               |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Waiting to sync**         | Bytes of WAL between the pipeline's confirmed flush position and the current Postgres WAL position. This is the main byte-based replication lag. | A value that keeps growing means the pipeline is receiving changes more slowly than Postgres produces them.                                                     |
+| **WAL retention remaining** | How much WAL can still accumulate before the replication slot is at risk of becoming unusable. This is controlled by `max_slot_wal_keep_size`.   | A small or shrinking value means you should investigate before required WAL is removed. `Unlimited` means Postgres is not reporting a slot WAL retention limit. |
+| **Last check-in**           | How long it has been since the pipeline last sent replication feedback to Postgres.                                                              | An old value can mean the pipeline is stopped, disconnected, overloaded, or unable to make progress.                                                            |
+| **Connected**               | Whether the pipeline's replication slot is active and currently being used.                                                                      | `Not connected` while the pipeline should be running usually means you should check pipeline status and logs.                                                   |
+| **Slot status**             | How safely Postgres is keeping the WAL files the pipeline still needs.                                                                           | `Unreserved` and `Lost` require action. See [Slot statuses](#slot-statuses).                                                                                    |
 
-Pipelines uses one main pipeline replication slot for ongoing changes. During the initial copy phase, it can also create temporary table-sync replication slots. These temporary slots let multiple tables copy in parallel, make large table copies faster, and allow individual tables to be retried or copied again without restarting the whole pipeline.
+Pipelines uses one main pipeline replication slot for ongoing replication. During the initial sync, it can also create temporary table-sync replication slots. These temporary slots let multiple tables sync in parallel, make large initial syncs faster, and allow individual tables to be retried without restarting the whole pipeline.
 
-Temporary table-sync slots show the same kind of lag and slot health metrics while they are active. After a table finishes copying and catches up, its temporary slot is removed and ongoing changes continue through the main pipeline slot. For overall replication health, focus first on the main pipeline slot.
+Temporary table-sync slots show the same kind of lag and slot health metrics while they are active. After a table finishes its initial sync and catches up, its temporary slot is removed and ongoing replication continues through the main pipeline slot. For overall replication health, focus first on the main pipeline slot.
 
 #### Slot statuses
 
@@ -116669,17 +116631,20 @@ Replication slot status tells you whether Postgres is still retaining the WAL th
 
 The pipeline status page also shows the state of individual tables being replicated. Each table can be in one of these states:
 
-| State       | Description                                                            |
-| ----------- | ---------------------------------------------------------------------- |
-| **Queue**   | Table is getting ready to be copied                                    |
-| **Copying** | Initial snapshot of the table is being copied                          |
-| **Copied**  | Table snapshot is complete and getting ready for real-time replication |
-| **Live**    | Table is now replicating data in near real-time                        |
-| **Error**   | Table has experienced an error during replication                      |
+| State             | Description                                                              |
+| ----------------- | ------------------------------------------------------------------------ |
+| **Queued**        | Table is waiting for the pipeline to begin its initial sync              |
+| **Copying**       | Existing rows are being copied during the initial sync                   |
+| **Copied**        | Initial sync is complete and the table is preparing to replicate changes |
+| **Live**          | Table is now receiving ongoing replication                               |
+| **Error**         | Table has experienced an error during replication                        |
+| **Restarting**    | The table's initial sync is being restarted                              |
+| **Not Available** | Table state is temporarily unavailable while the pipeline changes state  |
+| **Unknown**       | The Dashboard received a table state it doesn't recognize                |
 
 ### Dealing with replication lag
 
-Replication lag means the pipeline is behind the source database. Some lag is expected during the initial copy phase, after a burst of writes, or after restarting a stopped pipeline. Lag becomes a problem when it keeps increasing, when **Room before pausing** is running low, or when the slot status moves to **Unreserved** or **Lost**.
+Replication lag means the pipeline is behind the source database. Some lag is expected during the initial sync, after a burst of writes, or after restarting a stopped pipeline. Lag becomes a problem when it keeps increasing, when **WAL retention remaining** is running low, or when the slot status moves to **Unreserved** or **Lost**.
 
 Lag can come from several places:
 
@@ -116688,26 +116653,26 @@ Lag can come from several places:
 - **Source database activity**: Postgres is producing WAL faster than the pipeline can consume it, often during bulk writes, migrations, or backfill jobs.
 - **Network latency**: Latency or instability between the pipeline and source database can slow down WAL streaming.
 - **Stopped or disconnected pipeline**: When a pipeline is stopped, disconnected, or failed, Postgres keeps WAL for the slot until the retention limit is reached.
-- **Slow initial table copy**: A temporary table-sync slot can fall behind if a table is copied more slowly than new changes are written to that table.
+- **Slow initial sync**: A temporary table-sync slot can fall behind if existing rows are copied more slowly than new changes are written to that table.
 
-#### Initial copy and table-sync slots
+#### Initial sync and table-sync slots
 
-A common initial sync issue happens when a large or busy table is still in **Copying** while new rows keep being inserted or updated. The temporary table-sync slot needs to keep the changes that happen during the copy. If the copy is too slow compared to the table's write rate, the slot can move to **Unreserved** and then **Lost** if Postgres removes changes the copy still needs.
+A common initial sync issue happens when a large or busy table is still in **Copying** while new rows keep being inserted or updated. The temporary table-sync slot retains changes that happen during the initial sync. If copying is too slow compared to the table's write rate, the slot can move to **Unreserved** and then **Lost** if Postgres removes changes the sync still needs.
 
-When a table-sync slot is lost, the affected table needs to be copied again. Tune the copy settings, then retry the table copy:
+When a table-sync slot is lost, the affected table needs to run its initial sync again. Tune the copy settings, then retry the table:
 
-- Increase **Copy connections per table** when one large table is the bottleneck. This lets the pipeline copy chunks of that table in parallel, up to the point where the source database or network becomes the limit.
+- Increase **Copy connections per table** when one large table is the bottleneck. This lets the pipeline copy chunks of that table over multiple source connections, up to the point where the source database, network, or destination becomes the limit.
 - Increase **Table sync workers** when several tables need to copy at the same time. Each worker can copy one table, and each worker uses an additional temporary replication slot during initial sync.
-- If possible, run the initial copy during a quieter write period or reduce bulk writes until the table reaches **Live**.
+- If possible, run the initial sync during a quieter write period or reduce bulk writes until the table reaches **Live**.
 
 After the affected table finishes copying and catches up, the temporary slot is deleted. The table then continues through the main pipeline replication slot.
 
 #### Investigate the lag
 
 1. Open [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) and check the destination's lag column.
-2. Click **View pipeline** and check **Waiting to sync**, **Room before pausing**, **Last check-in**, **Connected**, and **Slot status**.
-3. Check table states. Tables in **Copying** can create temporary lag while the initial snapshot catches up to live changes. If a table-sync slot is **Unreserved** or **Lost**, tune copy parallelism and retry the affected table copy.
-4. Open [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/explorer) and look for destination errors, retries, rate limits, schema errors, or repeated restarts.
+2. Click **View pipeline** and check **Waiting to sync**, **WAL retention remaining**, **Last check-in**, **Connected**, and **Slot status**.
+3. Check table states. Tables in **Copying** can create temporary lag while the initial sync catches up to ongoing changes. If a table-sync slot is **Unreserved** or **Lost**, tune copy parallelism and retry the affected table's initial sync.
+4. Open [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) and look for destination errors, retries, rate limits, schema errors, or repeated restarts.
 5. Compare the lag trend with recent database activity, such as imports, migrations, bulk updates, or long transactions.
 
 #### Respond based on the slot status
@@ -116726,7 +116691,7 @@ After the affected table finishes copying and catches up, the temporary slot is 
 - Avoid leaving pipelines stopped for long periods while the source database is still receiving writes.
 - Schedule bulk updates, imports, and migrations during lower-traffic windows when possible.
 - For BigQuery, verify that service account permissions, table requirements, and replica identity settings match the [BigQuery destination guide](https://supabase.com/docs/guides/database/replication/bigquery).
-- If the initial copy is the bottleneck, review **Table sync workers** and **Copy connections per table** in the pipeline's advanced settings. Increasing them can speed up copying, but it uses more database connections and replication slots.
+- If the initial sync is the bottleneck, review **Table sync workers** and **Copy connections per table** in the pipeline's advanced settings. Increasing either can use more source database connections; increasing table sync workers can also use more temporary replication slots.
 
 ### Handling errors
 
@@ -116734,9 +116699,7 @@ Errors can occur at two levels: per table or per pipeline.
 
 #### Table errors
 
-Table errors occur during the copy phase and affect individual tables. These errors can be retried without stopping the entire pipeline.
-
-![Table Error Details](https://supabase.com/docs/img/database/replication/replication-pipeline-table-error.png)
+Table errors occur during the initial sync and affect individual tables. These errors can be retried without stopping the entire pipeline.
 
 **Viewing table error details:**
 
@@ -116746,21 +116709,17 @@ Table errors occur during the copy phase and affect individual tables. These err
 
 **Recovering from table errors:**
 
-When a table encounters an error during the copy phase, you can reset the table state. This will restart the table copy from the beginning.
+When a table encounters an error during the initial sync, you can reset the table state. This restarts that table's initial sync from the beginning.
 
 #### Pipeline errors
 
-Pipeline errors occur during the streaming phase (Live state) and affect the entire pipeline. When streaming data, if an error occurs, the entire pipeline will stop and enter a **Failed** state. This prevents data loss by ensuring no changes are skipped.
-
-Note: When a pipeline error occurs, you'll receive an email notification immediately. This ensures you're promptly notified of any issues so you can take action to resolve them.
-
-![Pipeline error details](https://supabase.com/docs/img/database/replication/replication-pipeline-error.png)
+Pipeline errors can occur during startup or ongoing replication and affect the entire pipeline. If a non-retryable pipeline-level error occurs, the entire pipeline stops and enters a **Failed** state instead of silently skipping the failure.
 
 **Viewing pipeline error details:**
 
 1. Hover over the **Failed** status in the destinations list to see a quick error summary
 2. Click **View pipeline** for comprehensive error information
-3. Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/explorer) section of the Dashboard for detailed error logs
+3. Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) section of the Dashboard for detailed error logs
 
 **Recovering from pipeline errors:**
 
@@ -116772,13 +116731,11 @@ To recover from a pipeline error, you'll need to:
 
 ### Viewing logs
 
-To see detailed logs for all your replication pipelines:
+To see detailed logs for all your pipelines:
 
-1. Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/explorer) section of the Dashboard
+1. Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) section of the Dashboard
 2. Select **Replication** from the log source filter
-3. You'll see all logs from your replication pipelines
-
-![Replication Logs](https://supabase.com/docs/img/database/replication/replication-logs.png)
+3. You'll see all logs from your pipelines
 
 Note: Logs contain diagnostic information that may be too technical for most users. If you're experiencing issues with replication, reaching out to support with your error details is recommended.
 
@@ -116798,7 +116755,7 @@ If you see a **Failed** status:
 1. Hover over the status to see the error summary
 2. Click **View pipeline** to see detailed error information
 3. Check table states to identify which tables are affected
-4. Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/explorer) section of the Dashboard for full error details
+4. Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) section of the Dashboard for full error details
 5. For table errors, attempt to reset the affected tables
 
 #### Monitoring performance
@@ -116816,7 +116773,7 @@ If you notice issues with your replication:
 
 1. **Check pipeline state**: Ensure the pipeline is in **Running** state
 2. **Review table states**: Identify tables in **Error** state
-3. **Check logs**: Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/explorer) section of the Dashboard for detailed error information
+3. **Check logs**: Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) section of the Dashboard for detailed error information
 4. **Verify publication**: Ensure your Postgres publication is properly configured
 5. **Monitor replication lag**: High lag may indicate performance issues
 
@@ -116832,27 +116789,35 @@ For more troubleshooting tips, see the [Pipelines FAQ](https://supabase.com/docs
 
 # Set up Pipelines
 
-Configure publications, destinations, and managed replication pipelines.
+Configure publications, destinations, and Supabase Pipelines.
 
-Create a managed replication pipeline using Postgres logical replication.
+Create a Supabase Pipeline using Postgres logical replication.
 
-Caution: Supabase Pipelines is currently in private alpha. Private alpha features can be unstable and may introduce breaking changes while we evaluate the product direction, refine the feature set, and incorporate customer feedback.
+Note: Supabase Pipelines is currently in public alpha. Features and behavior may change as we continue developing the product.
 
-Pipelines is a managed CDC feature for creating replication pipelines from Supabase Postgres to destination systems. It uses **Postgres logical replication** with the open-source [Supabase ETL engine](https://github.com/supabase/etl). You choose a destination in the Dashboard, and Supabase runs the pipeline that streams database changes to that destination.
+Supabase Pipelines is a managed CDC product for moving data from Supabase Postgres to supported destination systems. It uses **Postgres logical replication** with the open-source [Supabase ETL engine](https://github.com/supabase/etl). You choose a destination in the Dashboard, and Supabase runs the pipeline that sends database changes to that destination.
+
+Pipelines has two replication phases:
+
+- **Initial sync**: A one-time copy of the existing rows in the published tables.
+- **Ongoing replication (CDC)**: Continuously captures and applies subsequent inserts, updates, deletes, and truncates.
+
+Managed Pipelines run in **AWS `eu-central-1` (Frankfurt)**. Choose a destination region as close as possible to Frankfurt to reduce network latency and replication lag.
 
 ## Pricing
 
-$0.053 per hour (\~$39 per month) for each pipeline. $0.60 per Gigabyte backfill
-data. $3.00 per Gigabyte replicated data.
+$0.053 per hour for each configured pipeline. $0.60 per Gigabyte of initial sync data. $3.00 per Gigabyte of ongoing replication data.
 
-| Plan       | Pipeline  | Backfill/Initial Copy Data | Replicated Data |
-| ---------- | --------- | -------------------------- | --------------- |
-| Free       | -         | -                          | -               |
-| Pro        | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
-| Team       | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
-| Enterprise | Custom    | Custom                     | Custom          |
+| Plan       | Configured Pipeline | Initial Sync Data | Ongoing Replication Data |
+| ---------- | ------------------- | ----------------- | ------------------------ |
+| Free       | -                   | -                 | -                        |
+| Pro        | $0.053/hr           | $0.60 per GB      | $3.00 per GB             |
+| Team       | $0.053/hr           | $0.60 per GB      | $3.00 per GB             |
+| Enterprise | Custom              | Custom            | Custom                   |
 
 For a detailed breakdown of how charges are calculated, refer to [Manage Pipeline usage](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines).
+
+For billing examples and optimization guidance, see [Manage Pipelines usage](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines).
 
 ## Setup overview
 
@@ -116862,9 +116827,12 @@ Tip: If you already have a Postgres publication set up, you can skip to [Step 2:
 
 ### Step 1: Create a Postgres publication
 
-A Postgres publication defines which tables and change types will be replicated from your database. You create publications using SQL.
+A Postgres publication defines which tables and change types will be replicated from your database. You can create a basic publication in the Dashboard while configuring the destination, or use SQL when you need column lists, row filters, schema-wide publications, or other advanced options.
 
-#### Creating a publication
+- **Dashboard**: Continue to [Step 2](#step-2-enable-pipelines). In Step 3, open the **Publication** selector, click **New publication**, enter a name, and select at least one table.
+- **SQL**: Create the publication now using one of the examples below, then select it when you configure the destination.
+
+#### Creating a publication with SQL
 
 The following SQL examples assume you have `users` and `orders` tables in your database.
 
@@ -116895,6 +116863,8 @@ create publication pub_all_tables for all tables;
 ```
 
 This tracks changes for all tables in your database.
+
+Caution: `FOR ALL TABLES` includes tables in Supabase-managed schemas, including the internal `etl` tables that Pipelines creates. Prefer `FOR TABLES IN SCHEMA public` or list the application tables explicitly unless you intend to replicate every eligible table in the database.
 
 #### Advanced publication options
 
@@ -116954,9 +116924,13 @@ Use `publish_via_partition_root = true` when you want analytics queries to read 
 
 Publications created from the Dashboard replication flow use `publish_via_partition_root = true`. If you create or alter a publication manually with SQL, set this option explicitly so the destination shape matches what you expect.
 
-On Postgres 15 and newer, row filters on partition publications apply during both the initial copy and streaming phases. Pipelines uses the row filter attached to the effective publication table entry: the published partition root when `publish_via_partition_root = true`, and the published leaf relation when `publish_via_partition_root = false`.
+On Postgres 15 and newer, row filters on partition publications apply during both the initial sync and ongoing replication. Pipelines uses the row filter attached to the effective publication table entry: the published partition root when `publish_via_partition_root = true`, and the published leaf relation when `publish_via_partition_root = false`.
 
-Note: With `publish_via_partition_root = true`, truncating an individual leaf partition is not replicated as a truncate event for the published parent. If you need truncate replication, run `TRUNCATE` on the published partition root.
+The publication setting controls which Postgres relation becomes a destination table. It does not copy the source table's physical partitioning configuration, partition key, or partition bounds to BigQuery.
+
+Note: With `publish_via_partition_root = true`, truncating an individual leaf partition is not replicated as a truncate event for the published parent. This is useful for append-only data such as events: you can truncate old leaf partitions to keep Postgres storage bounded while retaining the rows already copied to the destination. If you want the destination to be truncated too, run `TRUNCATE` on the published partition root.
+
+Rows retained only in the destination aren't a permanent archive. A table reset or full pipeline initial sync rebuilds the destination from the rows that still exist in Postgres.
 
 #### Viewing publications in the Dashboard
 
@@ -116974,50 +116948,50 @@ Before creating a managed replication pipeline, enable Pipelines for your projec
 3. Select a Pipelines destination, such as **BigQuery**
 4. Click **Enable Pipelines**
 
-![Enable Pipelines](https://supabase.com/docs/img/database/replication/replication-enable-replication.png)
-
 ### Step 3: Configure a destination
 
 Once Pipelines is enabled and you have a Postgres publication, configure a destination. The destination is where your replicated data will be stored, while the pipeline is the active Postgres replication process that continuously streams changes from your database to that destination.
 
 #### Choose and configure your destination
 
-Follow these steps to configure your destination. Each destination has its own setup requirements and behavior. **BigQuery** is currently available, and we are working on new destinations.
+Follow these steps to configure your destination. Each destination has its own setup requirements and behavior. **BigQuery** is currently available. You can [request early access to ClickHouse, Snowflake, and DuckLake](https://supabase.com/go/supabase-pipelines-new-destinations).
 
 1. Navigate to the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard
 
 2. Click **Add destination** if the destination side panel isn't already open
 
-3. Configure the general settings:
-   - **Destination name**: A name to identify this destination
-   - **Publication**: The publication to replicate data from (created in [Step 1](#step-1-create-a-postgres-publication))
-   - **Destination type**: Select the destination you want to use
+3. Select the destination type
 
-4. Configure the destination-specific settings. See the destination guide for required credentials, permissions, and limitations:
+4. Configure the destination details:
+   - **Destination name**: A name to identify this destination
+   - **Publication**: Select an existing publication, or click **New publication** to create one by choosing a name and at least one table
+   - **Region**: Managed Pipelines run in the fixed **AWS `eu-central-1` (Frankfurt)** region. This can't be changed. In your destination provider, choose a nearby dataset, warehouse, or storage bucket region.
+
+5. Configure the destination-specific settings. See the destination guide for required credentials, permissions, and limitations:
    - [BigQuery](https://supabase.com/docs/guides/database/replication/bigquery)
 
-5. Optionally expand **Advanced settings** to tune pipeline behavior. These settings apply to the pipeline rather than the destination:
+6. Optionally expand **Advanced settings** to tune pipeline behavior:
 
-   | Setting                        | Default              | Description                                                                                                                                                                                                                            |
-   | ------------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **Batch wait time**            | `10000` milliseconds | Maximum time the pipeline waits to collect additional changes before flushing them. Lower values reduce replication latency. Higher values can improve batching efficiency.                                                            |
-   | **Table sync workers**         | `4` workers          | Number of tables copied in parallel during the initial snapshot phase. Each worker uses one replication slot, up to `N + 1` total replication slots while syncing.                                                                     |
-   | **Copy connections per table** | `2` connections      | Number of parallel database connections each table copy can use during the initial sync. Increasing this can speed up large table copies, but uses more database connections.                                                          |
-   | **Invalidated slot behavior**  | `Error`              | What the pipeline does when its replication slot is invalidated. **Error** blocks startup so you can recover manually. **Recreate** rebuilds the slot on the next pipeline restart and starts replication from scratch for all tables. |
+   | Setting                        | Default              | Allowed values                     | Description                                                                                                                                                                                                                                                                           |
+   | ------------------------------ | -------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **Batch wait time**            | `10000` milliseconds | Whole milliseconds, `0` or greater | Maximum time after the first buffered initial-sync row or ongoing change before the pipeline flushes a partially filled batch. Internal size and memory limits can flush it earlier. Lower values can reduce batching delay; higher values can improve destination write efficiency.  |
+   | **Table sync workers**         | `4` workers          | Whole number greater than `0`      | Maximum number of tables synced in parallel during the initial sync. Each active table sync temporarily uses one additional replication slot, up to `N + 1` slots including the pipeline's main slot.                                                                                 |
+   | **Copy connections per table** | `4` connections      | Whole number greater than `0`      | Maximum source database connections used to copy one table in parallel. With multiple table sync workers, source connection usage can scale with both settings. More connections can speed up large tables until the source database, network, or destination becomes the bottleneck. |
+   | **Invalidated slot behavior**  | `Error`              | `Error` or `Recreate`              | What happens when the main replication slot can no longer continue from retained WAL. **Error** blocks startup for manual recovery. **Recreate** resets table sync state, rebuilds the slot on the next start, and runs the initial sync again for every replicated table.            |
 
-   Leave these settings at their defaults unless you need to tune initial copy speed, latency, or recovery behavior.
+   Leave these settings at their defaults unless you need to tune initial sync speed, latency, or recovery behavior.
 
-   Use **Invalidated slot behavior** carefully. If **Recreate** is selected and the pipeline restarts after Postgres has invalidated the main replication slot, the pipeline creates a new slot and copies all replicated tables again. This full restart is required for consistency because the old slot can no longer provide every change the pipeline missed.
+   Use **Invalidated slot behavior** carefully. If **Recreate** is selected and the pipeline starts after Postgres has invalidated the main replication slot, the pipeline resets its saved table-sync state, creates a new slot, and replaces each destination table through a new initial sync. This destructive restart is required for consistency because the old slot can no longer provide every change the pipeline missed, and the new initial sync is billed as initial sync data.
 
-6. Click **Create and start pipeline** to begin replication
+7. Click **Create and start pipeline** to begin replication
 
-Your replication pipeline now starts copying data from your database to your destination.
+![Pipeline cost confirmation showing the initial sync estimate and ongoing replication prices](https://supabase.com/docs/img/database/replication/pipelines-cost-confirmation.png)
+
+The pipeline begins the initial sync from your database to your destination.
 
 ### Step 4: Monitor your pipeline
 
 After you create and start the pipeline, its destination appears in the destinations list. You can monitor the pipeline's status and performance from the Dashboard.
-
-![Replication pipelines destinations list](https://supabase.com/docs/img/database/replication/replication-destinations-list.png)
 
 For comprehensive monitoring instructions including pipeline states, metrics, and logs, see [Monitor pipeline status](https://supabase.com/docs/guides/database/replication/pipelines-monitoring).
 
@@ -117025,21 +116999,20 @@ For comprehensive monitoring instructions including pipeline states, metrics, an
 
 You can manage your pipeline from the destinations list using the actions menu.
 
-![Pipeline actions](https://supabase.com/docs/img/database/replication/replication-pipeline-actions.png)
+![Destinations list with the actions menu open for a running BigQuery pipeline](https://supabase.com/docs/img/database/replication/pipelines-actions-menu.png)
 
 Available actions:
 
 - **Start pipeline**: Begin replication for a stopped pipeline
-- **Stop**: Pause replication (changes will queue up in the WAL)
+- **Update available**: Review and apply the latest managed pipeline version when an update is available
+- **Stop pipeline**: Request a graceful stop. The pipeline can remain **Stopping** for up to five minutes while in-flight work finishes. New changes queue in the WAL, and configured pipeline-hour billing continues while stopped.
 - **Restart pipeline**: Stop and start the pipeline (required after publication changes)
 - **Edit destination**: Modify destination settings like credentials or advanced options
-- **Delete**: Remove the destination and permanently stop replication
+- **Delete destination**: Remove the destination and permanently stop replication
 
 ### Disabling Pipelines
 
-To turn off Pipelines for a project, delete all replication pipelines first. After all pipelines are removed, open the three-dot actions menu on the Replication page and click **Disable Pipelines**.
-
-![Disable Pipelines from the Replication page actions menu](https://supabase.com/docs/img/database/replication/replication-disable-external-replication.png)
+To turn off Pipelines for a project, delete all Pipelines destinations first. After all destinations are removed, open the three-dot actions menu on the Replication page and click **Disable Pipelines**.
 
 For cleanup details, see [What happens when you disable Pipelines?](https://supabase.com/docs/guides/database/replication/pipelines-faq#what-happens-when-you-disable-pipelines).
 
@@ -117077,7 +117050,7 @@ Note: If your Postgres publication uses `FOR ALL TABLES` or `FOR TABLES IN SCHEM
 
 2. **Restart the replication pipeline** using the actions menu (see [Managing your pipeline](#managing-your-pipeline)) for the changes to take effect.
 
-Note: When a table is deleted at the destination, the behavior depends on the destination. In general, the pipeline tries to recreate the table so replication can continue. To permanently delete a table, pause the pipeline first or remove it from the publication before deleting. See the [Pipelines FAQ](https://supabase.com/docs/guides/database/replication/pipelines-faq#what-happens-if-a-table-is-deleted-at-the-destination) for details.
+Note: When a table is deleted at the destination, the behavior depends on the destination. In general, the pipeline tries to recreate the table so replication can continue. To permanently delete a table, stop the pipeline first or remove it from the publication before deleting. See the [Pipelines FAQ](https://supabase.com/docs/guides/database/replication/pipelines-faq#what-happens-if-a-table-is-deleted-at-the-destination) for details.
 
 ### Schema change support
 
@@ -117088,17 +117061,17 @@ Schema change support depends on the destination. BigQuery is currently the only
 Once configured, a replication pipeline:
 
 1. **Captures** changes from your Postgres database using Postgres publications and logical replication
-2. **Streams** the changes through the managed pipeline
+2. **Sends** the changes through the managed pipeline
 3. **Loads** the data to your destination
 
-Pipelines automatically optimizes how changes are delivered to the destination. It currently performs data extraction and loading only, without transformation - your data is replicated as-is to the destination.
+Pipelines automatically optimizes how changes are delivered to the destination. It maps published source columns and values to destination-compatible names and types, but doesn't provide user-defined transformations.
 
 ### Troubleshooting
 
 If you encounter issues during setup:
 
 - **Publication not appearing**: Ensure you created the Postgres publication via SQL and refresh the dashboard
-- **Tables not showing in publication**: Verify your tables have primary keys (required for Postgres logical replication)
+- **Tables not showing in publication**: Verify your tables meet the requirements of the selected destination. BigQuery requires a source primary key and requires the publication to include its columns.
 - **Pipeline failed to start**: Check the error message in the status view for specific details
 - **No data being replicated**: Verify your Postgres publication includes the correct tables and event types
 
@@ -117108,13 +117081,13 @@ For more troubleshooting help, see the [Pipelines FAQ](https://supabase.com/docs
 
 Pipelines has the following limitations:
 
-- **Primary keys required**: Tables must have primary keys (Postgres logical replication requirement)
+- **Primary keys**: Requirements are destination-specific. Postgres can publish inserts for a table without a primary key, but BigQuery Pipelines always requires a source primary key and requires the publication to include its columns.
 - **Custom data types**: Custom values replicate as strings. Check that your destination can interpret those string values correctly.
 - **Generated columns**: Generated columns are skipped. Use triggers to store derived values in regular columns if you need them in the destination.
-- **Replica identity**: `REPLICA IDENTITY FULL` is strongly recommended. Updates and deletes need enough row data to apply changes correctly at the destination.
+- **Replica identity**: Requirements are destination-specific. Updates and deletes need enough row identity to apply safely. See [BigQuery source table requirements](https://supabase.com/docs/guides/database/replication/bigquery#source-table-requirements) for the supported modes.
 - **Schema changes**: Currently in beta and limited to BigQuery
-- **No data transformation**: Data is replicated as-is without transformation
-- **Data duplicates**: Duplicates can occur when stopping a pipeline if your database has transactions that take longer than a few minutes to complete. See [Can data duplicates occur during pipeline operations?](https://supabase.com/docs/guides/database/replication/pipelines-faq#can-data-duplicates-occur-during-pipeline-operations) for details
+- **No user-defined transformations**: Pipelines performs destination-compatible type and name mapping, but doesn't run custom transformations
+- **At-least-once processing**: A retry, restart, or interruption can cause a batch to be processed again. BigQuery uses primary-key-based CDC to converge on the current table state. See [Can data be processed more than once?](https://supabase.com/docs/guides/database/replication/pipelines-faq#can-data-be-processed-more-than-once) for details.
 
 Destination-specific limitations, such as BigQuery's row size limits, are documented in each destination guide.
 
@@ -128513,61 +128486,61 @@ Features in Beta are tested by an external penetration tester for security issue
 
 In addition to the Beta requirements, features in GA are covered by the [uptime SLA](https://supabase.com/sla).
 
-| Product        | Feature                    | Stage           | Available on self-hosted                    |
-| -------------- | -------------------------- | --------------- | ------------------------------------------- |
-| Database       | Postgres                   | `GA`            | ✅                                           |
-| Database       | Vector Database            | `GA`            | ✅                                           |
-| Database       | Auto-generated Rest API    | `GA`            | ✅                                           |
-| Database       | Auto-generated GraphQL API | `GA`            | ✅                                           |
-| Database       | Webhooks                   | `beta`          | ✅                                           |
-| Database       | Vault                      | `public alpha`  | ✅                                           |
-| Database       | Replication                | `private alpha` | N/A                                         |
-| Platform       |                            | `GA`            | ✅                                           |
-| Platform       | Point-in-Time Recovery     | `GA`            | 🚧 [wal-g](https://github.com/wal-g/wal-g)  |
-| Platform       | Custom Domains             | `GA`            | N/A                                         |
-| Platform       | Network Restrictions       | `GA`            | N/A                                         |
-| Platform       | SSL enforcement            | `GA`            | N/A                                         |
-| Platform       | Branching                  | `beta`          | N/A                                         |
-| Platform       | Terraform Provider         | `public alpha`  | N/A                                         |
-| Platform       | Read Replicas              | `GA`            | N/A                                         |
-| Platform       | Log Drains                 | `public alpha`  | ✅                                           |
-| Platform       | MCP                        | `public alpha`  | ✅                                           |
-| Platform       | PrivateLink                | `beta`          | N/A                                         |
-| Studio         |                            | `GA`            | ✅                                           |
-| Studio         | SSO                        | `GA`            | ✅                                           |
-| Studio         | Column Privileges          | `public alpha`  | ✅                                           |
-| Realtime       | Postgres Changes           | `GA`            | ✅                                           |
-| Realtime       | Broadcast                  | `GA`            | ✅                                           |
-| Realtime       | Presence                   | `GA`            | ✅                                           |
-| Realtime       | Broadcast Authorization    | `public beta`   | ✅                                           |
-| Realtime       | Presence Authorization     | `public beta`   | ✅                                           |
-| Realtime       | Broadcast from Database    | `public beta`   | ✅                                           |
-| Storage        |                            | `GA`            | ✅                                           |
-| Storage        | CDN                        | `GA`            | 🚧 [Cloudflare](https://www.cloudflare.com) |
-| Storage        | Smart CDN                  | `GA`            | 🚧 [Cloudflare](https://www.cloudflare.com) |
-| Storage        | Image Transformations      | `GA`            | ✅                                           |
-| Storage        | Resumable Uploads          | `GA`            | ✅                                           |
-| Storage        | S3 compatibility           | `GA`            | ✅                                           |
-| Edge Functions |                            | `GA`            | ✅                                           |
-| Edge Functions | Regional Invocations       | `GA`            | ✅                                           |
-| Edge Functions | NPM compatibility          | `GA`            | ✅                                           |
-| Auth           |                            | `GA`            | ✅                                           |
-| Auth           | Email login                | `GA`            | ✅                                           |
-| Auth           | Social login               | `GA`            | ✅                                           |
-| Auth           | Phone login                | `GA`            | ✅                                           |
-| Auth           | Passwordless login         | `GA`            | ✅                                           |
-| Auth           | SSO with SAML              | `GA`            | ✅                                           |
-| Auth           | Authorization via RLS      | `GA`            | ✅                                           |
-| Auth           | CAPTCHA protection         | `GA`            | ✅                                           |
-| Auth           | Server-side Auth           | `beta`          | ✅                                           |
-| Auth           | Third-Party Auth           | `GA`            | ✅                                           |
-| Auth           | Hooks                      | `beta`          | ✅                                           |
-| CLI            |                            | `GA`            | ✅ Works with self-hosted                    |
-| Management API |                            | `GA`            | N/A                                         |
-| Client Library | JavaScript                 | `GA`            | N/A                                         |
-| Client Library | Flutter                    | `GA`            | N/A                                         |
-| Client Library | Swift                      | `GA`            | N/A                                         |
-| Client Library | Python                     | `beta`          | N/A                                         |
+| Product        | Feature                    | Stage          | Available on self-hosted                    |
+| -------------- | -------------------------- | -------------- | ------------------------------------------- |
+| Database       | Postgres                   | `GA`           | ✅                                           |
+| Database       | Vector Database            | `GA`           | ✅                                           |
+| Database       | Auto-generated Rest API    | `GA`           | ✅                                           |
+| Database       | Auto-generated GraphQL API | `GA`           | ✅                                           |
+| Database       | Webhooks                   | `beta`         | ✅                                           |
+| Database       | Vault                      | `public alpha` | ✅                                           |
+| Database       | Supabase Pipelines         | `public alpha` | N/A                                         |
+| Platform       |                            | `GA`           | ✅                                           |
+| Platform       | Point-in-Time Recovery     | `GA`           | 🚧 [wal-g](https://github.com/wal-g/wal-g)  |
+| Platform       | Custom Domains             | `GA`           | N/A                                         |
+| Platform       | Network Restrictions       | `GA`           | N/A                                         |
+| Platform       | SSL enforcement            | `GA`           | N/A                                         |
+| Platform       | Branching                  | `beta`         | N/A                                         |
+| Platform       | Terraform Provider         | `public alpha` | N/A                                         |
+| Platform       | Read Replicas              | `GA`           | N/A                                         |
+| Platform       | Log Drains                 | `public alpha` | ✅                                           |
+| Platform       | MCP                        | `public alpha` | ✅                                           |
+| Platform       | PrivateLink                | `beta`         | N/A                                         |
+| Studio         |                            | `GA`           | ✅                                           |
+| Studio         | SSO                        | `GA`           | ✅                                           |
+| Studio         | Column Privileges          | `public alpha` | ✅                                           |
+| Realtime       | Postgres Changes           | `GA`           | ✅                                           |
+| Realtime       | Broadcast                  | `GA`           | ✅                                           |
+| Realtime       | Presence                   | `GA`           | ✅                                           |
+| Realtime       | Broadcast Authorization    | `public beta`  | ✅                                           |
+| Realtime       | Presence Authorization     | `public beta`  | ✅                                           |
+| Realtime       | Broadcast from Database    | `public beta`  | ✅                                           |
+| Storage        |                            | `GA`           | ✅                                           |
+| Storage        | CDN                        | `GA`           | 🚧 [Cloudflare](https://www.cloudflare.com) |
+| Storage        | Smart CDN                  | `GA`           | 🚧 [Cloudflare](https://www.cloudflare.com) |
+| Storage        | Image Transformations      | `GA`           | ✅                                           |
+| Storage        | Resumable Uploads          | `GA`           | ✅                                           |
+| Storage        | S3 compatibility           | `GA`           | ✅                                           |
+| Edge Functions |                            | `GA`           | ✅                                           |
+| Edge Functions | Regional Invocations       | `GA`           | ✅                                           |
+| Edge Functions | NPM compatibility          | `GA`           | ✅                                           |
+| Auth           |                            | `GA`           | ✅                                           |
+| Auth           | Email login                | `GA`           | ✅                                           |
+| Auth           | Social login               | `GA`           | ✅                                           |
+| Auth           | Phone login                | `GA`           | ✅                                           |
+| Auth           | Passwordless login         | `GA`           | ✅                                           |
+| Auth           | SSO with SAML              | `GA`           | ✅                                           |
+| Auth           | Authorization via RLS      | `GA`           | ✅                                           |
+| Auth           | CAPTCHA protection         | `GA`           | ✅                                           |
+| Auth           | Server-side Auth           | `beta`         | ✅                                           |
+| Auth           | Third-Party Auth           | `GA`           | ✅                                           |
+| Auth           | Hooks                      | `beta`         | ✅                                           |
+| CLI            |                            | `GA`           | ✅ Works with self-hosted                    |
+| Management API |                            | `GA`           | N/A                                         |
+| Client Library | JavaScript                 | `GA`           | N/A                                         |
+| Client Library | Flutter                    | `GA`           | N/A                                         |
+| Client Library | Swift                      | `GA`           | N/A                                         |
+| Client Library | Python                     | `beta`         | N/A                                         |
 
 - ✅ = Fully Available
 - 🚧 = Available, but requires external tools or configuration
@@ -146544,31 +146517,36 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 ## What you are charged for
 
-You are charged for all pipelines configured, initial/backfill data and replicated data. Pipelines are charged by the hour for as long as they are configured.
+You are charged for configured pipelines, initial sync data, and ongoing replication data. Pipelines are charged by the hour for as long as they are configured, including while they are stopped.
+
+- **Pipeline hours** measure how long each pipeline remains configured. Delete a pipeline to end this charge.
+- **Initial sync data** is the volume of destination-write data processed when a table is first synchronized or synchronized again.
+- **Ongoing replication data** is the volume of destination-write data processed for subsequent database changes. It depends on how much your published data changes, not on the source table size, WAL size, or destination's compressed storage size.
+
+Destination-provider charges are separate. For example, Google Cloud can charge for BigQuery ingestion, storage, and CDC compute.
 
 ### Usage on your invoice
 
-Usage is shown as "ETL Pipeline Hours", "ETL Copy Backfill Data GB" and "ETL Replicated Data GB" on your invoice.
+Usage is shown as "ETL Pipeline Hours", "ETL Copy Backfill Data GB", and "ETL Replicated Data GB" on your invoice.
 
 ## Pricing
 
-$0.053 per hour (\~$39 per month) for each pipeline. $0.60 per Gigabyte backfill
-data. $3.00 per Gigabyte replicated data.
+$0.053 per hour for each configured pipeline. $0.60 per Gigabyte of initial sync data. $3.00 per Gigabyte of ongoing replication data.
 
-| Plan       | Pipeline  | Backfill/Initial Copy Data | Replicated Data |
-| ---------- | --------- | -------------------------- | --------------- |
-| Free       | -         | -                          | -               |
-| Pro        | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
-| Team       | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
-| Enterprise | Custom    | Custom                     | Custom          |
+| Plan       | Configured Pipeline | Initial Sync Data | Ongoing Replication Data |
+| ---------- | ------------------- | ----------------- | ------------------------ |
+| Free       | -                   | -                 | -                        |
+| Pro        | $0.053/hr           | $0.60 per GB      | $3.00 per GB             |
+| Team       | $0.053/hr           | $0.60 per GB      | $3.00 per GB             |
+| Enterprise | Custom              | Custom            | Custom                   |
 
 For a detailed breakdown of how charges are calculated, refer to [Manage Pipeline usage](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines).
 
 ## Billing examples
 
-### Single project with no backfill
+### Billing period without an initial sync
 
-The project has an active pipeline for the entire month.
+The project has a configured pipeline for the entire month.
 
 | Line Item                     | Units     | Costs       |
 | ----------------------------- | --------- | ----------- |
@@ -146580,9 +146558,9 @@ The project has an active pipeline for the entire month.
 | Compute Credits               |           | -$10        |
 | **Total**                     |           | **$518.73** |
 
-### Multiple projects with backfills
+### Multiple projects with initial syncs
 
-Multiple projects had an active pipeline for the entire month and had initial backfills and replicated data.
+Multiple projects had a configured pipeline for the entire month and processed initial sync data and ongoing replication data.
 
 | Line Item                           | Units     | Costs        |
 | ----------------------------------- | --------- | ------------ |
@@ -146602,10 +146580,9 @@ Multiple projects had an active pipeline for the entire month and had initial ba
 | Compute Credits                     |           | -$10         |
 | **Total**                           |           | **$1367.46** |
 
-### After disabling an add-on for a day
+### After deleting a pipeline after one day
 
-Project add-ons are billed in arrears based on how many hours you used them.
-If you remove the add-on, you are no longer billed from the time of removal onward.
+Pipeline hours are billed in arrears for as long as a pipeline is configured, including while it is stopped. After you delete the pipeline, pipeline-hour billing ends.
 
 | Line Item                     | Hours | Costs      |
 | ----------------------------- | ----- | ---------- |
@@ -146620,10 +146597,9 @@ If you remove the add-on, you are no longer billed from the time of removal onwa
 
 ## Optimize usage
 
-- Only replicate tables you need to replicate
-- If you no longer require replication, remove the pipeline through your [project's replication settings](https://supabase.com/dashboard/project/_/database/replication)
-- Reduce the number of writes to your table
-- Exclude columns you do not need from replication - Pipelines let you configure which columns to replicate
+- Include only the tables and columns that you need at the destination.
+- Keep high-churn tables out of the publication when their changes are not needed for analytics.
+- If you no longer require replication, delete the pipeline through your [project's replication settings](https://supabase.com/dashboard/project/_/database/replication) to stop pipeline-hour charges.
 
 
 ---

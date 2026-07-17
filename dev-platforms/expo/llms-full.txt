@@ -1512,7 +1512,7 @@ The agents mentioned in [Pick an agent](/agents.md#pick-an-agent) read your code
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 17, 2026
 title: Expo Skills for AI agents
 description: A list of official AI agent skills provided by Expo for building, deploying, and debugging Expo and React Native apps.
 ---
@@ -1524,6 +1524,8 @@ This documentation is available as Markdown for AI agents and LLMs. See the [ful
 A list of official AI agent skills provided by Expo for building, deploying, and debugging Expo and React Native apps.
 
 Expo Skills are structured instruction files that teach AI agents how to build, deploy, and debug Expo and React Native apps accurately and efficiently. They work with Claude Code, Cursor, Codex, and other AI agents.
+
+[The 3 tools you need to build mobile apps with AI](https://www.youtube.com/watch?v=WLGAuwagI8o&t=61) — Learn how Expo Skills teach an AI agent to build a habit tracker app from scratch.
 
 ## Install Expo Skills
 
@@ -1647,7 +1649,7 @@ Try the following prompts after installing Expo Skills. Your AI agent will autom
 ---
 
 ---
-modificationDate: June 30, 2026
+modificationDate: July 17, 2026
 title: Using Model Context Protocol (MCP) with Expo
 description: A guide on integrating Model Context Protocol with Expo projects to enhance AI model capabilities.
 ---
@@ -1663,6 +1665,8 @@ A guide on integrating Model Context Protocol with Expo projects to enhance AI m
 Expo MCP Server is a remote MCP server hosted by Expo that integrates with popular AI-assisted tools such as Claude Code, Cursor, VS Code, and others, enabling them to interact directly with your Expo projects.
 
 [Introducing Expo MCP Server: for accurate, context-aware AI responses](https://www.youtube.com/watch?v=dp9dpIgDxZQ) — Enhance your AI-assisted tools for building apps with Expo.
+
+[The 3 tools you need to build mobile apps with AI](https://www.youtube.com/watch?v=WLGAuwagI8o&t=364) — Watch an AI agent use MCP servers while building a mobile app with Expo.
 
 ## What does Expo MCP Server do?
 
@@ -8437,7 +8441,7 @@ For more information, see [CLI Options](https://jestjs.io/docs/en/cli) in Jest d
 ---
 
 ---
-modificationDate: May 23, 2026
+modificationDate: July 17, 2026
 title: Overview of distributing apps for review
 description: Learn about how to distribute your app for review using app stores, internal distribution, and EAS Update.
 ---
@@ -8474,7 +8478,7 @@ TestFlight also includes an external testing option that allows you to share you
 
 Both internal and external test distribution in TestFlight require you to [upload your app](/submit/ios.md) to App Store Connect and wait for the automated review before you can share a build. However, external test builds will need to go through a more formal App Store review (which is distinct from the review that your app must undergo before production release) before being distributed.
 
-[EAS Submit](/submit/introduction.md) — Learn how to upload your app to app store testing and release tracks.
+[EAS Submit](/deploy/submit-to-app-stores.md) — Learn how to upload your app to app store testing and release tracks.
 
 ## Internal distribution with EAS Build
 
@@ -8776,208 +8780,106 @@ These guides assume your project has **android** and/or **ios** directories cont
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 17, 2026
 title: Submit to app stores
-description: Learn how to submit your app to Google Play Store and Apple App Store from the command line with EAS Submit.
+description: An overview of how to submit your app to the Google Play Store and Apple App Store.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
 # Submit to app stores
 
-Learn how to submit your app to Google Play Store and Apple App Store from the command line with EAS Submit.
+An overview of how to submit your app to the Google Play Store and Apple App Store.
 
-**EAS Submit** is a hosted service that allows uploading and submitting app binaries to the app stores using EAS CLI. This guide describes how to submit your app to the Google Play Store and Apple App Store using EAS Submit.
+Releasing an app means uploading a signed binary (**.aab** for Android, **.ipa** for iOS) to Google Play Console or App Store Connect. From there, Google and Apple manage review, testing tracks, and production rollout.
+
+You have two options for getting a binary into each store: submit with **EAS Submit**, or upload manually through the store's own tools. **EAS Submit is the recommended path** since it works from any OS (including Windows and Linux for iOS), integrates with [EAS Build](/build/introduction.md) and [EAS Workflows](/eas/workflows/introduction.md), and can be run from a CI/CD service. Manual uploads are useful when you aren't using EAS, or when you prefer to create your Android app's first release directly in Play Console.
 
 [How to quickly publish to the App Store & Play Store with EAS Submit](https://www.youtube.com/watch?v=-KZjr576tuE) — EAS Submit makes it easy to publish your apps to the App Store and Play Store with a simple command.
 
-## Apple App Store
+## How EAS Submit works
 
-#### Prerequisites
+### Android (Google Play Store)
 
-##### Sign up for an Apple Developer account
+EAS Submit uploads your **.aab** to Google Play Console and places it in the track you choose (internal, alpha, beta, or production). For a brand-new app, the default `eas submit` command creates the first release on the [internal testing track](/eas/json.md#track), even before you complete the store listing. To distribute beyond internal testing, finish the setup tasks in Play Console and promote the release. To upload a build without rolling it out to its track, set [`releaseStatus`](/eas/json.md#releasestatus) to `draft` in **eas.json**.
 
-An Apple Developer account is required to submit your app to the Apple App Store. You can sign up for an Apple Developer account on the [Apple Developer Portal](https://developer.apple.com/account/).
+### iOS (Apple App Store)
 
-##### Include a bundle identifier in app.json
+EAS Submit uploads your **.ipa** to App Store Connect, where it becomes available in TestFlight after processing (usually 10-15 minutes). A TestFlight build is not automatically released to the App Store. To ship it to production, sign in to App Store Connect, complete the app metadata and screenshots, select the build, and submit it for App Review.
 
-Include your app's bundle identifier in **app.json**:
+## When to use EAS Submit
 
-```json
-{
-  "ios": {
-    "bundleIdentifier": "com.yourcompany.yourapp"
-  }
-}
-```
+| Scenario | Recommendation |
+| --- | --- |
+| Upload app binaries to [Google Play Console](https://play.google.com/console/about/) and [Apple App Store](https://developer.apple.com/app-store-connect/) | ✓ |
+| Upload iOS app binaries from Windows or Linux | ✓ |
+| Avoid manual uploads through Play Console, App Store Connect, or Transporter | ✓ |
+| Submit builds from [CI or automated workflows](/eas/workflows/pre-packaged-jobs.md#submit) | ✓ |
+| Standardize release processes via [eas.json](/eas/json.md) config | ✓ |
+| Testing during development | ✗ |
 
-##### Install EAS CLI and authenticate with your Expo account
+## Choose a submission path
 
-Install EAS CLI and login with your Expo account:
+[Submit to the Google Play Store with EAS Submit](/submit/android.md) — Recommended. Upload your Android build to Google Play Console with a single command, from your computer or CI.
 
-```sh
-# npm
-npm install --global eas-cli && eas login
+[Submit to the Apple App Store with EAS Submit](/submit/ios.md) — Recommended. Upload your iOS build to App Store Connect and TestFlight from any OS, including Windows and Linux.
 
-# yarn
-yarn global add eas-cli && eas login
+[Manually submit an Android app for the first time](/submit/android-manual.md) — Follow a step-by-step Play Console walkthrough to create your Android app's first release.
 
-# pnpm
-pnpm add --global eas-cli && eas login
+[Manually submit an iOS app with Xcode](/submit/ios-manual.md) — Build, archive, and upload an iOS app to App Store Connect using Xcode on macOS.
 
-# bun
-bun add --global eas-cli && eas login
-```
+## Frequently asked questions
 
-##### Build a production app
+#### Can I submit builds that were not built with EAS Build?
 
-You'll need a production build ready for store submission. You can create one using [EAS Build](/build/introduction.md):
+Yes. EAS Submit accepts any valid **.aab** (Android App Bundle) or **.ipa** (iOS App Archive) file.
 
-```sh
-eas build --platform ios --profile production
-```
+For builds created with EAS Build, run `eas submit` and select a build from the list or let it use the latest build automatically.
 
-Alternatively, you can build the app on your own computer with `eas build --platform ios --profile production --local` or with Xcode.
-
-Once you have completed all the prerequisites, you can start the submission process.
-
-Run the following command to submit a build to the Apple App Store:
+For local builds, use the `--path` flag to specify the binary:
 
 ```sh
-eas submit --platform ios
+eas submit --platform android --path ./my-app.aab
+eas submit --platform ios --path ./my-app.ipa
 ```
 
-The command will lead you step by step through the process of submitting the app.
+The binary must be correctly signed. For Android, this means an upload keystore. For iOS, this means a distribution certificate and provisioning profile.
 
-## Google Play Store
+#### Does EAS Submit handle store metadata or screenshots?
 
-#### Prerequisites
+EAS Submit uploads your binary but does not manage store listing metadata, screenshots, or release notes.
 
-##### Sign up for a Google Play Developer account
+For Google Play Store, configure your store listing directly in [Google Play Console](https://play.google.com/console/about/) before submitting.
 
-A Google Play Developer account is required to submit your app to the Google Play Store. You can sign up for a Google Play Developer account on the [Google Play Console sign-up page](https://play.google.com/apps/publish/signup/).
+For Apple App Store, you can use [EAS Metadata](/eas/metadata.md) to automate app information and localized descriptions.
 
-##### Create a Google Service Account
+#### How do I know why my submission failed?
 
-EAS requires you to upload and configure a Google Service Account Key to submit your Android app to the Google Play Store. You can create one with the [uploading a Google Service Account Key for Play Store submissions with EAS](https://github.com/expo/fyi/blob/main/creating-google-service-account.md) guide.
+Open the submission details page in the [EAS dashboard](https://expo.dev/accounts/%5Baccount%5D/projects/%5Bproject%5D/submissions):
 
-##### Create an app on Google Play Console
+-   Read the logs on the submission details page to understand the error.
+-   Look for a ["Build Annotations" bubble](https://expo.dev/changelog/2023-12-01-build-annotations) — these highlight common failure reasons and suggested fixes directly in the logs.
 
-Create an app by clicking **Create app** in the [Google Play Console](https://play.google.com/apps/publish/).
+#### Can I use EAS Submit inside EAS Workflows or from other CI/CD pipelines?
 
-##### Install EAS CLI and authenticate with your Expo account
-
-Install EAS CLI and login with your Expo account:
-
-```sh
-# npm
-npm install --global eas-cli && eas login
-
-# yarn
-yarn global add eas-cli && eas login
-
-# pnpm
-pnpm add --global eas-cli && eas login
-
-# bun
-bun add --global eas-cli && eas login
-```
-
-##### Include a package name in app.json
-
-Include your app's package name in **app.json**:
-
-```json
-{
-  "android": {
-    "package": "com.yourcompany.yourapp"
-  }
-}
-```
-
-##### Build a production app
-
-You'll need a production build ready for store submission. You can create one using [EAS Build](/build/introduction.md):
-
-```sh
-eas build --platform android --profile production
-```
-
-Alternatively, you can build the app on your own computer with `eas build --platform android --profile production --local` or with Android Studio.
-
-##### Upload your app manually at least once
-
-You have to upload your app manually at least once. This is a limitation of the Google Play Store API.
-
-Learn how with the [first submission of an Android app](https://expo.fyi/first-android-submission) guide.
-
-Once you have completed all the prerequisites, you can start the submission process.
-
-Run the following command to submit a build to the Google Play Store:
-
-```sh
-eas submit --platform android
-```
-
-The command will lead you step by step through the process of submitting the app.
-
-## Build and submit automatically
-
-You can automatically create builds and submit them to the app stores with [EAS Workflows](/eas/workflows/introduction.md). First, you'll need to [configure your project](/eas/workflows/get-started.md), add a file named **.eas/workflows/build-and-submit.yml** at the root of your project, then add the following workflow configuration:
+Yes. EAS Submit works in CI environments and integrates with [EAS Workflows](/eas/workflows/introduction.md). You can add a submit job to your workflow configuration. For example:
 
 ```yaml
-name: Build and submit
-
-on:
-  push:
-    branches: ['main']
-
 jobs:
-  build_android:
-    name: Build Android app
-    type: build
-    params:
-      platform: android
-      profile: production
-  build_ios:
-    name: Build iOS app
-    type: build
-    params:
-      platform: ios
-      profile: production
-  submit_android:
-    name: Submit Android
-    type: submit
-    needs: [build_android]
-    params:
-      build_id: ${{ needs.build_android.outputs.build_id }}
-  submit_ios:
-    name: Submit iOS
+  submit_ios_to_store:
     type: submit
     needs: [build_ios]
     params:
       build_id: ${{ needs.build_ios.outputs.build_id }}
 ```
 
-The workflow above will create Android and iOS builds on every commit to your project's `main` branch, then submit them to the Google Play and Apple App Store respectively. You can also run this workflow manually with the following EAS CLI command:
+For more information, see [EAS Workflows pre-packaged jobs](/eas/workflows/pre-packaged-jobs.md#submit).
+
+For CI pipelines, you can also use the `--non-interactive` flag to skip prompts and `--latest` to automatically select the most recent build:
 
 ```sh
-eas workflow:run build-and-submit.yml
+eas submit --platform android --latest --non-interactive
 ```
-
-Learn more about common patterns with the [workflows examples guide](/eas/workflows/examples/introduction.md).
-
-## Manual submission to app stores
-
-You can also submit your app manually to the Google Play Store and Apple App Store.
-
-[Manual Apple App Store submission](/guides/local-app-production.md#app-submission-using-app-store-connect) — Learn how to submit your app manually to Apple App Store.
-
-[Manual Google Play Store submission](https://expo.fyi/first-android-submission) — Follow the steps on manually submitting your app to Google Play Store.
-
-## Next step
-
-[Configure EAS Submit with eas.json](/submit/eas-json.md) — Learn how to pre-configure your project using eas.json file with EAS Submit and more about Android or iOS specific options.
 
 ---
 
@@ -9351,7 +9253,7 @@ The team behind Expo also provides **Expo Application Services (EAS)**, deeply i
 ---
 
 ---
-modificationDate: May 23, 2026
+modificationDate: July 17, 2026
 title: FAQ
 description: A list of common questions and limitations about Expo and related services.
 ---
@@ -9406,13 +9308,13 @@ Yes! All Expo tools and services work great in any React Native app. For example
 
 The fastest way to share your project is to publish with [EAS Update](/eas-update/introduction.md) and launch in a [development build](/develop/development-builds/introduction.md). This gives your app a URL; you can share this URL with anybody who has the [development build](/develop/development-builds/introduction.md) for Android or iOS. URLs can also be opened in Expo Go for Android.
 
-When ready, you can create a production build (**.aab** and **.ipa**) to submit to the app stores. You can build your app in a single command with [EAS Build](/build/introduction.md) and submit it to the stores with [EAS Submit](/submit/introduction.md).
+When ready, you can create a production build (**.aab** and **.ipa**) to submit to the app stores. You can build your app in a single command with [EAS Build](/build/introduction.md) and submit it to the stores with [EAS Submit](/deploy/submit-to-app-stores.md).
 
 You can also use [internal distribution](/build/internal-distribution.md) to share your app with an APK on Android and ad-hoc or enterprise provisioning on iOS.
 
 ## Can I develop iOS apps on a Windows computer?
 
-Traditionally you needed a macOS to develop iOS apps, however, you can use [EAS Build](/build/introduction.md) to build your app in the cloud. You can also use [EAS Submit](/submit/introduction.md) to submit your app to the stores. Testing can be done on a physical iOS device using [Expo Go](https://expo.dev/go) or a [development build](/develop/development-builds/introduction.md).
+Traditionally you needed a macOS to develop iOS apps, however, you can use [EAS Build](/build/introduction.md) to build your app in the cloud. You can also use [EAS Submit](/deploy/submit-to-app-stores.md) to submit your app to the stores. Testing can be done on a physical iOS device using [Expo Go](https://expo.dev/go) or a [development build](/develop/development-builds/introduction.md).
 
 ## What versions of Android and iOS are supported by the Expo SDK?
 
@@ -13146,7 +13048,7 @@ Curious what your agent actually wrote? The Expo tutorial builds the same app, e
 ---
 
 ---
-modificationDate: June 26, 2026
+modificationDate: July 17, 2026
 title: 'EAS Tutorial: Introduction'
 description: An introduction to the tutorial for building apps for Android and iOS using Expo Application Services (EAS) that covers the Build, Update, and Submit workflows.
 ---
@@ -13159,7 +13061,7 @@ An introduction to the tutorial for building apps for Android and iOS using Expo
 
 ## About this tutorial
 
-This tutorial will give you proficiency with [Expo Application Services (EAS)](https://expo.dev/eas) core services: [Build](/build/introduction.md), [Submit](/submit/introduction.md), and [Update](/eas-update/introduction.md). When you complete the tutorial, you will know how to set up a professional mobile Continuous Integration (CI)/Continuous Development (CD) pipeline for your individual and team projects.
+This tutorial will give you proficiency with [Expo Application Services (EAS)](https://expo.dev/eas) core services: [Build](/build/introduction.md), [Submit](/deploy/submit-to-app-stores.md), and [Update](/eas-update/introduction.md). When you complete the tutorial, you will know how to set up a professional mobile Continuous Integration (CI)/Continuous Development (CD) pipeline for your individual and team projects.
 
 This tutorial covers the following topics:
 
@@ -14267,7 +14169,7 @@ In the next chapter, learn about the process of creating a production build for 
 ---
 
 ---
-modificationDate: July 16, 2026
+modificationDate: July 17, 2026
 title: Create a production build for Android
 description: Learn about the process of creating a production build for Android and automating the release process.
 ---
@@ -14311,6 +14213,8 @@ eas build --platform android
 The above command will queue the build. Notice in the EAS dashboard that the **Version Code** is auto-incremented.
 
 ## Create an app on the Google Play Console
+
+> Creating the first release manually is not required: `eas submit` can create your app's first release directly. In this tutorial, we walk through Play Console to get familiar with how releases work.
 
 To upload the app to the Google Play Store for the first time, we need to:
 
@@ -14368,7 +14272,7 @@ To promote our internal test release version to **alpha**, in Google Play Store 
 
 > **Tip**: Before following the steps in this section, see the instructions on [creating a Google Service Account key or downloading it from an existing account](https://expo.fyi/creating-google-service-account) guide.
 
-From now on, we can use [EAS Submit](/submit/introduction.md) to automate releases and avoid the manual process. To do that, we need to add the service account key to our project's credentials.
+From now on, we can use [EAS Submit](/submit/android.md) to automate releases and avoid the manual process. To do that, we need to add the service account key to our project's credentials.
 
 After following the Google Service Account guide steps, we can upload the downloaded JSON key to EAS dashboard:
 
@@ -14455,7 +14359,7 @@ In the next chapter, learn about the process of creating a production build for 
 ---
 
 ---
-modificationDate: July 16, 2026
+modificationDate: July 17, 2026
 title: Create a production build for iOS
 description: Learn about the process of creating a production build for iOS and automating the release process.
 ---
@@ -14508,7 +14412,7 @@ The command will queue the build. Notice on the EAS dashboard that the **Build N
 
 ## Submit the app binary to the App Store
 
-To submit the app binary created from our latest EAS Build, run the [`eas submit`](/submit/introduction.md) command:
+To submit the app binary created from our latest EAS Build, run the [`eas submit`](/submit/ios.md) command:
 
 ```sh
 eas submit --platform ios
@@ -14821,7 +14725,7 @@ Learn about the next steps to use EAS.
 ---
 
 ---
-modificationDate: February 11, 2026
+modificationDate: July 17, 2026
 title: Next steps
 description: Learn about the next steps in your journey with EAS.
 ---
@@ -14844,7 +14748,7 @@ But this is just the beginning. Here are some next steps to continue your journe
 
 [EAS Hosting](/eas/hosting/introduction.md) — See EAS Hosting documentation to learn more about deploying Expo Router and React Native web apps, and API routes.
 
-[EAS Submit](/submit/introduction.md) — See EAS Submit documentation to learn more about uploading app to Google Play Store and Apple App Store with one CLI command.
+[EAS Submit](/deploy/submit-to-app-stores.md) — See EAS Submit documentation to learn more about uploading app to Google Play Store and Apple App Store with one CLI command.
 
 [EAS Update](/eas-update/introduction.md) — See EAS Update documentation to learn more about publishing updates and applying customizable strategies.
 
@@ -16605,7 +16509,7 @@ We hope you enjoyed this tutorial. If you have any questions or feedback, don't 
 ---
 
 ---
-modificationDate: July 6, 2026
+modificationDate: July 15, 2026
 title: Additional resources
 description: A reference of resources that are useful to learn about Expo tooling and services.
 ---
@@ -16739,6 +16643,8 @@ The following resources are useful for learning about Expo tooling and services.
 
 ## Video tutorials
 
+[The 3 tools you need to build mobile apps with AI](https://www.youtube.com/watch?v=WLGAuwagI8o) — Expo Tutorials
+
 [Introducing "Observe": Performance monitoring for React Native apps](https://www.youtube.com/watch?v=5JqK9JLD140) — Expo Tutorials
 
 [Highlights from the largest Expo conference of the year: App.js '26](https://www.youtube.com/watch?v=EEbdiZFXayg) — Expo Tutorials
@@ -16760,8 +16666,6 @@ The following resources are useful for learning about Expo tooling and services.
 [How to send emails with Resend from your Expo app](https://www.youtube.com/watch?v=8sPD8SNcUFA) — Expo Tutorials
 
 [The fastest mobile QA workflow: Expo pull request previews in GitHub Actions](https://www.youtube.com/watch?v=7UVIrqrrrso) — EAS Tutorials
-
-[Getting started with Meta Horizon Development using Expo](https://www.youtube.com/watch?v=24G2tui0Ts8) — Expo Tutorials
 
 ---
 
@@ -16799,7 +16703,7 @@ Apart from the essentials listed above, there are plenty of other features to ex
 ---
 
 ---
-modificationDate: June 30, 2026
+modificationDate: July 17, 2026
 title: Develop an app with Expo
 description: An overview of the development process of building an Expo app to help build a mental model of the core development loop.
 ---
@@ -16987,7 +16891,7 @@ If you compile your app locally, you can create [production builds locally](/gui
 
 ## Release app to stores
 
-To release your app on the app stores, you can use [EAS Submit](/submit/introduction.md). For more information on using EAS Submit, see [Submit to Google Play Store](/submit/android.md) and [Submit to Apple App Store](/submit/ios.md).
+To release your app on the app stores, you can use [EAS Submit](/deploy/submit-to-app-stores.md). For more information on using EAS Submit, see [Submit to Google Play Store](/submit/android.md) and [Submit to Apple App Store](/submit/ios.md).
 
 To create a production build locally, see the [guide](/guides/local-app-production.md) on the same and then go through the app stores guide to submit your app.
 
@@ -19359,7 +19263,7 @@ bun expo run:android --variant freeDebug --app-id dev.expo.myapp.free
 ---
 
 ---
-modificationDate: June 19, 2026
+modificationDate: July 17, 2026
 title: Create a release build locally
 description: Learn how to create a release (production) build for your Expo app locally.
 ---
@@ -19445,63 +19349,17 @@ cd android
 
 This command will generate app-release.aab inside the **android/app/build/outputs/bundle/release** directory.
 
-### Manual app submission to Google Play Console
+### App submission to Google Play Console
 
-Google Play Store requires manual app submission when submitting the **.aab** file for the first time.
+To submit the **.aab** file, upload it manually through Google Play Console. Alternatively, [EAS Submit](/deploy/submit-to-app-stores.md#can-i-submit-builds-that-were-not) accepts locally built binaries with `eas submit --platform android --path ./my-app.aab`.
 
-[Manual submission of an Android app](https://expo.fyi/first-android-submission) — Follow the steps from the FYI guide on manually submitting your app to Google Play Store for the first time.
+[Manual submission of an Android app](/submit/android-manual.md) — Follow the step-by-step guide on manually submitting your app to Google Play Store for the first time.
 
 ## iOS
 
-To create an iOS release build locally for Apple App Store, you need to use Xcode which handles the signing and submission process via App Store Connect.
+To create an iOS release build locally, you use Xcode, which handles signing and uploading to App Store Connect. Follow the manual submission guide for the complete walkthrough, from configuring a release scheme to archiving and uploading your app:
 
-#### Prerequisites
-
-##### Apple Developer membership
-
-A paid Apple Developer membership is required to sign and submit iOS apps.
-
-##### Xcode installed
-
-[Install Xcode](/get-started/set-up-your-environment.md?platform=ios&device=physical&mode=development-build&buildEnv=local#set-up-xcode-and-watchman) on your computer.
-
-##### ios directory generated
-
-If you are using [Continuous Native Generation (CNG)](/workflow/continuous-native-generation.md), run `npx expo prebuild` to generate it.
-
-### Open iOS workspace in Xcode
-
-Inside your Expo project directory, run the following command to open `your-project.xcworkspace` in Xcode:
-
-```sh
-xed ios
-```
-
-After opening the iOS project in Xcode:
-
-1.  From the sidebar on the left, select your app's workspace.
-2.  Go to **Signing & Capabilities** and select **All** or **Release**.
-3.  Under **Signing** > **Team**, ensure your Apple Developer team is selected. Xcode will generate an automatically managed Provisioning Profile and Signing Certificate.
-
-### Configure a release scheme
-
-To configure your app's release scheme:
-
-1.  From the menu bar, open **Product** > **Scheme** > **Edit Scheme**.
-2.  Select **Run** from the sidebar, then set the **Build configuration** to **Release** using the dropdown.
-
-### Build app for release
-
-To build your app for release, From the menu bar, open **Product** > **Build**. This step will build your app binary for release.
-
-### App submission using App Store Connect
-
-Once the build is complete, you can distribute your app to TestFlight or submit it to the App Store using App Store Connect:
-
-1.  From the menu bar, open **Product** > **Archive**.
-2.  Under **Archives**, click **Distribute App** from the right sidebar.
-3.  Click **App Store Connect** and follow the prompts shown in the window. This step will create an app store record and upload your app to the App Store.
-4.  Now you can go to your App Store Connect account, select your app under Apps, and submit it for testing using TestFlight or prepare it for final release by following the steps in the App Store Connect dashboard.
+[Manually submit an iOS app with Xcode](/submit/ios-manual.md) — Configure signing, archive your app with Xcode, and upload it to App Store Connect.
 
 ---
 
@@ -24179,7 +24037,7 @@ Choose your **from SDK version** and **to SDK version** to see the generated dif
 ---
 
 ---
-modificationDate: May 14, 2026
+modificationDate: July 17, 2026
 title: Integrating Expo tools into existing native apps
 description: An overview of how you can integrate Expo tools into existing native apps ("brownfield" apps).
 ---
@@ -24210,7 +24068,7 @@ Expo is primarily built with greenfield apps in mind, but we are increasingly in
 | [Expo CLI](/more/expo-cli.md) - tools to run and develop your app from your terminal | ✓ |
 | [Expo Dev Client](/versions/latest/sdk/dev-client.md) - adds in-app developer tooling to Debug builds | ✗ |
 | [EAS Build](/build/introduction.md) - a CI/CD service built specifically for Expo/React Native | ✓ |
-| [EAS Submit](/submit/introduction.md) - a hosted service that uploads your app to stores | ✓ |
+| [EAS Submit](/deploy/submit-to-app-stores.md) - a hosted service that uploads your app to stores | ✓ |
 | [EAS Update](/eas-update/introduction.md) - instant updates of your app JavaScript and assets | ✓ |
 
 ## Integrated vs Isolated approaches
@@ -51223,7 +51081,7 @@ bun expo start
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 17, 2026
 title: Using Facebook authentication
 description: A guide on using react-native-fbsdk-next library to integrate Facebook authentication in your Expo project.
 ---
@@ -51258,7 +51116,7 @@ See the following guides for more information on how to build your project for a
 
 [Build your project for app stores](/deploy/build-project.md)
 
-[Manually upload Android app for the first time](https://expo.fyi/first-android-submission)
+[Submit to the Google Play Store with EAS Submit](/submit/android.md)
 
 Once you have uploaded the app to the Play Store you can submit your app review. When it is approved the Facebook project will be able to access it at a Play Store URL.
 
@@ -51274,7 +51132,7 @@ Now, you can use your Facebook project for development or release builds and pro
 ---
 
 ---
-modificationDate: June 17, 2026
+modificationDate: July 17, 2026
 title: Using Google authentication
 description: A guide on using react-native-nitro-google-signin or @react-native-google-signin/google-signin to integrate Google authentication in your Expo project.
 ---
@@ -51329,7 +51187,7 @@ We recommend uploading the app to the Google Play Store if your app intends to r
 
 [Build your project for app stores](/deploy/build-project.md)
 
-[Manually upload Android app for the first time](https://expo.fyi/first-android-submission)
+[Submit to the Google Play Store with EAS Submit](/submit/android.md)
 
 ### Configure your Firebase or Google Cloud Console project
 

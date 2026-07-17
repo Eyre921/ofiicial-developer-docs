@@ -8,7 +8,7 @@ path: payment-links/post-payment
 
 Learn what you can do after receiving a payment link payment.
 
-After you receive a payment through a payment link, you can track payments, manage fulfillment automatically, view payment link metrics, and more.
+After you receive a payment through a payment link, you can perform actions such as track payments, manage fulfillment automatically, and view payment link metrics.
 
 ## Track payments 
 
@@ -41,7 +41,7 @@ If you’re selling a subscription or [saving a payment method for future use](h
 
 You can automatically handle fulfillment through a Stripe partner or programmatically with the Stripe API:
 
-- **Automation with a Stripe partner:** To automate post-purchase activities like order *fulfillment* (Fulfillment is the process of providing the goods or services purchased by a customer, typically after payment is collected), emailing customers, and recording data to a spreadsheet, you can use a Stripe partner, like [Zapier](https://help.zapier.com/hc/articles/10821467221133), to connect Stripe data to other applications.
+- **Automation with a Stripe partner:** To automate post-purchase activities such as order *fulfillment* (Fulfillment is the process of providing the goods or services purchased by a customer, typically after payment is collected), emailing customers, and recording data to a spreadsheet, you can use a Stripe partner, such as [Zapier](https://help.zapier.com/hc/articles/10821467221133), to connect Stripe data to other applications.
 
 - **Handle fulfillment programmatically:** If you’re interested in handling fulfillment programmatically using the Stripe API and *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests), learn how to [fulfill orders after a customer pays](https://docs.stripe.com/checkout/fulfillment.md).
 

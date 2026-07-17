@@ -119,7 +119,7 @@ Customize your RFT job with these flags:
 --epochs 2                    # Number of training epochs (default: 1)
 --learning-rate 5e-5          # Learning rate (default: 1e-4)
 --lora-rank 16                # LoRA rank (default: 8)
---batch-size 65536            # Batch size in tokens (default: 32768)
+--batch-size 65536            # RFT V1 packed-token budget; remains active with --batch-size-samples
 --chunk-size 200              # Prompts rolled out per GRPO training step (default: 200). -1 disables chunking.
 ```
 

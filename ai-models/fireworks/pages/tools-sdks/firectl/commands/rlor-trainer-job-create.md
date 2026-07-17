@@ -32,9 +32,9 @@ firectl rlor-trainer-job create \
       --evaluation-dataset string                 The evaluation dataset for the fine-tuning job.
       --epochs int32                              The number of epochs for the fine-tuning job.
       --learning-rate float32                     The learning rate for the fine-tuning job.
-      --max-context-length int32                  Maximum token length for sequences within each training batch. Shorter sequences are concatenated; longer sequences are truncated.
-      --batch-size int32                          The batch size measured in tokens. Maximum number of tokens packed into each training batch/step. A single sequence will not be split across batches.
-      --batch-size-samples int32                  Number of samples per gradient update. If set to k, gradients update after every k samples. By default (0), gradients update based on batch-size (tokens).
+      --max-context-length int32                  Maximum token length per sequence. When unset, defaults to the validated training shape's max supported context length. Capped (not pinned) by the shape: smaller user values are honored.
+      --batch-size int32                          Legacy V1 token budget. On V1 RLOR paths, limits packed tokens per microbatch and remains active when --batch-size-samples is set. Training V2 rejects nonzero values.
+      --batch-size-samples int32                  Sample-count batching control. On V1 RLOR paths it limits samples per gradient batch and works alongside --batch-size; on Training V2 SFT and DPO paths it maps to examples or preference pairs per optimizer step.
       --gradient-accumulation-steps int32         The number of batches to accumulate gradients before updating the model parameters. The effective batch size will be batch-size multiplied by this value. (default 1)
       --learning-rate-warmup-steps int32          The number of learning rate warmup steps for the rlor trainer job.
       --lora-rank int32                           The rank of the LoRA layers for the fine-tuning job.
@@ -55,10 +55,10 @@ firectl rlor-trainer-job create \
                                                   
       --rewards strings                           A list of reward weights as key=value pairs (e.g., --rewards key1=1.0,key2=0.5).
       --display-name string                       The display name of the supervised fine-tuning job.
-      --early-stop                                Enable early stopping for the supervised fine-tuning job.
       --quiet                                     If set, only errors will be printed.
       --eval-auto-carveout                        If set, the evaluation dataset will be auto-carved.
       --training-shape string                     Training shape selector for service-mode launches. Accepts training shape names or training shape version names; a shape name uses its latest validated version.
+      --trainer-replicas int32                    Data-parallel replica count for service-mode trainers. If not specified, defaults to 1.
       --inactivity-timeout duration               Trainer inactivity timeout (for example, 30m or 2h). The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. If omitted or 0, defaults to 60 minutes. Use --disable-inactivity-cleanup to disable automatic cleanup. GPU usage continues to accrue while the trainer is running.
       --disable-inactivity-cleanup                Disable trainer inactivity cleanup. The trainer is not automatically stopped due to inactivity, and GPU usage continues to accrue while the trainer is running.
       --dry-run                                   Print the request proto without running it.

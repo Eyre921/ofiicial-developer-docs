@@ -288,10 +288,10 @@ Test datasets with examples for evaluation.
 | Get dataset versions                         |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | Diff dataset versions                        |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | Update dataset version (tags)                |        ✓        |         ✓        |         ✗        | `datasets:update`                                    |
-| Download dataset (OpenAI format)             |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
-| Download dataset (OpenAI fine-tuning format) |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
-| Download dataset (CSV)                       |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
-| Download dataset (JSONL)                     |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
+| Download dataset (OpenAI format)             |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
+| Download dataset (OpenAI fine-tuning format) |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
+| Download dataset (CSV)                       |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
+| Download dataset (JSONL)                     |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
 | View dataset sharing state                   |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | Share dataset publicly                       |        ✓        |         ✗        |         ✗        | `datasets:share`                                     |
 | Unshare dataset                              |        ✓        |         ✗        |         ✗        | `datasets:share`                                     |

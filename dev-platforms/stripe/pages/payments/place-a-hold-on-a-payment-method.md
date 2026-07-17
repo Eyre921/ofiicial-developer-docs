@@ -44,9 +44,7 @@ The following tables outline validity windows for authorizing different transact
 
 ### 30-day authorization windows in Japan 
 
-If your account is based in Japan, you can hold JPY-denominated transactions from Visa, Mastercard, JCB, Diners Club, and Discover for up to 30 days. Non-JPY and American Express transactions expire after the standard 7-day window.
-
-> As of April 14, 2024, Visa shortened the authorization window for online [Merchant-Initiated Transactions](https://docs.stripe.com/payments/cits-and-mits.md) from 7 days to 5 days. Visa also lengthened the authorization window for in-person (Terminal) transactions from 2 days to 5 days.
+If your account is based in Japan, you can hold JPY-denominated transactions from Visa, Mastercard, JCB, Diners Club, and Discover for up to 30 days. Non-JPY and American Express transactions expire according to the standard authorization windows (#authorization-validity-windows).
 
 ## Payment method limitations 
 

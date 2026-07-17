@@ -320,7 +320,7 @@ Use reinforcement fine-tuning while keeping sensitive components and data under 
             "learning_rate": 1e-5,
             "lora_rank": 8,
             "max_context_length": 4096,
-            "batch_size": 32768,
+            "batch_size_samples": 32,
         },
         dataset="accounts/{ACCOUNT}/datasets/{DATASET_NAME}",  # Your BYOB dataset with rewards
         output_model="accounts/{ACCOUNT}/models/my-improved-model-v1",
@@ -352,7 +352,7 @@ Use reinforcement fine-tuning while keeping sensitive components and data under 
     </Tip>
 
     <Note>
-      When continuing from a LoRA checkpoint, training parameters such as `lora_rank`, `learning_rate`, `max_context_length`, and `batch_size` must match the original LoRA training.
+      When continuing from a LoRA checkpoint, training parameters such as `lora_rank`, `learning_rate`, `max_context_length`, and `batch_size_samples` must match the original LoRA training.
     </Note>
   </Step>
 

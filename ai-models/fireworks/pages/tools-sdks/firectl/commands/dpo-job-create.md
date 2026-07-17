@@ -36,13 +36,15 @@ firectl dpo-job create \
       --source-job string                         The source dpo job to copy configuration from. If other flags are set, they will override the source job's configuration.
       --epochs int32                              The number of epochs for the dpo job.
       --learning-rate float32                     The learning rate for the dpo job.
-      --max-context-length int32                  Maximum token length for sequences within each training batch. Shorter sequences are concatenated; longer sequences are truncated.
-      --batch-size int32                          The batch size measured in tokens. Maximum number of tokens packed into each training batch/step. A single sequence will not be split across batches.
-      --batch-size-samples int32                  Number of samples per gradient update. If set to k, gradients update after every k samples. By default (0), gradients update based on batch-size (tokens).
-      --gradient-accumulation-steps int32         The number of batches to accumulate gradients before updating the model parameters. The effective batch size will be batch-size multiplied by this value. (default 1)
+      --max-context-length int32                  Maximum token length per sequence. When unset, defaults to the validated training shape's max supported context length. Capped (not pinned) by the shape: smaller user values are honored.
+      --batch-size-samples int32                  Number of preference pairs per optimizer step. This is the supported Training V2 batch knob.
       --learning-rate-warmup-steps int32          The number of learning rate warmup steps for the dpo job.
-      --lora-rank int32                           The rank of the LoRA layers for the dpo job. (default 8)
+      --learning-rate-scheduler string            Learning rate scheduler to use: constant, linear, or cosine. When unset, the trainer uses its legacy constant schedule.
+      --learning-rate-min-lr-ratio float32        Minimum learning rate as a ratio of --learning-rate for linear/cosine schedules. Must be between 0 and 1.
+      --learning-rate-decay-ratio float32         Fraction of total training steps over which to decay for linear/cosine schedules. 0 uses the full run.
+      --lora-rank int32                           The rank of the LoRA layers for the dpo job. Use --full-parameter for full parameter tuning. (default 8)
       --optimizer-weight-decay float32            Weight decay (L2 regularization) for the optimizer. Default in trainer is 0.01.
+      --full-parameter                            Enable full parameter fine-tuning instead of LoRA. Equivalent to --lora-rank=0. Requires bf16 precision.
                                                   
       --wandb-api-key string                      [WANDB_API_KEY] WandB API Key. (Required if any WandB flag is set)
       --wandb-project string                      [WANDB_PROJECT] WandB Project. (Required if any WandB flag is set)
@@ -59,9 +61,10 @@ firectl dpo-job create \
       --azure-tenant-id string                    [AZURE_TENANT_ID] Azure tenant ID (required with --azure-managed-identity-client-id)
                                                   
       --display-name string                       The display name of the dpo job.
-      --early-stop                                Enable early stopping for the dpo job.
       --quiet                                     If set, only errors will be printed.
       --loss-method string                        Loss method for the job (DPO, GRPO, or ORPO). Defaults to DPO for new jobs; when using --source-job, inherits the source job's method unless overridden.
+      --dpo-beta float32                          Typed DPO beta override. Must be > 0 and < 0.5. Applies to loss_config.dpo.beta.
+      --orpo-lambda float32                       Typed ORPO lambda override. Applies to loss_config.orpo.lambda.
       --dry-run                                   Print the request proto without running it.
   -o, --output Output                             Set the output format to "text", "json", or "flag". (default text)
   -h, --help                                      help for create

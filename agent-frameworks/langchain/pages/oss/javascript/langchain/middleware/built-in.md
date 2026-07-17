@@ -634,6 +634,8 @@ const agent = createAgent({
   </ParamField>
 </Accordion>
 
+### Tool error
+
 ### Tool retry
 
 Automatically retry failed tool calls with configurable exponential backoff. Tool retry is useful for the following:

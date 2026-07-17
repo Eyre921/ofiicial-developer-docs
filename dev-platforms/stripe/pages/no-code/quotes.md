@@ -13,7 +13,7 @@ Send a quote and convert it to a payment or subscription.
 - **Good for:** Online sellers, individual creators, solo entrepreneurs, early-stage startups
 - **Pricing:** [Pay-as-you-go](https://stripe.com/pricing), [Stripe Billing pricing](https://stripe.com/billing/pricing) for recurring payments, [Invoicing pricing](https://stripe.com/invoicing/pricing) for advanced invoicing features
 
-With quotes, provide price estimates to your customers that you can convert into *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) or *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis). You can combine recurring and one-off line items, including any discounts or taxes.
+Use quotes to provide price estimates to your customers that you can convert into *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) or *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis). You can combine recurring and one-off line items, including any discounts or taxes.
 ![Quote PDF](https://b.stripecdn.com/docs-statics-srv/assets/quote-pdf.fbd3abb09a59b6be9f1c692ab402691c.png)
 
 The generated quote PDF

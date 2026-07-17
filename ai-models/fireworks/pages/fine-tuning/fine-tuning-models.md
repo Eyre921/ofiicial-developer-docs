@@ -273,7 +273,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
       </Tab>
 
       <Tab title="firectl">
-        Ensure the fine tuned model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a fine-tuning job ID. For a full explanation of the settings available to control the fine-tuning process, including learning rate and epochs, consult [additional SFT job settings](#additional-sft-job-settings).
+        Ensure the fine tuned model ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids). This will return a fine-tuning job ID. For a full explanation of the settings available to control the fine-tuning process, including learning rate and epochs, consult [additional managed fine-tuning job settings](#additional-managed-fine-tuning-job-settings).
 
         ```bash theme={null}
         firectl sftj create --base-model <MODEL_ID> --dataset <DATASET_ID> --output-model <FINE_TUNED_MODEL_ID>
@@ -331,9 +331,11 @@ This creates a dedicated deployment with performance matching the base model.
   For more details on deploying fine-tuned models, including multi-LoRA deployments, see the [Deploying Fine Tuned Models guide](/fine-tuning/deploying-loras).
 </Tip>
 
-## Additional SFT job settings
+<a />
 
-Additional tuning settings are available when starting a fine-tuning job. All of the below settings are optional and will have reasonable defaults if not specified. For settings that affect tuning quality like `epochs` and `learning rate`, we recommend using default settings and only changing hyperparameters if results are not as desired.
+## Additional managed fine-tuning job settings
+
+Additional tuning settings are available when starting an SFT or preference (DPO/ORPO) job. All of the settings below are optional and have reasonable defaults. For settings that affect tuning quality, such as `epochs` and `learning_rate`, use the defaults first and change them only when the results indicate a clear need. Examples use SFT unless otherwise noted.
 
 <AccordionGroup>
   <Accordion title="Evaluation">
@@ -362,12 +364,12 @@ Additional tuning settings are available when starting a fine-tuning job. All of
     ```
   </Accordion>
 
-  <Accordion title="Batch Size">
-    Batch size is the number of tokens packed into one forward step during training. One batch could consist of multiple training samples. We do sequence packing on the training samples, and batch size controls how many total tokens will be packed into each batch.
+  <Accordion title="Batch Size (Samples)">
+    Managed SFT and preference tuning use sample-count batching. `batch_size_samples` is the number of SFT samples or preference pairs included in each optimizer step. It is independent of `max_context_length`, which limits the token length of each sample. The UI defaults are 32 samples for SFT and 4 preference pairs for DPO/ORPO.
 
     ```shell theme={null}
     firectl sftj create \
-      --batch-size 65536 \
+      --batch-size-samples 32 \
       --base-model MY_BASE_MODEL \
       --dataset cancerset \
       --output-model my-tuned-model
@@ -413,15 +415,44 @@ Additional tuning settings are available when starting a fine-tuning job. All of
     ```
   </Accordion>
 
-  <Accordion title="Gradient accumlation steps">
-    Gradient accumulation steps controls the number of forward steps and backward steps to take (gradients are accumulated) before optimizer.step() is taken. Gradient accumulation steps > 1 increases effective batch size.
+  <Accordion title="Learning rate scheduler">
+    Configure how the learning rate changes over training. Supported schedulers are `constant`, `linear`, and `cosine`. When unset, the trainer uses its legacy constant schedule. The same flags apply to SFT and preference tuning jobs (DPO/ORPO).
+
+    For `linear` and `cosine`, you can optionally set:
+
+    * `--learning-rate-min-lr-ratio`: minimum learning rate as a fraction of `--learning-rate` (0 to 1)
+    * `--learning-rate-decay-ratio`: fraction of total training steps over which to decay; `0` decays over the full run
 
     ```shell theme={null}
     firectl sftj create \
-      --gradient-accumulation-steps 4 \
       --base-model MY_BASE_MODEL \
       --dataset cancerset \
-      --output-model my-tuned-model
+      --output-model my-tuned-model \
+      --learning-rate 0.0001 \
+      --learning-rate-warmup-steps 10 \
+      --learning-rate-scheduler cosine \
+      --learning-rate-min-lr-ratio 0.1 \
+      --learning-rate-decay-ratio 0.8
+    ```
+
+    Via the REST API, pass an `lrScheduler` object with one of `constant`, `linear`, or `cosine`:
+
+    ```javascript theme={null}
+    const payload = {
+      supervisedFineTuningJob: {
+        baseModel: "accounts/my-account/models/MY_BASE_MODEL",
+        dataset: "accounts/my-account/datasets/cancerset",
+        outputModel: "accounts/my-account/models/my-tuned-model",
+        learningRate: 0.0001,
+        learningRateWarmupSteps: 10,
+        lrScheduler: {
+          cosine: {
+            minLrRatio: 0.1,
+            decayRatio: 0.8
+          }
+        }
+      }
+    };
     ```
   </Accordion>
 
@@ -474,6 +505,24 @@ Additional tuning settings are available when starting a fine-tuning job. All of
     ```
   </Accordion>
 </AccordionGroup>
+
+### Deprecated parameters
+
+<Warning>
+  These parameters are deprecated. Do not include them in new managed fine-tuning requests. The wire fields remain present so existing resources can still be read, but Training V2 rejects or ignores non-default values as described below.
+</Warning>
+
+| Proto / Python field          | Former or legacy `firectl` flag           | Affected jobs                    | Migration behavior                                                                                                                                                                                                                         |
+| ----------------------------- | ----------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `batch_size`                  | `--batch-size`                            | SFT and DPO/ORPO Training V2     | Training V2 rejects nonzero values; use `batch_size_samples` / `--batch-size-samples`. RFT and RLOR V1 paths are not affected: they still use `batch_size` as the packed-token budget alongside the optional `batch_size_samples` control. |
+| `gradient_accumulation_steps` | `--gradient-accumulation-steps`           | SFT, DPO/ORPO, RFT, RLOR trainer | Legacy V1 accumulation control. SFT and DPO/ORPO V2 reject nonzero values. Use `batch_size_samples` to control samples or preference pairs per optimizer step.                                                                             |
+| `jinja_template`              | —                                         | SFT and shared training config   | Training V2 rejects non-empty values. Conversation rendering comes from the base model's registered renderer configuration.                                                                                                                |
+| `early_stop`                  | `--early-stop`                            | Managed SFT                      | Early stopping is not supported by managed training. The CLI flag is no longer exposed; omit the field or leave it `false`.                                                                                                                |
+| `mtp_enabled`                 | `--mtp-enable`                            | Managed SFT                      | MTP training is no longer supported. The CLI flag was removed, and managed training rejects `true`.                                                                                                                                        |
+| `mtp_num_draft_tokens`        | `--mtp-num-draft-tokens`                  | Managed SFT                      | Deprecated with MTP support. The CLI flag was removed; leave the field unset (`0`).                                                                                                                                                        |
+| `mtp_freeze_base_model`       | `--mtp-freeze-base-model`                 | Managed SFT                      | Deprecated with MTP support. The CLI flag was removed; leave the field unset (`false`).                                                                                                                                                    |
+| `extra_values`                | `--extra-values` (admin-only legacy flag) | Managed SFT                      | Legacy V1 Helm overrides. Training V2 rejects a non-empty map.                                                                                                                                                                             |
+| `use_reservation`             | `--use-reservation` (former admin flag)   | SFT, DPO/ORPO, RFT, RLOR trainer | The request value is ignored. Reservation placement is selected automatically from account policy, and the CLI flag was removed.                                                                                                           |
 
 ## Appendix
 

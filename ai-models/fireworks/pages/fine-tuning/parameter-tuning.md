@@ -16,6 +16,10 @@ Most experiments converge well with the default values. Adjust parameters only w
 
 Core parameters that control how your model learns during the training process.
 
+<Warning>
+  RFT V1 still uses `batch_size` as its packed-token budget. Do not send a nonzero `batch_size` in new SFT or DPO/ORPO Training V2 requests; use `batch_size_samples` for those job types instead. See [Deprecated parameters](/fine-tuning/fine-tuning-models#deprecated-parameters) for the path-specific migration list.
+</Warning>
+
 <AccordionGroup>
   <Accordion title="Learning Rate">
     **What it does**: Controls how aggressively the model updates its weights during each training step. Think of it as the "step size" when descending the loss landscape.
@@ -73,11 +77,11 @@ Core parameters that control how your model learns during the training process.
     * Consider task complexity: simple style changes need lower rank, complex reasoning needs higher
   </Accordion>
 
-  <Accordion title="Batch Size">
-    **What it does**: The amount of data (measured in tokens) processed in each training step before updating model weights.
+  <Accordion title="Legacy Token Batch Size (RFT)">
+    **What it does**: `batch_size` sets the maximum number of packed tokens in each RFT V1 microbatch.
 
     <Note>
-      Unlike traditional batch sizes that count sequences (e.g., 32 or 64 sequences), Fireworks RFT uses **token-based batch sizing**. For example, with an 8k max sequence length, a 64k batch size allows up to 8 sequences per batch (64k tokens ÷ 8k tokens/sequence = 8 sequences).
+      This field is active for managed RFT V1 and is not replaced by `batch_size_samples`. The two controls work together: `batch_size` limits packed tokens per microbatch, while `batch_size_samples` optionally limits rollout samples per gradient batch. For example, an 8k max sequence length and a 64k token budget allow up to 8 full-length sequences in a packed microbatch.
     </Note>
 
     **Default**: `32k tokens`
@@ -121,12 +125,12 @@ Core parameters that control how your model learns during the training process.
 
     That is, 5 chunks × 2 epochs = 10 GRPO training steps total, each preceded by 200 × 8 = 1600 rollouts.
 
-    **Relationship with `gradient_accumulation_steps`**
+    **Relationship with legacy `gradient_accumulation_steps`**
 
     These two are orthogonal:
 
     * `chunk_size` controls how many prompts are rolled out **before each GRPO training step** — i.e., how on-policy the training is.
-    * `gradient_accumulation_steps` controls how many forward/backward passes accumulate **within a single chunk's training step** before each optimizer update.
+    * `gradient_accumulation_steps` controls how many forward/backward passes accumulate **within a single chunk's training step** before each optimizer update. This field is also deprecated; use `batch_size_samples` in new integrations.
 
     <Note>
       `--chunk-size` is only exposed via the `firectl` / `eval-protocol` CLI. It is not configurable from the Web UI.

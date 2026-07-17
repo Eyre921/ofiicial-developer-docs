@@ -298,7 +298,7 @@ To see all vision models that support fine-tuning, visit the [Model Library for 
           --epochs 3
         ```
 
-        For additional parameters like learning rates, evaluation datasets, and batch sizes, see [Additional SFT job settings](/fine-tuning/fine-tuning-models#additional-sft-job-settings).
+        For additional parameters like learning rates, evaluation datasets, and batch sizes, see [Additional managed fine-tuning job settings](/fine-tuning/fine-tuning-models#additional-managed-fine-tuning-job-settings).
       </Tab>
 
       <Tab title="UI">
@@ -363,7 +363,7 @@ To see all vision models that support fine-tuning, visit the [Model Library for 
 
 ## Advanced Configuration
 
-For additional fine-tuning parameters and advanced settings like custom learning rates, batch sizes, and optimization options, see the [Additional SFT job settings](/fine-tuning/fine-tuning-models#additional-sft-job-settings) section in our comprehensive fine-tuning guide.
+For additional fine-tuning parameters and advanced settings like custom learning rates, batch sizes, and optimization options, see the [Additional managed fine-tuning job settings](/fine-tuning/fine-tuning-models#additional-managed-fine-tuning-job-settings) section in our comprehensive fine-tuning guide.
 
 <Tip>
   Need custom training loops for VLMs? The **Training API** also supports vision-language model fine-tuning with full control over loss functions, training objectives, and evaluation. See [Training API — Vision Inputs](/fine-tuning/training-api/vision-inputs) for details.

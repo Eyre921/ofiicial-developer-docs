@@ -40501,7 +40501,7 @@ POST
 
 **Early access:** this API is not yet stable and may change in backwards-incompatible ways without notice. Contact the Convex team before depending on it.
 
-Streams a consistent, resumable export of a deployment's data — either the whole deployment or a subset of components, tables, and columns (see the request body). Streaming export must be enabled on the deployment, and the caller must have the `deployment:data:sync` permission.
+Streams a consistent, resumable export of a deployment's data — either the whole deployment or a subset of components, tables, and columns (see the request body). Streaming export must be enabled on the deployment, and the caller must have the `deployment:data:view` permission.
 
 Call this endpoint repeatedly, passing the `pagination.nextCursor` from each response back in the next request as `cursor`; omit `cursor` on the first call. The cursor is opaque — store and send it back verbatim. Each response contains:
 
@@ -49988,7 +49988,7 @@ Free, Starter, and Professional are limited to a single deployment class, while 
 | ------------------------------ | ----------- | ----------- | ------------------- | ------------------- |
 | Concurrent sessions            | 1,000       | 10,000      | 100,000             | 200,000             |
 | Query cache                    | 1 GB shared | 1 GB shared | 2 GB dedicated      | 4 GB dedicated      |
-| Max dataset                    | 1 TB        | 1 TB        | 4 TB                | 4 TB                |
+| Max dataset                    | 1 TB        | 1 TB        | 4 TB                | 8 TB                |
 | Backup/restore                 | Logical     | Logical     | High-speed physical | High-speed physical |
 | SLA (Business/Enterprise only) | 99.9%       | 99.9%       | 99.95%              | 99.95%              |
 

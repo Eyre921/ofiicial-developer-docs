@@ -806,6 +806,7 @@ The table below shows a list of events logged on the Activity page.
 | vcr-image-pushed | Active | A container image was pushed to a registry repository. |
 | vcr-repository-created | Active | A container registry repository was created for a project. |
 | vcr-repository-deleted | Active | A container registry repository was deleted from a project. |
+| vcr-repository-permission-added | Active | A team was granted access to a container registry repository. |
 | vercel-agent-elevated-permissions-approved | Active | A Vercel Agent elevated access request was approved. |
 | vercel-agent-elevated-permissions-requested | Active | A Vercel Agent plan requested elevated access. |
 | vercel-agent-session-created | Active | A Vercel Agent session was created. |
@@ -101956,6 +101957,7 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Events retrieval per minute. | 10 | 60 | `user` |
 | Download Audit Log exports per minute. | 5 | 60 | `user` |
 | Setup up Audit Log Stream per minute | 10 | 60 | `user` |
+| Check Audit Log Stream status per minute | 30 | 60 | `user` |
 | Plan retrieval per minute. | 120 | 60 | `owner` |
 | Plan update per hour. | 60 | 3600 | `owner` |
 | Requests to self-unblock per hour. | 5 | 3600 | `owner` |
@@ -142311,6 +142313,110 @@ You can use the following tools to [monitor the internet traffic](/docs/vercel-f
 - **Firewall** in the Vercel dashboard sidebar on every project allows you to monitor the internet traffic to your deployments with a [traffic monitoring view](/docs/vercel-firewall/firewall-observability#traffic) that includes a live traffic window.
 - [Firewall alerts](/docs/vercel-firewall/firewall-observability#firewall-alerts) allow you to react quickly to potential security threats.
 - Use [Log Drains](/docs/drains/using-drains) to send your application logs to a Security Information and Event Management (SIEM) system.
+
+
+--------------------------------------------------------------------------------
+title: "Security Plus"
+description: "Learn how Security Plus adds bot intelligence, security observability, and OWASP protection for Pro Plus and Enterprise teams."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/vercel-firewall/security-plus"
+--------------------------------------------------------------------------------
+
+# Security Plus
+
+> **🔒 Permissions Required**: Security Plus
+
+The [Vercel Firewall](/docs/vercel-firewall) provides free DDoS and system protections for every user. **Security Plus** is available on Pro and Enterprise plans and reveals unverified bot traffic, adds deeper security observability, and protects against the OWASP Top 10.
+
+You enable Security Plus per project from the project's **Firewall** tab. To see what it unlocks, review [what Security Plus adds](#what-security-plus-adds) or the [feature comparison](#feature-comparison).
+
+## Using Security Plus
+
+### Enabling Security Plus
+
+To enable Security Plus on a project on an existing Pro or Enterprise team:
+
+1. Go to your project's [**Firewall**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Ffirewall\&title=Go+to+Firewall) tab.
+2. Open the firewall menu and select **Enable Security Plus**.
+3. Review the information and any charges, and then confirm to enable.
+
+#### Plan availability
+
+Security Plus access depends on your plan:
+
+- **Pro**: Enable Security Plus per project using the steps above.
+- **Hobby** and **Pro**: Upgrade to [Pro Plus](/docs/plans/pro-plan) or Enterprise to access Security Plus.
+- **Enterprise**: Enable Security Plus per project using the steps above.
+
+### Disabling Security Plus
+
+To disable Security Plus for a project, open the firewall menu on the **Firewall** tab and select **Disable Security Plus**. When you disable it:
+
+- The Bot Management dashboard becomes inaccessible.
+- Bot conditions in Firewall rules are no longer available. Existing rules that use bot conditions will become **inactive**.
+- 30 day extended observability for Firewall data will no longer be available.
+- Security Plus fields in the Observability query builder are no longer available.
+
+Re-enabling Security Plus reactivates these features and rules.
+
+## Features
+
+Security Plus adds additional security features on top of the [Vercel Firewall](/docs/vercel-firewall) features available to all teams.
+
+### Bot management
+
+On all plans, you can see [verified bot](/docs/bot-management#verified-bots) traffic, such as Googlebot or Bingbot. Security Plus enriches requests from unknown bots:
+
+- **Visibility into unverified bots**: See the bot name and category for bots that claim an identity but can't prove it, such as a client claiming to be Googlebot from a non-Google IP address.
+- **Richer bot categories**: Classify unverified traffic into categories like `automated_browser`, `browser_impersonation`, `http_client`, and `scanner`.
+- **Bot signals in firewall rules**: Match requests by `bot_name`, `bot_category`, `bot_status`, and `bot_protection` in the [WAF rule builder](/docs/vercel-firewall/vercel-waf/custom-rules).
+- **Bot signals in middleware and functions**: Read `x-vercel-bot-category`, `x-vercel-bot-name`, and `x-vercel-verified-bot` headers directly in your application code.
+
+For the full list of categories, dashboard details, and rule conditions, see [Bot Management](/docs/bot-management).
+
+### Advanced security observability
+
+Security Plus adds deeper visibility into your firewall traffic:
+
+- **Query builder fields**: Filter firewall events by `bot_name`, `bot_category`, and `bot_verified` in the [Firewall](/docs/vercel-firewall/firewall-observability) query builder.
+- **Request header logging**: Capture request headers when a firewall rule matches, with sensitive headers filtered automatically. See [Firewall Observability](/docs/vercel-firewall/firewall-observability).
+- **Log drains for security events**: Include bot classification data and matched request headers in your [Log Drains](/docs/drains/using-drains) payloads.
+- **Extended data retention**: Retain firewall data for 30 days, up from 1 day on Pro or 3 days on Enterprise.
+
+### Anomaly alerts
+
+[DDoS alerts](/docs/vercel-firewall/ddos-mitigation) are available to users on all plans. Anomaly alerts on Firewall system and custom rules are available to Security Plus users.
+
+### OWASP managed ruleset
+
+Security Plus and Enterprise teams can protect against the OWASP Top 10 web application attacks with the [OWASP core ruleset](/docs/vercel-firewall/vercel-waf/managed-rulesets#configure-owasp-core-ruleset), a managed WAF ruleset.
+
+## Feature comparison
+
+The following table compares the Vercel Firewall on all plans with the Firewall on a project that has Security Plus enabled:
+
+| Feature                  | Firewall                                                        | Firewall with Security Plus                                                        |
+| ------------------------ | -------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Verified bot visibility  | Bot name and category for verified bots                        | Bot name and category for verified bots                                           |
+| Unverified bot visibility | No access                                                        | Bot name and category revealed                                                     |
+| Bot categories           | Verified bots only                                             | Unverified bot categories such as `automated_browser`, `browser_impersonation`, `http_client`, `scanner`  |
+| Bot Management dashboard | No access                                                      | Full access under **Firewall > Bot Management**                                    |
+| Bot signals in rules     | No access                                                      | `bot_name`, `bot_category`, `bot_status`, `bot_protection` conditions              |
+| Bot signals in code      | No access                                                      | `x-vercel-bot-*` headers in middleware and functions                              |
+| Query builder fields     | Path, method, IP, country, action, rule name, status code, JA4 | Adds `bot_name`, `bot_category`, `bot_verified`                                   |
+| Request header logging   | No access                                                      | Capture matched request headers with sensitive headers filtered                   |
+| OWASP managed ruleset    | Enterprise only                                                | Available                                                                          |
+| Firewall data retention  | Pro: 1 day  Enterprise: 3 days                          | 30 days                                                                            |
+
+## Related
+
+**Bot Management**: Observe and control verified and unverified bot traffic. [Learn more →](/docs/bot-management)
+
+**Firewall Observability**: Monitor firewall traffic and investigate security events. [Learn more →](/docs/vercel-firewall/firewall-observability)
+
+**WAF Managed Rulesets**: Enable the OWASP core ruleset and bot rulesets. [Learn more →](/docs/vercel-firewall/vercel-waf/managed-rulesets)
+
+**Custom Rules**: Match bot signals and build fine-grained WAF rules. [Learn more →](/docs/vercel-firewall/vercel-waf/custom-rules)
 
 
 --------------------------------------------------------------------------------

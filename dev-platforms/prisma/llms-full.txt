@@ -9770,6 +9770,8 @@ yarn dlx prisma studio --url="postgresql://user:password@localhost:5432/yourdb"
 npx prisma studio --url="postgresql://user:password@localhost:5432/yourdb"
 ```
 
+This is also how you launch Studio for a [Prisma Next](/orm/next) project, which has no `schema.prisma` to read. See [Studio with Prisma Next](/studio/prisma-next).
+
 Connecting to Your Database [#connecting-to-your-database]
 
 1. **Using environment variables**:
@@ -9820,8 +9822,13 @@ Exporting Data [#exporting-data]
 
 Next Steps [#next-steps]
 
+* Use Studio with a [Prisma Next project](/studio/prisma-next) to read your applied migration history in the Migrations view
 * Learn how to [embed Studio in your application](/studio/integrations/embedding)
 * Discover [VS Code integration](/studio/integrations/vscode-integration) features
+
+## Related pages
+
+- [`Studio with Prisma Next`](https://www.prisma.io/docs/studio/prisma-next): Apply migrations to Prisma Postgres with Prisma Next, then inspect the migration history, schema changes, executed SQL, and data in Prisma Studio.
 
 # Prisma Studio (/docs/studio)
 
@@ -9831,6 +9838,7 @@ Location: Prisma Studio
 
 * Viewing and editing data in a spreadsheet-like interface
 * Real-time schema introspection
+* Reading the applied migration history of a [Prisma Next](/orm/next) database
 * Embedding directly into your Next.js applications
 * VS Code integration for in-editor database management
 
@@ -9887,6 +9895,7 @@ npx prisma studio --url="postgresql://user:password@localhost:5432/dbname"
 Getting started [#getting-started]
 
 * [Getting Started](/studio/getting-started) - Learn how to set up and use Prisma Studio to manage your database
+* [Studio with Prisma Next](/studio/prisma-next) - Apply migrations to Prisma Postgres and read your migration history in the Migrations view
 * [Embed Studio](/studio/integrations/embedding) - Learn how to embed Prisma Studio in your own applications
 * [Studio in VS Code](/studio/integrations/vscode-integration) - Learn how to use Prisma Studio directly in VS Code
 
@@ -9898,197 +9907,219 @@ Getting started [#getting-started]
 - [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
 - [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
 
-# Choose a setup path (/docs/next/getting-started)
+# Studio with Prisma Next (/docs/studio/prisma-next)
 
-Location: Next > Choose a setup path
+Location: Studio > Studio with Prisma Next
 
-Start with a quickstart if you want Prisma Next to create the app. Use the existing-project path if you already have an app and database.
+Prisma Studio shows the migration history of your [Prisma Next](/orm/next) database as a visual timeline. Select any applied migration to see the models it changed, the SQL it executed, and a diff of the schema before and after.
 
-Start a new project [#start-a-new-project]
+This guide takes you from an empty directory to inspecting your own migration history. For browsing, editing, and filtering data in general, see [Getting Started](/studio/getting-started).
 
-  
+The Migrations view requires `@prisma/studio-core` 0.32.0 or later, currently available in the Prisma CLI's `dev` release: run Studio with `npx prisma@dev studio`. Prisma Next is in [early access](/orm/next).
 
-#### bun
+Prerequisites [#prerequisites]
 
-```bash
-bunx create-prisma@next
-```
+* [Node.js](https://nodejs.org) installed
+* A Prisma Next project on PostgreSQL
 
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@next
-```
-
-#### yarn
+Create the project and provision a [Prisma Postgres](/postgres) database in one step:
 
 ```bash
-yarn dlx create-prisma@next
+npm create prisma@next
 ```
 
-#### npm
+To skip the prompts:
 
 ```bash
-npx create-prisma@next
+npm create prisma@next -- my-app --yes --provider postgres --authoring psl \
+  --template minimal --prisma-postgres --install --emit
 ```
 
-- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create the app, choose PostgreSQL, initialize the database, seed data, and run the first query.
+This writes your `DATABASE_URL` into `.env` and scaffolds a [data model](/orm/next/data-modeling) at `src/prisma/contract.prisma`, authored in [PSL](/orm/next/contract-authoring/psl-syntax). The database expires after 24 hours unless you claim it; open the `CLAIM_URL` in `.env` to keep it and attach it to your Prisma Console account.
 
-- [Quickstart with MongoDB](/next/quickstart/mongodb): Create the app, choose MongoDB, start or connect to MongoDB, seed data, and run the first query.
+Apply the first migration [#apply-the-first-migration]
 
-Use Prisma Postgres [#use-prisma-postgres]
-
-  
-
-#### bun
+The scaffolded [contract](/orm/next/contract-authoring/the-data-contract) defines a `User` and a `Post` model. Compile it, [plan a migration](/orm/next/migrations/generating-a-migration), and [apply it](/orm/next/migrations/applying-a-migration):
 
 ```bash
-bunx create-prisma@next
+npx prisma-next contract emit
+npx prisma-next migration plan --name init_users_posts
+npx prisma-next migrate --advance-ref db
 ```
 
-#### pnpm
+The CLI confirms the apply:
+
+```text
+Applied 1 migration(s) (6 operation(s)) across 1 contract space(s)
+```
+
+`--advance-ref db` records where your database is by advancing a [ref](/orm/next/migrations/the-migration-graph#name-important-states-with-refs), so the next plan produces a delta instead of recreating everything.
+
+Update the data model [#update-the-data-model]
+
+Add an enum and two fields to `src/prisma/contract.prisma`:
+
+```prisma title="src/prisma/contract.prisma"
+enum Role {
+  USER
+  EDITOR
+  ADMIN
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String?
+  name      String?
+  bio       String?
+  role      Role     @default(USER)
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt temporal.updatedAt()
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt DateTime @default(now())
+  updatedAt temporal.updatedAt()
+}
+```
+
+Create and apply another migration [#create-and-apply-another-migration]
+
+Compile the updated contract, plan, and apply:
 
 ```bash
-pnpm dlx create-prisma@next
+npx prisma-next contract emit
+npx prisma-next migration plan --name add_roles_and_publishing
+npx prisma-next migrate --advance-ref db
 ```
 
-#### yarn
+Because the `db` ref was advanced in the previous step, the planner produces a delta: four `ALTER TABLE` operations that add the new columns and the enum's check constraint. To edit a planned migration before it runs, for example to add a backfill, see [Editing a migration](/orm/next/migrations/editing-a-migration).
+
+> [!WARNING]
+> Plans start from empty without a starting point
+> 
+> Without a `db` ref and without `--from`, `migration plan` compares against an empty database and recreates every table. If that happens, delete the planned migration directory and re-plan with `--from <previous-migration-dir>`, for example `--from 20260716T1155_init_users_posts`. See [The db ref](/orm/next/migrations/generating-a-migration#the-db-ref-skipping---from).
+
+Seed the database [#seed-the-database]
+
+Migration history is easier to read next to real rows:
 
 ```bash
-yarn dlx create-prisma@next
+npm run db:seed
 ```
 
-#### npm
-
-```bash
-npx create-prisma@next
-```
-
-- [Quickstart with Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app and let setup provision Prisma Postgres for the first run.
-
-- [From the CLI](/next/prisma-postgres/from-the-cli): Start from the command line when you want the Prisma Postgres path without browsing Console first.
-
-Add to an existing project [#add-to-an-existing-project]
-
-  
-
-#### bun
-
-```bash
-bunx prisma-next init
-```
-
-#### pnpm
-
-```bash
-pnpm dlx prisma-next init
-```
-
-#### yarn
-
-```bash
-yarn dlx prisma-next init
-```
-
-#### npm
-
-```bash
-npx prisma-next init
-```
-
-- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app and infer a starter contract from the live schema.
-
-- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
-
-After setup [#after-setup]
-
-* Use the generated app scripts for the first run.
-* Open `prisma-next.md` or the installed Prisma Next skills when you want agent-ready guidance inside the project.
-* Change the starter contract when you are ready to model your own data.
-* Open the [Prisma Next overview](/orm/next) when you want the concepts behind the setup.
-
-# Introduction to Prisma Next (/docs/next)
-
-Location: Introduction to Prisma Next
-
-Prisma Next is a ground-up rebuild of Prisma ORM, covering the runtime, query APIs, migration flow, and project setup.
+The CLI confirms with `Seeded 3 users.` The seed script writes through the Prisma Next ORM client; see [Writing data](/orm/next/fundamentals/writing-data) for the API it uses.
 
 > [!NOTE]
-> Prisma Next is in Early Access
+> Namespaced ORM access
 > 
-> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
+> `db.orm` is keyed by namespace first: reach models as `db.orm.public.User`, not `db.orm.User`. If the scaffolded `seed.ts` uses the shorter form, it fails with `TypeError: Cannot read properties of undefined (reading 'where')`. Add the namespace to fix it.
+
+Open Prisma Studio [#open-prisma-studio]
+
+A Prisma Next project has no `schema.prisma`, so pass the [connection string](/postgres/database/connecting-to-your-database) with `--url`. Load it from `.env` first:
+
+```bash
+set -a && . ./.env && set +a
+npx prisma@dev studio --url "$DATABASE_URL"
+```
+
+Studio opens at `http://localhost:5555`. Once the database has at least one applied migration, a **Migrations** item appears in the left navigation.
+
+> [!NOTE]
+> History lives in your database
 > 
-> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
+> Studio reads migration history from the connected database, not from your local `migrations/` directory. Migrations applied from CI or another machine appear automatically.
 
-Use Prisma Next when you want to try the new developer experience before it becomes the default Prisma ORM path.
+Inspect migration history [#inspect-migration-history]
 
-  
+Open **Migrations**. The timeline lists every applied migration, newest first, with its name, apply time, operation count, and chips summarizing the change: `+1 model`, `~2 models`, `+3 fields`, `+1 enum`, `−1 field`. A ⚠️ marker flags migrations that contain a destructive change, so a dropped column is visible before you select anything. If a destructive migration needs undoing, see [Rollbacks and recovery](/orm/next/migrations/rollbacks-and-recovery).
 
-#### bun
+<img alt="The Prisma Studio Migrations view showing a timeline of six applied migrations and a visual diff canvas of the selected migration." src="/img/studio/prisma-next-migrations/studio-migrations-timeline.png" width="2880" height="1800" />
 
-```bash
-bunx create-prisma@next
+The selected migration is part of the URL, so you can link a teammate straight to it:
+
+```
+http://localhost:5555/#view=migrations&migration=3
 ```
 
-#### pnpm
+Review schema changes [#review-schema-changes]
 
-```bash
-pnpm dlx create-prisma@next
-```
+Select a migration to see the schema as that migration changed it:
 
-#### yarn
+* **NEW** (green): a model the migration added.
+* **UPDATED** (amber): a model whose table changed, with `+`, `−`, and `~` glyphs on the affected fields and `before → after` pills for changed types, nullability, or defaults.
+* **UNCHANGED** (dimmed): neighboring models drawn for context.
+* Enum cards, and [relation](/orm/next/fundamentals/relations-and-joins) edges between visible models.
 
-```bash
-yarn dlx create-prisma@next
-```
+Amber always means the migration changed that model's table. A model that only gained a back-relation, where the foreign key lives on the other table, stays dimmed, and the new relation edge is emphasized instead.
 
-#### npm
+<img alt="The diff canvas for a migration that added a Category model and a relation, showing Category as NEW, Post as UPDATED, and User dimmed as UNCHANGED." src="/img/studio/prisma-next-migrations/studio-migrations-add-model-relation.png" width="2880" height="1800" />
 
-```bash
-npx create-prisma@next
-```
+By default the view shows only the models the migration touched plus their direct neighbors. Toggle **All models** to see the entire schema as it stood at that point in history, including unchanged enums.
 
-Start with the setup page when you want a guided first run.
+<img alt="The Migrations view with the All models toggle enabled, showing every model and enum in the schema at that migration." src="/img/studio/prisma-next-migrations/studio-migrations-all-models.png" width="2880" height="1800" />
 
-- [Choose a setup path](/next/getting-started): Pick a new-project quickstart or add Prisma Next to an existing app.
+Review executed SQL [#review-executed-sql]
 
-What you can try [#what-you-can-try]
+Open the **SQL** panel to see the operations exactly as they ran, each labelled `additive` or `destructive`. This is the same SQL the migration runner executed; [How migrations work](/orm/next/migrations/how-migrations-work) explains how those operations are planned and checked.
 
-- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create a Prisma Next app, initialize the database, seed data, and run the first query.
+<img alt="The SQL panel showing the ALTER TABLE statements and check constraint executed by a migration, each labelled with its operation class." src="/img/studio/prisma-next-migrations/studio-migrations-sql-panel.png" width="2880" height="1800" />
 
-- [Quickstart with MongoDB](/next/quickstart/mongodb): Create a Prisma Next app with a local MongoDB replica set or your own MongoDB deployment.
+Compare schema versions [#compare-schema-versions]
 
-- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app with `prisma-next init`.
+Open the **Schema** panel to see a Prisma-schema diff between the migration's before and after state. Long unchanged runs collapse into folds you can click to expand.
 
-- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
+<img alt="The Schema panel showing a color-coded diff of the Prisma schema before and after a migration, with collapsed unchanged sections." src="/img/studio/prisma-next-migrations/studio-migrations-schema-diff.png" width="2880" height="1800" />
 
-- [Use Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app backed by Prisma Postgres.
+The diff is a projection built for stable comparison, not a copy of your source file. It uses a fixed field order and renders some attributes in expanded form, such as `@default(dbgenerated("autoincrement()"))`.
 
-Learn the fundamentals [#learn-the-fundamentals]
+Browse the resulting data [#browse-the-resulting-data]
 
-Once you are connected, the Fundamentals section teaches the everyday query patterns.
+Your tables are in the same Studio session under **Tables**. Move between what a migration changed and the rows it produced without leaving the app. [Getting Started](/studio/getting-started) covers editing, filtering, and exporting.
 
-- [Reading data](/orm/next/fundamentals/reading-data): Filter with where, project with select, sort, and paginate.
+<img alt="The Prisma Studio table view showing rows in the post table, including the published column added by a migration." src="/img/studio/prisma-next-migrations/studio-post-table-data.png" width="2880" height="1800" />
 
-- [Writing data](/orm/next/fundamentals/writing-data): Create, update, delete, upsert, and the bulk write variants.
+How migration history works [#how-migration-history-works]
 
-- [Relations and joins](/orm/next/fundamentals/relations-and-joins): Read related records with include on PostgreSQL and MongoDB.
+Prisma Next records every apply in two tables in your database:
 
-- [Transactions](/orm/next/fundamentals/transactions): Make several writes succeed or fail together.
+* `prisma_contract.ledger`: one row per applied migration, with its name, apply time, executed operations, and the schema versions it moved between.
+* `prisma_contract.contract`: each schema version, stored once and keyed by hash.
 
-- [Advanced queries](/orm/next/fundamentals/advanced-queries): The SQL builder and the MongoDB pipeline builder for shapes the ORM can't express.
+Studio joins the two to build the timeline and the diffs. Nothing is read from disk and nothing is reconstructed, which is why the history of any database you connect to is complete, including migrations you never ran yourself. These table names are also where to look if you inspect the history over SQL.
 
-Learn the concepts [#learn-the-concepts]
+The hashes are the same ones that make Prisma Next migrations [a graph rather than a numbered list](/orm/next/migrations/the-migration-graph); the design story is in [Rethinking Database Migrations](https://www.prisma.io/blog/rethinking-database-migrations).
 
-- [Prisma Next overview](/orm/next): Learn the core ideas behind contracts, emitted artifacts, runtime clients, query styles, and migrations.
+Availability [#availability]
+
+| Surface                                                                                                                | Available                                                        |
+| ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Local Studio (`npx prisma@dev studio`)                                                                                 | Yes, with `@prisma/studio-core` 0.32.0 or later                  |
+| [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=studio) (embedded Studio) | Yes, for databases with an applied Prisma Next migration history |
+| Prisma ORM projects using `prisma migrate`                                                                             | No                                                               |
+
+In Prisma Console, open your database's Studio tab and select **Migrations**. The view is the same as local Studio, the selected migration is part of the Console URL, and no local setup is required.
+
+The stable Prisma CLI (`prisma@latest`) currently bundles an older Studio without the Migrations view. Use `npx prisma@dev studio` until it lands in a stable release.
+
+Limitations [#limitations]
+
+* **Prisma Next on PostgreSQL only.** Prisma ORM projects using `prisma migrate` record history in a different format, and [Studio does not support MongoDB](/studio), where Prisma Next [stores its history differently](/orm/next/migrations/the-migration-graph#database-specific-details).
+* **Applied migrations only.** A planned but unapplied migration is not in the database, so it does not appear.
+* **An empty history hides the view.** The **Migrations** item appears only after the first applied migration.
+* **Older databases lose the diffs.** If the database was migrated by a Prisma Next version that predates schema snapshots, the timeline and SQL panel still work, and the diff canvas asks you to update Prisma Next. Migrations applied after the update render normally.
 
 ## Related pages
 
-- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
-- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
-- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
+- [`Getting Started`](https://www.prisma.io/docs/studio/getting-started): Learn how to set up and use Prisma Studio to manage your database
 
 # Deploy your first app (/docs/prisma-compute/deploy)
 
@@ -10492,6 +10523,198 @@ What's next [#whats-next]
 * [Deployments](/compute/deployments): promote, roll back, and inspect what you ship.
 * [GitHub integration](/compute/github): the full picture on deploy-on-push, monorepos, and cleanup.
 * [Read the full CLI getting-started guide](/compute/getting-started) for frameworks, project linking, and CI.
+
+# Choose a setup path (/docs/next/getting-started)
+
+Location: Next > Choose a setup path
+
+Start with a quickstart if you want Prisma Next to create the app. Use the existing-project path if you already have an app and database.
+
+Start a new project [#start-a-new-project]
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next
+```
+
+#### npm
+
+```bash
+npx create-prisma@next
+```
+
+- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create the app, choose PostgreSQL, initialize the database, seed data, and run the first query.
+
+- [Quickstart with MongoDB](/next/quickstart/mongodb): Create the app, choose MongoDB, start or connect to MongoDB, seed data, and run the first query.
+
+Use Prisma Postgres [#use-prisma-postgres]
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next
+```
+
+#### npm
+
+```bash
+npx create-prisma@next
+```
+
+- [Quickstart with Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app and let setup provision Prisma Postgres for the first run.
+
+- [From the CLI](/next/prisma-postgres/from-the-cli): Start from the command line when you want the Prisma Postgres path without browsing Console first.
+
+Add to an existing project [#add-to-an-existing-project]
+
+  
+
+#### bun
+
+```bash
+bunx prisma-next init
+```
+
+#### pnpm
+
+```bash
+pnpm dlx prisma-next init
+```
+
+#### yarn
+
+```bash
+yarn dlx prisma-next init
+```
+
+#### npm
+
+```bash
+npx prisma-next init
+```
+
+- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app and infer a starter contract from the live schema.
+
+- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
+
+After setup [#after-setup]
+
+* Use the generated app scripts for the first run.
+* Open `prisma-next.md` or the installed Prisma Next skills when you want agent-ready guidance inside the project.
+* Change the starter contract when you are ready to model your own data.
+* Open the [Prisma Next overview](/orm/next) when you want the concepts behind the setup.
+
+# Introduction to Prisma Next (/docs/next)
+
+Location: Introduction to Prisma Next
+
+Prisma Next is a ground-up rebuild of Prisma ORM, covering the runtime, query APIs, migration flow, and project setup.
+
+> [!NOTE]
+> Prisma Next is in Early Access
+> 
+> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
+> 
+> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
+
+Use Prisma Next when you want to try the new developer experience before it becomes the default Prisma ORM path.
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next
+```
+
+#### npm
+
+```bash
+npx create-prisma@next
+```
+
+Start with the setup page when you want a guided first run.
+
+- [Choose a setup path](/next/getting-started): Pick a new-project quickstart or add Prisma Next to an existing app.
+
+What you can try [#what-you-can-try]
+
+- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create a Prisma Next app, initialize the database, seed data, and run the first query.
+
+- [Quickstart with MongoDB](/next/quickstart/mongodb): Create a Prisma Next app with a local MongoDB replica set or your own MongoDB deployment.
+
+- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app with `prisma-next init`.
+
+- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
+
+- [Use Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app backed by Prisma Postgres.
+
+Learn the fundamentals [#learn-the-fundamentals]
+
+Once you are connected, the Fundamentals section teaches the everyday query patterns.
+
+- [Reading data](/orm/next/fundamentals/reading-data): Filter with where, project with select, sort, and paginate.
+
+- [Writing data](/orm/next/fundamentals/writing-data): Create, update, delete, upsert, and the bulk write variants.
+
+- [Relations and joins](/orm/next/fundamentals/relations-and-joins): Read related records with include on PostgreSQL and MongoDB.
+
+- [Transactions](/orm/next/fundamentals/transactions): Make several writes succeed or fail together.
+
+- [Advanced queries](/orm/next/fundamentals/advanced-queries): The SQL builder and the MongoDB pipeline builder for shapes the ORM can't express.
+
+Learn the concepts [#learn-the-concepts]
+
+- [Prisma Next overview](/orm/next): Learn the core ideas behind contracts, emitted artifacts, runtime clients, query styles, and migrations.
+
+## Related pages
+
+- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
+- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
+- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
 
 # From the CLI (/docs/prisma-postgres/from-the-cli)
 
@@ -43245,6 +43468,8 @@ npx prisma studio
 
 This should start a live server in `http://localhost:5555` where you can visit and interact with your database.
 
+If your database is managed with [Prisma Next](/orm/next), Studio also shows a **Migrations** view alongside your tables, with a visual diff of what each applied migration changed. See [Studio with Prisma Next](/studio/prisma-next).
+
 Connecting to Prisma Postgres instance with 3rd party database editors [#connecting-to-prisma-postgres-instance-with-3rd-party-database-editors]
 
 You can connect to your Prisma Postgres instance using third party database editors like pgAdmin, TablePlus, Postico etc using [`@prisma/ppg-tunnel` package](https://www.npmjs.com/package/@prisma/ppg-tunnel). See the example below to connect using TablePlus.
@@ -49819,6 +50044,8 @@ Next steps [#next-steps]
 - [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create a Prisma Next app, initialize the database, seed data, and run your first query.
 
 - [The data contract](/orm/next/contract-authoring/the-data-contract): Learn how your schema becomes a verifiable contract, authored in PSL or TypeScript.
+
+- [See your migrations in Studio](/studio/prisma-next): Read your applied migration history in Prisma Studio: a visual diff, the executed SQL, and a schema diff per migration.
 
 ## Related pages
 
@@ -67233,6 +67460,386 @@ Use [db update](/cli/next/db-update) for a direct development update, or [migrat
 
 - [`MongoDB`](https://www.prisma.io/docs/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB project.
 
+# MongoDB (/docs/next/quickstart/mongodb)
+
+Location: Next > Quickstart > MongoDB
+
+Create a Prisma Next app with MongoDB, seed it, and run your first query.
+
+> [!NOTE]
+> Prisma Next is in Early Access
+> 
+> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
+> 
+> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
+
+Quick start [#quick-start]
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next --provider mongodb
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next --provider mongodb
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next --provider mongodb
+```
+
+#### npm
+
+```bash
+npx create-prisma@next --provider mongodb
+```
+
+Run this from a Node.js 24 or newer environment. The command preselects MongoDB. The generated local setup gives you a MongoDB replica set through `db:up`; if you use MongoDB Atlas or another existing deployment, set `DATABASE_URL` and skip `db:up`.
+
+Setup gives you the app template, a starter contract, `prisma-next.md`, project-level Prisma Next skills for your coding agent, and package scripts for the database steps below.
+
+For local development, use a replica set. MongoDB Atlas already provides one, and the generated `db:up` script starts one for you.
+
+1. Check the database connection [#1-check-the-database-connection]
+
+Open `.env` and confirm that `DATABASE_URL` points to the MongoDB deployment you want Prisma Next to use.
+
+```text title=".env"
+DATABASE_URL="mongodb://127.0.0.1:27017/app?replicaSet=rs0"
+```
+
+If you use MongoDB Atlas, replace this with the connection string from your Atlas cluster.
+
+2. Start MongoDB [#2-start-mongodb]
+
+From the generated project directory, run `db:up` to start the local replica set.
+
+  
+
+#### bun
+
+```bash
+bun run db:up
+```
+
+#### pnpm
+
+```bash
+pnpm run db:up
+```
+
+#### yarn
+
+```bash
+yarn db:up
+```
+
+#### npm
+
+```bash
+npm run db:up
+```
+
+Skip this command when you use MongoDB Atlas or another existing deployment.
+
+3. Create the migration plan [#3-create-the-migration-plan]
+
+Create the first migration plan from the starter contract.
+
+  
+
+#### bun
+
+```bash
+bun run migration:plan --name init
+```
+
+#### pnpm
+
+```bash
+pnpm run migration:plan --name init
+```
+
+#### yarn
+
+```bash
+yarn migration:plan --name init
+```
+
+#### npm
+
+```bash
+npm run migration:plan -- --name init
+```
+
+4. Apply the migration [#4-apply-the-migration]
+
+Apply the planned migration to MongoDB.
+
+  
+
+#### bun
+
+```bash
+bun run migrate
+```
+
+#### pnpm
+
+```bash
+pnpm run migrate
+```
+
+#### yarn
+
+```bash
+yarn migrate
+```
+
+#### npm
+
+```bash
+npm run migrate
+```
+
+5. Seed data [#5-seed-data]
+
+`db:seed` inserts sample users so the first query has data to show.
+
+  
+
+#### bun
+
+```bash
+bun run db:seed
+```
+
+#### pnpm
+
+```bash
+pnpm run db:seed
+```
+
+#### yarn
+
+```bash
+yarn db:seed
+```
+
+#### npm
+
+```bash
+npm run db:seed
+```
+
+6. Run the app [#6-run-the-app]
+
+Start the app and confirm the sample query runs successfully.
+
+  
+
+#### bun
+
+```bash
+bun run dev
+```
+
+#### pnpm
+
+```bash
+pnpm run dev
+```
+
+#### yarn
+
+```bash
+yarn dev
+```
+
+#### npm
+
+```bash
+npm run dev
+```
+
+Use the URL or terminal output shown by your template. You should see the seeded users returned from MongoDB.
+
+Next steps [#next-steps]
+
+* Open `src/prisma/contract.prisma` or `src/prisma/contract.ts` and change the starter model.
+* Use the [MongoDB existing-project guide](/next/add-to-existing-project/mongodb) if you already have an app and database.
+* Read the [Prisma Next overview](/orm/next) when you want the concepts behind contracts, query APIs, and migrations.
+
+## Related pages
+
+- [`PostgreSQL`](https://www.prisma.io/docs/next/quickstart/postgresql): Create a new Prisma Next project with PostgreSQL using create-prisma@next.
+
+# PostgreSQL (/docs/next/quickstart/postgresql)
+
+Location: Next > Quickstart > PostgreSQL
+
+Create a Prisma Next app with PostgreSQL, seed it, and run your first query.
+
+> [!NOTE]
+> Prisma Next is in Early Access
+> 
+> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
+> 
+> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
+
+Quick start [#quick-start]
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next --provider postgres
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next --provider postgres
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next --provider postgres
+```
+
+#### npm
+
+```bash
+npx create-prisma@next --provider postgres
+```
+
+Run this from a Node.js 24 or newer environment. The command preselects PostgreSQL, so you can focus on the template and database URL prompts. Pick Prisma Postgres if you want setup to create the database for you, or paste your own `DATABASE_URL`.
+
+Setup gives you the app template, a starter contract, `prisma-next.md`, project-level Prisma Next skills for your coding agent, and package scripts for the database steps below.
+
+If you use your own database, keep the connection string ready before you start.
+
+1. Check the database connection [#1-check-the-database-connection]
+
+Open `.env` and confirm that `DATABASE_URL` points to the PostgreSQL database you want Prisma Next to use.
+
+```text title=".env"
+DATABASE_URL="postgresql://username:password@host:5432/database?sslmode=require"
+```
+
+If you chose Prisma Postgres during setup, this value is already written for you. If you pasted your own connection string, keep it in `.env` and do not hardcode it in application code.
+
+2. Initialize the database [#2-initialize-the-database]
+
+From the generated project directory, run `db:init` to apply the starter schema to PostgreSQL and sign the database.
+
+  
+
+#### bun
+
+```bash
+bun run db:init
+```
+
+#### pnpm
+
+```bash
+pnpm run db:init
+```
+
+#### yarn
+
+```bash
+yarn db:init
+```
+
+#### npm
+
+```bash
+npm run db:init
+```
+
+3. Seed data [#3-seed-data]
+
+`db:seed` inserts sample users so the first query has data to show.
+
+  
+
+#### bun
+
+```bash
+bun run db:seed
+```
+
+#### pnpm
+
+```bash
+pnpm run db:seed
+```
+
+#### yarn
+
+```bash
+yarn db:seed
+```
+
+#### npm
+
+```bash
+npm run db:seed
+```
+
+4. Run the app [#4-run-the-app]
+
+Start the app and confirm the sample query runs successfully.
+
+  
+
+#### bun
+
+```bash
+bun run dev
+```
+
+#### pnpm
+
+```bash
+pnpm run dev
+```
+
+#### yarn
+
+```bash
+yarn dev
+```
+
+#### npm
+
+```bash
+npm run dev
+```
+
+Use the URL or terminal output shown by your template. You should see the seeded users returned from PostgreSQL.
+
+Next steps [#next-steps]
+
+* Open `src/prisma/contract.prisma` or `src/prisma/contract.ts` and change the starter model.
+* Use the [PostgreSQL existing-project guide](/next/add-to-existing-project/postgresql) if you already have an app and database.
+* Read the [Prisma Next overview](/orm/next) when you want the concepts behind contracts, query APIs, and migrations.
+
+## Related pages
+
+- [`MongoDB`](https://www.prisma.io/docs/next/quickstart/mongodb): Create a new Prisma Next project with MongoDB using create-prisma@next.
+
 # From the CLI (/docs/next/prisma-postgres/from-the-cli)
 
 Location: Next > Prisma Postgres > From the CLI
@@ -67632,386 +68239,6 @@ Next steps [#next-steps]
 
 - [`From the CLI`](https://www.prisma.io/docs/next/prisma-postgres/from-the-cli): Start a Prisma Next app with Prisma Postgres from the command line.
 - [`Import from MySQL`](https://www.prisma.io/docs/next/prisma-postgres/import-from-existing-database-mysql): Import an existing MySQL database into Prisma Postgres, then use it with Prisma Next.
-
-# MongoDB (/docs/next/quickstart/mongodb)
-
-Location: Next > Quickstart > MongoDB
-
-Create a Prisma Next app with MongoDB, seed it, and run your first query.
-
-> [!NOTE]
-> Prisma Next is in Early Access
-> 
-> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
-> 
-> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
-
-Quick start [#quick-start]
-
-  
-
-#### bun
-
-```bash
-bunx create-prisma@next --provider mongodb
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@next --provider mongodb
-```
-
-#### yarn
-
-```bash
-yarn dlx create-prisma@next --provider mongodb
-```
-
-#### npm
-
-```bash
-npx create-prisma@next --provider mongodb
-```
-
-Run this from a Node.js 24 or newer environment. The command preselects MongoDB. The generated local setup gives you a MongoDB replica set through `db:up`; if you use MongoDB Atlas or another existing deployment, set `DATABASE_URL` and skip `db:up`.
-
-Setup gives you the app template, a starter contract, `prisma-next.md`, project-level Prisma Next skills for your coding agent, and package scripts for the database steps below.
-
-For local development, use a replica set. MongoDB Atlas already provides one, and the generated `db:up` script starts one for you.
-
-1. Check the database connection [#1-check-the-database-connection]
-
-Open `.env` and confirm that `DATABASE_URL` points to the MongoDB deployment you want Prisma Next to use.
-
-```text title=".env"
-DATABASE_URL="mongodb://127.0.0.1:27017/app?replicaSet=rs0"
-```
-
-If you use MongoDB Atlas, replace this with the connection string from your Atlas cluster.
-
-2. Start MongoDB [#2-start-mongodb]
-
-From the generated project directory, run `db:up` to start the local replica set.
-
-  
-
-#### bun
-
-```bash
-bun run db:up
-```
-
-#### pnpm
-
-```bash
-pnpm run db:up
-```
-
-#### yarn
-
-```bash
-yarn db:up
-```
-
-#### npm
-
-```bash
-npm run db:up
-```
-
-Skip this command when you use MongoDB Atlas or another existing deployment.
-
-3. Create the migration plan [#3-create-the-migration-plan]
-
-Create the first migration plan from the starter contract.
-
-  
-
-#### bun
-
-```bash
-bun run migration:plan --name init
-```
-
-#### pnpm
-
-```bash
-pnpm run migration:plan --name init
-```
-
-#### yarn
-
-```bash
-yarn migration:plan --name init
-```
-
-#### npm
-
-```bash
-npm run migration:plan -- --name init
-```
-
-4. Apply the migration [#4-apply-the-migration]
-
-Apply the planned migration to MongoDB.
-
-  
-
-#### bun
-
-```bash
-bun run migrate
-```
-
-#### pnpm
-
-```bash
-pnpm run migrate
-```
-
-#### yarn
-
-```bash
-yarn migrate
-```
-
-#### npm
-
-```bash
-npm run migrate
-```
-
-5. Seed data [#5-seed-data]
-
-`db:seed` inserts sample users so the first query has data to show.
-
-  
-
-#### bun
-
-```bash
-bun run db:seed
-```
-
-#### pnpm
-
-```bash
-pnpm run db:seed
-```
-
-#### yarn
-
-```bash
-yarn db:seed
-```
-
-#### npm
-
-```bash
-npm run db:seed
-```
-
-6. Run the app [#6-run-the-app]
-
-Start the app and confirm the sample query runs successfully.
-
-  
-
-#### bun
-
-```bash
-bun run dev
-```
-
-#### pnpm
-
-```bash
-pnpm run dev
-```
-
-#### yarn
-
-```bash
-yarn dev
-```
-
-#### npm
-
-```bash
-npm run dev
-```
-
-Use the URL or terminal output shown by your template. You should see the seeded users returned from MongoDB.
-
-Next steps [#next-steps]
-
-* Open `src/prisma/contract.prisma` or `src/prisma/contract.ts` and change the starter model.
-* Use the [MongoDB existing-project guide](/next/add-to-existing-project/mongodb) if you already have an app and database.
-* Read the [Prisma Next overview](/orm/next) when you want the concepts behind contracts, query APIs, and migrations.
-
-## Related pages
-
-- [`PostgreSQL`](https://www.prisma.io/docs/next/quickstart/postgresql): Create a new Prisma Next project with PostgreSQL using create-prisma@next.
-
-# PostgreSQL (/docs/next/quickstart/postgresql)
-
-Location: Next > Quickstart > PostgreSQL
-
-Create a Prisma Next app with PostgreSQL, seed it, and run your first query.
-
-> [!NOTE]
-> Prisma Next is in Early Access
-> 
-> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
-> 
-> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
-
-Quick start [#quick-start]
-
-  
-
-#### bun
-
-```bash
-bunx create-prisma@next --provider postgres
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@next --provider postgres
-```
-
-#### yarn
-
-```bash
-yarn dlx create-prisma@next --provider postgres
-```
-
-#### npm
-
-```bash
-npx create-prisma@next --provider postgres
-```
-
-Run this from a Node.js 24 or newer environment. The command preselects PostgreSQL, so you can focus on the template and database URL prompts. Pick Prisma Postgres if you want setup to create the database for you, or paste your own `DATABASE_URL`.
-
-Setup gives you the app template, a starter contract, `prisma-next.md`, project-level Prisma Next skills for your coding agent, and package scripts for the database steps below.
-
-If you use your own database, keep the connection string ready before you start.
-
-1. Check the database connection [#1-check-the-database-connection]
-
-Open `.env` and confirm that `DATABASE_URL` points to the PostgreSQL database you want Prisma Next to use.
-
-```text title=".env"
-DATABASE_URL="postgresql://username:password@host:5432/database?sslmode=require"
-```
-
-If you chose Prisma Postgres during setup, this value is already written for you. If you pasted your own connection string, keep it in `.env` and do not hardcode it in application code.
-
-2. Initialize the database [#2-initialize-the-database]
-
-From the generated project directory, run `db:init` to apply the starter schema to PostgreSQL and sign the database.
-
-  
-
-#### bun
-
-```bash
-bun run db:init
-```
-
-#### pnpm
-
-```bash
-pnpm run db:init
-```
-
-#### yarn
-
-```bash
-yarn db:init
-```
-
-#### npm
-
-```bash
-npm run db:init
-```
-
-3. Seed data [#3-seed-data]
-
-`db:seed` inserts sample users so the first query has data to show.
-
-  
-
-#### bun
-
-```bash
-bun run db:seed
-```
-
-#### pnpm
-
-```bash
-pnpm run db:seed
-```
-
-#### yarn
-
-```bash
-yarn db:seed
-```
-
-#### npm
-
-```bash
-npm run db:seed
-```
-
-4. Run the app [#4-run-the-app]
-
-Start the app and confirm the sample query runs successfully.
-
-  
-
-#### bun
-
-```bash
-bun run dev
-```
-
-#### pnpm
-
-```bash
-pnpm run dev
-```
-
-#### yarn
-
-```bash
-yarn dev
-```
-
-#### npm
-
-```bash
-npm run dev
-```
-
-Use the URL or terminal output shown by your template. You should see the seeded users returned from PostgreSQL.
-
-Next steps [#next-steps]
-
-* Open `src/prisma/contract.prisma` or `src/prisma/contract.ts` and change the starter model.
-* Use the [PostgreSQL existing-project guide](/next/add-to-existing-project/postgresql) if you already have an app and database.
-* Read the [Prisma Next overview](/orm/next) when you want the concepts behind contracts, query APIs, and migrations.
-
-## Related pages
-
-- [`MongoDB`](https://www.prisma.io/docs/next/quickstart/mongodb): Create a new Prisma Next project with MongoDB using create-prisma@next.
 
 # CockroachDB (/docs/prisma-orm/add-to-existing-project/cockroachdb)
 
@@ -83891,32 +84118,6 @@ Creates a new connection for the specified database.
 - [`List connections`](https://www.prisma.io/docs/management-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
 - [`Rotate connection credentials`](https://www.prisma.io/docs/management-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
 
-# Get list of backups (/docs/management-api/endpoints/database-backups/get-databases-by-database-id-backups)
-
-Location: Management API > Endpoints > Database Backups > Get list of backups
-
-Returns backups for the specified database.
-
-## API reference
-
-### Get list of backups
-
-`GET /v1/databases/{databaseId}/backups`
-
-Returns backups for the specified database.
-
-#### Parameters
-
-- `databaseId` (path, string, required)
-- `limit` (query, integer, optional)
-
-#### Responses
-
-- `200`: Returned backups for the given database.
-- `401`: Missing or invalid authorization token.
-- `404`: Database with the given ID was not found.
-- `422`: Remote database backups are not supported
-
 # Get database usage metrics (/docs/management-api/endpoints/database-usage/get-databases-by-database-id-usage)
 
 Location: Management API > Endpoints > Database Usage > Get database usage metrics
@@ -83944,6 +84145,32 @@ Returns usage metrics for the specified database.
 - `401`: Missing or invalid authorization token.
 - `404`: Database with the given ID was not found.
 - `500`: Error occurred while fetching metrics
+
+# Get list of backups (/docs/management-api/endpoints/database-backups/get-databases-by-database-id-backups)
+
+Location: Management API > Endpoints > Database Backups > Get list of backups
+
+Returns backups for the specified database.
+
+## API reference
+
+### Get list of backups
+
+`GET /v1/databases/{databaseId}/backups`
+
+Returns backups for the specified database.
+
+#### Parameters
+
+- `databaseId` (path, string, required)
+- `limit` (query, integer, optional)
+
+#### Responses
+
+- `200`: Returned backups for the given database.
+- `401`: Missing or invalid authorization token.
+- `404`: Database with the given ID was not found.
+- `422`: Remote database backups are not supported
 
 # Delete database (/docs/management-api/endpoints/databases/delete-databases-by-database-id)
 
@@ -84461,6 +84688,78 @@ Returns integrations for the given workspace.
 - [`Get list of integrations`](https://www.prisma.io/docs/management-api/endpoints/integrations/get-integrations): Returns integrations filtered by workspace ID.
 - [`Revoke integration tokens`](https://www.prisma.io/docs/management-api/endpoints/integrations/delete-workspaces-by-workspace-id-integrations-by-client-id): Revokes the integration tokens with the given client ID.
 
+# Get current authenticated principal (/docs/management-api/endpoints/misc/get-me)
+
+Location: Management API > Endpoints > Misc > Get current authenticated principal
+
+Returns the user, workspace, and credential represented by the current token.
+
+## API reference
+
+### Get current authenticated principal
+
+`GET /v1/me`
+
+Returns the user, workspace, and credential represented by the current token.
+
+#### Responses
+
+- `200`: Current authenticated principal retrieved.
+- `401`: Missing or invalid authorization token.
+
+## Related pages
+
+- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
+- [`Get Prisma Postgres regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-postgres): Returns all available regions for Prisma Postgres.
+
+# Get Prisma Accelerate regions (/docs/management-api/endpoints/misc/get-regions-accelerate)
+
+Location: Management API > Endpoints > Misc > Get Prisma Accelerate regions
+
+Returns all available regions for Prisma Accelerate.
+
+## API reference
+
+### Get Prisma Accelerate regions
+
+`GET /v1/regions/accelerate`
+
+Returns all available regions for Prisma Accelerate.
+
+#### Responses
+
+- `200`: Returns all available regions for Prisma Accelerate.
+- `401`: Missing or invalid authorization token.
+
+## Related pages
+
+- [`Get current authenticated principal`](https://www.prisma.io/docs/management-api/endpoints/misc/get-me): Returns the user, workspace, and credential represented by the current token.
+- [`Get Prisma Postgres regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-postgres): Returns all available regions for Prisma Postgres.
+
+# Get Prisma Postgres regions (/docs/management-api/endpoints/misc/get-regions-postgres)
+
+Location: Management API > Endpoints > Misc > Get Prisma Postgres regions
+
+Returns all available regions for Prisma Postgres.
+
+## API reference
+
+### Get Prisma Postgres regions
+
+`GET /v1/regions/postgres`
+
+Returns all available regions for Prisma Postgres.
+
+#### Responses
+
+- `200`: Returns all available regions for Prisma Postgres.
+- `401`: Missing or invalid authorization token.
+
+## Related pages
+
+- [`Get current authenticated principal`](https://www.prisma.io/docs/management-api/endpoints/misc/get-me): Returns the user, workspace, and credential represented by the current token.
+- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
+
 # Delete project (/docs/management-api/endpoints/projects/delete-projects-by-id)
 
 Location: Management API > Endpoints > Projects > Delete project
@@ -84688,78 +84987,6 @@ Returns all available regions across products. Optionally filter by product.
 
 - `200`: Returns all available regions.
 - `401`: Missing or invalid authorization token.
-
-# Get current authenticated principal (/docs/management-api/endpoints/misc/get-me)
-
-Location: Management API > Endpoints > Misc > Get current authenticated principal
-
-Returns the user, workspace, and credential represented by the current token.
-
-## API reference
-
-### Get current authenticated principal
-
-`GET /v1/me`
-
-Returns the user, workspace, and credential represented by the current token.
-
-#### Responses
-
-- `200`: Current authenticated principal retrieved.
-- `401`: Missing or invalid authorization token.
-
-## Related pages
-
-- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
-- [`Get Prisma Postgres regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-postgres): Returns all available regions for Prisma Postgres.
-
-# Get Prisma Accelerate regions (/docs/management-api/endpoints/misc/get-regions-accelerate)
-
-Location: Management API > Endpoints > Misc > Get Prisma Accelerate regions
-
-Returns all available regions for Prisma Accelerate.
-
-## API reference
-
-### Get Prisma Accelerate regions
-
-`GET /v1/regions/accelerate`
-
-Returns all available regions for Prisma Accelerate.
-
-#### Responses
-
-- `200`: Returns all available regions for Prisma Accelerate.
-- `401`: Missing or invalid authorization token.
-
-## Related pages
-
-- [`Get current authenticated principal`](https://www.prisma.io/docs/management-api/endpoints/misc/get-me): Returns the user, workspace, and credential represented by the current token.
-- [`Get Prisma Postgres regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-postgres): Returns all available regions for Prisma Postgres.
-
-# Get Prisma Postgres regions (/docs/management-api/endpoints/misc/get-regions-postgres)
-
-Location: Management API > Endpoints > Misc > Get Prisma Postgres regions
-
-Returns all available regions for Prisma Postgres.
-
-## API reference
-
-### Get Prisma Postgres regions
-
-`GET /v1/regions/postgres`
-
-Returns all available regions for Prisma Postgres.
-
-#### Responses
-
-- `200`: Returns all available regions for Prisma Postgres.
-- `401`: Missing or invalid authorization token.
-
-## Related pages
-
-- [`Get current authenticated principal`](https://www.prisma.io/docs/management-api/endpoints/misc/get-me): Returns the user, workspace, and credential represented by the current token.
-- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/management-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
 
 # Get workspace (/docs/management-api/endpoints/workspaces/get-workspaces-by-id)
 
@@ -94312,6 +94539,7 @@ See also [#see-also]
 * [Rollbacks and recovery](/orm/next/migrations/rollbacks-and-recovery): when you need to go back instead of forward
 * [The migration graph](/orm/next/migrations/the-migration-graph): markers, refs, and pathfinding
 * [Generating a migration](/orm/next/migrations/generating-a-migration): producing what `migrate` runs
+* [Studio with Prisma Next](/studio/prisma-next): read the ledger you just wrote as a visual timeline, with the executed SQL and a schema diff per migration
 
 ## Related pages
 
@@ -94777,6 +95005,7 @@ See also [#see-also]
 
 * [Editing a migration](/orm/next/migrations/editing-a-migration): fill placeholders, add data steps, write raw SQL
 * [Applying a migration](/orm/next/migrations/applying-a-migration): run what you planned
+* [Studio with Prisma Next](/studio/prisma-next): once applied, see the same operations as a visual diff in Prisma Studio
 * [TypeScript Migrations in Prisma Next](https://www.prisma.io/blog/typescript-migrations-in-prisma-next): the design story behind `migration.ts`
 
 ## Related pages
@@ -95015,6 +95244,7 @@ Projects scaffolded with `create-prisma@next` install [Prisma Next skills](/ai/t
 
 See also [#see-also]
 
+* [Studio with Prisma Next](/studio/prisma-next): read your applied migration history in Prisma Studio: a visual diff, the executed SQL, and a schema diff per migration
 * [The migration graph](/orm/next/migrations/the-migration-graph): why migrations form a graph and what that buys you
 * [Generating a migration](/orm/next/migrations/generating-a-migration) and [Applying a migration](/orm/next/migrations/applying-a-migration): the hands-on loop
 * [Editing a migration](/orm/next/migrations/editing-a-migration): backfills, raw SQL, and the recompile step
@@ -95352,6 +95582,7 @@ See also [#see-also]
 
 * [How migrations work](/orm/next/migrations/how-migrations-work): the plan-review-apply loop
 * [Applying a migration](/orm/next/migrations/applying-a-migration): how the runner walks the graph
+* [Studio with Prisma Next](/studio/prisma-next): browse the same ledger visually in Prisma Studio, one contract edge per migration
 * [Rollbacks and recovery](/orm/next/migrations/rollbacks-and-recovery): backwards edges in practice
 
 ## Related pages
@@ -145345,6 +145576,375 @@ Using Windsurf with Prisma can speed up development while ensuring clean and mai
 - [`GitHub Copilot`](https://www.prisma.io/docs/orm/v6/more/ai-tools/github-copilot): Learn about the features available with GitHub Copilot and Prisma ORM, plus best practices and tips.
 - [`Tabnine`](https://www.prisma.io/docs/orm/v6/more/ai-tools/tabnine): Learn tips and best practices for using Prisma ORM with the Tabnine AI code editor.
 
+# Editor setup (/docs/orm/v6/more/dev-environment/editor-setup)
+
+Location: ORM > v6 > More > Dev environment > Editor setup
+
+This page describes how you can configure your editor for an optimal developer experience when using Prisma ORM.
+
+If you don't see your editor here, please [open a feature request](https://github.com/prisma/prisma/issues/new?assignees=\&labels=\&template=feature_request.md\&title=")" and ask for dedicated support for your editor (e.g. for syntax highlighting and auto-formatting).
+
+VS Code extension [#vs-code-extension]
+
+You can install the official [Prisma VS Code extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma). It adds extra capabilities to VS Code when developing applications with Prisma ORM:
+
+* Syntax highlighting of `schema.prisma`
+* Linting
+  * Diagnostic tools are used to surface errors and warnings in your schema file as you type.
+* Code Completion
+  * Completion results appear for symbols as you type.
+  * You can trigger this manually with the `Ctrl+Space` shortcut.
+* Documentation help
+  * Documentation of a completion result pops up as completion results are provided.
+* Quick info on hover
+  * Documentation Comments (`///`) of models and enums appear anywhere you hover over their usages.
+* Go to Definition
+  * Jump to or peek a model or enum's declaration.
+* Formatting
+  * Format code either manually or on save (if configured).
+    * To automatically format on save, add the following to your `settings.json` file:
+      ```json
+      "editor.formatOnSave": true
+      ```
+    * To enable formatting in combination with `prettier`, add the following to your `settings.json` file:or use the [Prettier plugin for Prisma](https://github.com/umidbekk/prettier-plugin-prisma)
+      ```json
+      "[prisma]": {
+        "editor.defaultFormatter": "Prisma.prisma"
+      },
+      ```
+* Rename
+  * Rename models, enums, fields and enum values
+    * Click into the model or enum, press `F2` and then type the new desired name and press `Enter`
+    * All usages will be renamed
+    * Automatically applies `@map` or `@@map` on the schema
+* Quick-fixes
+  * Quickly fix typos in model and enum names
+  * Create new models and enums with a single click
+
+> [!NOTE]
+> If you're using VS Code, you can use [VS Code agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode) to enter prompts such as “create Postgres database” or “apply schema migration” directly in the chat. The VS code agent handles all underlying Prisma CLI invocations and API calls automatically. See our [VS Code Agent documentation](/guides/postgres/vscode#agent-mode) for more details.
+
+Community projects [#community-projects]
+
+> **Note**: Community projects are not maintained or officially supported by Prisma and some features may by out of sync. Use at your own discretion.
+
+Emacs [#emacs]
+
+* [emacs-prisma-mode](https://github.com/pimeys/emacs-prisma-mode) provides syntax highlighting of the Prisma Schema Language and uses the Prisma Language Server.
+
+Vim [#vim]
+
+* [vim-prisma](https://github.com/prisma/vim-prisma) provides file detection and syntax highlighting of the Prisma Schema Language.
+
+neovim [#neovim]
+
+* [coc-prisma](https://github.com/pantharshit00/coc-prisma) implements the Prisma Language Server.
+
+JetBrains IDE [#jetbrains-ide]
+
+* [Prisma ORM](https://plugins.jetbrains.com/plugin/20686-prisma-orm) Provided by JetBrains. This plugin provides PSL grammar, syntax highlighting, LSP, and more.
+
+Sublime Text [#sublime-text]
+
+* [Prisma](https://packagecontrol.io/packages/Prisma) - For Sublime Text 3 & 4 - Provides syntax highlighting for the Prisma Schema Language. ([Source Code](https://github.com/Sublime-Instincts/PrismaHighlight/))
+* [LSP-prisma](https://packagecontrol.io/packages/LSP-prisma) - For Sublime Text 4 - Language Server helper package for Prisma schema files that uses Prisma's Language Server to provide linting, error checking, formatting, autocompletion, renaming etc. Note: It requires the Prisma package to be installed. ([Source Code](https://github.com/Sublime-Instincts/LSP-prisma))
+
+nova [#nova]
+
+* [nova](https://extensions.panic.com/extensions/robb-j/robb-j.Prisma/) provides syntax highlighting of the Prisma Schema Language and uses the Prisma Language Server.
+
+Helix [#helix]
+
+* [Helix](https://helix-editor.com/) (from version 22.08) provides syntax highlighting of the Prisma Schema Language and uses the Prisma Language Server.
+
+CLI autocomplete [#cli-autocomplete]
+
+inshellisense [#inshellisense]
+
+You can get IDE-style autocompletion for Prisma CLI using [`inshellisense`](https://github.com/microsoft/inshellisense/tree/main). It supports: bash, zsh, fish, pwsh, powershell (Windows Powershell).
+
+To install, run:
+
+  
+
+#### bun
+
+```bash
+bun add --global @microsoft/inshellisense
+```
+
+#### pnpm
+
+```bash
+pnpm add -g @microsoft/inshellisense
+```
+
+#### yarn
+
+```bash
+yarn global add @microsoft/inshellisense
+```
+
+#### npm
+
+```bash
+npm install -g @microsoft/inshellisense
+```
+
+## Related pages
+
+- [`Environment variables`](https://www.prisma.io/docs/orm/v6/more/dev-environment/environment-variables): Learn how to manage environment variables in your Prisma ORM project
+
+# Environment variables (/docs/orm/v6/more/dev-environment/environment-variables)
+
+Location: ORM > v6 > More > Dev environment > Environment variables
+
+An environment variable is a key value pair of string data that is stored on your machine's local environment. Refer to our [Environment variables reference documentation](/orm/v6/reference/environment-variables-reference) for specific details.
+
+Typically the name of the variable is uppercase, this is then followed by an equals sign then the value of the variable:
+
+```text
+MY_VALUE=prisma
+```
+
+The environment variable belongs to the environment where a process is running. Any program can read and create these environment variables. They are a cheap and effective way to store simple information.
+
+> [!NOTE]
+> With Prisma ORM v6.4.0, we released the `prisma.config.ts` file. This file allows you to manage your environment variables and settings in a more flexible way. [View our reference](/orm/v6/reference/prisma-config-reference) for more information.
+
+How Prisma ORM can use environment variables [#how-prisma-orm-can-use-environment-variables]
+
+Prisma ORM always reads environment variables from the system's environment.
+
+When you initialize Prisma ORM in your project with `prisma init`, it creates a convenience `.env` file for you to set your [`connection url`](/orm/v6/reference/connection-urls) as an environment variable. When you use Prisma CLI or Prisma Client, the `.env` file content and the variables defined in it are added to the [`process.env` object](https://nodejs.org/api/process.html#processenv), where Prisma ORM can read it and use it.
+
+Using an .env file [#using-an-env-file]
+
+> [!WARNING]
+> **Do not commit your `.env` files into version control**!
+
+The Prisma CLI looks for `.env` files, in order, in the following locations:
+
+1. In the root folder of your project (`./.env`)
+2. From the same folder as the schema specified by the `--schema` argument
+3. From the same folder as the schema taken from `"prisma": {"schema": "/path/to/schema.prisma"}` in `package.json`
+4. From the `./prisma` folder
+
+If a `.env` file is located in step 1., but additional, clashing `.env` variables are located in steps 2. - 4., the CLI will throw an error. For example, if you specify a `DATABASE_URL` variable in two different `.env` files, you will get the following error:
+
+```
+Error: There is a conflict between env vars in .env and prisma/.env
+Conflicting env vars:
+  DATABASE_URL
+
+We suggest to move the contents of prisma/.env to .env to consolidate your env vars.
+```
+
+The following table describes where the Prisma CLI looks for the `.env` file:
+
+| **Command**                                     | **schema location**                                                          | **`.env` file locations checked, in order**               |
+| :---------------------------------------------- | :--------------------------------------------------------------------------- | :-------------------------------------------------------- |
+| `prisma [command]`                              | `./prisma/schema.prisma`                                                     | `./.env`<br />`./prisma/.env`                             |
+| `prisma [command] --schema=./a/b/schema.prisma` | `./a/b/schema.prisma`                                                        | `./.env`<br />`./a/b/.env`<br />`./prisma/.env`           |
+| `prisma [command]`                              | `"prisma": {"schema": "/path/to/schema.prisma"}`                             | `.env`<br /> `./path/to/schema/.env`<br />`./prisma/.env` |
+| `prisma [command]`                              | No schema (for example, when running `prisma db pull` in an empty directory) | `./.env`<br />`./prisma/.env`                             |
+
+Any environment variables defined in that `.env` file will automatically be loaded when running a Prisma CLI command.
+
+> [!NOTE]
+> Looking to use more than one `.env` file? See [Using multiple `.env` files](#using-multiple-env-files) for information on how to setup and use multiple `.env` files in your application.
+
+Refer to the `dotenv` documentation for information about [what happens if an environment variable is defined in two places](https://www.npmjs.com/package/dotenv#what-happens-to-environment-variables-that-were-already-set).
+
+Expanding variables with .env files [#expanding-variables-with-env-files]
+
+Variables stored in `.env` files can be expanded using the format specified by [dotenv-expand](https://github.com/motdotla/dotenv-expand).
+
+```text title=".env"
+DATABASE_URL=postgresql://test:test@localhost:5432/test
+DATABASE_URL_WITH_SCHEMA=${DATABASE_URL}?schema=public
+```
+
+Additionally, you can use environment variables in the expansion that are set *outside* of the `.env` file. For example a database URL that is set on a PaaS like Heroku or similar:
+
+```bash
+# environment variable already set in the environment of the system
+export DATABASE_URL=postgresql://test:test@localhost:5432/test
+```
+
+```text title=".env"
+DATABASE_URL_WITH_SCHEMA=${DATABASE_URL}?schema=foo
+```
+
+This will make the environment variable `DATABASE_URL_WITH_SCHEMA` with value `postgresql://test:test@localhost:5432/test?schema=foo` available for Prisma ORM.
+
+Using environment variables in your code [#using-environment-variables-in-your-code]
+
+If you want environment variables to be evaluated at runtime, you need to load them manually in your application code (for example, by using [`dotenv`](https://github.com/motdotla/dotenv)):
+
+```ts
+import * as dotenv from "dotenv";
+
+dotenv.config(); // Load the environment variables
+console.log(`The connection URL is ${process.env.DATABASE_URL}`);
+```
+
+If you are using a custom file name for your environment variables, you can configure `dotenv` to use that filename:
+
+```ts
+import * as dotenv from "dotenv";
+
+var envFile = path.resolve(join(__dirname, "myenv.env"));
+dotenv.config({ path: envFile }); // Load the environment variables
+console.log(`The connection URL is ${process.env.DATABASE_URL}`);
+```
+
+If you need variable expansion across environment files, you can additionally use [`dotenv-expand`](https://github.com/motdotla/dotenv-expand):
+
+```ts
+import * as dotenv from "dotenv";
+const dotenvExpand = require("dotenv-expand");
+
+var envFile = path.resolve(join(__dirname, "myenv.env"));
+var mySqlEnv = dotenv.config({ path: envFile });
+dotenvExpand.expand(mySqlEnv);
+```
+
+If you are using multiple `.env` files, you can reference an environment file in your project's code depending on the environment you are running in.
+
+```ts
+import { config } from "dotenv";
+
+const envFile = process.env.NODE_ENV === "development" ? ".env.development" : ".env.production";
+config({ path: envFile });
+```
+
+Manually set environment variables [#manually-set-environment-variables]
+
+Because Prisma ORM reads from the system's environment when looking for environment variables, it's possible to skip using `.env` completely and create them manually on your local system.
+
+> [!NOTE]
+> The following examples will use setting the `DATABASE_URL` environment variable which is often used for the database connection URL.
+
+Manually set an environment variable on a Mac/Linux system [#manually-set-an-environment-variable-on-a-maclinux-system]
+
+From a terminal on a Unix machine (Mac/Linux), you export the variable as a key value pair.
+
+```bash
+export DATABASE_URL=postgresql://test:test@localhost:5432/test?schema=public
+```
+
+Then check that it has been successfully set using `printenv`:
+
+```bash
+printenv DATABASE_URL
+```
+
+```text no-copy
+postgresql://test:test@localhost:5432/test?schema=public
+```
+
+Manually set an environment variable on a Windows system [#manually-set-an-environment-variable-on-a-windows-system]
+
+The following examples illustrate how to set the environment variable (for the current user) using both Command Prompt (`cmd.exe`) and PowerShell, depending on your preference.
+
+  
+
+#### Command Prompt
+
+```bash
+set "DATABASE_URL=postgresql://test:test@localhost:5432/test?schema=public"
+```
+
+#### PowerShell
+
+```bash
+[Environment]::SetEnvironmentVariable("DATABASE_URL", "postgresql://test:test@localhost:5432/test?schema=public")
+```
+
+Then check that it has been successfully set:
+
+  
+
+#### Command Prompt
+
+```bash
+set DATABASE_URL
+```
+
+#### PowerShell
+
+```bash
+Get-ChildItem Env:DATABASE_URL
+```
+
+Using multiple .env files [#using-multiple-env-files]
+
+There is a risk that your production database could be deleted if you store different connection URLs to each of your environments within a single `.env` file.
+
+One solution is to have multiple `.env` files which each represent different environments. In practice, this means you create a file for each of your environments:
+
+* `.env.development`
+* `.env.sample`
+
+Then using a package like [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli), you can load the correct connection URL for the environment you are working in.
+
+> [!NOTE]
+> For our purposes, it is assumed you have a dedicated development database that you use while developing your application.
+
+1. Rename your `.env` file to `.env.development`
+
+```text title=".env.development"
+DATABASE_URL="postgresql://prisma:prisma@localhost:5433/dev"
+```
+
+2. Create a new `.env.sample` file and change the database name to `sample` (or your preferred name)
+
+```text title=".env.sample"
+DATABASE_URL="postgresql://prisma:prisma@localhost:5433/sample"
+```
+
+3. Install [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli)
+
+In order for Prisma ORM and Jest to know which `.env` file to use, alter your `package.json` scripts to include and call the `dotenv` package and specify which file to use depending on what commands you are running and in which environment you want them to run.
+
+> [!NOTE]
+> Any top-level script that is running the tests and migrations needs the `dotenv` command before it. This makes sure that the env variables from `.env.sample` are passed to all commands, including Jest.
+
+Running migrations on different environments [#running-migrations-on-different-environments]
+
+You can use the [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli) package to specify which environment file Prisma ORM should use when running a migration.
+
+The below script uses `dotenv-cli` to pass the `.env.sample` environment file (which holds a `DATABASE_URL` connection string) to the Prisma ORM migration script.
+
+Migration script [#migration-script]
+
+```json title="package.json"
+  "scripts": {
+    "migrate:postgres": "dotenv -e .env.sample -- npx prisma migrate deploy",
+  },
+```
+
+Running tests on different environments [#running-tests-on-different-environments]
+
+When running tests, we advise you to [mock Prisma Client](/orm/v6/prisma-client/testing/unit-testing#mocking-prisma-client). In doing so, you need to tell Jest which environment it should use when running its tests.
+
+By default, Prisma Client will use the environment specified in the default `.env` file located at the project's root.
+
+If you have created a separate `.env.sample` file to specify your testing database, then this environment will need to be passed to Jest.
+
+The below script uses `dotenv-cli` to pass the `.env.sample` environment file (which holds a `DATABASE_URL` connection string) to Jest.
+
+```json title="package.json"
+  "scripts": {
+    "test": "dotenv -e .env.sample -- jest -i"
+  },
+```
+
+## Related pages
+
+- [`Editor setup`](https://www.prisma.io/docs/orm/v6/more/dev-environment/editor-setup): Learn how to configure your editor and IDEs for an optimal developer experience with Prisma ORM.
+
 # Drizzle (/docs/orm/v6/more/comparisons/prisma-and-drizzle)
 
 Location: ORM > v6 > More > Comparisons > Drizzle
@@ -147556,375 +148156,6 @@ await getConnection().$transaction(async (transactionalEntityManager) => {
 - [`Drizzle`](https://www.prisma.io/docs/orm/v6/more/comparisons/prisma-and-drizzle): Learn how Prisma ORM compares to Drizzle.
 - [`Mongoose`](https://www.prisma.io/docs/orm/v6/more/comparisons/prisma-and-mongoose): Learn how Prisma ORM compares to Mongoose.
 - [`Sequelize`](https://www.prisma.io/docs/orm/v6/more/comparisons/prisma-and-sequelize): Learn how Prisma ORM compares to Sequelize.
-
-# Editor setup (/docs/orm/v6/more/dev-environment/editor-setup)
-
-Location: ORM > v6 > More > Dev environment > Editor setup
-
-This page describes how you can configure your editor for an optimal developer experience when using Prisma ORM.
-
-If you don't see your editor here, please [open a feature request](https://github.com/prisma/prisma/issues/new?assignees=\&labels=\&template=feature_request.md\&title=")" and ask for dedicated support for your editor (e.g. for syntax highlighting and auto-formatting).
-
-VS Code extension [#vs-code-extension]
-
-You can install the official [Prisma VS Code extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma). It adds extra capabilities to VS Code when developing applications with Prisma ORM:
-
-* Syntax highlighting of `schema.prisma`
-* Linting
-  * Diagnostic tools are used to surface errors and warnings in your schema file as you type.
-* Code Completion
-  * Completion results appear for symbols as you type.
-  * You can trigger this manually with the `Ctrl+Space` shortcut.
-* Documentation help
-  * Documentation of a completion result pops up as completion results are provided.
-* Quick info on hover
-  * Documentation Comments (`///`) of models and enums appear anywhere you hover over their usages.
-* Go to Definition
-  * Jump to or peek a model or enum's declaration.
-* Formatting
-  * Format code either manually or on save (if configured).
-    * To automatically format on save, add the following to your `settings.json` file:
-      ```json
-      "editor.formatOnSave": true
-      ```
-    * To enable formatting in combination with `prettier`, add the following to your `settings.json` file:or use the [Prettier plugin for Prisma](https://github.com/umidbekk/prettier-plugin-prisma)
-      ```json
-      "[prisma]": {
-        "editor.defaultFormatter": "Prisma.prisma"
-      },
-      ```
-* Rename
-  * Rename models, enums, fields and enum values
-    * Click into the model or enum, press `F2` and then type the new desired name and press `Enter`
-    * All usages will be renamed
-    * Automatically applies `@map` or `@@map` on the schema
-* Quick-fixes
-  * Quickly fix typos in model and enum names
-  * Create new models and enums with a single click
-
-> [!NOTE]
-> If you're using VS Code, you can use [VS Code agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode) to enter prompts such as “create Postgres database” or “apply schema migration” directly in the chat. The VS code agent handles all underlying Prisma CLI invocations and API calls automatically. See our [VS Code Agent documentation](/guides/postgres/vscode#agent-mode) for more details.
-
-Community projects [#community-projects]
-
-> **Note**: Community projects are not maintained or officially supported by Prisma and some features may by out of sync. Use at your own discretion.
-
-Emacs [#emacs]
-
-* [emacs-prisma-mode](https://github.com/pimeys/emacs-prisma-mode) provides syntax highlighting of the Prisma Schema Language and uses the Prisma Language Server.
-
-Vim [#vim]
-
-* [vim-prisma](https://github.com/prisma/vim-prisma) provides file detection and syntax highlighting of the Prisma Schema Language.
-
-neovim [#neovim]
-
-* [coc-prisma](https://github.com/pantharshit00/coc-prisma) implements the Prisma Language Server.
-
-JetBrains IDE [#jetbrains-ide]
-
-* [Prisma ORM](https://plugins.jetbrains.com/plugin/20686-prisma-orm) Provided by JetBrains. This plugin provides PSL grammar, syntax highlighting, LSP, and more.
-
-Sublime Text [#sublime-text]
-
-* [Prisma](https://packagecontrol.io/packages/Prisma) - For Sublime Text 3 & 4 - Provides syntax highlighting for the Prisma Schema Language. ([Source Code](https://github.com/Sublime-Instincts/PrismaHighlight/))
-* [LSP-prisma](https://packagecontrol.io/packages/LSP-prisma) - For Sublime Text 4 - Language Server helper package for Prisma schema files that uses Prisma's Language Server to provide linting, error checking, formatting, autocompletion, renaming etc. Note: It requires the Prisma package to be installed. ([Source Code](https://github.com/Sublime-Instincts/LSP-prisma))
-
-nova [#nova]
-
-* [nova](https://extensions.panic.com/extensions/robb-j/robb-j.Prisma/) provides syntax highlighting of the Prisma Schema Language and uses the Prisma Language Server.
-
-Helix [#helix]
-
-* [Helix](https://helix-editor.com/) (from version 22.08) provides syntax highlighting of the Prisma Schema Language and uses the Prisma Language Server.
-
-CLI autocomplete [#cli-autocomplete]
-
-inshellisense [#inshellisense]
-
-You can get IDE-style autocompletion for Prisma CLI using [`inshellisense`](https://github.com/microsoft/inshellisense/tree/main). It supports: bash, zsh, fish, pwsh, powershell (Windows Powershell).
-
-To install, run:
-
-  
-
-#### bun
-
-```bash
-bun add --global @microsoft/inshellisense
-```
-
-#### pnpm
-
-```bash
-pnpm add -g @microsoft/inshellisense
-```
-
-#### yarn
-
-```bash
-yarn global add @microsoft/inshellisense
-```
-
-#### npm
-
-```bash
-npm install -g @microsoft/inshellisense
-```
-
-## Related pages
-
-- [`Environment variables`](https://www.prisma.io/docs/orm/v6/more/dev-environment/environment-variables): Learn how to manage environment variables in your Prisma ORM project
-
-# Environment variables (/docs/orm/v6/more/dev-environment/environment-variables)
-
-Location: ORM > v6 > More > Dev environment > Environment variables
-
-An environment variable is a key value pair of string data that is stored on your machine's local environment. Refer to our [Environment variables reference documentation](/orm/v6/reference/environment-variables-reference) for specific details.
-
-Typically the name of the variable is uppercase, this is then followed by an equals sign then the value of the variable:
-
-```text
-MY_VALUE=prisma
-```
-
-The environment variable belongs to the environment where a process is running. Any program can read and create these environment variables. They are a cheap and effective way to store simple information.
-
-> [!NOTE]
-> With Prisma ORM v6.4.0, we released the `prisma.config.ts` file. This file allows you to manage your environment variables and settings in a more flexible way. [View our reference](/orm/v6/reference/prisma-config-reference) for more information.
-
-How Prisma ORM can use environment variables [#how-prisma-orm-can-use-environment-variables]
-
-Prisma ORM always reads environment variables from the system's environment.
-
-When you initialize Prisma ORM in your project with `prisma init`, it creates a convenience `.env` file for you to set your [`connection url`](/orm/v6/reference/connection-urls) as an environment variable. When you use Prisma CLI or Prisma Client, the `.env` file content and the variables defined in it are added to the [`process.env` object](https://nodejs.org/api/process.html#processenv), where Prisma ORM can read it and use it.
-
-Using an .env file [#using-an-env-file]
-
-> [!WARNING]
-> **Do not commit your `.env` files into version control**!
-
-The Prisma CLI looks for `.env` files, in order, in the following locations:
-
-1. In the root folder of your project (`./.env`)
-2. From the same folder as the schema specified by the `--schema` argument
-3. From the same folder as the schema taken from `"prisma": {"schema": "/path/to/schema.prisma"}` in `package.json`
-4. From the `./prisma` folder
-
-If a `.env` file is located in step 1., but additional, clashing `.env` variables are located in steps 2. - 4., the CLI will throw an error. For example, if you specify a `DATABASE_URL` variable in two different `.env` files, you will get the following error:
-
-```
-Error: There is a conflict between env vars in .env and prisma/.env
-Conflicting env vars:
-  DATABASE_URL
-
-We suggest to move the contents of prisma/.env to .env to consolidate your env vars.
-```
-
-The following table describes where the Prisma CLI looks for the `.env` file:
-
-| **Command**                                     | **schema location**                                                          | **`.env` file locations checked, in order**               |
-| :---------------------------------------------- | :--------------------------------------------------------------------------- | :-------------------------------------------------------- |
-| `prisma [command]`                              | `./prisma/schema.prisma`                                                     | `./.env`<br />`./prisma/.env`                             |
-| `prisma [command] --schema=./a/b/schema.prisma` | `./a/b/schema.prisma`                                                        | `./.env`<br />`./a/b/.env`<br />`./prisma/.env`           |
-| `prisma [command]`                              | `"prisma": {"schema": "/path/to/schema.prisma"}`                             | `.env`<br /> `./path/to/schema/.env`<br />`./prisma/.env` |
-| `prisma [command]`                              | No schema (for example, when running `prisma db pull` in an empty directory) | `./.env`<br />`./prisma/.env`                             |
-
-Any environment variables defined in that `.env` file will automatically be loaded when running a Prisma CLI command.
-
-> [!NOTE]
-> Looking to use more than one `.env` file? See [Using multiple `.env` files](#using-multiple-env-files) for information on how to setup and use multiple `.env` files in your application.
-
-Refer to the `dotenv` documentation for information about [what happens if an environment variable is defined in two places](https://www.npmjs.com/package/dotenv#what-happens-to-environment-variables-that-were-already-set).
-
-Expanding variables with .env files [#expanding-variables-with-env-files]
-
-Variables stored in `.env` files can be expanded using the format specified by [dotenv-expand](https://github.com/motdotla/dotenv-expand).
-
-```text title=".env"
-DATABASE_URL=postgresql://test:test@localhost:5432/test
-DATABASE_URL_WITH_SCHEMA=${DATABASE_URL}?schema=public
-```
-
-Additionally, you can use environment variables in the expansion that are set *outside* of the `.env` file. For example a database URL that is set on a PaaS like Heroku or similar:
-
-```bash
-# environment variable already set in the environment of the system
-export DATABASE_URL=postgresql://test:test@localhost:5432/test
-```
-
-```text title=".env"
-DATABASE_URL_WITH_SCHEMA=${DATABASE_URL}?schema=foo
-```
-
-This will make the environment variable `DATABASE_URL_WITH_SCHEMA` with value `postgresql://test:test@localhost:5432/test?schema=foo` available for Prisma ORM.
-
-Using environment variables in your code [#using-environment-variables-in-your-code]
-
-If you want environment variables to be evaluated at runtime, you need to load them manually in your application code (for example, by using [`dotenv`](https://github.com/motdotla/dotenv)):
-
-```ts
-import * as dotenv from "dotenv";
-
-dotenv.config(); // Load the environment variables
-console.log(`The connection URL is ${process.env.DATABASE_URL}`);
-```
-
-If you are using a custom file name for your environment variables, you can configure `dotenv` to use that filename:
-
-```ts
-import * as dotenv from "dotenv";
-
-var envFile = path.resolve(join(__dirname, "myenv.env"));
-dotenv.config({ path: envFile }); // Load the environment variables
-console.log(`The connection URL is ${process.env.DATABASE_URL}`);
-```
-
-If you need variable expansion across environment files, you can additionally use [`dotenv-expand`](https://github.com/motdotla/dotenv-expand):
-
-```ts
-import * as dotenv from "dotenv";
-const dotenvExpand = require("dotenv-expand");
-
-var envFile = path.resolve(join(__dirname, "myenv.env"));
-var mySqlEnv = dotenv.config({ path: envFile });
-dotenvExpand.expand(mySqlEnv);
-```
-
-If you are using multiple `.env` files, you can reference an environment file in your project's code depending on the environment you are running in.
-
-```ts
-import { config } from "dotenv";
-
-const envFile = process.env.NODE_ENV === "development" ? ".env.development" : ".env.production";
-config({ path: envFile });
-```
-
-Manually set environment variables [#manually-set-environment-variables]
-
-Because Prisma ORM reads from the system's environment when looking for environment variables, it's possible to skip using `.env` completely and create them manually on your local system.
-
-> [!NOTE]
-> The following examples will use setting the `DATABASE_URL` environment variable which is often used for the database connection URL.
-
-Manually set an environment variable on a Mac/Linux system [#manually-set-an-environment-variable-on-a-maclinux-system]
-
-From a terminal on a Unix machine (Mac/Linux), you export the variable as a key value pair.
-
-```bash
-export DATABASE_URL=postgresql://test:test@localhost:5432/test?schema=public
-```
-
-Then check that it has been successfully set using `printenv`:
-
-```bash
-printenv DATABASE_URL
-```
-
-```text no-copy
-postgresql://test:test@localhost:5432/test?schema=public
-```
-
-Manually set an environment variable on a Windows system [#manually-set-an-environment-variable-on-a-windows-system]
-
-The following examples illustrate how to set the environment variable (for the current user) using both Command Prompt (`cmd.exe`) and PowerShell, depending on your preference.
-
-  
-
-#### Command Prompt
-
-```bash
-set "DATABASE_URL=postgresql://test:test@localhost:5432/test?schema=public"
-```
-
-#### PowerShell
-
-```bash
-[Environment]::SetEnvironmentVariable("DATABASE_URL", "postgresql://test:test@localhost:5432/test?schema=public")
-```
-
-Then check that it has been successfully set:
-
-  
-
-#### Command Prompt
-
-```bash
-set DATABASE_URL
-```
-
-#### PowerShell
-
-```bash
-Get-ChildItem Env:DATABASE_URL
-```
-
-Using multiple .env files [#using-multiple-env-files]
-
-There is a risk that your production database could be deleted if you store different connection URLs to each of your environments within a single `.env` file.
-
-One solution is to have multiple `.env` files which each represent different environments. In practice, this means you create a file for each of your environments:
-
-* `.env.development`
-* `.env.sample`
-
-Then using a package like [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli), you can load the correct connection URL for the environment you are working in.
-
-> [!NOTE]
-> For our purposes, it is assumed you have a dedicated development database that you use while developing your application.
-
-1. Rename your `.env` file to `.env.development`
-
-```text title=".env.development"
-DATABASE_URL="postgresql://prisma:prisma@localhost:5433/dev"
-```
-
-2. Create a new `.env.sample` file and change the database name to `sample` (or your preferred name)
-
-```text title=".env.sample"
-DATABASE_URL="postgresql://prisma:prisma@localhost:5433/sample"
-```
-
-3. Install [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli)
-
-In order for Prisma ORM and Jest to know which `.env` file to use, alter your `package.json` scripts to include and call the `dotenv` package and specify which file to use depending on what commands you are running and in which environment you want them to run.
-
-> [!NOTE]
-> Any top-level script that is running the tests and migrations needs the `dotenv` command before it. This makes sure that the env variables from `.env.sample` are passed to all commands, including Jest.
-
-Running migrations on different environments [#running-migrations-on-different-environments]
-
-You can use the [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli) package to specify which environment file Prisma ORM should use when running a migration.
-
-The below script uses `dotenv-cli` to pass the `.env.sample` environment file (which holds a `DATABASE_URL` connection string) to the Prisma ORM migration script.
-
-Migration script [#migration-script]
-
-```json title="package.json"
-  "scripts": {
-    "migrate:postgres": "dotenv -e .env.sample -- npx prisma migrate deploy",
-  },
-```
-
-Running tests on different environments [#running-tests-on-different-environments]
-
-When running tests, we advise you to [mock Prisma Client](/orm/v6/prisma-client/testing/unit-testing#mocking-prisma-client). In doing so, you need to tell Jest which environment it should use when running its tests.
-
-By default, Prisma Client will use the environment specified in the default `.env` file located at the project's root.
-
-If you have created a separate `.env.sample` file to specify your testing database, then this environment will need to be passed to Jest.
-
-The below script uses `dotenv-cli` to pass the `.env.sample` environment file (which holds a `DATABASE_URL` connection string) to Jest.
-
-```json title="package.json"
-  "scripts": {
-    "test": "dotenv -e .env.sample -- jest -i"
-  },
-```
-
-## Related pages
-
-- [`Editor setup`](https://www.prisma.io/docs/orm/v6/more/dev-environment/editor-setup): Learn how to configure your editor and IDEs for an optimal developer experience with Prisma ORM.
 
 # Engines (/docs/orm/v6/more/internals/engines)
 
@@ -177497,6 +177728,891 @@ npx prisma migrate dev
 - [`Development and production`](https://www.prisma.io/docs/orm/v6/prisma-migrate/workflows/development-and-production): Development and production
 - [`Generating down migrations`](https://www.prisma.io/docs/orm/v6/prisma-migrate/workflows/generating-down-migrations): How to generate down migrations
 
+# Data sources (/docs/orm/v6/prisma-schema/overview/data-sources)
+
+Location: ORM > v6 > Prisma Schema > Overview > Data sources
+
+A data source determines how Prisma ORM connects to your database, and is represented by the [`datasource`](/orm/v6/reference/prisma-schema-reference#datasource) block in the Prisma schema. The following data source uses the `postgresql` provider and includes a connection URL:
+
+> [!NOTE]
+> As of Prisma ORM v7, the `url`, `directUrl`, and `shadowDatabaseUrl` fields in the Prisma schema `datasource` block are deprecated. Configure these fields in [Prisma Config](/orm/v6/reference/prisma-config-reference) instead.
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
+}
+```
+
+A Prisma schema can only have *one* data source. However, you can:
+
+* [Programmatically override a data source `url` when creating your `PrismaClient`](/orm/v6/reference/prisma-client-reference#programmatically-override-a-datasource-url)
+* [Specify a different URL for Prisma Migrate's shadow database if you are working with cloud-hosted development databases](/orm/v6/prisma-migrate/understanding-prisma-migrate/shadow-database#cloud-hosted-shadow-databases-must-be-created-manually)
+
+> **Note**: Multiple provider support was removed in 2.22.0. Please see [Deprecation of provider array notation](https://github.com/prisma/prisma/issues/3834) for more information.
+
+Securing database connections [#securing-database-connections]
+
+Some data source `provider`s allow you to configure your connection with SSL/TLS, and provide parameters for the `url` to specify the location of certificates.
+
+* [Configuring an SSL connection with PostgreSQL](/orm/v6/overview/databases/postgresql#configuring-an-ssl-connection)
+* [Configuring an SSL connection with MySQL](/orm/v6/overview/databases/mysql#configuring-an-ssl-connection)
+* [Configure a TLS connection with Microsoft SQL Server](/orm/v6/overview/databases/sql-server#connection-details)
+
+Prisma ORM resolves SSL certificates relative to the `./prisma` directory. If your certificate files are located outside that directory, e.g. your project root directory, use relative paths for certificates:
+
+> [!NOTE]
+> When you're using a [multi-file Prisma schema](/orm/v6/prisma-schema/overview/location#multi-file-prisma-schema), Prisma ORM resolves SSL certificates relative to the `./prisma/schema` directory.
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public&sslmode=require&sslcert=../server-ca.pem&sslidentity=../client-identity.p12&sslpassword=<REDACTED>"
+}
+```
+
+## Related pages
+
+- [`Generators`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/generators): Generators in your Prisma schema specify what assets are generated when the `prisma generate` command is invoked. This page explains how to configure generators.
+- [`Schema location`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/location): Documentation regarding proper location of Prisma Schema including default naming and multiple files.
+
+# Generators (/docs/orm/v6/prisma-schema/overview/generators)
+
+Location: ORM > v6 > Prisma Schema > Overview > Generators
+
+A Prisma schema can have one or more generators, represented by the [`generator`](/orm/v6/reference/prisma-schema-reference#generator) block:
+
+```prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+```
+
+A generator determines which assets are created when you run the `prisma generate` command.
+
+The default generator for Prisma Client is `prisma-client`, which outputs plain TypeScript code and *requires* a custom `output` path (read more about it [here](https://www.prisma.io/blog/why-prisma-orm-generates-code-into-node-modules-and-why-it-ll-change)).
+
+Alternatively, you can configure any npm package that complies with our generator specification.
+
+prisma-client [#prisma-client]
+
+The new `prisma-client` generator offers greater control and flexibility when using Prisma ORM across different JavaScript environments (such as ESM, Bun, Deno, ...).
+
+It generates Prisma Client into a custom directory in your application's codebase that's specified via the `output` field on the `generator` block. This gives you full visibility and control over the generated code. It also [splits](#importing-types) the generated Prisma Client library into multiple files.
+
+This generator ensures you can bundle your application code exactly the way you want, without relying on hidden or automatic behaviors.
+
+Here are the main differences compared to `prisma-client-js`:
+
+* Requires an `output` path; no "magic" generation into `node_modules` any more
+* Doesn't load `.env` at runtime; use `dotenv` or set environment variables manually instead
+* Supports ESM and CommonJS via the `moduleFormat` field
+* More flexible thanks to additional [fields](#field-reference)
+* Outputs plain TypeScript that's bundled just like the rest of your application code
+
+The `prisma-client` generator has been Generally Available since [v6.16.0](https://pris.ly/releases/6.16.0) and is the default generator as of Prisma ORM v7.
+
+Getting started [#getting-started]
+
+Follow these steps to use the new `prisma-client` generator in your project.
+
+1. Configure the prisma-client generator in schema.prisma [#1-configure-the-prisma-client-generator-in-schemaprisma]
+
+Update your [`generator`](/orm/v6/prisma-schema/overview/generators) block:
+
+```prisma title="prisma/schema.prisma"
+generator client {
+  provider = "prisma-client"            // Required // [!code ++]
+  output   = "../src/generated/prisma"  // Required // [!code ++]
+}
+```
+
+The **`output` option is required** and tells Prisma ORM where to put the generated Prisma Client code. You can choose any location suitable for your project structure. For instance, if you have the following layout:
+
+```txt
+.
+├── package.json
+├── prisma
+│   └── schema.prisma
+├── src
+│   └── index.ts
+└── tsconfig.json
+```
+
+Then `../src/generated/prisma` places the generated code in `src/generated/prisma` relative to `schema.prisma`.
+
+2. Generate Prisma Client [#2-generate-prisma-client]
+
+Generate Prisma Client by running:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm dlx prisma generate
+```
+
+#### yarn
+
+```bash
+yarn dlx prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+This generates the code for Prisma Client (including the query engine binary) into the specified `output` folder.
+
+3. Exclude the generated directory from version control [#3-exclude-the-generated-directory-from-version-control]
+
+The new generator includes both the TypeScript client code *and* the [query engine](/orm/v6/more/internals/engines#the-query-engine-file). Including the query engine in version control can cause compatibility issues on different machines. To avoid this, add the generated directory to `.gitignore`:
+
+```bash title=".gitignore"
+# Keep the generated Prisma Client + query engine out of version control
+/src/generated/prisma
+```
+
+> [!NOTE]
+> In the future, you can safely include the generated directory in version control when [Prisma ORM is fully transitioned from Rust to TypeScript](https://www.prisma.io/blog/rust-to-typescript-update-boosting-prisma-orm-performance?utm_source=docs\&utm_medium=inline_text).
+
+4. Use Prisma Client in your application [#4-use-prisma-client-in-your-application]
+
+Importing Prisma Client [#importing-prisma-client]
+
+After generating the Prisma Client, import it from the path you specified:
+
+```ts title="src/index.ts"
+import { PrismaClient } from "./generated/prisma/client";
+
+const prisma = new PrismaClient();
+```
+
+Prisma Client is now ready to use in your project.
+
+Importing generated model types [#importing-generated-model-types]
+
+If you're importing types generated for your models, you can do so as follows:
+
+```ts title="src/index.ts"
+import { UserModel, PostModel } from "./generated/prisma/models";
+```
+
+Importing generated enum types [#importing-generated-enum-types]
+
+If you're importing types generated for your enums, you can do so as follows:
+
+```ts title="src/index.ts"
+import { Role, User } from "./generated/prisma/enums";
+```
+
+Importing in browser environments [#importing-in-browser-environments]
+
+If you need to access generated types in your frontend code, you can import them as follows:
+
+```ts title="src/index.ts"
+import { Role } from "./generated/prisma/browser";
+```
+
+Note that `./generated/prisma/browser` does not expose a `PrismaClient`.
+
+Field reference [#field-reference]
+
+Use the following options in the `generator client { ... }` block. Only `output` is required. The other fields have defaults or are inferred from your environment and `tsconfig.json`.
+
+```prisma title="schema.prisma"
+generator client {
+  // Required
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+
+  // Optional
+  engineType             = "client"
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+}
+```
+
+Below are the options for the `prisma-client` generator:
+
+| **Option**               | **Default**               | **Description**                                                                                                                                                        |
+| ------------------------ | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `output` (**required**)  |                           | Directory where Prisma Client is generated, e.g. `../src/generated/prisma`.                                                                                            |
+| `runtime`                | `nodejs`                  | Target runtime environment. <br />Supported values: <br />`nodejs`, `deno`, `bun`, `workerd` (alias `cloudflare`), `vercel-edge` (alias `edge-light`), `react-native`. |
+| `moduleFormat`           | Inferred from environment | Module format (`esm` or `cjs`). Determines whether `import.meta.url` or `__dirname` is used.                                                                           |
+| `generatedFileExtension` | `ts`                      | File extension for generated TypeScript files (`ts`, `mts`, `cts`).                                                                                                    |
+| `importFileExtension`    | Inferred from environment | File extension used in **import statements**. Can be `ts`, `mts`, `cts`, `js`, `mjs`, `cjs`, or empty (for bare imports).                                              |
+
+> [!NOTE]
+> `nodejs`, `deno`, and `bun` all map to the same internal codepath but are preserved as separate user-facing values for clarity.
+
+Importing types [#importing-types]
+
+The new `prisma-client` generator creates individual `.ts` files which allow for a more fine granular import of types. This can improve compile and typecheck performance and be useful for tree-shaking, too.
+You can still use the top level barrel files that export all types through a single import.
+
+The overall structure of the generated output looks like this:
+
+```
+generated/
+└── prisma
+    ├── browser.ts
+    ├── client.ts
+    ├── commonInputTypes.ts
+    ├── enums.ts
+    ├── internal
+    │   ├── ...
+    ├── models
+    │   ├── Post.ts
+    │   └── User.ts
+    └── models.ts
+```
+
+client.ts [#clientts]
+
+For use in your server code.
+
+* Provides access to the `PrismaClient` instance and all model and utility types.
+* Provides best compatibility with the `prisma-client-js` generated output.
+* Contains transitive dependencies on server only-packages, so cannot be used in browser contexts.
+
+Example:
+
+```ts
+import { Prisma, type Post, PrismaClient } from "./generated/prisma/client";
+```
+
+browser.ts [#browserts]
+
+For using types in your frontend (i.e. code that runs in the browser).
+
+* Contains no transitive dependencies on Node.js or other server-only packages.
+* Contains no real `PrismaClient` constructor.
+* Contains all model and enum types and values.
+* Provides access to various utilities like `Prisma.JsonNull` and `Prisma.Decimal`.
+* Available since `v6.16.0`.
+
+> [!NOTE]
+> The old `prisma-client-js` generator created a `node_modules` package and used export maps to dynamically provide a browser compatible export of the generated Prisma Client library. As the new `prisma-client` generator creates direct TypeScript source code and no `package.json` file anymore, this approach is not possible. Hence you need to be explicit about your imports and whether things run on server or client!
+> 
+> You can still wrap the generated code in a package and use a similar approach as with `prisma-client-js` on your own.
+
+Example:
+
+```ts
+import { Prisma, type Post } from "./generated/prisma/browser";
+```
+
+enums.ts [#enumsts]
+
+Isolated access to user defined enum types and values.
+
+* Contains no transitive dependencies and is very slim.
+* Can be used on backend and frontend.
+* Prefer this for optimal tree shaking and typecheck performance when accessing enums.
+
+Example:
+
+```ts
+import { MyEnum } from "./generated/prisma/enums";
+```
+
+models.ts [#modelsts]
+
+Isolated access to all model types.
+
+* Can be used on backend and frontend.
+* Contains all models including their derived utility types like `<ModelName>WhereInput` or `<ModelName>UpdateInput>`.
+
+> [!NOTE]
+> Plain model types are exposed here as `<ModelName>Model` (e.g. `PostModel`). This is in contrast to the exposed name in `client.ts` and `browser.ts` which is simply `<ModelName>` (e.g. `Post`).
+> 
+> This is necessary due to internal constraints to avoid potential naming conflicts with internal types.
+
+Example:
+
+```ts
+import type {
+  UserModel,
+  PostModel,
+  PostWhereInput,
+  UserUpdateInput,
+} from "./generated/prisma/models";
+```
+
+models/<ModelName>.ts [#modelsmodelnamets]
+
+Isolated access to the types for an individual model.
+
+* Can be used on backend and frontend.
+* Contains the models including its derived utility types like `<ModelName>WhereInput` or `<ModelName>UpdateInput>`.
+
+> [!NOTE]
+> The plain model type is exposed here as `<ModelName>Model` (e.g. `PostModel`).
+
+Example:
+
+```ts
+import type { UserModel, UserWhereInput, UserUpdateInput } from "./generated/prisma/models/User";
+```
+
+commonInputTypes.ts [#commoninputtypests]
+
+Provides shared utility types that you should rarely directly need.
+
+Example:
+
+```ts
+import type { IntFilter } from "./generated/prisma/commonInputTypes";
+```
+
+internal/* [#internal]
+
+> [!WARNING]
+> Do not directly import from these files! They are not part of the stable API of the generated code and can change at any time in breaking ways.
+> 
+> Usually anything you might need from there is exposed via `browser.ts` or `client.ts` under the `Prisma` namespace.
+
+Breaking changes from prisma-client-js [#breaking-changes-from-prisma-client-js]
+
+* Requires an `output` path on the `generator` block
+* No `Prisma.validator` function; you can use TypeScript native [`satisfies`](https://www.prisma.io/blog/satisfies-operator-ur8ys8ccq7zb) keyword instead
+
+Examples [#examples]
+
+To see what the new `prisma-client` generator looks like in practice, check out our minimal and [ready-to-run examples](https://github.com/prisma/prisma-examples):
+
+| Example                                                                                                                                                            | Framework      | Bundler           | Runtime                                          | Monorepo  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- | ----------------- | ------------------------------------------------ | --------- |
+| [`nextjs-starter-webpack`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack)                                   | Next.js 15     | Webpack           | Node.js                                          | n/a       |
+| [`nextjs-starter-turbopack`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-turbopack)                               | Next.js 15     | Turbopack (alpha) | Node.js                                          | n/a       |
+| [`nextjs-starter-webpack-monorepo`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack-monorepo)                 | Next.js 15     | Webpack           | Node.js                                          | pnpm      |
+| [`nextjs-starter-webpack-with-middleware`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack-with-middleware)   | Next.js 15     | Webpack           | Node.js (main pages), `vercel-edge` (middleware) | n/a       |
+| [`nextjs-starter-webpack-turborepo`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack-turborepo)               | Next.js 15     | Webpack           | Node.js                                          | turborepo |
+| [`react-router-starter-nodejs`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/react-router-starter-nodejs)                         | React Router 7 | Vite 6            | Node.js                                          | n/a       |
+| [`react-router-starter-cloudflare-workerd`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/react-router-starter-cloudflare-workerd) | React Router 7 |                   |                                                  | n/a       |
+| [`nuxt3-starter-nodejs`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nuxt3-starter-nodejs)                                       | Nuxt 3         | Vite 6            | Node.js                                          | n/a       |
+| [`nuxt4-starter-nodejs`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nuxt4-starter-nodejs)                                       | Nuxt 4         | Vite 7            | Node.js                                          | n/a       |
+| [`bun`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/deno-deploy)                                                                 | None           | None              | Deno 2                                           | n/a       |
+| [`deno`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/deno-deploy)                                                                | None           | None              | Deno 2                                           | n/a       |
+
+prisma-client-js (Deprecated) [#prisma-client-js-deprecated]
+
+> [!WARNING]
+> Deprecated
+> 
+> The `prisma-client-js` generator is **deprecated as of Prisma 7**. It was the default generator for Prisma ORM 6.X and earlier versions. We recommend migrating to [`prisma-client`](#prisma-client) for new projects and updating existing projects when possible.
+
+The `prisma-client-js` generator requires the `@prisma/client` npm package and generates Prisma Client into `node_modules`.
+
+Field reference [#field-reference-1]
+
+The generator for Prisma's JavaScript Client accepts multiple additional properties:
+
+* `previewFeatures`: [Preview features](/orm/v6/reference/preview-features) to include
+* `binaryTargets`: Engine binary targets for `prisma-client-js` (for example, `debian-openssl-1.1.x` if you are deploying to Ubuntu 18+, or `native` if you are working locally)
+
+```prisma
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["sample-preview-feature"]
+  binaryTargets   = ["debian-openssl-1.1.x"] // defaults to `"native"`
+}
+```
+
+Binary targets [#binary-targets]
+
+> [!NOTE]
+> As of [v6.16.0](https://pris.ly/release/6.16.0), Prisma ORM can be used without Rust engines in production applications. Learn more [here](/orm/v6/prisma-client/setup-and-configuration/no-rust-engine).
+> 
+> **When enabled, your Prisma Client will be generated without a Rust-based query engine binary**:
+> 
+> ```prisma
+> generator client {
+>   provider   = "prisma-client-js" // or "prisma-client"
+>   output     = "../src/generated/prisma"
+>   engineType = "client"           // no Rust engine
+> }
+> ```
+> 
+> Note that [driver adapters](/orm/v6/overview/databases/database-drivers#driver-adapters) are required if you want to use Prisma ORM without Rust engines.
+> 
+> When using Prisma ORM without Rust, the `binaryTargets` field is obsolete and not needed.
+> 
+> You can [read about the performance and DX improvements](https://www.prisma.io/blog/prisma-orm-without-rust-latest-performance-benchmarks) of this change on our blog.
+
+The `prisma-client-js` generator uses several [engines](https://github.com/prisma/prisma-engines). Engines are implemented in Rust and are used by Prisma Client in the form of executable, platform-dependent engine files. Depending on which platform you are executing your code on, you need the correct file. "Binary targets" are used to define which files should be present for the target platform(s).
+
+The correct file is particularly important when [deploying](/orm/v6/prisma-client/deployment/deploy-prisma) your application to production, which often differs from your local development environment.
+
+The native binary target [#the-native-binary-target]
+
+The `native` binary target is special. It doesn't map to a concrete operating system. Instead, when `native` is specified in `binaryTargets`, Prisma Client detects the *current* operating system and automatically specifies the correct binary target for it.
+
+As an example, assume you're running **macOS** and you specify the following generator:
+
+```prisma title="prisma/schema.prisma"
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+```
+
+In that case, Prisma Client detects your operating system and finds the right binary file for it based on the [list of supported operating systems](/orm/v6/reference/prisma-schema-reference#binarytargets-options) .
+If you use macOS Intel x86 (`darwin`), then the binary file that was compiled for `darwin` will be selected.
+If you use macOS ARM64 (`darwin-arm64`), then the binary file that was compiled for `darwin-arm64` will be selected.
+
+> **Note**: The `native` binary target is the default. You can set it explicitly if you wish to include additional [binary targets](/orm/v6/reference/prisma-schema-reference#binarytargets-options) for deployment to different environments.
+
+Community generators [#community-generators]
+
+> [!NOTE]
+> Existing generators or new ones should not be affected if you are using a [multi-file Prisma schema](/orm/v6/prisma-schema/overview/location#multi-file-prisma-schema), unless a generator reads the schema manually.
+
+The following is a list of community created generators.
+
+* [`prisma-dbml-generator`](https://notiz.dev/blog/prisma-dbml-generator/): Transforms the Prisma schema into [Database Markup Language](https://dbml.dbdiagram.io/home/) (DBML) which allows for an easy visual representation
+* [`prisma-docs-generator`](https://github.com/pantharshit00/prisma-docs-generator): Generates an individual API reference for Prisma Client
+* [`prisma-json-schema-generator`](https://github.com/valentinpalkovic/prisma-json-schema-generator): Transforms the Prisma schema in [JSON schema](https://json-schema.org/)
+* [`prisma-json-types-generator`](https://github.com/arthurfiorette/prisma-json-types-generator): Enhances `prisma-client-js` (or `prisma-client`) to provide strongly typed JSON fields for all databases, based on your schema. It improves code generation, Intellisense, and more, without affecting runtime code.
+* [`typegraphql-prisma`](https://github.com/MichalLytek/typegraphql-prisma#readme): Generates [TypeGraphQL](https://typegraphql.com/) CRUD resolvers for Prisma models
+* [`typegraphql-prisma-nestjs`](https://github.com/EndyKaufman/typegraphql-prisma-nestjs#readme): Fork of [`typegraphql-prisma`](https://github.com/MichalLytek/typegraphql-prisma), which also generates CRUD resolvers for Prisma models but for NestJS
+* [`prisma-typegraphql-types-gen`](https://github.com/YassinEldeeb/prisma-tgql-types-gen): Generates [TypeGraphQL](https://typegraphql.com/) class types and enums from your prisma type definitions, the generated output can be edited without being overwritten by the next gen and has the ability to correct you when you mess up the types with your edits.
+* [`nexus-prisma`](https://github.com/prisma/nexus-prisma/): Allows to project Prisma models to GraphQL via [GraphQL Nexus](https://nexusjs.org/docs/)
+* [`prisma-nestjs-graphql`](https://github.com/unlight/prisma-nestjs-graphql): Generates object types, inputs, args, etc. from the Prisma Schema for usage with `@nestjs/graphql` module
+* [`prisma-appsync`](https://github.com/maoosi/prisma-appsync): Generates a full-blown GraphQL API for [AWS AppSync](https://aws.amazon.com/appsync/)
+* [`prisma-kysely`](https://github.com/valtyr/prisma-kysely): Generates type definitions for Kysely, a TypeScript SQL query builder. This can be useful to perform queries against your database from an edge runtime, or to write more complex SQL queries not possible in Prisma without dropping type safety.
+* [`prisma-generator-nestjs-dto`](https://github.com/vegardit/prisma-generator-nestjs-dto): Generates DTO and Entity classes with relation `connect` and `create` options for use with [NestJS Resources](https://docs.nestjs.com/recipes/crud-generator) and [@nestjs/swagger](https://www.npmjs.com/package/@nestjs/swagger)
+* [`prisma-erd-generator`](https://github.com/keonik/prisma-erd-generator): Generates an entity relationship diagram
+* [`prisma-generator-plantuml-erd`](https://github.com/dbgso/prisma-generator-plantuml-erd/tree/main/packages/generator): Generator to generate ER diagrams for PlantUML. Markdown and Asciidoc documents can also be generated by activating the option.
+* [`prisma-class-generator`](https://github.com/kimjbstar/prisma-class-generator): Generates classes from your Prisma Schema that can be used as DTO, Swagger Response, TypeGraphQL and so on.
+* [`zod-prisma`](https://github.com/CarterGrimmeisen/zod-prisma): Creates Zod schemas from your Prisma models.
+* [`prisma-pothos-types`](https://github.com/hayes/pothos/tree/main/packages/plugin-prisma): Makes it easier to define Prisma-based object types, and helps solve n+1 queries for relations. It also has integrations for the Relay plugin to make defining nodes and connections easy and efficient.
+* [`prisma-generator-pothos-codegen`](https://github.com/Cauen/prisma-generator-pothos-codegen): Auto generate input types (for use as args) and auto generate decoupled type-safe base files makes it easy to create customizable objects, queries and mutations for [Pothos](https://pothos-graphql.dev/) from Prisma schema. Optionally generate all crud at once from the base files.
+* [`prisma-joi-generator`](https://github.com/omar-dulaimi/prisma-joi-generator): Generate full Joi schemas from your Prisma schema.
+* [`prisma-yup-generator`](https://github.com/omar-dulaimi/prisma-yup-generator): Generate full Yup schemas from your Prisma schema.
+* [`prisma-class-validator-generator`](https://github.com/omar-dulaimi/prisma-class-validator-generator): Emit TypeScript models from your Prisma schema with class validator validations ready.
+* [`prisma-zod-generator`](https://github.com/omar-dulaimi/prisma-zod-generator): Emit Zod schemas from your Prisma schema.
+* [`prisma-trpc-generator`](https://github.com/omar-dulaimi/prisma-trpc-generator): Emit fully implemented tRPC routers.
+* [`prisma-json-server-generator`](https://github.com/omar-dulaimi/prisma-json-server-generator): Emit a JSON file that can be run with json-server.
+* [`prisma-trpc-shield-generator`](https://github.com/omar-dulaimi/prisma-trpc-shield-generator): Emit a tRPC shield from your Prisma schema.
+* [`prisma-custom-models-generator`](https://github.com/omar-dulaimi/prisma-custom-models-generator): Emit custom models from your Prisma schema, based on Prisma recommendations.
+* [`nestjs-prisma-graphql-crud-gen`](https://github.com/mk668a/nestjs-prisma-graphql-crud-gen): Generate CRUD resolvers from GraphQL schema with NestJS and Prisma.
+* [`prisma-generator-dart`](https://github.com/FredrikBorgstrom/abcx3/tree/master/libs/prisma-generator-dart): Generates Dart/Flutter class files with to- and fromJson methods.
+* [`prisma-generator-graphql-typedef`](https://github.com/mavvy22/prisma-generator-graphql-typedef): Generates graphql schema.
+* [`prisma-markdown`](https://github.com/samchon/prisma-markdown): Generates markdown document composed with ERD diagrams and their descriptions. Supports pagination of ERD diagrams through `@namespace` comment tag.
+* [`prisma-models-graph`](https://github.com/dangchinh25/prisma-models-graph): Generates a bi-directional models graph for schema without strict relationship defined in the schema, works via a custom schema annotation.
+* [`prisma-generator-fake-data`](https://github.com/luisrudge/prisma-generator-fake-data): Generates realistic-looking fake data for your Prisma models that can be used in unit/integration tests, demos, and more.
+* [`prisma-generator-drizzle`](https://github.com/farreldarian/prisma-generator-drizzle): A Prisma generator for generating Drizzle schema with ease.
+* [`prisma-generator-express`](https://github.com/multipliedtwice/prisma-generator-express): Generates Express CRUD and Router generator function.
+* [`prismabox`](https://github.com/m1212e/prismabox): Generates versatile [typebox](https://github.com/sinclairzx81/typebox) schema from your Prisma models.
+* [`prisma-generator-typescript-interfaces`](https://github.com/mogzol/prisma-generator-typescript-interfaces): Generates zero-dependency TypeScript interfaces from your Prisma schema.
+* [`prisma-openapi`](https://github.com/nitzano/prisma-openapi): Generates OpenAPI schema from Prisma models.
+
+## Related pages
+
+- [`Data sources`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/data-sources): Data sources enable Prisma to connect to your database. This page explains how to configure data sources in your Prisma schema.
+- [`Schema location`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/location): Documentation regarding proper location of Prisma Schema including default naming and multiple files.
+
+# Overview on Prisma Schema (/docs/orm/v6/prisma-schema/overview)
+
+Location: ORM > v6 > Prisma Schema > Overview on Prisma Schema
+
+The Prisma Schema (or *schema* for short) is the main method of configuration for your Prisma ORM setup. It consists of the following parts:
+
+* [**Data sources**](/orm/v6/prisma-schema/overview/data-sources): Specify the details of the data sources Prisma ORM should connect to (e.g. a PostgreSQL database)
+* [**Generators**](/orm/v6/prisma-schema/overview/generators): Specifies what clients should be generated based on the data model (e.g. Prisma Client)
+* [**Data model definition**](/orm/v6/prisma-schema/data-model/models): Specifies your application [models](/orm/v6/prisma-schema/data-model/models#defining-models) (the shape of the data per data source) and their [relations](/orm/v6/prisma-schema/data-model/relations)
+
+It is typically a single file called `schema.prisma` (or multiple files with `.prisma` file extension) that is stored in a defined but customizable [location](/orm/v6/prisma-schema/overview/location). You can also [organize your Prisma schema in multiple files](/orm/v6/prisma-schema/overview/location#multi-file-prisma-schema) if you prefer that.
+
+See the [Prisma schema API reference](/orm/v6/reference/prisma-schema-reference) <span class="api" /> for detailed information about each section of the schema.
+
+Whenever a `prisma` command is invoked, the CLI typically reads some information from the schema, e.g.:
+
+* `prisma generate`: Reads *all* above mentioned information from the Prisma schema to generate the correct data source client code (e.g. Prisma Client).
+* `prisma migrate dev`: Reads the data sources and data model definition to create a new migration.
+
+You can also [use environment variables](#accessing-environment-variables-from-the-schema) inside the schema to provide configuration options when a CLI command is invoked.
+
+Example [#example]
+
+The following is an example of a Prisma Schema that specifies:
+
+* A data source (PostgreSQL or MongoDB)
+* A generator (Prisma Client)
+* A data model definition with two models (with one relation) and one `enum`
+* Several [native data type attributes](/orm/v6/prisma-schema/data-model/models#native-types-mapping) (`@db.VarChar(255)`, `@db.ObjectId`)
+
+  
+
+#### Relational databases
+
+```prisma
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  posts     Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  title     String   @db.VarChar(255)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+```
+
+#### MongoDB
+
+```prisma
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  posts     Post[]
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  title     String
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String   @db.ObjectId
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+```
+
+Syntax [#syntax]
+
+Prisma Schema files are written in Prisma Schema Language (PSL). See the [data sources](/orm/v6/prisma-schema/overview/data-sources), [generators](/orm/v6/prisma-schema/overview/generators), [data model definition](/orm/v6/prisma-schema/data-model/models) and of course [Prisma Schema API reference](/orm/v6/reference/prisma-schema-reference) pages for details and examples.
+
+VS Code [#vs-code]
+
+Syntax highlighting for PSL is available via a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) (which also lets you auto-format the contents of your Prisma schema and indicates syntax errors with red squiggly lines). Learn more about [setting up Prisma ORM in your editor](/orm/v6/more/dev-environment/editor-setup).
+
+GitHub [#github]
+
+PSL code snippets on GitHub can be rendered with syntax highlighting as well by using the `.prisma` file extension or annotating fenced code blocks in Markdown with `prisma`:
+
+````
+```prisma
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+}
+```
+````
+
+Accessing environment variables from the schema [#accessing-environment-variables-from-the-schema]
+
+You can use environment variables to provide configuration options when a CLI command is invoked, or a Prisma Client query is run.
+
+Hardcoding URLs directly in your schema is possible but is discouraged because it poses a security risk. Using environment variables in the schema allows you to **keep secrets out of the schema** which in turn **improves the portability of the schema** by allowing you to use it in different environments.
+
+Environment variables can be accessed using the `env()` function:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+}
+```
+
+You can use the `env()` function in the following places:
+
+* A datasource url
+* Generator binary targets
+
+See [Environment variables](/orm/v6/more/dev-environment/environment-variables) for more information about how to use an `.env` file during development.
+
+Comments [#comments]
+
+There are three types of comments that are supported in Prisma Schema Language:
+
+* `// comment`: This comment is for the reader's clarity and is not present in the abstract syntax tree (AST) of the schema.
+* `/// comment`: These comments will show up in the abstract syntax tree (AST) of the schema as descriptions to AST nodes. Tools can then use these comments to provide additional information. All comments are attached to the next available node - [free-floating comments](https://github.com/prisma/prisma/issues/3544) are not supported and are not included in the AST.
+* `/* block comment */`: These comments will show up in the abstract syntax tree, similarly to `///` comments.
+
+Here are some different examples:
+
+```prisma
+/// This comment will get attached to the `User` node in the AST
+model User {
+  /// This comment will get attached to the `id` node in the AST
+  id     Int   @default(autoincrement())
+  // This comment is just for you
+  weight Float /// This comment gets attached to the `weight` node
+}
+
+// This comment is just for you. It will not
+// show up in the AST.
+
+/// This comment will get attached to the
+/// Customer node.
+model Customer {
+  /**
+   * ...and so will this comment
+   */
+}
+```
+
+Auto formatting [#auto-formatting]
+
+Prisma ORM supports formatting `.prisma` files automatically. There are two ways to format `.prisma` files:
+
+* Run the [`prisma format`](/orm/v6/reference/prisma-cli-reference#format) <span class="api" /> command.
+* Install the [Prisma VS Code extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) and invoke the [VS Code format action](https://code.visualstudio.com/docs/editor/codebasics#_formatting) - manually or on save.
+
+There are no configuration options - [formatting rules](#formatting-rules) are fixed (similar to Golang's `gofmt` but unlike Javascript's `prettier`):
+
+Formatting rules [#formatting-rules]
+
+Configuration blocks are aligned by their = sign [#configuration-blocks-are-aligned-by-theirsign]
+
+```
+block _ {
+  key      = "value"
+  key2     = 1
+  long_key = true
+}
+```
+
+Field definitions are aligned into columns separated by 2 or more spaces [#field-definitions-are-aligned-into-columns-separated-by-2-or-more-spaces]
+
+```
+block _ {
+  id          String       @id
+  first_name  LongNumeric  @default
+}
+```
+
+Empty lines resets block alignment and formatting rules [#empty-lines-resets-block-alignment-and-formatting-rules]
+
+```
+block _ {
+  key   = "value"
+  key2  = 1
+  key10 = true
+
+  long_key   = true
+  long_key_2 = true
+}
+```
+
+```
+block _ {
+  id  String  @id
+              @default
+
+  first_name  LongNumeric  @default
+}
+```
+
+Multiline field attributes are properly aligned with the rest of the field attributes [#multiline-field-attributes-are-properly-aligned-with-the-rest-of-the-field-attributes]
+
+```
+block _ {
+  id          String       @id
+                           @default
+  first_name  LongNumeric  @default
+}
+```
+
+Block attributes are sorted to the end of the block [#block-attributes-are-sorted-to-the-end-of-the-block]
+
+```
+block _ {
+  key   = "value"
+
+  @@attribute
+}
+```
+
+## Related pages
+
+- [`PostgreSQL extensions`](https://www.prisma.io/docs/orm/v6/prisma-schema/postgresql-extensions): How to install and manage PostgreSQL extensions with Prisma ORM using customized migrations, and how to use them in Prisma Client.
+- [`What is introspection?`](https://www.prisma.io/docs/orm/v6/prisma-schema/introspection): Learn how you can introspect your database to generate a data model into your Prisma schema.
+
+# Schema location (/docs/orm/v6/prisma-schema/overview/location)
+
+Location: ORM > v6 > Prisma Schema > Overview > Schema location
+
+The default name for the Prisma Schema is a single file `schema.prisma` in your `prisma` folder. When your schema is named like this, the Prisma CLI will detect it automatically.
+
+Prisma Schema location [#prisma-schema-location]
+
+The Prisma CLI looks for the Prisma Schema in the following locations, in the following order:
+
+1. The location specified by the [`--schema` flag](/orm/v6/reference/prisma-cli-reference), which is available when you `introspect`, `generate`, `migrate`, and `studio`:
+
+   ```bash
+   prisma generate --schema=./alternative/schema.prisma
+   ```
+
+2. The location specified in the `package.json` file (version 2.7.0 and later):
+
+   ```json
+   "prisma": {
+     "schema": "db/schema.prisma"
+   }
+   ```
+
+3. Default locations:
+   * `./prisma/schema.prisma`
+   * `./schema.prisma`
+
+The Prisma CLI outputs the path of the schema that will be used. The following example shows the terminal output for `prisma db pull`:
+
+```text
+Environment variables loaded from .env
+Prisma Schema loaded from prisma/schema.prisma
+
+Introspecting based on datasource defined in prisma/schema.prisma …
+
+✔ Introspected 4 models and wrote them into prisma/schema.prisma in 239ms
+
+Run prisma generate to generate Prisma Client.
+```
+
+Multi-file Prisma schema [#multi-file-prisma-schema]
+
+If you prefer splitting your Prisma schema into multiple files, you can have a setup that looks as follows:
+
+```
+prisma/
+├── migrations
+├── models
+│   ├── posts.prisma
+│   ├── users.prisma
+│   └── ... other `.prisma` files
+└── schema.prisma
+```
+
+> [!NOTE]
+> Multi-file Prisma schemas are Generally Available since [v6.7.0](https://pris.ly/release/6.7.0). Before that, they could be used via the `prismaSchemaFolder` Preview feature flag.
+
+Usage [#usage]
+
+When using a multi-file Prisma schema, you must always explicitly specify the location of the directory that contains your schema files (including the main `schema.prisma` file with your `generator` block).
+
+You can do this in either of three ways:
+
+* pass the `--schema` option to your Prisma CLI command (e.g. `prisma migrate dev --schema ./prisma`)
+* set the `prisma.schema` field in `package.json`:
+  ```jsonc
+  // package.json
+  {
+    "prisma": {
+      "schema": "./prisma",
+    },
+  }
+  ```
+* set the `schema` property in [`prisma.config.ts`](/orm/v6/reference/prisma-config-reference#schema) ( for Prisma ORM v7):
+
+  ```ts
+  import { defineConfig, env } from "prisma/config";
+  import "dotenv/config";
+
+  export default defineConfig({
+    schema: "prisma/schema.prisma",
+    migrations: {
+      path: "prisma/migrations",
+      seed: "tsx prisma/seed.ts",
+    },
+    datasource: {
+      url: env("DATABASE_URL"),
+    },
+  });
+  ```
+
+  > [!NOTE]
+> We recommend using the [Prisma Config file](/orm/v6/reference/prisma-config-reference#schema) to specify the location of your Prisma schema. This is the most flexible way to specify the location of your Prisma schema alongside other configuration options.
+
+> [!WARNING]
+> The `schema.prisma` file (which contains your `generator` block) must be located in the same directory that you specify in your schema configuration. For example, if you configure `schema: 'prisma'`, your `schema.prisma` file must be at `prisma/schema.prisma`, not in a subdirectory like `prisma/models/schema.prisma`.
+
+You also must place the `migrations` directory at the same level as your `schema.prisma` file.
+
+For example, assuming `schema.prisma` defines the `generator` block, here's the correct directory structure:
+
+```
+# All files must be inside the `prisma/` directory
+# `migrations` and `schema.prisma` must be at the same level
+prisma/
+├── migrations
+├── models
+│   ├── posts.prisma
+│   └── users.prisma
+└── schema.prisma  # Contains generator block
+```
+
+> [!NOTE]
+> If your schema files are in a `prisma/` directory (as shown above), the Prisma CLI commands like `prisma generate` and `prisma migrate dev` will work without additional configuration, as `./prisma/schema.prisma` is a default location.
+
+Tips for multi-file Prisma Schema [#tips-for-multi-file-prisma-schema]
+
+We've found that a few patterns work well with this feature and will help you get the most out of it:
+
+* Organize your files by domain: group related models into the same file. For example, keep all user-related models in `user.prisma` while post-related models go in `post.prisma`.
+* Use clear naming conventions: schema files should be named clearly and succinctly. Use names like `user.prisma` and `post.prisma` and not `myModels.prisma` or `CommentFeaturesSchema.prisma`.
+* Have an obvious "main" schema file: while you can now have as many schema files as you want, you'll still need a place where you define your `generator` block. We recommend having a single schema file that's obviously the "main" file so that this block is easy to find. `main.prisma`, `schema.prisma`, and `base.prisma` are a few we've seen that work well.
+
+## Related pages
+
+- [`Data sources`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/data-sources): Data sources enable Prisma to connect to your database. This page explains how to configure data sources in your Prisma schema.
+- [`Generators`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/generators): Generators in your Prisma schema specify what assets are generated when the `prisma generate` command is invoked. This page explains how to configure generators.
+
 # Database mapping (/docs/orm/v6/prisma-schema/data-model/database-mapping)
 
 Location: ORM > v6 > Prisma Schema > Data Model > Database mapping
@@ -180798,891 +181914,6 @@ All write operations (`create`, `update`, `delete`, `upsert`) are disabled and n
 - [`Indexes`](https://www.prisma.io/docs/orm/v6/prisma-schema/data-model/indexes): How to configure index functionality and add full text indexes
 - [`Models`](https://www.prisma.io/docs/orm/v6/prisma-schema/data-model/models): Learn about the concepts for building your data model with Prisma: Models, scalar types, enums, attributes, functions, IDs, default values and more.
 - [`Multi-schema`](https://www.prisma.io/docs/orm/v6/prisma-schema/data-model/multi-schema): How to use Prisma ORM with multiple database schemas
-
-# Data sources (/docs/orm/v6/prisma-schema/overview/data-sources)
-
-Location: ORM > v6 > Prisma Schema > Overview > Data sources
-
-A data source determines how Prisma ORM connects to your database, and is represented by the [`datasource`](/orm/v6/reference/prisma-schema-reference#datasource) block in the Prisma schema. The following data source uses the `postgresql` provider and includes a connection URL:
-
-> [!NOTE]
-> As of Prisma ORM v7, the `url`, `directUrl`, and `shadowDatabaseUrl` fields in the Prisma schema `datasource` block are deprecated. Configure these fields in [Prisma Config](/orm/v6/reference/prisma-config-reference) instead.
-
-```prisma
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
-}
-```
-
-A Prisma schema can only have *one* data source. However, you can:
-
-* [Programmatically override a data source `url` when creating your `PrismaClient`](/orm/v6/reference/prisma-client-reference#programmatically-override-a-datasource-url)
-* [Specify a different URL for Prisma Migrate's shadow database if you are working with cloud-hosted development databases](/orm/v6/prisma-migrate/understanding-prisma-migrate/shadow-database#cloud-hosted-shadow-databases-must-be-created-manually)
-
-> **Note**: Multiple provider support was removed in 2.22.0. Please see [Deprecation of provider array notation](https://github.com/prisma/prisma/issues/3834) for more information.
-
-Securing database connections [#securing-database-connections]
-
-Some data source `provider`s allow you to configure your connection with SSL/TLS, and provide parameters for the `url` to specify the location of certificates.
-
-* [Configuring an SSL connection with PostgreSQL](/orm/v6/overview/databases/postgresql#configuring-an-ssl-connection)
-* [Configuring an SSL connection with MySQL](/orm/v6/overview/databases/mysql#configuring-an-ssl-connection)
-* [Configure a TLS connection with Microsoft SQL Server](/orm/v6/overview/databases/sql-server#connection-details)
-
-Prisma ORM resolves SSL certificates relative to the `./prisma` directory. If your certificate files are located outside that directory, e.g. your project root directory, use relative paths for certificates:
-
-> [!NOTE]
-> When you're using a [multi-file Prisma schema](/orm/v6/prisma-schema/overview/location#multi-file-prisma-schema), Prisma ORM resolves SSL certificates relative to the `./prisma/schema` directory.
-
-```prisma
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public&sslmode=require&sslcert=../server-ca.pem&sslidentity=../client-identity.p12&sslpassword=<REDACTED>"
-}
-```
-
-## Related pages
-
-- [`Generators`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/generators): Generators in your Prisma schema specify what assets are generated when the `prisma generate` command is invoked. This page explains how to configure generators.
-- [`Schema location`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/location): Documentation regarding proper location of Prisma Schema including default naming and multiple files.
-
-# Generators (/docs/orm/v6/prisma-schema/overview/generators)
-
-Location: ORM > v6 > Prisma Schema > Overview > Generators
-
-A Prisma schema can have one or more generators, represented by the [`generator`](/orm/v6/reference/prisma-schema-reference#generator) block:
-
-```prisma
-generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-}
-```
-
-A generator determines which assets are created when you run the `prisma generate` command.
-
-The default generator for Prisma Client is `prisma-client`, which outputs plain TypeScript code and *requires* a custom `output` path (read more about it [here](https://www.prisma.io/blog/why-prisma-orm-generates-code-into-node-modules-and-why-it-ll-change)).
-
-Alternatively, you can configure any npm package that complies with our generator specification.
-
-prisma-client [#prisma-client]
-
-The new `prisma-client` generator offers greater control and flexibility when using Prisma ORM across different JavaScript environments (such as ESM, Bun, Deno, ...).
-
-It generates Prisma Client into a custom directory in your application's codebase that's specified via the `output` field on the `generator` block. This gives you full visibility and control over the generated code. It also [splits](#importing-types) the generated Prisma Client library into multiple files.
-
-This generator ensures you can bundle your application code exactly the way you want, without relying on hidden or automatic behaviors.
-
-Here are the main differences compared to `prisma-client-js`:
-
-* Requires an `output` path; no "magic" generation into `node_modules` any more
-* Doesn't load `.env` at runtime; use `dotenv` or set environment variables manually instead
-* Supports ESM and CommonJS via the `moduleFormat` field
-* More flexible thanks to additional [fields](#field-reference)
-* Outputs plain TypeScript that's bundled just like the rest of your application code
-
-The `prisma-client` generator has been Generally Available since [v6.16.0](https://pris.ly/releases/6.16.0) and is the default generator as of Prisma ORM v7.
-
-Getting started [#getting-started]
-
-Follow these steps to use the new `prisma-client` generator in your project.
-
-1. Configure the prisma-client generator in schema.prisma [#1-configure-the-prisma-client-generator-in-schemaprisma]
-
-Update your [`generator`](/orm/v6/prisma-schema/overview/generators) block:
-
-```prisma title="prisma/schema.prisma"
-generator client {
-  provider = "prisma-client"            // Required // [!code ++]
-  output   = "../src/generated/prisma"  // Required // [!code ++]
-}
-```
-
-The **`output` option is required** and tells Prisma ORM where to put the generated Prisma Client code. You can choose any location suitable for your project structure. For instance, if you have the following layout:
-
-```txt
-.
-├── package.json
-├── prisma
-│   └── schema.prisma
-├── src
-│   └── index.ts
-└── tsconfig.json
-```
-
-Then `../src/generated/prisma` places the generated code in `src/generated/prisma` relative to `schema.prisma`.
-
-2. Generate Prisma Client [#2-generate-prisma-client]
-
-Generate Prisma Client by running:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm dlx prisma generate
-```
-
-#### yarn
-
-```bash
-yarn dlx prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-This generates the code for Prisma Client (including the query engine binary) into the specified `output` folder.
-
-3. Exclude the generated directory from version control [#3-exclude-the-generated-directory-from-version-control]
-
-The new generator includes both the TypeScript client code *and* the [query engine](/orm/v6/more/internals/engines#the-query-engine-file). Including the query engine in version control can cause compatibility issues on different machines. To avoid this, add the generated directory to `.gitignore`:
-
-```bash title=".gitignore"
-# Keep the generated Prisma Client + query engine out of version control
-/src/generated/prisma
-```
-
-> [!NOTE]
-> In the future, you can safely include the generated directory in version control when [Prisma ORM is fully transitioned from Rust to TypeScript](https://www.prisma.io/blog/rust-to-typescript-update-boosting-prisma-orm-performance?utm_source=docs\&utm_medium=inline_text).
-
-4. Use Prisma Client in your application [#4-use-prisma-client-in-your-application]
-
-Importing Prisma Client [#importing-prisma-client]
-
-After generating the Prisma Client, import it from the path you specified:
-
-```ts title="src/index.ts"
-import { PrismaClient } from "./generated/prisma/client";
-
-const prisma = new PrismaClient();
-```
-
-Prisma Client is now ready to use in your project.
-
-Importing generated model types [#importing-generated-model-types]
-
-If you're importing types generated for your models, you can do so as follows:
-
-```ts title="src/index.ts"
-import { UserModel, PostModel } from "./generated/prisma/models";
-```
-
-Importing generated enum types [#importing-generated-enum-types]
-
-If you're importing types generated for your enums, you can do so as follows:
-
-```ts title="src/index.ts"
-import { Role, User } from "./generated/prisma/enums";
-```
-
-Importing in browser environments [#importing-in-browser-environments]
-
-If you need to access generated types in your frontend code, you can import them as follows:
-
-```ts title="src/index.ts"
-import { Role } from "./generated/prisma/browser";
-```
-
-Note that `./generated/prisma/browser` does not expose a `PrismaClient`.
-
-Field reference [#field-reference]
-
-Use the following options in the `generator client { ... }` block. Only `output` is required. The other fields have defaults or are inferred from your environment and `tsconfig.json`.
-
-```prisma title="schema.prisma"
-generator client {
-  // Required
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-
-  // Optional
-  engineType             = "client"
-  runtime                = "nodejs"
-  moduleFormat           = "esm"
-  generatedFileExtension = "ts"
-  importFileExtension    = "ts"
-}
-```
-
-Below are the options for the `prisma-client` generator:
-
-| **Option**               | **Default**               | **Description**                                                                                                                                                        |
-| ------------------------ | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `output` (**required**)  |                           | Directory where Prisma Client is generated, e.g. `../src/generated/prisma`.                                                                                            |
-| `runtime`                | `nodejs`                  | Target runtime environment. <br />Supported values: <br />`nodejs`, `deno`, `bun`, `workerd` (alias `cloudflare`), `vercel-edge` (alias `edge-light`), `react-native`. |
-| `moduleFormat`           | Inferred from environment | Module format (`esm` or `cjs`). Determines whether `import.meta.url` or `__dirname` is used.                                                                           |
-| `generatedFileExtension` | `ts`                      | File extension for generated TypeScript files (`ts`, `mts`, `cts`).                                                                                                    |
-| `importFileExtension`    | Inferred from environment | File extension used in **import statements**. Can be `ts`, `mts`, `cts`, `js`, `mjs`, `cjs`, or empty (for bare imports).                                              |
-
-> [!NOTE]
-> `nodejs`, `deno`, and `bun` all map to the same internal codepath but are preserved as separate user-facing values for clarity.
-
-Importing types [#importing-types]
-
-The new `prisma-client` generator creates individual `.ts` files which allow for a more fine granular import of types. This can improve compile and typecheck performance and be useful for tree-shaking, too.
-You can still use the top level barrel files that export all types through a single import.
-
-The overall structure of the generated output looks like this:
-
-```
-generated/
-└── prisma
-    ├── browser.ts
-    ├── client.ts
-    ├── commonInputTypes.ts
-    ├── enums.ts
-    ├── internal
-    │   ├── ...
-    ├── models
-    │   ├── Post.ts
-    │   └── User.ts
-    └── models.ts
-```
-
-client.ts [#clientts]
-
-For use in your server code.
-
-* Provides access to the `PrismaClient` instance and all model and utility types.
-* Provides best compatibility with the `prisma-client-js` generated output.
-* Contains transitive dependencies on server only-packages, so cannot be used in browser contexts.
-
-Example:
-
-```ts
-import { Prisma, type Post, PrismaClient } from "./generated/prisma/client";
-```
-
-browser.ts [#browserts]
-
-For using types in your frontend (i.e. code that runs in the browser).
-
-* Contains no transitive dependencies on Node.js or other server-only packages.
-* Contains no real `PrismaClient` constructor.
-* Contains all model and enum types and values.
-* Provides access to various utilities like `Prisma.JsonNull` and `Prisma.Decimal`.
-* Available since `v6.16.0`.
-
-> [!NOTE]
-> The old `prisma-client-js` generator created a `node_modules` package and used export maps to dynamically provide a browser compatible export of the generated Prisma Client library. As the new `prisma-client` generator creates direct TypeScript source code and no `package.json` file anymore, this approach is not possible. Hence you need to be explicit about your imports and whether things run on server or client!
-> 
-> You can still wrap the generated code in a package and use a similar approach as with `prisma-client-js` on your own.
-
-Example:
-
-```ts
-import { Prisma, type Post } from "./generated/prisma/browser";
-```
-
-enums.ts [#enumsts]
-
-Isolated access to user defined enum types and values.
-
-* Contains no transitive dependencies and is very slim.
-* Can be used on backend and frontend.
-* Prefer this for optimal tree shaking and typecheck performance when accessing enums.
-
-Example:
-
-```ts
-import { MyEnum } from "./generated/prisma/enums";
-```
-
-models.ts [#modelsts]
-
-Isolated access to all model types.
-
-* Can be used on backend and frontend.
-* Contains all models including their derived utility types like `<ModelName>WhereInput` or `<ModelName>UpdateInput>`.
-
-> [!NOTE]
-> Plain model types are exposed here as `<ModelName>Model` (e.g. `PostModel`). This is in contrast to the exposed name in `client.ts` and `browser.ts` which is simply `<ModelName>` (e.g. `Post`).
-> 
-> This is necessary due to internal constraints to avoid potential naming conflicts with internal types.
-
-Example:
-
-```ts
-import type {
-  UserModel,
-  PostModel,
-  PostWhereInput,
-  UserUpdateInput,
-} from "./generated/prisma/models";
-```
-
-models/<ModelName>.ts [#modelsmodelnamets]
-
-Isolated access to the types for an individual model.
-
-* Can be used on backend and frontend.
-* Contains the models including its derived utility types like `<ModelName>WhereInput` or `<ModelName>UpdateInput>`.
-
-> [!NOTE]
-> The plain model type is exposed here as `<ModelName>Model` (e.g. `PostModel`).
-
-Example:
-
-```ts
-import type { UserModel, UserWhereInput, UserUpdateInput } from "./generated/prisma/models/User";
-```
-
-commonInputTypes.ts [#commoninputtypests]
-
-Provides shared utility types that you should rarely directly need.
-
-Example:
-
-```ts
-import type { IntFilter } from "./generated/prisma/commonInputTypes";
-```
-
-internal/* [#internal]
-
-> [!WARNING]
-> Do not directly import from these files! They are not part of the stable API of the generated code and can change at any time in breaking ways.
-> 
-> Usually anything you might need from there is exposed via `browser.ts` or `client.ts` under the `Prisma` namespace.
-
-Breaking changes from prisma-client-js [#breaking-changes-from-prisma-client-js]
-
-* Requires an `output` path on the `generator` block
-* No `Prisma.validator` function; you can use TypeScript native [`satisfies`](https://www.prisma.io/blog/satisfies-operator-ur8ys8ccq7zb) keyword instead
-
-Examples [#examples]
-
-To see what the new `prisma-client` generator looks like in practice, check out our minimal and [ready-to-run examples](https://github.com/prisma/prisma-examples):
-
-| Example                                                                                                                                                            | Framework      | Bundler           | Runtime                                          | Monorepo  |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- | ----------------- | ------------------------------------------------ | --------- |
-| [`nextjs-starter-webpack`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack)                                   | Next.js 15     | Webpack           | Node.js                                          | n/a       |
-| [`nextjs-starter-turbopack`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-turbopack)                               | Next.js 15     | Turbopack (alpha) | Node.js                                          | n/a       |
-| [`nextjs-starter-webpack-monorepo`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack-monorepo)                 | Next.js 15     | Webpack           | Node.js                                          | pnpm      |
-| [`nextjs-starter-webpack-with-middleware`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack-with-middleware)   | Next.js 15     | Webpack           | Node.js (main pages), `vercel-edge` (middleware) | n/a       |
-| [`nextjs-starter-webpack-turborepo`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nextjs-starter-webpack-turborepo)               | Next.js 15     | Webpack           | Node.js                                          | turborepo |
-| [`react-router-starter-nodejs`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/react-router-starter-nodejs)                         | React Router 7 | Vite 6            | Node.js                                          | n/a       |
-| [`react-router-starter-cloudflare-workerd`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/react-router-starter-cloudflare-workerd) | React Router 7 |                   |                                                  | n/a       |
-| [`nuxt3-starter-nodejs`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nuxt3-starter-nodejs)                                       | Nuxt 3         | Vite 6            | Node.js                                          | n/a       |
-| [`nuxt4-starter-nodejs`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/nuxt4-starter-nodejs)                                       | Nuxt 4         | Vite 7            | Node.js                                          | n/a       |
-| [`bun`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/deno-deploy)                                                                 | None           | None              | Deno 2                                           | n/a       |
-| [`deno`](https://github.com/prisma/prisma-examples/tree/latest/generator-prisma-client/deno-deploy)                                                                | None           | None              | Deno 2                                           | n/a       |
-
-prisma-client-js (Deprecated) [#prisma-client-js-deprecated]
-
-> [!WARNING]
-> Deprecated
-> 
-> The `prisma-client-js` generator is **deprecated as of Prisma 7**. It was the default generator for Prisma ORM 6.X and earlier versions. We recommend migrating to [`prisma-client`](#prisma-client) for new projects and updating existing projects when possible.
-
-The `prisma-client-js` generator requires the `@prisma/client` npm package and generates Prisma Client into `node_modules`.
-
-Field reference [#field-reference-1]
-
-The generator for Prisma's JavaScript Client accepts multiple additional properties:
-
-* `previewFeatures`: [Preview features](/orm/v6/reference/preview-features) to include
-* `binaryTargets`: Engine binary targets for `prisma-client-js` (for example, `debian-openssl-1.1.x` if you are deploying to Ubuntu 18+, or `native` if you are working locally)
-
-```prisma
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["sample-preview-feature"]
-  binaryTargets   = ["debian-openssl-1.1.x"] // defaults to `"native"`
-}
-```
-
-Binary targets [#binary-targets]
-
-> [!NOTE]
-> As of [v6.16.0](https://pris.ly/release/6.16.0), Prisma ORM can be used without Rust engines in production applications. Learn more [here](/orm/v6/prisma-client/setup-and-configuration/no-rust-engine).
-> 
-> **When enabled, your Prisma Client will be generated without a Rust-based query engine binary**:
-> 
-> ```prisma
-> generator client {
->   provider   = "prisma-client-js" // or "prisma-client"
->   output     = "../src/generated/prisma"
->   engineType = "client"           // no Rust engine
-> }
-> ```
-> 
-> Note that [driver adapters](/orm/v6/overview/databases/database-drivers#driver-adapters) are required if you want to use Prisma ORM without Rust engines.
-> 
-> When using Prisma ORM without Rust, the `binaryTargets` field is obsolete and not needed.
-> 
-> You can [read about the performance and DX improvements](https://www.prisma.io/blog/prisma-orm-without-rust-latest-performance-benchmarks) of this change on our blog.
-
-The `prisma-client-js` generator uses several [engines](https://github.com/prisma/prisma-engines). Engines are implemented in Rust and are used by Prisma Client in the form of executable, platform-dependent engine files. Depending on which platform you are executing your code on, you need the correct file. "Binary targets" are used to define which files should be present for the target platform(s).
-
-The correct file is particularly important when [deploying](/orm/v6/prisma-client/deployment/deploy-prisma) your application to production, which often differs from your local development environment.
-
-The native binary target [#the-native-binary-target]
-
-The `native` binary target is special. It doesn't map to a concrete operating system. Instead, when `native` is specified in `binaryTargets`, Prisma Client detects the *current* operating system and automatically specifies the correct binary target for it.
-
-As an example, assume you're running **macOS** and you specify the following generator:
-
-```prisma title="prisma/schema.prisma"
-generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native"]
-}
-```
-
-In that case, Prisma Client detects your operating system and finds the right binary file for it based on the [list of supported operating systems](/orm/v6/reference/prisma-schema-reference#binarytargets-options) .
-If you use macOS Intel x86 (`darwin`), then the binary file that was compiled for `darwin` will be selected.
-If you use macOS ARM64 (`darwin-arm64`), then the binary file that was compiled for `darwin-arm64` will be selected.
-
-> **Note**: The `native` binary target is the default. You can set it explicitly if you wish to include additional [binary targets](/orm/v6/reference/prisma-schema-reference#binarytargets-options) for deployment to different environments.
-
-Community generators [#community-generators]
-
-> [!NOTE]
-> Existing generators or new ones should not be affected if you are using a [multi-file Prisma schema](/orm/v6/prisma-schema/overview/location#multi-file-prisma-schema), unless a generator reads the schema manually.
-
-The following is a list of community created generators.
-
-* [`prisma-dbml-generator`](https://notiz.dev/blog/prisma-dbml-generator/): Transforms the Prisma schema into [Database Markup Language](https://dbml.dbdiagram.io/home/) (DBML) which allows for an easy visual representation
-* [`prisma-docs-generator`](https://github.com/pantharshit00/prisma-docs-generator): Generates an individual API reference for Prisma Client
-* [`prisma-json-schema-generator`](https://github.com/valentinpalkovic/prisma-json-schema-generator): Transforms the Prisma schema in [JSON schema](https://json-schema.org/)
-* [`prisma-json-types-generator`](https://github.com/arthurfiorette/prisma-json-types-generator): Enhances `prisma-client-js` (or `prisma-client`) to provide strongly typed JSON fields for all databases, based on your schema. It improves code generation, Intellisense, and more, without affecting runtime code.
-* [`typegraphql-prisma`](https://github.com/MichalLytek/typegraphql-prisma#readme): Generates [TypeGraphQL](https://typegraphql.com/) CRUD resolvers for Prisma models
-* [`typegraphql-prisma-nestjs`](https://github.com/EndyKaufman/typegraphql-prisma-nestjs#readme): Fork of [`typegraphql-prisma`](https://github.com/MichalLytek/typegraphql-prisma), which also generates CRUD resolvers for Prisma models but for NestJS
-* [`prisma-typegraphql-types-gen`](https://github.com/YassinEldeeb/prisma-tgql-types-gen): Generates [TypeGraphQL](https://typegraphql.com/) class types and enums from your prisma type definitions, the generated output can be edited without being overwritten by the next gen and has the ability to correct you when you mess up the types with your edits.
-* [`nexus-prisma`](https://github.com/prisma/nexus-prisma/): Allows to project Prisma models to GraphQL via [GraphQL Nexus](https://nexusjs.org/docs/)
-* [`prisma-nestjs-graphql`](https://github.com/unlight/prisma-nestjs-graphql): Generates object types, inputs, args, etc. from the Prisma Schema for usage with `@nestjs/graphql` module
-* [`prisma-appsync`](https://github.com/maoosi/prisma-appsync): Generates a full-blown GraphQL API for [AWS AppSync](https://aws.amazon.com/appsync/)
-* [`prisma-kysely`](https://github.com/valtyr/prisma-kysely): Generates type definitions for Kysely, a TypeScript SQL query builder. This can be useful to perform queries against your database from an edge runtime, or to write more complex SQL queries not possible in Prisma without dropping type safety.
-* [`prisma-generator-nestjs-dto`](https://github.com/vegardit/prisma-generator-nestjs-dto): Generates DTO and Entity classes with relation `connect` and `create` options for use with [NestJS Resources](https://docs.nestjs.com/recipes/crud-generator) and [@nestjs/swagger](https://www.npmjs.com/package/@nestjs/swagger)
-* [`prisma-erd-generator`](https://github.com/keonik/prisma-erd-generator): Generates an entity relationship diagram
-* [`prisma-generator-plantuml-erd`](https://github.com/dbgso/prisma-generator-plantuml-erd/tree/main/packages/generator): Generator to generate ER diagrams for PlantUML. Markdown and Asciidoc documents can also be generated by activating the option.
-* [`prisma-class-generator`](https://github.com/kimjbstar/prisma-class-generator): Generates classes from your Prisma Schema that can be used as DTO, Swagger Response, TypeGraphQL and so on.
-* [`zod-prisma`](https://github.com/CarterGrimmeisen/zod-prisma): Creates Zod schemas from your Prisma models.
-* [`prisma-pothos-types`](https://github.com/hayes/pothos/tree/main/packages/plugin-prisma): Makes it easier to define Prisma-based object types, and helps solve n+1 queries for relations. It also has integrations for the Relay plugin to make defining nodes and connections easy and efficient.
-* [`prisma-generator-pothos-codegen`](https://github.com/Cauen/prisma-generator-pothos-codegen): Auto generate input types (for use as args) and auto generate decoupled type-safe base files makes it easy to create customizable objects, queries and mutations for [Pothos](https://pothos-graphql.dev/) from Prisma schema. Optionally generate all crud at once from the base files.
-* [`prisma-joi-generator`](https://github.com/omar-dulaimi/prisma-joi-generator): Generate full Joi schemas from your Prisma schema.
-* [`prisma-yup-generator`](https://github.com/omar-dulaimi/prisma-yup-generator): Generate full Yup schemas from your Prisma schema.
-* [`prisma-class-validator-generator`](https://github.com/omar-dulaimi/prisma-class-validator-generator): Emit TypeScript models from your Prisma schema with class validator validations ready.
-* [`prisma-zod-generator`](https://github.com/omar-dulaimi/prisma-zod-generator): Emit Zod schemas from your Prisma schema.
-* [`prisma-trpc-generator`](https://github.com/omar-dulaimi/prisma-trpc-generator): Emit fully implemented tRPC routers.
-* [`prisma-json-server-generator`](https://github.com/omar-dulaimi/prisma-json-server-generator): Emit a JSON file that can be run with json-server.
-* [`prisma-trpc-shield-generator`](https://github.com/omar-dulaimi/prisma-trpc-shield-generator): Emit a tRPC shield from your Prisma schema.
-* [`prisma-custom-models-generator`](https://github.com/omar-dulaimi/prisma-custom-models-generator): Emit custom models from your Prisma schema, based on Prisma recommendations.
-* [`nestjs-prisma-graphql-crud-gen`](https://github.com/mk668a/nestjs-prisma-graphql-crud-gen): Generate CRUD resolvers from GraphQL schema with NestJS and Prisma.
-* [`prisma-generator-dart`](https://github.com/FredrikBorgstrom/abcx3/tree/master/libs/prisma-generator-dart): Generates Dart/Flutter class files with to- and fromJson methods.
-* [`prisma-generator-graphql-typedef`](https://github.com/mavvy22/prisma-generator-graphql-typedef): Generates graphql schema.
-* [`prisma-markdown`](https://github.com/samchon/prisma-markdown): Generates markdown document composed with ERD diagrams and their descriptions. Supports pagination of ERD diagrams through `@namespace` comment tag.
-* [`prisma-models-graph`](https://github.com/dangchinh25/prisma-models-graph): Generates a bi-directional models graph for schema without strict relationship defined in the schema, works via a custom schema annotation.
-* [`prisma-generator-fake-data`](https://github.com/luisrudge/prisma-generator-fake-data): Generates realistic-looking fake data for your Prisma models that can be used in unit/integration tests, demos, and more.
-* [`prisma-generator-drizzle`](https://github.com/farreldarian/prisma-generator-drizzle): A Prisma generator for generating Drizzle schema with ease.
-* [`prisma-generator-express`](https://github.com/multipliedtwice/prisma-generator-express): Generates Express CRUD and Router generator function.
-* [`prismabox`](https://github.com/m1212e/prismabox): Generates versatile [typebox](https://github.com/sinclairzx81/typebox) schema from your Prisma models.
-* [`prisma-generator-typescript-interfaces`](https://github.com/mogzol/prisma-generator-typescript-interfaces): Generates zero-dependency TypeScript interfaces from your Prisma schema.
-* [`prisma-openapi`](https://github.com/nitzano/prisma-openapi): Generates OpenAPI schema from Prisma models.
-
-## Related pages
-
-- [`Data sources`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/data-sources): Data sources enable Prisma to connect to your database. This page explains how to configure data sources in your Prisma schema.
-- [`Schema location`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/location): Documentation regarding proper location of Prisma Schema including default naming and multiple files.
-
-# Overview on Prisma Schema (/docs/orm/v6/prisma-schema/overview)
-
-Location: ORM > v6 > Prisma Schema > Overview on Prisma Schema
-
-The Prisma Schema (or *schema* for short) is the main method of configuration for your Prisma ORM setup. It consists of the following parts:
-
-* [**Data sources**](/orm/v6/prisma-schema/overview/data-sources): Specify the details of the data sources Prisma ORM should connect to (e.g. a PostgreSQL database)
-* [**Generators**](/orm/v6/prisma-schema/overview/generators): Specifies what clients should be generated based on the data model (e.g. Prisma Client)
-* [**Data model definition**](/orm/v6/prisma-schema/data-model/models): Specifies your application [models](/orm/v6/prisma-schema/data-model/models#defining-models) (the shape of the data per data source) and their [relations](/orm/v6/prisma-schema/data-model/relations)
-
-It is typically a single file called `schema.prisma` (or multiple files with `.prisma` file extension) that is stored in a defined but customizable [location](/orm/v6/prisma-schema/overview/location). You can also [organize your Prisma schema in multiple files](/orm/v6/prisma-schema/overview/location#multi-file-prisma-schema) if you prefer that.
-
-See the [Prisma schema API reference](/orm/v6/reference/prisma-schema-reference) <span class="api" /> for detailed information about each section of the schema.
-
-Whenever a `prisma` command is invoked, the CLI typically reads some information from the schema, e.g.:
-
-* `prisma generate`: Reads *all* above mentioned information from the Prisma schema to generate the correct data source client code (e.g. Prisma Client).
-* `prisma migrate dev`: Reads the data sources and data model definition to create a new migration.
-
-You can also [use environment variables](#accessing-environment-variables-from-the-schema) inside the schema to provide configuration options when a CLI command is invoked.
-
-Example [#example]
-
-The following is an example of a Prisma Schema that specifies:
-
-* A data source (PostgreSQL or MongoDB)
-* A generator (Prisma Client)
-* A data model definition with two models (with one relation) and one `enum`
-* Several [native data type attributes](/orm/v6/prisma-schema/data-model/models#native-types-mapping) (`@db.VarChar(255)`, `@db.ObjectId`)
-
-  
-
-#### Relational databases
-
-```prisma
-datasource db {
-  provider = "postgresql"
-}
-
-generator client {
-  provider = "prisma-client"
-  output   = "./generated"
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  role      Role     @default(USER)
-  posts     Post[]
-}
-
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String   @db.VarChar(255)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-```
-
-#### MongoDB
-
-```prisma
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  role      Role     @default(USER)
-  posts     Post[]
-}
-
-model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  String   @db.ObjectId
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-```
-
-Syntax [#syntax]
-
-Prisma Schema files are written in Prisma Schema Language (PSL). See the [data sources](/orm/v6/prisma-schema/overview/data-sources), [generators](/orm/v6/prisma-schema/overview/generators), [data model definition](/orm/v6/prisma-schema/data-model/models) and of course [Prisma Schema API reference](/orm/v6/reference/prisma-schema-reference) pages for details and examples.
-
-VS Code [#vs-code]
-
-Syntax highlighting for PSL is available via a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) (which also lets you auto-format the contents of your Prisma schema and indicates syntax errors with red squiggly lines). Learn more about [setting up Prisma ORM in your editor](/orm/v6/more/dev-environment/editor-setup).
-
-GitHub [#github]
-
-PSL code snippets on GitHub can be rendered with syntax highlighting as well by using the `.prisma` file extension or annotating fenced code blocks in Markdown with `prisma`:
-
-````
-```prisma
-model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-}
-```
-````
-
-Accessing environment variables from the schema [#accessing-environment-variables-from-the-schema]
-
-You can use environment variables to provide configuration options when a CLI command is invoked, or a Prisma Client query is run.
-
-Hardcoding URLs directly in your schema is possible but is discouraged because it poses a security risk. Using environment variables in the schema allows you to **keep secrets out of the schema** which in turn **improves the portability of the schema** by allowing you to use it in different environments.
-
-Environment variables can be accessed using the `env()` function:
-
-```prisma
-datasource db {
-  provider = "postgresql"
-}
-```
-
-You can use the `env()` function in the following places:
-
-* A datasource url
-* Generator binary targets
-
-See [Environment variables](/orm/v6/more/dev-environment/environment-variables) for more information about how to use an `.env` file during development.
-
-Comments [#comments]
-
-There are three types of comments that are supported in Prisma Schema Language:
-
-* `// comment`: This comment is for the reader's clarity and is not present in the abstract syntax tree (AST) of the schema.
-* `/// comment`: These comments will show up in the abstract syntax tree (AST) of the schema as descriptions to AST nodes. Tools can then use these comments to provide additional information. All comments are attached to the next available node - [free-floating comments](https://github.com/prisma/prisma/issues/3544) are not supported and are not included in the AST.
-* `/* block comment */`: These comments will show up in the abstract syntax tree, similarly to `///` comments.
-
-Here are some different examples:
-
-```prisma
-/// This comment will get attached to the `User` node in the AST
-model User {
-  /// This comment will get attached to the `id` node in the AST
-  id     Int   @default(autoincrement())
-  // This comment is just for you
-  weight Float /// This comment gets attached to the `weight` node
-}
-
-// This comment is just for you. It will not
-// show up in the AST.
-
-/// This comment will get attached to the
-/// Customer node.
-model Customer {
-  /**
-   * ...and so will this comment
-   */
-}
-```
-
-Auto formatting [#auto-formatting]
-
-Prisma ORM supports formatting `.prisma` files automatically. There are two ways to format `.prisma` files:
-
-* Run the [`prisma format`](/orm/v6/reference/prisma-cli-reference#format) <span class="api" /> command.
-* Install the [Prisma VS Code extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma) and invoke the [VS Code format action](https://code.visualstudio.com/docs/editor/codebasics#_formatting) - manually or on save.
-
-There are no configuration options - [formatting rules](#formatting-rules) are fixed (similar to Golang's `gofmt` but unlike Javascript's `prettier`):
-
-Formatting rules [#formatting-rules]
-
-Configuration blocks are aligned by their = sign [#configuration-blocks-are-aligned-by-theirsign]
-
-```
-block _ {
-  key      = "value"
-  key2     = 1
-  long_key = true
-}
-```
-
-Field definitions are aligned into columns separated by 2 or more spaces [#field-definitions-are-aligned-into-columns-separated-by-2-or-more-spaces]
-
-```
-block _ {
-  id          String       @id
-  first_name  LongNumeric  @default
-}
-```
-
-Empty lines resets block alignment and formatting rules [#empty-lines-resets-block-alignment-and-formatting-rules]
-
-```
-block _ {
-  key   = "value"
-  key2  = 1
-  key10 = true
-
-  long_key   = true
-  long_key_2 = true
-}
-```
-
-```
-block _ {
-  id  String  @id
-              @default
-
-  first_name  LongNumeric  @default
-}
-```
-
-Multiline field attributes are properly aligned with the rest of the field attributes [#multiline-field-attributes-are-properly-aligned-with-the-rest-of-the-field-attributes]
-
-```
-block _ {
-  id          String       @id
-                           @default
-  first_name  LongNumeric  @default
-}
-```
-
-Block attributes are sorted to the end of the block [#block-attributes-are-sorted-to-the-end-of-the-block]
-
-```
-block _ {
-  key   = "value"
-
-  @@attribute
-}
-```
-
-## Related pages
-
-- [`PostgreSQL extensions`](https://www.prisma.io/docs/orm/v6/prisma-schema/postgresql-extensions): How to install and manage PostgreSQL extensions with Prisma ORM using customized migrations, and how to use them in Prisma Client.
-- [`What is introspection?`](https://www.prisma.io/docs/orm/v6/prisma-schema/introspection): Learn how you can introspect your database to generate a data model into your Prisma schema.
-
-# Schema location (/docs/orm/v6/prisma-schema/overview/location)
-
-Location: ORM > v6 > Prisma Schema > Overview > Schema location
-
-The default name for the Prisma Schema is a single file `schema.prisma` in your `prisma` folder. When your schema is named like this, the Prisma CLI will detect it automatically.
-
-Prisma Schema location [#prisma-schema-location]
-
-The Prisma CLI looks for the Prisma Schema in the following locations, in the following order:
-
-1. The location specified by the [`--schema` flag](/orm/v6/reference/prisma-cli-reference), which is available when you `introspect`, `generate`, `migrate`, and `studio`:
-
-   ```bash
-   prisma generate --schema=./alternative/schema.prisma
-   ```
-
-2. The location specified in the `package.json` file (version 2.7.0 and later):
-
-   ```json
-   "prisma": {
-     "schema": "db/schema.prisma"
-   }
-   ```
-
-3. Default locations:
-   * `./prisma/schema.prisma`
-   * `./schema.prisma`
-
-The Prisma CLI outputs the path of the schema that will be used. The following example shows the terminal output for `prisma db pull`:
-
-```text
-Environment variables loaded from .env
-Prisma Schema loaded from prisma/schema.prisma
-
-Introspecting based on datasource defined in prisma/schema.prisma …
-
-✔ Introspected 4 models and wrote them into prisma/schema.prisma in 239ms
-
-Run prisma generate to generate Prisma Client.
-```
-
-Multi-file Prisma schema [#multi-file-prisma-schema]
-
-If you prefer splitting your Prisma schema into multiple files, you can have a setup that looks as follows:
-
-```
-prisma/
-├── migrations
-├── models
-│   ├── posts.prisma
-│   ├── users.prisma
-│   └── ... other `.prisma` files
-└── schema.prisma
-```
-
-> [!NOTE]
-> Multi-file Prisma schemas are Generally Available since [v6.7.0](https://pris.ly/release/6.7.0). Before that, they could be used via the `prismaSchemaFolder` Preview feature flag.
-
-Usage [#usage]
-
-When using a multi-file Prisma schema, you must always explicitly specify the location of the directory that contains your schema files (including the main `schema.prisma` file with your `generator` block).
-
-You can do this in either of three ways:
-
-* pass the `--schema` option to your Prisma CLI command (e.g. `prisma migrate dev --schema ./prisma`)
-* set the `prisma.schema` field in `package.json`:
-  ```jsonc
-  // package.json
-  {
-    "prisma": {
-      "schema": "./prisma",
-    },
-  }
-  ```
-* set the `schema` property in [`prisma.config.ts`](/orm/v6/reference/prisma-config-reference#schema) ( for Prisma ORM v7):
-
-  ```ts
-  import { defineConfig, env } from "prisma/config";
-  import "dotenv/config";
-
-  export default defineConfig({
-    schema: "prisma/schema.prisma",
-    migrations: {
-      path: "prisma/migrations",
-      seed: "tsx prisma/seed.ts",
-    },
-    datasource: {
-      url: env("DATABASE_URL"),
-    },
-  });
-  ```
-
-  > [!NOTE]
-> We recommend using the [Prisma Config file](/orm/v6/reference/prisma-config-reference#schema) to specify the location of your Prisma schema. This is the most flexible way to specify the location of your Prisma schema alongside other configuration options.
-
-> [!WARNING]
-> The `schema.prisma` file (which contains your `generator` block) must be located in the same directory that you specify in your schema configuration. For example, if you configure `schema: 'prisma'`, your `schema.prisma` file must be at `prisma/schema.prisma`, not in a subdirectory like `prisma/models/schema.prisma`.
-
-You also must place the `migrations` directory at the same level as your `schema.prisma` file.
-
-For example, assuming `schema.prisma` defines the `generator` block, here's the correct directory structure:
-
-```
-# All files must be inside the `prisma/` directory
-# `migrations` and `schema.prisma` must be at the same level
-prisma/
-├── migrations
-├── models
-│   ├── posts.prisma
-│   └── users.prisma
-└── schema.prisma  # Contains generator block
-```
-
-> [!NOTE]
-> If your schema files are in a `prisma/` directory (as shown above), the Prisma CLI commands like `prisma generate` and `prisma migrate dev` will work without additional configuration, as `./prisma/schema.prisma` is a default location.
-
-Tips for multi-file Prisma Schema [#tips-for-multi-file-prisma-schema]
-
-We've found that a few patterns work well with this feature and will help you get the most out of it:
-
-* Organize your files by domain: group related models into the same file. For example, keep all user-related models in `user.prisma` while post-related models go in `post.prisma`.
-* Use clear naming conventions: schema files should be named clearly and succinctly. Use names like `user.prisma` and `post.prisma` and not `myModels.prisma` or `CommentFeaturesSchema.prisma`.
-* Have an obvious "main" schema file: while you can now have as many schema files as you want, you'll still need a place where you define your `generator` block. We recommend having a single schema file that's obviously the "main" file so that this block is easy to find. `main.prisma`, `schema.prisma`, and `base.prisma` are a few we've seen that work well.
-
-## Related pages
-
-- [`Data sources`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/data-sources): Data sources enable Prisma to connect to your database. This page explains how to configure data sources in your Prisma schema.
-- [`Generators`](https://www.prisma.io/docs/orm/v6/prisma-schema/overview/generators): Generators in your Prisma schema specify what assets are generated when the `prisma generate` command is invoked. This page explains how to configure generators.
 
 # Prisma Error Reference (/docs/orm/v6/reference/errors)
 

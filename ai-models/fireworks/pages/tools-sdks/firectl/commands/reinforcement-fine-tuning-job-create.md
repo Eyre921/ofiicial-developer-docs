@@ -39,9 +39,9 @@ firectl reinforcement-fine-tuning-job create \
       --evaluator string                          The evaluator resource name to use for the reinforcement fine-tuning job. (Required)
       --epochs int32                              The number of epochs for the reinforcement fine-tuning job. (default 1)
       --learning-rate float32                     The learning rate for the reinforcement fine-tuning job. (default 0.0001)
-      --max-context-length int32                  Maximum token length for sequences within each training batch. Shorter sequences are concatenated; longer sequences are truncated.
-      --batch-size int32                          The batch size measured in tokens. Maximum number of tokens packed into each training batch/step. A single sequence will not be split across batches.
-      --batch-size-samples int32                  Number of samples per gradient update. If set to k, gradients update after every k samples. By default (0), gradients update based on batch-size (tokens).
+      --max-context-length int32                  Maximum token length per sequence. When unset, defaults to the validated training shape's max supported context length. Capped (not pinned) by the shape: smaller user values are honored.
+      --batch-size int32                          Legacy V1 token budget used by managed RFT. Limits packed tokens per microbatch and remains active when --batch-size-samples is set.
+      --batch-size-samples int32                  Optional number of rollout samples per gradient batch. Works alongside --batch-size; with --gradient-accumulation-steps=N, the target samples per optimizer step is this value multiplied by N.
       --gradient-accumulation-steps int32         The number of batches to accumulate gradients before updating the model parameters. The effective batch size will be batch-size multiplied by this value. (default 1)
       --learning-rate-warmup-steps int32          The number of learning rate warmup steps for the reinforcement fine-tuning job.
       --lora-rank int32                           The rank of the LoRA layers for the reinforcement fine-tuning job. (default 8)

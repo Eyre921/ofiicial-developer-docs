@@ -294,6 +294,14 @@ Patch a deployment by ID.
 
 
 
+# Patch Deployment Resource Tiers
+Source: https://docs.langchain.com/api-reference/deployments-v2/patch-deployment-resource-tiers
+
+https://api.host.langchain.com/openapi.json patch /v2/deployments/{deployment_id}/resource-tiers
+Patch a deployment's compute and database resource tiers independently.
+
+
+
 # Patch Deployment Tier
 Source: https://docs.langchain.com/api-reference/deployments-v2/patch-deployment-tier
 
@@ -698,7 +706,7 @@ Each condition group specifies:
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `project`           | `projects:read`, `projects:update`, `projects:delete`, `runs:read`, `runs:share`, `runs:delete`, `projects:increase-trace-tier`, `projects:decrease-trace-tier`                   |
 | `prompt`            | `prompts:read`, `prompts:update`, `prompts:delete`, `prompts:share`, `prompts:tag`                                                                                                |
-| `dataset`           | `datasets:read`, `datasets:update`, `datasets:delete`, `datasets:share`                                                                                                           |
+| `dataset`           | `datasets:read`, `datasets:update`, `datasets:delete`, `datasets:share`, `datasets:download`                                                                                      |
 | `deployment`        | `deployments:read`, `deployments:update`, `deployments:delete`                                                                                                                    |
 | `mcp_server`        | `mcp-servers:read`, `mcp-servers:invoke`, `mcp-servers:update`, `mcp-servers:delete`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control). |
 | `fleet_integration` | `mcp-servers:read`, `mcp-servers:invoke`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control).                                             |
@@ -3538,70 +3546,187 @@ Source: https://docs.langchain.com/langsmith/agent-server-changelog
 
 [Agent Server](/langsmith/agent-server) is an API platform for creating and managing agent-based applications. It provides built-in persistence, a task queue, and supports deploying, configuring, and running assistants (agentic workflows) at scale. This changelog documents all notable updates, features, and fixes to Agent Server releases.
 
-<Update label="2026-06-30">
-  ## v0.11.0rc8
+## Release cadence
 
-  ### General Notes
+`langgraph-api` maintains three release streams:
 
-  * Agent Server metrics are now emitted through the OpenTelemetry/Prometheus client on the dedicated Prometheus scrape endpoint (`LSD_PROM_METRICS_PORT`, default 9464). Set `LSD_PROM_METRICS_ENABLED=true` to enable the endpoint and `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` to expose the internal metrics migrated from the main API `/metrics` path. By default, the Prometheus endpoint serves only LSD Deployment UI metrics.
-  * **Potentially breaking** for Prometheus scrapers and dashboards: point collectors at the OTLP Prometheus port instead of the main API `/metrics` path. `lg_api_http_requests_latency_seconds` is now `lg_api_http_requests_latency` and reports milliseconds instead of seconds. Pool request counters now use a `_total` suffix (`lg_api_pg_pool_requests_queued_total`, `lg_api_pg_pool_requests_errors_total`). The `lg_api_pending_runs_wait_time_*` gauges are removed in favor of the `lg_api_run_queue_wait_time_1st_attempt` latency histogram.
-</Update>
+* `latest`: Published every morning with the latest bug fixes and test features. Semantic versioning uses a dev tag off the minor version, for example `0.9.0.dev1`.
+* `rc` (release candidate): Published every three weeks and patched as needed during the bake window for critical bug backfills. Recommended for users who want to test a feature in the next stable release. Semantic versioning uses an rc tag off the minor version, for example `0.9.0rc1`.
+* `stable`: Published every three weeks from rc. Patched for security-related dependency bumps or critical bug fixes. This is the default version used by new deployments and is recommended for production use. Semantic versioning uses minor bumps for regular promotions (for example `0.9.0`) and patch bumps for backfills (for example `0.9.1`).
 
-<Update label="2026-06-25">
-  ## v0.11.0rc5
+Deployments use the newest `stable` version by default and are automatically updated to the newest `stable` version on each new revision. To pin to a specific version, set [`api_version`](/langsmith/cli#pinning-api-version) to the desired version in langgraph.json.
 
-  ### Fixes
+## v0.11
 
-  * Fixed DeltaChannel replay for channels that migrated from a non-delta channel to DeltaChannel. The checkpointer did not correctly recognize the head seed checkpoint, which could produce incorrect reconstructed state for non-additive reducers.
-</Update>
+Latest version: `0.11.0`
 
-<Update label="2026-06-18">
-  ## v0.11.0rc4
+### Changes
 
-  ### Fixes
+#### New Features
 
-  * Fixed HTTP `input.respond` validation for Event Streaming v2 to read pending interrupts from the durable thread row instead of rebuilding thread state, preventing valid HITL resumes from incorrectly returning `no_such_interrupt` after reconnects, redeploys, or thread-state lookup failures.
-  * Fixed `input.respond` so optional `update` and `goto` parameters are forwarded into the same `Command` as the resume value.
-</Update>
+* Added DeltaChannel-aware pruning that preserves only the minimum ancestor checkpoints needed for state reconstruction, replacing the previous approach that refused to prune threads with active delta channels.
+* Added opt-in Prometheus metrics scrape support. Set `LSD_PROM_METRICS_ENABLED=true` to expose OTel metrics (run lifecycle, latency, stream, worker gauges) on a dedicated Prometheus scrape endpoint at port `LSD_PROM_METRICS_PORT` (default 9464). Datadog OTLP push continues to work alongside Prometheus when both are configured.
+* Added `coreApi.runQueueTraceLog` config flag (`LSD_RUN_QUEUE_TRACE_LOG` env var, default `false`) to enable verbose Redis run-queue trace logs.
+* Added the `langsmith_session_name` field to each run and exposed support via `/info` so Studio can detect API versions that support this field.
+* Added `-fips` variants of Wolfi Python and JS server images (for example `3.13-wolfi-fips`, `22-wolfi-fips`), built with the Go FIPS 140 cryptographic module and FIPS-hardened OpenSSL for Node.
 
-<Update label="2026-06-18">
-  ## v0.11.0rc3
+#### Fixes
 
-  ### New Features
+* Fixed protocol v2 runs on JS graphs failing silently. The sidecar rejected `streamEvents` with a 400 due to strict stream-mode validation, the error was swallowed, and runs falsely reported success with 0 nodes executed. Relaxed stream-mode validation at the HTTP boundary and now raise a clear error on non-2xx sidecar responses instead of masking the failure.
+* Fixed protocol v2 event streaming against JS sidecar (remote) graphs, which were incorrectly served through the legacy reconstruction path. Remote graphs now use LangGraphJS's native v3 stream for v2 event-streaming runs, resolving tool calls not rendering, headless interrupts never executing or resuming, and `400: tool_use ids must be unique` errors on the final message after a resume.
+* Delete run now skips checkpoint deletion for threads using DeltaChannel and removes only the run record. Checkpoints that store delta writes later checkpoints depend on are preserved. Use thread prune APIs to reclaim checkpoint storage on delta-channel threads.
+* Fixed HTTP `input.respond` validation for Event Streaming v2 to read pending interrupts from the durable thread row instead of rebuilding thread state, preventing valid HITL resumes from incorrectly returning `no_such_interrupt` after reconnects, redeploys, or thread-state lookup failures.
+* Fixed `input.respond` so optional `update` and `goto` parameters are forwarded into the same `Command` as the resume value.
+* Fixed DeltaChannel replay for channels that migrated from a non-delta channel to DeltaChannel. The checkpointer did not correctly recognize the head seed checkpoint, which could produce incorrect reconstructed state for non-additive reducers.
+* Fixed custom stream events emitted from subgraphs not being forwarded to the client when using `stream_mode=["custom"]` with `stream_subgraphs=True` on JS deployments.
+* Fixed a bug where calling `join_stream` with a `stream_mode` filter could cause non-message events from subgraphs to be incorrectly filtered from the results.
+* Fixed Redis Cluster pub/sub failing to connect on TLS-only clusters when `REDIS_CLUSTER=true`, which previously attempted to dial port `0`.
+* Made queue runs query field selection explicit for backwards compatibility, so new run schema fields can be added without breaking older server versions during rollbacks.
 
-  * Added `coreApi.runQueueTraceLog` config flag (`LSD_RUN_QUEUE_TRACE_LOG` env var, default `false`) to enable verbose Redis run-queue trace logs.
-</Update>
+<Accordion title="Previous v0.11 releases">
+  <Update label="2026-07-09">
+    ## v0.11.0rc14
 
-<Update label="2026-06-17">
-  ## v0.11.0rc2
+    ### Fixes
 
-  ### Fixes
+    * Fixed OTLP latency histogram bucket configuration after the metrics migration so latency metrics use legacy second-scale buckets converted to milliseconds, restoring accurate p95/p99 for long HTTP polls, queue waits, and run execution.
+    * Made queue runs query field selection explicit for backwards compatibility, so new run schema fields can be added without breaking older server versions during rollbacks.
+  </Update>
 
-  * Loosened the `starlette` lower bound introduced in 0.11.0rc1 back to `>=0.38.6` so `langgraph-api` can be installed alongside environments that pin older Starlette versions. Builds still resolve Starlette to 1.0.1 through the lockfile.
-</Update>
+  <Update label="2026-07-08">
+    ## v0.11.0rc13
 
-<Update label="2026-06-11">
-  ## v0.11.0rc1
+    ### Fixes
 
-  ### General Notes
+    * Fixed JS worker port collisions when the API server and queue worker run as separate containers in the same Kubernetes pod. The queue entrypoint now offsets loopback ports.
+    * Fixed Redis Cluster pub/sub failing to connect on TLS-only clusters when `REDIS_CLUSTER=true`, which previously attempted to dial port `0`.
+  </Update>
 
-  * Includes dependency and security maintenance updates.
+  <Update label="2026-07-08">
+    ## v0.11.0rc12
 
-  ### New Features
+    ### New Features
 
-  * Added DeltaChannel-aware pruning that preserves only the minimum ancestor checkpoints needed for state reconstruction, replacing the previous approach that refused to prune threads with active delta channels. Supported across the Postgres, SQLite, DeferredDelete, and in-memory runtimes.
-  * Added DeltaChannel-aware pruning for the MongoDB checkpointer, preserving only the minimum ancestor checkpoints and delta-channel blobs needed for state reconstruction.
-  * Added opt-in Prometheus metrics scrape support. Set `LSD_PROM_METRICS_ENABLED=true` to expose OTel metrics (run lifecycle, latency, stream, worker gauges) on a dedicated Prometheus scrape endpoint at port `LSD_PROM_METRICS_PORT` (default 9464). Datadog OTLP push continues to work alongside Prometheus when both are configured.
-  * Added opt-in Go core rate limits for unary core-api RPCs and Redis stream publish bytes, with Redis-backed GCRA enforcement, shadow/enforce modes, and `LS_RATE_LIMITS` bootstrap config with YAML override.
-  * Allow passing custom certificate and key files (`ssl_certfile`, `ssl_keyfile`) to run the dev server over HTTPS.
+    * Added `-fips` variants of Wolfi Python and JS server images (for example `3.13-wolfi-fips`, `22-wolfi-fips`), built with the Go FIPS 140 cryptographic module and FIPS-hardened OpenSSL for Node.
+  </Update>
 
-  ### Fixes
+  <Update label="2026-07-07">
+    ## v0.11.0rc11
 
-  * Fixed protocol v2 runs on JS graphs failing silently. The sidecar rejected `streamEvents` with a 400 due to strict stream-mode validation, the error was swallowed, and runs falsely reported success with 0 nodes executed. Relaxed stream-mode validation at the HTTP boundary and now raise a clear error on non-2xx sidecar responses instead of masking the failure.
-  * Fixed protocol v2 event streaming against JS sidecar (remote) graphs, which were incorrectly served through the legacy reconstruction path. Remote graphs now use LangGraphJS's native v3 stream for v2 event-streaming runs, resolving tool calls not rendering, headless interrupts never executing or resuming, and `400: tool_use ids must be unique` errors on the final message after a resume.
-  * Delete run now skips checkpoint deletion for threads using DeltaChannel and removes only the run record. Checkpoints that store delta writes later checkpoints depend on are preserved. Use thread prune APIs to reclaim checkpoint storage on delta-channel threads.
-  * Fixed Prometheus metrics export and aligned OpenTelemetry exporter configuration.
-</Update>
+    ### New Features
+
+    * Added the `langsmith_session_name` field to each run. This field is the LangSmith tracing project name when tracing is enabled. Exposed support via `/info` so Studio can detect API versions that support this field.
+
+    ### General Notes
+
+    * Applied stranded Postgres migration `061` for `thread_ls_user_id_idx` and `thread_assistant_id_idx` btree indexes.
+  </Update>
+
+  <Update label="2026-07-02">
+    ## v0.11.0rc10
+
+    ### New Features
+
+    * Added core search cost rate limits for assistants, runs, crons, and threads search, wired through existing rate-limit config and metrics.
+
+    ### General Notes
+
+    * Wolfi (`chainguard-base-fips`) server images now ship a FIPS-compliant Go core-server and FIPS-mode Node, and no longer include the unused bun runtime.
+  </Update>
+
+  <Update label="2026-07-01">
+    ## v0.11.0rc9
+
+    ### Fixes
+
+    * Fixed a bug where calling `join_stream` with a `stream_mode` filter could cause non-message events from subgraphs to be incorrectly filtered from the results.
+  </Update>
+
+  <Update label="2026-06-30">
+    ## v0.11.0rc8
+
+    ### General Notes
+
+    * Agent Server metrics are now emitted through the OpenTelemetry/Prometheus client on the dedicated Prometheus scrape endpoint (`LSD_PROM_METRICS_PORT`, default 9464). Set `LSD_PROM_METRICS_ENABLED=true` to enable the endpoint and `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` to expose the internal metrics migrated from the main API `/metrics` path. By default, the Prometheus endpoint serves only LSD Deployment UI metrics.
+    * **Potentially breaking** for Prometheus scrapers and dashboards: point collectors at the OTLP Prometheus port instead of the main API `/metrics` path. `lg_api_http_requests_latency_seconds` is now `lg_api_http_requests_latency` and reports milliseconds instead of seconds. Pool request counters now use a `_total` suffix (`lg_api_pg_pool_requests_queued_total`, `lg_api_pg_pool_requests_errors_total`). The `lg_api_pending_runs_wait_time_*` gauges are removed in favor of the `lg_api_run_queue_wait_time_1st_attempt` latency histogram.
+  </Update>
+
+  <Update label="2026-06-30">
+    ## v0.11.0rc7
+
+    ### Fixes
+
+    * Fixed custom stream events emitted from subgraphs not being forwarded to the client when using `stream_mode=["custom"]` with `stream_subgraphs=True` on JS deployments.
+
+    ### General Notes
+
+    * Includes security dependency updates for PyJWT, LangSmith, cryptography, Hono, undici, `golang.org/x/net`, `golang.org/x/crypto`, and Starlette.
+  </Update>
+
+  <Update label="2026-06-26">
+    ## v0.11.0rc6
+
+    ### New Features
+
+    * Added rate-limit observability metrics, including configured-limit gauges (`lg_api_rate_limit_configured_rate`, `lg_api_rate_limit_configured_burst`) and a per-bucket `rate_limit_key` tag on decision, error, and cost metrics.
+  </Update>
+
+  <Update label="2026-06-25">
+    ## v0.11.0rc5
+
+    ### Fixes
+
+    * Fixed DeltaChannel replay for channels that migrated from a non-delta channel to DeltaChannel. The checkpointer did not correctly recognize the head seed checkpoint, which could produce incorrect reconstructed state for non-additive reducers.
+  </Update>
+
+  <Update label="2026-06-18">
+    ## v0.11.0rc4
+
+    ### Fixes
+
+    * Fixed HTTP `input.respond` validation for Event Streaming v2 to read pending interrupts from the durable thread row instead of rebuilding thread state, preventing valid HITL resumes from incorrectly returning `no_such_interrupt` after reconnects, redeploys, or thread-state lookup failures.
+    * Fixed `input.respond` so optional `update` and `goto` parameters are forwarded into the same `Command` as the resume value.
+  </Update>
+
+  <Update label="2026-06-18">
+    ## v0.11.0rc3
+
+    ### New Features
+
+    * Added `coreApi.runQueueTraceLog` config flag (`LSD_RUN_QUEUE_TRACE_LOG` env var, default `false`) to enable verbose Redis run-queue trace logs.
+  </Update>
+
+  <Update label="2026-06-17">
+    ## v0.11.0rc2
+
+    ### Fixes
+
+    * Loosened the `starlette` lower bound introduced in 0.11.0rc1 back to `>=0.38.6` so `langgraph-api` can be installed alongside environments that pin older Starlette versions. Builds still resolve Starlette to 1.0.1 through the lockfile.
+  </Update>
+
+  <Update label="2026-06-11">
+    ## v0.11.0rc1
+
+    ### General Notes
+
+    * Includes dependency and security maintenance updates.
+
+    ### New Features
+
+    * Added DeltaChannel-aware pruning that preserves only the minimum ancestor checkpoints needed for state reconstruction, replacing the previous approach that refused to prune threads with active delta channels. Supported across the Postgres, SQLite, DeferredDelete, and in-memory runtimes.
+    * Added DeltaChannel-aware pruning for the MongoDB checkpointer, preserving only the minimum ancestor checkpoints and delta-channel blobs needed for state reconstruction.
+    * Added opt-in Prometheus metrics scrape support. Set `LSD_PROM_METRICS_ENABLED=true` to expose OTel metrics (run lifecycle, latency, stream, worker gauges) on a dedicated Prometheus scrape endpoint at port `LSD_PROM_METRICS_PORT` (default 9464). Datadog OTLP push continues to work alongside Prometheus when both are configured.
+    * Added opt-in Go core rate limits for unary core-api RPCs and Redis stream publish bytes, with Redis-backed GCRA enforcement, shadow/enforce modes, and `LS_RATE_LIMITS` bootstrap config with YAML override.
+    * Allow passing custom certificate and key files (`ssl_certfile`, `ssl_keyfile`) to run the dev server over HTTPS.
+
+    ### Fixes
+
+    * Fixed protocol v2 runs on JS graphs failing silently. The sidecar rejected `streamEvents` with a 400 due to strict stream-mode validation, the error was swallowed, and runs falsely reported success with 0 nodes executed. Relaxed stream-mode validation at the HTTP boundary and now raise a clear error on non-2xx sidecar responses instead of masking the failure.
+    * Fixed protocol v2 event streaming against JS sidecar (remote) graphs, which were incorrectly served through the legacy reconstruction path. Remote graphs now use LangGraphJS's native v3 stream for v2 event-streaming runs, resolving tool calls not rendering, headless interrupts never executing or resuming, and `400: tool_use ids must be unique` errors on the final message after a resume.
+    * Delete run now skips checkpoint deletion for threads using DeltaChannel and removes only the run record. Checkpoints that store delta writes later checkpoints depend on are preserved. Use thread prune APIs to reclaim checkpoint storage on delta-channel threads.
+    * Fixed Prometheus metrics export and aligned OpenTelemetry exporter configuration.
+  </Update>
+</Accordion>
 
 <Update label="2026-06-10">
   ## v0.10.0
@@ -42499,19 +42624,15 @@ To require approval for a tool, set it to **Ask**. When the agent reaches that t
 
 ### What you can do when your agent pauses
 
-When your agent stops to ask for approval, you have three options:
+When your agent stops to ask for approval, you have two options:
 
 <CardGroup>
   <Card title="Accept" icon="check">
     Give the green light and let your agent proceed with its plan.
   </Card>
 
-  <Card title="Edit" icon="edit">
-    Modify the agent's message or parameters before allowing it to continue.
-  </Card>
-
-  <Card title="Send feedback" icon="message">
-    Share feedback to help your agent learn and improve.
+  <Card title="Reject" icon="x">
+    Decline the action and tell the agent what to change.
   </Card>
 </CardGroup>
 
@@ -43098,76 +43219,25 @@ Source: https://docs.langchain.com/langsmith/fleet/quickstart
 
 Build an agent from a template
 
-In this quickstart, you use the prebuilt **Executive Assistant** [template](/langsmith/fleet/templates) that manages your inbox, calendar, and daily brief.
+By the end of this quickstart, you will have an Executive Assistant that labels the Gmail messages needing your attention and pauses for approval before acting, all set up without code or a model API key and controlled through chat.
 
 <Callout icon="message">
-  You'll interact with your agent through chat, just like texting a helpful assistant.
+  You interact with your agent through chat, just like texting a helpful assistant.
 </Callout>
+
+You will start from the prebuilt **Executive Assistant** [template](/langsmith/fleet/templates), which manages your inbox, calendar, and daily brief.
 
 ## Before you start
 
-You'll need:
+You need:
 
 * A LangSmith account ([sign up here](https://smith.langchain.com/agents?skipOnboarding=true\&utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-quickstart)).
 * A Gmail account.
-* A Google calendar.
-* An OpenAI or Anthropic API key (Step 1 will show you how to get one).
+* A Google Calendar.
 
-## 1. Get your model API key
+Fleet manages the AI model for you, so you do not need your own model provider API key. For more information, see [Models](/langsmith/fleet/essentials#models).
 
-Your agent needs an API key to connect to an AI model. The AI model is what allows your agent to understand and respond to your requests.
-
-<Tabs>
-  <Tab title="OpenAI (ChatGPT)">
-    1. Go to [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
-    2. Click **Create new secret key**.
-    3. Give it a name like "Fleet".
-    4. Copy the key (it starts with `sk-`).
-    5. Save it somewhere safe, you'll need it in Step 2.
-  </Tab>
-
-  <Tab title="Anthropic (Claude)">
-    1. Go to [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
-    2. Click **Create Key**.
-    3. Give it a name like "Fleet".
-    4. Copy the key (it starts with `sk-ant-`).
-    5. Save it somewhere safe, you'll need it in Step 2.
-  </Tab>
-</Tabs>
-
-<Warning>
-  Both services charge based on usage.
-</Warning>
-
-## 2. Add your API key to LangSmith
-
-Now you'll add your API key to LangSmith so your agents can use it:
-
-<Steps>
-  <Step title="Open Settings">
-    1. Go to [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-quickstart).
-    2. Click the <Icon icon="settings" /> **Settings** icon in the bottom left.
-  </Step>
-
-  <Step title="Go to Secrets">
-    Click the **Secrets** tab at the top.
-  </Step>
-
-  <Step title="Add your key">
-    1. Click **Add secret**.
-    2. For **Key**, enter:
-       * `OPENAI_API_KEY` (if using OpenAI)
-       * `ANTHROPIC_API_KEY` (if using Anthropic)
-    3. For **Value**, paste the API key you copied in Step 1.
-    4. Click **Save secret**.
-  </Step>
-</Steps>
-
-<Callout type="success" icon="check">
-  Your agent now has access to an AI model to understand and respond to your requests. Next, you'll create your agent.
-</Callout>
-
-## 3. Create your agent
+## 1. Create your agent
 
 <Steps>
   <Step title="Navigate to Fleet">
@@ -43177,49 +43247,100 @@ Now you'll add your API key to LangSmith so your agents can use it:
   <Step title="Choose a template">
     1. Select **Templates** in the left-hand navigation, or click **+** in **My Agents** and select **From template**.
     2. Select the **Executive Assistant** template to create your agent.
+    3. Click **Create Agent** at the top right.
 
     <Tip>
-      If you do not want to start with a template, choose **Build with AI** when you create an agent and describe the agent you want. The agent configures itself and pauses at key points for your input.
+      If you do not want to start with a template, choose **Build with AI** or **New agent** when you create an agent and describe the agent you want. The agent configures itself and pauses at key points for your input.
     </Tip>
   </Step>
 
-  <Step title="Authorize accounts">
-    Your agent will ask you to connect your Google accounts:
+  <Step title="Skip channel setup for now">
+    When the agent prompts you to connect a channel, click **Skip for now**. You connect channels in a [later step](#3-configure-your-agent).
+  </Step>
 
-    1. Click **Connect**.
-    2. Sign in with your Google account.
-    3. Review permissions and click **Allow**.
-    4. You'll be redirected back to LangSmith where your agent will be created.
+  <Step title="Answer onboarding questions">
+    Provide information so your agent knows how to work the way you prefer.
+  </Step>
+</Steps>
+
+## 2. Connect tools
+
+Your agent asks you to connect to your Gmail and Google Calendar accounts.
+
+A connection gives your agent the [tools](/langsmith/fleet/tools) to use a service. A [channel](/langsmith/fleet/channels) lets the service trigger the agent. You connect Gmail and Google Calendar here, then add Gmail as a channel in [Configure your agent](#3-configure-your-agent).
+
+<Steps>
+  <Step title="Connect Gmail">
+    1. In the **Gmail** row, click **Connect** on the right.
+    2. In the dialog, click **+ Connect new account**.
+    3. Choose your account and click **Continue**.
+    4. Review permissions and click **Allow**.
+    5. LangSmith redirects you back to Fleet. Select **Gmail** to expand the row.
+    6. Click **Choose account** and select the account you chose in step 3.
+  </Step>
+
+  <Step title="Connect Google Calendar">
+    1. Connecting Gmail authorized your Google account for Gmail only, not Google Calendar. To grant calendar access, click **Update permissions** on the right in the **Google Calendar** row.
+    2. In the dialog, click **Reauthorize**.
+    3. Choose your account and click **Continue**.
+    4. Review permissions and click **Allow**.
+    5. LangSmith redirects you back to Fleet. Close the dialog.
+    6. Click **Save and continue**.
   </Step>
 </Steps>
 
 <Info>
-  Your agent only accesses your accounts when working on tasks you give it. You can revoke access anytime in your Google account settings.
+  Your agent only accesses your accounts when working on tasks you give it. You can revoke access anytime in the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar) or your Google account settings.
 </Info>
 
-## 4. View the agent template
+## 3. Configure your agent
+
+There are two ways to configure your agent:
+
+* Chatting with your agent directly
+* Modifying settings in the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar)
+
+This section describes how to configure your agent using the agent sidebar.
 
 <Steps>
-  <Step title="View and customize the template">
-    At this point, you can review the template instructions for the Executive Assistant. If needed, you can make adjustments to the instructions.
-
-    If you made any changes, click **Save changes**.
+  <Step title="Open the agent sidebar">
+    Click **<Icon icon="settings" /> Configure** at the top right to open the agent sidebar.
   </Step>
 
-  <Step title="Start a test chat">
+  <Step title="View connections">
+    Expand the **Connections** drawer. **Gmail** and **Google Calendar** appear as **Connected**. If either shows as not connected, complete [2. Connect tools](#2-connect-tools) before continuing.
+  </Step>
+
+  <Step title="Configure a tool to ask for approval">
+    In the **Connections** drawer, click **Gmail** to view the available tools. By default, the tools are enabled and set to **Auto**, so they run without your approval.
+
+    For **Apply Label**, click **Ask**, so your agent pauses and waits for your approval before continuing. You can accept the proposed action, or reject it and tell the agent what to change. For more information, see [Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop).
+  </Step>
+
+  <Step title="Connect channels">
+    Expand the **Channels** drawer. Click **Gmail**. Select the account that you set up for **Connections**. Click **Confirm**.
+  </Step>
+
+  <Step title="Save your changes">
+    Click **Save** at the top of the sidebar to save your changes, then click **X** to close the panel.
+  </Step>
+</Steps>
+
+## 4. Test your agent
+
+<Steps>
+  <Step title="Send your agent a task">
     In the agent chat, try out the Executive Assistant, for example:
 
-    > *Apply a "Review" label to emails that I receive, which require some kind of review from me*
+    > *Apply a "Review" label to emails that I receive, which require some kind of review from me.*
   </Step>
 
-  <Step title="Agent starts working">
-    Your agent will start work and provide a **Continue** option for each step that requires your approval.
+  <Step title="Accept or reject the agent's action">
+    Click **Accept** to approve the agent's proposed action or tell the agent what it did wrong and click **Reject**.
+  </Step>
 
-    <img alt="Test chat output view with response including approvals for Gmail tool." />
-
-    <img alt="Test chat output view with response including approvals for Gmail tool." />
-
-    As you test out the agent, you can make edits to the instructions, or add tools that you may need. Click **Save changes** when you are happy with the results.
+  <Step title="Check your inbox in Gmail">
+    If you clicked **Accept**, emails that need review now have the **Review** label in your inbox.
   </Step>
 </Steps>
 
@@ -43227,14 +43348,15 @@ Now you'll add your API key to LangSmith so your agents can use it:
 
 You may want to update your agent's instructions or include more tools. You can chat with your agent directly to ask for updates, or configure it from the [agent sidebar](/langsmith/fleet/essentials#agent-sidebar):
 
+* Edit the agent's instructions (its `AGENTS.md`) in the **Knowledge** drawer. See [Instructions](/langsmith/fleet/essentials#instructions).
 * Add integrations and tools in the **Connections** drawer, and set each tool to run automatically or [ask for approval](/langsmith/fleet/essentials#human-in-the-loop). See [Tools](/langsmith/fleet/tools).
 * Connect [Slack](/langsmith/fleet/slack-app), [Gmail](/langsmith/fleet/channels#add-a-gmail-channel), or [Microsoft Teams](/langsmith/fleet/teams-app) in the **Channels** drawer.
-* Run your agent on a [schedule](/langsmith/fleet/schedules) in the **Schedule** drawer.
+* Run your agent on a [schedule](/langsmith/fleet/schedules) in the **Schedules** drawer.
 * Change the [model](/langsmith/fleet/manage-agent-settings#change-the-model) in the **Advanced settings** drawer.
 
 ## Next steps
 
-Now that you've created your first agent, here's what to explore:
+Now that you have created your first agent, here is what to explore:
 
 <CardGroup>
   <Card title="Try more templates" icon="layout-grid" href="/langsmith/fleet/templates">
@@ -44284,44 +44406,12 @@ Templates serve as starting points that you clone to create your own agent. When
 ## Available templates
 
 <CardGroup>
-  <Card title="Ashby Screening" icon="user-check">
-    Scores applicants and flags the strongest candidates.
-  </Card>
-
-  <Card title="Recruiting Outreach" icon="user-search">
-    Finds candidates worth reaching out to and drafts your outreach.
-  </Card>
-
-  <Card title="Competitor Intelligence Slack Bot" icon="brand-slack">
-    Answers Slack questions from a maintained competitor battlecard.
-  </Card>
-
-  <Card title="Brand Copywriter" icon="pencil">
-    Reviews and drafts blog posts and marketing copy.
-  </Card>
-
   <Card title="Executive Assistant" icon="mail">
     Manages your inbox, calendar, and daily brief.
   </Card>
 
-  <Card title="GTM Agent" icon="target">
-    A go-to-market teammate for outbound and research.
-  </Card>
-
-  <Card title="On-Call Copilot" icon="bell">
-    Turns a noisy page into a triaged ticket and a draft response.
-  </Card>
-
   <Card title="Software Engineer" icon="code">
     Ships code from Slack, Linear, and GitHub in a sandbox.
-  </Card>
-
-  <Card title="X Content Manager" icon="brand-x">
-    Posts on X in your voice, based on what is actually happening.
-  </Card>
-
-  <Card title="Tavily Competitor Research" icon="world-search">
-    Produces concise, cited competitor insights.
   </Card>
 </CardGroup>
 
@@ -51771,10 +51861,17 @@ In addition to the [built-in providers](/langsmith/llm-gateway#supported-provide
 A custom provider is defined by an **OpenAI Compatible Endpoint** [model configuration](/langsmith/model-configurations) that you save under **Settings → Model configurations** in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-custom-providers). The gateway uses the following options from the configuration:
 
 * A **base URL**: the upstream endpoint the gateway forwards requests to.
-* A **model name**: injected into each request so callers don't have to specify it.
+* A **model name**: the model identifier your upstream expects.
 * An **API key**: stored as a [workspace secret](/langsmith/llm-gateway-admin-setup#2-add-provider-secrets), never sent by the client.
 
-You then address the saved configuration by name through the `https://gateway.smith.langchain.com/providers/{configName}` route. When a request comes in, the gateway looks up the configuration, resolves the secret, and proxies the call to the configured upstream URL.
+You address the saved configuration by name through one of two routes, depending on whether you want callers to choose the model or want to enforce the configured one:
+
+| Route                                                        | Model name in the request body                                                |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `https://gateway.smith.langchain.com/providers/{configName}` | Forwarded to the upstream as-is—the client picks the model.                   |
+| `https://gateway.smith.langchain.com/models/{configName}`    | Overridden with the configuration's model name—the client's value is ignored. |
+
+Both routes look up the same configuration, resolve the same secret, and proxy to the same upstream URL; they only differ in whether the model name is enforced.
 
 <Note>
   `{configName}` is the configuration name from your workspace [model configuration](/langsmith/model-configurations). If the name contains characters that aren't URL-safe (such as `/` or spaces), URL-encode them in the path. For example, a configuration named `meta-llama/Llama-3.1-8B-Instruct` becomes `https://gateway.smith.langchain.com/providers/meta-llama%2FLlama-3.1-8B-Instruct/v1/chat/completions`.
@@ -51784,30 +51881,47 @@ You then address the saved configuration by name through the `https://gateway.sm
 
 1. Add the upstream endpoint's API key as a workspace secret under **Settings → Integrations → Provider Secrets**. Give it a descriptive name (for example, `MY_PROVIDER_API_KEY`).
 2. Go to **Settings → Model configurations** and create a configuration with **OpenAI Compatible Endpoint** as the provider.
-3. Set the **Base URL** to your upstream endpoint (for example, `https://my-inference-server.example.com/v1`) and the **Model Name** to the model identifier the endpoint expects.
+3. Set the **Base URL** to your upstream endpoint (for example, `https://my-inference-server.example.com/v1`) and the **Model Name** to a model identifier the endpoint expects.
 4. Set the **API Key Name** to the secret you created.
 5. Save the configuration with a **name**. This name is what you'll use in the gateway route.
 
 <Note>
-  Each configuration pins a single model, since the gateway overrides the request body's `model` with the configured value. To serve multiple models from the same endpoint, create one configuration per model (each with its own name and `/providers/{configName}` route).
+  The **Model Name** you save only matters if you call the configuration through `/models/{configName}`. Through `/providers/{configName}`, the client's `model` field is sent through unchanged, so a single configuration can serve any model your upstream supports (for example, any model pulled into a shared Ollama instance).
 </Note>
 
 ## 2. Make a call
 
-Call the saved configuration by name. The route is `https://gateway.smith.langchain.com/providers/{configName}`, where `{configName}` is the configuration name you saved in **Settings → Model configurations** (`my-custom-endpoint` in the following examples).
+Call the saved configuration by name (`my-custom-endpoint` in the following examples).
+
+### Any model: `/providers/{configName}`
+
+Use this route when the upstream serves multiple models and you want callers to pick which one:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/providers/my-custom-endpoint/v1/chat/completions \
     -H "Authorization: Bearer $LANGSMITH_API_KEY" \
     -H "Content-Type: application/json" \
+    -d '{"model":"llama3.1:8b","messages":[{"role":"user","content":"ping"}]}'
+```
+
+The gateway forwards the request body's `model` field to the upstream as-is.
+
+### One model: `/models/{configName}`
+
+Use this route to pin every call through this configuration to a single model, regardless of what the client requests—useful for enforcing model behavior for a team or application:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/models/my-custom-endpoint/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
     -d '{"messages":[{"role":"user","content":"ping"}]}'
 ```
 
-The gateway overrides the request body's `model` field with the model name from the saved configuration, so the value you pass from the client is ignored.
+The gateway overrides the request body's `model` field with the model name from the saved configuration, so any value the client passes (or omitting it, as per the example) is ignored. To serve multiple pinned models from the same upstream, create one configuration per model (each with its own name and `/models/{configName}` route).
 
 ## Supported endpoints
 
-Custom providers use the same allowlist as the built-in OpenAI provider: `POST /v1/chat/completions` (including streaming), `POST /v1/responses`, and the `GET /v1/models` listing endpoints. Any other path returns `501 Not Implemented`.
+Both `/providers/{configName}` and `/models/{configName}` use the same allowlist as the built-in OpenAI provider: `POST /v1/chat/completions` (including streaming), `POST /v1/responses`, and the `GET /v1/models` listing endpoints. Any other path returns `501 Not Implemented`.
 
 ## Next steps
 
@@ -68114,10 +68228,10 @@ Test datasets with examples for evaluation.
 | Get dataset versions                         |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | Diff dataset versions                        |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | Update dataset version (tags)                |        ✓        |         ✓        |         ✗        | `datasets:update`                                    |
-| Download dataset (OpenAI format)             |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
-| Download dataset (OpenAI fine-tuning format) |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
-| Download dataset (CSV)                       |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
-| Download dataset (JSONL)                     |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
+| Download dataset (OpenAI format)             |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
+| Download dataset (OpenAI fine-tuning format) |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
+| Download dataset (CSV)                       |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
+| Download dataset (JSONL)                     |        ✓        |         ✓        |         ✓        | `datasets:download`                                  |
 | View dataset sharing state                   |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | Share dataset publicly                       |        ✓        |         ✗        |         ✗        | `datasets:share`                                     |
 | Unshare dataset                              |        ✓        |         ✗        |         ✗        | `datasets:share`                                     |
@@ -96591,7 +96705,7 @@ Source: https://docs.langchain.com/langsmith/smith-api-ref
 
 The LangSmith REST API provides programmatic access to LangSmith platform features including tracing, datasets, experiments, annotations, and more.
 
-Browse the full API reference in the **LangSmith API** section in the sidebar.
+Browse the full API reference in the **LangSmith REST API** section in the sidebar.
 
 ## Authentication
 
@@ -97458,24 +97572,6 @@ Source: https://docs.langchain.com/langsmith/smith-api/datasets/download-dataset
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/openai_ft
 Download a dataset as OpenAI Jsonl format.
-
-
-
-# Fetch experiment runs for dataset examples
-Source: https://docs.langchain.com/langsmith/smith-api/datasets/fetch-experiment-runs-for-dataset-examples
-
-/langsmith/langsmith-platform-openapi.json post /v2/datasets/{dataset_id}/experiment-runs
-Returns a paginated page of dataset examples with runs from the requested experiments.
-Response uses the canonical `{items, next_cursor}` envelope.
-
-
-
-# Fetch shared experiment runs for dataset examples
-Source: https://docs.langchain.com/langsmith/smith-api/datasets/fetch-shared-experiment-runs-for-dataset-examples
-
-/langsmith/langsmith-platform-openapi.json post /v2/datasets/public/{share_token}/experiment-runs
-Public share-token variant of POST /v2/datasets/{dataset_id}/experiment-runs.
-Returns a paginated page of dataset examples with runs from the requested experiments.
 
 
 
@@ -99838,24 +99934,6 @@ Queues a single run for ingestion. The request body must be a JSON-encoded run o
 
 
 
-# Get a public shared trace run
-Source: https://docs.langchain.com/langsmith/smith-api/runs/get-a-public-shared-trace-run
-
-/langsmith/langsmith-platform-openapi.json get /v2/public/{share_token}/run/{run_id}
-**Alpha:** The request and response contract may change;
-Returns one run within the trace identified by the share token. The request supplies only the run ID and that run's exact start_time coordinate.
-
-
-
-# Get a single run
-Source: https://docs.langchain.com/langsmith/smith-api/runs/get-a-single-run
-
-/langsmith/langsmith-platform-openapi.json get /v2/runs/{run_id}
-**Alpha:** The request and response contract may change;
-Returns one run by ID for the given session and start_time. Use the `selects` query parameter (repeatable) to select fields to return.
-
-
-
 # Ingest Runs (Batch JSON)
 Source: https://docs.langchain.com/langsmith/smith-api/runs/ingest-runs-batch-json
 
@@ -99877,53 +99955,6 @@ Ingests multiple runs, feedback objects, and binary attachments in a single `mul
 * `attachment.<run_id>.<filename>` – arbitrary binary attachment stored in S3.
 **Headers**: every part must set `Content-Type` **and** either a `Content-Length` header or `length` parameter. Per‑part `Content-Encoding` is **not** allowed; the top‑level request may be `Content-Encoding: gzip` or `Content-Encoding: zstd`.
 **Best performance** for high‑volume ingestion.
-
-
-
-# List runs in a trace
-Source: https://docs.langchain.com/langsmith/smith-api/runs/list-runs-in-a-trace
-
-/langsmith/langsmith-platform-openapi.json get /v2/traces/{trace_id}/runs
-**Alpha:** The request and response contract may change;
-Returns runs for a trace ID within min/max start time. Optional `filter`; repeatable `selects` to select fields to return.
-
-
-
-# Query public shared trace runs
-Source: https://docs.langchain.com/langsmith/smith-api/runs/query-public-shared-trace-runs
-
-/langsmith/langsmith-platform-openapi.json post /v2/public/{share_token}/runs/v2/query
-**Alpha:** The request and response contract may change;
-Returns all runs within the trace identified by the share token. The share token supplies the tenant, project, and trace scope.
-
-
-
-# Query runs
-Source: https://docs.langchain.com/langsmith/smith-api/runs/query-runs
-
-/langsmith/langsmith-platform-openapi.json post /v2/runs/query
-**Alpha:** The request and response contract may change;
-Returns a paginated list of runs for the given projects within min/max start_time. Supports filters, cursor pagination, and `selects` to select fields to return.
-
-
-
-# Query traces
-Source: https://docs.langchain.com/langsmith/smith-api/runs/query-traces
-
-/langsmith/langsmith-platform-openapi.json post /v2/traces/query
-Returns a paginated list of traces (root runs) for a single tracing project. Each item carries the trace's root run plus optional trace-wide aggregates (`total_tokens`, `total_cost`, `first_token_time`) under `trace_aggregates`, so clients never have to merge by `trace_id`.
-
-Traces are scanned within a `start_time` window: `min_start_time` defaults to 24 hours before the request, `max_start_time` defaults to the request time. Set either explicitly to widen or narrow the window.
-
-Supports filters (`trace_filter`, `tree_filter`), cursor pagination (`cursor`), and field projection (`selects`).
-
-
-
-# Share a run
-Source: https://docs.langchain.com/langsmith/smith-api/runs/share-a-run
-
-/langsmith/langsmith-platform-openapi.json post /v2/runs/{run_id}/share
-Creates or returns a share token for a run. Child runs share their trace root.
 
 
 
@@ -100303,34 +100334,6 @@ Get all tenants visible to this auth
 
 
 
-# Query Single Thread Stats
-Source: https://docs.langchain.com/langsmith/smith-api/threads/query-single-thread-stats
-
-/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/stats
-**Alpha:** The request and response contract may change;
-Compute aggregate stats for a single thread (turn count, latency percentiles, token/cost sums, and detail breakdowns) within a project.
-
-
-
-# Query Thread Traces
-Source: https://docs.langchain.com/langsmith/smith-api/threads/query-thread-traces
-
-/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/traces
-**Alpha:** The request and response contract may change;
-Retrieve all traces belonging to a specific thread within a project.
-
-
-
-# Query Threads
-Source: https://docs.langchain.com/langsmith/smith-api/threads/query-threads
-
-/langsmith/langsmith-platform-openapi.json post /v2/threads/query
-**Alpha:** The request and response contract may change;
-Query threads within a project (session), with cursor-based pagination.
-Returns threads matching the given time range and optional filter.
-
-
-
 # Create a tool
 Source: https://docs.langchain.com/langsmith/smith-api/tools/create-a-tool
 
@@ -100663,6 +100666,117 @@ Source: https://docs.langchain.com/langsmith/smith-api/usage-limits/upsert-usage
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/usage-limits
 Create a new usage limit.
+
+
+
+# Fetch experiment runs for dataset examples
+Source: https://docs.langchain.com/langsmith/smith-api/v2/fetch-experiment-runs-for-dataset-examples
+
+/langsmith/langsmith-platform-openapi.json post /v2/datasets/{dataset_id}/experiment-runs
+Returns a paginated page of dataset examples with runs from the requested experiments.
+Response uses the canonical `{items, next_cursor}` envelope.
+
+
+
+# Fetch shared experiment runs for dataset examples
+Source: https://docs.langchain.com/langsmith/smith-api/v2/fetch-shared-experiment-runs-for-dataset-examples
+
+/langsmith/langsmith-platform-openapi.json post /v2/datasets/public/{share_token}/experiment-runs
+Public share-token variant of POST /v2/datasets/{dataset_id}/experiment-runs.
+Returns a paginated page of dataset examples with runs from the requested experiments.
+
+
+
+# Get a public shared trace run
+Source: https://docs.langchain.com/langsmith/smith-api/v2/get-a-public-shared-trace-run
+
+/langsmith/langsmith-platform-openapi.json get /v2/public/{share_token}/run/{run_id}
+**Alpha:** The request and response contract may change;
+Returns one run within the trace identified by the share token. The request supplies only the run ID and that run's exact start_time coordinate.
+
+
+
+# Get a single run
+Source: https://docs.langchain.com/langsmith/smith-api/v2/get-a-single-run
+
+/langsmith/langsmith-platform-openapi.json get /v2/runs/{run_id}
+**Alpha:** The request and response contract may change;
+Returns one run by ID for the given session and start_time. Use the `selects` query parameter (repeatable) to select fields to return.
+
+
+
+# List runs in a trace
+Source: https://docs.langchain.com/langsmith/smith-api/v2/list-runs-in-a-trace
+
+/langsmith/langsmith-platform-openapi.json get /v2/traces/{trace_id}/runs
+**Alpha:** The request and response contract may change;
+Returns runs for a trace ID within min/max start time. Optional `filter`; repeatable `selects` to select fields to return.
+
+
+
+# Query public shared trace runs
+Source: https://docs.langchain.com/langsmith/smith-api/v2/query-public-shared-trace-runs
+
+/langsmith/langsmith-platform-openapi.json post /v2/public/{share_token}/runs/v2/query
+**Alpha:** The request and response contract may change;
+Returns all runs within the trace identified by the share token. The share token supplies the tenant, project, and trace scope.
+
+
+
+# Query runs
+Source: https://docs.langchain.com/langsmith/smith-api/v2/query-runs
+
+/langsmith/langsmith-platform-openapi.json post /v2/runs/query
+**Alpha:** The request and response contract may change;
+Returns a paginated list of runs for the given projects within min/max start_time. Supports filters, cursor pagination, and `selects` to select fields to return.
+
+
+
+# Query Single Thread Stats
+Source: https://docs.langchain.com/langsmith/smith-api/v2/query-single-thread-stats
+
+/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/stats
+**Alpha:** The request and response contract may change;
+Compute aggregate stats for a single thread (turn count, latency percentiles, token/cost sums, and detail breakdowns) within a project.
+
+
+
+# Query Thread Traces
+Source: https://docs.langchain.com/langsmith/smith-api/v2/query-thread-traces
+
+/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/traces
+**Alpha:** The request and response contract may change;
+Retrieve all traces belonging to a specific thread within a project.
+
+
+
+# Query Threads
+Source: https://docs.langchain.com/langsmith/smith-api/v2/query-threads
+
+/langsmith/langsmith-platform-openapi.json post /v2/threads/query
+**Alpha:** The request and response contract may change;
+Query threads within a project (session), with cursor-based pagination.
+Returns threads matching the given time range and optional filter.
+
+
+
+# Query traces
+Source: https://docs.langchain.com/langsmith/smith-api/v2/query-traces
+
+/langsmith/langsmith-platform-openapi.json post /v2/traces/query
+Returns a paginated list of traces (root runs) for a single tracing project. Each item carries the trace's root run plus optional trace-wide aggregates (`total_tokens`, `total_cost`, `first_token_time`) under `trace_aggregates`, so clients never have to merge by `trace_id`.
+
+Traces are scanned within a `start_time` window: `min_start_time` defaults to 24 hours before the request, `max_start_time` defaults to the request time. Set either explicitly to widen or narrow the window.
+
+Supports filters (`trace_filter`, `tree_filter`), cursor pagination (`cursor`), and field projection (`selects`).
+
+
+
+# Share a run
+Source: https://docs.langchain.com/langsmith/smith-api/v2/share-a-run
+
+/langsmith/langsmith-platform-openapi.json post /v2/runs/{run_id}/share
+Creates or returns a share token for a run. Child runs share their trace root.
 
 
 
@@ -136720,6 +136834,204 @@ for await (const event of stream) {
 </div>
 
 
+# Fault tolerance
+Source: https://docs.langchain.com/oss/javascript/deepagents/fault-tolerance
+
+Make your deep agent resilient with rate limiting, retries, fallbacks, and error handling
+
+Fault tolerance middleware keeps your deep agent running when things go wrong. Not all errors should be handled the same way: transient failures (network timeouts, rate limits) should be retried automatically, errors the LLM can recover from (bad tool output, parsing failures) should be fed back to the model, and errors that need human input should pause the agent.
+
+## Error handling strategies
+
+Different errors need different handling strategies:
+
+| Error type                                                      | Who fixes it       | Strategy                                                | Middleware or feature                                                                                                                                                                                                          |
+| --------------------------------------------------------------- | ------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Transient errors (network issues, rate limits)                  | System (automatic) | Retry with exponential backoff                          | [ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware), [ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)                 |
+| LLM-recoverable errors (tool failures, parsing issues)          | LLM                | Convert to error `ToolMessage` and let the model adjust | @\[ToolErrorMiddleware]                                                                                                                                                                                                        |
+| User-fixable errors (missing information, unclear instructions) | Human              | Pause with `interrupt()`                                | [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)                                                                                                                                                              |
+| Provider outage                                                 | System (automatic) | Fall back to an alternative model                       | [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware)                                                                                                                  |
+| Excessive calls (runaway loops)                                 | System (automatic) | Cap model and tool calls per run                        | [ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware), [ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware) |
+| Unexpected errors                                               | Developer          | Let them bubble up                                      | No middleware — let the exception propagate                                                                                                                                                                                    |
+
+The sections below cover each strategy with code examples.
+
+<Tabs>
+  <Tab title="Transient errors" icon="rotate">
+    Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
+
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createAgent, modelRetryMiddleware, toolRetryMiddleware } from "langchain";
+
+    const agent = createAgent({
+      model: "google_genai:gemini-3.5-flash",
+      tools: [searchTool, fetchUrlTool],
+      middleware: [
+        modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
+        toolRetryMiddleware({
+          maxRetries: 2,
+          tools: ["search", "fetch_url"],
+          retryOn: [TimeoutError, TypeError],
+        }),
+      ],
+    });
+    ```
+  </Tab>
+
+  <Tab title="LLM-recoverable" icon="brain">
+    Use @\[ToolErrorMiddleware] to catch tool exceptions and convert them into error `ToolMessage`s so the LLM can see what went wrong and try again:
+
+    This middleware is not yet available in the JavaScript SDK.
+  </Tab>
+
+  <Tab title="User-fixable" icon="user">
+    Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
+
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+
+    const agent = createDeepAgent({
+      model: "google_genai:gemini-3.5-flash",
+      tools: [sendEmailTool, deleteRecordTool],
+      interruptOn: ["send_email", "delete_record"],
+    });
+    ```
+
+    For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop).
+  </Tab>
+
+  <Tab title="Provider outage" icon="arrows-exchange">
+    If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) to switch to an alternative model:
+
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createAgent, modelFallbackMiddleware } from "langchain";
+
+    const agent = createAgent({
+      model: "google_genai:gemini-3.5-flash",
+      tools: [searchTool],
+      middleware: [
+        modelFallbackMiddleware("gpt-5.5"),
+      ],
+    });
+    ```
+  </Tab>
+
+  <Tab title="Excessive calls" icon="gauge">
+    Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
+
+    const agent = createAgent({
+      model: "google_genai:gemini-3.5-flash",
+      tools: [searchTool],
+      middleware: [
+        modelCallLimitMiddleware({ runLimit: 50 }),
+        toolCallLimitMiddleware({ runLimit: 200 }),
+      ],
+    });
+    ```
+  </Tab>
+
+  <Tab title="Unexpected" icon="alert-triangle">
+    Let them bubble up for debugging. Do not catch what you cannot handle. @\[ToolErrorMiddleware] only surfaces exceptions you explicitly return content for; everything else propagates unchanged:
+
+    This pattern applies to custom middleware in the JavaScript SDK as well.
+  </Tab>
+</Tabs>
+
+## Rate limiting
+
+There are two complementary ways to limit resource usage: controlling the request rate to your model provider, and capping the total number of calls per run.
+
+### Provider rate limiting
+
+Chat model providers impose a limit on the number of invocations that can be made in a given time period. To control the rate at which requests are made, initialize your model with a `rate_limiter`:
+
+### Call limits
+
+Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
+
+const agent = createAgent({
+  model: "google_genai:gemini-3.5-flash",
+  middleware: [
+    modelCallLimitMiddleware({ runLimit: 50 }),
+    toolCallLimitMiddleware({ runLimit: 200 }),
+  ],
+});
+```
+
+Use `run_limit` to cap calls within a single invocation (resets each turn). Use `thread_limit` to cap calls across an entire conversation (requires a checkpointer). See [ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware) and [ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware) for the full configuration.
+
+## Retries
+
+Transient failures (network timeouts, rate limits) should be retried automatically. Model calls and tool calls each have their own retry middleware with exponential backoff:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  toolRetryMiddleware,
+} from "langchain";
+
+const agent = createAgent({
+  model: "google_genai:gemini-3.5-flash",
+  middleware: [
+    // Retry model calls on rate limits, timeouts, and 5xx errors
+    modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
+    // Retry specific tools that hit external APIs (not all tools)
+    toolRetryMiddleware({
+      maxRetries: 2,
+      tools: ["search", "fetch_url"],
+      retryOn: [TimeoutError, TypeError],
+    }),
+  ],
+});
+```
+
+Scope [ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) to specific tools rather than retrying everything. A filesystem `read_file` that fails will not benefit from a retry, but a web search that times out probably will. See [ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware) for the full configuration.
+
+## Fallbacks
+
+If your primary model provider goes down entirely, the fallback middleware switches to an alternative model:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelFallbackMiddleware,
+} from "langchain";
+
+const agent = createAgent({
+  model: "google_genai:gemini-3.5-flash",
+  middleware: [
+    // If the primary model is fully down, fall back to an alternative
+    modelFallbackMiddleware("gpt-5.5"),
+  ],
+});
+```
+
+See [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) for the full configuration.
+
+## Error handling
+
+When a tool raises an exception during execution, the agent run halts by default. Use @\[ToolErrorMiddleware] to catch specific exceptions and convert them into error ToolMessages that the model can see and recover from, instead of crashing the run.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Overview
 Source: https://docs.langchain.com/oss/javascript/deepagents/frontend/overview
 
@@ -137706,8 +138018,8 @@ For backends and sandboxes:
   [sandbox auth proxy](/oss/javascript/deepagents/going-to-production#managing-secrets)
   instead of environment variables or file uploads for API keys.
 * **Add guardrails before launch**. Configure
-  [rate limits](/oss/javascript/deepagents/going-to-production#rate-limiting),
-  [error handling](/oss/javascript/deepagents/going-to-production#handling-errors), and
+  [rate limits](/oss/javascript/deepagents/fault-tolerance#rate-limiting),
+  [error handling](/oss/javascript/deepagents/fault-tolerance#error-handling), and
   [data privacy](/oss/javascript/deepagents/going-to-production#data-privacy) middleware
   for autonomous coding agents.
 
@@ -138544,7 +138856,7 @@ This page covers:
 * **[Production considerations](#production-considerations)**: invocation, multi-tenancy, authentication, credentials, async, and durability
 * **[Memory](#memory)**: persist information across conversations
 * **[Execution environment](#execution-environment)**: file storage and code execution
-* **[Guardrails](#guardrails)**: rate limiting, error handling, and data privacy
+* **[Guardrails](#guardrails)**: permissions and data privacy
 * **[Frontend](#frontend)**: connect your UI to a deployed agent
 
 ## LangSmith Deployments
@@ -139374,63 +139686,17 @@ The `${SECRET_KEY}` references resolve against secrets stored in your LangSmith 
 
 Agents in production run autonomously, which means they can loop indefinitely, hit rate limits, or process user data that contains sensitive information. Deep Agents provide two layers of protection:
 
-* **[Permissions](/oss/javascript/deepagents/permissions)**: declarative allow/deny rules that control which files and directories the agent can read or write. Use permissions to isolate the agent to a working directory, protect sensitive files, or enforce read-only memory.
-* **[Middleware](/oss/javascript/langchain/middleware/built-in)**: hooks that wrap model and tool calls for rate limiting, error handling, and data privacy.
+* **[Permissions](#permissions)**: declarative allow/deny rules that control which files and directories the agent can read or write.
+* **[Fault tolerance](#fault-tolerance)**: rate limiting, retries, fallbacks, and error handling.
+* **[Data privacy](#data-privacy)**: middleware that detects and handles PII before it reaches the model or gets stored in logs.
 
-<img alt="Middleware hooks—before_model, wrap_model_call, wrap_tool_call, after_model—wrap the agent loop so policies run deterministically around every relevant step" />
+### Permissions
 
-### Rate limiting
+[Permissions](/oss/javascript/deepagents/permissions) are declarative allow/deny rules that control which files and directories the agent can read or write. Use permissions to isolate the agent to a working directory, protect sensitive files, or enforce read-only memory. Rules are evaluated in declaration order, and the first matching rule wins.
 
-Rate limiting here refers to capping the agent's own LLM and tool usage within a run, not API gateway rate limiting for incoming requests.
+### Fault tolerance
 
-Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
-
-const agent = createAgent({
-  model: "google_genai:gemini-3.5-flash",
-  middleware: [
-    modelCallLimitMiddleware({ runLimit: 50 }),
-    toolCallLimitMiddleware({ runLimit: 200 }),
-  ],
-});
-```
-
-Use `run_limit` to cap calls within a single invocation (resets each turn). Use `thread_limit` to cap calls across an entire conversation (requires a checkpointer). See [ModelCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/modelCallLimitMiddleware) and [ToolCallLimitMiddleware](https://reference.langchain.com/javascript/langchain/index/toolCallLimitMiddleware) for the full configuration.
-
-### Handling errors
-
-Not all errors should be handled the same way. Transient failures (network timeouts, rate limits) should be retried automatically. Errors the LLM can recover from (bad tool output, parsing failures) should be fed back to the model. Errors that need human input should pause the agent. For the full breakdown with code examples, see [Handle errors appropriately](/oss/javascript/langgraph/thinking-in-langgraph#handle-errors-appropriately).
-
-Middleware handles the transient case. Model calls and tool calls each have their own retry middleware with exponential backoff. If your primary model provider goes down entirely, the fallback middleware switches to an alternative:
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import {
-  createAgent,
-  modelFallbackMiddleware,
-  modelRetryMiddleware,
-  toolRetryMiddleware,
-} from "langchain";
-
-const agent = createAgent({
-  model: "google_genai:gemini-3.5-flash",
-  middleware: [
-    // Retry model calls on rate limits, timeouts, and 5xx errors
-    modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
-    // If the primary model is fully down, fall back to an alternative
-    modelFallbackMiddleware("gpt-5.5"),
-    // Retry specific tools that hit external APIs (not all tools)
-    toolRetryMiddleware({
-      maxRetries: 2,
-      tools: ["search", "fetch_url"],
-      retryOn: [TimeoutError, TypeError],
-    }),
-  ],
-});
-```
-
-Scope [ToolRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware) to specific tools rather than retrying everything. A filesystem `read_file` that fails won't benefit from a retry, but a web search that times out probably will. See [ModelRetryMiddleware](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware) and [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) for the full configuration.
+For rate limiting, retries, fallbacks, and error handling, see [Fault tolerance](/oss/javascript/deepagents/fault-tolerance).
 
 ### Data privacy
 
@@ -178090,6 +178356,8 @@ const agent = createAgent({
     Tool names to always include regardless of selection. These do not count against the maxTools limit.
   </ParamField>
 </Accordion>
+
+### Tool error
 
 ### Tool retry
 
@@ -221028,6 +221296,24 @@ Terminal coding agent built on the Deep Agents SDK
 </div>
 
 
+# Changelog
+Source: https://docs.langchain.com/oss/python/deepagents/code/changelog
+
+
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/changelog.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Command reference
 Source: https://docs.langchain.com/oss/python/deepagents/code/cli-reference
 
@@ -234038,6 +234324,272 @@ for event in stream:
 </div>
 
 
+# Fault tolerance
+Source: https://docs.langchain.com/oss/python/deepagents/fault-tolerance
+
+Make your deep agent resilient with rate limiting, retries, fallbacks, and error handling
+
+Fault tolerance middleware keeps your deep agent running when things go wrong. Not all errors should be handled the same way: transient failures (network timeouts, rate limits) should be retried automatically, errors the LLM can recover from (bad tool output, parsing failures) should be fed back to the model, and errors that need human input should pause the agent.
+
+## Error handling strategies
+
+Different errors need different handling strategies:
+
+| Error type                                                      | Who fixes it       | Strategy                                                | Middleware or feature                                                                                                                                                                                                                                                           |
+| --------------------------------------------------------------- | ------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Transient errors (network issues, rate limits)                  | System (automatic) | Retry with exponential backoff                          | [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware), [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware)                           |
+| LLM-recoverable errors (tool failures, parsing issues)          | LLM                | Convert to error `ToolMessage` and let the model adjust | [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)                                                                                                                                                        |
+| User-fixable errors (missing information, unclear instructions) | Human              | Pause with `interrupt()`                                | [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)                                                                                                                                                                                                                   |
+| Provider outage                                                 | System (automatic) | Fall back to an alternative model                       | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware)                                                                                                                                            |
+| Excessive calls (runaway loops)                                 | System (automatic) | Cap model and tool calls per run                        | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware), [ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) |
+| Unexpected errors                                               | Developer          | Let them bubble up                                      | No middleware — let the exception propagate                                                                                                                                                                                                                                     |
+
+The sections below cover each strategy with code examples.
+
+<Tabs>
+  <Tab title="Transient errors" icon="rotate">
+    Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.agents import create_agent
+    from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
+
+    agent = create_agent(
+        model="google_genai:gemini-3.5-flash",
+        tools=[search_tool, fetch_url_tool],
+        middleware=[
+            ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
+            ToolRetryMiddleware(
+                max_retries=2,
+                tools=["search", "fetch_url"],
+                retry_on=(TimeoutError, ConnectionError),
+            ),
+        ],
+    )
+    ```
+  </Tab>
+
+  <Tab title="LLM-recoverable" icon="brain">
+    Use [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) to catch tool exceptions and convert them into error `ToolMessage`s so the LLM can see what went wrong and try again:
+
+    <Note>
+      `ToolErrorMiddleware` requires `langchain>=1.3.14`.
+    </Note>
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.agents import create_agent
+    from langchain.agents.middleware import ToolErrorMiddleware
+
+
+    def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+        if isinstance(exc, ValueError):
+            return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
+        # propagate everything else
+
+
+    agent = create_agent(
+        model="google_genai:gemini-3.5-flash",
+        tools=[search_tool],
+        middleware=[ToolErrorMiddleware(on_error)],
+    )
+    ```
+  </Tab>
+
+  <Tab title="User-fixable" icon="user">
+    Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from deepagents import create_deep_agent
+
+    agent = create_deep_agent(
+        model="google_genai:gemini-3.5-flash",
+        tools=[send_email_tool, delete_record_tool],
+        interrupt_on=["send_email", "delete_record"],
+    )
+    ```
+
+    For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
+  </Tab>
+
+  <Tab title="Provider outage" icon="arrows-exchange">
+    If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) to switch to an alternative model:
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.agents import create_agent
+    from langchain.agents.middleware import ModelFallbackMiddleware
+
+    agent = create_agent(
+        model="google_genai:gemini-3.5-flash",
+        tools=[search_tool],
+        middleware=[
+            ModelFallbackMiddleware("gpt-5.5"),
+        ],
+    )
+    ```
+  </Tab>
+
+  <Tab title="Excessive calls" icon="gauge">
+    Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.agents import create_agent
+    from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+
+    agent = create_agent(
+        model="google_genai:gemini-3.5-flash",
+        tools=[search_tool],
+        middleware=[
+            ModelCallLimitMiddleware(run_limit=50),
+            ToolCallLimitMiddleware(run_limit=200),
+        ],
+    )
+    ```
+  </Tab>
+
+  <Tab title="Unexpected" icon="alert-triangle">
+    Let them bubble up for debugging. Do not catch what you cannot handle. [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) only surfaces exceptions you explicitly return content for; everything else propagates unchanged:
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+        if isinstance(exc, (ValueError, KeyError)):
+            # Surface known, recoverable errors to the model
+            return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}."
+        # Everything else (unexpected errors) propagates and halts the run
+    ```
+  </Tab>
+</Tabs>
+
+## Rate limiting
+
+There are two complementary ways to limit resource usage: controlling the request rate to your model provider, and capping the total number of calls per run.
+
+### Provider rate limiting
+
+Chat model providers impose a limit on the number of invocations that can be made in a given time period. To control the rate at which requests are made, initialize your model with a `rate_limiter`:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.rate_limiters import InMemoryRateLimiter
+from langchain.chat_models import init_chat_model
+
+rate_limiter = InMemoryRateLimiter(
+    requests_per_second=0.1,  # 1 request every 10s
+    check_every_n_seconds=0.1,  # Check every 100ms whether allowed to make a request
+    max_bucket_size=10,  # Controls the maximum burst size
+)
+
+model = init_chat_model(
+    model="google_genai:gemini-3.5-flash",
+    rate_limiter=rate_limiter,  # [!code highlight]
+)
+
+agent = create_deep_agent(model=model, tools=[search_tool])
+```
+
+For the full configuration, see [Rate limiting](/oss/python/langchain/models#rate-limiting).
+
+### Call limits
+
+Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.5-flash",
+    middleware=[
+        ModelCallLimitMiddleware(run_limit=50),
+        ToolCallLimitMiddleware(run_limit=200),
+    ],
+)
+```
+
+Use `run_limit` to cap calls within a single invocation (resets each turn). Use `thread_limit` to cap calls across an entire conversation (requires a checkpointer). See [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware) and [ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) for the full configuration.
+
+## Retries
+
+Transient failures (network timeouts, rate limits) should be retried automatically. Model calls and tool calls each have their own retry middleware with exponential backoff:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.5-flash",
+    middleware=[
+        # Retry model calls on rate limits, timeouts, and 5xx errors
+        ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
+        # Retry specific tools that hit external APIs (not all tools)
+        ToolRetryMiddleware(
+            max_retries=2,
+            tools=["search", "fetch_url"],
+            retry_on=(TimeoutError, ConnectionError),
+        ),
+    ],
+)
+```
+
+Scope [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) to specific tools rather than retrying everything. A filesystem `read_file` that fails will not benefit from a retry, but a web search that times out probably will. See [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware) for the full configuration.
+
+## Fallbacks
+
+If your primary model provider goes down entirely, the fallback middleware switches to an alternative model:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ModelFallbackMiddleware
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.5-flash",
+    middleware=[
+        # If the primary model is fully down, fall back to an alternative
+        ModelFallbackMiddleware("gpt-5.5"),
+    ],
+)
+```
+
+See [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) for the full configuration.
+
+## Error handling
+
+When a tool raises an exception during execution, the agent run halts by default. Use [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) to catch specific exceptions and convert them into error ToolMessages that the model can see and recover from, instead of crashing the run.
+
+<Note>
+  `ToolErrorMiddleware` requires `langchain>=1.3.14`.
+</Note>
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolErrorMiddleware
+
+
+def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+    if isinstance(exc, ValueError):
+        return f"`{request.tool_call['name']}` failed with {type(exc).__name__}."
+    # propagate everything else
+
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.5-flash",
+    middleware=[ToolErrorMiddleware(on_error)],
+)
+```
+
+For the full configuration options and usage patterns, including async handlers and composing with retry middleware, see [Prebuilt middleware](/oss/python/langchain/middleware/built-in#tool-error).
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Overview
 Source: https://docs.langchain.com/oss/python/deepagents/frontend/overview
 
@@ -235063,8 +235615,8 @@ For backends and sandboxes:
   [sandbox auth proxy](/oss/python/deepagents/going-to-production#managing-secrets)
   instead of environment variables or file uploads for API keys.
 * **Add guardrails before launch**. Configure
-  [rate limits](/oss/python/deepagents/going-to-production#rate-limiting),
-  [error handling](/oss/python/deepagents/going-to-production#handling-errors), and
+  [rate limits](/oss/python/deepagents/fault-tolerance#rate-limiting),
+  [error handling](/oss/python/deepagents/fault-tolerance#error-handling), and
   [data privacy](/oss/python/deepagents/going-to-production#data-privacy) middleware
   for autonomous coding agents.
 
@@ -235901,7 +236453,7 @@ This page covers:
 * **[Production considerations](#production-considerations)**: invocation, multi-tenancy, authentication, credentials, async, and durability
 * **[Memory](#memory)**: persist information across conversations
 * **[Execution environment](#execution-environment)**: file storage and code execution
-* **[Guardrails](#guardrails)**: rate limiting, error handling, and data privacy
+* **[Guardrails](#guardrails)**: permissions and data privacy
 * **[Frontend](#frontend)**: connect your UI to a deployed agent
 
 ## LangSmith Deployments
@@ -236743,64 +237295,17 @@ The `${SECRET_KEY}` references resolve against secrets stored in your LangSmith 
 
 Agents in production run autonomously, which means they can loop indefinitely, hit rate limits, or process user data that contains sensitive information. Deep Agents provide two layers of protection:
 
-* **[Permissions](/oss/python/deepagents/permissions)**: declarative allow/deny rules that control which files and directories the agent can read or write. Use permissions to isolate the agent to a working directory, protect sensitive files, or enforce read-only memory.
-* **[Middleware](/oss/python/langchain/middleware/built-in)**: hooks that wrap model and tool calls for rate limiting, error handling, and data privacy.
+* **[Permissions](#permissions)**: declarative allow/deny rules that control which files and directories the agent can read or write.
+* **[Fault tolerance](#fault-tolerance)**: rate limiting, retries, fallbacks, and error handling.
+* **[Data privacy](#data-privacy)**: middleware that detects and handles PII before it reaches the model or gets stored in logs.
 
-<img alt="Middleware hooks—before_model, wrap_model_call, wrap_tool_call, after_model—wrap the agent loop so policies run deterministically around every relevant step" />
+### Permissions
 
-### Rate limiting
+[Permissions](/oss/python/deepagents/permissions) are declarative allow/deny rules that control which files and directories the agent can read or write. Use permissions to isolate the agent to a working directory, protect sensitive files, or enforce read-only memory. Rules are evaluated in declaration order, and the first matching rule wins.
 
-Rate limiting here refers to capping the agent's own LLM and tool usage within a run, not API gateway rate limiting for incoming requests.
+### Fault tolerance
 
-Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    middleware=[
-        ModelCallLimitMiddleware(run_limit=50),
-        ToolCallLimitMiddleware(run_limit=200),
-    ],
-)
-```
-
-Use `run_limit` to cap calls within a single invocation (resets each turn). Use `thread_limit` to cap calls across an entire conversation (requires a checkpointer). See [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware) and [ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) for the full configuration.
-
-### Handling errors
-
-Not all errors should be handled the same way. Transient failures (network timeouts, rate limits) should be retried automatically. Errors the LLM can recover from (bad tool output, parsing failures) should be fed back to the model. Errors that need human input should pause the agent. For the full breakdown with code examples, see [Handle errors appropriately](/oss/python/langgraph/thinking-in-langgraph#handle-errors-appropriately).
-
-Middleware handles the transient case. Model calls and tool calls each have their own retry middleware with exponential backoff. If your primary model provider goes down entirely, the fallback middleware switches to an alternative:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from langchain.agents.middleware import (
-    ModelFallbackMiddleware,
-    ModelRetryMiddleware,
-    ToolRetryMiddleware,
-)
-
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    middleware=[
-        # Retry model calls on rate limits, timeouts, and 5xx errors
-        ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
-        # If the primary model is fully down, fall back to an alternative
-        ModelFallbackMiddleware("gpt-5.5"),
-        # Retry specific tools that hit external APIs (not all tools)
-        ToolRetryMiddleware(
-            max_retries=2,
-            tools=["search", "fetch_url"],
-            retry_on=(TimeoutError, ConnectionError),
-        ),
-    ],
-)
-```
-
-Scope [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) to specific tools rather than retrying everything. A filesystem `read_file` that fails won't benefit from a retry, but a web search that times out probably will. See [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware) and [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) for the full configuration.
+For rate limiting, retries, fallbacks, and error handling, see [Fault tolerance](/oss/python/deepagents/fault-tolerance).
 
 ### Data privacy
 
@@ -273315,6 +273820,7 @@ The following middleware work with any LLM provider:
 | [PII detection](#pii-detection)               | Detect and handle Personally Identifiable Information (PII).                                  |
 | [To-do list](#to-do-list)                     | Equip agents with task planning and tracking capabilities.                                    |
 | [LLM tool selector](#llm-tool-selector)       | Use an LLM to select relevant tools before calling main model.                                |
+| [Tool error](#tool-error)                     | Catch tool execution exceptions and convert them to error messages for the model.             |
 | [Tool retry](#tool-retry)                     | Automatically retry failed tool calls with exponential backoff.                               |
 | [Model retry](#model-retry)                   | Automatically retry failed model calls with exponential backoff.                              |
 | [LLM tool emulator](#llm-tool-emulator)       | Emulate tool execution using an LLM for testing purposes.                                     |
@@ -274000,6 +274506,102 @@ agent = create_agent(
   </ParamField>
 </Accordion>
 
+### Tool error
+
+Catch exceptions raised during tool execution and convert them into error `ToolMessage`s that the model can see and recover from, instead of halting the agent run. Tool error is useful for the following:
+
+* Letting the model retry a failed tool call with corrected arguments.
+* Surfacing controlled, sanitized error messages instead of raw exception details.
+* Preventing unexpected tool exceptions from crashing the agent.
+
+<Note>
+  Tool error middleware does not automatically retry failed calls. For retries, compose with [Tool retry](#tool-retry) middleware placed *inner* (earlier in the `middleware` list) and configured with `on_failure="error"` so that exceptions reach the tool error middleware. See the [full example](#tool-error-full-example) below.
+</Note>
+
+**API reference:** [`ToolErrorMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)
+
+<Note>
+  `ToolErrorMiddleware` requires `langchain>=1.3.14`.
+</Note>
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ToolErrorMiddleware
+
+
+def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+    if isinstance(exc, ValueError):
+        return f"`{request.tool_call['name']}` failed with {type(exc).__name__}."
+    # propagate everything else
+
+
+agent = create_agent(
+    model="gpt-5.5",
+    tools=[your_tools],
+    middleware=[ToolErrorMiddleware(on_error)],
+)
+```
+
+<Accordion title="Configuration options">
+  <ParamField type="Callable[[Exception, ToolCallRequest], str | list[ContentBlock] | None]">
+    Sync handler called for each exception raised by tool execution. Return content (a `str` or list of content blocks) to convert the exception into a `ToolMessage(status="error")`. Return `None` or omit a return statement to let the exception propagate. Used on the sync path and, unless `aon_error` is given, on the async path.
+  </ParamField>
+
+  <ParamField type="Callable[[Exception, ToolCallRequest], Awaitable[str | list[ContentBlock] | None]]">
+    Optional async handler, used on the async execution path. Falls back to `on_error` when not provided.
+  </ParamField>
+
+  <ParamField type="list[BaseTool | str]">
+    Optional list of tools or tool names to apply error handling to. If `None`, applies to all tools.
+  </ParamField>
+</Accordion>
+
+<Accordion title="Tool error full example">
+  The `on_error` handler receives the exception and the `ToolCallRequest` (which includes the tool call dict with name, args, and call ID). Return `None` for exceptions you do not want to handle, and they will propagate normally.
+
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langchain.agents import create_agent
+  from langchain.agents.middleware import ToolErrorMiddleware, ToolRetryMiddleware
+
+
+  def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+      # Surface ValueError to the model so it can correct the input
+      if isinstance(exc, ValueError):
+          return f"`{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
+      # Let all other exceptions propagate (halts the run)
+      return None
+
+
+  # Async-only usage
+  async def aon_error(exc: Exception, request: ToolCallRequest) -> str | None:
+      if isinstance(exc, ConnectionError):
+          return f"Tool `{request.tool_call['name']}` encountered a connection error."
+      return None
+
+
+  agent = create_agent(
+      model="gpt-5.5",
+      tools=[search_tool, database_tool],
+      middleware=[
+          # Place retry inner so exceptions reach ToolErrorMiddleware after retries are exhausted
+          ToolRetryMiddleware(max_retries=3, on_failure="error"),
+          ToolErrorMiddleware(on_error=on_error, tools=["search_tool"]),
+      ],
+  )
+
+  # Async-only: pass aon_error alone (do not pass on_error)
+  async_agent = create_agent(
+      model="gpt-5.5",
+      tools=[api_tool],
+      middleware=[ToolErrorMiddleware(aon_error=aon_error)],
+  )
+  ```
+
+  <Note>
+    Prefer returning content that names the exception type over the raw exception message, which may carry sensitive or internal detail. The `on_error` handler controls disclosure: the raw exception message is never sent to the model unless you choose to include it.
+  </Note>
+</Accordion>
+
 ### Tool retry
 
 Automatically retry failed tool calls with configurable exponential backoff. Tool retry is useful for the following:
@@ -274037,15 +274639,17 @@ agent = create_agent(
   </ParamField>
 
   <ParamField type="tuple[type[Exception], ...] | callable">
-    Either a tuple of exception types to retry on, or a callable that takes an exception and returns `True` if it should be retried.
+    Either a tuple of exception types to retry on, or a callable that takes an exception and returns `True` if it should be retried. By default, all exceptions are retried. Exceptions that do not match propagate immediately and are not handled by `on_failure`.
   </ParamField>
 
   <ParamField type="string | callable">
     Behavior when all retries are exhausted. Options:
 
-    * `'return_message'` - Return a `ToolMessage` with error details (allows LLM to handle failure)
-    * `'raise'` - Re-raise the exception (stops agent execution)
+    * `'continue'` (default) - Return a `ToolMessage` with error details, allowing the LLM to handle the failure
+    * `'error'` - Re-raise the exception, stopping agent execution
     * Custom callable - Function that takes the exception and returns a string for the `ToolMessage` content
+
+    **Deprecated values:** `'return_message'` (use `'continue'` instead) and `'raise'` (use `'error'` instead).
   </ParamField>
 
   <ParamField type="number">
@@ -274078,8 +274682,8 @@ agent = create_agent(
 
   **Failure handling:**
 
-  * `on_failure='return_message'` - Return error message
-  * `on_failure='raise'` - Re-raise exception
+  * `on_failure='continue'` (default) - Return error message
+  * `on_failure='error'` - Re-raise exception
   * Custom function - Function returning error message
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

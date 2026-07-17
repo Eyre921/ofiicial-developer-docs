@@ -4,6 +4,12 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<Update label="2026-07-16">
+  # SFT learning rate scheduler documentation
+
+  Documented learning rate scheduler settings for supervised fine-tuning jobs, including `constant`, `linear`, and `cosine` schedules via `firectl` and the REST API `lrScheduler` object.
+</Update>
+
 <Update label="2026-06-26">
   # Serverless deprecation: Kimi K2.5 and Qwen 3.6 Plus
 

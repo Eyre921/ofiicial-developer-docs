@@ -97,7 +97,7 @@ The Fireworks RFT UI provides a visual interface for creating RFT jobs, with gui
     * **Epochs**: Number of passes through the dataset (start with 1)
     * **Learning rate**: How fast the model updates (use default 1e-4)
     * **LoRA rank**: Model capacity (8-16 for most tasks)
-    * **Batch size**: Training throughput (use default 32k tokens)
+    * **Batch size**: Legacy RFT token budget (the default is 32k tokens). This compatibility control is deprecated at the API layer; new integrations should use sample-count batching.
 
     The UI shows helpful tooltips for each parameter. See [Parameter Tuning](/fine-tuning/parameter-tuning) for detailed guidance.
   </Step>
