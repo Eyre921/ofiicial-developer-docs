@@ -22,19 +22,19 @@ Claude Code runs on several surfaces: the terminal, IDE extensions, a desktop ap
       <Tab title="Native Install (Recommended)">
         **macOS, Linux, WSL:**
 
-        ```bash theme={null}
+        ```bash theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
         curl -fsSL https://claude.ai/install.sh | bash
         ```
 
         **Windows PowerShell:**
 
-        ```powershell theme={null}
+        ```powershell theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
         irm https://claude.ai/install.ps1 | iex
         ```
 
         **Windows CMD:**
 
-        ```batch theme={null}
+        ```batch theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
         curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
         ```
 
@@ -50,7 +50,7 @@ Claude Code runs on several surfaces: the terminal, IDE extensions, a desktop ap
       </Tab>
 
       <Tab title="Homebrew">
-        ```bash theme={null}
+        ```bash theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
         brew install --cask claude-code
         ```
 
@@ -62,7 +62,7 @@ Claude Code runs on several surfaces: the terminal, IDE extensions, a desktop ap
       </Tab>
 
       <Tab title="WinGet">
-        ```powershell theme={null}
+        ```powershell theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
         winget install Anthropic.ClaudeCode
         ```
 
@@ -74,7 +74,7 @@ Claude Code runs on several surfaces: the terminal, IDE extensions, a desktop ap
 
     You can also install with [apt, dnf, or apk](/docs/en/setup#install-with-linux-package-managers) on Debian, Fedora, RHEL, and Alpine.
 
-    Then start Claude Code in any project:
+    Then start Claude Code in any project. Replace `your-project` with the path to a project directory on your machine:
 
     ```bash theme={null}
     cd your-project
@@ -114,7 +114,7 @@ Claude Code runs on several surfaces: the terminal, IDE extensions, a desktop ap
   </Tab>
 
   <Tab title="Web">
-    Run Claude Code in your browser with no local setup. Kick off long-running tasks and check back when they're done, work on repos you don't have locally, or run multiple tasks in parallel. Available on desktop browsers and the Claude iOS app.
+    Run Claude Code in your browser with no local setup. Kick off long-running tasks and check back when they're done, work on repos you don't have locally, or run multiple tasks in parallel. Available on desktop browsers and [the Claude app for iOS and Android](/docs/en/mobile).
 
     Start coding at [claude.ai/code](https://claude.ai/code).
 
@@ -207,8 +207,8 @@ Here are some of the ways you can use Claude Code:
 
     * Step away from your desk and keep working from your phone or any browser with [Remote Control](/docs/en/remote-control)
     * Message [Dispatch](/docs/en/desktop#sessions-from-dispatch) a task from your phone and open the Desktop session it creates
-    * Kick off a long-running task on the [web](/docs/en/claude-code-on-the-web) or [iOS app](https://apps.apple.com/app/claude-by-anthropic/id6473753684), then pull it into your terminal with `claude --teleport`. Teleport requires a claude.ai subscription.
-    * Hand off a terminal session to the [Desktop app](/docs/en/desktop) with `/desktop` for visual diff review
+    * Kick off a long-running task on the [web](/docs/en/claude-code-on-the-web) or the [Claude mobile app](/docs/en/mobile), then pull it into your terminal with `claude --teleport`. Teleport requires a claude.ai subscription.
+    * Run `/desktop` to continue your current terminal session in the [Desktop app](/docs/en/desktop), where you can review diffs visually. Available on macOS and x64 Windows.
     * Route tasks from team chat: mention `@Claude` in [Slack](/docs/en/slack) with a bug report and get a pull request back
   </Accordion>
 </AccordionGroup>
@@ -219,17 +219,17 @@ Each [surface](/docs/en/glossary#surface) connects to the same underlying Claude
 
 Beyond the [Terminal](/docs/en/quickstart), [VS Code](/docs/en/vs-code), [JetBrains](/docs/en/jetbrains), [Desktop](/docs/en/desktop), and [Web](/docs/en/claude-code-on-the-web) surfaces above, Claude Code integrates with CI/CD, chat, and browser workflows:
 
-| I want to...                                                                    | Best option                                                                                                        |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Continue a local session from my phone or another device                        | [Remote Control](/docs/en/remote-control)                                                                               |
-| Push events from Telegram, Discord, iMessage, or my own webhooks into a session | [Channels](/docs/en/channels)                                                                                           |
-| Start a task locally, continue on mobile                                        | [Web](/docs/en/claude-code-on-the-web) or [Claude iOS app](https://apps.apple.com/app/claude-by-anthropic/id6473753684) |
-| Run Claude on a recurring schedule                                              | [Routines](/docs/en/routines) or [Desktop scheduled tasks](/docs/en/desktop-scheduled-tasks)                                 |
-| Automate PR reviews and issue triage                                            | [GitHub Actions](/docs/en/github-actions) or [GitLab CI/CD](/docs/en/gitlab-ci-cd)                                           |
-| Get automatic code review on every PR                                           | [GitHub Code Review](/docs/en/code-review)                                                                              |
-| Route bug reports from Slack to pull requests                                   | [Slack](/docs/en/slack)                                                                                                 |
-| Debug live web applications                                                     | [Chrome](/docs/en/chrome)                                                                                               |
-| Build custom agents for your own workflows                                      | [Agent SDK](/docs/en/agent-sdk/overview)                                                                                |
+| I want to...                                                                    | Best option                                                                                                   |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Continue a local session from my phone or another device                        | [Remote Control](/docs/en/remote-control)                                                                          |
+| Push events from Telegram, Discord, iMessage, or my own webhooks into a session | [Channels](/docs/en/channels)                                                                                      |
+| Start a task locally, continue on mobile                                        | [`claude --cloud`](/docs/en/claude-code-on-the-web#from-terminal-to-web), then the [Claude mobile app](/docs/en/mobile) |
+| Run Claude on a recurring schedule                                              | [Routines](/docs/en/routines) or [Desktop scheduled tasks](/docs/en/desktop-scheduled-tasks)                            |
+| Automate PR reviews and issue triage                                            | [GitHub Actions](/docs/en/github-actions) or [GitLab CI/CD](/docs/en/gitlab-ci-cd)                                      |
+| Get automatic code review on every PR                                           | [GitHub Code Review](/docs/en/code-review)                                                                         |
+| Route bug reports from Slack to pull requests                                   | [Slack](/docs/en/slack)                                                                                            |
+| Debug live web applications                                                     | [Chrome](/docs/en/chrome)                                                                                          |
+| Build custom agents for your own workflows                                      | [Agent SDK](/docs/en/agent-sdk/overview)                                                                           |
 
 ## Next steps
 

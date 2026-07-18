@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 294 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -99,7 +99,6 @@
 - `docs/client-sdks/python/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/python/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/endpoints/README.md)
 - `docs/client-sdks/python/sdks/files/readme` — [Files](pages/docs/client-sdks/python/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/files/README.md)
 - `docs/client-sdks/python/sdks/generations/readme` — [Generations](pages/docs/client-sdks/python/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/generations/README.md)
-- `docs/client-sdks/python/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/python/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/guardrails/README.md)
 - `docs/client-sdks/python/sdks/images/readme` — [Images](pages/docs/client-sdks/python/sdks/images/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/images/README.md)
 - `docs/client-sdks/python/sdks/models/readme` — [Models](pages/docs/client-sdks/python/sdks/models/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/models/README.md)
 - `docs/client-sdks/python/sdks/oauth/readme` — [OAuth](pages/docs/client-sdks/python/sdks/oauth/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/oauth/README.md)

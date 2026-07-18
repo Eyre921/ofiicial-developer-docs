@@ -44,7 +44,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
-  <p>Learn how to navigate through paginated responses from the REST API.</p>
+  Learn how to navigate through paginated responses from the REST API.
 
 ## Links
 
