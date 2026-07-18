@@ -1,5 +1,5 @@
 ---
-title: "Get Api Keys"
+title: "Get API keys"
 source: https://docs.langchain.com/langsmith/smith-api/api-key/get-api-keys
 path: langsmith/smith-api/api-key/get-api-keys
 ---

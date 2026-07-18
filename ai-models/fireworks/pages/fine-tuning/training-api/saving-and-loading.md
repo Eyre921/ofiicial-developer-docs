@@ -26,10 +26,10 @@ Sampler checkpoints are weight-only snapshots used for weight sync and promotion
 
 The raw SDK exposes two `checkpoint_type` modes that affect size and weight-sync speed:
 
-| `checkpoint_type` | What it saves               | Size                   |
-| ----------------- | --------------------------- | ---------------------- |
-| `"base"`          | Full model weights          | Large (\~16 GB for 8B) |
-| `"delta"`         | XOR diff from previous base | \~10× smaller          |
+| `checkpoint_type` | What it saves                                                                                       | Size                                |
+| ----------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `"base"`          | Complete chain anchor: full-model weights for full-parameter training, or the full adapter for LoRA | Depends on parameter mode and model |
+| `"delta"`         | Full-parameter XOR diff from the previous base                                                      | Depends on changed weights          |
 
 Delta is much faster for per-step weight sync (`current_weights = base XOR delta` on the deployment). LoRA sampler checkpoints always contain the full adapter regardless of `checkpoint_type`.
 
@@ -40,7 +40,7 @@ Delta is much faster for per-step weight sync (`current_weights = base XOR delta
 ### Saving checkpoints
 
 ```python theme={null}
-# First checkpoint — must be base (full weights)
+# First checkpoint — base chain anchor
 saved = training_client.save_weights_for_sampler(
     "step-0001",
     checkpoint_type="base",
@@ -72,13 +72,19 @@ Promote a sampler checkpoint to a deployable Fireworks model. Available on [`Fir
 `list_checkpoints` returns each checkpoint's full resource name (`accounts/<account>/rlorTrainerJobs/<job>/checkpoints/<id>`). Hand that string straight to `promote_checkpoint` — no manual disassembly into `(job_id, checkpoint_id)`:
 
 ```python theme={null}
+from datetime import datetime
 from fireworks.training.sdk import FireworksClient
 
 client = FireworksClient(api_key=api_key)
 
-# Pick a row from the trainer's checkpoints — usually newest promotable.
+# Select the newest promotable row by parsed timestamp.
 rows = client.list_checkpoints(job_id)
-target = next(r for r in rows if r.get("promotable"))
+target = max(
+    (row for row in rows if row.get("promotable")),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
 
 model = client.promote_checkpoint(
     name=target["name"],                          # 4-segment resource path
@@ -113,7 +119,18 @@ model = client.promote_checkpoint(
 To migrate, look the row up via `list_checkpoints` and pass its `name` field straight through:
 
 ```python theme={null}
-entry = client.list_checkpoints(endpoint.job_id)[0]
+from datetime import datetime
+
+entry = max(
+    (
+        row
+        for row in client.list_checkpoints(endpoint.job_id)
+        if row.get("promotable")
+    ),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
 model = client.promote_checkpoint(
     name=entry["name"],
     output_model_id="my-fine-tuned-qwen3-8b",

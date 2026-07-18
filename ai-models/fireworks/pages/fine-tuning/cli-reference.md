@@ -73,7 +73,7 @@ The following guide will help you:
 
     ```bash theme={null}
     eval-protocol create rft \
-      --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+      --base-model accounts/fireworks/models/qwen3-4b \
       --output-model my-model-name 
     ```
 
@@ -109,7 +109,7 @@ Customize your RFT job with these flags:
 **Model and output**:
 
 ```bash theme={null}
---base-model accounts/fireworks/models/llama-v3p1-8b-instruct  # Base model to fine-tune
+--base-model accounts/fireworks/models/qwen3-4b  # Base model to fine-tune
 --output-model my-custom-name                                   # Name for fine-tuned model
 ```
 
@@ -168,7 +168,7 @@ eval-protocol create rft --help
 
     ```bash theme={null}
     eval-protocol create rft \
-      --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+      --base-model accounts/fireworks/models/qwen3-4b \
       --wandb-project my-rft-experiments \
       --wandb-entity my-org
     ```
@@ -181,7 +181,7 @@ eval-protocol create rft --help
 
     ```bash theme={null}
     firectl rftj create \
-      --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+      --base-model accounts/fireworks/models/qwen3-4b \
       --checkpoint-frequency 500  # Save every 500 steps
       ...
     ```
@@ -210,7 +210,7 @@ For other tuning parameters — rollout concurrency, chunk size, loss method, an
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/qwen3-0p6b \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --output-model quick-test
 ```
 
@@ -218,7 +218,7 @@ eval-protocol create rft \
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --output-model high-quality-model \
   --n 8 \
   --temperature 1.0
@@ -228,7 +228,7 @@ eval-protocol create rft \
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --remote-server-url https://your-agent.example.com \
   --output-model remote-agent
 ```
@@ -237,7 +237,7 @@ eval-protocol create rft \
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --epochs 3 \
   --learning-rate 5e-5 \
   --output-model multi-epoch-model
@@ -249,7 +249,7 @@ For users already familiar with Fireworks `firectl`, you can create RFT jobs dir
 
 ```bash theme={null}
 firectl rftj create \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --dataset accounts/your-account/datasets/my-dataset \
   --evaluator accounts/your-account/evaluators/my-evaluator \
   --output-model my-finetuned-model

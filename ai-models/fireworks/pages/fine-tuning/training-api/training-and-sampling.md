@@ -1,16 +1,18 @@
 ---
-title: "Training and Sampling"
+title: "Dedicated Training and Sampling"
 source: https://docs.fireworks.ai/fine-tuning/training-api/training-and-sampling
 path: fine-tuning/training-api/training-and-sampling
 ---
 
-End-to-end SDK walkthrough: bootstrap resources, train, checkpoint, and sample through a serving deployment.
+Detailed dedicated SDK lifecycle: provision resources, train, checkpoint, weight-sync, and sample through a deployment.
 
 ## What this is
 
-This is the default lifecycle for research loops that need serving-quality evaluation during training: create an SDK-managed trainer and deployment, run iterative updates, save sampler weights, sync those weights to the deployment, then sample through the deployment.
+This is the detailed [Dedicated Training](/fine-tuning/training-api/dedicated) lifecycle for research loops that need serving-quality evaluation during training: create an SDK-managed trainer and deployment, run iterative updates, save sampler weights, sync those weights to the deployment, then sample through the deployment.
 
-For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookbook/overview). They wrap this same SDK-managed service path and handle batching, reference clients, checkpoints, reconnect, and cleanup.
+If you do not need provisioned trainer and deployment resources, [compare serverless and dedicated training](/fine-tuning/training-api/choose-infrastructure).
+
+For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookbook/overview). They wrap this same SDK-managed service path and handle batching, reference clients, checkpoints, reconnect, and configuration-specific cleanup.
 
 ## Workflow
 
@@ -22,7 +24,7 @@ For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookb
 6. **Refresh the sampler** with `service.create_deployment_sampler(model_path=saved.path, ...)`.
 7. **Sample and evaluate** through the deployment endpoint.
 
-The SDK owns trainer provisioning, deployment provisioning, bucket wiring, base-vs-delta sampler checkpoint selection, weight sync, and teardown. You do not construct `TrainerJobManager`, `DeploymentManager`, or `WeightSyncer` for the normal SDK flow.
+The SDK owns trainer provisioning, deployment provisioning, bucket wiring, base-vs-delta sampler checkpoint selection, and weight sync. It performs teardown according to configured cleanup flags; resources are not deleted or scaled down unless those flags request it. You do not construct `TrainerJobManager`, `DeploymentManager`, or `WeightSyncer` for the normal SDK flow.
 
 ## End-to-end example
 
@@ -130,7 +132,7 @@ if step % eval_interval == 0:
 
 `sample_with_tokens(n=K)` fans out K concurrent requests. A concurrency controller prevents overloading the deployment:
 
-* **`AdaptiveConcurrencyController`** (recommended) — automatically adjusts the concurrency window based on the server's prefill queue latency. Starts at `initial_window` and grows or shrinks between steps using AIMD.
+* **`AdaptiveConcurrencyController`** (recommended) — automatically adjusts the concurrency window based on the server's prefill queue latency. Starts at `initial_window` and grows or shrinks during rollout sampling and at step boundaries using AIMD.
 * **`FixedConcurrencyController`** — a static semaphore with a fixed maximum. Use when you already know the right concurrency for your deployment.
 
 See [DeploymentSampler — Concurrency Control](/fine-tuning/training-api/reference/deployment-sampler#concurrency-control) for full details and configuration options.
@@ -175,16 +177,7 @@ training_client.load_state_with_optimizer("step-100").result()
 
 ## Cleanup
 
-Close the service when the loop exits:
-
-```python theme={null}
-try:
-    run_training_loop()
-finally:
-    service.close()
-```
-
-`cleanup_trainer_on_close=True` deletes SDK-managed trainers. `cleanup_deployment_on_close="scale_to_zero"` releases deployment GPUs while keeping the deployment resource around for later reuse; use `"delete"` only when you want to remove the deployment entirely.
+Set cleanup flags deliberately, call `service.close()` from `try/finally`, and verify the requested final resource state. The canonical cleanup modes and examples live in [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup).
 
 ## Operational guidance
 

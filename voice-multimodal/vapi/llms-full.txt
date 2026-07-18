@@ -178,6 +178,7 @@
 - [Google](https://docs.vapi.ai/providers/transcriber/google.md)
 - [Gladia](https://docs.vapi.ai/providers/transcriber/gladia.md)
 - [Speechmatics](https://docs.vapi.ai/providers/transcriber/speechmatics.md)
+- [Soniox](https://docs.vapi.ai/providers/transcriber/soniox.md): Connect Soniox to a Vapi assistant and configure the stt-rt-v5 real-time speech-to-text model for low-latency, multilingual transcription and endpointing.
 - [Talkscriber](https://docs.vapi.ai/providers/transcriber/talkscriber.md): What is Talkscriber?
 - [AssemblyAI](https://docs.vapi.ai/providers/transcriber/assembly-ai.md)
 - [AWS S3](https://docs.vapi.ai/providers/cloud/s3.md): Store recordings of chat conversations in AWS S3

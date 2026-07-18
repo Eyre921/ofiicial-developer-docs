@@ -56,15 +56,16 @@ ctrl = AdaptiveConcurrencyController(
     min_window=1,             # minimum window
     max_window=256,           # maximum window
     prefill_queue_target=0.5, # target prefill queue latency (seconds)
+    adjustment_interval=32,   # adjust every 32 completed requests
 )
 sampler = DeploymentSampler(..., concurrency_controller=ctrl)
 
-# Between training steps, call step_completed() to trigger window adjustment
+# Between training steps, flush remaining metrics and reset the interval
 summary = ctrl.step_completed()
 print(summary)  # {"window": 20, "avg_pq": 0.08, "cache_hit_rate": 0.95, ...}
 ```
 
-The controller reads `prefill_queue_duration` from server response metrics. When the queue is below target, the window grows proportionally. When above, it halves (multiplicative decrease).
+The controller reads `prefill_queue_duration` from server response metrics. When the queue is below target, the window grows proportionally. When above, it halves (multiplicative decrease). By default, it adjusts after every 32 completed requests and at step boundaries. Set `adjustment_interval=0` to adjust only at step boundaries.
 
 ### FixedConcurrencyController
 

@@ -1,5 +1,5 @@
 ---
-title: "Get issues-agent (Engine) LCU spend per project for the calling org"
+title: "Get issues-agent (engine) LCU spend per project for the calling org"
 source: https://docs.langchain.com/langsmith/smith-api/issues-agent/get-issues-agent-engine-lcu-spend-per-project-for-the-calling-org
 path: langsmith/smith-api/issues-agent/get-issues-agent-engine-lcu-spend-per-project-for-the-calling-org
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Create Runs Multipart Proxy"
+title: "Create runs multipart proxy"
 source: https://docs.langchain.com/langsmith/smith-api/run/create-runs-multipart-proxy
 path: langsmith/smith-api/run/create-runs-multipart-proxy
 ---

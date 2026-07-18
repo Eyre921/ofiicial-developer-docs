@@ -1093,7 +1093,7 @@ There are two approaches depending on whether tools are known ahead of time:
         });
 
         const agent = await createDeepAgent({
-            model: "claude-sonnet-4-20250514",
+            model: "claude-sonnet-4-6",
             tools: tools,
             middleware: [stateBasedTools] as any,
         });
@@ -1143,7 +1143,7 @@ There are two approaches depending on whether tools are known ahead of time:
         });
 
         const agent = await createDeepAgent({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-6",
           backend: new StoreBackend(),
           store,
           checkpointer,
@@ -1189,7 +1189,7 @@ There are two approaches depending on whether tools are known ahead of time:
         });
 
         const agent = await createDeepAgent({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-6",
           store,
           checkpointer,
           tools,
@@ -1256,7 +1256,7 @@ There are two approaches depending on whether tools are known ahead of time:
     });
 
     const agent = createAgent({
-      model: "gpt-4o",
+      model: "gpt-5.5",
       tools: [getWeather], // Only static tools registered here
       middleware: [dynamicToolMiddleware],
     });

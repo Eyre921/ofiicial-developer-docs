@@ -140,7 +140,18 @@ rlor_mgr.delete(job_id="<job-id>")
 *Inherited from [`FireworksClient`](/fine-tuning/training-api/reference/fireworks-client).* Promote a sampler checkpoint to a deployable Fireworks model. The trainer job does not need to be running -- the checkpoint resource name resolves the storage location.
 
 ```python theme={null}
-entry = rlor_mgr.list_checkpoints(endpoint.job_id)[0]
+from datetime import datetime
+
+entry = max(
+    (
+        row
+        for row in rlor_mgr.list_checkpoints(endpoint.job_id)
+        if row.get("promotable")
+    ),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
 model = rlor_mgr.promote_checkpoint(
     name=entry["name"],
     output_model_id="my-fine-tuned-model",

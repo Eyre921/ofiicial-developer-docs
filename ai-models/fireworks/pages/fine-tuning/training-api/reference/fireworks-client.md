@@ -39,7 +39,17 @@ client = FireworksClient(
 Promote a sampler checkpoint to a deployable Fireworks model. The trainer job does not need to be running -- the checkpoint resource name is enough to resolve the GCS bucket where the files reside.
 
 ```python theme={null}
-entry = client.list_checkpoints("<job-id>")[0]
+from datetime import datetime
+
+def latest_promotable(rows):
+    return max(
+        (row for row in rows if row.get("promotable")),
+        key=lambda row: datetime.fromisoformat(
+            row["createTime"].replace("Z", "+00:00")
+        ),
+    )
+
+entry = latest_promotable(client.list_checkpoints("<job-id>"))
 model = client.promote_checkpoint(
     name=entry["name"],          # accounts/<a>/rlorTrainerJobs/<j>/checkpoints/<c>
     output_model_id="my-fine-tuned-model",
@@ -68,7 +78,7 @@ Server-side list of a trainer's checkpoints (sampler + DCP, with promotability m
 
 ```python theme={null}
 rows = client.list_checkpoints(job_id)
-latest = max((r for r in rows if r["promotable"]), key=lambda r: r["createTime"])
+latest = latest_promotable(rows)
 ```
 
 Each row has `name`, `createTime` / `updateTime` (RFC3339), `checkpointType` (opaque server enum — filter on `promotable` rather than matching values), and `promotable` (bool, authoritative). Server returns rows **oldest-first** — re-sort client-side for newest-first. Requires `fireworks-ai[training] >= 1.0.0a62`.
@@ -113,14 +123,14 @@ from fireworks.training.sdk import FireworksClient, TrainerJobManager
 
 # Trainer-free: promote a checkpoint from a completed experiment
 client = FireworksClient(api_key=api_key)
-entry = client.list_checkpoints(job_id)[0]
+entry = latest_promotable(client.list_checkpoints(job_id))
 client.promote_checkpoint(name=entry["name"], output_model_id="my-model", base_model=base_model)
 
 # Compatibility lifecycle: create trainer manually, train, promote
 mgr = TrainerJobManager(api_key=api_key)
 endpoint = mgr.create_and_wait(config)
 # ... train ...
-entry = mgr.list_checkpoints(endpoint.job_id)[0]
+entry = latest_promotable(mgr.list_checkpoints(endpoint.job_id))
 mgr.promote_checkpoint(name=entry["name"], output_model_id="my-model", base_model=base_model)
 mgr.delete(endpoint.job_id)
 ```

@@ -1,19 +1,24 @@
 ---
-title: "Direct Preference Optimization"
+title: "Preference Optimization with DPO or ORPO"
 source: https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning
 path: fine-tuning/dpo-fine-tuning
 ---
 
-Direct Preference Optimization (DPO) fine-tunes models by training them on pairs of preferred and non-preferred responses to the same prompt. This teaches the model to generate more desirable outputs while reducing unwanted behaviors.
+Train on preferred and non-preferred response pairs using managed DPO or ORPO.
 
-**Use DPO when:**
+Preference optimization fine-tunes models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
+
+* **DPO** compares the policy against a reference model.
+* **ORPO** combines supervised and preference objectives without a separate reference model.
+
+Use either method for:
 
 * Aligning model outputs with brand voice, tone, or style guidelines
 * Reducing hallucinations or incorrect reasoning patterns
 * Improving response quality where there's no single "correct" answer
 * Teaching models to follow specific formatting or structural preferences
 
-## Fine-tuning with DPO
+## Fine-tuning with DPO or ORPO
 
 <Steps>
   <Step title="Prepare dataset">
@@ -122,35 +127,38 @@ Direct Preference Optimization (DPO) fine-tunes models by training them on pairs
     Ensure the dataset ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids).
   </Step>
 
-  <Step title="Create a DPO Job">
+  <Step title="Create a DPO or ORPO Job">
     <Tabs>
       <Tab title="firectl">
         ```bash theme={null}
-        firectl dpoj create \
+        firectl dpo-job create \
+          --loss-method DPO \
           --base-model accounts/account-id/models/base-model-id \
           --dataset accounts/my-account-id/datasets/my-dataset-id \
           --output-model new-model-id
         ```
 
-        For our example, we might run the following command:
+        For ORPO, use the same preference dataset and select the ORPO objective:
 
         ```bash theme={null}
-        firectl dpoj create \
-          --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
-          --dataset accounts/pyroworks/datasets/einstein-dpo \
-          --output-model einstein-dpo-model
+        firectl dpo-job create \
+          --loss-method ORPO \
+          --orpo-lambda <approved-value> \
+          --base-model accounts/account-id/models/base-model-id \
+          --dataset accounts/my-account-id/datasets/my-dataset-id \
+          --output-model new-model-id
         ```
 
-        to fine-tune a [Llama 3.1 8b Instruct](https://fireworks.ai/models/fireworks/llama-v3p1-8b-instruct) model with our Einstein dataset.
+        Choose a base model and shape that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as compatible with DPO or ORPO.
       </Tab>
     </Tabs>
   </Step>
 
-  <Step title="Monitor the DPO Job">
+  <Step title="Monitor the preference job">
     <Tabs>
       <Tab title="firectl">
         ```bash theme={null}
-        firectl dpoj get dpo-job-id
+        firectl dpo-job get dpo-job-id
         ```
       </Tab>
     </Tabs>

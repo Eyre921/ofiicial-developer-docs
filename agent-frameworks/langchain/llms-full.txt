@@ -15916,8 +15916,8 @@ Both Serverless and Dedicated are available in three sizes: Small, Medium, and L
 
 | Resource                | Serverless S | Serverless M | Serverless L | Dedicated S  | Dedicated M  | Dedicated L  |
 | ----------------------- | ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
-| Runtime compute (vCPU)  | 1            | 5            | 9            | 3            | 5            | 10           |
-| Runtime memory (GiB)    | 3            | 6            | 11           | 6            | 12           | 24           |
+| Runtime compute (vCPU)  | 1            | 2            | 4            | 3            | 5            | 10           |
+| Runtime memory (GiB)    | 2            | 5            | 9            | 6            | 12           | 24           |
 | Database compute (vCPU) | —            | —            | —            | 1            | 2            | 4            |
 | Database memory (GiB)   | —            | —            | —            | 4            | 8            | 16           |
 | Storage                 | Shared       | Shared       | Shared       | Auto-scaling | Auto-scaling | Auto-scaling |
@@ -29250,36 +29250,40 @@ KMS handles master key rotation automatically. When you enable automatic rotatio
 </div>
 
 
-# Find and fix your agent's failures with LangSmith Engine
+# Find and fix your agent's issues with LangSmith Engine
 Source: https://docs.langchain.com/langsmith/engine
 
 Automatically detect and resolve recurring issues in your tracing project using LangSmith Engine.
 
-The LangSmith Engine turns your traces into a continuous improvement workflow. It surfaces recurring issues, diagnoses their root cause, and guides you through fixing them and preventing them from coming back.
+LangSmith Engine helps you ship more reliable agents without manually searching through traces. It is the LangSmith Agent for agent engineering: working from your production traces, it surfaces recurring issues, diagnoses their root cause, and drives the fix across every stage of the development lifecycle. For a product overview, see [Engine](/langsmith/engine-overview).
 
-Each issue moves through a closed loop: a recurring failure is detected in your traces → the root cause is diagnosed → a fix is proposed → an evaluator is deployed to catch regressions → if the issue resurfaces after being closed, it is automatically reopened.
+Each issue moves through a closed loop in which Engine:
 
-For each issue, LangSmith Engine surfaces the relevant traces, proposes a fix, generates a custom evaluator to prevent regressions, and creates custom ground truth [dataset examples](/langsmith/manage-datasets) from the production trace inputs for offline evaluation.
+1. Detects a recurring issue in your traces.
+2. Diagnoses the root cause against your traces and connected source code.
+3. Proposes a fix as a pull request.
+4. Generates an evaluator and ground truth [dataset examples](/langsmith/manage-datasets) to catch regressions.
+5. Reopens the issue automatically if it resurfaces after being closed.
 
-## What you can do
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+flowchart LR
+    detect["Detect recurring issue"]:::trigger --> diagnose["Diagnose root cause"]:::process
+    diagnose --> fix["Propose fix as PR"]:::process
+    fix --> prevent["Generate evaluator and dataset examples"]:::output
+    prevent --> close["Close issue"]:::decision
+    close -->|"resurfaces"| detect
 
-<CardGroup>
-  <Card title="Build: Open a pull request" icon="git-pull-request" href="#open-a-pull-request">
-    Apply the proposed fix by opening a pull request in your connected repository.
-  </Card>
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+    classDef decision fill:#FDF3FF,stroke:#7E65AE,stroke-width:2px,color:#504B5F
+```
 
-  <Card title="Test: Add offline examples to a dataset" icon="database" href="#add-offline-examples">
-    Generate custom ground truth dataset examples from production traces for offline evaluation.
-  </Card>
+This page covers how to set up Engine, work through the fix and evaluation loop, control costs, and route notifications.
 
-  <Card title="Monitor: Create an online evaluator" icon="chart-line" href="#create-an-evaluator">
-    Deploy a custom evaluator to catch regressions in future traces.
-  </Card>
-</CardGroup>
+## Set up Engine
 
-## Set up LangSmith Engine
-
-Setting up LangSmith Engine is a two-step process: an [Organization Admin](/langsmith/rbac#organization-admin) first enables Engine for the workspace, then any user can configure Engine for each tracing project.
+Setting up Engine is a two-step process: an [Organization Admin](/langsmith/rbac#organization-admin) first enables Engine for the [workspace](/langsmith/administration-overview#workspaces), then any user can configure Engine for each tracing project.
 
 ### Enable Engine for your organization
 
@@ -29291,7 +29295,7 @@ Setting up LangSmith Engine is a two-step process: an [Organization Admin](/lang
   </Step>
 
   <Step title="Toggle Enable Engine">
-    Toggle **Enable Engine** on and acknowledge the AI features terms of use:
+    Toggle **Enable Engine** on and acknowledge the AI features terms of use. The dialog displays the following in-product notice verbatim:
 
     > LangSmith AI features, powered by LangChain-managed inference, bring intelligence to your observability workflow. With LangSmith AI enabled, your team can surface issues faster, run smarter evaluations, and build more reliable LLM applications. By enabling this feature, your organization's trace data will be processed using LangChain-managed LLM keys. Subject to our Terms of Service.
   </Step>
@@ -29305,7 +29309,7 @@ Once Engine is enabled, any team member in your organization can set it up for t
 
 ### Understand LCU costs
 
-Engine charges in **LangChain Compute Units (LCUs)**, a normalized unit of work combining compute, storage, memory, and LLM spend. The more traces, deep thought, and work needed, the more LCUs Engine consumes. LCUs cost **\$1.50 USD each**.
+Engine charges in **LangChain Compute Units (LCUs)**, a normalized unit of work combining compute, storage, memory, and LLM spend. LCU consumption scales with the number of traces analyzed, the number and complexity of the LLM calls Engine makes to diagnose and fix issues, and the size of any connected repository. LCUs cost **\$1.50 USD each**. For an estimate of your expected LCU usage, see the [LangSmith Usage Calculator](https://www.langchain.com/pricing).
 
 Engine runs in two phases:
 
@@ -29314,22 +29318,20 @@ Engine runs in two phases:
 | **Initialization**  | First time you enable Engine on a project | 30–40 LCUs        |
 | **Recurring scans** | Every 6 hours automatically               | 10–15 LCUs        |
 
-Actual usage varies based on trace volume and complexity.
-
-On initialization, Engine audits past traces, clusters and prioritizes issues by severity, and proposes fixes to your prompts or code (if a repository is connected). Recurring scans surface new improvements not previously found.
+On initialization, Engine audits past traces, clusters and prioritizes issues by severity, and proposes fixes to your prompts or code (if a repository is connected). Recurring scans run on the 6-hour schedule whether or not new issues are found, and surface new issues not previously detected.
 
 ### Set spend limits and monitor usage
 
 Organization Admins can set spend limits at two levels:
 
 * **Org-wide limit**: Open **Settings**, select **Engine enablement** under **Engine**, then enter a value under **Monthly LCU spend limit**.
-* **Per-project limit**: Open the **Engine** tab in a tracing project, click the **Engine settings** gear icon, and set a limit under **Monthly LCU spend limit**.
+* **Per-project limit**: Open the **Engine** tab in a tracing project, click the **Engine Settings** <Icon icon="settings" /> icon, and set a limit under **Monthly LCU spend limit**.
 
 You can enter limits in LCU or USD (1 LCU = \$1.50). When a limit is reached, LangSmith pauses new Engine runs until the limit is raised or the next monthly billing period begins.
 
 Leave the limit blank to allow unlimited Engine spend. To stop Engine entirely, use the **Enable Engine** toggle in **Settings > Engine enablement**.
 
-To monitor usage, you can view your organization's monthly LCU spend on the **Engine enablement** page in **Settings**, or view per-project spend in the **Engine settings** panel for each tracing project.
+To monitor usage, you can view your organization's monthly LCU spend on the **Engine enablement** page in **Settings**, or view per-project spend in the [**Engine Settings**](#configure-engine) panel for each tracing project.
 
 ### Set up Engine for a tracing project
 
@@ -29339,19 +29341,23 @@ To monitor usage, you can view your organization's monthly LCU spend on the **En
   </Step>
 
   <Step title="Connect a code repository (optional)">
-    Although optional, connecting a GitHub repository is recommended. LangSmith Engine uses your source code to diagnose problems, generate higher-quality fixes, and open pull requests directly from issues. Under **Connect your agent's code repository**, select a repository. Only repositories the GitHub app can access are shown. Click **Manage app access →** to update permissions. You can update the **Code repository** at any time from [**Engine settings**](#configure-langsmith-engine).
+    Although optional, connecting a code repository is recommended. Engine reads your source code to locate the code path behind a failing trace, ground its proposed fixes in the actual implementation, and open pull requests directly from issues. Under **Connect your agent's code repository**, select a repository in the **GitHub Repository** field. Only repositories the GitHub app can access are shown. Click **Manage app access →** to update permissions. To give Engine additional project context, select a repository in the **Context Hub repository** field. You can update either repository at any time from the [**Engine Settings**](#configure-engine) panel.
   </Step>
 
   <Step title="Select priority categories (optional)">
-    Under **What matters most to you?**, select categories to prioritize for your review (for example, **Tool Call Failures** or **Latency**). Click **+ Add something specific** to describe a custom concern. You can update **Priorities** at any time from the [**Engine settings**](#configure-langsmith-engine).
+    Under **What matters most to you?**, select categories to prioritize for your review (for example, **Tool Call Failures** or **Latency**). Click **+ Add something specific** to describe a custom concern. You can update **Priorities** at any time from the [**Engine Settings**](#configure-engine) panel.
+  </Step>
+
+  <Step title="Focus on specific traces (optional)">
+    Under **Focus on specific traces**, narrow Engine's attention to a subset of runs by run name or metadata. Leave it empty to analyze all traces. You can update the scope at any time from the [**Engine Settings**](#configure-engine) panel. For more information, see [Focus on specific traces](#focus-on-specific-traces).
   </Step>
 
   <Step title="Start analyzing">
-    Click **Start Analyzing**. LangSmith Engine can take up to 20 minutes to analyze your project’s traces and begin making suggestions. While you wait, you can [set up notifications](#get-notified-about-new-issues) in the settings panel to be alerted in Slack or via webhook when issues of different priority levels are found.
+    Click **Start Analyzing**. The dialog may show an estimated monthly cost range based on your project's usage. Engine can take up to 20 minutes to analyze your project’s traces and begin making suggestions. While you wait, you can [set up notifications](#get-notified-about-new-issues) in the settings panel to be alerted in Slack or via webhook when issues of different priority levels are found.
   </Step>
 
   <Step title="Review the agent overview document">
-    Before surfacing issues, LangSmith Engine generates an agent overview document describing your project's purpose, architecture, and key metrics based on your traces. Review and edit the document, then click **Accept & Continue** to proceed. If the overview is inaccurate, edit it before continuing, since LangSmith Engine uses it as context for all analysis, so accuracy here affects the quality of detected issues. You can update it at any time from [**Engine settings**](#configure-langsmith-engine).
+    Before surfacing issues, Engine generates an agent overview document describing your project's purpose, architecture, and key metrics based on your traces. Review and edit the document, then click **Accept & Continue** to proceed. If the overview is inaccurate, edit it before continuing, since Engine uses it as context for all analysis, so accuracy here affects the quality of detected issues. You can update it at any time from the [**Engine Settings**](#configure-engine) panel.
   </Step>
 </Steps>
 
@@ -29361,6 +29367,24 @@ To monitor usage, you can view your organization's monthly LCU spend on the **En
   <img alt="Setup dialog showing the code repository field and category selections for prioritizing issue types" />
 </Frame>
 
+### Focus on specific traces
+
+Focus Engine on the traces that matter to keep analysis precise and reduce wasted LCU spend. Use trace scope (the **Focus on specific traces** control) when a project mixes several agents or workloads and you want Engine to analyze only some of them. For example, if a project runs both a production chatbot and a nightly batch job, scope to `Run Name is chatbot` so Engine ignores the batch runs. By default, Engine analyzes all of a project's traces.
+
+Set the scope in either of two places, using the same control:
+
+* **Engine setup**: In the **Find and fix your agent's issues** panel, under **Focus on specific traces**.
+* **Engine Settings**: In the **Focus on specific traces** section of the [**Engine Settings**](#configure-engine) panel. Edits here save automatically.
+
+Add scope conditions with the same [filter editor](/langsmith/filter-traces-in-application#create-and-apply-filters) used on the tracing project's **Tracing** tab. You can add one condition of each kind, **up to two**:
+
+* **Run Name**: Pick a run or agent name. The value field autocompletes from the run names in your project's recent traces.
+* **Metadata**: Pick a metadata key, then a value. Both autocomplete from the metadata present on your project's recent runs.
+
+To add a condition, choose its kind from the field selector, fill in the values, then click **Add**. Each condition appears as a chip, for example `Run Name is chatbot` or `env is prod`. Click the **×** on a chip to remove that condition.
+
+Scope determines which traces Engine analyzes to detect issues and build the agent overview document. Scope set during initial setup applies to Engine's first scan. Scope changed later in the [**Engine Settings**](#configure-engine) panel does not re-run Engine immediately; it applies on the next scan, which runs every 6 hours.
+
 ## Browse and filter issues
 
 Once setup is complete, the **Engine** tab displays a list of automatically detected issues in the left panel. Each entry shows a title, a short description, the number of contributing traces, and how recently the issue was observed.
@@ -29369,17 +29393,17 @@ At the top of the list, you can click:
 
 * **Filter issues** icon to filter by **Priority**, **Status** and **Tags**.
 * **Sort issues** icon to sort by **Severity**, **Last Updated**, and **Created**.
-* **Engine settings** gear icon to [configure LangSmith Engine](#configure-langsmith-engine).
+* **Engine Settings** <Icon icon="settings" /> icon to [configure Engine](#configure-engine).
 
 Click any issue to display its details in the right panel.
 
-If no issues appear after setup completes, LangSmith Engine found no recurring patterns in the analyzed traces. Try checking back after more traces have been collected.
+If no issues appear after setup completes, Engine found no recurring patterns in the analyzed traces. Try checking back after more traces have been collected.
 
 ## Review an issue
 
 Click any issue in the list to open its detail panel. At the top, a diagnosis describes the problem and its impact.
 
-The **Linked traces** section lists the traces that support the diagnosis. Click any trace to open its detail panel. For more information, see [Manage a trace](/langsmith/manage-trace). Click [**Add offline examples**](#add-offline-examples) at the bottom right of this section to generate custom ground truth [dataset examples](/langsmith/manage-datasets) from the production trace inputs for offline evaluation.
+The **Linked Traces** section lists the traces that support the diagnosis. Click any trace to open its detail panel. For more information, see [Manage a trace](/langsmith/manage-trace). Click [**Add offline examples**](#add-offline-examples) at the top right of this section to generate custom ground truth [dataset examples](/langsmith/manage-datasets) from the production trace inputs for offline evaluation.
 
 The **Proposed Fix** section describes the issue and suggests how to address it, which may include specific code or prompt changes if a repository is connected.
 
@@ -29391,7 +29415,7 @@ The **Offline Examples** section proposes dataset examples generated from the pr
 
 ### Change priority
 
-Select **Low**, **Medium** or **High** from the priority dropdown to update an issue's priority. You can optionally provide a reason, which feeds back into LangSmith Engine to help improve its analysis over time.
+Select **Low**, **Medium**, or **High** from the priority dropdown to update an issue's priority. You can optionally provide a reason, which feeds back into Engine to help improve its analysis over time.
 
 ### Create an evaluator
 
@@ -29406,9 +29430,9 @@ For more information, see [Evaluators](/langsmith/evaluators).
 1. Click **Add offline examples** at the bottom of the **Linked traces** list to open the **Add as offline example** dialog.
 2. Review each trace. The dialog shows the input, the wrong output the agent produced, and the proposed expected output as a custom ground truth example.
 3. Click **Add to Dataset** to add them directly, or click **Edit in annotation queue** to review them first.
-4. In the annotation queue, each example shows the run inputs alongside reference outputs proposed by LangSmith Engine, structured as named [assertions](/langsmith/assertions) generated from trace analysis. Each assertion is a short claim describing what a correct answer should or shouldn't include. Edit the assertions as needed, add new ones with **+ Add assertion**, then click **Add to Dataset & Continue** to work through each example.
+4. In the annotation queue, each example shows the run inputs alongside reference outputs proposed by Engine, structured as named [assertions](/langsmith/assertions) generated from trace analysis. Each assertion is a short claim describing what a correct answer should or shouldn't include. Edit the assertions as needed, add new ones with **+ Add assertion**, then click **Add to Dataset & Continue** to work through each example.
 
-For more information, refer to [Manage datasets](/langsmith/manage-datasets), [Use annotation queues](/langsmith/annotation-queues), and [Use assertions](/langsmith/assertions), .
+For more information, refer to [Manage datasets](/langsmith/manage-datasets), [Use annotation queues](/langsmith/annotation-queues), and [Use assertions](/langsmith/assertions).
 
 ### Copy the issue prompt
 
@@ -29416,7 +29440,7 @@ Click the **Copy Fix Context** copy icon to save a prompt with the issue details
 
 ### Open a pull request
 
-Click **Open PR** to open a GitHub pull request in your connected repository with the proposed fix applied. Once a pull request is open, the button changes to **View PR**. LangSmith Engine can propose code changes to any connected repository, including agents built with [Deep Agents](/oss/python/deepagents/overview), [LangChain](/oss/python/langchain/overview), and [LangGraph](/oss/python/langgraph/overview).
+Click **Open PR** to open a GitHub pull request in your connected repository with the proposed fix applied. Once a pull request is open, the button changes to **View PR**. Engine can propose code changes to any connected repository, including agents built with [Deep Agents](/oss/python/deepagents/overview), [LangChain](/oss/python/langchain/overview), and [LangGraph](/oss/python/langgraph/overview).
 
 ### Resolve or ignore an issue
 
@@ -29437,9 +29461,9 @@ langsmith project issues list --project <project-name>
 
 ## Get notified about new issues
 
-LangSmith Engine can notify you when it opens a new issue, links a new trace to an existing issue, or fails to complete a run. Deliver these notifications to a **Slack channel**, an **HTTP webhook endpoint**, or both. Each destination has its own event types and minimum priority level, so you can route urgent issues to a paging webhook while sending every issue to a Slack channel.
+Engine can notify you when it opens a new issue, links a new trace to an existing issue, or fails to complete a run. Deliver these notifications to a **Slack channel**, an **HTTP webhook endpoint**, or both. Each destination has its own event types and minimum priority level, so you can route urgent issues to a paging webhook while sending every issue to a Slack channel.
 
-Manage notification destinations from the **Engine Settings** panel: open the **Engine** tab for a tracing project, click the **Engine settings** gear icon, and under **Notifications** click **+ Add destination**.
+Manage notification destinations from the [**Engine Settings**](#configure-engine) panel: open the **Engine** tab for a tracing project, click the **Engine Settings** <Icon icon="settings" /> icon, and under **Notifications** click **+ Add destination**.
 
 ### Notify a Slack channel
 
@@ -29449,7 +29473,7 @@ Manage notification destinations from the **Engine Settings** panel: open the **
   </Step>
 
   <Step title="Add a Slack destination">
-    On the **Engine** tab of a tracing project, click the **Engine settings** gear icon, then click **Add destination**. Set the **Deliver to** field to **Slack**, then choose the workspace and channel under **Channel**.
+    On the **Engine** tab of a tracing project, click the **Engine Settings** <Icon icon="settings" /> icon, then click **Add destination**. Set the **Deliver to** field to **Slack**, then choose the workspace and channel under **Channel**.
   </Step>
 
   <Step title="Choose events and priority">
@@ -29459,26 +29483,37 @@ Manage notification destinations from the **Engine Settings** panel: open the **
 
 LangSmith automatically joins the public channel you select. To post to a private channel, invite the LangSmith app to that channel in Slack first.
 
-Each Slack message includes the issue title, description, and severity, a **View issue** link back to LangSmith, and (for issue events) a chart of the issue's recurrence over time. If a workspace's connection becomes invalid—for example, the app is removed from Slack—its destinations stop delivering until you reconnect it from your organization's **General** settings.
+Each Slack message includes the issue title, description, and severity, a **View issue** link back to LangSmith, and (for issue events) a chart of the issue's recurrence over time. If a workspace's connection becomes invalid, for example, the app is removed from Slack, its destinations stop delivering until you reconnect it from your organization's **General** settings.
 
 ### Send to a webhook
 
 To forward Engine events to your own incident-management, paging, or chat tooling, add a destination and set the **Deliver to** field to **Webhook**. Enter a URL and, optionally, custom headers. Webhook deliveries are signed so you can verify their authenticity. For the full event payload reference, signing-secret verification, and delivery semantics, see [Engine webhook events](/langsmith/engine-webhooks).
 
-## Configure LangSmith Engine
+## Configure Engine
 
 <Note>
-  LangSmith Engine uses **LangChain-managed inference** exclusively. Bring Your Own Key (BYOK) is not supported; you cannot supply your own provider API keys for Engine.
+  Engine uses **LangChain-managed inference** exclusively. Bring Your Own Key (BYOK) is not supported; you cannot supply your own provider API keys for Engine.
 </Note>
 
-Within a tracing project, click the **Engine settings** gear icon on the **Engine** tab to open the **Edit Engine Settings** panel. From here you can configure:
+Within a tracing project, click the **Engine Settings** <Icon icon="settings" /> icon on the **Engine** tab to open the **Edit Engine Settings** panel. From here you can configure:
 
-* **Agent Overview**: Edit your agent overview document to keep LangSmith Engine's understanding of your project accurate as your application evolves.
-* **Priorities**: Areas LangSmith Engine should pay extra attention to when scanning traces. Changes take effect on the next scan.
-* **Code repository**: Update the connected GitHub repository or subfolder.
-* **Notifications**: Add Slack channel or webhook destinations that receive a notification when LangSmith Engine detects a new issue. Set a minimum priority level per destination to control which issues trigger a notification. See [Get notified about new issues](#get-notified-about-new-issues).
-* **Pause Engine**: LangSmith Engine scans your traces every 6 hours by default. Click **Pause** to suspend scanning or **Resume** to resume scanning.
+* **Agent overview**: Edit your agent overview document to keep Engine's understanding of your project accurate as your application evolves.
+* **Preferences**: Areas Engine should focus on, prioritize, or ignore. Engine treats these as authoritative and folds them into the agent overview document on the next scan. Select category chips such as **Cost & Tokens**, **Latency**, or **Tool Call Failures**, or click **+ Add something specific** to describe a custom concern. Changes take effect on the next scan.
+* **Engine spend**: View the month-to-date Engine LCU spend for this project. Click **Set limit** to cap monthly spend. New runs pause when the monthly limit is reached.
+* **Focus on specific traces**: Narrow Engine's attention to a subset of runs by run name or metadata. Edits save automatically and take effect on the next scan. See [Focus on specific traces](#focus-on-specific-traces).
+* **Notifications**: Click **Add destination** to add a Slack channel or webhook destination that receives a notification when Engine detects a new issue. Set a minimum priority level per destination to control which issues trigger a notification. See [Get notified about new issues](#get-notified-about-new-issues).
+* **Code repository**: Connect or update a GitHub repository so the agent can reference source code when diagnosing issues. Optionally set a **Subfolder** and a **Branch** (defaults to the repository default).
+* **Context repository**: Connect a Context Hub repository so Engine can propose fixes to instructions, docs, and linked skills.
+* **Pause**: Engine scans your traces every 6 hours by default. Click **Pause** to stop scanning without deleting the existing issues, or **Resume** to resume scanning.
 * **Delete all issues**: This action cannot be undone. All issues and settings will be permanently removed.
+
+## See also
+
+* [Engine](/langsmith/engine-overview): Product overview and where Engine fits in the development lifecycle.
+* [Engine webhook events](/langsmith/engine-webhooks): Event payload reference, signing-secret verification, and delivery semantics.
+* [Engine on self-hosted](/langsmith/engine-self-hosted): Self-hosted architecture and data handling.
+* [Manage datasets](/langsmith/manage-datasets), [Use annotation queues](/langsmith/annotation-queues), and [Use assertions](/langsmith/assertions): Work with the offline examples Engine generates.
+* [LangSmith CLI](/langsmith/cli): List and manage issues programmatically.
 
 ***
 
@@ -29545,7 +29580,7 @@ Engine scans each connected tracing project every 6 hours, clustering and priori
 ## Get started
 
 <CardGroup>
-  <Card title="Set up Engine" icon="settings" href="/langsmith/engine#set-up-langsmith-engine">
+  <Card title="Set up Engine" icon="settings" href="/langsmith/engine#set-up-engine">
     Enable Engine for your organization and configure it for a tracing project.
   </Card>
 
@@ -29629,7 +29664,7 @@ Engine adds the following controls on top of LangSmith's baseline:
 * **Auditability**: Engine surfaces its work as GitHub pull requests, with supporting context in the issue list on the [Engine tab](/langsmith/engine). Code changes flow through your branch-protection, review, and automated build controls, so your software development lifecycle remains the system of record for what ships.
 * **Client-side PII scrubbing**: LangSmith's [client libraries](/langsmith/mask-inputs-outputs) can remove sensitive content from traces before they are sent to LangSmith. Recommended for customers handling regulated data.
 * **Model selection managed by LangChain**: LangChain selects the specific model used for each Engine task across these subprocessors, and may change selections within that set without separate notification. Adding any new subprocessor follows the standard subprocessor-change notification process.
-* **Revocation and deletion**: You can revoke GitHub access at any time by uninstalling the App, and remove Engine's findings with **Delete all issues** in [Engine settings](/langsmith/engine#configure-langsmith-engine). Trace data follows your LangSmith [retention and purging](/langsmith/data-purging-compliance) settings.
+* **Revocation and deletion**: You can revoke GitHub access at any time by uninstalling the App, and remove Engine's findings with **Delete all issues** in [Engine settings](/langsmith/engine#configure-engine). Trace data follows your LangSmith [retention and purging](/langsmith/data-purging-compliance) settings.
 
 ## Compliance posture
 
@@ -29765,7 +29800,7 @@ Reference for the webhook events LangSmith Engine sends when it creates issues o
 
 Forward LangSmith-detected agent issues into your incident-management, paging, or chat tools. [LangSmith Engine](/langsmith/engine) sends a webhook event to your endpoint when it opens a new issue, or when it links a new trace to an issue it has already opened.
 
-To configure webhook subscriptions, open the **Engine Settings** panel on the **Engine** tab of a tracing project. See [Configure LangSmith Engine](/langsmith/engine#configure-langsmith-engine).
+To configure webhook subscriptions, open the **Engine Settings** panel on the **Engine** tab of a tracing project. See [Configure Engine](/langsmith/engine#configure-engine).
 
 <Note>
   A destination delivers to either a webhook URL or a **Slack channel**. Both use the same [event types](#event-types) and [minimum-priority filtering](#severity-filtering) described on this page. Slack destinations post through LangSmith's managed Slack app instead of sending the [JSON payload](#event-envelope) below, so the [signing secret](#signing-secret) and [custom headers](#custom-headers) do not apply.
@@ -91063,6 +91098,14 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
+<Update label="2026-07-16">
+  ## langsmith-0.16.0-rc.13
+
+  * This release packages the same LangSmith application version as langsmith-0.16.0-rc.12. Refer to the [langsmith-0.16.0-rc.12](#langsmith-0-16-0-rc-12) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.13.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.13/langsmith-0.16.0-rc.13.tgz)
+</Update>
+
 <Update label="2026-07-09">
   ## langsmith-0.16.0-rc.12
 
@@ -96826,42 +96869,42 @@ Updates an alert rule.
 
 
 
-# Add Runs To Annotation Queue
+# Add runs to annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/add-runs-to-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/annotation-queues/{queue_id}/runs
 
 
 
-# Add Runs To Annotation Queue By Key
+# Add runs to annotation queue by key
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/add-runs-to-annotation-queue-by-key
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/annotation-queues/{queue_id}/runs/by-key
 
 
 
-# Create Annotation Queue
+# Create annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/create-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/annotation-queues
 
 
 
-# Create Identity Annotation Queue Run Status
+# Create identity annotation queue run status
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/create-identity-annotation-queue-run-status
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/annotation-queues/status/{annotation_queue_run_id}
 
 
 
-# Delete Annotation Queue
+# Delete annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/delete-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/annotation-queues/{queue_id}
 
 
 
-# Delete Annotation Queues
+# Delete annotation queues
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/delete-annotation-queues
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/annotation-queues
@@ -96873,49 +96916,49 @@ Returns:
 
 
 
-# Delete Run From Annotation Queue
+# Delete run from annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/delete-run-from-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/annotation-queues/{queue_id}/runs/{queue_run_id}
 
 
 
-# Delete Runs From Annotation Queue
+# Delete runs from annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/delete-runs-from-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/annotation-queues/{queue_id}/runs/delete
 
 
 
-# Export Annotation Queue Archived Runs
+# Export annotation queue archived runs
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/export-annotation-queue-archived-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/annotation-queues/{queue_id}/export
 
 
 
-# Get Annotation Queue
+# Get annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{queue_id}
 
 
 
-# Get Annotation Queues
+# Get annotation queues
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-annotation-queues
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues
 
 
 
-# Get Annotation Queues For Run
+# Get annotation queues for run
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-annotation-queues-for-run
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{run_id}/queues
 
 
 
-# Get Run From Annotation Queue
+# Get run from annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-run-from-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{queue_id}/run/{index}
@@ -96923,35 +96966,35 @@ Get a run from an annotation queue
 
 
 
-# Get Runs From Annotation Queue
+# Get runs from annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-runs-from-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{queue_id}/runs
 
 
 
-# Get Size From Annotation Queue
+# Get size from annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-size-from-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{queue_id}/size
 
 
 
-# Get Total Archived From Annotation Queue
+# Get total archived from annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-total-archived-from-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{queue_id}/total_archived
 
 
 
-# Get Total Size From Annotation Queue
+# Get total size from annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/get-total-size-from-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{queue_id}/total_size
 
 
 
-# Populate Annotation Queue
+# Populate annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/populate-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/annotation-queues/populate
@@ -96959,7 +97002,7 @@ Populate annotation queue with runs from an experiment.
 
 
 
-# Resolve Annotation Queue Run
+# Resolve annotation queue run
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/resolve-annotation-queue-run
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/annotation-queues/{queue_id}/runs/resolve/{queue_run_id}
@@ -96967,14 +97010,14 @@ Resolve a queue run ID to its section and run data for deep linking.
 
 
 
-# Update Annotation Queue
+# Update annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/update-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/annotation-queues/{queue_id}
 
 
 
-# Update Run In Annotation Queue
+# Update run in annotation queue
 Source: https://docs.langchain.com/langsmith/smith-api/annotation-queues/update-run-in-annotation-queue
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/annotation-queues/{queue_id}/runs/{queue_run_id}
@@ -96997,7 +97040,7 @@ Unassigns an identity as a reviewer for the queue. Idempotent.
 
 
 
-# Delete Api Key
+# Delete API key
 Source: https://docs.langchain.com/langsmith/smith-api/api-key/delete-api-key
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/api-key/{api_key_id}
@@ -97005,7 +97048,7 @@ Delete an api key for the user
 
 
 
-# Delete Personal Access Token
+# Delete personal access token
 Source: https://docs.langchain.com/langsmith/smith-api/api-key/delete-personal-access-token
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/api-key/current/{pat_id}
@@ -97013,7 +97056,7 @@ DEPRECATED: Use /orgs/current/personal-access-tokens/{pat_id} instead
 
 
 
-# Generate Api Key
+# Generate API key
 Source: https://docs.langchain.com/langsmith/smith-api/api-key/generate-api-key
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/api-key
@@ -97021,7 +97064,7 @@ Generate an api key for the user
 
 
 
-# Generate Personal Access Token
+# Generate personal access token
 Source: https://docs.langchain.com/langsmith/smith-api/api-key/generate-personal-access-token
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/api-key/current
@@ -97029,7 +97072,7 @@ DEPRECATED: Use /orgs/current/personal-access-tokens instead
 
 
 
-# Get Api Keys
+# Get API keys
 Source: https://docs.langchain.com/langsmith/smith-api/api-key/get-api-keys
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/api-key
@@ -97037,7 +97080,7 @@ Get the current tenant's API keys
 
 
 
-# Get Personal Access Tokens
+# Get personal access tokens
 Source: https://docs.langchain.com/langsmith/smith-api/api-key/get-personal-access-tokens
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/api-key/current
@@ -97045,7 +97088,7 @@ DEPRECATED: Use /orgs/current/personal-access-tokens instead
 
 
 
-# Get Audit Logs
+# Get audit logs
 Source: https://docs.langchain.com/langsmith/smith-api/audit-logs/get-audit-logs
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/audit-logs
@@ -97060,7 +97103,7 @@ Reference: https://schema.ocsf.io/1.7.0/classes/api_activity
 
 
 
-# Check Sso Email Verification Status
+# Check SSO email verification status
 Source: https://docs.langchain.com/langsmith/smith-api/auth/check-sso-email-verification-status
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sso/email-verification/status
@@ -97068,7 +97111,7 @@ Retrieve the email verification status of an SSO user.
 
 
 
-# Confirm Sso User Email
+# Confirm SSO user email
 Source: https://docs.langchain.com/langsmith/smith-api/auth/confirm-sso-user-email
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sso/email-verification/confirm
@@ -97084,7 +97127,7 @@ Returns public authentication information for the current workspace-level sessio
 
 
 
-# Get Sso Settings
+# Get SSO settings
 Source: https://docs.langchain.com/langsmith/smith-api/auth/get-sso-settings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sso/settings/{sso_login_slug}
@@ -97099,7 +97142,7 @@ Source: https://docs.langchain.com/langsmith/smith-api/auth/login
 
 
 
-# Lookup Sso By Email
+# Lookup SSO by email
 Source: https://docs.langchain.com/langsmith/smith-api/auth/lookup-sso-by-email
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sso/email-lookup
@@ -97107,7 +97150,7 @@ Look up SSO providers available for a SCIM-provisioned email address.
 
 
 
-# Send Sso Email Confirmation
+# Send SSO email confirmation
 Source: https://docs.langchain.com/langsmith/smith-api/auth/send-sso-email-confirmation
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sso/email-verification/send
@@ -97115,7 +97158,7 @@ Send an email to confirm the email address for an SSO user.
 
 
 
-# AWS Marketplace fulfillment URL registration
+# AWS marketplace fulfillment URL registration
 Source: https://docs.langchain.com/langsmith/smith-api/aws_marketplace/aws-marketplace-fulfillment-url-registration
 
 /langsmith/langsmith-platform-openapi.json post /aws-marketplace/register
@@ -97131,7 +97174,7 @@ Deletes the backfill job record, causing the backfill to restart from the beginn
 
 
 
-# Cancel Bulk Export
+# Cancel bulk export
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/cancel-bulk-export
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/bulk-exports/{bulk_export_id}
@@ -97139,7 +97182,7 @@ Cancel a bulk export by ID
 
 
 
-# Create Bulk Export
+# Create bulk export
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/create-bulk-export
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/bulk-exports
@@ -97147,7 +97190,7 @@ Create a new bulk export
 
 
 
-# Create Bulk Export Destination
+# Create bulk export destination
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/create-bulk-export-destination
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/bulk-exports/destinations
@@ -97155,7 +97198,7 @@ Create a new bulk export destination
 
 
 
-# Get Bulk Export
+# Get bulk export
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/bulk-exports/{bulk_export_id}
@@ -97163,7 +97206,7 @@ Get a single bulk export by ID
 
 
 
-# Get Bulk Export Destination
+# Get bulk export destination
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-destination
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/bulk-exports/destinations/{destination_id}
@@ -97171,7 +97214,7 @@ Get a single bulk export destination by ID
 
 
 
-# Get Bulk Export Destinations
+# Get bulk export destinations
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-destinations
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/bulk-exports/destinations
@@ -97179,7 +97222,7 @@ Get the current workspace's bulk export destinations
 
 
 
-# Get Bulk Export Run
+# Get bulk export run
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-run
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/bulk-exports/{bulk_export_id}/runs/{run_id}
@@ -97187,7 +97230,7 @@ Get a single bulk export's run by ID
 
 
 
-# Get Bulk Export Runs
+# Get bulk export runs
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-runs
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/bulk-exports/{bulk_export_id}/runs
@@ -97195,7 +97238,7 @@ Get a bulk export's runs
 
 
 
-# Get Bulk Export Runs Filtered
+# Get bulk export runs filtered
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-export-runs-filtered
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/bulk-exports/runs
@@ -97203,7 +97246,7 @@ Get bulk export runs for exports that were created from a scheduled bulk export
 
 
 
-# Get Bulk Exports
+# Get bulk exports
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/get-bulk-exports
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/bulk-exports
@@ -97211,7 +97254,7 @@ Get the current workspace's bulk exports
 
 
 
-# Update Bulk Export Destination
+# Update bulk export destination
 Source: https://docs.langchain.com/langsmith/smith-api/bulk-exports/update-bulk-export-destination
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/bulk-exports/destinations/{destination_id}
@@ -97219,7 +97262,7 @@ Update a bulk export destination
 
 
 
-# Clone Section
+# Clone section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/clone-section
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/charts/section/clone
@@ -97227,7 +97270,7 @@ Clone a dashboard.
 
 
 
-# Create Chart
+# Create chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/create-chart
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/charts/create
@@ -97235,7 +97278,7 @@ Create a new chart.
 
 
 
-# Create Section
+# Create section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/create-section
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/charts/section
@@ -97243,7 +97286,7 @@ Create a new section.
 
 
 
-# Delete Chart
+# Delete chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/delete-chart
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/charts/{chart_id}
@@ -97251,7 +97294,7 @@ Delete a chart.
 
 
 
-# Delete Section
+# Delete section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/delete-section
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/charts/section/{section_id}
@@ -97259,7 +97302,7 @@ Delete a section.
 
 
 
-# Org Create Chart
+# Org create chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-create-chart
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts/create
@@ -97267,7 +97310,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Create Section
+# Org create section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-create-section
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts/section
@@ -97275,7 +97318,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Delete Chart
+# Org delete chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-delete-chart
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/org-charts/{chart_id}
@@ -97283,7 +97326,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Delete Section
+# Org delete section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-delete-section
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/org-charts/section/{section_id}
@@ -97291,7 +97334,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Read Chart Preview
+# Org read chart preview
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-read-chart-preview
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts/preview
@@ -97299,7 +97342,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Read Charts
+# Org read charts
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-read-charts
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts
@@ -97307,7 +97350,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Read Sections
+# Org read sections
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-read-sections
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/org-charts/section
@@ -97315,7 +97358,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Read Single Chart
+# Org read single chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-read-single-chart
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts/{chart_id}
@@ -97323,7 +97366,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Read Single Section
+# Org read single section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-read-single-section
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts/section/{section_id}
@@ -97331,7 +97374,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Update Chart
+# Org update chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-update-chart
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/org-charts/{chart_id}
@@ -97339,7 +97382,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Org Update Section
+# Org update section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/org-update-section
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/org-charts/section/{section_id}
@@ -97347,7 +97390,7 @@ Deprecated: organization usage charts have been retired (HTTP 410).
 
 
 
-# Read Chart Preview
+# Read chart preview
 Source: https://docs.langchain.com/langsmith/smith-api/charts/read-chart-preview
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/charts/preview
@@ -97355,7 +97398,7 @@ Get a preview for a chart without actually creating it.
 
 
 
-# Read Charts
+# Read charts
 Source: https://docs.langchain.com/langsmith/smith-api/charts/read-charts
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/charts
@@ -97363,7 +97406,7 @@ Get all charts for the tenant.
 
 
 
-# Read Sections
+# Read sections
 Source: https://docs.langchain.com/langsmith/smith-api/charts/read-sections
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/charts/section
@@ -97371,7 +97414,7 @@ Get all sections for the tenant.
 
 
 
-# Read Single Chart
+# Read single chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/read-single-chart
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/charts/{chart_id}
@@ -97379,7 +97422,7 @@ Get a single chart by ID.
 
 
 
-# Read Single Section
+# Read single section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/read-single-section
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/charts/section/{section_id}
@@ -97387,7 +97430,7 @@ Get a single section by ID.
 
 
 
-# Update Chart
+# Update chart
 Source: https://docs.langchain.com/langsmith/smith-api/charts/update-chart
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/charts/{chart_id}
@@ -97395,7 +97438,7 @@ Update a chart.
 
 
 
-# Update Section
+# Update section
 Source: https://docs.langchain.com/langsmith/smith-api/charts/update-section
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/charts/section/{section_id}
@@ -97403,42 +97446,42 @@ Update a section.
 
 
 
-# Create Comment
+# Create comment
 Source: https://docs.langchain.com/langsmith/smith-api/comments/create-comment
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/comments/{owner}/{repo}
 
 
 
-# Create Sub Comment
+# Create sub comment
 Source: https://docs.langchain.com/langsmith/smith-api/comments/create-sub-comment
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/comments/{owner}/{repo}/{parent_comment_id}
 
 
 
-# Get Comments
+# Get comments
 Source: https://docs.langchain.com/langsmith/smith-api/comments/get-comments
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/comments/{owner}/{repo}
 
 
 
-# Get Sub Comments
+# Get sub comments
 Source: https://docs.langchain.com/langsmith/smith-api/comments/get-sub-comments
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/comments/{owner}/{repo}/{parent_comment_id}
 
 
 
-# Like Comment
+# Like comment
 Source: https://docs.langchain.com/langsmith/smith-api/comments/like-comment
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/comments/{owner}/{repo}/{parent_comment_id}/like
 
 
 
-# Unlike Comment
+# Unlike comment
 Source: https://docs.langchain.com/langsmith/smith-api/comments/unlike-comment
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/comments/{owner}/{repo}/{parent_comment_id}/like
@@ -97495,7 +97538,7 @@ Returns up to 50 data planes owned by the caller's organization. Sorted status p
 
 
 
-# Clone Dataset
+# Clone dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/clone-dataset
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/datasets/clone
@@ -97503,7 +97546,7 @@ Clone a dataset.
 
 
 
-# Create Comparative Experiment
+# Create comparative experiment
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/create-comparative-experiment
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/datasets/comparative
@@ -97511,7 +97554,7 @@ Create a comparative experiment.
 
 
 
-# Create Dataset
+# Create dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/create-dataset
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/datasets
@@ -97519,7 +97562,7 @@ Create a new dataset.
 
 
 
-# Delete Comparative Experiment
+# Delete comparative experiment
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/delete-comparative-experiment
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/datasets/comparative/{comparative_experiment_id}
@@ -97527,7 +97570,7 @@ Delete a specific comparative experiment.
 
 
 
-# Delete Dataset
+# Delete dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/delete-dataset
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/datasets/{dataset_id}
@@ -97535,7 +97578,7 @@ Delete a specific dataset.
 
 
 
-# Delete Datasets
+# Delete datasets
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/delete-datasets
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/datasets
@@ -97543,7 +97586,7 @@ Delete multiple datasets.
 
 
 
-# Diff Dataset Versions
+# Diff dataset versions
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/diff-dataset-versions
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/versions/diff
@@ -97551,7 +97594,7 @@ Get diff between two dataset versions.
 
 
 
-# Download Dataset Csv
+# Download dataset csv
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/download-dataset-csv
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/csv
@@ -97559,7 +97602,7 @@ Download a dataset as CSV format.
 
 
 
-# Download Dataset Jsonl
+# Download dataset jsonl
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/download-dataset-jsonl
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/jsonl
@@ -97567,7 +97610,7 @@ Download a dataset as CSV format.
 
 
 
-# Download Dataset Openai
+# Download dataset openai
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/download-dataset-openai
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/openai
@@ -97575,11 +97618,29 @@ Download a dataset as OpenAI Evals Jsonl format.
 
 
 
-# Download Dataset Openai Ft
+# Download dataset openai ft
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/download-dataset-openai-ft
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/openai_ft
 Download a dataset as OpenAI Jsonl format.
+
+
+
+# Fetch experiment runs for dataset examples (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/datasets/fetch-experiment-runs-for-dataset-examples-v2
+
+/langsmith/langsmith-platform-openapi.json post /v2/datasets/{dataset_id}/experiment-runs
+Returns a paginated page of dataset examples with runs from the requested experiments.
+Response uses the canonical `{items, next_cursor}` envelope.
+
+
+
+# Fetch shared experiment runs for dataset examples (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/datasets/fetch-shared-experiment-runs-for-dataset-examples-v2
+
+/langsmith/langsmith-platform-openapi.json post /v2/datasets/public/{share_token}/experiment-runs
+Public share-token variant of POST /v2/datasets/{dataset_id}/experiment-runs.
+Returns a paginated page of dataset examples with runs from the requested experiments.
 
 
 
@@ -97591,14 +97652,14 @@ Generate synthetic examples for a dataset.
 
 
 
-# Get Dataset Splits
+# Get dataset splits
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/get-dataset-splits
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/splits
 
 
 
-# Get Dataset Version
+# Get dataset version
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/get-dataset-version
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/version
@@ -97606,7 +97667,7 @@ Get dataset version by as_of or exact tag.
 
 
 
-# Get Dataset Versions
+# Get dataset versions
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/get-dataset-versions
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/versions
@@ -97614,7 +97675,7 @@ Get dataset versions.
 
 
 
-# Read Dataset
+# Read dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/read-dataset
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}
@@ -97622,7 +97683,7 @@ Get a specific dataset.
 
 
 
-# Read Dataset Share State
+# Read dataset share state
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/read-dataset-share-state
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/{dataset_id}/share
@@ -97630,7 +97691,7 @@ Get the state of sharing a dataset
 
 
 
-# Read Datasets
+# Read datasets
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/read-datasets
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets
@@ -97638,7 +97699,7 @@ Get all datasets by query params and owner.
 
 
 
-# Read Datasets Stream
+# Read datasets stream
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/read-datasets-stream
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/datasets/stream
@@ -97646,7 +97707,7 @@ Stream all datasets by query params and owner as JSON patches.
 
 
 
-# Read Examples With Runs
+# Read examples with runs
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/read-examples-with-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/datasets/{dataset_id}/runs
@@ -97654,7 +97715,7 @@ Fetch examples for a dataset, and fetch the runs for each example if they are as
 
 
 
-# Share Dataset
+# Share dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/share-dataset
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/datasets/{dataset_id}/share
@@ -97662,14 +97723,14 @@ Share a dataset.
 
 
 
-# Studio Experiment
+# Studio experiment
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/studio-experiment
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/datasets/studio_experiment
 
 
 
-# Unshare Dataset
+# Unshare dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/unshare-dataset
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/datasets/{dataset_id}/share
@@ -97677,7 +97738,7 @@ Unshare a dataset.
 
 
 
-# Update Dataset
+# Update dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/update-dataset
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/datasets/{dataset_id}
@@ -97685,14 +97746,14 @@ Update a specific dataset.
 
 
 
-# Update Dataset Splits
+# Update dataset splits
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/update-dataset-splits
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/datasets/{dataset_id}/splits
 
 
 
-# Update Dataset Version
+# Update dataset version
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/update-dataset-version
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/datasets/{dataset_id}/tags
@@ -97700,7 +97761,7 @@ Set a tag on a dataset version.
 
 
 
-# Upload Csv Dataset
+# Upload csv dataset
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/upload-csv-dataset
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/datasets/upload
@@ -97708,7 +97769,7 @@ Create a new dataset from a CSV or JSONL file.
 
 
 
-# Upload Experiment
+# Upload experiment
 Source: https://docs.langchain.com/langsmith/smith-api/datasets/upload-experiment
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/datasets/upload-experiment
@@ -97796,7 +97857,7 @@ Update an existing evaluator's name, LLM configuration, or code configuration.
 
 
 
-# Count Examples
+# Count examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/count-examples
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/examples/count
@@ -97804,7 +97865,7 @@ Count all examples by query params
 
 
 
-# Create Example
+# Create example
 Source: https://docs.langchain.com/langsmith/smith-api/examples/create-example
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/examples
@@ -97812,7 +97873,7 @@ Create a new example.
 
 
 
-# Create Examples
+# Create examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/create-examples
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/examples/bulk
@@ -97820,7 +97881,7 @@ Create bulk examples.
 
 
 
-# Delete Example
+# Delete example
 Source: https://docs.langchain.com/langsmith/smith-api/examples/delete-example
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/examples/{example_id}
@@ -97828,7 +97889,7 @@ Soft delete an example. Only deletes the example in the 'latest' version of the 
 
 
 
-# Delete Examples
+# Delete examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/delete-examples
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/examples
@@ -97836,7 +97897,7 @@ Soft delete examples. Only deletes the examples in the 'latest' version of the d
 
 
 
-# Hard Delete Examples
+# Hard delete examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/hard-delete-examples
 
 /langsmith/langsmith-platform-openapi.json post /v1/platform/datasets/examples/delete
@@ -97846,7 +97907,7 @@ IMPORTANT: attachment files can take up to 7 days to be deleted. inputs, outputs
 
 
 
-# Legacy Update Examples
+# Legacy update examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/legacy-update-examples
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/examples/bulk
@@ -97854,7 +97915,7 @@ Legacy update examples in bulk. For update involving attachments, use PATCH /v1/
 
 
 
-# Read Example
+# Read example
 Source: https://docs.langchain.com/langsmith/smith-api/examples/read-example
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/examples/{example_id}
@@ -97862,7 +97923,7 @@ Get a specific example.
 
 
 
-# Read Examples
+# Read examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/read-examples
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/examples
@@ -97870,7 +97931,7 @@ Get all examples by query params
 
 
 
-# Update Example
+# Update example
 Source: https://docs.langchain.com/langsmith/smith-api/examples/update-example
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/examples/{example_id}
@@ -97878,7 +97939,7 @@ Update a specific example.
 
 
 
-# Update Examples
+# Update examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/update-examples
 
 /langsmith/langsmith-platform-openapi.json patch /v1/platform/datasets/{dataset_id}/examples
@@ -97887,7 +97948,7 @@ Each form part contains either JSON-encoded data or binary attachment files to u
 
 
 
-# Upload Examples
+# Upload examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/upload-examples
 
 /langsmith/langsmith-platform-openapi.json post /v1/platform/datasets/{dataset_id}/examples
@@ -97896,7 +97957,7 @@ Each form part contains either JSON-encoded data or binary attachment files asso
 
 
 
-# Upload Examples From Csv
+# Upload examples from csv
 Source: https://docs.langchain.com/langsmith/smith-api/examples/upload-examples-from-csv
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/examples/upload/{dataset_id}
@@ -97907,7 +97968,7 @@ the POST /v1/platform/datasets/{dataset_id}/examples endpoint which provides mor
 
 
 
-# Validate Example
+# Validate example
 Source: https://docs.langchain.com/langsmith/smith-api/examples/validate-example
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/examples/validate
@@ -97915,7 +97976,7 @@ Validate an example.
 
 
 
-# Validate Examples
+# Validate examples
 Source: https://docs.langchain.com/langsmith/smith-api/examples/validate-examples
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/examples/validate/bulk
@@ -98045,7 +98106,7 @@ Both the dataset and override must exist and be accessible by the authenticated 
 
 
 
-# Evaluate Experiment Adhoc
+# Evaluate experiment adhoc
 Source: https://docs.langchain.com/langsmith/smith-api/experiments/evaluate-experiment-adhoc
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/experiments/{experiment_id}/evaluate
@@ -98096,14 +98157,14 @@ Sets or replaces the default model for a feature in the workspace.
 
 
 
-# Create Feedback Config Endpoint
+# Create feedback config endpoint
 Source: https://docs.langchain.com/langsmith/smith-api/feedback-configs/create-feedback-config-endpoint
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback-configs
 
 
 
-# Delete Feedback Config Endpoint
+# Delete feedback config endpoint
 Source: https://docs.langchain.com/langsmith/smith-api/feedback-configs/delete-feedback-config-endpoint
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/feedback-configs
@@ -98114,21 +98175,21 @@ Existing feedback records with this key will remain unchanged.
 
 
 
-# List Feedback Configs Endpoint
+# List feedback configs endpoint
 Source: https://docs.langchain.com/langsmith/smith-api/feedback-configs/list-feedback-configs-endpoint
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback-configs
 
 
 
-# Update Feedback Config Endpoint
+# Update feedback config endpoint
 Source: https://docs.langchain.com/langsmith/smith-api/feedback-configs/update-feedback-config-endpoint
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/feedback-configs
 
 
 
-# Create Feedback
+# Create feedback
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback
@@ -98136,7 +98197,7 @@ Create a new feedback.
 
 
 
-# Create Feedback Formula Ep
+# Create feedback formula ep
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback-formula-ep
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback/formulas
@@ -98144,7 +98205,7 @@ Create a new feedback formula
 
 
 
-# Create Feedback Ingest Token
+# Create feedback ingest token
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback-ingest-token
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback/tokens
@@ -98152,7 +98213,7 @@ Create a new feedback ingest token.
 
 
 
-# Create Feedback With Token Get
+# Create feedback with token get
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback-with-token-get
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback/tokens/{token}
@@ -98160,7 +98221,7 @@ Create a new feedback with a token.
 
 
 
-# Create Feedback With Token Post
+# Create feedback with token post
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback-with-token-post
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback/tokens/{token}
@@ -98168,7 +98229,7 @@ Create a new feedback with a token.
 
 
 
-# Delete Feedback
+# Delete feedback
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/delete-feedback
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/feedback/{feedback_id}
@@ -98176,7 +98237,7 @@ Delete a feedback.
 
 
 
-# Delete Feedback Formula Endpoint
+# Delete feedback formula endpoint
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/delete-feedback-formula-endpoint
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/feedback/formulas/{feedback_formula_id}
@@ -98184,7 +98245,7 @@ Delete a feedback formula by id
 
 
 
-# Eagerly Create Feedback
+# Eagerly create feedback
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/eagerly-create-feedback
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback/eager
@@ -98195,7 +98256,7 @@ is already visible in the app, thus already present in DB
 
 
 
-# Get Feedback Formula Ep
+# Get feedback formula ep
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/get-feedback-formula-ep
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback/formulas/{feedback_formula_id}
@@ -98203,7 +98264,7 @@ Get a feedback formula by id
 
 
 
-# List Feedback Formula Ep
+# List feedback formula ep
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/list-feedback-formula-ep
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback/formulas
@@ -98211,7 +98272,7 @@ List feedback formulas for a given dataset or tracing project
 
 
 
-# List Feedback Ingest Tokens
+# List feedback ingest tokens
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/list-feedback-ingest-tokens
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback/tokens
@@ -98219,7 +98280,7 @@ List all feedback ingest tokens for a run.
 
 
 
-# Read Feedback
+# Read feedback
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/read-feedback
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback/{feedback_id}
@@ -98227,7 +98288,7 @@ Get a specific feedback.
 
 
 
-# Read Feedbacks
+# Read feedbacks
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/read-feedbacks
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback
@@ -98235,7 +98296,7 @@ List all Feedback by query params.
 
 
 
-# Update Feedback
+# Update feedback
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/update-feedback
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/feedback/{feedback_id}
@@ -98243,7 +98304,7 @@ Replace an existing feedback entry with a new, modified entry.
 
 
 
-# Update Feedback Formula Ep
+# Update feedback formula ep
 Source: https://docs.langchain.com/langsmith/smith-api/feedback/update-feedback-formula-ep
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/feedback/formulas/{feedback_formula_id}
@@ -98410,7 +98471,7 @@ Replaces the environments array on an existing model.
 
 
 
-# Get Health Info
+# Get health info
 Source: https://docs.langchain.com/langsmith/smith-api/info/get-health-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/info/health
@@ -98418,7 +98479,7 @@ Get health information about the current deployment of LangSmith.
 
 
 
-# Get Server Info
+# Get server info
 Source: https://docs.langchain.com/langsmith/smith-api/info/get-server-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/info
@@ -98426,7 +98487,7 @@ Get information about the current deployment of LangSmith.
 
 
 
-# Get Agent Builder integrations settings
+# Get agent builder integrations settings
 Source: https://docs.langchain.com/langsmith/smith-api/integrations/get-agent-builder-integrations-settings
 
 /langsmith/langsmith-platform-openapi.json get /v1/agent-builder/integrations
@@ -98434,7 +98495,7 @@ Returns default policy, integration overrides, and known integrations for the cu
 
 
 
-# Update Agent Builder integrations settings
+# Update agent builder integrations settings
 Source: https://docs.langchain.com/langsmith/smith-api/integrations/update-agent-builder-integrations-settings
 
 /langsmith/langsmith-platform-openapi.json put /v1/agent-builder/integrations
@@ -98442,8 +98503,8 @@ Replaces default policy and integration overrides for the current workspace.
 
 
 
-# [Beta] Create the issues agent for a session
-Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/[beta]-create-the-issues-agent-for-a-session
+# Create the issues agent for a session (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/create-the-issues-agent-for-a-session-beta
 
 /langsmith/langsmith-platform-openapi.json post /v1/platform/sessions/{session_id}/issues-agent
 **Beta:** This endpoint is in active development and may change without notice.
@@ -98453,8 +98514,8 @@ the initial scan. Fails if an agent already exists for the session.
 
 
 
-# [Beta] Delete the issues agent for a session
-Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/[beta]-delete-the-issues-agent-for-a-session
+# Delete the issues agent for a session (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/delete-the-issues-agent-for-a-session-beta
 
 /langsmith/langsmith-platform-openapi.json delete /v1/platform/sessions/{session_id}/issues-agent
 **Beta:** This endpoint is in active development and may change without notice.
@@ -98463,50 +98524,7 @@ Removes the agent config, its issues, and the agent-overview hub repo.
 
 
 
-# [Beta] Get the issues agent config for a session
-Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/[beta]-get-the-issues-agent-config-for-a-session
-
-/langsmith/langsmith-platform-openapi.json get /v1/platform/sessions/{session_id}/issues-agent
-**Beta:** This endpoint is in active development and may change without notice.
-
-Returns the issues agent config attached to the given tracer session.
-
-
-
-# [Beta] List issues agent configs
-Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/[beta]-list-issues-agent-configs
-
-/langsmith/langsmith-platform-openapi.json get /v1/platform/issues-agent
-**Beta:** This endpoint is in active development and may change without notice.
-
-Returns every issues agent config configured for the authenticated tenant.
-
-
-
-# [Beta] Save the agent overview for a session
-Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/[beta]-save-the-agent-overview-for-a-session
-
-/langsmith/langsmith-platform-openapi.json patch /v1/platform/sessions/{session_id}/issues-agent/overview
-**Beta:** This endpoint is in active development and may change without notice.
-
-Saves the issues agent overview content server-side, creating or updating
-the backing private Prompt Hub repo and linking it to the issues agent config.
-
-
-
-# [Beta] Update the issues agent config for a session
-Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/[beta]-update-the-issues-agent-config-for-a-session
-
-/langsmith/langsmith-platform-openapi.json patch /v1/platform/sessions/{session_id}/issues-agent
-**Beta:** This endpoint is in active development and may change without notice.
-
-Patches the agent config. All side effects (clearing fix fields when
-the GitHub repo changes, setting agent_overview_repo_id) happen in a
-single CRUD transaction. Omitted fields are left unchanged.
-
-
-
-# Get issues-agent (Engine) LCU spend per project for the calling org
+# Get issues-agent (engine) LCU spend per project for the calling org
 Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/get-issues-agent-engine-lcu-spend-per-project-for-the-calling-org
 
 /langsmith/langsmith-platform-openapi.json get /issues-agent/lcu-spend
@@ -98526,6 +98544,26 @@ coverage gaps without inflating the spend number.
 
 
 
+# Get the issues agent config for a session (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/get-the-issues-agent-config-for-a-session-beta
+
+/langsmith/langsmith-platform-openapi.json get /v1/platform/sessions/{session_id}/issues-agent
+**Beta:** This endpoint is in active development and may change without notice.
+
+Returns the issues agent config attached to the given tracer session.
+
+
+
+# List issues agent configs (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/list-issues-agent-configs-beta
+
+/langsmith/langsmith-platform-openapi.json get /v1/platform/issues-agent
+**Beta:** This endpoint is in active development and may change without notice.
+
+Returns every issues agent config configured for the authenticated tenant.
+
+
+
 # Roll an issues agent webhook signing secret
 Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/roll-an-issues-agent-webhook-signing-secret
 
@@ -98535,8 +98573,31 @@ updated webhook. Future deliveries are signed with the new secret immediately.
 
 
 
-# [Beta] Get issue
-Source: https://docs.langchain.com/langsmith/smith-api/issues/[beta]-get-issue
+# Save the agent overview for a session (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/save-the-agent-overview-for-a-session-beta
+
+/langsmith/langsmith-platform-openapi.json patch /v1/platform/sessions/{session_id}/issues-agent/overview
+**Beta:** This endpoint is in active development and may change without notice.
+
+Saves the issues agent overview content server-side, creating or updating
+the backing private Prompt Hub repo and linking it to the issues agent config.
+
+
+
+# Update the issues agent config for a session (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/update-the-issues-agent-config-for-a-session-beta
+
+/langsmith/langsmith-platform-openapi.json patch /v1/platform/sessions/{session_id}/issues-agent
+**Beta:** This endpoint is in active development and may change without notice.
+
+Patches the agent config. All side effects (clearing fix fields when
+the GitHub repo changes, setting agent_overview_repo_id) happen in a
+single CRUD transaction. Omitted fields are left unchanged.
+
+
+
+# Get issue (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues/get-issue-beta
 
 /langsmith/langsmith-platform-openapi.json get /v1/platform/issues/{id}
 **Beta:** This endpoint is in active development and may change without notice.
@@ -98545,8 +98606,8 @@ Returns one issue for the authenticated tenant.
 
 
 
-# [Beta] List issues
-Source: https://docs.langchain.com/langsmith/smith-api/issues/[beta]-list-issues
+# List issues (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues/list-issues-beta
 
 /langsmith/langsmith-platform-openapi.json get /v1/platform/issues
 **Beta:** This endpoint is in active development and may change without notice.
@@ -98556,8 +98617,8 @@ by session, status, severity, tag, or last modified time.
 
 
 
-# [Beta] List viewed issues for a session
-Source: https://docs.langchain.com/langsmith/smith-api/issues/[beta]-list-viewed-issues-for-a-session
+# List viewed issues for a session (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues/list-viewed-issues-for-a-session-beta
 
 /langsmith/langsmith-platform-openapi.json get /v1/platform/sessions/{session_id}/issues/views
 **Beta:** Returns the issues in this session that the current
@@ -98566,8 +98627,8 @@ the per-row "unread" indicator and the Engine tab badge.
 
 
 
-# [Beta] Mark issue viewed
-Source: https://docs.langchain.com/langsmith/smith-api/issues/[beta]-mark-issue-viewed
+# Mark issue viewed (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/issues/mark-issue-viewed-beta
 
 /langsmith/langsmith-platform-openapi.json post /v1/platform/issues/{id}/views
 **Beta:** Records that the current user opened this issue.
@@ -98591,7 +98652,7 @@ Opens/reuses the fix PR, applies the preview label, and schedules the poll that 
 
 
 
-# Like Repo
+# Like repo
 Source: https://docs.langchain.com/langsmith/smith-api/likes/like-repo
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/likes/{owner}/{repo}
@@ -98599,7 +98660,7 @@ Like a repo.
 
 
 
-# Get Tools
+# Get tools
 Source: https://docs.langchain.com/langsmith/smith-api/mcp/get-tools
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/mcp/tools
@@ -98616,7 +98677,7 @@ ls_user_id in auth) to specify the user for per-user OAuth cache lookups.
 
 
 
-# Invalidate Tools Cache
+# Invalidate tools cache
 Source: https://docs.langchain.com/langsmith/smith-api/mcp/invalidate-tools-cache
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/mcp/tools
@@ -98634,7 +98695,7 @@ Source: https://docs.langchain.com/langsmith/smith-api/mcp/proxy
 
 
 
-# Proxy Get
+# Proxy get
 Source: https://docs.langchain.com/langsmith/smith-api/mcp/proxy-get
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/mcp/proxy
@@ -98713,7 +98774,7 @@ Replaces vendor settings.
 
 
 
-# Create Onboarding State
+# Create onboarding state
 Source: https://docs.langchain.com/langsmith/smith-api/me/create-onboarding-state
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/me/onboarding_state
@@ -98721,7 +98782,7 @@ Initialize onboarding state for the current user.
 
 
 
-# Get Ls User Id
+# Get ls user ID
 Source: https://docs.langchain.com/langsmith/smith-api/me/get-ls-user-id
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/me/ls_user_id
@@ -98729,7 +98790,7 @@ Get the LangSmith user ID for the current user.
 
 
 
-# Get Onboarding State
+# Get onboarding state
 Source: https://docs.langchain.com/langsmith/smith-api/me/get-onboarding-state
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/me/onboarding_state
@@ -98745,7 +98806,7 @@ Returns the provider user ID associated with the authenticated user for a given 
 
 
 
-# Update Onboarding State Field
+# Update onboarding state field
 Source: https://docs.langchain.com/langsmith/smith-api/me/update-onboarding-state-field
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/me/onboarding_state/{field}
@@ -98760,28 +98821,28 @@ Valid fields:
 
 
 
-# Create New Model Price
+# Create new model price
 Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/create-new-model-price
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/model-price-map
 
 
 
-# Delete Model Price
+# Delete model price
 Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/delete-model-price
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/model-price-map/{id}
 
 
 
-# Read Model Price Map
+# Read model price map
 Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/read-model-price-map
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/model-price-map
 
 
 
-# Update Model Price
+# Update model price
 Source: https://docs.langchain.com/langsmith/smith-api/model-price-map/update-model-price
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/model-price-map/{id}
@@ -98860,7 +98921,7 @@ Revokes an access token or refresh token per RFC 7009. Always returns 200 regard
 
 
 
-# Create Job
+# Create job
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/create-job
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/repos/{owner}/{repo}/optimization-jobs
@@ -98868,7 +98929,7 @@ Create a new prompt optimization job.
 
 
 
-# Create Log
+# Create log
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/create-log
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs
@@ -98876,7 +98937,7 @@ Create a new log entry for a prompt optimization job.
 
 
 
-# Delete Job
+# Delete job
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/delete-job
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}
@@ -98884,7 +98945,7 @@ Delete a prompt optimization job.
 
 
 
-# Delete Log
+# Delete log
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/delete-log
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs/{log_id}
@@ -98892,7 +98953,7 @@ Delete a prompt optimization job log.
 
 
 
-# Get Job
+# Get job
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/get-job
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}
@@ -98900,7 +98961,7 @@ Get a specific optimization job.
 
 
 
-# Get Log
+# Get log
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/get-log
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs/{log_id}
@@ -98908,7 +98969,7 @@ Get a specific prompt optimization job log.
 
 
 
-# List Job Logs
+# List job logs
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/list-job-logs
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}/logs
@@ -98916,7 +98977,7 @@ List all logs for a specific prompt optimization job.
 
 
 
-# List Jobs
+# List jobs
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/list-jobs
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}/optimization-jobs
@@ -98924,7 +98985,7 @@ List all prompt optimization jobs.
 
 
 
-# Update Job
+# Update job
 Source: https://docs.langchain.com/langsmith/smith-api/optimization-jobs/update-job
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/repos/{owner}/{repo}/optimization-jobs/{job_id}
@@ -98940,7 +99001,7 @@ Returns organization info for the authenticated user's current organization.
 
 
 
-# Add Basic Auth Members To Current Org
+# Add basic auth members to current org
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/add-basic-auth-members-to-current-org
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/members/basic/batch
@@ -98948,14 +99009,14 @@ Batch add up to 500 users to the org and specified workspaces in basic auth mode
 
 
 
-# Add Member To Current Org
+# Add member to current org
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/add-member-to-current-org
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/members
 
 
 
-# Add Members To Current Org Batch
+# Add members to current org batch
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/add-members-to-current-org-batch
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/members/batch
@@ -98963,35 +99024,35 @@ Batch invite up to 500 users to the current org.
 
 
 
-# Change Payment Plan
+# Change payment plan
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/change-payment-plan
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/plan
 
 
 
-# Claim Pending Organization Invite
+# Claim pending organization invite
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/claim-pending-organization-invite
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/pending/{organization_id}/claim
 
 
 
-# Create Customers And Get Stripe Setup Intent
+# Create customers and get stripe setup intent
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-customers-and-get-stripe-setup-intent
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/setup
 
 
 
-# Create Org Personal Access Token
+# Create org personal access token
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-org-personal-access-token
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/personal-access-tokens
 
 
 
-# Create Org Service Key
+# Create org service key
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-org-service-key
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/service-keys
@@ -98999,21 +99060,21 @@ Create org-scoped service key. If workspaces is None, key is org-wide.
 
 
 
-# Create Organization
+# Create organization
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-organization
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs
 
 
 
-# Create Organization Roles
+# Create organization roles
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-organization-roles
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/roles
 
 
 
-# Create Sso Settings
+# Create SSO settings
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-sso-settings
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/sso-settings
@@ -99021,7 +99082,7 @@ Create SSO provider settings for the current organization.
 
 
 
-# Create Stripe Account Links Endpoint
+# Create stripe account links endpoint
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-stripe-account-links-endpoint
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/stripe_account_links
@@ -99029,7 +99090,7 @@ Kick off a Stripe account link flow.
 
 
 
-# Create Stripe Checkout Sessions Endpoint
+# Create stripe checkout sessions endpoint
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/create-stripe-checkout-sessions-endpoint
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/stripe_checkout_session
@@ -99037,7 +99098,7 @@ Kick off a Stripe checkout session flow.
 
 
 
-# Delete Current Org Pending Member
+# Delete current org pending member
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/delete-current-org-pending-member
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/orgs/current/members/{identity_id}/pending
@@ -99045,35 +99106,35 @@ When an admin deletes a pending member invite.
 
 
 
-# Delete Org Personal Access Token
+# Delete org personal access token
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/delete-org-personal-access-token
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/orgs/current/personal-access-tokens/{pat_id}
 
 
 
-# Delete Org Service Key
+# Delete org service key
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/delete-org-service-key
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/orgs/current/service-keys/{api_key_id}
 
 
 
-# Delete Organization Roles
+# Delete organization roles
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/delete-organization-roles
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/orgs/current/roles/{role_id}
 
 
 
-# Delete Pending Organization Invite
+# Delete pending organization invite
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/delete-pending-organization-invite
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/orgs/pending/{organization_id}
 
 
 
-# Delete Sso Settings
+# Delete SSO settings
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/delete-sso-settings
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/orgs/current/sso-settings/{id}
@@ -99081,7 +99142,7 @@ Delete SSO provider settings for the current organization.
 
 
 
-# Export Granular Usage Csv
+# Export granular usage csv
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/export-granular-usage-csv
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/billing/granular-usage/export
@@ -99096,42 +99157,42 @@ Dimension columns are identical across kinds.
 
 
 
-# Get Company Info
+# Get company info
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-company-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/business-info
 
 
 
-# Get Current Active Org Members
+# Get current active org members
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-current-active-org-members
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/members/active
 
 
 
-# Get Current Org Members
+# Get current org members
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-current-org-members
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/members
 
 
 
-# Get Current Organization Info
+# Get current organization info
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-current-organization-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/info
 
 
 
-# Get Current Pending Org Members
+# Get current pending org members
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-current-pending-org-members
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/members/pending
 
 
 
-# Get Current Sso Settings
+# Get current SSO settings
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-current-sso-settings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/sso-settings
@@ -99139,7 +99200,7 @@ Get SSO provider settings for the current organization.
 
 
 
-# Get Current User Login Methods
+# Get current user login methods
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-current-user-login-methods
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/user/login-methods
@@ -99147,14 +99208,14 @@ Get login methods for the current user.
 
 
 
-# Get Dashboard
+# Get dashboard
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-dashboard
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/dashboard
 
 
 
-# Get Granular Usage
+# Get granular usage
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-granular-usage
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/billing/granular-usage
@@ -99176,21 +99237,21 @@ workspaces the user has read access to are included.
 
 
 
-# Get Org Usage
+# Get org usage
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-org-usage
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/billing/usage
 
 
 
-# Get Organization Billing Info
+# Get organization billing info
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-organization-billing-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/billing
 
 
 
-# Get Organization Info
+# Get organization info
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/get-organization-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current
@@ -99205,28 +99266,28 @@ Returns a paginated list of org members (active and pending) enriched with works
 
 
 
-# List Org Personal Access Tokens
+# List org personal access tokens
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-org-personal-access-tokens
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/personal-access-tokens
 
 
 
-# List Org Service Keys
+# List org service keys
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-org-service-keys
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/service-keys
 
 
 
-# List Organization Roles
+# List organization roles
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-organization-roles
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/current/roles
 
 
 
-# List Organizations
+# List organizations
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-organizations
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs
@@ -99234,7 +99295,7 @@ Get all orgs visible to this auth
 
 
 
-# List Pending Organization Invites
+# List pending organization invites
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-pending-organization-invites
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/pending
@@ -99242,14 +99303,14 @@ Get all pending orgs visible to this auth
 
 
 
-# List Permissions
+# List permissions
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-permissions
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/permissions
 
 
 
-# List Ttl Settings
+# List TTL settings
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/list-ttl-settings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/orgs/ttl-settings
@@ -99257,14 +99318,14 @@ List out the configured TTL settings for a given org (org-level and tenant-level
 
 
 
-# On Payment Method Created
+# On payment method created
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/on-payment-method-created
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/payment-method
 
 
 
-# Patch Current Org Pending Member
+# Patch current org pending member
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/patch-current-org-pending-member
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/current/members/{identity_id}/pending
@@ -99272,7 +99333,7 @@ Update the role on a pending org member invite.
 
 
 
-# Remove Member From Current Org
+# Remove member from current org
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/remove-member-from-current-org
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/orgs/current/members/{identity_id}
@@ -99280,14 +99341,14 @@ Remove a user from the current organization.
 
 
 
-# Set Company Info
+# Set company info
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/set-company-info
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/business-info
 
 
 
-# Set Default Sso Provision
+# Set default SSO provision
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/set-default-sso-provision
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/orgs/current/set-default-sso-provision
@@ -99295,14 +99356,14 @@ Set the current organization as the default for SSO provisioning in self-hosted 
 
 
 
-# Set Role Restriction
+# Set role restriction
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/set-role-restriction
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/orgs/current/roles/{role_id}/restriction
 
 
 
-# Update Allowed Login Methods
+# Update allowed login methods
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/update-allowed-login-methods
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/current/login-methods
@@ -99310,7 +99371,7 @@ Update allowed login methods for the current organization.
 
 
 
-# Update Current Org Member
+# Update current org member
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/update-current-org-member
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/current/members/{identity_id}
@@ -99318,14 +99379,14 @@ This is used for updating a user's role (all auth modes) or full_name/password (
 
 
 
-# Update Current Organization Info
+# Update current organization info
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/update-current-organization-info
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/current/info
 
 
 
-# Update Current User
+# Update current user
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/update-current-user
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/members/basic
@@ -99333,7 +99394,7 @@ Update a user's full_name/password (basic auth only)
 
 
 
-# Update Org Service Key
+# Update org service key
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/update-org-service-key
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/current/service-keys/{api_key_id}
@@ -99344,14 +99405,14 @@ org-scoped and workspace-scoped keys listed in /orgs/current/service-keys.
 
 
 
-# Update Organization Roles
+# Update organization roles
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/update-organization-roles
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/current/roles/{role_id}
 
 
 
-# Update Sso Settings
+# Update SSO settings
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/update-sso-settings
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/orgs/current/sso-settings/{id}
@@ -99359,14 +99420,14 @@ Update SSO provider settings defaults for the current organization.
 
 
 
-# Upsert Ttl Settings
+# Upsert TTL settings
 Source: https://docs.langchain.com/langsmith/smith-api/orgs/upsert-ttl-settings
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/orgs/ttl-settings
 
 
 
-# Add Repo Owner
+# Add repo owner
 Source: https://docs.langchain.com/langsmith/smith-api/ownerships/add-repo-owner
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/repos/{owner}/{repo}/owners
@@ -99376,7 +99437,7 @@ Requires being an existing owner of the repo.
 
 
 
-# List Repo Owners
+# List repo owners
 Source: https://docs.langchain.com/langsmith/smith-api/ownerships/list-repo-owners
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}/owners
@@ -99386,7 +99447,7 @@ Requires read permission on the repo.
 
 
 
-# Remove Repo Owner
+# Remove repo owner
 Source: https://docs.langchain.com/langsmith/smith-api/ownerships/remove-repo-owner
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/repos/{owner}/{repo}/owners
@@ -99396,7 +99457,7 @@ Requires being an existing owner of the repo.
 
 
 
-# Create Playground Settings
+# Create playground settings
 Source: https://docs.langchain.com/langsmith/smith-api/playground-settings/create-playground-settings
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/playground-settings
@@ -99404,7 +99465,7 @@ Create playground settings.
 
 
 
-# Delete Playground Settings
+# Delete playground settings
 Source: https://docs.langchain.com/langsmith/smith-api/playground-settings/delete-playground-settings
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/playground-settings/{playground_settings_id}
@@ -99412,7 +99473,7 @@ Delete playground settings.
 
 
 
-# Get Playground Settings
+# Get playground settings
 Source: https://docs.langchain.com/langsmith/smith-api/playground-settings/get-playground-settings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/playground-settings/{playground_settings_id}
@@ -99420,7 +99481,7 @@ Get a single playground settings by ID.
 
 
 
-# List Playground Settings
+# List playground settings
 Source: https://docs.langchain.com/langsmith/smith-api/playground-settings/list-playground-settings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/playground-settings
@@ -99428,7 +99489,7 @@ Get all playground settings for this tenant id.
 
 
 
-# Update Playground Settings
+# Update playground settings
 Source: https://docs.langchain.com/langsmith/smith-api/playground-settings/update-playground-settings
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/playground-settings/{playground_settings_id}
@@ -99436,7 +99497,7 @@ Update playground settings.
 
 
 
-# Create Prompt Webhook
+# Create prompt webhook
 Source: https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/create-prompt-webhook
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/prompt-webhooks
@@ -99444,7 +99505,7 @@ Create a new prompt webhook.
 
 
 
-# Delete Prompt Webhook
+# Delete prompt webhook
 Source: https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/delete-prompt-webhook
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/prompt-webhooks/{webhook_id}
@@ -99452,7 +99513,7 @@ Delete a specific prompt webhook.
 
 
 
-# Get Prompt Webhook
+# Get prompt webhook
 Source: https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/get-prompt-webhook
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/prompt-webhooks/{webhook_id}
@@ -99460,7 +99521,7 @@ Get a specific prompt webhook.
 
 
 
-# List Prompt Webhooks
+# List prompt webhooks
 Source: https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/list-prompt-webhooks
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/prompt-webhooks
@@ -99468,7 +99529,7 @@ List all prompt webhooks for the current tenant.
 
 
 
-# Test Prompt Webhook
+# Test prompt webhook
 Source: https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/test-prompt-webhook
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/prompt-webhooks/test
@@ -99476,7 +99537,7 @@ Test a specific prompt webhook.
 
 
 
-# Update Prompt Webhook
+# Update prompt webhook
 Source: https://docs.langchain.com/langsmith/smith-api/prompt-webhooks/update-prompt-webhook
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/prompt-webhooks/{webhook_id}
@@ -99484,21 +99545,21 @@ Update a specific prompt webhook.
 
 
 
-# Invoke Prompt
+# Invoke prompt
 Source: https://docs.langchain.com/langsmith/smith-api/prompts/invoke-prompt
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/prompts/invoke_prompt
 
 
 
-# Prompt Canvas
+# Prompt canvas
 Source: https://docs.langchain.com/langsmith/smith-api/prompts/prompt-canvas
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/prompts/canvas
 
 
 
-# Count Shared Examples
+# Count shared examples
 Source: https://docs.langchain.com/langsmith/smith-api/public/count-shared-examples
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/examples/count
@@ -99506,7 +99567,7 @@ Count all examples by query params
 
 
 
-# Generate Query For Shared Dataset Runs
+# Generate query for shared dataset runs
 Source: https://docs.langchain.com/langsmith/smith-api/public/generate-query-for-shared-dataset-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/public/{share_token}/datasets/runs/generate-query
@@ -99514,14 +99575,14 @@ Get runs in projects run over a dataset that has been shared.
 
 
 
-# Get Message Json Schema
+# Get message JSON schema
 Source: https://docs.langchain.com/langsmith/smith-api/public/get-message-json-schema
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/schemas/{version}/message.json
 
 
 
-# Get Shared Run
+# Get shared run
 Source: https://docs.langchain.com/langsmith/smith-api/public/get-shared-run
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/run
@@ -99529,7 +99590,7 @@ Get the shared run.
 
 
 
-# Get Shared Run By Id
+# Get shared run by ID
 Source: https://docs.langchain.com/langsmith/smith-api/public/get-shared-run-by-id
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/run/{id}
@@ -99537,14 +99598,14 @@ Get the shared run.
 
 
 
-# Get Tool Def Json Schema
+# Get tool def JSON schema
 Source: https://docs.langchain.com/langsmith/smith-api/public/get-tool-def-json-schema
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/schemas/{version}/tooldef.json
 
 
 
-# Query Shared Dataset Runs
+# Query shared dataset runs
 Source: https://docs.langchain.com/langsmith/smith-api/public/query-shared-dataset-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/public/{share_token}/datasets/runs/query
@@ -99552,7 +99613,7 @@ Get runs in projects run over a dataset that has been shared.
 
 
 
-# Query Shared Runs
+# Query shared runs
 Source: https://docs.langchain.com/langsmith/smith-api/public/query-shared-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/public/{share_token}/runs/query
@@ -99560,7 +99621,7 @@ Get run by ids or the shared run if not specifed.
 
 
 
-# Read Shared Comparative Experiments
+# Read shared comparative experiments
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-comparative-experiments
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/datasets/comparative
@@ -99568,7 +99629,7 @@ Get all comparative experiments for a given dataset.
 
 
 
-# Read Shared Dataset
+# Read shared dataset
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-dataset
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/datasets
@@ -99576,7 +99637,7 @@ Get dataset by ids or the shared dataset if not specifed.
 
 
 
-# Read Shared Dataset Feedback
+# Read shared dataset feedback
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-dataset-feedback
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/datasets/feedback
@@ -99584,7 +99645,7 @@ Get feedback for runs in projects run over a dataset that has been shared.
 
 
 
-# Read Shared Dataset Run
+# Read shared dataset run
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-dataset-run
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/datasets/runs/{run_id}
@@ -99592,7 +99653,7 @@ Get runs in projects run over a dataset that has been shared.
 
 
 
-# Read Shared Dataset Tracer Sessions
+# Read shared dataset tracer sessions
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-dataset-tracer-sessions
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/datasets/sessions
@@ -99600,7 +99661,7 @@ Get projects run on a dataset that has been shared.
 
 
 
-# Read Shared Dataset Tracer Sessions Bulk
+# Read shared dataset tracer sessions bulk
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-dataset-tracer-sessions-bulk
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/datasets/sessions-bulk
@@ -99608,7 +99669,7 @@ Get sessions from multiple datasets using share tokens.
 
 
 
-# Read Shared Examples
+# Read shared examples
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-examples
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/examples
@@ -99616,14 +99677,14 @@ Get example by ids or the shared example if not specifed.
 
 
 
-# Read Shared Feedbacks
+# Read shared feedbacks
 Source: https://docs.langchain.com/langsmith/smith-api/public/read-shared-feedbacks
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/public/{share_token}/feedbacks
 
 
 
-# Stats Shared Dataset Runs
+# Stats shared dataset runs
 Source: https://docs.langchain.com/langsmith/smith-api/public/stats-shared-dataset-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/public/{share_token}/datasets/runs/stats
@@ -99631,7 +99692,7 @@ Get run stats in projects run over a dataset that has been shared.
 
 
 
-# Create Repo
+# Create repo
 Source: https://docs.langchain.com/langsmith/smith-api/repos/create-repo
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/repos
@@ -99639,7 +99700,7 @@ Create a repo.
 
 
 
-# Delete Repo
+# Delete repo
 Source: https://docs.langchain.com/langsmith/smith-api/repos/delete-repo
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/repos/{owner}/{repo}
@@ -99647,7 +99708,7 @@ Delete a repo.
 
 
 
-# Delete Repos
+# Delete repos
 Source: https://docs.langchain.com/langsmith/smith-api/repos/delete-repos
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/repos
@@ -99659,7 +99720,7 @@ Returns:
 
 
 
-# Fork Repo
+# Fork repo
 Source: https://docs.langchain.com/langsmith/smith-api/repos/fork-repo
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/repos/{owner}/{repo}/fork
@@ -99667,7 +99728,7 @@ Fork a repo.
 
 
 
-# Get Repo
+# Get repo
 Source: https://docs.langchain.com/langsmith/smith-api/repos/get-repo
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}
@@ -99675,7 +99736,7 @@ Get a repo.
 
 
 
-# List Repo Tags
+# List repo tags
 Source: https://docs.langchain.com/langsmith/smith-api/repos/list-repo-tags
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/tags
@@ -99683,7 +99744,7 @@ Get all repo tags.
 
 
 
-# List Repos
+# List repos
 Source: https://docs.langchain.com/langsmith/smith-api/repos/list-repos
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos
@@ -99691,7 +99752,7 @@ Get all repos.
 
 
 
-# Optimize Prompt Job
+# Optimize prompt job
 Source: https://docs.langchain.com/langsmith/smith-api/repos/optimize-prompt-job
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/repos/optimize-job
@@ -99699,7 +99760,7 @@ Optimize prompt
 
 
 
-# Update Repo
+# Update repo
 Source: https://docs.langchain.com/langsmith/smith-api/repos/update-repo
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/repos/{owner}/{repo}
@@ -99707,7 +99768,7 @@ Update a repo.
 
 
 
-# Create Rule
+# Create rule
 Source: https://docs.langchain.com/langsmith/smith-api/run/create-rule
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/rules
@@ -99715,7 +99776,7 @@ Create a new run rule.
 
 
 
-# Create Run Proxy
+# Create run proxy
 Source: https://docs.langchain.com/langsmith/smith-api/run/create-run-proxy
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs
@@ -99723,7 +99784,7 @@ Create a new run.
 
 
 
-# Create Runs Batch Proxy
+# Create runs batch proxy
 Source: https://docs.langchain.com/langsmith/smith-api/run/create-runs-batch-proxy
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/batch
@@ -99731,7 +99792,7 @@ Proxy POST /runs/batch to Go backend for tests.
 
 
 
-# Create Runs Multipart Proxy
+# Create runs multipart proxy
 Source: https://docs.langchain.com/langsmith/smith-api/run/create-runs-multipart-proxy
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/multipart
@@ -99739,7 +99800,7 @@ Proxy POST /runs/multipart to Go backend for tests.
 
 
 
-# Delete Rule
+# Delete rule
 Source: https://docs.langchain.com/langsmith/smith-api/run/delete-rule
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/runs/rules/{rule_id}
@@ -99747,7 +99808,7 @@ Delete a run rule.
 
 
 
-# Delete Runs
+# Delete runs
 Source: https://docs.langchain.com/langsmith/smith-api/run/delete-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/delete
@@ -99755,7 +99816,7 @@ Delete specific runs by trace IDs or metadata key-value pairs.
 
 
 
-# Delete Runs Abac
+# Delete runs abac
 Source: https://docs.langchain.com/langsmith/smith-api/run/delete-runs-abac
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/delete/traces
@@ -99763,7 +99824,7 @@ Delete specific runs by trace IDs.
 
 
 
-# Generate Query For Runs
+# Generate query for runs
 Source: https://docs.langchain.com/langsmith/smith-api/run/generate-query-for-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/generate-query
@@ -99771,7 +99832,7 @@ Get runs filter expression query for a given natural language query.
 
 
 
-# Get Last Applied Rule
+# Get last applied rule
 Source: https://docs.langchain.com/langsmith/smith-api/run/get-last-applied-rule
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/runs/rules/{rule_id}/last_applied
@@ -99779,7 +99840,7 @@ Get the last applied rule.
 
 
 
-# Group Runs
+# Group runs
 Source: https://docs.langchain.com/langsmith/smith-api/run/group-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/group
@@ -99787,7 +99848,7 @@ Get runs grouped by an expression
 
 
 
-# List Rule Logs
+# List rule logs
 Source: https://docs.langchain.com/langsmith/smith-api/run/list-rule-logs
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/runs/rules/{rule_id}/logs
@@ -99795,7 +99856,7 @@ List logs for a particular rule
 
 
 
-# List Rule Logs V2
+# List rule logs (v2)
 Source: https://docs.langchain.com/langsmith/smith-api/run/list-rule-logs-v2
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/runs/rules/{rule_id}/logs/v2
@@ -99806,7 +99867,7 @@ to predict batch sizes and avoid over-fetching.
 
 
 
-# List Rules
+# List rules
 Source: https://docs.langchain.com/langsmith/smith-api/run/list-rules
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/runs/rules
@@ -99814,14 +99875,14 @@ List all run rules.
 
 
 
-# Query Runs
+# Query runs
 Source: https://docs.langchain.com/langsmith/smith-api/run/query-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/query
 
 
 
-# Read Run
+# Read run
 Source: https://docs.langchain.com/langsmith/smith-api/run/read-run
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/runs/{run_id}
@@ -99829,7 +99890,7 @@ Get a specific run.
 
 
 
-# Read Run Share State
+# Read run share state
 Source: https://docs.langchain.com/langsmith/smith-api/run/read-run-share-state
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/runs/{run_id}/share
@@ -99837,7 +99898,7 @@ Get the state of sharing of a run.
 
 
 
-# Share Run
+# Share run
 Source: https://docs.langchain.com/langsmith/smith-api/run/share-run
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/runs/{run_id}/share
@@ -99845,7 +99906,7 @@ Share a run.
 
 
 
-# Stats Group Runs
+# Stats group runs
 Source: https://docs.langchain.com/langsmith/smith-api/run/stats-group-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/group/stats
@@ -99853,7 +99914,7 @@ Get stats for the grouped runs.
 
 
 
-# Stats Runs
+# Stats runs
 Source: https://docs.langchain.com/langsmith/smith-api/run/stats-runs
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/stats
@@ -99861,7 +99922,7 @@ Get all runs by query in body payload.
 
 
 
-# Thread Preview
+# Thread preview
 Source: https://docs.langchain.com/langsmith/smith-api/run/thread-preview
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/runs/threads/{thread_id}
@@ -99869,7 +99930,7 @@ Get preview of a thread.
 
 
 
-# Trigger Rule
+# Trigger rule
 Source: https://docs.langchain.com/langsmith/smith-api/run/trigger-rule
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/rules/{rule_id}/trigger
@@ -99877,7 +99938,7 @@ Trigger a run rule manually.
 
 
 
-# Trigger Rules
+# Trigger rules
 Source: https://docs.langchain.com/langsmith/smith-api/run/trigger-rules
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/rules/trigger
@@ -99885,7 +99946,7 @@ Trigger an array of run rules manually.
 
 
 
-# Unshare Run
+# Unshare run
 Source: https://docs.langchain.com/langsmith/smith-api/run/unshare-run
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/runs/{run_id}/share
@@ -99893,7 +99954,7 @@ Unshare a run.
 
 
 
-# Update Rule
+# Update rule
 Source: https://docs.langchain.com/langsmith/smith-api/run/update-rule
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/runs/rules/{rule_id}
@@ -99901,7 +99962,7 @@ Update a run rule.
 
 
 
-# Update Run
+# Update run
 Source: https://docs.langchain.com/langsmith/smith-api/run/update-run
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/runs/{run_id}
@@ -99909,7 +99970,7 @@ Update a run.
 
 
 
-# Validate Rule
+# Validate rule
 Source: https://docs.langchain.com/langsmith/smith-api/run/validate-rule
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/rules/validate
@@ -99926,7 +99987,7 @@ project), which allows users to see the evaluator execution history.
 
 
 
-# Validate Runs Query
+# Validate runs query
 Source: https://docs.langchain.com/langsmith/smith-api/run/validate-runs-query
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/runs/query/validate
@@ -99934,7 +99995,7 @@ Validate runs query syntax, returns errors for broken queries.
 
 
 
-# Create a Run
+# Create a run
 Source: https://docs.langchain.com/langsmith/smith-api/runs/create-a-run
 
 /langsmith/langsmith-platform-openapi.json post /runs
@@ -99942,7 +100003,16 @@ Queues a single run for ingestion. The request body must be a JSON-encoded run o
 
 
 
-# Ingest Runs (Batch JSON)
+# Get a public shared trace run (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/get-a-public-shared-trace-run-v2
+
+/langsmith/langsmith-platform-openapi.json get /v2/public/{share_token}/run/{run_id}
+**Alpha:** The request and response contract may change;
+Returns one run within the trace identified by the share token. The request supplies only the run ID and that run's exact start_time coordinate.
+
+
+
+# Ingest runs (batch json)
 Source: https://docs.langchain.com/langsmith/smith-api/runs/ingest-runs-batch-json
 
 /langsmith/langsmith-platform-openapi.json post /runs/batch
@@ -99951,7 +100021,7 @@ Prefer this endpoint over single‑run ingestion when submitting hundreds of run
 
 
 
-# Ingest Runs (Multipart)
+# Ingest runs (multipart)
 Source: https://docs.langchain.com/langsmith/smith-api/runs/ingest-runs-multipart
 
 /langsmith/langsmith-platform-openapi.json post /runs/multipart
@@ -99966,7 +100036,71 @@ Ingests multiple runs, feedback objects, and binary attachments in a single `mul
 
 
 
-# Update a Run
+# List runs in a trace (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/list-runs-in-a-trace-v2
+
+/langsmith/langsmith-platform-openapi.json get /v2/traces/{trace_id}/runs
+**Alpha:** The request and response contract may change;
+Returns runs for a trace ID within min/max start time. Optional `filter`; repeatable `selects` to select fields to return.
+
+
+
+# Query public shared trace runs (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/query-public-shared-trace-runs-v2
+
+/langsmith/langsmith-platform-openapi.json post /v2/public/{share_token}/runs/v2/query
+**Alpha:** The request and response contract may change;
+Returns all runs within the trace identified by the share token. The share token supplies the tenant, project, and trace scope.
+
+
+
+# Query runs (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/query-runs-v2
+
+/langsmith/langsmith-platform-openapi.json post /v2/runs/query
+**Alpha:** The request and response contract may change;
+Returns a paginated list of runs for the given projects within min/max start_time. Supports filters, cursor pagination, and `selects` to select fields to return.
+
+
+
+# Query traces (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/query-traces-v2
+
+/langsmith/langsmith-platform-openapi.json post /v2/traces/query
+Returns a paginated list of traces (root runs) for a single tracing project. Each item carries the trace's root run plus optional trace-wide aggregates (`total_tokens`, `total_cost`, `first_token_time`) under `trace_aggregates`, so clients never have to merge by `trace_id`.
+
+Traces are scanned within a `start_time` window: `min_start_time` defaults to 24 hours before the request, `max_start_time` defaults to the request time. Set either explicitly to widen or narrow the window.
+
+Supports filters (`trace_filter`, `tree_filter`), cursor pagination (`cursor`), and field projection (`selects`).
+
+
+
+# Read run (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/read-run-v2
+
+/langsmith/langsmith-platform-openapi.json get /v2/runs/{run_id}
+**Alpha:** The request and response contract may change;
+Returns one run by ID for the given session and start_time. Use the `selects` query parameter (repeatable) to select fields to return.
+
+
+
+# Share run (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/share-run-v2
+
+/langsmith/langsmith-platform-openapi.json post /v2/runs/{run_id}/share
+Creates or returns a share token for a run. Child runs share their trace root.
+
+
+
+# Unshare a run (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/unshare-a-run-v2
+
+/langsmith/langsmith-platform-openapi.json delete /v2/runs/{trace_id}/share
+Deletes the share token for the trace identified by trace_id and session_id. Idempotent: returns 204 whether or not a share token existed.
+
+
+
+# Update a run
 Source: https://docs.langchain.com/langsmith/smith-api/runs/update-a-run
 
 /langsmith/langsmith-platform-openapi.json patch /runs/{run_id}
@@ -100118,6 +100252,22 @@ Retrieve the lightweight status of a sandbox for polling.
 
 
 
+# Glob a sandbox filesystem
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/glob-a-sandbox-filesystem
+
+/langsmith/langsmith-platform-openapi.json post /v2/sandboxes/{sandbox_id}/glob
+Find files under a root path matching a glob pattern (supports **). Entries are returned in lexical order by path.
+
+
+
+# Grep a sandbox filesystem
+Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/grep-a-sandbox-filesystem
+
+/langsmith/langsmith-platform-openapi.json post /v2/sandboxes/{sandbox_id}/grep
+Search files under a root path for a literal text pattern (not a regex).
+
+
+
 # List registries
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/list-registries
 
@@ -100230,7 +100380,7 @@ Update the description of an existing SCIM token for the current organization.
 
 
 
-# Create Service Account
+# Create service account
 Source: https://docs.langchain.com/langsmith/smith-api/service-accounts/create-service-account
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/service-accounts
@@ -100238,7 +100388,7 @@ Create a service account
 
 
 
-# Delete Service Account
+# Delete service account
 Source: https://docs.langchain.com/langsmith/smith-api/service-accounts/delete-service-account
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/service-accounts/{service_account_id}
@@ -100246,7 +100396,7 @@ Delete a service account
 
 
 
-# Get Service Accounts
+# Get service accounts
 Source: https://docs.langchain.com/langsmith/smith-api/service-accounts/get-service-accounts
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/service-accounts
@@ -100262,7 +100412,7 @@ Returns all agent versions (commit SHAs) seen in the given tracing project, orde
 
 
 
-# Get Settings
+# Get settings
 Source: https://docs.langchain.com/langsmith/smith-api/settings/get-settings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/settings
@@ -100270,7 +100420,7 @@ Get settings.
 
 
 
-# Set Tenant Handle
+# Set tenant handle
 Source: https://docs.langchain.com/langsmith/smith-api/settings/set-tenant-handle
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/settings/handle
@@ -100288,7 +100438,7 @@ tag in a repository. Each entry records a commit change
 
 
 
-# Create Tag
+# Create tag
 Source: https://docs.langchain.com/langsmith/smith-api/tags/create-tag
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/repos/{owner}/{repo}/tags
@@ -100296,7 +100446,7 @@ Create a tag. Requires repo ownership, prompts:tag permission, or ABAC grant.
 
 
 
-# Delete Tag
+# Delete tag
 Source: https://docs.langchain.com/langsmith/smith-api/tags/delete-tag
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/repos/{owner}/{repo}/tags/{tag_name}
@@ -100304,21 +100454,21 @@ Delete a tag. Requires repo ownership, prompts:tag permission, or ABAC grant.
 
 
 
-# Get Tag
+# Get tag
 Source: https://docs.langchain.com/langsmith/smith-api/tags/get-tag
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}/tags/{tag_name}
 
 
 
-# Get Tags
+# Get tags
 Source: https://docs.langchain.com/langsmith/smith-api/tags/get-tags
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/repos/{owner}/{repo}/tags
 
 
 
-# Update Tag
+# Update tag
 Source: https://docs.langchain.com/langsmith/smith-api/tags/update-tag
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/repos/{owner}/{repo}/tags/{tag_name}
@@ -100326,7 +100476,7 @@ Update a tag. Requires repo ownership, prompts:tag permission, or ABAC grant.
 
 
 
-# Create Tenant
+# Create tenant
 Source: https://docs.langchain.com/langsmith/smith-api/tenant/create-tenant
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/tenants
@@ -100334,11 +100484,39 @@ Create a new organization and corresponding workspace.
 
 
 
-# List Tenants
+# List tenants
 Source: https://docs.langchain.com/langsmith/smith-api/tenant/list-tenants
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/tenants
 Get all tenants visible to this auth
+
+
+
+# Query single thread stats (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/threads/query-single-thread-stats-v2
+
+/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/stats
+**Alpha:** The request and response contract may change;
+Compute aggregate stats for a single thread (turn count, latency percentiles, token/cost sums, and detail breakdowns) within a project.
+
+
+
+# Query thread traces (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/threads/query-thread-traces-v2
+
+/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/traces
+**Alpha:** The request and response contract may change;
+Retrieve all traces belonging to a specific thread within a project.
+
+
+
+# Query threads (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/threads/query-threads-v2
+
+/langsmith/langsmith-platform-openapi.json post /v2/threads/query
+**Alpha:** The request and response contract may change;
+Query threads within a project (session), with cursor-based pagination.
+Returns threads matching the given time range and optional filter.
 
 
 
@@ -100406,103 +100584,15 @@ Updates an existing tool identified by its UUID.
 
 
 
-# [Beta] Auto-Generate Insights Job Config
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-auto-generate-insights-job-config
+# Auto-generate insights job config (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/auto-generate-insights-job-config-beta
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/insights/configs/generate
 Auto-generate an insights job config.
 
 
 
-# [Beta] Create Insights Job
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-create-insights-job
-
-/langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/insights
-Create an insights job.
-
-
-
-# [Beta] Create Insights Job Config
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-create-insights-job-config
-
-/langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/insights/configs
-Save an insights job config.
-
-
-
-# [Beta] Delete Insights Job
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-delete-insights-job
-
-/langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}/insights/{job_id}
-Delete a session cluster job.
-
-
-
-# [Beta] Delete Insights Job Config
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-delete-insights-job-config
-
-/langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}/insights/configs/{config_id}
-Delete an insights job config.
-
-
-
-# [Beta] Get Insights Job
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-get-insights-job
-
-/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/{job_id}
-Get a specific cluster job for a session.
-
-
-
-# [Beta] Get Insights Job Configs
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-get-insights-job-configs
-
-/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/configs
-Get all insights job configs for a session.
-
-
-
-# [Beta] Get Insights Jobs
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-get-insights-jobs
-
-/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights
-Get all clusters for a session.
-
-
-
-# [Beta] Get Run Cluster From Insights Job
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-get-run-cluster-from-insights-job
-
-/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/{job_id}/clusters/{cluster_id}
-Get a specific cluster for a session.
-
-
-
-# [Beta] Get Runs From Insights Job
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-get-runs-from-insights-job
-
-/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/{job_id}/runs
-Get all runs for a cluster job, optionally filtered by cluster.
-
-
-
-# [Beta] Update Insights Job
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-update-insights-job
-
-/langsmith/langsmith-platform-openapi.json patch /api/v1/sessions/{session_id}/insights/{job_id}
-Update a session cluster job.
-
-
-
-# [Beta] Update Insights Job Config
-Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/[beta]-update-insights-job-config
-
-/langsmith/langsmith-platform-openapi.json patch /api/v1/sessions/{session_id}/insights/configs/{config_id}
-Update an insights job config.
-
-
-
-# Create Filter View
+# Create filter view
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-filter-view
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/views
@@ -100510,7 +100600,23 @@ Create a new filter view.
 
 
 
-# Create Tracer Session
+# Create insights job (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-insights-job-beta
+
+/langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/insights
+Create an insights job.
+
+
+
+# Create insights job config (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-insights-job-config-beta
+
+/langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/insights/configs
+Save an insights job config.
+
+
+
+# Create tracer session
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-tracer-session
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sessions
@@ -100518,7 +100624,7 @@ Create a new project.
 
 
 
-# Delete Filter View
+# Delete filter view
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/delete-filter-view
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}/views/{view_id}
@@ -100526,7 +100632,23 @@ Delete a specific filter view.
 
 
 
-# Delete Tracer Session
+# Delete insights job (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/delete-insights-job-beta
+
+/langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}/insights/{job_id}
+Delete a session cluster job.
+
+
+
+# Delete insights job config (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/delete-insights-job-config-beta
+
+/langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}/insights/configs/{config_id}
+Delete an insights job config.
+
+
+
+# Delete tracer session
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/delete-tracer-session
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}
@@ -100534,7 +100656,7 @@ Delete a specific project.
 
 
 
-# Delete Tracer Sessions
+# Delete tracer sessions
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/delete-tracer-sessions
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/sessions
@@ -100542,7 +100664,47 @@ Delete projects.
 
 
 
-# Get Tracing Project Prebuilt Dashboard
+# Get insights job (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/get-insights-job-beta
+
+/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/{job_id}
+Get a specific cluster job for a session.
+
+
+
+# Get insights job configs (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/get-insights-job-configs-beta
+
+/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/configs
+Get all insights job configs for a session.
+
+
+
+# Get insights jobs (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/get-insights-jobs-beta
+
+/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights
+Get all clusters for a session.
+
+
+
+# Get run cluster from insights job (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/get-run-cluster-from-insights-job-beta
+
+/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/{job_id}/clusters/{cluster_id}
+Get a specific cluster for a session.
+
+
+
+# Get runs from insights job (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/get-runs-from-insights-job-beta
+
+/langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/insights/{job_id}/runs
+Get all runs for a cluster job, optionally filtered by cluster.
+
+
+
+# Get tracing project prebuilt dashboard
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/get-tracing-project-prebuilt-dashboard
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/dashboard
@@ -100550,7 +100712,7 @@ Get a prebuilt dashboard for a tracing project.
 
 
 
-# Read Filter View
+# Read filter view
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/read-filter-view
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/views/{view_id}
@@ -100558,7 +100720,7 @@ Get a specific filter view.
 
 
 
-# Read Filter Views
+# Read filter views
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/read-filter-views
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/views
@@ -100566,7 +100728,7 @@ Get all filter views for a session.
 
 
 
-# Read Tracer Session
+# Read tracer session
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/read-tracer-session
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}
@@ -100574,7 +100736,7 @@ Get a specific project.
 
 
 
-# Read Tracer Sessions
+# Read tracer sessions
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/read-tracer-sessions
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sessions
@@ -100582,7 +100744,7 @@ List all projects.
 
 
 
-# Read Tracer Sessions Runs Metadata
+# Read tracer sessions runs metadata
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/read-tracer-sessions-runs-metadata
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sessions/{session_id}/metadata
@@ -100590,7 +100752,7 @@ Given a session, a number K, and (optionally) a list of metadata keys, return th
 
 
 
-# Rename Filter View
+# Rename filter view
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/rename-filter-view
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/sessions/{session_id}/views/{view_id}/rename
@@ -100598,7 +100760,7 @@ Rename a filter view (display_name and description only).
 
 
 
-# Update Filter View
+# Update filter view
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/update-filter-view
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/sessions/{session_id}/views/{view_id}
@@ -100606,7 +100768,23 @@ Update a filter view.
 
 
 
-# Update Tracer Session
+# Update insights job (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/update-insights-job-beta
+
+/langsmith/langsmith-platform-openapi.json patch /api/v1/sessions/{session_id}/insights/{job_id}
+Update a session cluster job.
+
+
+
+# Update insights job config (Beta)
+Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/update-insights-job-config-beta
+
+/langsmith/langsmith-platform-openapi.json patch /api/v1/sessions/{session_id}/insights/configs/{config_id}
+Update an insights job config.
+
+
+
+# Update tracer session
 Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/update-tracer-session
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/sessions/{session_id}
@@ -100622,7 +100800,7 @@ Get the longlived trace TTL settings for a workspace
 
 
 
-# List Ttl Settings
+# List TTL settings
 Source: https://docs.langchain.com/langsmith/smith-api/ttl-settings/list-ttl-settings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/ttl-settings
@@ -100638,14 +100816,14 @@ Update the longlived trace TTL for a workspace.
 
 
 
-# Upsert Ttl Settings
+# Upsert TTL settings
 Source: https://docs.langchain.com/langsmith/smith-api/ttl-settings/upsert-ttl-settings
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/ttl-settings
 
 
 
-# Delete Usage Limit
+# Delete usage limit
 Source: https://docs.langchain.com/langsmith/smith-api/usage-limits/delete-usage-limit
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/usage-limits/{usage_limit_id}
@@ -100653,7 +100831,7 @@ Delete a specific usage limit.
 
 
 
-# List Org Usage Limits
+# List org usage limits
 Source: https://docs.langchain.com/langsmith/smith-api/usage-limits/list-org-usage-limits
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/usage-limits/org
@@ -100661,7 +100839,7 @@ List out the configured usage limits for a given organization.
 
 
 
-# List Usage Limits
+# List usage limits
 Source: https://docs.langchain.com/langsmith/smith-api/usage-limits/list-usage-limits
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/usage-limits
@@ -100669,7 +100847,7 @@ List out the configured usage limits for a given tenant.
 
 
 
-# Upsert Usage Limit
+# Upsert usage limit
 Source: https://docs.langchain.com/langsmith/smith-api/usage-limits/upsert-usage-limit
 
 /langsmith/langsmith-platform-openapi.json put /api/v1/usage-limits
@@ -100677,118 +100855,7 @@ Create a new usage limit.
 
 
 
-# Fetch experiment runs for dataset examples
-Source: https://docs.langchain.com/langsmith/smith-api/v2/fetch-experiment-runs-for-dataset-examples
-
-/langsmith/langsmith-platform-openapi.json post /v2/datasets/{dataset_id}/experiment-runs
-Returns a paginated page of dataset examples with runs from the requested experiments.
-Response uses the canonical `{items, next_cursor}` envelope.
-
-
-
-# Fetch shared experiment runs for dataset examples
-Source: https://docs.langchain.com/langsmith/smith-api/v2/fetch-shared-experiment-runs-for-dataset-examples
-
-/langsmith/langsmith-platform-openapi.json post /v2/datasets/public/{share_token}/experiment-runs
-Public share-token variant of POST /v2/datasets/{dataset_id}/experiment-runs.
-Returns a paginated page of dataset examples with runs from the requested experiments.
-
-
-
-# Get a public shared trace run
-Source: https://docs.langchain.com/langsmith/smith-api/v2/get-a-public-shared-trace-run
-
-/langsmith/langsmith-platform-openapi.json get /v2/public/{share_token}/run/{run_id}
-**Alpha:** The request and response contract may change;
-Returns one run within the trace identified by the share token. The request supplies only the run ID and that run's exact start_time coordinate.
-
-
-
-# Get a single run
-Source: https://docs.langchain.com/langsmith/smith-api/v2/get-a-single-run
-
-/langsmith/langsmith-platform-openapi.json get /v2/runs/{run_id}
-**Alpha:** The request and response contract may change;
-Returns one run by ID for the given session and start_time. Use the `selects` query parameter (repeatable) to select fields to return.
-
-
-
-# List runs in a trace
-Source: https://docs.langchain.com/langsmith/smith-api/v2/list-runs-in-a-trace
-
-/langsmith/langsmith-platform-openapi.json get /v2/traces/{trace_id}/runs
-**Alpha:** The request and response contract may change;
-Returns runs for a trace ID within min/max start time. Optional `filter`; repeatable `selects` to select fields to return.
-
-
-
-# Query public shared trace runs
-Source: https://docs.langchain.com/langsmith/smith-api/v2/query-public-shared-trace-runs
-
-/langsmith/langsmith-platform-openapi.json post /v2/public/{share_token}/runs/v2/query
-**Alpha:** The request and response contract may change;
-Returns all runs within the trace identified by the share token. The share token supplies the tenant, project, and trace scope.
-
-
-
-# Query runs
-Source: https://docs.langchain.com/langsmith/smith-api/v2/query-runs
-
-/langsmith/langsmith-platform-openapi.json post /v2/runs/query
-**Alpha:** The request and response contract may change;
-Returns a paginated list of runs for the given projects within min/max start_time. Supports filters, cursor pagination, and `selects` to select fields to return.
-
-
-
-# Query Single Thread Stats
-Source: https://docs.langchain.com/langsmith/smith-api/v2/query-single-thread-stats
-
-/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/stats
-**Alpha:** The request and response contract may change;
-Compute aggregate stats for a single thread (turn count, latency percentiles, token/cost sums, and detail breakdowns) within a project.
-
-
-
-# Query Thread Traces
-Source: https://docs.langchain.com/langsmith/smith-api/v2/query-thread-traces
-
-/langsmith/langsmith-platform-openapi.json get /v2/threads/{thread_id}/traces
-**Alpha:** The request and response contract may change;
-Retrieve all traces belonging to a specific thread within a project.
-
-
-
-# Query Threads
-Source: https://docs.langchain.com/langsmith/smith-api/v2/query-threads
-
-/langsmith/langsmith-platform-openapi.json post /v2/threads/query
-**Alpha:** The request and response contract may change;
-Query threads within a project (session), with cursor-based pagination.
-Returns threads matching the given time range and optional filter.
-
-
-
-# Query traces
-Source: https://docs.langchain.com/langsmith/smith-api/v2/query-traces
-
-/langsmith/langsmith-platform-openapi.json post /v2/traces/query
-Returns a paginated list of traces (root runs) for a single tracing project. Each item carries the trace's root run plus optional trace-wide aggregates (`total_tokens`, `total_cost`, `first_token_time`) under `trace_aggregates`, so clients never have to merge by `trace_id`.
-
-Traces are scanned within a `start_time` window: `min_start_time` defaults to 24 hours before the request, `max_start_time` defaults to the request time. Set either explicitly to widen or narrow the window.
-
-Supports filters (`trace_filter`, `tree_filter`), cursor pagination (`cursor`), and field projection (`selects`).
-
-
-
-# Share a run
-Source: https://docs.langchain.com/langsmith/smith-api/v2/share-a-run
-
-/langsmith/langsmith-platform-openapi.json post /v2/runs/{run_id}/share
-Creates or returns a share token for a run. Child runs share their trace root.
-
-
-
-# Add Member To Current Workspace
+# Add member to current workspace
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/add-member-to-current-workspace
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/current/members
@@ -100796,7 +100863,7 @@ Add an existing organization member to the current workspace.
 
 
 
-# Add Members To Current Workspace Batch
+# Add members to current workspace batch
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/add-members-to-current-workspace-batch
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/current/members/batch
@@ -100804,7 +100871,7 @@ Batch invite up to 500 users to the current workspace and organization.
 
 
 
-# Bulk Unshare Entities
+# Bulk unshare entities
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/bulk-unshare-entities
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/current/shared
@@ -100812,35 +100879,35 @@ Bulk unshare entities by share tokens for the workspace.
 
 
 
-# Claim Pending Workspace Invite
+# Claim pending workspace invite
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/claim-pending-workspace-invite
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/pending/{workspace_id}/claim
 
 
 
-# Create Tag Key
+# Create tag key
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/create-tag-key
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/current/tag-keys
 
 
 
-# Create Tag Value
+# Create tag value
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/create-tag-value
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values
 
 
 
-# Create Tagging
+# Create tagging
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/create-tagging
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/current/taggings
 
 
 
-# Create Workspace
+# Create workspace
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/create-workspace
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces
@@ -100848,70 +100915,70 @@ Create a new workspace.
 
 
 
-# Delete Current Workspace Member
+# Delete current workspace member
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-current-workspace-member
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/current/members/{identity_id}
 
 
 
-# Delete Current Workspace Pending Member
+# Delete current workspace pending member
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-current-workspace-pending-member
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/current/members/{identity_id}/pending
 
 
 
-# Delete Pending Workspace Invite
+# Delete pending workspace invite
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-pending-workspace-invite
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/pending/{id}
 
 
 
-# Delete Tag Key
+# Delete tag key
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-tag-key
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/current/tag-keys/{tag_key_id}
 
 
 
-# Delete Tag Value
+# Delete tag value
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-tag-value
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values/{tag_value_id}
 
 
 
-# Delete Tagging
+# Delete tagging
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-tagging
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/current/taggings/{tagging_id}
 
 
 
-# Delete Workspace
+# Delete workspace
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/delete-workspace
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/workspaces/{workspace_id}
 
 
 
-# Get Current Active Workspace Members
+# Get current active workspace members
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-current-active-workspace-members
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/members/active
 
 
 
-# Get Current Pending Workspace Members
+# Get current pending workspace members
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-current-pending-workspace-members
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/members/pending
 
 
 
-# Get Current Workspace Encrypted Secrets
+# Get current workspace encrypted secrets
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-current-workspace-encrypted-secrets
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/secrets/encrypted
@@ -100919,28 +100986,28 @@ Get encrypted workspace secrets for use with Fleet and external services.
 
 
 
-# Get Current Workspace Members
+# Get current workspace members
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-current-workspace-members
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/members
 
 
 
-# Get Current Workspace Stats
+# Get current workspace stats
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-current-workspace-stats
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/stats
 
 
 
-# Get Current Workspace Usage Limits Info
+# Get current workspace usage limits info
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-current-workspace-usage-limits-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/usage_limits
 
 
 
-# Get Shared Tokens
+# Get shared tokens
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-shared-tokens
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/shared
@@ -100948,21 +101015,21 @@ List all shared entities and their tokens by the workspace.
 
 
 
-# Get Tag Key
+# Get tag key
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-tag-key
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/tag-keys/{tag_key_id}
 
 
 
-# Get Tag Value
+# Get tag value
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-tag-value
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values/{tag_value_id}
 
 
 
-# Get Workspace
+# Get workspace
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/get-workspace
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/{workspace_id}
@@ -100970,14 +101037,14 @@ Get a single workspace by ID, scoped to the current org and identity.
 
 
 
-# List Current Workspace Secrets
+# List current workspace secrets
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-current-workspace-secrets
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/secrets
 
 
 
-# List Pending Workspace Invites
+# List pending workspace invites
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-pending-workspace-invites
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/pending
@@ -100985,49 +101052,49 @@ Get all workspaces visible to this auth
 
 
 
-# List Tag Keys
+# List tag keys
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-tag-keys
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/tag-keys
 
 
 
-# List Tag Values
+# List tag values
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-tag-values
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values
 
 
 
-# List Taggings
+# List taggings
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-taggings
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/taggings
 
 
 
-# List Tags
+# List tags
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-tags
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/tags
 
 
 
-# List Tags For Resource
+# List tags for resource
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-tags-for-resource
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/tags/resource
 
 
 
-# List Tags For Resources
+# List tags for resources
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-tags-for-resources
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/current/tags/resources
 
 
 
-# List Workspaces
+# List workspaces
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/list-workspaces
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces
@@ -101035,14 +101102,14 @@ Get all workspaces visible to this auth in the current org. Does not create a ne
 
 
 
-# Patch Current Workspace Member
+# Patch current workspace member
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/patch-current-workspace-member
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/workspaces/current/members/{identity_id}
 
 
 
-# Patch Current Workspace Pending Member
+# Patch current workspace pending member
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/patch-current-workspace-pending-member
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/workspaces/current/members/{identity_id}/pending
@@ -101050,7 +101117,7 @@ Update the role on a pending workspace member invite.
 
 
 
-# Patch Workspace
+# Patch workspace
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/patch-workspace
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/workspaces/{workspace_id}
@@ -101058,21 +101125,21 @@ Update a workspace.
 
 
 
-# Update Tag Key
+# Update tag key
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/update-tag-key
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/workspaces/current/tag-keys/{tag_key_id}
 
 
 
-# Update Tag Value
+# Update tag value
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/update-tag-value
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/workspaces/current/tag-keys/{tag_key_id}/tag-values/{tag_value_id}
 
 
 
-# Upsert Current Workspace Secrets
+# Upsert current workspace secrets
 Source: https://docs.langchain.com/langsmith/smith-api/workspaces/upsert-current-workspace-secrets
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/workspaces/current/secrets
@@ -106686,10 +106753,10 @@ Source: https://docs.langchain.com/langsmith/trace-openai
 
 
 
-The `wrap_openai`/`wrapOpenAI` methods in Python/TypeScript allow you to wrap your OpenAI client in order to automatically log traces -- no decorator or function wrapping required! Using the wrapper ensures that messages, including tool calls and multimodal content blocks will be rendered nicely in LangSmith. Also note that the wrapper works seamlessly with the `@traceable` decorator or `traceable` function and you can use both in the same application.
+The [`wrap_openai`](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) / [`wrapOpenAI`](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI) methods in Python/TypeScript allow you to wrap your OpenAI client in order to automatically log traces -- no decorator or function wrapping required! Using the wrapper ensures that messages, including tool calls and multimodal content blocks will be rendered nicely in LangSmith. Also note that the wrapper works seamlessly with the [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) decorator or [`traceable`](https://reference.langchain.com/javascript/functions/langsmith.traceable.traceable.html) function and you can use both in the same application.
 
 <Note>
-  The `LANGSMITH_TRACING` environment variable must be set to `'true'` in order for traces to be logged to LangSmith, even when using `wrap_openai` or `wrapOpenAI`. This allows you to toggle tracing on and off without changing your code.
+  The `LANGSMITH_TRACING` environment variable must be set to `'true'` in order for traces to be logged to LangSmith, even when using [`wrap_openai`](https://reference.langchain.com/python/langsmith/wrappers/_openai/wrap_openai) or [`wrapOpenAI`](https://reference.langchain.com/javascript/langsmith/wrappers/wrapOpenAI). This allows you to toggle tracing on and off without changing your code.
 
   Additionally, you will need to set the `LANGSMITH_API_KEY` environment variable to your API key (see [Setup](/) for more information).
 
@@ -112460,7 +112527,7 @@ Trace your [Pipecat](https://pipecat.ai/) voice agents to LangSmith with the Lan
   The Pipecat integration requires `langsmith[pipecat]>=0.9.7`.
 </Note>
 
-The integration hooks into the spans Pipecat already emits and maps them onto LangSmith's tracing format, so each conversation becomes a single LangSmith trace, with a span per pipeline stage (STT, LLM, TTS).
+The integration hooks into the spans Pipecat already emits and maps them onto LangSmith's tracing format, so each conversation becomes a single LangSmith trace, with a span per pipeline stage (STT, LLM, TTS). This covers both the STT/LLM/TTS cascade and speech-to-speech (realtime) models. Realtime models (for example, `OpenAIRealtimeLLMService`) need one extra call to capture the user's transcript. See [When using Pipecat with a realtime model](#when-using-pipecat-with-a-realtime-model).
 
 ## Install
 
@@ -112538,6 +112605,59 @@ from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
 configure_pipecat()
 set_thread_id(conversation_id)
 ```
+
+## When using Pipecat with a realtime model
+
+With a speech-to-speech (realtime) model there is no separate speech-to-text stage, so the user's transcript is never emitted as an OTel span. Instead it arrives through the user context aggregator's `on_user_turn_message_added` callback, which Pipecat fires once it has the finalized user text. Without wiring it up, the trace shows only the assistant side.
+
+Call `instrument_user_aggregator` once, right after building the context aggregator, so the SDK subscribes to that callback for you and pairs each transcript with its turn. It correlates by the id you pass to `set_thread_id`, so set that first and pass the same id:
+
+<Note>
+  `instrument_user_aggregator` requires `langsmith[pipecat]>=0.10.6`.
+</Note>
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
+from pipecat.processors.aggregators.llm_context import LLMContext
+from pipecat.processors.aggregators.llm_response_universal import LLMContextAggregatorPair
+from pipecat.services.openai.realtime.events import (
+    AudioConfiguration,
+    AudioInput,
+    AudioOutput,
+    InputAudioTranscription,
+    SessionProperties,
+)
+from pipecat.services.openai.realtime.llm import OpenAIRealtimeLLMService
+
+conversation_id = "..."  # any id that identifies the conversation
+span_processor = configure_pipecat()
+set_thread_id(conversation_id)
+
+llm = OpenAIRealtimeLLMService(
+    api_key=openai_api_key,
+    settings=OpenAIRealtimeLLMService.Settings(
+        model="gpt-realtime",
+        session_properties=SessionProperties(
+            # Enable input-audio transcription: OpenAI Realtime sends the model
+            # raw audio and, by default, produces no user-side text. Without this
+            # the context aggregator never fires, so the user's turns never reach
+            # the trace.
+            audio=AudioConfiguration(
+                input=AudioInput(transcription=InputAudioTranscription()),
+                output=AudioOutput(voice="marin"),
+            ),
+        ),
+    ),
+)
+
+context = LLMContext(messages=[{"role": "system", "content": "..."}])
+context_aggregator = LLMContextAggregatorPair(context, realtime_service_mode=True)
+span_processor.instrument_user_aggregator(context_aggregator, conversation_id)  # capture the user transcript
+```
+
+For OpenAI Realtime, also enable input-audio transcription (`InputAudioTranscription`) on the session; otherwise the model receives raw audio and produces no user-side text, so the aggregator never fires. Other realtime services that surface the user's text through the aggregator themselves (for example, Gemini Live) need only the `instrument_user_aggregator` call, with no extra session configuration.
+
+Only call `instrument_user_aggregator` for realtime models. In the STT/LLM/TTS cascade the transcript is already captured (from the speech-to-text stage), so calling it there would record the user's turns a second time.
 
 ## Record the conversation audio
 
@@ -125790,7 +125910,7 @@ Each provider is a TOML table under `[models.providers]`:
 [models.providers.<name>]
 display_name = "My Provider"
 api_key_url = "https://provider.example/keys"
-models = ["gpt-4o"]
+models = ["gpt-5.5"]
 api_key_env = "OPENAI_API_KEY"
 base_url = "https://api.openai.com/v1"
 class_path = "my_package.models:MyChatModel"
@@ -125800,7 +125920,7 @@ enabled = true
 temperature = 0
 max_tokens = 4096
 
-[models.providers.<name>.params."gpt-4o"]
+[models.providers.<name>.params."gpt-5.5"]
 temperature = 0.7
 ```
 
@@ -125847,7 +125967,7 @@ Providers have the following configuration options:
 </ResponseField>
 
 <ResponseField name="params" type="object">
-  Extra keyword arguments forwarded to the model constructor. Flat keys (e.g., `temperature = 0`) apply to every model from this provider. Model-keyed sub-tables (e.g., `[params."gpt-4o"]`) override individual values for that model only; the merge is shallow (model wins on conflict).
+  Extra keyword arguments forwarded to the model constructor. Flat keys (e.g., `temperature = 0`) apply to every model from this provider. Model-keyed sub-tables (e.g., `[params."gpt-5.5"]`) override individual values for that model only; the merge is shallow (model wins on conflict).
 
   Do not put credentials (e.g., `api_key`) in `params`. Use [`api_key_env`](#provider-configuration) to point at an environment variable instead.
 </ResponseField>
@@ -140344,7 +140464,7 @@ const requestApproval = tool(
 async function main() {
   const checkpointer = new MemorySaver();
   const model = new ChatOpenAI({
-    model: "gpt-4o-mini",
+    model: "gpt-5.4-mini",
     maxTokens: 4096,
   });
 
@@ -181693,7 +181813,7 @@ import { z } from "zod";
 import { createAgent } from "langchain";
 import { StateGraph, START, END, StateSchema, MessagesValue } from "@langchain/langgraph";
 
-const agent = createAgent({ model: "openai:gpt-4o", tools: [...] });
+const agent = createAgent({ model: "openai:gpt-5.5", tools: [...] });
 
 const AgentState = new StateSchema({
   messages: MessagesValue,
@@ -189807,7 +189927,7 @@ const fetchUrl = tool(
 );
 
 const agent = createAgent({
-    model: "claude-sonnet-4-0",
+    model: "claude-sonnet-4-6",
     tools: [fetchUrl],
     systemPrompt,
 });
@@ -189871,7 +189991,7 @@ const agent = createAgent({
   const tools = [fetchDocumentation];
 
   const agent = createAgent({
-    model: "claude-sonnet-4-0"
+    model: "claude-sonnet-4-6"
     tools,  // [!code highlight]
     systemPrompt,  // [!code highlight]
     name: "Agentic RAG",
@@ -196283,7 +196403,7 @@ There are two approaches depending on whether tools are known ahead of time:
         });
 
         const agent = await createDeepAgent({
-            model: "claude-sonnet-4-20250514",
+            model: "claude-sonnet-4-6",
             tools: tools,
             middleware: [stateBasedTools] as any,
         });
@@ -196333,7 +196453,7 @@ There are two approaches depending on whether tools are known ahead of time:
         });
 
         const agent = await createDeepAgent({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-6",
           backend: new StoreBackend(),
           store,
           checkpointer,
@@ -196379,7 +196499,7 @@ There are two approaches depending on whether tools are known ahead of time:
         });
 
         const agent = await createDeepAgent({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-6",
           store,
           checkpointer,
           tools,
@@ -196446,7 +196566,7 @@ There are two approaches depending on whether tools are known ahead of time:
     });
 
     const agent = createAgent({
-      model: "gpt-4o",
+      model: "gpt-5.5",
       tools: [getWeather], // Only static tools registered here
       middleware: [dynamicToolMiddleware],
     });
@@ -208057,7 +208177,7 @@ function Chat() {
   );
 
   export const agent = createAgent({
-    model: new ChatOpenAI({ model: "gpt-4o-mini" }),
+    model: new ChatOpenAI({ model: "gpt-5.4-mini" }),
     tools: [searchFlights, checkHotels],
     checkpointer: new MemorySaver(),
   });
@@ -208405,7 +208525,7 @@ Set `streaming: false` when initializing the model.
 import { ChatOpenAI } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "o1-preview",
+  model: "gpt-5.5",
   // Set streaming: false to disable streaming for the chat model
   streaming: false,
 });
@@ -221974,7 +222094,7 @@ Each provider is a TOML table under `[models.providers]`:
 [models.providers.<name>]
 display_name = "My Provider"
 api_key_url = "https://provider.example/keys"
-models = ["gpt-4o"]
+models = ["gpt-5.5"]
 api_key_env = "OPENAI_API_KEY"
 base_url = "https://api.openai.com/v1"
 class_path = "my_package.models:MyChatModel"
@@ -221984,7 +222104,7 @@ enabled = true
 temperature = 0
 max_tokens = 4096
 
-[models.providers.<name>.params."gpt-4o"]
+[models.providers.<name>.params."gpt-5.5"]
 temperature = 0.7
 ```
 
@@ -222031,7 +222151,7 @@ Providers have the following configuration options:
 </ResponseField>
 
 <ResponseField name="params" type="object">
-  Extra keyword arguments forwarded to the model constructor. Flat keys (e.g., `temperature = 0`) apply to every model from this provider. Model-keyed sub-tables (e.g., `[params."gpt-4o"]`) override individual values for that model only; the merge is shallow (model wins on conflict).
+  Extra keyword arguments forwarded to the model constructor. Flat keys (e.g., `temperature = 0`) apply to every model from this provider. Model-keyed sub-tables (e.g., `[params."gpt-5.5"]`) override individual values for that model only; the merge is shallow (model wins on conflict).
 
   Do not put credentials (e.g., `api_key`) in `params`. Use [`api_key_env`](#provider-configuration) to point at an environment variable instead.
 </ResponseField>
@@ -228107,7 +228227,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = ChatGoogleGenerativeAI(model="gemini-3.1-pro-preview")
+      model = ChatGoogleGenerativeAI(model="gemini-3.5-flash")
       agent = create_deep_agent(model=model)
       ```
     </CodeGroup>
@@ -283043,7 +283163,7 @@ The agent saw the lightweight skill description in its system prompt, recognized
   # Example: from langchain_anthropic import ChatAnthropic
   # model = ChatAnthropic(model="claude-3-5-sonnet-20241022")
   from langchain_openai import ChatOpenAI
-  model = ChatOpenAI(model="gpt-4")
+  model = ChatOpenAI(model="gpt-5.5")
 
   # Create the agent with skill support
   agent = create_agent(
@@ -286362,7 +286482,7 @@ agent = create_agent(
 
   tools = [fetch_documentation]
 
-  model = init_chat_model("claude-sonnet-4-0", max_tokens=32_000)
+  model = init_chat_model("claude-sonnet-4-6", max_tokens=32_000)
 
   agent = create_agent(
       model=model,
@@ -292881,7 +293001,7 @@ There are two approaches depending on whether tools are known ahead of time:
             return handler(request)
 
     agent = create_agent(
-        model="gpt-4o",
+        model="gpt-5.5",
         tools=[get_weather],  # Only static tools registered here
         middleware=[DynamicToolMiddleware()],
     )
@@ -306374,7 +306494,7 @@ Set `streaming=False` when initializing the model.
     from langchain_openai import ChatOpenAI
 
     # Set streaming=False to disable streaming for the chat model
-    model = ChatOpenAI(model="o1-preview", streaming=False)
+    model = ChatOpenAI(model="gpt-5.5", streaming=False)
     ```
   </Tab>
 </Tabs>

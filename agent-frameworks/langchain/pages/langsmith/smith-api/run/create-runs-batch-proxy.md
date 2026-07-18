@@ -1,5 +1,5 @@
 ---
-title: "Create Runs Batch Proxy"
+title: "Create runs batch proxy"
 source: https://docs.langchain.com/langsmith/smith-api/run/create-runs-batch-proxy
 path: langsmith/smith-api/run/create-runs-batch-proxy
 ---

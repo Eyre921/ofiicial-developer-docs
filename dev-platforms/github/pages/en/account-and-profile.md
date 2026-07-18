@@ -12,7 +12,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Account](/en/account-and-profile/get-started/account)
 
-  Get started with your GitHub account.
+  <p>Get started with your GitHub account.</p>
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
@@ -24,11 +24,11 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
-  You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.
+  <p>You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.</p>
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
-  Demonstrate your skills to hiring managers with your GitHub profile.
+  <p>Demonstrate your skills to hiring managers with your GitHub profile.</p>
 
 * [Setting your commit email address](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)
 
@@ -40,7 +40,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 
-  <p>If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.</p>
+  If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 

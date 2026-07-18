@@ -1,5 +1,5 @@
 ---
-title: "Eagerly Create Feedback"
+title: "Eagerly create feedback"
 source: https://docs.langchain.com/langsmith/smith-api/feedback/eagerly-create-feedback
 path: langsmith/smith-api/feedback/eagerly-create-feedback
 ---

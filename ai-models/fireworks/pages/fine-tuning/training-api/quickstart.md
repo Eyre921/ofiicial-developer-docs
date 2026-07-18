@@ -1,10 +1,12 @@
 ---
-title: "Quickstart"
+title: "Dedicated Training Quickstart"
 source: https://docs.fireworks.ai/fine-tuning/training-api/quickstart
 path: fine-tuning/training-api/quickstart
 ---
 
-Get a custom training loop running in minutes with the Fireworks Training API.
+Provision a trainer and run a custom Training API loop on dedicated Fireworks resources.
+
+This quickstart uses [Dedicated Training](/fine-tuning/training-api/dedicated). For supported LoRA SFT or RL without provisioning, use [Serverless Training](/fine-tuning/training-api/serverless).
 
 ## Installation
 
@@ -12,6 +14,7 @@ Install the Fireworks Python package with training extensions:
 
 ```bash theme={null}
 pip install --pre "fireworks-ai[training]"
+pip install "tinker-cookbook==0.4.1"
 ```
 
 Set your credentials:
@@ -132,17 +135,25 @@ for step in range(10):
 ### Step 5: Save and promote
 
 ```python theme={null}
+from datetime import datetime
+
 saved = training_client.save_weights_for_sampler(
     "sft-final",
     checkpoint_type="base",
 ).result()
 print(f"Checkpoint saved: {saved.path}")
 
-# Promote the checkpoint to a deployable Fireworks model. `list_checkpoints`
-# returns the full 4-segment checkpoint resource name that promotion expects.
-entry = next(
-    row for row in service.list_checkpoints(service.trainer_job_id)
-    if row["name"].endswith(f"/checkpoints/{saved.path}")
+# List control-plane checkpoints and select a promotable row.
+# The public saved.path can differ from the checkpoint resource ID.
+entry = max(
+    (
+        row
+        for row in service.list_checkpoints(service.trainer_job_id)
+        if row.get("promotable")
+    ),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
 )
 model = service.promote_checkpoint(
     name=entry["name"],
@@ -154,7 +165,7 @@ service.close()
 ```
 
 <Tip>
-  For production scripts, wrap `service.close()` in `try/finally` so SDK-managed trainers are cleaned up on exit — including on exceptions. See [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup).
+  For production scripts, set cleanup flags deliberately, call `service.close()` in `try/finally`, and verify the requested final resource state. See [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup).
 </Tip>
 
 ## Next steps

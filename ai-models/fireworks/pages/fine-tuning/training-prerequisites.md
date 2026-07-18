@@ -47,13 +47,7 @@ Before launching an RFT job, ensure you have the following set up. Our quickstar
   </Accordion>
 
   <Accordion title="Base model selected">
-    Choose a base model that supports fine-tuning. Popular options:
-
-    * `accounts/fireworks/models/llama-v3p1-8b-instruct` - Good balance of quality and speed
-    * `accounts/fireworks/models/qwen3-0p6b` - Fast training for experimentation
-    * `accounts/fireworks/models/llama-v3p1-70b-instruct` - Best quality, slower training
-
-    Check available models at [fireworks.ai/models](https://fireworks.ai/models).
+    Choose a model that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as RFT-compatible. `accounts/fireworks/models/qwen3-4b` is a common small starting point when enabled for the account.
   </Accordion>
 </AccordionGroup>
 

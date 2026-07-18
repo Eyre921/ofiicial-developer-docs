@@ -176,7 +176,7 @@ To kickoff training, simply do:
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/qwen3-0p6b \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --chunk-size 10
 ```
 
@@ -196,7 +196,7 @@ This command:
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/qwen3-0p6b \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --chunk-size 10 \
   --force
 ```

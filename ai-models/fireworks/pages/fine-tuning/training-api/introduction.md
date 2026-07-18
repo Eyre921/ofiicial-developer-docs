@@ -11,25 +11,34 @@ Fireworks Training API — custom training loops with full Python control over o
 </Info>
 
 <Tip>
-  **Using a code agent?** Clone [fw-ai/cookbook](https://github.com/fw-ai/cookbook). The cookbook includes the [`skills/dev/`](https://github.com/fw-ai/cookbook/tree/main/skills/dev) skill, which gives agents repo-specific guidance for setup, debugging, weight sync, RL recipe internals, and checkpoint promotion.
+  **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents). One skill covers managed training and Training API serverless or dedicated cookbook workflows.
 </Tip>
 
 ## What is the Training API?
 
 Fireworks Training API lets you write training logic in plain Python on your local machine while model computation runs on remote GPUs managed by Fireworks.
 
-Most users should start from [cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and async RL loops for agentic RL. Fork a recipe when you want to adapt an existing loop with your own loss, reward, rollout function, data loading, or checkpointing behavior.
+Most users should start from [cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and experimental async RL loops for agentic RL. Fork a recipe when you want to adapt an existing loop with your own loss, reward, rollout function, data loading, or checkpointing behavior.
 
-Use the Direct Training SDK when you need full control over training behavior.
+Use the Direct SDK when you need full control over Training API behavior.
 
-| Mode                    | Best for                                                                                                  | Infrastructure                                                                            |
-| ----------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Cookbook recipes**    | Recommended entry point for adapting existing SFT/DPO/GRPO-style loops, including async RL for agentic RL | You configure and implement simple loss, reward, or rollout functions; platform runs GPUs |
-| **Direct Training SDK** | Full control over training behavior                                                                       | You drive the training flow; platform runs GPUs                                           |
+| Mode                 | Best for                                                                                                               | Infrastructure                                                                            |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Cookbook recipes** | Recommended entry point for adapting existing SFT/DPO/GRPO-style loops, including experimental async RL for agentic RL | You configure and implement simple loss, reward, or rollout functions; platform runs GPUs |
+| **Direct SDK**       | Full control over training behavior                                                                                    | You drive the training flow; platform runs GPUs                                           |
+
+## Choose serverless or dedicated infrastructure
+
+After choosing the Training API, decide how compute is provided:
+
+* [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer, LoRA SFT or RL on supported models, no provisioning, per-token billing.
+* [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and method support, explicit checkpoint/resume/deployment control.
+
+Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrastructure) before adapting a recipe.
 
 ## Who does what
 
-| Fireworks handles                                                        | Cookbook recipes handle                                                    | Direct Training SDK users implement                                            |
+| Fireworks handles                                                        | Cookbook recipes handle                                                    | Direct SDK users implement                                                     |
 | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | GPU provisioning and cluster management                                  | Training loop structure for supported recipes                              | Training loop logic (`forward_backward_custom` + `optim_step`)                 |
 | Service-mode trainer lifecycle (create, health-check, reconnect, delete) | Resource setup, health checks, reconnect, and cleanup                      | Managed service setup with `FiretitanServiceClient.from_firetitan_config(...)` |
@@ -51,7 +60,7 @@ flowchart LR
 <Warning>
   **Most common gotchas**
 
-  * Every API call returns a future. Always call `.result()` or failures can be missed.
+  * Remote operations such as `forward`, `forward_backward`, `optim_step`, sampling, and checkpoint saves return future-like results. Call `.result()` on operations that return one.
   * `token_weights=0` means prompt/no-loss tokens, `token_weights=1` means response/learned tokens.
   * `forward_backward_custom` computes gradients only; you still need `optim_step` to apply updates.
 </Warning>
@@ -68,74 +77,33 @@ flowchart LR
 
 A **Datum** is the unit of training data sent to the remote GPU. It wraps tokenized input and per-token weights that your loss function needs.
 
-Token weights tell the loss function which tokens to train on:
-
-* **`0.0`** = prompt token (don't train on this)
-* **`1.0`** = response token (train on this)
-
-```python theme={null}
-import tinker
-import torch
-from tinker_cookbook.supervised.common import datum_from_model_input_weights
-
-tokens = tokenizer.encode("What is 2+2? The answer is 4.")
-prompt_len = len(tokenizer.encode("What is 2+2? "))
-
-weights = torch.zeros(len(tokens), dtype=torch.float32)
-weights[prompt_len:] = 1.0  # Train on response tokens only
-
-datum = datum_from_model_input_weights(
-    tinker.ModelInput.from_ints(tokens),
-    weights,
-    max_length=4096,
-)
-```
+For SFT, token weight `0.0` marks prompt tokens and `1.0` marks response tokens. Cookbook renderers construct these weights from chat messages.
 
 ### Logprobs and forward\_backward\_custom
 
 When you call `forward_backward_custom`, the GPU runs a forward pass and returns **per-token log-probabilities** as PyTorch tensors with `requires_grad=True`. Your loss function computes a scalar loss, the API calls `loss.backward()`, and gradients are sent back to the GPU for the model backward pass.
 
-```python theme={null}
-def my_loss_fn(data, logprobs_list):
-    loss = compute_something(logprobs_list)
-    return loss, {"loss": loss.item()}
-
-result = training_client.forward_backward_custom(datums, my_loss_fn).result()
-```
-
-After accumulating gradients, call `optim_step` to apply the optimizer update:
-
-```python theme={null}
-import tinker
-
-training_client.optim_step(
-    tinker.AdamParams(learning_rate=1e-5, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.01)
-).result()
-```
+After accumulating gradients, call `optim_step` to apply the update. See the [Dedicated Training Quickstart](/fine-tuning/training-api/quickstart) for one complete runnable Datum, loss, and optimizer loop.
 
 ### Futures
 
-All training client API calls return **futures**. Call `.result()` to block until completion. Without `.result()`, errors are silently swallowed.
+Remote training operations such as `forward`, `forward_backward`, `optim_step`, and checkpoint saves return **future-like results**. Call `.result()` on operations that return one so failures surface.
 
 ### Checkpointing and weight sync
 
 After training, you export checkpoints for serving:
 
-* **Base checkpoint**: Full model weights. Use for the first checkpoint.
-* **Delta checkpoint**: Only the diff from the previous base (\~10x smaller). Use for subsequent checkpoints.
+* **Base snapshot:** a complete chain anchor for the trainable state. For LoRA this is the adapter; for full-parameter training it is model weights.
+* **Delta snapshot:** a change relative to a prior full-parameter base snapshot.
 
-**Weight sync** pushes a checkpoint onto a running inference deployment without restarting it, enabling evaluation under serving conditions during training. In normal SDK and cookbook code, this is expressed as `training_client.save_weights_for_sampler(...).result()` followed by `service.create_sampling_client(model_path=saved.path)` or `service.create_deployment_sampler(model_path=saved.path)`.
+The SDK selects base versus delta automatically unless the recipe overrides it.
 
-For RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts) for how active request streams, session IDs, and `reset_prompt_cache` interact.
+Checkpoint-to-sampler behavior depends on the infrastructure:
 
-```mermaid theme={null}
-flowchart LR
-  train["Train step"] --> save["save_weights_for_sampler"]
-  save --> sample_client["create_sampling_client(model_path=...)"]
-  sample_client --> sample["Sample via deployment"]
-  sample --> eval["Evaluate quality"]
-  eval --> train
-```
+* **Serverless:** save a snapshot and bind an in-session sampling client to that snapshot. There is no deployment weight sync. See [Serverless Training](/fine-tuning/training-api/serverless).
+* **Dedicated:** save a snapshot and refresh an SDK-managed deployment sampler, which syncs weights onto the deployment. See [Dedicated Training and Sampling](/fine-tuning/training-api/training-and-sampling).
+
+For dedicated RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).
 
 ## Key APIs
 
@@ -192,7 +160,7 @@ Usually because `.result()` was not called on futures, so failures were never su
 
 ### What's the difference between base and delta checkpoints, and when should I use each?
 
-Use a base checkpoint for your first checkpoint. Use delta checkpoints for subsequent checkpoints to speed up sync and reduce storage.
+Let the SDK select automatically. LoRA snapshots contain the full adapter; full-parameter delta snapshots can accelerate synchronization but are not promotable. See [Saving and Loading](/fine-tuning/training-api/saving-and-loading#sampler-checkpoints).
 
 ### Do I need to manage distributed training infra?
 
@@ -204,7 +172,7 @@ Start with Cookbook for most SFT/DPO/GRPO adaptations. Use the Direct SDK when y
 
 ### Can I evaluate serving behavior during training?
 
-Yes. Save a checkpoint, sync it onto a running deployment, and evaluate under serving conditions.
+Yes. On serverless, save a snapshot and sample from it in the same session. On dedicated infrastructure, sync a snapshot to the SDK-managed deployment sampler and evaluate there.
 
 ### How should I compare Training API pricing vs a DIY bare-metal setup?
 
@@ -216,8 +184,11 @@ See the [Price comparison vs Tinker](/fine-tuning/multi-turn-cost-comparison) ca
 
 ## Next steps
 
-* [Quickstart](/fine-tuning/training-api/quickstart) — get a custom training loop running in minutes
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling) — end-to-end API walkthrough
+* [Dedicated quickstart](/fine-tuning/training-api/quickstart) — run a minimal dedicated custom loop
+* [Choose infrastructure](/fine-tuning/training-api/choose-infrastructure) — compare serverless and dedicated training
+* [Serverless Training](/fine-tuning/training-api/serverless) — shared pooled LoRA training
+* [Dedicated Training](/fine-tuning/training-api/dedicated) — provisioned trainer and deployment lifecycle
+* [Dedicated Training and Sampling](/fine-tuning/training-api/training-and-sampling) — deployment-sampling lifecycle
 * [Loss Functions](/fine-tuning/training-api/loss-functions) — built-in and custom loss functions
 * [Vision Inputs](/fine-tuning/training-api/vision-inputs) — fine-tune vision-language models with image and text data
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview) — ready-to-run recipes for SFT, DPO, ORPO, GRPO/IGPO, and async RL (experimental)

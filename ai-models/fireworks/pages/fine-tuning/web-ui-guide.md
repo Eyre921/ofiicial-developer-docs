@@ -47,7 +47,7 @@ The Fireworks RFT UI provides a visual interface for creating RFT jobs, with gui
     The UI shows only models that support fine-tuning. Popular choices appear at the top.
 
     <Tip>
-      Not sure which model to choose? Start with `llama-v3p1-8b-instruct` for a good balance of quality and speed.
+      Not sure which model to choose? Use the live Training Shapes method-support matrix and start with a small RFT-compatible model such as `qwen3-4b`.
     </Tip>
   </Step>
 

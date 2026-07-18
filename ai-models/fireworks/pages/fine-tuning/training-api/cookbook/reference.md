@@ -33,7 +33,7 @@ Use `training_shape_id` for explicit shape selection — this is the primary sha
 | `extra_args`                  | `list[str] \| None` | `None`  | Extra trainer arguments.                                                                                                                                                                                                                                          |
 | `replica_count`               | `int \| None`       | `None`  | Data-parallel HSDP replica count for policy trainer launches. This is a run-level knob, not part of the validated training shape; reference trainers are launched without it.                                                                                     |
 | `skip_validations`            | `bool`              | `False` | Skip server-side shape validation. Requires elevated permissions.                                                                                                                                                                                                 |
-| `purpose`                     | `str \| None`       | `None`  | Optional platform purpose enum name, such as `"PURPOSE_PILOT"`.                                                                                                                                                                                                   |
+| `purpose`                     | `str \| None`       | `None`  | Optional platform purpose enum name for internal scheduling metadata. Most users leave this unset.                                                                                                                                                                |
 
 To request replicated HSDP for a run:
 
@@ -94,14 +94,15 @@ When `deployment_shape` is set (the recommended path), the shape owns deployment
 
 Rollout sampling concurrency settings used by RL-family recipes:
 
-| Field                  | Type          | Default      | Description                                                                                   |
-| ---------------------- | ------------- | ------------ | --------------------------------------------------------------------------------------------- |
-| `mode`                 | `str \| None` | `"adaptive"` | Concurrency mode. RL recipes currently use adaptive concurrency.                              |
-| `initial_window`       | `int \| None` | `None`       | Starting adaptive concurrency window. When unset, recipes derive it from deployment capacity. |
-| `min_window`           | `int`         | `1`          | Minimum adaptive concurrency window.                                                          |
-| `max_window`           | `int`         | `256`        | Maximum adaptive concurrency window.                                                          |
-| `prefill_queue_target` | `float`       | `0.5`        | Target prefill queue duration in seconds for AIMD adjustment.                                 |
-| `max_concurrency`      | `int \| None` | `None`       | Deprecated fixed-concurrency compatibility field.                                             |
+| Field                         | Type          | Default      | Description                                                                                                                                                   |
+| ----------------------------- | ------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode`                        | `str \| None` | `"adaptive"` | Concurrency mode. RL recipes currently use adaptive concurrency.                                                                                              |
+| `initial_window`              | `int \| None` | `None`       | Starting adaptive concurrency window. When unset, recipes derive it from deployment capacity.                                                                 |
+| `min_window`                  | `int`         | `1`          | Minimum adaptive concurrency window.                                                                                                                          |
+| `max_window`                  | `int`         | `256`        | Maximum adaptive concurrency window.                                                                                                                          |
+| `prefill_queue_target`        | `float`       | `0.5`        | Target prefill queue duration in seconds for AIMD adjustment.                                                                                                 |
+| `rollout_adjustment_interval` | `int`         | `32`         | Adjust adaptive concurrency every N completed rollout requests. Remaining requests adjust at the step boundary; set to `0` for step-boundary-only adjustment. |
+| `max_concurrency`             | `int \| None` | `None`       | Deprecated fixed-concurrency compatibility field.                                                                                                             |
 
 ## Checkpoint & weight-sync fields
 
@@ -210,7 +211,7 @@ For checkpointing, resume, and promote — see the dedicated [Checkpoints and Re
 
 ## Skills reference
 
-Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/gradient-accumulation.md).
+Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md).
 
 ## Deprecated managed infra (InfraConfig)
 
@@ -239,4 +240,4 @@ The `InfraConfig` dataclass is still importable for backward compatibility and n
 
 ### Get help migrating
 
-The cookbook ships a **debug-and-migrate skill** at [`skills/dev/`](https://github.com/fw-ai/cookbook/tree/main/skills/dev) that walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface (in addition to its day-to-day debugging guidance for weight sync and checkpoint promotion). Point your coding agent at that skill to automate the migration.
+The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.

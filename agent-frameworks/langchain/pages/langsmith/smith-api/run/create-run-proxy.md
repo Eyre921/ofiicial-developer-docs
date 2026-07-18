@@ -1,5 +1,5 @@
 ---
-title: "Create Run Proxy"
+title: "Create run proxy"
 source: https://docs.langchain.com/langsmith/smith-api/run/create-run-proxy
 path: langsmith/smith-api/run/create-run-proxy
 ---

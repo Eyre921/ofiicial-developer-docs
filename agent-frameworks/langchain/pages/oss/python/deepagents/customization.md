@@ -332,7 +332,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = ChatGoogleGenerativeAI(model="gemini-3.1-pro-preview")
+      model = ChatGoogleGenerativeAI(model="gemini-3.5-flash")
       agent = create_deep_agent(model=model)
       ```
     </CodeGroup>

@@ -687,7 +687,7 @@ function Chat() {
   );
 
   export const agent = createAgent({
-    model: new ChatOpenAI({ model: "gpt-4o-mini" }),
+    model: new ChatOpenAI({ model: "gpt-5.4-mini" }),
     tools: [searchFlights, checkHotels],
     checkpointer: new MemorySaver(),
   });
@@ -1035,7 +1035,7 @@ Set `streaming: false` when initializing the model.
 import { ChatOpenAI } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "o1-preview",
+  model: "gpt-5.5",
   // Set streaming: false to disable streaming for the chat model
   streaming: false,
 });

@@ -6015,722 +6015,71 @@ Request handling capacity depends on several factors:
 * **Deployment type** (serverless vs. on-demand)
 
 
-# Fireworks Agent: Classification
-Source: https://docs.fireworks.ai/fine-tuning/agent/classification
+# Train from Your Coding Agent
+Source: https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents
 
-Benchmark base models, fine-tune on labeled data, and pick the best classifier — automatically.
+Install one Fireworks training skill and run managed or Training API workflows from Claude Code, Cursor, Codex, or another compatible agent.
 
-Fireworks Agent's classification workflow is purpose-built for label-prediction tasks. It evaluates one or more base models against your labeled dataset, fine-tunes the strongest candidates, and reports a head-to-head comparison of base vs fine-tuned accuracy on a held-out test split.
+The Fireworks training skill teaches your coding agent to run training end to end: choose managed or Training API, choose serverless or dedicated infrastructure when needed, prepare and validate data, launch and monitor the run, evaluate, deploy, and troubleshoot.
 
-Use this workflow for classification, content extraction, intent detection, routing, and other tasks with a discrete label set.
+## Install
 
-<Note>
-  For the underlying SFT mechanics (job parameters, supported base models, dataset format), see [Managed Fine-Tuning → Supervised Fine-Tuning](/fine-tuning/fine-tuning-models). The classification workflow is built on top of SFT with classification-specific dataset handling and reporting.
-</Note>
+### Claude Code
 
-## What you give Agent
-
-| Input                            | Required? | Notes                                                                                  |
-| -------------------------------- | --------- | -------------------------------------------------------------------------------------- |
-| Dataset ID(s)                    | **Yes**   | Single dataset (split 80/20 train/test) or two datasets (separate train + eval)        |
-| Models to evaluate and fine-tune | **Yes**   | Agent does **not** default to "all models"; pick from the supported list when prompted |
-| Candidate labels                 | No        | Agent infers labels from your data if you don't list them explicitly                   |
-| Imbalance-ratio threshold        | No        | Defaults to `50.0` (ratio of most-frequent to least-frequent label)                    |
-
-### Dataset requirements
-
-* Each sample must contain `messages` in OpenAI chat-completion format.
-* `ground_truth` is optional. If absent, Agent extracts the label from the final assistant message using task-specific logic in the plan.
-* `ground_truth` may be a single string or a list of strings.
-
-## Example session instructions
-
-Single dataset with automatic split, two candidate models:
+Install the auto-updating cookbook plugin:
 
 ```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Benchmark and fine-tune classification on accounts/myacct/datasets/intent-labels. Compare Qwen3 8B and Qwen3 32B. Labels are: billing, technical, account, sales."
+claude plugin marketplace add fw-ai/cookbook
+claude plugin install fireworks-training@fw-ai-cookbook
 ```
 
-Separate train and eval datasets, model already chosen:
+### Cursor
 
 ```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Run classification fine-tuning on accounts/myacct/datasets/train, eval on accounts/myacct/datasets/test, using Qwen3 8B."
+npx --yes skills add fw-ai/cookbook -g \
+  -s fireworks-training -a cursor -y
+```
+
+### Codex
+
+```bash theme={null}
+npx --yes skills add fw-ai/cookbook -g \
+  -s fireworks-training -a codex -y
+```
+
+### Other compatible agents
+
+Install to every detected Agent Skills-compatible harness:
+
+```bash theme={null}
+npx --yes skills add fw-ai/cookbook -g \
+  -s fireworks-training -a '*' -y
 ```
 
 <Note>
-  **Where classification lives in the 7-phase pipeline:** Phase 1 is dataset inspection (with per-label sample counts and imbalance detection), phase 2 is plan + cost approval, **phase 3 is the base-model benchmark plus fine-tuning sweep**, phase 4 is the full-data run for each candidate, **phase 5 is the fine-tuned evaluation** with per-label and overall accuracy, phase 6 is deployment of the winner, phase 7 is the base-vs-fine-tuned comparison report. See [How Agent runs a training job](/fine-tuning/agent/introduction#how-agent-runs-a-training-job).
+  Skills installed with `npx skills` do not update automatically. Refresh them with `npx --yes skills update -g -y`.
 </Note>
 
-## Workflow stages
+## Prerequisites
 
-<Steps>
-  <Step title="Dataset inspection">
-    Agent stages your dataset locally once, computes per-label sample counts, detects the imbalance ratio, and inspects message structure. If `ground_truth` is missing, Agent decides how to extract the label from the final assistant turn.
-  </Step>
+* [`firectl`](/tools-sdks/firectl/firectl) installed. Authenticate with either `firectl signin` or `FIREWORKS_API_KEY`.
+* Export `FIREWORKS_API_KEY` for Training API Python workflows.
 
-  <Step title="Label resolution">
-    If you provided candidate labels in your instruction, Agent uses them. Otherwise, Agent infers them from the data and surfaces the inferred set in the plan for you to confirm.
-  </Step>
+## What it does
 
-  <Step title="Imbalance handling">
-    Agent computes the ratio of most-frequent to least-frequent label. If it exceeds the threshold (default `50.0`), Agent flags the imbalance in the plan and proposes mitigations (rebalancing, weighted training, or a smaller candidate set).
-  </Step>
+Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and deploy it."* The skill uses current Fireworks docs and cookbook recipes to choose the right path, validate inputs, run and monitor training, evaluate the result, deploy it, and troubleshoot failures.
 
-  <Step title="Plan + cost approval">
-    Agent writes a plan and presents it with a cost breakdown (base-model evaluation inference + fine-tuning + fine-tuned evaluation inference + total). Approve once to proceed.
-  </Step>
-
-  <Step title="Base-model benchmarking">
-    Agent runs inference on the held-out eval split against each selected base model and reports per-label and overall accuracy. This becomes the baseline.
-  </Step>
-
-  <Step title="Fine-tuning sweep">
-    Agent fine-tunes the strongest candidates with the default tuning grid (or your explicit grid), batched into waves of up to 6 active jobs.
-  </Step>
-
-  <Step title="Fine-tuned evaluation">
-    Agent runs the same eval inference against each fine-tuned model and computes per-label accuracy, overall accuracy, and confusion-matrix style summaries.
-  </Step>
-
-  <Step title="Deployment and comparison report">
-    Agent picks the winner, deploys it (phase 6), and writes the final comparison report (phase 7) showing base vs fine-tuned accuracy per candidate plus a `fireworks-ai` SDK snippet for inference.
-  </Step>
-</Steps>
-
-## Output
-
-When the session reports `succeeded`, Agent's response includes:
-
-* Per-label and overall accuracy for every base model evaluated
-* Per-label and overall accuracy for every fine-tuned candidate
-* The winning model ID, deployment ID, and inference endpoint
-* A `fireworks-ai` SDK snippet for label prediction
-* `final_report.md` in the session workspace with the full base vs fine-tuned comparison and estimated-vs-actual cost
-
-## Customizing the run
-
-* **Explicit labels:** *"Labels are: positive, negative, neutral."*
-* **Imbalance threshold override:** *"Use an imbalance threshold of 20."*
-* **Inference-only mode:** *"Just benchmark — don't fine-tune."*
-* **Single candidate:** *"Only fine-tune Qwen3 8B, skip the base-vs-base comparison."*
-* **Custom split:** *"Use a 70/30 train/test split."*
+Before any upload, registration, paid inference, job creation, promotion, or deployment, it shows the resolved parameters, defaults, cost ceiling, evaluation, and teardown for approval. Material changes require approval again; promotion and deployment each have separate confirmation.
 
 <Note>
-  **Agent crib notes**
-
-  * Required inputs: dataset ID and at least one base model to evaluate. Agent will ask explicitly if either is missing.
-  * Agent needs to know your labels eventually — either supply them in the instruction or confirm Agent's inferred set when prompted.
-  * The default imbalance threshold is `50.0`; if your dataset is highly imbalanced, expect Agent to flag it in the plan.
-  * For multi-label classification (a sample with multiple ground-truth labels), pass `ground_truth` as a list in your dataset.
-  * Agent creates new resources only; your dataset, models, and deployments are never deleted or modified in place.
+  `firectl` may block mutating commands inside any AI-agent environment. When that happens, the skill gives you the exact command to run manually in your terminal, then resumes read-only monitoring and reporting. It does not bypass the guard.
 </Note>
 
+Use [managed fine-tuning](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/choose-infrastructure).
 
-# Fireworks Agent: Preference Learning (DPO/ORPO)
-Source: https://docs.fireworks.ai/fine-tuning/agent/dpo
-
-Run preference fine-tuning end-to-end with optional base-model sweep, automatic pair generation, and pairwise evaluation.
-
-Fireworks Agent's preference-learning workflow runs DPO or ORPO fine-tuning against pre-paired preference data, or generates pairs for you from a prompts-only dataset using delta learning. It can sweep multiple base models when you don't know which to pick, evaluates winners pairwise (or with your evaluator), and produces a final comparison report.
-
-<Note>
-  For the underlying DPO mechanics and dataset format details, see [Managed Fine-Tuning → DPO Fine-Tuning](/fine-tuning/dpo-fine-tuning). This page documents the Fireworks Agent workflow built on top of it.
-</Note>
-
-## What you give Agent
-
-| Input              | Required? | Notes                                                                                                                   |
-| ------------------ | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Dataset ID(s)      | **Yes**   | A single dataset (split 80/20 train/test automatically) or two datasets (separate train + test)                         |
-| Base model         | No        | If omitted, Agent runs a **model sweep** across supported base models to pick the best automatically                    |
-| Evaluator          | No        | Evaluator ID, custom rubric text, or none (Agent builds a data-grounded pairwise judge rubric if you don't provide one) |
-| Performance target | No        | Optional goal score, for example *"win rate above 70%"*                                                                 |
-
-## Example session instructions
-
-Pre-paired preference data with a specific base model:
-
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Run DPO on accounts/myacct/datasets/customer-prefs using Qwen3 32B."
-```
-
-Prompts-only dataset with automatic pair generation and a base-model sweep:
-
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Run preference learning on accounts/myacct/datasets/prompts-only. Generate preference pairs automatically and sweep base models to find the best one."
-```
-
-<Note>
-  **Where DPO lives in the 7-phase pipeline:** Phase 1 is dataset inspection, phase 2 is plan + cost approval, **phase 3 is the preference sweep** (replacing the SFT HP sweep — includes pair generation up-front for Format B), phase 5 is the pairwise evaluation, phase 6 is deployment of the winner, phase 7 is the final report. DPO does **not** run a separate phase 4 full-data retrain — the sweep itself is the training run on the chosen base model + config. See [How Agent runs a training job](/fine-tuning/agent/introduction#how-agent-runs-a-training-job).
-</Note>
-
-## Dataset formats
-
-Agent accepts two formats:
-
-### Format A — DPO format (pre-paired preferences)
-
-Each sample has `input`, `preferred_output`, and `non_preferred_output` fields. `input.messages` holds the conversation; `preferred_output` and `non_preferred_output` hold candidate assistant responses.
-
-When this format is detected, Agent skips pair generation and goes straight to training.
-
-### Format B — prompts-only
-
-Each sample has a `messages` field with user messages only (no assistant completions). Agent generates preference pairs automatically using **delta learning**: it samples completions from a strong and a weak model, then constructs preferred/non-preferred pairs for training.
-
-## Workflow stages
-
-<Steps>
-  <Step title="Dataset download and metrics">
-    Agent stages the dataset locally exactly once per session, computes token statistics, and decides between Format A (skip pair generation) and Format B (generate pairs).
-  </Step>
-
-  <Step title="Inspect evaluator and gather inputs">
-    Agent resolves your evaluator choice (evaluator ID / custom rubric / auto rubric) and asks for anything missing — usually the dataset and, if you omitted both base model and grid, confirmation that a base-model sweep is OK.
-  </Step>
-
-  <Step title="Plan + cost approval">
-    Agent presents a plan plus a cost breakdown (training + any pair-generation inference + evaluator inference + total) and asks for a single approval covering both.
-  </Step>
-
-  <Step title="Pair generation (Format B only)">
-    Agent generates preference pairs via delta learning and uploads the resulting dataset to Fireworks under a new, timestamped name. Your original dataset is left untouched.
-  </Step>
-
-  <Step title="Model sweep / HP sweep">
-    If no base model was specified, Agent runs DPO/ORPO across a curated set of supported base models. If a base model was specified, Agent runs an HP sweep against that single base model. Training jobs are batched (default cap of 6 active at once).
-  </Step>
-
-  <Step title="Evaluation and pairwise comparison">
-    For each trained model, Agent generates completions on the held-out test split and scores them. With your own evaluator, scores are reported independently. Without one, Agent uses a pairwise judge rubric grounded in actual training samples.
-  </Step>
-
-  <Step title="Deployment and final report">
-    Agent deploys the winning fine-tuned model and writes a final report comparing base and fine-tuned models, with the deployment endpoint and (if you supplied a performance target) whether the target was met.
-  </Step>
-</Steps>
-
-## Evaluator handling
-
-Agent supports three evaluator paths, in priority order:
-
-1. **Evaluator ID** — for example `accounts/myacct/evaluators/my-eval`. Agent fetches the evaluator code, installs dependencies, and runs it to score each model's completions independently. Agent reports average scores for the base model and every fine-tuned candidate.
-2. **Custom rubric text** — provide a pairwise LLM judge rubric in your instruction. Agent uses it to compare two completions head-to-head.
-3. **Neither** — Agent inspects training samples and writes a data-grounded pairwise judge rubric automatically.
-
-## Output
-
-When the session reports `succeeded`, Agent returns:
-
-* The winning fine-tuned model ID and its deployment endpoint
-* Base vs fine-tuned comparison: scores or win rate from the chosen evaluator
-* A copy-paste `fireworks-ai` SDK snippet for the deployed model
-* `final_report.md` in the session workspace with per-model scores, pair-generation provenance (if Format B), and estimated-vs-actual cost
-
-## Supported base models
-
-The model sweep selects from the supported preference-learning base models. For the canonical list, see [Managed Fine-Tuning Overview → Supported base models](/fine-tuning/managed-finetuning-intro#supported-base-models).
-
-## Customizing the run
-
-* **Pin a base model:** *"Use Qwen3 32B."* — skips the model sweep.
-* **Explicit grid:** *"Sweep Qwen3 32B and Qwen3-30B-A3B with beta 0.1 and 0.3."*
-* **Bring your own evaluator:** *"Use evaluator accounts/myacct/evaluators/my-rubric."*
-* **Auto-generate pairs:** *"Generate preference pairs automatically."*
-* **Set a target:** *"Stop early once we reach 75% win rate against the base."*
-
-<Note>
-  **Agent crib notes**
-
-  * Required input: dataset ID. Everything else is optional.
-  * Agent will pause for one approval (plan + cost) and again at the comparison report. The promotion gate appears only when a clear winner needs confirmation.
-  * If the dataset is prompts-only, Agent will generate pairs by sampling strong and weak models — expect inference cost on top of training cost.
-  * Agent always creates new datasets with timestamped names; your original dataset is never overwritten.
-  * For deeper customization of the loss (custom beta schedules, hybrid objectives), use the [Training API](/fine-tuning/training-api/introduction) instead.
-</Note>
-
-
-# Fireworks Agent: Evaluator Authoring
-Source: https://docs.fireworks.ai/fine-tuning/agent/evaluators
-
-Have Fireworks Agent generate a reusable evaluator from your dataset — for scoring candidates in an SFT sweep, or for use with Managed RFT.
-
-Fireworks Agent can write a task-specific evaluator from your dataset alone. Two flavors:
-
-* **SFT evaluators** — a Python evaluator (`evaluator.py`) plus a spec (`eval_spec.md`) that Agent uses to score candidates during a subsequent SFT sweep in the same session.
-* **RFT evaluators** — an Eval Protocol `@evaluation_test` evaluator ready to drive a Reinforcement Fine-Tuning job.
-
-Use evaluator authoring when you have a dataset and a clear notion of what "correct" looks like, but no evaluator script yet.
-
-## SFT evaluators
-
-### What you get
-
-Agent generates two artifacts in the session workspace:
-
-* `outputs/eval_spec.md` — a human-readable spec describing what the evaluator checks (the contract: what counts as correct, how partial credit works, edge cases).
-* `outputs/evaluator.py` — a Python evaluator that takes a model's outputs and the dataset's ground truth and returns scores.
-
-After the artifacts are written, Agent surfaces the full `eval_spec.md` and `evaluator.py` contents in chat so you can review them before they're used downstream.
-
-### Example session instructions
-
-Author an evaluator only:
-
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Generate an evaluator for accounts/myacct/datasets/customer-support. Outputs are short text answers; check whether the final assistant reply matches ground truth on key facts."
-```
-
-Author an evaluator and continue straight into SFT in the same session — Agent reuses the freshly-written evaluator without re-authoring:
-
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Generate an evaluator for accounts/myacct/datasets/customer-support, then run SFT on Qwen3 8B and use that evaluator to pick the winning candidate."
-```
-
-<Note>
-  **Where evaluator authoring lives in the 7-phase pipeline:** When evaluator authoring runs as a standalone session, phases 3–7 of the standard pipeline don't apply; the session writes `outputs/evaluator.py` + `outputs/eval_spec.md` and stops. When you chain authoring into SFT in the same session, those artifacts feed **phase 5 (Evaluation)** of the follow-on training pipeline — used to score candidates during phase 3 and again for direct evaluation of the final model. (RFT evaluators are saved to your Fireworks account and then used by [Managed Fine-Tuning's RFT path](/fine-tuning/reinforcement-fine-tuning-models), not by Agent.) See [How Agent runs a training job](/fine-tuning/agent/introduction#how-agent-runs-a-training-job).
-</Note>
-
-When you ask for both in one instruction, Agent writes the evaluator first, then automatically continues into SFT with **same-session evaluator reuse**: the SFT workflow picks up `outputs/evaluator.py` and `outputs/eval_spec.md` without re-authoring them, and reuses the staged dataset paths so the dataset is downloaded only once.
-
-### Multi-turn handoff
-
-If you want fine-grained control of the handoff, structure your two instructions like this:
-
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Generate an evaluator for accounts/myacct/datasets/mydata."
-# Wait for evaluator artifacts to be written and presented in chat.
-```
-
-Then continue in the **same session**:
-
-```bash theme={null}
-source .env && firectl session update <session-id> \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Now run SFT on Qwen3 32B using the evaluator we just authored. Reuse outputs/evaluator.py and outputs/eval_spec.md — do not regenerate them."
-```
-
-Agent will inherit the staged dataset and the evaluator artifacts without re-downloading or rewriting them.
-
-## RFT evaluators
-
-<Note>
-  **Agent authors RFT evaluators but does not run RFT training.** This workflow produces and validates the Eval Protocol evaluator file, then registers it with your Fireworks account. The actual RFT training job runs through [Managed Fine-Tuning's RFT path](/fine-tuning/reinforcement-fine-tuning-models) — not from an Agent session.
-</Note>
-
-### What you get
-
-An Eval Protocol `@evaluation_test` evaluator file, validated end-to-end, ready to drop into a Reinforcement Fine-Tuning job. The plan includes the concrete evaluator code, validation commands, and the command to save the evaluator to Fireworks.
-
-This is purpose-built for tasks where you can score model outputs against reference data — math problems, code generation, structured-output extraction, agentic workflows with verifiable side effects.
-
-### Example session instruction
-
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Build an RFT evaluator for accounts/myacct/datasets/math-problems. Score whether the final numeric answer matches ground truth."
-```
-
-Agent inspects samples, writes the evaluator, validates it on a few records, and presents the plan with the save command. You approve once and Agent executes the plan, registering the evaluator with your Fireworks account.
-
-### Handing off to RFT training
-
-Once the evaluator is saved, run the RFT job through Managed Fine-Tuning — see the [Reinforcement Fine-Tuning Overview](/fine-tuning/reinforcement-fine-tuning-models) and [Evaluators concepts](/fine-tuning/evaluators). For example:
-
-```bash theme={null}
-firectl rftj create \
-  --base-model accounts/fireworks/models/qwen3-8b \
-  --evaluator accounts/myacct/evaluators/<your-evaluator> \
-  --dataset accounts/myacct/datasets/math-problems
-```
-
-Or use the [Web UI](/fine-tuning/web-ui-guide) to launch the RFT job interactively.
-
-## Workflow summary
-
-<Steps>
-  <Step title="Dataset inspection">
-    Agent stages the dataset locally, samples records, and infers the evaluator contract from data plus your scoring intent. Agent will not finalize an evaluator without successfully staging readable data.
-  </Step>
-
-  <Step title="Spec and code generation">
-    For SFT, Agent writes both `eval_spec.md` (the contract) and `evaluator.py` (the implementation) and self-checks that both are non-empty before finishing. For RFT, Agent writes a single Eval Protocol `@evaluation_test` file and self-checks that it's non-empty and that validation succeeds.
-  </Step>
-
-  <Step title="Review and approval">
-    Agent surfaces the artifacts inline in chat. For RFT, Agent also presents a plan with validation and save commands and asks for one approval.
-  </Step>
-
-  <Step title="Hand off (optional)">
-    If your instruction asks for downstream SFT, Agent continues into the SFT workflow in the same session and reuses the just-authored evaluator — no re-downloading, no re-authoring. RFT training itself runs through [Managed Fine-Tuning](/fine-tuning/reinforcement-fine-tuning-models), not from an Agent session.
-  </Step>
-</Steps>
-
-## When to use which
-
-| Use case                                                                                                          | Workflow                                                                                                                                                           |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| You want an evaluator Agent can use to score candidates during an SFT sweep, with optional auto-continue into SFT | **SFT evaluator authoring** (run end-to-end by Agent)                                                                                                              |
-| You want an Eval Protocol evaluator to drive an RFT job                                                           | **RFT evaluator authoring** (Agent writes and saves the evaluator; RFT training runs through [Managed Fine-Tuning](/fine-tuning/reinforcement-fine-tuning-models)) |
-| You don't have a clear notion of "correct" yet                                                                    | Start with **validation-loss-only SFT** on [Agent SFT](/fine-tuning/agent/sft) and add an evaluator later                                                          |
-
-<Note>
-  **Agent crib notes**
-
-  * Required input: dataset ID. Agent also wants your scoring intent in plain English — "check whether the answer matches ground truth", "verify the JSON has the right schema", etc.
-  * For SFT evaluators, ask for both authoring and SFT in the same instruction to get same-session evaluator reuse for free.
-  * For RFT evaluators, expect a plan + cost approval before the evaluator is saved to your Fireworks account. **The Agent session ends after the evaluator is saved.** Hand off to [Managed Fine-Tuning's RFT path](/fine-tuning/reinforcement-fine-tuning-models) to run the actual RFT training job.
-  * Agent surfaces the generated `eval_spec.md` and `evaluator.py` inline in chat after authoring — relay them to the user.
-  * All evaluator artifacts live under `outputs/` in the session workspace and can be inspected via `firectl session get <id>` if needed.
-</Note>
-
-
-# Fireworks Agent Overview
-Source: https://docs.fireworks.ai/fine-tuning/agent/introduction
-
-Describe what you want, approve the plan and cost, get a deployed fine-tuned model.
-
-Fireworks Agent is a hosted Fireworks assistant that owns the full fine-tuning loop. You describe what you want — *"fine-tune a model that classifies our support tickets"*, *"improve Llama 3.1 70B on our function-calling data"*, *"train a smaller model that matches GPT-4 on our routing task"* — and Agent picks the base model, prepares the dataset, runs a hyperparameter sweep, submits training, evaluates the result, and deploys the fine-tuned model. You stay in the loop for approvals and final calls; everything else is handled.
-
-Agent is the easiest of the three Fireworks fine-tuning paths, sitting alongside [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro) and the [Training API](/fine-tuning/training-api/introduction). It's the right starting point when you want a working fine-tuned model without writing config files or Python training loops.
-
-<Note>
-  **Naming.** This documentation refers to the product as **Fireworks Agent** (or just **Agent**). You may also see it called `pilot` in internal source code, in CLI permission presets (`--permission-preset=pilot`), in the embedded manifest file (`pilot.yaml`), and in some legacy support contexts — those are all the same product. Use *"Fireworks Agent"* or *"Agent"* in your own prompts and communication.
-</Note>
-
-## What Agent does for you
+## See also
 
 <CardGroup>
-  <Card title="Picks the right model" icon="sparkles">
-    Agent recommends a base model and tuning method (SFT, DPO, or classification) from your task description and a peek at your data.
-  </Card>
-
-  <Card title="Plans the run" icon="list-check">
-    Inspects your dataset, proposes hyperparameters, estimates cost, and presents a single plan for approval before any spend.
-  </Card>
-
-  <Card title="Runs and evaluates" icon="play">
-    Submits the job, streams progress, evaluates checkpoints, and ships a deployed model at the end.
-  </Card>
-</CardGroup>
-
-Concretely, Agent can:
-
-* Run **SFT, DPO, and classification** jobs from a natural-language prompt
-* Inspect your dataset and call out format issues before training starts
-* Recommend a base model from a curated panel based on your task shape
-* Run a short **hyperparameter sweep** before committing to full training
-* Stream a live progress feed with eval loss, cost-so-far, and ETA
-* Evaluate the trained model against a held-out set and surface the best checkpoint
-* Deploy the fine-tuned model so you can call it from `chat/completions` immediately
-* Author task-specific [evaluators](/fine-tuning/agent/evaluators) for use in SFT sweeps, or Eval Protocol evaluators you can then run through [Managed Fine-Tuning's RFT path](/fine-tuning/reinforcement-fine-tuning-models)
-* Answer questions about your account, deployments, jobs, and Fireworks models along the way
-
-Agent does **not** run RFT training itself — for that, author the evaluator with Agent and then submit the RFT job through [Managed Fine-Tuning](/fine-tuning/reinforcement-fine-tuning-models). Agent also cannot run an arbitrary Python training loop, use a custom loss function, or sample mid-training from your own evaluator — for those, use the [Training API](/fine-tuning/training-api/introduction) directly.
-
-## Architecture
-
-```mermaid theme={null}
-flowchart LR
-    Client["Client<br/>(user via web app,<br/>user via firectl / REST API,<br/>or coding agent)"] -->|"create session"| AgentAPI["Fireworks Agent API"]
-    AgentAPI -->|dispatch| Runner["Session Runner"]
-    Runner -->|"plan + cost estimate"| AgentAPI
-    AgentAPI -->|"events stream"| Client
-    Client -->|"approve / answer"| AgentAPI
-    AgentAPI -->|"session update"| Runner
-    Runner -->|"firectl + Fireworks API"| Platform["Fireworks Platform"]
-    Platform -->|results| Runner
-    Runner -->|"final report + deployed model"| Client
-```
-
-The runner is an ephemeral, sandboxed environment with its own filesystem. It executes Agent's plan against your Fireworks account using your API key. Sessions can pause for hours or days waiting on user input without consuming compute.
-
-## Two ways to use Agent
-
-<Tabs>
-  <Tab title="In the Fireworks dashboard">
-    The default — and recommended — surface for most users. Open **Agent** in the left nav of [app.fireworks.ai](https://app.fireworks.ai) for a chat interface that streams Agent's plan, progress, and final report. Best for:
-
-    * Most fine-tuning workflows, end to end
-    * Teams that want a visual plan, cost, and approval UX
-    * Watching a long training run with a live progress feed
-    * Skipping `firectl` installation and service-account setup
-
-    ### Dashboard quickstart
-
-    <Steps>
-      <Step title="Open Agent">
-        Click **Agent** in the left navigation at [app.fireworks.ai](https://app.fireworks.ai).
-      </Step>
-
-      <Step title="Describe the job">
-        A good first prompt is specific about *what* you're training for, *what data* to use, and *what success looks like*:
-
-        ```text theme={null}
-        Fine-tune a model on accounts/your-account/datasets/support-tickets.
-        Classify each ticket into one of 12 categories.
-        Target: better than GPT-4 mini on accuracy. Budget: under $5.
-        ```
-
-        Agent will inspect the dataset, propose a plan, and stop for your approval.
-      </Step>
-
-      <Step title="Approve the plan">
-        Agent presents one structured plan with a cost estimate. Approve, request a change (*"use Qwen3 32B instead"*, *"skip HP tuning"*), or cancel. No spend happens before this gate.
-      </Step>
-
-      <Step title="Watch it run">
-        Agent streams phase-anchored updates every few minutes through the final report, which includes the deployed model ID and inference endpoint.
-      </Step>
-    </Steps>
-  </Tab>
-
-  <Tab title="From the CLI or your coding agent">
-    The advanced path, for power users and anyone already living in a coding-agent harness. Use it two ways:
-
-    * **Drive Agent directly from `firectl session`** — script it, run it from CI, or call the REST API.
-    * **Let Claude Code, Cursor, Codex, Aider, Goose, or another coding agent drive it for you** by installing the [Fireworks Agent skill file](/fine-tuning/agent/use-with-coding-agents). The coding agent shells out to `firectl session` using a scoped service-account key.
-
-    Best for:
-
-    * Fine-tuning as a step in a larger coding workflow
-    * Reproducing a training run with code-checked-in instructions
-    * Power users who already orchestrate everything from their coding agent or terminal
-    * Scripting and automation against the `firectl session` / REST API
-
-    ### CLI quickstart
-
-    <Steps>
-      <Step title="Create a service account and API key">
-        Create a service account scoped to Agent's capabilities (the `pilot` permission preset — see the [security section below](#security-service-accounts-and-the-agent-manifest) for the rationale) and mint an API key:
-
-        ```bash theme={null}
-        firectl -a <account> user create \
-          --service-account \
-          --user-id=fireworks-agent \
-          --permission-preset=pilot
-
-        firectl -a <account> api-key create --service-account=fireworks-agent
-        ```
-
-        Save the returned key in a `.env` file in your project root:
-
-        ```bash .env theme={null}
-        FIREWORKS_AGENT_API_KEY=fw-...
-        ```
-
-        The Fireworks Agent skill sources `.env` automatically. See [Service Accounts](/accounts/service-accounts) for the full setup.
-      </Step>
-
-      <Step title="Create a session">
-        ```bash theme={null}
-        source .env && firectl session create \
-          --api-key $FIREWORKS_AGENT_API_KEY \
-          --instruction "Run SFT on Qwen3 32B using accounts/myacct/datasets/mydata"
-        ```
-
-        The command returns a session ID, for example `abc123`.
-      </Step>
-
-      <Step title="Stream events">
-        ```bash theme={null}
-        source .env && firectl session events abc123 --api-key $FIREWORKS_AGENT_API_KEY --wait
-        ```
-
-        The `--wait` flag keeps streaming until the session reaches `waiting`, `succeeded`, `failed`, or `cancelled`. Without it, the command dumps existing events and exits.
-      </Step>
-
-      <Step title="Answer waiting-state questions">
-        When the stream stops at `waiting`, read Agent's question, then send your answer back to the same session:
-
-        ```bash theme={null}
-        source .env && firectl session update abc123 \
-          --api-key $FIREWORKS_AGENT_API_KEY \
-          --instruction "Approved, proceed."
-        ```
-
-        Re-run `firectl session events abc123 --wait` to resume. Repeat until the session reports `succeeded`.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
-
-## How Agent runs a training job
-
-Every Agent session moves through the same seven phases. Coding agents should expect this sequence; humans can use it as a mental model for what to expect next.
-
-| # | Phase                   | What happens                                                                                                                                                                                                |
-| - | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 | **Data inspection**     | Agent reads your dataset, reports format, sample count, token count, and any issues.                                                                                                                        |
-| 2 | **Planning & approval** | Agent proposes base model, tuning method, hyperparameters, eval path, and a cost estimate. You approve, edit, or cancel.                                                                                    |
-| 3 | **HP tuning**           | A short parallel sweep (typically 3 configs) over LoRA rank and learning rate, capped at 6 active jobs by default.                                                                                          |
-| 4 | **Full training**       | The best config from phase 3 runs to completion on the full dataset, with per-epoch eval loss.                                                                                                              |
-| 5 | **Evaluation**          | The trained model is evaluated against a held-out set using one of three strategies you pick in phase 2: validation loss only (default), an evaluator you provide, or an evaluator Agent generates for you. |
-| 6 | **Deployment**          | The model is deployed and a `fireworks-ai` SDK snippet is ready for inference.                                                                                                                              |
-| 7 | **Final report**        | Deployed model ID, key metrics, total cost, and per-phase summary in one message.                                                                                                                           |
-
-DPO uses the same shape with phase 3 replaced by a preference sweep (or pair generation followed by a preference sweep when the dataset is prompts-only). Classification uses the same shape with phase 3 expanded into a base-model benchmark plus a fine-tuning sweep, and phase 5 reports per-label and overall accuracy. The promotion gate between phase 3 and phase 4 is one of the two user-facing pauses (the other is plan approval in phase 2).
-
-### The approval and cost contract
-
-Agent never spends without an explicit approval. This is structural, not a setting.
-
-<Warning>
-  At the end of **Phase 2 (Planning)** — and again before any new spend-incurring step — Agent surfaces a structured cost preview and waits for approval. In the dashboard this is a yes/no prompt. From a coding agent, the skill holds the session in a `waiting` state, surfaces Agent's exact question, and only proceeds after you respond via `firectl session update`. Reject and the session ends with no charges.
-</Warning>
-
-The preview always includes:
-
-* Total estimated cost (in USD, with a confidence range)
-* Estimated wall time
-* Per-phase cost breakdown (HP tuning / full training / evaluation / deployment)
-* Cost-so-far in the session (for re-approvals on long runs)
-
-### Out-of-coverage behavior
-
-If you ask Agent to use a model or method outside its supported set, it refuses rather than silently approximating. For example, asking for full-parameter tuning on a model with no Agent recipe returns a clear *"not supported in Agent — use Managed Fine-Tuning or the Training API"* message with a pointer to the right surface. See [When not to use Agent](#when-not-to-use-agent).
-
-## What Agent can do today
-
-<CardGroup>
-  <Card title="Supervised Fine-Tuning" icon="message" href="/fine-tuning/agent/sft">
-    End-to-end SFT with dataset inspection, hyperparameter sweep, evaluator-guided model selection, and a deployed winner.
-  </Card>
-
-  <Card title="Preference Learning (DPO/ORPO)" icon="arrows-left-right" href="/fine-tuning/agent/dpo">
-    Run DPO or ORPO on pre-paired preferences or generate pairs automatically with delta learning, with an optional base-model sweep.
-  </Card>
-
-  <Card title="Classification" icon="tags" href="/fine-tuning/agent/classification">
-    Benchmark base models, fine-tune on labeled data, and compare base vs fine-tuned classification accuracy on a held-out split.
-  </Card>
-
-  <Card title="Evaluator authoring" icon="check-circle" href="/fine-tuning/agent/evaluators">
-    Generate a reusable Python evaluator Agent uses to score candidates during an SFT sweep, or an Eval Protocol evaluator you can take to a Managed RFT job — directly from your dataset.
-  </Card>
-
-  <Card title="Use with coding agents" icon="robot" href="/fine-tuning/agent/use-with-coding-agents">
-    Copy-paste skill files for Claude Code, Cursor, Codex, Aider, and Goose so they can drive Agent for you.
-  </Card>
-</CardGroup>
-
-## Agent vs Managed Fine-Tuning vs Training API
-
-All three sit on the same training infrastructure, GPU shapes, and tuning methods. The difference is how much you drive.
-
-|                                 | **Fireworks Agent**                                                       | **Managed Fine-Tuning**           | **Training API**                   |
-| ------------------------------- | ------------------------------------------------------------------------- | --------------------------------- | ---------------------------------- |
-| **Interface**                   | Natural language (dashboard chat, `firectl session`, or via coding agent) | UI, `firectl`, REST               | Python script                      |
-| **Who picks the model**         | Agent recommends                                                          | You                               | You                                |
-| **Who tunes hyperparameters**   | Agent runs a sweep                                                        | You set them                      | You set them                       |
-| **Cost approval**               | Built-in gate                                                             | None — you submit jobs directly   | None                               |
-| **Custom loss / training loop** | Not supported                                                             | Not supported                     | Supported                          |
-| **Inference-in-the-loop eval**  | Not supported                                                             | Not supported                     | Supported (hotload)                |
-| **Best for**                    | Getting a working fine-tuned model fast, without ML expertise             | Production runs with known config | Research, custom RL, hybrid losses |
-
-### When not to use Agent
-
-Reach for a more direct surface when:
-
-* You need a **custom loss function** or hybrid objective → [Training API](/fine-tuning/training-api/introduction)
-* You need to **hotload checkpoints** for mid-training inference evaluation → [Training API](/fine-tuning/training-api/introduction)
-* You already know your config and just want to **submit a job** → [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro)
-* You need **full-parameter tuning** on a model Agent doesn't cover → [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro)
-* You're training in a **fully automated CI pipeline** with no human approval → Agent's approval gate is interactive by design; [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro) is the better fit today
-
-## Security: service accounts and the Agent manifest
-
-When a coding agent drives Fireworks Agent on your behalf, it should authenticate as a **service account** with the `pilot` permission preset, not your personal user key. This enforces a layered permissions model:
-
-> Effective permissions = User role ∩ Agent capability manifest
-
-### The manifest is a real artifact
-
-The Agent capability manifest is a versioned YAML file (`pilot.yaml`, kept under its original internal name) embedded into the Fireworks control-plane binary at build time. It enumerates the exact set of RPC methods the `pilot` preset is allowed to call — roughly 80 methods grouped by capability surface:
-
-* **Account & billing** — `GetAccountUsage`, `GetQuota`, `ListQuotas`, `ListCosts`
-* **Models** — `GetModel`, `ListModels`, `CreateModelVersion`, `PrepareModel`, `ValidateModelUpload`
-* **Deployments** — `GetDeployment`, `CreateDeployment`, `DeployModelVersion`, `GetDeploymentMetrics`
-* **Datasets** — `CreateDataset`, `GetDataset`, `ListDatasets`, `PreviewDataset`, `SplitDataset`
-* **Evaluators and evaluations** — `CreateEvaluator`, `GetEvaluator`, `CreateEvaluation`, `TestEvaluation`
-* **Fine-tuning jobs** — `CreateSupervisedFineTuningJob`, `CreateDpoJob`, `CreateReinforcementFineTuningJob`, `CreateRlorTrainerJob` <sup>*(the RFT and RLOR-trainer RPCs are granted by the manifest but Agent's current workflows don't use them — see [What Agent does for you](#what-agent-does-for-you))*</sup>
-* **Training shapes** — `GetTrainingShape`, `ListTrainingShapes`
-* **Batch inference and inference logs** — `CreateBatchInferenceJob`, `ListInferenceLogs`
-
-The control plane enforces the manifest as a **hard ceiling** before checking the underlying user's role: even if the user has broader permissions, the preset cannot exceed what the manifest allows. Any RPC outside the manifest returns `PERMISSION_DENIED` at the API gateway, regardless of how the request was constructed.
-
-### Non-destructive guarantee, structurally enforced
-
-Agent's promise to never delete, cancel, or destroy your existing resources is enforced by the manifest itself, not by skill-level politeness. The manifest **does not include any `Delete*`, `Cancel*`, or destructive RPC methods**. Even a malicious or hallucinated tool call targeting `DeleteModel`, `CancelReinforcementFineTuningJob`, or `DeleteDeployment` is rejected at the control plane before it reaches the resource layer.
-
-### Cross-account reads, never cross-account writes
-
-The `pilot` preset is granted **read-only** access across accounts. This is what lets Agent reach Fireworks-owned public resources — base models at `accounts/fireworks/models/...`, public deployment shapes, public datasets — using only your account's API key. Agent cannot write into any other account; mutating operations are scoped to your account.
-
-### Auto-update on control-plane releases
-
-Because the manifest is compiled into the control-plane binary, expanded Agent capabilities ship automatically with every control-plane deploy. Your service account stores only the preset *name* (`pilot`), not the list of allowed methods — so new capabilities are picked up without rotating keys or re-provisioning the service account. See [Service Accounts](/accounts/service-accounts) for setup details.
-
-## Session lifecycle reference
-
-| Command                                                | What it does                                  | Confirmation required           |
-| ------------------------------------------------------ | --------------------------------------------- | ------------------------------- |
-| `firectl session create --instruction "<instruction>"` | Start a new session                           | No                              |
-| `firectl session events <id> --wait`                   | Stream events until terminal or waiting state | No                              |
-| `firectl session get <id>`                             | Get current status and details                | No                              |
-| `firectl session list`                                 | List sessions for your account                | No                              |
-| `firectl session update <id> --instruction "<answer>"` | Send a response to a waiting session          | **Yes** — confirm with the user |
-| `firectl session cancel <id>`                          | Stop a running session (keeps the record)     | **Yes** — confirm with the user |
-| `firectl session delete <id>`                          | Remove the session record (irreversible)      | **Yes** — confirm with the user |
-
-All commands accept `--api-key $FIREWORKS_AGENT_API_KEY` for non-interactive auth and `--scope optimize` (the default scope).
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="My job is stuck in pending">
-    Agent shares the on-demand pool with the Training API. If GPU capacity is tight, jobs queue. If you need guaranteed capacity, [request a reservation](https://fireworks.ai/contact).
-  </Accordion>
-
-  <Accordion title="Agent refused my model or method choice">
-    Agent only runs methods it has curated recipes for. For anything outside that set, use [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro) or the [Training API](/fine-tuning/training-api/introduction).
-  </Accordion>
-
-  <Accordion title="My coding agent dumps the event history and exits immediately">
-    You're missing the `--wait` flag. Without it, `firectl session events` prints existing events and returns. The Fireworks Agent skill always passes `--wait`, which keeps the stream open until the session reaches `waiting`, `succeeded`, `failed`, or `cancelled`. If you're driving `firectl` directly, add `-w / --wait`.
-  </Accordion>
-
-  <Accordion title="The cost preview looks higher than I expected">
-    Agent's preview includes HP tuning, full training, evaluation, and the first hour of deployment. Reject the plan and ask Agent to skip HP tuning or use a smaller base model — the next preview will reflect the lower scope.
-  </Accordion>
-</AccordionGroup>
-
-## Next steps
-
-<CardGroup>
-  <Card title="Try Agent in the dashboard" icon="rocket" href="https://app.fireworks.ai">
-    Open Agent in the left nav at app.fireworks.ai.
-  </Card>
-
-  <Card title="Drive Agent from a coding agent" icon="file-code" href="/fine-tuning/agent/use-with-coding-agents">
-    Install the skill file in Claude Code, Cursor, Codex, Aider, or Goose.
-  </Card>
-
   <Card title="Managed Fine-Tuning" icon="sliders" href="/fine-tuning/managed-finetuning-intro">
     Drive the same training infra directly when you know your config.
   </Card>
@@ -6738,353 +6087,108 @@ All commands accept `--api-key $FIREWORKS_AGENT_API_KEY` for non-interactive aut
   <Card title="Training API" icon="code" href="/fine-tuning/training-api/introduction">
     Write your own Python training loop on Fireworks GPUs.
   </Card>
+
+  <Card title="Choose infrastructure" icon="server" href="/fine-tuning/training-api/choose-infrastructure">
+    Compare serverless and dedicated training.
+  </Card>
+
+  <Card title="firectl" icon="terminal" href="/tools-sdks/firectl/firectl">
+    The CLI the skill drives.
+  </Card>
+
+  <Card title="Cookbook" icon="book" href="/fine-tuning/training-api/cookbook/overview">
+    Ready-to-run recipes, including the inline-reward RL loop.
+  </Card>
 </CardGroup>
 
-<Note>
-  **Agent crib notes**
 
-  * Auth: set `FIREWORKS_AGENT_API_KEY` in a project-local `.env` (the key is from a service account with the `pilot` permission preset). Source it via `source .env && ...` and pass on every command as `--api-key $FIREWORKS_AGENT_API_KEY`.
-  * Use the **same session ID** for follow-ups. Never create a new session to continue an existing conversation.
-  * Always pass `--wait` to `session events`, or the command exits immediately after dumping history.
-  * `create`, `get`, `events`, and `list` are safe to run without user confirmation. **Always confirm with the user before `update`, `cancel`, or `delete`.**
-  * On `waiting`, surface Agent's exact question to the user verbatim; do not paraphrase.
-  * See [Use with coding agents](/fine-tuning/agent/use-with-coding-agents) for a complete copy-paste skill for Claude Code, Cursor, Codex, Aider, and Goose.
-</Note>
+# Choose a Training Path
+Source: https://docs.fireworks.ai/fine-tuning/choose-training-path
 
+Choose the Fireworks workflow, infrastructure, and interaction surface for your training task.
 
-# Fireworks Agent: Supervised Fine-Tuning
-Source: https://docs.fireworks.ai/fine-tuning/agent/sft
+Make three choices independently:
 
-Run end-to-end SFT with Fireworks Agent — dataset inspection, hyperparameter sweep, evaluator-guided selection, and a deployed winner.
+1. **Workflow:** Managed Fine-Tuning or Training API.
+2. **Infrastructure:** Serverless or dedicated, only when you choose Training API.
+3. **Interaction surface:** Coding agent, UI, CLI or REST API, or Python SDK.
 
-Fireworks Agent's SFT workflow takes a dataset and (optionally) a base model, runs a hyperparameter sweep with held-out evaluation, picks the winner, retrains on the full data, and deploys the result. You approve a single plan with a cost estimate up front; Agent handles everything from there and pauses only at meaningful decision points.
+## Step 1: Choose the workflow
 
-<Note>
-  For the underlying SFT mechanics (job parameters, supported base models, dataset format), see [Managed Fine-Tuning → Supervised Fine-Tuning](/fine-tuning/fine-tuning-models). This page documents the Fireworks Agent workflow built on top of it.
-</Note>
+| Choose Managed Fine-Tuning when                                      | Choose the Training API when                                                               |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| You need a standard SFT, DPO, ORPO, or RFT job                       | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop                |
+| You want Fireworks to own the training loop and checkpoint lifecycle | You want to fork or write Python training logic                                            |
+| A supported model and managed configuration cover the task           | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
+| You want to launch through UI, CLI, REST API, or a coding agent      | You want to launch through the Python SDK, cookbook, or a coding agent                     |
 
-## What you give Agent
+<CardGroup>
+  <Card title="Managed Fine-Tuning" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
+    Standard jobs with a platform-managed loop.
+  </Card>
 
-Agent needs enough to build an executable plan. The required inputs:
+  <Card title="Training API" icon="code" href="/fine-tuning/training-api/introduction">
+    Programmable loops built from cookbook recipes or the SDK.
+  </Card>
+</CardGroup>
 
-* **Dataset ID** — an existing Fireworks dataset in `READY` state, in OpenAI-compatible chat format. Optionally a separate evaluation dataset.
-* **Base model(s)** — one or more base models. If you omit this, Agent will ask you to choose from the supported list.
-* **Evaluation approach** — one of three strategies (see below). Default is validation loss only.
+## Step 2: If Training API, choose infrastructure
 
-Everything else (epochs, LoRA rank, learning rate, batching) is resolved by Agent from defaults or your explicit overrides.
+| Choose Serverless Training when                                                   | Choose Dedicated Training when                                                     |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Supported LoRA SFT or RL covers the workload                                      | You need full-parameter, DPO, ORPO, distillation, or broader model support         |
+| You want shared pooled compute with no trainer or sampler deployment provisioning | You need explicit trainer, deployment, checkpoint, reconnect, or promotion control |
+| Per-token billing fits a small or bursty experiment                               | A sustained, highly utilized time-based run fits the workload                      |
+| In-session sampling is sufficient                                                 | You need provisioned rollout or evaluation deployments                             |
 
-## Example session instruction
+<CardGroup>
+  <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
+    Shared pooled trainer, no provisioning, per-token billing.
+  </Card>
 
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Run supervised fine-tuning on accounts/myacct/datasets/customer-support-conv. Use Qwen3 32B as the base model. Use validation loss for evaluation."
-```
+  <Card title="Dedicated Training" icon="server" href="/fine-tuning/training-api/dedicated">
+    Provisioned trainer and deployment resources with explicit lifecycle control.
+  </Card>
+</CardGroup>
 
-For explicit candidates instead of the default tuning grid:
+See the detailed [serverless versus dedicated comparison](/fine-tuning/training-api/choose-infrastructure).
 
-```bash theme={null}
-source .env && firectl session create \
-  --api-key $FIREWORKS_AGENT_API_KEY \
-  --instruction "Run SFT on accounts/myacct/datasets/mydata across qwen3-8b and qwen3-32b with learning rates 1e-4 and 5e-5, LoRA ranks 16 and 32, and 3 epochs."
-```
+## Step 3: Choose how to interact
 
-<Note>
-  **Where SFT lives in the 7-phase pipeline:** Phase 1 is dataset inspection, phase 2 is plan + cost approval, **phase 3 is the candidate sweep** described below, phase 4 is the full-data final run, **phase 5 is held-out evaluation** (using the strategy you picked in phase 2), phase 6 is deployment, phase 7 is the final report. See [How Agent runs a training job](/fine-tuning/agent/introduction#how-agent-runs-a-training-job).
-</Note>
+The interface does not determine the workflow or infrastructure:
 
-## Workflow stages
+| Interface                                   | What it does                                                                                                                      |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Coding agent + Fireworks training skill** | Chooses the path, validates inputs, shows the full parameters and cost for confirmation, then runs and troubleshoots the workflow |
+| **Fireworks UI**                            | Guided creation and monitoring for managed jobs                                                                                   |
+| **`firectl` or REST API**                   | Reproducible managed job and resource automation                                                                                  |
+| **Python SDK and cookbook**                 | Training API loops on serverless or dedicated infrastructure                                                                      |
 
-<Steps>
-  <Step title="Dataset inspection">
-    Agent stages your dataset locally exactly once per session (`firectl dataset download ...`), inspects format and sample structure, estimates token counts for cost, and decides whether any conversion is needed (for example, mapping `ground_truth` fields onto an assistant message or rewriting `tool` roles).
-  </Step>
+[Install the Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to bring your own coding agent.
 
-  <Step title="Strategy and candidate selection">
-    Agent picks an evaluation strategy (see [Evaluation paths](#evaluation-paths) below) and resolves your candidate grid. The default tuning grid is three HP configurations with the LoRA rank and learning rate shown below; epochs default to `min(5, ceil(2500 / total_samples))` unless you override them.
+## Examples
 
-    | HP config | LoRA rank | Learning rate |
-    | --------- | --------- | ------------- |
-    | 1         | 8         | 1.5e-4        |
-    | 2         | 16        | 1.0e-4        |
-    | 3         | 32        | 5.0e-5        |
+### Standard SFT from labeled JSONL
 
-    For HP tuning on datasets larger than 1,000 samples, Agent subsamples to 1,000 (seed `42`) to keep candidate-search costs bounded.
-  </Step>
+* **Workflow:** Managed Fine-Tuning
+* **Infrastructure:** Managed by the platform; no Training API infrastructure choice
+* **Interface:** Coding agent, UI, CLI, or REST API
 
-  <Step title="Plan + cost approval">
-    Agent writes a plan to the session workspace and presents it to you with a cost breakdown (Training + Inference + Total). A single approval covers both the plan and the estimate. Reply with `Approved, proceed.` or ask for revisions and Agent will re-cost and re-present.
-  </Step>
+### First custom GRPO experiment
 
-  <Step title="Hyperparameter sweep">
-    Agent launches the candidate training runs, capped at **6 active jobs at a time** by default. Each candidate trains on the (sub-sampled) train split and is evaluated against the held-out test split using the evaluation strategy you chose.
-  </Step>
+* **Workflow:** Training API
+* **Infrastructure:** Serverless when the model and LoRA workload are supported
+* **Interface:** Cookbook through Python or a coding agent
 
-  <Step title="Promotion gate">
-    Before the full-data final run, Agent pauses at a promotion gate. It surfaces the candidate scoreboard (validation loss and any evaluator metrics) and asks you to confirm the winner. Reply with `Proceed with the winning config.`
-  </Step>
+### Sustained full-parameter RL
 
-  <Step title="Full-data final run">
-    Agent trains the winning configuration on the full dataset (epochs default to `min(5, ceil(2500 / total_samples))` for the final run). Agent then evaluates the final model directly and writes `final_report.md`.
-  </Step>
+* **Workflow:** Training API
+* **Infrastructure:** Dedicated
+* **Interface:** Cookbook or direct SDK, optionally orchestrated by a coding agent
 
-  <Step title="Deployment">
-    Agent deploys the final model and reports the deployed model ID, deployment ID, inference endpoint, and a copy-paste `fireworks-ai` SDK snippet you can use immediately.
-  </Step>
-</Steps>
+## Before launch
 
-## Evaluation paths
-
-Agent supports three evaluation strategies. You can specify one in your instruction, or Agent will ask which to use in plain English (it does **not** say "Path A" / "Path B" / "Path C" to you — the labels below are docs shorthand for the three options).
-
-### Path A — validation loss only
-
-The default. Agent creates a held-out test split, trains each candidate, and picks the winner purely on validation loss. No task-level evaluator is run. Choose this when:
-
-* You don't have an evaluator script for the task
-* The dataset is small or evaluator design is not yet settled
-* You want the fastest, lowest-cost sweep
-
-Trigger phrase: *"Use validation loss for evaluation."* or simply *"validation loss is fine"* if Agent asks.
-
-### Path B — bring your own evaluator
-
-You provide a Python evaluator (uploaded to Fireworks, or generated in the same session via [evaluator authoring](/fine-tuning/agent/evaluators)). Agent runs the evaluator on each candidate's outputs and on the final model.
-
-Trigger phrase: *"Use evaluator accounts/myacct/evaluators/my-eval."* or *"Use my own evaluator"* if Agent asks.
-
-### Path C — Agent-generated evaluator
-
-Agent inspects your data and writes a Python evaluator for structured or objectively checkable outputs (for example: numeric answers, JSON schemas, exact-match labels). It then uses that evaluator to score candidates and the final model.
-
-Trigger phrase: *"Generate an evaluator for me."* or *"agent-generated evaluator"* if Agent asks.
-
-## Output
-
-When the session reports `succeeded`, Agent's final message includes:
-
-* The deployed **model ID** and **deployment ID**
-* The inference endpoint and a ready-to-run `fireworks-ai` SDK snippet
-* Final training loss and evaluation loss (or evaluator score) for the winning model
-* Provenance for any rollout/evaluation evidence carried forward from candidate search
-* A link to `final_report.md` in the session workspace with the full plan, costs (estimated vs actual), and per-candidate metrics
-
-## Supported base models
-
-Agent's SFT workflow supports the same base models as Managed Fine-Tuning. For the canonical list and maximum context lengths, see [Managed Fine-Tuning Overview → Supported base models](/fine-tuning/managed-finetuning-intro#supported-base-models).
-
-You can ask Agent for the current list inside any session: *"Which base models do you support for SFT?"*
-
-## Customizing the run
-
-Things you can put in your instruction:
-
-* **Candidate grid:** *"Use LoRA ranks 8, 16, 32 with learning rates 1e-4 and 5e-5."*
-* **Fixed epochs:** *"Train each candidate for 3 epochs."*
-* **Subsampling override:** *"Use 500 samples for HP tuning."*
-* **Batch limit:** *"Run up to 10 training jobs in parallel."*
-* **Skip final retrain:** *"Skip the full-data final run."* (Agent will deploy the winning candidate directly.)
-* **Eval set:** *"Use accounts/myacct/datasets/holdout as the eval dataset."* (Agent sets `evaluationDataset` and disables eval carveout.)
-
-If anything in your instruction conflicts with Agent's defaults, your instruction wins.
-
-<Note>
-  **Agent crib notes**
-
-  * Required inputs for an SFT session: dataset ID. Optional: base model, evaluation strategy, candidate grid, epochs.
-  * Default tuning grid is 3 LoRA configs × selected base models. Default epochs = `min(5, ceil(2500 / total_samples))`.
-  * Agent will pause twice for user input: plan + cost approval, and the promotion gate. Common responses: `Approved, proceed.` and `Proceed with the winning config.`
-  * For validation-loss-only evaluation, answer `validation loss is fine` when Agent asks how to evaluate.
-  * All training jobs and the deployed model are created in **your** account using the `FIREWORKS_AGENT_API_KEY` you authenticated with. Agent never destroys or modifies your existing resources.
-</Note>
-
-
-# Use Fireworks Agent with Claude Code, Cursor, Codex, and other coding agents
-Source: https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents
-
-Install the Fireworks Agent skill file once and drive end-to-end fine-tuning from your coding agent.
-
-Fireworks Agent is a great fit for coding-assistant workflows: long-running training jobs that benefit from a conversational driver, multi-turn approvals that benefit from a human-in-the-loop, and natural-language instructions that benefit from a model that already knows your project context.
-
-This page gives you everything you need to plug Agent into Claude Code, Cursor, Codex, Aider, Goose, or any other coding agent — a single canonical skill file you can `curl`, the right install path for each runtime, and the agent-side patterns that handle Agent's plan-and-cost approval and waiting-state Q\&A loops correctly.
-
-## TL;DR for agents
-
-```text theme={null}
-Fireworks Agent (firectl session) is a hosted Fireworks fine-tuning agent.
-Use it whenever the user asks to fine-tune, train, or improve a model on
-Fireworks (SFT, DPO/ORPO, or classification workflows).
-
-Authenticate with FIREWORKS_AGENT_API_KEY in a project-local .env, sourced via
-`source .env`. The key is a Fireworks API key from a service account with
-the `pilot` permission preset (internal name kept for historical reasons —
-it's the manifest that scopes Fireworks Agent's capabilities).
-
-Lifecycle:
-  - firectl session create --instruction "<plain English instruction>"
-  - firectl session events <id> --wait                  # stream until terminal or waiting
-  - firectl session update <id> --instruction "<answer>" # respond to a waiting state
-  - firectl session get  <id>                            # status
-  - firectl session list                                 # browse sessions
-
-Safety:
-  - Always confirm with the user before `update`, `cancel`, or `delete`.
-  - `create`, `get`, `events`, `list` are safe to run autonomously.
-  - Never create a new session for a follow-up — always reuse the same session id.
-  - Always pass `--wait` to `events`; without it the command exits immediately.
-```
-
-## Prerequisites
-
-<Steps>
-  <Step title="Install firectl">
-    See the [firectl reference](/tools-sdks/firectl/firectl) for installation. On Linux:
-
-    ```bash theme={null}
-    curl -sL -o /tmp/firectl.gz https://storage.googleapis.com/fireworks-public/firectl/stable/linux-amd64.gz
-    gunzip -f /tmp/firectl.gz
-    sudo install -m 0755 /tmp/firectl /usr/local/bin/firectl
-    ```
-  </Step>
-
-  <Step title="Create a service account">
-    Create a service account scoped to Agent's capabilities. The CLI preset is named `pilot` for historical reasons — it's the [Agent capability manifest](/fine-tuning/agent/introduction#security-service-accounts-and-the-agent-manifest):
-
-    ```bash theme={null}
-    firectl -a <account> user create \
-      --service-account \
-      --user-id=fireworks-agent \
-      --permission-preset=pilot
-    firectl -a <account> api-key create --service-account=fireworks-agent
-    ```
-  </Step>
-
-  <Step title="Save the API key in a .env file">
-    Drop the returned key into your project root:
-
-    ```bash .env theme={null}
-    FIREWORKS_AGENT_API_KEY=fw-...
-    ```
-
-    The skill sources `.env` automatically. See [Service Accounts](/accounts/service-accounts) for the full setup.
-  </Step>
-</Steps>
-
-## Install the skill file
-
-The Fireworks Agent skill is a single Markdown document that teaches your coding agent how to drive Agent: when to invoke it, how to authenticate, how to handle waiting states and approval gates, which `firectl session` flags are confirmed working, and the common questions Agent asks mid-session. It auto-attaches based on the `description` frontmatter — no slash commands required.
-
-<Card title="fireworks-agent SKILL.md (canonical)" icon="file-code" href="https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-agent/SKILL.md">
-  Canonical source in the public [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook) repo. `curl` the raw URL into your coding agent (see below); re-fetch at the start of a fine-tuning session to pick up the latest confirmed flags.
-</Card>
-
-<CodeGroup>
-  ```bash Claude Code theme={null}
-  # Project-scoped (recommended)
-  mkdir -p .claude/skills/fireworks-agent
-  curl -L https://raw.githubusercontent.com/fw-ai/cookbook/main/skills/fireworks-agent/SKILL.md \
-    -o .claude/skills/fireworks-agent/SKILL.md
-
-  # Or user-scoped (available in every project)
-  mkdir -p ~/.claude/skills/fireworks-agent
-  curl -L https://raw.githubusercontent.com/fw-ai/cookbook/main/skills/fireworks-agent/SKILL.md \
-    -o ~/.claude/skills/fireworks-agent/SKILL.md
-  ```
-
-  ```bash Cursor theme={null}
-  mkdir -p .cursor/skills/fireworks-agent
-  curl -L https://raw.githubusercontent.com/fw-ai/cookbook/main/skills/fireworks-agent/SKILL.md \
-    -o .cursor/skills/fireworks-agent/SKILL.md
-  ```
-
-  ```bash Codex / Aider / Goose theme={null}
-  # These runtimes read AGENTS.md as ambient context at session start.
-  curl -L https://raw.githubusercontent.com/fw-ai/cookbook/main/skills/fireworks-agent/SKILL.md >> AGENTS.md
-  ```
-</CodeGroup>
-
-<Tip>
-  Once the skill is installed, prompts like *"Fine-tune Qwen3 32B on my customer-support dataset"* will trigger Fireworks Agent automatically. The coding agent will create a session, stream events, surface Agent's questions to you, and wait for your approval before sending responses back.
-</Tip>
-
-## How the agent should drive Fireworks Agent
-
-Every Agent workflow pauses at least once (plan + cost approval) and may pause again at the promotion gate or whenever the planner needs missing information. Your coding agent must handle the loop correctly.
-
-```mermaid theme={null}
-flowchart TD
-    Create["firectl session create"] --> Stream["firectl session events --wait"]
-    Stream -->|"status: waiting"| Capture["Capture LAST_TS"]
-    Capture --> Extract["Extract status_info question"]
-    Extract --> Ask["Surface question to user verbatim"]
-    Ask --> Confirm["Get user response<br/>+ confirmation"]
-    Confirm --> Update["firectl session update --instruction '...'"]
-    Update --> Resume["Resume events, filter older than LAST_TS"]
-    Resume --> Stream
-    Stream -->|"status: succeeded"| Report["Surface deployed model + final report"]
-    Stream -->|"status: failed"| Triage["Surface error, ask user how to proceed"]
-```
-
-Key invariants:
-
-1. **`--wait` is required.** `session events` without `--wait` exits immediately after dumping history.
-2. **Use the same session ID for follow-ups.** Never create a new session to continue a conversation. The runner reads state from the previous session's workspace.
-3. **Pause for confirmation on `update`, `cancel`, `delete`.** Read-only commands (`create`, `get`, `events`, `list`) are safe to run autonomously.
-4. **Surface Agent's questions verbatim.** Agent's exact question contains the information the user needs to answer correctly. Don't paraphrase.
-5. **Filter history on resume.** After a `session update`, the next `events --wait` re-dumps history. Filter on the timestamp captured before the update so the user only sees new traces.
-
-### Fallback when the stream drops
-
-If the events stream drops unexpectedly (network error, client timeout), fall back to polling `session get` until the status is terminal or waiting:
-
-```bash theme={null}
-source .env && until firectl session get <session-id> --api-key $FIREWORKS_AGENT_API_KEY 2>/dev/null \
-  | grep -E "waiting|succeeded|failed|cancelled"; do sleep 10; done \
-  && firectl session get <session-id> --api-key $FIREWORKS_AGENT_API_KEY
-```
-
-Then resume `events --wait` from the captured timestamp once you know the session is alive.
-
-### Common waiting-state prompts and good responses
-
-| Agent asks about                 | Reasonable default response                                                                  |
-| -------------------------------- | -------------------------------------------------------------------------------------------- |
-| Which evaluation strategy to use | `"validation loss is fine"` (no task-level evaluator)                                        |
-| Plan and cost approval           | `"Approved, proceed."`                                                                       |
-| Promotion gate / winning config  | `"Proceed with the winning config."`                                                         |
-| Missing base model               | `"Use Qwen3 32B."` (or whatever model the user picked)                                       |
-| Missing dataset                  | (Agent won't reach `waiting` without a dataset — surface this back to the user and ask them) |
-| Plan revisions                   | Forward the user's revision request verbatim                                                 |
-
-## Pitfalls
-
-* **Forgetting `--wait`.** The most common failure mode. Always pass it on `events`.
-* **Creating a new session for a follow-up.** Agent loses all prior context. Use `session update` on the existing ID.
-* **Running `update` / `cancel` / `delete` autonomously.** These are user-confirmation gates. Always ask first.
-* **Treating Agent's safety refusals as failures.** Agent won't delete, cancel, or destroy your existing resources. If your instruction contains a destructive intent, rephrase it as a non-destructive action (list, inspect, create, monitor).
-* **Streaming through a TTY-truncating wrapper.** Piping `firectl session events` through `tail` or `head` can hide the `[done] session status:` footer and break the loop. Stream directly.
-
-## Reference: session commands
-
-| Command                                                                                   | Description                | Confirmation required |
-| ----------------------------------------------------------------------------------------- | -------------------------- | --------------------- |
-| `firectl session create --api-key $FIREWORKS_AGENT_API_KEY --instruction "<instruction>"` | Start a session            | No                    |
-| `firectl session events <id> --api-key $FIREWORKS_AGENT_API_KEY --wait`                   | Stream events              | No                    |
-| `firectl session get <id> --api-key $FIREWORKS_AGENT_API_KEY`                             | Get status                 | No                    |
-| `firectl session list --api-key $FIREWORKS_AGENT_API_KEY`                                 | List sessions              | No                    |
-| `firectl session update <id> --api-key $FIREWORKS_AGENT_API_KEY --instruction "<answer>"` | Reply to a waiting session | **Yes**               |
-| `firectl session cancel <id> --api-key $FIREWORKS_AGENT_API_KEY`                          | Cancel a running session   | **Yes**               |
-| `firectl session delete <id> --api-key $FIREWORKS_AGENT_API_KEY`                          | Delete the session record  | **Yes**               |
-
-`session create` and `session update` accept the long-form `--instruction` flag (short form: `-n`). All session commands accept `--scope optimize` (the default scope).
-
-<Note>
-  **Agent crib notes**
-
-  * `curl` the canonical [`fireworks-agent SKILL.md`](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-agent/SKILL.md) from the public `fw-ai/cookbook` repo into `.claude/skills/fireworks-agent/SKILL.md`, `.cursor/skills/fireworks-agent/SKILL.md`, or append it to `AGENTS.md` for Codex/Aider/Goose.
-  * Authenticate via `FIREWORKS_AGENT_API_KEY` in a project-local `.env`, sourced with `source .env`. The key is a Fireworks service-account API key with the `pilot` permission preset (the underlying capability manifest is kept under that internal name).
-  * Always reuse the same session ID for follow-ups. Always pass `--wait` to `events`. Always confirm before `update / cancel / delete`.
-</Note>
+Verify current model support, shapes, access status, pricing, limits, and quota in the linked live pages. A coding agent asks for confirmation before upload, registration, paid inference, job creation, promotion, deployment, or another mutation. Material changes require approval again; promotion and deployment are confirmed separately.
 
 
 # Training Overview
@@ -7159,7 +6263,7 @@ The following guide will help you:
 
     ```bash theme={null}
     eval-protocol create rft \
-      --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+      --base-model accounts/fireworks/models/qwen3-4b \
       --output-model my-model-name 
     ```
 
@@ -7195,7 +6299,7 @@ Customize your RFT job with these flags:
 **Model and output**:
 
 ```bash theme={null}
---base-model accounts/fireworks/models/llama-v3p1-8b-instruct  # Base model to fine-tune
+--base-model accounts/fireworks/models/qwen3-4b  # Base model to fine-tune
 --output-model my-custom-name                                   # Name for fine-tuned model
 ```
 
@@ -7254,7 +6358,7 @@ eval-protocol create rft --help
 
     ```bash theme={null}
     eval-protocol create rft \
-      --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+      --base-model accounts/fireworks/models/qwen3-4b \
       --wandb-project my-rft-experiments \
       --wandb-entity my-org
     ```
@@ -7267,7 +6371,7 @@ eval-protocol create rft --help
 
     ```bash theme={null}
     firectl rftj create \
-      --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+      --base-model accounts/fireworks/models/qwen3-4b \
       --checkpoint-frequency 500  # Save every 500 steps
       ...
     ```
@@ -7296,7 +6400,7 @@ For other tuning parameters — rollout concurrency, chunk size, loss method, an
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/qwen3-0p6b \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --output-model quick-test
 ```
 
@@ -7304,7 +6408,7 @@ eval-protocol create rft \
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --output-model high-quality-model \
   --n 8 \
   --temperature 1.0
@@ -7314,7 +6418,7 @@ eval-protocol create rft \
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --remote-server-url https://your-agent.example.com \
   --output-model remote-agent
 ```
@@ -7323,7 +6427,7 @@ eval-protocol create rft \
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --epochs 3 \
   --learning-rate 5e-5 \
   --output-model multi-epoch-model
@@ -7335,7 +6439,7 @@ For users already familiar with Fireworks `firectl`, you can create RFT jobs dir
 
 ```bash theme={null}
 firectl rftj create \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --dataset accounts/your-account/datasets/my-dataset \
   --evaluator accounts/your-account/evaluators/my-evaluator \
   --output-model my-finetuned-model
@@ -7647,7 +6751,7 @@ Your remote service must implement a single `/init` endpoint that accepts rollou
 ```json theme={null}
 {
   "completion_params": {
-    "model": "accounts/fireworks/models/llama-v3p1-8b-instruct",
+    "model": "accounts/fireworks/models/qwen3-4b",
     "temperature": 0.7,
     "max_tokens": 2048
   },
@@ -7949,7 +7053,7 @@ Once your remote server is deployed, create an RFT job that uses it:
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --remote-server-url https://your-evaluator.example.com \
   --dataset my-dataset
 ```
@@ -8462,21 +7566,24 @@ For a deeper dive into LoRA performance characteristics and optimization strateg
 </CardGroup>
 
 
-# Direct Preference Optimization
+# Preference Optimization with DPO or ORPO
 Source: https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning
 
+Train on preferred and non-preferred response pairs using managed DPO or ORPO.
 
+Preference optimization fine-tunes models on pairs of preferred and non-preferred responses to the same prompt. Managed jobs support two objectives:
 
-Direct Preference Optimization (DPO) fine-tunes models by training them on pairs of preferred and non-preferred responses to the same prompt. This teaches the model to generate more desirable outputs while reducing unwanted behaviors.
+* **DPO** compares the policy against a reference model.
+* **ORPO** combines supervised and preference objectives without a separate reference model.
 
-**Use DPO when:**
+Use either method for:
 
 * Aligning model outputs with brand voice, tone, or style guidelines
 * Reducing hallucinations or incorrect reasoning patterns
 * Improving response quality where there's no single "correct" answer
 * Teaching models to follow specific formatting or structural preferences
 
-## Fine-tuning with DPO
+## Fine-tuning with DPO or ORPO
 
 <Steps>
   <Step title="Prepare dataset">
@@ -8585,35 +7692,38 @@ Direct Preference Optimization (DPO) fine-tunes models by training them on pairs
     Ensure the dataset ID conforms to the [resource id restrictions](/getting-started/concepts#resource-names-and-ids).
   </Step>
 
-  <Step title="Create a DPO Job">
+  <Step title="Create a DPO or ORPO Job">
     <Tabs>
       <Tab title="firectl">
         ```bash theme={null}
-        firectl dpoj create \
+        firectl dpo-job create \
+          --loss-method DPO \
           --base-model accounts/account-id/models/base-model-id \
           --dataset accounts/my-account-id/datasets/my-dataset-id \
           --output-model new-model-id
         ```
 
-        For our example, we might run the following command:
+        For ORPO, use the same preference dataset and select the ORPO objective:
 
         ```bash theme={null}
-        firectl dpoj create \
-          --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
-          --dataset accounts/pyroworks/datasets/einstein-dpo \
-          --output-model einstein-dpo-model
+        firectl dpo-job create \
+          --loss-method ORPO \
+          --orpo-lambda <approved-value> \
+          --base-model accounts/account-id/models/base-model-id \
+          --dataset accounts/my-account-id/datasets/my-dataset-id \
+          --output-model new-model-id
         ```
 
-        to fine-tune a [Llama 3.1 8b Instruct](https://fireworks.ai/models/fireworks/llama-v3p1-8b-instruct) model with our Einstein dataset.
+        Choose a base model and shape that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as compatible with DPO or ORPO.
       </Tab>
     </Tabs>
   </Step>
 
-  <Step title="Monitor the DPO Job">
+  <Step title="Monitor the preference job">
     <Tabs>
       <Tab title="firectl">
         ```bash theme={null}
-        firectl dpoj get dpo-job-id
+        firectl dpo-job get dpo-job-id
         ```
       </Tab>
     </Tabs>
@@ -9315,7 +8425,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     With `firectl`, you can monitor the progress of the tuning job by running
 
     ```bash theme={null}
-    firectl sftj get <DATASET_ID>
+    firectl sftj get <JOB_ID>
     ```
 
     Once the job successfully completes, you will see the new LoRA model in your model list
@@ -9983,9 +9093,9 @@ Fireworks helps you fine-tune models to improve quality and performance for your
   **Coming from OpenAI?** Fireworks uses the same [OpenAI-compatible chat completion format](/fine-tuning/fine-tuning-models#prepare-a-dataset) for training data — the same `messages` array with `role`, `content`, `tool_calls`, and `weight` fields. You can use your existing SFT datasets with no conversion required. See our [OpenAI compatibility guide](/tools-sdks/openai-compatibility) for more details.
 </Info>
 
-## Before you start: account tier and GPU quota
+## Before managed or dedicated training: account tier and GPU quota
 
-Fine-tuning needs training GPU quota, granted automatically by [spending tier](/guides/quotas_usage/account-quotas#training-gpu-quota):
+Managed jobs and dedicated Training API runs need training GPU quota, granted automatically by [spending tier](/guides/quotas_usage/account-quotas#training-gpu-quota):
 
 | Tier              | How to reach it                          | B200 / B300 (Blackwell) | H200 | H100 / A100 |
 | ----------------- | ---------------------------------------- | :---------------------: | :--: | :---------: |
@@ -9997,44 +9107,25 @@ Fine-tuning needs training GPU quota, granted automatically by [spending tier](/
 
 Check your quota with `firectl quota list`. A job rejected with HTTP 429 `quota_exceeded` (sometimes a `403` on the job poll) is a tier issue, not a dataset/config problem.
 
+[Serverless Training](/fine-tuning/training-api/serverless) uses a shared pool with its own model, concurrency, and rate limits instead of dedicated training GPU quota.
+
 <Note>
   Need more training quota than your tier allows? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
 </Note>
 
-## Three ways to fine-tune
+## Start here
 
-Fireworks offers three approaches to fine-tuning, from fully autonomous to fully custom. Pick the one that fits how much control you want:
+Use [Choose a Training Path](/fine-tuning/choose-training-path) to choose managed or Training API, serverless or dedicated infrastructure, and the interface you want to use.
 
 <CardGroup>
-  <Card title="Fireworks Agent" icon="robot" href="/fine-tuning/agent/introduction">
-    **Describe what you want in plain English.** Agent picks the base model, prepares the data, sweeps hyperparameters, evaluates, trains, and deploys. You approve a single plan and cost up front.
-
-    Best for the fastest path from dataset to deployed fine-tuned model — from the Fireworks dashboard or from inside Claude Code, Cursor, Codex, Aider, or Goose.
+  <Card title="Choose a training path" icon="route" href="/fine-tuning/choose-training-path">
+    Compare workflows, infrastructure, and interfaces.
   </Card>
 
-  <Card title="Managed Fine-Tuning" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
-    **Give Fireworks your data and configuration.** The platform handles scheduling, training, checkpointing, and model output. No custom code required.
-
-    Best for teams that want managed SFT, DPO, or RFT with LoRA or full-parameter tuning.
-  </Card>
-
-  <Card title="Training API (Tinker compatible)" icon="code" href="/fine-tuning/training-api/introduction">
-    **Write custom Python training loops.** You control the loss function, optimizer step, checkpointing, and weight sync. Fireworks handles the distributed GPU infrastructure.
-
-    Best for research teams needing custom loops, custom rollout orchestration, or inference-in-the-loop evaluation.
+  <Card title="Train from your coding agent" icon="robot" href="/fine-tuning/agent/use-with-coding-agents">
+    Install one skill and ask in plain language.
   </Card>
 </CardGroup>
-
-|                                 | **Fireworks Agent**                                                       | **Managed Fine-Tuning**                      | **Training API**                   |
-| ------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------- | ---------------------------------- |
-| **Interface**                   | Natural language (dashboard chat, `firectl session`, or via coding agent) | UI, `firectl`, REST API                      | Python script                      |
-| **Who picks the model**         | Agent recommends                                                          | You                                          | You                                |
-| **Who tunes hyperparameters**   | Agent runs a sweep                                                        | You set them                                 | You set them                       |
-| **Cost approval**               | Built-in gate before any spend                                            | None — you submit jobs directly              | None                               |
-| **Tuning method**               | Full-parameter or LoRA                                                    | Full-parameter or LoRA                       | Full-parameter or LoRA             |
-| **Custom loss / training loop** | Not supported                                                             | Not supported                                | Supported                          |
-| **Inference-in-the-loop eval**  | Not supported                                                             | Not supported                                | Supported (hotload)                |
-| **Best for**                    | Getting a working fine-tuned model fast, without ML expertise             | Production fine-tuning with standard methods | Research, custom RL, hybrid losses |
 
 ## When to use SFT vs. RFT
 
@@ -10074,36 +9165,7 @@ flowchart TD
   `Verifiable` refers to whether it is relatively easy to make a judgement on the quality of the model generation.
 </Tip>
 
-## When to use the Training API instead
-
-Move from managed fine-tuning to the [Training API](/fine-tuning/training-api/introduction) when you need:
-
-* **Custom training logic** — hybrid objectives, custom reward shaping, or a non-standard algorithm beyond managed settings
-* **Inference-in-the-loop evaluation** — hotload checkpoints onto a serving deployment and sample mid-training
-* **Per-step control** — custom gradient accumulation, dynamic learning rate schedules, or algorithm research
-
-### Detailed capability comparison
-
-| Capability              | Managed RFT                                                  | Training API                                                 |
-| ----------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Launch training         | CLI or UI                                                    | Python script                                                |
-| Loss functions          | `grpo`, `dapo`, `gspo-token` (built-in)                      | Any custom loss via `forward_backward_custom`                |
-| Tuning modes            | Full-parameter or LoRA                                       | Full-parameter or LoRA                                       |
-| Context length          | Full context length supported by the selected training shape | Full context length supported by the selected training shape |
-| Training loop           | Fully managed                                                | You write the loop                                           |
-| Per-step diagnostics    | Dashboard (reward, loss, rollouts)                           | Full Python access to all metrics                            |
-| Zero-variance filtering | Automatic                                                    | You implement                                                |
-| Checkpoint management   | Automatic                                                    | You control via `save_weights_for_sampler_ext`               |
-
-### Migrating from managed flow to Training API
-
-If you've been using managed RFT and want more control — custom loss functions, richer diagnostics, or algorithm experimentation — the Training API lets you implement your own training loop while keeping the same GPU infrastructure. Managed jobs and cookbook recipes now use the same core tuning capabilities, including LoRA or full-parameter tuning and the full context length supported by the selected training shape.
-
-### MoE models and Routing Replay
-
-For Mixture-of-Experts (MoE) models like Kimi K2 (384 experts), training stability benefits from **Routing Replay**. Routing Replay captures the expert routing assignments used by the inference sampler and replays them during the policy training forward pass. This keeps training on the same expert paths that produced the rollout and reduces variance caused by routing changes.
-
-To use Routing Replay with the Training API, request routing matrices while sampling, align them with the training input tokens, and pass them through `tinker.ModelInput.from_ints(..., routing_matrices=...)` when constructing the policy datum. You can inspect or customize the matrices before constructing the datum.
+For custom losses, rollouts, per-step control, or algorithm research, continue to the [Training API overview](/fine-tuning/training-api/introduction).
 
 
 # Basics
@@ -10181,6 +9243,18 @@ Fine-tune models with Fireworks-managed infrastructure — no custom code requir
 
 Give Fireworks your data and configuration. The platform handles scheduling, training, checkpointing, and model output. Training data uses the **OpenAI-compatible chat completion format**, so existing OpenAI SFT datasets work with no conversion required.
 
+## How to launch managed training
+
+These interfaces create the same underlying managed jobs:
+
+| Interface                                   | Use when                                                                                                                     |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Fireworks UI**                            | You want guided configuration and visual monitoring                                                                          |
+| **`firectl` or REST API**                   | You want scripted and reproducible job operations                                                                            |
+| **Coding agent + Fireworks training skill** | You want natural-language planning, validation, complete parameter and cost confirmation, orchestration, and troubleshooting |
+
+[Install the training skill](/fine-tuning/agent/use-with-coding-agents) or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
+
 ## Methods
 
 <CardGroup>
@@ -10192,8 +9266,8 @@ Give Fireworks your data and configuration. The platform handles scheduling, tra
     Train vision-language models with image and text pairs
   </Card>
 
-  <Card title="Direct Preference Optimization" href="/fine-tuning/dpo-fine-tuning" icon="arrows-left-right">
-    Align models with human preferences using pairwise comparisons
+  <Card title="Preference Optimization (DPO / ORPO)" href="/fine-tuning/dpo-fine-tuning" icon="arrows-left-right">
+    Train on preferred and non-preferred response pairs using DPO or ORPO
   </Card>
 
   <Card title="Reinforcement Fine Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
@@ -10215,11 +9289,11 @@ For SFT and DPO pricing, see the [pricing page](https://fireworks.ai/pricing).
 
 ## Supported base models
 
-Fireworks supports fine-tuning for most major open source models, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama families. The same set of base models is available for SFT, DPO, and RFT — once a base model is supported, every managed fine-tuning method works against it.
+Fireworks supports fine-tuning for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is method and parameter-mode specific: a model can support SFT without supporting DPO, RFT, LoRA, or full-parameter training on the same shapes. Use the live [Training Shapes](/fine-tuning/training-api/training-shapes) method-support matrix before creating a job.
 
 Custom models uploaded by users are not automatically tunable. To use managed fine-tuning with an uploaded custom base model, the model must have a corresponding Hugging Face URL. Fireworks uses that URL to infer the training renderer and locate compatible training shapes. A custom model is supported only when Fireworks can resolve both a supported renderer and at least one compatible training shape. After the Hugging Face URL is set, tunability is refreshed by a background operation that runs about every 30 minutes, so the model may take up to 30 minutes to show as `Tunable: true`. We are working to make this refresh faster.
 
-The table below is generated from the live training shape registry. The "Max supported context length" is the largest `max_supported_context_length` across all training shapes registered for that base model — use it as the upper bound when you set a per-job context length on `firectl sftj create`, `firectl dpoj create`, or RFT job creation.
+The table below is generated from the live training shape registry. The "Max supported context length" is a catalog-level model maximum. For a job, use the maximum context of a shape that supports the selected method and tuning mode. Set it with `firectl sftj create`, `firectl dpo-job create`, or the corresponding RFT command.
 
 | Base model                      | Max supported context length |
 | ------------------------------- | ---------------------------- |
@@ -10653,7 +9727,7 @@ If training is slower than expected:
 
 Reduce costs without sacrificing too much quality:
 
-1. **Start small**: Experiment with `qwen3-0p6b` before scaling to larger models
+1. **Start small**: Experiment with `qwen3-4b` before scaling to larger models
 2. **Reduce rollouts**: Use `--n 4` instead of 8
 3. **Shorter responses**: Lower `--max-tokens` to minimum needed
 4. **Fewer epochs**: Start with 1 epoch, only add more if needed
@@ -11517,7 +10591,7 @@ Train a model to be an expert at answering GSM8K math questions
   **Following the [RFT Overview](/fine-tuning/reinforcement-fine-tuning-models)?** This is the **Single-Turn Training** path—the fastest way to get started with RFT.
 </Note>
 
-In this quickstart, you'll train a small language model—`Qwen3 0.6B`—to solve mathematical reasoning problems from the GSM8K dataset.
+In this quickstart, you'll train `Qwen3 4B` to solve mathematical reasoning problems from the GSM8K dataset.
 
 ## What you'll learn
 
@@ -11647,12 +10721,12 @@ First, set your Fireworks API key so the Fireworks CLI can authenticate you:
 export FIREWORKS_API_KEY="<your-fireworks-key>"
 ```
 
-Next, we'll launch the RFT job using the evaluator and dataset you just registered. We're using a small base model (`qwen3-0p6b`) to keep training fast and inexpensive. Because your evaluator and dataset were already registered with Fireworks in the last step, we don't need to specify them again here.
+Next, launch the RFT job using the evaluator and dataset you registered. This example uses `qwen3-4b`; confirm current RFT eligibility and pricing before launch.
 
 ```bash theme={null}
 cd ..
-eval-protocol create rft 
-    --base-model accounts/fireworks/models/qwen3-0p6b
+eval-protocol create rft \
+  --base-model accounts/fireworks/models/qwen3-4b
 ```
 
 The CLI will output dashboard links where you can monitor your training job in real-time.
@@ -11889,7 +10963,7 @@ To kickoff training, simply do:
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/qwen3-0p6b \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --chunk-size 10
 ```
 
@@ -11909,7 +10983,7 @@ This command:
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/qwen3-0p6b \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --chunk-size 10 \
   --force
 ```
@@ -12138,228 +11212,67 @@ Fireworks RFT helps you train frontier models like DeepSeek V3 and Kimi K2 to **
 </CardGroup>
 
 
-# Cost Estimator
+# RFT Cost Planning
 Source: https://docs.fireworks.ai/fine-tuning/rft-cost-estimator
 
-Estimate and optimize the cost of your RFT training jobs
+Plan RFT cost using current model eligibility, training shapes, pricing, and workload assumptions.
 
-<Tip>
-  **Reinforcement Fine-Tuning (RFT)** is free for models under 16B parameters. When creating an RFT job in the UI, filter for free tuning models in the model selection area on the [fine-tuning creation page](https://app.fireworks.ai/dashboard/fine-tuning/create). If kicking off jobs from the terminal, you can find the model ID from the [Model Library](https://app.fireworks.ai/models?filter=LLM\&tunable=true). Note: SFT and DPO jobs are billed per training token for all model sizes—see the [pricing page](https://fireworks.ai/pricing) for details.
-</Tip>
-
-## Interactive cost calculator
-
-Select your model and training configuration to get an instant cost estimate. The calculator uses the following formulas:
-
-1. **Total tokens**: Prompts × Epochs × Response candidates × (Max tokens × 0.6)
-2. **GPU hours**: (Total tokens ÷ 1M) × (GPU hours per million tokens range, varies by model size)
-3. **Cost**: GPU hours × GPU rate per hour
-
-You can derive wall-clock training time from the estimate as: **Training time = GPU hours ÷ Number of GPUs**.
-
-The GPU hours per million tokens range varies by model size and accounts for variability in model efficiency, system overhead, and actual response lengths. Ranges are based on actual RFT job data.
+RFT cost depends on the selected model and compatible training shape, rollout volume, generated tokens, evaluator latency, and total runtime. These inputs change as models, shapes, and pricing evolve, so this page does not provide a hardcoded dollar calculator.
 
 <Warning>
-  **Order-of-magnitude estimates only.** This calculator provides estimates and is not intended for real forecasting or budgeting. Actual costs may vary significantly.
+  Do not estimate cost from model size alone. Confirm that the live Training Shapes matrix supports RFT for the selected model and tuning mode, then use current pricing and the resolved shape.
 </Warning>
 
-<RftCostCalculator />
+## Before estimating
 
-## How RFT pricing works
+1. Choose an RFT-compatible model in the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix.
+2. Resolve the shape and parameter mode used by the job.
+3. Read current [pricing](https://fireworks.ai/pricing), including any eligible managed RFT promotion.
+4. Record dataset rows, epochs, rollout candidates, maximum output tokens, expected average output length, evaluator latency, and concurrency.
+5. Set a cost ceiling and label any unknown line item rather than guessing.
 
-Reinforcement fine-tuning jobs are billed based on **GPU-seconds** consumed during training. The total cost depends on three main factors:
+## Cost drivers
 
-1. **Model size** — Determines how many GPUs are needed and the per-GPU-hour rate
-2. **Training dataset** — How much data is processed (dataset size × epochs × rollouts)
-3. **Rollout generation** — Token generation during training (max tokens × rollouts per prompt)
+| Driver                         | Why it matters                                            | User control                                        |
+| ------------------------------ | --------------------------------------------------------- | --------------------------------------------------- |
+| Model and compatible shape     | Determines available hardware and runtime characteristics | Choose from the live method-support matrix          |
+| Dataset rows                   | Determines prompt groups processed                        | Curate representative prompts                       |
+| Epochs                         | Repeats the dataset                                       | Start with one                                      |
+| Rollout candidates             | Multiplies sampled completions per prompt                 | Use the minimum that gives useful reward variance   |
+| Output length                  | Drives rollout generation and evaluation time             | Set a realistic maximum                             |
+| Evaluator latency              | Slow evaluation increases wall-clock runtime              | Cache, batch, and remove unnecessary external calls |
+| Trainer and deployment runtime | Dedicated resources are metered by runtime                | Monitor progress and tear down promptly             |
 
-## Cost formula
+## Planning formulas
 
-The approximate cost of an RFT job can be estimated as:
+Use formulas to expose assumptions, not to replace current platform pricing:
 
-$$
-\text{Cost} = \text{GPU-hours} \times \text{Price per GPU-hour}
-$$
+```text theme={null}
+rollout_count = prompts × epochs × candidates_per_prompt
+estimated_output_tokens = rollout_count × average_output_tokens
+runtime_cost = measured_or_estimated_runtime × resolved_resource_rate
+```
 
-Where GPU-hours depend on:
+For a first run, estimate a range using conservative and expected output lengths. If throughput or a resource rate is unavailable, mark the total as incomplete and keep a hard runtime or budget ceiling.
 
-$$
-\text{GPU-hours} \approx \text{Num GPUs} \times \left(\frac{\text{Prompts} \times \text{Epochs} \times \text{Rollouts (n)} \times \text{Avg tokens per rollout}}{\text{Throughput (tokens/sec)}}\right) \div 3600
-$$
+## Reduce cost safely
 
-The key variables are:
+* Validate the evaluator offline and confirm that representative outputs receive different scores.
+* Start with a small RFT-compatible model when the live matrix and pricing support it.
+* Run a bounded dataset sample before the full dataset.
+* Start with one epoch.
+* Reduce rollout candidates only if reward variance remains sufficient.
+* Set output limits to the task's real needs.
+* Stop runs that show no real progress or a constant reward.
+* Delete or scale down billable deployments after evaluation.
 
-| Variable                    | Description                    | How to control                      |
-| --------------------------- | ------------------------------ | ----------------------------------- |
-| **Num GPUs**                | GPUs required for the model    | Determined by model size            |
-| **Prompts**                 | Number of rows in your dataset | Your dataset size                   |
-| **Epochs**                  | Passes through the dataset     | `--epochs` flag (default: 1)        |
-| **Response candidates (n)** | Responses generated per prompt | `--n` flag (default: 4)             |
-| **Avg tokens per rollout**  | Average response length        | `--max-tokens` flag (default: 2048) |
-| **Throughput**              | Tokens generated per second    | Determined by model + hardware      |
+## Managed versus Training API
 
-<Note>
-  Training time directly translates to cost: **Cost = Training time × Num GPUs × GPU-hour rate**. Check the [pricing page](https://fireworks.ai/pricing) for current GPU-hour rates.
-</Note>
+* **Managed RFT:** use the current managed pricing and any eligibility rules shown on the pricing and model-support pages.
+* **Training API serverless:** verify current per-token meter definitions and rates during private preview.
+* **Training API dedicated:** use the resolved trainer and deployment resources, current runtime rates, and measured or bounded duration.
 
-### How parameters affect cost
-
-See how each parameter change impacts your total cost relative to a baseline configuration (500 prompts, 1 epoch, n=4, 2048 max tokens):
-
-| Change                             | Cost impact    | Explanation                             |
-| ---------------------------------- | -------------- | --------------------------------------- |
-| Double dataset size (1000 prompts) | **\~2×**       | Linear scaling with dataset size        |
-| Double rollouts (n=8)              | **\~2×**       | Linear scaling with rollout count       |
-| Double max tokens (4096)           | **\~1.5–2×**   | More tokens per rollout                 |
-| Add epoch (epochs=2)               | **\~2×**       | Full additional pass through data       |
-| Double LoRA rank (16 → 32)         | **\~1.2–1.5×** | More trainable parameters               |
-| Halve max tokens (1024)            | **\~0.5–0.7×** | Fewer tokens generated                  |
-| Halve rollouts (n=2)               | **\~0.5×**     | Fewer rollouts but less learning signal |
-
-## Cost optimization tips
-
-<AccordionGroup>
-  <Accordion title="Start with free models">
-    Use models under 16B parameters for initial experimentation. Iterate on your evaluator and dataset with `qwen3-0p6b` or `llama-v3p1-8b-instruct` before moving to larger models.
-
-    This lets you:
-
-    * Validate your evaluator logic at zero cost
-    * Test dataset quality and format
-    * Tune rollout parameters
-    * Establish baseline reward curves
-  </Accordion>
-
-  <Accordion title="Limit max tokens">
-    Set `--max-tokens` to the minimum needed for your task:
-
-    * **Short outputs** (classification, short answers): 256–512 tokens
-    * **Medium outputs** (code generation, summaries): 1024–2048 tokens
-    * **Long outputs** (detailed analysis, multi-step reasoning): 4096+ tokens
-
-    Every token generated during rollouts costs compute. Don't use 16384 max tokens if your task only needs 512.
-  </Accordion>
-
-  <Accordion title="Use 1 epoch first">
-    Start with 1 epoch (default). Most RFT jobs converge well within a single pass through the data. Add more epochs only if the reward curve is still climbing at the end of training.
-  </Accordion>
-
-  <Accordion title="Optimize evaluator speed">
-    Slow evaluators increase wall-clock training time and therefore cost:
-
-    * Keep evaluations under 5 seconds per rollout
-    * Cache expensive computations
-    * For remote evaluators, ensure your server can handle concurrent requests
-    * Avoid unnecessary API calls in your evaluation logic
-
-    **Evaluator complexity impact**: Simple evaluators (self-contained) have minimal overhead. Evaluators with calls to external services, such as LLM-as-judge use cases or company-specific endpoints, may have variable training time due to rate limits by model providers or other services.
-  </Accordion>
-
-  <Accordion title="Curate your dataset">
-    A smaller, high-quality dataset often outperforms a larger, noisy one:
-
-    * Remove duplicate or near-duplicate prompts
-    * Ensure prompts are diverse and representative
-    * Start with 200–500 well-chosen prompts
-    * Quality over quantity reduces cost while maintaining performance
-  </Accordion>
-</AccordionGroup>
-
-## Example cost scenarios
-
-<AccordionGroup>
-  <Accordion title="Scenario 1: Quick prototype (Free)">
-    **Goal**: Test an evaluator on a small model
-
-    | Parameter          | Value           |
-    | ------------------ | --------------- |
-    | Model              | Qwen3 0.6B      |
-    | Dataset            | 100 prompts     |
-    | Epochs             | 1               |
-    | Rollouts (n)       | 4               |
-    | Max tokens         | 2048            |
-    | **Estimated cost** | **Free**        |
-    | **Estimated time** | \~15–30 minutes |
-
-    Best for: Initial evaluator development and testing.
-  </Accordion>
-
-  <Accordion title="Scenario 2: Production training (Free)">
-    **Goal**: Train a capable model for production use
-
-    | Parameter          | Value                 |
-    | ------------------ | --------------------- |
-    | Model              | Llama 3.1 8B Instruct |
-    | Dataset            | 500 prompts           |
-    | Epochs             | 1                     |
-    | Rollouts (n)       | 4                     |
-    | Max tokens         | 2048                  |
-    | **Estimated cost** | **Free**              |
-    | **Estimated time** | \~1–2 hours           |
-
-    Best for: Production workloads that can use an 8B model.
-  </Accordion>
-
-  <Accordion title="Scenario 3: Large model training (Paid)">
-    **Goal**: Train a large model for maximum quality
-
-    | Parameter          | Value                          |
-    | ------------------ | ------------------------------ |
-    | Model              | Llama 3.3 70B Instruct         |
-    | Dataset            | 500 prompts                    |
-    | Epochs             | 1                              |
-    | Rollouts (n)       | 4                              |
-    | Max tokens         | 2048                           |
-    | **Estimated cost** | Training hours × 8 GPUs × rate |
-    | **Estimated time** | \~1–2 hours                    |
-
-    Check the [Fireworks Pricing page](https://fireworks.ai/pricing) for the current GPU-hour rate. For a 2-hour job on 8 GPUs, multiply: 2 × 8 × (rate per GPU-hour).
-  </Accordion>
-
-  <Accordion title="Scenario 4: High-quality with more rollouts (Paid)">
-    **Goal**: Maximum quality with large model and more rollouts
-
-    | Parameter          | Value                          |
-    | ------------------ | ------------------------------ |
-    | Model              | DeepSeek V3                    |
-    | Dataset            | 1000 prompts                   |
-    | Epochs             | 2                              |
-    | Rollouts (n)       | 8                              |
-    | Max tokens         | 4096                           |
-    | **Estimated cost** | Training hours × 8 GPUs × rate |
-    | **Estimated time** | \~8–16 hours                   |
-
-    This is a larger job. The cost scales with training time: more prompts, epochs, rollouts, and tokens all increase total GPU-hours.
-  </Accordion>
-</AccordionGroup>
-
-## Monitoring costs during training
-
-Cost information is only available after your job completes:
-
-1. **Dashboard**: The [Fireworks Dashboard](https://app.fireworks.ai) displays the final cost on the RFT job page once training finishes
-2. **Training progress**: While the job is running, you can monitor elapsed time and estimated completion in the job overview
-3. **Early stopping**: You can cancel a job early if needed—the model checkpoint from the last completed step is still usable. The final cost will be calculated based on GPU-seconds consumed up to the cancellation point.
-
-<Tip>
-  If a job is running longer than expected, check your evaluator performance. Slow evaluators are the most common cause of unexpectedly long (and expensive) training runs.
-</Tip>
-
-## Next steps
-
-<CardGroup>
-  <Card title="Pricing Page" icon="dollar-sign" href="https://fireworks.ai/pricing">
-    View current GPU-hour rates and pricing tiers
-  </Card>
-
-  <Card title="Parameter Tuning" icon="sliders" href="/fine-tuning/parameter-tuning">
-    Learn how each parameter affects training quality and cost
-  </Card>
-
-  <Card title="Launch Training" icon="rocket" href="/fine-tuning/cli-reference">
-    Create your first RFT job
-  </Card>
-</CardGroup>
+For broader serverless-versus-dedicated economics, use [Choose Serverless or Dedicated Training](/fine-tuning/training-api/choose-infrastructure) and the [multi-turn cost comparison](/fine-tuning/multi-turn-cost-comparison).
 
 
 # RFT parameters reference
@@ -13600,6 +12513,91 @@ For inference-side controls — disabling Response API storage (`store=False`) o
 </CardGroup>
 
 
+# Choose Serverless or Dedicated Training
+Source: https://docs.fireworks.ai/fine-tuning/training-api/choose-infrastructure
+
+Choose the Training API infrastructure that fits your model, method, workload, and cost profile.
+
+The Training API uses the same Tinker-compatible primitives on two infrastructure paths. Choose the path before adapting a cookbook recipe.
+
+<CardGroup>
+  <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
+    Attach to a shared pooled trainer. There is no trainer or rollout deployment to provision.
+  </Card>
+
+  <Card title="Dedicated Training" icon="server" href="/fine-tuning/training-api/dedicated">
+    Provision trainer and deployment resources for your run, with broader model and method support.
+  </Card>
+</CardGroup>
+
+## Quick decision
+
+```mermaid theme={null}
+flowchart TD
+  Start["What does the run require?"]
+  Supported["Is the model and method supported on serverless?"]
+  FullParam["Do you need full-parameter, DPO, dedicated resume, or explicit deployment control?"]
+  Scale["Is the run sustained enough to benefit from time-based dedicated compute?"]
+  Serverless["Use Serverless Training"]
+  Dedicated["Use Dedicated Training"]
+
+  Start --> Supported
+  Supported -->|"No"| Dedicated
+  Supported -->|"Yes"| FullParam
+  FullParam -->|"Yes"| Dedicated
+  FullParam -->|"No"| Scale
+  Scale -->|"No"| Serverless
+  Scale -->|"Yes"| Dedicated
+```
+
+## Comparison
+
+| Dimension         | Serverless                                                       | Dedicated                                                                                     |
+| ----------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation | SDK provisions trainer and deployment resources                                               |
+| Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                     |
+| Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                       |
+| Methods           | SFT and RL on the supported serverless surface                   | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
+| Models            | Current serverless model list                                    | Models with an enabled dedicated training shape                                               |
+| Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability            |
+| Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
+| Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                  |
+| Teardown          | Session lifecycle is managed by the service                      | You must close trainers and delete or scale down deployments                                  |
+| Best fit          | Fast LoRA experiments and first RL iterations                    | Full-parameter work, DPO, sustained RL, larger workloads, explicit lifecycle control          |
+
+Always verify current models, limits, prices, and feature status in the [Serverless Training](/fine-tuning/training-api/serverless) and [Dedicated Training](/fine-tuning/training-api/dedicated) pages before launch.
+
+## Choose serverless when
+
+* The base model appears in the current serverless model list.
+* LoRA SFT or RL covers the task.
+* You want to start without provisioning trainer or inference resources.
+* Per-token billing fits a small or bursty experiment.
+* In-session sampling is sufficient.
+
+## Choose dedicated when
+
+* You need full-parameter training, DPO, ORPO, distillation, or a model not on the serverless list.
+* You need explicit trainer, rollout deployment, checkpoint, reconnect, or promotion control.
+* You need sustained throughput or long-running rollouts.
+* A highly utilized time-based deployment is more economical for the workload.
+* You need to serve or evaluate through a dedicated deployment during training.
+
+## The interface is a separate choice
+
+Serverless and dedicated describe **how training compute is provided**. They are not separate coding-agent modes.
+
+You can ask the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to choose and run either path. You can also use the Python SDK or cookbook directly. Managed fine-tuning is a separate workflow for standard jobs where Fireworks owns the training loop.
+
+## Next steps
+
+* [Run Serverless Training](/fine-tuning/training-api/serverless)
+* [Run Dedicated Training](/fine-tuning/training-api/dedicated)
+* [Training API introduction](/fine-tuning/training-api/introduction)
+* [Cookbook recipes](/fine-tuning/training-api/cookbook/overview)
+* [Compare multi-turn costs](/fine-tuning/multi-turn-cost-comparison)
+
+
 # Checkpoints and Resume
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/checkpoints
 
@@ -14274,7 +13272,7 @@ Use `training_shape_id` for explicit shape selection — this is the primary sha
 | `extra_args`                  | `list[str] \| None` | `None`  | Extra trainer arguments.                                                                                                                                                                                                                                          |
 | `replica_count`               | `int \| None`       | `None`  | Data-parallel HSDP replica count for policy trainer launches. This is a run-level knob, not part of the validated training shape; reference trainers are launched without it.                                                                                     |
 | `skip_validations`            | `bool`              | `False` | Skip server-side shape validation. Requires elevated permissions.                                                                                                                                                                                                 |
-| `purpose`                     | `str \| None`       | `None`  | Optional platform purpose enum name, such as `"PURPOSE_PILOT"`.                                                                                                                                                                                                   |
+| `purpose`                     | `str \| None`       | `None`  | Optional platform purpose enum name for internal scheduling metadata. Most users leave this unset.                                                                                                                                                                |
 
 To request replicated HSDP for a run:
 
@@ -14335,14 +13333,15 @@ When `deployment_shape` is set (the recommended path), the shape owns deployment
 
 Rollout sampling concurrency settings used by RL-family recipes:
 
-| Field                  | Type          | Default      | Description                                                                                   |
-| ---------------------- | ------------- | ------------ | --------------------------------------------------------------------------------------------- |
-| `mode`                 | `str \| None` | `"adaptive"` | Concurrency mode. RL recipes currently use adaptive concurrency.                              |
-| `initial_window`       | `int \| None` | `None`       | Starting adaptive concurrency window. When unset, recipes derive it from deployment capacity. |
-| `min_window`           | `int`         | `1`          | Minimum adaptive concurrency window.                                                          |
-| `max_window`           | `int`         | `256`        | Maximum adaptive concurrency window.                                                          |
-| `prefill_queue_target` | `float`       | `0.5`        | Target prefill queue duration in seconds for AIMD adjustment.                                 |
-| `max_concurrency`      | `int \| None` | `None`       | Deprecated fixed-concurrency compatibility field.                                             |
+| Field                         | Type          | Default      | Description                                                                                                                                                   |
+| ----------------------------- | ------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode`                        | `str \| None` | `"adaptive"` | Concurrency mode. RL recipes currently use adaptive concurrency.                                                                                              |
+| `initial_window`              | `int \| None` | `None`       | Starting adaptive concurrency window. When unset, recipes derive it from deployment capacity.                                                                 |
+| `min_window`                  | `int`         | `1`          | Minimum adaptive concurrency window.                                                                                                                          |
+| `max_window`                  | `int`         | `256`        | Maximum adaptive concurrency window.                                                                                                                          |
+| `prefill_queue_target`        | `float`       | `0.5`        | Target prefill queue duration in seconds for AIMD adjustment.                                                                                                 |
+| `rollout_adjustment_interval` | `int`         | `32`         | Adjust adaptive concurrency every N completed rollout requests. Remaining requests adjust at the step boundary; set to `0` for step-boundary-only adjustment. |
+| `max_concurrency`             | `int \| None` | `None`       | Deprecated fixed-concurrency compatibility field.                                                                                                             |
 
 ## Checkpoint & weight-sync fields
 
@@ -14451,7 +13450,7 @@ For checkpointing, resume, and promote — see the dedicated [Checkpoints and Re
 
 ## Skills reference
 
-Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/gradient-accumulation.md).
+Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md).
 
 ## Deprecated managed infra (InfraConfig)
 
@@ -14480,7 +13479,7 @@ The `InfraConfig` dataclass is still importable for backward compatibility and n
 
 ### Get help migrating
 
-The cookbook ships a **debug-and-migrate skill** at [`skills/dev/`](https://github.com/fw-ai/cookbook/tree/main/skills/dev) that walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface (in addition to its day-to-day debugging guidance for weight sync and checkpoint promotion). Point your coding agent at that skill to automate the migration.
+The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training) that routes managed and Training API work. Its progressive SDK migration reference walks an agent through porting old `InfraConfig` / `setup_infra` scripts to the new `TrainerConfig` + `build_service_client` surface, alongside weight-sync and checkpoint guidance.
 
 
 # Cookbook: Reinforcement Learning
@@ -14603,7 +13602,7 @@ The same recipe covers the full spectrum from strict on-policy to overlapped off
 | `max_head_offpolicy_versions=0` (default) | **Strict on-policy** — samples that would arrive after the next weight sync are held until the sync. No drift; rollouts and training serialize at batch boundaries. |
 | `max_head_offpolicy_versions=O` (`O > 0`) | **Off-policy with bounded staleness** — samples may land up to `O` weight-sync versions past their submit version, letting sampling overlap with training.          |
 
-Raising `O` later is a single-knob change. For the off-policy gate math, GPU split, and the `perf/*` tuning metrics, see the cookbook skill: [`skills/dev/references/rl/async-rl.md`](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/async-rl.md).
+Raising `O` later is a single-knob change. For the off-policy gate math, GPU split, and the `perf/*` tuning metrics, see the [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md).
 
 ### Policy loss variants
 
@@ -14712,7 +13711,7 @@ main(cfg)
 
 ## Related guides
 
-* [`skills/dev/references/rl/async-rl.md`](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/async-rl.md) — full async contract: off-policy gate, `perf/*` metrics, GPU split tuning
+* [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — full async contract: off-policy gate, `perf/*` metrics, GPU split tuning
 * [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated weights reach the deployment
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes
 * [Loss Functions](/fine-tuning/training-api/loss-functions) — policy-loss and datum internals
@@ -14872,12 +13871,168 @@ The recipe dispatches on this single field and wires the rest correctly. The two
 
 ## Diagnosing errors
 
-The control plane catches scope-mix mistakes at create time and returns an error that names both resources and suggests the fix. For the full list of server error strings and per-error recovery steps, see the cookbook's dev skill: **[`skills/dev/references/rl/hotload.md`](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/hotload.md)**. It also covers trainer retention, the unified promote API, and runtime bucket-mismatch warnings.
+The control plane catches scope-mix mistakes at create time and returns an error that names both resources and suggests the fix. For the full list of server error strings and per-error recovery steps, see the **[Fireworks training skill hotload reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/hotload.md)**. It also covers trainer retention, the unified promote API, and runtime bucket-mismatch warnings.
 
 ## See also
 
 * [RL cookbook](/fine-tuning/training-api/cookbook/rl) — end-to-end RL flow, including weight-sync cadence knobs
 * [Checkpoints](/fine-tuning/training-api/cookbook/checkpoints) — base/delta, promote
+
+
+# Dedicated Training
+Source: https://docs.fireworks.ai/fine-tuning/training-api/dedicated
+
+Run Training API workloads with provisioned trainer and deployment resources, explicit checkpoints, and lifecycle control.
+
+<Info>
+  The Training API is currently in **private preview**. [Request access](https://fireworks.ai/contact-training) before running this guide.
+</Info>
+
+Dedicated training provisions trainer and deployment resources for your run. Use it when you need broader model or method support, full-parameter training, DPO, sustained RL, explicit checkpoint resume, or control over rollout and evaluation deployments.
+
+If LoRA SFT or RL on the shared pool is sufficient, compare this path with [Serverless Training](/fine-tuning/training-api/serverless) before provisioning resources.
+
+<Tip>
+  **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), then fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes). Recipes own provisioning, checkpoints, reconnect, and sampling where applicable. Cleanup is configuration-specific; review and set each recipe's cleanup flags before launch.
+</Tip>
+
+## What you can run
+
+<CardGroup>
+  <Card title="SFT, DPO, and ORPO" icon="messages">
+    Use cookbook recipes with LoRA or full-parameter configurations supported by the selected training shape.
+  </Card>
+
+  <Card title="RL and RFT" icon="brain">
+    Run synchronous or asynchronous rollouts with custom rewards, losses, environments, and deployment sampling.
+  </Card>
+
+  <Card title="Distillation" icon="arrows-left-right">
+    Provision student and teacher resources for sampled reverse KL, top-k forward KL, and related workflows.
+  </Card>
+
+  <Card title="Custom loops" icon="code">
+    Use the Tinker-compatible training client directly when a maintained recipe does not express the required behavior.
+  </Card>
+</CardGroup>
+
+## Dedicated training steps
+
+### Step 1: Install the SDK and cookbook
+
+```bash theme={null}
+git clone https://github.com/fw-ai/cookbook
+cd cookbook
+pip install -e ./training
+export FIREWORKS_API_KEY="fw_..."
+```
+
+Check the SDK requirement declared by your cookbook revision:
+
+```bash theme={null}
+grep 'fireworks-ai\[training\]' training/pyproject.toml
+pip show fireworks-ai | grep -i version
+```
+
+### Step 2: Choose the closest recipe
+
+| Task                              | Start here                                                                                                                   |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| SFT                               | [`training/recipes/sft_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/sft_loop.py)                   |
+| DPO                               | [`training/recipes/dpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py)                   |
+| ORPO                              | [`training/recipes/orpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/orpo_loop.py)                 |
+| RL                                | [`training/recipes/rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py)                     |
+| Async or agentic RL, experimental | [`training/recipes/async_rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py)         |
+| Distillation                      | [`training/recipes/distillation_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/distillation_loop.py) |
+
+Fork the recipe and change only the task-specific data, loss, reward, rollout, evaluation, or configuration.
+
+For a complete bounded SFT smoke using the bundled text-to-SQL dataset:
+
+```bash theme={null}
+python training/examples/sft/train_sft.py \
+  --output-model-id dedicated-sft-smoke \
+  --max-examples 10 \
+  --epochs 1 \
+  --lora-rank 8 \
+  --training-shape accounts/fireworks/trainingShapes/<shape>
+```
+
+This command creates paid trainer resources. Replace `<shape>`, then review the
+model, shape, parameters, cost ceiling, and cleanup flags before running it.
+
+### Step 3: Choose the model and training shape
+
+Use the live [Training Shapes](/fine-tuning/training-api/training-shapes) catalog. Pass the full shared shape ID and let the SDK resolve its validated version and linked deployment shape.
+
+Do not copy accelerator type, GPU count, image tag, or deployment-shape details into the config when the training shape owns them.
+
+### Step 4: Configure stable run outputs
+
+Record:
+
+* cookbook commit and installed SDK version;
+* account, base model, recipe, and dataset;
+* complete configuration, including defaults;
+* training shape and linked deployment shape;
+* stable trainer, output-model, and deployment IDs where the API exposes them;
+* checkpoint cadence and resume policy;
+* cost ceiling, success metric, and teardown policy.
+
+### Step 5: Provision the SDK-managed service
+
+Cookbook recipes provision through the SDK-managed service. If you are writing a direct loop, follow the exact [`FiretitanServiceClient.from_firetitan_config(...)` quickstart](/fine-tuning/training-api/quickstart#step-1-create-the-managed-service).
+
+Provisioning happens on the first client creation. Capture `service.trainer_job_id` and every rollout or evaluation deployment ID immediately.
+
+### Step 6: Train and monitor
+
+Run the forked recipe. Monitor:
+
+* trainer state and real optimizer-step progress;
+* recipe metrics and W\&B when configured;
+* rollout success, reward distribution, and sampler latency for RL;
+* checkpoints and deployment weight-sync state;
+* quota, billing, and capacity separately.
+
+State alone is not proof of progress. Use a bounded no-progress interval and preserve IDs and timestamps for escalation.
+
+### Step 7: Save, sample, and evaluate
+
+Save weights for the sampler, create or refresh the SDK-managed sampler, and evaluate the base and tuned policy on the same held-out set.
+
+For checkpoint and sampler details, see [Saving and Loading](/fine-tuning/training-api/saving-and-loading) and [Training and Sampling](/fine-tuning/training-api/training-and-sampling).
+
+### Step 8: Promote the selected checkpoint
+
+List checkpoints from the control plane, choose a row marked promotable, validate the output model ID, and promote the full checkpoint resource name.
+
+Do not choose a winner from training loss alone. Use the agreed held-out metric or evaluator.
+
+### Step 9: Deploy and prove serving
+
+Create the final on-demand deployment, wait for `READY`, then send a real request. `READY` without a successful response is not serving proof.
+
+Fine-tuned LoRA adapters are served through an on-demand deployment, not the shared serverless inference catalog.
+
+### Step 10: Tear down
+
+Set the recipe's cleanup flags explicitly. Close the SDK-managed service in `try/finally`, then verify every trainer and deployment reached the requested final state. Resources are not deleted or scaled down unless the configuration requests it. Use the complete [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup) contract.
+
+Checkpoint storage and promoted models can remain after compute teardown. Report them separately from billable trainer and deployment resources.
+
+## Compare infrastructure
+
+For the canonical decision rules and comparison table, see [Choose Serverless or Dedicated Training](/fine-tuning/training-api/choose-infrastructure).
+
+## Next steps
+
+* [Dedicated quickstart](/fine-tuning/training-api/quickstart)
+* [Training and Sampling](/fine-tuning/training-api/training-and-sampling)
+* [Training Shapes](/fine-tuning/training-api/training-shapes)
+* [Saving and Loading](/fine-tuning/training-api/saving-and-loading)
+* [Cookbook overview](/fine-tuning/training-api/cookbook/overview)
+* [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup)
 
 
 # Introduction
@@ -14890,25 +14045,34 @@ Fireworks Training API — custom training loops with full Python control over o
 </Info>
 
 <Tip>
-  **Using a code agent?** Clone [fw-ai/cookbook](https://github.com/fw-ai/cookbook). The cookbook includes the [`skills/dev/`](https://github.com/fw-ai/cookbook/tree/main/skills/dev) skill, which gives agents repo-specific guidance for setup, debugging, weight sync, RL recipe internals, and checkpoint promotion.
+  **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents). One skill covers managed training and Training API serverless or dedicated cookbook workflows.
 </Tip>
 
 ## What is the Training API?
 
 Fireworks Training API lets you write training logic in plain Python on your local machine while model computation runs on remote GPUs managed by Fireworks.
 
-Most users should start from [cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and async RL loops for agentic RL. Fork a recipe when you want to adapt an existing loop with your own loss, reward, rollout function, data loading, or checkpointing behavior.
+Most users should start from [cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and experimental async RL loops for agentic RL. Fork a recipe when you want to adapt an existing loop with your own loss, reward, rollout function, data loading, or checkpointing behavior.
 
-Use the Direct Training SDK when you need full control over training behavior.
+Use the Direct SDK when you need full control over Training API behavior.
 
-| Mode                    | Best for                                                                                                  | Infrastructure                                                                            |
-| ----------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Cookbook recipes**    | Recommended entry point for adapting existing SFT/DPO/GRPO-style loops, including async RL for agentic RL | You configure and implement simple loss, reward, or rollout functions; platform runs GPUs |
-| **Direct Training SDK** | Full control over training behavior                                                                       | You drive the training flow; platform runs GPUs                                           |
+| Mode                 | Best for                                                                                                               | Infrastructure                                                                            |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Cookbook recipes** | Recommended entry point for adapting existing SFT/DPO/GRPO-style loops, including experimental async RL for agentic RL | You configure and implement simple loss, reward, or rollout functions; platform runs GPUs |
+| **Direct SDK**       | Full control over training behavior                                                                                    | You drive the training flow; platform runs GPUs                                           |
+
+## Choose serverless or dedicated infrastructure
+
+After choosing the Training API, decide how compute is provided:
+
+* [**Serverless Training**](/fine-tuning/training-api/serverless): shared pooled trainer, LoRA SFT or RL on supported models, no provisioning, per-token billing.
+* [**Dedicated Training**](/fine-tuning/training-api/dedicated): provisioned trainer and deployment resources, broader model and method support, explicit checkpoint/resume/deployment control.
+
+Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrastructure) before adapting a recipe.
 
 ## Who does what
 
-| Fireworks handles                                                        | Cookbook recipes handle                                                    | Direct Training SDK users implement                                            |
+| Fireworks handles                                                        | Cookbook recipes handle                                                    | Direct SDK users implement                                                     |
 | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | GPU provisioning and cluster management                                  | Training loop structure for supported recipes                              | Training loop logic (`forward_backward_custom` + `optim_step`)                 |
 | Service-mode trainer lifecycle (create, health-check, reconnect, delete) | Resource setup, health checks, reconnect, and cleanup                      | Managed service setup with `FiretitanServiceClient.from_firetitan_config(...)` |
@@ -14930,7 +14094,7 @@ flowchart LR
 <Warning>
   **Most common gotchas**
 
-  * Every API call returns a future. Always call `.result()` or failures can be missed.
+  * Remote operations such as `forward`, `forward_backward`, `optim_step`, sampling, and checkpoint saves return future-like results. Call `.result()` on operations that return one.
   * `token_weights=0` means prompt/no-loss tokens, `token_weights=1` means response/learned tokens.
   * `forward_backward_custom` computes gradients only; you still need `optim_step` to apply updates.
 </Warning>
@@ -14947,74 +14111,33 @@ flowchart LR
 
 A **Datum** is the unit of training data sent to the remote GPU. It wraps tokenized input and per-token weights that your loss function needs.
 
-Token weights tell the loss function which tokens to train on:
-
-* **`0.0`** = prompt token (don't train on this)
-* **`1.0`** = response token (train on this)
-
-```python theme={null}
-import tinker
-import torch
-from tinker_cookbook.supervised.common import datum_from_model_input_weights
-
-tokens = tokenizer.encode("What is 2+2? The answer is 4.")
-prompt_len = len(tokenizer.encode("What is 2+2? "))
-
-weights = torch.zeros(len(tokens), dtype=torch.float32)
-weights[prompt_len:] = 1.0  # Train on response tokens only
-
-datum = datum_from_model_input_weights(
-    tinker.ModelInput.from_ints(tokens),
-    weights,
-    max_length=4096,
-)
-```
+For SFT, token weight `0.0` marks prompt tokens and `1.0` marks response tokens. Cookbook renderers construct these weights from chat messages.
 
 ### Logprobs and forward\_backward\_custom
 
 When you call `forward_backward_custom`, the GPU runs a forward pass and returns **per-token log-probabilities** as PyTorch tensors with `requires_grad=True`. Your loss function computes a scalar loss, the API calls `loss.backward()`, and gradients are sent back to the GPU for the model backward pass.
 
-```python theme={null}
-def my_loss_fn(data, logprobs_list):
-    loss = compute_something(logprobs_list)
-    return loss, {"loss": loss.item()}
-
-result = training_client.forward_backward_custom(datums, my_loss_fn).result()
-```
-
-After accumulating gradients, call `optim_step` to apply the optimizer update:
-
-```python theme={null}
-import tinker
-
-training_client.optim_step(
-    tinker.AdamParams(learning_rate=1e-5, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.01)
-).result()
-```
+After accumulating gradients, call `optim_step` to apply the update. See the [Dedicated Training Quickstart](/fine-tuning/training-api/quickstart) for one complete runnable Datum, loss, and optimizer loop.
 
 ### Futures
 
-All training client API calls return **futures**. Call `.result()` to block until completion. Without `.result()`, errors are silently swallowed.
+Remote training operations such as `forward`, `forward_backward`, `optim_step`, and checkpoint saves return **future-like results**. Call `.result()` on operations that return one so failures surface.
 
 ### Checkpointing and weight sync
 
 After training, you export checkpoints for serving:
 
-* **Base checkpoint**: Full model weights. Use for the first checkpoint.
-* **Delta checkpoint**: Only the diff from the previous base (\~10x smaller). Use for subsequent checkpoints.
+* **Base snapshot:** a complete chain anchor for the trainable state. For LoRA this is the adapter; for full-parameter training it is model weights.
+* **Delta snapshot:** a change relative to a prior full-parameter base snapshot.
 
-**Weight sync** pushes a checkpoint onto a running inference deployment without restarting it, enabling evaluation under serving conditions during training. In normal SDK and cookbook code, this is expressed as `training_client.save_weights_for_sampler(...).result()` followed by `service.create_sampling_client(model_path=saved.path)` or `service.create_deployment_sampler(model_path=saved.path)`.
+The SDK selects base versus delta automatically unless the recipe overrides it.
 
-For RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts) for how active request streams, session IDs, and `reset_prompt_cache` interact.
+Checkpoint-to-sampler behavior depends on the infrastructure:
 
-```mermaid theme={null}
-flowchart LR
-  train["Train step"] --> save["save_weights_for_sampler"]
-  save --> sample_client["create_sampling_client(model_path=...)"]
-  sample_client --> sample["Sample via deployment"]
-  sample --> eval["Evaluate quality"]
-  eval --> train
-```
+* **Serverless:** save a snapshot and bind an in-session sampling client to that snapshot. There is no deployment weight sync. See [Serverless Training](/fine-tuning/training-api/serverless).
+* **Dedicated:** save a snapshot and refresh an SDK-managed deployment sampler, which syncs weights onto the deployment. See [Dedicated Training and Sampling](/fine-tuning/training-api/training-and-sampling).
+
+For dedicated RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).
 
 ## Key APIs
 
@@ -15071,7 +14194,7 @@ Usually because `.result()` was not called on futures, so failures were never su
 
 ### What's the difference between base and delta checkpoints, and when should I use each?
 
-Use a base checkpoint for your first checkpoint. Use delta checkpoints for subsequent checkpoints to speed up sync and reduce storage.
+Let the SDK select automatically. LoRA snapshots contain the full adapter; full-parameter delta snapshots can accelerate synchronization but are not promotable. See [Saving and Loading](/fine-tuning/training-api/saving-and-loading#sampler-checkpoints).
 
 ### Do I need to manage distributed training infra?
 
@@ -15083,7 +14206,7 @@ Start with Cookbook for most SFT/DPO/GRPO adaptations. Use the Direct SDK when y
 
 ### Can I evaluate serving behavior during training?
 
-Yes. Save a checkpoint, sync it onto a running deployment, and evaluate under serving conditions.
+Yes. On serverless, save a snapshot and sample from it in the same session. On dedicated infrastructure, sync a snapshot to the SDK-managed deployment sampler and evaluate there.
 
 ### How should I compare Training API pricing vs a DIY bare-metal setup?
 
@@ -15095,8 +14218,11 @@ See the [Price comparison vs Tinker](/fine-tuning/multi-turn-cost-comparison) ca
 
 ## Next steps
 
-* [Quickstart](/fine-tuning/training-api/quickstart) — get a custom training loop running in minutes
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling) — end-to-end API walkthrough
+* [Dedicated quickstart](/fine-tuning/training-api/quickstart) — run a minimal dedicated custom loop
+* [Choose infrastructure](/fine-tuning/training-api/choose-infrastructure) — compare serverless and dedicated training
+* [Serverless Training](/fine-tuning/training-api/serverless) — shared pooled LoRA training
+* [Dedicated Training](/fine-tuning/training-api/dedicated) — provisioned trainer and deployment lifecycle
+* [Dedicated Training and Sampling](/fine-tuning/training-api/training-and-sampling) — deployment-sampling lifecycle
 * [Loss Functions](/fine-tuning/training-api/loss-functions) — built-in and custom loss functions
 * [Vision Inputs](/fine-tuning/training-api/vision-inputs) — fine-tune vision-language models with image and text data
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview) — ready-to-run recipes for SFT, DPO, ORPO, GRPO/IGPO, and async RL (experimental)
@@ -15408,7 +14534,7 @@ training_client.optim_step(tinker.AdamParams(learning_rate=1e-5, ...)).result()
 ```
 
 <Note>
-  Advanced optimizer-step controls such as server-side gradient accumulation normalization are intentionally kept out of this user-facing guide. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/gradient-accumulation.md) for agent-facing operational guidance.
+  Advanced optimizer-step controls such as server-side gradient accumulation normalization are intentionally kept out of this user-facing guide. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md) for agent-facing operational guidance.
 </Note>
 
 ## Common pitfalls
@@ -15426,10 +14552,12 @@ training_client.optim_step(tinker.AdamParams(learning_rate=1e-5, ...)).result()
 * [Cookbook DPO recipe](/fine-tuning/training-api/cookbook/dpo) — DPO with preference data
 
 
-# Quickstart
+# Dedicated Training Quickstart
 Source: https://docs.fireworks.ai/fine-tuning/training-api/quickstart
 
-Get a custom training loop running in minutes with the Fireworks Training API.
+Provision a trainer and run a custom Training API loop on dedicated Fireworks resources.
+
+This quickstart uses [Dedicated Training](/fine-tuning/training-api/dedicated). For supported LoRA SFT or RL without provisioning, use [Serverless Training](/fine-tuning/training-api/serverless).
 
 ## Installation
 
@@ -15437,6 +14565,7 @@ Install the Fireworks Python package with training extensions:
 
 ```bash theme={null}
 pip install --pre "fireworks-ai[training]"
+pip install "tinker-cookbook==0.4.1"
 ```
 
 Set your credentials:
@@ -15557,17 +14686,25 @@ for step in range(10):
 ### Step 5: Save and promote
 
 ```python theme={null}
+from datetime import datetime
+
 saved = training_client.save_weights_for_sampler(
     "sft-final",
     checkpoint_type="base",
 ).result()
 print(f"Checkpoint saved: {saved.path}")
 
-# Promote the checkpoint to a deployable Fireworks model. `list_checkpoints`
-# returns the full 4-segment checkpoint resource name that promotion expects.
-entry = next(
-    row for row in service.list_checkpoints(service.trainer_job_id)
-    if row["name"].endswith(f"/checkpoints/{saved.path}")
+# List control-plane checkpoints and select a promotable row.
+# The public saved.path can differ from the checkpoint resource ID.
+entry = max(
+    (
+        row
+        for row in service.list_checkpoints(service.trainer_job_id)
+        if row.get("promotable")
+    ),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
 )
 model = service.promote_checkpoint(
     name=entry["name"],
@@ -15579,7 +14716,7 @@ service.close()
 ```
 
 <Tip>
-  For production scripts, wrap `service.close()` in `try/finally` so SDK-managed trainers are cleaned up on exit — including on exceptions. See [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup).
+  For production scripts, set cleanup flags deliberately, call `service.close()` in `try/finally`, and verify the requested final resource state. See [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup).
 </Tip>
 
 ## Next steps
@@ -15660,7 +14797,7 @@ config = TrainerJobConfig(
 
 With `firectl`, use `--inactivity-timeout 30m` or `--inactivity-timeout 2h`. When the value is omitted or set to `0`, Fireworks uses the 60-minute default.
 
-To disable automatic inactivity cleanup, set `disableInactivityCleanup` in the REST API, set `TrainerJobConfig.disable_inactivity_cleanup=True` in the Training SDK, or pass `--disable-inactivity-cleanup` in `firectl`. The trainer will not be stopped due to inactivity, and GPU usage continues to accrue while the trainer is running, so delete the trainer when you no longer need it.
+To disable automatic inactivity cleanup, set `disableInactivityCleanup` in the REST API, set `TrainerJobConfig.disable_inactivity_cleanup=True` in the Python SDK, or pass `--disable-inactivity-cleanup` in `firectl`. The trainer will not be stopped due to inactivity, and GPU usage continues to accrue while the trainer is running, so delete the trainer when you no longer need it.
 
 ## Manual compatibility cleanup
 
@@ -16000,15 +15137,16 @@ ctrl = AdaptiveConcurrencyController(
     min_window=1,             # minimum window
     max_window=256,           # maximum window
     prefill_queue_target=0.5, # target prefill queue latency (seconds)
+    adjustment_interval=32,   # adjust every 32 completed requests
 )
 sampler = DeploymentSampler(..., concurrency_controller=ctrl)
 
-# Between training steps, call step_completed() to trigger window adjustment
+# Between training steps, flush remaining metrics and reset the interval
 summary = ctrl.step_completed()
 print(summary)  # {"window": 20, "avg_pq": 0.08, "cache_hit_rate": 0.95, ...}
 ```
 
-The controller reads `prefill_queue_duration` from server response metrics. When the queue is below target, the window grows proportionally. When above, it halves (multiplicative decrease).
+The controller reads `prefill_queue_duration` from server response metrics. When the queue is below target, the window grows proportionally. When above, it halves (multiplicative decrease). By default, it adjusts after every 32 completed requests and at step boundaries. Set `adjustment_interval=0` to adjust only at step boundaries.
 
 ### FixedConcurrencyController
 
@@ -16149,7 +15287,17 @@ client = FireworksClient(
 Promote a sampler checkpoint to a deployable Fireworks model. The trainer job does not need to be running -- the checkpoint resource name is enough to resolve the GCS bucket where the files reside.
 
 ```python theme={null}
-entry = client.list_checkpoints("<job-id>")[0]
+from datetime import datetime
+
+def latest_promotable(rows):
+    return max(
+        (row for row in rows if row.get("promotable")),
+        key=lambda row: datetime.fromisoformat(
+            row["createTime"].replace("Z", "+00:00")
+        ),
+    )
+
+entry = latest_promotable(client.list_checkpoints("<job-id>"))
 model = client.promote_checkpoint(
     name=entry["name"],          # accounts/<a>/rlorTrainerJobs/<j>/checkpoints/<c>
     output_model_id="my-fine-tuned-model",
@@ -16178,7 +15326,7 @@ Server-side list of a trainer's checkpoints (sampler + DCP, with promotability m
 
 ```python theme={null}
 rows = client.list_checkpoints(job_id)
-latest = max((r for r in rows if r["promotable"]), key=lambda r: r["createTime"])
+latest = latest_promotable(rows)
 ```
 
 Each row has `name`, `createTime` / `updateTime` (RFC3339), `checkpointType` (opaque server enum — filter on `promotable` rather than matching values), and `promotable` (bool, authoritative). Server returns rows **oldest-first** — re-sort client-side for newest-first. Requires `fireworks-ai[training] >= 1.0.0a62`.
@@ -16223,14 +15371,14 @@ from fireworks.training.sdk import FireworksClient, TrainerJobManager
 
 # Trainer-free: promote a checkpoint from a completed experiment
 client = FireworksClient(api_key=api_key)
-entry = client.list_checkpoints(job_id)[0]
+entry = latest_promotable(client.list_checkpoints(job_id))
 client.promote_checkpoint(name=entry["name"], output_model_id="my-model", base_model=base_model)
 
 # Compatibility lifecycle: create trainer manually, train, promote
 mgr = TrainerJobManager(api_key=api_key)
 endpoint = mgr.create_and_wait(config)
 # ... train ...
-entry = mgr.list_checkpoints(endpoint.job_id)[0]
+entry = latest_promotable(mgr.list_checkpoints(endpoint.job_id))
 mgr.promote_checkpoint(name=entry["name"], output_model_id="my-model", base_model=base_model)
 mgr.delete(endpoint.job_id)
 ```
@@ -16496,7 +15644,7 @@ training_client.optim_step(
 ).result()
 ```
 
-Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/gradient-accumulation.md) for operational guidance.
+Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md) for operational guidance.
 
 ### `save_weights_for_sampler(name, ttl_seconds=None, checkpoint_type=None)`
 
@@ -16760,7 +15908,18 @@ rlor_mgr.delete(job_id="<job-id>")
 *Inherited from [`FireworksClient`](/fine-tuning/training-api/reference/fireworks-client).* Promote a sampler checkpoint to a deployable Fireworks model. The trainer job does not need to be running -- the checkpoint resource name resolves the storage location.
 
 ```python theme={null}
-entry = rlor_mgr.list_checkpoints(endpoint.job_id)[0]
+from datetime import datetime
+
+entry = max(
+    (
+        row
+        for row in rlor_mgr.list_checkpoints(endpoint.job_id)
+        if row.get("promotable")
+    ),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
 model = rlor_mgr.promote_checkpoint(
     name=entry["name"],
     output_model_id="my-fine-tuned-model",
@@ -17037,10 +16196,10 @@ Sampler checkpoints are weight-only snapshots used for weight sync and promotion
 
 The raw SDK exposes two `checkpoint_type` modes that affect size and weight-sync speed:
 
-| `checkpoint_type` | What it saves               | Size                   |
-| ----------------- | --------------------------- | ---------------------- |
-| `"base"`          | Full model weights          | Large (\~16 GB for 8B) |
-| `"delta"`         | XOR diff from previous base | \~10× smaller          |
+| `checkpoint_type` | What it saves                                                                                       | Size                                |
+| ----------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `"base"`          | Complete chain anchor: full-model weights for full-parameter training, or the full adapter for LoRA | Depends on parameter mode and model |
+| `"delta"`         | Full-parameter XOR diff from the previous base                                                      | Depends on changed weights          |
 
 Delta is much faster for per-step weight sync (`current_weights = base XOR delta` on the deployment). LoRA sampler checkpoints always contain the full adapter regardless of `checkpoint_type`.
 
@@ -17051,7 +16210,7 @@ Delta is much faster for per-step weight sync (`current_weights = base XOR delta
 ### Saving checkpoints
 
 ```python theme={null}
-# First checkpoint — must be base (full weights)
+# First checkpoint — base chain anchor
 saved = training_client.save_weights_for_sampler(
     "step-0001",
     checkpoint_type="base",
@@ -17083,13 +16242,19 @@ Promote a sampler checkpoint to a deployable Fireworks model. Available on [`Fir
 `list_checkpoints` returns each checkpoint's full resource name (`accounts/<account>/rlorTrainerJobs/<job>/checkpoints/<id>`). Hand that string straight to `promote_checkpoint` — no manual disassembly into `(job_id, checkpoint_id)`:
 
 ```python theme={null}
+from datetime import datetime
 from fireworks.training.sdk import FireworksClient
 
 client = FireworksClient(api_key=api_key)
 
-# Pick a row from the trainer's checkpoints — usually newest promotable.
+# Select the newest promotable row by parsed timestamp.
 rows = client.list_checkpoints(job_id)
-target = next(r for r in rows if r.get("promotable"))
+target = max(
+    (row for row in rows if row.get("promotable")),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
 
 model = client.promote_checkpoint(
     name=target["name"],                          # 4-segment resource path
@@ -17124,7 +16289,18 @@ model = client.promote_checkpoint(
 To migrate, look the row up via `list_checkpoints` and pass its `name` field straight through:
 
 ```python theme={null}
-entry = client.list_checkpoints(endpoint.job_id)[0]
+from datetime import datetime
+
+entry = max(
+    (
+        row
+        for row in client.list_checkpoints(endpoint.job_id)
+        if row.get("promotable")
+    ),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
 model = client.promote_checkpoint(
     name=entry["name"],
     output_model_id="my-fine-tuned-qwen3-8b",
@@ -17229,17 +16405,20 @@ Source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 Run LoRA fine-tuning and RL on a shared pooled trainer, with no provisioning and per-token pricing.
 
 <Info>
-  Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and mention "serverless training"; we'll enable your account and provide onboarding credits so you can start testing the same week.
+  Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and mention "serverless training."
 </Info>
 
-Serverless training is the fastest way to run post-training on Fireworks. You connect to a shared, already-running pooled trainer through the gateway and get back a single service object that hands you both a training client and a sampling client. There is nothing to provision: no trainer job to launch, no inference deployment to stand up, and nothing to tear down.
+Serverless training connects to a shared, already-running pooled trainer through the gateway and returns training and sampling clients. There is no trainer job or inference deployment to provision or delete. Close each sampler and the service client when finished.
+
+Not sure whether the shared pool fits your workload? [Compare serverless and dedicated training](/fine-tuning/training-api/choose-infrastructure).
 
 <Info>
   **What you need**
 
   * **Install the SDK** (same one as the dedicated path, no separate console flow): `pip install --pre "fireworks-ai[training]"`
+  * **For the runnable example, clone the cookbook:** `git clone https://github.com/fw-ai/cookbook && pip install -e ./cookbook/training`
   * **Point at the serverless endpoint:** `base_url="https://api.fireworks.ai/training/v1/serverless"`
-  * **Pick a base model:** `accounts/fireworks/models/qwen3p5-9b` (**Qwen 3.5 9B**) or `accounts/fireworks/models/qwen3p6-27b` (**Qwen 3.6 27B**)
+  * **Pick a base model enabled for serverless training on your account.** Availability changes during private preview; verify it before launch.
   * Set your API key and run the [Quickstart](#quickstart) below.
 </Info>
 
@@ -17251,23 +16430,7 @@ Serverless training is the fastest way to run post-training on Fireworks. You co
 
 You write the training loop, for supervised fine-tuning or reinforcement learning, and Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
 
-```python theme={null}
-from fireworks.training.sdk import FiretitanServiceClient
-
-service = FiretitanServiceClient(
-    api_key=api_key,
-    base_url="https://api.fireworks.ai/training/v1/serverless",
-)
-
-training_client = service.create_lora_training_client(base_model, rank=8)
-
-for step in range(steps):
-    snapshot = training_client.save_weights_for_sampler(name).result().path
-    sampler  = service.create_sampling_client(model_path=snapshot, tokenizer=tokenizer)
-    # sample completions, score them, build training datums
-    training_client.forward_backward(datums, "importance_sampling").result()
-    training_client.optim_step(adam).result()
-```
+The [quickstart](#quickstart) shows the exact client setup and operation order. The complete implementation lives in the cookbook's [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl).
 
 ## What you can run
 
@@ -17281,22 +16444,11 @@ for step in range(steps):
   </Card>
 </CardGroup>
 
-Both run as LoRA on the shared pool. For full-parameter training, DPO, or the full menu of managed methods, use the [dedicated path](/fine-tuning/training-api/training-and-sampling).
+Both run as LoRA on the shared pool. For full-parameter training, DPO, or the broader Training API method set, use [Dedicated Training](/fine-tuning/training-api/dedicated). For standard platform-managed jobs, use [Managed Fine-Tuning](/fine-tuning/managed-finetuning-intro).
 
-## Serverless vs dedicated
+## When to use dedicated
 
-The two paths share the same SDK surface and the same primitives; they differ in how compute is provisioned.
-
-| Dimension     | Serverless                                                                                                    | Dedicated                                                                                              |
-| ------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Provisioning  | None. Attach to a shared pooled trainer.                                                                      | SDK provisions a trainer job and an inference deployment for your run.                                 |
-| Tuning method | LoRA only (SFT or RL).                                                                                        | LoRA and full-parameter.                                                                               |
-| Capacity      | Shared pool, subject to availability.                                                                         | Reserved for your run.                                                                                 |
-| Lifecycle     | Nothing to manage or tear down.                                                                               | You manage and tear down the trainer and deployment.                                                   |
-| Idle cost     | None. Pay per token.                                                                                          | Deployment bills per GPU-hour until scaled to zero or deleted.                                         |
-| Best for      | Fast iteration, small-to-mid LoRA experiments, RL loops with inference in the loop, first-time training runs. | Large-model or full-parameter training, sustained production RL, long rollouts, guaranteed throughput. |
-
-Start on serverless to move fast. Move to [dedicated](/fine-tuning/training-api/training-and-sampling) when you need full-parameter training, reserved capacity, or the cost curve of a saturated GPU at scale.
+Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full-parameter training, broader model or method support, explicit resource lifecycle control, or sustained utilization. See the canonical [serverless versus dedicated comparison](/fine-tuning/training-api/choose-infrastructure).
 
 ## Core concepts
 
@@ -17308,7 +16460,7 @@ Start on serverless to move fast. Move to [dedicated](/fine-tuning/training-api/
 
 **Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights.
 
-**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot, served through Fireworks' OpenAI-compatible completions API (`/inference/v1/chat/completions`). For multi-turn rollouts, session-affinity headers pin an episode to one replica so the KV cache is reused across turns (see [RL rollout integration](/fine-tuning/rl-rollout-integration)). The sampler runs in the same session, so there's no deployment to create or hot-load.
+**Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). For multi-turn rollouts, session-affinity headers pin an episode to one replica so the KV cache is reused across turns (see [RL rollout integration](/fine-tuning/rl-rollout-integration)). The sampler runs in the same session, so there's no deployment to create or hot-load.
 
 ## Quickstart
 
@@ -17317,11 +16469,27 @@ Start on serverless to move fast. Move to [dedicated](/fine-tuning/training-api/
 Create an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys) (click **Create API key** and store it somewhere safe), or run `firectl api-key create`. Then install the SDK and export the key:
 
 ```bash theme={null}
-pip install --pre "fireworks-ai[training]"
+git clone https://github.com/fw-ai/cookbook
+pip install -e ./cookbook/training
 export FIREWORKS_API_KEY="fw_..."   # the key you just created
 ```
 
-### Step 2: Connect to the serverless session
+### Step 2: Run the complete serverless RL example
+
+The cookbook includes its dataset, reward, loop, metrics, and cleanup behavior:
+
+```bash theme={null}
+cd cookbook/training
+python -m examples.serverless_rl.countdown_rl
+```
+
+The default is a real paid run. For a cheaper smoke test, fork
+`examples/serverless_rl/countdown_rl.py` and reduce `steps`, `group_size`,
+`prompt_groups_per_step`, and `max_sample_tokens` before execution.
+
+The remaining snippets explain the core calls used by that runnable example.
+
+### Step 3: Connect to the serverless session
 
 ```python theme={null}
 import os
@@ -17333,6 +16501,7 @@ service = FiretitanServiceClient(
 )
 
 base_model = "accounts/fireworks/models/qwen3p6-27b"
+max_seq_len = 65536  # enforce this when rendering prompts and training datums
 training_client = service.create_lora_training_client(base_model=base_model, rank=8)
 
 print(f"session={service.training_session_id} run={training_client.run_id}")
@@ -17340,7 +16509,11 @@ print(f"session={service.training_session_id} run={training_client.run_id}")
 
 This doubles as your setup check: if it prints a session id beginning with `ts-`, serverless routing is working. If the base URL does not end in `/training/v1/serverless`, sampling errors out.
 
-### Step 3: Train, checkpoint, and sample
+### Step 4: Train, checkpoint, and sample
+
+The complete example defines `datums`, `tinker`, `tokenizer`, `prompt`, and
+`params`, and rejects prompt plus completion lengths above `max_seq_len`. The
+excerpt below shows the operation order:
 
 ```python theme={null}
 # One optimizer step
@@ -17352,11 +16525,16 @@ training_client.optim_step(
 # Save weights and open a sampler bound to that exact snapshot
 snapshot = training_client.save_weights_for_sampler("step-0001").result().path
 sampler = service.create_sampling_client(model_path=snapshot, tokenizer=tokenizer)
-completions = sampler.sample(prompt=prompt, num_samples=8, sampling_params=params)
+completions = sampler.sample(
+    prompt=prompt,
+    num_samples=8,
+    sampling_params=params,
+).result()
+sampler.close()
 ```
 
 <Warning>
-  * Every training-client call returns a future. Always call `.result()`, or failures can be missed.
+  * Remote training and sampling operations return future-like results. Call `.result()` on operations that return one, or failures can be missed.
   * The tokenizer you pass must match `base_model`. It renders prompts and decodes sampled tokens client-side, so a mismatch silently corrupts your rewards.
   * Give each checkpoint a distinct `name`. Saving twice with the same name currently resolves to the same snapshot path.
 </Warning>
@@ -17365,49 +16543,22 @@ completions = sampler.sample(prompt=prompt, num_samples=8, sampling_params=param
 
 The end-to-end serverless RL pattern is the standard GRPO / importance-sampling loop: each step saves the current adapter, rolls out a batch of prompts through a sampler bound to that snapshot, scores completions with your reward function, turns group-relative advantages into training datums, and takes one optimizer step.
 
-```python theme={null}
-for step in range(steps):
-    snapshot = training_client.save_weights_for_sampler(f"countdown-{step:04d}").result().path
-    sampler  = service.create_sampling_client(model_path=snapshot, tokenizer=tokenizer)
-
-    # sample group_size completions per prompt, score each with your reward_fn,
-    # standardize rewards within each prompt group (GRPO), drop zero-spread groups
-    datums = build_importance_sampling_datums(sampler, batch, reward_fn)
-
-    training_client.forward_backward(datums, "importance_sampling").result()
-    training_client.optim_step(adam).result()
-```
-
-Reward should climb as the policy learns the task. The complete runnable version is the cookbook's [`serverless_rl`](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) example. For a supervised loop, run the same structure with a cross-entropy loss instead of importance sampling. For the full menu of RL losses (GRPO, DAPO, GSPO, CISPO) and the dedicated provisioned path, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
+Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the complete cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) rather than rebuilding the loop from this page. For a supervised loop, use cross-entropy loss. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
 ## Pricing
 
-Serverless training is billed per token, with three meters: **prefill** (reading the prompt), **sample** (generating tokens), and **train** (the tokens you learn from), each priced per 1M tokens. There is no idle cost: you pay only for tokens processed. Long-context variants are priced as separate SKUs, and MoE models are priced by active parameters.
-
-**Cached prefill.** Fireworks is KV-cache-aware on the sampler side and passes the benefit through to you. When an agent accumulates context turn after turn, the repeated prefill tokens hit the cache and are billed at **20% of the prefill rate (an 80% discount)**, so multi-turn rollouts cost materially less than the headline prefill rate suggests.
-
-| Base model   | Context | Prefill (per 1M) | Cached prefill (per 1M) | Sample (per 1M) | Train (per 1M) |
-| ------------ | ------- | ---------------- | ----------------------- | --------------- | -------------- |
-| Qwen 3.5 9B  | 65K     | \$0.44           | \$0.088                 | \$1.33          | \$1.33         |
-| Qwen 3.6 27B | 65K     | \$1.24           | \$0.248                 | \$3.73          | \$3.73         |
-
-Additional models are added to the table as they come online.
-
-Checkpoint storage is billed at \$0.10 / GB-month. See the [pricing page](https://fireworks.ai/pricing) for the current authoritative rates.
-
-For sustained or multi-turn RL at scale, dedicated GPU-hour billing is often cheaper overall, because session-affinity KV-cache reuse turns cache savings into more work per hour. Use the [cost comparison calculator](/fine-tuning/multi-turn-cost-comparison) to estimate your workload on serverless per-token pricing against Fireworks Dedicated.
+Serverless training is billed per token. Available models, meter definitions, and rates can change during private preview. Verify current availability and [pricing](https://fireworks.ai/pricing) before launch.
 
 ## Supported models and limits
 
 ### Models
 
-* **Qwen 3.5 9B** and **Qwen 3.6 27B**, up to **65K context**. LoRA only, dense only. Additional models roll out as they come online.
-* For full-parameter training or MoE base models, use the [dedicated path](/fine-tuning/training-api/training-and-sampling).
+Use a base model enabled for serverless training on your account. Serverless is LoRA only. For full-parameter training or a model not enabled on the shared pool, use [Dedicated Training](/fine-tuning/training-api/dedicated).
 
 ### Capacity and rate limits (private preview)
 
-* **Concurrent runs:** 8 per account. Sessions auto-release \~10 minutes after the last heartbeat, so a fast iterate/retry loop can briefly hit `HTTP 429: maximum concurrent serverless training runs exceeded` until slots free up.
-* **Rate limits:** per-account budget shared across training and sampling — 60 requests/min, 60K prompt tokens/min, 12K generated tokens/min. RL rollouts run against raised limits. The SDK backs off on 429s, so steps may slow rather than fail. Reach out if you need higher throughput.
+* **Concurrent runs:** The default quota is 8, although account overrides may differ. Slots are released when runs become terminal after session expiration.
+* **Request and token limits:** Contact Fireworks for the current limits on your account.
 * **Shared-pool capacity:** if the pool is full, `create_lora_training_client` returns an out-of-capacity error; retry, or switch to the dedicated path.
 
 ### Behavior to know
@@ -17418,22 +16569,26 @@ For sustained or multi-turn RL at scale, dedicated GPU-hour billing is often che
 
 ## Next steps
 
-* [Quickstart](/fine-tuning/training-api/quickstart): a custom training loop from scratch
-* [Training and Sampling](/fine-tuning/training-api/training-and-sampling): the dedicated provisioned path
+* [Serverless RL cookbook example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl): runnable serverless loop
+* [Choose infrastructure](/fine-tuning/training-api/choose-infrastructure): compare serverless and dedicated
+* [Dedicated Training](/fine-tuning/training-api/dedicated): the provisioned path from setup through teardown
+* [Training and Sampling](/fine-tuning/training-api/training-and-sampling): dedicated lifecycle internals
 * [Loss Functions](/fine-tuning/training-api/loss-functions): built-in and custom losses
 * [The Cookbook](/fine-tuning/training-api/cookbook/overview): ready-to-run recipes, including [`serverless_rl`](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl)
 
 
-# Training and Sampling
+# Dedicated Training and Sampling
 Source: https://docs.fireworks.ai/fine-tuning/training-api/training-and-sampling
 
-End-to-end SDK walkthrough: bootstrap resources, train, checkpoint, and sample through a serving deployment.
+Detailed dedicated SDK lifecycle: provision resources, train, checkpoint, weight-sync, and sample through a deployment.
 
 ## What this is
 
-This is the default lifecycle for research loops that need serving-quality evaluation during training: create an SDK-managed trainer and deployment, run iterative updates, save sampler weights, sync those weights to the deployment, then sample through the deployment.
+This is the detailed [Dedicated Training](/fine-tuning/training-api/dedicated) lifecycle for research loops that need serving-quality evaluation during training: create an SDK-managed trainer and deployment, run iterative updates, save sampler weights, sync those weights to the deployment, then sample through the deployment.
 
-For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookbook/overview). They wrap this same SDK-managed service path and handle batching, reference clients, checkpoints, reconnect, and cleanup.
+If you do not need provisioned trainer and deployment resources, [compare serverless and dedicated training](/fine-tuning/training-api/choose-infrastructure).
+
+For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookbook/overview). They wrap this same SDK-managed service path and handle batching, reference clients, checkpoints, reconnect, and configuration-specific cleanup.
 
 ## Workflow
 
@@ -17445,7 +16600,7 @@ For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookb
 6. **Refresh the sampler** with `service.create_deployment_sampler(model_path=saved.path, ...)`.
 7. **Sample and evaluate** through the deployment endpoint.
 
-The SDK owns trainer provisioning, deployment provisioning, bucket wiring, base-vs-delta sampler checkpoint selection, weight sync, and teardown. You do not construct `TrainerJobManager`, `DeploymentManager`, or `WeightSyncer` for the normal SDK flow.
+The SDK owns trainer provisioning, deployment provisioning, bucket wiring, base-vs-delta sampler checkpoint selection, and weight sync. It performs teardown according to configured cleanup flags; resources are not deleted or scaled down unless those flags request it. You do not construct `TrainerJobManager`, `DeploymentManager`, or `WeightSyncer` for the normal SDK flow.
 
 ## End-to-end example
 
@@ -17553,7 +16708,7 @@ if step % eval_interval == 0:
 
 `sample_with_tokens(n=K)` fans out K concurrent requests. A concurrency controller prevents overloading the deployment:
 
-* **`AdaptiveConcurrencyController`** (recommended) — automatically adjusts the concurrency window based on the server's prefill queue latency. Starts at `initial_window` and grows or shrinks between steps using AIMD.
+* **`AdaptiveConcurrencyController`** (recommended) — automatically adjusts the concurrency window based on the server's prefill queue latency. Starts at `initial_window` and grows or shrinks during rollout sampling and at step boundaries using AIMD.
 * **`FixedConcurrencyController`** — a static semaphore with a fixed maximum. Use when you already know the right concurrency for your deployment.
 
 See [DeploymentSampler — Concurrency Control](/fine-tuning/training-api/reference/deployment-sampler#concurrency-control) for full details and configuration options.
@@ -17598,16 +16753,7 @@ training_client.load_state_with_optimizer("step-100").result()
 
 ## Cleanup
 
-Close the service when the loop exits:
-
-```python theme={null}
-try:
-    run_training_loop()
-finally:
-    service.close()
-```
-
-`cleanup_trainer_on_close=True` deletes SDK-managed trainers. `cleanup_deployment_on_close="scale_to_zero"` releases deployment GPUs while keeping the deployment resource around for later reuse; use `"delete"` only when you want to remove the deployment entirely.
+Set cleanup flags deliberately, call `service.close()` from `try/finally`, and verify the requested final resource state. The canonical cleanup modes and examples live in [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup).
 
 ## Operational guidance
 
@@ -18139,13 +17285,7 @@ Before launching an RFT job, ensure you have the following set up. Our quickstar
   </Accordion>
 
   <Accordion title="Base model selected">
-    Choose a base model that supports fine-tuning. Popular options:
-
-    * `accounts/fireworks/models/llama-v3p1-8b-instruct` - Good balance of quality and speed
-    * `accounts/fireworks/models/qwen3-0p6b` - Fast training for experimentation
-    * `accounts/fireworks/models/llama-v3p1-70b-instruct` - Best quality, slower training
-
-    Check available models at [fireworks.ai/models](https://fireworks.ai/models).
+    Choose a model that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as RFT-compatible. `accounts/fireworks/models/qwen3-4b` is a common small starting point when enabled for the account.
   </Accordion>
 </AccordionGroup>
 
@@ -18383,7 +17523,7 @@ eval-protocol create rft \
   ```bash theme={null}
   # Wrong, includes --base-model
   eval-protocol create rft \
-    --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+    --base-model accounts/fireworks/models/qwen3-4b \
     --warm-start-from accounts/your-account/models/<SFT_MODEL_ID>
   ```
 </Warning>
@@ -18490,7 +17630,7 @@ The Fireworks RFT UI provides a visual interface for creating RFT jobs, with gui
     The UI shows only models that support fine-tuning. Popular choices appear at the top.
 
     <Tip>
-      Not sure which model to choose? Start with `llama-v3p1-8b-instruct` for a good balance of quality and speed.
+      Not sure which model to choose? Use the live Training Shapes method-support matrix and start with a small RFT-compatible model such as `qwen3-4b`.
     </Tip>
   </Step>
 

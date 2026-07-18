@@ -1,5 +1,5 @@
 ---
-title: "Update Run"
+title: "Update run"
 source: https://docs.langchain.com/langsmith/smith-api/run/update-run
 path: langsmith/smith-api/run/update-run
 ---

@@ -82,7 +82,7 @@ Your remote service must implement a single `/init` endpoint that accepts rollou
 ```json theme={null}
 {
   "completion_params": {
-    "model": "accounts/fireworks/models/llama-v3p1-8b-instruct",
+    "model": "accounts/fireworks/models/qwen3-4b",
     "temperature": 0.7,
     "max_tokens": 2048
   },
@@ -384,7 +384,7 @@ Once your remote server is deployed, create an RFT job that uses it:
 
 ```bash theme={null}
 eval-protocol create rft \
-  --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --base-model accounts/fireworks/models/qwen3-4b \
   --remote-server-url https://your-evaluator.example.com \
   --dataset my-dataset
 ```

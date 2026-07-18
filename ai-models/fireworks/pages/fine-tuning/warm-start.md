@@ -29,7 +29,7 @@ eval-protocol create rft \
   ```bash theme={null}
   # Wrong, includes --base-model
   eval-protocol create rft \
-    --base-model accounts/fireworks/models/llama-v3p1-8b-instruct \
+    --base-model accounts/fireworks/models/qwen3-4b \
     --warm-start-from accounts/your-account/models/<SFT_MODEL_ID>
   ```
 </Warning>

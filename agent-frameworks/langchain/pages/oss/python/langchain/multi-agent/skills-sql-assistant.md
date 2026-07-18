@@ -1060,7 +1060,7 @@ The agent saw the lightweight skill description in its system prompt, recognized
   # Example: from langchain_anthropic import ChatAnthropic
   # model = ChatAnthropic(model="claude-3-5-sonnet-20241022")
   from langchain_openai import ChatOpenAI
-  model = ChatOpenAI(model="gpt-4")
+  model = ChatOpenAI(model="gpt-5.5")
 
   # Create the agent with skill support
   agent = create_agent(

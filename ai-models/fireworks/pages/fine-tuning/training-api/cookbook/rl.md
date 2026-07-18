@@ -121,7 +121,7 @@ The same recipe covers the full spectrum from strict on-policy to overlapped off
 | `max_head_offpolicy_versions=0` (default) | **Strict on-policy** — samples that would arrive after the next weight sync are held until the sync. No drift; rollouts and training serialize at batch boundaries. |
 | `max_head_offpolicy_versions=O` (`O > 0`) | **Off-policy with bounded staleness** — samples may land up to `O` weight-sync versions past their submit version, letting sampling overlap with training.          |
 
-Raising `O` later is a single-knob change. For the off-policy gate math, GPU split, and the `perf/*` tuning metrics, see the cookbook skill: [`skills/dev/references/rl/async-rl.md`](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/async-rl.md).
+Raising `O` later is a single-knob change. For the off-policy gate math, GPU split, and the `perf/*` tuning metrics, see the [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md).
 
 ### Policy loss variants
 
@@ -230,7 +230,7 @@ main(cfg)
 
 ## Related guides
 
-* [`skills/dev/references/rl/async-rl.md`](https://github.com/fw-ai/cookbook/blob/main/skills/dev/references/rl/async-rl.md) — full async contract: off-policy gate, `perf/*` metrics, GPU split tuning
+* [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — full async contract: off-policy gate, `perf/*` metrics, GPU split tuning
 * [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated weights reach the deployment
 * [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes
 * [Loss Functions](/fine-tuning/training-api/loss-functions) — policy-loss and datum internals

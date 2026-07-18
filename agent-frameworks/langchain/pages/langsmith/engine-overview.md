@@ -35,7 +35,7 @@ Engine scans each connected tracing project every 6 hours, clustering and priori
 ## Get started
 
 <CardGroup>
-  <Card title="Set up Engine" icon="settings" href="/langsmith/engine#set-up-langsmith-engine">
+  <Card title="Set up Engine" icon="settings" href="/langsmith/engine#set-up-engine">
     Enable Engine for your organization and configure it for a tracing project.
   </Card>
 

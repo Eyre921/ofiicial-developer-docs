@@ -397,7 +397,7 @@ If training is slower than expected:
 
 Reduce costs without sacrificing too much quality:
 
-1. **Start small**: Experiment with `qwen3-0p6b` before scaling to larger models
+1. **Start small**: Experiment with `qwen3-4b` before scaling to larger models
 2. **Reduce rollouts**: Use `--n 4` instead of 8
 3. **Shorter responses**: Lower `--max-tokens` to minimum needed
 4. **Fewer epochs**: Start with 1 epoch, only add more if needed

@@ -302,7 +302,7 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
     With `firectl`, you can monitor the progress of the tuning job by running
 
     ```bash theme={null}
-    firectl sftj get <DATASET_ID>
+    firectl sftj get <JOB_ID>
     ```
 
     Once the job successfully completes, you will see the new LoRA model in your model list

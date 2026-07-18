@@ -8,6 +8,18 @@ Fine-tune models with Fireworks-managed infrastructure — no custom code requir
 
 Give Fireworks your data and configuration. The platform handles scheduling, training, checkpointing, and model output. Training data uses the **OpenAI-compatible chat completion format**, so existing OpenAI SFT datasets work with no conversion required.
 
+## How to launch managed training
+
+These interfaces create the same underlying managed jobs:
+
+| Interface                                   | Use when                                                                                                                     |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Fireworks UI**                            | You want guided configuration and visual monitoring                                                                          |
+| **`firectl` or REST API**                   | You want scripted and reproducible job operations                                                                            |
+| **Coding agent + Fireworks training skill** | You want natural-language planning, validation, complete parameter and cost confirmation, orchestration, and troubleshooting |
+
+[Install the training skill](/fine-tuning/agent/use-with-coding-agents) or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
+
 ## Methods
 
 <CardGroup>
@@ -19,8 +31,8 @@ Give Fireworks your data and configuration. The platform handles scheduling, tra
     Train vision-language models with image and text pairs
   </Card>
 
-  <Card title="Direct Preference Optimization" href="/fine-tuning/dpo-fine-tuning" icon="arrows-left-right">
-    Align models with human preferences using pairwise comparisons
+  <Card title="Preference Optimization (DPO / ORPO)" href="/fine-tuning/dpo-fine-tuning" icon="arrows-left-right">
+    Train on preferred and non-preferred response pairs using DPO or ORPO
   </Card>
 
   <Card title="Reinforcement Fine Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
@@ -42,11 +54,11 @@ For SFT and DPO pricing, see the [pricing page](https://fireworks.ai/pricing).
 
 ## Supported base models
 
-Fireworks supports fine-tuning for most major open source models, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama families. The same set of base models is available for SFT, DPO, and RFT — once a base model is supported, every managed fine-tuning method works against it.
+Fireworks supports fine-tuning for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is method and parameter-mode specific: a model can support SFT without supporting DPO, RFT, LoRA, or full-parameter training on the same shapes. Use the live [Training Shapes](/fine-tuning/training-api/training-shapes) method-support matrix before creating a job.
 
 Custom models uploaded by users are not automatically tunable. To use managed fine-tuning with an uploaded custom base model, the model must have a corresponding Hugging Face URL. Fireworks uses that URL to infer the training renderer and locate compatible training shapes. A custom model is supported only when Fireworks can resolve both a supported renderer and at least one compatible training shape. After the Hugging Face URL is set, tunability is refreshed by a background operation that runs about every 30 minutes, so the model may take up to 30 minutes to show as `Tunable: true`. We are working to make this refresh faster.
 
-The table below is generated from the live training shape registry. The "Max supported context length" is the largest `max_supported_context_length` across all training shapes registered for that base model — use it as the upper bound when you set a per-job context length on `firectl sftj create`, `firectl dpoj create`, or RFT job creation.
+The table below is generated from the live training shape registry. The "Max supported context length" is a catalog-level model maximum. For a job, use the maximum context of a shape that supports the selected method and tuning mode. Set it with `firectl sftj create`, `firectl dpo-job create`, or the corresponding RFT command.
 
 | Base model                      | Max supported context length |
 | ------------------------------- | ---------------------------- |

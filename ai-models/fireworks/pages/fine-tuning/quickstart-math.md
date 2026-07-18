@@ -14,7 +14,7 @@ Train a model to be an expert at answering GSM8K math questions
   **Following the [RFT Overview](/fine-tuning/reinforcement-fine-tuning-models)?** This is the **Single-Turn Training** path—the fastest way to get started with RFT.
 </Note>
 
-In this quickstart, you'll train a small language model—`Qwen3 0.6B`—to solve mathematical reasoning problems from the GSM8K dataset.
+In this quickstart, you'll train `Qwen3 4B` to solve mathematical reasoning problems from the GSM8K dataset.
 
 ## What you'll learn
 
@@ -144,12 +144,12 @@ First, set your Fireworks API key so the Fireworks CLI can authenticate you:
 export FIREWORKS_API_KEY="<your-fireworks-key>"
 ```
 
-Next, we'll launch the RFT job using the evaluator and dataset you just registered. We're using a small base model (`qwen3-0p6b`) to keep training fast and inexpensive. Because your evaluator and dataset were already registered with Fireworks in the last step, we don't need to specify them again here.
+Next, launch the RFT job using the evaluator and dataset you registered. This example uses `qwen3-4b`; confirm current RFT eligibility and pricing before launch.
 
 ```bash theme={null}
 cd ..
-eval-protocol create rft 
-    --base-model accounts/fireworks/models/qwen3-0p6b
+eval-protocol create rft \
+  --base-model accounts/fireworks/models/qwen3-4b
 ```
 
 The CLI will output dashboard links where you can monitor your training job in real-time.

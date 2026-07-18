@@ -70,7 +70,7 @@ config = TrainerJobConfig(
 
 With `firectl`, use `--inactivity-timeout 30m` or `--inactivity-timeout 2h`. When the value is omitted or set to `0`, Fireworks uses the 60-minute default.
 
-To disable automatic inactivity cleanup, set `disableInactivityCleanup` in the REST API, set `TrainerJobConfig.disable_inactivity_cleanup=True` in the Training SDK, or pass `--disable-inactivity-cleanup` in `firectl`. The trainer will not be stopped due to inactivity, and GPU usage continues to accrue while the trainer is running, so delete the trainer when you no longer need it.
+To disable automatic inactivity cleanup, set `disableInactivityCleanup` in the REST API, set `TrainerJobConfig.disable_inactivity_cleanup=True` in the Python SDK, or pass `--disable-inactivity-cleanup` in `firectl`. The trainer will not be stopped due to inactivity, and GPU usage continues to accrue while the trainer is running, so delete the trainer when you no longer need it.
 
 ## Manual compatibility cleanup
 
