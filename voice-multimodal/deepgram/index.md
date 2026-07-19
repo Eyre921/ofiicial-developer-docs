@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 366 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 371 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -124,6 +124,7 @@
 - `docs/genesys-and-deepgram-voice-agent` — [Genesys Cloud CX and Deepgram Voice Agent](pages/docs/genesys-and-deepgram-voice-agent.md) · [原文](https://developers.deepgram.com/docs/genesys-and-deepgram-voice-agent.md)
 - `docs/genesys-deepgram` — [Genesys and Deepgram](pages/docs/genesys-deepgram.md) · [原文](https://developers.deepgram.com/docs/genesys-deepgram.md)
 - `docs/getting-started-with-the-streaming-test-suite` — [Live Streaming Starter Kit](pages/docs/getting-started-with-the-streaming-test-suite.md) · [原文](https://developers.deepgram.com/docs/getting-started-with-the-streaming-test-suite.md)
+- `docs/handling-audio-issues-in-text-to-speech` — [Handling Audio Issues in Text To Speech](pages/docs/handling-audio-issues-in-text-to-speech.md) · [原文](https://developers.deepgram.com/docs/handling-audio-issues-in-text-to-speech.md)
 - `docs/improving-aura-2-formatting` — [Formatting Text for Aura-2](pages/docs/improving-aura-2-formatting.md) · [原文](https://developers.deepgram.com/docs/improving-aura-2-formatting.md)
 - `docs/inbound-telephony-agent` — [Build an Inbound Telephony Agent](pages/docs/inbound-telephony-agent.md) · [原文](https://developers.deepgram.com/docs/inbound-telephony-agent.md)
 - `docs/integrate-deepgram-stt-with-audiocodes` — [AudioCodes (LiveHub) and Deepgram STT](pages/docs/integrate-deepgram-stt-with-audiocodes.md) · [原文](https://developers.deepgram.com/docs/integrate-deepgram-stt-with-audiocodes.md)
@@ -131,6 +132,7 @@
 - `docs/integrate-deepgram-with-zoom` — [Zoom and Deepgram](pages/docs/integrate-deepgram-with-zoom.md) · [原文](https://developers.deepgram.com/docs/integrate-deepgram-with-zoom.md)
 - `docs/intent-recognition` — [Intent Recognition](pages/docs/intent-recognition.md) · [原文](https://developers.deepgram.com/docs/intent-recognition.md)
 - `docs/interim-results` — [Interim Results](pages/docs/interim-results.md) · [原文](https://developers.deepgram.com/docs/interim-results.md)
+- `docs/k8s-troubleshooting` — [Troubleshooting](pages/docs/k8s-troubleshooting.md) · [原文](https://developers.deepgram.com/docs/k8s-troubleshooting.md)
 - `docs/keyterm` — [Keyterm Prompting](pages/docs/keyterm.md) · [原文](https://developers.deepgram.com/docs/keyterm.md)
 - `docs/keywords` — [Keywords](pages/docs/keywords.md) · [原文](https://developers.deepgram.com/docs/keywords.md)
 - `docs/keywords-vs-search` — [When To Use Keywords and Search](pages/docs/keywords-vs-search.md) · [原文](https://developers.deepgram.com/docs/keywords-vs-search.md)
@@ -148,6 +150,7 @@
 - `docs/measuring-streaming-latency` — [Measuring STT Latency](pages/docs/measuring-streaming-latency.md) · [原文](https://developers.deepgram.com/docs/measuring-streaming-latency.md)
 - `docs/media-input-settings` — [Media Input Settings](pages/docs/media-input-settings.md) · [原文](https://developers.deepgram.com/docs/media-input-settings.md)
 - `docs/metrics-guide` — [Metrics Guide](pages/docs/metrics-guide.md) · [原文](https://developers.deepgram.com/docs/metrics-guide.md)
+- `docs/migrating-from-amazon-web-services-aws-transcribe-to-deepgram` — [Migrating From Amazon Web Services (AWS) Transcribe to Deepgram](pages/docs/migrating-from-amazon-web-services-aws-transcribe-to-deepgram.md) · [原文](https://developers.deepgram.com/docs/migrating-from-amazon-web-services-aws-transcribe-to-deepgram.md)
 - `docs/migrating-from-assembly-ai-speech-to-text-to-deepgram` — [Migrating from AssemblyAI Speech-to-Text to Deepgram](pages/docs/migrating-from-assembly-ai-speech-to-text-to-deepgram.md) · [原文](https://developers.deepgram.com/docs/migrating-from-assembly-ai-speech-to-text-to-deepgram.md)
 - `docs/migrating-from-google-speech-to-text-stt-to-deepgram` — [Migrating From Google Speech-to-Text (STT) to Deepgram](pages/docs/migrating-from-google-speech-to-text-stt-to-deepgram.md) · [原文](https://developers.deepgram.com/docs/migrating-from-google-speech-to-text-stt-to-deepgram.md)
 - `docs/migrating-from-openai-whisper-to-deepgram` — [Migrating From OpenAI Whisper to Deepgram](pages/docs/migrating-from-openai-whisper-to-deepgram.md) · [原文](https://developers.deepgram.com/docs/migrating-from-openai-whisper-to-deepgram.md)
@@ -183,6 +186,7 @@
 - `docs/search` — [Search](pages/docs/search.md) · [原文](https://developers.deepgram.com/docs/search.md)
 - `docs/securing-your-cluster` — [Securing Your Cluster](pages/docs/securing-your-cluster.md) · [原文](https://developers.deepgram.com/docs/securing-your-cluster.md)
 - `docs/security-and-compliance-sagemaker` — [Security and Compliance](pages/docs/security-and-compliance-sagemaker.md) · [原文](https://developers.deepgram.com/docs/security-and-compliance-sagemaker.md)
+- `docs/self-hosted-add-ons` — [Self-Hosted Add Ons](pages/docs/self-hosted-add-ons.md) · [原文](https://developers.deepgram.com/docs/self-hosted-add-ons.md)
 - `docs/self-hosted-deployment-environments` — [Deployment Environments](pages/docs/self-hosted-deployment-environments.md) · [原文](https://developers.deepgram.com/docs/self-hosted-deployment-environments.md)
 - `docs/self-hosted-ingress-auth` — [Ingress Authentication](pages/docs/self-hosted-ingress-auth.md) · [原文](https://developers.deepgram.com/docs/self-hosted-ingress-auth.md)
 - `docs/self-hosted-introduction` — [Introduction](pages/docs/self-hosted-introduction.md) · [原文](https://developers.deepgram.com/docs/self-hosted-introduction.md)
@@ -208,6 +212,7 @@
 - `docs/summarization` — [Summarization](pages/docs/summarization.md) · [原文](https://developers.deepgram.com/docs/summarization.md)
 - `docs/supported-audio-formats` — [Supported Audio Formats](pages/docs/supported-audio-formats.md) · [原文](https://developers.deepgram.com/docs/supported-audio-formats.md)
 - `docs/supported-entity-types` — [Supported Entity Types](pages/docs/supported-entity-types.md) · [原文](https://developers.deepgram.com/docs/supported-entity-types.md)
+- `docs/terraform-deploy-sagemaker` — [Deploy with Terraform](pages/docs/terraform-deploy-sagemaker.md) · [原文](https://developers.deepgram.com/docs/terraform-deploy-sagemaker.md)
 - `docs/test-amazon-sagemaker-endpoint` — [Validate a Deepgram SageMaker Endpoint](pages/docs/test-amazon-sagemaker-endpoint.md) · [原文](https://developers.deepgram.com/docs/test-amazon-sagemaker-endpoint.md)
 - `docs/text-chunking-for-tts-optimization` — [Text Chunking for TTS REST Optimization](pages/docs/text-chunking-for-tts-optimization.md) · [原文](https://developers.deepgram.com/docs/text-chunking-for-tts-optimization.md)
 - `docs/text-intelligence` — [Getting Started](pages/docs/text-intelligence.md) · [原文](https://developers.deepgram.com/docs/text-intelligence.md)
@@ -218,6 +223,7 @@
 - `docs/text-intention-recognition` — [Intent Recognition](pages/docs/text-intention-recognition.md) · [原文](https://developers.deepgram.com/docs/text-intention-recognition.md)
 - `docs/text-sentiment-analysis` — [Sentiment Analysis](pages/docs/text-sentiment-analysis.md) · [原文](https://developers.deepgram.com/docs/text-sentiment-analysis.md)
 - `docs/text-summarization` — [Summarization](pages/docs/text-summarization.md) · [原文](https://developers.deepgram.com/docs/text-summarization.md)
+- `docs/text-to-speech` — [Getting Started](pages/docs/text-to-speech.md) · [原文](https://developers.deepgram.com/docs/text-to-speech.md)
 - `docs/text-to-speech-latency` — [Text to Speech Latency](pages/docs/text-to-speech-latency.md) · [原文](https://developers.deepgram.com/docs/text-to-speech-latency.md)
 - `docs/text-to-speech-prompting` — [Text to Speech Prompting](pages/docs/text-to-speech-prompting.md) · [原文](https://developers.deepgram.com/docs/text-to-speech-prompting.md)
 - `docs/text-topic-detection` — [Topic Detection](pages/docs/text-topic-detection.md) · [原文](https://developers.deepgram.com/docs/text-topic-detection.md)
@@ -327,7 +333,6 @@
 - `reference/deepgram-api-overview` — [Deepgram API Overview](pages/reference/deepgram-api-overview.md) · [原文](https://developers.deepgram.com/reference/deepgram-api-overview.md)
 - `reference/manage/billing/breakdown/get` — [Get Project Billing Breakdown](pages/reference/manage/billing/breakdown/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/breakdown/get.md)
 - `reference/manage/billing/fields/get` — [List Project Billing Fields](pages/reference/manage/billing/fields/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/fields/get.md)
-- `reference/manage/billing/list` — [Get Project Balances](pages/reference/manage/billing/list.md) · [原文](https://developers.deepgram.com/reference/manage/billing/list.md)
 - `reference/manage/billing/purchases/get` — [List Project Purchases](pages/reference/manage/billing/purchases/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/purchases/get.md)
 - `reference/manage/invites/create` — [Create a Project Invite](pages/reference/manage/invites/create.md) · [原文](https://developers.deepgram.com/reference/manage/invites/create.md)
 - `reference/manage/invites/delete` — [Delete a Project Invite](pages/reference/manage/invites/delete.md) · [原文](https://developers.deepgram.com/reference/manage/invites/delete.md)
@@ -335,13 +340,13 @@
 - `reference/manage/keys/create` — [Create a Project Key](pages/reference/manage/keys/create.md) · [原文](https://developers.deepgram.com/reference/manage/keys/create.md)
 - `reference/manage/keys/delete` — [Delete a Project Key](pages/reference/manage/keys/delete.md) · [原文](https://developers.deepgram.com/reference/manage/keys/delete.md)
 - `reference/manage/keys/get` — [Get a Project Key](pages/reference/manage/keys/get.md) · [原文](https://developers.deepgram.com/reference/manage/keys/get.md)
+- `reference/manage/keys/list` — [List Project Keys](pages/reference/manage/keys/list.md) · [原文](https://developers.deepgram.com/reference/manage/keys/list.md)
 - `reference/manage/members/delete` — [Delete a Project Member](pages/reference/manage/members/delete.md) · [原文](https://developers.deepgram.com/reference/manage/members/delete.md)
 - `reference/manage/members/list` — [List Project Members](pages/reference/manage/members/list.md) · [原文](https://developers.deepgram.com/reference/manage/members/list.md)
 - `reference/manage/members/scopes/list` — [List Project Member Scopes](pages/reference/manage/members/scopes/list.md) · [原文](https://developers.deepgram.com/reference/manage/members/scopes/list.md)
 - `reference/manage/members/scopes/update` — [Update Project Member Scopes](pages/reference/manage/members/scopes/update.md) · [原文](https://developers.deepgram.com/reference/manage/members/scopes/update.md)
 - `reference/manage/models/get` — [Get an Available Model](pages/reference/manage/models/get.md) · [原文](https://developers.deepgram.com/reference/manage/models/get.md)
 - `reference/manage/models/list` — [List All Available Models](pages/reference/manage/models/list.md) · [原文](https://developers.deepgram.com/reference/manage/models/list.md)
-- `reference/manage/projects/delete` — [Delete a Project](pages/reference/manage/projects/delete.md) · [原文](https://developers.deepgram.com/reference/manage/projects/delete.md)
 - `reference/manage/projects/get` — [Get a Project](pages/reference/manage/projects/get.md) · [原文](https://developers.deepgram.com/reference/manage/projects/get.md)
 - `reference/manage/projects/leave` — [Leave a Project](pages/reference/manage/projects/leave.md) · [原文](https://developers.deepgram.com/reference/manage/projects/leave.md)
 - `reference/manage/projects/list` — [List Projects](pages/reference/manage/projects/list.md) · [原文](https://developers.deepgram.com/reference/manage/projects/list.md)

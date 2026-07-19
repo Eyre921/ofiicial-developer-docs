@@ -1,20 +1,20 @@
 ---
-title: "Get Project Balances"
-source: https://developers.deepgram.com/reference/manage/billing/list.md
-path: reference/manage/billing/list
+title: "List Project Keys"
+source: https://developers.deepgram.com/reference/manage/keys/list.md
+path: reference/manage/keys/list
 ---
 
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
-# Get Project Balances
+# List Project Keys
 
-GET https://api.deepgram.com/v1/projects/{project_id}/balances
+GET https://api.deepgram.com/v1/projects/{project_id}/keys
 
-Generates a list of outstanding balances for the specified project
+Retrieves all API keys associated with the specified project
 
-Reference: https://developers.deepgram.com/reference/manage/billing/list
+Reference: https://developers.deepgram.com/reference/manage/keys/list
 
 ## OpenAPI Specification
 
@@ -24,13 +24,13 @@ info:
   title: Deepgram API Specification
   version: 1.0.0
 paths:
-  /v1/projects/{project_id}/balances:
+  /v1/projects/{project_id}/keys:
     get:
       operationId: list
-      summary: Get Project Balances
-      description: Generates a list of outstanding balances for the specified project
+      summary: List Project Keys
+      description: Retrieves all API keys associated with the specified project
       tags:
-        - manage > v1 > projects > billing > balances
+        - manage > v1 > projects > keys
       parameters:
         - name: project_id
           in: path
@@ -38,6 +38,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: status
+          in: query
+          description: Only return keys with a specific status
+          required: false
+          schema:
+            $ref: '#/components/schemas/V1ProjectsProjectIdKeysGetParametersStatus'
         - name: Authorization
           in: header
           description: |
@@ -48,11 +54,11 @@ paths:
             type: string
       responses:
         '200':
-          description: A list of outstanding balances
+          description: A list of API keys
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListProjectBalancesV1Response'
+                $ref: '#/components/schemas/ListProjectKeysV1Response'
         '400':
           description: Invalid Request
           content:
@@ -64,32 +70,51 @@ servers:
     description: Base
 components:
   schemas:
-    ListProjectBalancesV1ResponseBalancesItems:
+    V1ProjectsProjectIdKeysGetParametersStatus:
+      type: string
+      enum:
+        - active
+        - expired
+      title: V1ProjectsProjectIdKeysGetParametersStatus
+    ListProjectKeysV1ResponseApiKeysItemsMember:
       type: object
       properties:
-        balance_id:
+        member_id:
           type: string
-          description: The unique identifier of the balance
-        amount:
-          type: number
-          format: double
-          default: 0
-          description: The amount of the balance
-        units:
+        email:
           type: string
-          description: The units of the balance, such as "USD"
-        purchase_order_id:
-          type: string
-          description: Description or reference of the purchase
-      title: ListProjectBalancesV1ResponseBalancesItems
-    ListProjectBalancesV1Response:
+      title: ListProjectKeysV1ResponseApiKeysItemsMember
+    ListProjectKeysV1ResponseApiKeysItemsApiKey:
       type: object
       properties:
-        balances:
+        api_key_id:
+          type: string
+        comment:
+          type: string
+        scopes:
           type: array
           items:
-            $ref: '#/components/schemas/ListProjectBalancesV1ResponseBalancesItems'
-      title: ListProjectBalancesV1Response
+            type: string
+        created:
+          type: string
+          format: date-time
+      title: ListProjectKeysV1ResponseApiKeysItemsApiKey
+    ListProjectKeysV1ResponseApiKeysItems:
+      type: object
+      properties:
+        member:
+          $ref: '#/components/schemas/ListProjectKeysV1ResponseApiKeysItemsMember'
+        api_key:
+          $ref: '#/components/schemas/ListProjectKeysV1ResponseApiKeysItemsApiKey'
+      title: ListProjectKeysV1ResponseApiKeysItems
+    ListProjectKeysV1Response:
+      type: object
+      properties:
+        api_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListProjectKeysV1ResponseApiKeysItems'
+      title: ListProjectKeysV1Response
     ErrorResponseTextError:
       type: string
       title: ErrorResponseTextError
@@ -143,22 +168,24 @@ components:
 
 
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
-  "balances": [
+  "api_keys": [
     {
-      "balance_id": "b7f3c9d2-4a1e-4f8b-9c3d-2e5a7f8b9c1d",
-      "amount": 1250.75,
-      "units": "USD",
-      "purchase_order_id": "PO-2024-04567"
+      "member": {
+        "member_id": "1000-2000-3000-4000",
+        "email": "john@test.com"
+      },
+      "api_key": {
+        "api_key_id": "1234567890abcdef1234567890abcdef",
+        "comment": "A comment",
+        "scopes": [
+          "admin"
+        ],
+        "created": "2021-01-01T00:00:00Z"
+      }
     }
   ]
 }
@@ -169,26 +196,18 @@ components:
 ```python
 import requests
 
-url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances"
+url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys"
 
-payload = {}
-headers = {
-    "Authorization": "Token <apiKey>",
-    "Content-Type": "application/json"
-}
+headers = {"Authorization": "Token <apiKey>"}
 
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances';
-const options = {
-  method: 'GET',
-  headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{}'
-};
+const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys';
+const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
   const response = await fetch(url, options);
@@ -204,21 +223,17 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances"
+	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
+	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("Authorization", "Token <apiKey>")
-	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -235,15 +250,13 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances")
+url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
 request["Authorization"] = 'Token <apiKey>'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -253,10 +266,8 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances")
+HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys")
   .header("Authorization", "Token <apiKey>")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -266,11 +277,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances', [
-  'body' => '{}',
+$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys', [
   'headers' => [
     'Authorization' => 'Token <apiKey>',
-    'Content-Type' => 'application/json',
   ],
 ]);
 
@@ -280,31 +289,22 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances");
+var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "Authorization": "Token <apiKey>",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
+let headers = ["Authorization": "Token <apiKey>"]
 
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/keys")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
