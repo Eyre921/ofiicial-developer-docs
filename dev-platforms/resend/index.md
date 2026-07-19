@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 307 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 308 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -287,6 +287,7 @@
 - `docs/send-with-supabase-smtp` — [Send emails using Supabase with SMTP](pages/docs/send-with-supabase-smtp.md) · [原文](https://resend.com/docs/send-with-supabase-smtp)
 - `docs/send-with-sveltekit` — [Send emails with SvelteKit](pages/docs/send-with-sveltekit.md) · [原文](https://resend.com/docs/send-with-sveltekit)
 - `docs/send-with-symfony` — [Send emails with Symfony](pages/docs/send-with-symfony.md) · [原文](https://resend.com/docs/send-with-symfony)
+- `docs/send-with-tanstack-start` — [Send emails with TanStack Start](pages/docs/send-with-tanstack-start.md) · [原文](https://resend.com/docs/send-with-tanstack-start)
 - `docs/send-with-vercel-functions` — [Send emails with Vercel Functions](pages/docs/send-with-vercel-functions.md) · [原文](https://resend.com/docs/send-with-vercel-functions)
 - `docs/send-with-wordpress-smtp` — [Send emails using WordPress with SMTP](pages/docs/send-with-wordpress-smtp.md) · [原文](https://resend.com/docs/send-with-wordpress-smtp)
 - `docs/v0-integration` — [Send emails with v0 and Resend](pages/docs/v0-integration.md) · [原文](https://resend.com/docs/v0-integration)

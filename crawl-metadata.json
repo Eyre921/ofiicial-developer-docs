@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15006 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 170,
@@ -99,11 +99,11 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 307,
+    "pages": 308,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -188,7 +188,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 97,
+    "pages": 88,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -196,16 +196,16 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 294,
+    "pages": 295,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 374,
+    "pages": 366,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
     "pages": 766,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-18T23:30:47Z"
+  "_last_crawl": "2026-07-19T11:30:50Z"
 }
