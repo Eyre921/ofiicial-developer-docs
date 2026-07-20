@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 371 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -333,6 +333,8 @@
 - `reference/deepgram-api-overview` — [Deepgram API Overview](pages/reference/deepgram-api-overview.md) · [原文](https://developers.deepgram.com/reference/deepgram-api-overview.md)
 - `reference/manage/billing/breakdown/get` — [Get Project Billing Breakdown](pages/reference/manage/billing/breakdown/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/breakdown/get.md)
 - `reference/manage/billing/fields/get` — [List Project Billing Fields](pages/reference/manage/billing/fields/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/fields/get.md)
+- `reference/manage/billing/get` — [Get a Project Balance](pages/reference/manage/billing/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/get.md)
+- `reference/manage/billing/list` — [Get Project Balances](pages/reference/manage/billing/list.md) · [原文](https://developers.deepgram.com/reference/manage/billing/list.md)
 - `reference/manage/billing/purchases/get` — [List Project Purchases](pages/reference/manage/billing/purchases/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/purchases/get.md)
 - `reference/manage/invites/create` — [Create a Project Invite](pages/reference/manage/invites/create.md) · [原文](https://developers.deepgram.com/reference/manage/invites/create.md)
 - `reference/manage/invites/delete` — [Delete a Project Invite](pages/reference/manage/invites/delete.md) · [原文](https://developers.deepgram.com/reference/manage/invites/delete.md)
@@ -347,6 +349,7 @@
 - `reference/manage/members/scopes/update` — [Update Project Member Scopes](pages/reference/manage/members/scopes/update.md) · [原文](https://developers.deepgram.com/reference/manage/members/scopes/update.md)
 - `reference/manage/models/get` — [Get an Available Model](pages/reference/manage/models/get.md) · [原文](https://developers.deepgram.com/reference/manage/models/get.md)
 - `reference/manage/models/list` — [List All Available Models](pages/reference/manage/models/list.md) · [原文](https://developers.deepgram.com/reference/manage/models/list.md)
+- `reference/manage/projects/delete` — [Delete a Project](pages/reference/manage/projects/delete.md) · [原文](https://developers.deepgram.com/reference/manage/projects/delete.md)
 - `reference/manage/projects/get` — [Get a Project](pages/reference/manage/projects/get.md) · [原文](https://developers.deepgram.com/reference/manage/projects/get.md)
 - `reference/manage/projects/leave` — [Leave a Project](pages/reference/manage/projects/leave.md) · [原文](https://developers.deepgram.com/reference/manage/projects/leave.md)
 - `reference/manage/projects/list` — [List Projects](pages/reference/manage/projects/list.md) · [原文](https://developers.deepgram.com/reference/manage/projects/list.md)

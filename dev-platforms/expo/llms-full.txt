@@ -1603,7 +1603,7 @@ The following skills are available in the `expo` plugin. Skills name prefixed wi
 | [`expo-dev-client`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-dev-client/SKILL.md) | Build and distribute Expo development clients locally or via TestFlight for internal testing. For production TestFlight releases and store submission, use the eas-app-stores skill. |
 | [`expo-dom`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-dom/SKILL.md) | Use Expo DOM components to run web code in a webview on native and as-is on web. Migrate web code to native incrementally. For the end-to-end migration of a whole web app, use the expo-web-to-native skill. |
 | [`expo-examples`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-examples/SKILL.md) | Expo's official example projects - the expo/examples repo of ~70 `with-*` integrations (Stripe, Clerk, Supabase, OpenAI, maps, Reanimated, SQLite, Skia, NativeWind, and more). Use when integrating a third-party library or service into an existing Expo app and you want the canonical, version-matched pattern to adapt, or when scaffolding a new project from one with `npx create-expo --example`. |
-| [`expo-module`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-module/SKILL.md) | Guide for creating and writing Expo native modules and views using the Expo Modules API (Swift, Kotlin, TypeScript). Covers module definition DSL, native views, shared objects, config plugins, lifecycle hooks, autolinking, and type system. Use when building or modifying native modules for Expo. |
+| [`expo-module`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-module/SKILL.md) | Guide for creating and writing Expo native modules and views using the Expo Modules API (Swift, Kotlin, TypeScript). Covers module definition DSL, native views, shared objects, config plugins, lifecycle hooks, autolinking, and type system. Use when building or modifying native modules for Expo. Not for migrating an existing Swift module from the definition DSL to the Expo Modules API 2.0 macros; use expo-migrate-module (from the expo-experiments plugin) for that. |
 | [`expo-native-ui`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-native-ui/SKILL.md) | Build beautiful, native-feeling Expo screens. Covers Apple HIG styling, semantic colors, native controls, SF Symbols, media, animations, visual effects, gradients, storage, and responsive layout. For routing and navigation, use the expo-router skill. |
 | [`expo-project-structure`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-project-structure/SKILL.md) | Folder structure for a new Expo app. Use when scaffolding or laying out a new Expo project with Expo Router, or deciding where a file should live in one. For new projects only — never restructure an existing app to match. |
 | [`expo-router`](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-router/SKILL.md) | Navigation and routing for Expo Router. Covers file-based routes, groups and dynamic routes, folder organization, Link with previews and context menus, native Stack, page titles, modals and form sheets, NativeTabs, headers and toolbars, and header search bars. |
@@ -3847,7 +3847,7 @@ See [Add a custom font](/develop/user-interface/fonts.md#add-a-custom-font) for 
 ---
 
 ---
-modificationDate: June 26, 2026
+modificationDate: July 20, 2026
 title: Color themes
 description: Learn how to support light and dark modes in your app.
 ---
@@ -3920,7 +3920,7 @@ bun expo config --type introspect
 
 #### Using an existing React Native project?
 
-#### Android
+### Android
 
 Ensure that the `uiMode` flag is present on your `MainActivity` (and any other activities where this behavior is desired) in **AndroidManifest.xml**:
 
@@ -3947,7 +3947,7 @@ public class MainActivity extends ReactActivity {
 }
 ```
 
-#### iOS
+### iOS
 
 You can configure supported styles with the [`UIUserInterfaceStyle`](https://developer.apple.com/documentation/bundleresources/information_property_list/uiuserinterfacestyle) key in your app **Info.plist**. Use `Automatic` to support both light and dark modes.
 
@@ -16597,7 +16597,7 @@ The following resources are useful for learning about Expo tooling and services.
 ---
 
 ---
-modificationDate: February 20, 2026
+modificationDate: July 20, 2026
 title: 'Guides: Overview'
 ---
 
@@ -16607,23 +16607,23 @@ This documentation is available as Markdown for AI agents and LLMs. See the [ful
 
 This section contains information about the development with Expo and Expo Application Services (EAS):
 
-### Development process
+## Development process
 
 Learn about the process of [building an app with Expo](/workflow/overview.md) to help understand the mental model of the core development loop. This section also dives into additional configurations and workflows you may require during the development process to help you develop, deploy, and maintain your app. It contains in-depth information about [app config](/workflow/configuration.md), [permissions](/guides/permissions.md), [universal links](/linking/into-your-app.md), [custom native code](/workflow/continuous-native-generation.md), [web](/workflow/web.md), and more.
 
-### Expo Router
+## Expo Router
 
 Learn about using different navigation functionalities from the [Expo Router](/router/introduction.md) library. It also covers a comprehensive [Hooks API](/versions/latest/sdk/router.md#hooks) that the library provides and other aspects of navigation such as [Authentication](/router/advanced/authentication.md), [Redirects](/router/reference/redirects.md), [Testing](/router/reference/testing.md), and more.
 
-### Expo Modules API
+## Expo Modules API
 
 Learn how to add and use native modules in your app using [Expo Modules API](/modules/overview.md).
 
-### Tutorials
+## Tutorials
 
 If you're looking for step-by-step tutorials for Expo and EAS, see the [Tutorial section](/tutorial/overview.md) which includes comprehensive tutorials for both [building apps with Expo](/tutorial/introduction.md) and [using EAS services](/tutorial/eas/introduction.md).
 
-### Other content
+## Other content
 
 Apart from the essentials listed above, there are plenty of other features to explore such as [Push notifications](/push-notifications/overview.md). We also have a collection of guides in the **Assorted** and third-party **Integrations** sections.
 
@@ -17022,7 +17022,7 @@ Running `npx expo config` will display the final configuration that will be used
 ---
 
 ---
-modificationDate: June 26, 2026
+modificationDate: July 20, 2026
 title: Continuous Native Generation (CNG)
 description: Learn about managing your native projects with Continuous Native Generation (CNG) and Prebuild.
 ---
@@ -17164,7 +17164,7 @@ The `--clean` option deletes any existing native directories before generating. 
 
 For example, some config plugins aren't idempotent. When a project utilizes multiple "dangerous modifiers" to add regex changes to an app's code, it can lead to unexpected behavior. This is why using the `--clean` option is the safest way to use the prebuild command and is generally recommended in most cases.
 
-#### Using `--clean` option
+### Using `--clean` option
 
 When using the `--clean` option, you'll be warned if you have any uncommitted changes to your git code repository, as this option will delete and recreate all of your native project files. This prompt is optional and will be skipped when encountered in CI. You can disable this check by enabling the environment variable `EXPO_NO_GIT_STATUS=1`.
 
@@ -24037,7 +24037,7 @@ This separation simplifies the workflow for native developers, as they don't nee
 ---
 
 ---
-modificationDate: June 30, 2026
+modificationDate: July 20, 2026
 title: How to add Expo to a native app using the isolated approach
 description: A guide for adding Expo and React Native as a native library and integrating it into an existing (brownfield) native app using the isolated approach.
 ---
@@ -24266,7 +24266,7 @@ With the artifacts built, you can now integrate them into your existing native a
 
 #### Android
 
-#### Add the Maven dependency
+### Add the Maven dependency
 
 Start by adding the dependency to your app's **build.gradle.kts**. The group, artifact name, and version should match your config plugin settings:
 
@@ -24288,7 +24288,7 @@ dependencyResolutionManagement {
 }
 ```
 
-#### Show a React Native screen
+### Show a React Native screen
 
 Create an activity that extends `BrownfieldActivity` and use the `showReactNativeFragment()` extension:
 
@@ -24325,7 +24325,7 @@ startActivity(Intent(this, ExpoActivity::class.java))
 
 #### iOS
 
-#### Add the artifacts to your project
+### Add the artifacts to your project
 
 The integration steps depend on whether you built XCFrameworks or a Swift Package.
 
@@ -24344,7 +24344,7 @@ When `build:ios` produces a Swift Package (for example, **./artifacts/MyAppPacka
 
 To support both `--debug` and `--release`, point your host app at the matching package for each build configuration.
 
-#### Initialize React Native
+### Initialize React Native
 
 Call `ReactNativeHostManager.shared.initialize()` early in your app's lifecycle. A good place is your `AppDelegate`:
 
@@ -24364,7 +24364,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 
-#### Present a React Native view
+### Present a React Native view
 
 #### UIKit
 
@@ -46598,7 +46598,7 @@ The listener interfaces may change from time to time between Expo SDK releases. 
 ---
 
 ---
-modificationDate: April 07, 2026
+modificationDate: July 20, 2026
 title: iOS AppDelegate subscribers
 description: Learn how to subscribe to iOS system events relevant to an app, such as inbound links and notifications using Expo modules API.
 ---
@@ -46629,11 +46629,11 @@ Now you can subscribe to events by adding delegate functions to your subscriber 
 
 Delegate functions that need to return a value have some additional logic to reconcile responses from multiple subscribers and try to satisfy all of them. There are two good examples of such edge cases:
 
-#### `application(_:didFinishLaunchingWithOptions:) -> Bool`
+### `application(_:didFinishLaunchingWithOptions:) -> Bool`
 
 According to the [Apple documentation](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622921-application), you should return `false` if the app cannot handle the URL resource or continue a user activity, otherwise `true` should be returned. The return value is ignored if the app is launched because of a remote notification. In such situations, if at least one of the subscribers returns `true`, the `ExpoAppDelegate` will return `true` as well.
 
-#### `application(_:didReceiveRemoteNotification:fetchCompletionHandler:)`
+### `application(_:didReceiveRemoteNotification:fetchCompletionHandler:)`
 
 This method tells the app delegate that a remote notification arrived and gives the app the opportunity to fetch new data. It receives a completion block to execute when the fetch operation is completed. This block should be called with the fetch result value that best describes the results of your fetch request. Possible values are: `UIBackgroundFetchResult.newData`, `UIBackgroundFetchResult.noData` or `UIBackgroundFetchResult.failed`. In this scenario, `ExpoAppDelegate` passes a new completion block to each subscriber, waits until all are completed and collects the results before calling the original completion block. The final result depends on the results collected from the subscribers, as follows in the following order:
 
@@ -48093,7 +48093,7 @@ After sending the notification from the tool, you should see the notification on
 ---
 
 ---
-modificationDate: June 09, 2026
+modificationDate: July 20, 2026
 title: Send notifications with the Expo Push Service
 description: Learn how to call Expo Push Service API to send push notifications from your server.
 ---
@@ -48447,7 +48447,7 @@ Finally, the push notification services from Google and Apple follow their own p
 
 This section helps you diagnose and resolve common network issues. Your server must have connectivity to Google Cloud Platform services in the United States region, as this is where Expo's push notification service is hosted.
 
-#### DNS resolution
+### DNS resolution
 
 Test if your server can resolve Expo's push service domain name:
 
@@ -48458,7 +48458,7 @@ dig exp.host
 dig @8.8.8.8 exp.host
 ```
 
-#### Network routing and connectivity
+### Network routing and connectivity
 
 Verify your server can reach Expo's endpoints:
 
@@ -48481,7 +48481,7 @@ Common issues to check:
 -   Network ACLs or security groups (in cloud environments) restricting outbound connections
 -   Packet fragmentation due to MTU size issues
 
-#### TLS certificate validation
+### TLS certificate validation
 
 Ensure your server can validate the server's TLS certificate:
 
@@ -52642,7 +52642,7 @@ A good place to start learning TypeScript is the official [TypeScript Handbook](
 ---
 
 ---
-modificationDate: June 24, 2026
+modificationDate: July 20, 2026
 title: Build Expo apps for TV
 description: A guide for building an Expo app for an Android TV or Apple TV target.
 ---
@@ -52797,7 +52797,7 @@ At this time, TV applications work with the following libraries and APIs listed 
 
 TV also works with [React Navigation](https://reactnavigation.org/), [React Native Skia](https://shopify.github.io/react-native-skia/), and many other commonly used third-party React Native libraries. See [React Native directory](https://reactnative.directory/?tvos=true) to learn more about supported third-party libraries.
 
-#### Limitations
+### Limitations
 
 -   The [Expo DevClient](/versions/latest/sdk/dev-client.md) library is only supported in SDK 54 and later:
     -   **Android TV**: All operations are supported, similar to an Android phone.
@@ -57934,7 +57934,7 @@ The bundler that you're running in your terminal (using `npx expo start`) is usi
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 20, 2026
 title: Troubleshooting Proxies
 description: Learn about troubleshooting proxies with a set of recommended tools.
 ---
@@ -58009,7 +58009,7 @@ Now, in Charles under the "Help" menu > Install Charles Root Certificate, and th
 
 npm, git, Brew, Curl, and any other command-line applications need proxy access too.
 
-#### For npm
+### For npm
 
 Open `~/.npmrc` and set:
 
