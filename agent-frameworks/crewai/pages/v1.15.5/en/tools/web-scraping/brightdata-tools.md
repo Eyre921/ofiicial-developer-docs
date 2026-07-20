@@ -1,0 +1,111 @@
+---
+title: "Bright Data Tools"
+source: https://docs.crewai.com/v1.15.5/en/tools/web-scraping/brightdata-tools
+path: v1.15.5/en/tools/web-scraping/brightdata-tools
+---
+
+Bright Data integrations for SERP search, Web Unlocker scraping, and Dataset API.
+
+# Bright Data Tools
+
+This set of tools integrates Bright Data services for web extraction.
+
+## Installation
+
+```shell theme={null}
+uv add crewai-tools requests aiohttp
+```
+
+## Environment Variables
+
+* `BRIGHT_DATA_API_KEY` (required)
+* `BRIGHT_DATA_ZONE` (for SERP/Web Unlocker)
+
+Create credentials at [https://brightdata.com/](https://brightdata.com/) (sign up, then create an API token and zone).
+See their docs: [https://developers.brightdata.com/](https://developers.brightdata.com/)
+
+## Included Tools
+
+* `BrightDataSearchTool`: SERP search (Google/Bing/Yandex) with geo/language/device options.
+* `BrightDataWebUnlockerTool`: Scrape pages with anti-bot bypass and rendering.
+* `BrightDataDatasetTool`: Run Dataset API jobs and fetch results.
+
+## Examples
+
+### SERP Search
+
+```python Code theme={null}
+from crewai_tools import BrightDataSearchTool
+
+tool = BrightDataSearchTool(
+    query="CrewAI", 
+    country="us",
+)
+
+print(tool.run())
+```
+
+### Web Unlocker
+
+```python Code theme={null}
+from crewai_tools import BrightDataWebUnlockerTool
+
+tool = BrightDataWebUnlockerTool(
+    url="https://example.com", 
+    format="markdown",
+)
+
+print(tool.run(url="https://example.com"))
+```
+
+### Dataset API
+
+```python Code theme={null}
+from crewai_tools import BrightDataDatasetTool
+
+tool = BrightDataDatasetTool(
+    dataset_type="ecommerce", 
+    url="https://example.com/product",
+)
+
+print(tool.run())
+```
+
+## Troubleshooting
+
+* 401/403: verify `BRIGHT_DATA_API_KEY` and `BRIGHT_DATA_ZONE`.
+* Empty/blocked content: enable rendering or try a different zone.
+
+## Example
+
+```python Code theme={null}
+from crewai import Agent, Task, Crew
+from crewai_tools import BrightDataSearchTool
+
+tool = BrightDataSearchTool(
+    query="CrewAI", 
+    country="us",
+)
+
+agent = Agent(
+    role="Web Researcher",
+    goal="Search with Bright Data",
+    backstory="Finds reliable results",
+    tools=[tool],
+    verbose=True,
+)
+
+task = Task(
+    description="Search for CrewAI and summarize top results",
+    expected_output="Short summary with links",
+    agent=agent,
+)
+
+crew = Crew(
+    agents=[agent], 
+    tasks=[task],
+    verbose=True,
+)
+
+result = crew.kickoff()
+```

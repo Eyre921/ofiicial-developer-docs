@@ -352,7 +352,7 @@ What happens past the allowance depends on your plan:
 If the import operation fails (e.g., after encountering a vector of the wrong dimension in an import with `on_error="abort"`), you will still be charged for the records read. However, if the import fails because of an internal system error, you will not incur charges. In this case, the import will return the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
 
 <Note>
-  Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through July 31, 2026. Usage beyond the free allotment is billed at the standard import rate. Builder and Free plans are not eligible.
+  Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through August 31, 2026. Usage beyond the free allotment is billed at the standard import rate. Builder and Free plans are not eligible.
 </Note>
 
 For the latest import pricing rates, see [Pricing](https://www.pinecone.io/pricing/).

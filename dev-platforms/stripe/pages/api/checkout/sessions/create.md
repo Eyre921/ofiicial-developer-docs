@@ -278,7 +278,7 @@ Possible enum values:
       The type of image for the icon. Must be one of `file` or `url`.
 
     - `branding_settings.icon.file` (string, optional)
-      The ID of a [File upload](https://stripe.com/docs/api/files) representing the icon. Purpose must be `business_icon`. Required if `type` is `file` and disallowed otherwise.
+      The ID of a [File upload](https://docs.stripe.com/api/files.md) representing the icon. Purpose must be `business_icon`. Required if `type` is `file` and disallowed otherwise.
 
     - `branding_settings.icon.url` (string, optional)
       The URL of the image. Required if `type` is `url` and disallowed otherwise.
@@ -290,7 +290,7 @@ Possible enum values:
       The type of image for the logo. Must be one of `file` or `url`.
 
     - `branding_settings.logo.file` (string, optional)
-      The ID of a [File upload](https://stripe.com/docs/api/files) representing the logo. Purpose must be `business_logo`. Required if `type` is `file` and disallowed otherwise.
+      The ID of a [File upload](https://docs.stripe.com/api/files.md) representing the logo. Purpose must be `business_logo`. Required if `type` is `file` and disallowed otherwise.
 
     - `branding_settings.logo.url` (string, optional)
       The URL of the image. Required if `type` is `url` and disallowed otherwise.
@@ -337,7 +337,7 @@ Possible enum values:
       Displays a checkbox for the terms of service agreement which requires customer to check before being able to pay.
 
 - `currency` (enum, required conditionally)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). Required in `setup` mode when `payment_method_types` is not set.
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md). Required in `setup` mode when `payment_method_types` is not set.
 
 - `custom_fields` (array of objects, optional)
   Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `custom`.
@@ -627,7 +627,7 @@ Possible enum values:
     Data used to generate a new [Price](https://docs.stripe.com/docs/api/prices.md) object inline. One of `price` or `price_data` is required.
 
     - `line_items.price_data.currency` (enum, required)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `line_items.price_data.product` (string, required conditionally)
       The ID of the [Product](https://docs.stripe.com/api/products.md) that this [Price](https://docs.stripe.com/api/prices.md) will belong to. One of `product` or `product_data` is required.
@@ -971,7 +971,7 @@ Possible enum values:
     contains details about the ACSS Debit payment method options. You can’t set this parameter if `ui_mode` is `elements`.
 
     - `payment_method_options.acss_debit.currency` (enum, optional)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). This is only accepted for Checkout Sessions in `setup` mode.
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md). This is only accepted for Checkout Sessions in `setup` mode.
 Possible enum values:
       - `cad`
         Canadian dollars
@@ -2776,10 +2776,10 @@ Possible enum values:
         A non-negative integer in cents representing how much to charge.
 
       - `shipping_options.shipping_rate_data.fixed_amount.currency` (enum, required)
-        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
       - `shipping_options.shipping_rate_data.fixed_amount.currency_options` (object, optional)
-        Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+        Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `shipping_options.shipping_rate_data.fixed_amount.currency_options.<currency>.amount` (integer, required)
           A non-negative integer in cents representing how much to charge.
@@ -2832,7 +2832,7 @@ Possible enum values:
   A subset of parameters to be passed to subscription creation for Checkout Sessions in `subscription` mode.
 
   - `subscription_data.application_fee_percent` (float, optional)
-    A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account. To use an application fee percent, the request must be made on behalf of another account, using the `Stripe-Account` header or an OAuth key. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
+    A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account. To use an application fee percent, the request must be made on behalf of another account, using the `Stripe-Account` header or an OAuth key. For more information, see the application fees [documentation](https://docs.stripe.com/connect/subscriptions.md#collecting-fees-on-subscriptions).
 
   - `subscription_data.billing_cycle_anchor` (timestamp, optional)
     A future timestamp to anchor the subscription’s billing cycle for new subscriptions. You can’t set this parameter if `ui_mode` is `elements`.

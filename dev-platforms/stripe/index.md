@@ -136,7 +136,7 @@
 - `connect/accounts` — [Connected account types](pages/connect/accounts.md) · [原文](https://docs.stripe.com/connect/accounts.md)
 - `connect/accounts-v2` — [Accounts v2 API](pages/connect/accounts-v2.md) · [原文](https://docs.stripe.com/connect/accounts-v2.md)
 - `connect/accounts-v2/connected-account-configuration` — [connected account configuration](pages/connect/accounts-v2/connected-account-configuration.md) · [原文](https://docs.stripe.com/connect/accounts-v2/connected-account-configuration.md)
-- `connect/authentication` — [Making API calls for connected accounts](pages/connect/authentication.md) · [原文](https://docs.stripe.com/connect/authentication.md)
+- `connect/authentication` — [Make API calls for connected accounts](pages/connect/authentication.md) · [原文](https://docs.stripe.com/connect/authentication.md)
 - `connect/charges` — [how charges work in a Connect integration](pages/connect/charges.md) · [原文](https://docs.stripe.com/connect/charges.md)
 - `connect/custom-accounts` — [Using Custom connected accounts](pages/connect/custom-accounts.md) · [原文](https://docs.stripe.com/connect/custom-accounts.md)
 - `connect/dashboard` — [Manage connected accounts with the Dashboard](pages/connect/dashboard.md) · [原文](https://docs.stripe.com/connect/dashboard.md)

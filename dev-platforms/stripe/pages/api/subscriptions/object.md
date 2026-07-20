@@ -353,7 +353,7 @@ Possible enum values:
   Time at which the object was created. Measured in seconds since the Unix epoch.
 
 - `currency` (enum)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `customer` (string, expandable (can be expanded into an object with the `expand` request parameter))
   ID of the customer who owns the subscription.
@@ -620,10 +620,10 @@ Possible enum values:
         Time at which the object was created. Measured in seconds since the Unix epoch.
 
       - `items.data.price.currency` (enum)
-        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
       - `items.data.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `items.data.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
           When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
@@ -1584,10 +1584,10 @@ Possible enum values:
         Time at which the object was created. Measured in seconds since the Unix epoch.
 
       - `pending_update.subscription_items.price.currency` (enum)
-        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
       - `pending_update.subscription_items.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `pending_update.subscription_items.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
           When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.

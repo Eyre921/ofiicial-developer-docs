@@ -18,9 +18,17 @@ If you don't already have an account and Sentry project established, head over t
 
 ## [Features](https://docs.sentry.io/platforms/react-native.md#features)
 
-In addition to capturing errors, you can monitor interactions between multiple services or applications by [enabling tracing](https://docs.sentry.io/concepts/key-terms/tracing.md). You can also collect and analyze performance profiles from real users with [profiling](https://docs.sentry.io/product/profiling.md).
+In addition to [error monitoring](https://docs.sentry.io/product/issues.md), here are some of the features you can configure when installing Sentry:
 
-Select which Sentry features you'd like to install in addition to Error Monitoring to get the corresponding installation and configuration instructions below.
+* **[Logs](https://docs.sentry.io/platforms/react-native/logs.md)**: Send, view, and query logs from your app alongside your errors to get richer context when debugging.
+* **[Tracing](https://docs.sentry.io/platforms/react-native/tracing.md)**: Monitor the timing and flow of requests and operations as they happen across different systems in your application to improve performance.
+* **[Session Replay](https://docs.sentry.io/platforms/react-native/session-replay.md)**: Get reproductions of user sessions to improve your app experience.
+* **[Profiling](https://docs.sentry.io/platforms/react-native/profiling.md)**: Collect and analyze function-level information about your code to fine-tune performance.
+* **[Application Metrics](https://docs.sentry.io/platforms/react-native/metrics.md)**: Send, view, and query counters, gauges, and measurements from your app to track health and drill down into related traces, logs, and errors.
+* **[User Feedback](https://docs.sentry.io/platforms/react-native/user-feedback.md)**: Collect user feedback from anywhere inside your application at any time, without needing an error event to occur first.
+* **[Size Analysis](https://docs.sentry.io/platforms/react-native/size-analysis.md)**: Monitor your mobile app's size in pre-production to prevent unexpected size increases (regressions) from reaching users.
+
+Tracing, profiling, session replay, and logs can be added via the [Configure](https://docs.sentry.io/platforms/react-native.md#configure) section below. For the other features, refer to each product page for instructions on getting started.
 
 ## [Install](https://docs.sentry.io/platforms/react-native.md#install)
 

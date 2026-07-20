@@ -9,7 +9,7 @@ View, rename, and delete projects in your organization.
 This page shows you how to view project details, rename a project, and delete a project.
 
 <Note>
-  You must be an [organization owner](/guides/assistant/admin/organizations-overview#organization-roles) or [project owner](/guides/assistant/admin/projects-overview#project-roles) to edit project details or delete a project.
+  You must be an [organization owner](/guides/organizations/understanding-organizations#organization-roles) or [project owner](/guides/projects/understanding-projects#project-roles) to edit project details or delete a project.
 </Note>
 
 ## View project details
@@ -17,7 +17,7 @@ This page shows you how to view project details, rename a project, and delete a 
 You can view the details of a project, as in the following example:
 
 <Note>
-  An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+  An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
 </Note>
 
 <CodeGroup>
@@ -91,7 +91,7 @@ You can change the name of your project:
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
     </Note>
 
     <CodeGroup>
@@ -175,7 +175,7 @@ To delete a project, you must first [delete all data](/guides/manage-data/delete
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
+      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
     </Note>
 
     <CodeGroup>

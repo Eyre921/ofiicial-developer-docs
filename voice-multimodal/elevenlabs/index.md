@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 765 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 766 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -217,6 +217,7 @@
 - `docs/api-reference/tests/create` — [Create test](pages/docs/api-reference/tests/create.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/create.md)
 - `docs/api-reference/tests/delete` — [Delete test](pages/docs/api-reference/tests/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/delete.md)
 - `docs/api-reference/tests/get` — [Get test](pages/docs/api-reference/tests/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/get.md)
+- `docs/api-reference/tests/list` — [List tests](pages/docs/api-reference/tests/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/list.md)
 - `docs/api-reference/tests/run-tests` — [Run tests on agent](pages/docs/api-reference/tests/run-tests.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/run-tests.md)
 - `docs/api-reference/tests/summaries` — [Get test summaries](pages/docs/api-reference/tests/summaries.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/summaries.md)
 - `docs/api-reference/tests/test-folders/create` — [Create folder](pages/docs/api-reference/tests/test-folders/create.md) · [原文](https://elevenlabs.io/docs/api-reference/tests/test-folders/create.md)

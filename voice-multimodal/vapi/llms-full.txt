@@ -80,6 +80,7 @@
 - [Plivo SIP Integration](https://docs.vapi.ai/advanced/sip/plivo.md): Learn to connect your Plivo SIP trunk to Vapi for inbound and outbound calls
 - [Amazon Chime SDK SIP Integration](https://docs.vapi.ai/advanced/sip/amazon-chime.md): How to integrate Amazon Chime SDK Voice Connector with Vapi
 - [Troubleshoot SIP trunk credential errors](https://docs.vapi.ai/advanced/sip/troubleshoot-sip-trunk-credential-errors.md): Learn to resolve gateway creation failures when setting up a BYO SIP trunk
+- [Troubleshoot SIP response codes](https://docs.vapi.ai/advanced/sip/troubleshoot-sip-response-codes.md): Diagnose SIP response codes by response class, failure point, and call direction, then check the relevant Vapi, provider, network, or destination configuration.
 - [Phone Number Hooks](https://docs.vapi.ai/phone-numbers/phone-number-hooks.md)
 - [Phone Calling](https://docs.vapi.ai/phone-calling.md): Learn how to create and configure phone numbers with Vapi
 - [Outbound Calling](https://docs.vapi.ai/calls/outbound-calling.md): Learn how to send outbound calls from Vapi.

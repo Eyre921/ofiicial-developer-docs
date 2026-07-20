@@ -180,7 +180,7 @@ Possible enum values:
     - `required`
 
 - `currency` (enum)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `custom_fields` (array of objects)
   Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `custom`.
@@ -375,7 +375,7 @@ Possible enum values:
       Total after discounts and taxes.
 
     - `line_items.data.currency` (enum)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `line_items.data.description` (string, nullable)
       An arbitrary string attached to the object. Often useful for displaying to users. Defaults to product name.
@@ -462,10 +462,10 @@ Possible enum values:
         Time at which the object was created. Measured in seconds since the Unix epoch.
 
       - `line_items.data.price.currency` (enum)
-        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
       - `line_items.data.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `line_items.data.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
           When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.

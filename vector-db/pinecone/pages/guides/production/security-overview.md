@@ -12,64 +12,7 @@ Understand Pinecone's security features, including authentication, encryption, a
 
 Each Pinecone [project](/guides/projects/understanding-projects) has one or more [API keys](/guides/projects/manage-api-keys). In order to make calls to the Pinecone API, a user must provide a valid API key for the relevant Pinecone project.
 
-You can [manage API key permissions](/guides/projects/manage-api-keys) in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/keys). The available permission roles are as follows:
-
-#### General permissions
-
-<Tabs>
-  <Tab title="Pinecone console">
-    | Role | Permissions                                     |
-    | :--- | :---------------------------------------------- |
-    | All  | Permissions to read and write all project data. |
-  </Tab>
-
-  <Tab title="API">
-    | Role            | Permissions                                      |
-    | :-------------- | :----------------------------------------------- |
-    | `ProjectEditor` | Permissions to read  and write all project data. |
-    | `ProjectViewer` | Permissions to read all project data.            |
-  </Tab>
-</Tabs>
-
-#### Control plane permissions
-
-<Tabs>
-  <Tab title="Pinecone console">
-    | Role      | Permissions                                                                                                 |
-    | :-------- | :---------------------------------------------------------------------------------------------------------- |
-    | ReadWrite | Permissions to list, describe, create, delete, and configure indexes, backups, collections, and assistants. |
-    | ReadOnly  | Permissions to list and describe indexes, backups, collections, and assistants.                             |
-    | None      | No control plane permissions.                                                                               |
-  </Tab>
-
-  <Tab title="API">
-    | Role                 | Permissions                                                                                                 |
-    | :------------------- | :---------------------------------------------------------------------------------------------------------- |
-    | `ControlPlaneEditor` | Permissions to list, describe, create, delete, and configure indexes, backups, collections, and assistants. |
-    | `ControlPlaneViewer` | Permissions to list and describe indexes, backups, collections, and assistants.                             |
-    | None                 | No control plane permissions.                                                                               |
-  </Tab>
-</Tabs>
-
-#### Data plane permissions
-
-<Tabs>
-  <Tab title="Pinecone console">
-    | Role      | Permissions                                                                                                                                                                                                                                                                                                            |
-    | :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | ReadWrite | <ul><li>Indexes: Permissions to query, import, fetch, add, update, and delete index data.</li><li>Pinecone Assistant: Permissions to add, list, view, and delete files; chat with an assistant, and evaluate responses.</li><li>Pinecone Inference: Permissions to generate embeddings and rerank documents.</li></ul> |
-    | ReadOnly  | <ul><li>Indexes: Permissions to query, fetch, list ID, and view stats.</li><li>Pinecone Assistant: Permissions to list and view files, chat with an assistant, and evaluate responses.</li><li>Pinecone Inference: Permissions to generate embeddings and rerank documents.</li></ul>                                  |
-    | None      | No data plane permissions.                                                                                                                                                                                                                                                                                             |
-  </Tab>
-
-  <Tab title="API">
-    | Role              | Permissions                                                                                                                                                                                                                                                                                                            |
-    | :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `DataPlaneEditor` | <ul><li>Indexes: Permissions to query, import, fetch, add, update, and delete index data.</li><li>Pinecone Assistant: Permissions to add, list, view, and delete files; chat with an assistant, and evaluate responses.</li><li>Pinecone Inference: Permissions to generate embeddings and rerank documents.</li></ul> |
-    | `DataPlaneViewer` | <ul><li>Indexes: Permissions to query, fetch, list ID, and view stats.</li><li>Pinecone Assistant: Permissions to list and view files, chat with an assistant, and evaluate responses.</li><li>Pinecone Inference: Permissions to generate embeddings and rerank documents.</li></ul>                                  |
-    | None              | No data plane permissions.                                                                                                                                                                                                                                                                                             |
-  </Tab>
-</Tabs>
+You can [manage API key permissions](/guides/projects/manage-api-keys) in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/keys). For the roles you can assign to an API key and the operations each role covers, see [Project roles](/guides/projects/understanding-projects#project-roles).
 
 ### Organization single sign-on (SSO)
 
@@ -83,13 +26,15 @@ Pinecone uses role-based access controls (RBAC) to manage access to resources.
 
 Service accounts, API keys, and users are all *principals*. A principal's access is determined by the *roles* assigned to it. Roles are assigned to a principal for a *resource*, either a project or an organization. The roles available to be assigned depend on the type of principal and resource.
 
+You can manage roles in the [Pinecone console](https://app.pinecone.io) or programmatically with the Admin API. For more information, see [Manage roles and access](/guides/production/manage-rbac).
+
 #### Service account roles
 
 A service account can be assigned roles for the organization it belongs to, and any projects within that organization. For more information, see [Organization roles](/guides/organizations/understanding-organizations#organization-roles) and [Project roles](/guides/projects/understanding-projects#project-roles).
 
 #### API key roles
 
-An API key can only be assigned permissions for the projects it belongs to. For more information, see [API keys](#api-keys).
+An API key can be assigned any [project role](/guides/projects/understanding-projects#project-roles) except `ProjectOwner`, `ProjectManager`, and `ProjectMember`, and only for the project it belongs to. For more information, see [API keys](#api-keys).
 
 #### User roles
 

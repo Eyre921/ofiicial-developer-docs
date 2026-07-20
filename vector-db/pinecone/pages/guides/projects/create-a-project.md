@@ -8,7 +8,7 @@ Create a new Pinecone project in your organization.
 
 This page shows you how to create a project.
 
-If you are an [organization owner or user](/guides/organizations/understanding-organizations#organization-roles), you can create a project in your organization:
+If you are an [organization owner or organization manager](/guides/organizations/understanding-organizations#organization-roles), you can create a project in your organization:
 
 <Tabs>
   <Tab title="Pinecone console">

@@ -17465,6 +17465,12 @@ components:
           total 0
         type: openrouter:bash
       properties:
+        arguments:
+          description: The raw tool-call arguments string as emitted by the model.
+          type: string
+        call_id:
+          description: The model-generated tool call id from the originating turn.
+          type: string
         command:
           type: string
         exitCode:
@@ -29074,6 +29080,16 @@ paths:
                   - data
                 type: object
           description: Returns a list of endpoints
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '500':
           content:
             application/json:
@@ -33266,6 +33282,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ModelResponse'
           description: Returns the model details
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:
@@ -33760,6 +33786,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequestResponse'
           description: Bad Request - Invalid request parameters or malformed input
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '500':
           content:
             application/json:
@@ -33882,6 +33918,16 @@ paths:
                   - data
                 type: object
           description: Returns a list of endpoints
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:
@@ -33944,6 +33990,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequestResponse'
           description: Bad Request - Invalid request parameters or malformed input
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '500':
           content:
             application/json:
@@ -34055,6 +34111,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:

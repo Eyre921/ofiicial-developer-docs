@@ -6,9 +6,9 @@ path: guides/assistant/admin/manage-api-keys
 
 Create and manage API keys with custom permissions.
 
-Each Pinecone [project](/guides/projects/understanding-projects) has one or more API keys. In order to [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
+Each Pinecone [project](/guides/assistant/admin/projects-overview) has one or more API keys. In order to [make calls to the Pinecone API](/guides/assistant/quickstart/sdk-quickstart), you must provide a valid API key for the relevant Pinecone project.
 
-This page shows you how to [create](#create-an-api-key), [view](#view-api-keys), [change permissions for](#change-api-key-permissions), and [delete](#delete-an-api-key) API keys.
+This page shows you how to [create](#create-an-api-key), [view](#view-project-api-keys), [update](#update-an-api-key), and [delete](#delete-an-api-key) API keys.
 
 <Warning>
   If you use custom API key permissions, ensure that you [target your index by host](/guides/manage-data/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
@@ -30,7 +30,7 @@ You can create a new API key for your project, as follows:
 
     5. Enter an **API key name**.
 
-    6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [API key permissions](/guides/production/security-overview#api-keys).
+    6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [Project roles](/guides/assistant/admin/projects-overview#project-roles).
 
        <Note>
          Users on the Starter and Builder plans can set the permissions to **All** only. To customize the permissions further, [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
@@ -49,7 +49,7 @@ You can create a new API key for your project, as follows:
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -119,7 +119,7 @@ You can [view the API keys](/reference/api/latest/admin/list_api_keys) for your 
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -197,7 +197,7 @@ You can [view the details of an API key](/reference/api/latest/admin/fetch_api_k
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -250,7 +250,7 @@ You can [view the details of an API key](/reference/api/latest/admin/fetch_api_k
   Users on the Starter and Builder plans cannot change API key permissions once they are set. Instead, [create a new API key](#create-an-api-key) or [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
 </Note>
 
-If you are a [project owner](/guides/projects/understanding-projects#project-roles), you can update the name and roles of an API key:
+If you are a [project owner](/guides/assistant/admin/projects-overview#project-roles), you can update the name and roles of an API key:
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -264,14 +264,14 @@ If you are a [project owner](/guides/projects/understanding-projects#project-rol
 
     5. Change the name and/or permissions for the API key as needed.
 
-       For information about the different API key permissions, refer to [Understanding security - API keys](/guides/production/security-overview#api-keys).
+       For information about the different API key permissions, refer to [Project roles](/guides/assistant/admin/projects-overview#project-roles).
 
     6. Click **Update**.
   </Tab>
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -326,7 +326,7 @@ If you are a [project owner](/guides/projects/understanding-projects#project-rol
 
 ## Delete an API key
 
-If you are a [project owner](/guides/projects/understanding-projects#project-roles), you can delete your API key:
+If you are a [project owner](/guides/assistant/admin/projects-overview#project-roles), you can delete your API key:
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -344,7 +344,7 @@ If you are a [project owner](/guides/projects/understanding-projects#project-rol
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
     </Note>
 
     <CodeGroup>

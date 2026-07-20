@@ -51,7 +51,7 @@ path: api/balance/balance_object
     Balance amount.
 
   - `available.currency` (enum)
-    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
   - `available.source_types` (object, nullable)
     Breakdown of balance by source types. Funds coming from certain source / payment method types must be shown separately. All payment methods that do not have this restriction will be combined with the `card` source type balance.
@@ -72,7 +72,7 @@ path: api/balance/balance_object
     Balance amount.
 
   - `connect_reserved.currency` (enum)
-    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
   - `connect_reserved.source_types` (object, nullable)
     Breakdown of balance by source types. Funds coming from certain source / payment method types must be shown separately. All payment methods that do not have this restriction will be combined with the `card` source type balance.
@@ -93,7 +93,7 @@ path: api/balance/balance_object
     Balance amount.
 
   - `instant_available.currency` (enum)
-    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
   - `instant_available.net_available` (array of objects, nullable, expandable (can be expanded into an object with the `expand` request parameter))
     Breakdown of balance by destination.
@@ -138,7 +138,7 @@ path: api/balance/balance_object
       Balance amount.
 
     - `issuing.available.currency` (enum)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `issuing.available.source_types` (object, nullable)
       Breakdown of balance by source types. Funds coming from certain source / payment method types must be shown separately. All payment methods that do not have this restriction will be combined with the `card` source type balance.
@@ -162,7 +162,7 @@ path: api/balance/balance_object
     Balance amount.
 
   - `pending.currency` (enum)
-    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
   - `pending.source_types` (object, nullable)
     Breakdown of balance by source types. Funds coming from certain source / payment method types must be shown separately. All payment methods that do not have this restriction will be combined with the `card` source type balance.
@@ -186,7 +186,7 @@ path: api/balance/balance_object
       Balance amount.
 
     - `refund_and_dispute_prefunding.available.currency` (enum)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `refund_and_dispute_prefunding.available.source_types` (object, nullable)
       Breakdown of balance by source types. Funds coming from certain source / payment method types must be shown separately. All payment methods that do not have this restriction will be combined with the `card` source type balance.
@@ -207,7 +207,7 @@ path: api/balance/balance_object
       Balance amount.
 
     - `refund_and_dispute_prefunding.pending.currency` (enum)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `refund_and_dispute_prefunding.pending.source_types` (object, nullable)
       Breakdown of balance by source types. Funds coming from certain source / payment method types must be shown separately. All payment methods that do not have this restriction will be combined with the `card` source type balance.

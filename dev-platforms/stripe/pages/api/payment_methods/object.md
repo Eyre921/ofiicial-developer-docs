@@ -244,7 +244,7 @@ Possible enum values:
           Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
 
         - `card.generated_from.payment_method_details.card_present.brand_product` (string, nullable)
-          The [product code](https://stripe.com/docs/card-product-codes) that identifies the specific program or product associated with a card.
+          The [product code](https://docs.stripe.com/card-product-codes.md) that identifies the specific program or product associated with a card.
 
         - `card.generated_from.payment_method_details.card_present.capture_before` (timestamp, nullable)
           When using manual capture, a future timestamp after which the charge will be automatically refunded if uncaptured.
@@ -568,7 +568,7 @@ Possible enum values:
     Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
 
   - `card_present.brand_product` (string, nullable)
-    The [product code](https://stripe.com/docs/card-product-codes) that identifies the specific program or product associated with a card.
+    The [product code](https://docs.stripe.com/card-product-codes.md) that identifies the specific program or product associated with a card.
 
   - `card_present.cardholder_name` (string, nullable)
     The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay.

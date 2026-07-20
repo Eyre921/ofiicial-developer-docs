@@ -236,7 +236,7 @@ Possible enum values:
     Data used to generate a new [Price](https://docs.stripe.com/docs/api/prices.md) object inline. One of `price` or `price_data` is required.
 
     - `add_invoice_items.price_data.currency` (enum, required)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `add_invoice_items.price_data.product` (string, required)
       The ID of the [Product](https://docs.stripe.com/api/products.md) that this [Price](https://docs.stripe.com/api/prices.md) will belong to.
@@ -261,7 +261,7 @@ Possible enum values:
     The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
 
 - `application_fee_percent` (float, optional)
-  A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
+  A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://docs.stripe.com/connect/subscriptions.md#collecting-fees-on-subscriptions).
 
 - `automatic_tax` (object, optional)
   Automatic tax settings for this subscription.
@@ -412,7 +412,7 @@ Possible enum values:
   - `send_invoice`
 
 - `currency` (enum, optional)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `customer` (string, optional)
   The identifier of the customer to subscribe.
@@ -520,7 +520,7 @@ Possible enum values:
     Data used to generate a new [Price](https://docs.stripe.com/docs/api/prices.md) object inline.
 
     - `items.price_data.currency` (enum, required)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `items.price_data.product` (string, required)
       The ID of the [Product](https://docs.stripe.com/api/products.md) that this [Price](https://docs.stripe.com/api/prices.md) will belong to.

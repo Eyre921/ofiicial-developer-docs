@@ -14,15 +14,15 @@ This page describes how to set up Pinecone with Okta as the single sign-on (SSO)
 
 This page assumes you have the following:
 
-* Access to your organization's [Pinecone console](https://login.pinecone.io) as an [organization owner](/guides/organizations/understanding-organizations#organization-owners).
+* Access to your organization's [Pinecone console](https://login.pinecone.io) as an [organization owner](/guides/organizations/understanding-organizations#organization-roles).
 * Access to your organization's [Okta Admin console](https://login.okta.com/).
 
 ## 1. Start SSO setup in Pinecone
 
 First, start setting up SSO in Pinecone. In this step, you'll capture a couple values necessary for configuring Okta in [Step 2](#2-create-an-app-integration-in-okta).
 
-1. In the Pinecone console, go to [**Settings > Manage**](https://app.pinecone.io/organizations/-/settings/manage).
-2. In the **Single Sign-On** section, click **Enable SSO**.
+1. In the Pinecone console, go to [**Settings > Access > Identity provider**](https://app.pinecone.io/organizations/-/settings/access/identity-provider).
+2. In the **Single sign-on** section, click **Enable SSO**.
 3. In the **Setup SSO** dialog, copy the **Entity ID** and the **Assertion Consumer Service (ACS) URL**. You'll need these values in [Step 2](#2-create-an-app-integration-in-okta).
 4. Click **Next**.
 
@@ -58,10 +58,14 @@ In [Okta](https://login.okta.com/), follow these steps to create and configure a
    * **Application username**: `Okta username`
    * **Update application username on**: `Create and update`
 
-9. In the **Attribute Statements** section, create the following attribute:
+9. In the **Attribute Statements (SAML)** section, create the following attribute:
 
    * **Name**: `email`
    * **Value**: `user.email`
+
+   <Note>
+     In newer versions of Okta, attribute statements are configured on the app's **Sign On** tab after the app is created, rather than in the app creation wizard. If you don't see the **Attribute Statements (SAML)** section here, finish creating the app, then add the attribute from **Applications > Pinecone > Sign On**, expanding **Show legacy configuration** if needed.
+   </Note>
 
 10. Click **Next**.
 
@@ -103,15 +107,23 @@ In the browser tab or window you kept open in [Step 1](#1-start-sso-setup-in-pin
 
 4. Select a **Default role** for all users who log in with SSO. You can change user roles later.
 
+   <Note>
+     The **Default role** does not apply if you enable [SAML role management](/guides/production/configure-single-sign-on/okta-role-management). In that mode, every user's organization and project roles come entirely from your identity provider's SAML attributes.
+   </Note>
+
    <Warning>
-     When users first log in via SSO, they receive the default SSO role regardless of their previous role. Subsequent SSO logins do not change the role. If the default is **User**, existing owners will lose owner access on their first SSO login.
+     When users first log in via SSO, they receive the default SSO role regardless of their previous role. Subsequent SSO logins do not change the role. If the default is **Member** or **Manager**, existing owners will lose owner access on their first SSO login.
 
      To prevent losing access to organization management features:
 
-     * **Sole owner**: Temporarily set the default to **Owner**, log in via SSO to retain owner access, then change the default back to **User**. After changing it back, check your organization's user list to verify no one else logged in via SSO while the default was **Owner**—if they did, adjust their roles accordingly.
+     * **Sole owner**: Temporarily set the default to **Owner**, log in via SSO to retain owner access, then change the default back to **Member**. After changing it back, check your organization's user list to verify no one else logged in via SSO while the default was **Owner**—if they did, adjust their roles accordingly.
      * **Multiple owners**: Keep at least one owner signed in via email while others log in via SSO. That owner can restore roles as needed, then log in via SSO last.
 
      If all owners lose access, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
    </Warning>
 
 Okta is now ready to be used for single sign-on. Follow the [Okta docs](https://help.okta.com/en-us/content/topics/users-groups-profiles/usgp-main.htm) to learn how to add users and groups.
+
+## Manage roles automatically
+
+Optionally, you can have Pinecone assign organization and project roles automatically from your identity provider on each login, instead of managing them manually. For more information, see [Manage roles with Okta](/guides/production/configure-single-sign-on/okta-role-management).

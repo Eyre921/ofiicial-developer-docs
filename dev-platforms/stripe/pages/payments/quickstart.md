@@ -3378,7 +3378,7 @@ Card scanning can help increase your conversion rate by removing the friction of
 #### Groovy
 
 ```groovy
-implementation 'com.stripe:stripecardscan:23.12.0'
+implementation 'com.stripe:stripecardscan:23.13.0'
 ```
 
 ### Save payment details after payment
@@ -3620,7 +3620,7 @@ To install the SDK, add `stripe-android` to the dependencies block of your `buil
 #### Groovy
 
 ```groovy
-implementation 'com.stripe:stripe-android:23.12.0'
+implementation 'com.stripe:stripe-android:23.13.0'
 ```
 
 > For details on the latest SDK release and past versions, see the [Releases page](https://github.com/stripe/stripe-android/releases) on GitHub.
@@ -3712,7 +3712,7 @@ Card scanning can help increase your conversion rate by removing the friction of
 #### Groovy
 
 ```groovy
-implementation 'com.stripe:stripecardscan:23.12.0'
+implementation 'com.stripe:stripecardscan:23.13.0'
 ```
 
 ### Save payment details after payment

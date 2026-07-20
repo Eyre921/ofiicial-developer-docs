@@ -93,7 +93,7 @@ Possible enum values:
   Time at which the object was created. Measured in seconds since the Unix epoch.
 
 - `currency` (enum, nullable)
-  Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources.
+  Three-letter [ISO code for the currency](https://docs.stripe.com/currencies.md) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources.
 
 - `customer` (string, nullable)
   The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer.
@@ -213,7 +213,7 @@ Possible enum values:
     A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the order.
 
   - `source_order.currency` (enum)
-    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
   - `source_order.email` (string, nullable)
     The email address of the customer placing the order.

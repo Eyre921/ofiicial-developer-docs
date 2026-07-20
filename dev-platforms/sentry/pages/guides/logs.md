@@ -24,15 +24,7 @@ Every structured log follows the same format:
 Sentry.logger.<level>(message, { attributes });
 ```
 
-*Other available variations of the above snippet: Python, PHP, .NET*
-
-Logs in Sentry are automatically trace-connected. Each log shows a trace ID that links to the full [trace view](https://docs.sentry.io/concepts/key-terms/tracing.md#traces-to-trace-view).
-
-```ruby
-Sentry.logger.<level>(message)
-```
-
-*Other available variations of the above snippet: Flutter, Swift, Kotlin*
+*Other available variations of the above snippet: Python, PHP, .NET, Ruby, Flutter, Swift, Kotlin*
 
 **Levels:** `trace`, `debug`, `info`, `warn` (or `warning` in Python), `error`, `fatal`
 

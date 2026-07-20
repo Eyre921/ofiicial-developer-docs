@@ -33,7 +33,7 @@ You need:
 Install or update the Pipecat CLI:
 
 ```bash
-uv tool install pipecat-ai-cli
+uv tool install "pipecat-ai[cli]"
 ```
 
 To update the CLI use:
@@ -136,25 +136,6 @@ stt = DeepgramFluxSTTService(
     api_key=os.getenv("DEEPGRAM_API_KEY"),
     settings=DeepgramFluxSTTService.Settings(
         min_confidence=0.3,
-    ),
-)
-```
-
-Since Deepgram Flux provides its own user turn start and end detection, you should use ExternalUserTurnStrategies to let Flux handle turn management. See [User Turn Strategies](https://docs.pipecat.ai/api-reference/server/utilities/turn-management/user-turn-strategies) for configuration details.
-
-```python
-from pipecat.audio.vad.silero import SileroVADAnalyzer
-from pipecat.turns.user_turn_strategies import ExternalUserTurnStrategies
-from pipecat.processors.aggregators.llm_response_universal import (
-    LLMContextAggregatorPair,
-    LLMUserAggregatorParams,
-)
-
-user_aggregator, assistant_aggregator = LLMContextAggregatorPair(
-    context,  # the existing LLMContext from your bot.py
-    user_params=LLMUserAggregatorParams(
-        user_turn_strategies=ExternalUserTurnStrategies(),
-        vad_analyzer=SileroVADAnalyzer(),
     ),
 )
 ```

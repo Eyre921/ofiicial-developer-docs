@@ -199,7 +199,7 @@ Possible enum values:
     The icon for the Checkout Session. You cannot set both `logo` and `icon`.
 
     - `branding_settings.icon.file` (string, nullable)
-      The ID of a [File upload](https://stripe.com/docs/api/files) representing the icon. Purpose must be `business_icon`. Required if `type` is `file` and disallowed otherwise.
+      The ID of a [File upload](https://docs.stripe.com/api/files.md) representing the icon. Purpose must be `business_icon`. Required if `type` is `file` and disallowed otherwise.
 
     - `branding_settings.icon.type` (enum)
       The type of image for the icon. Must be one of `file` or `url`.
@@ -214,7 +214,7 @@ Possible enum values:
     The logo for the Checkout Session. You cannot set both `logo` and `icon`.
 
     - `branding_settings.logo.file` (string, nullable)
-      The ID of a [File upload](https://stripe.com/docs/api/files) representing the logo. Purpose must be `business_logo`. Required if `type` is `file` and disallowed otherwise.
+      The ID of a [File upload](https://docs.stripe.com/api/files.md) representing the logo. Purpose must be `business_logo`. Required if `type` is `file` and disallowed otherwise.
 
     - `branding_settings.logo.type` (enum)
       The type of image for the logo. Must be one of `file` or `url`.
@@ -315,7 +315,7 @@ Possible enum values:
   Time at which the object was created. Measured in seconds since the Unix epoch.
 
 - `currency` (enum, nullable)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `currency_conversion` (object, nullable)
   Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing.md) sessions created before 2025-03-31.
@@ -738,7 +738,7 @@ Possible enum values:
       Total after discounts and taxes.
 
     - `line_items.data.currency` (enum)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `line_items.data.description` (string, nullable)
       An arbitrary string attached to the object. Often useful for displaying to users. Defaults to product name.
@@ -825,10 +825,10 @@ Possible enum values:
         Time at which the object was created. Measured in seconds since the Unix epoch.
 
       - `line_items.data.price.currency` (enum)
-        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
       - `line_items.data.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+        Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `line_items.data.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
           When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.

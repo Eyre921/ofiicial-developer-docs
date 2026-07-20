@@ -33,26 +33,26 @@ Flux TTS brings the Flux promise to speech synthesis. Where `/v1/speak` renders 
 When connecting to Flux TTS, you must use:
 
 * **Endpoint:** `/v2/speak` (not `/v1/speak`)
-* **Model:** a Flux TTS model string, e.g. `flux-alexis-en`
+* **Model:** a Flux TTS model string, e.g. `flux-haley-en`
 * **Authentication:** `Authorization: Token YOUR_DEEPGRAM_API_KEY`
 
 **WebSocket URL format:**
 
 ```
-wss://api.deepgram.com/v2/speak?model=flux-alexis-en
+wss://api.deepgram.com/v2/speak?model=flux-haley-en
 ```
 
 ### Connection query parameters
 
 The streaming WebSocket produces **raw audio** (no container), so it accepts only the parameters below. Unknown or misspelled parameters are rejected, as are batch-only parameters (`container`, `bit_rate`, `callback`, `callback_method`, `priority`).
 
-| Parameter     | Type    | Default      | Description                                                                                                                                  |
-| ------------- | ------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`       | string  | —            | **Required.** The Flux TTS model to use (e.g. `flux-alexis-en`). Must be a `flux-*` model; an Aura model returns an endpoint-specific error. |
-| `encoding`    | enum    | `linear16`   | Raw audio encoding: `linear16`, `mulaw`, or `alaw`.                                                                                          |
-| `sample_rate` | integer | model native | Output sample rate. With `linear16`: `8000`, `16000`, `24000`, `32000`, `44100`, `48000`. With `mulaw`/`alaw`: `8000` or `16000`.            |
-| `mip_opt_out` | boolean | `false`      | Opt out of the Model Improvement Program.                                                                                                    |
-| `tag`         | string  | —            | Custom tag(s) for request tracking. Repeatable.                                                                                              |
+| Parameter     | Type    | Default      | Description                                                                                                                                 |
+| ------------- | ------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `model`       | string  | —            | **Required.** The Flux TTS model to use (e.g. `flux-haley-en`). Must be a `flux-*` model; an Aura model returns an endpoint-specific error. |
+| `encoding`    | enum    | `linear16`   | Raw audio encoding: `linear16`, `mulaw`, or `alaw`.                                                                                         |
+| `sample_rate` | integer | model native | Output sample rate. With `linear16`: `8000`, `16000`, `24000`, `32000`, `44100`, `48000`. With `mulaw`/`alaw`: `8000` or `16000`.           |
+| `mip_opt_out` | boolean | `false`      | Opt out of the Model Improvement Program.                                                                                                   |
+| `tag`         | string  | —            | Custom tag(s) for request tracking. Repeatable.                                                                                             |
 
 **Compressed and containerized encodings are batch-only.** `opus`, `mp3`, `flac`, and `aac` (and the `container` / `bit_rate` parameters) are available on the [batch REST transport](#streaming-vs-batch), not on the streaming WebSocket, which emits raw `linear16`/`mulaw`/`alaw`.
 
@@ -63,7 +63,7 @@ The streaming WebSocket produces **raw audio** (no container), so it accepts onl
 Flux TTS model strings follow the format `flux-{voice}-{language}`, mirroring Flux STT:
 
 ```
-flux-alexis-en      # English voice
+flux-haley-en      # English voice
 ```
 
 English voices ship first; multilingual voices (`flux-{voice}-multi`) come later. See [Voices & Languages](/docs/flux-tts/voices) for the current catalog. As with Flux STT, model generations roll forward behind a stable model string — there is no version segment in the customer-facing name.
@@ -103,7 +103,7 @@ from deepgram.speak.v2.types import SpeakV2Speak
 # Reads DEEPGRAM_API_KEY from the environment.
 client = DeepgramClient()
 
-with client.speak.v2.connect(model="flux-alexis-en") as connection:
+with client.speak.v2.connect(model="flux-haley-en") as connection:
     # Audio arrives as binary frames; control messages (SpeechStarted,
     # SpeechMetadata, ...) arrive as JSON.
     connection.on(EventType.MESSAGE, handle_message)
@@ -128,7 +128,7 @@ const { DeepgramClient } = require('@deepgram/sdk');
 // Reads DEEPGRAM_API_KEY from the environment.
 const deepgram = new DeepgramClient({ apiKey: process.env.DEEPGRAM_API_KEY });
 
-const connection = await deepgram.speak.v2.createConnection({ model: 'flux-alexis-en' });
+const connection = await deepgram.speak.v2.createConnection({ model: 'flux-haley-en' });
 
 // Audio arrives as binary frames; control messages (SpeechStarted,
 // SpeechMetadata, ...) arrive as JSON.
@@ -151,7 +151,7 @@ connection.sendClose({ type: 'Close' });
 ```bash Direct WebSocket
 # Connect with wscat for testing.
 wscat -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
-  -c "wss://api.deepgram.com/v2/speak?model=flux-alexis-en"
+  -c "wss://api.deepgram.com/v2/speak?model=flux-haley-en"
 
 # Then send text frames, e.g.
 # {"type": "Speak", "text": "Sure, I can help you cancel your subscription."}
@@ -185,7 +185,7 @@ Build new voice-agent integrations on `/v2/speak`. Stay on `/v1/speak` if you de
 * **Batch (REST)** — `POST https://api.deepgram.com/v2/speak`. Submit a complete block of text, receive the full audio in one response. Use it for pre-generating fixed audio (IVR prompts, notifications, audiobook lines) where the whole text is known up front and interruption isn't needed.
 
 ```bash Batch request
-curl "https://api.deepgram.com/v2/speak?model=flux-alexis-en" \
+curl "https://api.deepgram.com/v2/speak?model=flux-haley-en" \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{ "text": "Your appointment is confirmed for 3pm tomorrow." }' \

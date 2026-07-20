@@ -110,7 +110,7 @@ Possible enum values:
   Time at which the object was created. Measured in seconds since the Unix epoch.
 
 - `currency` (string, nullable)
-  Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) the customer can be charged in for recurring billing purposes.
+  Three-letter [ISO code for the currency](https://docs.stripe.com/currencies.md) the customer can be charged in for recurring billing purposes.
 
 - `customer_account` (string, nullable)
   The ID of an Account representing a customer. You can use this ID with any v1 API that accepts a customer_account parameter.
@@ -310,7 +310,7 @@ Possible enum values:
       Two-letter ISO code representing the country the bank account is located in.
 
     - `sources.data.currency` (enum)
-      Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
+      Three-letter [ISO code for the currency](https://docs.stripe.com/payouts.md) paid out to the bank account.
 
     - `sources.data.customer` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
       The ID of the customer that the bank account is associated with.
@@ -328,7 +328,7 @@ Possible enum values:
       The routing transit number for the bank account.
 
     - `sources.data.status` (string)
-      For bank accounts, possible values are `new`, `validated`, `verified`, `verification_failed`, `tokenized_account_number_deactivated` or `errored`. A bank account that hasn’t had any activity or validation performed is `new`. If Stripe can determine that the bank account exists, its status will be `validated`. Note that there often isn’t enough information to know (e.g., for smaller credit unions), and the validation is not always run. If customer bank account verification has succeeded, the bank account status will be `verified`. If the verification failed for any reason, such as microdeposit failure, the status will be `verification_failed`. If the status is `tokenized_account_number_deactivated`, the account utilizes a tokenized account number which has been deactivated due to expiration or revocation. This account will need to be reverified to continue using it for money movement. If a payout sent to this bank account fails, we’ll set the status to `errored` and will not continue to send [scheduled payouts](https://stripe.com/docs/payouts#payout-schedule) until the bank details are updated.
+      For bank accounts, possible values are `new`, `validated`, `verified`, `verification_failed`, `tokenized_account_number_deactivated` or `errored`. A bank account that hasn’t had any activity or validation performed is `new`. If Stripe can determine that the bank account exists, its status will be `validated`. Note that there often isn’t enough information to know (e.g., for smaller credit unions), and the validation is not always run. If customer bank account verification has succeeded, the bank account status will be `verified`. If the verification failed for any reason, such as microdeposit failure, the status will be `verification_failed`. If the status is `tokenized_account_number_deactivated`, the account utilizes a tokenized account number which has been deactivated due to expiration or revocation. This account will need to be reverified to continue using it for money movement. If a payout sent to this bank account fails, we’ll set the status to `errored` and will not continue to send [scheduled payouts](https://docs.stripe.com/payouts.md#payout-schedule) until the bank details are updated.
 
       For external accounts, possible values are `new`, `errored`, `verification_failed`, and `tokenized_account_number_deactivated`. If a payout fails, the status is set to `errored` and scheduled payouts are stopped until account details are updated. In the US and India, if we can’t [verify the owner of the bank account](https://support.stripe.com/questions/bank-account-ownership-verification), we’ll set the status to `verification_failed`. Other validations aren’t run against external accounts because they’re only used for payouts. This means the other statuses don’t apply.
 
@@ -560,7 +560,7 @@ Possible enum values:
       Time at which the object was created. Measured in seconds since the Unix epoch.
 
     - `subscriptions.data.currency` (enum)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `subscriptions.data.customer` (string, expandable (can be expanded into an object with the `expand` request parameter))
       ID of the customer who owns the subscription.
@@ -827,10 +827,10 @@ Possible enum values:
             Time at which the object was created. Measured in seconds since the Unix epoch.
 
           - `subscriptions.data.items.data.price.currency` (enum)
-            Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+            Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
           - `subscriptions.data.items.data.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-            Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+            Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
             - `subscriptions.data.items.data.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
               When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
@@ -1791,10 +1791,10 @@ Possible enum values:
             Time at which the object was created. Measured in seconds since the Unix epoch.
 
           - `subscriptions.data.pending_update.subscription_items.price.currency` (enum)
-            Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+            Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
           - `subscriptions.data.pending_update.subscription_items.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
-            Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+            Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
             - `subscriptions.data.pending_update.subscription_items.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
               When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
@@ -2164,13 +2164,13 @@ Possible enum values:
       There was an error determining the customer’s location. This is usually caused by a temporary issue. Retrieve the customer to try again.
 
     - `not_collecting`
-      The customer is located in a country or state where you’re [not registered to collect tax](https://stripe.com/docs/tax/zero-tax#not-registered). Also returned when automatic tax calculation is not supported in the customer’s location.
+      The customer is located in a country or state where you’re [not registered to collect tax](https://docs.stripe.com/tax/zero-tax.md#not-registered). Also returned when automatic tax calculation is not supported in the customer’s location.
 
     - `supported`
       The customer is located in a country or state where you’re collecting tax.
 
     - `unrecognized_location`
-      The customer’s location couldn’t be determined. Make sure the provided address information is valid and [supported in the customer’s country](https://stripe.com/docs/tax/customer-locations#supported-formats).
+      The customer’s location couldn’t be determined. Make sure the provided address information is valid and [supported in the customer’s country](https://docs.stripe.com/tax/customer-locations.md#supported-formats).
 
   - `tax.ip_address` (string, nullable)
     A recent IP address of the customer used for tax reporting and tax location inference.

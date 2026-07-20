@@ -35,7 +35,7 @@ To edit a spend alert:
 ## Monitor organization-level usage
 
 <Note>
-  You must be the [organization owner](/guides/organizations/understanding-organizations#organization-owners) to view usage across your Pinecone organization. Also, this feature is available only to organizations on the Standard or Enterprise plans.
+  You must be an [organization owner or billing admin](/guides/assistant/admin/organizations-overview#organization-roles) to view usage across your Pinecone organization. Also, this feature is available only to organizations on the Standard or Enterprise plans.
 </Note>
 
 To view and download a report of your usage and costs for your Pinecone organization, go to [**Settings > Usage**](https://app.pinecone.io/organizations/-/settings/usage) in the Pinecone console.

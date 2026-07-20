@@ -24,34 +24,37 @@ Organization owners can update the billing contact information, update the payme
 
 ## Organization roles
 
-Organization owners can manage access to their organizations and projects by assigning roles to organization members and service accounts. The role determines the entity's permissions within Pinecone. The organization roles are as follows:
+Organization owners can manage access to their organizations and projects by assigning roles to organization members and service accounts. A role determines the permissions that a [principal](/guides/production/security-overview#role-based-access-controls-rbac) (a user, service account, or API key) has within Pinecone. The organization roles are as follows:
 
-* **Organization owner**: Organization owners have global permissions across the organization. This includes managing billing details, organization members, and all projects. Organization owners are automatically [project owners](/guides/projects/understanding-projects#project-roles) and, therefore, have all project owner permissions as well.
+* **Organization owner** (`OrgOwner`): Full control over the organization, including billing, members, service accounts, security, and every project. Inherits [owner access](/guides/projects/understanding-projects#project-roles) to all projects in the organization.
 
-* **Organization user**: Organization users have restricted organization-level permissions. When inviting organization users, you also choose the projects they belong to and the project role they should have.
+* **Organization manager** (`OrgManager`): Can view organization details and create projects. Organization managers cannot manage billing, members, service accounts, or organization settings.
 
-* **Billing admin**: Billing admins have permissions to view and update billing details, but they cannot manage organization members. Billing admins cannot manage projects unless they are also [project owners](/guides/projects/understanding-projects#project-roles).
+* **Organization member** (`OrgMember`): Can view organization details and access the projects they are added to. Organization members cannot create projects or manage organization settings. To grant project access, add the member to one or more projects and assign a [project role](/guides/projects/understanding-projects#project-roles); see [Manage project members](/guides/projects/manage-project-members).
+
+* **Billing admin** (`OrgBillingAdmin`): Can view organization details and manage billing, subscriptions, and usage. Billing admins cannot manage members or organization settings, and they cannot manage projects unless they are also [project owners](/guides/projects/understanding-projects#project-roles).
 
 The following table summarizes the permissions for each organization role:
 
-| Permission                           | Org Owner | Org User | Billing Admin |
-| ------------------------------------ | --------- | -------- | ------------- |
-| View account details                 | ✓         | ✓        | ✓             |
-| Update organization name             | ✓         |          |               |
-| Delete the organization              | ✓         |          |               |
-| View billing details                 | ✓         |          | ✓             |
-| Update billing details               | ✓         |          | ✓             |
-| View usage details                   | ✓         |          | ✓             |
-| View support plans                   | ✓         |          | ✓             |
-| Invite members to the organization   | ✓         |          |               |
-| Delete pending member invites        | ✓         |          |               |
-| Remove members from the organization | ✓         |          |               |
-| Update organization member roles     | ✓         |          |               |
-| Create projects                      | ✓         | ✓        |               |
+| Permission                             | Owner | Manager | Member | Billing admin |
+| -------------------------------------- | :---: | :-----: | :----: | :-----------: |
+| View account details                   |   ✓   |    ✓    |    ✓   |       ✓       |
+| Create projects                        |   ✓   |    ✓    |        |               |
+| View billing and usage details         |   ✓   |         |        |       ✓       |
+| Manage billing details                 |   ✓   |         |        |       ✓       |
+| Invite and remove organization members |   ✓   |         |        |               |
+| Update organization member roles       |   ✓   |         |        |               |
+| Manage service accounts                |   ✓   |         |        |               |
+| Configure single sign-on (SSO)         |   ✓   |         |        |               |
+| Configure audit logs                   |   ✓   |         |        |               |
+| Update organization name               |   ✓   |         |        |               |
+| Delete the organization                |   ✓   |         |        |               |
 
 ## Organization single sign-on (SSO)
 
 SSO allows organizations to manage their teams' access to Pinecone through their identity management solution. Once your integration is configured, you can specify a default role for teammates when they sign up.
+
+<Note>For organizations that use SSO for authentication, console sessions are re-authenticated at least every 24 hours.</Note>
 
 For more information, see [Configure single sign-on](/guides/production/configure-single-sign-on/okta).
 

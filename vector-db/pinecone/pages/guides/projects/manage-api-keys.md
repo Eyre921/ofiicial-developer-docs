@@ -8,7 +8,7 @@ Create and manage API keys with custom permissions.
 
 Each Pinecone [project](/guides/projects/understanding-projects) has one or more API keys. In order to [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
 
-This page shows you how to [create](#create-an-api-key), [view](#view-api-keys), [change permissions for](#change-api-key-permissions), and [delete](#delete-an-api-key) API keys.
+This page shows you how to [create](#create-an-api-key), [view](#view-project-api-keys), [update](#update-an-api-key), and [delete](#delete-an-api-key) API keys.
 
 <Warning>
   If you use custom API key permissions, ensure that you [target your index by host](/guides/manage-data/target-an-index#target-by-index-host-recommended) when performing data operations such as `upsert` and `query`.
@@ -30,7 +30,7 @@ You can create a new API key for your project, as follows:
 
     5. Enter an **API key name**.
 
-    6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [API key permissions](/guides/production/security-overview#api-keys).
+    6. Select the **Permissions** to grant to the API key. For a description of the permission roles, see [Project roles](/guides/projects/understanding-projects#project-roles).
 
        <Note>
          Users on the Starter and Builder plans can set the permissions to **All** only. To customize the permissions further, [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
@@ -264,7 +264,7 @@ If you are a [project owner](/guides/projects/understanding-projects#project-rol
 
     5. Change the name and/or permissions for the API key as needed.
 
-       For information about the different API key permissions, refer to [Understanding security - API keys](/guides/production/security-overview#api-keys).
+       For information about the different API key permissions, refer to [Project roles](/guides/projects/understanding-projects#project-roles).
 
     6. Click **Update**.
   </Tab>

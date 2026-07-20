@@ -37,7 +37,7 @@ Flux TTS ships on a new endpoint, `/v2/speak`. The `/v1/speak` endpoint stays av
 
 1. **Change the endpoint.** Point your WebSocket at `/v2/speak` (was `/v1/speak`). The Python (`deepgram-sdk`) and JavaScript (`@deepgram/sdk`) SDKs expose a `speak.v2` client — see [Getting Started](/docs/flux-tts/quickstart) and the [template apps](/docs/flux-tts/template-apps) — or integrate against the WebSocket directly.
 2. **Keep your `Speak` messages.** The `Speak` shape is unchanged. Do **not** specify `speech_id` — the server assigns it and returns it for debuggability.
-3. **Require a `model`.** `model` is required on every `/v2/speak` connection. Use a Flux TTS voice string (e.g. `flux-alexis-en`); Aura voices are served by `/v1/speak`, not `/v2/speak`.
+3. **Require a `model`.** `model` is required on every `/v2/speak` connection. Use a Flux TTS voice string (e.g. `flux-haley-en`); Aura voices are served by `/v1/speak`, not `/v2/speak`.
 4. **Drop `Clear`.** At Early Access, end each turn with `Flush`. Barge-in handling — `Interrupt` returning `text_spoken` / `text_remaining` — is planned for GA.
 5. **Treat `Flush` as end-of-turn, and read `SpeechMetadata`.** `Flush` marks the end of a turn (there's no separate `Finalize`). The turn's `SpeechMetadata` reports billing and timing — use it as your end-of-turn signal (not `Flushed`), and drop any client-side character-count or audio-duration tracking.
 6. **Drop the flush toggles.** The v1 `flush_send`-style toggles don't exist on v2 — audio starts streaming for a turn on its own, and you `Flush` only to mark the end of the turn.

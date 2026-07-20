@@ -15,7 +15,7 @@ How Neon credentials work with AI Gateway
 
 The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-AI Gateway uses Neon bearer credentials, the same credential system as [Neon Object Storage](https://neon.com/docs/introduction). No provider API keys are needed.
+AI Gateway uses Neon bearer credentials, the same scoped-credential system as [Object Storage](https://neon.com/docs/storage/authentication): one credential API mints branch-scoped tokens that differ by scope (AI Gateway uses `ai_gateway:invoke`). No provider API keys are needed.
 
 ## Creating a credential
 
@@ -25,7 +25,7 @@ A credential must include the `ai_gateway:invoke` scope.
 
 In the Neon Console, select your branch and click **Credentials** under **APP BACKEND** in the sidebar. Click **Create credential**, give it a name, and check **ai_gateway:invoke**.
 
-After creation, the credential is shown once. Copy the snippet or click **Download .env** before closing. The snippet includes all four gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below).
+After creation, the credential is shown once. Copy the snippet or click **Download .env** before closing. The snippet includes the gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below).
 
 To view or revoke credentials later, return to the **Credentials** page and use the action menu (⋮) next to the credential.
 
@@ -77,7 +77,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/mlflow/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
 });
 ```
 
@@ -89,7 +89,7 @@ import os
 
 client = OpenAI(
     api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/mlflow/v1",
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
 )
 ```
 
@@ -97,20 +97,20 @@ client = OpenAI(
 
 Neon provides two gateway env vars. `NEON_AI_GATEWAY_BASE_URL` is the bare branch host, so you append the dialect path yourself when configuring an SDK.
 
-| Variable                   | Value                                                                                               |
-| -------------------------- | --------------------------------------------------------------------------------------------------- |
-| `NEON_AI_GATEWAY_TOKEN`    | Bearer token (`nt_live_...`)                                                                        |
-| `NEON_AI_GATEWAY_BASE_URL` | Bare branch host: `https://<branch-host>`, with no path. Append `/ai-gateway/<dialect>/v1` yourself |
+| Variable                   | Value                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------- |
+| `NEON_AI_GATEWAY_TOKEN`    | Bearer token (`nt_live_...`)                                                              |
+| `NEON_AI_GATEWAY_BASE_URL` | Bare branch host: `https://<branch-host>`, with no path. Append the dialect path yourself |
 
 Append the dialect path for the endpoint you need:
 
 ```
-NEON_AI_GATEWAY_BASE_URL + /ai-gateway/mlflow/v1   → chat completions (all providers)
-NEON_AI_GATEWAY_BASE_URL + /ai-gateway/openai/v1   → OpenAI Responses API
-NEON_AI_GATEWAY_BASE_URL + /ai-gateway/gemini      → Gemini generateContent API
+NEON_AI_GATEWAY_BASE_URL + /v1            → chat completions (all providers)
+NEON_AI_GATEWAY_BASE_URL + /openai/v1     → OpenAI Responses API
+NEON_AI_GATEWAY_BASE_URL + /v1/gemini     → Gemini generateContent API
 ```
 
-Most dialects are also reachable at a shorter top-level path with no `/ai-gateway/<dialect>` prefix: `/v1/chat/completions` for chat completions and `/openai/v1/responses` for OpenAI Responses. Gemini's shorter alias keeps the `gemini` segment: `/v1/gemini/v1beta/models/{model}:generateContent`. `GET /v1/models` lists the catalog in an OpenRouter-shaped response. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
+Each inference dialect is also reachable at a longer `/ai-gateway/<dialect>/v1` path (e.g. `/ai-gateway/mlflow/v1` for chat completions, `/ai-gateway/openai/v1` for Responses, `/ai-gateway/gemini` for Gemini). Both forms behave identically and neither is deprecated. The model list is the exception: it has only `GET /v1/models`, with no `/ai-gateway/...` form. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
 
 To use an OpenAI SDK, set its `apiKey` and `baseURL` from these variables (see the examples below).
 
@@ -132,7 +132,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/openai/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
 });
 
 const response = await client.responses.create({
@@ -141,14 +141,14 @@ const response = await client.responses.create({
 });
 ```
 
-For the chat completions endpoint, point the base URL at the `mlflow` dialect instead:
+For the chat completions endpoint, point the base URL at `/v1` instead:
 
 ```typescript
 import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/mlflow/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
 });
 ```
 
@@ -206,9 +206,9 @@ The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://dis
 
 The chat completions endpoint is the recommended way to use Neon AI Gateway. It's fully compatible with the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat) and works with every model in the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models). Switch models by changing a single field.
 
-**Base URL:** `https://<branch-host>/ai-gateway/mlflow/v1`
+**Base URL:** `https://<branch-host>/v1`
 
-This endpoint is also reachable at the shorter `/v1/chat/completions` path (no `/ai-gateway/mlflow` prefix). Both behave identically. See [Shorter /v1 paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+This endpoint is also reachable at the longer `/ai-gateway/mlflow/v1/chat/completions` path. Both behave identically and neither is deprecated. See [Shorter /v1 paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
 
 If you're using an OpenRouter-compatible client that asks for a base URL, set it to `https://<branch-host>/v1` and call `/chat/completions`.
 
@@ -230,7 +230,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/mlflow/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
 });
 
 const response = await client.chat.completions.create({
@@ -253,7 +253,7 @@ import os
 
 client = OpenAI(
     api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/mlflow/v1",
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
 )
 
 response = client.chat.completions.create(
@@ -271,7 +271,7 @@ print(response.choices[0].message.content)
 **cURL**
 
 ```bash
-curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -295,7 +295,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/mlflow/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
 });
 
 const stream = await client.chat.completions.create({
@@ -317,7 +317,7 @@ import os
 
 client = OpenAI(
     api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/mlflow/v1",
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
 )
 
 with client.chat.completions.create(
@@ -332,7 +332,7 @@ with client.chat.completions.create(
 **cURL**
 
 ```bash
-curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -351,7 +351,7 @@ Change the `model` field to use a different provider. Everything else stays the 
 model: 'gpt-5-4'
 
 // Google
-model: 'gemini-2-5-flash'
+model: 'gemini-3-flash'
 
 // Alibaba
 model: 'qwen3-next-80b-a3b-instruct'
@@ -450,8 +450,6 @@ This endpoint accepts Google models only:
 | `gemini-3-1-flash-lite` |       |
 | `gemini-3-pro`          |       |
 | `gemini-3-flash`        |       |
-| `gemini-2-5-pro`        |       |
-| `gemini-2-5-flash`      |       |
 
 Sending a non-Google model ID returns `400 model "<model-id>" is not available on the gemini_generate_content endpoint`, naming whichever model you sent. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you want to call Gemini models alongside other providers from the same code.
 
@@ -475,7 +473,7 @@ const client = new GoogleGenAI({
 });
 
 const response = await client.models.generateContent({
-  model: 'gemini-2-5-flash',
+  model: 'gemini-3-flash',
   contents: [{ role: 'user', parts: [{ text: 'What is Neon?' }] }],
 });
 
@@ -498,7 +496,7 @@ client = genai.Client(
 )
 
 response = client.models.generate_content(
-    model='gemini-2-5-flash',
+    model='gemini-3-flash',
     contents='What is Neon?',
 )
 
@@ -509,7 +507,7 @@ print(response.text)
 
 ```bash
 curl -X POST \
-  "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/gemini/v1beta/models/gemini-2-5-flash:generateContent" \
+  "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/gemini/v1beta/models/gemini-3-flash:generateContent" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -523,7 +521,7 @@ curl -X POST \
 
 ```typescript
 const stream = await client.models.generateContentStream({
-  model: 'gemini-2-5-flash',
+  model: 'gemini-3-flash',
   contents: [{ role: 'user', parts: [{ text: 'Explain database branching.' }] }],
 });
 
@@ -536,7 +534,7 @@ for await (const chunk of stream) {
 
 ```python
 for chunk in client.models.generate_content_stream(
-    model='gemini-2-5-flash',
+    model='gemini-3-flash',
     contents='Explain database branching.',
 ):
     print(chunk.text, end='', flush=True)
@@ -548,11 +546,11 @@ The gateway uses the model ID and action directly in the URL path. The `google-g
 
 ```
 base_url: https://<branch-host>/ai-gateway/gemini
-model:    gemini-2-5-flash
+model:    gemini-3-flash
 action:   generateContent or streamGenerateContent
 
-→ https://<branch-host>/ai-gateway/gemini/v1beta/models/gemini-2-5-flash:generateContent
-→ https://<branch-host>/ai-gateway/gemini/v1beta/models/gemini-2-5-flash:streamGenerateContent
+→ https://<branch-host>/ai-gateway/gemini/v1beta/models/gemini-3-flash:generateContent
+→ https://<branch-host>/ai-gateway/gemini/v1beta/models/gemini-3-flash:streamGenerateContent
 ```
 
 When calling the REST API directly, the model ID and action must appear in the path as shown above.
@@ -675,7 +673,7 @@ import 'dotenv/config';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/mlflow/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
 });
 
 const response = await client.chat.completions.create({
@@ -697,7 +695,7 @@ load_dotenv()
 
 client = OpenAI(
     api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/mlflow/v1",
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
 )
 
 response = client.chat.completions.create(
@@ -711,7 +709,7 @@ print(response.choices[0].message.content)
 **cURL**
 
 ```bash
-curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -732,7 +730,7 @@ import 'dotenv/config';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/mlflow/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
 });
 
 const stream = await client.chat.completions.create({
@@ -757,7 +755,7 @@ load_dotenv()
 
 client = OpenAI(
     api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/mlflow/v1",
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
 )
 
 with client.chat.completions.create(
@@ -772,7 +770,7 @@ with client.chat.completions.create(
 **cURL**
 
 ```bash
-curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -791,7 +789,7 @@ Change the `model` field to use a different provider. No other code changes requ
 model: 'gpt-5-mini'
 
 // Google
-model: 'gemini-2-5-flash'
+model: 'gemini-3-flash'
 
 // Alibaba
 model: 'qwen3-next-80b-a3b-instruct'
@@ -811,7 +809,7 @@ For TypeScript apps and agents, use [`@neon/ai-sdk-provider`](https://www.npmjs.
 
 --- [Document source](https://neon.com/docs/ai-gateway/models.md) ---
 
-> Summary: Neon AI Gateway serves Databricks-hosted foundation models from OpenAI, Google, Meta, Databricks, and Alibaba. Use short model IDs like gpt-5-mini or gemini-2-5-flash. The databricks- prefix is also accepted.
+> Summary: Neon AI Gateway serves Databricks-hosted foundation models from OpenAI, Google, Meta, Databricks, and Alibaba. Use short model IDs like gpt-5-mini or gemini-3-flash. The databricks- prefix is also accepted.
 
 # AI Gateway models
 
@@ -821,7 +819,7 @@ Available models and how to specify them
 
 The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `model` field, for example `gpt-5-mini` or `gemini-2-5-flash`. The `databricks-` prefixed form is also accepted. The Neon Console and most examples use the short form.
+Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `model` field, for example `gpt-5-mini` or `gemini-3-flash`. The `databricks-` prefixed form is also accepted. The Neon Console and most examples use the short form.
 
 **Important:** Models are hosted by Databricks and served through Neon AI Gateway. By using these models, you are responsible for complying with each provider's applicable terms of use. See [Provider terms](https://neon.com/docs/ai-gateway/models#provider-terms) below.
 
@@ -831,7 +829,7 @@ The full catalog is published as the [`neon` provider on models.dev](https://mod
 
 ## Model access
 
-Neon AI Gateway serves frontier models like GPT (`gpt-5`) and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss. See the full list in the [catalog](https://neon.com/docs/ai-gateway/models#available-models) below.
+Neon AI Gateway serves frontier models like GPT (`gpt-5`) and Gemini (`gemini-3-flash`) alongside open-weight models like Qwen and gpt-oss. See the full list in the [catalog](https://neon.com/docs/ai-gateway/models#available-models) below.
 
 Open-weight models are available to every project right away. Frontier models from OpenAI and Google are rolling out gradually. Don't see them in your project yet? [Request early access](https://neon.com/docs/ai-gateway/overview#foundation-model-access).
 
@@ -1128,7 +1126,7 @@ const text = typeof content === 'string'
 
 ## Shorter /v1 paths
 
-Most dialects above are also reachable at a shorter path with no `/ai-gateway/<dialect>` prefix. These are additive aliases: the `/ai-gateway/...` paths documented throughout this page keep working and aren't deprecated. Both forms use the same branch host, bearer token, request body, response body, model routing, rate limits, and quota behavior. Only chat completions and Gemini use a top-level `/v1/...` prefix; OpenAI Responses has its own shorter prefix instead of a bare `/v1/`.
+Each inference dialect is reachable at two equivalent paths: a shorter top-level path (recommended, and what most examples and the `@neon/ai-sdk-provider` use) and a longer `/ai-gateway/<dialect>/v1` path. Both forms behave identically, using the same branch host, bearer token, request body, response body, model routing, rate limits, and quota, and **neither is deprecated**. The longer `/ai-gateway/...` paths keep working indefinitely. Note that the shorter form isn't a uniform `/v1/<dialect>` rule: chat completions is a bare `/v1/...`, Gemini keeps a `gemini` segment, and OpenAI Responses uses an `/openai/v1/...` prefix instead of a bare `/v1/`.
 
 Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-gateway/...` paths when a framework or existing Neon example expects the older dialect-specific route.
 
@@ -1140,7 +1138,7 @@ Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-g
 
 ### List available models
 
-`GET /v1/models` lists the model catalog in an OpenRouter-shaped response, authenticated the same way as the endpoints above:
+`GET /v1/models` lists the model catalog in an OpenRouter-shaped response, authenticated the same way as the endpoints above. Unlike the inference dialects, the model list has only this `/v1/models` path, with no `/ai-gateway/...` form.
 
 ```bash
 curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
@@ -1189,11 +1187,11 @@ The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://dis
 
 The OpenAI Responses endpoint exposes the [OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses) through Neon AI Gateway. Use it with the OpenAI SDK's `responses.create()` method by changing only the `baseURL`.
 
-**Base URL:** `https://<branch-host>/ai-gateway/openai/v1`
+**Base URL:** `https://<branch-host>/openai/v1`
 
-This endpoint is also reachable at the shorter `/openai/v1/responses` path (no `/ai-gateway` prefix). Both behave identically. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+This endpoint is also reachable at the longer `/ai-gateway/openai/v1/responses` path. Both behave identically and neither is deprecated. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
 
-If you're using an OpenAI-compatible client that accepts a base URL, set it to either `https://<branch-host>/ai-gateway/openai/v1` or `https://<branch-host>/openai/v1`. The request and response shapes are the standard OpenAI Responses API shape.
+If you're using an OpenAI-compatible client that accepts a base URL, set it to either `https://<branch-host>/openai/v1` or `https://<branch-host>/ai-gateway/openai/v1`. The request and response shapes are the standard OpenAI Responses API shape.
 
 **Warning:** All codex model variants (`gpt-5-3-codex`, `gpt-5-2-codex`, `gpt-5-1-codex-max`, `gpt-5-1-codex-mini`) **require this endpoint**. They do not work with the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions).
 
@@ -1236,7 +1234,7 @@ import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/openai/v1`,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
 });
 
 const response = await client.responses.create({
@@ -1255,7 +1253,7 @@ import os
 
 client = OpenAI(
     api_key=os.environ['NEON_AI_GATEWAY_TOKEN'],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/openai/v1",
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
 )
 
 response = client.responses.create(
@@ -1269,7 +1267,7 @@ print(response.output_text)
 **cURL**
 
 ```bash
-curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/openai/v1/responses" \
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/openai/v1/responses" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1311,7 +1309,7 @@ with client.responses.stream(
 **cURL**
 
 ```bash
-curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/openai/v1/responses" \
+curl -X POST "$NEON_AI_GATEWAY_BASE_URL/openai/v1/responses" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1373,7 +1371,7 @@ One API for frontier and open-source models from OpenAI, Google, and more. Built
 
 ## Foundation model access
 
-Neon AI Gateway serves frontier models like GPT (`gpt-5`) and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss.
+Neon AI Gateway serves frontier models like GPT (`gpt-5`) and Gemini (`gemini-3-flash`) alongside open-weight models like Qwen and gpt-oss.
 
 **See every supported model in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models).**
 
@@ -1480,8 +1478,8 @@ The model exists in the catalog but doesn't work with the endpoint you're callin
 
 **Fix:** Check which endpoint the model requires:
 
-- OpenAI codex models on `/mlflow/v1/chat/completions` → use `/openai/v1/responses`
-- Google models on `/openai/v1/responses` → use `/ai-gateway/gemini/v1beta/...` or `/mlflow/v1/chat/completions`
+- OpenAI codex models on `/v1/chat/completions` → use `/openai/v1/responses`
+- Google models on `/openai/v1/responses` → use `/v1/gemini/v1beta/...` or `/v1/chat/completions`
 
 See [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
 
@@ -1505,7 +1503,7 @@ The action in the Gemini endpoint URL is unsupported. The AI Gateway supports Ge
 
 The `{modelAction}` segment in the Gemini URL path is malformed. It must follow the format `<model>:<action>` where both parts are non-empty.
 
-**Fix:** Ensure the URL path contains exactly one colon separating the model ID and action, e.g. `gemini-2-5-flash:generateContent`.
+**Fix:** Ensure the URL path contains exactly one colon separating the model ID and action, e.g. `gemini-3-flash:generateContent`.
 
 ---
 
@@ -14144,6 +14142,8 @@ Subcommands: [pull](https://neon.com/docs/cli/env#pull)
 
 Writes the branch's Neon environment variables to a local `.env` file.
 
+`neon env pull` works with or without a [`neon.ts`](https://neon.com/docs/reference/neon-ts) configuration file. Without one, it writes the branch's core variables (`DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`). With a `neon.ts`, it also writes credentials for each service you declare (Managed Better Auth, Data API, AI Gateway, Object Storage).
+
 ```bash
 neon env pull [options]
 ```
@@ -20605,28 +20605,28 @@ Neon injects connection strings, credentials, and service URLs automatically at 
 
 Each variable is present only when its service is enabled on the branch. `DATABASE_URL` and `DATABASE_URL_UNPOOLED`, for example, are undefined on a functions-only branch with no Postgres database.
 
-| Variable                                     | Service             | Description                                                                                                                                           |
-| -------------------------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`                               | Postgres            | Pooled connection string. Use this for most queries.                                                                                                  |
-| `DATABASE_URL_UNPOOLED`                      | Postgres            | Direct connection string. Use for migrations, `LISTEN`/`NOTIFY`, and multi-round-trip transactions.                                                   |
-| `NEON_BRANCH`                                | Core                | Branch name (e.g. `main`, `preview/foo`). Present on all branches.                                                                                    |
-| `NEON_AUTH_BASE_URL`                         | Managed Better Auth | Base URL for Managed Better Auth.                                                                                                                     |
-| `NEON_AUTH_JWKS_URL`                         | Managed Better Auth | JWKS endpoint for verifying Managed Better Auth JWTs. See [Authentication](https://neon.com/docs/compute/functions/authentication).                   |
-| `NEON_DATA_API_URL`                          | Data API            | Base URL for the Neon Data API (PostgREST). Present when the Data API is provisioned on the branch.                                                   |
-| `NEON_AI_GATEWAY_TOKEN`                      | AI Gateway          | Gateway bearer token.                                                                                                                                 |
-| `NEON_AI_GATEWAY_BASE_URL`                   | AI Gateway          | Gateway host root. Append a dialect route, e.g. `/ai-gateway/mlflow/v1` for Chat Completions or `/ai-gateway/openai/v1` for the OpenAI Responses API. |
-| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Object Storage      | S3-compatible credentials for the branch's buckets.                                                                                                   |
-| `AWS_ENDPOINT_URL_S3`, `AWS_REGION`          | Object Storage      | S3 endpoint and region. The `AWS_*` names mean the AWS SDKs work with no setup.                                                                       |
+| Variable                                     | Service             | Description                                                                                                                         |
+| -------------------------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                               | Postgres            | Pooled connection string. Use this for most queries.                                                                                |
+| `DATABASE_URL_UNPOOLED`                      | Postgres            | Direct connection string. Use for migrations, `LISTEN`/`NOTIFY`, and multi-round-trip transactions.                                 |
+| `NEON_BRANCH`                                | Core                | Branch name (e.g. `main`, `preview/foo`). Present on all branches.                                                                  |
+| `NEON_AUTH_BASE_URL`                         | Managed Better Auth | Base URL for Managed Better Auth.                                                                                                   |
+| `NEON_AUTH_JWKS_URL`                         | Managed Better Auth | JWKS endpoint for verifying Managed Better Auth JWTs. See [Authentication](https://neon.com/docs/compute/functions/authentication). |
+| `NEON_DATA_API_URL`                          | Data API            | Base URL for the Neon Data API (PostgREST). Present when the Data API is provisioned on the branch.                                 |
+| `NEON_AI_GATEWAY_TOKEN`                      | AI Gateway          | Gateway bearer token.                                                                                                               |
+| `NEON_AI_GATEWAY_BASE_URL`                   | AI Gateway          | Gateway host root. Append a dialect route, e.g. `/v1` for Chat Completions or `/openai/v1` for the OpenAI Responses API.            |
+| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Object Storage      | S3-compatible credentials for the branch's buckets.                                                                                 |
+| `AWS_ENDPOINT_URL_S3`, `AWS_REGION`          | Object Storage      | S3 endpoint and region. The `AWS_*` names mean the AWS SDKs work with no setup.                                                     |
 
 These variables are branch-scoped: each branch injects its own values. A function deployed to a preview branch connects to that branch's database, not the default branch's.
 
 **Note: Two AI Gateway endpoints**
 
-`NEON_AI_GATEWAY_BASE_URL` is the bare gateway host: append a dialect path yourself. Use `/ai-gateway/openai/v1` for the OpenAI **Responses API** and `/ai-gateway/mlflow/v1` for **Chat Completions** (see [Chat completions](https://neon.com/docs/ai-gateway/chat-completions)). The [`@neon/ai-sdk-provider`](https://neon.com/docs/compute/functions/agents) handles this routing for you.
+`NEON_AI_GATEWAY_BASE_URL` is the bare gateway host: append a dialect path yourself. Use `/openai/v1` for the OpenAI **Responses API** and `/v1` for **Chat Completions** (see [Chat completions](https://neon.com/docs/ai-gateway/chat-completions)). The [`@neon/ai-sdk-provider`](https://neon.com/docs/compute/functions/agents) handles this routing for you.
 
 **Note: Local pull vs. deployed runtime**
 
-A deployed function gets credentials injected automatically for every service enabled on its branch, so you don't ship a `.env`. For local development, `neon env pull` writes credentials for the services you **declare in `neon.ts`**, which can be a subset. Declare a service (`auth: true`, `dataApi: true`, `aiGateway: true`, `buckets: { ... }`) to pull its credentials locally and to get type-safe access.
+A deployed function gets credentials injected automatically for every service enabled on its branch, so you don't ship a `.env`. For local development, `neon env pull` writes the branch's core variables plus credentials for any services you **declare in `neon.ts`**, which can be a subset. Declare a service (`auth: true`, `dataApi: true`, `aiGateway: true`, `buckets: { ... }`) to pull its credentials locally and to get type-safe access. (Outside a `neon.ts` workflow, `neon env pull` still writes the branch's core variables — see the [`env` command](https://neon.com/docs/cli/env).)
 
 For type-safe access, the [`@neon/env`](https://www.npmjs.com/package/@neon/env) package ships `parseEnv`. It takes your `neon.ts` config and returns a typed env object validated against the services the config declares:
 
@@ -20709,7 +20709,7 @@ neon env pull --file .env.preview
 
 To pull from a different branch, switch with `neon checkout`; it pulls the new branch's variables as part of the switch.
 
-`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's `DATABASE_URL` and `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`, plus the variables for each service **declared in `neon.ts`**: the Managed Better Auth URLs, the Neon Data API URL, the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`), and the Object Storage credentials (`AWS_*`).
+`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's the core variables `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, and `NEON_BRANCH`, plus the variables for any service you **declare in `neon.ts`**: the Managed Better Auth URLs, the Neon Data API URL, the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`), and the Object Storage credentials (`AWS_*`).
 
 ## Constraints
 
@@ -50244,7 +50244,7 @@ import { neon } from "@neon/ai-sdk-provider";
 import { streamText } from "ai";
 
 const result = streamText({
-  model: neon("gpt-5-mini"), // or "claude-sonnet-4-6", "gemini-2-5-flash", ...
+  model: neon("gpt-5-mini"), // or "claude-sonnet-4-6", "gemini-3-flash", ...
   system: "Answer using only the user's notes.",
   prompt: `${question}\n\nNotes:\n${notesText}`,
 });
@@ -83118,11 +83118,19 @@ You can enable either or both options based on your monitoring needs.
 
 ## Configure resource attributes
 
-Neon automatically organizes your data into separate service entities: your configured service name will receive Postgres logs, while metrics are split into `compute-host-metrics` (infrastructure metrics) and `sql-metrics` (database metrics).
+In the **Resource** section, set the `service.name` attribute to the name your Postgres logs should appear under in your observability platform, such as `neon-postgres-production`.
 
-1. In the **Resource** section, configure the `service.name` attribute to identify your Neon project in your observability platform. For example, you might use "neon-postgres-test" or your actual project name.
+Logs are event messages; metrics are numeric values sampled over time. This name labels your logs only. Metrics are not tagged with it; they arrive under fixed, Neon-assigned service names. Your data appears as follows:
 
-2. Optionally, you can add additional resource attributes by providing a value in the second field to further categorize or filter your data in your observability platform.
+| Data             | Service name                   | Includes                                                            |
+| ---------------- | ------------------------------ | ------------------------------------------------------------------- |
+| Postgres logs    | Your configured `service.name` | Errors, warnings, connection events, and other Postgres activity    |
+| Database metrics | `sql-metrics`                  | Connections, database size, replication delay, and other statistics |
+| Compute metrics  | `compute-host-metrics`         | CPU, memory, and load                                               |
+
+The metric service names are also exposed as the `job` label on each metric.
+
+`service.name` is the only resource attribute Neon exports. Custom resource attributes and custom request headers are not currently supported.
 
 ## Complete the setup
 
@@ -83166,8 +83174,8 @@ _Postgres logs flowing into New Relic_
 **Find your data under APM & Services**
 ![Multiple Neon services in New Relic APM & Services](https://neon.com/docs/guides/new_relic_services.png)
 
-- **Logs**: Check your configured service name in APM & Services (for example, `neon-postgres-test`)
-- **Metrics**: Look for the auto-created `compute-host-metrics` and `sql-metrics` services
+- **Logs**: Check your configured service name in APM & Services (for example, `neon-postgres-production`)
+- **Metrics**: Look for the auto-created `compute-host-metrics` and `sql-metrics` services. Metrics are not tagged with your configured `service.name`; see [Configure resource attributes](https://neon.com/docs/guides/opentelemetry#configure-resource-attributes).
 
 **Note:** You can modify these settings later by editing your integration configuration from the **Integrations** page.
 
@@ -118272,7 +118280,7 @@ How Neon credentials map to S3 access keys
 
 The **Neon Object Storage** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-Neon Object Storage uses the same credential system as AI Gateway and Functions. You create a scoped credential via the Neon API, and it maps directly to the S3 Access Key ID and Secret Access Key your SDK expects. No AWS account or IAM configuration required.
+Neon Object Storage uses the same scoped-credential system as [AI Gateway](https://neon.com/docs/ai-gateway/authentication): one credential API mints branch-scoped tokens that differ by scope (Object Storage uses `storage:read` and `storage:write`). You create a scoped credential via the Neon API, and it maps directly to the S3 Access Key ID and Secret Access Key your SDK expects. No AWS account or IAM configuration required.
 
 ## Creating a credential
 

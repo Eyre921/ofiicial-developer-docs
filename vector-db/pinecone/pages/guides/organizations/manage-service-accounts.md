@@ -24,7 +24,7 @@ You can create a service account in the [Pinecone console](https://app.pinecone.
 
 2. Enter a **Name** for the service account.
 
-3. Choose an [**Organization Role**](/guides/organizations/understanding-organizations#organization-roles) for the service account. The role determines the service account's permissions within Pinecone.
+3. Choose an [**Organization role**](/guides/organizations/understanding-organizations#organization-roles) for the service account. The role determines the service account's permissions within Pinecone.
 
 4. Click **Create**.
 
@@ -70,7 +70,7 @@ The response will include an `access_token` field, which you can use to authenti
 
 You can change a service account's role in the [Pinecone console](https://app.pinecone.io):
 
-1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/service-accounts).
+1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 2. In the row of the service account you want to update, click **ellipsis (...) menu > Manage**.
 3. Select an [**Organization role**](/guides/organizations/understanding-organizations#organization-roles) for the service account.
 4. Click **Update**.
@@ -79,7 +79,7 @@ You can change a service account's role in the [Pinecone console](https://app.pi
 
 You can change a service account's name in the [Pinecone console](https://app.pinecone.io):
 
-1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/service-accounts).
+1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 2. In the row of the service account you want to update, click **ellipsis (...) menu > Manage**.
 3. Enter a new **Service account name**.
 4. Click **Update**.
@@ -88,7 +88,7 @@ You can change a service account's name in the [Pinecone console](https://app.pi
 
 You can rotate a service account's client secret in the [Pinecone console](https://app.pinecone.io):
 
-1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/service-accounts).
+1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 
 2. In the row of the service account you want to update, click **ellipsis (...) menu > Rotate secret**.
 
@@ -108,7 +108,7 @@ You can rotate a service account's client secret in the [Pinecone console](https
 
 Deleting a service account will remove it from all projects and will disrupt any applications using it to access Pinecone. You delete a service account in the [Pinecone console](https://app.pinecone.io):
 
-1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/service-accounts).
+1. Go to [**Settings > Access > Service accounts**](https://app.pinecone.io/organizations/-/settings/access/service-accounts).
 2. In the row of the service account you want to update, click **ellipsis (...) menu > Delete**.
 3. **Enter the service account name** to confirm.
 4. Click **Delete service account**.

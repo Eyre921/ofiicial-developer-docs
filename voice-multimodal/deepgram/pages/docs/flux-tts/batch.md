@@ -19,7 +19,7 @@ Batch is stateless request/response: simple retries, high fan-out, no connection
 ## Make a request
 
 ```bash
-curl "https://api.deepgram.com/v2/speak?model=flux-alexis-en" \
+curl "https://api.deepgram.com/v2/speak?model=flux-haley-en" \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{ "text": "Your appointment is confirmed for 3pm tomorrow." }' \
@@ -32,7 +32,7 @@ The response body is the synthesized audio in the requested encoding. Per-reques
 
 | Parameter         | Default              | Description                                                                                                                                                                                                                                    |
 | ----------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`           | —                    | **Required.** A `flux-{voice}-{language}` model (e.g. `flux-alexis-en`).                                                                                                                                                                       |
+| `model`           | —                    | **Required.** A `flux-{voice}-{language}` model (e.g. `flux-haley-en`).                                                                                                                                                                        |
 | `encoding`        | `mp3`                | `mp3`, `opus`, `flac`, `aac` (containerized/compressed), or raw `linear16` / `mulaw` / `alaw`.                                                                                                                                                 |
 | `bit_rate`        | per-encoding default | Bit rate for compressed encodings. For `mp3`: `8000`, `16000`, `24000`, `32000`, `40000`, `48000`.                                                                                                                                             |
 | `container`       | per-encoding default | Output container where applicable (e.g. `wav` for `linear16`, `ogg` for `opus`).                                                                                                                                                               |

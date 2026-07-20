@@ -1,23 +1,23 @@
 ---
-title: "Making API calls for connected accounts"
+title: "Make API calls for connected accounts"
 source: https://docs.stripe.com/connect/authentication.md
 path: connect/authentication
 ---
 
-# Making API calls for connected accounts
+# Make API calls for connected accounts
 
-Learn how to add the right information to your API calls so you can make calls for your connected accounts.
+Learn how to make API calls for your connected accounts on the server or the client.
 
-You can make API calls for your connected accounts:
+You can make API calls for your connected accounts on the server or on the client:
 
-- Server-side with the [Stripe-Account header](https://docs.stripe.com/connect/authentication.md#stripe-account-header) and the connected account ID, per request
-- Client-side by passing the connected account ID as an argument to the client library
+- **Server-side**: Include the connected account ID in the `Stripe-Account` header on each request
+- **Client-side**: Pass the connected account ID as an argument to the client library
 
 To help with performance and reliability, Stripe has established [rate limits and allocations](https://docs.stripe.com/rate-limits.md) for API endpoints.
 
 ## Add the Stripe-Account header server-side 
 
-To make server-side API calls for connected accounts, use the `Stripe-Account` header with the account identifier, which begins with the prefix `acct_`. Here are four examples using your platform’s [API secret key](https://docs.stripe.com/keys.md) and the connected account’s [Account](https://docs.stripe.com/api/accounts.md) identifier:
+To make server-side API calls for connected accounts, use the `Stripe-Account` header with the [Account](https://docs.stripe.com/api/accounts.md) ID, which begins with the prefix `acct_`. Here are four examples using your platform’s [API secret key](https://docs.stripe.com/keys.md) and the connected account’s `Account` ID:
 
 #### Create PaymentIntent
 
@@ -54,7 +54,7 @@ curl -X DELETE https://api.stripe.com/v1/customers/{{CUSTOMER_ID}} \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
 ```
 
-The `Stripe-Account` header approach is implied in any API request that includes the Stripe account ID in the URL. Here’s an example that shows how to [Retrieve an account](https://docs.stripe.com/api/accounts/retrieve.md) with your user’s [Account](https://docs.stripe.com/api/accounts.md) identifier in the URL.
+The `Stripe-Account` header approach is implied in any API request that includes the `Account` ID in the URL. This example shows how to [Retrieve an Account](https://docs.stripe.com/api/accounts/retrieve.md) by including its ID in the request URL.
 
 ```curl
 curl https://api.stripe.com/v1/accounts/{{CONNECTEDACCOUNT_ID}} \

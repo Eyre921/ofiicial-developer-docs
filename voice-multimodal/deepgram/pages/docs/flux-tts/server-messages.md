@@ -26,7 +26,7 @@ Sent immediately on a successful connection. Successor to v1/speak's `Metadata` 
 {
   "type": "Connected",
   "request_id": "550e8400-e29b-41d4-a716-446655440000",
-  "model_name": "flux-alexis-en",
+  "model_name": "flux-haley-en",
   "model_version": "2026.06.01",
   "model_uuids": ["b3e47c20-9f81-4a2e-bd15-8d7c6e2a1f09"]
 }
@@ -35,7 +35,7 @@ Sent immediately on a successful connection. Successor to v1/speak's `Metadata` 
 | Field           | Type                   | Description                                                                                             |
 | --------------- | ---------------------- | ------------------------------------------------------------------------------------------------------- |
 | `request_id`    | string (UUID)          | ID of the `/v2/speak` request.                                                                          |
-| `model_name`    | string                 | Resolved model name (e.g. `flux-alexis-en`).                                                            |
+| `model_name`    | string                 | Resolved model name (e.g. `flux-haley-en`).                                                             |
 | `model_version` | string                 | Resolved model version.                                                                                 |
 | `model_uuids`   | array of string (UUID) | Resolved model UUIDs. A list, because a resolved model may be backed by more than one underlying model. |
 

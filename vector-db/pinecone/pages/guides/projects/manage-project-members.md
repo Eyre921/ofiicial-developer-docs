@@ -6,13 +6,19 @@ path: guides/projects/manage-project-members
 
 Add and manage project members with role-based access control.
 
-[Organization owners](/guides/organizations/understanding-organizations#organization-roles) or [project owners](#project-roles) can manage members in a project. Members can be added to a project with different [roles](/guides/projects/understanding-projects#project-roles), which determine their permissions within the project.
+[Organization owners](/guides/organizations/understanding-organizations#organization-roles) or [project owners](/guides/projects/understanding-projects#project-roles) can manage members in a project. Each member is assigned one or more [project roles](/guides/projects/understanding-projects#project-roles) that determine their permissions within the project.
+
+To assign and manage roles programmatically with the Admin API, or to manage roles for service accounts and API keys, see [Manage roles and access](/guides/production/manage-rbac).
 
 <Tip>
   For information about managing members at the **organization-level**, see [Manage organization members](/guides/organizations/manage-organization-members).
 </Tip>
 
 ## Add members to a project
+
+<Note>
+  Project owners can add existing organization members to a project and manage their project roles. Only [organization owners](/guides/organizations/understanding-organizations#organization-roles) can invite people who are not yet members of the organization.
+</Note>
 
 You can add members to a project in the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
 

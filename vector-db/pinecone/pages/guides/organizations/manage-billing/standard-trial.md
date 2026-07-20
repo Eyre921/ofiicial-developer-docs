@@ -18,7 +18,7 @@ The Standard trial lets you evaluate Pinecone without requiring any up-front pay
 * 21 days of access to Standard plan [features](https://www.pinecone.io/pricing/), including:
   * [Bulk import](/guides/index-data/import-data)
   * [Backup and restore](/guides/manage-data/backups-overview)
-  * [RBAC (role-based access control)](/guides/production/security-overview#role-based-access-control)
+  * [RBAC (role-based access control)](/guides/production/security-overview#role-based-access-controls-rbac)
 * [Higher limits](/reference/api/database-limits) for testing at scale
 * Access to all [cloud regions](/guides/index-data/create-an-index#cloud-regions)
 * Access to [Developer Support](https://www.pinecone.io/pricing/?plans=support)

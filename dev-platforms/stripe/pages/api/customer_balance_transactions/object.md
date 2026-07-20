@@ -47,7 +47,7 @@ path: api/customer_balance_transactions/object
   The ID of the credit note (if any) related to the transaction.
 
 - `currency` (enum)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `customer` (string, expandable (can be expanded into an object with the `expand` request parameter))
   The ID of the customer the transaction belongs to.

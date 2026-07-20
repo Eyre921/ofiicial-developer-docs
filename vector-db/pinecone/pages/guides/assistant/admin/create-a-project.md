@@ -8,7 +8,7 @@ Create a new Pinecone project in your organization.
 
 This page shows you how to create a project.
 
-If you are an [organization owner or user](/guides/organizations/understanding-organizations#organization-roles), you can create a project in your organization:
+If you are an [organization owner or organization manager](/guides/assistant/admin/organizations-overview#organization-roles), you can create a project in your organization:
 
 <Tabs>
   <Tab title="Pinecone console">
@@ -37,7 +37,7 @@ If you are an [organization owner or user](/guides/organizations/understanding-o
 
   <Tab title="Code">
     <Note>
-      An [access token](/guides/organizations/manage-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API.
+      An [access token](/guides/assistant/admin/manage-organization-service-accounts#retrieve-an-access-token) must be provided to complete this action through the Admin API. The Admin API is in [public preview](/assistant-release-notes/feature-availability).
     </Note>
 
     <CodeGroup>
@@ -95,5 +95,5 @@ If you are an [organization owner or user](/guides/organizations/understanding-o
 
 ## Next steps
 
-* [Add users to your project](/guides/projects/manage-project-members#add-members-to-a-project)
-* [Create an index](/guides/index-data/create-an-index)
+* [Add users to your project](/guides/assistant/admin/manage-project-members#add-members-to-a-project)
+* [Create an assistant](/guides/assistant/create-assistant)

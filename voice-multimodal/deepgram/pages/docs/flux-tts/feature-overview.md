@@ -19,7 +19,7 @@ This page summarizes what the Flux TTS `/v2/speak` WebSocket supports at Early A
 | Feature      | Value                                                                 |
 | ------------ | --------------------------------------------------------------------- |
 | Endpoint     | `/v2/speak` (WebSocket and REST)                                      |
-| Model format | `flux-{voice}-{language}` (e.g. `flux-alexis-en`)                     |
+| Model format | `flux-{voice}-{language}` (e.g. `flux-haley-en`)                      |
 | Model string | **Required** on every connection                                      |
 | Versioning   | Internal only — generations roll forward behind a stable model string |
 

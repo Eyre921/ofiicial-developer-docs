@@ -115,7 +115,7 @@ path: api/invoices/object
 ## Attributes
 
 - `id` (string)
-  Unique identifier for the object. For preview invoices created using the [create preview](https://stripe.com/docs/api/invoices/create_preview) endpoint, this id will be prefixed with `upcoming_in`.
+  Unique identifier for the object. For preview invoices created using the [create preview](https://docs.stripe.com/api/invoices/create_preview.md) endpoint, this id will be prefixed with `upcoming_in`.
 
 - `object` (string)
   String representing the object’s type. Objects of the same type share the same value.
@@ -250,7 +250,7 @@ Possible enum values:
   Time at which the object was created. Measured in seconds since the Unix epoch.
 
 - `currency` (enum)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `custom_fields` (array of objects, nullable)
   Custom fields displayed on the invoice.
@@ -714,7 +714,7 @@ Possible enum values:
       The amount, in the smallest currency unit.
 
     - `lines.data.currency` (enum)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `lines.data.description` (string, nullable)
       An arbitrary string attached to the object. Often useful for displaying to users.
@@ -1444,7 +1444,7 @@ Possible enum values:
       Time at which the object was created. Measured in seconds since the Unix epoch.
 
     - `payments.data.currency` (string)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `payments.data.invoice` (string, expandable (can be expanded into an object with the `expand` request parameter))
       The invoice that was paid.

@@ -56,31 +56,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Security overview](#security-overview-docs-nav-links-security-overview-mdx)
 - [Data Controls](#data-controls-docs-data-controls-mdx)
 - [Data retention and model training](#data-retention-and-model-training-docs-data-retention-and-model-training-mdx)
-- [Overview](#overview-docs-api-reference-overview-mdx)
-- [Upload a media file](#upload-a-media-file-docs-api-reference-files-upload-mdx)
-- [Submit a transcript](#submit-a-transcript-docs-api-reference-transcripts-submit-mdx)
-- [Get a transcript](#get-a-transcript-docs-api-reference-transcripts-get-mdx)
-- [Get transcript sentences](#get-transcript-sentences-docs-api-reference-transcripts-get-sentences-mdx)
-- [Get transcript paragraphs](#get-transcript-paragraphs-docs-api-reference-transcripts-get-paragraphs-mdx)
-- [Get subtitles](#get-subtitles-docs-api-reference-transcripts-get-subtitles-mdx)
-- [Get redacted audio](#get-redacted-audio-docs-api-reference-transcripts-get-redacted-audio-mdx)
-- [Word search](#word-search-docs-api-reference-transcripts-word-search-mdx)
-- [List transcripts](#list-transcripts-docs-api-reference-transcripts-list-mdx)
-- [Delete a transcript](#delete-a-transcript-docs-api-reference-transcripts-delete-mdx)
-- [Create a chat completion](#create-a-chat-completion-docs-api-reference-llm-gateway-create-chat-completion-mdx)
-- [Create speech understanding](#create-speech-understanding-docs-api-reference-llm-gateway-create-speech-understanding-mdx)
-- [Generate streaming token](#generate-streaming-token-docs-api-reference-streaming-api-generate-streaming-token-mdx)
-- [Streaming WebSocket API](#streaming-websocket-api-docs-api-reference-streaming-api-universal-3-pro-streaming-mdx)
-- [Generate voice agent token](#generate-voice-agent-token-docs-api-reference-voice-agent-api-generate-voice-agent-token-mdx)
-- [Voice Agent WebSocket](#voice-agent-websocket-docs-api-reference-voice-agent-api-voice-agent-web-socket-mdx)
-- [Create an agent](#create-an-agent-docs-api-reference-voice-agent-api-create-agent-mdx)
-- [List agents](#list-agents-docs-api-reference-voice-agent-api-list-agents-mdx)
-- [Retrieve an agent](#retrieve-an-agent-docs-api-reference-voice-agent-api-get-agent-mdx)
-- [Update an agent](#update-an-agent-docs-api-reference-voice-agent-api-update-agent-mdx)
-- [Delete an agent](#delete-an-agent-docs-api-reference-voice-agent-api-delete-agent-mdx)
-- [List sessions](#list-sessions-docs-api-reference-voice-agent-api-list-sessions-mdx)
-- [Retrieve a session](#retrieve-a-session-docs-api-reference-voice-agent-api-get-session-mdx)
-- [Delete a session](#delete-a-session-docs-api-reference-voice-agent-api-delete-session-mdx)
+- [API Reference](#api-reference-docs-api-reference-overview-mdx)
 - [Quickstart](#quickstart-docs-pre-recorded-audio-getting-started-transcribe-an-audio-file-mdx)
 - [Model selection](#model-selection-docs-pre-recorded-audio-select-the-speech-model-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-pre-recorded-audio-universal-3-5-pro-prompting-mdx)
@@ -98,6 +74,16 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Transcript Status](#transcript-status-docs-pre-recorded-audio-check-transcript-status-mdx)
 - [Transcript export options](#transcript-export-options-docs-pre-recorded-audio-export-transcripts-as-srt-vtt-or-text-mdx)
 - [Delete Transcripts](#delete-transcripts-docs-pre-recorded-audio-delete-transcripts-mdx)
+- [Upload a media file](#upload-a-media-file-docs-pre-recorded-audio-api-reference-files-upload-mdx)
+- [Submit a transcript](#submit-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-submit-mdx)
+- [Get a transcript](#get-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-get-mdx)
+- [Get transcript sentences](#get-transcript-sentences-docs-pre-recorded-audio-api-reference-transcripts-get-sentences-mdx)
+- [Get transcript paragraphs](#get-transcript-paragraphs-docs-pre-recorded-audio-api-reference-transcripts-get-paragraphs-mdx)
+- [Get subtitles](#get-subtitles-docs-pre-recorded-audio-api-reference-transcripts-get-subtitles-mdx)
+- [Get redacted audio](#get-redacted-audio-docs-pre-recorded-audio-api-reference-transcripts-get-redacted-audio-mdx)
+- [Word search](#word-search-docs-pre-recorded-audio-api-reference-transcripts-word-search-mdx)
+- [List transcripts](#list-transcripts-docs-pre-recorded-audio-api-reference-transcripts-list-mdx)
+- [Delete a transcript](#delete-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-delete-mdx)
 - [Webhooks for pre-recorded audio](#webhooks-for-pre-recorded-audio-docs-pre-recorded-audio-webhooks-mdx)
 - [Benchmarks](#benchmarks-docs-pre-recorded-audio-benchmarks-mdx)
 - [Evaluating Pre-recorded STT models](#evaluating-pre-recorded-stt-models-docs-pre-recorded-audio-evaluations-mdx)
@@ -260,6 +246,8 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Tool Calling](#tool-calling-docs-llm-gateway-tool-calling-mdx)
 - [Structured Outputs](#structured-outputs-docs-llm-gateway-structured-outputs-mdx)
 - [Cloud Endpoints and Data Residency](#cloud-endpoints-and-data-residency-docs-llm-gateway-cloud-endpoints-and-data-residency-mdx)
+- [Create a chat completion](#create-a-chat-completion-docs-llm-gateway-api-reference-create-chat-completion-mdx)
+- [Create speech understanding](#create-speech-understanding-docs-llm-gateway-api-reference-create-speech-understanding-mdx)
 - [Ask Questions About Your Audio Transcripts](#ask-questions-about-your-audio-transcripts-docs-llm-gateway-ask-questions-mdx)
 - [Agentic Workflows](#agentic-workflows-docs-llm-gateway-agentic-workflows-mdx)
 - [Basic Chat Completions](#basic-chat-completions-docs-llm-gateway-chat-completions-mdx)
@@ -381,11 +369,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [What is your API Uptime SLA?](#what-is-your-api-uptime-sla-docs-faq-what-is-your-api-uptime-sla-mdx)
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
-- [Create a webhook subscription](#create-a-webhook-subscription-docs-api-reference-voice-agent-api-create-webhook-subscription-mdx)
-- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-api-reference-voice-agent-api-delete-webhook-subscription-mdx)
-- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-api-reference-voice-agent-api-get-webhook-subscription-mdx)
-- [List webhook subscriptions](#list-webhook-subscriptions-docs-api-reference-voice-agent-api-list-webhook-subscriptions-mdx)
-- [Update a webhook subscription](#update-a-webhook-subscription-docs-api-reference-voice-agent-api-update-webhook-subscription-mdx)
 - [CLI](#cli-docs-concepts-cli-mdx)
 - [Frequently asked questions](#frequently-asked-questions-docs-concepts-faq-mdx)
 - [Deployment](#deployment-docs-deployment-mdx)
@@ -13285,494 +13268,31 @@ AssemblyAI has opted out of model training with all LLM Gateway providers. Pleas
 
 ---
 
-<a id="overview-docs-api-reference-overview-mdx"></a>
+<a id="api-reference-docs-api-reference-overview-mdx"></a>
 
-# Overview
+# API Reference
 
 URL: https://www.assemblyai.com/docs/api-reference/overview
 Source: docs/api-reference/overview.mdx
 Navigation: API Reference > Overview
-Description: AssemblyAI API reference overview.
-
-This page describes how to perform common operations with the AssemblyAI APIs. Each endpoint is documented individually and grouped by the resource it interacts with.
-
-## Pre-recorded STT
-
-The Pre-recorded Speech-to-Text API uses [REST](https://en.wikipedia.org/wiki/REST) with [JSON-encoded](https://www.json.org/json-en.html) request bodies and responses, and is available at the following URL:
-
-```plain title="Base URL"
-https://api.assemblyai.com
-```
-
-  To use our EU server for Pre-recorded STT, replace `api.assemblyai.com` with
-  `api.eu.assemblyai.com`. See [Cloud Endpoints and Data
-  Residency](/pre-recorded-audio/select-the-region) for more information.
-
-### Authentication
-
-To make authorized calls to the REST API, your app must provide an authorization header with an API key. You can find your API key in the [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home).
-
-```bash title="Authenticated request"
-curl https://api.assemblyai.com/v2/transcript \
-  --header 'Authorization: <YOUR_API_KEY>'
-```
-
-  **Your API key**
-
-The examples here contain a placeholder, `<YOUR_API_KEY>`, that you need to replace with your actual API key.
-
-### Errors
-
-The AssemblyAI API uses HTTP response codes to indicate whether a request was successful.
-
-The response codes generally fall into the following ranges:
-
-- `2xx` indicates the request was successful.
-- `4xx` indicates the request may have omitted a required parameter, or have invalid information.
-- `5xx` indicates an error on AssemblyAI's end.
-
-Below is a summary of the HTTP response codes you may encounter:
-
-| Code          | Status            | Description                                   |
-| ------------- | ----------------- | --------------------------------------------- |
-| 200           | OK                | Request was successful.                       |
-| 400           | Bad request       | The request failed due to an invalid request. |
-| 401           | Unauthorized      | Missing or invalid API key.                   |
-| 404           | Not found         | The requested resource doesn't exist.         |
-| 403           | Too many requests | Too many requests were sent to the API.       |
-| 500, 503, 504 | Server error      | Something went wrong on AssemblyAI's end.     |
-
-```json title="Response with error"
-{
-  "error": "Authentication error, API token missing/invalid"
-}
-```
-
-  **API status**
-
-  To stay up-to-date with any known service disruptions, subscribe to updates on
-  the [Status](https://status.assemblyai.com) page.
-
-#### Failed transcriptions
-
-Transcriptions may fail due to errors while processing the audio data.
-
-When you query a transcription that has failed, the response will have a `200` code, along with `status` set to `error` and an `error` property with more details.
-
-```json title="Failed transcription"
-{
-    "status": "error",
-    "error": "Download error to https://foo.bar, 403 Client Error: Forbidden for url: https://foo.bar",
-    ...
-}
-```
-
-Common reasons why a transcription may fail include:
-
-- Audio data is corrupted or in an unsupported format. See [FAQ](/faq) for supported formats.
-- Audio URL is a webpage rather than a file.
-- Audio URL isn't accessible from AssemblyAI's servers.
-- Audio duration is too short (less than 160ms).
-- The file exceeds the 5.5 GB cap, contains no audio stream, returns an empty body, or — for uploaded files — was uploaded in a different region from the transcript request.
-- [Automatic Language Detection](/pre-recorded-audio/language-detection) couldn't run on the file, or the detected language's confidence was below the configured `language_confidence_threshold`.
-
-For the full list of error strings (request-time and processing-time) and recommended fixes, see [Troubleshoot Common Errors](/pre-recorded-audio/guides/common_errors_and_solutions).
-
-In the rare event of a transcription failure due to a server error, you may resubmit the file for transcription. See [Implement Retry Server Error Logic](/pre-recorded-audio/guides/retry-server-error) for a worked example. If the problems persist after resubmitting, [let us know](mailto:support@assemblyai.com).
-
-## Real-time STT
-
-The Streaming Speech-to-Text API uses [WebSockets](https://en.wikipedia.org/wiki/WebSocket) for real-time audio transcription. See [Streaming API reference](/api-reference/streaming-api/universal-3-pro-streaming) for full endpoint documentation.
-
-```plain title="Base URL"
-wss://streaming.assemblyai.com
-```
-
-  To use our EU server for Real-time STT, use `streaming.eu.assemblyai.com`. See
-  [Streaming Endpoints and Data Zones](/streaming/endpoints-and-data-zones)
-  for more information.
-
-Real-time STT uses the same API key for authentication as Pre-recorded STT. Pass the API key as a query parameter or in the initial WebSocket message.
-
-## LLM Gateway
-
-The LLM Gateway API provides a unified interface for interacting with multiple LLM providers through a single endpoint.
-
-```plain title="Base URL"
-https://llm-gateway.assemblyai.com
-```
-
-  To use our EU server for LLM Gateway, replace `llm-gateway.assemblyai.com`
-  with `llm-gateway.eu.assemblyai.com`. See [Cloud Endpoints and Data
-  Residency](/llm-gateway/cloud-endpoints-and-data-residency) for more
-  information.
-
-LLM Gateway uses the same API key for authentication as Pre-recorded STT. Pass your API key in the `Authorization` header.
-
-### Rate limits
-
-To ensure the LLM Gateway API remains available for all users, you can only make a limited number of requests within a 60-second time window. These rate limits are specific to each LLM Gateway model.
-
-If you exceed the limit, the API will respond with a `429` status code.
-
-To see your remaining quota, check the following response headers:
-
-| Header                  | Description                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------ |
-| `X-RateLimit-Limit`     | Maximum number of allowed requests in a 60 second window.                                  |
-| `X-RateLimit-Remaining` | Number of remaining requests in the current time window.                                   |
-| `X-RateLimit-Reset`     | Number of seconds until the remaining requests resets to the value of `X-RateLimit-Limit`. |
-| `X-RateLimit-Model`     | The model the rate limit applies to. Same as "model" param in the request.                 |
-| `X-RateLimit-Service`   | Denotes the service used, LLM Gateway or Speech Understanding                              |
-
-If the response doesn't include `X-RateLimit` headers, the endpoint doesn't have rate limits.
-
-  **Increasing rate limits**
-
-  If you want to increase the rate limit for your account, [contact
-  us](mailto:support@assemblyai.com).
-
-## Versioning
-
-When AssemblyAI makes backwards-incompatible changes to the API, we release a new version. For information on API updates, see [Changelog](https://www.assemblyai.com/changelog).
-
-Endpoints are versioned using a path prefix, such as `/v2`.
-
----
-
-<a id="upload-a-media-file-docs-api-reference-files-upload-mdx"></a>
-
-# Upload a media file
-
-URL: https://www.assemblyai.com/docs/api-reference/files/upload
-Source: docs/api-reference/files/upload.mdx
-Navigation: API Reference > Files
-Description: Upload a media file to AssemblyAI.
-
-Metadata:
-- openapi: ../../openapi.yaml POST /v2/upload
-
----
-
-<a id="submit-a-transcript-docs-api-reference-transcripts-submit-mdx"></a>
-
-# Submit a transcript
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/submit
-Source: docs/api-reference/transcripts/submit.mdx
-Navigation: API Reference > Transcripts
-Description: Create a transcription request.
-
-Metadata:
-- openapi: ../../openapi.yaml POST /v2/transcript
-
----
-
-<a id="get-a-transcript-docs-api-reference-transcripts-get-mdx"></a>
-
-# Get a transcript
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/get
-Source: docs/api-reference/transcripts/get.mdx
-Navigation: API Reference > Transcripts
-Description: Retrieve a transcript by ID.
-
-Metadata:
-- openapi: ../../openapi.yaml GET /v2/transcript/{transcript_id}
-
----
-
-<a id="get-transcript-sentences-docs-api-reference-transcripts-get-sentences-mdx"></a>
-
-# Get transcript sentences
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/get-sentences
-Source: docs/api-reference/transcripts/get-sentences.mdx
-Navigation: API Reference > Transcripts
-Description: Retrieve transcript sentences.
-
-Metadata:
-- openapi: ../../openapi.yaml GET /v2/transcript/{transcript_id}/sentences
-
----
-
-<a id="get-transcript-paragraphs-docs-api-reference-transcripts-get-paragraphs-mdx"></a>
-
-# Get transcript paragraphs
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/get-paragraphs
-Source: docs/api-reference/transcripts/get-paragraphs.mdx
-Navigation: API Reference > Transcripts
-Description: Retrieve transcript paragraphs.
-
-Metadata:
-- openapi: ../../openapi.yaml GET /v2/transcript/{transcript_id}/paragraphs
-
----
-
-<a id="get-subtitles-docs-api-reference-transcripts-get-subtitles-mdx"></a>
-
-# Get subtitles
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/get-subtitles
-Source: docs/api-reference/transcripts/get-subtitles.mdx
-Navigation: API Reference > Transcripts
-Description: Export subtitles for a transcript.
-
-Metadata:
-- openapi: ../../openapi.yaml GET /v2/transcript/{transcript_id}/{subtitle_format}
-
----
-
-<a id="get-redacted-audio-docs-api-reference-transcripts-get-redacted-audio-mdx"></a>
-
-# Get redacted audio
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/get-redacted-audio
-Source: docs/api-reference/transcripts/get-redacted-audio.mdx
-Navigation: API Reference > Transcripts
-Description: Retrieve redacted audio for a transcript.
-
-Metadata:
-- openapi: ../../openapi.yaml GET /v2/transcript/{transcript_id}/redacted-audio
-
----
-
-<a id="word-search-docs-api-reference-transcripts-word-search-mdx"></a>
-
-# Word search
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/word-search
-Source: docs/api-reference/transcripts/word-search.mdx
-Navigation: API Reference > Transcripts
-Description: Search a transcript for words or phrases.
-
-Metadata:
-- openapi: ../../openapi.yaml GET /v2/transcript/{transcript_id}/word-search
-
----
-
-<a id="list-transcripts-docs-api-reference-transcripts-list-mdx"></a>
-
-# List transcripts
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/list
-Source: docs/api-reference/transcripts/list.mdx
-Navigation: API Reference > Transcripts
-Description: List transcripts.
-
-Metadata:
-- openapi: ../../openapi.yaml GET /v2/transcript
-
----
-
-<a id="delete-a-transcript-docs-api-reference-transcripts-delete-mdx"></a>
-
-# Delete a transcript
-
-URL: https://www.assemblyai.com/docs/api-reference/transcripts/delete
-Source: docs/api-reference/transcripts/delete.mdx
-Navigation: API Reference > Transcripts
-Description: Delete a transcript.
-
-Metadata:
-- openapi: ../../openapi.yaml DELETE /v2/transcript/{transcript_id}
-
----
-
-<a id="create-a-chat-completion-docs-api-reference-llm-gateway-create-chat-completion-mdx"></a>
-
-# Create a chat completion
-
-URL: https://www.assemblyai.com/docs/api-reference/llm-gateway/create-chat-completion
-Source: docs/api-reference/llm-gateway/create-chat-completion.mdx
-Navigation: API Reference > LLM Gateway
-Description: Create a chat completion with LLM Gateway.
-
-Metadata:
-- openapi: ../specs/llm-gateway.yaml POST /chat/completions
-
----
-
-<a id="create-speech-understanding-docs-api-reference-llm-gateway-create-speech-understanding-mdx"></a>
-
-# Create speech understanding
-
-URL: https://www.assemblyai.com/docs/api-reference/llm-gateway/create-speech-understanding
-Source: docs/api-reference/llm-gateway/create-speech-understanding.mdx
-Navigation: API Reference > LLM Gateway
-Description: Apply LLM Gateway to audio transcripts.
-
-Metadata:
-- openapi: ../specs/llm-gateway.yaml POST /understanding
-
----
-
-<a id="generate-streaming-token-docs-api-reference-streaming-api-generate-streaming-token-mdx"></a>
-
-# Generate streaming token
-
-URL: https://www.assemblyai.com/docs/api-reference/streaming-api/generate-streaming-token
-Source: docs/api-reference/streaming-api/generate-streaming-token.mdx
-Navigation: API Reference > Streaming API
-Description: Generate a temporary token for Real-time STT.
-
-Metadata:
-- openapi: ../specs/streaming-token.yaml GET /v3/token
-
----
-
-<a id="streaming-websocket-api-docs-api-reference-streaming-api-universal-3-pro-streaming-mdx"></a>
-
-# Streaming WebSocket API
-
-URL: https://www.assemblyai.com/docs/api-reference/streaming-api/universal-3-pro-streaming
-Source: docs/api-reference/streaming-api/universal-3-pro-streaming.mdx
-Navigation: API Reference > Streaming API
-Description: Full AsyncAPI reference for the Real-time STT WebSocket API.
-
-Metadata:
-- asyncapi: /api-reference/specs/streaming.yaml streaming
-
----
-
-<a id="generate-voice-agent-token-docs-api-reference-voice-agent-api-generate-voice-agent-token-mdx"></a>
-
-# Generate voice agent token
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/generate-voice-agent-token
-Source: docs/api-reference/voice-agent-api/generate-voice-agent-token.mdx
-Navigation: API Reference > Voice Agent API
-Description: Generate a temporary token for the Voice Agent API.
-
-Metadata:
-- openapi: ../../specs/voice-agent-token.yaml GET /v1/token
-
----
-
-<a id="voice-agent-websocket-docs-api-reference-voice-agent-api-voice-agent-web-socket-mdx"></a>
-
-# Voice Agent WebSocket
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/voice-agent-web-socket
-Source: docs/api-reference/voice-agent-api/voice-agent-web-socket.mdx
-Navigation: API Reference > Voice Agent API
-Description: AsyncAPI reference for the Voice Agent WebSocket.
-
-Metadata:
-- asyncapi: /api-reference/specs/voice-agent-api.yaml voiceAgent
-
----
-
-<a id="create-an-agent-docs-api-reference-voice-agent-api-create-agent-mdx"></a>
-
-# Create an agent
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-agent
-Source: docs/api-reference/voice-agent-api/create-agent.mdx
-Navigation: API Reference > Voice Agent API > Agents
-Description: Create a reusable voice agent.
-
-Metadata:
-- openapi: ../../specs/agents.yaml POST /v1/agents
-
----
-
-<a id="list-agents-docs-api-reference-voice-agent-api-list-agents-mdx"></a>
-
-# List agents
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/list-agents
-Source: docs/api-reference/voice-agent-api/list-agents.mdx
-Navigation: API Reference > Voice Agent API > Agents
-Description: List the voice agents for your account.
-
-Metadata:
-- openapi: ../../specs/agents.yaml GET /v1/agents
-
----
-
-<a id="retrieve-an-agent-docs-api-reference-voice-agent-api-get-agent-mdx"></a>
-
-# Retrieve an agent
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/get-agent
-Source: docs/api-reference/voice-agent-api/get-agent.mdx
-Navigation: API Reference > Voice Agent API > Agents
-Description: Retrieve a voice agent by ID.
-
-Metadata:
-- openapi: ../../specs/agents.yaml GET /v1/agents/{agent_id}
-
----
-
-<a id="update-an-agent-docs-api-reference-voice-agent-api-update-agent-mdx"></a>
-
-# Update an agent
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/update-agent
-Source: docs/api-reference/voice-agent-api/update-agent.mdx
-Navigation: API Reference > Voice Agent API > Agents
-Description: Update a voice agent.
-
-Metadata:
-- openapi: ../../specs/agents.yaml PUT /v1/agents/{agent_id}
-
----
-
-<a id="delete-an-agent-docs-api-reference-voice-agent-api-delete-agent-mdx"></a>
-
-# Delete an agent
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/delete-agent
-Source: docs/api-reference/voice-agent-api/delete-agent.mdx
-Navigation: API Reference > Voice Agent API > Agents
-Description: Delete a voice agent.
-
-Metadata:
-- openapi: ../../specs/agents.yaml DELETE /v1/agents/{agent_id}
-
----
-
-<a id="list-sessions-docs-api-reference-voice-agent-api-list-sessions-mdx"></a>
-
-# List sessions
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/list-sessions
-Source: docs/api-reference/voice-agent-api/list-sessions.mdx
-Navigation: API Reference > Voice Agent API > Sessions
-Description: List your voice agent sessions, newest first.
-
-Metadata:
-- openapi: ../../specs/agents.yaml GET /v1/sessions
-
----
-
-<a id="retrieve-a-session-docs-api-reference-voice-agent-api-get-session-mdx"></a>
-
-# Retrieve a session
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/get-session
-Source: docs/api-reference/voice-agent-api/get-session.mdx
-Navigation: API Reference > Voice Agent API > Sessions
-Description: Retrieve a voice agent session by ID, including its recording, timeline, and metadata artifacts.
-
-Metadata:
-- openapi: ../../specs/agents.yaml GET /v1/sessions/{session_id}
-
----
-
-<a id="delete-a-session-docs-api-reference-voice-agent-api-delete-session-mdx"></a>
-
-# Delete a session
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/delete-session
-Source: docs/api-reference/voice-agent-api/delete-session.mdx
-Navigation: API Reference > Voice Agent API > Sessions
-Description: Soft-delete a voice agent session.
-
-Metadata:
-- openapi: ../../specs/agents.yaml DELETE /v1/sessions/{session_id}
+Description: Choose an API to view its full reference.
+
+Pick a product to jump to its full API reference. Each product tab has its own reference section with all endpoints, request and response schemas, and example calls.
+
+  
+    Get clean, customizable transcripts in 99 languages with industry-leading accuracy and natural language prompting.
+  
+  
+    Real-time transcription your notetaker, agents, and captions can depend on.
+  
+  
+    Send an audio file in a single HTTP request, get a transcript back in milliseconds. No polling, no session management.
+  
+  
+    One OpenAI-compatible API for every frontier model — with automatic fallbacks, zero markup, and zero data retention.
+  
+  
+    Stream audio in, get audio back. We handle the rest so you can focus on your product.
 
 ---
 
@@ -18602,7 +18122,7 @@ A transcription may fail for various reasons:
 If a transcription fails due to a server error, we recommend that you resubmit the file for transcription to allow another server to process the audio.
 
   
-A "400 Bad Request" error typically indicates that there's a problem with the formatting or content of the API request. Double-check the syntax of your request and ensure that all required parameters are included as described in the [API reference](/api-reference/transcripts). If the issue persists, contact our support team for assistance.
+A "400 Bad Request" error typically indicates that there's a problem with the formatting or content of the API request. Double-check the syntax of your request and ensure that all required parameters are included as described in the [API reference](/pre-recorded-audio/api-reference/transcripts/submit). If the issue persists, contact our support team for assistance.
 
 ---
 
@@ -19534,6 +19054,146 @@ console.log(deleteResponse.text);
 
   See [here](/data-retention-and-model-training) for more information on
   how long AssemblyAI retains data in the production environment.
+
+---
+
+<a id="upload-a-media-file-docs-pre-recorded-audio-api-reference-files-upload-mdx"></a>
+
+# Upload a media file
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/files/upload
+Source: docs/pre-recorded-audio/api-reference/files/upload.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Upload a media file to AssemblyAI.
+
+Metadata:
+- openapi: ../../../openapi.yaml POST /v2/upload
+
+---
+
+<a id="submit-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-submit-mdx"></a>
+
+# Submit a transcript
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/submit
+Source: docs/pre-recorded-audio/api-reference/transcripts/submit.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Create a transcription request.
+
+Metadata:
+- openapi: ../../../openapi.yaml POST /v2/transcript
+
+---
+
+<a id="get-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-get-mdx"></a>
+
+# Get a transcript
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/get
+Source: docs/pre-recorded-audio/api-reference/transcripts/get.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Retrieve a transcript by ID.
+
+Metadata:
+- openapi: ../../../openapi.yaml GET /v2/transcript/{transcript_id}
+
+---
+
+<a id="get-transcript-sentences-docs-pre-recorded-audio-api-reference-transcripts-get-sentences-mdx"></a>
+
+# Get transcript sentences
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/get-sentences
+Source: docs/pre-recorded-audio/api-reference/transcripts/get-sentences.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Retrieve transcript sentences.
+
+Metadata:
+- openapi: ../../../openapi.yaml GET /v2/transcript/{transcript_id}/sentences
+
+---
+
+<a id="get-transcript-paragraphs-docs-pre-recorded-audio-api-reference-transcripts-get-paragraphs-mdx"></a>
+
+# Get transcript paragraphs
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/get-paragraphs
+Source: docs/pre-recorded-audio/api-reference/transcripts/get-paragraphs.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Retrieve transcript paragraphs.
+
+Metadata:
+- openapi: ../../../openapi.yaml GET /v2/transcript/{transcript_id}/paragraphs
+
+---
+
+<a id="get-subtitles-docs-pre-recorded-audio-api-reference-transcripts-get-subtitles-mdx"></a>
+
+# Get subtitles
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/get-subtitles
+Source: docs/pre-recorded-audio/api-reference/transcripts/get-subtitles.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Export subtitles for a transcript.
+
+Metadata:
+- openapi: ../../../openapi.yaml GET /v2/transcript/{transcript_id}/{subtitle_format}
+
+---
+
+<a id="get-redacted-audio-docs-pre-recorded-audio-api-reference-transcripts-get-redacted-audio-mdx"></a>
+
+# Get redacted audio
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/get-redacted-audio
+Source: docs/pre-recorded-audio/api-reference/transcripts/get-redacted-audio.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Retrieve redacted audio for a transcript.
+
+Metadata:
+- openapi: ../../../openapi.yaml GET /v2/transcript/{transcript_id}/redacted-audio
+
+---
+
+<a id="word-search-docs-pre-recorded-audio-api-reference-transcripts-word-search-mdx"></a>
+
+# Word search
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/word-search
+Source: docs/pre-recorded-audio/api-reference/transcripts/word-search.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Search a transcript for words or phrases.
+
+Metadata:
+- openapi: ../../../openapi.yaml GET /v2/transcript/{transcript_id}/word-search
+
+---
+
+<a id="list-transcripts-docs-pre-recorded-audio-api-reference-transcripts-list-mdx"></a>
+
+# List transcripts
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/list
+Source: docs/pre-recorded-audio/api-reference/transcripts/list.mdx
+Navigation: Pre-recorded STT > API reference
+Description: List transcripts.
+
+Metadata:
+- openapi: ../../../openapi.yaml GET /v2/transcript
+
+---
+
+<a id="delete-a-transcript-docs-pre-recorded-audio-api-reference-transcripts-delete-mdx"></a>
+
+# Delete a transcript
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/api-reference/transcripts/delete
+Source: docs/pre-recorded-audio/api-reference/transcripts/delete.mdx
+Navigation: Pre-recorded STT > API reference
+Description: Delete a transcript.
+
+Metadata:
+- openapi: ../../../openapi.yaml DELETE /v2/transcript/{transcript_id}
 
 ---
 
@@ -28631,6 +28291,39 @@ Navigation: Pre-recorded STT > Guides > Tutorials > Error handling and audio fil
 Description: Troubleshoot Common Errors documentation.
 
 AssemblyAI's API always returns a response even when there is an error. This guide is designed to help you navigate and resolve common issues when implementing AssemblyAI.
+
+## HTTP status codes
+
+The AssemblyAI API uses HTTP response codes to indicate whether a request was successful.
+
+The response codes generally fall into the following ranges:
+
+- `2xx` indicates the request was successful.
+- `4xx` indicates the request may have omitted a required parameter, or have invalid information.
+- `5xx` indicates an error on AssemblyAI's end.
+
+Below is a summary of the HTTP response codes you may encounter:
+
+| Code          | Status            | Description                                       |
+| ------------- | ----------------- | ------------------------------------------------- |
+| 200           | OK                | Request was successful.                           |
+| 400           | Bad request       | The request failed due to an invalid request.     |
+| 401           | Unauthorized      | Missing or invalid API key.                       |
+| 403           | Forbidden         | You don't have access to the requested resource.  |
+| 404           | Not found         | The requested resource doesn't exist.             |
+| 429           | Too many requests | Too many requests were sent to the API.           |
+| 500, 503, 504 | Server error      | Something went wrong on AssemblyAI's end.         |
+
+```json title="Response with error"
+{
+  "error": "Authentication error, API token missing/invalid"
+}
+```
+
+  **API status**
+
+  To stay up-to-date with any known service disruptions, subscribe to updates on
+  the [Status](https://status.assemblyai.com) page.
 
 ## Understanding Errors with AssemblyAI
 
@@ -51677,7 +51370,8 @@ A successful request returns a JSON object with the transcript and word-level de
   ],
   "confidence": 0.87,
   "audio_duration_ms": 101567,
-  "session_id": "eb92c4ff-4bbb-429f-9b99-7279d7fe738f"
+  "session_id": "eb92c4ff-4bbb-429f-9b99-7279d7fe738f",
+  "request_time_ms": 243.7
 }
 ```
 
@@ -51688,6 +51382,7 @@ A successful request returns a JSON object with the transcript and word-level de
 | `confidence` | Overall transcript confidence score (0–1). |
 | `audio_duration_ms` | Duration of the submitted audio in milliseconds. |
 | `session_id` | Server-generated UUID. Include this when contacting support. |
+| `request_time_ms` | End-to-end server-side processing time for the request, in milliseconds. |
 
 ```python
 result = response.json()
@@ -66794,6 +66489,34 @@ curl -X POST \
 
 ---
 
+<a id="create-a-chat-completion-docs-llm-gateway-api-reference-create-chat-completion-mdx"></a>
+
+# Create a chat completion
+
+URL: https://www.assemblyai.com/docs/llm-gateway/api-reference/create-chat-completion
+Source: docs/llm-gateway/api-reference/create-chat-completion.mdx
+Navigation: LLM Gateway > API reference
+Description: Create a chat completion with LLM Gateway.
+
+Metadata:
+- openapi: ../../api-reference/specs/llm-gateway.yaml POST /chat/completions
+
+---
+
+<a id="create-speech-understanding-docs-llm-gateway-api-reference-create-speech-understanding-mdx"></a>
+
+# Create speech understanding
+
+URL: https://www.assemblyai.com/docs/llm-gateway/api-reference/create-speech-understanding
+Source: docs/llm-gateway/api-reference/create-speech-understanding.mdx
+Navigation: LLM Gateway > API reference
+Description: Apply LLM Gateway to audio transcripts.
+
+Metadata:
+- openapi: ../../api-reference/specs/llm-gateway.yaml POST /understanding
+
+---
+
 <a id="ask-questions-about-your-audio-transcripts-docs-llm-gateway-ask-questions-mdx"></a>
 
 # Ask Questions About Your Audio Transcripts
@@ -68207,6 +67930,20 @@ LLM Gateway is rate limited per model, measured as requests within a 60-second w
 
   If you need a higher rate limit, [contact our support team](mailto:support@assemblyai.com).
 
+## Response headers
+
+If you exceed the limit, the API responds with a `429` status code. To see your remaining quota, check the following response headers:
+
+| Header                  | Description                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------ |
+| `X-RateLimit-Limit`     | Maximum number of allowed requests in a 60 second window.                                  |
+| `X-RateLimit-Remaining` | Number of remaining requests in the current time window.                                   |
+| `X-RateLimit-Reset`     | Number of seconds until the remaining requests resets to the value of `X-RateLimit-Limit`. |
+| `X-RateLimit-Model`     | The model the rate limit applies to. Same as "model" param in the request.                 |
+| `X-RateLimit-Service`   | Denotes the service used, LLM Gateway or Speech Understanding.                             |
+
+If the response doesn't include `X-RateLimit` headers, the endpoint doesn't have rate limits.
+
 ---
 
 <a id="troubleshooting-docs-llm-gateway-troubleshooting-mdx"></a>
@@ -68366,7 +68103,7 @@ The `metadata.errors` array lists every field that failed validation:
 
 **Fixes:**
 
-- Read the rate limit headers on every response (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) to back off gracefully. See [Rate limits](/api-reference/overview#rate-limits) for the full header reference.
+- Read the rate limit headers on every response (`X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`) to back off gracefully. See [Rate limits](/llm-gateway/rate-limits#response-headers) for the full header reference.
 - Implement exponential backoff with jitter when you receive a 429.
 - Consider [specifying fallback models](/llm-gateway/fallback) so traffic spills over to a different model when the primary is rate-limited.
 - If you need a higher rate limit, [contact support](mailto:support@assemblyai.com).
@@ -80605,76 +80342,6 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 ---
 
-<a id="create-a-webhook-subscription-docs-api-reference-voice-agent-api-create-webhook-subscription-mdx"></a>
-
-# Create a webhook subscription
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-webhook-subscription
-Source: docs/api-reference/voice-agent-api/create-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Create a webhook subscription documentation.
-
-Metadata:
-- openapi: ../../specs/webhooks.yaml POST /v1/webhook-subscriptions
-
----
-
-<a id="delete-a-webhook-subscription-docs-api-reference-voice-agent-api-delete-webhook-subscription-mdx"></a>
-
-# Delete a webhook subscription
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/delete-webhook-subscription
-Source: docs/api-reference/voice-agent-api/delete-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Delete a webhook subscription documentation.
-
-Metadata:
-- openapi: ../../specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="retrieve-a-webhook-subscription-docs-api-reference-voice-agent-api-get-webhook-subscription-mdx"></a>
-
-# Retrieve a webhook subscription
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/get-webhook-subscription
-Source: docs/api-reference/voice-agent-api/get-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Retrieve a webhook subscription documentation.
-
-Metadata:
-- openapi: ../../specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="list-webhook-subscriptions-docs-api-reference-voice-agent-api-list-webhook-subscriptions-mdx"></a>
-
-# List webhook subscriptions
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/list-webhook-subscriptions
-Source: docs/api-reference/voice-agent-api/list-webhook-subscriptions.mdx
-Navigation: Additional pages
-Description: List webhook subscriptions documentation.
-
-Metadata:
-- openapi: ../../specs/webhooks.yaml GET /v1/webhook-subscriptions
-
----
-
-<a id="update-a-webhook-subscription-docs-api-reference-voice-agent-api-update-webhook-subscription-mdx"></a>
-
-# Update a webhook subscription
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/update-webhook-subscription
-Source: docs/api-reference/voice-agent-api/update-webhook-subscription.mdx
-Navigation: Additional pages
-Description: Update a webhook subscription documentation.
-
-Metadata:
-- openapi: ../../specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
-
----
-
 <a id="cli-docs-concepts-cli-mdx"></a>
 
 # CLI
@@ -81401,7 +81068,7 @@ The speaker label information is included in the `utterances` key of the respons
 }
 ```
 
-For more information, see the [Speaker Diarization model documentation](/pre-recorded-audio/label-speakers#specifying-the-number-of-speakers) or see the [API reference](/api-reference/transcripts).
+For more information, see the [Speaker Diarization model documentation](/pre-recorded-audio/label-speakers#specifying-the-number-of-speakers) or see the [API reference](/pre-recorded-audio/api-reference/transcripts/submit).
 
 ## Specifying the number of speakers
 
@@ -84607,13 +84274,12 @@ components:
           x-label: Language code
           description: |
             The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
-            The default value is 'en_us'.
+            If you don't specify a language, it's detected automatically. Cannot be used together with `language_detection`.
           oneOf:
             - anyOf:
                 - $ref: "#/components/schemas/TranscriptLanguageCode"
                 - type: string
             - type: "null"
-          default: en_us
           x-ts-type: LiteralUnion<TranscriptLanguageCode, string> | null
           x-go-type: TranscriptLanguageCode
 
@@ -84631,7 +84297,7 @@ components:
           description: |
             The confidence threshold for the automatically detected language.
             An error will be returned if the language confidence is below this threshold.
-            Defaults to 0. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+            Defaults to 0. Can only be set when `language_detection` is enabled. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
           type: number
           format: float
           minimum: 0
@@ -84640,9 +84306,9 @@ components:
 
         language_detection:
           x-label: Language detection
-          description: Enable [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection), either true or false.
+          description: |
+            [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) identifies the spoken language and routes the request to the best model. It's applied automatically when you don't specify a `language_code`. Set to `false` only together with a `language_code`; disabling it without specifying a language returns an error.
           type: boolean
-          default: false
 
         language_detection_options:
           x-label: Specify options for Automatic Language Detection.
@@ -84809,13 +84475,14 @@ components:
         speech_models:
           x-label: Speech models
           description: |
-            Optional. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `universal-3-5-pro`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
+            Optional. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `["universal-3-5-pro", "universal-2"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
           type: array
           items:
             x-label: Speech model
             $ref: "#/components/schemas/SpeechModel"
           default:
             - universal-3-5-pro
+            - universal-2
 
         speech_threshold:
           x-label: Speech threshold
@@ -84939,7 +84606,6 @@ components:
       example:
         {
           speech_model: null,
-          language_code: "en_us",
           language_detection: true,
           language_confidence_threshold: 0.7,
           punctuate: true,
@@ -85009,7 +84675,6 @@ components:
       example:
         {
           speech_model: null,
-          language_code: "en_us",
           language_detection: true,
           language_confidence_threshold: 0.7,
           audio_url: "https://assembly.ai/wildfires.mp3",
@@ -85662,7 +85327,6 @@ components:
       type: string
       description: |
         The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
-        The default value is 'en_us'.
       x-fern-sdk-group-name: transcripts
       enum:
         - en
@@ -86190,7 +85854,6 @@ components:
           description: |
             The language of your audio file.
             Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
-            The default value is 'en_us'.
           anyOf:
             - $ref: "#/components/schemas/TranscriptLanguageCode"
             - type: string
@@ -86378,7 +86041,7 @@ components:
         speech_models:
           x-label: Speech models
           description: |
-            List of speech models that were used (in priority order) to transcribe the audio. If not specified in the request, this defaults to `universal-3-5-pro`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
+            List of speech models that were used (in priority order) to transcribe the audio. If not specified in the request, this defaults to `["universal-3-5-pro", "universal-2"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
           type: [array, "null"]
           items:
             x-label: Speech model

@@ -293,7 +293,7 @@ Possible enum values:
   Time at which the object was created. Measured in seconds since the Unix epoch.
 
 - `currency` (enum)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - `customer` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
   ID of the Customer this PaymentIntent belongs to, if one exists.
@@ -720,7 +720,7 @@ Possible enum values:
               Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
 
             - `last_payment_error.payment_method.card.generated_from.payment_method_details.card_present.brand_product` (string, nullable)
-              The [product code](https://stripe.com/docs/card-product-codes) that identifies the specific program or product associated with a card.
+              The [product code](https://docs.stripe.com/card-product-codes.md) that identifies the specific program or product associated with a card.
 
             - `last_payment_error.payment_method.card.generated_from.payment_method_details.card_present.capture_before` (timestamp, nullable)
               When using manual capture, a future timestamp after which the charge will be automatically refunded if uncaptured.
@@ -1044,7 +1044,7 @@ Possible enum values:
         Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
 
       - `last_payment_error.payment_method.card_present.brand_product` (string, nullable)
-        The [product code](https://stripe.com/docs/card-product-codes) that identifies the specific program or product associated with a card.
+        The [product code](https://docs.stripe.com/card-product-codes.md) that identifies the specific program or product associated with a card.
 
       - `last_payment_error.payment_method.card_present.cardholder_name` (string, nullable)
         The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay.
@@ -2159,7 +2159,7 @@ Possible enum values:
       The remaining amount that needs to be transferred to complete the payment.
 
     - `next_action.display_bank_transfer_instructions.currency` (enum, nullable)
-      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+      Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
     - `next_action.display_bank_transfer_instructions.financial_addresses` (array of objects, nullable)
       A list of financial addresses that can be used to fund the customer balance
