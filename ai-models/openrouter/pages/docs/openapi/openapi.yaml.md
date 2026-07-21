@@ -2063,6 +2063,52 @@ components:
         - error_message
         - type
       type: object
+    AnthropicToolSearchToolBm25:
+      properties:
+        allowed_callers:
+          $ref: '#/components/schemas/AnthropicAllowedCallers'
+        cache_control:
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
+        defer_loading:
+          type: boolean
+        name:
+          enum:
+            - tool_search_tool_bm25
+          type: string
+        strict:
+          type: boolean
+        type:
+          enum:
+            - tool_search_tool_bm25_20251119
+            - tool_search_tool_bm25
+          type: string
+      required:
+        - type
+        - name
+      type: object
+    AnthropicToolSearchToolRegex:
+      properties:
+        allowed_callers:
+          $ref: '#/components/schemas/AnthropicAllowedCallers'
+        cache_control:
+          $ref: '#/components/schemas/AnthropicCacheControlDirective'
+        defer_loading:
+          type: boolean
+        name:
+          enum:
+            - tool_search_tool_regex
+          type: string
+        strict:
+          type: boolean
+        type:
+          enum:
+            - tool_search_tool_regex_20251119
+            - tool_search_tool_regex
+          type: string
+      required:
+        - type
+        - name
+      type: object
     AnthropicToolSearchToolResult:
       example:
         content:
@@ -4429,6 +4475,7 @@ components:
         - clarifai
         - cloudflare
         - cohere
+        - coreweave
         - crusoe
         - darkbloom
         - decart
@@ -4482,6 +4529,7 @@ components:
         - recraft
         - reka
         - relace
+        - runway
         - sail-research
         - sakana
         - sambanova
@@ -13426,6 +13474,8 @@ components:
                 required:
                   - type
                 type: object
+              - $ref: '#/components/schemas/AnthropicToolSearchToolBm25'
+              - $ref: '#/components/schemas/AnthropicToolSearchToolRegex'
           type: array
         top_k:
           type: integer
@@ -13640,6 +13690,7 @@ components:
                 - Clarifai
                 - Cloudflare
                 - Cohere
+                - CoreWeave
                 - Crucible
                 - Crusoe
                 - Darkbloom
@@ -13711,6 +13762,7 @@ components:
                 - WandB
                 - Quiver
                 - Krea
+                - Runway
                 - Xiaomi
                 - xAI
                 - Z.AI
@@ -19660,6 +19712,7 @@ components:
         - Clarifai
         - Cloudflare
         - Cohere
+        - CoreWeave
         - Crucible
         - Crusoe
         - Darkbloom
@@ -19731,6 +19784,7 @@ components:
         - WandB
         - Quiver
         - Krea
+        - Runway
         - Xiaomi
         - xAI
         - Z.AI
@@ -19822,6 +19876,9 @@ components:
           additionalProperties: {}
           type: object
         cohere:
+          additionalProperties: {}
+          type: object
+        coreweave:
           additionalProperties: {}
           type: object
         crofai:
@@ -20044,6 +20101,9 @@ components:
           additionalProperties: {}
           type: object
         replicate:
+          additionalProperties: {}
+          type: object
+        runway:
           additionalProperties: {}
           type: object
         sail-research:
@@ -20401,6 +20461,7 @@ components:
             - Clarifai
             - Cloudflare
             - Cohere
+            - CoreWeave
             - Crucible
             - Crusoe
             - Darkbloom
@@ -20472,6 +20533,7 @@ components:
             - WandB
             - Quiver
             - Krea
+            - Runway
             - Xiaomi
             - xAI
             - Z.AI
@@ -21564,6 +21626,11 @@ components:
             - integer
             - 'null'
         max_tool_calls:
+          description: >-
+            Maximum number of server-tool (e.g. `openrouter:web_search`) agent
+            steps the model may take during a request. Defaults to 30, which is
+            also the maximum. Ignored when `stop_server_tools_when` is set.
+          example: 30
           type:
             - integer
             - 'null'
@@ -22205,6 +22272,10 @@ components:
       description: >-
         Stop conditions for the server-tool agent loop. Any condition firing
         halts the loop (OR logic). When set, this overrides `max_tool_calls`.
+        When a condition fires while the model is still emitting tool calls, the
+        pending tool calls are executed and one final turn is made with tool
+        calls disabled so the response ends with a natural-language answer
+        instead of an unfinished tool call.
       example:
         - step_count: 5
           type: step_count_is
@@ -27047,6 +27118,7 @@ paths:
               - clarifai
               - cloudflare
               - cohere
+              - coreweave
               - crusoe
               - darkbloom
               - decart
@@ -27100,6 +27172,7 @@ paths:
               - recraft
               - reka
               - relace
+              - runway
               - sail-research
               - sakana
               - sambanova
@@ -27143,6 +27216,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListBYOKKeysResponse'
           description: List of BYOK credentials
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
         '401':
           content:
             application/json:
@@ -30022,6 +30105,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListGuardrailsResponse'
           description: List of guardrails
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
         '401':
           content:
             application/json:
@@ -31899,6 +31992,16 @@ paths:
                   - data
                 type: object
           description: List of API keys
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
         '401':
           content:
             application/json:
@@ -34265,6 +34368,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListObservabilityDestinationsResponse'
           description: List of observability destinations
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
         '401':
           content:
             application/json:

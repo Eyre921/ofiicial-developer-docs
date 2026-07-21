@@ -18,34 +18,6 @@ ElevenLabs supports three types of post-call webhooks:
 * **Audio webhooks** (`post_call_audio`): Contains minimal data with base64-encoded audio of the full conversation
 * **Call initiation failure webhooks** (`call_initiation_failure`): Contains information about failed call initiation attempts including failure reasons and metadata
 
-## Migration Notice: Enhanced Webhook Format
-
-**Important:** Post-call transcription webhooks will be migrated to include additional fields for
-enhanced compatibility and consistency, ensure your endpoint can handle the extra fields.
-
-### What's Changing
-
-Post-call transcription webhooks will be updated to match the same format as the [GET Conversation response](/docs/api-reference/conversations/get). The webhook `data` object will include three additional boolean fields:
-
-* `has_audio`: Boolean indicating whether the conversation has any audio available
-* `has_user_audio`: Boolean indicating whether user audio is available for the conversation
-* `has_response_audio`: Boolean indicating whether agent response audio is available for the conversation
-
-### Migration Requirements
-
-To ensure your webhook handlers continue working after the migration:
-
-1. **Update your webhook parsing logic** to handle these three new boolean fields
-2. **Test your webhook endpoints** with the new field structure before August 15th, 2025
-3. **Ensure your JSON parsing** can gracefully handle additional fields without breaking
-
-### Benefits After Migration
-
-Once the migration is complete:
-
-* **Unified data model**: Webhook responses will match the GET Conversation API format exactly
-* **SDK compatibility**: Webhook handlers can be provided in the SDK and automatically stay up-to-date with the GET response model
-
 ## Enabling post-call webhooks
 
 Post-call webhooks can be enabled for all agents in your workspace through the ElevenAgents [settings page](https://elevenlabs.io/app/agents/settings).
@@ -204,25 +176,23 @@ Contains comprehensive conversation data including full transcripts, analysis re
 
 The `data` object contains:
 
-| Field                                 | Type   | Description                                                            |
-| ------------------------------------- | ------ | ---------------------------------------------------------------------- |
-| `agent_id`                            | string | The ID of the agent that handled the call                              |
-| `agent_name`                          | string | The name of the agent at the time of the conversation                  |
-| `conversation_id`                     | string | Unique identifier for the conversation                                 |
-| `status`                              | string | Status of the conversation (e.g., "done")                              |
-| `user_id`                             | string | User identifier if available                                           |
-| `branch_id`                           | string | The agent branch used for the conversation, if applicable              |
-| `version_id`                          | string | The ID of the agent version (snapshot) that was active during the call |
-| `environment`                         | string | The environment used for resolving environment variables               |
-| `transcript`                          | array  | Complete conversation transcript with turns                            |
-| `metadata`                            | object | Call timing, costs, and phone details                                  |
-| `analysis`                            | object | Evaluation results and conversation summary                            |
-| `conversation_initiation_client_data` | object | Configuration overrides and dynamic variables                          |
-
-As of August 15th, 2025, transcription webhooks will include the `has_audio`, `has_user_audio`,
-and `has_response_audio` fields to match the [GET Conversation
-response](/docs/api-reference/conversations/get) format exactly. Prior to this date, these fields
-are not included in webhook payloads.
+| Field                                 | Type    | Description                                                            |
+| ------------------------------------- | ------- | ---------------------------------------------------------------------- |
+| `agent_id`                            | string  | The ID of the agent that handled the call                              |
+| `agent_name`                          | string  | The name of the agent at the time of the conversation                  |
+| `conversation_id`                     | string  | Unique identifier for the conversation                                 |
+| `status`                              | string  | Status of the conversation (e.g., "done")                              |
+| `user_id`                             | string  | User identifier if available                                           |
+| `branch_id`                           | string  | The agent branch used for the conversation, if applicable              |
+| `version_id`                          | string  | The ID of the agent version (snapshot) that was active during the call |
+| `environment`                         | string  | The environment used for resolving environment variables               |
+| `transcript`                          | array   | Complete conversation transcript with turns                            |
+| `metadata`                            | object  | Call timing, costs, and phone details                                  |
+| `analysis`                            | object  | Evaluation results and conversation summary                            |
+| `conversation_initiation_client_data` | object  | Configuration overrides and dynamic variables                          |
+| `has_audio`                           | boolean | Whether the conversation has any audio available                       |
+| `has_user_audio`                      | boolean | Whether user audio is available for the conversation                   |
+| `has_response_audio`                  | boolean | Whether agent response audio is available for the conversation         |
 
 ### Audio webhooks (`post_call_audio`)
 

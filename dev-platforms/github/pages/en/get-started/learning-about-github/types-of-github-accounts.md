@@ -61,7 +61,7 @@ The users within an organization can be given different roles in the organizatio
 
 You can also create nested sub-groups of organization members called teams, to reflect your group's structure and simplify access management. For more information, see [About organization teams](/en/organizations/organizing-members-into-teams/about-teams).
 
-You can use organizations for free, with GitHub Free, which includes limited features on private repositories. To get the full feature set on private repositories and additional features at the organization level, including SAML single sign-on and improved support coverage, you can upgrade to GitHub Team or GitHub Enterprise Cloud. For more information, see [GitHub's plans](/en/get-started/learning-about-github/githubs-plans).
+You can use organizations for free, with GitHub Free, which includes limited features on private repositories. To get the full feature set on private repositories and additional features at the organization level, including SAML single sign-on and improved support coverage, you can upgrade to GitHub Team or GitHub Enterprise Cloud. See [GitHub's plans](/en/get-started/learning-about-github/githubs-plans).
 
 Organizations are limited to owning 100,000 repositories, to create additional repositories you can create additional organizations.
 

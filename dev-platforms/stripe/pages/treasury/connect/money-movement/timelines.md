@@ -8,6 +8,10 @@ path: treasury/connect/money-movement/timelines
 
 Learn about the timelines for various types of money movement with Treasury for platforms.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Stripe Treasury for platforms integrates with banking partners and payment networks, which have varying processing and cutoff times.
 
 ## OutboundPayment and OutboundTransfer transactions

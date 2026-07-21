@@ -71,7 +71,7 @@ Flux provides three key parameters to control end-of-turn detection behavior and
 | --------------------- | --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `eot_threshold`       | `0.5` - `0.9`   | `0.7`   | Confidence required to trigger an `EndOfTurn` event. Higher values = more reliable turn detection but slightly increased latency.                                  |
 | `eager_eot_threshold` | `0.3` - `0.9`   | *None*  | Confidence required to trigger an `EagerEndOfTurn` event. **Required** to enable early response generation. Lower values = earlier triggers but more false starts. |
-| `eot_timeout_ms`      | `500` - `10000` | `5000`  | Maximum milliseconds of silence before forcing an `EndOfTurn`, regardless of confidence.                                                                           |
+| `eot_timeout_ms`      | `500` - `60000` | `5000`  | Maximum milliseconds of silence before forcing an `EndOfTurn`, regardless of confidence.                                                                           |
 
 ### When to Configure These Parameters
 

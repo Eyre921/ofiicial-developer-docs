@@ -601,6 +601,11 @@ components:
                 the separate endpoint to get dependent agents instead.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
             external_sync_info:
@@ -617,6 +622,7 @@ components:
             - access_info
             - dependent_agents
             - children_count
+            - document_count
         - type: object
           properties:
             type:
@@ -821,7 +827,7 @@ components:
         "metadata": {
           "created_at_unix_secs": 1672531200,
           "last_updated_at_unix_secs": 1680307200,
-          "size_bytes": 2457600
+          "size_bytes": 2540000
         },
         "name": "Introduction to Machine Learning.pdf",
         "supported_usages": [
@@ -831,17 +837,21 @@ components:
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1675123200,
-            "id": "agent-1234",
-            "name": "ML Assistant"
+            "created_at_unix_secs": 1675209600,
+            "id": "a12b3c4d-5678-90ef-abcd-1234567890ab",
+            "name": "ML Research Assistant"
           }
         ]
       },
       "score": 0.95,
       "search_snippet": [
         {
-          "value": "Machine learning is a subset of artificial intelligence that provides systems the ability to automatically learn and improve from experience without being explicitly programmed.",
+          "value": "Machine learning is a subset of artificial intelligence that provides systems the ability to automatically learn and improve from experience.",
           "is_hit": true
+        },
+        {
+          "value": "This document covers supervised and unsupervised learning techniques.",
+          "is_hit": false
         }
       ]
     }
@@ -857,7 +867,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient({
-        apiKey: "sk_live_1234567890abcdef",
+        apiKey: "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
     });
     await client.conversationalAi.knowledgeBase.search({
         cursor: "eyJwYWdlIjoxfQ==",
@@ -877,7 +887,7 @@ main();
 from elevenlabs import ElevenLabs
 
 client = ElevenLabs(
-    api_key="sk_live_1234567890abcdef",
+    api_key="sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
 )
 
 client.conversational_ai.knowledge_base.search(
@@ -910,7 +920,7 @@ func main() {
 
 	req, _ := http.NewRequest("GET", url, payload)
 
-	req.Header.Add("xi-api-key", "sk_live_1234567890abcdef")
+	req.Header.Add("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
 	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -934,7 +944,7 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'sk_live_1234567890abcdef'
+request["xi-api-key"] = 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c'
 request["Content-Type"] = 'application/json'
 request.body = "{}"
 
@@ -947,7 +957,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D")
-  .header("xi-api-key", "sk_live_1234567890abcdef")
+  .header("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -963,7 +973,7 @@ $response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/knowled
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
-    'xi-api-key' => 'sk_live_1234567890abcdef',
+    'xi-api-key' => 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c',
   ],
 ]);
 
@@ -975,7 +985,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=eyJwYWdlIjoxfQ%3D%3D&page_size=25&query=machine+learning+algorithms&types=%5B%22file%22%2C%22text%22%5D");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "sk_live_1234567890abcdef");
+request.AddHeader("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c");
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
@@ -985,7 +995,7 @@ IRestResponse response = client.Execute(request);
 import Foundation
 
 let headers = [
-  "xi-api-key": "sk_live_1234567890abcdef",
+  "xi-api-key": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
   "Content-Type": "application/json"
 ]
 let parameters = [] as [String : Any]

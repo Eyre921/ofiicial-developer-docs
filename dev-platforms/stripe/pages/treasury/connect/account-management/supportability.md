@@ -8,9 +8,9 @@ path: treasury/connect/account-management/supportability
 
 Learn how Stripe evaluates connected accounts for Treasury for platforms supportability.
 
-> #### Accounts v2 API compatibility
+> #### Legacy integration
 > 
-> The Accounts v2 API doesn’t support Treasury workflows. If you have accounts created with Accounts v2, you can use Accounts v1 to manage the `treasury` and `card_issuing` capabilities. For details, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
 
 To support Stripe Treasury for platforms features, a connected account must be a supportable business and must [fulfill certain requirements](https://docs.stripe.com/treasury/connect/requirements.md). Stripe reviews each connected account using its provided URL and product descriptions to determine whether it meets Fifth Third Bank’s policy standards. Most connected accounts that provide accurate information are supportable without requiring any action.
 

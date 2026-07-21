@@ -26,10 +26,11 @@ path: docs/flux/feature-overview
 
 ## Formatting
 
-| Feature                                    | Language(s)                                        |
-| ------------------------------------------ | -------------------------------------------------- |
-| [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux)                  |
-| [Numerals](/docs/numerals)                 | English + Multilingual (excludes Hindi & Japanese) |
+| Feature                                    | Language(s)                                                                      |
+| ------------------------------------------ | -------------------------------------------------------------------------------- |
+| [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux)                                                |
+| [Numerals](/docs/numerals)                 | English + Multilingual (excludes Hindi & Japanese)                               |
+| [Redaction](/docs/redaction)               | Number redaction only (`numbers`, `aggressive_numbers`) — English + Multilingual |
 
 ## Transcription
 

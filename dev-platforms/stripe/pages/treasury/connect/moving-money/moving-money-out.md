@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/moving-money-out
 
 Learn the requests available to move money out of financial accounts.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 You can use a number of methods to move funds from a financial account to another account (either an external account or another financial account):
 
 - Originate an `OutboundPayment` to move money to a third party’s external account or financial account through *ACH* (Automated Clearing House (ACH) is a US financial network used for electronic payments and money transfers that doesn’t rely on paper checks, credit card networks, wire transfers, or cash), *wire transfer* (Also called a bank transfer or credit transfer, wire transfers are a method of electronic funds transfers that move money from a payer to a payee), or the Stripe network.

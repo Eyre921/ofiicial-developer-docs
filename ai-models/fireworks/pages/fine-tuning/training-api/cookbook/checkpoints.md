@@ -51,6 +51,23 @@ That's the full surface most users need. The rest of this page covers config kno
 | `output_model_id`      | All recipes | `str \| None` | `None`     | If set, promote the final checkpoint to this Fireworks model ID at the end of training                                                     |
 | `init_from_checkpoint` | All recipes | `str \| None` | `None`     | Load weights from another job (`"job-id:checkpoint-name"`). Step counter resets to 0.                                                      |
 
+## Resume-training vs serving: which checkpoint to use
+
+Each save can produce up to two different control-plane rows, and they are **not interchangeable**. Selecting the wrong one is the most common cause of a resume that produces incoherent output.
+
+| Goal                                                                                                                                                                                | Checkpoint to use        | Server `checkpointType`                                                                                                                      | How it is saved                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **Continue training** (restore weights **and** optimizer state via same-`log_path` auto-resume or `load_state_with_optimizer`; `init_from_checkpoint` is a weights-only warm start) | Resumable DCP checkpoint | `TRAINING` (full-param) or `TRAINING_LORA` (LoRA)                                                                                            | `resumable=True` / `dcp_save_interval` / `save_state` |
+| **Serve, evaluate, or promote to a model**                                                                                                                                          | Sampler snapshot         | `INFERENCE_BASE` / `INFERENCE_LORA` (or `INFERENCE_ARC_V2` for a full-param delta, which is servable and weight-syncable but not promotable) | `promotable=True` / `save_weights_for_sampler`        |
+
+Key points:
+
+* **To resume training, load a `TRAINING`/`TRAINING_LORA` (DCP) checkpoint.** Only DCP checkpoints carry optimizer state. To continue a run with optimizer state (plus the step counter and data cursor), reattach the same trainer job and use automatic same-`log_path` resume (recipe), or load the checkpoint with `load_state_with_optimizer` (SDK). `init_from_checkpoint` (recipe) is a weights warm start: it loads the checkpoint weights with a fresh optimizer and resets the step counter to 0.
+* **To serve or promote, use the `INFERENCE_*` sampler snapshot.** These are weight-only, and are what `promote_checkpoint` and hot-load expect.
+* The two rows saved at the same step represent the **same weights** but different payloads (DCP is weights plus optimizer, sampler is weights only). Do not assume a `TRAINING_LORA` blob can be served directly, or that an `INFERENCE_LORA` blob can resume training.
+
+See [Checkpoint kinds](#checkpoint-kinds) for the full mapping across cookbook, SDK, and server layers.
+
 ## Resume
 
 ### Automatic (same log\_path)
@@ -68,6 +85,79 @@ config = Config(
 ```
 
 Loads weights from the specified job, resets step to 0. Mutually exclusive with automatic resume.
+
+### Safely saving a resumable checkpoint before you continue
+
+To continue training from an existing run without losing progress, follow the same ordered procedure for every recipe, including the RL recipe (`rl_loop`): save a resumable checkpoint, verify it on the control plane, then resume from it. This applies whether the source run is still active, cancelled, or completed.
+
+<Note>
+  A common reason there is no resumable checkpoint to continue from is that `dcp_save_interval` was left unset. It defaults to `0` (off), so the run never saved automatic DCP (resumable) checkpoints and there is nothing to continue from. Check this first: if the source job did not have `dcp_save_interval` set, force a save explicitly (Step 1) while the trainer job is still available, rather than assuming a periodic checkpoint already exists.
+</Note>
+
+<Steps>
+  <Step title="Save a resumable (DCP) checkpoint">
+    Make sure a `TRAINING`/`TRAINING_LORA` checkpoint exists on the source job. Either set `dcp_save_interval=N` on the recipe config so periodic saves happen automatically, or force one save explicitly:
+
+    ```python theme={null}
+    ckpt.save("step-N", resumable=True, promotable=False, data_consumed=count)
+    ```
+
+    `resumable=True` is what persists weights **and** optimizer state; without it the run cannot be continued from intermediate steps.
+  </Step>
+
+  <Step title="Verify the checkpoint is visible on the control plane">
+    The control plane is the source of truth for resume, so confirm the checkpoint landed **before** you tear anything down:
+
+    ```bash theme={null}
+    python training/examples/tools/list_checkpoints.py --job-id <source-job-id>
+    ```
+
+    Or via the SDK/API, see [Listing checkpoints on a trainer](/fine-tuning/training-api/saving-and-loading#listing-checkpoints-on-a-trainer). Look for your `step-N` row with a `TRAINING`/`TRAINING_LORA` type.
+  </Step>
+
+  <Step title="Continue training from it">
+    Start (or restart) a trainer and point `init_from_checkpoint` at the verified checkpoint:
+
+    ```python theme={null}
+    config = Config(
+        init_from_checkpoint="<source-job-id>:step-N",  # job_id:checkpoint_name
+        ...
+    )
+    ```
+
+    This loads the checkpoint weights with a fresh optimizer and resets the step counter to 0 (a weights warm start). To continue with optimizer state instead, reattach the same trainer job and use automatic same-`log_path` resume, or load the checkpoint with `load_state_with_optimizer` (SDK).
+  </Step>
+</Steps>
+
+<Note>
+  Keep the source trainer job's row around until the new run has loaded its checkpoint. A cancelled or completed trainer can still serve as a source of checkpoints, but its checkpoint blobs are what the resume reads from.
+</Note>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Resuming from a TRAINING_LORA checkpoint produces incoherent output while the INFERENCE_LORA snapshot of the same step serves correctly">
+    **Symptoms**: Promoting or serving an `INFERENCE_LORA` sampler snapshot for a given step produces coherent output, but restarting training from the same step's `TRAINING_LORA` (DCP) checkpoint and then exporting or serving those weights produces degenerate or incoherent output (for example, repeated or non-Latin tokens), sometimes with tool-call failures. A test prompt at temperature 0 may look identical to a different step, which suggests the loaded weights are not the ones you requested.
+
+    **Root cause (checklist)**:
+
+    1. **Wrong checkpoint type for the goal.** Confirm you loaded a `TRAINING`/`TRAINING_LORA` (DCP) checkpoint for the resume, not an `INFERENCE_*` snapshot, and that you are serving the `INFERENCE_*` snapshot, not the DCP blob. See [which checkpoint to use](#resume-training-vs-serving-which-checkpoint-to-use).
+
+    2. **Export ordering after a resume.** `save_weights_for_sampler` / `save_weights_for_sampler_ext` export the trainer session's **currently active** adapter/weights. In a normal training step it is preceded by an `optim_step`, so the active weights are well defined. Immediately after a resume, export the weights you just loaded, and make sure nothing else (a stale adapter from an earlier state, another concurrent step) is active. If a sampler export right after `load_state_with_optimizer` yields a different snapshot than the DCP step you requested, the loaded state is not the one being exported. See [Resuming and then exporting weights](/fine-tuning/training-api/saving-and-loading#resuming-and-then-exporting-weights).
+
+    3. **A platform-side loader mismatch.** In some cases the trainer-side checkpoint loader can resolve the latest checkpoint rather than the one you requested when a sampler export follows a cross-job resume, so the exported snapshot points at a different, later step. If you have ruled out (1) and (2) and a cross-job resume still exports the wrong weights, capture the source job ID, the requested checkpoint name, and the exported snapshot identity, and contact Fireworks support so they can check the trainer shape version and checkpoint loader.
+  </Accordion>
+
+  <Accordion title="Resume seems to load, but weights look unchanged from the base model">
+    **Symptoms**: `load_state_with_optimizer` returns without error and the deployment is addressed correctly, but outputs look like the base model (or identical across steps that should differ).
+
+    **What to check**:
+
+    * Verify you passed a resumable (`TRAINING`/`TRAINING_LORA`) checkpoint name, not a name that does not exist (a missing checkpoint can silently leave the trainer at its initial weights). List checkpoints first (see [Safely saving a resumable checkpoint](#safely-saving-a-resumable-checkpoint-before-you-continue)).
+    * Confirm the sampler snapshot you served was exported **after** the resume load, not carried over from a previous state.
+    * Sanity-check that the deployment is actually serving your adapter and not falling back to base (compare against a known-good promoted checkpoint at temperature 0).
+  </Accordion>
+</AccordionGroup>
 
 ## Promoting a checkpoint manually
 

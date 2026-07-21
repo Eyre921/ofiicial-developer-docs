@@ -576,6 +576,11 @@ components:
                 parent folder.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               oneOf:
                 - $ref: '#/components/schemas/AutoSyncInfo'
@@ -602,6 +607,7 @@ components:
             - supported_usages
             - access_info
             - children_count
+            - document_count
           description: GetKnowledgeBaseFolderResponseModel variant
       discriminator:
         propertyName: type
@@ -682,8 +688,8 @@ components:
   "folder_parent_id": null,
   "folder_path": [
     {
-      "id": "folder12345",
-      "name": "API Documentation"
+      "id": "root",
+      "name": "Root Folder"
     }
   ]
 }

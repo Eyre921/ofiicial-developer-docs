@@ -63,7 +63,7 @@ It's important to understand the differences between [Flux](/docs/models-languag
 | Speaker Diarization      | 🚫                       | ✅      |
 | Filler Words             | ✅ Transcribed by default | 🚫     |
 | Profanity Filtering      | 🚫                       | ✅      |
-| Redaction                | 🚫                       | ✅      |
+| Redaction                | ✅ Numbers only           | ✅      |
 | Find and Replace         | 🚫                       | ✅      |
 | Keyterm Prompting        | ✅                        | ✅      |
 | Search                   | 🚫                       | ✅      |

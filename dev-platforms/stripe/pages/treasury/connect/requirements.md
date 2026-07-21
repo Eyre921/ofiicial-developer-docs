@@ -8,6 +8,10 @@ path: treasury/connect/requirements
 
 Understand the requirements for using Treasury for platforms.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 *Stripe Treasury for platforms* (A collection of API endpoints and cloud- and web-based features that enable platforms to offer embedded financial solutions to their users) have compliance requirements and restrictions in addition to those needed for [Stripe Payments](https://docs.stripe.com/payments.md). They apply to both the platform and its connected accounts. Offer your Stripe Treasury-based financial services only to businesses that meet the requirements.
 
 ## Fraud management process

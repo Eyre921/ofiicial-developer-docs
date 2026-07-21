@@ -106,13 +106,13 @@ Rollout sampling concurrency settings used by RL-family recipes:
 
 ## Checkpoint & weight-sync fields
 
-Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). `rl_loop` and `igpo_loop` expose the full weight-sync cadence knobs; `async_rl_loop` pins sampler sync to every optimizer step and exposes only pre-training sync and timeout. Every recipe exposes `dcp_save_interval`:
+Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). `rl_loop` and `igpo_loop` expose weight-sync cadence knobs. `async_rl_loop` always syncs once before training and once after every optimizer batch; only its timeout is configurable. Every recipe exposes `dcp_save_interval`:
 
 ```python theme={null}
 cfg = Config(
     # ... base_model, dataset, trainer, deployment ...
     weight_sync_interval=1,               # rl_loop/igpo_loop: sync weights every N steps
-    weight_sync_before_training=False,    # RL: sync a base checkpoint before step 1
+    weight_sync_before_training=False,    # rl_loop/igpo_loop: optional initial sync
     weight_sync_timeout=600,              # RL: per weight-sync timeout (seconds)
     dcp_save_interval=10,                  # all recipes: save resumable DCP checkpoints every N steps
 )
@@ -122,12 +122,12 @@ cfg = Config(
   `dcp_save_interval` defaults to `0` (off). Without setting it to a positive value, **no DCP checkpoints are saved and training cannot be resumed**. If you need checkpoint-based resume, explicitly set `dcp_save_interval` (e.g. `dcp_save_interval=50`).
 </Warning>
 
-| Field                         | Recipes                | Type   | Default | Description                                                                                                                           |
-| ----------------------------- | ---------------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `dcp_save_interval`           | All                    | `int`  | `0`     | Save resumable DCP checkpoints every N steps. `0` disables DCP saves. **Set to a positive value to enable resume.**                   |
-| `weight_sync_interval`        | `rl_loop`, `igpo_loop` | `int`  | `1`     | Save + sync weights to the deployment every N optimizer steps. `0` disables weight sync. `async_rl_loop` pins this internally to `1`. |
-| `weight_sync_before_training` | RL family              | `bool` | `False` | Save a base checkpoint and sync it to the deployment before the first training step.                                                  |
-| `weight_sync_timeout`         | RL family              | `int`  | `600`   | Timeout for each weight sync (seconds).                                                                                               |
+| Field                         | Recipes                | Type   | Default | Description                                                                                                                              |
+| ----------------------------- | ---------------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `dcp_save_interval`           | All                    | `int`  | `0`     | Save resumable DCP checkpoints every N steps. `0` disables DCP saves. **Set to a positive value to enable resume.**                      |
+| `weight_sync_interval`        | `rl_loop`, `igpo_loop` | `int`  | `1`     | Save + sync weights to the deployment every N optimizer steps. `0` disables weight sync. This field is not part of `async_rl_loop`.      |
+| `weight_sync_before_training` | `rl_loop`, `igpo_loop` | `bool` | `False` | Save a base checkpoint and sync it to the deployment before the first training step. `async_rl_loop` performs this sync unconditionally. |
+| `weight_sync_timeout`         | RL family              | `int`  | `600`   | Timeout for each weight sync (seconds).                                                                                                  |
 
 <Note>
   The old nested `WeightSyncConfig` recipe field is gone. Recipe `Config` objects set the fields above directly, and the SDK-managed service owns the underlying save and weight-sync state.
@@ -229,7 +229,7 @@ Earlier cookbook releases provisioned trainers and deployments from the recipe l
 | `InfraConfig.ref_training_shape_id`                            | `TrainerConfig.reference_training_shape_id`                                                                                                                    |
 | `InfraConfig.trainer_timeout_s`                                | `TrainerConfig.timeout_s`                                                                                                                                      |
 | `InfraConfig.trainer_replica_count`                            | `TrainerConfig.replica_count`                                                                                                                                  |
-| `Config(weight_sync=WeightSyncConfig(weight_sync_interval=N))` | `Config(weight_sync_interval=N)` (top-level, `rl_loop` / `igpo_loop`; `async_rl_loop` pins this to `1`)                                                        |
+| `Config(weight_sync=WeightSyncConfig(weight_sync_interval=N))` | `Config(weight_sync_interval=N)` (top-level, `rl_loop` / `igpo_loop`; `async_rl_loop` always syncs after each optimizer batch)                                 |
 | `weight_sync.dcp_save_interval=N`                              | `Config(dcp_save_interval=N)` (top-level, all recipes)                                                                                                         |
 | top-level `policy_job_id=...`                                  | `TrainerConfig(job_id=...)`                                                                                                                                    |
 | `setup_infra(rlor_mgr, deploy_mgr, ...)`                       | `build_service_client(...)` (see the [DPO API-level example](/fine-tuning/training-api/cookbook/dpo#step-by-step-api-level))                                   |

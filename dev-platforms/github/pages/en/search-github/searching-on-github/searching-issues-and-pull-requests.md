@@ -265,7 +265,7 @@ You can filter issues and pull requests by the number of reactions using the `re
 
 ## Search for draft pull requests
 
-You can filter for draft pull requests. For more information, see [About pull requests](/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests).
+You can filter for draft pull requests. For more information, see [Pull requests](/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests).
 
 | Qualifier     | Example                                                                                                       |
 | ------------- | ------------------------------------------------------------------------------------------------------------- |

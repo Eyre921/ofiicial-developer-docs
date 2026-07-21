@@ -65114,6 +65114,147 @@ This is a beta, and we want your feedback. Tell us what is missing, what is slow
 ---
 
 ---
+title: Supabase Pipelines is now in Public Alpha
+description: >-
+  Supabase Pipelines is now in public alpha with schema change support, a faster
+  initial sync, and a new destination request form for ClickHouse, Snowflake,
+  and DuckLake.
+author: riccardo_busetti
+date: '2026-07-21'
+tags:
+  - pipelines
+  - bigquery
+  - postgres
+categories:
+  - product
+---
+Today we're moving **Supabase Pipelines** into public alpha. The biggest addition is schema change support: Pipelines can now detect supported schema changes in your source tables and apply them to the destination automatically. This release also brings a faster initial sync and a new destination request form for ClickHouse, Snowflake, and DuckLake.
+
+Supabase Pipelines replicates your Supabase Postgres data to external analytical systems in near real time. It is powered by [Supabase ETL](https://github.com/supabase/etl), our open source change-data-capture pipeline written in Rust. Supabase ETL reads changes from Postgres through logical replication, copies existing table data, streams inserts, updates, deletes, and truncates, and writes them to your destination.
+
+The first destination available to everyone in public alpha is **Google BigQuery**.
+
+## Why Supabase Pipelines?
+
+Postgres is excellent for transactional workloads: reading a user profile, inserting an order, updating a subscription, or serving your application.
+
+Analytics workloads are different. They often scan large amounts of data, aggregate across many rows, and power dashboards, reports, notebooks, and downstream systems. Running those queries directly on your production database can add load to the same system your application depends on.
+
+Supabase Pipelines gives you a reliable way to move production data into systems built for analytics, while keeping your application workload on Postgres.
+
+You get:
+
+- A complete initial sync of your selected tables.
+- Near real-time replication after the initial sync finishes.
+- At-least-once delivery for database changes.
+- Destination-side tables that stay aligned with your source schema.
+- A managed Dashboard experience for creating, monitoring, and controlling pipelines.
+- The ability to add and remove tables to your replication pipeline without having to restart replication from scratch.
+
+If you are deciding between Supabase Realtime and Supabase Pipelines, read [Realtime or Pipelines? How to choose the right tool](https://supabase.com/blog/realtime-or-pipelines-how-to-choose-the-right-tool). The short version: Realtime is for live user experiences over WebSocket. Supabase Pipelines is for reliable data movement into analytical systems.
+
+## What changed since private alpha
+
+Since introducing Supabase Pipelines, we've been focused on making it faster, more predictable, and easier to operate.
+
+We improved performance across the board, reduced memory usage, and lowered replication latency. This work is ongoing. Supabase Pipelines is still in alpha, and we're continuing to tune throughput, batching, and backpressure as we learn from more workloads.
+
+We also improved the initial sync. It can now be parallelized across tables and within a table, which lets pipelines load existing data much faster before switching to ongoing replication.
+
+The biggest new feature is **schema change support**.
+
+## Schema changes are now replicated
+
+When your Postgres schema changes in a supported way, Pipelines applies the same change to your destination automatically.
+
+That means your BigQuery schema can stay up to date as your Postgres schema changes, without requiring a manual destination migration for every supported change.
+
+The current version supports:
+
+- Adding columns.
+- Removing columns.
+- Renaming columns.
+- Changing column nullability and defaults.
+
+This is an important step toward one-to-one replication between your operational database and your analytical destination.
+
+There is more to do. We're working on expanding schema change support to cover more cases, including additional type changes and other table-level changes. Some destinations may also support the operations above in different ways due to their inherent limitations. For now, unsupported schema changes may still require manual handling depending on the change and destination.
+
+## How it works
+
+Supabase Pipelines uses Postgres logical replication under the hood.
+
+When you create a pipeline:
+
+1. You choose the tables you want to replicate.
+1. Supabase Pipelines creates an initial sync of the selected tables.
+1. The initial sync runs with parallel workers based on the configured parallelism level.
+1. After the sync completes, the pipeline switches to ongoing replication.
+1. New changes are read from the replication slot, batched, and written to the destination.
+1. Supported schema changes are detected and applied to the destination schema.
+
+The pipeline is designed for reliable data movement. If a destination is temporarily unavailable or the pipeline restarts, replication resumes from the last acknowledged position. It can also detect and recover from many transient failures automatically, while surfacing issues that require intervention.
+
+## Available destinations
+
+BigQuery is the first destination available to everyone in public alpha.
+
+BigQuery is Google's serverless data warehouse. It works well for large-scale analytics, integrates with BI tools, and gives teams a familiar place to query operational data without running heavy analytical workloads against Postgres.
+
+When you replicate to BigQuery, Supabase Pipelines keeps a destination representation of your source tables up to date. You can query the replicated data in BigQuery while your application continues using Postgres.
+
+## Request new destinations
+
+We want Supabase Pipelines to connect Supabase Postgres to the systems your team already uses.
+
+We're opening a [destination request form](https://supabase.com/go/supabase-pipelines-new-destinations) for:
+
+- ClickHouse
+- Snowflake
+- DuckLake
+
+This form helps us prioritize the next destinations based on real use cases: scale, data volume, expected latency, destination setup, and how teams want to query replicated data.
+
+We're always looking to add more destinations. If there is another warehouse, lakehouse, database, or local analytics engine you want to see supported, let us know.
+
+## Pricing
+
+Supabase Pipelines uses a pipeline-based and usage-based pricing model:
+
+- **$0.053 per hour** per configured pipeline
+- **$0.60 per GB** of initial sync data
+- **$3 per GB** of ongoing replication data
+
+A pipeline becomes billable as soon as it is created and is charged hourly, including while replication is paused or inactive. Initial sync data covers the first load of existing data, while ongoing replication data covers changes processed after that initial sync. Pricing may change during the public alpha, and we will provide advance notice before any updates take effect.
+
+## Things to know during public alpha
+
+Supabase Pipelines is now available in public alpha, which means more teams can start using it, but we're still improving the product quickly.
+
+A few things to keep in mind:
+
+- BigQuery is currently the only destination, available on all paid plans.
+- More schema changes, including broader type change support, are on the roadmap.
+- Performance, memory usage, and latency will continue to improve.
+- Destination support will expand based on customer demand and product feedback.
+- Multi-region support for reduced latency is being evaluated.
+
+We're especially interested in feedback from teams using Supabase Pipelines for analytics, reporting, audit trails, ML workflows, and workload isolation.
+
+## Get started
+
+![Supabase Pipelines dashboard](/images/blog/supabase-pipelines-public-alpha/pipelines-screenshot-1.png)
+
+Supabase Pipelines is available in public alpha on all paid plans, from the Supabase Dashboard.
+
+Create a pipeline, choose BigQuery as your destination, select the tables you want to replicate, and start moving your Postgres data into your warehouse.
+
+To explore the underlying technology, visit the open-source [Supabase ETL repository](https://github.com/supabase/etl). If you want to understand when to use Supabase Pipelines instead of Realtime, read [Realtime or Pipelines? How to choose the right tool](https://supabase.com/blog/realtime-or-etl-how-to-choose-the-right-tool).
+
+
+---
+
+---
 name: Quivr
 title: >-
   Scaling Beyond No-Code: asap.work’s Journey to a Faster, Flexible Solution
@@ -70098,7 +70239,21 @@ You can also install the agent skills together with the Supabase MCP server usin
 
 ## Available skills
 
+### supabase
+      
+Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, getSession, getUser, getClaims, RLS); Supabase CLI or MCP server; schema changes, migrations, declarative schemas, security audits, Postgres extensions (pg_graphql, pg_cron, pg_vector).
+      
+```sh
+npx skills add supabase/agent-skills --skill supabase
+```
 
+### supabase-postgres-best-practices
+      
+Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema designs, or database configurations.
+      
+```sh
+npx skills add supabase/agent-skills --skill supabase-postgres-best-practices
+```
 
 ## Finding more skills
 
@@ -74943,6 +75098,509 @@ Tip: Click [**Connect**](https://supabase.com/dashboard/project/_/?showConnect=t
 Copy the URI from the **Shared pooler** option.
 
 For production python applications with version controlled migrations, we recommend adding first class vector support to your toolchain by [registering the vector type with your ORM](https://github.com/pgvector/pgvector-python). pgvector provides bindings for the most commonly used SQL drivers/libraries including Django, SQLAlchemy, SQLModel, psycopg, asyncpg and Peewee.
+
+
+---
+
+# API
+
+`vecs` is a python client for managing and querying vector stores in PostgreSQL with the [pgvector extension](https://github.com/pgvector/pgvector). This guide will help you get started with using vecs.
+
+If you don't have a Postgres database with the pgvector ready, see [hosting](https://supabase.github.io/vecs/hosting) for easy options.
+
+## Installation
+
+Requires:
+
+- Python 3.7+
+
+You can install vecs using pip:
+
+```bash
+pip install vecs
+```
+
+## Usage
+
+## Connecting
+
+Before you can interact with vecs, create the client to communicate with Postgres. If you haven't started a Postgres instance yet, see [hosting](https://supabase.github.io/vecs/hosting).
+
+```python
+import vecs
+
+DB_CONNECTION = "postgresql://<user>:<password>@<host>:<port>/<db_name>"
+
+# create vector store client
+vx = vecs.create_client(DB_CONNECTION)
+```
+
+## Get or Create a Collection
+
+You can get a collection (or create if it doesn't exist), specifying the collection's name and the number of dimensions for the vectors you intend to store.
+
+```python
+docs = vx.get_or_create_collection(name="docs", dimension=3)
+```
+
+## Upserting vectors
+
+`vecs` combines the concepts of "insert" and "update" into "upsert". Upserting records adds them to the collection if the `id` is not present, or updates the existing record if the `id` does exist.
+
+```python
+# add records to the collection
+docs.upsert(
+    records=[
+        (
+         "vec0",           # the vector's identifier
+         [0.1, 0.2, 0.3],  # the vector. list or np.array
+         {"year": 1973}    # associated  metadata
+        ),
+        (
+         "vec1",
+         [0.7, 0.8, 0.9],
+         {"year": 2012}
+        )
+    ]
+)
+```
+
+## Deleting vectors
+
+Deleting records removes them from the collection. To delete records, specify a list of `ids` or metadata filters to the `delete` method. The ids of the sucessfully deleted records are returned from the method. Note that attempting to delete non-existent records does not raise an error.
+
+```python
+docs.delete(ids=["vec0", "vec1"])
+# or delete by a metadata filter
+docs.delete(filters={"year": {"$eq": 2012}})
+```
+
+## Create an index
+
+Collections can be queried immediately after being created.
+However, for good throughput, the collection should be indexed after records have been upserted.
+
+Only one index may exist per-collection. By default, creating an index will replace any existing index.
+
+To create an index:
+
+```python
+docs.create_index()
+```
+
+You may optionally provide a distance measure and index method.
+
+Available options for distance `measure` are:
+
+- `vecs.IndexMeasure.cosine_distance`
+- `vecs.IndexMeasure.l2_distance`
+- `vecs.IndexMeasure.l1_distance`
+- `vecs.IndexMeasure.max_inner_product`
+
+which correspond to different methods for comparing query vectors to the vectors in the database.
+
+If you aren't sure which to use, the default of cosine\_distance is the most widely compatible with off-the-shelf embedding methods.
+
+Available options for index `method` are:
+
+- `vecs.IndexMethod.auto`
+- `vecs.IndexMethod.hnsw`
+- `vecs.IndexMethod.ivfflat`
+
+Where `auto` selects the best available index method, `hnsw` uses the [HNSW](https://github.com/pgvector/pgvector#hnsw) method and `ivfflat` uses [IVFFlat](https://github.com/pgvector/pgvector#ivfflat).
+
+HNSW and IVFFlat indexes both allow for parameterization to control the speed/accuracy tradeoff. vecs provides sane defaults for these parameters. For a greater level of control you can optionally pass an instance of `vecs.IndexArgsIVFFlat` or `vecs.IndexArgsHNSW` to `create_index`'s `index_arguments` argument. Descriptions of the impact for each parameter are available in the [pgvector docs](https://github.com/pgvector/pgvector).
+
+When using IVFFlat indexes, the index must be created **after** the collection has been populated with records. Building an IVFFlat index on an empty collection will result in significantly reduced recall. You can continue upserting new documents after the index has been created, but should rebuild the index if the size of the collection more than doubles since the last index operation.
+
+HNSW indexes can be created immediately after the collection without populating records.
+
+To manually specify `method`, `measure`, and `index_arguments` add them as arguments to `create_index` for example:
+
+```python
+docs.create_index(
+    method=IndexMethod.hnsw,
+    measure=IndexMeasure.cosine_distance,
+    index_arguments=IndexArgsHNSW(m=8),
+)
+```
+
+Note: The time required to create an index grows with the number of records and size of vectors.
+For a few thousand records expect sub-minute a response in under a minute. It may take a few
+minutes for larger collections.
+
+## Query
+
+Given a collection `docs` with several records:
+
+### Basic
+
+The simplest form of search is to provide a query vector.
+
+Note: Indexes are essential for good performance. See [creating an index](#create-an-index) for more info.
+
+If you do not create an index, every query will return a warning
+
+```text
+query does not have a covering index for cosine_similarity. See Collection.create_index
+```
+
+that incldues the `IndexMeasure` you should index.
+
+```python
+docs.query(
+    data=[0.4,0.5,0.6],          # required
+    limit=5,                     # number of records to return
+    filters={},                  # metadata filters
+    measure="cosine_distance",   # distance measure to use
+    include_value=False,         # should distance measure values be returned?
+    include_metadata=False,      # should record metadata be returned?
+    include_vector=False,        # should vectors be returned?
+)
+```
+
+Which returns a list of vector record `ids`.
+
+### Metadata Filtering
+
+The metadata that is associated with each record can also be filtered during a query.
+
+As an example, `{"year": {"$eq": 2005}}` filters a `year` metadata key to be equal to 2005
+
+In context:
+
+```python
+docs.query(
+    data=[0.4,0.5,0.6],
+    filters={"year": {"$eq": 2012}}, # metadata filters
+)
+```
+
+For a complete reference, see the [metadata guide](https://supabase.com/docs/guides/ai/python/metadata).
+
+### Disconnect
+
+When you're done with a collection, be sure to disconnect the client from the database.
+
+```python
+vx.disconnect()
+```
+
+alternatively, use the client as a context manager and it will automatically close the connection on exit.
+
+```python
+import vecs
+
+DB_CONNECTION = "postgresql://<user>:<password>@<host>:<port>/<db_name>"
+
+# create vector store client
+with vecs.create_client(DB_CONNECTION) as vx:
+    # do some work here
+    pass
+
+# connections are now closed
+```
+
+## Adapters
+
+Adapters are an optional feature to transform data before adding to or querying from a collection. Adapters make it possible to interact with a collection using only your project's native data type (eg. just raw text), rather than manually handling vectors.
+
+For a complete list of available adapters, see [built-in adapters](https://supabase.github.io/vecs/concepts_adapters#built-in-adapters).
+
+As an example, we'll create a collection with an adapter that chunks text into paragraphs and converts each chunk into an embedding vector using the `all-MiniLM-L6-v2` model.
+
+First, install `vecs` with optional dependencies for text embeddings:
+
+```sh
+pip install "vecs[text_embedding]"
+```
+
+Then create a collection with an adapter to chunk text into paragraphs and embed each paragraph using the `all-MiniLM-L6-v2` 384 dimensional text embedding model.
+
+```python
+import vecs
+from vecs.adapter import Adapter, ParagraphChunker, TextEmbedding
+
+# create vector store client
+vx = vecs.Client("postgresql://<user>:<password>@<host>:<port>/<db_name>")
+
+# create a collection with an adapter
+docs = vx.get_or_create_collection(
+    name="docs",
+    adapter=Adapter(
+        [
+            ParagraphChunker(skip_during_query=True),
+            TextEmbedding(model='all-MiniLM-L6-v2'),
+        ]
+    )
+)
+
+```
+
+With the adapter registered against the collection, we can upsert records into the collection passing in text rather than vectors.
+
+```python
+# add records to the collection using text as the media type
+docs.upsert(
+    records=[
+        (
+         "vec0",
+         "four score and ....", # <- note that we can now pass text here
+         {"year": 1973}
+        ),
+        (
+         "vec1",
+         "hello, world!",
+         {"year": "2012"}
+        )
+    ]
+)
+```
+
+Similarly, we can query the collection using text.
+
+```python
+
+# search by text
+docs.query(data="foo bar")
+```
+
+***
+
+## Deprecated
+
+### Create collection
+
+Note: Deprecated: use [get\_or\_create\_collection](#get-or-create-a-collection)
+
+You can create a collection to store vectors specifying the collections name and the number of dimensions in the vectors you intend to store.
+
+```python
+docs = vx.create_collection(name="docs", dimension=3)
+```
+
+### Get an existing collection
+
+Note: Deprecated: use [get\_or\_create\_collection](#get-or-create-a-collection)
+
+To access a previously created collection, use `get_collection` to retrieve it by name
+
+```python
+docs = vx.get_collection(name="docs")
+```
+
+
+---
+
+# Collections
+
+A collection is an group of vector records.
+Records can be [added to or updated in](https://supabase.github.io/vecs/api.md/#upserting-vectors) a collection.
+Collections can be [queried](https://supabase.github.io/vecs/api.md/#query) at any time, but should be [indexed](https://supabase.github.io/vecs/api.md/#create-an-index) for scalable query performance.
+
+Each vector record has the form:
+
+```python
+Record (
+    id: String
+    vec: Numeric[]
+    metadata: JSON
+)
+```
+
+For example:
+
+```python
+("vec1", [0.1, 0.2, 0.3], {"year": 1990})
+```
+
+Underneath every `vecs` collection is a Postgres table
+
+```sql
+create table <collection_name> (
+    id string primary key,
+    vec vector(<dimension>),
+    metadata jsonb
+)
+```
+
+where rows in the table map 1:1 with vecs vector records.
+
+It is safe to select collection tables from outside the vecs client but issuing DDL is not recommended.
+
+
+---
+
+# Indexes
+
+Indexes are tools for optimizing query performance of a [collection](https://supabase.com/docs/guides/ai/python/collections).
+
+Collections can be [queried](https://supabase.github.io/vecs/api.md/#query) without an index, but that will emit a python warning and should never be done in production.
+
+```text
+query does not have a covering index for cosine_similarity. See Collection.create_index
+```
+
+As each query vector must be checked against every record in the collection. When the number of dimensions and/or number of records becomes large, that becomes extremely slow and computationally expensive.
+
+An index is a heuristic data structure that pre-computes distances between key points in the vector space. It is smaller and can be traversed more quickly than the whole collection enabling much more performant searching.
+
+Only one index may exist per-collection. An index optimizes a collection for searching according to a selected distance measure.
+
+To create an index:
+
+```python
+docs.create_index()
+```
+
+You may optionally provide a distance measure and index method.
+
+Available options for distance `measure` are:
+
+- `vecs.IndexMeasure.cosine_distance`
+- `vecs.IndexMeasure.l2_distance`
+- `vecs.IndexMeasure.l1_distance`
+- `vecs.IndexMeasure.max_inner_product`
+
+which correspond to different methods for comparing query vectors to the vectors in the database.
+
+If you aren't sure which to use, the default of cosine\_distance is the most widely compatible with off-the-shelf embedding methods.
+
+Available options for index `method` are:
+
+- `vecs.IndexMethod.auto`
+- `vecs.IndexMethod.hnsw`
+- `vecs.IndexMethod.ivfflat`
+
+Where `auto` selects the best available index method, `hnsw` uses the [HNSW](https://github.com/pgvector/pgvector#hnsw) method and `ivfflat` uses [IVFFlat](https://github.com/pgvector/pgvector#ivfflat).
+
+HNSW and IVFFlat indexes both allow for parameterization to control the speed/accuracy tradeoff. vecs provides sane defaults for these parameters. For a greater level of control you can optionally pass an instance of `vecs.IndexArgsIVFFlat` or `vecs.IndexArgsHNSW` to `create_index`'s `index_arguments` argument. Descriptions of the impact for each parameter are available in the [pgvector docs](https://github.com/pgvector/pgvector).
+
+When using IVFFlat indexes, the index must be created **after** the collection has been populated with records. Building an IVFFlat index on an empty collection will result in significantly reduced recall. You can continue upserting new documents after the index has been created, but should rebuild the index if the size of the collection more than doubles since the last index operation.
+
+HNSW indexes can be created immediately after the collection without populating records.
+
+To manually specify `method`, `measure`, and `index_arguments` add them as arguments to `create_index` for example:
+
+```python
+docs.create_index(
+    method=IndexMethod.hnsw,
+    measure=IndexMeasure.cosine_distance,
+    index_arguments=IndexArgsHNSW(m=8),
+)
+```
+
+Note: The time required to create an index grows with the number of records and size of vectors.
+For a few thousand records expect sub-minute a response in under a minute. It may take a few
+minutes for larger collections.
+
+
+---
+
+# Metadata
+
+vecs allows you to associate key-value pairs of metadata with indexes and ids in your collections.
+You can then add filters to queries that reference the metadata metadata.
+
+## Types
+
+Metadata is stored as binary JSON. As a result, allowed metadata types are drawn from JSON primitive types.
+
+- Boolean
+- String
+- Number
+
+The technical limit of a metadata field associated with a vector is 1GB.
+In practice you should keep metadata fields as small as possible to maximize performance.
+
+## Metadata Query Language
+
+The metadata query language is based loosely on [mongodb's selectors](https://www.mongodb.com/docs/manual/reference/operator/query/).
+
+`vecs` currently supports a subset of those operators.
+
+### Comparison Operators
+
+Comparison operators compare a provided value with a value stored in metadata field of the vector store.
+
+| Operator  | Description                                                               |
+| --------- | ------------------------------------------------------------------------- |
+| $eq       | Matches values that are equal to a specified value                        |
+| $ne       | Matches values that are not equal to a specified value                    |
+| $gt       | Matches values that are greater than a specified value                    |
+| $gte      | Matches values that are greater than or equal to a specified value        |
+| $lt       | Matches values that are less than a specified value                       |
+| $lte      | Matches values that are less than or equal to a specified value           |
+| $in       | Matches values that are contained by scalar list of specified values      |
+| $contains | Matches values where a scalar is contained within an array metadata field |
+
+### Logical Operators
+
+Logical operators compose other operators, and can be nested.
+
+| Operator | Description                                                                                             |
+| -------- | ------------------------------------------------------------------------------------------------------- |
+| $and     | Joins query clauses with a logical AND returns all documents that match the conditions of both clauses. |
+| $or      | Joins query clauses with a logical OR returns all documents that match the conditions of either clause. |
+
+### Performance
+
+For best performance, use scalar key-value pairs for metadata and prefer `$eq`, `$and` and `$or` filters where possible.
+Those variants are most consistently able to make use of indexes.
+
+### Examples
+
+***
+
+`year` equals 2020
+
+```json
+{"year": {"$eq": 2020}}
+```
+
+***
+
+`year` equals 2020 or `gross` greater than or equal to 5000.0
+
+```json
+{
+    "$or": [
+        {"year": {"$eq": 2020}},
+        {"gross": {"$gte": 5000.0}}
+    ]
+}
+```
+
+***
+
+`last_name` is less than "Brown" and `is_priority_customer` is true
+
+```json
+{
+    "$and": [
+        {"last_name": {"$lt": "Brown"}},
+        {"is_priority_customer": {"$gte": 5000.00}}
+    ]
+}
+```
+
+***
+
+`priority` contained by \["enterprise", "pro"]
+
+```json
+{
+    "priority": {"$in": ["enterprise", "pro"]}
+}
+```
+
+`tags`, an array, contains the string "important"
+
+```json
+{
+    "tags": {"$contains": "important"}
+}
+```
 
 
 ---
@@ -119166,6 +119824,198 @@ Branches are completely isolated from each other. Changes made in one branch don
 
 ---
 
+# Automated backups using GitHub Actions
+
+Backup your database on a regular basis.
+
+You can use the Supabase CLI to backup your Postgres database. The steps involve running a series of commands to dump roles, schema, and data separately.
+Inside your repository, create a new file inside the `.github/workflows` folder called `backup.yml`. Copy the following snippet inside the file, and the action will run whenever a new PR is created.
+
+Note: Never backup your data to a public repository.
+
+## Backup action
+
+```yaml
+name: 'backup-database'
+on:
+  pull_request:
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    env:
+      supabase_db_url: ${{ secrets.SUPABASE_DB_URL }}   # For example: postgresql://postgres:[YOUR-PASSWORD]@db.<ref>.supabase.co:5432/postgres
+    steps:
+      - uses: actions/checkout@v2
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Backup roles
+        run: supabase db dump --db-url "$supabase_db_url" -f roles.sql --role-only
+      - name: Backup schema
+        run: supabase db dump --db-url "$supabase_db_url" -f schema.sql
+      - name: Backup data
+        run: supabase db dump --db-url "$supabase_db_url" -f data.sql --data-only --use-copy
+```
+
+## Periodic Backups Workflow
+
+You can use the GitHub Action to run periodic backups of your database. In this example, the Action workflow is triggered by `push` and `pull_request` events on the `main` branch, manually via `workflow_dispatch`, and automatically at midnight every day due to the `schedule` event with a `cron` expression.
+The workflow runs on the latest Ubuntu runner and requires write permissions to the repository's contents. It uses the Supabase CLI to dump the roles, schema, and data from your Supabase database, utilizing the `SUPABASE_DB_URL` environment variable that is securely stored in the GitHub secrets.
+After the backup is complete, it auto-commits the changes to the repository using the `git-auto-commit-action`. This ensures that the latest backup is always available in your repository. The commit message for these automated commits is "Supabase backup".
+This workflow provides an automated solution for maintaining regular backups of your Supabase database. It helps keep your data safe and enables easy restoration in case of any accidental data loss or corruption.
+
+Note: Never backup your data to a public repository.
+
+```yaml
+name: Supa-backup
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+jobs:   
+  run_db_backup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      supabase_db_url: ${{ secrets.SUPABASE_DB_URL }}   # For example: postgresql://postgres:[YOUR-PASSWORD]@db.<ref>.supabase.co:5432/postgres
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Backup roles
+        run: supabase db dump --db-url "$supabase_db_url" -f roles.sql --role-only
+      - name: Backup schema
+        run: supabase db dump --db-url "$supabase_db_url" -f schema.sql
+      - name: Backup data
+        run: supabase db dump --db-url "$supabase_db_url" -f data.sql --data-only --use-copy
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Supabase backup
+```
+
+## More resources
+
+- Backing up and migrating your project: [Migrating and Upgrading](https://supabase.com/docs/guides/platform/migrating-and-upgrading-projects)
+
+
+---
+
+# Generate types using GitHub Actions
+
+End-to-end type safety across client, server, and database.
+
+You can use the Supabase CLI to automatically generate Typescript definitions from your Postgres database. You can then pass these definitions to your `supabase-js` client and get end-to-end type safety across client, server, and database.
+
+Inside your repository, create a new file inside the `.github/workflows` folder called `generate-types.yml`. Copy this snippet inside the file, and the action will run whenever a new PR is created:
+
+## Verify types
+
+```yaml
+name: 'generate-types'
+on:
+  pull_request:
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+        - uses: supabase/setup-cli@v1
+          with:
+            version: latest
+        - run: supabase init
+        - run: supabase db start
+        - name: Verify generated types match Postgres schema
+          run: |
+            supabase gen types typescript --local > schema.gen.ts
+            if ! git diff --ignore-space-at-eol --exit-code --quiet schema.gen.ts; then
+              echo "Detected uncommitted changes after build. See status below:"
+              git diff
+              exit 1
+            fi
+```
+
+## More resources
+
+- Using supabase-js with type definitions: [Typescript Support](https://supabase.com/docs/reference/javascript/typescript-support)
+
+
+---
+
+# Automated testing using GitHub Actions
+
+Run your tests when you or your team make changes.
+
+You can use the Supabase CLI to run automated tests.
+
+## Testing your database
+
+After you have [created unit tests](https://supabase.com/docs/guides/database/testing) for your database, you can use the GitHub Action to run the tests.
+
+Inside your repository, create a new file inside the `.github/workflows` folder called `database-tests.yml`. Copy this snippet inside the file, and the action will run whenever a new PR is created:
+
+```yaml
+name: 'database-tests'
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase db start
+      - run: supabase test db
+
+```
+
+## Testing your Edge Functions
+
+After you have [created unit tests](https://supabase.com/docs/guides/functions/unit-test) for your Edge Functions, you can use the GitHub Action to run the tests.
+
+Inside your repository, create a new file inside the `.github/workflows` folder called `functions-tests.yml`. Copy this snippet inside the file, and the action will run whenever a new PR is created:
+
+```yaml
+name: 'functions-tests'
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: latest
+      - run: supabase start
+      - run: deno test --allow-all deno-test.ts --env-file .env.local
+
+```
+
+## More resources
+
+- Learn more about the [pgTAP extension](https://supabase.com/docs/guides/database/extensions/pgtap) for database testing.
+- Official pgTAP Documentation: [pgtap.org](https://pgtap.org/)
+
+
+---
+
 # Database Migrations
 
 How to manage schema migrations for your Supabase project.
@@ -120068,6 +120918,278 @@ You can use Supabase to store and process Protected Health Information (PHI). Yo
 - Not [transferring projects](https://supabase.com/docs/guides/platform/project-transfer) to a non-HIPAA organization.
 
 For more information on the shared responsibilities and rules under HIPAA, review the [HIPAA compliance responsibilities document](https://supabase.com/docs/guides/security/hipaa-compliance).
+
+
+---
+
+# Terraform Provider
+
+The [Supabase Provider](https://registry.terraform.io/providers/supabase/supabase/latest/docs) allows Terraform to manage resources hosted on [Supabase](https://supabase.com/) platform.
+
+You may use this provider to version control your project settings or setup CI/CD pipelines for automatically provisioning projects and branches.
+
+- [CI/CD example](https://github.com/supabase/supabase-action-example/tree/main/supabase/remotes)
+- [Step-by-step tutorials](https://supabase.com/docs/guides/deployment/terraform/tutorial)
+- [Contributing guide](https://github.com/supabase/terraform-provider-supabase/blob/v1.1.3/CONTRIBUTING.md)
+
+## Using the provider
+
+This simple example imports an existing Supabase project and synchronises its API settings.
+
+```hcl
+terraform {
+  required_providers {
+    supabase = {
+      source  = "supabase/supabase"
+      version = "~> 1.0"
+    }
+  }
+}
+
+provider "supabase" {
+  access_token = file("${path.module}/access-token")
+}
+
+# Define a linked project variable as user input
+variable "linked_project" {
+  type = string
+}
+
+# Import the linked project resource
+import {
+  to = supabase_project.production
+  id = var.linked_project
+}
+
+resource "supabase_project" "production" {
+  organization_id   = "nknnyrtlhxudbsbuazsu"
+  name              = "tf-project"
+  database_password = "tf-example"
+  region            = "ap-southeast-1"
+
+  lifecycle {
+    ignore_changes = [database_password]
+  }
+}
+
+# Configure api settings for the linked project
+resource "supabase_settings" "production" {
+  project_ref = var.linked_project
+
+  api = jsonencode({
+    db_schema            = "public,storage,graphql_public"
+    db_extra_search_path = "public,extensions"
+    max_rows             = 1000
+  })
+}
+```
+
+
+---
+
+# Terraform Provider reference
+
+Resources and data sources available through the Terraform Provider
+
+The Terraform Provider provides access to [resources](https://developer.hashicorp.com/terraform/language/resources) and [data sources](https://developer.hashicorp.com/terraform/language/data-sources). Resources are infrastructure objects, such as a Supabase project, that you can declaratively configure. Data sources are sources of information about your Supabase instances.
+
+## Provider settings
+
+| Attribute | Description | Type | Optional | Sensitive |
+| --- | --- | --- | --- | --- |
+| `access_token` | Supabase access token | string | true | true |
+| `endpoint` | Supabase API endpoint | string | true |  |
+
+## Resources
+
+### supabase_branch
+
+| Attribute | Description | Type | Required | Optional |
+| --- | --- | --- | --- | --- |
+| `database` | Database connection details |  |  |  |
+| `git_branch` | Git branch | string | true |  |
+| `id` | Branch identifier | string |  |  |
+| `parent_project_ref` | Parent project ref | string | true |  |
+| `region` | Database region | string |  | true |
+
+### supabase_project
+
+| Attribute | Description | Type | Required | Optional |
+| --- | --- | --- | --- | --- |
+| `database_password` | Password for the project database | string | true |  |
+| `id` | Project identifier | string |  |  |
+| `name` | Name of the project | string | true |  |
+| `organization_id` | Reference to the organization | string | true |  |
+| `region` | Region where the project is located | string | true |  |
+
+### supabase_settings
+
+| Attribute | Description | Type | Required | Optional |
+| --- | --- | --- | --- | --- |
+| `api` | API settings as [serialised JSON](https://api.supabase.com/api/v1#/services/updatePostgRESTConfig) | string |  | true |
+| `auth` | Auth settings as [serialised JSON](https://api.supabase.com/api/v1#/projects%20config/updateV1AuthConfig) | string |  | true |
+| `id` | Project identifier | string |  |  |
+| `pooler` | Pooler settings as serialised JSON | string |  | true |
+| `project_ref` | Project reference ID | string | true |  |
+| `storage` | Storage settings as serialised JSON | string |  | true |
+
+## Data sources
+
+### supabase_branch
+
+| Attribute | Description | Type | Required | Optional |
+| --- | --- | --- | --- | --- |
+| `branches` | Branch databases |  |  |  |
+| `parent_project_ref` | Parent project ref | string | true |  |
+
+
+---
+
+# Using the Supabase Terraform Provider
+
+## Setting up a TF module
+
+1. Create a Personal Access Token from Supabase Dashboard.
+2. Save your access token locally to `access-token` file or a secure credentials store.
+3. Create `module/provider.tf` with the following contents:
+
+```tf
+terraform {
+  required_providers {
+    supabase = {
+      source  = "supabase/supabase"
+      version = "~> 1.0"
+    }
+  }
+}
+
+provider "supabase" {
+  access_token = file("${path.cwd}/access-token")
+}
+```
+
+Run the command `terraform -chdir=module apply` which should succeed in finding the provider.
+
+## Creating a project
+
+Supabase projects are represented as a TF resource called `supabase_project`.
+
+Create a `module/resource.tf` file with the following contents.
+
+```tf
+# Create a project resource
+resource "supabase_project" "production" {
+  organization_id   = "<your-org-id>"
+  name              = "tf-example"
+  database_password = "<your-password>"
+  region            = "ap-southeast-1"
+
+  lifecycle {
+    ignore_changes = [database_password]
+  }
+}
+```
+
+Remember to substitue placeholder values with your own. For sensitive fields like password, you may consider retrieving it from a secure credentials store.
+
+Next, run `terraform -chdir=module apply` and confirm creating the new project resource.
+
+### Importing a project
+
+If you have an existing project hosted on Supabase, you may import it into your local terraform state for tracking and management.
+
+Edit `module/resource.tf` with the following changes.
+
+```tf
+# Define a linked project variable as user input
+variable "linked_project" {
+  type = string
+}
+
+import {
+  to = supabase_project.production
+  id = var.linked_project
+}
+
+# Create a project resource
+resource "supabase_project" "production" {
+  organization_id   = "<your-org-id>"
+  name              = "tf-example"
+  database_password = "<your-password>"
+  region            = "ap-southeast-1"
+
+  lifecycle {
+    ignore_changes = [database_password]
+  }
+}
+```
+
+Run `terraform -chdir=module apply` and you will be prompted to enter the reference ID of an existing Supabase project. If your local TF state is empty, your project will be imported from remote rather than recreated.
+
+Alternatively, you may use the `terraform import ...` command without editing the resource file.
+
+## Configuring a project
+
+Keeping your project settings in-sync is easy with the `supabase_settings` resource.
+
+Create `module/settings.tf` with the following contents.
+
+```tf
+# Configure api settings for the linked project
+resource "supabase_settings" "production" {
+  project_ref = var.linked_project
+
+  api = jsonencode({
+    db_schema            = "public,storage,graphql_public"
+    db_extra_search_path = "public,extensions"
+    max_rows             = 1000
+  })
+}
+```
+
+Project settings don't exist on their own. They are created and destroyed together with their corresponding project resource referenced by the `project_ref` field. This means there is no difference between creating and updating `supabase_settings` resource while deletion is always a no-op.
+
+You may declare any subset of fields to be managed by your TF module. The Supabase provider always performs a partial update when you run `terraform -chdir=module apply`. The underlying API call is also idempotent so it's safe to apply again if the local state is lost.
+
+To see the full list of settings available, try importing the `supabase_settings` resource instead.
+
+### Configuring branches
+
+One of the most powerful features of TF is the ability to fan out configs to multiple resources. You can easily mirror the configurations of your production project to your branch databases using the `for_each` meta-argument.
+
+Create a `module/branches.tf` file.
+
+```tf
+# Fetch all branches of a linked project
+data "supabase_branch" "all" {
+  parent_project_ref = var.linked_project
+}
+
+# Override settings for each preview branch
+resource "supabase_settings" "branch" {
+  for_each = { for b in data.supabase_branch.all.branches : b.project_ref => b }
+
+  project_ref = each.key
+
+  api = supabase_settings.production.api
+
+  auth = jsonencode({
+    site_url = "http://localhost:3001"
+  })
+}
+```
+
+When you run `terraform -chdir=module apply`, the provider will configure all branches associated with your `linked_project` to mirror the `api` settings of your production project.
+
+In addition, the `auth.site_url` settings of your branches will be customised to a localhost URL for all branches. This allows your users to login via a separate domain for testing.
+
+## Committing your changes
+
+Finally, you may commit the entire `module` directory to git for version control. This allows your CI runner to run `terraform apply` automatically on new config changes. Any command line variables can be passed to CI via `TF_VAR_*` environment variables instead.
+
+## Resolving config drift
+
+Tracking your configs in TF module does not mean that you lose the ability to change configs through the dashboard. However, doing so could introduce config drift that you need to resolve manually by adding them to your `*.tf` files.
 
 
 ---
@@ -138570,6 +139692,5184 @@ At this stage you have a fully functional application!
 
 ---
 
+# GraphQL
+
+Autogenerated GraphQL APIs with Postgres.
+
+The Supabase GraphQL API is automatically reflected from your database's schema using [pg\_graphql](https://github.com/supabase/pg_graphql). It supports:
+
+- Basic CRUD operations (Create/Read/Update/Delete)
+- Support for Tables, Views, Materialized Views, and Foreign Tables
+- Arbitrarily deep relationships among tables/views
+- User defined computed fields
+- Postgres' security model - including Row Level Security, Roles, and Grants
+
+All requests resolve in a single round-trip leading to fast response times and high throughput.
+
+If you haven't created a Supabase project, do that [here](https://database.new) so you can follow along with the guide.
+
+## Quickstart
+
+`https://<PROJECT_REF>.supabase.co/graphql/v1` is your project's GraphQL API endpoint. See [PROJECT\_REF](#project-reference-project_ref) for instructions on finding your project's reference. Note that the url does not allow a trailing `/`.
+
+To access the API you MUST provide your project's [API key](#api-key-api_key) as a header in every request. For example see line 2 of the cURL request below.
+
+```sh
+curl -X POST https://<PROJECT_REF>.supabase.co/graphql/v1 \
+    -H 'apiKey: <API_KEY>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{"query": "{ accountCollection(first: 1) { edges { node { id } } } }", "variables": {}}'
+```
+
+For user authentication, pass an `Authorization` header e.g.
+
+```
+    -H 'Authorization: Bearer <JWT>'
+```
+
+See the [auth docs](https://supabase.com/docs/guides/auth/auth-email) to understand how to sign-up/sign-in users to your application and retrieve a JWT. The [apollo](https://supabase.com/docs/guides/graphql/with-apollo) and [relay](https://supabase.com/docs/guides/graphql/with-relay) guides also include complete examples of using Supabase Auth with GraphQL. Supabase Auth works with [row level security (RLS)](https://supabase.com/docs/guides/auth/row-level-security) allowing you to control which users can access tables/rows.
+
+The fastest way to get started with GraphQL on Supabase is using the [GraphQL IDE (GraphiQL) built directly into Supabase Studio](#supabase-studio).
+
+## Clients
+
+If you're new to GraphQL or Supabase, we strongly recommend starting with Supabase GraphQL by following the [Supabase Studio guide](#supabase-studio).
+
+For more experienced users, or when you're ready to productionize your application, access the API using [supabase-js](#supabase-js), [GraphiQL](#connecting-graphiql), or any HTTP client, for example [cURL](#curl).
+
+### Supabase Studio
+
+The easiest way to make a GraphQL request with Supabase is to use [Supabase Studio's builtin GraphiQL IDE](https://app.supabase.com/project/_/api/graphiql).
+You can access GraphiQL [here](https://app.supabase.com/project/_/api/graphiql) by selecting the relevant project. Alternatively, navigate there within Studio at `API Docs > GraphQL > GraphiQL`.
+
+![graphiql](https://supabase.github.io/pg_graphql/assets/supabase_graphiql.png)
+
+Type queries in the central query editor and use the green icon to submit requests to the server. Results are shown in the output display to the right of the editor.
+
+To explore the API visually, select the docs icon shown below and navigate through each type to see how they connect to the Graph.
+
+![graphiql](https://supabase.github.io/pg_graphql/assets/supabase_graphiql_explore.png)
+
+The schema explorer relies on GraphQL introspection. From pg\_graphql 1.6.0, introspection is disabled by default and must be enabled per schema:
+
+```sql
+comment on schema public is e'@graphql({"introspection": true})';
+```
+
+pg\_graphql mirrors the structure of the project's SQL schema in the GraphQL API. If your project is new and empty, the GraphQL API will be empty as well, with the exception of basic introspection types. For a more interesting result, go to the SQL or table editor and create a table.
+
+![graphiql](https://supabase.github.io/pg_graphql/assets/supabase_sql_editor.png)
+
+Head back to GraphiQL to see the new table reflected in your GraphQL API's Query and Mutation types.
+
+![graphiql](https://supabase.github.io/pg_graphql/assets/supabase_graphiql_query_table.png)
+
+If you'd like your type and field names to match the GraphQL convention of `PascalCase` for types and `camelCase` for fields, check out the [pg\_graphql inflection guide](https://supabase.com/docs/guides/graphql/configuration#inflection).
+
+### HTTP Request
+
+To access the GraphQL API over HTTP, first collect your [project reference](#project-reference-project_ref) and [API Key](#api-key-api_key).
+
+### cURL
+
+To hit the Supabase GraphQL API using cURL, submit a `POST` request to your GraphQL API's URL shown below, substituting in your [PROJECT\_REF](#project-reference-project_ref) and passing the project's [API\_KEY](#api-key-api_key) as the `apiKey` header:
+
+```sh
+curl -X POST https://<PROJECT_REF>.supabase.co/graphql/v1 \
+    -H 'apiKey: <API_KEY>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{"query": "{ accountCollection(first: 1) { edges { node { id } } } }", "variables": {}}'
+```
+
+In that example, the GraphQL `query` is
+
+```graphql
+{
+  accountCollection(first: 1) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+```
+
+and there are no `variables`
+
+```js
+{}
+```
+
+### supabase-js
+
+The JS ecosystem supports multiple prominent GraphQL frameworks. [supabase-js](https://supabase.com/docs/reference/javascript/introduction) is unopinionated about your GraphQL tooling and can integrate with all of them.
+
+For an example integration, check out the [Relay guide](https://supabase.com/docs/guides/graphql/with-relay), complete with Supabase Auth support.
+
+### GraphiQL
+
+If you'd prefer to connect to Supabase GraphQL using an external IDE like GraphiQL, save the HTML snippet below as `supabase_graphiql.html` and open it in your browser. Be sure to substitute in your [PROJECT\_REF](#project-reference-project_ref) and [API\_KEY](#api-key-api_key) beneath the `EDIT BELOW` comment.
+
+GraphiQL uses introspection to display your schema and provide autocomplete. From pg\_graphql 1.6.0, introspection is disabled by default — enable it before connecting:
+
+```sql
+comment on schema public is e'@graphql({"introspection": true})';
+```
+
+```html
+<html>
+  <head>
+    <title>GraphiQL</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/graphiql/2.4.7/graphiql.css" rel="stylesheet" />
+  </head>
+  <body style="margin: 0;">
+    <div id="graphiql" style="height: 100vh;"></div>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script
+      crossorigin
+      src="https://cdnjs.cloudflare.com/ajax/libs/graphiql/2.4.7/graphiql.js"
+    ></script>
+    <script>
+
+      ////////////////
+      // EDIT BELOW //
+      ////////////////
+
+      const fetcher = GraphiQL.createFetcher({
+        url: 'https://<PROJECT_REF>.supabase.co/graphql/v1',
+        headers: {
+          "apiKey": "<API_KEY>",
+        }
+      });
+      ReactDOM.render(
+        React.createElement(GraphiQL, { fetcher: fetcher }),
+        document.getElementById('graphiql'),
+      );
+    </script>
+  </body>
+</html>
+```
+
+## Schema & Table Visibility
+
+pg\_graphql uses Postgres' `search_path` and permissions system to determine which schemas and entities are exposed in the GraphQL schema. By default on Supabase, tables, views, and functions in the `public` schema are visible to anonymous (`anon`) and logged in (`authenticated`) roles.
+
+### Remove a Table from the API
+
+To remove a table from the GraphQL API, you can revoke permission on that table from the the relevant role. For example, to remove table `foo` from the API for anonymous users you could run:
+
+```sql
+revoke all on table public.foo from anon;
+```
+
+You can similarly revoke permissions using the more granular `insert`, `update`, `delete`, and `truncate` permissions to remove individual entrypoints in the GraphQL API. For example, revoking `update` permission removes the `updateFooCollection` entrypoing in the API's `Mutation` type.
+
+### Add a Schema to the API
+
+Adding a schema to the GraphQL API is a two step process.
+
+First, we need to add the new schema to the API search path. In the example below, we add a comma separated value for the new `app` schema:
+
+![add\_schema](https://supabase.github.io/pg_graphql/assets/supabase_add_schema.png)
+
+Next, make sure the schema and entities (tables/views/functions) that you intend to expose are accessible by the relevant roles. For example, to match permissions from the public schema:
+
+```sql
+grant usage on schema app to anon, authenticated, service_role;
+grant all privileges on all tables in schema app to anon, authenticated, service_role;
+grant all privileges on all routines in schema app to anon, authenticated, service_role;
+grant all privileges on all sequences in schema app to anon, authenticated, service_role;
+alter default privileges for role postgres in schema app grant all on tables to anon, authenticated, service_role;
+alter default privileges for role postgres in schema app grant all on routines to anon, authenticated, service_role;
+alter default privileges for role postgres in schema app grant all on sequences to anon, authenticated, service_role;
+```
+
+Note that in practice you likely prefer a more secure set of permissions, particularly for anonymous API users.
+
+## Version Management
+
+To maximize stability, you are in control of when to upgrade your GraphQL API.
+To see which version of pg\_graphql you have, and the highest upgrade version available, execute:
+
+```sql
+select * from pg_available_extensions where name = 'pg_graphql'
+```
+
+Which returns a table, for example:
+
+| name        | default\_version | installed\_version | comment         |
+| ----------- | ---------------- | ------------------ | --------------- |
+| pg\_graphql | 1.2.0            | 1.1.0              | GraphQL support |
+
+The `default_version` is the highest version available on your database. The `installed_version` is the version currently enabled in your database.
+If the two differ, as in the example, you can upgrade your installed version by running:
+
+```sql
+drop extension pg_graphql;   -- drop version 1.1.0
+create extension pg_graphql; -- install default version 1.2.0
+```
+
+To upgrade your GraphQL API with 0 downtime.
+
+When making a decision to upgrade, you can review features of the upgraded version in the [changelog](https://supabase.github.io/pg_graphql/changelog). If upgrading to 1.6.0, note that introspection is now disabled by default — enable it per schema if your project relies on schema exploration tools.
+
+Always test a new version of pg\_graphql extensively on a development or staging instance before updating your production instance. pg\_graphql follows SemVer, which makes API backwards compatibility relatively safe for minor and patch updates. Even so, it's critical to verify that changes do not negatively impact the specifics of your project's API in other ways, e.g. requests/sec or CPU load.
+
+## Local Development
+
+When starting a local project through the [Supabase CLI](https://supabase.com/docs/guides/cli), the output of `supabase start` provides the information needed to call the GraphQL API directly. You can also use the Supabase Studio url to access [the builtin GraphiQL IDE](https://app.supabase.com/project/_/api/graphiql).
+
+```sh
+> supabase start
+...
+
+Started supabase local development setup.
+
+     GraphQL URL: http://localhost:54321/graphql/v1  <-- GraphQL endpoint
+          DB URL: ...
+      Studio URL: http://localhost:54323             <-- Supabase Studio
+    Inbucket URL: ...
+      JWT secret: ...
+        anon key: eyJhbGciOiJIUzI1...<truncated>     <-- API_KEY
+service_role key: ...
+```
+
+## Term Reference
+
+### Project Reference (PROJECT\_REF)
+
+Your Supabase project reference or PROJECT\_REF is a 20 digit unique identifier for your project, for example `bvykdyhlwawojivopztl`.
+The project reference is used throughout your supabase application including the project's API URL. You can find the project reference in by logging
+in to Supabase Studio and navigating to `Settings > General > Project Settings > Reference ID`
+
+![project\_ref](https://supabase.github.io/pg_graphql/assets/supabase_project_ref.png)
+
+### API Key (API\_KEY)
+
+Your Supabase API Key is a public value that must be sent with every API request. The key is visible in Supabase Studio at `Settings > API > Project API keys`
+
+![project\_ref](https://supabase.github.io/pg_graphql/assets/supabase_api_key.png)
+
+
+---
+
+# GraphQL API
+
+Understanding the core concepts of the GraphQL API.
+
+In our API, each SQL table is reflected as a set of GraphQL types. At a high level, tables become types and columns/foreign keys become fields on those types.
+
+By default, PostgreSQL table and column names are not inflected when reflecting GraphQL  names. For example, an `account_holder` table has GraphQL type name `account_holder`. In cases where SQL entities are named using `snake_case`, [enable inflection](https://supabase.com/docs/guides/graphql/configuration#inflection) to match GraphQL/Javascript conventions e.g. `account_holder` -> `AccountHolder`.
+
+Individual table, column, and relationship names may also be [manually overridden](https://supabase.com/docs/guides/graphql/configuration#tables-type).
+
+## Primary Keys (Required)
+
+Every table must have a primary key for it to be exposed in the GraphQL schema. For example, the following `Blog` table will be available in the GraphQL schema as `blogCollection` since it has a primary key named `id`:
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+);
+```
+
+But the following table will not be exposed because it doesn't have a primary key:
+
+```sql
+create table "Blog"(
+  id int,
+  name varchar(255) not null,
+);
+```
+
+## QueryType
+
+The `Query` type is the entrypoint for all read access into the graph.
+
+### Node
+
+The `node` interface allows for retrieving records that are uniquely identifiable by a globally unique `nodeId: ID!` field. For more information about nodeId, see [nodeId](#nodeid).
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+  description varchar(255),
+  "createdAt" timestamp not null,
+  "updatedAt" timestamp not null
+);
+```
+
+**GraphQL Types**
+
+**QueryType**
+
+```graphql
+"""The root type for querying data"""
+type Query {
+
+  """Retrieve a record by its `ID`"""
+  node(nodeId: ID!): Node
+
+}
+```
+
+To query the `node` interface effectively, use [inline fragments](https://graphql.org/learn/queries/#inline-fragments) to specify which fields to return for each type.
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  node(
+    nodeId: "WyJwdWJsaWMiLCAiYmxvZyIsIDFd"
+  ) {
+    nodeId
+    # Inline fragment for `Blog` type
+    ... on Blog {
+      name
+      description
+    }
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "node": {
+      "name": "Some Blog",
+      "nodeId": "WyJwdWJsaWMiLCAiYmxvZyIsIDFd",
+      "description": "Description of Some Blog"
+    }
+  }
+}
+```
+
+### Collections
+
+Each table has top level entry in the `Query` type for selecting records from that table. Collections return a connection type and can be [paginated](#pagination), [filtered](#filtering), and [sorted](#ordering) using the available arguments.
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+  description varchar(255),
+  "createdAt" timestamp not null,
+  "updatedAt" timestamp not null
+);
+```
+
+**GraphQL Types**
+
+**QueryType**
+
+```graphql
+"""The root type for querying data"""
+type Query {
+
+  """A pagable collection of type `Blog`"""
+  blogCollection(
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: BlogFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [BlogOrderBy!]
+  ): BlogConnection!
+}
+```
+
+Connection types are the primary interface to returning records from a collection.
+
+Connections wrap a result set with some additional metadata.
+
+**BlogConnection**
+
+```graphql
+type BlogConnection {
+
+  # Count of all records matching the *filter* criteria
+  totalCount: Int!
+
+  # Pagination metadata
+  pageInfo: PageInfo!
+
+  # Result set
+  edges: [BlogEdge!]!
+
+  # Aggregate functions
+  aggregate: BlogAggregate
+
+}
+```
+
+**BlogEdge**
+
+```graphql
+type BlogEdge {
+
+  # Unique identifier of the record within the query
+  cursor: String!
+
+  # Contents of a record/row in the results set
+  node: Blog
+
+}
+```
+
+**PageInfo**
+
+```graphql
+type PageInfo {
+
+  # unique identifier of the first record within the query
+  startCursor: String
+
+  # unique identifier of the last record within the query
+  endCursor: String
+
+  # is another page of content available
+  hasNextPage: Boolean!
+
+  # is another page of content available
+  hasPreviousPage: Boolean!
+}
+```
+
+**Blog**
+
+```graphql
+# A record from the `blog` table
+type Blog {
+
+  # globally unique identifier
+  nodeId: ID!
+
+  # Value from `id` column
+  id: Int!
+
+  # Value from `name` column
+  name: String!
+
+  # Value from `description` column
+  description: String
+
+  # Value from `createdAt` column
+  createdAt: Datetime!
+
+  # Value from `updatedAt` column
+  updatedAt: Datetime!
+
+}
+
+```
+
+**BlogOrderBy**
+
+```graphql
+input BlogOrderBy {
+  id: OrderByDirection
+  name: OrderByDirection
+  description: OrderByDirection
+  createdAt: OrderByDirection
+  updatedAt: OrderByDirection
+}
+```
+
+**BlogFilter**
+
+```graphql
+input BlogFilter {
+  nodeId: IDFilter
+  id: IntFilter
+  name: StringFilter
+  description: StringFilter
+  createdAt: DatetimeFilter
+  updatedAt: DatetimeFilter
+  and: [BlogFilter!]
+  or: [BlogFilter!]
+  not: BlogFilter
+}
+```
+
+Note: The `totalCount` field is disabled by default because it can be expensive on large tables. To enable it use a [comment directive](https://supabase.com/docs/guides/graphql/configuration#totalcount)
+
+#### Aggregates
+
+Aggregate functions are available on the collection's `aggregate` field when enabled via [comment directive](https://supabase.com/docs/guides/graphql/configuration#aggregate). These allow you to perform calculations on the collection of records that match your filter criteria.
+
+The supported aggregate operations are:
+
+- **count**: Always available, returns the number of records matching the query
+- **sum**: Available for numeric fields, returns the sum of values
+- **avg**: Available for numeric fields, returns the average (mean) of values
+- **min**: Available for numeric, string, boolean, and date/time fields, returns the minimum value
+- **max**: Available for numeric, string, boolean, and date/time fields, returns the maximum value
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    filter: { rating: { gt: 3 } }
+  ) {
+    aggregate {
+      count
+      sum {
+        rating
+        visits
+      }
+      avg {
+        rating
+      }
+      min {
+        createdAt
+        title
+      }
+      max {
+        rating
+        updatedAt
+      }
+    }
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "aggregate": {
+        "count": 5,
+        "sum": {
+          "rating": 23,
+          "visits": 1250
+        },
+        "avg": {
+          "rating": 4.6
+        },
+        "min": {
+          "createdAt": "2022-01-15T08:30:00Z",
+          "title": "A Blog Post"
+        },
+        "max": {
+          "rating": 5,
+          "updatedAt": "2023-04-22T14:15:30Z"
+        }
+      }
+    }
+  }
+}
+```
+
+**BlogAggregate**
+
+```graphql
+"""Aggregate results for `Blog`"""
+type BlogAggregate {
+  """The number of records matching the query"""
+  count: Int!
+
+  """Summation aggregates for `Blog`"""
+  sum: BlogSumAggregateResult
+
+  """Average aggregates for `Blog`"""
+  avg: BlogAvgAggregateResult
+
+  """Minimum aggregates for comparable fields"""
+  min: BlogMinAggregateResult
+
+  """Maximum aggregates for comparable fields"""
+  max: BlogMaxAggregateResult
+}
+```
+
+**GraphQL Types**
+
+**BlogSumAggregateResult**
+
+```graphql
+"""Result of summation aggregation for `Blog`"""
+type BlogSumAggregateResult {
+  """Sum of rating values"""
+  rating: BigFloat
+
+  """Sum of visits values"""
+  visits: BigInt
+
+  # Other numeric fields...
+}
+```
+
+**BlogAvgAggregateResult**
+
+```graphql
+"""Result of average aggregation for `Blog`"""
+type BlogAvgAggregateResult {
+  """Average of rating values"""
+  rating: BigFloat
+
+  """Average of visits values"""
+  visits: BigFloat
+
+  # Other numeric fields...
+}
+```
+
+**BlogMinAggregateResult**
+
+```graphql
+"""Result of minimum aggregation for `Blog`"""
+type BlogMinAggregateResult {
+  """Minimum rating value"""
+  rating: Float
+
+  """Minimum title value"""
+  title: String
+
+  """Minimum createdAt value"""
+  createdAt: Datetime
+
+  # Other comparable fields...
+}
+```
+
+**BlogMaxAggregateResult**
+
+```graphql
+"""Result of maximum aggregation for `Blog`"""
+type BlogMaxAggregateResult {
+  """Maximum rating value"""
+  rating: Float
+
+  """Maximum title value"""
+  title: String
+
+  """Maximum updatedAt value"""
+  updatedAt: Datetime
+
+  # Other comparable fields...
+}
+```
+
+Note: - The return type for `sum` depends on the input type: integer fields return `BigInt`, while other numeric fields return `BigFloat`.
+- The return type for `avg` is always `BigFloat`.
+- The return types for `min` and `max` match the original field types.
+
+Note: The `aggregate` field is disabled by default because it can be expensive on large tables. To enable it use a [comment directive](https://supabase.com/docs/guides/graphql/configuration#Aggregate)
+
+#### Pagination
+
+##### Keyset Pagination
+
+Paginating forwards and backwards through collections is handled using the `first`, `last`, `before`, and `after` parameters, following the [relay spec](https://relay.dev/graphql/connections.htm#).
+
+**QueryType**
+
+```graphql
+type Query {
+
+  blogCollection(
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    ...truncated...
+
+  ): BlogConnection!
+}
+```
+
+Metadata relating to the current page of a result set is available on the `pageInfo` field of the connection type returned from a collection.
+
+**PageInfo**
+
+```graphql
+type PageInfo {
+
+  # unique identifier of the first record within the query
+  startCursor: String
+
+  # unique identifier of the last record within the query
+  endCursor: String
+
+  # is another page of content available
+  hasNextPage: Boolean!
+
+  # is another page of content available
+  hasPreviousPage: Boolean!
+}
+```
+
+**BlogConnection**
+
+```graphql
+type BlogConnection {
+
+  # Pagination metadata
+  pageInfo: PageInfo!
+
+  # Result set
+  edges: [BlogEdge!]!
+
+}
+```
+
+To paginate forward in the collection, use the `first` and `after` arguments. To retrieve the first page, the `after` argument should be null or absent.
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    first: 2,
+    after: null
+  ) {
+    pageInfo {
+      startCursor
+      endCursor
+      hasPreviousPage
+      hasNextPage
+    }
+    edges {
+      cursor
+      node {
+        id
+      }
+    }
+  }
+}
+```
+
+**Page 1**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2
+          },
+          "cursor": "WzJd"
+        }
+      ],
+      "pageInfo": {
+        "startCursor": "WzFd",
+        "endCursor": "WzJd",
+        "hasNextPage": true,
+        "hasPreviousPage": false
+      }
+    }
+  }
+}
+```
+
+To retrieve the next page, provide the cursor value from `data.blogCollection.pageInfo.endCursor` to the `after` argument of another query.
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    first: 2,
+    after: "WzJd"
+  ) {
+  ...truncated...
+}
+```
+
+**Page 2**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 3
+          },
+          "cursor": "WzNd"
+        },
+        {
+          "node": {
+            "id": 4
+          },
+          "cursor": "WzRd"
+        }
+      ],
+      "pageInfo": {
+        "startCursor": "WzNd",
+        "endCursor": "WzRd",
+        "hasNextPage": false,
+        "hasPreviousPage": true
+      }
+    }
+  }
+}
+```
+
+once the collection has been fully enumerated, `data.blogConnection.pageInfo.hasNextPage` returns false.
+
+To paginate backwards through a collection, repeat the process substituting `first` -> `last`, `after` -> `before`, `hasNextPage` -> `hasPreviousPage`
+
+##### Offset Pagination
+
+In addition to keyset pagination, collections may also be paged using `first` and `offset`, which operates like SQL's `limit` and `offset` to skip `offset` number of records in the results.
+
+Note: `offset` based pagination becomes inefficient the `offset` value increases. For this reason, prefer cursor based pagination where possible.
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    first: 2,
+    offset: 2
+  ) {
+  ...truncated...
+}
+```
+
+**Page 2**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 3
+          },
+          "cursor": "WzNd"
+        },
+        {
+          "node": {
+            "id": 4
+          },
+          "cursor": "WzRd"
+        }
+      ],
+      "pageInfo": {
+        "startCursor": "WzNd",
+        "endCursor": "WzRd",
+        "hasNextPage": false,
+        "hasPreviousPage": true
+      }
+    }
+  }
+}
+```
+
+#### Filtering
+
+To filter the result set, use the `filter` argument.
+
+**QueryType**
+
+```graphql
+type Query {
+
+  blogCollection(
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: BlogFilter
+
+    ...truncated...
+
+  ): BlogConnection!
+}
+```
+
+Where the `<Table>Filter` type enumerates filterable fields and their associated `<Type>Filter`.
+
+**BlogFilter**
+
+```graphql
+input BlogFilter {
+  nodeId: IDFilter
+  id: IntFilter
+  name: StringFilter
+  description: StringFilter
+  tags: StringListFilter
+  createdAt: DatetimeFilter
+  updatedAt: DatetimeFilter
+  and: [BlogFilter!]
+  or: [BlogFilter!]
+  not: BlogFilter
+}
+```
+
+**IntFilter**
+
+```graphql
+"""
+Boolean expression comparing fields on type "Int"
+"""
+input IntFilter {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  neq: Int
+  is: FilterIs
+}
+```
+
+**StringFilter**
+
+```graphql
+"""
+Boolean expression comparing fields on type "String"
+"""
+input StringFilter {
+  eq: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  neq: String
+  is: FilterIs
+  startsWith: String
+  like: String
+  ilike: String
+  regex: String
+  iregex: String
+}
+```
+
+**StringListFilter**
+
+```graphql
+"""
+Boolean expression comparing fields on type "StringList"
+"""
+input StringListFilter {
+  contains: [String!]
+  containedBy: [String!]
+  eq: [String!]
+  overlaps: [String!]
+  is: FilterIs
+}
+```
+
+**FilterIs**
+
+```graphql
+enum FilterIs {
+  NULL
+  NOT_NULL
+}
+```
+
+The following list shows the operators that may be available on `<Type>Filter` types.
+
+| Operator    | Description                                                     |
+| ----------- | --------------------------------------------------------------- |
+| eq          | Equal To                                                        |
+| neq         | Not Equal To                                                    |
+| gt          | Greater Than                                                    |
+| gte         | Greater Than Or Equal To                                        |
+| in          | Contained by Value List                                         |
+| lt          | Less Than                                                       |
+| lte         | Less Than Or Equal To                                           |
+| is          | Null or Not Null                                                |
+| startsWith  | Starts with prefix                                              |
+| like        | Pattern Match. '%' as wildcard                                  |
+| ilike       | Pattern Match. '%' as wildcard. Case Insensitive                |
+| regex       | POSIX Regular Expression Match                                  |
+| iregex      | POSIX Regular Expression Match. Case Insensitive                |
+| contains    | Contains. Applies to array columns only.                        |
+| containedBy | Contained in. Applies to array columns only.                    |
+| overlaps    | Overlap (have points in common). Applies to array columns only. |
+
+Not all operators are available on every `<Type>Filter` type. For example, `UUIDFilter` only supports `eq` and `neq` because `UUID`s are not ordered.
+
+**Example: simple**
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    filter: {id: {lt: 3}},
+  ) {
+    edges {
+      cursor
+      node {
+        id
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2
+          },
+          "cursor": "WzJd"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Example: array column**
+
+The `contains` filter is used to return results where all the elements in the input array appear in the array column.
+
+**"**
+
+`contains`
+
+Filter Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {tags: {contains: ["tech", "innovation"]}},
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        tags
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`contains`
+
+Filter Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["tech", "innovation"]
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["tech", "innovation", "entrepreneurship"]
+          },
+          "cursor": "WzJd"
+        }
+      ]
+    }
+  }
+}
+```
+
+The `contains` filter can also accept a single scalar.
+
+**"**
+
+`contains`
+
+Filter with Scalar Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {tags: {contains: "tech"}},
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        tags
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`contains`
+
+Filter with Scalar Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["tech", "innovation"]
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["tech", "innovation", "entrepreneurship"]
+          },
+          "cursor": "WzJd"
+        }
+      ]
+    }
+  }
+}
+```
+
+The `containedBy` filter is used to return results where every element of the array column appears in the input array.
+
+**"**
+
+`containedBy`
+
+Filter Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {tags: {containedBy: ["entrepreneurship", "innovation", "tech"]}},
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        tags
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`containedBy`
+
+Filter Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["tech", "innovation"]
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 3,
+            "name": "A: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["innovation", "entrepreneurship"]
+          },
+          "cursor": "WzNd"
+        }
+      ]
+    }
+  }
+}
+```
+
+The `containedBy` filter can also accept a single scalar. In this case, only results where the only element in the array column is the input scalar are returned.
+
+**"**
+
+`containedBy`
+
+Filter with Scalar Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {tags: {containedBy: "travel"}},
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        tags
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`containedBy`
+
+Filter with Scalar Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 4,
+            "name": "A: Blog 4",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["travel"]
+          },
+          "cursor": "WzPd"
+        }
+      ]
+    }
+  }
+}
+```
+
+The `overlaps` filter is used to return results where the array column and the input array have at least one element in common.
+
+**"**
+
+`overlaps`
+
+Filter Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {tags: {overlaps: ["tech", "travel"]}},
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        tags
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`overlaps`
+
+Filter Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["tech", "innovation"]
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["tech", "innovation", "entrepreneurship"]
+          },
+          "cursor": "WzJd"
+        },
+        {
+          "node": {
+            "id": 4,
+            "name": "A: Blog 4",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "tags": ["travel"]
+          },
+          "cursor": "WzPd"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Example: and/or**
+
+Multiple filters can be combined with `and`, `or` and `not` operators. The `and` and `or` operators accept a list of `<Type>Filter`.
+
+**"**
+
+`and`
+
+Filter Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      and: [
+        {id: {eq: 1}}
+        {name: {eq: "A: Blog 1"}}
+      ]
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`and`
+
+Filter Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc1"
+          },
+          "cursor": "WzFd"
+        }
+      ]
+    }
+  }
+}
+```
+
+**"**
+
+`or`
+
+Filter Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      or: [
+        {id: {eq: 1}}
+        {name: {eq: "A: Blog 2"}}
+      ]
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`or`
+
+Filter Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc1"
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc2"
+          },
+          "cursor": "WzJd"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Example: not**
+
+`not` accepts a single `<Type>Filter`.
+
+**"**
+
+`not`
+
+Filter Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      not: {id: {eq: 1}}
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"**
+
+`not`
+
+Filter Result"
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc2"
+          },
+          "cursor": "WzJd"
+        },
+        {
+          "node": {
+            "id": 3,
+            "name": "A: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc3"
+          },
+          "cursor": "WzNd"
+        },
+        {
+          "node": {
+            "id": 4,
+            "name": "B: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "b desc1"
+          },
+          "cursor": "WzRd"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Example: nested composition**
+
+The `and`, `or` and `not` operators can be arbitrarily nested inside each other.
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      or: [
+        { id: { eq: 1 } }
+        { id: { eq: 2 } }
+        { and: [{ id: { eq: 3 }, not: { name: { eq: "A: Blog 2" } } }] }
+      ]
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc1"
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc2"
+          },
+          "cursor": "WzJd"
+        },
+        {
+          "node": {
+            "id": 3,
+            "name": "A: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc3"
+          },
+          "cursor": "WzNd"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Example: empty**
+
+Empty filters are ignored, i.e. they behave as if the operator was not specified at all.
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      and: [], or: [], not: {}
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "A: Blog 1",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc1"
+          },
+          "cursor": "WzFd"
+        },
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc2"
+          },
+          "cursor": "WzJd"
+        },
+        {
+          "node": {
+            "id": 3,
+            "name": "A: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc3"
+          },
+          "cursor": "WzNd"
+        },
+        {
+          "node": {
+            "id": 4,
+            "name": "B: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "b desc1"
+          },
+          "cursor": "WzRd"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Example: implicit and**
+
+Multiple column filters at the same level will be implicitly combined with boolean `and`. In the following example the `id: {eq: 1}` and `name: {eq: "A: Blog 1"}` will be `and`ed.
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      # Equivalent to not: { and: [{id: {eq: 1}}, {name: {eq: "A: Blog 1"}}]}
+      not: {
+        id: {eq: 1}
+        name: {eq: "A: Blog 1"}
+      }
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc2"
+          },
+          "cursor": "WzJd"
+        },
+        {
+          "node": {
+            "id": 3,
+            "name": "A: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc3"
+          },
+          "cursor": "WzNd"
+        },
+        {
+          "node": {
+            "id": 4,
+            "name": "B: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "b desc1"
+          },
+          "cursor": "WzRd"
+        }
+      ]
+    }
+  }
+}
+```
+
+This means that an `and` filter can be often be simplified. In the following example all queries are equivalent and produce the same result.
+
+**"Original **
+
+`and`
+
+Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      and: [
+        {id: {gt: 0}}
+        {id: {lt: 2}}
+        {name: {eq: "A: Blog 1"}}
+      ]
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**"Simplified **
+
+`and`
+
+Query"
+
+```graphql
+{
+  blogCollection(
+    filter: {
+        id: {gt: 0}
+        id: {lt: 2}
+        name: {eq: "A: Blog 1"}
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**Even More Simplified Query**
+
+```graphql
+{
+  blogCollection(
+    filter: {
+        id: {gt: 0, lt: 2}
+        name: {eq: "A: Blog 1"}
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 2,
+            "name": "A: Blog 2",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc2"
+          },
+          "cursor": "WzJd"
+        },
+        {
+          "node": {
+            "id": 3,
+            "name": "A: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "a desc3"
+          },
+          "cursor": "WzNd"
+        },
+        {
+          "node": {
+            "id": 4,
+            "name": "B: Blog 3",
+            "createdAt": "2023-07-24T04:01:09.882781",
+            "description": "b desc1"
+          },
+          "cursor": "WzRd"
+        }
+      ]
+    }
+  }
+}
+```
+
+Be aware that the above simplification only works for the `and` operator. If you try it with an `or` operator it will behave like an `and`.
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    filter: {
+      # This is really an `and` in `or`'s clothing
+      or: {
+        id: {eq: 1}
+        name: {eq: "A: Blog 2"}
+      }
+    }
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        description
+        createdAt
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": []
+    }
+  }
+}
+```
+
+This is because according to the rules of GraphQL list input coercion, if a value passed to an input of list type is not a list, then it is coerced to a list of a single item. So in the above example `or: {id: {eq: 1}, name: {eq: "A: Blog 2}}` will be coerced into `or: [{id: {eq: 1}, name: {eq: "A: Blog 2}}]` which is equivalent to `or: [and: [{id: {eq: 1}}, {name: {eq: "A: Blog 2}}}]` due to implicit `and`ing.
+
+Note: Avoid naming your columns `and`, `or` or `not`. If you do, the corresponding filter operator will not be available for use.
+
+The `and`, `or` and `not` operators also work with update and delete mutations.
+
+#### Ordering
+
+The default order of results is defined by the underlying table's primary key column in ascending order. That default can be overridden by passing an array of `<Table>OrderBy` to the collection's `orderBy` argument.
+
+**QueryType**
+
+```graphql
+type Query {
+
+  blogCollection(
+
+    """Sort order to apply to the collection"""
+    orderBy: [BlogOrderBy!]
+
+    ...truncated...
+
+  ): BlogConnection!
+}
+```
+
+**BlogOrderBy**
+
+```graphql
+input BlogOrderBy {
+  id: OrderByDirection
+  name: OrderByDirection
+  description: OrderByDirection
+  createdAt: OrderByDirection
+  updatedAt: OrderByDirection
+}
+```
+
+**OrderByDirection**
+
+```graphql
+"""Defines a per-field sorting order"""
+enum OrderByDirection {
+  """Ascending order, nulls first"""
+  AscNullsFirst
+
+  """Ascending order, nulls last"""
+  AscNullsLast
+
+  """Descending order, nulls first"""
+  DescNullsFirst
+
+  """Descending order, nulls last"""
+  DescNullsLast
+}
+```
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  blogCollection(
+    orderBy: [{id: DescNullsLast}]
+  ) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 4
+          }
+        },
+        {
+          "node": {
+            "id": 3
+          }
+        },
+        {
+          "node": {
+            "id": 2
+          }
+        },
+        {
+          "node": {
+            "id": 1
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+Note, only one key value pair may be provided to each element of the input array. For example, `[{name: AscNullsLast}, {id: AscNullFirst}]` is valid. Passing multiple key value pairs in a single element of the input array e.g. `[{name: AscNullsLast, id: AscNullFirst}]`, is invalid.
+
+### Primary Key Queries
+
+Each table has a top level field in the `Query` type for selecting a single record by primary key from that table. The field is named `<table>ByPk`
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+  description varchar(255),
+  "createdAt" timestamp not null,
+  "updatedAt" timestamp not null
+);
+```
+
+**GraphQL Types**
+
+**QueryType**
+
+```graphql
+"""The root type for querying data"""
+type Query {
+
+  """Retrieve a blog by its id"""
+  blogByPk(id: Int!): Blog
+
+}
+```
+
+To query the table by primary key, pass the value of the primary key field to the field:
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  blogByPk(
+    id: 1
+  ) {
+    id
+    name
+    description
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "blogByPk": {
+      "id": 1,
+      "name": "Some Blog",
+      "description": "Description of Some Blog"
+    }
+  }
+}
+```
+
+If a record with the give id doesn't exist, the field will return null:
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  blogByPk(
+    id: 999
+  ) {
+    id
+    name
+    description
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "blogByPk": null
+  }
+}
+```
+
+If the key is a composite primary key, all the columns of the primary key should be sent in the query:
+
+**SQL Setup**
+
+```sql
+create table item(
+    item_id int,
+    product_id int,
+    quantity int,
+    price numeric(10,2),
+    primary key(item_id, product_id)
+);
+```
+
+**GraphQL Types**
+
+**QueryType**
+
+```graphql
+"""The root type for querying data"""
+type Query {
+
+  """Retrieve an item by its item and product ids"""
+  itemByPk(itemId: Int!, productId: Int!): Item
+
+}
+```
+
+**Query**
+
+```graphql
+{
+  itemByPk(
+    itemId: 1, productId: 2
+  ) {
+    itemId
+    productId
+    quantity
+    price
+  }
+}
+```
+
+**Example**
+
+**Response**
+
+```json
+{
+  "data": {
+    "itemByPk": {
+      "itemId": 1,
+      "productId": 2,
+      "quantity": 1,
+      "price": "24.99"
+    }
+  }
+}
+```
+
+Otherwise an error will be returned:
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  itemByPk(
+    itemId: 1
+  ) {
+    itemId
+    productId
+    quantity
+    price
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": null,
+  "errors": [
+    {
+      "message": "Missing primary key column(s): product_id"
+    }
+  ]
+}
+```
+
+## MutationType
+
+The `Mutation` type is the entrypoint for mutations/edits.
+
+Each table has top level entry in the `Mutation` type for [inserting](#insert) `insertInto<Table>Collection`, [updating](#update) `update<Table>Collection` and [deleting](#delete) `deleteFrom<Table>Collection`.
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+  description varchar(255),
+  "createdAt" timestamp not null default now(),
+  "updatedAt" timestamp
+);
+```
+
+**MutationType**
+
+```graphql
+"""The root type for creating and mutating data"""
+type Mutation {
+
+  """Adds one or more `BlogInsertResponse` records to the collection"""
+  insertIntoBlogCollection(
+
+    """Records to add to the Blog collection"""
+    objects: [BlogInsertInput!]!
+
+  ): BlogInsertResponse
+
+  """Updates zero or more records in the collection"""
+  updateBlogCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: BlogUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: BlogFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+  ): BlogUpdateResponse!
+
+  """Deletes zero or more records from the collection"""
+  deleteFromBlogCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: BlogFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+  ): BlogDeleteResponse!
+
+}
+```
+
+### Insert
+
+To add records to a collection, use the `insertInto<Table>Collection` field on the `Mutation` type.
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+  description varchar(255),
+  "createdAt" timestamp not null default now(),
+  "updatedAt" timestamp
+);
+```
+
+**GraphQL Types**
+
+**MutationType**
+
+```graphql
+"""The root type for creating and mutating data"""
+type Mutation {
+
+  """Adds one or more `BlogInsertResponse` records to the collection"""
+  insertIntoBlogCollection(
+
+    """Records to add to the Blog collection"""
+    objects: [BlogInsertInput!]!
+
+  ): BlogInsertResponse
+
+}
+```
+
+**BlogInsertInput**
+
+```graphql
+input BlogInsertInput {
+  name: String
+  description: String
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+```
+
+**BlogInsertResponse**
+
+```graphql
+type BlogInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Blog!]!
+}
+```
+
+Where elements in the `objects` array are inserted into the underlying table.
+
+**Example**
+
+**Query**
+
+```graphql
+mutation {
+  insertIntoBlogCollection(
+    objects: [
+      {name: "foo"},
+      {name: "bar"},
+    ]
+  ) {
+    affectedCount
+    records {
+      id
+      name
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "insertIntoBlogCollection": {
+      "records": [
+        {
+          "id": 1,
+          "name": "foo"
+        },
+        {
+          "id": 2,
+          "name": "bar"
+        }
+      ],
+      "affectedCount": 2
+    }
+  }
+}
+```
+
+### Update
+
+To update records in a collection, use the `update<Table>Collection` field on the `Mutation` type.
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+  description varchar(255),
+  "createdAt" timestamp not null default now(),
+  "updatedAt" timestamp
+);
+```
+
+**GraphQL Types**
+
+**MutationType**
+
+```graphql
+"""The root type for creating and mutating data"""
+type Mutation {
+
+  """Updates zero or more records in the collection"""
+  updateBlogCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: BlogUpdateInput!
+
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: BlogFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+  ): BlogUpdateResponse!
+
+}
+```
+
+**BlogUpdateInput**
+
+```graphql
+input BlogUpdateInput {
+  name: String
+  description: String
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+```
+
+**BlogUpdateResponse**
+
+```graphql
+type BlogUpdateResponse {
+
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Blog!]!
+
+}
+```
+
+Where the `set` argument is a key value pair describing the values to update, `filter` controls which records should be updated, and `atMost` restricts the maximum number of records that may be impacted. If the number of records impacted by the mutation exceeds the `atMost` parameter the operation will return an error.
+
+**Example**
+
+**Query**
+
+```graphql
+mutation {
+  updateBlogCollection(
+    set: {name: "baz"}
+    filter: {id: {eq: 1}}
+  ) {
+    affectedCount
+    records {
+      id
+      name
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "updateBlogCollection": {
+      "records": [
+        {
+          "id": 1,
+          "name": "baz"
+        }
+      ],
+      "affectedCount": 1
+    }
+  }
+}
+```
+
+### Delete
+
+To remove records from a collection, use the `deleteFrom<Table>Collection` field on the `Mutation` type.
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+  id serial primary key,
+  name varchar(255) not null,
+  description varchar(255),
+  "createdAt" timestamp not null default now(),
+  "updatedAt" timestamp
+);
+```
+
+**GraphQL Types**
+
+**MutationType**
+
+```graphql
+"""The root type for creating and mutating data"""
+type Mutation {
+
+  """Deletes zero or more records from the collection"""
+  deleteFromBlogCollection(
+    """Restricts the mutation's impact to records matching the critera"""
+    filter: BlogFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+  ): BlogDeleteResponse!
+
+}
+```
+
+**BlogFilter**
+
+```graphql
+input BlogFilter {
+  id: IntFilter
+  name: StringFilter
+  description: StringFilter
+  createdAt: DatetimeFilter
+  updatedAt: DatetimeFilter
+  and: [BlogFilter!]
+  or: [BlogFilter!]
+  not: BlogFilter
+}
+```
+
+**BlogDeleteResponse**
+
+```graphql
+type BlogDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Blog!]!
+}
+```
+
+Where `filter` controls which records should be deleted and `atMost` restricts the maximum number of records that may be deleted. If the number of records impacted by the mutation exceeds the `atMost` parameter the operation will return an error.
+
+**Example**
+
+**Query**
+
+```graphql
+mutation {
+  deleteFromBlogCollection(
+    filter: {id: {eq: 1}}
+  ) {
+    affectedCount
+    records {
+      id
+      name
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "deleteFromBlogCollection": {
+      "records": [
+        {
+          "id": 1,
+          "name": "baz"
+        }
+      ],
+      "affectedCount": 1
+    }
+  }
+}
+```
+
+## Concepts
+
+### nodeId
+
+The base GraphQL type for every table with a primary key is automatically assigned a `nodeId: ID!` field. That value, can be passed to the [node](#node) entrypoint of the `Query` type to retrieve its other fields. `nodeId` may also be used as a caching key.
+
+Note: By default relay expects the `ID` field for types to have the name `id`. pg\_graphql uses `nodeId` by default to avoid conflicting with user defined `id` columns. You can configure relay to work with pg\_graphql's `nodeId` field with relay's `nodeInterfaceIdField` option. More info available [here](https://github.com/facebook/relay/tree/main/packages/relay-compiler#supported-compiler-configuration-options).
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+    id serial primary key,
+    name varchar(255) not null
+);
+```
+
+**GraphQL Types**
+
+**Blog**
+
+```sql
+type Blog {
+  nodeId: ID! # this field
+  id: Int!
+  name: String!
+}
+```
+
+### Relationships
+
+Relationships between collections in the Graph are derived from foreign keys.
+
+#### One-to-Many
+
+A foreign key on table A referencing table B defines a one-to-many relationship from table A to table B.
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+    id serial primary key,
+    name varchar(255) not null
+);
+
+create table "BlogPost"(
+    id serial primary key,
+    "blogId" integer not null references "Blog"(id),
+    title varchar(255) not null,
+    body varchar(10000)
+);
+```
+
+**GraphQL Types**
+
+**Blog**
+
+```sql
+type Blog {
+
+  # globally unique identifier
+  nodeId: ID!
+
+  id: Int!
+  name: String!
+  description: String
+
+  blogPostCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: BlogPostFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [BlogPostOrderBy!]
+  ): BlogPostConnection!
+
+}
+```
+
+Where `blogPostCollection` exposes the full `Query` interface to `BlogPost`s.
+
+**Example**
+
+**Query**
+
+```graphql
+{
+  blogCollection {
+    edges {
+      node {
+        name
+        blogPostCollection {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "name": "pg_graphql blog",
+            "blogPostCollection": {
+              "edges": [
+                {
+                  "node": {
+                    "id": 2,
+                    "title": "fIr3t p0sT"
+                  }
+                },
+                {
+                  "node": {
+                    "id": 3,
+                    "title": "graphql with postgres"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+#### Many-to-One
+
+A foreign key on table A referencing table B defines a many-to-one relationship from table B to table A.
+
+**SQL Setup**
+
+```sql
+create table "Blog"(
+    id serial primary key,
+    name varchar(255) not null
+);
+
+create table "BlogPost"(
+    id serial primary key,
+    "blogId" integer not null references "Blog"(id),
+    title varchar(255) not null,
+    body varchar(10000)
+);
+```
+
+**GraphQL Types**
+
+**BlogPost**
+
+```sql
+type BlogPost {
+  nodeId: ID!
+  id: Int!
+  blogId: Int!
+  title: String!
+  body: String
+
+  blog: Blog
+}
+```
+
+Where `blog` exposes the `Blog` record associated with the `BlogPost`.
+
+**Query**
+
+```graphql
+{
+  blogPostCollection {
+    edges {
+      node {
+        title
+        blog {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+**Result**
+
+```json
+{
+  "data": {
+    "blogPostCollection": {
+      "edges": [
+        {
+          "node": {
+            "blog": {
+              "name": "pg_graphql blog"
+            },
+            "title": "fIr3t p0sT"
+          }
+        },
+        {
+          "node": {
+            "blog": {
+              "name": "pg_graphql blog"
+            },
+            "title": "graphql with postgres"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+#### One-to-One
+
+A one-to-one relationship is defined by a foreign key on table A referencing table B where the columns making up the foreign key on table A are unique.
+
+**SQL Setup**
+
+```sql
+create table "EmailAddress"(
+    id serial primary key,
+    address text unique not null
+);
+
+create table "Employee"(
+    id serial primary key,
+    name text not null,
+    email_address_id int unique references "EmailAddress"(id)
+);
+```
+
+**GraphQL Types**
+
+**Employee**
+
+```sql
+type Employee {
+  nodeId: ID!
+  id: Int!
+  name: String!
+  emailAddressId: Int
+  emailAddress: EmailAddress
+}
+```
+
+**EmailAddress**
+
+```sql
+type EmailAddress {
+  nodeId: ID!
+  id: Int!
+  address: String!
+  employee: Employee
+}
+```
+
+**Query**
+
+```graphql
+{
+  employeeCollection {
+    edges {
+      node {
+        name
+        emailAddress {
+          address
+          employee {
+            name
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Example**
+
+**Result**
+
+```json
+{
+  "data": {
+    "employeeCollection": {
+      "edges": [
+        {
+          "node": {
+            "name": "Foo Barington",
+            "emailAddress": {
+              "address": "foo@bar.com",
+              "employee": {
+                "name": "Foo Barington"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+## Custom Scalars
+
+Due to differences among the types supported by PostgreSQL, JSON, and GraphQL, `pg_graphql` adds several new Scalar types to handle PostgreSQL builtins that require special handling.
+
+### JSON
+
+`pg_graphql` serializes `json` and `jsonb` data types as `String` under the custom scalar name `JSON`.
+
+```graphql
+scalar JSON
+```
+
+**Example**
+
+Given the setup
+
+**SQL**
+
+```sql
+create table "User"(
+    id bigserial primary key,
+    config jsonb
+);
+
+insert into "User"(config)
+values (jsonb_build_object('palette', 'dark-mode'));
+```
+
+**GraphQL**
+
+```sql
+type User {
+  nodeId: ID!
+  id: BigInt!
+  config: JSON
+}
+```
+
+The query
+
+```graphql
+{
+  userCollection {
+    edges {
+      node {
+        config
+      }
+    }
+  }
+}
+```
+
+The returns the following data. Note that `config` is serialized as a string
+
+```json
+{
+  "data": {
+    "userCollection": {
+      "edges": [
+        {
+          "node": {
+            "config": "{\"palette\": \"dark-mode\"}"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+Use serialized JSON strings when updating or inserting `JSON` fields via the GraphQL API.
+
+JSON does not currently support filtering.
+
+### BigInt
+
+PostgreSQL `bigint` and `bigserial` types are 64 bit integers. In contrast, JSON supports 32 bit integers.
+
+Since PostgreSQL `bigint` values may be outside the min/max range allowed by JSON, they are represented in the GraphQL schema as `BigInt`s and values are serialized as strings.
+
+```graphql
+scalar BigInt
+
+input BigIntFilter {
+  eq: BigInt
+  gt: BigInt
+  gte: BigInt
+  in: [BigInt!]
+  lt: BigInt
+  lte: BigInt
+  neq: BigInt
+  is: FilterIs
+}
+```
+
+**Example**
+
+Given the setup
+
+**SQL**
+
+```sql
+create table "Person"(
+    id bigserial primary key,
+    name text
+);
+
+insert into "Person"(name)
+values ('J. Bazworth');
+```
+
+**GraphQL**
+
+```sql
+type Person {
+  nodeId: ID!
+  id: BigInt!
+  name: String
+}
+```
+
+The query
+
+```graphql
+{
+  personCollection {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+```
+
+The returns the following data. Note that `id` is serialized as a string
+
+```json
+{
+  "data": {
+    "personCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": "1",
+            "name": "Foo Barington",
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### BigFloat
+
+PostgreSQL's `numeric` type supports arbitrary precision floating point values. JSON's `float` is limited to 64-bit precision.
+
+Since a PostgreSQL `numeric` may require more precision than can be handled by JSON, `numeric` types are represented in the GraphQL schema as `BigFloat` and values are serialized as strings.
+
+```graphql
+scalar BigFloat
+
+input BigFloatFilter {
+  eq: BigFloat
+  gt: BigFloat
+  gte: BigFloat
+  in: [BigFloat!]
+  lt: BigFloat
+  lte: BigFloat
+  neq: BigFloat
+  is: FilterIs
+}
+```
+
+**Example**
+
+Given the SQL setup
+
+```sql
+create table "GeneralLedger"(
+    id serial primary key,
+    amount numeric(10,2)
+);
+
+insert into "GeneralLedger"(amount)
+values (22.15);
+```
+
+The query
+
+```graphql
+{
+  generalLedgerCollection {
+    edges {
+      node {
+        id
+        amount
+      }
+    }
+  }
+}
+```
+
+The returns the following data. Note that `amount` is serialized as a string
+
+```json
+{
+  "data": {
+    "generalLedgerCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "amount": "22.15",
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### Opaque
+
+PostgreSQL's type system is extensible and not all types handle all operations e.g. filtering with `like`. To account for these, `pg_graphql` introduces a scalar `Opaque` type. The `Opaque` type uses PostgreSQL's `to_json` method to serialize values. That allows complex or unknown types to be included in the schema by delegating handling to the client.
+
+```graphql
+scalar Opaque
+
+input OpaqueFilter {
+  eq: Opaque
+  is: FilterIs
+}
+```
+
+
+---
+
+# Computed Fields
+
+Using Postgres Computed Fields with GraphQL.
+
+## Computed Values
+
+### PostgreSQL Builtin (Preferred)
+
+PostgreSQL has a builtin method for adding [generated columns](https://www.postgresql.org/docs/14/ddl-generated-columns.html) to tables. Generated columns are reflected identically to non-generated columns. This is the recommended approach to adding computed fields when your computation meets the restrictions. Namely:
+
+- expression must be immutable
+- expression may only reference the current row
+
+For example:
+
+```sql
+--8<-- "test/expected/extend_type_with_generated_column.out"
+```
+
+### Extending Types with Functions
+
+For arbitrary computations that do not meet the requirements for [generated columns](https://www.postgresql.org/docs/14/ddl-generated-columns.html), a table's reflected GraphQL type can be extended by creating a function that:
+
+- accepts a single argument of the table's tuple type
+
+```sql
+--8<-- "test/expected/extend_type_with_function.out"
+```
+
+If the function is written in SQL, its volatility can impact freshness of data returned in mutations:
+
+```sql
+--8<-- "test/expected/issue_337.out"
+```
+
+## Computed Relationships
+
+Computed relations can be helpful to express relationships:
+
+- between entities that don't support foreign keys
+- too complex to be expressed via a foreign key
+
+If the relationship is simple, but involves an entity that does not support foreign keys e.g. Foreign Data Wrappers / Views, defining a comment directive is the easiest solution. See the [view doc](https://supabase.com/docs/guides/graphql/views) for a complete example. Note that for entities that do not support a primary key, like views, you must define one using a [comment directive](https://supabase.com/docs/guides/graphql/configuration#comment-directives) to use them in a computed relationship.
+
+Alternatively, if the relationship is complex, or you need compatibility with PostgREST, you can define a relationship using set returning functions.
+
+### To-One
+
+To One relationships can be defined using a function that returns `setof <entity> rows 1`
+
+For example
+
+```sql
+create table "Person" (
+    id int primary key,
+    name text
+);
+
+create table "Address"(
+    id int primary key,
+    "isPrimary" bool not null default false,
+    "personId" int references "Person"(id),
+    address text
+);
+
+-- Example computed relation
+create function "primaryAddress"("Person")
+    returns setof "Address" rows 1
+    language sql
+    as
+$$
+    select addr
+    from "Address" addr
+    where $1.id = addr."personId"
+          and addr."isPrimary"
+    limit 1
+$$;
+
+insert into "Person"(id, name)
+values (1, 'Foo Barington');
+
+insert into "Address"(id, "isPrimary", "personId", address)
+values (4, true, 1, '1 Main St.');
+```
+
+results in the GraphQL type
+
+**Person**
+
+```graphql
+type Person implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  ...
+  primaryAddress: Address
+}
+```
+
+and can be queried like a natively enforced relationship
+
+**Query**
+
+```graphql
+{
+  personCollection {
+    edges {
+      node {
+        id
+        name
+        primaryAddress {
+          address
+        }
+      }
+    }
+
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "personCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "Foo Barington",
+            "primaryAddress": {
+              "address": "1 Main St."
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### To-Many
+
+To-many relationships can be defined using a function that returns a `setof <entity>`
+
+For example:
+
+```sql
+create table "Person" (
+    id int primary key,
+    name text
+);
+
+create table "Address"(
+    id int primary key,
+    address text
+);
+
+create table "PersonAtAddress"(
+    id int primary key,
+    "personId" int not null,
+    "addressId" int not null
+);
+
+
+-- Computed relation to bypass "PersonAtAddress" table for cleaner API
+create function "addresses"("Person")
+    returns setof "Address"
+    language sql
+    as
+$$
+    select
+        addr
+    from
+        "PersonAtAddress" pa
+        join "Address" addr
+            on pa."addressId" = "addr".id
+    where
+        pa."personId" = $1.id
+$$;
+
+insert into "Person"(id, name)
+values (1, 'Foo Barington');
+
+insert into "Address"(id, address)
+values (4, '1 Main St.');
+
+insert into "PersonAtAddress"(id, "personId", "addressId")
+values (2, 1, 4);
+```
+
+results in the GraphQL type
+
+**Person**
+
+```graphql
+type Person implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  ...
+  addresses(
+    first: Int
+    last: Int
+    before: Cursor
+    after: Cursor
+    filter: AddressFilter
+    orderBy: [AddressOrderBy!]
+  ): AddressConnection
+}
+```
+
+and can be queried like a natively enforced relationship
+
+**Query**
+
+```graphql
+{
+  personCollection {
+    edges {
+      node {
+        id
+        name
+        addresses {
+          edges {
+            node {
+              id
+              address
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "personCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "name": "Foo Barington",
+            "addresses": {
+              "edges": [
+                {
+                  "node": {
+                    "id": 4,
+                    "address": "1 Main St."
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+
+---
+
+# Configuration & Customization
+
+Extra configuration options can be set on SQL entities using comment directives.
+
+Extra configuration options can be set on SQL entities using comment directives.
+
+## Comment Directives
+
+Comment directives are snippets of configuration associated with SQL entities that alter how those entities behave.
+
+The format of a comment directive is
+
+```sql
+@graphql(<JSON>)
+```
+
+### Inflection
+
+Inflection describes how SQL entities' names are transformed into GraphQL type and field names. By default, inflection is disabled and SQL names are literally interpolated such that
+
+```sql
+create table "BlogPost"(
+    id int primary key,
+    ...
+);
+```
+
+results in GraphQL type names like
+
+```
+BlogPost
+BlogPostEdge
+BlogPostConnection
+...
+```
+
+Since snake case is a common casing structure for SQL types, `pg_graphql` support basic inflection from `snake_case` to `PascalCase` for type names, and `snake_case` to `camelCase` for field names to match Javascript conventions.
+
+The inflection directive can be applied at the schema level with:
+
+```sql
+comment on schema <schema_name> is e'@graphql({"inflect_names": true})';
+```
+
+for example
+
+```sql
+comment on schema public is e'@graphql({"inflect_names": true})';
+
+create table blog_post(
+    id int primary key,
+    ...
+);
+```
+
+similarly would generated the GraphQL type names
+
+```
+BlogPost
+BlogPostEdge
+BlogPostConnection
+...
+```
+
+For more fine grained adjustments to reflected names, see [renaming](#renaming).
+
+### Max Rows
+
+The default page size for collections is 30 entries. To adjust the number of entries on each page, set a `max_rows` directive on the relevant schema entity, table or view.
+
+For example, to increase the max rows per page for each table in the `public` schema:
+
+```sql
+comment on schema public is e'@graphql({"max_rows": 100})';
+```
+
+To limit the max rows per page for the `blog_post` table and `Person` view:
+
+```sql
+comment on table blog_post is e'@graphql({"max_rows": 20})';
+comment on view "Person" is e'@graphql({"primary_key_columns": ["id"], "max_rows": 10})';
+```
+
+The `max_rows` value falls back to the parent object if it is missing on the current object. For example, if a table doesn't have `max_rows` set, the value set on the table's schema will be used. If the schema also doesn't have `max_rows` set, then it falls back to default value 30. The parent object of a view is the schema, not the table on which the view is created.
+
+### Introspection
+
+GraphQL introspection is disabled by default to reduce the potential for API enumeration. Tools like GraphiQL, code generators, Apollo DevTools, and the Relay compiler rely on introspection. Opt in per schema when you need them.
+
+To enable introspection on `public` schema:
+
+```sql
+comment on schema public is e'@graphql({"introspection": true})';
+```
+
+To explicitly disable it (same as the default):
+
+```sql
+comment on schema public is e'@graphql({"introspection": false})';
+```
+
+When no exposed schema has opted in, `__schema` and `__type` selections return an error:
+
+```json
+{ "errors": [{ "message": "Unknown field \"__schema\" on type Query" }] }
+```
+
+#### Partial introspection across multiple schemas
+
+Note: It is recommended to disable introspection for all schemas in production.
+
+The introspection directive is per schema. If two exposed schemas have introspection enabled for one but disabled for another, instead of returning `Unknown field...` errors, disabled schema's types are hidden from introspection fields.
+
+Consider a setup with two schemas, where `public` has introspection enabled and `private` has it disabled:
+
+```sql
+-- public schema exists by default
+create schema private;
+
+comment on schema public  is e'@graphql({"inflect_names": true, "introspection": true})';
+comment on schema private is e'@graphql({"inflect_names": true, "introspection": false})';
+
+create table public.blog(id serial primary key, content text not null);
+create table private.account(id serial primary key, email text not null);
+
+set search_path = public, private;
+```
+
+`__schema` and `__type` will not return an error because at least one schema (`public`) has introspection enabled. If neither schema had it enabled, both fields would return `Unknown field "__schema" on type Query`.
+
+**`__type` Field Queries**
+
+The `__type` field successfully resolves types belonging to the `public` schema:
+
+**Query**
+
+```graphql
+{ __type(name: "Blog") { kind name } }
+```
+
+**Response**
+
+```json
+{ "data": { "__type": { "kind": "OBJECT", "name": "Blog" } } }
+```
+
+But it returns `null` for types in the `private` schema:
+
+**Query**
+
+```graphql
+{ __type(name: "Account") { kind name } }
+```
+
+**Response**
+
+```json
+{ "data": { "__type": null } }
+```
+
+Any non-existent types in the `private` schema also return null. In that case the introspecting user does not have visibility into if the requested type is in a schema without introspection, or if it doesn't exist. The two responses are indistinguishable:
+
+**Query**
+
+```graphql
+{ __type(name: "User") { kind name } }
+```
+
+**Response**
+
+```json
+{ "data": { "__type": null } }
+```
+
+**`__schema` Field Queries**
+
+`__schema` field also filters out types from the private schema. `Blog` and its derived types (`BlogEdge`, `BlogConnection`, `BlogFilter`, `BlogOrderBy`, etc.) appear in the list, while `Account` and its derivatives are absent:
+
+**Query**
+
+```graphql
+{ __schema { types { kind name } } }
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "__schema": {
+      "types": [
+        { "kind": "OBJECT", "name": "Blog" },
+        { "kind": "OBJECT", "name": "BlogConnection" },
+        { "kind": "OBJECT", "name": "BlogEdge" },
+        { "kind": "INPUT_OBJECT", "name": "BlogFilter" },
+        { "kind": "INPUT_OBJECT", "name": "BlogOrderBy" },
+        // no Account, AccountConnection, AccountEdge, AccountFilter, AccountOrderBy, ...
+      ]
+    }
+  }
+}
+```
+
+Note that built-in scalars and meta-types continue to appear:
+
+**Query**
+
+```graphql
+{ __schema { types { kind name } } }
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "__schema": {
+      "types": [
+        { "kind": "SCALAR", "name": "Boolean" },
+        { "kind": "SCALAR", "name": "Int" },
+        { "kind": "SCALAR", "name": "Float" },
+        { "kind": "OBJECT", "name": "__Schema" }
+        { "kind": "OBJECT", "name": "__Field" }
+        // ... other fields omitted for brevity
+      ]
+    }
+  }
+}
+```
+
+The Query type's field listing is filtered the same way. `blogCollection` appears, `accountCollection` is hidden:
+
+**Query**
+
+```graphql
+{ __schema { queryType { fields { name } } } }
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "__schema": {
+      "queryType": {
+        "fields": [
+          { "name": "blogCollection" },
+          { "name": "node" }
+          // no accountCollection
+        ]
+      }
+    }
+  }
+}
+```
+
+Same for the the Mutation type's field listing, `Blog`'s mutation fields appear, `Account`'s are hidden:
+
+**Query**
+
+```graphql
+{ __schema { mutationType { fields { name } } } }
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "__schema": {
+      "mutationType": {
+        "fields": [
+          { "name": "insertIntoBlogCollection" },
+          { "name": "updateBlogCollection" },
+          { "name": "deleteFromBlogCollection" }
+          // no insertIntoAccountCollection, updateAccountCollection, deleteFromAccountCollection
+        ]
+      }
+    }
+  }
+}
+```
+
+**Mixed Field Queries**
+
+If a query contains both an introspection field (`__schema`, `__type`) and a data
+field, and introspection is disabled, only the introspection fields return an error, the data field is resolved correctly:
+
+**Query**
+
+```graphql
+{
+  __schema { types { name } }
+  blogCollection { edges { node { id } } }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "blogCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "content": "hello, world"
+          }
+        }
+      ]
+    }
+  },
+  "errors": [
+    {
+      "message": "Unknown field \"__schema\" on type Query"
+    }
+  ]
+}
+```
+
+If there are two schemas with introspection enabled only on one schema, there is no error on the introspection fields but entities from the introspection disabled schema are filtered out:
+
+**Query**
+
+```graphql
+{
+    __schema { types { name } }
+    accountCollection { edges { node { id email } } }
+    blogCollection { edges { node { id content } } }
+}
+```
+
+**Response**
+
+```json
+{
+   "data": {
+     "__schema": {
+       "queryType": {
+         "fields": [
+           { "name": "blogCollection" },
+           { "name": "node" }
+           // no accountCollection
+         ]
+       }
+     },
+     "blogCollection": {
+       "edges": [
+         {
+           "node": {
+             "id": 1,
+             "content": "hello, world"
+           }
+         }
+       ]
+     },
+    "accountCollection": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "email": "alice@example.com"
+          }
+        }
+      ]
+    }
+  },
+  // no errors
+}
+```
+
+#### Non-introspection Queries
+
+Non-introspection queries are not affected by disabling introspection. `accountCollection`, `insertIntoAccountCollection`, etc. continue to resolve normally as long as the role has the underlying SQL privileges:
+
+**Query**
+
+```graphql
+{
+  accountCollection {
+    edges {
+      node {
+        id
+        email
+      }
+    }
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "accountCollection": {
+      "edges": [
+        { "node": { "id": 1, "email": "alice@example.com" } }
+      ]
+    }
+  }
+}
+```
+
+The four combinations across the two schemas behave as follows:
+
+| `public` | `private` | `__schema` / `__type` available | `Blog` visible | `Account` visible | Non-introspection queries |
+| -------- | --------- | ------------------------------- | -------------- | ----------------- | ------------------------- |
+| on       | on        | yes                             | yes            | yes               | unchanged                 |
+| on       | off       | yes                             | yes            | no                | unchanged                 |
+| off      | on        | yes                             | no             | yes               | unchanged                 |
+| off      | off       | no (`Unknown field` error)      | n/a            | n/a               | unchanged                 |
+
+### totalCount
+
+`totalCount` is an opt-in field that extends a table's Connection type. It provides a count of the rows that match the query's filters, and ignores pagination arguments.
+
+```graphql
+type BlogPostConnection {
+  edges: [BlogPostEdge!]!
+  pageInfo: PageInfo!
+
+  """
+  The total number of records matching the `filter` criteria
+  """
+  totalCount: Int! # this field
+}
+```
+
+to enable `totalCount` for a table, use the directive
+
+```sql
+comment on table "BlogPost" is e'@graphql({"totalCount": {"enabled": true}})';
+```
+
+for example
+
+```sql
+create table "BlogPost"(
+    id serial primary key,
+    email varchar(255) not null
+);
+comment on table "BlogPost" is e'@graphql({"totalCount": {"enabled": true}})';
+```
+
+### Aggregate
+
+The `aggregate` field is an opt-in field that extends a table's Connection type. It provides various aggregate functions like count, sum, avg, min, and max that operate on the collection of records that match the query's filters.
+
+```graphql
+type BlogPostConnection {
+  edges: [BlogPostEdge!]!
+  pageInfo: PageInfo!
+
+  """
+  Aggregate functions calculated on the collection of `BlogPost`
+  """
+  aggregate: BlogPostAggregate # this field
+}
+```
+
+To enable the `aggregate` field for a table, use the directive:
+
+```sql
+comment on table "BlogPost" is e'@graphql({"aggregate": {"enabled": true}})';
+```
+
+For example:
+
+```sql
+create table "BlogPost"(
+    id serial primary key,
+    title varchar(255) not null,
+    rating int not null
+);
+comment on table "BlogPost" is e'@graphql({"aggregate": {"enabled": true}})';
+```
+
+You can combine both totalCount and aggregate directives:
+
+```sql
+comment on table "BlogPost" is e'@graphql({"totalCount": {"enabled": true}, "aggregate": {"enabled": true}})';
+```
+
+### Renaming
+
+#### Table's Type
+
+Use the `"name"` JSON key to override a table's type name.
+
+```sql
+create table account(
+    id serial primary key
+);
+
+comment on table public.account is
+e'@graphql({"name": "AccountHolder"})';
+```
+
+results in:
+
+```graphql
+type AccountHolder { # previously: "Account"
+  id: Int!
+}
+```
+
+#### Column's Field Name
+
+Use the `"name"` JSON key to override a column's field name.
+
+```sql
+create table public."Account"(
+    id serial primary key,
+    email text
+);
+
+comment on column "Account".email is
+e'@graphql({"name": "emailAddress"})';
+```
+
+results in:
+
+```graphql
+type Account {
+  nodeId: ID!
+  id: Int!
+  emailAddress: String! # previously "email"
+}
+```
+
+#### Computed Field
+
+Use the `"name"` JSON key to override a [computed field's](https://supabase.com/docs/guides/graphql/computed-fields) name.
+
+```sql
+create table "Account"(
+    id serial primary key,
+    "firstName" varchar(255) not null,
+    "lastName" varchar(255) not null
+);
+
+-- Extend with function
+create function public."_fullName"(rec public."Account")
+    returns text
+    immutable
+    strict
+    language sql
+as $$
+    select format('%s %s', rec."firstName", rec."lastName")
+$$;
+
+comment on function public._full_name is
+e'@graphql({"name": "displayName"})';
+```
+
+results in:
+
+```graphql
+type Account {
+  nodeId: ID!
+  id: Int!
+  firstName: String!
+  lastName: String!
+  displayName: String # previously "fullName"
+}
+```
+
+#### Relationship's Field
+
+Use the `"local_name"` and `"foreign_name"` JSON keys to override a relationship's inbound and outbound field names.
+
+```sql
+create table "Account"(
+    id serial primary key
+);
+
+create table "Post"(
+    id serial primary key,
+    "accountId" integer not null references "Account"(id),
+    title text not null,
+    body text
+);
+
+comment on constraint post_account_id_fkey
+  on "Post"
+  is E'@graphql({"foreign_name": "author", "local_name": "posts"})';
+```
+
+results in:
+
+```graphql
+type Post {
+  nodeId: ID!
+  id: Int!
+  accountId: Int!
+  title: String!
+  body: String!
+  author: Account # was "account"
+}
+
+type Account {
+  id: Int!
+  posts( # was "postCollection"
+    after: Cursor
+    before: Cursor
+    filter: PostFilter
+    first: Int
+    last: Int
+    orderBy: [PostOrderBy!]
+  ): PostConnection
+}
+```
+
+### Description
+
+Tables, Columns, and Functions accept a `description` directive to populate user defined descriptions in the GraphQL schema.
+
+```sql
+create table "Account"(
+    id serial primary key
+);
+
+comment on table public.account
+is e'@graphql({"description": "A User Account"})';
+
+comment on column public.account.id
+is e'@graphql({"description": "The primary key identifier"})';
+```
+
+```graphql
+"""
+A User Account
+"""
+type Account implements Node {
+  """
+  The primary key identifier
+  """
+  id: Int!
+}
+```
+
+#### Enum Variant
+
+If a variant of a Postgres enum does not conform to GraphQL naming conventions, introspection returns an error:
+
+For example:
+
+```sql
+create type "Algorithm" as enum ('aead-ietf');
+```
+
+causes the error:
+
+```json
+{
+  "errors": [
+    {
+      "message": "Names must only contain [_a-zA-Z0-9] but \"aead-ietf\" does not."
+    }
+  ]
+}
+```
+
+To resolve this problem, rename the invalid SQL enum variant to a GraphQL compatible name:
+
+```sql
+alter type "Algorithm" rename value 'aead-ietf' to 'AEAD_IETF';
+```
+
+or, add a comment directive to remap the enum variant in the GraphQL API
+
+```sql
+comment on type "Algorithm" is '@graphql({"mappings": {"aead-ietf": "AEAD_IETF"}})';
+```
+
+Which both result in the GraphQL enum:
+
+```graphql
+enum Algorithm {
+  AEAD_IETF
+}
+```
+
+
+---
+
+# Functions
+
+Using Postgres Functions with GraphQL.
+
+Functions can be exposed by pg\_graphql to allow running custom queries or mutations.
+
+## Query vs Mutation
+
+For example, a function to add two numbers will be available on the query type as a field:
+
+**Function**
+
+```sql
+create function "addNums"(a int, b int)
+  returns int
+  immutable
+  language sql
+as $$ select a + b; $$;
+```
+
+**QueryType**
+
+```graphql
+type Query {
+  addNums(a: Int!, b: Int!): Int
+}
+```
+
+**Query**
+
+```graphql
+query {
+  addNums(a: 2, b: 3)
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "addNums": 5
+  }
+}
+```
+
+Functions marked `immutable` or `stable` are available on the query type. Functions marked with the default `volatile` category are available on the mutation type:
+
+**Function**
+
+```sql
+create table account(
+  id serial primary key,
+  email varchar(255) not null
+);
+
+create function "addAccount"(email text)
+  returns int
+  volatile
+  language sql
+as $$ insert into account (email) values (email) returning id; $$;
+```
+
+**MutationType**
+
+```graphql
+type Mutation {
+  addAccount(email: String!): Int
+}
+```
+
+**Query**
+
+```graphql
+mutation {
+  addAccount(email: "email@example.com")
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "addAccount": 1
+  }
+}
+```
+
+## Supported Return Types
+
+Built-in GraphQL scalar types `Int`, `Float`, `String`, `Boolean` and [custom scalar types](https://supabase.com/docs/guides/graphql/api#custom-scalars) are supported as function arguments and return types. Function types returning a table or view are supported as well. Such functions implement the [Node interface](https://supabase.com/docs/guides/graphql/api#node):
+
+**Function**
+
+```sql
+create table account(
+  id serial primary key,
+  email varchar(255) not null
+);
+
+insert into account(email)
+values
+  ('a@example.com'),
+  ('b@example.com');
+
+create function "accountById"("accountId" int)
+  returns account
+  stable
+  language sql
+as $$ select id, email from account where id = "accountId"; $$;
+```
+
+**QueryType**
+
+```graphql
+type Query {
+  accountById(email: String!): Account
+}
+```
+
+**Query**
+
+```graphql
+query {
+  accountById(accountId: 1) {
+      id
+      email
+      nodeId
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "accountById": {
+      "id": 1,
+      "email": "a@example.com"
+      "nodeId": "WyJwdWJsaWMiLCAiYWNjb3VudCIsIDFd"
+    }
+  }
+}
+```
+
+Since Postgres considers a row/composite type containing only null values to be null, the result can be a little surprising in this case. Instead of an object with all columns null, the top-level field is null:
+
+**Function**
+
+```sql
+create table account(
+    id int,
+    email varchar(255),
+    name text null
+);
+
+insert into account(id, email, name)
+values
+    (1, 'aardvark@x.com', 'aardvark'),
+    (2, 'bat@x.com', null),
+    (null, null, null);
+
+create function "returnsAccountWithAllNullColumns"()
+    returns account language sql stable
+as $$ select id, email, name from account where id is null; $$;
+```
+
+**Query**
+
+```graphql
+query {
+  returnsAccountWithAllNullColumns {
+    id
+    email
+    name
+    __typename
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "returnsAccountWithAllNullColumns": null
+  }
+}
+```
+
+Functions returning multiple rows of a table or view are exposed as [collections](https://supabase.com/docs/guides/graphql/api#collections).
+
+**Function**
+
+```sql
+create table "Account"(
+  id serial primary key,
+  email varchar(255) not null
+);
+
+insert into "Account"(email)
+values
+  ('a@example.com'),
+  ('a@example.com'),
+  ('b@example.com');
+
+create function "accountsByEmail"("emailToSearch" text)
+  returns setof "Account"
+  stable
+  language sql
+as $$ select id, email from "Account" where email = "emailToSearch"; $$;
+```
+
+**QueryType**
+
+```graphql
+type Query {
+  accountsByEmail(
+    emailToSearch: String!
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: AccountFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [AccountOrderBy!]
+  ): AccountConnection
+}
+```
+
+**Query**
+
+```graphql
+query {
+  accountsByEmail(emailToSearch: "a@example.com", first: 1) {
+    edges {
+      node {
+        id
+        email
+      }
+    }
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "accountsByEmail": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "email": "a@example.com"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+Note: A set returning function with any of its argument names clashing with argument names of a collection (`first`, `last`, `before`, `after`, `filter`, or `orderBy`) will not be exposed.
+
+Functions accepting or returning arrays of non-composite types are also supported. In the following example, the `ids` array is used to filter rows from the `Account` table:
+
+**Function**
+
+```sql
+create table "Account"(
+  id serial primary key,
+  email varchar(255) not null
+);
+
+insert into "Account"(email)
+values
+  ('a@example.com'),
+  ('b@example.com'),
+  ('c@example.com');
+
+create function "accountsByIds"("ids" int[])
+  returns setof "Account"
+  stable
+  language sql
+as $$ select id, email from "Account" where id = any(ids); $$;
+```
+
+**QueryType**
+
+```graphql
+type Query {
+  accountsByIds(
+    ids: Int[]!
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: AccountFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [AccountOrderBy!]
+  ): AccountConnection
+}
+```
+
+**Query**
+
+```graphql
+query {
+  accountsByIds(ids: [1, 2]) {
+    edges {
+      node {
+        id
+        email
+      }
+    }
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "accountsByIds": {
+      "edges": [
+        {
+          "node": {
+            "id": 1,
+            "email": "a@example.com"
+          }
+        },
+        {
+          "node": {
+            "id": 2,
+            "email": "b@example.com"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+## Default Arguments
+
+Arguments without a default value are required in the GraphQL schema, to make them optional they should have a default value.
+
+**Function**
+
+```sql
+create function "addNums"(a int default 1, b int default 2)
+  returns int
+  immutable
+  language sql
+as $$ select a + b; $$;
+```
+
+**QueryType**
+
+```graphql
+type Query {
+  addNums(a: Int, b: Int): Int
+}
+```
+
+**Query**
+
+```graphql
+query {
+  addNums(b: 20)
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "addNums": 21
+  }
+}
+```
+
+If there is no sensible default, and you still want to make the argument optional, consider using the default value null.
+
+**Function**
+
+```sql
+create function "addNums"(a int default null, b int default null)
+    returns int
+    immutable
+    language plpgsql
+as $$
+begin
+
+    if a is null and b is null then
+        raise exception 'a and b both can''t be null';
+    end if;
+
+    if a is null then
+        return b;
+    end if;
+
+    if b is null then
+        return a;
+    end if;
+
+    return a + b;
+end;
+$$;
+```
+
+**QueryType**
+
+```graphql
+type Query {
+  addNums(a: Int, b: Int): Int
+}
+```
+
+**Query**
+
+```graphql
+query {
+  addNums(a: 42)
+}
+```
+
+**Response**
+
+```json
+{
+  "data": {
+    "addNums": 42
+  }
+}
+```
+
+Currently, null defaults are only supported as simple expressions, as shown in the previous example.
+
+## Limitations
+
+The following features are not yet supported. Any function using these features is not exposed in the API:
+
+- Functions that accept a table's tuple type
+- Overloaded functions
+- Functions with a nameless argument
+- Functions returning void
+- Variadic functions
+- Functions that accept or return an array of composite type
+- Functions that accept or return an enum type or an array of enum type
+
+
+---
+
+# Security
+
+Securing your GraphQL API.
+
+`pg_graphql` fully respects builtin PostgreSQL role and row security.
+
+## Table/Column Visibility
+
+Table and column visibility in the GraphQL schema are controlled by standard PostgreSQL role permissions. Revoking `SELECT` access from the user/role executing queries removes that entity from the visible schema.
+
+For example:
+
+```sql
+revoke all privileges on public."Account" from api_user;
+```
+
+removes the `Account` GraphQL type.
+
+Similarly, revoking `SELECT` access on a table's column will remove that field from the associated GraphQL type/s.
+
+The permissions `SELECT`, `INSERT`, `UPDATE`, and `DELETE` all impact the relevant sections of the GraphQL schema.
+
+## Row Visibility
+
+Visibility of rows in a given table can be configured using PostgreSQL's built-in [row level security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html) policies.
+
+## Introspection
+
+`__schema` and `__type` introspection queries are disabled by default. Listing the full API surface area makes it easier for attackers to enumerate poorly secured projects, so introspection must be opted into per schema:
+
+```sql
+comment on schema public is e'@graphql({"introspection": true})';
+```
+
+Enable it during development for tooling like GraphiQL and codegen, then disable it again before exposing the API publicly. Disabling introspection does not restrict actual queries or mutations. Those are governed by PostgreSQL roles and Row Level Security. Read the [Introspection](https://supabase.com/docs/guides/graphql/configuration#introspection) section for details.
+
+
+---
+
+# Views
+
+Using Postgres Views with GraphQL.
+
+Views, materialized views, and foreign tables can be exposed with pg\_graphql.
+
+## Primary Keys (Required)
+
+A primary key is required for an entity to be reflected in the GraphQL schema. Tables can define primary keys with SQL DDL, but primary keys are not available for views, materialized views, or foreign tables. For those entities, you can set a "fake" primary key with a [comment directive](https://supabase.com/docs/guides/graphql/configuration#comment-directives).
+
+```json
+{"primary_key_columns": [<column_name_1>, ..., <column_name_n>]}
+```
+
+For example:
+
+```sql
+create view "Person" as
+  select
+    id,
+    name
+  from
+    "Account";
+
+comment on view "Person" is e'@graphql({"primary_key_columns": ["id"]})';
+```
+
+tells pg\_graphql to treat `"Person".id` as the primary key for the `Person` entity resulting in the following GraphQL type:
+
+```graphql
+type Person {
+  nodeId: ID!
+  id: Int!
+  name: String!
+}
+```
+
+Caution: Values of the primary key column/s must be unique within the table. If they are not unique, you will experience inconsistent behavior with `ID!` types, sorting, and pagination.
+
+[Updatable views](https://www.postgresql.org/docs/current/sql-createview.html#SQL-CREATEVIEW-UPDATABLE-VIEWS) are reflected in the `Query` and `Mutation` types identically to tables. Non-updatable views are read-only and accessible via the `Query` type only.
+
+## Relationships
+
+pg\_graphql identifies relationships among entities by inspecting foreign keys. Views, materialized views, and foreign tables do not support foreign keys. For this reason, relationships can also be defined in [comment directive](https://supabase.com/docs/guides/graphql/configuration#comment-directives) using the structure:
+
+```json
+{
+  "foreign_keys": [
+    {
+      "local_name": "foo", // optional
+      "local_columns": ["account_id"],
+      "foreign_name": "bar", // optional
+      "foreign_schema": "public",
+      "foreign_table": "account",
+      "foreign_columns": ["id"]
+    }
+  ]
+}
+```
+
+For example:
+
+```sql
+create table "Account"(
+  id serial primary key,
+  name text not null
+);
+
+create table "EmailAddress"(
+  id serial primary key,
+  "accountId" int not null, -- note: no foreign key
+  "isPrimary" bool not null,
+  address text not null
+);
+
+comment on table "EmailAddress" is e'
+    @graphql({
+        "foreign_keys": [
+          {
+            "local_name": "addresses",
+            "local_columns": ["accountId"],
+            "foreign_name": "account",
+            "foreign_schema": "public",
+            "foreign_table": "Account",
+            "foreign_columns": ["id"]
+          }
+        ]
+    })';
+```
+
+defines a relationship equivalent to the following foreign key
+
+```sql
+alter table "EmailAddress"
+  add constraint fkey_email_address_to_account
+  foreign key ("accountId")
+  references "Account" ("id");
+
+comment on constraint fkey_email_address_to_account
+  on "EmailAddress"
+  is E'@graphql({"foreign_name": "account", "local_name": "addresses"})';
+```
+
+yielding the GraphQL types:
+
+```graphql
+type Account {
+  nodeId: ID!
+  id: Int!
+  name: String!
+  addresses(
+    after: Cursor,
+    before: Cursor,
+    filter: EmailAddressFilter,
+    first: Int,
+    last: Int,
+    orderBy: [EmailAddressOrderBy!]
+  ): EmailAddressConnection
+}
+
+type EmailAddress {
+  nodeId: ID!
+  id: Int!
+  isPrimary: Boolean!
+  address: String!
+  accountId: Int!
+  account: Account!
+}
+```
+
+
+---
+
+# With Apollo
+
+Using pg_grapqhl with Apollo.
+
+This guide will show you how to use pg\_graphql with [Apollo](https://www.apollographql.com/docs/react/) and [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) for type-safe GraphQL queries in your React application.
+
+## Apollo Setup
+
+### Pre-requisites
+
+1. Follow the [Apollo Getting Started Guide](https://www.apollographql.com/docs/react/get-started).
+2. Follow the [GraphQL Code Generator Installation Guide](https://the-guild.dev/graphql/codegen/docs/getting-started/installation).
+
+### Configuring GraphQL Code Generator
+
+Modify your `codegen.ts` file to reflect the following:
+
+```javascript
+import type { CodegenConfig } from '@graphql-codegen/cli'
+import { addTypenameSelectionDocumentTransform } from '@graphql-codegen/client-preset'
+
+const config: CodegenConfig = {
+  schema: 'http://localhost:54321/graphql/v1', // Using the local endpoint, update if needed
+  documents: 'src/**/*.tsx',
+  overwrite: true,
+  ignoreNoDocuments: true,
+  generates: {
+    'src/gql/': {
+      preset: 'client',
+      documentTransforms: [addTypenameSelectionDocumentTransform],
+      plugins: [],
+      config: {
+        scalars: {
+          UUID: 'string',
+          Date: 'string',
+          Time: 'string',
+          Datetime: 'string',
+          JSON: 'string',
+          BigInt: 'string',
+          BigFloat: 'string',
+          Opaque: 'any',
+        },
+      },
+    },
+  },
+  hooks: {
+    afterAllFileWrite: ['npm run prettier'], // optional
+  },
+}
+
+export default config
+```
+
+### Configuring Apollo Client
+
+This example uses [Supabase](https://supabase.com) for the GraphQL server, but pg\_graphql can be used independently.
+
+```typescript
+import {
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+  defaultDataIdFromObject
+} from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
+import { relayStylePagination } from '@apollo/client/utilities'
+import supabase, { SUPABASE_ANON_KEY } from './supabase'
+
+const cache = new InMemoryCache({
+  dataIdFromObject(responseObject) {
+    if ('nodeId' in responseObject) {
+      return `${responseObject.nodeId}`
+    }
+
+    return defaultDataIdFromObject(responseObject)
+  },
+  possibleTypes: { Node: ['Todos'] }, // optional, but useful to specify supertype-subtype relationships
+  typePolicies: {
+    Query: {
+      fields: {
+        todosCollection: relayStylePagination(), // example of paginating a collection
+        node: {
+          read(_, { args, toReference }) {
+            const ref = toReference({
+              nodeId: args?.nodeId,
+            })
+
+            return ref
+          },
+        },
+      },
+    },
+  },
+})
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:54321/graphql/v1',
+})
+
+const authLink = setContext(async (_, { headers }) => {
+  const token = (await supabase.auth.getSession()).data.session?.access_token
+
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : '',
+      apikey: SUPABASE_ANON_KEY,
+    },
+  }
+})
+
+const apolloClient = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache,
+})
+
+export default apolloClient
+```
+
+- `typePolicies.Query.fields.node` is also optional, but useful for reducing cache misses. Learn more about [Redirecting to cached data](https://www.apollographql.com/docs/react/performance/performance#redirecting-to-cached-data).
+
+## Example Query
+
+```javascript
+import { useQuery } from '@apollo/client'
+import { graphql } from './gql'
+
+const allTodosQueryDocument = graphql(/* GraphQL */ `
+  query AllTodos($cursor: Cursor) {
+    todosCollection(first: 10, after: $cursor) {
+      edges {
+        node {
+          nodeId
+          title
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+`)
+
+const TodoList = () => {
+  const { data, fetchMore } = useQuery(allTodosQueryDocument)
+
+  return (
+    <>
+      {data?.thingsCollection?.edges.map(({ node }) => (
+        <Todo key={node.nodeId} title={node.title} />
+      ))}
+      {data?.thingsCollection?.pageInfo.hasNextPage && (
+        <Button
+          onClick={() => {
+            fetchMore({
+              variables: {
+                cursor: data?.thingsCollection?.pageInfo.endCursor,
+              },
+            })
+          }}
+        >
+          Load More
+        </Button>
+      )}
+    </>
+  )
+}
+
+export default TodoList
+```
+
+
+---
+
+# With Relay
+
+Using pg_grapqhl with Relay.
+
+pg\_graphql implements the [GraphQL Global Object Identification Specification](https://relay.dev/graphql/objectidentification.htm) (`Node` interface) and the [GraphQL Cursor Connections Specification](https://relay.dev/graphql/connections.htm#) to be compatible with [Relay](https://relay.dev/).
+
+## Relay Setup
+
+### Pre-requisites
+
+Follow the [Relay Installation Guide](https://relay.dev/docs/getting-started/installation-and-setup/).
+
+### Configuring the Relay Compiler
+
+Modify your `relay.config.js` file to reflect the following:
+
+```javascript
+module.exports = {
+  // standard relay config options
+  src: './src',
+  language: 'typescript',
+  schema: './data/schema.graphql',
+  exclude: ['**/node_modules/**', '**/__mocks__/**', '**/__generated__/**'],
+  // pg_graphql specific options
+  schemaConfig: {
+    nodeInterfaceIdField: 'nodeId',
+    nodeInterfaceIdVariableName: 'nodeId',
+  },
+  customScalarTypes: {
+    UUID: 'string',
+    Datetime: 'string',
+    JSON: 'string',
+    BigInt: 'string',
+    BigFloat: 'string',
+    Opaque: 'any',
+  },
+}
+```
+
+- `schemaConfig` tells the Relay compiler where to find the `nodeId` field on the `node` interface
+- `customScalarTypes` will improve Relay's type emission
+
+Note: For Relay versions older than v16.2.0, it should be named `customScalars` instead.
+
+### Configuring your Relay Environment
+
+This example uses [Supabase](https://supabase.com) for the GraphQL server, but pg\_graphql can be used independently.
+
+```typescript
+import {
+  Environment,
+  FetchFunction,
+  Network,
+  RecordSource,
+  Store,
+} from 'relay-runtime'
+
+import supabase, { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase'
+
+const fetchQuery: FetchFunction = async (operation, variables) => {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  const response = await fetch(`${SUPABASE_URL}/graphql/v1`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${session?.access_token ?? SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify({
+      query: operation.text,
+      variables,
+    }),
+  })
+
+  return await response.json()
+}
+
+const network = Network.create(fetchQuery)
+const store = new Store(new RecordSource())
+
+const environment = new Environment({
+  network,
+  store,
+  getDataID: (node) => node.nodeId,
+  missingFieldHandlers: [
+    {
+      handle(field, _record, argValues) {
+        if (field.name === 'node' && 'nodeId' in argValues) {
+          // If field is node(nodeId: $nodeId), look up the record by the value of $nodeId
+          return argValues.nodeId
+        }
+
+        return undefined
+      },
+      kind: 'linked',
+    },
+  ],
+})
+
+export default environment
+```
+
+- `getDataID` is the most important option to add, as it tells Relay how to store data correctly in the cache.
+- `missingFieldHandlers` is optional in this example but helps with [Rendering Partially Cached Data](https://relay.dev/docs/guided-tour/reusing-cached-data/rendering-partially-cached-data/).
+
+## Pagination
+
+Say you are working on a Todo app and want to add pagination. You can use `@connection` and `@prependNode` to do this.
+
+**Fragment passed to `usePaginationFragment()`**
+
+```graphql
+fragment TodoList_query on Query
+@argumentDefinitions(
+  cursor: { type: "Cursor" }
+  count: { type: "Int", defaultValue: 20 }
+)
+@refetchable(queryName: "TodoListPaginationQuery") {
+  todosCollection(after: $cursor, first: $count)
+    @connection(key: "TodoList_query_todosCollection") {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        nodeId
+        ...TodoItem_todos
+      }
+    }
+  }
+}
+```
+
+**Mutation to create a new Todo**
+
+```graphql
+mutation TodoCreateMutation($input: TodosInsertInput!, $connections: [ID!]!) {
+  insertIntoTodosCollection(objects: [$input]) {
+    affectedCount
+    records @prependNode(connections: $connections, edgeTypeName: "TodosEdge") {
+      ...TodoItem_todos
+    }
+  }
+}
+```
+
+**Code to call the mutation**
+
+```typescript
+import { ConnectionHandler, graphql, useMutation } from 'react-relay'
+
+// inside a React component
+const [todoCreateMutate, isMutationInFlight] =
+  useMutation<TodoCreateMutation>(CreateTodoMutation)
+
+// inside your create todo function
+const connectionID = ConnectionHandler.getConnectionID(
+  'root',
+  'TodoList_query_todosCollection'
+)
+
+todoCreateMutate({
+  variables: {
+    input: {
+      // ...new todo data
+    },
+    connections: [connectionID],
+  },
+})
+```
+
+
+---
+
 # Integrations
 
 Supabase integrates with many of your favorite third-party services.
@@ -143776,20 +150076,20 @@ The following table describes the base instances, Nano (free plan) and Micro (pa
 
 Note: In paid organizations, Nano Compute are billed at the same price as Micro Compute. It is recommended to upgrade your Project from Nano Compute to Micro Compute when it's convenient for you. Compute sizes are not auto-upgraded because of the downtime incurred. See [Supabase Pricing](https://supabase.com/pricing) for more information. You cannot launch Nano instances on paid plans, only Micro and above - but you might have Nano instances after upgrading from Free Plan.
 
-| Compute Size | Hourly Price USD | Monthly Price USD                                                                                                            | CPU                     | Memory       | Max DB Size (Recommended)[^2] |
-| ------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ------------ | ----------------------------- |
-| Nano[^3]     | $0               | $0                                                                                                                           | Shared                  | Up to 0.5 GB | 500 MB                        |
-| Micro        | $0.01344         | \~$10                                                                                                                        | 2-core ARM (shared)     | 1 GB         | 10 GB                         |
-| Small        | $0.0206          | \~$15                                                                                                                        | 2-core ARM (shared)     | 2 GB         | 50 GB                         |
-| Medium       | $0.0822          | \~$60                                                                                                                        | 2-core ARM (shared)     | 4 GB         | 100 GB                        |
-| Large        | $0.1517          | \~$110                                                                                                                       | 2-core ARM (dedicated)  | 8 GB         | 200 GB                        |
-| XL           | $0.2877          | \~$210                                                                                                                       | 4-core ARM (dedicated)  | 16 GB        | 500 GB                        |
-| 2XL          | $0.562           | \~$410                                                                                                                       | 8-core ARM (dedicated)  | 32 GB        | 1 TB                          |
-| 4XL          | $1.32            | \~$960                                                                                                                       | 16-core ARM (dedicated) | 64 GB        | 2 TB                          |
-| 8XL          | $2.562           | \~$1,870                                                                                                                     | 32-core ARM (dedicated) | 128 GB       | 4 TB                          |
-| 12XL         | $3.836           | \~$2,800                                                                                                                     | 48-core ARM (dedicated) | 192 GB       | 6 TB                          |
-| 16XL         | $5.12            | \~$3,730                                                                                                                     | 64-core ARM (dedicated) | 256 GB       | 10 TB                         |
-| >16XL        | -                | [Contact Us](https://supabase.com/dashboard/support/new?category=sales\&subject=Enquiry%20about%20larger%20instance%20sizes) | Custom                  | Custom       | Custom                        |
+| Compute Size | Hourly Price USD | Monthly Price USD                                                                                                            | CPU                 | Memory       | Max DB Size (Recommended)[^2] |
+| ------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------- | ------------ | ----------------------------- |
+| Nano[^3]     | $0               | $0                                                                                                                           | Shared              | Up to 0.5 GB | 500 MB                        |
+| Micro        | $0.01344         | \~$10                                                                                                                        | 2-core (shared)     | 1 GB         | 10 GB                         |
+| Small        | $0.0206          | \~$15                                                                                                                        | 2-core (shared)     | 2 GB         | 50 GB                         |
+| Medium       | $0.0822          | \~$60                                                                                                                        | 2-core (shared)     | 4 GB         | 100 GB                        |
+| Large        | $0.1517          | \~$110                                                                                                                       | 2-core (dedicated)  | 8 GB         | 200 GB                        |
+| XL           | $0.2877          | \~$210                                                                                                                       | 4-core (dedicated)  | 16 GB        | 500 GB                        |
+| 2XL          | $0.562           | \~$410                                                                                                                       | 8-core (dedicated)  | 32 GB        | 1 TB                          |
+| 4XL          | $1.32            | \~$960                                                                                                                       | 16-core (dedicated) | 64 GB        | 2 TB                          |
+| 8XL          | $2.562           | \~$1,870                                                                                                                     | 32-core (dedicated) | 128 GB       | 4 TB                          |
+| 12XL         | $3.836           | \~$2,800                                                                                                                     | 48-core (dedicated) | 192 GB       | 6 TB                          |
+| 16XL         | $5.12            | \~$3,730                                                                                                                     | 64-core (dedicated) | 256 GB       | 10 TB                         |
+| >16XL        | -                | [Contact Us](https://supabase.com/dashboard/support/new?category=sales\&subject=Enquiry%20about%20larger%20instance%20sizes) | Custom              | Custom       | Custom                        |
 
 [^1]: Database max connections are recommended values and can be [customized via `max_connections`](https://supabase.com/docs/guides/database/custom-postgres-config) depending on your use case. Be aware of [these considerations](https://supabase.com/docs/guides/troubleshooting/how-to-change-max-database-connections-_BQ8P5) before modifying.
 
@@ -155171,6 +161471,10 @@ Realtime uses the `messages` table in your database's `realtime` schema to gener
 
 By creating RLS policies on the `realtime.messages` table you can control the access users have to a Channel topic, and features within a Channel topic.
 
+Caution: Realtime locks down the `realtime` schema to protect it against unexpected changes to guarantee the healthy operation of the Realtime service and avoid conflicts that could be caused by future migrations. Creating a table or function in `realtime` is expected to fail with `permission denied for schema realtime`, whether you run the SQL yourself or through the dashboard. Managing RLS policies on `realtime.messages` is allowed.
+
+Row level security (RLS) is enabled by default on table `realtime.messages`, you don't need to execute `ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY`.
+
 The validation is done when the user connects. When their WebSocket connection is established and a Channel topic is joined, their permissions are calculated based on:
 
 - The RLS policies on the `realtime.messages` table
@@ -156814,9 +163118,10 @@ Note: Realtime has a cleanup process that will delete tables older than 3 days.
 
 ### Functions
 
-Realtime creates two functions on your database:
+Realtime creates some functions on your database:
 
 - `realtime.send` - Inserts an entry into `realtime.messages` table that will trigger the replication slot to broadcast the changes to the clients. It also captures errors to prevent the trigger from breaking.
+- `realtime.send_binary` - Similar to `realtime.send` but allows you to broadcast binaries.
 - `realtime.broadcast_changes` - uses `realtime.send` to broadcast the changes with a format that is compatible with Postgres Changes
 
 

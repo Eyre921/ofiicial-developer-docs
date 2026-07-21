@@ -374,23 +374,36 @@ components:
           type: string
           enum:
             - init
+          description: The message type identifier.
         conversation_id:
           type: string
+          description: Unique identifier for this conversation session.
       required:
         - type
         - conversation_id
+      description: Payload for the session initialisation message sent by ElevenLabs.
       title: Init
-    UserTranscriptUserTranscriptItems:
+    TranscriptMessageRole:
+      type: string
+      enum:
+        - user
+        - agent
+      description: The speaker for this turn.
+      title: TranscriptMessageRole
+    TranscriptMessage:
       type: object
       properties:
         role:
-          type: string
+          $ref: '#/components/schemas/TranscriptMessageRole'
+          description: The speaker for this turn.
         content:
           type: string
+          description: The transcript text for this turn.
       required:
         - role
         - content
-      title: UserTranscriptUserTranscriptItems
+      description: A single turn in the conversation history.
+      title: TranscriptMessage
     UserTranscript:
       type: object
       properties:
@@ -398,16 +411,34 @@ components:
           type: string
           enum:
             - user_transcript
-        event_id:
-          type: integer
+          description: The message type identifier.
         user_transcript:
           type: array
           items:
-            $ref: '#/components/schemas/UserTranscriptUserTranscriptItems'
+            $ref: '#/components/schemas/TranscriptMessage'
+          description: >
+            Full conversation history up to and including the latest user turn,
+            ordered
+
+            chronologically. Contains both `user` and `agent` turns.
+        event_id:
+          type: integer
+          description: >
+            Monotonically increasing identifier for this transcript event. Pass
+            this value
+
+            back in every `agent_response` message so ElevenLabs can correlate
+            responses and
+
+            discard any that belong to an interrupted turn.
       required:
         - type
-        - event_id
         - user_transcript
+      description: >
+        Payload containing the full conversation history sent by ElevenLabs each
+        time
+
+        the user finishes speaking.
       title: UserTranscript
     Ping:
       type: object
@@ -416,8 +447,10 @@ components:
           type: string
           enum:
             - ping
+          description: The message type identifier.
       required:
         - type
+      description: Keep-alive ping sent periodically by ElevenLabs.
       title: Ping
     Close:
       type: object
@@ -426,30 +459,36 @@ components:
           type: string
           enum:
             - close
+          description: The message type identifier.
       required:
         - type
+      description: Payload indicating a clean end-of-conversation signal from ElevenLabs.
       title: Close
-    SpeechEngineError:
+    Error:
       type: object
       properties:
         type:
           type: string
           enum:
             - error
+          description: The message type identifier.
         message:
           type: string
           description: Human-readable description of the error.
       required:
         - type
         - message
-      title: SpeechEngineError
+      description: >-
+        Payload for protocol-level errors sent by ElevenLabs before closing the
+        connection.
+      title: Error
     SpeechEngineUpstreamSubscribe:
       oneOf:
         - $ref: '#/components/schemas/Init'
         - $ref: '#/components/schemas/UserTranscript'
         - $ref: '#/components/schemas/Ping'
         - $ref: '#/components/schemas/Close'
-        - $ref: '#/components/schemas/SpeechEngineError'
+        - $ref: '#/components/schemas/Error'
       title: SpeechEngineUpstreamSubscribe
     AgentResponse:
       type: object
@@ -458,17 +497,42 @@ components:
           type: string
           enum:
             - agent_response
-        event_id:
-          type: integer
+          description: The message type identifier.
         content:
           type: string
-          default: ''
+          description: >
+            The text to synthesize. For streaming responses, send incremental
+            chunks here.
+
+            The final message in a response must have an empty string (`""`).
+        event_id:
+          type: integer
+          description: >
+            The `event_id` from the `user_transcript` this response addresses.
+            ElevenLabs
+
+            uses this to discard responses that belong to an interrupted turn.
         is_final:
           type: boolean
-          default: false
+          description: >
+            Set to `true` on the last message of a response (with an empty
+            `content`).
+
+            Set to `false` on all preceding chunks.
       required:
         - type
-        - event_id
+        - content
+        - is_final
+      description: >
+        Text chunk sent from your server to ElevenLabs for speech synthesis.
+
+        Stream LLM output by sending multiple messages with `is_final: false`,
+        then
+
+        terminate the response with a message where `is_final: true` and
+        `content` is
+
+        an empty string.
       title: AgentResponse
     Pong:
       type: object
@@ -477,8 +541,10 @@ components:
           type: string
           enum:
             - pong
+          description: The message type identifier.
       required:
         - type
+      description: Reply to a `ping` message.
       title: Pong
     SpeechEngineUpstreamPublish:
       oneOf:

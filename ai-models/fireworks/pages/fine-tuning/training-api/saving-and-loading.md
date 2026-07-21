@@ -210,10 +210,31 @@ training_client.load_state_with_optimizer("train_state_step_100").result()
 ```python theme={null}
 checkpoint_ref = training_client.resolve_checkpoint_path(
     "step-4",
-    source_job_id="previous-job-id",
+    source_job_id="<source-job-id>",
 )
 training_client.load_state_with_optimizer(checkpoint_ref).result()
 ```
+
+### Resuming and then exporting weights
+
+`save_weights_for_sampler` / `save_weights_for_sampler_ext` export the trainer session's **currently active** weights (for LoRA, the active adapter). During normal training this is unambiguous: an `optim_step` runs just before the export, so "active weights" means "the weights you just updated." Right after a **resume**, there is no intervening `optim_step`, so be deliberate about the order:
+
+```python theme={null}
+# 1. Load the train-state checkpoint you want to continue from.
+training_client.load_state_with_optimizer(checkpoint_ref).result()
+
+# 2. Export exactly those loaded weights to a sampler snapshot.
+saved = training_client.save_weights_for_sampler_ext(
+    "warmstart-step-N",
+    checkpoint_type="base",
+)
+
+# 3. Serve / sync that snapshot (promote or hot-load `saved.path`).
+```
+
+<Warning>
+  Do not let anything change the active weights between the load in step 1 and the export in step 2: no stale adapter from a prior state, no other concurrent training step, and no second `load_*` call. If a sampler export immediately after `load_state_with_optimizer` produces a snapshot whose weights differ from the DCP step you requested, the state being exported is not the state you loaded. Capture the source job ID, the requested checkpoint name, and the exported snapshot identity, and contact Fireworks support. A storage-backend change can cause the loader to resolve the latest checkpoint rather than the requested one on a cross-job resume, which produces this symptom. See [Troubleshooting a failed resume](/fine-tuning/training-api/cookbook/checkpoints#troubleshooting).
+</Warning>
 
 ### List available checkpoints
 

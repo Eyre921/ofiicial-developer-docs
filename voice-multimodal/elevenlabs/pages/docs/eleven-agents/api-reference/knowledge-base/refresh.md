@@ -523,6 +523,11 @@ components:
                 parent folder.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
             external_sync_info:
@@ -543,6 +548,7 @@ components:
             - supported_usages
             - access_info
             - children_count
+            - document_count
       discriminator:
         propertyName: type
       title: DocumentRefreshResponse
@@ -604,7 +610,7 @@ components:
   "metadata": {
     "created_at_unix_secs": 1685600000,
     "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 24576
+    "size_bytes": 45230
   },
   "name": "ElevenLabs API Documentation",
   "supported_usages": [
@@ -613,7 +619,7 @@ components:
   "url": "https://elevenlabs.io/docs/api",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
-    "auto_remove": true,
+    "auto_remove": false,
     "consec_failures": 0,
     "next_refresh_by": 1688806400
   },
@@ -621,7 +627,7 @@ components:
   "folder_parent_id": null,
   "folder_path": [
     {
-      "id": "rootFolder123",
+      "id": "root-folder-001",
       "name": "Root"
     }
   ]

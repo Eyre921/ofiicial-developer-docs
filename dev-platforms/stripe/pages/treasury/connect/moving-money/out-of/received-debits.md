@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/out-of/received-debits
 
 Learn how external account holders can pull funds from a financial account.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Certain processes initiated outside of Treasury for platforms result in money being pulled out of a financial account. This includes:
 
 - Spending money on a card through [Stripe Issuing](https://docs.stripe.com/issuing/purchases/transactions.md#transactions)

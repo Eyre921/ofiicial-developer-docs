@@ -245,7 +245,7 @@ Deepgram offers many options for you to customize your output [encoding](/docs/t
 
 Consider `linear16` encoded `wav` audio when prioritizing high-fidelity audio quality and compatibility with a wide range of playback systems. Deepgram supports output sample rates of `8000`, `16000`, `24000`, `32000`, and `48000`, and sample rate does not affect latency. You can generate audio with any of these sample rates at the same speed.
 
-Choose compressed formats like `mp3` or `opus` when file size and bandwidth efficiency are critical factors. These formats offer reduced file sizes while maintaining acceptable audio quality, potentially reducing latency in streaming and transmission.
+Choose compressed formats like `mp3` or `opus` when file size and bandwidth efficiency are critical factors. These formats offer reduced file sizes while maintaining acceptable audio quality, reducing the time to transfer the REST response over constrained networks. Compressed formats are available on the REST endpoint only — the streaming WebSocket emits raw `linear16`, `mulaw`, or `alaw` audio (see [Encoding](/docs/tts-encoding)).
 
 Choose the audio format that best suits your specific use case and requirements, considering factors such as audio quality, compatibility, file size, and efficiency, rather than solely focusing on minimizing latency.
 

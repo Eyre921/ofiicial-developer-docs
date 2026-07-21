@@ -40,7 +40,7 @@ You can update the following parameters mid-stream:
 | `language_hints`      | array  | Supported language codes | Bias `flux-general-multi` toward specific languages. **Note:** Non-empty array replaces current hints. Empty array `[]` clears hints. Omit or `null` to keep current hints unchanged. See [Language Prompting](/docs/flux/language-prompting). |
 | `eot_threshold`       | number | 0.5-0.9                  | Confidence threshold for standard turn detection. Higher values mean more confidence required before detecting turn end.                                                                                                                       |
 | `eager_eot_threshold` | number | 0.3-0.9                  | Confidence threshold for eager turn detection. Must be ≤ `eot_threshold`.                                                                                                                                                                      |
-| `eot_timeout_ms`      | number | 500-10000                | Maximum silence duration (in milliseconds) before forcing turn end.                                                                                                                                                                            |
+| `eot_timeout_ms`      | number | 500-60000                | Maximum silence duration (in milliseconds) before forcing turn end.                                                                                                                                                                            |
 
 All parameters are optional in a Configure message. Omitted parameters retain their current values.
 

@@ -216,28 +216,28 @@ def cross_entropy_loss(data, logprobs_list):
 result = training_client.forward_backward_custom(datums, cross_entropy_loss).result()
 ```
 
-## Example: GRPO with KL penalty
+## Example: cookbook GRPO loss
+
+The stock cookbook RL recipes use the tested `make_grpo_loss_fn` helper rather than maintaining a second inline implementation. It combines PPO clipping, behavior-policy TIS, and an optional differentiable k3 reference-KL penalty:
 
 ```python theme={null}
-def make_grpo_loss(rewards, ref_logprobs, kl_beta=0.001):
-    advantages = compute_advantages(rewards)
-    ref_tensors = [torch.tensor(lp, dtype=torch.float32) for lp in ref_logprobs]
+from training.utils.rl.grpo import make_grpo_loss_fn
+from training.utils.rl.tis import TISConfig
 
-    def loss_fn(data, logprobs_list):
-        total_loss = torch.tensor(0.0)
-        for i in range(len(logprobs_list)):
-            weights = torch.tensor(data[i].loss_fn_inputs["weights"].data, dtype=torch.float32)
-            pi = logprobs_list[i][:len(weights)]
-            ref = ref_tensors[i][:len(weights)]
-
-            pg_loss = -advantages[i] * torch.dot(pi.float(), weights)
-            kl_term = torch.dot((pi - ref).float(), weights)
-            total_loss = total_loss + pg_loss + kl_beta * kl_term
-
-        return total_loss / len(logprobs_list), {"loss": (total_loss / len(logprobs_list)).item()}
-
-    return loss_fn
+loss_fn = make_grpo_loss_fn(
+    advantages=advantages,
+    ref_logprobs=reference_logprobs,
+    prompt_len=prompt_lengths,
+    inf_logprobs=rollout_logprobs,
+    old_policy_logprobs=old_policy_logprobs,
+    kl_beta=0.001,
+    eps_clip=0.2,
+    tis_config=TISConfig(cap=5.0, level="token"),
+)
+result = training_client.forward_backward_custom(datums, loss_fn).result()
 ```
+
+All datum, prompt-boundary, and logprob arrays must be exactly aligned. The generic cookbook recipes expose this direct client GRPO path only; fork the documented loss call when you intentionally need another objective.
 
 ## Example: DPO margin loss
 
@@ -261,21 +261,21 @@ def make_dpo_loss(ref_chosen, ref_rejected, beta=0.1):
     return loss_fn
 ```
 
-## Built-in loss methods: GRPO vs DAPO vs GSPO-token
+## Managed RFT loss methods
 
-When using the managed RFT flow or the cookbook's RL recipe, three built-in loss methods are available via `--rl-loss-method`:
+Managed RFT exposes three loss methods through `--rl-loss-method`. This CLI selector is separate from the cookbook recipes; the stock cookbook `rl_loop` and `async_rl_loop` use direct client-side GRPO and do not expose it.
 
-| Method           | Clipping                      | KL penalty    | Loss aggregation    | Importance sampling |
-| ---------------- | ----------------------------- | ------------- | ------------------- | ------------------- |
-| `grpo` (default) | Symmetric `[0.8, 1.2]`        | Yes (`0.001`) | Token-mean          | Token-level         |
-| `dapo`           | Asymmetric `[0.8, 1.28]`      | No            | Token-mean          | Token-level         |
-| `gspo-token`     | Very tight `[1-3e-4, 1+4e-4]` | No            | Seq-mean-token-mean | Sequence-level      |
+| Method           | Clipping                              | Reference KL                     | Importance sampling |
+| ---------------- | ------------------------------------- | -------------------------------- | ------------------- |
+| `grpo` (default) | Symmetric PPO clipping                | Configurable with `--rl-kl-beta` | Token-level         |
+| `dapo`           | Asymmetric PPO clipping               | Not supported                    | Token-level         |
+| `gspo-token`     | Configurable sequence-policy clipping | Not supported                    | Sequence-level      |
 
-**GRPO** ([arXiv:2402.03300](https://arxiv.org/abs/2402.03300)) is the safe default with KL regularization.
+**GRPO** ([arXiv:2402.03300](https://arxiv.org/abs/2402.03300)) is the safe default and supports optional KL regularization against a reference policy.
 
 **DAPO** ([arXiv:2503.14476](https://arxiv.org/abs/2503.14476)) removes KL and uses asymmetric clipping to allow more aggressive exploration in the improve direction.
 
-**GSPO-token** ([arXiv:2507.18071](https://arxiv.org/abs/2507.18071)) uses sequence-level importance ratios and extremely tight clipping. The `seq-mean-token-mean` aggregation normalizes per-sequence before averaging, reducing bias toward longer responses.
+**GSPO-token** ([arXiv:2507.18071](https://arxiv.org/abs/2507.18071)) uses sequence-level importance ratios. See [Parameter Tuning](/fine-tuning/parameter-tuning#loss-method) for the managed defaults and configuration guidance.
 
 For Training API users implementing custom loss functions via `forward_backward_custom`, these methods serve as reference implementations. You can replicate or modify their behavior in your custom loss function. See [Parameter Tuning](/fine-tuning/parameter-tuning#loss-method) for detailed guidance on when to choose each method.
 

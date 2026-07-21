@@ -17141,6 +17141,17 @@ Returns all legal holds for your organization, both active and released.
 </Info>
 
 
+# List personal access tokens in a workspace
+Source: https://developers.notion.com/reference/admin/list-personal-access-tokens
+
+openapi-adminApi.json GET /v1/spaces/{space_id}/personal_access_tokens
+List personal access tokens in a workspace.
+
+The organization bot token must have the following scopes:
+
+* `personal-access-token:read`
+
+
 # Release a legal hold
 Source: https://developers.notion.com/reference/admin/release-legal-hold
 
@@ -17161,6 +17172,17 @@ Remove a user from a legal hold.
 The organization bot token must have the following scopes:
 
 * `legal-hold:write`
+
+
+# Revoke a personal access token in a workspace
+Source: https://developers.notion.com/reference/admin/revoke-personal-access-token
+
+openapi-adminApi.json DELETE /v1/spaces/{space_id}/personal_access_tokens/{bot_id}
+Revoke a personal access token in a workspace.
+
+The organization bot token must have the following scopes:
+
+* `personal-access-token:write-high-impact`
 
 
 # Revoke a managed user's sessions

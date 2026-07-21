@@ -8,6 +8,10 @@ path: treasury/connect/account-management/platform-financial-account
 
 Learn about the financial account for your platform.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 After you’ve [gained API access](https://docs.stripe.com/treasury/connect/access.md) to Stripe Treasury for platforms, we automatically provision your platform with a financial account. For *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes) environments, it’s a test platform financial account.
 
 The test platform financial account on your sandbox environment enables you to set up and test your integration without actually affecting your live account’s platform financial account.

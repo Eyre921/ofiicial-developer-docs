@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/out-of/debit-reversals
 
 Learn how you can retrieve funds taken out of a financial account from an external account holder.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Returning the funds from a [ReceivedDebit](https://docs.stripe.com/api/treasury/received_debits.md) creates a [DebitReversal](https://docs.stripe.com/api/treasury/debit_reversals.md). You can get the funds back from a `ReceivedDebit` in only some scenarios (detailed in the following table). Whether you can return the funds of a `ReceivedDebit` depends on the network and source flow.
 
 The `reversal_details` sub-hash on the `ReceivedDebit` resource can have the following combination of values, which determines whether you can return the `ReceivedDebit` funds.

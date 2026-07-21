@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 297 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -241,6 +241,7 @@
 - `docs/guides/features/presets` — [Presets](pages/docs/guides/features/presets.md) · [原文](https://openrouter.ai/docs/guides/features/presets.md)
 - `docs/guides/features/response-caching` — [Response Caching](pages/docs/guides/features/response-caching.md) · [原文](https://openrouter.ai/docs/guides/features/response-caching.md)
 - `docs/guides/features/router-metadata` — [Router Metadata](pages/docs/guides/features/router-metadata.md) · [原文](https://openrouter.ai/docs/guides/features/router-metadata.md)
+- `docs/guides/features/scim-mappings` — [SCIM Group Mappings](pages/docs/guides/features/scim-mappings.md) · [原文](https://openrouter.ai/docs/guides/features/scim-mappings.md)
 - `docs/guides/features/server-tools` — [Server Tools](pages/docs/guides/features/server-tools.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools.md)
 - `docs/guides/features/server-tools/advisor` — [Advisor](pages/docs/guides/features/server-tools/advisor.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/advisor.md)
 - `docs/guides/features/server-tools/apply-patch` — [Apply Patch](pages/docs/guides/features/server-tools/apply-patch.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/apply-patch.md)
@@ -256,6 +257,7 @@
 - `docs/guides/features/server-tools/web-search` — [Web Search](pages/docs/guides/features/server-tools/web-search.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/web-search.md)
 - `docs/guides/features/service-tiers` — [Service Tiers](pages/docs/guides/features/service-tiers.md) · [原文](https://openrouter.ai/docs/guides/features/service-tiers.md)
 - `docs/guides/features/sovereign-ai` — [Sovereign AI](pages/docs/guides/features/sovereign-ai.md) · [原文](https://openrouter.ai/docs/guides/features/sovereign-ai.md)
+- `docs/guides/features/sso` — [Single Sign-On (SSO)](pages/docs/guides/features/sso.md) · [原文](https://openrouter.ai/docs/guides/features/sso.md)
 - `docs/guides/features/structured-outputs` — [Structured Outputs](pages/docs/guides/features/structured-outputs.md) · [原文](https://openrouter.ai/docs/guides/features/structured-outputs.md)
 - `docs/guides/features/tool-calling` — [Tool & Function Calling](pages/docs/guides/features/tool-calling.md) · [原文](https://openrouter.ai/docs/guides/features/tool-calling.md)
 - `docs/guides/features/workspaces` — [Workspaces](pages/docs/guides/features/workspaces.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces.md)

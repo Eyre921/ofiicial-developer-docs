@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 195 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 197 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -76,8 +76,10 @@
 - `reference/admin/list-legal-hold-users` — [List users on a legal hold](pages/reference/admin/list-legal-hold-users.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-users)
 - `reference/admin/list-legal-hold-workspaces` — [List workspaces on a legal hold](pages/reference/admin/list-legal-hold-workspaces.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-workspaces)
 - `reference/admin/list-legal-holds` — [List legal holds](pages/reference/admin/list-legal-holds.md) · [原文](https://developers.notion.com/reference/admin/list-legal-holds)
+- `reference/admin/list-personal-access-tokens` — [List personal access tokens in a workspace](pages/reference/admin/list-personal-access-tokens.md) · [原文](https://developers.notion.com/reference/admin/list-personal-access-tokens)
 - `reference/admin/release-legal-hold` — [Release a legal hold](pages/reference/admin/release-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/release-legal-hold)
 - `reference/admin/remove-legal-hold-user` — [Remove a user from a legal hold](pages/reference/admin/remove-legal-hold-user.md) · [原文](https://developers.notion.com/reference/admin/remove-legal-hold-user)
+- `reference/admin/revoke-personal-access-token` — [Revoke a personal access token in a workspace](pages/reference/admin/revoke-personal-access-token.md) · [原文](https://developers.notion.com/reference/admin/revoke-personal-access-token)
 - `reference/admin/revoke-user-session` — [Revoke a managed user's sessions](pages/reference/admin/revoke-user-session.md) · [原文](https://developers.notion.com/reference/admin/revoke-user-session)
 - `reference/admin/scopes` — [Scopes](pages/reference/admin/scopes.md) · [原文](https://developers.notion.com/reference/admin/scopes)
 - `reference/admin/update-legal-hold` — [Update a legal hold](pages/reference/admin/update-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/update-legal-hold)

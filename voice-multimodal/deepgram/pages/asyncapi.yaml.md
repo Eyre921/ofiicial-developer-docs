@@ -195,6 +195,8 @@ channels:
             numerals:
               $ref: '#/components/schemas/ListenV2Numerals'
               default: 'false'
+            redact:
+              $ref: '#/components/schemas/ListenV2Redact'
             mip_opt_out:
               $ref: '#/components/schemas/ListenV2MipOptOut'
             tag:
@@ -3016,6 +3018,15 @@ components:
       default: 'false'
       description: Numerals converts numbers from written format to numerical format
       title: ListenV2Numerals
+    ListenV2Redact:
+      type: string
+      enum:
+        - numbers
+        - aggressive_numbers
+      description: >-
+        Redaction removes sensitive information from your transcripts. On Flux, only `numbers` and `aggressive_numbers`
+        are supported.
+      title: ListenV2Redact
     ListenV2MipOptOut:
       description: Any type
       title: ListenV2MipOptOut

@@ -8,9 +8,9 @@ path: treasury/connect/account-management/financial-accounts
 
 Use financial accounts to store, send, and receive funds.
 
-> #### Accounts v2 API compatibility
+> #### Legacy integration
 > 
-> The Accounts v2 API doesn’t support Treasury workflows. If you have accounts created with Accounts v2, you can use Accounts v1 to manage the `treasury` and `card_issuing` capabilities. For details, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
 
 After you [gain API access to Stripe Treasury for platforms](https://docs.stripe.com/treasury/connect/access.md), Stripe attaches a financial account to your platform account and enables you to provision financial accounts for eligible connected accounts on your platform. Each financial account has its own distinct [balance of funds](https://docs.stripe.com/treasury/connect/account-management/working-with-balances-and-transactions.md), separate from the balance of the account it’s linked to. For example, the owner of a connected account on your platform might have a 100 USD connected account balance and a 200 USD financial account balance. In this scenario, the connected account owner has a sum of 300 USD spread between their financial account and connected account balances. These two balances remain separate, but the API provides the ability to move money from the connected account balance to the financial account balance.
 

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1175 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1176 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -531,6 +531,7 @@
 - `docs/eleven-agents/customization/privacy/retention` — [Retention](pages/docs/eleven-agents/customization/privacy/retention.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/privacy/retention.md)
 - `docs/eleven-agents/customization/privacy/zrm` — [Zero Retention Mode (per-agent)](pages/docs/eleven-agents/customization/privacy/zrm.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/privacy/zrm.md)
 - `docs/eleven-agents/customization/procedures` — [Procedures](pages/docs/eleven-agents/customization/procedures.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/procedures.md)
+- `docs/eleven-agents/customization/procedures/free-form-procedures` — [Free-form procedures](pages/docs/eleven-agents/customization/procedures/free-form-procedures.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/procedures/free-form-procedures.md)
 - `docs/eleven-agents/customization/procedures/structured-procedures` — [Structured procedures](pages/docs/eleven-agents/customization/procedures/structured-procedures.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/procedures/structured-procedures.md)
 - `docs/eleven-agents/customization/tools` — [Tools](pages/docs/eleven-agents/customization/tools.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools.md)
 - `docs/eleven-agents/customization/tools/agent-tools-deprecation` — [Agent tools deprecation](pages/docs/eleven-agents/customization/tools/agent-tools-deprecation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/tools/agent-tools-deprecation.md)

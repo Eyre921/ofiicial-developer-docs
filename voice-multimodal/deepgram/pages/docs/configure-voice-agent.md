@@ -45,12 +45,12 @@ The `Settings` message is a JSON object that contains the following fields:
 
 ### Agent Settings
 
-| Parameter                | Type   | Description                                                                                                                                                                                                             |
-| ------------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `agent.language`         | String | **Deprecated.** Optional language code for the agent. Defaults to `en`. Use `agent.listen.provider.language` and `agent.speak.provider.language` instead. See the [V1 Migration Guide](/docs/voice-agent-v1-migration). |
-| `agent.context`          | Object | Optional conversation context including history of messages and function calls                                                                                                                                          |
-| `agent.context.messages` | Array  | Array of previous conversation messages and function calls to provide context to the agent                                                                                                                              |
-| `agent.greeting`         | String | Optional initial message that the agent will speak when the conversation starts                                                                                                                                         |
+| Parameter                | Type   | Description                                                                                                                                               |
+| ------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `agent.language`         | String | **Deprecated.** Optional language code for the agent. Defaults to `en`. Use `agent.listen.provider.language` and `agent.speak.provider.language` instead. |
+| `agent.context`          | Object | Optional conversation context including history of messages and function calls                                                                            |
+| `agent.context.messages` | Array  | Array of previous conversation messages and function calls to provide context to the agent                                                                |
+| `agent.greeting`         | String | Optional initial message that the agent will speak when the conversation starts                                                                           |
 
 #### `agent.context`
 
@@ -163,7 +163,7 @@ These parameters control [Flux end-of-turn detection](/docs/flux/configuration#p
 #### TTS Controls - Speed, Pronounciation, Pause / Pacing
 
 * Use `agent.speak.provider.speed` to control speed for each session
-* Leverage the prompt (`agent.think.prompt`) for pronunciation, pause, and pacing controls. For detailed recommendations, see \[Voice Agent TTS Controls]\(/docs/voice-agent-tts-controls].
+* Leverage the prompt (`agent.think.prompt`) for pronunciation, pause, and pacing controls. For detailed recommendations, see [Voice Agent TTS Controls](/docs/voice-agent-tts-controls).
 
 ## Full Example
 

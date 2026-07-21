@@ -8,9 +8,9 @@ path: treasury/connect/examples/webhooks
 
 Learn about webhook events for Stripe Issuing and Treasury for platforms and why they occur.
 
-> #### Accounts v2 API compatibility
+> #### Legacy integration
 > 
-> The Accounts v2 API doesn’t support Treasury for platforms and Issuing workflows. If you have accounts created with Accounts v2, you can use Accounts v1 to manage the `treasury` and `card_issuing` capabilities. For details, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
 
 Stripe uses webhooks to notify your application when an [event](https://docs.stripe.com/api/events/types.md) happens in your account. Use webhooks to handle asynchronous [events](https://docs.stripe.com/api/events/types.md) such as the [creation of an Issuing authorization](https://docs.stripe.com/api/events/types.md#event_types-issuing_authorization.created) or an ACH transfer. To view the Treasury for platforms-related webhook events, log in to your Stripe account with Treasury for platforms enabled.
 

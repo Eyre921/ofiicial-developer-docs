@@ -156,7 +156,7 @@ servers:
     protocol: wss
 components:
   schemas:
-    SessionStartedConfigAudioFormat:
+    AudioFormatEnum:
       type: string
       enum:
         - pcm_8000
@@ -166,113 +166,112 @@ components:
         - pcm_44100
         - pcm_48000
         - ulaw_8000
-      title: SessionStartedConfigAudioFormat
-    SessionStartedConfigTimestampsGranularity:
+      default: pcm_16000
+      description: Audio encoding format for speech-to-text.
+      title: AudioFormatEnum
+    MessagesSessionStartedConfigCommitStrategy:
       type: string
       enum:
-        - none
-        - word
-        - character
-      default: word
-      title: SessionStartedConfigTimestampsGranularity
-    SessionStartedConfigModelId:
-      type: string
-      enum:
-        - scribe_v2_realtime
-        - scribe_v2_realtime_turbo
-      default: scribe_v2_realtime
-      title: SessionStartedConfigModelId
-    SessionStartedConfig:
+        - manual
+        - vad
+      description: Strategy for committing transcriptions.
+      title: MessagesSessionStartedConfigCommitStrategy
+    MessagesSessionStartedConfig:
       type: object
       properties:
         sample_rate:
           type: integer
+          description: Sample rate of the audio in Hz.
         audio_format:
-          $ref: '#/components/schemas/SessionStartedConfigAudioFormat'
+          $ref: '#/components/schemas/AudioFormatEnum'
+          default: pcm_16000
         language_code:
           type: string
-        secondary_languages:
-          type: array
-          items:
-            type: string
-        timestamps_granularity:
-          $ref: '#/components/schemas/SessionStartedConfigTimestampsGranularity'
-          default: word
-        vad_commit_strategy:
-          type: boolean
-          default: false
+          description: Language code in ISO 639-1 or ISO 639-3 format.
+        commit_strategy:
+          $ref: '#/components/schemas/MessagesSessionStartedConfigCommitStrategy'
+          description: Strategy for committing transcriptions.
         vad_silence_threshold_secs:
           type: number
           format: double
-          default: 1.5
+          description: Silence threshold in seconds.
         vad_threshold:
           type: number
           format: double
-          default: 0.4
+          description: Threshold for voice activity detection.
         min_speech_duration_ms:
           type: integer
-          default: 100
+          description: Minimum speech duration in milliseconds.
         min_silence_duration_ms:
           type: integer
-          default: 100
-        max_tokens_to_recompute:
-          type: integer
-          default: 5
+          description: Minimum silence duration in milliseconds.
         model_id:
-          $ref: '#/components/schemas/SessionStartedConfigModelId'
-          default: scribe_v2_realtime
-        disable_logging:
+          type: string
+          description: ID of the model to use for transcription.
+        enable_logging:
           type: boolean
-          default: false
+          description: >-
+            When enable_logging is set to false zero retention mode will be used
+            for the request. This will mean history features are unavailable for
+            this request. Zero retention mode may only be used by enterprise
+            customers.
         include_timestamps:
           type: boolean
-          default: false
+          description: >-
+            Whether the session will include word-level timestamps in the
+            committed transcript.
         include_language_detection:
           type: boolean
-          default: false
-        filter_background_audio:
-          type: boolean
-          default: false
+          description: >-
+            Whether the session will include language detection in the committed
+            transcript.
         keyterms:
           type: array
           items:
             type: string
+          description: List of keyterms the model is biased towards.
         no_verbatim:
           type: boolean
-          default: false
-        entity_detection:
-          type: array
-          items:
-            type: string
-      required:
-        - sample_rate
-        - audio_format
-        - language_code
-      title: SessionStartedConfig
+          description: >-
+            Whether filler words and disfluencies are removed from the
+            transcript.
+      description: Configuration for the transcription session.
+      title: MessagesSessionStartedConfig
     SessionStarted:
       type: object
       properties:
         message_type:
           type: string
-          default: session_started
+          enum:
+            - session_started
+          description: The message type identifier.
         session_id:
           type: string
+          description: Unique identifier for the session.
         config:
-          $ref: '#/components/schemas/SessionStartedConfig'
+          $ref: '#/components/schemas/MessagesSessionStartedConfig'
+          description: Configuration for the transcription session.
       required:
+        - message_type
         - session_id
         - config
+      description: Payload sent when the transcription session is successfully started.
       title: SessionStarted
     PartialTranscript:
       type: object
       properties:
         message_type:
           type: string
-          default: partial_transcript
+          enum:
+            - partial_transcript
+          description: The message type identifier.
         text:
           type: string
+          description: Partial transcription text.
       required:
+        - message_type
         - text
+      description: Payload for partial transcription results that may change.
       title: PartialTranscript
     FinalTranscript:
       type: object
@@ -380,103 +379,84 @@ components:
       properties:
         message_type:
           type: string
-          default: committed_transcript
+          enum:
+            - committed_transcript
+          description: The message type identifier.
         text:
           type: string
+          description: Committed transcription text.
       required:
+        - message_type
         - text
+      description: Payload for committed transcription results.
       title: CommittedTranscript
-    CommittedTranscriptWithTimestampsWordsItemsType:
+    TranscriptionWordType:
       type: string
       enum:
         - word
         - spacing
-        - audio_event
-      description: >-
-        The type of the word or sound. 'audio_event' is used for non-word sounds
-        like laughter or footsteps.
-      title: CommittedTranscriptWithTimestampsWordsItemsType
-    CommittedTranscriptWithTimestampsWordsItemsCharactersItems:
+      description: The type of word.
+      title: TranscriptionWordType
+    TranscriptionWord:
       type: object
       properties:
         text:
           type: string
-          description: The character that was transcribed.
+          description: The transcribed word.
         start:
           type: number
           format: double
-          description: The start time of the character in seconds.
+          description: Start time in seconds.
         end:
           type: number
           format: double
-          description: The end time of the character in seconds.
-      required:
-        - text
-      title: CommittedTranscriptWithTimestampsWordsItemsCharactersItems
-    CommittedTranscriptWithTimestampsWordsItems:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The word or sound that was transcribed.
-        start:
-          type: number
-          format: double
-          description: The start time of the word or sound in seconds.
-        end:
-          type: number
-          format: double
-          description: The end time of the word or sound in seconds.
+          description: End time in seconds.
         type:
-          $ref: '#/components/schemas/CommittedTranscriptWithTimestampsWordsItemsType'
-          description: >-
-            The type of the word or sound. 'audio_event' is used for non-word
-            sounds like laughter or footsteps.
+          $ref: '#/components/schemas/TranscriptionWordType'
+          description: The type of word.
         speaker_id:
           type: string
-          description: Unique identifier for the speaker of this word.
+          description: The ID of the speaker if available.
         logprob:
           type: number
           format: double
-          description: >-
-            The log of the probability with which this word was predicted.
-            Logprobs are in range [-infinity, 0], higher logprobs indicate a
-            higher confidence the model has in its predictions.
+          description: Confidence score for this word.
         characters:
           type: array
           items:
-            $ref: >-
-              #/components/schemas/CommittedTranscriptWithTimestampsWordsItemsCharactersItems
-          description: The characters that make up the word and their timing information.
-        channel_index:
-          type: integer
-          description: >-
-            The channel this word was spoken on (for multichannel audio). Null
-            for single-channel transcriptions.
-      required:
-        - text
-        - type
-        - logprob
-      description: Word-level detail of the transcription with timing information.
-      title: CommittedTranscriptWithTimestampsWordsItems
+            type: string
+          description: The characters in the word.
+      description: Word-level transcription data with timing information.
+      title: TranscriptionWord
     CommittedTranscriptWithTimestamps:
       type: object
       properties:
         message_type:
           type: string
-          default: committed_transcript_with_timestamps
+          enum:
+            - committed_transcript_with_timestamps
+          description: The message type identifier.
         text:
           type: string
+          description: Committed transcription text.
         language_code:
-          type: string
+          type:
+            - string
+            - 'null'
+          description: Detected or specified language code.
         words:
-          type: array
+          type:
+            - array
+            - 'null'
           items:
-            $ref: '#/components/schemas/CommittedTranscriptWithTimestampsWordsItems'
+            $ref: '#/components/schemas/TranscriptionWord'
+          description: Word-level information with timestamps.
       required:
+        - message_type
         - text
+      description: Payload for committed transcription results with word-level timestamps.
       title: CommittedTranscriptWithTimestamps
-    CommittedTranscriptEntitiesEntitiesItems:
+    DetectedEntity:
       type: object
       properties:
         text:
@@ -498,21 +478,29 @@ components:
         - entity_type
         - start_char
         - end_char
-      title: CommittedTranscriptEntitiesEntitiesItems
+      description: An entity detected within transcribed text.
+      title: DetectedEntity
     CommittedTranscriptEntities:
       type: object
       properties:
         message_type:
           type: string
-          default: committed_transcript_entities
+          enum:
+            - committed_transcript_entities
+          description: The message type identifier.
         text:
           type: string
+          description: The committed transcript text the entities were detected in.
         entities:
           type: array
           items:
-            $ref: '#/components/schemas/CommittedTranscriptEntitiesEntitiesItems'
+            $ref: '#/components/schemas/DetectedEntity'
+          description: Detected entities. Empty if none were found.
       required:
+        - message_type
         - text
+        - entities
+      description: Payload for detected entities on a committed transcript.
       title: CommittedTranscriptEntities
     ScribeError:
       type: object
@@ -521,11 +509,14 @@ components:
           type: string
           enum:
             - error
+          description: The message type identifier.
         error:
           type: string
+          description: Error message describing what went wrong.
       required:
         - message_type
         - error
+      description: Payload for error events during transcription.
       title: ScribeError
     ScribeAuthError:
       type: object
@@ -534,11 +525,14 @@ components:
           type: string
           enum:
             - auth_error
+          description: The message type identifier.
         error:
           type: string
+          description: Authentication error details.
       required:
         - message_type
         - error
+      description: Payload for authentication errors.
       title: ScribeAuthError
     ScribeQuotaExceededError:
       type: object
@@ -547,11 +541,14 @@ components:
           type: string
           enum:
             - quota_exceeded
+          description: The message type identifier.
         error:
           type: string
+          description: Quota exceeded error details.
       required:
         - message_type
         - error
+      description: Payload for quota exceeded errors.
       title: ScribeQuotaExceededError
     ScribeThrottledError:
       type: object
@@ -560,11 +557,14 @@ components:
           type: string
           enum:
             - commit_throttled
+          description: The message type identifier.
         error:
           type: string
+          description: Throttled error details.
       required:
         - message_type
         - error
+      description: Payload for throttled errors.
       title: ScribeThrottledError
     ScribeUnacceptedTermsError:
       type: object
@@ -573,11 +573,14 @@ components:
           type: string
           enum:
             - unaccepted_terms
+          description: The message type identifier.
         error:
           type: string
+          description: Unaccepted terms error details.
       required:
         - message_type
         - error
+      description: Payload for unaccepted terms errors.
       title: ScribeUnacceptedTermsError
     ScribeRateLimitedError:
       type: object
@@ -586,11 +589,14 @@ components:
           type: string
           enum:
             - rate_limited
+          description: The message type identifier.
         error:
           type: string
+          description: Rate limited error details.
       required:
         - message_type
         - error
+      description: Payload for rate limited errors.
       title: ScribeRateLimitedError
     ScribeQueueOverflowError:
       type: object
@@ -599,11 +605,14 @@ components:
           type: string
           enum:
             - queue_overflow
+          description: The message type identifier.
         error:
           type: string
+          description: Queue overflow error details.
       required:
         - message_type
         - error
+      description: Payload for queue overflow errors.
       title: ScribeQueueOverflowError
     ScribeResourceExhaustedError:
       type: object
@@ -612,11 +621,14 @@ components:
           type: string
           enum:
             - resource_exhausted
+          description: The message type identifier.
         error:
           type: string
+          description: Resource exhausted error details.
       required:
         - message_type
         - error
+      description: Payload for resource exhausted errors.
       title: ScribeResourceExhaustedError
     ScribeSessionTimeLimitExceededError:
       type: object
@@ -625,11 +637,14 @@ components:
           type: string
           enum:
             - session_time_limit_exceeded
+          description: The message type identifier.
         error:
           type: string
+          description: Session time limit exceeded error details.
       required:
         - message_type
         - error
+      description: Payload for session time limit exceeded errors.
       title: ScribeSessionTimeLimitExceededError
     ScribeInputError:
       type: object
@@ -638,11 +653,14 @@ components:
           type: string
           enum:
             - input_error
+          description: The message type identifier.
         error:
           type: string
+          description: Input error details.
       required:
         - message_type
         - error
+      description: Payload for input errors.
       title: ScribeInputError
     ScribeChunkSizeExceededError:
       type: object
@@ -651,11 +669,14 @@ components:
           type: string
           enum:
             - chunk_size_exceeded
+          description: The message type identifier.
         error:
           type: string
+          description: Chunk size exceeded error details.
       required:
         - message_type
         - error
+      description: Payload for chunk size exceeded errors.
       title: ScribeChunkSizeExceededError
     ScribeInsufficientAudioActivityError:
       type: object
@@ -664,11 +685,14 @@ components:
           type: string
           enum:
             - insufficient_audio_activity
+          description: The message type identifier.
         error:
           type: string
+          description: Insufficient audio activity error details.
       required:
         - message_type
         - error
+      description: Payload for insufficient audio activity errors.
       title: ScribeInsufficientAudioActivityError
     ScribeTranscriberError:
       type: object
@@ -677,11 +701,14 @@ components:
           type: string
           enum:
             - transcriber_error
+          description: The message type identifier.
         error:
           type: string
+          description: Transcriber error details.
       required:
         - message_type
         - error
+      description: Payload for transcriber errors.
       title: ScribeTranscriberError
     V1SpeechToTextRealtimeSubscribe:
       oneOf:
@@ -711,16 +738,31 @@ components:
       properties:
         message_type:
           type: string
-          default: input_audio_chunk
+          enum:
+            - input_audio_chunk
+          description: The message type identifier.
         audio_base_64:
           type: string
+          format: base64
+          description: Base64-encoded audio data.
         commit:
           type: boolean
-          default: false
+          description: Whether to commit the transcription after this chunk.
+        sample_rate:
+          type: integer
+          description: Sample rate of the audio in Hz.
         previous_text:
           type: string
+          description: >-
+            Send text context to the model. Can only be sent alongside the first
+            audio chunk. If sent in a subsequent chunk, an error will be
+            returned.
       required:
+        - message_type
         - audio_base_64
+        - commit
+        - sample_rate
+      description: Payload for sending audio chunks from client to server.
       title: InputAudioChunk
     V1SpeechToTextRealtimePublish:
       oneOf:

@@ -539,6 +539,11 @@ components:
                 parent folder.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
             external_sync_info:
@@ -559,6 +564,7 @@ components:
             - supported_usages
             - access_info
             - children_count
+            - document_count
       discriminator:
         propertyName: type
       title: DocumentUpdateFileResponse
@@ -600,7 +606,7 @@ components:
 
 ```json
 {
-  "file": "<file: U29tZSBleGFtcGxlIGJpbmFyeSBkYXRh>"
+  "file": "<file: U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=>"
 }
 ```
 
@@ -617,30 +623,30 @@ components:
     "anonymous_access_level_override": "viewer",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<div><h1>Product Documentation Q2 2024</h1><p>Latest updates and features...</p></div>",
+  "extracted_inner_html": "<p>This is the extracted content of the product manual PDF for 2024.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1717136000,
+    "last_updated_at_unix_secs": 1688201600,
     "size_bytes": 2457600
   },
-  "name": "Product Documentation Q2 2024",
+  "name": "Product_Manual_2024.pdf",
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://docs.example.com/product-docs/q2-2024.pdf",
+  "url": "https://docs.example.com/product_manuals/2024/Product_Manual_2024.pdf",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
     "auto_remove": false,
     "consec_failures": 0,
-    "next_refresh_by": 1717740800
+    "next_refresh_by": 1688806400
   },
   "content_format": "html",
   "folder_parent_id": "folder_9X7b2Lq3",
   "folder_path": [
     {
       "id": "folder_9X7b2Lq3",
-      "name": "Q2 Reports"
+      "name": "Product Documentation"
     }
   ]
 }
@@ -685,7 +691,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRh\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -713,7 +719,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRh\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -725,7 +731,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRh\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -739,7 +745,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'U29tZSBleGFtcGxlIGJpbmFyeSBkYXRh',
+        'filename' => 'U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=',
         'contents' => null
     ]
   ]
@@ -753,7 +759,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRh\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -764,7 +770,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "file",
-    "fileName": "U29tZSBleGFtcGxlIGJpbmFyeSBkYXRh"
+    "fileName": "U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ="
   ]
 ]
 

@@ -537,6 +537,11 @@ components:
                 parent folder.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
             external_sync_info:
@@ -557,6 +562,7 @@ components:
             - supported_usages
             - access_info
             - children_count
+            - document_count
       discriminator:
         propertyName: type
       title: DocumentsUpdateResponse
@@ -624,10 +630,10 @@ components:
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://docs.elevenlabs.io/api/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM",
+  "url": "https://elevenlabs.io/docs/api",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
-    "auto_remove": false,
+    "auto_remove": true,
     "consec_failures": 0,
     "next_refresh_by": 1688812800
   },

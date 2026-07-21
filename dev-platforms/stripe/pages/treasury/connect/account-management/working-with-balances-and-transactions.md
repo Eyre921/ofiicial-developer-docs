@@ -8,6 +8,10 @@ path: treasury/connect/account-management/working-with-balances-and-transactions
 
 Learn about financial account balances and the effect transactions have on them.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 [Financial accounts](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md) have their own balance separate from the balance of the account they’re attached to (platform account or connected account). `Balance` objects record the amount of funds in a financial account and their state of availability. `Transaction` and `TransactionEntry` objects debit or credit the funds in that balance.
 
 ## Balances

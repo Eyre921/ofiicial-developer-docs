@@ -82938,6 +82938,36 @@ Creates a new object-store bucket in the specified project.
 - [`Get bucket`](https://www.prisma.io/docs/management-api/endpoints/buckets/get-buckets-by-bucket-id): Returns the bucket with the given ID.
 - [`List bucket keys`](https://www.prisma.io/docs/management-api/endpoints/buckets/get-buckets-by-bucket-id-keys): Returns all access keys for the given bucket.
 
+# Get list of backups (/docs/management-api/endpoints/database-backups/get-databases-by-database-id-backups)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Returns backups for the specified database.
+
+Location: Management API > Endpoints > Database Backups > Get list of backups
+
+Returns backups for the specified database.
+
+## API reference
+
+### Get list of backups
+
+`GET /v1/databases/{databaseId}/backups`
+
+Returns backups for the specified database.
+
+#### Parameters
+
+- `databaseId` (path, string, required)
+- `limit` (query, integer, optional)
+
+#### Responses
+
+- `200`: Returned backups for the given database.
+- `401`: Missing or invalid authorization token.
+- `404`: Database with the given ID was not found.
+- `422`: Remote database backups are not supported
+
 # Delete connection (/docs/management-api/endpoints/connections/delete-connections-by-id)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -83114,36 +83144,6 @@ Creates a new connection for the specified database.
 - [`Get connection`](https://www.prisma.io/docs/management-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
 - [`List connections`](https://www.prisma.io/docs/management-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
 - [`Rotate connection credentials`](https://www.prisma.io/docs/management-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
-
-# Get list of backups (/docs/management-api/endpoints/database-backups/get-databases-by-database-id-backups)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Returns backups for the specified database.
-
-Location: Management API > Endpoints > Database Backups > Get list of backups
-
-Returns backups for the specified database.
-
-## API reference
-
-### Get list of backups
-
-`GET /v1/databases/{databaseId}/backups`
-
-Returns backups for the specified database.
-
-#### Parameters
-
-- `databaseId` (path, string, required)
-- `limit` (query, integer, optional)
-
-#### Responses
-
-- `200`: Returned backups for the given database.
-- `401`: Missing or invalid authorization token.
-- `404`: Database with the given ID was not found.
-- `422`: Remote database backups are not supported
 
 # Get database usage metrics (/docs/management-api/endpoints/database-usage/get-databases-by-database-id-usage)
 
@@ -124213,6 +124213,407 @@ If you want to deploy an app using Turso, you can follow the instructions [here]
 - [`Deploy to Deno Deploy`](https://www.prisma.io/docs/orm/prisma-client/deployment/edge/deploy-to-deno-deploy)
 - [`Deploy to Vercel Edge Functions & Middleware`](https://www.prisma.io/docs/orm/prisma-client/deployment/edge/deploy-to-vercel): Learn the things you need to know in order to deploy an Edge function that uses Prisma Client for talking to a database
 
+# Deploy to AWS Lambda (/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+
+Location: ORM > Prisma Client > Deployment > Serverless > Deploy to AWS Lambda
+
+> [!NOTE]
+> Quick summary
+> 
+> This guide explains how to avoid common issues when deploying a project using Prisma ORM to [AWS Lambda](https://aws.amazon.com/lambda/).
+
+<details>
+  <summary>
+    Questions answered in this page
+  </summary>
+
+  * How to deploy Prisma to AWS Lambda?
+  * Which binaryTargets should I configure?
+  * How to handle connection pooling on Lambda?
+</details>
+
+While a deployment framework is not required to deploy to AWS Lambda, this guide covers deploying with:
+
+* [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework from AWS that can be used in the creation of serverless applications. AWS SAM includes the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli), which you can use to build, test, and deploy your application.
+
+* [Serverless Framework](https://www.serverless.com/framework) provides a CLI that helps with workflow automation and AWS resource provisioning. While Prisma ORM works well with the Serverless Framework "out of the box", there are a few improvements that can be made within your project to ensure a smooth deployment and performance. There is also additional configuration that is needed if you are using the [`serverless-webpack`](https://www.npmjs.com/package/serverless-webpack) or [`serverless-bundle`](https://www.npmjs.com/package/serverless-bundle) libraries.
+
+* [SST](https://sst.dev/) provides tools that make it easy for developers to define, test, debug, and deploy their applications. Prisma ORM works well with SST but must be configured so that your schema is correctly packaged by SST.
+
+General considerations when deploying to AWS Lambda [#general-considerations-when-deploying-to-aws-lambda]
+
+This section covers changes you will need to make to your application, regardless of framework. After following these steps, follow the steps for your framework.
+
+* [Deploying with AWS SAM](#deploying-with-aws-sam)
+* [Deploying with the Serverless Framework](#deploying-with-the-serverless-framework)
+* [Deploying with SST](#deploying-with-sst)
+
+Connection pooling [#connection-pooling]
+
+In a Function as a Service (FaaS) environment, each function invocation typically creates a new database connection. Unlike a continuously running Node.js server, these connections aren't maintained between executions. For better performance in serverless environments, implement connection pooling to reuse existing database connections rather than creating new ones for each function call.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to solve this issue. For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+Deploying with AWS SAM [#deploying-with-aws-sam]
+
+Loading environment variables [#loading-environment-variables]
+
+AWS SAM does not directly support loading values from a `.env` file. You will have to use one of AWS's services to store and retrieve these parameters. [This guide](https://medium.com/bip-xtech/a-practical-guide-to-surviving-aws-sam-d8ab141b3d25) provides a great overview of your options and how to store and retrieve values in Parameters, SSM, Secrets Manager, and more.
+
+Deploying with the Serverless Framework [#deploying-with-the-serverless-framework]
+
+Loading environment variables via a .env file [#loading-environment-variables-via-a-env-file]
+
+Your functions will need the `DATABASE_URL` environment variable to access the database. The `serverless-dotenv-plugin` will allow you to use your `.env` file in your deployments.
+
+First, make sure that the plugin is installed:
+
+  
+
+#### bun
+
+```bash
+bun add --dev serverless-dotenv-plugin
+```
+
+#### pnpm
+
+```bash
+pnpm add -D serverless-dotenv-plugin
+```
+
+#### yarn
+
+```bash
+yarn add --dev serverless-dotenv-plugin
+```
+
+#### npm
+
+```bash
+npm install -D serverless-dotenv-plugin
+```
+
+Then, add `serverless-dotenv-plugin` to your list of plugins in `serverless.yml`:
+
+```yaml title="serverless.yml"
+plugins:
+  - serverless-dotenv-plugin
+```
+
+The environment variables in your `.env` file will now be automatically loaded on package or deployment.
+
+```bash
+serverless package
+```
+
+```bash
+Running "serverless" from node_modules
+DOTENV: Loading environment variables from .env:
+         - DATABASE_URL
+
+Packaging deployment-example-sls for stage dev (us-east-1)
+.
+```
+
+Deploying with SST [#deploying-with-sst]
+
+Working with environment variables [#working-with-environment-variables]
+
+While SST supports `.env` files, [it is not recommended](https://v2.sst.dev/config#should-i-use-configsecret-or-env-for-secrets). SST recommends using `Config` to access these environment variables in a secure way.
+
+The SST guide [available here](https://v2.sst.dev/config#overview) is a step-by-step guide to get started with `Config`. Assuming you have created a new secret called `DATABASE_URL` and have [bound that secret to your app](https://v2.sst.dev/config#bind-the-config), you can set up `PrismaClient` with the following:
+
+```ts title="prisma.ts" showLineNumbers
+import { PrismaClient } from "./generated/client";
+import { Config } from "sst/node/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+
+const adapter = new PrismaPg({ connectionString });
+
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({ adapter });
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+export default prisma;
+```
+
+## Related pages
+
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Azure Functions (/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+
+Location: ORM > Prisma Client > Deployment > Serverless > Deploy to Azure Functions
+
+This guide explains how to avoid common issues when deploying a Node.js-based function app to Azure using [Azure Functions](https://azure.microsoft.com/en-us/products/functions/).
+
+Azure Functions is a serverless deployment platform. You do not need to maintain infrastructure to deploy your code. With Azure Functions, the fundamental building block is the [function app](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob\&pivots=programming-language-typescript). A function app provides an execution context in Azure in which your functions run. It is comprised of one or more individual functions that Azure manages, deploys, and scales together. You can organize and collectively manage multiple functions as a single logical unit.
+
+Prerequisites [#prerequisites]
+
+* An existing function app project with Prisma ORM
+
+Things to know [#things-to-know]
+
+While Prisma ORM works well with Azure functions, there are a few things to take note of before deploying your application.
+
+Connection pooling [#connection-pooling]
+
+Generally, when you use a FaaS (Function as a Service) environment to interact with a database, every function invocation can result in a new connection to the database. This is not a problem with a constantly running Node.js server. Therefore, it is beneficial to pool DB connections to get better performance. To solve this issue, you can use [Prisma Postgres](https://www.prisma.io/docs/postgres). For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+Summary [#summary]
+
+For more insight into Prisma Client's API, explore the function handlers and check out the [Prisma Client API Reference](https://www.prisma.io/docs/orm/reference/prisma-client-reference)
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Netlify (/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+
+Location: ORM > Prisma Client > Deployment > Serverless > Deploy to Netlify
+
+This guide covers the steps you will need to take in order to deploy your application that uses Prisma ORM to [Netlify](https://www.netlify.com/).
+
+Netlify is a cloud platform for continuous deployment, static sites, and serverless functions. Netlify integrates seamlessly with GitHub for automatic deployments upon commits. When you follow the steps below, you will use that approach to create a CI/CD pipeline that deploys your application from a GitHub repository.
+
+Prerequisites [#prerequisites]
+
+Before you can follow this guide, you will need to set up your application to begin deploying to Netlify. We recommend the ["Get started with Netlify"](https://docs.netlify.com/get-started/) guide for a quick overview and ["Deploy functions"](https://docs.netlify.com/functions/deploy/?fn-language=ts) for an in-depth look at your deployment options.
+
+Store environment variables in Netlify [#store-environment-variables-in-netlify]
+
+We recommend keeping `.env` files in your `.gitignore` in order to prevent leakage of sensitive connection strings. Instead, you can use the Netlify CLI to [import values into netlify directly](https://docs.netlify.com/environment-variables/get-started/#import-variables-with-the-netlify-cli).
+
+Assuming you have a file like the following:
+
+```text title=".env"
+# Connect to DB
+DATABASE_URL="postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__"
+```
+
+You can upload the file as environment variables using the `env:import` command:
+
+```bash no-break-terminal
+netlify env:import .env
+```
+
+```bash
+site: my-very-very-cool-site
+---------------------------------------------------------------------------------.
+                         Imported environment variables                          |
+---------------------------------------------------------------------------------|
+     Key      |                              Value                               |
+--------------|------------------------------------------------------------------|
+ DATABASE_URL | postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__ |
+---------------------------------------------------------------------------------'
+```
+
+<details>
+  <summary>
+    If you are not using an 
+
+    `.env`
+
+     file
+  </summary>
+
+  If you are storing your database connection string and other environment variables in a different method, you will need to manually upload your environment variables to Netlify. These options are [discussed in Netlify's documentation](https://docs.netlify.com/environment-variables/get-started/) and one method, uploading via the UI, is described below.
+
+  1. Open the Netlify admin UI for the site. You can use Netlify CLI as follows:
+     ```bash
+     netlify open --admin
+     ```
+  2. Click **Site settings**:
+     <img alt="Netlify admin UI" src="/img/orm/prisma-client/deployment/serverless/images/500-06-deploy-to-netlify-site-settings.png" width="1402" height="506" />
+  3. Navigate to **Build & deploy** in the sidebar on the left and select **Environment**.
+  4. Click **Edit variables** and create a variable with the key `DATABASE_URL` and set its value to your database connection string.
+     <img alt="Netlify environment variables" src="/img/orm/prisma-client/deployment/serverless/images/500-07-deploy-to-netlify-environment-variables-settings.png" width="2442" height="980" />
+  5. Click **Save**.
+</details>
+
+Now start a new Netlify build and deployment so that the new build can use the newly uploaded environment variables.
+
+```bash
+netlify deploy
+```
+
+You can now test the deployed application.
+
+Connection pooling [#connection-pooling]
+
+When you use a Function-as-a-Service provider, like Netlify, it is beneficial to pool database connections for performance reasons. This is because every function invocation may result in a new connection to your database which can quickly run out of open connections.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
+
+For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Vercel (/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+Location: ORM > Prisma Client > Deployment > Serverless > Deploy to Vercel
+
+This guide takes you through the steps to set up and deploy a serverless application that uses Prisma to [Vercel](https://vercel.com/).
+
+Vercel is a cloud platform that hosts static sites, serverless, and edge functions. You can integrate a Vercel project with a GitHub repository to allow you to deploy automatically when you make new commits.
+
+We created an [example application](https://github.com/prisma/deployment-example-vercel) using Next.js you can use as a reference when deploying an application using Prisma to Vercel.
+
+While our examples use Next.js, you can deploy other applications to Vercel. See [Using Express with Vercel](https://vercel.com/guides/using-express-with-vercel) and [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt) as examples of other options.
+
+Build configuration [#build-configuration]
+
+Updating Prisma Client during Vercel builds [#updating-prisma-client-during-vercel-builds]
+
+Vercel will automatically cache dependencies on deployment. For most applications, this will not cause any issues. However, for Prisma ORM, it may result in an outdated version of Prisma Client on a change in your Prisma schema. To avoid this issue, add `prisma generate` to the `postinstall` script of your application:
+
+```json title="package.json" showLineNumbers
+{
+  ...
+  "scripts": {
+    "postinstall": "prisma generate" // [!code ++]
+  }
+  ...
+}
+```
+
+This will re-generate Prisma Client at build time so that your deployment always has an up-to-date client. Another option to avoid an outdated Prisma Client is to check your client into version control. This way each deployment is guaranteed to include the correct Prisma Client.
+
+> [!NOTE]
+> If you see `prisma: command not found` errors during your deployment to Vercel, you are missing `prisma` in your dependencies. By default, `prisma` is a dev dependency and may need to be moved to be a standard dependency.
+
+CI/CD workflows [#cicd-workflows]
+
+In a more sophisticated CI/CD environment, you may additionally want to update the database schema with any migrations you have performed during local development. You can do this using the [`prisma migrate deploy`](https://www.prisma.io/docs/orm/reference/prisma-cli-reference#migrate-deploy) command.
+
+In that case, you could create a custom build command in your `package.json` (e.g. called `vercel-build`) that looks as follows:
+
+```json title="package.json"
+{
+  ...
+  "scripts" {
+    "vercel-build": "prisma generate && prisma migrate deploy && next build", // [!code ++]
+  }
+  ...
+}
+```
+
+You can invoke this script inside your CI/CD pipeline using the following command:
+
+  
+
+#### bun
+
+```bash
+bun run vercel-build
+```
+
+#### pnpm
+
+```bash
+pnpm run vercel-build
+```
+
+#### yarn
+
+```bash
+yarn vercel-build
+```
+
+#### npm
+
+```bash
+npm run vercel-build
+```
+
+Add a separate database for preview deployments [#add-a-separate-database-for-preview-deployments]
+
+By default, your application will have a single *production* environment associated with the `main` git branch of your repository. If you open a pull request to change your application, Vercel creates a new *preview* environment.
+
+Vercel uses the `DATABASE_URL` environment variable you define when you import the project for both the production and preview environments. This causes problems if you create a pull request with a database schema migration because the pull request will change the schema of the production database.
+
+To prevent this, use a *second* hosted database to handle preview deployments. Once you have that connection string, you can add a `DATABASE_URL` for your preview environment using the Vercel dashboard:
+
+1. Click the **Settings** tab of your Vercel project.
+
+2. Click **Environment variables**.
+
+3. Add an environment variable with a key of `DATABASE_URL` and select only the **Preview** environment option:
+
+   <img alt="Add an environment variable for the preview environment" src="/img/orm/prisma-client/deployment/serverless/images/300-60-deploy-to-vercel-preview-environment-variable.png" width="2574" height="1348" />
+
+4. Set the value to the connection string of your second database:
+
+   ```bash
+   postgresql://dbUsername:dbPassword@myhost:5432/mydb
+   ```
+
+5. Click **Save**.
+
+Connection pooling [#connection-pooling]
+
+When you use a Function-as-a-Service provider, like Vercel Serverless functions, every invocation may result in a new connection to your database. This can cause your database to quickly run out of open connections and cause your application to stall. For this reason, pooling connections to your database is essential.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
+
+For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+Using Prisma ORM with Vercel Fluid [#using-prisma-orm-with-vercel-fluid]
+
+[Fluid compute](https://vercel.com/fluid) is a compute model from Vercel that combines the flexibility of serverless with the stability of servers, making it ideal for dynamic workloads such as streaming data and AI APIs. Vercel's Fluid compute [supports both edge and Node.js runtimes](https://vercel.com/docs/fluid-compute#available-runtime-support). A common challenge in traditional serverless platforms is leaked database connections when functions are suspended and pools can't close idle connections. Fluid provides [`attachDatabasePool`](https://vercel.com/blog/the-real-serverless-compute-to-database-connection-problem-solved) to ensure idle connections are released before a function is suspended.
+
+Use `attachDatabasePool` together with [Prisma's driver adapters](https://www.prisma.io/docs/orm/core-concepts/supported-databases/database-drivers) to safely manage connections in Fluid:
+
+```ts
+import { Pool } from "pg";
+import { attachDatabasePool } from "@vercel/functions";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/client";
+
+const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
+
+attachDatabasePool(pool);
+
+export const prisma = new PrismaClient({
+  adapter: new PrismaPg(pool),
+});
+```
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+
 # Deploy to Fly.io (/docs/orm/prisma-client/deployment/traditional/deploy-to-flyio)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -125200,407 +125601,6 @@ Congratulations! You've successfully deployed a Node.js application using Prisma
 - [`Deploy to Koyeb`](https://www.prisma.io/docs/orm/prisma-client/deployment/traditional/deploy-to-koyeb): Learn how to deploy a Node.js server that uses Prisma ORM to Koyeb Serverless Platform
 - [`Deploy to Railway`](https://www.prisma.io/docs/orm/prisma-client/deployment/traditional/deploy-to-railway): Learn how to deploy an app that uses Prisma ORM and Prisma Postgres to Railway
 - [`Deploy to Render`](https://www.prisma.io/docs/orm/prisma-client/deployment/traditional/deploy-to-render): Learn how to deploy a Node.js server that uses Prisma ORM to Render
-
-# Deploy to AWS Lambda (/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-
-Location: ORM > Prisma Client > Deployment > Serverless > Deploy to AWS Lambda
-
-> [!NOTE]
-> Quick summary
-> 
-> This guide explains how to avoid common issues when deploying a project using Prisma ORM to [AWS Lambda](https://aws.amazon.com/lambda/).
-
-<details>
-  <summary>
-    Questions answered in this page
-  </summary>
-
-  * How to deploy Prisma to AWS Lambda?
-  * Which binaryTargets should I configure?
-  * How to handle connection pooling on Lambda?
-</details>
-
-While a deployment framework is not required to deploy to AWS Lambda, this guide covers deploying with:
-
-* [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework from AWS that can be used in the creation of serverless applications. AWS SAM includes the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli), which you can use to build, test, and deploy your application.
-
-* [Serverless Framework](https://www.serverless.com/framework) provides a CLI that helps with workflow automation and AWS resource provisioning. While Prisma ORM works well with the Serverless Framework "out of the box", there are a few improvements that can be made within your project to ensure a smooth deployment and performance. There is also additional configuration that is needed if you are using the [`serverless-webpack`](https://www.npmjs.com/package/serverless-webpack) or [`serverless-bundle`](https://www.npmjs.com/package/serverless-bundle) libraries.
-
-* [SST](https://sst.dev/) provides tools that make it easy for developers to define, test, debug, and deploy their applications. Prisma ORM works well with SST but must be configured so that your schema is correctly packaged by SST.
-
-General considerations when deploying to AWS Lambda [#general-considerations-when-deploying-to-aws-lambda]
-
-This section covers changes you will need to make to your application, regardless of framework. After following these steps, follow the steps for your framework.
-
-* [Deploying with AWS SAM](#deploying-with-aws-sam)
-* [Deploying with the Serverless Framework](#deploying-with-the-serverless-framework)
-* [Deploying with SST](#deploying-with-sst)
-
-Connection pooling [#connection-pooling]
-
-In a Function as a Service (FaaS) environment, each function invocation typically creates a new database connection. Unlike a continuously running Node.js server, these connections aren't maintained between executions. For better performance in serverless environments, implement connection pooling to reuse existing database connections rather than creating new ones for each function call.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to solve this issue. For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-Deploying with AWS SAM [#deploying-with-aws-sam]
-
-Loading environment variables [#loading-environment-variables]
-
-AWS SAM does not directly support loading values from a `.env` file. You will have to use one of AWS's services to store and retrieve these parameters. [This guide](https://medium.com/bip-xtech/a-practical-guide-to-surviving-aws-sam-d8ab141b3d25) provides a great overview of your options and how to store and retrieve values in Parameters, SSM, Secrets Manager, and more.
-
-Deploying with the Serverless Framework [#deploying-with-the-serverless-framework]
-
-Loading environment variables via a .env file [#loading-environment-variables-via-a-env-file]
-
-Your functions will need the `DATABASE_URL` environment variable to access the database. The `serverless-dotenv-plugin` will allow you to use your `.env` file in your deployments.
-
-First, make sure that the plugin is installed:
-
-  
-
-#### bun
-
-```bash
-bun add --dev serverless-dotenv-plugin
-```
-
-#### pnpm
-
-```bash
-pnpm add -D serverless-dotenv-plugin
-```
-
-#### yarn
-
-```bash
-yarn add --dev serverless-dotenv-plugin
-```
-
-#### npm
-
-```bash
-npm install -D serverless-dotenv-plugin
-```
-
-Then, add `serverless-dotenv-plugin` to your list of plugins in `serverless.yml`:
-
-```yaml title="serverless.yml"
-plugins:
-  - serverless-dotenv-plugin
-```
-
-The environment variables in your `.env` file will now be automatically loaded on package or deployment.
-
-```bash
-serverless package
-```
-
-```bash
-Running "serverless" from node_modules
-DOTENV: Loading environment variables from .env:
-         - DATABASE_URL
-
-Packaging deployment-example-sls for stage dev (us-east-1)
-.
-```
-
-Deploying with SST [#deploying-with-sst]
-
-Working with environment variables [#working-with-environment-variables]
-
-While SST supports `.env` files, [it is not recommended](https://v2.sst.dev/config#should-i-use-configsecret-or-env-for-secrets). SST recommends using `Config` to access these environment variables in a secure way.
-
-The SST guide [available here](https://v2.sst.dev/config#overview) is a step-by-step guide to get started with `Config`. Assuming you have created a new secret called `DATABASE_URL` and have [bound that secret to your app](https://v2.sst.dev/config#bind-the-config), you can set up `PrismaClient` with the following:
-
-```ts title="prisma.ts" showLineNumbers
-import { PrismaClient } from "./generated/client";
-import { Config } from "sst/node/config";
-import { PrismaPg } from "@prisma/adapter-pg";
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-
-const adapter = new PrismaPg({ connectionString });
-
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({ adapter });
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
-```
-
-## Related pages
-
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Azure Functions (/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-
-Location: ORM > Prisma Client > Deployment > Serverless > Deploy to Azure Functions
-
-This guide explains how to avoid common issues when deploying a Node.js-based function app to Azure using [Azure Functions](https://azure.microsoft.com/en-us/products/functions/).
-
-Azure Functions is a serverless deployment platform. You do not need to maintain infrastructure to deploy your code. With Azure Functions, the fundamental building block is the [function app](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob\&pivots=programming-language-typescript). A function app provides an execution context in Azure in which your functions run. It is comprised of one or more individual functions that Azure manages, deploys, and scales together. You can organize and collectively manage multiple functions as a single logical unit.
-
-Prerequisites [#prerequisites]
-
-* An existing function app project with Prisma ORM
-
-Things to know [#things-to-know]
-
-While Prisma ORM works well with Azure functions, there are a few things to take note of before deploying your application.
-
-Connection pooling [#connection-pooling]
-
-Generally, when you use a FaaS (Function as a Service) environment to interact with a database, every function invocation can result in a new connection to the database. This is not a problem with a constantly running Node.js server. Therefore, it is beneficial to pool DB connections to get better performance. To solve this issue, you can use [Prisma Postgres](https://www.prisma.io/docs/postgres). For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-Summary [#summary]
-
-For more insight into Prisma Client's API, explore the function handlers and check out the [Prisma Client API Reference](https://www.prisma.io/docs/orm/reference/prisma-client-reference)
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Netlify (/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-
-Location: ORM > Prisma Client > Deployment > Serverless > Deploy to Netlify
-
-This guide covers the steps you will need to take in order to deploy your application that uses Prisma ORM to [Netlify](https://www.netlify.com/).
-
-Netlify is a cloud platform for continuous deployment, static sites, and serverless functions. Netlify integrates seamlessly with GitHub for automatic deployments upon commits. When you follow the steps below, you will use that approach to create a CI/CD pipeline that deploys your application from a GitHub repository.
-
-Prerequisites [#prerequisites]
-
-Before you can follow this guide, you will need to set up your application to begin deploying to Netlify. We recommend the ["Get started with Netlify"](https://docs.netlify.com/get-started/) guide for a quick overview and ["Deploy functions"](https://docs.netlify.com/functions/deploy/?fn-language=ts) for an in-depth look at your deployment options.
-
-Store environment variables in Netlify [#store-environment-variables-in-netlify]
-
-We recommend keeping `.env` files in your `.gitignore` in order to prevent leakage of sensitive connection strings. Instead, you can use the Netlify CLI to [import values into netlify directly](https://docs.netlify.com/environment-variables/get-started/#import-variables-with-the-netlify-cli).
-
-Assuming you have a file like the following:
-
-```text title=".env"
-# Connect to DB
-DATABASE_URL="postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__"
-```
-
-You can upload the file as environment variables using the `env:import` command:
-
-```bash no-break-terminal
-netlify env:import .env
-```
-
-```bash
-site: my-very-very-cool-site
----------------------------------------------------------------------------------.
-                         Imported environment variables                          |
----------------------------------------------------------------------------------|
-     Key      |                              Value                               |
---------------|------------------------------------------------------------------|
- DATABASE_URL | postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__ |
----------------------------------------------------------------------------------'
-```
-
-<details>
-  <summary>
-    If you are not using an 
-
-    `.env`
-
-     file
-  </summary>
-
-  If you are storing your database connection string and other environment variables in a different method, you will need to manually upload your environment variables to Netlify. These options are [discussed in Netlify's documentation](https://docs.netlify.com/environment-variables/get-started/) and one method, uploading via the UI, is described below.
-
-  1. Open the Netlify admin UI for the site. You can use Netlify CLI as follows:
-     ```bash
-     netlify open --admin
-     ```
-  2. Click **Site settings**:
-     <img alt="Netlify admin UI" src="/img/orm/prisma-client/deployment/serverless/images/500-06-deploy-to-netlify-site-settings.png" width="1402" height="506" />
-  3. Navigate to **Build & deploy** in the sidebar on the left and select **Environment**.
-  4. Click **Edit variables** and create a variable with the key `DATABASE_URL` and set its value to your database connection string.
-     <img alt="Netlify environment variables" src="/img/orm/prisma-client/deployment/serverless/images/500-07-deploy-to-netlify-environment-variables-settings.png" width="2442" height="980" />
-  5. Click **Save**.
-</details>
-
-Now start a new Netlify build and deployment so that the new build can use the newly uploaded environment variables.
-
-```bash
-netlify deploy
-```
-
-You can now test the deployed application.
-
-Connection pooling [#connection-pooling]
-
-When you use a Function-as-a-Service provider, like Netlify, it is beneficial to pool database connections for performance reasons. This is because every function invocation may result in a new connection to your database which can quickly run out of open connections.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
-
-For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Vercel (/docs/orm/prisma-client/deployment/serverless/deploy-to-vercel)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-Location: ORM > Prisma Client > Deployment > Serverless > Deploy to Vercel
-
-This guide takes you through the steps to set up and deploy a serverless application that uses Prisma to [Vercel](https://vercel.com/).
-
-Vercel is a cloud platform that hosts static sites, serverless, and edge functions. You can integrate a Vercel project with a GitHub repository to allow you to deploy automatically when you make new commits.
-
-We created an [example application](https://github.com/prisma/deployment-example-vercel) using Next.js you can use as a reference when deploying an application using Prisma to Vercel.
-
-While our examples use Next.js, you can deploy other applications to Vercel. See [Using Express with Vercel](https://vercel.com/guides/using-express-with-vercel) and [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt) as examples of other options.
-
-Build configuration [#build-configuration]
-
-Updating Prisma Client during Vercel builds [#updating-prisma-client-during-vercel-builds]
-
-Vercel will automatically cache dependencies on deployment. For most applications, this will not cause any issues. However, for Prisma ORM, it may result in an outdated version of Prisma Client on a change in your Prisma schema. To avoid this issue, add `prisma generate` to the `postinstall` script of your application:
-
-```json title="package.json" showLineNumbers
-{
-  ...
-  "scripts": {
-    "postinstall": "prisma generate" // [!code ++]
-  }
-  ...
-}
-```
-
-This will re-generate Prisma Client at build time so that your deployment always has an up-to-date client. Another option to avoid an outdated Prisma Client is to check your client into version control. This way each deployment is guaranteed to include the correct Prisma Client.
-
-> [!NOTE]
-> If you see `prisma: command not found` errors during your deployment to Vercel, you are missing `prisma` in your dependencies. By default, `prisma` is a dev dependency and may need to be moved to be a standard dependency.
-
-CI/CD workflows [#cicd-workflows]
-
-In a more sophisticated CI/CD environment, you may additionally want to update the database schema with any migrations you have performed during local development. You can do this using the [`prisma migrate deploy`](https://www.prisma.io/docs/orm/reference/prisma-cli-reference#migrate-deploy) command.
-
-In that case, you could create a custom build command in your `package.json` (e.g. called `vercel-build`) that looks as follows:
-
-```json title="package.json"
-{
-  ...
-  "scripts" {
-    "vercel-build": "prisma generate && prisma migrate deploy && next build", // [!code ++]
-  }
-  ...
-}
-```
-
-You can invoke this script inside your CI/CD pipeline using the following command:
-
-  
-
-#### bun
-
-```bash
-bun run vercel-build
-```
-
-#### pnpm
-
-```bash
-pnpm run vercel-build
-```
-
-#### yarn
-
-```bash
-yarn vercel-build
-```
-
-#### npm
-
-```bash
-npm run vercel-build
-```
-
-Add a separate database for preview deployments [#add-a-separate-database-for-preview-deployments]
-
-By default, your application will have a single *production* environment associated with the `main` git branch of your repository. If you open a pull request to change your application, Vercel creates a new *preview* environment.
-
-Vercel uses the `DATABASE_URL` environment variable you define when you import the project for both the production and preview environments. This causes problems if you create a pull request with a database schema migration because the pull request will change the schema of the production database.
-
-To prevent this, use a *second* hosted database to handle preview deployments. Once you have that connection string, you can add a `DATABASE_URL` for your preview environment using the Vercel dashboard:
-
-1. Click the **Settings** tab of your Vercel project.
-
-2. Click **Environment variables**.
-
-3. Add an environment variable with a key of `DATABASE_URL` and select only the **Preview** environment option:
-
-   <img alt="Add an environment variable for the preview environment" src="/img/orm/prisma-client/deployment/serverless/images/300-60-deploy-to-vercel-preview-environment-variable.png" width="2574" height="1348" />
-
-4. Set the value to the connection string of your second database:
-
-   ```bash
-   postgresql://dbUsername:dbPassword@myhost:5432/mydb
-   ```
-
-5. Click **Save**.
-
-Connection pooling [#connection-pooling]
-
-When you use a Function-as-a-Service provider, like Vercel Serverless functions, every invocation may result in a new connection to your database. This can cause your database to quickly run out of open connections and cause your application to stall. For this reason, pooling connections to your database is essential.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
-
-For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-Using Prisma ORM with Vercel Fluid [#using-prisma-orm-with-vercel-fluid]
-
-[Fluid compute](https://vercel.com/fluid) is a compute model from Vercel that combines the flexibility of serverless with the stability of servers, making it ideal for dynamic workloads such as streaming data and AI APIs. Vercel's Fluid compute [supports both edge and Node.js runtimes](https://vercel.com/docs/fluid-compute#available-runtime-support). A common challenge in traditional serverless platforms is leaked database connections when functions are suspended and pools can't close idle connections. Fluid provides [`attachDatabasePool`](https://vercel.com/blog/the-real-serverless-compute-to-database-connection-problem-solved) to ensure idle connections are released before a function is suspended.
-
-Use `attachDatabasePool` together with [Prisma's driver adapters](https://www.prisma.io/docs/orm/core-concepts/supported-databases/database-drivers) to safely manage connections in Fluid:
-
-```ts
-import { Pool } from "pg";
-import { attachDatabasePool } from "@vercel/functions";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/client";
-
-const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
-
-attachDatabasePool(pool);
-
-export const prisma = new PrismaClient({
-  adapter: new PrismaPg(pool),
-});
-```
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
 
 # Query optimization (/docs/orm/prisma-client/queries/advanced/query-optimization-performance)
 

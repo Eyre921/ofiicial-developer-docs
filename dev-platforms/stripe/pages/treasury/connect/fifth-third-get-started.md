@@ -8,6 +8,10 @@ path: treasury/connect/fifth-third-get-started
 
 Get started with Treasury for platforms.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 This guide describes how to get started with Stripe Treasury for platforms using Fifth Third Bank.
 
 ## Before you integrate

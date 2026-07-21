@@ -8,6 +8,10 @@ path: treasury/connect/account-management/accounts-structure
 
 Learn how the account components of Treasury for platforms interact.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Use this guide to understand the technical components of Stripe Treasury for platforms, specifically the different account types.
 
 ## Account types

@@ -529,6 +529,11 @@ components:
                 parent folder.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
             external_sync_info:
@@ -549,6 +554,7 @@ components:
             - supported_usages
             - access_info
             - children_count
+            - document_count
       discriminator:
         propertyName: type
       title: DocumentsGetResponse
@@ -602,10 +608,10 @@ components:
     "creator_name": "Alice Johnson",
     "creator_email": "alice.johnson@elevenlabs.io",
     "role": "admin",
-    "anonymous_access_level_override": "admin",
+    "anonymous_access_level_override": "viewer",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. This guide provides details on how to use our API programmatically.</p>",
+  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. This guide provides all the necessary information to integrate with our platform.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685606400,
@@ -624,10 +630,14 @@ components:
     "next_refresh_by": 1688899200
   },
   "content_format": "html",
-  "folder_parent_id": "root_folder_01",
+  "folder_parent_id": "folder_9X7b2LqP",
   "folder_path": [
     {
-      "id": "root_folder_01",
+      "id": "folder_root",
+      "name": "Root"
+    },
+    {
+      "id": "folder_9X7b2LqP",
       "name": "API Documentation"
     }
   ]

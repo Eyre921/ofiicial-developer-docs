@@ -102525,6 +102525,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 
 ### Postgres compute
 
+- **Postgres 19 support**: We support Postgres 14 through 18 today, with Postgres 19 support on the way.
 - **Performance optimizations for large computes**: We're working on improving startup performance for larger compute instances after restarts.
 - Fixed compute sizes up to 128 CUs
 - Autoscaling up to 60 CUs
@@ -102546,6 +102547,13 @@ We're accelerating work on improving and scaling the core database on Neon as we
 
 ## What we've shipped recently 🚢
 
+- **Neon backend services in beta**: Object Storage, Functions, and AI Gateway have graduated from private preview to beta and are available to everyone in AWS US East (Ohio). Declare your whole backend in one `neon.ts` file and it branches with your data. [Read the announcement](https://neon.com/blog/neon-backend-is-beta).
+- **New TypeScript SDK for the Neon API**: `@neon/sdk` is a fetch-based, zero-dependency client that covers the full Neon Platform API, including the new backend services, and replaces `@neondatabase/api-client` as the recommended client. [Learn more](https://neon.com/docs/reference/typescript-sdk).
+- **Passkey support**: Sign in to Neon with a passkey using device biometrics or a security key. Passkeys satisfy organization-level 2FA requirements. [Learn more](https://neon.com/docs/manage/accounts#passkeys).
+- **Git-style diffs in the Neon CLI**: The new `neon diff` command shows schema changes between your current branch and any other branch, and the config commands now report their changes as a git diff. [Learn more](https://neon.com/docs/cli).
+- **New `neon api` command**: Call any Neon Platform API route from the terminal using your existing CLI login, without hand-building `curl` requests or handing agents raw API keys. [Learn more](https://neon.com/docs/cli/api).
+- **Cmd+K in the Neon Console**: Press `Cmd+K` (or `Ctrl+K`) anywhere in the Console to open a searchable command bar with actions scoped to your current branch and project.
+- **Neon CLI is now `neon`**: Install the CLI as `neon` (`npm i -g neon`) instead of `neonctl`, scaffold a `neon.ts` config with `neon config init`, and print your current branch with no network call using `neon status`. [Learn more](https://neon.com/docs/cli/install).
 - **Lakebase Search**: Vector and BM25 full-text search are now available to all users on Postgres 16+ through the `lakebase_vector` and `lakebase_text` extensions, so you can run semantic, keyword, and hybrid search in Postgres without a separate search stack. [Learn more](https://neon.com/docs/ai/lakebase-search)
 - **neon.ts**: A TypeScript config file you commit to your repo to declare branch policies, compute settings, and Neon services as code. Apply changes with `neon deploy` and preview them with `neon config plan`. [Learn more](https://neon.com/docs/reference/neon-ts)
 - **Branch-first development workflow**: New CLI commands (`neon link`, `neon checkout`, `neon env pull`, `neon psql`, `neon data-api`) bring project linking and branch switching to the terminal. Your `DATABASE_URL` updates automatically when you check out a branch. [Learn more](https://neon.com/docs/cli)
@@ -108185,62 +108193,53 @@ Only Admins can rename an organization. Go to the **Settings** page under **Gene
 
 --- [Document source](https://neon.com/docs/manage/orgs-project-transfer.md) ---
 
-> Summary: Project transfer moves Neon projects from one organization to another without changing credentials or connection strings, so connected applications keep working. You can transfer in bulk via the Console or the API. Admin rights in the source org and at least Member rights in the destination are required. Projects with GitHub or Vercel integrations cannot be transferred, and Vercel-managed organizations are not supported.
+> Summary: Move Neon projects between organizations without changing credentials or connection strings, via the Console or API. The destination organization's plan must be the same tier or higher than the source.
 
 # Transfer projects
 
-You can transfer your projects to any organization you are a member of. You can do this individually from project **Settings**, in bulk from organization **Settings**, or via the Neon API.
+Move projects between organizations you belong to in the Neon Console or via the Neon API. You can also hand a project to a different Neon account with a claim link.
 
-**Note:** Transferring a project does not affect its credentials or connection string. Your connected applications will continue to work without any disruption.
+Transferring a project does not change its credentials or connection string, so connected applications keep working. Billing and usage move to the destination organization, and project limits follow the destination organization's [plan](https://neon.com/docs/introduction/plans).
 
-## Limits & requirements
+Before you transfer, review [Limits and requirements](https://neon.com/docs/manage/orgs-project-transfer#limits-and-requirements). In particular, disconnect any project integrations first, and make sure the destination organization's plan is the same tier or higher than the source organization's.
 
-- Transfer up to **200** projects at a time in the Console, or **400** via the API.
-- Limited by the destination org's plan.
-- Requires **Admin** rights in the source org and at least **Member** rights in the destination org.
-- Projects with GitHub or Vercel integrations cannot be transferred.
-- Vercel-managed orgs are not supported.
-- Projects can only be transferred to organizations you belong to, not to personal Neon accounts.
+## Ways to transfer
 
-## Transfer a single project
+**Console (single)**
 
-Navigate to the **Settings** page of the project you want to transfer, and select **Transfer** from the sidebar. Then use the dialog to select the organization you want to transfer this project into.
-
-Since this removes the project from your current org, you need **Admin** rights in this org to move the project (like if you wanted to delete the project). You only need **Member** access in the destination org.
+1. Open the project's **Settings** page.
+2. Select **Transfer** from the sidebar.
+3. Choose the destination organization.
 
 ![transfer single project to another org](https://neon.com/docs/manage/transfer_project.png)
 
-## Transfer multiple projects at once
+**Alternative: create a claim link**
 
-Use the org switcher in the top navbar to select the Organization that owns the projects you want to move. From Organization **Settings**, select **Transfer projects** from the sidebar and use the dialog to:
+The steps above transfer a project to one of your own organizations. As an alternative, you can hand a project to a **different Neon account**. On the same **Transfer** page, select **Create claim link** and share the generated link with the recipient. When they sign in and open it, they choose which of their organizations to transfer the project into. The link expires after 24 hours by default.
 
-- Choose the **projects** you want to move
-- Choose the **org** you want to move them to
+To automate this flow, see [Claimable database integration](https://neon.com/docs/workflows/claimable-database-integration).
 
-You'll need **Admin** rights in the source org, and at least **Member** rights in the destination.
+**Console (multiple)**
 
-![transfer multiple projects from org settings](https://neon.com/docs/manage/transfer_multiple.png)
+1. Use the organization switcher to select the source organization.
 
-## Via API (for automation or large numbers of projects)
+2. Open **Settings** > **Transfer projects**.
 
-You can also transfer projects from one org to another using the Neon API:
+3. Select the projects to transfer, then click **Next**.
+
+4. Choose the destination organization, then click **Transfer**.
+
+**API**
+
+Transfer projects with a [personal API key](https://neon.com/docs/manage/api-keys#create-a-personal-api-key) that has access to both organizations. Organization API keys are not supported.
 
 `POST /organizations/{source_org_id}/projects/transfer`
-
-**You'll need:**
-
-- ✅ [Personal API key (with access to both orgs)](https://neon.com/docs/manage/api-keys#create-a-personal-api-key)
-- ✅ Admin rights in the source org
-- ✅ At least Member rights in the destination org
-- ✅ Compatible billing plans between orgs (for example, projects can move from Scale to Launch but not the other way around)
-
-**Example request**
 
 ```bash
 curl --request POST \
      --url 'https://console.neon.tech/api/v2/organizations/{source_org_id}/projects/transfer' \
      --header 'accept: application/json' \
-     --header 'authorization: Bearer $API_KEY' \
+     --header 'authorization: Bearer $PERSONAL_API_KEY' \
      --header 'content-type: application/json' \
      --data '{
   "project_ids": [
@@ -108257,22 +108256,26 @@ Where:
 - `destination_org_id` is the organization receiving the projects
 - `project_ids` is an array of up to 400 project IDs to transfer
 
-### Response behavior
+A `200` response with an empty object (`{}`) means the transfer succeeded. A `406` (plan or capacity) or `422` (active integrations) means it failed; see [Limits and requirements](https://neon.com/docs/manage/orgs-project-transfer#limits-and-requirements) to resolve.
 
-A successful transfer returns a 200 status code with an empty JSON object:
+For the full request and response schema, see the [API reference](https://neon.com/docs/reference/api/organizations/transfer-projects-from-org-to-org).
 
-```json
-{}
-```
+As an alternative, to hand a project to a different Neon account, create a claim link. See [Claimable database integration](https://neon.com/docs/workflows/claimable-database-integration).
 
-You can verify the transfer in the Neon Console or by listing the projects in the destination organization via API.
+## Limits and requirements
 
-### Error responses
+- Transfer up to **200** projects at a time in the Console, or **400** via the API.
+- Destination organization must have capacity for the projects under its [plan](https://neon.com/docs/introduction/plans) (for example, project count limits).
+- Destination organization plan must be the **same tier or higher** than the source organization plan (for example, Launch to Scale works; Scale to Launch does not). This is a plan-level check, independent of the project's settings.
+- Requires **Admin** in the source organization and at least **Member** in the destination organization. See [User Permissions](https://neon.com/docs/manage/user-permissions).
+- Disconnect project integrations before you transfer. Open the project's **Integrations** page and remove any added integrations (for example, GitHub or Vercel). See [Manage integrations](https://neon.com/docs/manage/integrations).
+- [Vercel-managed organizations](https://neon.com/docs/guides/vercel-managed-integration) are not supported as source or destination.
+- HIPAA projects can only move to a HIPAA-enabled organization.
 
-The API may return these errors:
+If a transfer fails:
 
-- **`406`** – Transfer failed - the target organization has too many projects or its plan is incompatible with the source organization. Reduce projects or upgrade the organization.
-- **`422`** – One or more of the provided project IDs have GitHub or Vercel integrations installed. Transferring integration projects is currently not supported.
+- **Plan or capacity** (API `406`): the destination organization has a lower plan than the source, no free project slots, or doesn't allow a project's region. Upgrade the destination organization, free up slots, or choose a different organization.
+- **Integrations** (API `422`): one or more projects still have active integrations (for example, GitHub or Vercel). Remove them and retry.
 
 --- [Document source](https://neon.com/docs/manage/overview.md) ---
 

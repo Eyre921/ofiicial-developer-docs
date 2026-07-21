@@ -164,7 +164,7 @@ tts: new deepgram.TTS({ model: "aura-2-thalia-en" }),
 
 ### Use Flux for turn detection
 
-[Flux](/docs/flux) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations with fewer awkward pauses.
+[Flux](/docs/flux/feature-overview) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations with fewer awkward pauses.
 
 To use Flux, replace the `stt` configuration with `STTv2` and set turn detection to `"stt"`:
 

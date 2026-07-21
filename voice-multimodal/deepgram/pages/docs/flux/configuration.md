@@ -20,7 +20,7 @@ Flux's behavior is controlled by the following key parameters:
 | --------------------- | ------------------------ | ------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
 | `eot_threshold`       | `0.5` - `0.9`            | `0.7`   | No             | Confidence threshold for triggering `EndOfTurn` events                                                        |
 | `eager_eot_threshold` | `0.3` - `0.9`            | *None*  | For eager mode | Confidence threshold for triggering `EagerEndOfTurn` events                                                   |
-| `eot_timeout_ms`      | `500` - `10000`          | `5000`  | No             | Maximum silence duration (ms) before forcing `EndOfTurn`                                                      |
+| `eot_timeout_ms`      | `500` - `60000`          | `5000`  | No             | Maximum silence duration (ms) before forcing `EndOfTurn`                                                      |
 | `language_hint`       | Supported language codes | *None*  | No             | Bias `flux-general-multi` toward specific languages. See [Language Prompting](/docs/flux/language-prompting). |
 
 ## Parameter Details
@@ -80,7 +80,7 @@ wss://api.deepgram.com/v2/listen?model=flux-general-en&eager_eot_threshold=0.6&e
 
 Maximum silence duration before forcing an `EndOfTurn`, regardless of confidence.
 
-**Valid Values:** `500` to `10000` (milliseconds)
+**Valid Values:** `500` to `60000` (milliseconds)
 **Default:** `5000` (5 seconds)
 **Type:** Integer (passed as string in URL or SDK)
 

@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/out-of/outbound-payments
 
 Learn how to create outbound payments to move money out of financial accounts to third parties.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 `OutboundPayment` objects represent push-based transfers from your financial account to a third-party external account using ACH or wire transfer, or another financial account associated with the same platform instantly using the `stripe` network. For example, if you want to send money from your financial account to your vendor’s external US bank account, you create an `OutboundPayment` to move the funds. The receiving accounts for an `OutboundPayment` are either an external bank account or another financial account.
 
 The typical transfer time for outbound payments can range from minutes (when using the Stripe network), same day, to 1-2 business days (when using the ACH network). For more information, see the [Money movement timelines](https://docs.stripe.com/treasury/connect/money-movement/timelines.md#outboundpayment-and-outboundtransfer-transactions) guide.

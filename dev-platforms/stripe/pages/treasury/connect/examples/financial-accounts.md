@@ -8,6 +8,10 @@ path: treasury/connect/examples/financial-accounts
 
 Follow a sample Treasury for platforms and Issuing integration that sets up a financial account and creates cards.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Homebox is a fictitious vertical SaaS that builds software for home-services companies like HVAC technicians, cleaners, and plumbers. Homebox begins its Treasury for platforms integration by setting up a financial account and creating payment cards. To see how Homebox moves money to and from external bank accounts, see the [Using Treasury for platforms to move money](https://docs.stripe.com/treasury/connect/examples/moving-money.md) example integration.
 
 ## Platform onboarding

@@ -265,6 +265,64 @@ firectl deployment create <MODEL_NAME> --accelerator-count 2
 
 More GPUs = faster generation. Note that scaling is sub-linear (2x GPUs ≠ 2x performance).
 
+## Preemptible deployments (eval / batch)
+
+Preemptible deployments let you run **evaluation and batch workloads without holding dedicated on-demand capacity**. Passing `--preemptible` at creation opts the deployment into *borrowing idle reserved GPUs* instead of reserving GPUs exclusively for you, so you do not pay to hold dedicated capacity for an eval that only runs occasionally.
+
+Because the capacity is borrowed, it can be **reclaimed (preempted) at any time** and is not guaranteed. In practice a preemptible deployment usually stays up long enough to run an eval end to end, but you must treat disappearance as a normal outcome, not an error.
+
+<Warning>
+  **Eval and batch workloads only.** A preemptible deployment can be preempted mid-request and disappear with no warning. **Never** point production or latency-sensitive traffic at a preemptible deployment.
+</Warning>
+
+### Guarantees vs. risks
+
+|                                                      | Preemptible (`--preemptible`)        | Standard on-demand                             |
+| ---------------------------------------------------- | ------------------------------------ | ---------------------------------------------- |
+| **Capacity model**                                   | Borrows idle reserved GPUs           | Reserves dedicated GPUs for you                |
+| **Cost**                                             | No charge to hold dedicated capacity | Billed by GPU-second while replicas are active |
+| **Can be reclaimed mid-request?**                    | Yes, at any time, without warning    | No                                             |
+| **Availability guarantee**                           | None (treat as best-effort)          | Held for you once scheduled                    |
+| **Safe for production / latency-sensitive traffic?** | No                                   | Yes                                            |
+| **Intended for**                                     | Evaluation, batch, one-off runs      | Production and interactive serving             |
+
+<Note>
+  **No unique availability risk.** Preemptible does not make capacity *harder* to get. If there is no capacity for a preemptible deployment, there is no capacity for an on-demand one either. The only difference is that a preemptible deployment can also be taken back after it starts.
+</Note>
+
+### Requirements
+
+* **`firectl` >= 1.7.26.** `--preemptible` is a newer flag and is **silently ignored** on older builds (no error, and the deployment is created as standard on-demand). Check with `firectl version` and upgrade if you are below this version.
+
+### Create a preemptible deployment
+
+```bash theme={null}
+firectl deployment create accounts/fireworks/models/<MODEL> \
+  -a <ACCOUNT_ID> \
+  --deployment-id <NAME> --display-name <NAME> \
+  --deployment-shape accounts/fireworks/deploymentShapes/<SHAPE> \
+  --min-replica-count 1 --max-replica-count 1 \
+  --preemptible --wait
+```
+
+`--wait` blocks until the deployment is ready (1 hour default; tune with `--wait-timeout`).
+
+<Warning>
+  **`--preemptible` is immutable.** It is set at creation time and cannot be toggled on or off later. To change it, delete the deployment and recreate it.
+</Warning>
+
+Check status and then send eval requests as you would to any deployment:
+
+```bash theme={null}
+firectl deployment get <NAME> -a <ACCOUNT_ID>
+```
+
+When the eval is done, delete the deployment to release the borrowed capacity:
+
+```bash theme={null}
+firectl deployment delete <NAME> -a <ACCOUNT_ID>
+```
+
 ## Advanced
 
 * **[Speculative decoding](/deployments/speculative-decoding)** - Speed up text generation using draft models or n-gram speculation

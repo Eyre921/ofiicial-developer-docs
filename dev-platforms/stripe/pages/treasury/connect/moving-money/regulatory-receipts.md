@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/regulatory-receipts
 
 Learn about hosted transaction receipts.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 All changes to a balance have a corresponding [Transaction object](https://docs.stripe.com/api/treasury/transactions/object.md) that provides a summary of money movements. Some transaction types are considered *regulated* under Stripe’s money transmission licenses and require special treatment. You, the platform, must offer a transaction receipt and present disclosures to the customers of the sellers and service providers (connected accounts) on the platform taking part in regulated transactions.
 
 ## Providing access to receipts

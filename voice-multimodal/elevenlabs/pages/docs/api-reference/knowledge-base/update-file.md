@@ -592,6 +592,11 @@ components:
                 parent folder.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               oneOf:
                 - $ref: '#/components/schemas/AutoSyncInfo'
@@ -618,6 +623,7 @@ components:
             - supported_usages
             - access_info
             - children_count
+            - document_count
           description: GetKnowledgeBaseFolderResponseModel variant
       discriminator:
         propertyName: type
@@ -662,7 +668,7 @@ components:
 
 ```json
 {
-  "file": "<file: U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl>"
+  "file": "<file: JVBERi0xLjQKJcfs...>"
 }
 ```
 
@@ -678,7 +684,7 @@ components:
     "role": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<p>This is the extracted content from the PDF document for indexing and search.</p>",
+  "extracted_inner_html": "<p>This is the extracted content from the PDF document.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685600000,
@@ -746,7 +752,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -774,7 +780,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -786,7 +792,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -800,7 +806,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl',
+        'filename' => 'JVBERi0xLjQKJcfs...',
         'contents' => null
     ]
   ]
@@ -814,7 +820,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"JVBERi0xLjQKJcfs...\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -825,7 +831,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "file",
-    "fileName": "U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl"
+    "fileName": "JVBERi0xLjQKJcfs..."
   ]
 ]
 

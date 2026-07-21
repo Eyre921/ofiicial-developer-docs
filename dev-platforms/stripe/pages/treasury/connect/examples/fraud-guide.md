@@ -8,6 +8,10 @@ path: treasury/connect/examples/fraud-guide
 
 Learn best practices for managing fraud as a platform.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Treasury for platforms is an embedded finance API that lets you embed financial services into your platform’s product. With Treasury for platforms (through our partnerships with US domestic banks), you can offer your connected accounts a simple stored-value account that’s directly integrated into your application. It lets them perform financial actions such as sending and receiving funds (through ACH wires), earning cash back, and spending money through a card.
 
 - **Business fraud**: A fraudulent actor creates a connected account using a false or stolen identity, with the intent to commit fraud.

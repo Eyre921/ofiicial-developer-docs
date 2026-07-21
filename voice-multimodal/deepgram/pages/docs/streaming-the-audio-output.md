@@ -16,6 +16,8 @@ Fortunately, you do not have to wait for the entire audio file to be available b
 
 This guide will give you some tips and provide some examples so you can start streaming the audio as soon as you receive the first byte.
 
+This guide covers playing back the REST endpoint's response as it arrives — not the streaming WebSockets ([Aura](/reference/text-to-speech/speak-streaming) and [Flux](/reference/text-to-speech/speak-flux)), which are separate APIs that emit raw `linear16`, `mulaw`, or `alaw` audio only.
+
 ## Implementation Examples
 
 The following two examples demonstrate how to play the audio as soon as the first byte is returned. The first example takes a single text source and sends it to Deepgram for processing, while the second example chunks the text source by sentence boundaries and then consecutively sends each chunk to Deepgram for processing.
@@ -512,7 +514,7 @@ Select the audio format and configuration that best suits your streaming require
 
 ### Efficient Streaming with Lower Bandwidth
 
-Opus, AAC, and MP3 are considered efficient for streaming over networks with lower available bandwidth. These formats typically offer good compression without significant loss of audio quality, making them suitable for streaming applications where conserving bandwidth is crucial. They are optimized for efficient transmission and decoding, allowing for smoother playback even under bandwidth constraints.
+Opus, AAC, and MP3 are considered efficient for streaming over networks with lower available bandwidth. These formats typically offer good compression without significant loss of audio quality, making them suitable for streaming applications where conserving bandwidth is crucial. They are optimized for efficient transmission and decoding, allowing for smoother playback even under bandwidth constraints. These compressed formats apply to REST responses only.
 
 ### High-Quality Streaming with Higher Bandwidth
 

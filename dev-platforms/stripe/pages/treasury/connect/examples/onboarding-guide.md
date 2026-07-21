@@ -8,6 +8,10 @@ path: treasury/connect/examples/onboarding-guide
 
 Learn how to onboard your connected accounts.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 When a Connect platform uses Treasury for platforms to offer financial services to its connected accounts, the account onboarding process must consider fraud prevention and regulatory compliance. For example, financial services providers must employ Know Your Customer (KYC) and Know Your Business (KYB) client data collection and verification procedures. Use this guide to implement a Treasury for platforms onboarding process for your connected accounts.
 
 ## KYC and KYB onboarding

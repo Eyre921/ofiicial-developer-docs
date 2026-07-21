@@ -8,6 +8,10 @@ path: treasury/connect/examples/moving-money
 
 Learn how to use SetupIntents and PaymentMethods, and how to verify bank accounts with Treasury for platforms.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Homebox is a fictitious vertical SaaS that builds software for home services companies such as HVAC, cleaners, and plumbers. This example integration describes some basic money movement using the treasury endpoints of the [Stripe API](https://docs.stripe.com/api.md). To see how the company would set up a financial account and issue payment cards, see [Using Treasury for platforms to set up financial accounts and cards](https://docs.stripe.com/treasury/connect/examples/financial-accounts.md).
 
 ## Using external bank accounts

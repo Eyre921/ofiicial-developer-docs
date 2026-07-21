@@ -8,6 +8,10 @@ path: treasury/connect/handling-complaints
 
 Learn how to properly handle complaints about Treasury for platforms or Stripe Issuing.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Complaints are any expression of dissatisfaction with a product, service, policy, or employee related to Treasury for platforms or Issuing, except those expressions made by employees of your company. Proper handling of complaints is mandatory when offering financial services products.
 
 You must provide your customers with an easily identifiable and accessible way to submit complaints. Include instructions on how to efficiently submit complaints close to your customer support contact information or an equally obvious location. You’re ultimately responsible for resolving complaints, but Stripe can provide guidance and support when needed.

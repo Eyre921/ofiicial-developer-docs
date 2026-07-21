@@ -8,9 +8,9 @@ path: treasury/connect/account-management/connected-accounts
 
 Request the treasury capability and collect onboarding requirements for your connected accounts.
 
-> #### Accounts v2 API compatibility
+> #### Legacy integration
 > 
-> The Accounts v2 API doesn’t support Treasury workflows. If you have accounts created with Accounts v2, you can use Accounts v1 to manage the `treasury` and `card_issuing` capabilities. For details, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
 
 To use Stripe Treasury for platforms, your platform must have a Stripe *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) integration. Stripe Connect enables a platform to provide connected accounts to sellers and service providers. For an overview of how connected accounts fit into the Treasury for platforms account structure, see the [Treasury for platforms accounts structure](https://docs.stripe.com/treasury/connect/account-management/accounts-structure.md) guide.
 

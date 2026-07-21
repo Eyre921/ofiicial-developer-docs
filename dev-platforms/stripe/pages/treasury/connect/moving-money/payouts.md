@@ -8,9 +8,9 @@ path: treasury/connect/moving-money/payouts
 
 Learn how to move money between payments account balances and financial account balances.
 
-> #### Accounts v2 API compatibility
+> #### Legacy integration
 > 
-> The Accounts v2 API doesn’t support Treasury workflows. If you have accounts created with Accounts v2, you can use Accounts v1 to manage the `treasury` and `card_issuing` capabilities. For details, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
 
 You can move money from your payments balance to your financial account with [payouts](https://docs.stripe.com/treasury/connect/moving-money/payouts.md#payouts), and from your financial account back to your payments balance with [top-ups](https://docs.stripe.com/treasury/connect/moving-money/payouts.md#top-ups).
 

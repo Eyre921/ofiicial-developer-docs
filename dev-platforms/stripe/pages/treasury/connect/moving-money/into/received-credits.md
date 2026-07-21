@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/into/received-credits
 
 Learn how to move money into a financial account from another financial account or bank account.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 When funds move into a financial account, Stripe creates a corresponding [ReceivedCredit](https://docs.stripe.com/api/treasury/received_credits.md) object on the account. A `ReceivedCredit` contains information on how the funds were sent and from what account, where possible. You can send funds to a financial account with the account’s routing and account numbers for `ach` and `us_domestic_wire`, or the financial account ID for transfers between financial accounts.
 
 When the origin of the funds is another financial account, the `ReceivedCredit` contains a `linked_flows.source_flow` reference to the originating money movement. In this case, the source `OutboundPayment` has `stripe` as its `network` value.

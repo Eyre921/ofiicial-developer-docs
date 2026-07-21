@@ -264,6 +264,59 @@ To route inference requests to a specific LoRA adapter on a multi-LoRA deploymen
 * You are running experiments or A/B tests across multiple fine-tuned variants
 * You can accept some performance overhead compared to live merge
 
+## Downloading model weights
+
+You can download your fine-tuned weights from Fireworks to inspect them, extend the context locally, or serve them outside the platform. There are two things you might want: the **LoRA adapter** on its own, or the **merged (base + adapter) model**.
+
+### Download the LoRA adapter
+
+LoRA adapters are listed alongside models in `firectl model list` (denoted with the type `HF_PEFT_ADDON`). Download one with the same command used for any model:
+
+```bash theme={null}
+firectl model download <FINE_TUNED_MODEL_ID> /path/to/checkpoint/
+```
+
+See [`firectl model download`](/tools-sdks/firectl/commands/model-download) for flags.
+
+<Note>
+  The adapter alone is not enough to run inference. You also need the matching base model. The adapter was trained against a specific base (for example, a vendor checkpoint that may differ from the public Hugging Face weights), so pair the adapter with the exact base it was trained on. If you are unsure which base was used, ask your Fireworks contact before assuming the public Hugging Face weights are identical.
+</Note>
+
+### Download the merged (base + adapter) model
+
+On the platform, **the merge happens on the fly at deployment time** (live merge), so serving a fine-tuned model does not require a standalone merged file. To produce a merged copy you can run off-platform, download the base and the adapter, then merge them locally in BF16 with PEFT:
+
+1. Download the base model with `firectl model download`.
+2. Download the LoRA adapter with `firectl model download`.
+3. Load the base model, wrap it with `PeftModel` to load the adapter, call `merge_and_unload()`, and save the merged model.
+
+```python theme={null}
+from peft import PeftModel
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+base = AutoModelForCausalLM.from_pretrained("/path/to/base", torch_dtype="bfloat16")
+merged = PeftModel.from_pretrained(base, "/path/to/adapter").merge_and_unload()
+
+merged.save_pretrained("/path/to/merged")
+AutoTokenizer.from_pretrained("/path/to/base").save_pretrained("/path/to/merged")
+```
+
+Merge in BF16; if you need quantized (FP8) weights, quantize the merged result afterward (see FP8 below).
+
+### FP8 (and other quantized) merged weights
+
+If you want an FP8 merged model to run off-platform, merge in BF16 first, then quantize the merged result yourself. For reference, the on-platform serving path is:
+
+1. Keep the BF16 base + BF16 LoRA adapter.
+2. At deploy, merge in BF16: `W' = W_bf16 + (B·A)_bf16`.
+3. Quantize the merged BF16 weights to FP8 on the fly at serving time.
+
+To reproduce this locally, merge in BF16 first, then quantize the merged weights to FP8.
+
+<Warning>
+  **Match the original quantization scheme when serving locally.** Use the same quantization the base model ships with on Hugging Face rather than a generic FP8 cast. For example, a GLM-family MoE base uses **blockwise FP8** for its MoE weights, and casting with a different scheme can silently degrade quality. When in doubt, keep the merged model in BF16 and let your serving stack quantize.
+</Warning>
+
 ## Performance considerations
 
 Live merge eliminates all LoRA-related inference overhead because the adapter weights are baked into the model at deployment time. The resulting deployment behaves exactly like a natively fine-tuned base model.
@@ -275,6 +328,43 @@ Multi-LoRA deployments incur overhead because adapters are applied dynamically:
 * **Maximum throughput:** Lower than a live-merge deployment under sustained load
 
 For a deeper dive into LoRA performance characteristics and optimization strategies, see [Understanding LoRA Performance](/guides/understanding_lora_performance).
+
+## Troubleshooting
+
+### Silent deployment-shape drop (multi-LoRA lands on the default serving image)
+
+This is a subtle failure mode specific to multi-LoRA deployments. If the deployment shape you request is not **validated for the exact base model version** you are deploying, deployment create does **not** return an error. The unvalidated shape is **silently dropped**, and the deployment quietly falls back to the **default serving image**. That default image's addon loader then rejects addon (multi-LoRA) checkpoints, so you end up seeing base-model behavior or an addon-load failure with no obvious cause.
+
+<Warning>
+  This differs from training, where an unvalidated shape returns a **400**. At deployment create time there is no such error. The `skip_shape_validation` override is superuser-only, so you cannot force an unvalidated shape through yourself. The shape must be validated for your exact model version.
+</Warning>
+
+**Why it happens.** A deployment shape is validated against a specific base model version, not just a model family. A shape such as `deploymentShapes/<model>-h200-multilora` may have validated versions that bind one model version but **not** another version of the same family. Deploying a model version that no validated shape version binds triggers the silent drop.
+
+**How to detect it.** Before (or after) creating the deployment, confirm a validated shape version exists for the **exact** model version you are deploying, not just the family. List the validated shape versions for your model:
+
+```bash theme={null}
+firectl deployment-shape-version list --base-model accounts/<your-account>/models/<your-model-version>
+```
+
+Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)):
+
+```bash theme={null}
+curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filter=snapshot.base_model%3D%22accounts%2F<your-account>%2Fmodels%2F<your-model-version>%22%20AND%20latest_validated%3Dtrue&order_by=create_time%20desc" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" | jq .
+```
+
+Signs you have hit this failure mode:
+
+* No validated shape version lists your exact model version under `snapshot.base_model` (every validated version binds a **different** version of the same model family).
+* The deployment comes up serving base-model behavior instead of your fine-tune.
+* Loading an addon (a Tinker or other LoRA checkpoint) is rejected even though the shape you requested supports addons.
+
+**How to avoid landing on the default serving image.**
+
+* Deploy only against a shape version that is validated for your **exact** model version, confirmed with the check above.
+* If no validated shape version binds your model version, do **not** rely on the shape argument being honored. Ask your Fireworks account team to **validate a deployment shape version for that model version** first. A shape validated only for a sibling version will be dropped.
+* As an alternative that avoids multi-LoRA and the addon loader entirely, [live merge](#live-merge-deployment) the single adapter, which does not go through the addon path.
 
 ## Next steps
 

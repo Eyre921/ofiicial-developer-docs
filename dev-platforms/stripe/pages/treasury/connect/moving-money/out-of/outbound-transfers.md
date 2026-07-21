@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/out-of/outbound-transfers
 
 Learn how to transfer money out of financial accounts to external accounts.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 An `OutboundTransfer` object facilitates money movement out of a financial account. Use `OutboundTransfer` to send funds over ACH rails or through a domestic wire transfer to an external bank account that a connected account owns.
 
 Outbound transfers typically arrive at the receiving bank between the same day and 2 business days, depending on whether you use a wire or ACH.

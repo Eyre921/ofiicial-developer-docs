@@ -8,6 +8,10 @@ path: treasury/connect/examples/sample-app
 
 Use the Stripe Next.js sample app to start your own Issuing and Treasury for platforms integration.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 In addition to a full suite of documentation and SDKs for Stripe Issuing and Stripe Treasury for platforms, we offer a Next.js sample app.
 
 See a demo of our sample app at [baas.stripe.dev](https://baas.stripe.dev), or check out the [GitHub repository](https://github.com/stripe-samples/issuing-treasury).

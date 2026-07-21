@@ -16,9 +16,6 @@ ready for professional use.
 
 Use [Music Finetunes](/docs/eleven-creative/products/music/finetunes) to fine-tune the ElevenLabs Music model on your own original audio for consistent, personalized generation that reflects your unique sonic identity.
 
-Finetunes are currently only available for Music v1. Music v2 Finetunes are coming. Existing v1
-Finetunes are not compatible with Music v2, so plan migrations accordingly.
-
 ## Guide
 
 #### Create a new song

@@ -1649,7 +1649,7 @@ Try the following prompts after installing Expo Skills. Your AI agent will autom
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 21, 2026
 title: Using Model Context Protocol (MCP) with Expo
 description: A guide on integrating Model Context Protocol with Expo projects to enhance AI model capabilities.
 ---
@@ -1758,18 +1758,9 @@ The above command adds the MCP server to your Codex configuration file and promp
 
 ### Authenticate with Expo
 
-After installing the MCP server, you'll need to authenticate using one of two methods:
+After installing the MCP server, you'll need to authenticate.
 
-#### Access token (recommended)
-
-Generate a **Personal access token** from your Expo account and use it during the OAuth flow.
-
--   To generate an access token, open [Access tokens](https://expo.dev/accounts/%5Baccount%5D/settings/access-tokens) settings page in EAS dashboard.
--   Under **Personal access tokens**, click **Create token**. Copy the token and use it during the OAuth flow.
-
-#### Credentials
-
-Use your Expo account username and password. In this case, the server will generate an access token automatically.
+Sign in with your Expo account in the browser when prompted. The server will generate an access token automatically.
 
 ### Set up local capabilities (Recommended)
 

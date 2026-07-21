@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/into/credit-reversals
 
 Learn how you can return funds from received credits that add money to your financial account.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Reversing a [ReceivedCredit](https://docs.stripe.com/api/treasury/received_credits.md) creates a [CreditReversal](https://docs.stripe.com/api/treasury/credit_reversals.md). You can reverse `ReceivedCredits` only in some scenarios (detailed in the following table). Whether you can reverse a `ReceivedCredit` depends on the network and source flow.
 
 The `reversal_details` sub-hash on the `ReceivedCredit` object can have the following combination of values, which determines if you can reverse the `ReceivedCredit`.

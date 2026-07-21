@@ -8,6 +8,10 @@ path: treasury/connect/marketing-financial-accounts
 
 Create precise messaging for your users that complies with regulations.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Many states have statutory prohibitions on references to “banking," “banks," and “bank accounts” when the entities making these references aren’t state- or federally-chartered banks or credit unions. Imprecise terminology of Stripe Treasury for platforms might draw scrutiny from regulators.
 
 ## Recommended Terms

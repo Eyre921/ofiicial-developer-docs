@@ -1873,6 +1873,35 @@ Follow these best practices to avoid unexpected charges:
 
 For details on how to terminate a session, see the [Session termination](/streaming/getting-started/transcribe-streaming-audio) message sequence reference.
 
+## Voice Agent API billing
+
+  **Voice Agent sessions are billed on WebSocket-open duration**
+
+  Voice Agent sessions are billed on the total time the WebSocket connection stays open, not on how much audio the user or agent speaks. Always send [`session.end`](/voice-agents/voice-agent-api/events-reference#sessionend) before closing the socket on an intentional disconnect.
+
+Billing for a Voice Agent session starts when the WebSocket connection opens and stops when the session ends. Sessions bill at the Voice Agent rate listed on the [pricing page](https://www.assemblyai.com/pricing), pro-rated to the second, and each concurrent session accumulates billed time independently.
+
+A few Voice Agent-specific behaviors to be aware of:
+
+* **30-second resume grace window.** If the client closes the WebSocket without sending `session.end`, the server keeps the session open for 30 seconds so the client can reconnect with [`session.resume`](/voice-agents/voice-agent-api/events-reference#sessionresume). That grace window is billable. Send `session.end` on any intentional disconnect (user hung up, "End call" button, page unload) to avoid it. See [Unexpected billing after the call ended](/voice-agents/voice-agent-api/troubleshooting#unexpected-billing-after-the-call-ended).
+* **Idle time is billable.** Just like Streaming STT, silence and idle periods on an open Voice Agent connection are billed. Close sessions as soon as you're done with them.
+* **Any LLM Gateway calls made by the agent are billed separately** at the LLM Gateway token rates for the model in use — see [LLM Gateway billing](#llm-gateway-billing) below.
+
+For the full session lifecycle and best practices, see the [Voice Agent API overview](/voice-agents/voice-agent-api) and [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integration#ending-the-session-cleanly).
+
+## LLM Gateway billing
+
+LLM Gateway is billed on **input and output tokens**, not on audio duration or session time. Each request is charged at the per-1M-token input and output rates for the specific model you call. Rates vary by model — Claude, GPT, Gemini, and the other supported providers each have their own input and output prices, listed in the Rates table on the [Billing page](https://www.assemblyai.com/dashboard/home) of the dashboard and on the [pricing page](https://www.assemblyai.com/pricing).
+
+A few things to keep in mind:
+
+* **Output tokens usually cost more than input tokens.** Output pricing reflects the compute needed to generate the response. See [Understanding input and output tokens for LLM Gateway](/faq/understanding-input-and-output-tokens-for-llm-gateway).
+* **LLM Gateway is not covered by the \$50 free tier.** The free credits granted to new accounts apply to Pre-recorded STT, Real-time STT, Voice Agent API, Speech Understanding, and Guardrails. LLM Gateway usage is billed from your account balance from the first request.
+* **In-region endpoints have a 10% surcharge as of July 1, 2026.** Requests to the US (`llm-gateway.assemblyai.com`) or EU (`llm-gateway.eu.assemblyai.com`) in-region endpoints are 10% higher than global routing as a direct pass-through of provider price increases, with no AssemblyAI upcharge. To keep the standard rate, opt into [global routing](/llm-gateway/cloud-endpoints-and-data-residency#global-routing).
+* **Streaming and Voice Agent calls that invoke LLM Gateway are billed additively.** The Streaming or Voice Agent session is billed on its WebSocket-open duration, and any LLM Gateway request made during that session is billed separately on its input and output tokens.
+
+To estimate input token cost ahead of time, see [Estimate input token costs for LLM Gateway](/guides/counting-tokens).
+
 ## Multichannel billing
 
 When [multichannel transcription](/pre-recorded-audio/transcribe-multiple-audio-channels) is enabled, each channel is transcribed and billed separately. The total cost is the audio duration multiplied by the model's hourly rate, multiplied by the number of channels.
@@ -7553,7 +7582,7 @@ If you plan to use LiveKit turn detection with `MultilingualModel()`, also insta
 pip install "livekit-plugins-turn-detector~=1.0"
 ```
 
-  Install the latest `livekit-agents` from PyPI. **Universal 3.5 Pro Realtime**, `agent_context`, and **Voice Focus** require a recent **1.6** release. Older versions won't recognize the `universal-3-5-pro` model and return a validation error.
+  Install the latest `livekit-agents` from PyPI. **Universal 3.5 Pro Realtime**, `agent_context`, and **Voice Focus** require a recent **1.6** release. Automatic conversation-context forwarding and `language_codes` require **1.6.6+**. Older versions won't recognize the `universal-3-5-pro` model and return a validation error.
 
 Set your API keys in a `.env` file:
 
@@ -7666,20 +7695,26 @@ These are the key parameters to tune for LiveKit when using **Universal 3.5 Pro 
   about (domain, scenario, or full details). Transcription behavior is built
   in and optimized automatically.
 
-  Your agent's most recent spoken reply, up to ~1500 characters, used as context
-  for transcribing the next user turn. Can be set at construction time and
-  updated mid-stream with `update_options`. Universal-3.5 Pro only. See
+  Your agent's most recent spoken reply, up to 1750 characters, used as context
+  for transcribing the next user turn. The 1750-character cap is enforced
+  client-side — explicit values over the cap raise `ValueError` (both at
+  construction and via `update_options`); only automatic forwarding truncates
+  silently. Can be set at construction time and updated mid-stream with
+  `update_options`. Universal-3.5 Pro only. See
   [Conversation context](#conversation-context).
+
+  Steer transcription toward one or more expected languages instead of
+  auto-detecting across all supported languages. Accepts a single code
+  (`"es"`) or a list (`["en", "es"]`); entries are normalized to ISO 639-1
+  (`"en-US"`, `"english"` → `"en"`). Up to 10 codes. Leave unset for the
+  default multilingual behavior. Universal-3.5 Pro only. Can be updated
+  mid-session via `update_options`; pass an empty list to clear steering.
+  Requires `livekit-agents` **1.6.6+**.
 
   How many prior conversation entries are carried forward automatically. Range
   `0`–`100`; `0` disables carryover. Leave unset for the server default (5).
   Connect-time only — cannot be changed with `update_options`. Universal-3.5 Pro
   only.
-
-  When `true`, the plugin automatically forwards your agent's replies to the STT
-  model as `agent_context` after each turn — no `conversation_item_added` event
-  wiring required. Requires `livekit-agents` **1.6.5+**. Universal-3.5 Pro only.
-  See [Conversation context](#conversation-context).
 
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation to decide whether the turn has
@@ -7768,7 +7803,6 @@ This means the `min_turn_silence` and `max_turn_silence` parameters you pass to 
 | --------------------- | ---------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `min_turn_silence`    | `100` ms               | `100` ms               | Silence before a speculative end-of-turn check. If terminal punctuation (`.` `?` `!`) is found, the turn ends. If not, a partial is emitted and the turn continues. |
 | `max_turn_silence`    | **`1000`** ms          | **`100`** ms           | Maximum silence before forcing the turn to end, regardless of punctuation.                                                                                          |
-| `continuous_partials` | **`true`**             | **`true`**             | Emit partial transcripts every ~3 seconds during long turns for steady mid-turn updates to downstream consumers. Enabled by default on both the API and the LiveKit plugin.                  |
 
 The LiveKit plugin defaults are optimized for third-party turn detection models, where you want transcripts handed off as fast as possible. When using `turn_detection="stt"`, you should explicitly set `max_turn_silence=1000` if you'd like to mimic the behavior of streaming directly to the API without LiveKit.
 
@@ -8048,46 +8082,56 @@ stt=assemblyai.STT(
 )
 ```
 
+### Language selection
+
+By default, **Universal 3.5 Pro Realtime** auto-detects and code-switches across all supported languages. If you know which languages a caller will speak, `language_codes` steers transcription toward them for better accuracy on short or ambiguous turns. It can also be updated mid-session (e.g. when a caller switches languages) via `update_options`. Requires `livekit-agents` **1.6.6+**.
+
+```python
+stt=assemblyai.STT(
+    model="universal-3-5-pro",
+    language_codes=["en", "es"],  # single code or list, up to 10; ISO 639-1
+)
+```
+
 ### Conversation context
 
 Give the model both sides of the dialog so it transcribes the next user turn more accurately. **Universal 3.5 Pro Realtime** keeps a short, per-session memory of the conversation from two sources:
 
-- **The agent half** — what your agent just said, which you push in via the `agent_context` parameter.
+- **The agent half** — what your agent just said, forwarded automatically into `agent_context` by `AgentSession` on `livekit-agents` 1.6.6+ (no wiring needed).
 - **The user half** — prior STT-finalized user turns, carried forward automatically (no configuration needed).
 
 With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, `agent_context` lets the model produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-pro/context-carryover) for the full reference.
 
-| Parameter                  | Type    | Description                                                                                                                                                                                                          |
-| -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `agent_context_carryover`  | boolean | When `true`, the plugin automatically forwards your agent's replies to the STT model as `agent_context` after each turn — no event wiring required. Requires `livekit-agents` **1.6.5+**. Defaults to `false`.       |
-| `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to ~1500 characters. Set it at construction time to seed an opening greeting, and update it after each agent reply via `update_options()`.       |
-| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (5).                                          |
+| Parameter                  | Type    | Description                                                                                                                                                                                                    |
+| -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to 1750 characters. Set at construction time to seed an opening greeting; updated automatically after each agent reply on 1.6.6+.           |
+| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (5).                                     |
 
-  `agent_context_carryover`, `agent_context`, and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
+  `agent_context` and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
 
-#### Wiring agent context with `agent_context_carryover` (recommended)
+#### Automatic on 1.6.6+
 
-On `livekit-agents` **1.6.5+**, set `agent_context_carryover=True` on `assemblyai.STT(...)` and the plugin forwards your agent's replies to the STT model as `agent_context` automatically after each turn. No `conversation_item_added` handler required.
+On `livekit-agents` **1.6.6+**, `AgentSession` forwards each assistant reply into `agent_context` automatically — no wiring needed. Replies longer than the 1750-character limit are truncated automatically, keeping the tail (the end of the reply — usually the question — has the most biasing value).
+
+To opt out, use the session-level toggle:
 
 ```python
-from livekit.agents import AgentSession
-from livekit.plugins import assemblyai
-
 session = AgentSession(
-    stt=assemblyai.STT(
-        model="universal-3-5-pro",
-        agent_context_carryover=True,  # Requires livekit-agents 1.6.5+
-    ),
-    # llm=your_llm_plugin(),
-    # tts=your_tts_plugin(),
+    stt=assemblyai.STT(model="universal-3-5-pro"),
+    stt_context_options={"forward_chat_context": False},  # default: True
 )
 ```
 
-  To seed the model with your agent's opening greeting, also pass `agent_context` directly on `assemblyai.STT(...)` at construction time. `agent_context_carryover` will keep it current after each subsequent reply.
+  While automatic forwarding is on, any `agent_context` you set manually is
+  replaced by the next assistant reply. To manage `agent_context` yourself
+  (e.g. custom trimming or filtering), set `forward_chat_context: False` and
+  push it via `update_options(agent_context=...)` after each reply.
 
-#### Wiring agent context with `conversation_item_added` (pre-1.6.5)
+  To seed the model with your agent's opening greeting, pass `agent_context`
+  on `assemblyai.STT(...)` at construction time — automatic forwarding takes
+  over from the first reply onward.
 
-If you're on a version of `livekit-agents` that predates **1.6.5**, wire agent context yourself. LiveKit emits a `conversation_item_added` event for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
+If you're on a version of `livekit-agents` that predates **1.6.6**, or you want to manage `agent_context` yourself, wire it via the `conversation_item_added` event. LiveKit emits it for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
 
 A complete runnable example is on GitHub: [including-agent-context](https://github.com/dlange-aai/assemblyai-livekit-examples/tree/main/including-agent-context).
 
@@ -8095,12 +8139,13 @@ A complete runnable example is on GitHub: [including-agent-context](https://gith
 from livekit.agents import AgentSession, ConversationItemAddedEvent
 from livekit.plugins import assemblyai
 
-AGENT_CONTEXT_MAX_CHARS = 1500
+AGENT_CONTEXT_MAX_CHARS = 1750
 
 session = AgentSession(
     stt=assemblyai.STT(
         model="universal-3-5-pro",
     ),
+    stt_context_options={"forward_chat_context": False},  # Disable automatic forwarding on 1.6.6+
     # llm=your_llm_plugin(),
     # tts=your_tts_plugin(),
 )
@@ -8122,6 +8167,10 @@ def _on_conversation_item_added(ev: ConversationItemAddedEvent) -> None:
     # Push the latest reply; earlier turns are carried forward automatically.
     agent_stt.update_options(agent_context=spoken[-AGENT_CONTEXT_MAX_CHARS:])
 ```
+
+#### LiveKit Inference
+
+LiveKit Inference (`stt="assemblyai/universal-3-5-pro"`) receives the same automatic conversation-context forwarding by default, with the same `stt_context_options={"forward_chat_context": False}` opt-out. `language_codes` is plugin-only for now.
 
 ### Voice focus
 
@@ -8378,7 +8427,7 @@ await session.start(room=ctx.room, agent=MyAgent())
 
 ## Dynamic configuration
 
-You can update `prompt`, `keyterms_prompt`, `agent_context`, `min_turn_silence`, `max_turn_silence`, `continuous_partials`, and `interruption_delay` during an active session using `update_options` — no reconnect required. This lets you adapt to the conversation stage: boost names while collecting caller details, widen silence windows while a user dictates an email, then tighten them again.
+You can update `prompt`, `keyterms_prompt`, `agent_context`, `language_codes`, `min_turn_silence`, `max_turn_silence`, `continuous_partials`, and `interruption_delay` during an active session using `update_options` — no reconnect required. This lets you adapt to the conversation stage: boost names while collecting caller details, widen silence windows while a user dictates an email, then tighten them again.
 
 ```python
 # Update one or more options mid-stream
@@ -8396,7 +8445,8 @@ stt.update_options(
 | ------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Caller identification (names, account IDs)  | Boost terms with `update_options(keyterms_prompt=[...])`                                 |
 | Entity dictation (email, phone, address)    | Raise `max_turn_silence` to ~`2000`–`4000` ms, then lower it again afterward            |
-| After each agent reply                      | Set `agent_context_carryover=True` (1.6.5+) or push `agent_context` manually (see [Conversation context](#conversation-context)) |
+| After each agent reply                      | Handled automatically on 1.6.6+ (see [Conversation context](#conversation-context))     |
+| Caller switches language                    | `update_options(language_codes=["es"])`                                                  |
 | Faster barge-in                             | Lower `interruption_delay` (see [Latency](#latency))                                     |
 
 For more information, see [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream).
@@ -8434,7 +8484,7 @@ To balance accuracy, latency, turn-taking, and interruption handling, map your c
 | Endpointing / silence thresholds | `min_turn_silence` (speculative end-of-turn) and `max_turn_silence` (forced end) — see [Turn detection](#turn-detection) |
 | Custom vocabulary / keywords | `keyterms_prompt=[...]`; broader domain context → `prompt` |
 | Formatting / punctuation toggles | On by default — formatted transcripts always (`format_turns` does not apply) |
-| Language(s) | 18 languages with code-switching; pin a language via `prompt`; `language_detection` adds language codes |
+| Language(s) | 18 languages with code-switching; pin one or more languages via `language_codes`; `language_detection` adds language codes |
 
 ### VAD, interruptions, and infrastructure
 
@@ -28813,6 +28863,10 @@ This fires when `language_detection` is enabled and the detected language's conf
 
 - **Solution**: Set `language_detection_options.on_low_language_confidence` to `fallback` to fall back to a language you specify instead of erroring. Alternatively, lower the `language_confidence_threshold`. See [Automatic Language Detection](/pre-recorded-audio/language-detection) for details.
 
+### Completed transcript that's empty or shorter than expected
+
+The transcript comes back with `status: completed` and no `error`, but is empty or much shorter than you expected. Check that `audio_duration` in the response matches your source file — a file that was still uploading or not fully reachable when we fetched it transcribes without error, just truncated. For dual-channel audio, also rule out [duplicate or cancelling channels](/pre-recorded-audio/guides/identify_duplicate_channels).
+
 ---
 
 <a id="implement-retry-server-error-logic-docs-pre-recorded-audio-guides-retry-server-error-mdx"></a>
@@ -30731,7 +30785,7 @@ See [Multilingual transcription](/streaming/multilingual-transcription) for the 
 
 ## Turn detection
 
-Universal-3.5 Pro Streaming detects the end of a turn using acoustic and contextual cues rather than silence alone. The `mode` preset sets the defaults, and every turn detection parameter can be overridden on the connection or updated mid-stream to tune endpointing for your use case.
+Universal-3.5 Pro Streaming detects the end of a turn using the transcript rather than silence alone. The `mode` preset sets the defaults, and every turn detection parameter can be overridden on the connection or updated mid-stream to tune endpointing for your use case.
 
 - Raise `min_turn_silence` when brief pauses end turns too early, for example while a caller dictates a phone number. Raise `max_turn_silence` when you expect longer pauses within a turn.
 - Lower `vad_threshold` when quiet speech is missed. When background noise causes false interruptions, raise `vad_threshold`, increase `interruption_delay`, or enable [Voice Focus](/streaming/voice-focus).
@@ -30806,7 +30860,7 @@ Streaming transcription is delivered in **turns**. A turn is one continuous unit
 
 ## How turn detection works
 
-Universal-3.5 Pro Streaming does not endpoint on silence alone. When a speaker pauses, the model evaluates both acoustic and contextual cues, meaning how the speech sounded and what has been said so far, to judge whether the speaker is finished or just pausing mid-thought.
+Universal-3.5 Pro Streaming does not endpoint on silence alone. When a speaker pauses, the model evaluates what has been said so far to judge whether the speaker is finished or just pausing mid-thought.
 
 Two silence thresholds control this behavior.
 
@@ -35766,7 +35820,7 @@ If you plan to use LiveKit turn detection with `MultilingualModel()`, also insta
 pip install "livekit-plugins-turn-detector~=1.0"
 ```
 
-  Install the latest `livekit-agents` from PyPI. **Universal 3.5 Pro Realtime**, `agent_context`, and **Voice Focus** require a recent **1.6** release. Older versions won't recognize the `universal-3-5-pro` model and return a validation error.
+  Install the latest `livekit-agents` from PyPI. **Universal 3.5 Pro Realtime**, `agent_context`, and **Voice Focus** require a recent **1.6** release. Automatic conversation-context forwarding and `language_codes` require **1.6.6+**. Older versions won't recognize the `universal-3-5-pro` model and return a validation error.
 
 Set your API keys in a `.env` file:
 
@@ -35879,20 +35933,26 @@ These are the key parameters to tune for LiveKit when using **Universal 3.5 Pro 
   about (domain, scenario, or full details). Transcription behavior is built
   in and optimized automatically.
 
-  Your agent's most recent spoken reply, up to ~1500 characters, used as context
-  for transcribing the next user turn. Can be set at construction time and
-  updated mid-stream with `update_options`. Universal-3.5 Pro only. See
+  Your agent's most recent spoken reply, up to 1750 characters, used as context
+  for transcribing the next user turn. The 1750-character cap is enforced
+  client-side — explicit values over the cap raise `ValueError` (both at
+  construction and via `update_options`); only automatic forwarding truncates
+  silently. Can be set at construction time and updated mid-stream with
+  `update_options`. Universal-3.5 Pro only. See
   [Conversation context](#conversation-context).
+
+  Steer transcription toward one or more expected languages instead of
+  auto-detecting across all supported languages. Accepts a single code
+  (`"es"`) or a list (`["en", "es"]`); entries are normalized to ISO 639-1
+  (`"en-US"`, `"english"` → `"en"`). Up to 10 codes. Leave unset for the
+  default multilingual behavior. Universal-3.5 Pro only. Can be updated
+  mid-session via `update_options`; pass an empty list to clear steering.
+  Requires `livekit-agents` **1.6.6+**.
 
   How many prior conversation entries are carried forward automatically. Range
   `0`–`100`; `0` disables carryover. Leave unset for the server default (5).
   Connect-time only — cannot be changed with `update_options`. Universal-3.5 Pro
   only.
-
-  When `true`, the plugin automatically forwards your agent's replies to the STT
-  model as `agent_context` after each turn — no `conversation_item_added` event
-  wiring required. Requires `livekit-agents` **1.6.5+**. Universal-3.5 Pro only.
-  See [Conversation context](#conversation-context).
 
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation to decide whether the turn has
@@ -35981,7 +36041,6 @@ This means the `min_turn_silence` and `max_turn_silence` parameters you pass to 
 | --------------------- | ---------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `min_turn_silence`    | `100` ms               | `100` ms               | Silence before a speculative end-of-turn check. If terminal punctuation (`.` `?` `!`) is found, the turn ends. If not, a partial is emitted and the turn continues. |
 | `max_turn_silence`    | **`1000`** ms          | **`100`** ms           | Maximum silence before forcing the turn to end, regardless of punctuation.                                                                                          |
-| `continuous_partials` | **`true`**             | **`true`**             | Emit partial transcripts every ~3 seconds during long turns for steady mid-turn updates to downstream consumers. Enabled by default on both the API and the LiveKit plugin.                  |
 
 The LiveKit plugin defaults are optimized for third-party turn detection models, where you want transcripts handed off as fast as possible. When using `turn_detection="stt"`, you should explicitly set `max_turn_silence=1000` if you'd like to mimic the behavior of streaming directly to the API without LiveKit.
 
@@ -36261,46 +36320,56 @@ stt=assemblyai.STT(
 )
 ```
 
+### Language selection
+
+By default, **Universal 3.5 Pro Realtime** auto-detects and code-switches across all supported languages. If you know which languages a caller will speak, `language_codes` steers transcription toward them for better accuracy on short or ambiguous turns. It can also be updated mid-session (e.g. when a caller switches languages) via `update_options`. Requires `livekit-agents` **1.6.6+**.
+
+```python
+stt=assemblyai.STT(
+    model="universal-3-5-pro",
+    language_codes=["en", "es"],  # single code or list, up to 10; ISO 639-1
+)
+```
+
 ### Conversation context
 
 Give the model both sides of the dialog so it transcribes the next user turn more accurately. **Universal 3.5 Pro Realtime** keeps a short, per-session memory of the conversation from two sources:
 
-- **The agent half** — what your agent just said, which you push in via the `agent_context` parameter.
+- **The agent half** — what your agent just said, forwarded automatically into `agent_context` by `AgentSession` on `livekit-agents` 1.6.6+ (no wiring needed).
 - **The user half** — prior STT-finalized user turns, carried forward automatically (no configuration needed).
 
 With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, `agent_context` lets the model produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-pro/context-carryover) for the full reference.
 
-| Parameter                  | Type    | Description                                                                                                                                                                                                          |
-| -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `agent_context_carryover`  | boolean | When `true`, the plugin automatically forwards your agent's replies to the STT model as `agent_context` after each turn — no event wiring required. Requires `livekit-agents` **1.6.5+**. Defaults to `false`.       |
-| `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to ~1500 characters. Set it at construction time to seed an opening greeting, and update it after each agent reply via `update_options()`.       |
-| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (5).                                          |
+| Parameter                  | Type    | Description                                                                                                                                                                                                    |
+| -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to 1750 characters. Set at construction time to seed an opening greeting; updated automatically after each agent reply on 1.6.6+.           |
+| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (5).                                     |
 
-  `agent_context_carryover`, `agent_context`, and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
+  `agent_context` and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
 
-#### Wiring agent context with `agent_context_carryover` (recommended)
+#### Automatic on 1.6.6+
 
-On `livekit-agents` **1.6.5+**, set `agent_context_carryover=True` on `assemblyai.STT(...)` and the plugin forwards your agent's replies to the STT model as `agent_context` automatically after each turn. No `conversation_item_added` handler required.
+On `livekit-agents` **1.6.6+**, `AgentSession` forwards each assistant reply into `agent_context` automatically — no wiring needed. Replies longer than the 1750-character limit are truncated automatically, keeping the tail (the end of the reply — usually the question — has the most biasing value).
+
+To opt out, use the session-level toggle:
 
 ```python
-from livekit.agents import AgentSession
-from livekit.plugins import assemblyai
-
 session = AgentSession(
-    stt=assemblyai.STT(
-        model="universal-3-5-pro",
-        agent_context_carryover=True,  # Requires livekit-agents 1.6.5+
-    ),
-    # llm=your_llm_plugin(),
-    # tts=your_tts_plugin(),
+    stt=assemblyai.STT(model="universal-3-5-pro"),
+    stt_context_options={"forward_chat_context": False},  # default: True
 )
 ```
 
-  To seed the model with your agent's opening greeting, also pass `agent_context` directly on `assemblyai.STT(...)` at construction time. `agent_context_carryover` will keep it current after each subsequent reply.
+  While automatic forwarding is on, any `agent_context` you set manually is
+  replaced by the next assistant reply. To manage `agent_context` yourself
+  (e.g. custom trimming or filtering), set `forward_chat_context: False` and
+  push it via `update_options(agent_context=...)` after each reply.
 
-#### Wiring agent context with `conversation_item_added` (pre-1.6.5)
+  To seed the model with your agent's opening greeting, pass `agent_context`
+  on `assemblyai.STT(...)` at construction time — automatic forwarding takes
+  over from the first reply onward.
 
-If you're on a version of `livekit-agents` that predates **1.6.5**, wire agent context yourself. LiveKit emits a `conversation_item_added` event for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
+If you're on a version of `livekit-agents` that predates **1.6.6**, or you want to manage `agent_context` yourself, wire it via the `conversation_item_added` event. LiveKit emits it for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
 
 A complete runnable example is on GitHub: [including-agent-context](https://github.com/dlange-aai/assemblyai-livekit-examples/tree/main/including-agent-context).
 
@@ -36308,12 +36377,13 @@ A complete runnable example is on GitHub: [including-agent-context](https://gith
 from livekit.agents import AgentSession, ConversationItemAddedEvent
 from livekit.plugins import assemblyai
 
-AGENT_CONTEXT_MAX_CHARS = 1500
+AGENT_CONTEXT_MAX_CHARS = 1750
 
 session = AgentSession(
     stt=assemblyai.STT(
         model="universal-3-5-pro",
     ),
+    stt_context_options={"forward_chat_context": False},  # Disable automatic forwarding on 1.6.6+
     # llm=your_llm_plugin(),
     # tts=your_tts_plugin(),
 )
@@ -36335,6 +36405,10 @@ def _on_conversation_item_added(ev: ConversationItemAddedEvent) -> None:
     # Push the latest reply; earlier turns are carried forward automatically.
     agent_stt.update_options(agent_context=spoken[-AGENT_CONTEXT_MAX_CHARS:])
 ```
+
+#### LiveKit Inference
+
+LiveKit Inference (`stt="assemblyai/universal-3-5-pro"`) receives the same automatic conversation-context forwarding by default, with the same `stt_context_options={"forward_chat_context": False}` opt-out. `language_codes` is plugin-only for now.
 
 ### Voice focus
 
@@ -36591,7 +36665,7 @@ await session.start(room=ctx.room, agent=MyAgent())
 
 ## Dynamic configuration
 
-You can update `prompt`, `keyterms_prompt`, `agent_context`, `min_turn_silence`, `max_turn_silence`, `continuous_partials`, and `interruption_delay` during an active session using `update_options` — no reconnect required. This lets you adapt to the conversation stage: boost names while collecting caller details, widen silence windows while a user dictates an email, then tighten them again.
+You can update `prompt`, `keyterms_prompt`, `agent_context`, `language_codes`, `min_turn_silence`, `max_turn_silence`, `continuous_partials`, and `interruption_delay` during an active session using `update_options` — no reconnect required. This lets you adapt to the conversation stage: boost names while collecting caller details, widen silence windows while a user dictates an email, then tighten them again.
 
 ```python
 # Update one or more options mid-stream
@@ -36609,7 +36683,8 @@ stt.update_options(
 | ------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Caller identification (names, account IDs)  | Boost terms with `update_options(keyterms_prompt=[...])`                                 |
 | Entity dictation (email, phone, address)    | Raise `max_turn_silence` to ~`2000`–`4000` ms, then lower it again afterward            |
-| After each agent reply                      | Set `agent_context_carryover=True` (1.6.5+) or push `agent_context` manually (see [Conversation context](#conversation-context)) |
+| After each agent reply                      | Handled automatically on 1.6.6+ (see [Conversation context](#conversation-context))     |
+| Caller switches language                    | `update_options(language_codes=["es"])`                                                  |
 | Faster barge-in                             | Lower `interruption_delay` (see [Latency](#latency))                                     |
 
 For more information, see [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream).
@@ -36647,7 +36722,7 @@ To balance accuracy, latency, turn-taking, and interruption handling, map your c
 | Endpointing / silence thresholds | `min_turn_silence` (speculative end-of-turn) and `max_turn_silence` (forced end) — see [Turn detection](#turn-detection) |
 | Custom vocabulary / keywords | `keyterms_prompt=[...]`; broader domain context → `prompt` |
 | Formatting / punctuation toggles | On by default — formatted transcripts always (`format_turns` does not apply) |
-| Language(s) | 18 languages with code-switching; pin a language via `prompt`; `language_detection` adds language codes |
+| Language(s) | 18 languages with code-switching; pin one or more languages via `language_codes`; `language_detection` adds language codes |
 
 ### VAD, interruptions, and infrastructure
 
@@ -52529,9 +52604,11 @@ By the end of this guide you'll have a voice agent you can talk to right in your
 
 Prefer to try it first? Talk to an agent without writing any code in the [Voice Agent playground](https://www.assemblyai.com/dashboard/playground/voice-agent).
 
-  **Voice agents are billed per session**
+  **Voice agents are billed per session. Always end with `session.end`.**
 
-  You're billed for the time a session's WebSocket connection stays open. End the session with [`session.end`](/voice-agents/voice-agent-api/events-reference#sessionend) when you're done. New accounts get \$50 in free credits. See [Billing and pricing](/billing-and-pricing).
+  Billing runs for as long as the WebSocket stays open. If the client just calls `ws.close()`, the server keeps the session alive for a 30-second `session.resume` grace window, and that window is billable. See [Step 5: End the session cleanly](#step-5-end-the-session-cleanly) below.
+
+  New accounts get \$50 in free credits. See [Billing and pricing](/billing-and-pricing).
 
 ## Before you begin
 
@@ -52870,6 +52947,54 @@ console.log(data);
 ```
 
 Reload the page, connect again, and ask to book a meeting. The agent collects the details and POSTs them to Cal.com; your page never handles the request. The model's arguments become the JSON body, and the header values are encrypted at rest (reads return only the header name, never the value). See [Add tools](/voice-agents/voice-agent-api/tools/overview) for the full tool model.
+
+### Step 5: End the session cleanly
+
+The **Stop** button in step 2 calls `ws.close()` directly. That leaves the session in a 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window on the server, and that window is billable. Send [`session.end`](/voice-agents/voice-agent-api/events-reference#session-end) first, wait for [`session.ended`](/voice-agents/voice-agent-api/events-reference#session-ended), then close.
+
+Update `stop()` in `voice-agent.html`:
+
+```js
+function stop() {
+  if (ws && ws.readyState === 1) {
+    ws.send(JSON.stringify({ type: "session.end" }));
+    // Server emits session.ended and closes the socket. Handle it in ws.onmessage.
+  } else {
+    cleanup();
+  }
+}
+
+function cleanup() {
+  ws && ws.close();
+  stream && stream.getTracks().forEach((t) => t.stop());
+  ctx && ctx.close();
+  $("btn").textContent = "Connect"; $("btn").classList.remove("live"); setStatus("disconnected");
+}
+```
+
+Then handle `session.ended` inside your existing `ws.onmessage`:
+
+```js
+ws.onmessage = ({ data }) => {
+  const m = JSON.parse(data);
+  // ...existing handlers...
+  if (m.type === "session.ended") cleanup();
+};
+```
+
+Also cover tab close and navigation. `pagehide` fires on both and is more reliable than `beforeunload` on mobile Safari:
+
+```js
+window.addEventListener("pagehide", () => {
+  if (ws && ws.readyState === 1) {
+    ws.send(JSON.stringify({ type: "session.end" }));
+  }
+});
+```
+
+  Send `session.end` synchronously inside the `pagehide` handler. Anything async (like `await fetch`) will not finish before the socket is torn down.
+
+Server and native clients follow the same pattern: send `session.end` on your shutdown signal (`SIGINT`, `SIGTERM`, or your own hangup handler), wait briefly for `session.ended`, then close the socket. There's a complete example in the [Deploy your agent](/voice-agents/voice-agent-api/deploy#connect-from-a-server-or-native-app) quickstart. See [Unexpected billing after the call ended](/voice-agents/voice-agent-api/troubleshooting#unexpected-billing-after-the-call-ended) if your sessions look about 30 seconds longer than the call itself.
 
 ## Next steps
 
@@ -54381,7 +54506,7 @@ const data = await res.json();
 console.log(data);
 ```
 
-When you configure an agent **inline** via [`session.update`](/voice-agents/voice-agent-api/session-configuration#mutability-after-sessionready), the greeting is **immutable** after `session.ready`. Set it on your first `session.update`; trying to change it mid-session returns `immutable_field`. This caveat applies only to the inline path, not to updating a stored agent.
+When you configure an agent **inline** via [`session.update`](/voice-agents/voice-agent-api/session-configuration#mutability-after-session-ready), the greeting is **immutable** after `session.ready`. Set it on your first `session.update`; trying to change it mid-session returns `immutable_field`. This caveat applies only to the inline path, not to updating a stored agent.
 
 ---
 
@@ -54707,7 +54832,7 @@ During hold, the server does **not** emit `transcript.user.delta` or `transcript
 
 ### Status updates during hold
 
-Send [`reply.create`](/voice-agents/voice-agent-api/events-reference#replycreate) with optional `instructions` to make the agent speak mid-hold without ending it:
+Send [`reply.create`](/voice-agents/voice-agent-api/events-reference#reply-create) with optional `instructions` to make the agent speak mid-hold without ending it:
 
 ```python
 await ws.send(json.dumps({
@@ -55058,7 +55183,7 @@ Source: docs/voice-agents/voice-agent-api/tools/client-side-tools.mdx
 Navigation: Voice Agent API > Agent behavior > Tools
 Description: Function tools your own code runs. Declare them inline, handle the tool.call, and return a tool.result without breaking turn-taking.
 
-Declare tools inline in `session.tools` when the logic must run in your own code: local state, in-memory lookups, or anything you don't want to expose as an HTTP endpoint. The agent emits a [`tool.call`](/voice-agents/voice-agent-api/events-reference#toolcall); you run the tool and reply with a [`tool.result`](/voice-agents/voice-agent-api/events-reference#toolresult) when [`reply.done`](/voice-agents/voice-agent-api/events-reference#replydone) is the latest event you've received.
+Declare tools inline in `session.tools` when the logic must run in your own code: local state, in-memory lookups, or anything you don't want to expose as an HTTP endpoint. The agent emits a [`tool.call`](/voice-agents/voice-agent-api/events-reference#tool-call); you run the tool and reply with a [`tool.result`](/voice-agents/voice-agent-api/events-reference#tool-result) when [`reply.done`](/voice-agents/voice-agent-api/events-reference#reply-done) is the latest event you've received.
 
 If your tool just calls an HTTP API, prefer a server-side [HTTP tool](/voice-agents/voice-agent-api/tools/http-tools): AssemblyAI makes the request for you and your client never handles the round trip.
 
@@ -55307,7 +55432,7 @@ const data = await res.json();
 console.log(data);
 ```
 
-Configuring inline over the WebSocket instead of on a stored agent? Set it on `session.output.voice` in a [`session.update`](/voice-agents/voice-agent-api/events-reference#sessionupdate) before `session.ready`:
+Configuring inline over the WebSocket instead of on a stored agent? Set it on `session.output.voice` in a [`session.update`](/voice-agents/voice-agent-api/events-reference#session-update) before `session.ready`:
 
 ```json
 {
@@ -55450,7 +55575,7 @@ console.log(data);
 | --------------- | ------------- | -------- | ------------------------------------------------------ |
 | `output.volume` | number \| null | No       | `0` (silent) to `100` (loudest). `null` plays at native level. |
 
-Unlike `output.voice` and `output.format`, which are **immutable** after `session.ready`, `output.volume` can be changed mid-session via [`session.update`](/voice-agents/voice-agent-api/session-configuration#mutability-after-sessionready). The new value applies to subsequent `reply.audio` chunks.
+Unlike `output.voice` and `output.format`, which are **immutable** after `session.ready`, `output.volume` can be changed mid-session via [`session.update`](/voice-agents/voice-agent-api/session-configuration#mutability-after-session-ready). The new value applies to subsequent `reply.audio` chunks.
 
 ---
 
@@ -55474,7 +55599,7 @@ Turn detection and barge-in are on by default and based on what the user actuall
 - **Adaptive pacing.** If a speaker pauses a lot, the agent gives them more room; if they're crisp, it replies faster. This gets better over the call.
 - **Semantic barge-in.** Back-channels like "uh-huh" or "makes sense" don't interrupt; "wait, stop" does.
 
-A normal user turn emits [`input.speech.started`](/voice-agents/voice-agent-api/events-reference#inputspeechstarted) → [`transcript.user.delta`](/voice-agents/voice-agent-api/events-reference#transcriptuserdelta) (partials) → [`input.speech.stopped`](/voice-agents/voice-agent-api/events-reference#inputspeechstopped) → [`transcript.user`](/voice-agents/voice-agent-api/events-reference#transcriptuser) (final) → [`reply.started`](/voice-agents/voice-agent-api/events-reference#replystarted). You never signal end-of-turn yourself.
+A normal user turn emits [`input.speech.started`](/voice-agents/voice-agent-api/events-reference#input-speech-started) → [`transcript.user.delta`](/voice-agents/voice-agent-api/events-reference#transcript-user-delta) (partials) → [`input.speech.stopped`](/voice-agents/voice-agent-api/events-reference#input-speech-stopped) → [`transcript.user`](/voice-agents/voice-agent-api/events-reference#transcript-user) (final) → [`reply.started`](/voice-agents/voice-agent-api/events-reference#reply-started). You never signal end-of-turn yourself.
 
 ## Get better turn-taking with tool descriptions
 
@@ -55584,8 +55709,8 @@ With this, when the agent asks for the phone number it waits for all the digits 
 
 When the user truly interrupts, the server emits:
 
-- [`reply.done`](/voice-agents/voice-agent-api/events-reference#replydone) with `status: "interrupted"`
-- [`transcript.agent`](/voice-agents/voice-agent-api/events-reference#transcriptagent) with `interrupted: true` and `text` trimmed to what the user actually heard.
+- [`reply.done`](/voice-agents/voice-agent-api/events-reference#reply-done) with `status: "interrupted"`
+- [`transcript.agent`](/voice-agents/voice-agent-api/events-reference#transcript-agent) with `interrupted: true` and `text` trimmed to what the user actually heard.
 
 On that signal, stop and clear your queued audio so the user doesn't keep hearing stale speech:
 
@@ -55857,9 +55982,18 @@ wss://agents.assemblyai.com/v1/ws
 
 1. **Open** the WebSocket (with your API key, or a [browser token](/voice-agents/voice-agent-api/browser-integration)).
 2. **Bind** to your agent by sending one `session.update` with its `agent_id`. The stored prompt, voice, and tools load automatically, so you don't resend them.
-3. **Wait** for [`session.ready`](/voice-agents/voice-agent-api/events-reference#sessionready) — the signal the agent is live.
-4. **Stream** microphone audio as [`input.audio`](/voice-agents/voice-agent-api/events-reference#inputaudio) frames and **play** the agent's [`reply.audio`](/voice-agents/voice-agent-api/events-reference#replyaudio) frames.
-5. **End** cleanly with [`session.end`](/voice-agents/voice-agent-api/events-reference#sessionend) when the conversation is over.
+3. **Wait** for [`session.ready`](/voice-agents/voice-agent-api/events-reference#session-ready) — the signal the agent is live.
+4. **Stream** microphone audio as [`input.audio`](/voice-agents/voice-agent-api/events-reference#input-audio) frames and **play** the agent's [`reply.audio`](/voice-agents/voice-agent-api/events-reference#reply-audio) frames.
+5. **End** cleanly with [`session.end`](/voice-agents/voice-agent-api/events-reference#session-end) when the conversation is over.
+
+  **Always send `session.end` before closing the WebSocket.** If the client just closes the socket, the server holds the session open for a 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window, and that window is billable. `session.end` short-circuits the grace window, emits [`session.ended`](/voice-agents/voice-agent-api/events-reference#session-ended), and stops billing immediately.
+
+  ```js
+  ws.send(JSON.stringify({ type: "session.end" }));
+  // Wait for session.ended, then close the socket.
+  ```
+
+  Send `session.end` on every intentional disconnect: "End call" button, page unload (`beforeunload` / `pagehide`), user hangup, and Ctrl+C in server clients. See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly).
 
 Step 2 is the whole binding — send the `agent_id` and nothing else:
 
@@ -56156,7 +56290,7 @@ Call [`GET /v1/token`](/api-reference/voice-agent-api/generate-voice-agent-token
 
 These two parameters control different things and are easy to confuse:
 
-- **`expires_in_seconds`** is the *token redemption window*: how long the client has to use this token to open a WebSocket. If the window elapses before the WebSocket is opened, the server returns a [`session.error`](/voice-agents/voice-agent-api/events-reference#sessionerror) with code `unauthorized` on the first frame instead of `session.ready`. Once a `session.ready` has been received, this value no longer applies.
+- **`expires_in_seconds`** is the *token redemption window*: how long the client has to use this token to open a WebSocket. If the window elapses before the WebSocket is opened, the server returns a [`session.error`](/voice-agents/voice-agent-api/events-reference#session-error) with code `unauthorized` on the first frame instead of `session.ready`. Once a `session.ready` has been received, this value no longer applies.
 - **`max_session_duration_seconds`** is the *session duration cap*: how long the resulting voice agent session is allowed to run after the WebSocket is open.
 
 View the endpoint reference.
@@ -56189,7 +56323,7 @@ export default router;
 
 `expires_in_seconds` must be between 1 and 600. `max_session_duration_seconds` must be between 60 and 10800 (defaults to 10800, the 3-hour maximum session duration).
 
-Tokens are **single-use** — fetch a fresh one immediately before every connection, including reconnects via [`session.resume`](/voice-agents/voice-agent-api/events-reference#sessionresume). End sessions cleanly with [`session.end`](/voice-agents/voice-agent-api/events-reference#sessionend) so you don't pay for the 30-second resume grace window.
+Tokens are **single-use** — fetch a fresh one immediately before every connection, including reconnects via [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume). End sessions cleanly with [`session.end`](/voice-agents/voice-agent-api/events-reference#session-end) so you don't pay for the 30-second resume grace window.
 
 ## 2. Connect from the browser with the token
 
@@ -56413,6 +56547,12 @@ For playback, `createBuffer(1, length, 24000)` works on all current browsers —
 - **HTTPS or `localhost`.** `getUserMedia` only works on secure origins.
 - **Echo cancellation.** Pass `echoCancellation: true` to `getUserMedia` so the agent's TTS playing through the speakers doesn't get re-captured by the mic.
 - **Audio output sink.** On iOS Safari, set the [`<audio playsinline>`](https://developer.mozilla.org/docs/Web/HTML/Element/video#playsinline) attribute or route through an `AudioContext` destination. Autoplay and full-screen behavior differ from desktop.
+
+## 5. Ending the session cleanly
+
+  Do not just close the WebSocket. Send [`session.end`](/voice-agents/voice-agent-api/events-reference#session-end) first, then close. A bare `ws.close()` (or the browser tearing the socket down on navigation) leaves the session in the 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window, and that window is billable.
+
+In the browser, wire `session.end` to both your explicit end-call control and the `pagehide` event so tab close and navigation are covered. See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly) on the Voice Agent API overview for the full pattern and code sample.
 
 ---
 
@@ -56726,7 +56866,7 @@ const data = await res.json();
 console.log(data);
 ```
 
-Configuring inline over the WebSocket instead? Set the same `format` blocks under `session.input`/`session.output` in a [`session.update`](/voice-agents/voice-agent-api/events-reference#sessionupdate):
+Configuring inline over the WebSocket instead? Set the same `format` blocks under `session.input`/`session.output` in a [`session.update`](/voice-agents/voice-agent-api/events-reference#session-update):
 
 ```json
 {
@@ -56754,7 +56894,7 @@ Choose the encoding that matches your audio pipeline. For browser and desktop ap
 
 ## Sending audio
 
-Stream microphone audio as [`input.audio`](/voice-agents/voice-agent-api/events-reference#inputaudio) events. Each event contains a base64-encoded audio chunk in the configured encoding. Send chunks continuously. The server buffers them, so exact chunk size doesn't matter. ~50 ms chunks work well.
+Stream microphone audio as [`input.audio`](/voice-agents/voice-agent-api/events-reference#input-audio) events. Each event contains a base64-encoded audio chunk in the configured encoding. Send chunks continuously. The server buffers them, so exact chunk size doesn't matter. ~50 ms chunks work well.
 
 ```python
 import base64
@@ -56774,7 +56914,7 @@ async def send_audio():
         }))
 ```
 
-Only start sending `input.audio` after you receive [`session.ready`](/voice-agents/voice-agent-api/events-reference#sessionready).
+Only start sending `input.audio` after you receive [`session.ready`](/voice-agents/voice-agent-api/events-reference#session-ready).
 
 Stream audio at roughly real time, not faster. The server expects roughly one second of audio per second of wall clock. If you push audio significantly faster than that (for example, replaying a recorded file as fast as the network allows), excess frames are dropped rather than buffered, and transcription will be incomplete. If you're testing with a pre-recorded clip, pace the sends with `asyncio.sleep` to match the chunk duration.
 
@@ -56810,7 +56950,7 @@ Without echo cancellation or headphones, the agent's own speech loops back throu
 
 ## Playing output audio
 
-The server streams [`reply.audio`](/voice-agents/voice-agent-api/events-reference#replyaudio) events containing small audio chunks in the configured output encoding. Write each chunk directly into an audio output buffer and let the OS drain it at the correct sample rate:
+The server streams [`reply.audio`](/voice-agents/voice-agent-api/events-reference#reply-audio) events containing small audio chunks in the configured output encoding. Write each chunk directly into an audio output buffer and let the OS drain it at the correct sample rate:
 
 ```python
 SAMPLE_RATE = 24000  # 24 kHz for audio/pcm, 8 kHz for audio/pcmu or audio/pcma
@@ -56849,8 +56989,8 @@ if t == "reply.done":
 ```
 
 The server emits two events on interruption:
-- [`reply.done`](/voice-agents/voice-agent-api/events-reference#replydone) with `status: "interrupted"`
-- [`transcript.agent`](/voice-agents/voice-agent-api/events-reference#transcriptagent) with `interrupted: true` and `text` trimmed to what was spoken
+- [`reply.done`](/voice-agents/voice-agent-api/events-reference#reply-done) with `status: "interrupted"`
+- [`transcript.agent`](/voice-agents/voice-agent-api/events-reference#transcript-agent) with `interrupted: true` and `text` trimmed to what was spoken
 
 Barge-in is semantic. Back-channels like "uh-huh" don't trigger an interruption, but phrases like "wait, stop" do. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions) for how the model decides, and [Session configuration](/voice-agents/voice-agent-api/session-configuration#turn-detection) for tuning barge-in sensitivity.
 
@@ -56951,7 +57091,7 @@ console.log(data);
 | `output.format.encoding`| string  | No       | Same values as input. Default `audio/pcm`.                   |
 | `format.sample_rate`    | integer | No       | Sample rate in Hz. Determined by the encoding if omitted.    |
 
-Set the volume separately — see [Volume](/voice-agents/voice-agent-api/volume). When configured inline via [`session.update`](/voice-agents/voice-agent-api/session-configuration#mutability-after-sessionready), `output.format` is **immutable** after `session.ready` and must be set on your first update.
+Set the volume separately — see [Volume](/voice-agents/voice-agent-api/volume). When configured inline via [`session.update`](/voice-agents/voice-agent-api/session-configuration#mutability-after-session-ready), `output.format` is **immutable** after `session.ready` and must be set on your first update.
 
 ---
 
@@ -57430,7 +57570,7 @@ Description: Configure a voice agent at connect-time over the WebSocket with ses
 
 `session.update` is the configuration surface for an inline (non-stored) agent. Everything that shapes how the agent sounds and behaves lives here: its personality, its greeting, the tools it can call, how it interprets user speech, and what voice it speaks in.
 
-Send a [`session.update`](/voice-agents/voice-agent-api/events-reference#sessionupdate) as your first WebSocket message, and any time after, to update most fields. Some fields can only be set in the first update; see [Mutability after `session.ready`](#mutability-after-sessionready) below.
+Send a [`session.update`](/voice-agents/voice-agent-api/events-reference#session-update) as your first WebSocket message, and any time after, to update most fields. Some fields can only be set in the first update; see [Mutability after `session.ready`](#mutability-after-session-ready) below.
 
 To use a stored agent instead, send `{ "agent_id": "<id>" }` as the only field in your first `session.update`; it's mutually exclusive with the inline fields below. See [Deploy your agent](/voice-agents/voice-agent-api/deploy).
 
@@ -57466,7 +57606,7 @@ Every field is optional. Include only what you want to set or change. Jump to an
 
 ## Mutability after `session.ready`
 
-The first `session.update` you send before `session.ready` initializes the session. After `session.ready`, only a subset of fields can be changed. Changing one of the immutable fields raises a [`session.error`](/voice-agents/voice-agent-api/events-reference#sessionerror) with code `immutable_field` and the rejected change is ignored.
+The first `session.update` you send before `session.ready` initializes the session. After `session.ready`, only a subset of fields can be changed. Changing one of the immutable fields raises a [`session.error`](/voice-agents/voice-agent-api/events-reference#session-error) with code `immutable_field` and the rejected change is ignored.
 
 | Field                          | Mutable after `session.ready`? |
 | ------------------------------ | ------------------------------ |
@@ -57504,7 +57644,7 @@ Source: docs/voice-agents/voice-agent-api/events-reference.mdx
 Navigation: Voice Agent API > Reference
 Description: Every client-to-server and server-to-client event for the Voice Agent API.
 
-Every message exchanged over the Voice Agent API WebSocket, grouped by direction. You'll send [`session.update`](#sessionupdate) to configure, [`input.audio`](#inputaudio) to stream mic audio, [`tool.result`](#toolresult) to respond to tool calls, and [`session.end`](#sessionend) to cleanly end the call. The server streams everything else back, including [`session.ended`](#sessionended) on every clean teardown.
+Every message exchanged over the Voice Agent API WebSocket, grouped by direction. You'll send [`session.update`](#session-update) to configure, [`input.audio`](#input-audio) to stream mic audio, [`tool.result`](#tool-result) to respond to tool calls, and [`session.end`](#session-end) to cleanly end the call. The server streams everything else back, including [`session.ended`](#session-ended) on every clean teardown.
 
 ## Event flow
 
@@ -57568,7 +57708,7 @@ See [Audio format](/voice-agents/voice-agent-api/audio-format) for the full form
 
 ### `session.update`
 
-Configure the session. Send immediately on WebSocket connect (before `session.ready`). Can also be sent mid-conversation to update most fields. See [Mutability after `session.ready`](/voice-agents/voice-agent-api/session-configuration#mutability-after-sessionready) for which fields can change once the session is established.
+Configure the session. Send immediately on WebSocket connect (before `session.ready`). Can also be sent mid-conversation to update most fields. See [Mutability after `session.ready`](/voice-agents/voice-agent-api/session-configuration#mutability-after-session-ready) for which fields can change once the session is established.
 
 ```json expandable
 {
@@ -57662,7 +57802,7 @@ async def connect():
 
 ### `session.end`
 
-End the session cleanly. Send this when the call is over and you don't intend to reconnect. The server emits a final [`session.ended`](#sessionended) and closes the WebSocket; the `session_id` is dead immediately and cannot be resumed.
+End the session cleanly. Send this when the call is over and you don't intend to reconnect. The server emits a final [`session.ended`](#session-ended) and closes the WebSocket; the `session_id` is dead immediately and cannot be resumed.
 
 ```json
 { "type": "session.end" }
@@ -57672,11 +57812,11 @@ No other fields.
 
 **What happens next:**
 
-1. The server emits [`session.ended`](#sessionended).
+1. The server emits [`session.ended`](#session-ended).
 2. The server closes the WebSocket.
-3. The `session_id` is dead. Sending [`session.resume`](#sessionresume) with it returns `session_not_found`.
+3. The `session_id` is dead. Sending [`session.resume`](#session-resume) with it returns `session_not_found`.
 
-**When to send it vs. just closing the socket.** If you just close the WebSocket, the server holds the session for 30 seconds so you can [`session.resume`](#sessionresume) from a new connection, and that 30-second window is billable. `session.end` short-circuits the grace window and stops billing immediately.
+**When to send it vs. just closing the socket.** If you just close the WebSocket, the server holds the session for 30 seconds so you can [`session.resume`](#session-resume) from a new connection, and that 30-second window is billable. `session.end` short-circuits the grace window and stops billing immediately.
 
 | What you do                          | Server behavior                                   | Resumable?         | Billing                          |
 | ------------------------------------ | ------------------------------------------------- | ------------------ | -------------------------------- |
@@ -57773,7 +57913,7 @@ Final event emitted on every clean teardown, right before the server closes the 
 
 **When you'll see it:**
 
-- You sent [`session.end`](#sessionend).
+- You sent [`session.end`](#session-end).
 - The session hit `max_session_duration_seconds`.
 - The server hit an unrecoverable error.
 - You disconnected and the 30-second grace window expired.
@@ -57781,7 +57921,7 @@ Final event emitted on every clean teardown, right before the server closes the 
 **How to use it:**
 
 - **Got `session.ended` before the WebSocket closed**: clean server-initiated close. Done. Don't try to resume.
-- **WebSocket closed without `session.ended`**: probably a network drop. If you want to keep going, reconnect and call [`session.resume`](#sessionresume) with your saved `session_id` within 30 seconds.
+- **WebSocket closed without `session.ended`**: probably a network drop. If you want to keep going, reconnect and call [`session.resume`](#session-resume) with your saved `session_id` within 30 seconds.
 
 ---
 
@@ -57994,7 +58134,7 @@ If the server cancels the session due to an internal error, the WebSocket closes
 
 ## Interruptions
 
-When the user speaks mid-response (barge-in), the server stops the agent and emits [`reply.done`](#replydone) with `status: "interrupted"` and [`transcript.agent`](#transcriptagent) with `interrupted: true`. The decision is semantic. Back-channels like "uh-huh" don't trigger an interruption.
+When the user speaks mid-response (barge-in), the server stops the agent and emits [`reply.done`](#reply-done) with `status: "interrupted"` and [`transcript.agent`](#transcript-agent) with `interrupted: true`. The decision is semantic. Back-channels like "uh-huh" don't trigger an interruption.
 
 **On `reply.done` with `status: "interrupted"`:**
 
@@ -58017,7 +58157,7 @@ Description: Common issues and fixes when building with the Voice Agent API.
 
 ## Before you contact support
 
-Persist the [`session_id`](/voice-agents/voice-agent-api/events-reference#sessionready) from `session.ready` for every session, not just when something goes wrong. If you contact [support@assemblyai.com](mailto:support@assemblyai.com) about a specific session (audio glitches, unexpected interruptions, tool-call issues, session-resume failures), this ID lets us locate it in our logs immediately.
+Persist the [`session_id`](/voice-agents/voice-agent-api/events-reference#session-ready) from `session.ready` for every session, not just when something goes wrong. If you contact [support@assemblyai.com](mailto:support@assemblyai.com) about a specific session (audio glitches, unexpected interruptions, tool-call issues, session-resume failures), this ID lets us locate it in our logs immediately.
 
 Log at minimum:
 
@@ -58087,7 +58227,7 @@ Log at minimum:
 - Check that the data is base64-encoded: `base64.b64encode(pcm_bytes).decode()` in Python, or `btoa(String.fromCharCode(...new Uint8Array(buffer)))` in JavaScript.
 - Confirm the audio is 16-bit signed integer (little-endian), mono, at 24 kHz.
 
-If the message itself is malformed (bad JSON, missing `type`, or missing `audio` field), you'll get `invalid_format` instead. See the [error codes reference](/voice-agents/voice-agent-api/events-reference#sessionerror) for the full list.
+If the message itself is malformed (bad JSON, missing `type`, or missing `audio` field), you'll get `invalid_format` instead. See the [error codes reference](/voice-agents/voice-agent-api/events-reference#session-error) for the full list.
 
 ---
 
@@ -58100,7 +58240,7 @@ If the message itself is malformed (bad JSON, missing `type`, or missing `audio`
 **Fixes:**
 - Fetch a fresh token immediately before each connection attempt. Don't pre-fetch and store them.
 - Keep `expires_in_seconds` at 60–300 seconds for a good balance between security and usability.
-- If using [`session.resume`](/voice-agents/voice-agent-api/events-reference#sessionresume), remember that each new WebSocket connection needs a new token.
+- If using [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume), remember that each new WebSocket connection needs a new token.
 
 See [Token expiry and failure modes](/voice-agents/voice-agent-api/browser-integration#token-expiry-and-failure-modes) for more detail.
 
@@ -58110,7 +58250,7 @@ See [Token expiry and failure modes](/voice-agents/voice-agent-api/browser-integ
 
 **Symptom:** Sessions appear to be billed for ~30 seconds longer than the user was actually on the call.
 
-**Cause:** When the client closes the WebSocket without sending [`session.end`](/voice-agents/voice-agent-api/events-reference#sessionend), the server holds the session open for 30 seconds so you can reconnect with [`session.resume`](/voice-agents/voice-agent-api/events-reference#sessionresume). That grace window is billable.
+**Cause:** When the client closes the WebSocket without sending [`session.end`](/voice-agents/voice-agent-api/events-reference#session-end), the server holds the session open for 30 seconds so you can reconnect with [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume). That grace window is billable.
 
 **Fix:** Send `session.end` before closing the socket on any intentional disconnect (user hung up, "End call" button, page unload). Skip it only when the disconnect is unintentional and you want the option to resume within 30 seconds.
 
@@ -58119,7 +58259,7 @@ ws.send(JSON.stringify({ type: "session.end" }));
 // Server emits session.ended and closes the WebSocket.
 ```
 
-See [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integration#ending-the-session-cleanly).
+See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly).
 
 ---
 
@@ -58132,7 +58272,7 @@ See [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integrati
 - `session_forbidden`: the `session_id` belongs to a different account.
 - `session_expired`: the session's TTL elapsed during the grace window.
 
-**Fix:** Catch these error codes and start a fresh session without `session.resume`. See the [session.resume example](/voice-agents/voice-agent-api/events-reference#sessionresume).
+**Fix:** Catch these error codes and start a fresh session without `session.resume`. See the [session.resume example](/voice-agents/voice-agent-api/events-reference#session-resume).
 
 ---
 
@@ -58340,7 +58480,7 @@ See [Tool calling](/voice-agents/voice-agent-api/tools/overview) for the full to
 
 ## Updating configuration mid-session
 
-You can send another `session.update` at any time to change mutable fields such as `system_prompt`, `input.turn_detection`, or `output.volume`. The server acknowledges with `session.updated`. Changing immutable fields (for example `greeting`, `output.voice`, or `output.format`) raises `immutable_field`. See [Mutability after `session.ready`](/voice-agents/voice-agent-api/session-configuration#mutability-after-sessionready).
+You can send another `session.update` at any time to change mutable fields such as `system_prompt`, `input.turn_detection`, or `output.volume`. The server acknowledges with `session.updated`. Changing immutable fields (for example `greeting`, `output.voice`, or `output.format`) raises `immutable_field`. See [Mutability after `session.ready`](/voice-agents/voice-agent-api/session-configuration#mutability-after-session-ready).
 
 ## Session termination
 
@@ -58353,11 +58493,13 @@ To end a session cleanly, send `session.end`. The server flushes any in-flight e
 ```json
 {
   "type": "session.ended",
-  "reason": "client_ended"
+  "session_duration_seconds": 123.4,
+  "audio_duration_seconds": 45.6,
+  "timestamp": 1752969600.123
 }
 ```
 
-  Always terminate sessions explicitly. Sessions that are not ended remain open and continue to accrue charges until the server auto-closes them.
+  **Always send `session.end` before closing the WebSocket.** A bare `ws.close()` leaves the session in a 30-second [`session.resume`](/voice-agents/voice-agent-api/events-reference#session-resume) grace window that is billable. See [Ending the session cleanly](/voice-agents/voice-agent-api#step-5-end-the-session-cleanly) for browser and server-client patterns.
 
 ## Errors
 

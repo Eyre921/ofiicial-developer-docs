@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/noc-sec-handling
 
 Learn how external account information is updated.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 When you originate an ACH transaction with Stripe (for example, using `InboundTransfer`, `OutboundTransfer`, or `OutboundPayment` objects with Treasury for platforms), the financial institution receiving the transaction might return a Notification of Change (NOC). This is a message indicating that new information is available about the destination account (such as a new account number or routing number).
 
 ACH network rules require Stripe to update saved account information when we receive an NOC. We automatically process the NOC by updating the relevant `PaymentMethod` or `BankAccount` object and notify you through a webhook. You might want to monitor these webhooks to inform your users that account information has changed or to update account information that you’ve persisted outside of Stripe.

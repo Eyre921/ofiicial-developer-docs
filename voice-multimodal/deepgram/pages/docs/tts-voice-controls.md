@@ -14,10 +14,10 @@ Aura-2 Controls enable fine-grained adjustments to speech output, allowing you t
 
 ## Availability
 
-| Control               | [REST](/reference/text-to-speech/speak) | [WebSocket](/reference/text-to-speech/speak-streaming) | Languages                  |
-| --------------------- | --------------------------------------- | ------------------------------------------------------ | -------------------------- |
-| Speed control         | Yes                                     | Yes                                                    | English (en), Spanish (es) |
-| Pronunciation control | Yes                                     | Yes                                                    | English (en), Spanish (es) |
+| Control               | [REST](/reference/text-to-speech/speak-request) | [WebSocket](/reference/text-to-speech/speak-streaming) | Languages                  |
+| --------------------- | ----------------------------------------------- | ------------------------------------------------------ | -------------------------- |
+| Speed control         | Yes                                             | Yes                                                    | English (en), Spanish (es) |
+| Pronunciation control | Yes                                             | Yes                                                    | English (en), Spanish (es) |
 
 ## Speed control
 

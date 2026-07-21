@@ -30,6 +30,8 @@ The Encoding feature gives users the ability to specify the desired format of th
 | **flac**     | Free Lossless Audio Codec (FLAC).           | `REST`              |
 | **aac**      | Advanced Audio Coding format.               | `REST`              |
 
+The streaming WebSocket emits raw audio only: `linear16` (the streaming default), `mulaw`, or `alaw`. Compressed and containerized encodings (`mp3`, `opus`, `flac`, `aac`) are available on the REST endpoint only, where `mp3` is the default.
+
 ## Enable Feature
 
 To enable Encoding, include the `encoding` parameter in the query string with the desired encoding option.

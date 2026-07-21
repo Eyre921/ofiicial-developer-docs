@@ -14,9 +14,6 @@ Music Finetunes allows you to fine-tune the ElevenLabs music model to your sound
 
 This guide explains how Finetunes works, how to prepare your dataset, and how to evaluate results.
 
-Finetunes are currently only available for Music v1. Music v2 Finetunes are coming. Existing v1
-Finetunes are not compatible with Music v2, so plan migrations accordingly.
-
 ## What is a Music Finetune
 
 A Music Finetune is a fine-tuned version of the ElevenLabs music model shaped by your uploaded audio. Instead of relying only on prompts to describe a style, you can use a Finetune built on your sound.

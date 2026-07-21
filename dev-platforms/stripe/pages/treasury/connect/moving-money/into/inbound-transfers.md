@@ -8,6 +8,10 @@ path: treasury/connect/moving-money/into/inbound-transfers
 
 Learn how to transfer money from another account you own into a financial account.
 
+> #### Legacy integration
+> 
+> The v1 version of Treasury for platforms is a legacy integration that doesn’t support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect/v2.md). Don’t build a new v1 integration.
+
 Inbound transfers move money from an external US bank account into a financial account using the ACH network. These transfers are initiated with [InboundTransfer](https://docs.stripe.com/api/treasury/inbound_transfers.md) objects.
 
 Inbound transfers take 2-4 business days to complete unless you’re using the same-day ACH capability. For more information, see the [Money movement timelines](https://docs.stripe.com/treasury/connect/money-movement/timelines.md#inboundtransfer-transactions) guide.

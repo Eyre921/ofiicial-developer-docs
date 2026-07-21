@@ -4,233 +4,110 @@ source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 path: fine-tuning/training-api/cookbook/rl
 ---
 
-Async RL on Fireworks — write a rollout function, the recipe owns the loop (gate, advantage, weight sync, KL/TIS, PPO, checkpoints). Runs async or fully synchronous.
+Run experimental async GRPO with a custom rollout function while the recipe owns scheduling, training, and weight publication.
 
-## What this is
-
-The cookbook's primary RL recipe is **`async_rl_loop`**. It runs rollout sampling and training as concurrent tasks, so the trainer doesn't sit idle waiting for a full batch of rollouts. **The only thing you write is a rollout function** — the recipe owns everything else: the off-policy gate, advantage computation, reference-model forwards, weight sync, KL/TIS metrics, the PPO inner loop, and checkpointing.
-
-It is a strict superset of synchronous, on-policy GRPO: set one flag and it drains rollouts before every step (see [Sync vs. async](#sync-vs-async)). Start here for new RL work.
+The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe runs rollout production independently from serialized training. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 
 <Warning>
-  `async_rl_loop` is **experimental** and under active development. Config fields and the rollout protocol may change without backward-compatibility shims; the recipe emits a runtime warning at startup. Pin to a specific cookbook commit if you depend on the current shape.
+  `async_rl_loop` is experimental. Its configuration and rollout protocol may
+  change without backward-compatibility shims. Pin the cookbook version for
+  production workloads.
 </Warning>
 
-## Core design: two files
+## Responsibilities
 
-You write two small files; the recipe is the third moving part you configure but don't edit.
+| You provide                                                | The recipe owns                                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Dataset rows through `Config.dataset` or `rows=`           | Trainer and deployment setup, cleanup, and initial weight sync                     |
+| `rollout_fn_factory(setup) -> rollout_fn`                  | Rollout fan-out, admission, grouping, and advantages                               |
+| Environment interaction, scoring, and aligned rollout data | Reference and old-policy forwards, GRPO/TIS/KL, and optimizer steps                |
+| Scheduling and algorithm configuration                     | Training chunks, sampler hotload and version publication, metrics, and checkpoints |
+| Optional `dynamic_filter_fn`                               | Bounded handling of transient rollout failures                                     |
 
-| File                          | What it holds                                                                                                                                                                    |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `rollout.py`                  | The **rollout function** — one trajectory per call: sample from the deployment, (optionally) score it, return a `RolloutSample`. Exposes `make_rollout_fn(setup) -> rollout_fn`. |
-| `train.py`                    | **Config + wiring** — base model, training/deployment shapes, the policy loss variant, reward function, and the call to `main(cfg, rollout_fn_factory=..., rows=...)`.           |
-| `async_rl_loop.main` (recipe) | Everything else: fan-out, off-policy gate, advantage, reference forwards, weight sync, KL/TIS, PPO inner loop, checkpoints, promotion.                                           |
-
-```mermaid theme={null}
-flowchart LR
-  rows[Dataset rows] --> recipe[async_rl_loop.main]
-  recipe -->|sample_prompt| rollout[your rollout_fn]
-  rollout -->|sample completions| deployment[Inference Deployment]
-  deployment --> rollout
-  rollout -->|RolloutSample| recipe
-  recipe -->|forward_backward + optim_step + weight sync| trainer[Policy Trainer]
-```
-
-### `rollout.py` — the rollout function
-
-The recipe hands your factory a `RolloutSetup` (sampler dependencies, tokenizer, sampling kwargs, custom `extras`) once at startup. Your `rollout_fn` is then invoked once per sample and returns a `RolloutSample` (or `None` to drop it):
+## Minimal setup
 
 ```python theme={null}
-from training.examples.rl.vanilla_sampler import build_deployment_sampler
-from training.utils.rl.rollout import RolloutSample
+from training.examples.rl.single_turn_token_in.rollout import make_rollout_fn
+from training.recipes.async_rl_loop import Config, main
+from training.utils import DeployConfig, TrainerConfig
 
-def make_rollout_fn(setup):
-    sampler = build_deployment_sampler(setup)
-    sample_kwargs = dict(setup.sample_kwargs)
+cfg = Config(
+    log_path="./async-rl-logs",
+    base_model="accounts/<account>/models/<model>",
+    completions_per_prompt=8,
+    prompt_groups_per_step=8,
+    pipeline_chunks_per_step=4,
+    max_head_offpolicy_versions=2,
+    max_concurrency_rollout_sample=128,
+    trainer=TrainerConfig(
+        training_shape_id="accounts/<account>/trainingShapes/<shape>",
+    ),
+    deployment=DeployConfig(tokenizer_model="<tokenizer>"),
+)
 
-    async def rollout_fn(sample_prompt: dict) -> RolloutSample | None:
-        completions = await sampler.sample_with_prompt_tokens(
-            sample_prompt["prompt_token_ids"], n=1, **sample_kwargs,
-        )
-        if not completions:
-            return None
-        c = completions[0]
-        output = list(c.full_tokens)[c.prompt_len:]
-        return RolloutSample(
-            tokens=list(c.full_tokens),
-            logprobs=[0.0] * c.prompt_len + list(c.inference_logprobs),
-            loss_mask=[0] * c.prompt_len + [1] * len(output),
-            reward=score(c),                       # your reward function
-            finish_reason=c.finish_reason,
-            text=c.text,
-        )
+rows = [...]  # Each row is passed to rollout_fn as sample_prompt.
+main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
+```
+
+The example rollout above expects rows with `prompt_token_ids`. Fork the [single-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/single_turn_token_in) or [multi-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multi_turn_message_in) for your environment.
+
+## Rollout contract
+
+The factory receives `RolloutSetup` once and returns an async function:
+
+```python theme={null}
+from training.recipes.async_rl_loop import RolloutFn, RolloutSetup
+from training.utils.rl.rollout import RolloutRun
+
+
+def make_rollout_fn(setup: RolloutSetup) -> RolloutFn:
+    async def rollout_fn(sample_prompt: dict) -> RolloutRun | None:
+        ...
 
     return rollout_fn
 ```
 
-`RolloutSample` is three parallel per-token lists plus a scalar reward:
+The recipe calls `rollout_fn` `completions_per_prompt` times for each dataset row. One call represents one trajectory and returns:
 
-```python theme={null}
-@dataclass
-class RolloutSample:
-    tokens: list[int]
-    logprobs: list[float]   # 0.0 on non-generated positions
-    loss_mask: list[int]    # 1 on assistant tokens, 0 elsewhere
-    reward: float
-    finish_reason: str = "stop"
-    text: str = ""
-```
+* `RolloutRun(segments=[...])` on success. A run contains one or more `RolloutSample` segments from the same trajectory.
+* `None` to drop that trajectory draw.
 
-Multi-turn rollouts flatten into the same shape — turn boundaries are implicit in `loss_mask` transitions (0 on prompt/user/tool, 1 on assistant). The per-token mask alignment is the contract the trainer relies on.
+Each segment carries aligned `tokens`, `logprobs`, and `loss_mask` lists plus a scalar `reward`. Set the mask to `1` only for tokens that should contribute to training. All segments in one run must have the same reward.
 
-### `train.py` — config, reward, and loss
+## Scheduling controls
 
-`train.py` builds the `Config`, picks the policy loss, wires the reward (computed inside the rollout), and starts the loop:
+These five fields define the rollout/training pipeline:
 
-```python theme={null}
-from training.recipes.async_rl_loop import Config, main
-from training.utils import DeployConfig, TrainerConfig, WandBConfig
-from my_rollout import make_rollout_fn  # your rollout.py
+| Field                            | Default | Meaning                                                                                           |
+| -------------------------------- | ------: | ------------------------------------------------------------------------------------------------- |
+| `completions_per_prompt`         |     `4` | Trajectories per dataset row. Must be at least `2`.                                               |
+| `prompt_groups_per_step`         |     `1` | Dataset rows grouped into one optimizer batch.                                                    |
+| `pipeline_chunks_per_step`       |     `1` | Balanced forward/backward chunks prepared for each optimizer batch.                               |
+| `max_head_offpolicy_versions`    |     `0` | Number of published policy versions that rollout admission may run ahead. `0` is fully on-policy. |
+| `max_concurrency_rollout_sample` |  `None` | Optional cap on in-flight rollout calls. It must fit at least one complete row.                   |
 
-cfg = Config(
-    log_path="./gsm8k_logs",
-    base_model="accounts/fireworks/models/qwen3-8b",
-    learning_rate=1.7e-5,
-    completions_per_prompt=8,
-    prompt_groups_per_step=8,
-    policy_loss="grpo",                 # the "custom loss" knob
-    max_head_offpolicy_versions=4,      # off-policy staleness budget (0 = on-policy)
-    trainer=TrainerConfig(training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200"),
-    deployment=DeployConfig(tokenizer_model="Qwen/Qwen3-8B"),
-    wandb=WandBConfig(entity="my-team", project="gsm8k-rl"),
-)
+Admission is row-atomic: the scheduler submits a row only when both the staleness budget and concurrency budget can fit all of its completions. `max_head_offpolicy_versions=0` is fully on-policy: every optimizer batch trains groups from its current published policy version. Chunk training can still overlap remaining rollouts from the same optimizer batch.
 
-rows = [...]  # dataset rows; each becomes a sample_prompt
-main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
-```
+## Runtime behavior
 
-Provisioning (policy trainer, reference trainer when `kl_beta > 0`, and the inference deployment) is handled internally from `trainer` / `deployment` — you never construct managers yourself.
+1. The recipe syncs initial policy weights to the sampler.
+2. The producer submits complete rows while both admission budgets allow it.
+3. Every completed rollout retries refill. As soon as the first training chunk is ready, serialized trainer work can begin while rollout production continues.
+4. Later chunks queue and run in order. One optimizer step follows the final chunk.
+5. The recipe hotloads the updated weights and publishes the next policy version. Publication reopens staleness capacity.
 
-## Sync vs. async
+There is one sampler hotload per optimizer batch; `async_rl_loop` does not expose a weight-sync interval. Known transient rollout failures are dropped behind a bounded circuit breaker. Invalid rollout data, unexpected cancellation, and unknown errors remain fatal.
 
-The same recipe covers the full spectrum from strict on-policy to overlapped off-policy:
+## Loss behavior
 
-| Setting                                   | Behavior                                                                                                                                                            |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `synchronous_training=True`               | **Fully synchronous** — drains all in-flight rollouts before each train step. No overlap; useful as an on-policy baseline or to measure async savings.              |
-| `max_head_offpolicy_versions=0` (default) | **Strict on-policy** — samples that would arrive after the next weight sync are held until the sync. No drift; rollouts and training serialize at batch boundaries. |
-| `max_head_offpolicy_versions=O` (`O > 0`) | **Off-policy with bounded staleness** — samples may land up to `O` weight-sync versions past their submit version, letting sampling overlap with training.          |
+The stock recipe has one direct client-side GRPO path and no `policy_loss` or `loss_path` selector. `anchor_logp="old_policy"` (the default) snapshots trainer logprobs and applies TIS against rollout behavior logprobs; `anchor_logp="rollout"` reuses aligned rollout logprobs and makes the TIS ratio identity. Set `kl_beta=0` to disable reference-policy KL and reference provisioning.
 
-Raising `O` later is a single-knob change. For the off-policy gate math, GPU split, and the `perf/*` tuning metrics, see the [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md).
+## Detailed reference
 
-### Policy loss variants
+Keep implementation and tuning detail out of the recipe page:
 
-Set `policy_loss` on the `Config`:
-
-| `policy_loss`           | Description                                       |
-| ----------------------- | ------------------------------------------------- |
-| `"grpo"`                | REINFORCE + KL penalty (default)                  |
-| `"importance_sampling"` | Off-policy ratio weighting with optional clipping |
-| `"reinforce"`           | Vanilla REINFORCE                                 |
-| `"dapo"`                | Dynamic advantage with asymmetric PPO clipping    |
-| `"dro"`                 | Distributionally robust off-policy objective      |
-| `"gspo"`                | Sequence-level clipped PPO                        |
-| `"cispo"`               | Clipped importance sampling policy optimization   |
-
-## Examples
-
-Two minimal runnable examples ship under [`training/examples/rl/`](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl), each as a `rollout.py` + `train.py` pair:
-
-* **`single_turn_token_in/`** — pre-tokenized rows; the rollout makes one `/v1/completions` token-in/token-out call per invocation.
-* **`multi_turn_message_in/`** — OpenAI-style messages; the rollout runs a retry loop (ports AReaL's multi-turn math example), with the reward in a separate `reward.py`.
-
-### Black-box multi-turn agents
-
-The ProRL SWE-Gym-style coding-agent path uses the same `async_rl_loop` contract
-without modifying the agent. Run the agent in its sandbox, point its
-Anthropic-compatible model endpoint at a local shim, and let the shim translate
-each model call into a Fireworks deployment request while recording token ids and
-logprobs. This mirrors the public slime
-[`examples/coding_agent_rl`](https://github.com/THUDM/slime/tree/main/examples/coding_agent_rl)
-example, which turns one agent run into `subagent`, `wipe`, and `final`
-training segments.
-
-The important part is to keep one stable trajectory session id for the whole
-episode. Forward that id on every turn with the `user` request field or, for RL
-rollout traffic, with `x-multi-turn-session-id` and `x-session-affinity`.
-See [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts)
-for how that session id interacts with sticky routing, prompt-prefix KV reuse,
-active streams, and `reset_prompt_cache` during weight sync.
-
-For the training datum, separate turn routing from token stitching. The shim uses
-`training.utils.rl.rollout.turn_matching` to classify each incoming request as
-`NEW`, `APPEND`, or `WIPE`. The default strategy matches structured message
-hashes, which is useful for black-box agents that re-render the full
-conversation each turn; a stricter token-prefix strategy is also available. An
-`APPEND` continues the active chain, while a `WIPE` freezes the current chain as
-its own segment and starts a fresh one. That is how compaction or sub-agent
-excursions become multiple training segments without losing the rest of the
-run.
-
-Token stitching then happens in the coding-agent trajectory merge. Each recorded
-turn stores the exact prompt token ids seen by the deployment, output token ids,
-and per-token output logprobs. The first prompt becomes the segment prompt.
-Later prompts are matched against the segment's `prompt_ids + response_ids`; any
-new prompt suffix is non-trainable context, and generated output tokens are the
-trainable span.
-
-```python theme={null}
-sample = RolloutSample(
-    tokens=segment.prompt_ids + segment.response_ids,
-    logprobs=[0.0] * len(segment.prompt_ids) + segment.rollout_log_probs,
-    loss_mask=[0] * len(segment.prompt_ids) + segment.loss_mask,
-    reward=run_reward,
-)
-```
-
-Inside `segment.loss_mask`, prompt suffixes from user/tool/rendering turns stay
-`0`, assistant output tokens stay `1`, and non-trainable logprobs are zeroed.
-If a later rendered prompt no longer token-matches part of a previous model
-output, the merge masks or drops the unstitched tail instead of training on
-shifted masks. The rollout returns all surviving segments in one `RolloutRun`
-with the final sandbox/grader reward, and the recipe handles advantage
-computation, PPO/GRPO loss, and weight sync.
-
-## Operational guidance
-
-* **`deployment.tokenizer_model` is required** — the recipe tokenizes client-side.
-* **Set `trainer.training_shape_id`** for an explicit shape; otherwise the recipe auto-selects a validated one.
-* **Reward lives in the rollout** — set `RolloutSample.reward`; return `None` to drop a sample.
-* **Skip uniform-reward groups** with `dynamic_filter_fn=lambda pg: len(set(pg.rewards)) > 1` — GRPO advantage is zero when all rewards in a group match.
-* **DCP checkpoints are off by default** (`dcp_save_interval=0`); set a positive value to enable resume, and `output_model_id` to promote the final checkpoint.
-
-## The simpler `rl_loop` recipe
-
-If you don't need rollout/train overlap, the cookbook also ships **`rl_loop`** — a synchronous, strictly on-policy GRPO scaffold. It samples a batch, scores it, takes a step, syncs weights, and repeats. Configure it the same way (`trainer=TrainerConfig(...)`, `deployment=DeployConfig(...)`, `weight_sync_interval`, `policy_loss`) and call `main(cfg)`:
-
-```python theme={null}
-from training.recipes.rl_loop import Config, main
-from training.utils import DeployConfig, TrainerConfig
-
-cfg = Config(
-    log_path="./grpo_logs",
-    base_model="accounts/fireworks/models/qwen3-8b",
-    dataset="/path/to/gsm8k.jsonl",
-    max_rows=200,
-    completions_per_prompt=4,
-    policy_loss="grpo",
-    trainer=TrainerConfig(training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200"),
-    deployment=DeployConfig(deployment_id="grpo-serving", tokenizer_model="Qwen/Qwen3-8B"),
-    weight_sync_interval=1,
-)
-main(cfg)
-```
-
-`async_rl_loop` with `max_head_offpolicy_versions=0` is equivalent to `rl_loop`, so prefer the async recipe for new work and reach for `rl_loop` only when you specifically want the server-side fast loss path (which forbids `kl_beta>0` and pipeline parallelism). The reward function and `build_grpo_datums` / `make_grpo_loss_fn` internals are documented in [Loss Functions](/fine-tuning/training-api/loss-functions).
-
-## Related guides
-
-* [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — full async contract: off-policy gate, `perf/*` metrics, GPU split tuning
-* [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated weights reach the deployment
-* [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes
-* [Loss Functions](/fine-tuning/training-api/loss-functions) — policy-loss and datum internals
+* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — admission math, metrics, tuning, failure policy, and resume semantics
+* [Customize RL loss skill](https://github.com/fw-ai/cookbook/blob/main/skills/customize-rl-loss/SKILL.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
+* [Checkpointing](/fine-tuning/training-api/cookbook/checkpoints) — resumable checkpoints and final model promotion
+* [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated policy weights reach the sampler
+* [`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary

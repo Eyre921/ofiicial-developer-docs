@@ -201,6 +201,7 @@ components:
         - entity_type
         - start_char
         - end_char
+      description: An entity detected within transcribed text.
       title: DetectedEntity
     SpeechToTextChunkResponseModel:
       type: object

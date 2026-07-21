@@ -7537,6 +7537,59 @@ To route inference requests to a specific LoRA adapter on a multi-LoRA deploymen
 * You are running experiments or A/B tests across multiple fine-tuned variants
 * You can accept some performance overhead compared to live merge
 
+## Downloading model weights
+
+You can download your fine-tuned weights from Fireworks to inspect them, extend the context locally, or serve them outside the platform. There are two things you might want: the **LoRA adapter** on its own, or the **merged (base + adapter) model**.
+
+### Download the LoRA adapter
+
+LoRA adapters are listed alongside models in `firectl model list` (denoted with the type `HF_PEFT_ADDON`). Download one with the same command used for any model:
+
+```bash theme={null}
+firectl model download <FINE_TUNED_MODEL_ID> /path/to/checkpoint/
+```
+
+See [`firectl model download`](/tools-sdks/firectl/commands/model-download) for flags.
+
+<Note>
+  The adapter alone is not enough to run inference. You also need the matching base model. The adapter was trained against a specific base (for example, a vendor checkpoint that may differ from the public Hugging Face weights), so pair the adapter with the exact base it was trained on. If you are unsure which base was used, ask your Fireworks contact before assuming the public Hugging Face weights are identical.
+</Note>
+
+### Download the merged (base + adapter) model
+
+On the platform, **the merge happens on the fly at deployment time** (live merge), so serving a fine-tuned model does not require a standalone merged file. To produce a merged copy you can run off-platform, download the base and the adapter, then merge them locally in BF16 with PEFT:
+
+1. Download the base model with `firectl model download`.
+2. Download the LoRA adapter with `firectl model download`.
+3. Load the base model, wrap it with `PeftModel` to load the adapter, call `merge_and_unload()`, and save the merged model.
+
+```python theme={null}
+from peft import PeftModel
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+base = AutoModelForCausalLM.from_pretrained("/path/to/base", torch_dtype="bfloat16")
+merged = PeftModel.from_pretrained(base, "/path/to/adapter").merge_and_unload()
+
+merged.save_pretrained("/path/to/merged")
+AutoTokenizer.from_pretrained("/path/to/base").save_pretrained("/path/to/merged")
+```
+
+Merge in BF16; if you need quantized (FP8) weights, quantize the merged result afterward (see FP8 below).
+
+### FP8 (and other quantized) merged weights
+
+If you want an FP8 merged model to run off-platform, merge in BF16 first, then quantize the merged result yourself. For reference, the on-platform serving path is:
+
+1. Keep the BF16 base + BF16 LoRA adapter.
+2. At deploy, merge in BF16: `W' = W_bf16 + (B·A)_bf16`.
+3. Quantize the merged BF16 weights to FP8 on the fly at serving time.
+
+To reproduce this locally, merge in BF16 first, then quantize the merged weights to FP8.
+
+<Warning>
+  **Match the original quantization scheme when serving locally.** Use the same quantization the base model ships with on Hugging Face rather than a generic FP8 cast. For example, a GLM-family MoE base uses **blockwise FP8** for its MoE weights, and casting with a different scheme can silently degrade quality. When in doubt, keep the merged model in BF16 and let your serving stack quantize.
+</Warning>
+
 ## Performance considerations
 
 Live merge eliminates all LoRA-related inference overhead because the adapter weights are baked into the model at deployment time. The resulting deployment behaves exactly like a natively fine-tuned base model.
@@ -7548,6 +7601,43 @@ Multi-LoRA deployments incur overhead because adapters are applied dynamically:
 * **Maximum throughput:** Lower than a live-merge deployment under sustained load
 
 For a deeper dive into LoRA performance characteristics and optimization strategies, see [Understanding LoRA Performance](/guides/understanding_lora_performance).
+
+## Troubleshooting
+
+### Silent deployment-shape drop (multi-LoRA lands on the default serving image)
+
+This is a subtle failure mode specific to multi-LoRA deployments. If the deployment shape you request is not **validated for the exact base model version** you are deploying, deployment create does **not** return an error. The unvalidated shape is **silently dropped**, and the deployment quietly falls back to the **default serving image**. That default image's addon loader then rejects addon (multi-LoRA) checkpoints, so you end up seeing base-model behavior or an addon-load failure with no obvious cause.
+
+<Warning>
+  This differs from training, where an unvalidated shape returns a **400**. At deployment create time there is no such error. The `skip_shape_validation` override is superuser-only, so you cannot force an unvalidated shape through yourself. The shape must be validated for your exact model version.
+</Warning>
+
+**Why it happens.** A deployment shape is validated against a specific base model version, not just a model family. A shape such as `deploymentShapes/<model>-h200-multilora` may have validated versions that bind one model version but **not** another version of the same family. Deploying a model version that no validated shape version binds triggers the silent drop.
+
+**How to detect it.** Before (or after) creating the deployment, confirm a validated shape version exists for the **exact** model version you are deploying, not just the family. List the validated shape versions for your model:
+
+```bash theme={null}
+firectl deployment-shape-version list --base-model accounts/<your-account>/models/<your-model-version>
+```
+
+Or query the API directly with the `latest_validated=true` filter (see [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)):
+
+```bash theme={null}
+curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filter=snapshot.base_model%3D%22accounts%2F<your-account>%2Fmodels%2F<your-model-version>%22%20AND%20latest_validated%3Dtrue&order_by=create_time%20desc" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" | jq .
+```
+
+Signs you have hit this failure mode:
+
+* No validated shape version lists your exact model version under `snapshot.base_model` (every validated version binds a **different** version of the same model family).
+* The deployment comes up serving base-model behavior instead of your fine-tune.
+* Loading an addon (a Tinker or other LoRA checkpoint) is rejected even though the shape you requested supports addons.
+
+**How to avoid landing on the default serving image.**
+
+* Deploy only against a shape version that is validated for your **exact** model version, confirmed with the check above.
+* If no validated shape version binds your model version, do **not** rely on the shape argument being honored. Ask your Fireworks account team to **validate a deployment shape version for that model version** first. A shape validated only for a sibling version will be dropped.
+* As an alternative that avoids multi-LoRA and the addon loader entirely, [live merge](#live-merge-deployment) the single adapter, which does not go through the addon path.
 
 ## Next steps
 
@@ -12648,6 +12738,23 @@ That's the full surface most users need. The rest of this page covers config kno
 | `output_model_id`      | All recipes | `str \| None` | `None`     | If set, promote the final checkpoint to this Fireworks model ID at the end of training                                                     |
 | `init_from_checkpoint` | All recipes | `str \| None` | `None`     | Load weights from another job (`"job-id:checkpoint-name"`). Step counter resets to 0.                                                      |
 
+## Resume-training vs serving: which checkpoint to use
+
+Each save can produce up to two different control-plane rows, and they are **not interchangeable**. Selecting the wrong one is the most common cause of a resume that produces incoherent output.
+
+| Goal                                                                                                                                                                                | Checkpoint to use        | Server `checkpointType`                                                                                                                      | How it is saved                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **Continue training** (restore weights **and** optimizer state via same-`log_path` auto-resume or `load_state_with_optimizer`; `init_from_checkpoint` is a weights-only warm start) | Resumable DCP checkpoint | `TRAINING` (full-param) or `TRAINING_LORA` (LoRA)                                                                                            | `resumable=True` / `dcp_save_interval` / `save_state` |
+| **Serve, evaluate, or promote to a model**                                                                                                                                          | Sampler snapshot         | `INFERENCE_BASE` / `INFERENCE_LORA` (or `INFERENCE_ARC_V2` for a full-param delta, which is servable and weight-syncable but not promotable) | `promotable=True` / `save_weights_for_sampler`        |
+
+Key points:
+
+* **To resume training, load a `TRAINING`/`TRAINING_LORA` (DCP) checkpoint.** Only DCP checkpoints carry optimizer state. To continue a run with optimizer state (plus the step counter and data cursor), reattach the same trainer job and use automatic same-`log_path` resume (recipe), or load the checkpoint with `load_state_with_optimizer` (SDK). `init_from_checkpoint` (recipe) is a weights warm start: it loads the checkpoint weights with a fresh optimizer and resets the step counter to 0.
+* **To serve or promote, use the `INFERENCE_*` sampler snapshot.** These are weight-only, and are what `promote_checkpoint` and hot-load expect.
+* The two rows saved at the same step represent the **same weights** but different payloads (DCP is weights plus optimizer, sampler is weights only). Do not assume a `TRAINING_LORA` blob can be served directly, or that an `INFERENCE_LORA` blob can resume training.
+
+See [Checkpoint kinds](#checkpoint-kinds) for the full mapping across cookbook, SDK, and server layers.
+
 ## Resume
 
 ### Automatic (same log\_path)
@@ -12665,6 +12772,79 @@ config = Config(
 ```
 
 Loads weights from the specified job, resets step to 0. Mutually exclusive with automatic resume.
+
+### Safely saving a resumable checkpoint before you continue
+
+To continue training from an existing run without losing progress, follow the same ordered procedure for every recipe, including the RL recipe (`rl_loop`): save a resumable checkpoint, verify it on the control plane, then resume from it. This applies whether the source run is still active, cancelled, or completed.
+
+<Note>
+  A common reason there is no resumable checkpoint to continue from is that `dcp_save_interval` was left unset. It defaults to `0` (off), so the run never saved automatic DCP (resumable) checkpoints and there is nothing to continue from. Check this first: if the source job did not have `dcp_save_interval` set, force a save explicitly (Step 1) while the trainer job is still available, rather than assuming a periodic checkpoint already exists.
+</Note>
+
+<Steps>
+  <Step title="Save a resumable (DCP) checkpoint">
+    Make sure a `TRAINING`/`TRAINING_LORA` checkpoint exists on the source job. Either set `dcp_save_interval=N` on the recipe config so periodic saves happen automatically, or force one save explicitly:
+
+    ```python theme={null}
+    ckpt.save("step-N", resumable=True, promotable=False, data_consumed=count)
+    ```
+
+    `resumable=True` is what persists weights **and** optimizer state; without it the run cannot be continued from intermediate steps.
+  </Step>
+
+  <Step title="Verify the checkpoint is visible on the control plane">
+    The control plane is the source of truth for resume, so confirm the checkpoint landed **before** you tear anything down:
+
+    ```bash theme={null}
+    python training/examples/tools/list_checkpoints.py --job-id <source-job-id>
+    ```
+
+    Or via the SDK/API, see [Listing checkpoints on a trainer](/fine-tuning/training-api/saving-and-loading#listing-checkpoints-on-a-trainer). Look for your `step-N` row with a `TRAINING`/`TRAINING_LORA` type.
+  </Step>
+
+  <Step title="Continue training from it">
+    Start (or restart) a trainer and point `init_from_checkpoint` at the verified checkpoint:
+
+    ```python theme={null}
+    config = Config(
+        init_from_checkpoint="<source-job-id>:step-N",  # job_id:checkpoint_name
+        ...
+    )
+    ```
+
+    This loads the checkpoint weights with a fresh optimizer and resets the step counter to 0 (a weights warm start). To continue with optimizer state instead, reattach the same trainer job and use automatic same-`log_path` resume, or load the checkpoint with `load_state_with_optimizer` (SDK).
+  </Step>
+</Steps>
+
+<Note>
+  Keep the source trainer job's row around until the new run has loaded its checkpoint. A cancelled or completed trainer can still serve as a source of checkpoints, but its checkpoint blobs are what the resume reads from.
+</Note>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Resuming from a TRAINING_LORA checkpoint produces incoherent output while the INFERENCE_LORA snapshot of the same step serves correctly">
+    **Symptoms**: Promoting or serving an `INFERENCE_LORA` sampler snapshot for a given step produces coherent output, but restarting training from the same step's `TRAINING_LORA` (DCP) checkpoint and then exporting or serving those weights produces degenerate or incoherent output (for example, repeated or non-Latin tokens), sometimes with tool-call failures. A test prompt at temperature 0 may look identical to a different step, which suggests the loaded weights are not the ones you requested.
+
+    **Root cause (checklist)**:
+
+    1. **Wrong checkpoint type for the goal.** Confirm you loaded a `TRAINING`/`TRAINING_LORA` (DCP) checkpoint for the resume, not an `INFERENCE_*` snapshot, and that you are serving the `INFERENCE_*` snapshot, not the DCP blob. See [which checkpoint to use](#resume-training-vs-serving-which-checkpoint-to-use).
+
+    2. **Export ordering after a resume.** `save_weights_for_sampler` / `save_weights_for_sampler_ext` export the trainer session's **currently active** adapter/weights. In a normal training step it is preceded by an `optim_step`, so the active weights are well defined. Immediately after a resume, export the weights you just loaded, and make sure nothing else (a stale adapter from an earlier state, another concurrent step) is active. If a sampler export right after `load_state_with_optimizer` yields a different snapshot than the DCP step you requested, the loaded state is not the one being exported. See [Resuming and then exporting weights](/fine-tuning/training-api/saving-and-loading#resuming-and-then-exporting-weights).
+
+    3. **A platform-side loader mismatch.** In some cases the trainer-side checkpoint loader can resolve the latest checkpoint rather than the one you requested when a sampler export follows a cross-job resume, so the exported snapshot points at a different, later step. If you have ruled out (1) and (2) and a cross-job resume still exports the wrong weights, capture the source job ID, the requested checkpoint name, and the exported snapshot identity, and contact Fireworks support so they can check the trainer shape version and checkpoint loader.
+  </Accordion>
+
+  <Accordion title="Resume seems to load, but weights look unchanged from the base model">
+    **Symptoms**: `load_state_with_optimizer` returns without error and the deployment is addressed correctly, but outputs look like the base model (or identical across steps that should differ).
+
+    **What to check**:
+
+    * Verify you passed a resumable (`TRAINING`/`TRAINING_LORA`) checkpoint name, not a name that does not exist (a missing checkpoint can silently leave the trainer at its initial weights). List checkpoints first (see [Safely saving a resumable checkpoint](#safely-saving-a-resumable-checkpoint-before-you-continue)).
+    * Confirm the sampler snapshot you served was exported **after** the resume load, not carried over from a previous state.
+    * Sanity-check that the deployment is actually serving your adapter and not falling back to base (compare against a known-good promoted checkpoint at temperature 0).
+  </Accordion>
+</AccordionGroup>
 
 ## Promoting a checkpoint manually
 
@@ -13141,15 +13321,15 @@ export FIREWORKS_API_KEY="your-api-key"
 
 ## Available recipes
 
-| Recipe                           | Module                               | Use case                                                                                                                                                                                                                                                                                                                                        |
-| -------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **RL** *(primary, experimental)* | `training.recipes.async_rl_loop`     | Reinforcement learning — you write a rollout function, the recipe owns the loop. Async rollout/training overlap by default; fully synchronous on-policy with `synchronous_training=True`. GRPO, importance sampling, DAPO, DRO, GSPO, CISPO. See [Cookbook RL](/fine-tuning/training-api/cookbook/rl). **No backward-compatibility guarantee.** |
-| **RL** *(simpler, synchronous)*  | `training.recipes.rl_loop`           | Synchronous on-policy GRPO scaffold — reach for it when you want the server-side fast loss path or don't need rollout/train overlap                                                                                                                                                                                                             |
-| **IGPO**                         | `training.recipes.igpo_loop`         | Information Gain-based Policy Optimization — turn-level IG rewards for multi-turn agent trajectories (extends GRPO)                                                                                                                                                                                                                             |
-| **DPO**                          | `training.recipes.dpo_loop`          | Direct preference optimization from chosen/rejected pairs                                                                                                                                                                                                                                                                                       |
-| **SFT**                          | `training.recipes.sft_loop`          | Supervised fine-tuning with cross-entropy loss                                                                                                                                                                                                                                                                                                  |
-| **Distillation**                 | `training.recipes.distillation_loop` | On-policy distillation with sampled-token OPD, routed multi-teacher MOPD, and top-K SDFT                                                                                                                                                                                                                                                        |
-| **ORPO**                         | `training.recipes.orpo_loop`         | Odds ratio preference optimization                                                                                                                                                                                                                                                                                                              |
+| Recipe                           | Module                               | Use case                                                                                                                                                                                                                                                                                            |
+| -------------------------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RL** *(primary, experimental)* | `training.recipes.async_rl_loop`     | Reinforcement learning — you write a rollout function, and the recipe owns completion-driven rollout production, bounded off-policy admission, serialized GRPO training, and weight publication. See [Cookbook RL](/fine-tuning/training-api/cookbook/rl). **No backward-compatibility guarantee.** |
+| **RL** *(simpler, synchronous)*  | `training.recipes.rl_loop`           | Synchronous on-policy GRPO scaffold — reach for it when you don't need rollout/train overlap                                                                                                                                                                                                        |
+| **IGPO**                         | `training.recipes.igpo_loop`         | Information Gain-based Policy Optimization — turn-level IG rewards for multi-turn agent trajectories (extends GRPO)                                                                                                                                                                                 |
+| **DPO**                          | `training.recipes.dpo_loop`          | Direct preference optimization from chosen/rejected pairs                                                                                                                                                                                                                                           |
+| **SFT**                          | `training.recipes.sft_loop`          | Supervised fine-tuning with cross-entropy loss                                                                                                                                                                                                                                                      |
+| **Distillation**                 | `training.recipes.distillation_loop` | On-policy distillation with sampled-token OPD, routed multi-teacher MOPD, and top-K SDFT                                                                                                                                                                                                            |
+| **ORPO**                         | `training.recipes.orpo_loop`         | Odds ratio preference optimization                                                                                                                                                                                                                                                                  |
 
 Each recipe follows the same pattern: import `Config` and `main`, set your config, and call `main(cfg)`. Trainer and deployment provisioning is handled internally by the recipe — you describe *what* you want with `TrainerConfig` / `DeployConfig`, and the SDK attaches or creates the resources.
 
@@ -13345,13 +13525,13 @@ Rollout sampling concurrency settings used by RL-family recipes:
 
 ## Checkpoint & weight-sync fields
 
-Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). `rl_loop` and `igpo_loop` expose the full weight-sync cadence knobs; `async_rl_loop` pins sampler sync to every optimizer step and exposes only pre-training sync and timeout. Every recipe exposes `dcp_save_interval`:
+Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). `rl_loop` and `igpo_loop` expose weight-sync cadence knobs. `async_rl_loop` always syncs once before training and once after every optimizer batch; only its timeout is configurable. Every recipe exposes `dcp_save_interval`:
 
 ```python theme={null}
 cfg = Config(
     # ... base_model, dataset, trainer, deployment ...
     weight_sync_interval=1,               # rl_loop/igpo_loop: sync weights every N steps
-    weight_sync_before_training=False,    # RL: sync a base checkpoint before step 1
+    weight_sync_before_training=False,    # rl_loop/igpo_loop: optional initial sync
     weight_sync_timeout=600,              # RL: per weight-sync timeout (seconds)
     dcp_save_interval=10,                  # all recipes: save resumable DCP checkpoints every N steps
 )
@@ -13361,12 +13541,12 @@ cfg = Config(
   `dcp_save_interval` defaults to `0` (off). Without setting it to a positive value, **no DCP checkpoints are saved and training cannot be resumed**. If you need checkpoint-based resume, explicitly set `dcp_save_interval` (e.g. `dcp_save_interval=50`).
 </Warning>
 
-| Field                         | Recipes                | Type   | Default | Description                                                                                                                           |
-| ----------------------------- | ---------------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `dcp_save_interval`           | All                    | `int`  | `0`     | Save resumable DCP checkpoints every N steps. `0` disables DCP saves. **Set to a positive value to enable resume.**                   |
-| `weight_sync_interval`        | `rl_loop`, `igpo_loop` | `int`  | `1`     | Save + sync weights to the deployment every N optimizer steps. `0` disables weight sync. `async_rl_loop` pins this internally to `1`. |
-| `weight_sync_before_training` | RL family              | `bool` | `False` | Save a base checkpoint and sync it to the deployment before the first training step.                                                  |
-| `weight_sync_timeout`         | RL family              | `int`  | `600`   | Timeout for each weight sync (seconds).                                                                                               |
+| Field                         | Recipes                | Type   | Default | Description                                                                                                                              |
+| ----------------------------- | ---------------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `dcp_save_interval`           | All                    | `int`  | `0`     | Save resumable DCP checkpoints every N steps. `0` disables DCP saves. **Set to a positive value to enable resume.**                      |
+| `weight_sync_interval`        | `rl_loop`, `igpo_loop` | `int`  | `1`     | Save + sync weights to the deployment every N optimizer steps. `0` disables weight sync. This field is not part of `async_rl_loop`.      |
+| `weight_sync_before_training` | `rl_loop`, `igpo_loop` | `bool` | `False` | Save a base checkpoint and sync it to the deployment before the first training step. `async_rl_loop` performs this sync unconditionally. |
+| `weight_sync_timeout`         | RL family              | `int`  | `600`   | Timeout for each weight sync (seconds).                                                                                                  |
 
 <Note>
   The old nested `WeightSyncConfig` recipe field is gone. Recipe `Config` objects set the fields above directly, and the SDK-managed service owns the underlying save and weight-sync state.
@@ -13468,7 +13648,7 @@ Earlier cookbook releases provisioned trainers and deployments from the recipe l
 | `InfraConfig.ref_training_shape_id`                            | `TrainerConfig.reference_training_shape_id`                                                                                                                    |
 | `InfraConfig.trainer_timeout_s`                                | `TrainerConfig.timeout_s`                                                                                                                                      |
 | `InfraConfig.trainer_replica_count`                            | `TrainerConfig.replica_count`                                                                                                                                  |
-| `Config(weight_sync=WeightSyncConfig(weight_sync_interval=N))` | `Config(weight_sync_interval=N)` (top-level, `rl_loop` / `igpo_loop`; `async_rl_loop` pins this to `1`)                                                        |
+| `Config(weight_sync=WeightSyncConfig(weight_sync_interval=N))` | `Config(weight_sync_interval=N)` (top-level, `rl_loop` / `igpo_loop`; `async_rl_loop` always syncs after each optimizer batch)                                 |
 | `weight_sync.dcp_save_interval=N`                              | `Config(dcp_save_interval=N)` (top-level, all recipes)                                                                                                         |
 | top-level `policy_job_id=...`                                  | `TrainerConfig(job_id=...)`                                                                                                                                    |
 | `setup_infra(rlor_mgr, deploy_mgr, ...)`                       | `build_service_client(...)` (see the [DPO API-level example](/fine-tuning/training-api/cookbook/dpo#step-by-step-api-level))                                   |
@@ -13485,236 +13665,113 @@ The cookbook ships one [Fireworks training skill](https://github.com/fw-ai/cookb
 # Cookbook: Reinforcement Learning
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 
-Async RL on Fireworks — write a rollout function, the recipe owns the loop (gate, advantage, weight sync, KL/TIS, PPO, checkpoints). Runs async or fully synchronous.
+Run experimental async GRPO with a custom rollout function while the recipe owns scheduling, training, and weight publication.
 
-## What this is
-
-The cookbook's primary RL recipe is **`async_rl_loop`**. It runs rollout sampling and training as concurrent tasks, so the trainer doesn't sit idle waiting for a full batch of rollouts. **The only thing you write is a rollout function** — the recipe owns everything else: the off-policy gate, advantage computation, reference-model forwards, weight sync, KL/TIS metrics, the PPO inner loop, and checkpointing.
-
-It is a strict superset of synchronous, on-policy GRPO: set one flag and it drains rollouts before every step (see [Sync vs. async](#sync-vs-async)). Start here for new RL work.
+The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe runs rollout production independently from serialized training. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 
 <Warning>
-  `async_rl_loop` is **experimental** and under active development. Config fields and the rollout protocol may change without backward-compatibility shims; the recipe emits a runtime warning at startup. Pin to a specific cookbook commit if you depend on the current shape.
+  `async_rl_loop` is experimental. Its configuration and rollout protocol may
+  change without backward-compatibility shims. Pin the cookbook version for
+  production workloads.
 </Warning>
 
-## Core design: two files
+## Responsibilities
 
-You write two small files; the recipe is the third moving part you configure but don't edit.
+| You provide                                                | The recipe owns                                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Dataset rows through `Config.dataset` or `rows=`           | Trainer and deployment setup, cleanup, and initial weight sync                     |
+| `rollout_fn_factory(setup) -> rollout_fn`                  | Rollout fan-out, admission, grouping, and advantages                               |
+| Environment interaction, scoring, and aligned rollout data | Reference and old-policy forwards, GRPO/TIS/KL, and optimizer steps                |
+| Scheduling and algorithm configuration                     | Training chunks, sampler hotload and version publication, metrics, and checkpoints |
+| Optional `dynamic_filter_fn`                               | Bounded handling of transient rollout failures                                     |
 
-| File                          | What it holds                                                                                                                                                                    |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `rollout.py`                  | The **rollout function** — one trajectory per call: sample from the deployment, (optionally) score it, return a `RolloutSample`. Exposes `make_rollout_fn(setup) -> rollout_fn`. |
-| `train.py`                    | **Config + wiring** — base model, training/deployment shapes, the policy loss variant, reward function, and the call to `main(cfg, rollout_fn_factory=..., rows=...)`.           |
-| `async_rl_loop.main` (recipe) | Everything else: fan-out, off-policy gate, advantage, reference forwards, weight sync, KL/TIS, PPO inner loop, checkpoints, promotion.                                           |
-
-```mermaid theme={null}
-flowchart LR
-  rows[Dataset rows] --> recipe[async_rl_loop.main]
-  recipe -->|sample_prompt| rollout[your rollout_fn]
-  rollout -->|sample completions| deployment[Inference Deployment]
-  deployment --> rollout
-  rollout -->|RolloutSample| recipe
-  recipe -->|forward_backward + optim_step + weight sync| trainer[Policy Trainer]
-```
-
-### `rollout.py` — the rollout function
-
-The recipe hands your factory a `RolloutSetup` (sampler dependencies, tokenizer, sampling kwargs, custom `extras`) once at startup. Your `rollout_fn` is then invoked once per sample and returns a `RolloutSample` (or `None` to drop it):
+## Minimal setup
 
 ```python theme={null}
-from training.examples.rl.vanilla_sampler import build_deployment_sampler
-from training.utils.rl.rollout import RolloutSample
+from training.examples.rl.single_turn_token_in.rollout import make_rollout_fn
+from training.recipes.async_rl_loop import Config, main
+from training.utils import DeployConfig, TrainerConfig
 
-def make_rollout_fn(setup):
-    sampler = build_deployment_sampler(setup)
-    sample_kwargs = dict(setup.sample_kwargs)
+cfg = Config(
+    log_path="./async-rl-logs",
+    base_model="accounts/<account>/models/<model>",
+    completions_per_prompt=8,
+    prompt_groups_per_step=8,
+    pipeline_chunks_per_step=4,
+    max_head_offpolicy_versions=2,
+    max_concurrency_rollout_sample=128,
+    trainer=TrainerConfig(
+        training_shape_id="accounts/<account>/trainingShapes/<shape>",
+    ),
+    deployment=DeployConfig(tokenizer_model="<tokenizer>"),
+)
 
-    async def rollout_fn(sample_prompt: dict) -> RolloutSample | None:
-        completions = await sampler.sample_with_prompt_tokens(
-            sample_prompt["prompt_token_ids"], n=1, **sample_kwargs,
-        )
-        if not completions:
-            return None
-        c = completions[0]
-        output = list(c.full_tokens)[c.prompt_len:]
-        return RolloutSample(
-            tokens=list(c.full_tokens),
-            logprobs=[0.0] * c.prompt_len + list(c.inference_logprobs),
-            loss_mask=[0] * c.prompt_len + [1] * len(output),
-            reward=score(c),                       # your reward function
-            finish_reason=c.finish_reason,
-            text=c.text,
-        )
+rows = [...]  # Each row is passed to rollout_fn as sample_prompt.
+main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
+```
+
+The example rollout above expects rows with `prompt_token_ids`. Fork the [single-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/single_turn_token_in) or [multi-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multi_turn_message_in) for your environment.
+
+## Rollout contract
+
+The factory receives `RolloutSetup` once and returns an async function:
+
+```python theme={null}
+from training.recipes.async_rl_loop import RolloutFn, RolloutSetup
+from training.utils.rl.rollout import RolloutRun
+
+
+def make_rollout_fn(setup: RolloutSetup) -> RolloutFn:
+    async def rollout_fn(sample_prompt: dict) -> RolloutRun | None:
+        ...
 
     return rollout_fn
 ```
 
-`RolloutSample` is three parallel per-token lists plus a scalar reward:
+The recipe calls `rollout_fn` `completions_per_prompt` times for each dataset row. One call represents one trajectory and returns:
 
-```python theme={null}
-@dataclass
-class RolloutSample:
-    tokens: list[int]
-    logprobs: list[float]   # 0.0 on non-generated positions
-    loss_mask: list[int]    # 1 on assistant tokens, 0 elsewhere
-    reward: float
-    finish_reason: str = "stop"
-    text: str = ""
-```
+* `RolloutRun(segments=[...])` on success. A run contains one or more `RolloutSample` segments from the same trajectory.
+* `None` to drop that trajectory draw.
 
-Multi-turn rollouts flatten into the same shape — turn boundaries are implicit in `loss_mask` transitions (0 on prompt/user/tool, 1 on assistant). The per-token mask alignment is the contract the trainer relies on.
+Each segment carries aligned `tokens`, `logprobs`, and `loss_mask` lists plus a scalar `reward`. Set the mask to `1` only for tokens that should contribute to training. All segments in one run must have the same reward.
 
-### `train.py` — config, reward, and loss
+## Scheduling controls
 
-`train.py` builds the `Config`, picks the policy loss, wires the reward (computed inside the rollout), and starts the loop:
+These five fields define the rollout/training pipeline:
 
-```python theme={null}
-from training.recipes.async_rl_loop import Config, main
-from training.utils import DeployConfig, TrainerConfig, WandBConfig
-from my_rollout import make_rollout_fn  # your rollout.py
+| Field                            | Default | Meaning                                                                                           |
+| -------------------------------- | ------: | ------------------------------------------------------------------------------------------------- |
+| `completions_per_prompt`         |     `4` | Trajectories per dataset row. Must be at least `2`.                                               |
+| `prompt_groups_per_step`         |     `1` | Dataset rows grouped into one optimizer batch.                                                    |
+| `pipeline_chunks_per_step`       |     `1` | Balanced forward/backward chunks prepared for each optimizer batch.                               |
+| `max_head_offpolicy_versions`    |     `0` | Number of published policy versions that rollout admission may run ahead. `0` is fully on-policy. |
+| `max_concurrency_rollout_sample` |  `None` | Optional cap on in-flight rollout calls. It must fit at least one complete row.                   |
 
-cfg = Config(
-    log_path="./gsm8k_logs",
-    base_model="accounts/fireworks/models/qwen3-8b",
-    learning_rate=1.7e-5,
-    completions_per_prompt=8,
-    prompt_groups_per_step=8,
-    policy_loss="grpo",                 # the "custom loss" knob
-    max_head_offpolicy_versions=4,      # off-policy staleness budget (0 = on-policy)
-    trainer=TrainerConfig(training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200"),
-    deployment=DeployConfig(tokenizer_model="Qwen/Qwen3-8B"),
-    wandb=WandBConfig(entity="my-team", project="gsm8k-rl"),
-)
+Admission is row-atomic: the scheduler submits a row only when both the staleness budget and concurrency budget can fit all of its completions. `max_head_offpolicy_versions=0` is fully on-policy: every optimizer batch trains groups from its current published policy version. Chunk training can still overlap remaining rollouts from the same optimizer batch.
 
-rows = [...]  # dataset rows; each becomes a sample_prompt
-main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
-```
+## Runtime behavior
 
-Provisioning (policy trainer, reference trainer when `kl_beta > 0`, and the inference deployment) is handled internally from `trainer` / `deployment` — you never construct managers yourself.
+1. The recipe syncs initial policy weights to the sampler.
+2. The producer submits complete rows while both admission budgets allow it.
+3. Every completed rollout retries refill. As soon as the first training chunk is ready, serialized trainer work can begin while rollout production continues.
+4. Later chunks queue and run in order. One optimizer step follows the final chunk.
+5. The recipe hotloads the updated weights and publishes the next policy version. Publication reopens staleness capacity.
 
-## Sync vs. async
+There is one sampler hotload per optimizer batch; `async_rl_loop` does not expose a weight-sync interval. Known transient rollout failures are dropped behind a bounded circuit breaker. Invalid rollout data, unexpected cancellation, and unknown errors remain fatal.
 
-The same recipe covers the full spectrum from strict on-policy to overlapped off-policy:
+## Loss behavior
 
-| Setting                                   | Behavior                                                                                                                                                            |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `synchronous_training=True`               | **Fully synchronous** — drains all in-flight rollouts before each train step. No overlap; useful as an on-policy baseline or to measure async savings.              |
-| `max_head_offpolicy_versions=0` (default) | **Strict on-policy** — samples that would arrive after the next weight sync are held until the sync. No drift; rollouts and training serialize at batch boundaries. |
-| `max_head_offpolicy_versions=O` (`O > 0`) | **Off-policy with bounded staleness** — samples may land up to `O` weight-sync versions past their submit version, letting sampling overlap with training.          |
+The stock recipe has one direct client-side GRPO path and no `policy_loss` or `loss_path` selector. `anchor_logp="old_policy"` (the default) snapshots trainer logprobs and applies TIS against rollout behavior logprobs; `anchor_logp="rollout"` reuses aligned rollout logprobs and makes the TIS ratio identity. Set `kl_beta=0` to disable reference-policy KL and reference provisioning.
 
-Raising `O` later is a single-knob change. For the off-policy gate math, GPU split, and the `perf/*` tuning metrics, see the [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md).
+## Detailed reference
 
-### Policy loss variants
+Keep implementation and tuning detail out of the recipe page:
 
-Set `policy_loss` on the `Config`:
-
-| `policy_loss`           | Description                                       |
-| ----------------------- | ------------------------------------------------- |
-| `"grpo"`                | REINFORCE + KL penalty (default)                  |
-| `"importance_sampling"` | Off-policy ratio weighting with optional clipping |
-| `"reinforce"`           | Vanilla REINFORCE                                 |
-| `"dapo"`                | Dynamic advantage with asymmetric PPO clipping    |
-| `"dro"`                 | Distributionally robust off-policy objective      |
-| `"gspo"`                | Sequence-level clipped PPO                        |
-| `"cispo"`               | Clipped importance sampling policy optimization   |
-
-## Examples
-
-Two minimal runnable examples ship under [`training/examples/rl/`](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl), each as a `rollout.py` + `train.py` pair:
-
-* **`single_turn_token_in/`** — pre-tokenized rows; the rollout makes one `/v1/completions` token-in/token-out call per invocation.
-* **`multi_turn_message_in/`** — OpenAI-style messages; the rollout runs a retry loop (ports AReaL's multi-turn math example), with the reward in a separate `reward.py`.
-
-### Black-box multi-turn agents
-
-The ProRL SWE-Gym-style coding-agent path uses the same `async_rl_loop` contract
-without modifying the agent. Run the agent in its sandbox, point its
-Anthropic-compatible model endpoint at a local shim, and let the shim translate
-each model call into a Fireworks deployment request while recording token ids and
-logprobs. This mirrors the public slime
-[`examples/coding_agent_rl`](https://github.com/THUDM/slime/tree/main/examples/coding_agent_rl)
-example, which turns one agent run into `subagent`, `wipe`, and `final`
-training segments.
-
-The important part is to keep one stable trajectory session id for the whole
-episode. Forward that id on every turn with the `user` request field or, for RL
-rollout traffic, with `x-multi-turn-session-id` and `x-session-affinity`.
-See [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts)
-for how that session id interacts with sticky routing, prompt-prefix KV reuse,
-active streams, and `reset_prompt_cache` during weight sync.
-
-For the training datum, separate turn routing from token stitching. The shim uses
-`training.utils.rl.rollout.turn_matching` to classify each incoming request as
-`NEW`, `APPEND`, or `WIPE`. The default strategy matches structured message
-hashes, which is useful for black-box agents that re-render the full
-conversation each turn; a stricter token-prefix strategy is also available. An
-`APPEND` continues the active chain, while a `WIPE` freezes the current chain as
-its own segment and starts a fresh one. That is how compaction or sub-agent
-excursions become multiple training segments without losing the rest of the
-run.
-
-Token stitching then happens in the coding-agent trajectory merge. Each recorded
-turn stores the exact prompt token ids seen by the deployment, output token ids,
-and per-token output logprobs. The first prompt becomes the segment prompt.
-Later prompts are matched against the segment's `prompt_ids + response_ids`; any
-new prompt suffix is non-trainable context, and generated output tokens are the
-trainable span.
-
-```python theme={null}
-sample = RolloutSample(
-    tokens=segment.prompt_ids + segment.response_ids,
-    logprobs=[0.0] * len(segment.prompt_ids) + segment.rollout_log_probs,
-    loss_mask=[0] * len(segment.prompt_ids) + segment.loss_mask,
-    reward=run_reward,
-)
-```
-
-Inside `segment.loss_mask`, prompt suffixes from user/tool/rendering turns stay
-`0`, assistant output tokens stay `1`, and non-trainable logprobs are zeroed.
-If a later rendered prompt no longer token-matches part of a previous model
-output, the merge masks or drops the unstitched tail instead of training on
-shifted masks. The rollout returns all surviving segments in one `RolloutRun`
-with the final sandbox/grader reward, and the recipe handles advantage
-computation, PPO/GRPO loss, and weight sync.
-
-## Operational guidance
-
-* **`deployment.tokenizer_model` is required** — the recipe tokenizes client-side.
-* **Set `trainer.training_shape_id`** for an explicit shape; otherwise the recipe auto-selects a validated one.
-* **Reward lives in the rollout** — set `RolloutSample.reward`; return `None` to drop a sample.
-* **Skip uniform-reward groups** with `dynamic_filter_fn=lambda pg: len(set(pg.rewards)) > 1` — GRPO advantage is zero when all rewards in a group match.
-* **DCP checkpoints are off by default** (`dcp_save_interval=0`); set a positive value to enable resume, and `output_model_id` to promote the final checkpoint.
-
-## The simpler `rl_loop` recipe
-
-If you don't need rollout/train overlap, the cookbook also ships **`rl_loop`** — a synchronous, strictly on-policy GRPO scaffold. It samples a batch, scores it, takes a step, syncs weights, and repeats. Configure it the same way (`trainer=TrainerConfig(...)`, `deployment=DeployConfig(...)`, `weight_sync_interval`, `policy_loss`) and call `main(cfg)`:
-
-```python theme={null}
-from training.recipes.rl_loop import Config, main
-from training.utils import DeployConfig, TrainerConfig
-
-cfg = Config(
-    log_path="./grpo_logs",
-    base_model="accounts/fireworks/models/qwen3-8b",
-    dataset="/path/to/gsm8k.jsonl",
-    max_rows=200,
-    completions_per_prompt=4,
-    policy_loss="grpo",
-    trainer=TrainerConfig(training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200"),
-    deployment=DeployConfig(deployment_id="grpo-serving", tokenizer_model="Qwen/Qwen3-8B"),
-    weight_sync_interval=1,
-)
-main(cfg)
-```
-
-`async_rl_loop` with `max_head_offpolicy_versions=0` is equivalent to `rl_loop`, so prefer the async recipe for new work and reach for `rl_loop` only when you specifically want the server-side fast loss path (which forbids `kl_beta>0` and pipeline parallelism). The reward function and `build_grpo_datums` / `make_grpo_loss_fn` internals are documented in [Loss Functions](/fine-tuning/training-api/loss-functions).
-
-## Related guides
-
-* [Fireworks training skill async RL reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — full async contract: off-policy gate, `perf/*` metrics, GPU split tuning
-* [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated weights reach the deployment
-* [Cookbook Reference](/fine-tuning/training-api/cookbook/reference) — all config classes
-* [Loss Functions](/fine-tuning/training-api/loss-functions) — policy-loss and datum internals
+* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — admission math, metrics, tuning, failure policy, and resume semantics
+* [Customize RL loss skill](https://github.com/fw-ai/cookbook/blob/main/skills/customize-rl-loss/SKILL.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
+* [Checkpointing](/fine-tuning/training-api/cookbook/checkpoints) — resumable checkpoints and final model promotion
+* [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated policy weights reach the sampler
+* [`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
 
 
 # Cookbook: SFT
@@ -14443,28 +14500,28 @@ def cross_entropy_loss(data, logprobs_list):
 result = training_client.forward_backward_custom(datums, cross_entropy_loss).result()
 ```
 
-## Example: GRPO with KL penalty
+## Example: cookbook GRPO loss
+
+The stock cookbook RL recipes use the tested `make_grpo_loss_fn` helper rather than maintaining a second inline implementation. It combines PPO clipping, behavior-policy TIS, and an optional differentiable k3 reference-KL penalty:
 
 ```python theme={null}
-def make_grpo_loss(rewards, ref_logprobs, kl_beta=0.001):
-    advantages = compute_advantages(rewards)
-    ref_tensors = [torch.tensor(lp, dtype=torch.float32) for lp in ref_logprobs]
+from training.utils.rl.grpo import make_grpo_loss_fn
+from training.utils.rl.tis import TISConfig
 
-    def loss_fn(data, logprobs_list):
-        total_loss = torch.tensor(0.0)
-        for i in range(len(logprobs_list)):
-            weights = torch.tensor(data[i].loss_fn_inputs["weights"].data, dtype=torch.float32)
-            pi = logprobs_list[i][:len(weights)]
-            ref = ref_tensors[i][:len(weights)]
-
-            pg_loss = -advantages[i] * torch.dot(pi.float(), weights)
-            kl_term = torch.dot((pi - ref).float(), weights)
-            total_loss = total_loss + pg_loss + kl_beta * kl_term
-
-        return total_loss / len(logprobs_list), {"loss": (total_loss / len(logprobs_list)).item()}
-
-    return loss_fn
+loss_fn = make_grpo_loss_fn(
+    advantages=advantages,
+    ref_logprobs=reference_logprobs,
+    prompt_len=prompt_lengths,
+    inf_logprobs=rollout_logprobs,
+    old_policy_logprobs=old_policy_logprobs,
+    kl_beta=0.001,
+    eps_clip=0.2,
+    tis_config=TISConfig(cap=5.0, level="token"),
+)
+result = training_client.forward_backward_custom(datums, loss_fn).result()
 ```
+
+All datum, prompt-boundary, and logprob arrays must be exactly aligned. The generic cookbook recipes expose this direct client GRPO path only; fork the documented loss call when you intentionally need another objective.
 
 ## Example: DPO margin loss
 
@@ -14488,21 +14545,21 @@ def make_dpo_loss(ref_chosen, ref_rejected, beta=0.1):
     return loss_fn
 ```
 
-## Built-in loss methods: GRPO vs DAPO vs GSPO-token
+## Managed RFT loss methods
 
-When using the managed RFT flow or the cookbook's RL recipe, three built-in loss methods are available via `--rl-loss-method`:
+Managed RFT exposes three loss methods through `--rl-loss-method`. This CLI selector is separate from the cookbook recipes; the stock cookbook `rl_loop` and `async_rl_loop` use direct client-side GRPO and do not expose it.
 
-| Method           | Clipping                      | KL penalty    | Loss aggregation    | Importance sampling |
-| ---------------- | ----------------------------- | ------------- | ------------------- | ------------------- |
-| `grpo` (default) | Symmetric `[0.8, 1.2]`        | Yes (`0.001`) | Token-mean          | Token-level         |
-| `dapo`           | Asymmetric `[0.8, 1.28]`      | No            | Token-mean          | Token-level         |
-| `gspo-token`     | Very tight `[1-3e-4, 1+4e-4]` | No            | Seq-mean-token-mean | Sequence-level      |
+| Method           | Clipping                              | Reference KL                     | Importance sampling |
+| ---------------- | ------------------------------------- | -------------------------------- | ------------------- |
+| `grpo` (default) | Symmetric PPO clipping                | Configurable with `--rl-kl-beta` | Token-level         |
+| `dapo`           | Asymmetric PPO clipping               | Not supported                    | Token-level         |
+| `gspo-token`     | Configurable sequence-policy clipping | Not supported                    | Sequence-level      |
 
-**GRPO** ([arXiv:2402.03300](https://arxiv.org/abs/2402.03300)) is the safe default with KL regularization.
+**GRPO** ([arXiv:2402.03300](https://arxiv.org/abs/2402.03300)) is the safe default and supports optional KL regularization against a reference policy.
 
 **DAPO** ([arXiv:2503.14476](https://arxiv.org/abs/2503.14476)) removes KL and uses asymmetric clipping to allow more aggressive exploration in the improve direction.
 
-**GSPO-token** ([arXiv:2507.18071](https://arxiv.org/abs/2507.18071)) uses sequence-level importance ratios and extremely tight clipping. The `seq-mean-token-mean` aggregation normalizes per-sequence before averaging, reducing bias toward longer responses.
+**GSPO-token** ([arXiv:2507.18071](https://arxiv.org/abs/2507.18071)) uses sequence-level importance ratios. See [Parameter Tuning](/fine-tuning/parameter-tuning#loss-method) for the managed defaults and configuration guidance.
 
 For Training API users implementing custom loss functions via `forward_backward_custom`, these methods serve as reference implementations. You can replicate or modify their behavior in your custom loss function. See [Parameter Tuning](/fine-tuning/parameter-tuning#loss-method) for detailed guidance on when to choose each method.
 
@@ -16380,10 +16437,31 @@ training_client.load_state_with_optimizer("train_state_step_100").result()
 ```python theme={null}
 checkpoint_ref = training_client.resolve_checkpoint_path(
     "step-4",
-    source_job_id="previous-job-id",
+    source_job_id="<source-job-id>",
 )
 training_client.load_state_with_optimizer(checkpoint_ref).result()
 ```
+
+### Resuming and then exporting weights
+
+`save_weights_for_sampler` / `save_weights_for_sampler_ext` export the trainer session's **currently active** weights (for LoRA, the active adapter). During normal training this is unambiguous: an `optim_step` runs just before the export, so "active weights" means "the weights you just updated." Right after a **resume**, there is no intervening `optim_step`, so be deliberate about the order:
+
+```python theme={null}
+# 1. Load the train-state checkpoint you want to continue from.
+training_client.load_state_with_optimizer(checkpoint_ref).result()
+
+# 2. Export exactly those loaded weights to a sampler snapshot.
+saved = training_client.save_weights_for_sampler_ext(
+    "warmstart-step-N",
+    checkpoint_type="base",
+)
+
+# 3. Serve / sync that snapshot (promote or hot-load `saved.path`).
+```
+
+<Warning>
+  Do not let anything change the active weights between the load in step 1 and the export in step 2: no stale adapter from a prior state, no other concurrent training step, and no second `load_*` call. If a sampler export immediately after `load_state_with_optimizer` produces a snapshot whose weights differ from the DCP step you requested, the state being exported is not the state you loaded. Capture the source job ID, the requested checkpoint name, and the exported snapshot identity, and contact Fireworks support. A storage-backend change can cause the loader to resolve the latest checkpoint rather than the requested one on a cross-job resume, which produces this symptom. See [Troubleshooting a failed resume](/fine-tuning/training-api/cookbook/checkpoints#troubleshooting).
+</Warning>
 
 ### List available checkpoints
 
@@ -21321,6 +21399,64 @@ firectl deployment create <MODEL_NAME> --accelerator-count 2
 ```
 
 More GPUs = faster generation. Note that scaling is sub-linear (2x GPUs ≠ 2x performance).
+
+## Preemptible deployments (eval / batch)
+
+Preemptible deployments let you run **evaluation and batch workloads without holding dedicated on-demand capacity**. Passing `--preemptible` at creation opts the deployment into *borrowing idle reserved GPUs* instead of reserving GPUs exclusively for you, so you do not pay to hold dedicated capacity for an eval that only runs occasionally.
+
+Because the capacity is borrowed, it can be **reclaimed (preempted) at any time** and is not guaranteed. In practice a preemptible deployment usually stays up long enough to run an eval end to end, but you must treat disappearance as a normal outcome, not an error.
+
+<Warning>
+  **Eval and batch workloads only.** A preemptible deployment can be preempted mid-request and disappear with no warning. **Never** point production or latency-sensitive traffic at a preemptible deployment.
+</Warning>
+
+### Guarantees vs. risks
+
+|                                                      | Preemptible (`--preemptible`)        | Standard on-demand                             |
+| ---------------------------------------------------- | ------------------------------------ | ---------------------------------------------- |
+| **Capacity model**                                   | Borrows idle reserved GPUs           | Reserves dedicated GPUs for you                |
+| **Cost**                                             | No charge to hold dedicated capacity | Billed by GPU-second while replicas are active |
+| **Can be reclaimed mid-request?**                    | Yes, at any time, without warning    | No                                             |
+| **Availability guarantee**                           | None (treat as best-effort)          | Held for you once scheduled                    |
+| **Safe for production / latency-sensitive traffic?** | No                                   | Yes                                            |
+| **Intended for**                                     | Evaluation, batch, one-off runs      | Production and interactive serving             |
+
+<Note>
+  **No unique availability risk.** Preemptible does not make capacity *harder* to get. If there is no capacity for a preemptible deployment, there is no capacity for an on-demand one either. The only difference is that a preemptible deployment can also be taken back after it starts.
+</Note>
+
+### Requirements
+
+* **`firectl` >= 1.7.26.** `--preemptible` is a newer flag and is **silently ignored** on older builds (no error, and the deployment is created as standard on-demand). Check with `firectl version` and upgrade if you are below this version.
+
+### Create a preemptible deployment
+
+```bash theme={null}
+firectl deployment create accounts/fireworks/models/<MODEL> \
+  -a <ACCOUNT_ID> \
+  --deployment-id <NAME> --display-name <NAME> \
+  --deployment-shape accounts/fireworks/deploymentShapes/<SHAPE> \
+  --min-replica-count 1 --max-replica-count 1 \
+  --preemptible --wait
+```
+
+`--wait` blocks until the deployment is ready (1 hour default; tune with `--wait-timeout`).
+
+<Warning>
+  **`--preemptible` is immutable.** It is set at creation time and cannot be toggled on or off later. To change it, delete the deployment and recreate it.
+</Warning>
+
+Check status and then send eval requests as you would to any deployment:
+
+```bash theme={null}
+firectl deployment get <NAME> -a <ACCOUNT_ID>
+```
+
+When the eval is done, delete the deployment to release the borrowed capacity:
+
+```bash theme={null}
+firectl deployment delete <NAME> -a <ACCOUNT_ID>
+```
 
 ## Advanced
 

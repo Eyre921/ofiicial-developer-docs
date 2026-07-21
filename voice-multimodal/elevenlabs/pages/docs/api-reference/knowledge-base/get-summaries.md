@@ -627,6 +627,11 @@ components:
                 the separate endpoint to get dependent agents instead.
             children_count:
               type: integer
+            document_count:
+              type: integer
+              description: >-
+                Number of non-folder documents anywhere in this folder's subtree
+                (recursive). Counting stops past 1000;
             auto_sync_info:
               oneOf:
                 - $ref: '#/components/schemas/AutoSyncInfo'
@@ -647,6 +652,7 @@ components:
             - access_info
             - dependent_agents
             - children_count
+            - document_count
           description: GetKnowledgeBaseSummaryFolderResponseModel variant
         - type: object
           properties:

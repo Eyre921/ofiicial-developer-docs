@@ -27,9 +27,6 @@ Created in collaboration with labels, publishers, and artists, Eleven Music is c
 
 Fine-tune the ElevenLabs Music model to your sound. Music Finetunes lets you fine-tune the model to your own audio. By uploading non-copyrighted tracks you own, you can create a personalized version of our music model that consistently reflects your style, sonic identity, or brand.
 
-Finetunes are currently only available for Music v1. Music v2 Finetunes are coming. Existing v1
-Finetunes are not compatible with Music v2, so plan migrations accordingly.
-
 Standard music generation can produce high-quality tracks, but outputs may vary significantly in instrumentation, texture, production style, and feel. Finetunes grounds generation in your specific audio identity. Once trained, every track generated with your Finetune reflects the tone, structure, and character of your dataset - while remaining a new, original composition.
 
 Finetunes addresses three core challenges in AI music generation:
