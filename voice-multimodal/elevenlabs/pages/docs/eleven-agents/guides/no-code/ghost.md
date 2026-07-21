@@ -20,12 +20,16 @@ This tutorial will guide you through adding your ElevenLabs Agents agent to your
 
 There are two ways to add the widget to your Ghost site:
 
+#### Get your embed code
+
 Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and copy your agent's html widget.
 
 ```html
 <elevenlabs-convai agent-id="YOUR_AGENT_ID"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 ```
+
+#### Choose your implementation
 
 **Option A: Add globally (all pages)**
 
@@ -40,9 +44,11 @@ Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and copy your
 3. Paste your agent's html widget from step 1 into the HTML block. Make sure to fill in the agent-id attribute correctly.
 4. Save and publish
 
-1) Visit your Ghost website
-2) Verify the widget appears and functions correctly
-3) Test on different devices and browsers
+#### Test the integration
+
+1. Visit your Ghost website
+2. Verify the widget appears and functions correctly
+3. Test on different devices and browsers
 
 ## Troubleshooting
 

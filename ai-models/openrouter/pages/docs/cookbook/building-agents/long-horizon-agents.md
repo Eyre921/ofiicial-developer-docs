@@ -15,8 +15,8 @@ path: docs/cookbook/building-agents/long-horizon-agents
 <Tip>
   This cookbook assumes you have an OpenRouter API key and are using the Agent
   SDK (`@openrouter/agent`). If you are starting from scratch, read the
-  [Agent SDK overview](/agent-sdk/overview) and the
-  [callModel reference](/agent-sdk/call-model/overview) first.
+  [Agent SDK overview](/docs/agent-sdk/overview) and the
+  [callModel reference](/docs/agent-sdk/call-model/overview) first.
 </Tip>
 
 **Goal:** Run an agent that can keep working for hours, not seconds — research
@@ -33,8 +33,8 @@ up four primitives.
 * Runs a self-ask loop — research, adversarial review, repeat — until the
   agent emits a `[DONE]` sentinel.
 * Optionally accepts voice input via OpenRouter's
-  [Speech-to-Text](/guides/overview/multimodal/stt) endpoint and replies
-  with [Text-to-Speech](/guides/overview/multimodal/tts).
+  [Speech-to-Text](/docs/guides/overview/multimodal/stt) endpoint and replies
+  with [Text-to-Speech](/docs/guides/overview/multimodal/tts).
 
 You can hand this page to your coding agent as the implementation brief.
 Adapt the storage, ceilings, and surface (CLI, API, queue worker) to your app
@@ -105,7 +105,7 @@ const result = openrouter.callModel({
 const text = await result.getText();
 ```
 
-See the [Stop Conditions reference](/agent-sdk/call-model/stop-conditions)
+See the [Stop Conditions reference](/docs/agent-sdk/call-model/stop-conditions)
 for the full list (`stepCountIs`, `hasToolCall`, `maxTokensUsed`, `maxCost`,
 `finishReasonIs`) and how to compose custom predicates.
 
@@ -174,7 +174,7 @@ await resumed.getResponse();
 ```
 
 For production, swap the file accessor for one backed by Postgres, Redis, or
-an object store. See [Tool Approval & State](/agent-sdk/call-model/tool-approval-state)
+an object store. See [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state)
 for the full StateAccessor and resumption contract.
 
 ## 3. Stream progress instead of waiting
@@ -215,7 +215,7 @@ const final = await result.getResponse();
 publishToDashboard({ kind: 'done', usage: final.usage });
 ```
 
-See the [callModel API reference](/agent-sdk/call-model/api-reference)
+See the [callModel API reference](/docs/agent-sdk/call-model/api-reference)
 for every stream method and event type.
 
 Wire `publishToDashboard` to whatever transport you already use — Server-Sent
@@ -282,7 +282,7 @@ inherits its own `stepCountIs` + `maxCost` budget.
 
 Drive the same agent loop from a voice memo, phone call, or push-to-talk app.
 OpenRouter exposes a dedicated
-[`/api/v1/audio/transcriptions`](/guides/overview/multimodal/stt)
+[`/api/v1/audio/transcriptions`](/docs/guides/overview/multimodal/stt)
 endpoint with a single STT model parameter. Hand the transcript to
 `callModel` exactly like a text prompt.
 
@@ -311,13 +311,13 @@ const reply = await result.getText();
 
 For a streaming microphone, capture audio chunks on the client, send them to
 your server, and call `createTranscription` once silence is detected. Use the
-[STT cookbook](/guides/overview/multimodal/stt) for the full request and
+[STT cookbook](/docs/guides/overview/multimodal/stt) for the full request and
 response shape.
 
 ## 6. Speak the response back (optional)
 
 For voice-out, pipe the agent's reply through
-[`/api/v1/audio/speech`](/guides/overview/multimodal/tts) and write the
+[`/api/v1/audio/speech`](/docs/guides/overview/multimodal/tts) and write the
 resulting bytes to a file or stream them to the caller.
 
 ```typescript lines theme={null}
@@ -368,7 +368,7 @@ await fetch(webhookUrl, {
 ```
 
 For agents that pause mid-run (for example, human-in-the-loop approvals), see
-[Add Human-in-the-Loop Controls](/cookbook/building-agents/hitl-tools).
+[Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools).
 
 ## Check your work
 
@@ -389,12 +389,12 @@ A correct long-horizon implementation should pass all of the following:
 
 ## Resources
 
-* [Agent SDK overview](/agent-sdk/overview)
-* [callModel reference](/agent-sdk/call-model/overview)
-* [Stop conditions reference](/agent-sdk/call-model/stop-conditions)
-* [Tool Approval & State](/agent-sdk/call-model/tool-approval-state)
-* [Speech-to-Text guide](/guides/overview/multimodal/stt)
-* [Text-to-Speech guide](/guides/overview/multimodal/tts)
-* [Add Human-in-the-Loop Controls](/cookbook/building-agents/hitl-tools)
-* [Build Your Own Headless Agent](/cookbook/building-agents/create-headless-agent)
+* [Agent SDK overview](/docs/agent-sdk/overview)
+* [callModel reference](/docs/agent-sdk/call-model/overview)
+* [Stop conditions reference](/docs/agent-sdk/call-model/stop-conditions)
+* [Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state)
+* [Speech-to-Text guide](/docs/guides/overview/multimodal/stt)
+* [Text-to-Speech guide](/docs/guides/overview/multimodal/tts)
+* [Add Human-in-the-Loop Controls](/docs/cookbook/building-agents/hitl-tools)
+* [Build Your Own Headless Agent](/docs/cookbook/building-agents/create-headless-agent)
 

@@ -89,14 +89,14 @@ run();
 
 | Parameter              | Type                                                                                                   | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetCurrentKeyRequest](/agent-sdk/typescript/api-reference/operations/getcurrentkeyrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.GetCurrentKeyRequest](/docs/agent-sdk/typescript/api-reference/operations/getcurrentkeyrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                         | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                     | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                     | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetCurrentKeyResponse](/agent-sdk/typescript/api-reference/operations/getcurrentkeyresponse)>**
+**Promise\<[operations.GetCurrentKeyResponse](/docs/agent-sdk/typescript/api-reference/operations/getcurrentkeyresponse)>**
 
 ### Errors
 
@@ -108,7 +108,7 @@ run();
 
 ## list
 
-List all API keys for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+List all API keys for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -165,14 +165,14 @@ run();
 
 | Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
 | ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListRequest](/agent-sdk/typescript/api-reference/operations/listrequest)    | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListRequest](/docs/agent-sdk/typescript/api-reference/operations/listrequest)    | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                      | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                      | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListResponse](/agent-sdk/typescript/api-reference/operations/listresponse)>**
+**Promise\<[operations.ListResponse](/docs/agent-sdk/typescript/api-reference/operations/listresponse)>**
 
 ### Errors
 
@@ -185,7 +185,7 @@ run();
 
 ## create
 
-Create a new API key for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+Create a new API key for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -258,14 +258,14 @@ run();
 
 | Parameter              | Type                                                                                             | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateKeysRequest](/agent-sdk/typescript/api-reference/operations/createkeysrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.CreateKeysRequest](/docs/agent-sdk/typescript/api-reference/operations/createkeysrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                   | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)          | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.CreateKeysResponse](/agent-sdk/typescript/api-reference/operations/createkeysresponse)>**
+**Promise\<[operations.CreateKeysResponse](/docs/agent-sdk/typescript/api-reference/operations/createkeysresponse)>**
 
 ### Errors
 
@@ -280,7 +280,7 @@ run();
 
 ## delete
 
-Delete an existing API key. [Management key](/guides/overview/auth/management-api-keys) required.
+Delete an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -341,14 +341,14 @@ run();
 
 | Parameter              | Type                                                                                             | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteKeysRequest](/agent-sdk/typescript/api-reference/operations/deletekeysrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.DeleteKeysRequest](/docs/agent-sdk/typescript/api-reference/operations/deletekeysrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                   | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)          | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.DeleteKeysResponse](/agent-sdk/typescript/api-reference/operations/deletekeysresponse)>**
+**Promise\<[operations.DeleteKeysResponse](/docs/agent-sdk/typescript/api-reference/operations/deletekeysresponse)>**
 
 ### Errors
 
@@ -362,7 +362,7 @@ run();
 
 ## get
 
-Get a single API key by hash. [Management key](/guides/overview/auth/management-api-keys) required.
+Get a single API key by hash. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -423,14 +423,14 @@ run();
 
 | Parameter              | Type                                                                                     | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetKeyRequest](/agent-sdk/typescript/api-reference/operations/getkeyrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.GetKeyRequest](/docs/agent-sdk/typescript/api-reference/operations/getkeyrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                           | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)  | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetKeyResponse](/agent-sdk/typescript/api-reference/operations/getkeyresponse)>**
+**Promise\<[operations.GetKeyResponse](/docs/agent-sdk/typescript/api-reference/operations/getkeyresponse)>**
 
 ### Errors
 
@@ -444,7 +444,7 @@ run();
 
 ## update
 
-Update an existing API key. [Management key](/guides/overview/auth/management-api-keys) required.
+Update an existing API key. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -519,14 +519,14 @@ run();
 
 | Parameter              | Type                                                                                             | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.UpdateKeysRequest](/agent-sdk/typescript/api-reference/operations/updatekeysrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.UpdateKeysRequest](/docs/agent-sdk/typescript/api-reference/operations/updatekeysrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                   | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)          | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.UpdateKeysResponse](/agent-sdk/typescript/api-reference/operations/updatekeysresponse)>**
+**Promise\<[operations.UpdateKeysResponse](/docs/agent-sdk/typescript/api-reference/operations/updatekeysresponse)>**
 
 ### Errors
 

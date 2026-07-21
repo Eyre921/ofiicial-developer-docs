@@ -16,8 +16,12 @@ When building conversational agents, you may need to restrict access to certain 
 
 ElevenLabs offers two primary methods to secure your conversational agents:
 
+#### [Signed URLs](#using-signed-urls)
+
 Generate temporary authenticated URLs for secure client-side connections without exposing API
 keys.
+
+#### [Allowlists](#using-allowlists)
 
 Restrict access to specific domains or hostnames that can connect to your agent.
 
@@ -165,11 +169,19 @@ Allowlists are configured as part of your agent's authentication settings. You c
 
 ### Example: setting up an allowlist
 
+#### Configure via the dashboard
+
 Open your agent in the dashboard and navigate to the **Security** tab. Add each approved hostname (e.g., `example.com`, `app.example.com`, `localhost:3000`) to the allowlist.
+
+#### Configure via the CLI
+
+#### Pull your agent
 
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit the agent config
 
 In `agent_configs/<agent-name>.json`, set `platform_settings.auth`:
 
@@ -188,9 +200,13 @@ In `agent_configs/<agent-name>.json`, set `platform_settings.auth`:
 }
 ```
 
+#### Push the changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Configure via the API
 
 ```python
 from elevenlabs.client import ElevenLabs
@@ -363,23 +379,37 @@ async function createAllowlistAgent(client) {
 
 ## FAQ
 
+#### Can I use the same signed URL for multiple users?
+
 This is possible but we recommend generating a new signed URL for each user session.
+
+#### What happens if the signed URL expires during a conversation?
 
 If the signed URL expires (after 15 minutes), any WebSocket connection created with that signed
 url will **not** be closed, but trying to create a new connection with that signed URL will
 fail.
 
+#### Can I restrict access to specific users?
+
 The signed URL mechanism only verifies that the request came from an authorized source. To
 restrict access to specific users, implement user authentication in your application before
 requesting the signed URL.
 
+#### Is there a limit to how many signed URLs I can generate?
+
 There is no specific limit on the number of signed URLs you can generate.
+
+#### How do allowlists handle subdomains?
 
 Allowlists perform exact matching on hostnames. If you want to allow both a domain and its
 subdomains, you need to add each one separately (e.g., "example.com" and "app.example.com").
 
+#### Do I need to use both authentication methods?
+
 No. Configure either signed URLs or an allowlist for each agent. For client-side
 applications, signed URLs are the recommended default.
+
+#### What other security measures should I implement?
 
 Beyond signed URLs and allowlists, consider implementing:
 

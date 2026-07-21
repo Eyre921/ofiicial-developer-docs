@@ -41,9 +41,15 @@ Sound effects are generated using text descriptions & two optional parameters:
   * High: More literal interpretation of the prompt
   * Low: More creative interpretation with added variations
 
+#### [Products](/docs/eleven-creative/playground/sound-effects)
+
 Step-by-step guide for using sound effects in ElevenLabs.
 
+#### [Developers](/docs/eleven-api/guides/cookbooks/sound-effects)
+
 Learn how to integrate sound effects into your application.
+
+#### [API reference](/docs/api-reference/text-to-sound-effects/convert)
 
 Full API reference for the Sound Effects endpoint.
 

@@ -129,12 +129,20 @@ The **Node entered** filter is also available directly from the conversation his
 
 Analytics is the primary tool for measuring [experiment](/docs/eleven-agents/operate/experiments) outcomes. The recommended workflow:
 
+#### Filter by agent
+
 Select the agent running your experiment.
+
+#### Group by branch
 
 Break down all metrics by branch to see variant-level performance.
 
+#### Compare key metrics
+
 Look at the metrics that matter for your hypothesis — success evaluation results, conversation
 duration, cost, error rates.
+
+#### Decide and act
 
 When one variant consistently outperforms, increase its traffic share or merge it to main.
 
@@ -142,10 +150,18 @@ You can jump directly to this view from the agent configuration page by clicking
 
 ## Next steps
 
+#### [Experiments](/docs/eleven-agents/operate/experiments)
+
 Set up A/B tests and use analytics to measure the impact
+
+#### [Success evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation)
 
 Define custom criteria to measure conversation quality
 
+#### [Data collection](/docs/eleven-agents/customization/agent-analysis/data-collection)
+
 Extract structured data from conversations for analytics
+
+#### [Real-time monitoring](/docs/eleven-agents/guides/realtime-monitoring)
 
 Observe live conversations and send control commands

@@ -47,7 +47,13 @@ Tool call sounds can be configured in two places, with tool-level configuration 
 
 Configure sounds for individual tools in your agent's tool settings.
 
+#### Update via the dashboard
+
+#### Navigate to tool configuration
+
 In the **Agent** section of your agent settings, select the tool you want to configure or create a new tool.
+
+#### Configure tool call sound
 
 Scroll to the **Tool Call Sound** section at the bottom of the tool configuration.
 
@@ -59,6 +65,8 @@ Select a sound from the dropdown menu:
 * **Typing**: Keyboard typing effect
 * **Elevator Music 1-4**: Various ambient background music options
 
+#### Configure sound behavior
+
 If you've selected a sound (not "None"), you'll see an additional **Sound Behavior** option:
 
 ![sound behavior dropdown](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/00c7f6ddfb1b0240a900c8d6814c8706e045500d92f6a6c263d4a7c962e24fbe/assets/images/agents/tool-call-sounds-2.png)
@@ -68,11 +76,19 @@ Choose when the sound should play:
 * **With pre-speech**: Sound plays only when the agent speaks before executing the tool
 * **Always play**: Sound plays during every tool execution, regardless of whether the agent speaks first
 
+#### Save your configuration
+
 Click **Save** to apply your tool call sound settings.
+
+#### Update via the CLI
+
+#### Pull the tool configuration
 
 ```bash
 elevenlabs tools pull
 ```
+
+#### Edit \`tool\_configs/\<tool-name>.json\`
 
 Set `tool_call_sound` and `tool_call_sound_behavior`:
 
@@ -87,9 +103,13 @@ Set `tool_call_sound` and `tool_call_sound_behavior`:
 
 Use `"auto"` for **With pre-speech** or `"always"` for **Always play**.
 
+#### Push your changes
+
 ```bash
 elevenlabs tools push
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -136,13 +156,19 @@ await elevenlabs.conversationalAi.tools.update("tool_7101k5zvyjhmfg983brhmhkd98n
 
 For tools created through integrations (MCP servers, API integrations, etc.), you can set default tool call sounds at the integration level:
 
+#### Navigate to integration settings
+
 Go to **Agent Settings > Integrations** and select your integration.
+
+#### Configure default sound
 
 In the integration overview, locate the **Tool Call Sound** settings.
 
 ![tool call sound integrations dropdown](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9c4c33501c814c3d124d76060853ee6eb8c59c8b4f0cc494d16267e9fe5cf56b/assets/images/agents/tool-call-sounds-3.png)
 
 Select a default sound that will apply to all tools from this integration unless overridden at the tool level.
+
+#### Override at tool level (optional)
 
 You can override the integration-level default for specific tools by configuring tool call sounds in the individual tool settings.
 

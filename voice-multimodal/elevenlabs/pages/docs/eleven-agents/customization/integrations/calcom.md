@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with [Cal.com](https://cal.com) to manage sche
 
 This integration uses a **Cal.com API key** for authentication (not an OAuth app).
 
+#### Generate an API key in Cal.com
+
 Go to **Settings > Developer > API Keys** in your Cal.com account and click **New**. Copy the generated key immediately — it will not be shown again.
 
+#### Use a live key
+
 Cal.com generates two types of keys — test keys (starting with `cal_`) and live keys (starting with `cal_live_`). Use a **live key** so your agent can access real calendar data.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your Cal.com API key in the **API Key** field.
 
@@ -31,7 +37,13 @@ configured automatically — no manual webhook setup is needed.
 
 The agent schedules meetings by using tool calls to step through the booking process. The tabs below show a high-level summary and the detailed system prompt.
 
+#### High-level overview
+
+#### Initial inquiry and meeting details
+
 The agent asks for the meeting purpose, preferred date/time, and duration to gather scheduling information.
+
+#### Check calendar availability
 
 The agent checks calendar availability by:
 
@@ -40,6 +52,8 @@ The agent checks calendar availability by:
 * Suggesting alternatives if the requested time is unavailable.
 * Confirming the selected time with the caller.
 
+#### Contact information collection
+
 Once a time is agreed upon, the agent:
 
 * Collects and validates the attendee's full name.
@@ -47,12 +61,16 @@ Once a time is agreed upon, the agent:
 * Confirms time zone information.
 * Gathers any additional required fields for the Cal.com event type.
 
+#### Meeting creation
+
 The agent:
 
 * Calls the `book_meeting` tool after verifying all information.
 * Follows the booking template structure.
 * Confirms meeting creation with the attendee.
 * Informs them that they will receive a calendar invitation.
+
+#### Detailed system prompt
 
 ```
 You are a helpful receptionist responsible for scheduling meetings using the Cal.com integration. Be friendly, precise, and concise.
@@ -94,6 +112,8 @@ Guardrails:
 If you use the native Cal.com integration, tools are configured automatically. The steps below
 apply only to manual webhook setup.
 
+#### Store your Cal.com secret
+
 Store your API key securely before making authenticated requests. Generate a new [Cal.com API key](https://cal.com/docs/api-reference/v1/introduction#get-your-api-keys) if you have not already.
 
 The Cal.com API expects the following authentication header:
@@ -108,6 +128,8 @@ To match the expected authentication structure of Cal.com, remember to prepend t
 
 ![Tool secrets](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/agents-platform/pages/customization/integrations/calcom/tool-secrets.jpg)
 
+#### Add tools to the agent
+
 Enable calendar bookings by creating two tools:
 
 1. **`get_available_slots`**: When a user asks *"Is Louis free at 10:30 AM on Tuesday?"*, the agent uses [Cal.com's "Get available slots" endpoint](https://cal.com/docs/api-reference/v2/slots/find-out-when-is-an-event-type-ready-to-be-booked) to check for open time slots.
@@ -115,6 +137,10 @@ Enable calendar bookings by creating two tools:
 2. **`book_meeting`**: After identifying a suitable time, the agent books the meeting using [Cal.com's "Create a booking" endpoint](https://cal.com/docs/api-reference/v2/bookings/create-a-booking#create-a-booking).
 
 Navigate to the **Tools** section of the dashboard and select **Add Tool**. Choose **Webhook** as the tool type, then fill in the following sections:
+
+#### Tool 1: get\_available\_slots
+
+#### Configuration
 
 Metadata used by the agent to determine when the tool should be called:
 
@@ -125,12 +151,16 @@ Metadata used by the agent to determine when the tool should be called:
 | Method      | GET                                                                      |
 | URL         | [https://api.cal.com/v2/slots](https://api.cal.com/v2/slots)             |
 
+#### Headers
+
 Matches the request headers defined [here](https://cal.com/docs/api-reference/v2/slots/get-available-slots#get-available-slots):
 
 | Type   | Name            | Value                               |
 | ------ | --------------- | ----------------------------------- |
 | Secret | Authorization   | Select the secret key created above |
 | String | cal-api-version | 2024-09-04                          |
+
+#### Query parameters
 
 Matches the request query parameters defined [here](https://cal.com/docs/api-reference/v2/slots/get-available-slots#get-available-slots):
 
@@ -139,6 +169,10 @@ Matches the request query parameters defined [here](https://cal.com/docs/api-ref
 | string    | start       | Yes      | Start date/time (UTC) from which to fetch slots, e.g. '2024-08-13T09:00:00Z'.                                             |
 | string    | end         | Yes      | End date/time (UTC) until which to fetch slots, e.g. '2024-08-13T17:00:00Z'.                                              |
 | string    | eventTypeId | Yes      | The ID of the event type that is booked. If 15 minutes, return abc. If 30 minutes, return def. If 60 minutes, return xyz. |
+
+#### Tool 2: book\_meeting
+
+#### Configuration
 
 Metadata used by the agent to determine when the tool should be called:
 
@@ -149,12 +183,16 @@ Metadata used by the agent to determine when the tool should be called:
 | Method      | POST                                                               |
 | URL         | [https://api.cal.com/v2/bookings](https://api.cal.com/v2/bookings) |
 
+#### Headers
+
 Matches the request headers defined [here](https://cal.com/docs/api-reference/v2/bookings/create-a-booking#create-a-booking):
 
 | Type   | Name            | Value                               |
 | ------ | --------------- | ----------------------------------- |
 | Secret | Authorization   | Select the secret key created above |
 | String | cal-api-version | 2024-08-13                          |
+
+#### Body Parameters
 
 Matches the request body parameters defined [here](https://cal.com/docs/api-reference/v2/bookings/create-a-booking#create-a-booking):
 
@@ -178,6 +216,8 @@ automatically).
 | timeZone   | String    | Yes      | The caller's timezone. Should be in the format of 'Continent/City' like 'Europe/London' or 'America/New\_York'. |
 
 Test the agent by pressing the **Test AI agent** button. Adjust the system prompt as needed.
+
+#### Add date and time awareness
 
 By default, the agent does not know the current date or time. Use one of the following approaches:
 

@@ -198,7 +198,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
 <CodeGroup>
   ```python Python theme={null}
   reference_models = [
-      "Qwen/Qwen3.6-Plus",
+      "zai-org/GLM-5.2",
       "openai/gpt-oss-120b",
       "meta-llama/Llama-3.3-70B-Instruct-Turbo",
       "MiniMaxAI/MiniMax-M2.7",
@@ -237,7 +237,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
 
   ```typescript TypeScript theme={null}
   const referenceModels = [
-    "Qwen/Qwen3.6-Plus",
+    "zai-org/GLM-5.2",
     "openai/gpt-oss-120b",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "MiniMaxAI/MiniMax-M2.7",

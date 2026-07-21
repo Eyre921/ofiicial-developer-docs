@@ -22,6 +22,8 @@ SDKs. Understanding them is crucial for advanced implementations and debugging.
 
 ## Client event types
 
+#### conversation\_initiation\_metadata
+
 * Automatically sent when starting a conversation
 * Initializes conversation settings and parameters
 
@@ -36,6 +38,8 @@ SDKs. Understanding them is crucial for advanced implementations and debugging.
   }
 }
 ```
+
+#### ping
 
 * Health check event requiring immediate response
 * Automatically handled by SDK
@@ -58,6 +62,8 @@ SDKs. Understanding them is crucial for advanced implementations and debugging.
     websocket.send('pong');
   });
 ```
+
+#### audio
 
 * Contains base64 encoded audio for playback
 * Includes numeric event ID for tracking and sequencing
@@ -97,6 +103,8 @@ websocket.on('audio', (event) => {
 });
 ```
 
+#### user\_transcript
+
 * Contains finalized speech-to-text results
 * Represents complete user utterances
 * Used for conversation history
@@ -119,6 +127,8 @@ websocket.on('user_transcript', (event) => {
   updateConversationHistory(user_transcript);
 });
 ```
+
+#### agent\_response
 
 * Contains complete agent message
 * Sent with first audio chunk
@@ -143,6 +153,8 @@ websocket.on('agent_response', (event) => {
 });
 ```
 
+#### agent\_response\_correction
+
 * Contains truncated response after interruption
 * Updates displayed message
 * Maintains conversation accuracy
@@ -166,6 +178,8 @@ websocket.on('agent_response_correction', (event) => {
   displayAgentMessage(corrected_agent_response);
 });
 ```
+
+#### agent\_response\_metadata
 
 * Contains arbitrary metadata from a custom LLM response
 * Only sent when using a [custom LLM](/docs/eleven-agents/customization/llm/custom-llm)
@@ -199,6 +213,8 @@ websocket.on('agent_response_metadata', (event) => {
   updateResponseDetails(metadata);
 });
 ```
+
+#### client\_tool\_call
 
 * Represents a function call the agent wants the client to execute
 * Contains tool name, tool call ID, and parameters
@@ -250,6 +266,8 @@ websocket.on('client_tool_call', async (event) => {
 });
 ```
 
+#### agent\_tool\_response
+
 * Indicates when the agent has executed a tool function
 * Contains tool metadata and execution status
 * Provides visibility into agent tool usage during conversations
@@ -281,6 +299,8 @@ websocket.on('agent_tool_response', (event) => {
 });
 ```
 
+#### agent\_tool\_response\_full\_payload
+
 * Mirrors `agent_tool_response` and additionally streams the tool's full result payload as a string in `full_tool_result`.
 * Surfaces tool output in the client for display or downstream processing.
 * Must be explicitly enabled in the agent's `client_events` configuration.
@@ -301,6 +321,8 @@ This event exposes the complete tool result to the client and may contain sensit
   }
 }
 ```
+
+#### React
 
 ```tsx
 // Example agent tool response full payload handler (using @elevenlabs/react)
@@ -330,6 +352,8 @@ function App() {
 }
 ```
 
+#### JavaScript
+
 ```javascript
 // Example agent tool response full payload handler (using @elevenlabs/client)
 import { Conversation } from '@elevenlabs/client';
@@ -353,6 +377,8 @@ const conversation = await Conversation.startSession({
 });
 ```
 
+#### vad\_score
+
 * Voice Activity Detection score event
 * Indicates the probability that the user is speaking
 * Values range from 0 to 1, where higher values indicate higher confidence of speech
@@ -366,6 +392,8 @@ const conversation = await Conversation.startSession({
   }
 }
 ```
+
+#### mcp\_tool\_call
 
 * Indicates when the agent has executed a MCP tool function
 * Contains tool name, tool call ID, and parameters
@@ -388,6 +416,8 @@ const conversation = await Conversation.startSession({
   }
 }
 ```
+
+#### agent\_chat\_response\_part
 
 * Contains streaming text chunks during text-only conversations
 * Provides start, delta, and stop events for real-time text streaming
@@ -445,6 +475,8 @@ websocket.on('agent_chat_response_part', (event) => {
 });
 ```
 
+#### agent\_response\_complete
+
 * Fires when the agent has finished its response, including any pending tool calls. After this event, the agent will only produce further output if the user provides new input or a turn timeout triggers a new turn.
 * Must be explicitly enabled in the agent's `client_events` configuration
 
@@ -467,6 +499,8 @@ websocket.on('agent_response_complete', (event) => {
   console.log(`Agent response ${event_id} complete`);
 });
 ```
+
+#### guardrail\_triggered
 
 * Fires when a [guardrail](/docs/eleven-agents/best-practices/guardrails) violation ends the conversation. Not sent when a guardrail triggers a retry that succeeds.
 * The event itself is the signal - it carries no payload beyond the `type` field.
@@ -543,13 +577,19 @@ sequenceDiagram
 
 ## Troubleshooting
 
+#### Connection issues
+
 * Ensure proper WebSocket connection
 * Check PING/PONG responses
 * Verify API credentials
 
-- Check audio chunk handling
-- Verify audio format compatibility
-- Monitor memory usage
+#### Audio problems
+
+* Check audio chunk handling
+* Verify audio format compatibility
+* Monitor memory usage
+
+#### Event handling
 
 * Log all events for debugging
 * Implement error boundaries

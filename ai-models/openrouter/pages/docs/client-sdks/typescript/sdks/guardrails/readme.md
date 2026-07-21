@@ -34,7 +34,7 @@ Guardrails endpoints
 
 ## list
 
-List all guardrails for the authenticated user. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all guardrails for the authenticated user. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -114,7 +114,7 @@ run();
 
 ## create
 
-Create a new guardrail for the authenticated user. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Create a new guardrail for the authenticated user. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -232,7 +232,7 @@ run();
 
 ## delete
 
-Delete an existing guardrail. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing guardrail. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -313,7 +313,7 @@ run();
 
 ## get
 
-Get a single guardrail by ID. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Get a single guardrail by ID. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -394,7 +394,7 @@ run();
 
 ## update
 
-Update an existing guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Update an existing guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -488,7 +488,7 @@ run();
 
 ## listGuardrailKeyAssignments
 
-List all API key assignments for a specific guardrail. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all API key assignments for a specific guardrail. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -573,7 +573,7 @@ run();
 
 ## bulkAssignKeys
 
-Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -665,7 +665,7 @@ run();
 
 ## bulkUnassignKeys
 
-Unassign multiple API keys from a specific guardrail. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple API keys from a specific guardrail. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -757,7 +757,7 @@ run();
 
 ## listGuardrailMemberAssignments
 
-List all organization member assignments for a specific guardrail. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all organization member assignments for a specific guardrail. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -842,7 +842,7 @@ run();
 
 ## bulkAssignMembers
 
-Assign multiple organization members to a specific guardrail. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple organization members to a specific guardrail. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -936,7 +936,7 @@ run();
 
 ## bulkUnassignMembers
 
-Unassign multiple organization members from a specific guardrail. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple organization members from a specific guardrail. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -1030,7 +1030,7 @@ run();
 
 ## listKeyAssignments
 
-List all API key guardrail assignments for the authenticated user. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all API key guardrail assignments for the authenticated user. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -1110,7 +1110,7 @@ run();
 
 ## listMemberAssignments
 
-List all organization member guardrail assignments for the authenticated user. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List all organization member guardrail assignments for the authenticated user. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

@@ -26,11 +26,19 @@ You will learn how to:
 * A Twilio account with [Twilio Verify](https://www.twilio.com/docs/verify/api) enabled. If Verify is not available in your Twilio Console, request access through [Twilio support](https://support.twilio.com/) or your Twilio account team.
 * If your Twilio account is in [trial mode](https://www.twilio.com/docs/guides/how-to-use-your-free-trial-account), the destination phone number must be a verified caller ID in Twilio.
 
+#### Log in to the Twilio Console
+
 Open the [Twilio Console](https://console.twilio.com/).
+
+#### Create an Authenticate (Verify) service
 
 In the left sidebar, choose **Add +** and create an **Authenticate** (Verify) service.
 
+#### Name the service
+
 Give it a descriptive name (for example, `ElevenLabs OTP`).
+
+#### Copy the Verify Service SID
 
 Open the service **Settings** page and copy the **Verify Service SID**. It starts with `VA` and is different from your Account SID.
 
@@ -39,6 +47,8 @@ Open the service **Settings** page and copy the **Verify Service SID**. It start
 You can use the Twilio API Explorer in the console to test requests before you attach them to your agent.
 
 ### Encode credentials and configure webhook tools
+
+#### Encode your Twilio credentials for Basic authentication
 
 Twilio Verify uses HTTP Basic authentication with your **Account SID** as the username and **Auth Token** as the password. Find both under **Account Info** on the [Twilio Console](https://console.twilio.com/) home page.
 
@@ -54,7 +64,11 @@ Copy the output. The full `Authorization` header value is the word `Basic`, a si
 Basic dkFDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
 ```
 
+#### Configure the \`send\_SMS\_verification\` and \`check\_SMS\_verification\` tools
+
 `send_SMS_verification` calls Twilio Verify to send an SMS OTP. `check_SMS_verification` submits the digits the caller speaks. Both require the same Verify Service SID and the same `Authorization` secret.
+
+#### Add via the dashboard
 
 ### send\_SMS\_verification
 
@@ -95,7 +109,11 @@ Use the same Verify Service SID and the same `Authorization` secret as for `send
 
 **Body parameters:** **URL-encoded**. Add `To` (E.164) and `Code` (OTP digits) with **LLM Prompt**.
 
+#### Add via the CLI
+
 Create a [workspace secret](/docs/api-reference/workspace/secrets/create) whose value is the full `Authorization` header (`Basic ` plus Base64). Put the secret ID in the JSON below as `YOUR_SECRET_ID`.
+
+#### Add tool config files
 
 Save the send tool as `tool_configs/send_SMS_verification.json` (replace `YOUR_VERIFY_SERVICE_SID` with your `VA...` SID):
 
@@ -163,16 +181,22 @@ Save the check tool as `tool_configs/check_SMS_verification.json`:
 }
 ```
 
+#### Register the tools
+
 ```bash
 elevenlabs tools add "send_SMS_verification" --type "webhook" --config-path ./tool_configs/send_SMS_verification.json
 elevenlabs tools add "check_SMS_verification" --type "webhook" --config-path ./tool_configs/check_SMS_verification.json
 ```
+
+#### Attach the tools to your agent
 
 Edit `agent_configs/<agent-name>.json`. Under `conversation_config.agent.prompt`, set `tool_ids` to include both tools (use the IDs from `tools.json` or from `elevenlabs tools list`). Then push:
 
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Add via the API
 
 Create a [workspace secret](/docs/api-reference/workspace/secrets/create) holding the full `Basic ...` header value, then pass its ID as `secret_id` in `request_headers`.
 
@@ -335,15 +359,23 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 
 If you configure **`Channel`** as an LLM-filled field in the dashboard, add instructions in your system prompt so the model always passes `sms`. The CLI and API examples above pin `sms` with `constant_value` / `constantValue`, so the model does not choose the channel.
 
+#### Enable the \`skip\_turn\` system tool
+
 Callers often need a moment to receive the SMS before they can read the code. Without `skip_turn`, the agent may talk over the pause or repeat prompts.
 
+#### Add via the dashboard
+
 In **Tools**, choose **Add Tool**, select **System tool**, and enable **Skip turn**. No further configuration is required.
+
+#### Add via the CLI
 
 In `agent_configs/<agent-name>.json`, under `conversation_config.agent.prompt`, set `built_in_tools.skip_turn` to `null` (defaults) so Skip turn is enabled, then run:
 
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Add via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -394,6 +426,8 @@ until the caller indicates they are ready.
 ```
 
 See [Skip turn](/docs/eleven-agents/customization/tools/system-tools/skip-turn) for details.
+
+#### Orchestrate the flow in the system prompt
 
 Use a system prompt that sequences the tools clearly, for example:
 

@@ -16,21 +16,43 @@ Connect your ElevenLabs AI agents with [Zendesk](https://www.zendesk.com/) to ma
 
 This integration supports two authentication methods: API token and OAuth client.
 
+#### API token
+
+#### Enable API token access
+
 In [Zendesk Admin Center](https://support.zendesk.com/hc/en-us/articles/4581766374554-Using-Admin-Center), go to **Apps and integrations > APIs > Zendesk API** and enable **Token Access**.
+
+#### Generate an API token
 
 Go to **Apps and integrations > APIs > API tokens** and click **Add API token**. Copy the token immediately — it is not shown again after closing the dialog.
 
+#### Find your subdomain
+
 Your Zendesk subdomain is the first part of your Zendesk URL (e.g., `mycompany` from `mycompany.zendesk.com`).
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, enter your **email**, **API token**, and **subdomain**.
 
+#### Custom OAuth client
+
+#### Copy the redirect URL
+
 In the ElevenLabs Zendesk integration setup, copy the **redirect URL**.
+
+#### Create an OAuth client in Zendesk
 
 In [Zendesk Admin Center](https://support.zendesk.com/hc/en-us/articles/4581766374554-Using-Admin-Center), go to **Apps and integrations > APIs > OAuth clients** and click **Add Client**. Enter a **name** and a unique **identifier**.
 
+#### Add the redirect URL
+
 Paste the **redirect URL** copied from ElevenLabs into the OAuth client configuration.
 
+#### Save the secret
+
 Save the OAuth client. Zendesk displays a **secret** — copy and store it securely. It is not shown again after closing the dialog.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, enter the **identifier** as the client ID and provide the **secret**. Zendesk redirects you to authorize the connection.
 
@@ -50,6 +72,8 @@ The integration provides over 30 tools organized into the following categories:
 
 ### Example tools
 
+#### zendesk\_create\_ticket
+
 Creates a new support ticket. The agent collects details from the caller and opens a ticket on their behalf.
 
 | Parameter                | Type    | Description                                             |
@@ -64,11 +88,15 @@ Creates a new support ticket. The agent collects details from the caller and ope
 | `ticket.group_id`        | integer | Group ID to route the ticket to                         |
 | `ticket.custom_fields`   | array   | Array of `{id, value}` objects for custom fields        |
 
+#### zendesk\_search
+
 Searches Zendesk for tickets, users, or organizations using the Zendesk search query syntax.
 
 | Parameter | Type   | Description                                                                          |
 | --------- | ------ | ------------------------------------------------------------------------------------ |
 | `query`   | string | Search query (e.g., `type:ticket status:open` or `type:user email:user@example.com`) |
+
+#### zendesk\_add\_comment
 
 Adds a public or internal comment to an existing ticket — useful for posting call summaries or follow-up notes.
 
@@ -79,6 +107,8 @@ Adds a public or internal comment to an existing ticket — useful for posting c
 | `ticket.comment.html_body` | string  | HTML version of the comment (optional)          |
 | `ticket.comment.public`    | boolean | Whether the comment is visible to the requester |
 
+#### zendesk\_get\_user
+
 Retrieves a user's profile so the agent can greet callers by name or verify their identity.
 
 | Parameter | Type    | Description                    |
@@ -87,20 +117,30 @@ Retrieves a user's profile so the agent can greet callers by name or verify thei
 
 ### Configuring tools
 
+#### Add an integration tool
+
 On your agent's configuration page, click **Add tool** and select **Add integration tool**.
 
 ![Add integration tool](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/ef3a82e0747f1b1da18fb6b4755812abe161d436582312e47836e621a44d83c7/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_1.png)
+
+#### Select Zendesk tools
 
 Choose your Zendesk connection and toggle the tools you want the agent to use. You can enable as many or as few as needed — for example, a read-only triage agent might only need search and list tools, while a full-service agent might also create and update tickets.
 
 ![Select Zendesk tools](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9161ae75a4c514d477174622bd4857d6faf62a11825bc7d4d191176e52a72f91/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_2.png)
 
+#### (Optional) Provide parameters
+
 Each tool's parameters are filled by the agent during the conversation based on what the caller says. You do not need to hard-code parameter values. However, you can optionally pre-fill or constrain specific parameters — for example, setting a default `priority` or `group_id` — to guide the agent's behavior.
+
+#### Legacy webhook setup
 
 If you use the native Zendesk integration, tools are configured automatically. The steps below
 apply only to manual webhook setup.
 
 The legacy integration uses three webhook tools to create the support agent. Review each tool's configuration in the tabs below.
+
+#### zendesk\_get\_ticket\_comments
 
 **Name:** zendesk\_get\_ticket\_comments
 **Description:** Retrieves the comments of a ticket.
@@ -159,6 +199,8 @@ The legacy integration uses three webhook tools to create the support agent. Rev
 }
 ```
 
+#### zendesk\_get\_resolved\_tickets
+
 **Name:** zendesk\_get\_resolved\_tickets
 **Description:** Retrieves all resolved support tickets from Zendesk.
 **Method:** GET
@@ -201,6 +243,8 @@ The legacy integration uses three webhook tools to create the support agent. Rev
   }
 }
 ```
+
+#### zendesk\_open\_ticket
 
 **Name:** zendesk\_open\_ticket
 **Description:** Opens a new support ticket.
@@ -330,9 +374,13 @@ Configure Zendesk triggers to have your agent monitor and react to incoming tick
 
 ### Setup
 
+#### Create a trigger in Zendesk
+
 In Zendesk Admin Center, go to **Objects and rules > Business rules > Triggers** and click **Add trigger**. Configure the conditions that determine which ticket events the agent should respond to (e.g., new tickets in a specific group, ticket comments with a certain tag). Note the trigger name — you will need it in the next step.
 
 If you cannot save the trigger because an action is missing, add a simple action like adding an "agent is processing" tag to the ticket.
+
+#### Connect the trigger in ElevenLabs
 
 On your agent's configuration page, add a new trigger and select **Zendesk Trigger**. Configure the fields:
 
@@ -341,6 +389,8 @@ On your agent's configuration page, add a new trigger and select **Zendesk Trigg
 * **Daily Ticket Limit** (optional): maximum number of tickets the agent handles per day. Leave empty for unlimited.
 
 When you activate the trigger, ElevenLabs creates a webhook in your Zendesk account and adds it as an action to the trigger you specified. Deactivating the trigger removes the webhook and action.
+
+#### (Optional) Check your trigger in Zendesk
 
 In Zendesk Admin Center, go to **Objects and rules > Business rules > Triggers** and view your previously created trigger. You should see a new action added to it.
 

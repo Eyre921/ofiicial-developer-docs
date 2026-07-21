@@ -29,6 +29,8 @@ For streaming audio from a URL, see the [Server-side streaming](/docs/eleven-api
 This guide assumes you have [set up your API key](/docs/eleven-api/quickstart). Complete the
 quickstart first if you haven't.
 
+#### Install the SDK
+
 ```bash title="React"
 npm install @elevenlabs/react @elevenlabs/elevenlabs-js
 ```
@@ -36,6 +38,8 @@ npm install @elevenlabs/react @elevenlabs/elevenlabs-js
 ```bash title="JavaScript"
 npm install @elevenlabs/client @elevenlabs/elevenlabs-js
 ```
+
+#### Create a token
 
 To use the client side SDK, you need to create a single use token. This is a temporary token that can be used to connect to the API without exposing your API key. This can be done via the ElevenLabs API on the server side.
 
@@ -58,9 +62,13 @@ app.get("/scribe-token", yourAuthMiddleware, async (req, res) => {
 
 A single use token automatically expires after 15 minutes.
 
+#### Start the transcribing session
+
 Transcription can be done either via the microphone or manually chunking your own audio. Your own audio can be a file or a stream.
 
 For a full list of parameters and options the API supports, please refer to the [API reference](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
+
+#### Microphone
 
 ```typescript title="React"
 import { useScribe } from "@elevenlabs/react";
@@ -174,6 +182,8 @@ connection.on(RealtimeEvents.CLOSE, () => {
 // When you are done, close the connection
 connection.close();
 ```
+
+#### Manual audio chunking
 
 ```typescript title="React"
 import { useScribe, AudioFormat } from "@elevenlabs/react";
@@ -313,6 +323,10 @@ async function sendAudio() {
 
 ## Next steps
 
+#### [Server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming)
+
 Transcribe audio streams on the server side with the same WebSocket API.
+
+#### [Transcripts and commit strategies](/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies)
 
 Control when transcripts are committed and how to handle partial results.

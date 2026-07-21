@@ -25,12 +25,18 @@ The agent on this page is configured with full knowledge of ElevenLabs' document
 
 ## Usage
 
+#### Build a knowledge base via the web dashboard
+
 Files, URLs, and text can be added to the knowledge base in the dashboard.
+
+#### File
 
 Upload files in formats like PDF, TXT, DOCX, HTML, and EPUB.
 
 ![File upload interface showing supported formats (PDF, TXT, DOCX, HTML, EPUB) with a 21MB
 size limit](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/03218c6faaf2a65e8f93c6b0d0528db3b600944840b43c05d5518ed2db6a2630/assets/images/conversational-ai/knowledge-file.jpg)
+
+#### URL
 
 Import URLs from sources like documentation and product pages.
 
@@ -43,16 +49,24 @@ However, these features are coming soon.
 
 Ensure you have permission to use the content from the URLs you provide
 
+#### Text
+
 Manually add text to the knowledge base.
 
 ![Text input interface where users can name and add custom
 content](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/3db67ebc9c6fa40f1ad0ec9b60fc48abe08196cadb52aaf3d56dacc476034e75/assets/images/conversational-ai/knowledge-text.jpg)
 
+#### Attach knowledge base documents via the CLI
+
 The CLI does not upload knowledge base documents directly. Create them via the API or dashboard, then attach the resulting document IDs to your agent configuration.
+
+#### Pull the agent configuration
 
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.agent.prompt.knowledge_base`:
 
@@ -75,9 +89,13 @@ Set `conversation_config.agent.prompt.knowledge_base`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Build a knowledge base via the API
 
 ```python
 # First create the document from text

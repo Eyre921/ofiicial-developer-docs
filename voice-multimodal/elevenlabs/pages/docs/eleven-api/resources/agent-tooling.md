@@ -23,6 +23,8 @@ npx skills add elevenlabs/skills
 The official collection is hosted in the [elevenlabs/skills](https://github.com/elevenlabs/skills) repository.
 Open each skill for a prompt you can paste into your assistant after installing the skills.
 
+#### Text to speech
+
 Convert text to speech using ElevenLabs voices.
 
 ```text
@@ -33,12 +35,16 @@ Output: Save the MP3 file locally and return the file path.
 Script: "Welcome to ElevenLabs. Today we will walk through the new agent tooling."
 ```
 
+#### Speech to text
+
 Transcribe audio to text with timestamps.
 
 ```text
 Use the speech to text skill to transcribe the audio file path/to/file.mp3.
 Return a transcript that contains speaker IDs and timestamps at the start of each paragraph.
 ```
+
+#### Realtime speech to text
 
 Stream live transcription with low latency.
 
@@ -48,6 +54,8 @@ Model: scribe_v2_realtime.
 Stream partial transcripts and return committed transcripts with word-level timestamps.
 ```
 
+#### Agents
+
 Build conversational voice agents.
 
 ```text
@@ -55,6 +63,8 @@ Use the Agents skill to create a voice agent named "Support Concierge".
 Persona: friendly, concise, asks clarifying questions when needed.
 Goals: answer pricing questions and route enterprise leads to sales.
 ```
+
+#### Speech Engine
 
 Add voice to a custom chat agent using the [Speech Engine skill](https://github.com/elevenlabs/skills/tree/main/speech-engine).
 
@@ -65,12 +75,16 @@ LLM: Use my existing chat completion logic.
 Output: Create the Speech Engine server route, client connection code, and setup steps.
 ```
 
+#### Sound effects
+
 Generate sound effects from text prompts.
 
 ```text
 Use the Sound effects skill to generate a 3-second effect: "Wooden door creaks open, then a soft slam."
 Output WAV at 48 kHz and return the file path.
 ```
+
+#### Music
 
 Generate music tracks from prompts.
 
@@ -81,6 +95,8 @@ BPM: 80. No vocals.
 Return the audio file path.
 ```
 
+#### Voice changer
+
 Transform a recording into a different target voice while preserving the original delivery.
 
 ```text
@@ -89,12 +105,16 @@ Model: eleven_multilingual_sts_v2.
 Return the transformed audio file path.
 ```
 
+#### Voice isolator
+
 Remove background noise from audio files.
 
 ```text
 Use the voice isolator skill to remove background noise from path/to/file.mp3.
 Return the cleaned audio file path.
 ```
+
+#### Setup API key
 
 Get and configure an ElevenLabs API key.
 
@@ -105,5 +125,7 @@ How do I get my ElevenLabs API key?
 ## ElevenLabs MCP server
 
 The ElevenLabs MCP server is a local Model Context Protocol server for the ElevenLabs platform. It runs on your machine so tools like Claude and Cursor can call ElevenLabs APIs through simple prompts.
+
+#### [ElevenLabs MCP](https://github.com/elevenlabs/elevenlabs-mcp)
 
 Install and run the MCP server locally.

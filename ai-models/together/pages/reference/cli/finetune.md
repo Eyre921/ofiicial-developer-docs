@@ -133,6 +133,8 @@ To list saved checkpoints of a job:
 tg fine-tuning list-checkpoints [FT_ID]
 ```
 
+Each checkpoint includes `step`, `path`, `created_at`, `checkpoint_type`, and `checkpoint` (the download selector: `model` or `adapter`). When the job uploaded the artifact to the Together model registry, the entry also includes `object_id` and `object_revision_id` (for example, `ml_…` and `rv_…`). See [Model registry object IDs](/docs/fine-tuning/deployment#model-registry-object-ids) for how these relate to the job-level `model_object_id` / `adapter_object_id` fields.
+
 ## Download model weights
 
 To download the weights of a fine-tuned model, run:

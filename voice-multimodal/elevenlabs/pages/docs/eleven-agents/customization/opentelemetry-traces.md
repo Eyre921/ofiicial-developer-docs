@@ -61,6 +61,8 @@ The webhook `type` is `post_call_transcription_otel` (not `post_call_transcripti
 
 ### Enable OpenTelemetry transcripts
 
+#### Configure via the dashboard
+
 ### Create a workspace webhook
 
 In the ElevenAgents Dashboard, create a workspace webhook with your HTTPS URL and authentication.
@@ -70,6 +72,8 @@ In the ElevenAgents Dashboard, create a workspace webhook with your HTTPS URL an
 Open [Agents settings](https://elevenlabs.io/app/agents/settings), assign the webhook as the post-call webhook, enable the **Transcript** event, and turn on **OpenTelemetry transcript payloads**.
 
 ![Post-call webhook settings](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/f5edf1792c3791281ade98202614e51d7e93b7b3f6e25db1fdb261d71c13b5ef/assets/images/conversational-ai/postcallwebhooksettings.png)
+
+#### Configure via the CLI
 
 Workspace-wide post-call webhooks are configured in the Dashboard or API tab. Use the CLI to
 override webhook settings on a specific agent.
@@ -103,6 +107,8 @@ Set `platform_settings.workspace_overrides.webhooks`:
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Configure via the API
 
 ```python title="Python"
 import os

@@ -20,6 +20,8 @@ When you hit generate, we'll generate three voice options for you. The only char
 
 After generating, you'll have the option to select and save one of the generations, which will take up one of your voice slots.
 
+#### [API reference](/docs/api-reference/text-to-voice)
+
 See the API reference for Voice Design
 
 ## Prompting guide
@@ -221,3 +223,69 @@ different results!
 | Arabic Customer Service        | Native Arabic, soft Gulf (UAE) accent influence. Female, 30–40. Excellent quality. Persona: professional customer service agent. Emotion: warm, confident, polite.                                                                                                                                     | Velvety timbre with a calm tone, measured pacing, and gentle intonation, maintaining close-mic proximity for a high-fidelity, artifact-free signal. Clear presence and gentle emphasis on customer-friendly phrases to ensure easy understanding.                                                                                                                                                                                                                                                                                                        | 35%            |
 | Polish Creative Narrator       | Native Polish. Male, 48–58. Excellent quality. Persona: creative dreamer. Emotion: curious, gentle, inviting.                                                                                                                                                                                          | Voice is smooth and artifact-free, with a warm, engaging texture and steady pacing, delivered with natural proximity. Bright intonation and precise emphasis guide the listener through the narrative.                                                                                                                                                                                                                                                                                                                                                   | 32%            |
 | Mad Scientist                  | A voice of an eccentric scientific genius with rapid, erratic speech patterns that accelerate with excitement. His German-tinged accent becomes more pronounced when agitated. The pitch varies widely from contemplative murmurs to manic exclamations, with frequent eruptions of maniacal laughter. | "I am doctor Heinrich, revolutionary genius rejected by the narrow-minded scientific establishment! Bah! They called my theories impossible, my methods unethical—but who is laughing now? (maniacal laughter) For twenty years I have perfected my creation in this mountain laboratory, harnessing energies beyond mortal comprehension! The fools at the academy will regret their mockery when my quantum destabilizer reveals the multiverse. Or perhaps new life forms... the experiment has certain unpredictable variables... FASCINATING ones!" | 38%            |
+
+## FAQ
+
+<tbody>
+  <tr>
+    <td>
+      #### What is Voice Design?
+
+      Voice Design lets you create a unique voice from a text prompt.
+
+      It’s designed to help when you can’t find the exact voice you need in our Voice Library. Instead of choosing from existing options, you can now generate a custom voice by describing it in your own words.
+
+      To get started, just type a prompt describing the voice you want. You can include details like accent, gender, pacing, tone, and speaking style. The more specific your prompt, the more closely the voice will match your intent. But if you're unsure, a simple prompt like "a calm male narrator" also works.
+
+      Voices created with Voice Design v3 are fully compatible with our latest model, Eleven v3, and support audio tags for our most expressive speech. They’re also backward compatible, meaning you can use them across all our other models.
+
+      For more tips on writing effective prompts, see our [Voice Design guide.](/docs/creative-platform/voices/voice-design)
+
+      <strong>Note:</strong> Voice Design is still experimental. Professional Voice Clones offer the
+      highest quality and consistency. If you find a PVC that fits your needs, we recommend using it.
+      However, the v3 model does not currently support Professional Voice Clones.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What kind of voices can I create using Voice Design?
+
+      Voice Design can generate a wide range of voices, from realistic, human-like voices to more creative, character-style voices.
+
+      If you're unsure where to start, try a simple prompt like "middle-aged female newsreader." However, more detailed prompts typically produce more accurate and nuanced results.
+
+      You can include a variety of characteristics in your prompt, such as:
+
+      * age
+      * gender
+      * accent
+      * tone
+      * pacing
+      * emotion
+      * speaking style
+      * audio quality
+
+      Two additional controls help shape the output:
+
+      * <strong>Loudness</strong> adjusts the volume of both the preview and the saved voice.
+      * <strong>Guidance scale</strong> determines how closely the generated voice follows your prompt.
+
+      For more help crafting prompts, see our [Voice Design guide](/docs/product/voices/voice-lab/voice-design).
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How much does Voice Design cost?
+
+      Voice Design only consumes credits when you generate voices.
+
+      Each time you click <strong>Generate voice</strong>, we create three voice options based on your prompt. You're charged based on the number of characters in your preview text.
+
+      You can enter your own preview text or use the <strong>Auto-generate</strong> button to create one automatically. Auto-generated previews include relevant audio tags.
+
+      For more information, see our [Voice Design guide.](/docs/product-guides/voices/voice-design)
+    </td>
+  </tr>
+</tbody>

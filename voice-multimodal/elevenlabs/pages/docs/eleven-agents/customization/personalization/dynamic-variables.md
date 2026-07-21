@@ -133,6 +133,8 @@ Assignments are a field of each webhook tool, documented [here](/docs/eleven-age
 * An [ElevenLabs account](https://elevenlabs.io)
 * A configured ElevenLabs Conversational Agent ([create one here](/docs/eleven-agents/quickstart))
 
+#### Define dynamic variables in prompts
+
 Add variables using double curly braces `{{variable_name}}` in your:
 
 * System prompts
@@ -143,6 +145,8 @@ Add variables using double curly braces `{{variable_name}}` in your:
 
 ![Dynamic variables in messages](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/052ab733ff3ecb2512218c70d82a4337764577b0082cdc4b2fb4415d273d2cbe/assets/images/conversational-ai/dynamic-vars-system-prompt.png)
 
+#### Define dynamic variables in tools
+
 You can also define dynamic variables in the tool configuration.
 To create a new dynamic variable, set the value type to Dynamic variable and click the `+` button.
 
@@ -150,15 +154,25 @@ To create a new dynamic variable, set the value type to Dynamic variable and cli
 
 ![Setting placeholders](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/21856929c95fe77b274dc1a849668c144554719cd468a225d110295ae94c7713/assets/images/conversational-ai/dynamic-vars-path-params.png)
 
+#### Set placeholders
+
 Configure default values for testing without passing variables at runtime.
+
+#### Update via the dashboard
 
 Set default values for each dynamic variable in the agent's dashboard.
 
 ![Setting placeholders](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/dbea803919e315240202a3cb355ef7f62f25a5182d9aa99d0916177349c70ae4/assets/images/conversational-ai/dynamic-vars-presets.png)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.agent.dynamic_variables.dynamic_variable_placeholders`. Each key is the variable name; the value is the placeholder used during testing:
 
@@ -177,9 +191,13 @@ Set `conversation_config.agent.dynamic_variables.dynamic_variable_placeholders`.
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -219,6 +237,8 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
   },
 });
 ```
+
+#### Pass variables at runtime
 
 When starting a conversation, provide the dynamic variables in your code:
 
@@ -361,6 +381,8 @@ In this example, `user_name` will be "John" (from `var_user_name`) instead of "J
 
 ### Implementation Examples
 
+#### JavaScript URL Generation
+
 ```javascript
 // Method 1: Base64-encoded JSON
 function generateTalkToURL(agentId, variables) {
@@ -391,6 +413,8 @@ const variables = {
 const urlMethod1 = generateTalkToURL("agent_7101k5zvyjhmfg983brhmhkd98n6", variables);
 const urlMethod2 = generateTalkToURLWithParams("agent_7101k5zvyjhmfg983brhmhkd98n6", variables);
 ```
+
+#### Python URL Generation
 
 ```python
 import base64
@@ -424,6 +448,8 @@ url_method1 = generate_talk_to_url("agent_7101k5zvyjhmfg983brhmhkd98n6", variabl
 url_method2 = generate_talk_to_url_with_params("agent_7101k5zvyjhmfg983brhmhkd98n6", variables)
 ```
 
+#### Manual URL Construction
+
 ```
 # Base64-encoded method
 1. Create JSON: {"user_name": "John", "account_type": "premium"}
@@ -440,19 +466,29 @@ url_method2 = generate_talk_to_url_with_params("agent_7101k5zvyjhmfg983brhmhkd98
 
 Dynamic variables support these value types:
 
+#### String
+
 Text values
 
+#### Number
+
 Numeric values
+
+#### Boolean
 
 True/false values
 
 ## Troubleshooting
+
+#### Variables not replacing
 
 Verify that:
 
 * Variable names match exactly (case-sensitive)
 * Variables use double curly braces: `{{ variable_name }}`
 * Variables are included in your dynamic\_variables object
+
+#### Type errors
 
 Ensure that:
 

@@ -22,6 +22,48 @@ Click "Isolate voice" to start the process. The app will isolate the voice from 
 
 The voice isolator functionality is also available via the [API](/docs/api-reference/audio-isolation/convert) to easily integrate this functionality into your own applications.
 
+#### [Voice isolator app](https://elevenlabs.io/app/voice-isolator)
+
 Use the voice isolator app.
 
+#### [API reference](/docs/api-reference/audio-isolation/convert)
+
 Use the voice isolator API.
+
+## FAQ
+
+<tbody>
+  <tr>
+    <td>
+      #### What is Voice Isolator?
+
+      [Voice Isolator](https://elevenlabs.io/app/voice-isolator) strips background noise from audio files for film, podcast, and interview post production.
+
+      To get started, you can either upload an existing audio file or record a new one directly using your device’s microphone. Once uploaded, simply click <strong>Isolate voice</strong> to begin the process.
+
+      After the tool finishes processing your audio, it will generate a new file with the voice isolated from the background noise. You can listen to it directly in the app or download the cleaned-up version for your project.
+
+      You can upload audio files up to 500MB or 1 hour in length.
+
+      Voice Isolator costs 1,000 credits per minute of audio.
+
+      If you want a more in-depth guide on the Voice Isolator, we highly recommend reading the full documentation [here](/docs/product-guides/audio-tools/voice-isolator).
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How much does Voice Isolator cost?
+
+      [Voice Isolator](https://elevenlabs.io/app/voice-isolator) costs 1,000 credits per minute of audio.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is the maximum size of file I can upload for Voice Isolator?
+
+      You can upload audio files up to a maximum size of 500MB or maximum length of 1 hour.
+    </td>
+  </tr>
+</tbody>

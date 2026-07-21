@@ -20,6 +20,8 @@ Voice changer can be used to complement Text-to-Speech (TTS) by fixing pronuncia
 * Accurately follows the input speaking cadence
 * Language/accent retention
 
+#### Watch a video of voice changer in action
+
 ## Guide
 
 ![Voice changer demo](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/2edaef4c56e389edff8faf0c5a43247631432cead38d23023fb6263bb258cc55/assets/images/product-guides/voice-changer/voice-changer-demo.png)
@@ -68,3 +70,75 @@ Voice changer excels at **preserving accents** and **natural speech cadences** a
 * **Expression**: Be expressive in your recordings. Whether shouting, crying, or laughing, the voice changer will accurately replicate your performance. This tool is designed to enhance AI realism, allowing for creative expression.
 * **Microphone gain**: Ensure the input gain is appropriate. A quiet recording may hinder AI recognition, while a loud one could cause audio clipping.
 * **Background Noise**: Turn on the **Remove Background Noise** option to automatically remove background noise from your recording.
+
+## FAQ
+
+<tbody>
+  <tr>
+    <td>
+      #### What is Voice Changer?
+
+      Voice Changer, previously known as Speech to Speech, allows you to convert one voice (source voice) into another (cloned voice) while preserving the tone and delivery of the original voice.
+
+      The possibilities are endless. It can be used to complement Text to Speech by fixing pronunciations or infusing that special performance you've been wanting. It can also be used to help extend the range of voice actors by giving them access to a wide selection of different voices and tones. We do offer an end-to-end solution for dubbing, but if you still want to dub in the traditional way, you can take advantage of voice changer to help get the right voice for your project.
+
+      Voice Changer costs 1,000 credits per minute of audio, and the maximum length of audio that can be converted is 5 minutes.
+
+      For more information, please see our [guide.](/docs/product-guides/playground/voice-changer)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How much does Voice Changer cost?
+
+      Voice Changer, previously known as Speech to Speech, costs 1,000 credits per minute of audio.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is the max input length when using Voice Changer?
+
+      The current maximum input length when using voice changer, previously known as speech-to-speech, is 300 seconds or 5 minutes of audio. This is the same across all subscriptions.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Which formats can be used as the input audio for Voice Changer?
+
+      The following file formats can be used as the input audio for Voice Changer.
+
+      Audio:
+
+      * MP3
+      * M4A
+      * FLAC
+      * OGA
+      * OGG
+      * WAV
+
+      Video:
+
+      * MKV
+      * WEBM
+      * MP4
+      * MOV
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I download generated files from Voice Changer?
+
+      You can download the generated files in two ways:
+
+      You can download a generated file immediately by clicking the download button on the bottom right after generating the content.
+
+      Previously generated files can be downloaded from your history. To access your history, log in to your account and select <strong>Voice Changer</strong> in the sidebar, then click the <strong>History</strong> tab in the panel on the right side of the screen. 
+
+      You can click the download button to download any file from your history as either an MP3 or WAV file.  For additional download options, click <strong>Advanced</strong>.
+    </td>
+  </tr>
+</tbody>

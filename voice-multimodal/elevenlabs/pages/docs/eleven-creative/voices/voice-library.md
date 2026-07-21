@@ -43,13 +43,19 @@ You can sort voices by:
 
 Use filters to refine your search:
 
+#### Language
+
 ##### Language
 
 The language filter returns voices that have been trained on a specific language. While all voices can be used with any supported language, voices tagged with a specific language will perform best in that language. Some voices have been assessed as performing well in multiple languages, and these voices will also be returned when you search for a specific language.
 
+#### Accent
+
 ##### Accent
 
 When you select a language, the Accent filter will also become available, allowing you to filter for specific accents.
+
+#### Category
 
 ##### Category
 
@@ -63,11 +69,15 @@ Filter voices by their suggested use case:
 * Advertisement
 * Entertainment
 
+#### Gender
+
 ##### Gender
 
 * Male
 * Female
 * Neutral
+
+#### Age
 
 ##### Age
 
@@ -75,17 +85,23 @@ Filter voices by their suggested use case:
 * Middle Aged
 * Old
 
+#### Notice period
+
 ##### Notice period
 
 Some voices have a notice period. This is how long you'll continue to have access to the voice if the voice owner decides to remove it from the Voice Library. If the voice's owner stops sharing their voice, you'll receive advance notice through email and in-app notifications. These notifications specify when the voice will become unavailable and recommend similar voices from the Voice Library. If the owner of a voice without a notice period decides to stop sharing their voice, you'll lose access to the voice immediately.
 
 This filter allows you to only return voices that have a notice period, and search for voices with a specific notice period. The maximum notice period is 2 years.
 
+#### Live Moderation enabled
+
 ##### Live Moderation enabled
 
 Some voices have Live Moderation enabled. This is indicated with a label with a shield icon. When you generate using a voice with Live Moderation enabled, we use tools to check whether the text being generated belongs to a number of prohibited categories. This may introduce extra latency when using the voice.
 
 This filter allows you to exclude voices that have Live Moderation enabled.
+
+#### Quality
 
 ##### Quality
 
@@ -177,6 +193,8 @@ Make sure the name you give your voice follows our **naming guidelines**:
 
 #### Naming guidelines
 
+#### Naming guidelines
+
 * The naming pattern should be a name followed by **key voice traits** or a **voice persona**, separated by a hyphen (-).
 
 * The name must be 40 characters or fewer.
@@ -198,6 +216,8 @@ Make sure the name you give your voice follows our **naming guidelines**:
   * Maya - Terror narrator
   * Nelson - Scary villain
   * Harmony - High-energy, High-pitch
+
+#### Description guidelines
 
 #### Description guidelines
 
@@ -226,3 +246,235 @@ any questions at this stage, you can reach out to us at [legal@elevenlabs.io](ma
 After submission, your voice will be reviewed by our team. If minor adjustments are needed, we may make these for you. Your request to share your voice may be declined if it doesn't meet our guidelines, and repeated uploads that consistently violate our guidelines may lead to restrictions on uploading and sharing voices.
 
 We currently do not have an estimate for the review time, as it depends on the queue.
+
+## FAQ
+
+<tbody>
+  <tr>
+    <td>
+      #### What is the Voice Library?
+
+      The [Voice Library](https://elevenlabs.io/app/voice-library) is a marketplace where our community can share Professional Voice Clones and earn rewards when others use them. Currently, only Professional Voice Clones can be shared. Instant Voice Clones and voices created with Voice Design are not shareable.
+
+      To access the Voice Library, click <strong>Voices</strong> in the sidebar and select <strong>Explore</strong>.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/35970436663057" alt="" />
+
+      You can browse the Voice Library in several ways:
+
+      * Our Handpicked Collections highlight top voices across use cases, genres, and languages. These collections are updated regularly to include new standout voices.
+      * Use the search bar to find voices by name, keyword, or voice ID. You can also search by uploading or dragging and dropping an audio file. This will help you find the original voice, if available, along with similar voices.
+      * Use the filters to search by language and accent, gender, age and category. You can also use filters to search for voices with specific notice periods, that don't have Live Moderation enabled, or to exclude voices with a custom rate.
+
+      You can play a sample for each voice by clicking it. If a voice has multiple previews for different languages, you can select the language you want to preview in the player at the bottom of the page.
+
+      You can use a voice directly from the Voice Library by using the <strong>Use voice</strong> button. This will open Text to Speech with the voice preselected. Once you use a voice, the notice period, if any, is saved for your account. This means that you will be able to continue using it for the duration of the notice period if it's removed from the Voice Library in the future. 
+
+      To save a voice to your account so you can easily access it in the future, you can click the <strong>+</strong> button. Voices you’ve added to My Voices will become available for selection in all voice selection menus. You can also use a voice directly from My Voices by clicking the <strong>T</strong> button, which will open Text to Speech with the voice selected.
+
+      For more information, please visit our [guide to the Voice Library.](/docs/product-guides/voices/voice-library/)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Why can't I use some voices from the Voice Library?
+
+      Some voices in the Voice Library are only available to users with a paid subscription. If you're on the free plan and you try to use one of these voices, you'll see the message: "This voice is not available for free users."
+
+      This is because these voices have a credit multiplier in place. Voices with credit multipliers are not available on the free plan, but they will become available if you upgrade to a paid subscription.
+
+      When you use a voice with a credit multiplier, the credit usage will be adjusted accordingly. For example, if a voice has a 2x multiplier, generating audio will cost twice as many credits as a voice on the standard rate.
+
+      For more details on custom rates and credit multipliers, you can refer to this article: [What are custom rates and credit multipliers?](/docs/help-center/product/voice-customization/voice-library/what-are-custom-rates-and-credit-multipliers)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I share an AI-generated voice in the Voice Library?
+
+      No. We only allow the sharing of professional cloned voices verified by a human. Instant Voice Clones, synthetic voices created using [Voice Design](/docs/product/voices/voice-lab/voice-design), AI-generated or AI-enhanced voices cannot be shared in the Voice Library.
+
+      Users attempting to share voices generated with ElevenLabs or other AI tools into the library might be prohibited from sharing any voices in the future or suspended from the platform.
+
+      Engaging in fraudulent, predatory or abusive practices (like evading product guardrails including voice verification (e.g., CAPTCHA) is against our “Prohibited Use Policy” and might lead to a permanent ban of the user’s account.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I delete a voice I've shared with the Voice Library?
+
+      To remove a voice that you have shared with the Voice Library, you first need to stop sharing the voice.  To do this, find the voice in the list of voices in [My Voices](https://elevenlabs.io/app/voice-lab), click <strong>More actions</strong>(three dots) then select <strong>Share voice</strong> to access the sharing settings.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/35971119591313" alt="" />
+
+       
+
+      Click the <strong>Publish to the Voice Library</strong> toggle to stop sharing your voice with the Voice Library.
+
+      If you did not agree a notice period when you shared the voice, you can delete the voice after you have disabled sharing. 
+
+      To do this, click <strong>More actions</strong>(three dots) then select <strong>Delete voice</strong>. Deleting a voice cannot be undone and you will be asked to confirm the deletion.
+
+      If you did agree a notice period, you will need to wait for this to expire before you can remove your voice. During the notice period, your voice can be used by anyone who had already saved it to My Voices, but it will no longer be visible in the Voice Library. 
+
+      Once you have activated the notice period, you will see a clock icon which you can hover over for confirmation.  Please be aware that if you share your voice with the Voice Library again in the future, by enabling the <strong>Discovery in Voice Library</strong> toggle, this will reset your notice period.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can Children’s or Child-Like Voices Be Added to the Voice Library?
+
+      No, children’s voices or voices that sound child-like cannot be added to the Library. This policy applies to voices of minors as well as adult voices designed to mimic or sound like children.
+
+      We made this decision to align with our [Prohibited Use Policy](https://elevenlabs.io/use-policy), which prioritizes safeguarding against any potential misuse of voices that could pose risks to children. Voices resembling children could be misused in harmful or exploitative ways, and this restriction helps ensure that our platform remains a safe and responsible space for creators and users alike.
+
+      For more information, please refer to our [Prohibited Use Policy.](https://elevenlabs.io/use-policy)
+
+      If you have further questions or need clarification, feel free to [contact our support team.](https://help.elevenlabs.io/hc/en-us/requests/new?ticket_form_id=13145996177937)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I find out what voice is used in a video or audio clip?
+
+      You can usually hear our technology used all across the internet on social media, on YouTube, in marketing material, and sometimes you might want to know what voice is being used in this material. Luckily, we offer a tool just for this.
+
+      If you go to the [Voice Library](https://elevenlabs.io/app/voice-library) and look to the right of the search bar, you will see a little button that allows you to upload a file to use as the search method. Click this button and upload the file you want to search.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/27791992237457" alt="" />
+
+      The AI will then present you with the most similar voices or the exact matches if there is one.
+
+      It's important to keep in mind when searching that you should only include the audio of the spoken voice and nothing else. If there's any background noise, music, or anything else in the audio clip, you should remove it and only include the actual audio of the voice. If you don't have any clean audio, you can use the [Voice Isolator](https://elevenlabs.io/app/voice-isolator) first to isolate the voice and then upload that to get a more accurate match.
+
+      Also, please keep in mind that this will only search the voices available in the public voice library and not any custom voices from other sources.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I identify the voice used to generate audio?
+
+      You can use audio or video files to search the [Voice Library](https://elevenlabs.io/app/voice-library) for similar voices. The original voice used will be shown if it exists in the Voice Library, otherwise you will get suggestions for similar voices.
+
+      To do this, either drag and drop an audio or video file anywhere on the [Voice Library](https://elevenlabs.io/app/voice-library) page, or click the upload icon to select a file to upload.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/40421117743121" alt="" />
+
+      For the best results, please upload speech only, without background music or noise.  You can use our [Voice Isolator](https://elevenlabs.io/app/voice-isolator) to clean up the audio if required. 
+
+      Long clips are not required for the AI to find a match.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I add a custom preview for my shared voice?
+
+      You can generate a custom preview for your Professional Voice Clone, and choose this to be the preview for your voice in the [Voice Library](https://elevenlabs.io/app/voice-library). You can change the custom preview at any time from the sharing settings for your voice.
+
+      First, you will need to have generated some suitable audio from a text prompt between 70 and 150 characters long.
+
+      If you don't already have any eligible generations, find your voice in [My Voices](https://elevenlabs.io/app/voice-lab), and use the <strong>T</strong> button to open [Text to Speech](https://elevenlabs.io/app/speech-synthesis/text-to-speech) with your voice selected. Enter text of your choice between 70-150 characters and click <strong>Generate speech.</strong> You can generate the audio using any of our models, including v3. 
+
+      When you have a generation you're happy with, return to [My Voices.](https://elevenlabs.io/app/voice-lab) Find your voice in the list, click <strong>More actions</strong> (three dots) then select <strong>Share voice</strong> to access the sharing settings.
+
+      In the <strong>Publish to the Voice Library</strong> settings, use the drop down selection for <strong>Custom voice preview</strong> to select your recently generated text. This will then be applied as the preview for your voice. Only audio that meets the criteria (length of 70-150 characters) will appear in the list.
+
+       
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/35971482008209" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What are custom rates and credit multipliers?
+
+      Some voices in the Voice Library have a credit multiplier in place. This is because the voice's owner set a custom rate for financial rewards when they shared their Professional Voice Clone with the Voice Library. Custom rates are a legacy feature that is no longer available for newly shared voices.
+
+      When you use a voice with a custom rate to generate audio, this will have a credit multiplier in effect, meaning that it will cost more credits to generate with this voice.
+
+      If a voice has a credit multiplier in place, this will be displayed as a tag in the Voice Library:
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/35970940876689" alt="" />
+
+      In Speech Synthesis, you will see a notification that the voice has a credit multiplier in place:<br />
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/30603895331089" alt="" />
+
+      The credit multiplier that applies for generating audio is based on the custom rate chosen by the voice owner as well as the subscription plan of the user of the voice.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is a notice period?
+
+      The notice period in the [Voice Library](https://elevenlabs.io/app/voice-library) is designed to give users advance warning if the owner of a voice they’ve saved, or used previously, decides to stop sharing their voice. This ensures a smooth transition for users who rely on that voice.
+
+      When a voice actor shares their voice to the Voice Library, they can set a notice period. If no notice period is set, their voice will be removed immediately if they decide to stop sharing it, and anyone who has saved the voice will immediately lose access.
+
+      The minimum notice period is 3 months, and the maximum is 2 years. Voice owners receive increased financial rewards for selecting a longer notice period.
+
+      If a voice actor sets a notice period, users who have previously used or saved the voice will receive both email and in-app notifications when the voice owner decides to stop sharing their voice. The voice will be immediately removed from the Voice Library but will remain available for the duration of the notice period for users who saved or used it previously.
+
+      If a voice is deleted during an active notice period, it cannot be saved again because it is no longer available in the Voice Library.
+
+      Once a notice period is active, users can see in the app when the voice will be disabled. For API users, you can see this when fetching the voice using the [Get Voice endpoint](/docs/api-reference/voices/get) by looking for `disable_at_unix` in the response. If the voice has not had its notice period active, this key will not exist or it will say `null`.
+
+      For larger operations, you can also set up a webhook notification for voice removal, ensuring you are informed as soon as a voice is removed. This can be very useful if you need to be informed as soon as the voice is removed, for example if you need to notify your customers.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/33538657366545" alt="" />
+
+      You can set this up on your [webhooks settings page](https://elevenlabs.io/app/settings/webhooks) for your account.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Live Moderation?
+
+      When users choose to share their Professional Voice Clone with the Voice Library, they can enable Live Moderation.  When this is enabled, we use tools to check whether requests to use that voice contain text that belongs to a number of prohibited categories. 
+
+      Please note that using a voice model with Live Moderation enabled may result in extra latency.
+
+      For full details, please see the [Voice Library Addendum](https://elevenlabs.io/vla).
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What voices are popular on TikTok, YouTube, and social media?
+
+      If you’ve seen a clip using AI voices on TikTok, YouTube, Instagram, X, or other social platforms, there’s a good chance it was created with ElevenLabs.
+
+      Some of our most popular voices online today include:
+
+      <strong>
+        Male voices
+      </strong>
+
+      * Brian
+      * Liam
+      * Adam
+
+      <strong>
+        Female voices
+      </strong>
+
+      * Jessica
+      * Matilda
+      * Sarah
+
+      These are just a few of the many voices creators use every day across social media. You can explore our Voice Library to find one that fits your style, or create your own using [Voice Design](/docs/product-guides/voices/voice-design), [Voice Remixing](/docs/capabilities/voice-remixing), [Instant Voice Cloning](/docs/product-guides/voices/voice-cloning/instant-voice-cloning), or [Professional Voice Cloning](/docs/product-guides/voices/voice-cloning/professional-voice-cloning).
+
+      Sign up for a free account to get started: [elevenlabs.io](https://elevenlabs.io)
+    </td>
+  </tr>
+</tbody>

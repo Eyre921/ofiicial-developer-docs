@@ -33,6 +33,8 @@ In addition to satisfying our contractual requirements, this approach promotes t
 
 You should modify this example to reflect your specific use case while maintaining the required disclosures.
 
+#### ElevenLabs Agents
+
 We use ElevenLabs Agents to help power our \[insert purposes, e.g., virtual customer service
 agents]. By clicking "Agree" and each time you interact with this AI agent, you consent to us,
 ElevenLabs, and each of our service providers (including third-party LLM providers) recording,

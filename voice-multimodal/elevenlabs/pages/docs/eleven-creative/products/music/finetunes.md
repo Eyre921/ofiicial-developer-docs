@@ -168,31 +168,65 @@ If outputs feel too similar to specific tracks, increase dataset diversity.
 
 ## Frequently asked questions
 
-Typically 5-10 minutes per Finetune.
+<tbody>
+  <tr>
+    <td>
+      #### How long does it take to create a Finetune?
 
-{' '}
+      Typically 5-10 minutes per Finetune.
+    </td>
+  </tr>
 
-You can generate as much music as your plan's credits allow.
+  <tr>
+    <td>
+      #### Can I generate unlimited tracks?
 
-{' '}
+      You can generate as much music as your plan's credits allow.
+    </td>
+  </tr>
 
-No. ElevenCreative includes curated Finetunes available immediately.
+  <tr>
+    <td>
+      #### Do I need to upload audio to use Finetunes?
 
-{' '}
+      No. ElevenCreative includes curated Finetunes available immediately.
+    </td>
+  </tr>
 
-Your Finetune will be rejected, and the cost will not be refunded. You must not upload copyrighted
-material unless you are on an approved Enterprise plan.
+  <tr>
+    <td>
+      #### What happens if copyright screening fails?
 
-{' '}
+      Your Finetune will be rejected, and the cost will not be refunded. You must not upload
+      copyrighted material unless you are on an approved Enterprise plan.
+    </td>
+  </tr>
 
-Finetunes are designed for stylistic learning, not reproduction. However, small or repetitive
-datasets increase similarity risk. Use diverse, compliant training data and evaluate outputs
-carefully.
+  <tr>
+    <td>
+      #### Can the model reproduce my uploaded tracks?
 
-{' '}
+      Finetunes are designed for stylistic learning, not reproduction. However, small or
+      repetitive datasets increase similarity risk. Use diverse, compliant training data and
+      evaluate outputs carefully.
+    </td>
+  </tr>
 
-At launch, Finetunes are available in the ElevenCreative UI. Enterprise access to API may be
-available upon request.
+  <tr>
+    <td>
+      #### Is Finetunes available via API?
 
-Language-specific data improves capability, but you must explicitly specify the desired
-language in your generation prompt.
+      At launch, Finetunes are available in the ElevenCreative UI. Enterprise access to API may
+      be available upon request.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Does training data language control output language?
+
+      Language-specific data improves capability, but you must explicitly specify the desired
+      language in your generation prompt.
+    </td>
+  </tr>
+</tbody>

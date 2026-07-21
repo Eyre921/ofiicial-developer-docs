@@ -13,6 +13,8 @@ get started with Audio Native before continuing with this guide.
 
 This guide will show how to integrate Audio Native into React apps. The focus will be on a Next.js project, but the underlying concepts will work for any React based application.
 
+#### Create an Audio Native React component
+
 After completing the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native), you'll have an embed code snippet. Here's an example snippet:
 
 ```html title="Embed code snippet"
@@ -90,6 +92,8 @@ export default ElevenLabsAudioNative;
 
 The above component can be found on [GitHub](https://github.com/elevenlabs/examples/blob/main/examples/audio-native/react/ElevenLabsAudioNative.tsx).
 
+#### Use the Audio Native component
+
 Before using the component on your page, you need to retrieve your public user ID from the original code snippet. Copy the contents of `data-publicuserid` from the embed code snippet and insert it into the `publicUserId` prop of the component.
 
 ```tsx title="page.tsx" maxLines=0
@@ -108,6 +112,8 @@ export default function Page() {
   );
 }
 ```
+
+#### Customize the player with component props
 
 The component props can be used to customize the player. For example, you can change the size, text color, and background color.
 

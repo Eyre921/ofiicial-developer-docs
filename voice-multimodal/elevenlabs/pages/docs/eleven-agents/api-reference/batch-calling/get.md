@@ -104,6 +104,12 @@ components:
           description: >-
             How long to ring the recipient before giving up, in seconds. Note
             that this will also be limited by the provider's own constraints.
+        twilio_call_recording_enabled:
+          type: boolean
+          default: false
+          description: >-
+            Whether to record the call using Twilio call recording. Ignored for
+            non-Twilio providers. Recordings are stored in your Twilio account.
       title: TelephonyCallConfig
     type_:BatchCallRecipientStatus:
       type: string
@@ -222,7 +228,9 @@ components:
         - gemini-3.5-flash
         - claude-sonnet-4-5
         - claude-opus-4-7
+        - claude-opus-4-8
         - claude-sonnet-4-6
+        - claude-sonnet-5
         - claude-sonnet-4
         - claude-haiku-4-5
         - claude-3-7-sonnet
@@ -643,7 +651,8 @@ components:
   "status": "pending",
   "retry_count": 1,
   "telephony_call_config": {
-    "ringing_timeout_secs": 1
+    "ringing_timeout_secs": 1,
+    "twilio_call_recording_enabled": true
   },
   "agent_name": "agent_name",
   "recipients": [

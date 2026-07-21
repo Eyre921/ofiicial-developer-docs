@@ -86,6 +86,8 @@ conversation before it begins.
 
 Send JSON commands through the WebSocket to control the conversation:
 
+#### End call
+
 Terminate the active conversation immediately.
 
 ```javascript
@@ -103,6 +105,8 @@ await websocket.send(json.dumps({
     "command_type": "end_call"
 }))
 ```
+
+#### Transfer to phone number
 
 Transfer the call to a specified phone number.
 
@@ -130,6 +134,8 @@ await websocket.send(json.dumps({
 
 The `transfer_to_number` system tool must already be configured in the agent.
 
+#### Realtime contextual update
+
 Inject context or instructions into the active conversation so the agent can use the new
 information in its responses.
 
@@ -155,6 +161,8 @@ await websocket.send(json.dumps({
 }))
 ```
 
+#### Enable human takeover
+
 Switch from AI agent to human operator mode for chat conversations.
 
 ```javascript
@@ -172,6 +180,8 @@ await websocket.send(json.dumps({
     "command_type": "enable_human_takeover"
 }))
 ```
+
+#### Send message as human
 
 Send a message to the user as a human operator in chat conversations.
 
@@ -197,6 +207,8 @@ await websocket.send(json.dumps({
 }))
 ```
 
+#### Disable human takeover
+
 Return control from human operator back to the AI agent.
 
 ```javascript
@@ -219,49 +231,81 @@ await websocket.send(json.dumps({
 
 Real-time monitoring enables several operational scenarios:
 
+#### Quality assurance
+
 Monitor agent conversations in real-time to ensure quality standards and identify training
 opportunities.
 
+#### Human escalation
+
 Detect conversations requiring human intervention and seamlessly take over from the AI agent.
+
+#### Analytics dashboards
 
 Build real-time monitoring dashboards that aggregate conversation metrics and performance
 indicators.
 
+#### Call center oversight
+
 Supervise multiple agent conversations simultaneously and intervene when necessary.
+
+#### Automated intervention
 
 Implement automated systems that analyze conversation content and trigger actions based on
 specific conditions.
+
+#### Training and coaching
 
 Use live conversations as training material and provide real-time feedback to improve agent
 performance.
 
 ## Limitations
 
+#### Asynchronous event delivery
+
 Monitoring events are sent asynchronously to the conversation and may not arrive in the same
 order as the core conversation events. When processing events, do not rely on event order to
 reconstruct exact conversation timing.
 
+#### Audio data not available
+
 The monitoring endpoint streams only text events and metadata. Raw audio data is not included in
 monitoring events.
+
+#### Historical event limit
 
 Only approximately the last 100 events are cached and available when connecting to an active
 conversation. Earlier events cannot be retrieved.
 
+#### Event filtering restrictions
+
 VAD scores, turn probability metrics, and ping events cannot be monitored when custom event
 selection is enabled.
 
+#### Connection timing
+
 You must connect after the conversation has started. The monitoring endpoint cannot be used
 before conversation initiation.
+
+#### Permissions required
 
 API keys must have `ElevenLabs Agents Write` scope, and you must have `EDITOR` workspace access
 to monitor conversations.
 
 ## Related resources
 
+#### [Post-call Webhooks](/docs/eleven-agents/workflows/post-call-webhooks)
+
 Receive conversation data and analysis after calls complete.
+
+#### [Agent Analysis](/docs/eleven-agents/customization/agent-analysis)
 
 Configure success evaluation and data collection for conversations.
 
+#### [Client Events](/docs/eleven-agents/customization/events/client-events)
+
 Understand events received during conversational applications.
+
+#### [WebSocket API](/docs/eleven-agents/libraries/web-sockets)
 
 Learn about the WebSocket API for real-time conversations.

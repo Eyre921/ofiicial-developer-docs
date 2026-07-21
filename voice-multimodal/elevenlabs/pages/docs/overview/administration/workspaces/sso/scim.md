@@ -17,12 +17,18 @@ settings.
 
 Follow these steps to connect your Identity Provider (IdP) to ElevenLabs.
 
+#### Open SCIM settings
+
 Go to **Workspace settings** > **Security & SSO** > **SCIM**.
+
+#### Generate a token
 
 Click **Generate Token**. Copy the **Base URL** and **Bearer token** immediately.
 
 The token is only shown once. If you lose it, you must generate a new one, which will
 invalidate the previous token.
+
+#### Configure your identity provider
 
 In your IdP SCIM/Provisioning configuration:
 
@@ -60,22 +66,40 @@ can cause SCIM sync failures for that user.
 
 ## Setup by Identity Provider
 
+#### Microsoft Entra ID setup
+
+#### Open provisioning settings
+
 In the Microsoft Entra admin center, select your
 ElevenLabs app, then open **Provisioning**.
 
+#### Set provisioning mode
+
 Set **Provisioning Mode** to **Automatic**.
+
+#### Add SCIM credentials
 
 In **Admin Credentials**:
 
 * Set **Tenant URL** to your ElevenLabs SCIM Base URL.
 * Set **Secret Token** to your ElevenLabs Bearer token.
 
+#### Test and enable provisioning
+
 Click **Test Connection**, save the configuration, then set **Provisioning Status** to
 **On** when ready.
 
+#### Okta setup
+
+#### Create or open a custom app integration
+
 Open the ElevenLabs app that is used for SSO sign-in and go to **General**.
 
+#### Enable SCIM on the app
+
 Click **Edit** in **App Settings**, then set **Provisioning** to **SCIM**.
+
+#### Configure SCIM connection
 
 In **Provisioning** > **Settings** > **Integration**:
 
@@ -86,11 +110,19 @@ In **Provisioning** > **Settings** > **Integration**:
 * Paste your ElevenLabs Bearer token in the **Authorization** field.
 * Click **Save**
 
+#### OneLogin setup
+
+#### Open your app settings
+
 In OneLogin Admin, open your ElevenLabs app.
+
+#### Add SCIM credentials in Configuration
 
 In the **Configuration** tab:
 
 * Set **SCIM Base URL** to your ElevenLabs SCIM Base URL.
 * Set **SCIM Bearer token** to your ElevenLabs Bearer token.
+
+#### Enable API connection
 
 Go to **Provisioning** and check "Enable provisioning" for the app.

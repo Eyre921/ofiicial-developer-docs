@@ -62,24 +62,40 @@ Ads Engine is available on the Pro plan and above.
 
 ## FAQ
 
+#### What is Ads Engine?
+
 Ads Engine is a product area within ElevenCreative that connects directly to your advertising
 platforms to help you localize, generate, and manage ads at scale.
+
+#### What does the localization engine do?
 
 It takes your existing ads and localizes them across languages and markets — translating text,
 adapting images, and dubbing video — then pushes the localized ads back to your ad platform.
 
+#### Which ad platforms are supported at launch?
+
 Google Ads (Search — text) and Meta Ads (text, image, and video). LinkedIn Ads is supported for
 performance insights only.
+
+#### How does video localization work?
 
 Ads Engine uses Dubbing v2 to reproduce the original speaker's tone, emotion, and pacing in the
 target language. The original voice is preserved, not replaced with a generic voiceover.
 
+#### Does it localize images too?
+
 Yes. Text overlays are translated and image composition can be adapted per market.
+
+#### Is there a human review step?
 
 Yes. An optional approval workflow lets your team review localized assets before they are pushed
 to the ad platform.
 
+#### Can I use this for ads I did not create in ElevenCreative?
+
 Yes. The platform pulls existing ads from Google, Meta, and LinkedIn regardless of where they
 were originally created.
+
+#### Is there an API?
 
 No, Ads Engine is not currently available via API.

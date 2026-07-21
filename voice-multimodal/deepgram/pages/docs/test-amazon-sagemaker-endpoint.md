@@ -18,16 +18,26 @@ The scripts evolve independently. Flags, defaults, and input formats differ betw
 
 ## High-level process
 
+#### Install the required tooling
+
 Install the language runtime and package manager for the script you plan to run. See [Required tooling](#required-tooling).
 
+#### Configure AWS credentials and region
+
 Configure AWS credentials locally and ensure your shell targets the region where the SageMaker endpoint is deployed. See [AWS credentials and region](#aws-credentials-and-region).
+
+#### Clone the dg-sagemaker repository
 
 ```bash
 git clone https://github.com/deepgram-devs/dg-sagemaker.git
 cd dg-sagemaker
 ```
 
+#### Choose the script that matches your product
+
 Identify the subdirectory for your Deepgram product and language. See [Pick the right script](#pick-the-right-script).
+
+#### Run the script against your endpoint
 
 Invoke the script with your endpoint name, AWS region, and any product-specific inputs (for example, a WAV file for speech-to-text or a text file for text-to-speech).
 
@@ -59,6 +69,8 @@ Invocation flags, defaults, and required inputs vary per script. Consult the `RE
 
 Install only the tools you need for the script you plan to run.
 
+#### Python
+
 * Python 3.12+ (Python 3.14+ for `python-stt`)
 * [uv](https://docs.astral.sh/uv/) package manager
 * PortAudio for microphone or audio playback (required for `python-tts` and for microphone modes of `python-stt`/`python-flux`):
@@ -72,10 +84,14 @@ cd python-stt   # or python-flux, python-tts
 uv sync
 ```
 
+#### Node.js
+
 * Node.js (current LTS)
 * `npx` (bundled with Node.js)
 
 Dependencies are resolved on first invocation via `npx tsx`.
+
+#### Java
 
 * JDK 17 or later
 * Gradle (the projects ship with the Gradle wrapper, `./gradlew`)

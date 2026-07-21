@@ -125,18 +125,32 @@ When inviting new users to your workspace, you can select their seat type during
 
 ## FAQ
 
+#### What is the difference between a Full Seat and a Basic Seat?
+
 Full Seats provide unrestricted access to all ElevenLabs products, including unlimited ElevenCreative usage (subject to the workspace credit pool), and the ability to create personal API keys.
 
 Basic Seats are designed for users primarily working with ElevenAgents or ElevenAPI — ElevenCreative generation is capped at a 50,000 credit monthly ceiling (\$5 for Enterprise customers) per user, drawn from the shared workspace pool. This is a ceiling on consumption, not a separate allocation.
 
+#### Does ElevenAgents or ElevenAPI usage count toward the Basic Seat 50,000 credit ceiling?
+
 No. The 50,000 credit ceiling applies to ElevenCreative usage only. ElevenAgents and ElevenAPI usage draws freely from the workspace's shared credit pool with no individual ceiling.
+
+#### What happens if a Basic Seat user hits their credit ceiling?
 
 They will not be able to generate new content in ElevenCreative for the remainder of the billing period. Their access to ElevenAgents and ElevenAPI is unaffected. Their workspace admin can upgrade them to a Full Seat if they need more creative access.
 
+#### Can I change a seat type?
+
 Yes. Admins can upgrade or downgrade any seat type at any time from the Members settings page.
+
+#### Who can manage seat types?
 
 Only workspace admins can assign and change seat types.
 
+#### How many seats are included with my plan?
+
 See the Seat Types & Included Allocations by Plan table above. All plans now include 20 Basic Seats. Full Seat allocations vary by plan tier.
+
+#### Can I purchase additional seats?
 
 Enterprise customers can purchase additional Full Seats. Contact your account manager for pricing information. It's not possible to purchase additional seats for standard subscription plans.

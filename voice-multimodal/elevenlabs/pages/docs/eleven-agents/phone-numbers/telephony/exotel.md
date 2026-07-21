@@ -60,6 +60,8 @@ residency](/docs/overview/administration/data-residency).
 
 ## Setup on Exotel
 
+#### Collect your Exotel credentials
+
 In the Exotel dashboard, open the left-hand **Monitor** menu and click **Developer**. This opens the API credentials page where you can read the Account SID, API Key and API Token.
 
 ![Exotel sidebar: Developer](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/ebe936f8cd0d1773a88bb4922a7642cf8c2f844f39eb4ee9ee04eab50ecfa6c4/assets/images/conversational-ai/exotel-developer-sidebar.png)
@@ -72,6 +74,8 @@ You will need four values:
 * **Region (API subdomain)**: The cluster your Exotel account lives in. This is either `api.exotel.com` (Singapore) or `api.in.exotel.com` (Mumbai). You can confirm which one by looking at the host of any API URL shown on the Developer page.
 
 ElevenLabs uses the API Key + API Token for HTTP Basic Auth when calling Exotel's Connect API for outbound dialing.
+
+#### Create a Voicebot applet in App Bazaar
 
 1. In the Exotel dashboard, open the left-hand **Manage** menu and click **App Bazaar**.
 
@@ -136,6 +140,8 @@ ElevenLabs uses the API Key + API Token for HTTP Basic Auth when calling Exotel'
 The Voicebot applet handles both inbound and outbound legs. You only need a single applet per
 account. Every phone number you import into ElevenLabs can share it.
 
+#### Assign the flow to a phone number (inbound only)
+
 Save and publish the ExoML flow from the previous step. Then route an Exotel phone number to it so inbound calls land on your Voicebot applet.
 
 1. In the Exotel dashboard, open the left-hand **Manage** menu and click **ExoPhones** (just below **App Bazaar**).
@@ -156,6 +162,8 @@ dialed via the Connect API from ElevenLabs and don't depend on the **Installed A
 
 ## Setup on ElevenLabs
 
+#### Import the Exotel phone number
+
 In the ElevenAgents dashboard, go to the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) tab. Click **+ Import number** and select **From Exotel** from the dropdown.
 
 ![ElevenAgents: Import number dropdown with From Exotel
@@ -173,10 +181,14 @@ Fill in the following fields:
 
 Click **Import** to save the number. ElevenLabs will verify the credentials against Exotel and store the API token as a workspace secret.
 
+#### Assign your agent
+
 Once the number is imported, open it from the **Phone Numbers** list and pick the agent that should handle inbound calls in the **Assigned agent** dropdown.
 
 Inbound calls require that the Voicebot applet is assigned to the number on Exotel's side (see the
 previous section). Outbound-only setups do not need an inbound assignment.
+
+#### Test an inbound call
 
 Call your Exotel number from any phone. The call will be routed by Exotel to the Voicebot applet, which opens a WebSocket to ElevenLabs. Your agent will pick up and start the conversation.
 
@@ -187,7 +199,11 @@ verify everything is working as expected.
 
 Imported Exotel numbers can also initiate outbound calls. Your agent dials a phone number and starts the conversation when the recipient picks up.
 
+#### Initiate an outbound call
+
 From the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) tab, locate your Exotel number and click the **Outbound call** button.
+
+#### Configure the call
 
 In the Outbound Call modal:
 
@@ -223,6 +239,8 @@ Without the Connect applet in the flow, the agent's transfer attempts will fail 
 
 ## Troubleshooting
 
+#### \`exotel\_connect\_failed\` error when starting an outbound call
+
 ElevenLabs received a non-200 response from Exotel's Connect API. The most common causes are:
 
 * Wrong **Region**. Make sure the region you picked at import time matches the Exotel cluster your account lives in (`Singapore` vs `Mumbai`).
@@ -230,11 +248,17 @@ ElevenLabs received a non-200 response from Exotel's Connect API. The most commo
 * The **Account SID** does not match the API Key / Token pair.
 * The destination number is not in E.164 format.
 
-- Confirm the Voicebot applet's **URL** field matches the ElevenLabs WebSocket endpoint for your data residency exactly (including `wss://`).
-- Confirm the Exotel **phone number** is routed to the ExoML app that contains the Voicebot applet (Exotel dashboard, ExoPhones, the number, Installed App).
-- In ElevenLabs, confirm the phone number has an agent assigned in the **Phone Numbers** tab.
+#### Inbound calls don't reach my agent
+
+* Confirm the Voicebot applet's **URL** field matches the ElevenLabs WebSocket endpoint for your data residency exactly (including `wss://`).
+* Confirm the Exotel **phone number** is routed to the ExoML app that contains the Voicebot applet (Exotel dashboard, ExoPhones, the number, Installed App).
+* In ElevenLabs, confirm the phone number has an agent assigned in the **Phone Numbers** tab.
+
+#### \`Applet ID\` mismatch errors when importing
 
 The **Voicebot Applet ID** field expects the numeric App ID from the ExoML editor URL (e.g. for `.../exoml/start_voice/12345` the ID is `12345`). Don't paste the full URL. Use only the ID.
+
+#### Phone number imported twice in different formats
 
 ElevenLabs normalizes Exotel numbers to E.164 before storing them, and enforces uniqueness on `(provider, phone_number)`. If you previously imported the same number in a non-E.164 format, delete the old entry first and then re-import it in E.164 form.
 

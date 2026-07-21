@@ -16,6 +16,8 @@ This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quick
 the quickstart first if you haven't. To play audio through your speakers, you may also need
 [MPV](https://mpv.io/) and/or [ffmpeg](https://ffmpeg.org/).
 
+#### Make the API request
+
 Remixing a voice is a two step process:
 
 1. Generate a preview of the new voice by providing a voice ID and a prompt.
@@ -80,6 +82,8 @@ for (const preview of previews) {
 }
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -89,6 +93,8 @@ npx tsx example.mts
 ```
 
 You should hear the generated voice previews playing through your speakers, one at a time.
+
+#### Add generated voice to your library
 
 Once you've generated the previews and picked your favorite, you can add it to your voice library via the generated voice ID so it can be used with other APIs.
 
@@ -119,6 +125,10 @@ console.log(voice.voiceId);
 
 ## Next steps
 
+#### [Voice design](/docs/eleven-api/guides/how-to/voices/voice-design)
+
 Generate a new voice from a text description rather than remixing an existing one.
+
+#### [API reference](/docs/api-reference/text-to-voice/remix)
 
 Full Voice Remix API reference and parameters.

@@ -34,10 +34,18 @@ Some integrations are only available on higher-tier plans:
 | Plus    | All available integrations             |
 | Premium | All available integrations             |
 
+#### [Google Calendar](/docs/reception-ai/integrations/google-calendar)
+
 Sync staff availability in real-time.
+
+#### [Zapier](/docs/reception-ai/integrations/zapier)
 
 Connect to thousands of apps.
 
+#### [Webhooks](/docs/reception-ai/integrations/webhooks)
+
 Custom HTTP tools for your receptionist.
+
+#### [MCP](/docs/reception-ai/integrations/mcp-server)
 
 Connect custom tool servers.

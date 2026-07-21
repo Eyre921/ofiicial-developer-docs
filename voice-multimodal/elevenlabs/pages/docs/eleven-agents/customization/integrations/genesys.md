@@ -18,15 +18,25 @@ With this integration, you can deploy AI agents that handle inbound calls, chat 
 
 This integration uses **OAuth 2.0 Client Credentials** for authentication.
 
+#### Create OAuth client in Genesys Cloud
+
 In Genesys Cloud Admin Center, navigate to **Admin > Integrations > OAuth** and click **Add Client**.
+
+#### Configure the OAuth client
 
 * Set **Grant Type** to **Client Credentials**
 * Assign the admin role for your Division(s)
 * Save the client configuration
 
+#### Copy client credentials
+
 After creating the OAuth client, copy the **Client ID** and **Client Secret** immediately — the secret will not be shown again.
 
+#### Select region
+
 Identify your Genesys Cloud region (e.g., `mypurecloud.com` for US, `mypurecloud.de` for Europe, etc.).
+
+#### Connect to ElevenLabs
 
 In the ElevenLabs dashboard, go to **Agents > Integrations**, click **Add Integration** and select **Genesys**.
 Under the **Configure** tab, enter your **region**, **Client ID**, and **Client Secret**.
@@ -45,12 +55,18 @@ For text-based agents, use the Genesys Bot Connector trigger to enable chat and 
 
 #### Configure trigger
 
+#### Add a Bot Connector trigger
+
 On the Integrations page in the ElevenAgents dashboard, open the Genesys integration, and navigate to the **Triggers** tab. Select **Genesys Bot Connector**.
+
+#### Configure the trigger fields
 
 Fill in the required fields:
 
 * **Agent**: the ElevenLabs agent that will handle incoming conversations.
 * **Integration Name**: name for the Bot Connector integration to be created in Genesys Cloud (e.g., "ElevenLabs Support Bot"). This name is used to derive the bot integration and bot name referenced in Architect flows.
+
+#### Activate the trigger
 
 Save and activate the trigger. ElevenLabs automatically creates a Bot Connector integration in your Genesys Cloud environment with the intents `success` and `escalate`. Deactivating the trigger removes the integration from Genesys Cloud.
 
@@ -70,7 +86,11 @@ In Architect, open the Inbound Message Flow you want to use.
 
 To enable your agent to escalate conversations to human support, configure the following in ElevenLabs:
 
+#### Add the Update state tool
+
 In your agent configuration, add the **Update state** system tool. Configure it to set the `genesys_should_escalate` dynamic variable to `true`.
+
+#### Configure the system prompt
 
 Add escalation instructions to your agent's system prompt:
 
@@ -79,6 +99,8 @@ Add escalation instructions to your agent's system prompt:
 
 When escalating, ALWAYS ask first if the user would like to talk to another client services team member. If they say yes, use the update_state tool to set the genesys_should_escalate dynamic variable to true.
 ```
+
+#### Add business rules
 
 Include escalation scenarios in your agent's business rules. For example:
 

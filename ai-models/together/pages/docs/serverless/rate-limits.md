@@ -45,11 +45,11 @@ To maximize successful requests on serverless models:
 
 For example, if your limit is 60 requests per minute (RPM), send roughly 1 request per second (RPS) across the minute rather than 60 requests in a single second. The shorter the window you concentrate requests into, the burstier the traffic. Together does its best to serve bursty traffic, but success depends on the model's real-time load and available capacity at that moment.
 
-Every serverless inference API response includes `x-ratelimit-reset`, which reports the suggested retry interval for the model. Consider using **exponential backoff** so requests continue trying again with increasing wait times, instead of failing immediately. For spend and usage trends across keys and workloads, see your project's [cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics).
+When a request is rate limited, the `429` response includes `x-ratelimit-reset`, which reports the suggested retry interval for the model. Consider using **exponential backoff** so requests continue trying again with increasing wait times, instead of failing immediately. For spend and usage trends across keys and workloads, see your project's [cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics).
 
 ### Inspect your current rate limit
 
-Dynamic rate limits adjust with usage, so there are no fixed per-model limits published. The most reliable way to see how close you are to hitting a limit is to call it and read the `x-ratelimit-reset` response header. When you hit a `429`, the value reports how many seconds to wait before retrying.
+Dynamic rate limits adjust with usage, so there are no fixed per-model limits published. The most reliable signal is the response itself: successful requests come back without rate-limit headers, and when you hit a `429` the response includes `x-ratelimit-reset` with the number of seconds to wait before retrying.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -63,11 +63,11 @@ Dynamic rate limits adjust with usage, so there are no fixed per-model limits pu
       messages=[{"role": "user", "content": "ping"}],
   )
 
-  print("status:", response.http_response.status_code)
-  print(
-      "x-ratelimit-reset:",
-      response.http_response.headers.get("x-ratelimit-reset"),
-  )
+  reset = response.http_response.headers.get("x-ratelimit-reset")
+  if reset is None:
+      print("status:", response.http_response.status_code, "(not rate limited)")
+  else:
+      print("rate limited, retry in", reset, "seconds")
   ```
 
   ```bash cURL theme={null}
@@ -77,7 +77,7 @@ Dynamic rate limits adjust with usage, so there are no fixed per-model limits pu
     -d '{
       "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
       "messages": [{"role": "user", "content": "ping"}]
-    }' | grep -i "x-ratelimit-reset"
+    }' | grep -i "x-ratelimit-reset" || echo "not rate limited"
   ```
 </CodeGroup>
 

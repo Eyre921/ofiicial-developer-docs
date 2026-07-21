@@ -10,9 +10,15 @@ path: docs/eleven-agents/customization/privacy
 
 Privacy settings give you fine-grained control over your data. You can manage both call audio recordings and conversation data retention to meet your compliance and privacy requirements.
 
+#### [Retention](/docs/eleven-agents/customization/privacy/retention)
+
 Configure how long conversation transcripts and audio recordings are retained.
 
+#### [Audio Saving](/docs/eleven-agents/customization/privacy/audio-saving)
+
 Control whether call audio recordings are retained.
+
+#### [Conversation History Redaction](/docs/eleven-agents/customization/privacy/conversation-history-redaction)
 
 Automatically redact sensitive entities from stored conversation history.
 
@@ -36,9 +42,15 @@ For detailed instructions, see our [Conversation History Redaction](/docs/eleven
 
 ## Recommended Privacy Configurations
 
+#### Maximum Privacy
+
 Disable audio saving and set retention to 0 days for immediate deletion of data.
 
+#### Balanced Privacy
+
 Enable audio saving for critical interactions while setting a moderate retention period.
+
+#### Compliance Focus
 
 Enable audio saving and configure retention settings to adhere to regulatory requirements such
 as GDPR and HIPAA. For HIPAA compliance, we recommend enabling audio saving and setting a

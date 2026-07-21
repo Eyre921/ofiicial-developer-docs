@@ -22,7 +22,7 @@ Organization endpoints
 
 ## list\_members
 
-List all members of the organization associated with the authenticated management key. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all members of the organization associated with the authenticated management key. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

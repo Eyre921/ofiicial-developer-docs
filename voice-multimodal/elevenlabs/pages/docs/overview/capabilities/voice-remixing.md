@@ -24,7 +24,11 @@ And here is a remixed version, switching to a San Francisco accent:
 
 The voice remixing model allows you to transform voices you own or Voice Library voices with an infinite notice period by adjusting multiple attributes through natural language prompts and customizable settings.
 
+#### [Developers](/docs/eleven-api/guides/how-to/voices/remix-a-voice)
+
 Integrate voice remixing into your application.
+
+#### [API reference](/docs/api-reference/text-to-voice/remix)
 
 Full API reference for the Voice Remixing endpoint.
 

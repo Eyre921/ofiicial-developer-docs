@@ -57,9 +57,13 @@ Users can now accept invitations to multiple workspaces, allowing you to collabo
 
 ## FAQ
 
+#### How do I create a workspace?
+
 ### Creating a workspace
 
 Multi seat workspaces are automatically enabled on all accounts with Scale, Business and Enterprise subscriptions. On the Scale and Business plans, the account owner will be the workspace admin by default. They will have the power to add more team members as well as nominate others to be an admin. When setting up your Enterprise account, you'll be asked to nominate a workspace admin.
+
+#### How do I add a team member to a workspace?
 
 ### Adding a team member to a workspace
 
@@ -79,6 +83,8 @@ Enterprise customers can enable user auto-provisioning via the Security & SSO ta
 
 When this feature is active, you can select which of your verified domains will trigger automatic enrollment. New users with an email address from an enabled domain will automatically join your workspace and occupy a seat.
 
+#### What roles can I assign members?
+
 ### Roles and Seats
 
 **Admin Role**: Admins have enhanced permissions including the ability to add/remove teammates, manage permissions, and manage your workspace subscription. Admins always occupy a [Full Seat](/docs/overview/administration/workspaces/members#full-seats).
@@ -90,17 +96,23 @@ When this feature is active, you can select which of your verified domains will 
 
 Learn more about [managing members and seat types](/docs/overview/administration/workspaces/members).
 
+#### How do I manage billing?
+
 ### Managing Billing
 
 Only admins can manage billing.
 
 To manage your billing, select your profile icon in the top right corner of the dashboard and choose **Subscription**. From there, you'll be able to update your payment information and access past invoices.
 
+#### How do I manage Service Accounts / API keys?
+
 ### Managing Service Accounts
 
 To manage Service Accounts, select your profile icon in the top right corner of the dashboard and choose **Workspace settings**. Navigate to the **Service Accounts** tab and you'll be able to create / delete service accounts as well as issue new API keys for those service accounts.
 
 "Workspace API keys" were formerly a type of Service Account with a single API key.
+
+#### Who is the workspace owner?
 
 ### Managing the workspace owner
 

@@ -69,37 +69,59 @@ Eleven Music is available today on the ElevenLabs website. The Music API is avai
 
 Created in collaboration with labels, publishers, and artists, Eleven Music is cleared for nearly all commercial uses, from film and television to podcasts and social media videos, and from advertisements to gaming. For more information on supported usage across our different plans, [see our music terms](https://elevenlabs.io/music-terms).
 
+#### [Music](/docs/eleven-creative/products/music)
+
 Step-by-step guide for using Eleven Music on the ElevenCreative Platform.
+
+#### [Developers](/docs/eleven-api/guides/cookbooks/music)
 
 Step-by-step guide for using Eleven Music with the API.
 
+#### [Prompting guide](/docs/overview/capabilities/music/best-practices)
+
 Learn how to use Eleven Music with natural language prompts.
+
+#### [Music Finetunes](/docs/eleven-creative/products/music/finetunes)
 
 Learn how to train a custom music model on your own audio.
 
 ## Key facts
+
+#### What is Music v2?
 
 Music v2 is the next generation of ElevenLabs' AI music model, with improved prompt adherence,
 composition, prompt understanding, and multilingual output over Music v1. New capabilities
 include long-form section-by-section composition, mid-track genre transitions, fast rap and
 complex vocal delivery, improved inpainting, and sound effects embedded inside tracks.
 
+#### Is Music v1 still available?
+
 Music v1 will remain available during a transition period. Music v2 is the new default model in
 the UI. For API generations, Music v1 will remain the default model for transition period. After
 this, Music v2 will be the default in both UI and API. When Music v1 is deprecated, this will be
 with at least a few months' notice.
 
+#### How does inpainting work?
+
 In the UI, select a specific section of a generated song and regenerate just that section
 without affecting the rest of the track. Inpainting quality is improved in v2.
 
+#### What's the maximum duration for generated music?
+
 Generated music has a minimum duration of 3 seconds and a maximum duration of 5 minutes.
+
+#### Is there an API available?
 
 Yes, refer to the [developer quickstart](/docs/eleven-api/guides/cookbooks/music) for more
 information.
+
+#### Can I use Eleven Music for my business?
 
 Yes, Eleven Music is cleared for nearly all commercial uses, from film and television to
 podcasts and social media videos, and from advertisements to gaming. For more information on
 supported usage across our different plans, [see our music
 terms](https://elevenlabs.io/music-terms).
+
+#### What audio formats are supported?
 
 Generated audio is available in MP3 (44.1kHz, 128-192kbps) and WAV formats.

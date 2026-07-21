@@ -150,10 +150,18 @@ blocked turn).
 
 ## Configuration
 
+#### Configure via the dashboard
+
+#### Navigate to agent settings
+
 Open your agent in the ElevenLabs dashboard and navigate to the **Security** tab.
+
+#### Enable guardrails
 
 Toggle on the guardrail categories you want to enable. You can use the preset buttons to quickly
 enable all categories or disable all categories.
+
+#### Configure execution mode and exit strategy (custom and content guardrails)
 
 For each custom or content guardrail, choose **streaming** or **blocking** execution mode.
 **Blocking** suits **text** agents; **streaming** suits **voice** agents. Set **Action on
@@ -163,11 +171,19 @@ only when **blocking** is selected (**retry** is not available in **streaming**)
 <code>{'{{trigger_reason}}'}</code> (the custom prompt or content category that caused the
 block) and <code>{'{{agent_message}}'}</code> in the template.
 
+#### Save configuration
+
 Save your agent configuration. Changes take effect immediately for new conversations.
+
+#### Configure via the CLI
+
+#### Pull the agent configuration
 
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `platform_settings.guardrails`:
 
@@ -198,9 +214,13 @@ Set `platform_settings.guardrails`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Configure via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -279,19 +299,27 @@ the user - it blocks the specific response (or session) that violated the policy
 
 ## Best practices
 
+#### Customer support agents
+
 Use custom guardrails to enforce business-specific policies. Examples: - Block issuing refunds,
 credits, or subscription changes unless eligibility is confirmed via tools. - Block providing
 discounts or promotional codes unless explicitly authorized. - Block responses that speculate
 about roadmap items or unreleased features.
+
+#### Healthcare applications
 
 Use custom guardrails to tightly control medical boundaries. Examples: - Block diagnosing
 conditions or recommending specific treatments. - Block dosage recommendations for medications.
 
 * Block replacing advice from a licensed medical professional.
 
+#### Educational content
+
 Use custom guardrails to control sensitive academic topics. Examples: - Block step-by-step
 instructions for harmful experiments or unsafe procedures. - Block generating answer keys for
 active assessments or exams. - Block content that could facilitate academic dishonesty.
+
+#### Internal enterprise tools
 
 Use custom guardrails to protect company operations and data. Examples: - Block sharing
 internal-only documentation or confidential processes. - Block revealing private APIs, system
@@ -308,11 +336,15 @@ Before deploying, test your guardrail configuration with:
 
 ## Frequently asked questions
 
+#### Do guardrails affect latency?
+
 For custom and content guardrails, **streaming** mode adds no extra latency, but the response
 may start before the guardrail triggers. **Blocking** mode waits for the guardrail before the
 agent responds, typically about **200–500 ms** of delay. **Retry** adds full extra generations
 (and re-evaluations) per attempt, up to three times per blocked turn, which also increases
 usage-based cost.
+
+#### What is the difference between streaming and blocking execution mode?
 
 **Streaming** adds no additional latency, but the agent response may begin before the guardrail
 triggers. **Blocking** waits for the guardrail result before the agent responds (typically
@@ -323,6 +355,8 @@ conversation immediately - at the cost of extra model usage and **additional bil
 retries occur. **Blocking** is recommended for **text** agents; **streaming** is recommended for
 **voice** agents.
 
+#### Can I disable guardrails entirely?
+
 Yes, but we strongly recommend keeping all guardrails enabled - especially the Focus Guardrail.
 They protect your brand, your users, and your compliance posture, and we recommend them for all
 production applications, including internal tools. In rare cases, you may want to disable a
@@ -331,11 +365,17 @@ applications may involve topics that the Content Guardrail would otherwise flag,
 customized system prompt may not work properly with the Focus Guardrail enabled. Each guardrail
 can be individually toggled on or off.
 
+#### Can users appeal guardrail decisions?
+
 Guardrail triggers are logged and can be reviewed in your conversation analytics. If you
 identify false positives, adjust your guardrail prompts. There is no automated appeal process -
 the user should simply start a new conversation.
 
+#### How do I know which guardrail triggered?
+
 Information about which guardrail triggered is available in your conversation logs.
+
+#### Should I use both Guardrails and System Prompt Hardening?
 
 Yes. They serve complementary purposes. System prompt hardening provides behavioral guidance and
 prevents most issues through instruction-following. Platform guardrails provide independent

@@ -29,6 +29,8 @@ Requests authenticate with a workspace API key. The user or service account asso
 
 Audit logs are returned by [`GET /v1/workspace/audit-logs`](/docs/api-reference/workspace/audit-logs/list). See the API reference for the full list of query parameters and pagination details.
 
+#### Python
+
 ```python
 from dotenv import load_dotenv
 import os
@@ -42,6 +44,8 @@ page = elevenlabs.workspace.audit_logs.list(limit=50)
 for entry in page.entries:
     print(entry.time_dt, entry.class_name, entry.activity_name)
 ```
+
+#### TypeScript
 
 ```typescript
 import 'dotenv/config';

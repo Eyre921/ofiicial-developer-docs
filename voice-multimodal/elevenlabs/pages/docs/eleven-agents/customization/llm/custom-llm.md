@@ -59,6 +59,8 @@ To bring a custom LLM server, set up a compatible server endpoint using OpenAI's
 
 Both endpoints must return responses in SSE (Server-Sent Events) format with `Content-Type: text/event-stream`.
 
+#### Chat Completions API
+
 The Chat Completions API uses the `/v1/chat/completions` endpoint.
 
 Each chunk must be formatted as `data: {json}\n\n` and the stream must end with `data: [DONE]\n\n`.
@@ -124,6 +126,8 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8013)
 ```
+
+#### Responses API
 
 The Responses API uses the `/v1/responses` endpoint.
 
@@ -406,6 +410,8 @@ For more information on system tools, please see [our guide](/docs/eleven-agents
 
 ### Available system tools
 
+#### End call
+
 **Purpose**: Automatically terminate conversations when appropriate conditions are met.
 
 **Trigger conditions**: The LLM should call this tool when:
@@ -434,6 +440,8 @@ For more information on system tools, please see [our guide](/docs/eleven-agents
 **Implementation**: Configure as a system tool in your agent settings. The LLM will receive detailed instructions about when to call this function.
 
 Learn more: [End call tool](/docs/eleven-agents/customization/tools/system-tools/end-call)
+
+#### Language detection
 
 **Purpose**: Automatically switch to the user's detected language during conversations.
 
@@ -464,6 +472,8 @@ Learn more: [End call tool](/docs/eleven-agents/customization/tools/system-tools
 
 Learn more: [Language detection tool](/docs/eleven-agents/customization/tools/system-tools/language-detection)
 
+#### Agent transfer
+
 **Purpose**: Transfer conversations between specialized AI agents based on user needs.
 
 **Trigger conditions**: The LLM should call this tool when:
@@ -492,6 +502,8 @@ Learn more: [Language detection tool](/docs/eleven-agents/customization/tools/sy
 **Implementation**: Define transfer rules mapping conditions to specific agent IDs. Configure which agents the current agent can transfer to. Agents are referenced by zero-indexed numbers in the transfer configuration.
 
 Learn more: [Agent transfer tool](/docs/eleven-agents/customization/tools/system-tools/agent-transfer)
+
+#### Transfer to human
 
 **Purpose**: Seamlessly hand off conversations to human operators when AI assistance is insufficient.
 
@@ -525,6 +537,8 @@ Learn more: [Agent transfer tool](/docs/eleven-agents/customization/tools/system
 
 Learn more: [Transfer to human tool](/docs/eleven-agents/customization/tools/system-tools/transfer-to-number)
 
+#### Skip turn
+
 **Purpose**: Allow the agent to pause and wait for user input without speaking.
 
 **Trigger conditions**: The LLM should call this tool when:
@@ -552,6 +566,8 @@ Learn more: [Transfer to human tool](/docs/eleven-agents/customization/tools/sys
 **Implementation**: No additional configuration needed. The tool simply signals the agent to remain silent until the user speaks again.
 
 Learn more: [Skip turn tool](/docs/eleven-agents/customization/tools/system-tools/skip-turn)
+
+#### Voicemail detection
 
 **Parameters**:
 
@@ -660,7 +676,13 @@ proper function call responses in OpenAI format.
 
 # Additional Features
 
+#### Custom LLM Parameters
+
 You may pass additional parameters to your custom LLM implementation.
+
+#### Python
+
+#### Define the Extra Parameters
 
 Create an object containing your custom parameters:
 
@@ -677,6 +699,8 @@ config = ConversationConfig(
     extra_body=extra_body_for_convai,
 )
 ```
+
+#### Update the LLM Implementation
 
 Modify your custom LLM code to handle the additional parameters:
 

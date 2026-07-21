@@ -649,33 +649,49 @@ How you format your prompt impacts how effectively the language model interprets
 
 ## Frequently asked questions
 
+#### How do I maintain consistency across multiple agents?
+
 Create shared prompt templates for common sections like character normalization, error handling,
 and guardrails. Store these in a central repository and reference them across specialist agents.
 Use the orchestrator pattern to ensure consistent routing logic and handoff procedures.
+
+#### What's the minimum viable prompt for production?
 
 At minimum, include: (1) Personality/role definition, (2) Primary goal, (3) Core guardrails, and
 (4) Tool descriptions if tools are used. Even simple agents benefit from explicit section
 structure and error handling instructions.
 
+#### How do I handle tool deprecation without breaking agents?
+
 When deprecating a tool, add a new tool first, then update the prompt to prefer the new tool while
 keeping the old one as a fallback. Monitor usage, then remove the old tool once usage drops to
 zero. Always include error handling so agents can recover if a deprecated tool is called.
+
+#### Should I use different prompts for different LLMs?
 
 Generally, prompts structured with the principles in this guide work across models. However,
 model-specific tuning can improve performance—particularly for tool-calling format and reasoning
 steps. Test your prompt with multiple models and adjust if needed.
 
+#### How long should my system prompt be?
+
 No universal limit exists, but prompts over 2000 tokens increase latency and cost. Focus on
 conciseness: every line should serve a clear purpose. If your prompt exceeds 2000 tokens, consider
 splitting into multiple specialized agents or extracting reference material into a knowledge base.
+
+#### How do I balance consistency with adaptability?
 
 Define core personality traits, goals, and guardrails firmly while allowing flexibility in tone
 and verbosity based on user communication style. Use conditional instructions: "If the user is
 frustrated, acknowledge their concerns before proceeding."
 
+#### Can I update prompts after deployment?
+
 Yes. System prompts can be modified at any time to adjust behavior. This is particularly useful
 for addressing emerging issues or refining capabilities as you learn from user interactions.
 Always test changes in a staging environment before deploying to production.
+
+#### How do I prevent agents from hallucinating when tools fail?
 
 Include explicit error handling instructions for every tool. Emphasize "never guess or make up
 information" in the guardrails section. Repeat this instruction in tool-specific error handling

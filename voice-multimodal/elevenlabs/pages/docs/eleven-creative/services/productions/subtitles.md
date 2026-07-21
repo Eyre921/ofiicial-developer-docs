@@ -37,10 +37,14 @@ optional for subtitles.
 
 ## How it works
 
+#### Order subtitles and captions
+
 The easiest way to order new subtitles from Productions is from the
 [Productions](https://elevenlabs.io/app/productions) page in your ElevenLabs account.
 
 ![Productions Home Page](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png)
+
+#### Export subtitles and captions
 
 You will receive an email notification when your subtitles are ready and see them marked as
 'Done' on your Productions page. Export your completed subtitles in SRT format.
@@ -55,8 +59,30 @@ We aim to deliver all subtitles and captions **within 48-72 hours.** If you are 
 
 ## FAQ
 
-We support SRT format for subtitle exports.
+<tbody>
+  <tr>
+    <td>
+      #### What file formats do you support for subtitles?
 
-You can leave feedback on a completed subtitle project by clicking the three dots (⋯) next to your deliverable and selecting *Feedback*.
+      We support SRT format for subtitle exports.
+    </td>
+  </tr>
 
-No. You can export completed subtitles and make changes off platform. We plan to add support for this soon.
+  <tr>
+    <td>
+      #### What if I'm not happy with the result?
+
+      You can leave feedback on a completed subtitle project by clicking the three dots (⋯) next
+      to your deliverable and selecting *Feedback*.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I make changes once I receive the final version?
+
+      No. You can export completed subtitles and make changes off platform. We plan to add
+      support for this soon.
+    </td>
+  </tr>
+</tbody>

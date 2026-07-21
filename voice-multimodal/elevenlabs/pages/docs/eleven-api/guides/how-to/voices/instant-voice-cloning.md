@@ -17,6 +17,8 @@ For an in-depth explanation of how IVC and PVC work under the hood and when to c
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
 
+#### Make the API request
+
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
 ```python maxLines=0
@@ -64,6 +66,8 @@ const voice = await elevenlabs.voices.ivc.create({
 console.log(voice.voiceId);
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -76,6 +80,10 @@ You should see the voice ID printed to the console.
 
 ## Next steps
 
+#### [Professional voice cloning](/docs/eleven-api/guides/how-to/voices/professional-voice-cloning)
+
 Create a higher-quality clone by fine-tuning a model on your voice samples.
+
+#### [Voice cloning: how it works](/docs/eleven-api/concepts/voice-cloning)
 
 Understand the technical differences between IVC and PVC and when to choose each.

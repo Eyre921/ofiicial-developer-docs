@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1496 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1500 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -27,6 +27,7 @@
 - `api-reference/auth-service-v2/list-oauth-providers` — [List Oauth Providers](pages/api-reference/auth-service-v2/list-oauth-providers.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/list-oauth-providers)
 - `api-reference/auth-service-v2/list-oauth-tokens-for-user` — [List Oauth Tokens For User](pages/api-reference/auth-service-v2/list-oauth-tokens-for-user.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/list-oauth-tokens-for-user)
 - `api-reference/auth-service-v2/list-platform-oauth-providers` — [List Platform Oauth Providers](pages/api-reference/auth-service-v2/list-platform-oauth-providers.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/list-platform-oauth-providers)
+- `api-reference/auth-service-v2/list-token-events-for-user` — [List Token Events For User](pages/api-reference/auth-service-v2/list-token-events-for-user.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/list-token-events-for-user)
 - `api-reference/auth-service-v2/oauth-callback` — [Oauth Callback](pages/api-reference/auth-service-v2/oauth-callback.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/oauth-callback)
 - `api-reference/auth-service-v2/oauth-callback-get` — [Oauth Callback Get](pages/api-reference/auth-service-v2/oauth-callback-get.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/oauth-callback-get)
 - `api-reference/auth-service-v2/oauth-setup-callback` — [Oauth Setup Callback](pages/api-reference/auth-service-v2/oauth-setup-callback.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/oauth-setup-callback)
@@ -183,6 +184,7 @@
 - `langsmith/configure-ttl` — [How to add TTLs to your application](pages/langsmith/configure-ttl.md) · [原文](https://docs.langchain.com/langsmith/configure-ttl)
 - `langsmith/context-engineering-concepts` — [Context engineering concepts](pages/langsmith/context-engineering-concepts.md) · [原文](https://docs.langchain.com/langsmith/context-engineering-concepts)
 - `langsmith/context-hub` — [Context Hub](pages/langsmith/context-hub.md) · [原文](https://docs.langchain.com/langsmith/context-hub)
+- `langsmith/context-hub-webhooks` — [Configure Context Hub commit webhooks](pages/langsmith/context-hub-webhooks.md) · [原文](https://docs.langchain.com/langsmith/context-hub-webhooks)
 - `langsmith/control-plane` — [LangSmith control plane](pages/langsmith/control-plane.md) · [原文](https://docs.langchain.com/langsmith/control-plane)
 - `langsmith/cost-tracking` — [Cost tracking](pages/langsmith/cost-tracking.md) · [原文](https://docs.langchain.com/langsmith/cost-tracking)
 - `langsmith/create-a-prompt` — [Create a prompt](pages/langsmith/create-a-prompt.md) · [原文](https://docs.langchain.com/langsmith/create-a-prompt)
@@ -1120,6 +1122,7 @@
 - `oss/javascript/deepagents/code/config-file` — [Config file](pages/oss/javascript/deepagents/code/config-file.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/config-file)
 - `oss/javascript/deepagents/code/configuration` — [Configuration](pages/oss/javascript/deepagents/code/configuration.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/configuration)
 - `oss/javascript/deepagents/code/credentials` — [Provider credentials](pages/oss/javascript/deepagents/code/credentials.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/credentials)
+- `oss/javascript/deepagents/code/goals-and-rubrics` — [Goals and rubrics](pages/oss/javascript/deepagents/code/goals-and-rubrics.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/goals-and-rubrics)
 - `oss/javascript/deepagents/code/hooks` — [Hooks](pages/oss/javascript/deepagents/code/hooks.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/hooks)
 - `oss/javascript/deepagents/code/mcp-tools` — [MCP tools](pages/oss/javascript/deepagents/code/mcp-tools.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/mcp-tools)
 - `oss/javascript/deepagents/code/memory-and-skills` — [Memory and Skills](pages/oss/javascript/deepagents/code/memory-and-skills.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/memory-and-skills)
@@ -1330,6 +1333,7 @@
 - `oss/python/deepagents/code/config-file` — [Config file](pages/oss/python/deepagents/code/config-file.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/config-file)
 - `oss/python/deepagents/code/configuration` — [Configuration](pages/oss/python/deepagents/code/configuration.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/configuration)
 - `oss/python/deepagents/code/credentials` — [Provider credentials](pages/oss/python/deepagents/code/credentials.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/credentials)
+- `oss/python/deepagents/code/goals-and-rubrics` — [Goals and rubrics](pages/oss/python/deepagents/code/goals-and-rubrics.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/goals-and-rubrics)
 - `oss/python/deepagents/code/hooks` — [Hooks](pages/oss/python/deepagents/code/hooks.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/hooks)
 - `oss/python/deepagents/code/mcp-tools` — [MCP tools](pages/oss/python/deepagents/code/mcp-tools.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/mcp-tools)
 - `oss/python/deepagents/code/memory-and-skills` — [Memory and Skills](pages/oss/python/deepagents/code/memory-and-skills.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/memory-and-skills)

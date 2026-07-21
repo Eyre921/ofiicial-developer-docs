@@ -25,6 +25,8 @@ In terms of creating a PVC via the API, it contains considerably more steps than
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
 
+#### Create a PVC voice
+
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code to create a PVC voice:
 
 ```python maxLines=0
@@ -69,6 +71,8 @@ const voice = await elevenlabs.voices.pvc.create({
 console.log(voice.voiceId);
 ```
 
+#### Upload audio files
+
 Next we'll upload the audio sample files that will be used to train the PVC. Review the [Tips and suggestions](/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning#tips-and-suggestions) section of the PVC product guide for more information on how to get best results from your audio files.
 
 ```python maxLines=0
@@ -109,6 +113,8 @@ const samples = await elevenlabs.voices.pvc.samples.create(voice.voiceId, {
     files: [fs.createReadStream("/path/to/your/audio/file.mp3")],
 })
 ```
+
+#### Begin speaker separation
 
 This step will attempt to separate the audio files into individual speakers. This is required if you are uploading audio with multiple speakers.
 
@@ -171,6 +177,8 @@ const interval = setInterval(async () => {
     }
 }, 5000);
 ```
+
+#### Retrieve speaker audio
 
 Since the previous step will take some time to complete, the following step should be run in a separate process after the previous step has completed.
 
@@ -243,6 +251,8 @@ if (samples) {
 }
 ```
 
+#### Update samples with speaker IDs
+
 Once speaker separation is complete, you can update the samples to select which speaker you want to use for the PVC.
 
 ```python
@@ -260,6 +270,8 @@ await elevenlabs.voices.pvc.samples.update(voice.voiceId, sample.sampleId, {
 ```
 
 Repeat this process for each sample for with multiple speakers.
+
+#### Verify the PVC
 
 Before training can begin, a verification step is required to ensure you have permission to use the voice. First request the verification CAPTCHA.
 
@@ -295,6 +307,8 @@ await elevenlabs.voices.pvc.verification.captcha.verify(voice.voiceId, {
 })
 ```
 
+#### (Optional) Request manual verification
+
 If you are unable to verify the CAPTCHA, you can request manual verification. Note that this will take longer to process.
 
 This should only be used if the previous verification steps have failed or are not possible, for instance if the voice owner is visually impaired.
@@ -313,6 +327,8 @@ await elevenlabs.voices.pvc.verification.request(voice.voiceId, {
     files: [fs.createReadStream("/path/to/verification/files.txt")],
 });
 ```
+
+#### Train the PVC
 
 Next, begin the training process. This will take some time to complete based on the length and number of samples provided.
 
@@ -365,10 +381,16 @@ const interval = setInterval(async () => {
 }, 5000);
 ```
 
+#### Use the newly created voice
+
 Once the PVC is verified, you can use it in the same way as any other voice. See the [Text to Speech quickstart](/docs/eleven-api/quickstart) for more information on how to use a voice.
 
 ## Next steps
 
+#### [Instant voice cloning](/docs/eleven-api/guides/how-to/voices/instant-voice-cloning)
+
 Create a voice clone from a short audio sample without training.
+
+#### [Voice cloning: how it works](/docs/eleven-api/concepts/voice-cloning)
 
 Understand the technical differences between IVC and PVC and when to choose each.

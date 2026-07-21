@@ -49,6 +49,8 @@ on its configuration in Twilio.
   * A purchased & provisioned Twilio [phone number](https://www.twilio.com/docs/phone-numbers) (for inbound + outbound)
   * OR a [verified caller ID](https://www.twilio.com/docs/voice/make-calls#verify-your-caller-id) in Twilio (for outbound only)
 
+#### Import a Twilio phone number
+
 In the ElevenAgents dashboard, go to the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) tab.
 
 ![ElevenAgents phone numbers page](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7efb681147acd8f04803f84ed7f3289f0e90eb1fb0173e2a825836408cee89d1/assets/images/conversational-ai/phone-numbers-page.png)
@@ -62,7 +64,11 @@ Next, fill in the following details:
 
 You can find your account SID and auth token [**in the Twilio admin console**](https://www.twilio.com/console).
 
+#### ElevenAgents dashboard
+
 ![Phone number configuration](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9501110d58bfeca27cb9983bc44035864504bdc2ed9c78d9decbd04802f64418/assets/images/conversational-ai/phone-numbers-new.png)
+
+#### Twilio admin console
 
 Copy the Twilio SID and Auth Token from the [Twilio admin
 console](https://www.twilio.com/console).
@@ -70,6 +76,8 @@ console](https://www.twilio.com/console).
 ![Phone number details](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/42da512d1cdfb4ca4504c3162fecfed108580d9488236a0cc6a4a1d23a19da14/assets/images/conversational-ai/twilio-settings.png)
 
 ElevenLabs automatically configures the Twilio phone number with the correct settings.
+
+#### Applied settings
 
 ![Twilio phone number configuration](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b11d57a0aa588964bbd0117d2135c55592569a4bf051f00f17aa3ee632833a47/assets/images/conversational-ai/twilio-configuration.png)
 
@@ -79,6 +87,8 @@ ElevenLabs automatically configures the Twilio phone number with the correct set
 * **Outbound Only**: Numbers verified as caller IDs in Twilio
 
 If your number is not found in either category, you'll receive an error asking you to verify it exists in your Twilio account.
+
+#### Assign your agent (Inbound-capable numbers only)
 
 If your phone number supports inbound calls, you can assign an agent to handle incoming calls.
 
@@ -99,9 +109,13 @@ call button will be disabled for numbers that don't support outbound calling.
 
 Your imported Twilio phone number can also be used to initiate outbound calls where your agent calls a specified phone number.
 
+#### Initiate an outbound call
+
 From the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) tab, locate your imported Twilio number and click the **Outbound call** button.
 
 ![Outbound call button](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f/assets/images/conversational-ai/outbound-button.png)
+
+#### Configure the call
 
 In the Outbound Call modal:
 

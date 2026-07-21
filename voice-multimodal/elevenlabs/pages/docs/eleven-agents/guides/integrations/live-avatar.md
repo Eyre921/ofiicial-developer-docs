@@ -54,6 +54,8 @@ set in Voice settings > TTS output formats, and Advanced > User input audio form
 
 ## Setup
 
+#### Obtain your ElevenLabs credentials
+
 You need two items from your ElevenLabs account:
 
 1. **Agent ID**: Navigate to [Agents Platform > Agents](https://elevenlabs.io/app/agents/agents) and copy the ID of the agent you want to use
@@ -61,6 +63,8 @@ You need two items from your ElevenLabs account:
 2. **API Key**: Go to [Settings > API Keys](https://elevenlabs.io/app/settings/api-keys) and generate a new API key (or use an existing one)
 
 The API key needs to have `convai_read`, `user_read`, and `voices_read` permissions.
+
+#### Register your ElevenLabs API key with LiveAvatar
 
 LiveAvatar requires your ElevenLabs API key to be registered through their secrets endpoint. This registration encrypts your key using Amazon KMS and returns a `secret_id` for use in sessions.
 
@@ -78,6 +82,8 @@ curl -X POST "https://api.liveavatar.com/v1/secrets" \
 ```
 
 The response contains your `secret_id`. Store this `secret_id` for use when starting sessions.
+
+#### Start a LiveAvatar session
 
 When starting a LiveAvatar session, use LITE mode and include your ElevenAgents configuration:
 

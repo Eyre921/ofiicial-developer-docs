@@ -61,6 +61,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
 | Google            | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
 | LiquidAI          | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
+| Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | \$0.00                        | -                                    | \$0.00                         | -            | -                | -                  |
 
 **Chat model examples**
 

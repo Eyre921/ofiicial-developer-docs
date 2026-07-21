@@ -16,6 +16,8 @@ Connect your ElevenLabs AI agents with Salesforce CRM to access customer data, m
 
 This integration uses **Salesforce OAuth 2.0 Client Credentials** for authentication. You will need to create an External Client App in Salesforce.
 
+#### Create an External Client App
+
 1. Log into your Salesforce org as an administrator
 2. Go to **Setup** > **External Client App Manager**
 3. Click **New External Client App**
@@ -32,6 +34,8 @@ This integration uses **Salesforce OAuth 2.0 Client Credentials** for authentica
 7. On the app page, open the **Settings** tab, go to **OAuth Settings**, and click **Consumer Key and Secret**
 8. Copy the **Consumer Key** and **Consumer Secret** — you will need these for authentication
 
+#### Configure OAuth Client Credentials flow
+
 The Client Credentials Flow is recommended for server-to-server integrations where no user
 interaction is required. Ensure your Salesforce admin has enabled this flow.
 
@@ -42,6 +46,8 @@ interaction is required. Ensure your Salesforce admin has enabled this flow.
 5. Click **Save**
 
 The **Run As** user determines the permissions for all API calls. Choose a user with a System Administrator profile or a custom profile that has API access and permission to the objects your agent needs (Contact, Lead, Account, etc.). The **API Enabled** permission must be checked on the user record.
+
+#### Find your Salesforce domain
 
 Your Salesforce domain is required for API calls.
 
@@ -68,6 +74,8 @@ Go to **Setup** > **Domain Management** > **My Domain**. Your domain will be sho
 
 Use the full domain without a trailing slash.
 
+#### Connect in ElevenLabs
+
 In the ElevenLabs integration setup, enter your Salesforce **instance hostname** (e.g., `acme.my.salesforce.com`), **Client ID** (Consumer Key), and **Client Secret** (Consumer Secret).
 
 ## Demo video
@@ -77,13 +85,25 @@ are configured automatically — no manual webhook setup is needed.
 
 ## How it works
 
+#### High-level overview
+
+#### Initial customer inquiry
+
 The agent gathers customer information and asks relevant questions to identify their business requirements and current challenges.
+
+#### Customer data lookup
 
 The agent checks for existing records using `salesforce_search_records` to find contacts, accounts, or leads. It retrieves full details with `salesforce_get_record` and uses this information to personalize the conversation.
 
+#### Lead qualification
+
 If the customer is new, the agent collects contact information, assesses their business needs, and determines the appropriate sales process or routing.
 
+#### Record creation
+
 The agent creates the appropriate record (lead, contact, or opportunity) using `salesforce_create_record`, confirms creation with the customer, and explains next steps.
+
+#### Detailed system prompt
 
 ```text
 # Personality
@@ -155,7 +175,11 @@ Three webhook tools are available: `salesforce_search_records`, `salesforce_get_
 
 ### Authorization - Workplace OAuth2 connection
 
+#### Navigate to Workplace Auth Connections
+
 In your ElevenLabs dashboard, go to **Agents** > **Workplace Auth Connections** and click **Add Auth**.
+
+#### Configure Salesforce connection
 
 Fill in the following fields for your Salesforce integration:
 
@@ -196,7 +220,11 @@ Fill in the following fields for your Salesforce integration:
 
 {' '}
 
+#### Create auth connection
+
 Click **Create auth connection** to add your configuration.
+
+#### Use in tool configurations
 
 Once the connection is successful, save it and reference it in your webhook tool configurations in the **Authentication** section.
 
@@ -206,6 +234,8 @@ tokens manually.
 ### Webhook tool configurations
 
 Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** section. Use the tabs below to review each tool's configuration.
+
+#### salesforce\_search\_records
 
 **Name:** salesforce\_search\_records
 **Description:** Searches for existing records in Salesforce using SOQL queries. Always returns human-readable information including Names, not just IDs.
@@ -257,6 +287,8 @@ Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** 
   }
 }
 ```
+
+#### salesforce\_get\_record
 
 **Name:** salesforce\_get\_record
 **Description:** Retrieves detailed information about a specific Salesforce record.
@@ -318,6 +350,8 @@ Add a Workplace Auth Connection (OAuth2) to each tool in the **Authentication** 
   }
 }
 ```
+
+#### salesforce\_create\_record
 
 **Name:** salesforce\_create\_record
 **Description:** Creates a new record in Salesforce.

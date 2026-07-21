@@ -124,6 +124,8 @@ Enhanced metrics add per-instance and per-GPU utilization visibility, the same w
 
 Enhanced metrics are enabled with `MetricsConfig` on the endpoint configuration:
 
+#### AWS CLI
+
 ```bash
 aws sagemaker create-endpoint-config \
   --endpoint-config-name YOUR_CONFIG_NAME \
@@ -131,6 +133,8 @@ aws sagemaker create-endpoint-config \
   --metrics-config '{"EnableEnhancedMetrics": true, "MetricPublishFrequencyInSeconds": 10}' \
   --region YOUR_AWS_REGION
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3
@@ -195,11 +199,19 @@ This per-instance separation lets you isolate issues to a specific instance when
 
 ### View logs in the console
 
+#### Open the SageMaker console
+
 Navigate to the [Amazon SageMaker AI console](https://console.aws.amazon.com/sagemaker/home) and select **Endpoints** from the left menu.
+
+#### Select your endpoint
 
 Click the endpoint name to open its details page.
 
+#### Open CloudWatch Logs
+
 Under **Monitor**, click the **View logs** link. This opens the CloudWatch Log Group for the endpoint.
+
+#### Select a Log Stream
 
 Choose a Log Stream corresponding to the instance you want to inspect. Each stream contains the full Deepgram container output for that instance.
 
@@ -255,6 +267,8 @@ The following alarms cover the most critical failure and capacity scenarios for 
 
 Alert when concurrent streams approach the capacity limit of your instances. Set the threshold to approximately 80–90% of the maximum concurrent streams your instance type can handle at acceptable latency.
 
+#### AWS CLI
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name deepgram-high-concurrency \
@@ -270,6 +284,8 @@ aws cloudwatch put-metric-alarm \
   --alarm-actions arn:aws:sns:YOUR_REGION:YOUR_ACCOUNT_ID:YOUR_SNS_TOPIC \
   --region YOUR_AWS_REGION
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3
@@ -301,6 +317,8 @@ Adjust `Threshold` based on your benchmarking results. For example, if a `g5.2xl
 
 Alert when the endpoint returns errors. A sustained error rate indicates a container or model issue that needs investigation.
 
+#### AWS CLI
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name deepgram-invocation-errors \
@@ -316,6 +334,8 @@ aws cloudwatch put-metric-alarm \
   --alarm-actions arn:aws:sns:YOUR_REGION:YOUR_ACCOUNT_ID:YOUR_SNS_TOPIC \
   --region YOUR_AWS_REGION
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3
@@ -345,6 +365,8 @@ cloudwatch.put_metric_alarm(
 
 Alert when the time to first response on new streaming sessions degrades. `FirstChunkLatency` supports percentiles — alarm on `p99` so a handful of slow session starts is caught without being averaged away. Baseline your endpoint first and set the threshold above the steady-state `p99` (in microseconds).
 
+#### AWS CLI
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name deepgram-streaming-first-chunk-latency \
@@ -361,6 +383,8 @@ aws cloudwatch put-metric-alarm \
   --alarm-actions arn:aws:sns:YOUR_REGION:YOUR_ACCOUNT_ID:YOUR_SNS_TOPIC \
   --region YOUR_AWS_REGION
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3
@@ -393,6 +417,8 @@ cloudwatch.put_metric_alarm(
 
 GPU utilization is not a primary metric for Deepgram workloads — `ConcurrentRequestsPerModel` is a more direct indicator of load. However, GPU utilization is still useful for gauging the general level of load that a particular GPU instance is under and for detecting hardware-level saturation.
 
+#### AWS CLI
+
 ```bash
 aws cloudwatch put-metric-alarm \
   --alarm-name deepgram-high-gpu \
@@ -408,6 +434,8 @@ aws cloudwatch put-metric-alarm \
   --alarm-actions arn:aws:sns:YOUR_REGION:YOUR_ACCOUNT_ID:YOUR_SNS_TOPIC \
   --region YOUR_AWS_REGION
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3

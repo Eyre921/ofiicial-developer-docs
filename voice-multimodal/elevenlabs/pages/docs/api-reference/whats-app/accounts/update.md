@@ -87,6 +87,10 @@ components:
           type:
             - boolean
             - 'null'
+        enable_typing_indicator:
+          type:
+            - boolean
+            - 'null'
       title: UpdateWhatsAppAccountRequest
     ValidationErrorLocItems:
       oneOf:

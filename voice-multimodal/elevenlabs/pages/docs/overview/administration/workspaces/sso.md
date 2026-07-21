@@ -19,13 +19,21 @@ Single Sign-On (SSO) allows your team to log in to ElevenLabs by using your exis
 
 ## Guide
 
+#### Access your SSO settings
+
 Click on your profile icon located in the top right corner of the dashboard, select **Workspace settings**, and then navigate to the **Security & SSO** tab.
 
+#### Choose identity providers
+
 You can choose from a variety of pre-configured identity providers, including Google, Apple, GitHub, etc. Custom organization SSO providers will only appear in this list after they have been configured, as shown in the "SSO Provider" section.
+
+#### Verify your email domain
 
 Next, you need to verify your email domain for authentication. This lets ElevenLabs know that you own the domain you are configuring for SSO. This is a security measure to prevent unauthorized access to your Workspace.
 
 Click the **Verify domain** button and enter the domain name you want to verify. After completing this step, click on the domain pending verification. You will be prompted to add a DNS TXT record to your domain's DNS settings. Once the DNS record has been added, click on the **Verify** button.
+
+#### Configure SSO
 
 If you want to configure your own SSO provider, select the SSO provider dropdown to select between OIDC (OpenID Connect) and SAML (Security Assertion Markup Language).
 
@@ -41,25 +49,37 @@ Configuring a new SSO provider will log out all Workspace members currently logg
 
 SCIM is available for Enterprise workspaces, configurable by Workspace admins.
 
+#### [SCIM](/docs/overview/administration/workspaces/sso/scim)
+
 SCIM (System for Cross-domain Identity Management) allows your Identity Provider (IdP) to
 automatically manage users and groups in your ElevenLabs workspace.
 
 ## FAQ
 
+#### Microsoft Entra / Azure AD - SAML
+
 For Microsoft Entra-specific setup steps, field mappings, and troubleshooting notes, see
 [Microsoft Entra SAML SSO](/docs/overview/administration/workspaces/sso/microsoft-entra-saml).
 
+#### Okta - SAML
+
 For Okta-specific setup steps, field mappings, and troubleshooting notes, see
 [Okta SAML SSO](/docs/overview/administration/workspaces/sso/okta-saml).
+
+#### OneLogin - SAML
 
 **What to fill in on the OneLogin side**:
 
 * **Recipient**: Use `https://elevenlabs.io/__/auth/handler`
   * For [data residency](/docs/overview/administration/data-residency) environments, use `https://<region>.residency.elevenlabs.io/__/auth/handler`, replacing `<region>` with your region code.
 
+#### OIDC - Common Errors
+
 Please ensure that `email` and `email_verified` are included in the custom attributes returned in the OIDC response. Without these, the following errors may be hit:
 
 * *No email address was received*: Fixed by adding **email** to the response.
 * *Account exists with different credentials*: Fixed by adding **email\_verified** to the response
 
-- One known error: Inside the `<saml:Subject>` field of the SAML response, make sure `<saml:NameID>` is set to the email address of the user.
+#### I am getting the error 'Unable to login with saml.workspace...'
+
+* One known error: Inside the `<saml:Subject>` field of the SAML response, make sure `<saml:NameID>` is set to the email address of the user.

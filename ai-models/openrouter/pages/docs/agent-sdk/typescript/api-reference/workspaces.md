@@ -34,7 +34,7 @@ Workspaces endpoints
 
 ## list
 
-List all workspaces for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+List all workspaces for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -95,14 +95,14 @@ run();
 
 | Parameter              | Type                                                                                                     | Required             | Description                                                                                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListWorkspacesRequest](/agent-sdk/typescript/api-reference/operations/listworkspacesrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListWorkspacesRequest](/docs/agent-sdk/typescript/api-reference/operations/listworkspacesrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                           | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                  | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListWorkspacesResponse](/agent-sdk/typescript/api-reference/operations/listworkspacesresponse)>**
+**Promise\<[operations.ListWorkspacesResponse](/docs/agent-sdk/typescript/api-reference/operations/listworkspacesresponse)>**
 
 ### Errors
 
@@ -114,7 +114,7 @@ run();
 
 ## create
 
-Create a new workspace for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+Create a new workspace for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -189,14 +189,14 @@ run();
 
 | Parameter              | Type                                                                                                       | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateWorkspaceRequest](/agent-sdk/typescript/api-reference/operations/createworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.CreateWorkspaceRequest](/docs/agent-sdk/typescript/api-reference/operations/createworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                             | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                    | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.CreateWorkspaceResponse](/agent-sdk/typescript/api-reference/models/createworkspaceresponse)>**
+**Promise\<[models.CreateWorkspaceResponse](/docs/agent-sdk/typescript/api-reference/models/createworkspaceresponse)>**
 
 ### Errors
 
@@ -210,7 +210,7 @@ run();
 
 ## delete
 
-Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/guides/overview/auth/management-api-keys) required.
+Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -271,14 +271,14 @@ run();
 
 | Parameter              | Type                                                                                                       | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteWorkspaceRequest](/agent-sdk/typescript/api-reference/operations/deleteworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.DeleteWorkspaceRequest](/docs/agent-sdk/typescript/api-reference/operations/deleteworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                             | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                    | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.DeleteWorkspaceResponse](/agent-sdk/typescript/api-reference/models/deleteworkspaceresponse)>**
+**Promise\<[models.DeleteWorkspaceResponse](/docs/agent-sdk/typescript/api-reference/models/deleteworkspaceresponse)>**
 
 ### Errors
 
@@ -293,7 +293,7 @@ run();
 
 ## get
 
-Get a single workspace by ID or slug. [Management key](/guides/overview/auth/management-api-keys) required.
+Get a single workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -354,14 +354,14 @@ run();
 
 | Parameter              | Type                                                                                                 | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetWorkspaceRequest](/agent-sdk/typescript/api-reference/operations/getworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.GetWorkspaceRequest](/docs/agent-sdk/typescript/api-reference/operations/getworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                       | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)              | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.GetWorkspaceResponse](/agent-sdk/typescript/api-reference/models/getworkspaceresponse)>**
+**Promise\<[models.GetWorkspaceResponse](/docs/agent-sdk/typescript/api-reference/models/getworkspaceresponse)>**
 
 ### Errors
 
@@ -374,7 +374,7 @@ run();
 
 ## update
 
-Update an existing workspace by ID or slug. [Management key](/guides/overview/auth/management-api-keys) required.
+Update an existing workspace by ID or slug. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -443,14 +443,14 @@ run();
 
 | Parameter              | Type                                                                                                       | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.UpdateWorkspaceRequest](/agent-sdk/typescript/api-reference/operations/updateworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.UpdateWorkspaceRequest](/docs/agent-sdk/typescript/api-reference/operations/updateworkspacerequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                             | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                    | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.UpdateWorkspaceResponse](/agent-sdk/typescript/api-reference/models/updateworkspaceresponse)>**
+**Promise\<[models.UpdateWorkspaceResponse](/docs/agent-sdk/typescript/api-reference/models/updateworkspaceresponse)>**
 
 ### Errors
 
@@ -465,7 +465,7 @@ run();
 
 ## listMembers
 
-List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/guides/overview/auth/management-api-keys) required.
+List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -530,14 +530,14 @@ run();
 
 | Parameter              | Type                                                                                                                 | Required             | Description                                                                                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListWorkspaceMembersRequest](/agent-sdk/typescript/api-reference/operations/listworkspacemembersrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListWorkspaceMembersRequest](/docs/agent-sdk/typescript/api-reference/operations/listworkspacemembersrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                       | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                              | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListWorkspaceMembersResponse](/agent-sdk/typescript/api-reference/operations/listworkspacemembersresponse)>**
+**Promise\<[operations.ListWorkspaceMembersResponse](/docs/agent-sdk/typescript/api-reference/operations/listworkspacemembersresponse)>**
 
 ### Errors
 
@@ -551,7 +551,7 @@ run();
 
 ## bulkAddMembers
 
-Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/guides/overview/auth/management-api-keys) required.
+Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -624,14 +624,14 @@ run();
 
 | Parameter              | Type                                                                                                                       | Required             | Description                                                                                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkAddWorkspaceMembersRequest](/agent-sdk/typescript/api-reference/operations/bulkaddworkspacemembersrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.BulkAddWorkspaceMembersRequest](/docs/agent-sdk/typescript/api-reference/operations/bulkaddworkspacemembersrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                             | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                    | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.BulkAddWorkspaceMembersResponse](/agent-sdk/typescript/api-reference/models/bulkaddworkspacemembersresponse)>**
+**Promise\<[models.BulkAddWorkspaceMembersResponse](/docs/agent-sdk/typescript/api-reference/models/bulkaddworkspacemembersresponse)>**
 
 ### Errors
 
@@ -646,7 +646,7 @@ run();
 
 ## bulkRemoveMembers
 
-Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/guides/overview/auth/management-api-keys) required.
+Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -719,14 +719,14 @@ run();
 
 | Parameter              | Type                                                                                                                             | Required             | Description                                                                                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkRemoveWorkspaceMembersRequest](/agent-sdk/typescript/api-reference/operations/bulkremoveworkspacemembersrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.BulkRemoveWorkspaceMembersRequest](/docs/agent-sdk/typescript/api-reference/operations/bulkremoveworkspacemembersrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                                   | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                          | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.BulkRemoveWorkspaceMembersResponse](/agent-sdk/typescript/api-reference/models/bulkremoveworkspacemembersresponse)>**
+**Promise\<[models.BulkRemoveWorkspaceMembersResponse](/docs/agent-sdk/typescript/api-reference/models/bulkremoveworkspacemembersresponse)>**
 
 ### Errors
 

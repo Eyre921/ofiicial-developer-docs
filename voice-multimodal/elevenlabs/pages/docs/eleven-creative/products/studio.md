@@ -23,13 +23,25 @@ any time in **Project settings**.
 
 ## Guide
 
+#### Select settings
+
+#### Create a new project
+
 Select one of the starting options at the top of the ElevenCreative Studio page.
+
+#### Select settings
 
 Follow the instructions in the pop-up and click **Create**.
 
+#### Enhance your project
+
 Add video, narration, music, and sound effects to your project using our timeline editor.
 
+#### Collaborate with others
+
 Click the **Share** button to share your project and collect feedback from teammates.
+
+#### Export your project
 
 Click the **Export** button to export the project as audio or video.
 
@@ -56,7 +68,11 @@ At the top right of the Studio page, you'll find two buttons to quickly start a 
 
 #### Upload
 
+#### Upload
+
 **Upload** a file to start from existing media. We’ll analyze it and choose the best layout automatically: text or audio uploads open in the audio layout; video files open in the video layout with the timeline and captions available.
+
+#### New blank project
 
 #### Start a project from scratch
 
@@ -70,6 +86,8 @@ The first five options are video templates for tasks like creating faceless vide
 
 ### Video
 
+#### Create faceless video
+
 #### **Create faceless video**
 
 A guided wizard walks you through four steps:
@@ -79,17 +97,25 @@ A guided wizard walks you through four steps:
 3. Add a voiceover — select a voice and configure narration.
 4. Select captions — choose a caption style for your video.
 
+#### Add captions
+
 #### **Add captions**
 
 Add automatic captions to your video. Upload a video file (.mp4, .mov, .avi, .mkv, .webm, .m4v, .flv, .wmv), then select a caption style. Your video will open in the editor with captions ready to customize.
+
+#### Create dub
 
 #### Change the language of your video.
 
 Upload a video file, configure audio and language settings (source language and target language), then select captions. Your video will be dubbed into the chosen language.
 
+#### Add voiceover
+
 #### Add speech to your video.
 
 Upload a video file (.mp4, .mov, .avi, .mkv, .webm, .m4v, .flv, .wmv), add a voiceover with your chosen voice, and optionally select captions. Your video will open in the editor with the voiceover track ready.
+
+#### Video to music
 
 #### Auto-generate music that matches your video.
 
@@ -98,6 +124,8 @@ Upload a video file (.mp4, .mov, .avi, .mkv, .webm, .m4v, .flv, .wmv), provide a
 ### Audio
 
 Clicking the **Generate audio** option opens the **Long-form audio** menu with five options for creating audio content in Studio.
+
+#### Generate a podcast
 
 #### Generate a Podcast
 
@@ -112,15 +140,23 @@ script unchanged, use **New audiobook** or **Start audio project from scratch**.
 
 #### Narrate the article
 
+#### Narrate the article
+
 Turn any webpage or document into spoken audio. You can import a URL or upload a document. Select a default voice for your project and optionally enable **Auto-assign voices** (Alpha) to automatically detect characters and assign matching voices to them. This process can take significant time for longer content. Click **Create project** when ready.
+
+#### Generate a script
 
 #### **Generate a script**
 
 Generate a script from a prompt. Describe the script or story you want to generate, then click **Generate**. Review the script, make edits, and start a new audio project from it.
 
+#### Narrate an audiobook
+
 #### **Narrate an audiobook**
 
 Create a full audiobook from your manuscript. This option takes you to the dedicated **Audiobooks** feature.
+
+#### New empty audio project
 
 ### Start from scratch.
 
@@ -206,11 +242,15 @@ version of your project that includes the updated media.
 
 #### Timeline and tracks
 
+#### Timeline and tracks
+
 ![Studio timeline editing](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9b700138300740db9507fbd4fe4f0ca16cdd917eae6705e84d5764eef2e9aa6c/assets/images/product-guides/studio/studio-timeline-editing.webp)
 
 The timeline gives you a chapter‑wide view of your project so you can see narration, music, SFX, and video at a glance.
 
 You can adjust timing between paragraphs and even individual sentences, trim clip edges, split and duplicate clips to iterate quickly, and zoom or pan to navigate longer chapters. Waveforms help you visualize loudness so you can align levels precisely across tracks.
+
+#### Contextual sidebar
 
 #### Contextual sidebar
 
@@ -227,11 +267,15 @@ For media clips (audio, music, SFX, or video), the panel shows relevant clip pro
 
 #### Chapters sidebar
 
+#### Chapters sidebar
+
 When you create an ElevenCreative Studio project using the **New audio project** option and import a document that includes chapters, chapters will be automatically detected.
 
 To manage chapters in an existing project, click on the **Chapters** tab.
 
 You can add a new chapter using the **+** button. You can also rename and remove chapters using the **Chapter actions** (three dots) button, and drag and drop the chapters to rearrange them.
+
+#### Generate/Regenerate
 
 #### Generate/Regenerate
 
@@ -247,7 +291,11 @@ This action applies to narration and other generated speech. Timeline items like
 
 #### Play
 
+#### Play
+
 You can use the **Play** button in the player at the bottom of the ElevenCreative Studio interface to play audio that has already been generated, or generate audio if a paragraph has not yet been converted. Generating audio will cost credits. If you have already generated audio, then the **Play** button will play the audio that has already generated and you won't be charged any credits. There are three modes when using the **Play** button. **Until end (generate clips ahead)** will play existing audio, or generate new audio for paragraphs that have not yet been generated, from the selected paragraph to the end of the current chapter, generating multiple clips ahead. **Until end (generate one at a time)** will play existing audio or generate new audio from the selected paragraph to the end of the current chapter, but generates only one clip at a time. **Selection** will play or generate audio only for the selected paragraph. When a video track is present, the player also previews video in sync with the playhead. Playing existing audio or video never consumes credits; only generating narration does.
+
+#### Generation history
 
 #### Generation history
 
@@ -259,7 +307,11 @@ If you prefer an earlier version of a paragraph, you can use the **Restore gener
 
 #### Undo and Redo
 
+#### Undo and Redo
+
 If you accidentally make a change, you can use the **Undo** button to restore the previous version, and the **Redo** button to restore the change.
+
+#### Breaks
 
 #### Breaks
 
@@ -269,6 +321,8 @@ For precise timing, prefer the timeline with trimming and sentence‑level contr
 models may reduce or ignore break tags in favor of natural flow.
 
 Breaks affect generated speech delivery only; they don't move or pause other timeline tracks. Use the timeline to create precise pauses across music, SFX, and video.
+
+#### Actor Mode
 
 #### Actor Mode
 
@@ -288,9 +342,13 @@ Actor Mode will replicate all aspects of the audio you provide, including the ac
 
 #### Video track and voiceovers
 
+#### Video track and voiceovers
+
 ![Studio video track](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/0941dee25f9cff9bb94fccb9fb947b18f3335c2465fb51c7f04ebfe63c71b865/assets/images/product-guides/studio/studio-video-track.webp)
 
 Add a **video track** to voice over existing footage or to pair narration with b‑roll. Import a video file or add a blank track, then align the narration to key visual beats on the timeline. When needed, enable **captions** and choose a **template** to match your style.
+
+#### Captions
 
 #### Captions
 
@@ -300,15 +358,21 @@ Convert narration into styled captions for accessibility and engagement. Caption
 
 #### Files
 
+#### Files
+
 Upload or record audio files for your project. You can drag and drop files into the panel, click **Upload file**, or use the **Record** button to capture audio directly. Toggle between **This project** and **Workspace** to browse files. Uploaded audio cannot be published to distribution platforms.
 
 ![Insert audio](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/aa8200aa951210ff95bf59c5e8641ec78b761c5267e7906329065796283c5616/assets/images/product-guides/studio/studio-audio.webp)
 
 #### Music
 
+#### Music
+
 Generate music directly in ElevenCreative Studio and place it on its own track in the timeline. Create new songs from prompts (choose a vibe and length) or import existing tracks. Music clips can be trimmed duplicated and moved to match the narration, and you can adjust volume per clip. When the source is stereo, stereo is preserved.
 
 ![Insert music](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b88b6ddc5576d0f4af3e94cdce222477588909eff93d2afb9513f5a3019e4378/assets/images/product-guides/studio/studio-music.webp)
+
+#### Sound effects
 
 #### Sound effects
 
@@ -325,6 +389,8 @@ ElevenCreative Studio API.
 
 #### Lock paragraph
 
+#### Lock paragraph
+
 ![Lock paragraph Button](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/c3baa6ca96dd301ab1ef394be5d681d799daf690cde0e2dd156578c5162302cb/assets/images/product-guides/studio/studio-lock.webp)
 
 Once you're happy with the performance of a paragraph, you can use the **Lock paragraph** button to prevent any further changes.
@@ -335,11 +401,15 @@ Locked paragraphs are indicated by a lock icon to the left of the paragraph. If 
 
 #### Keyboard shortcuts
 
+#### Keyboard shortcuts
+
 ![Keyboard Shortcuts](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b6cec86ddc69edfe0e5059f7baf9498bfb9a89a463eec1882536b09f342a6564/assets/images/product-guides/studio/studio-keyboard-shortcuts.webp)
 
 There are a range of keyboard shortcuts that can be used in ElevenCreative Studio to speed up your workflow. To see a list of all available keyboard shortcuts, click the **Project options** button, then select **Keyboard shortcuts**.
 
 ## Settings
+
+#### Voices
 
 ### Voices
 
@@ -350,6 +420,8 @@ Not all voices are equal, and a lot depends on the source audio used to create t
 If you’re unhappy with a voice, but you’re happy with the delivery of the narration, you can use our Voice Changer functionality to change the voice, but preserve the narration
 
 [Learn more about voices](/docs/overview/capabilities/voices)
+
+#### Voice settings
 
 ### Voice settings
 
@@ -395,6 +467,8 @@ In general, we recommend keeping this setting at 0 at all times.
 
 This setting boosts the similarity to the original speaker. However, using this setting requires a slightly higher computational load, which in turn increases latency. The differences introduced by this setting are generally rather subtle.
 
+#### Pronunciation dictionaries
+
 ### Pronunciation dictionaries
 
 ![Studio pronunciation dictionaries](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c/assets/images/product-guides/studio/studio-pronunciation-dictionaries.webp)
@@ -411,6 +485,8 @@ You can create a new pronunciation dictionary from your project by creating an e
 
 For more information on pronunciation dictionaries, please see our [prompting best practices guide](/docs/overview/capabilities/text-to-speech/best-practices#pronunciation-dictionaries).
 
+#### Export settings
+
 ### Export settings
 
 Within the **Export** tab under **Project settings** you can add additional metadata such as Title, Author, ISBN and a Description to your project. This information will automatically be added to the downloaded audio files. You can also access previous versions of your project, and enable volume normalization. These settings apply to audio exports; video appearance is controlled by your timeline and caption templates.
@@ -424,11 +500,15 @@ you need a Creator plan or above.
 
 #### Export options
 
+#### Export options
+
 If your project only has one chapter, you will just see the option to export as either MP3 or WAV (audio), or as video when a video track/captions are present.
 
 If your project has multiple chapters, you will have the option to export each chapter individually, or export the full project. If you're exporting the full project, you can either export as a single file, or as a ZIP file containing individual files for each chapter. You can also choose whether to download as MP3 or WAV for audio‑only exports.
 
 For video exports, enable captions and add a video track (or shareable TTS video) before exporting. Video is rendered with your selected caption template.
+
+#### Quality setting
 
 #### Quality setting
 
@@ -441,15 +521,21 @@ If you have an older project, you may have set the quality setting when you crea
 
 #### Downloading
 
+#### Downloading
+
 Once your export is ready, it will be automatically downloaded. For shareable TTS videos, you can also copy a link for quick sharing.
 
 You can access and download all previous exports, of both chapters and projects, by clicking the **Project options** button and selecting **Exports**.
 
 #### Sharing
 
+#### Sharing
+
 From the editor, create a read‑only link so others can play your timeline and review your mix without downloading files. You can revoke access at any time. Commenting is also available, including anonymous comments.
 
 ![Studio share project](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/f2cf13471019a920e4b8483b40fb4a92b6d70f85da6bdfd82a7560287fa20efd/assets/images/product-guides/studio/studio-share-project.webp)
+
+#### Commenting
 
 #### Commenting
 
@@ -461,21 +547,495 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
 ## FAQ
 
-![Studio free regenerations](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/ac7e53c3ac7f58bb0f0d6ff90618779dd80a5a93e6c39237e35d775eb60979a8/assets/images/product-guides/studio/studio-free-regen.webp)
+<tbody>
+  <tr>
+    <td>
+      #### Free regenerations
 
-In ElevenCreative Studio, provided you don't change the text or voice, you can regenerate a selected paragraph or section of text twice for free.
+      ![Studio free regenerations](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/ac7e53c3ac7f58bb0f0d6ff90618779dd80a5a93e6c39237e35d775eb60979a8/assets/images/product-guides/studio/studio-free-regen.webp)
 
-If free regenerations are available for the selected paragraph or text, you will see **Regenerate**. If you hover over the **Regenerate** button, the number of free regenerations remaining will be displayed.
+      In ElevenCreative Studio, provided you don't change the text or voice, you can regenerate a selected paragraph or section of text twice for free.
 
-Once your free regenerations have been used, the button will display **Generate**, and you will be charged for subsequent generations.
+      If free regenerations are available for the selected paragraph or text, you will see **Regenerate**. If you hover over the **Regenerate** button, the number of free regenerations remaining will be displayed.
 
-When using **Export** to generate audio for a full chapter or project, auto-regeneration automatically checks the output for a range of issues including:
+      Once your free regenerations have been used, the button will display **Generate**, and you will be charged for subsequent generations.
+    </td>
+  </tr>
 
-* volume distortions
-* voice similarity
-* mispronunciations
-* missing or additional words
+  <tr>
+    <td>
+      #### Auto-regeneration for bulk conversions
 
-If any issues are detected, the tool will automatically regenerate the audio up to twice, at no extra cost.
+      When using **Export** to generate audio for a full chapter or project, auto-regeneration automatically checks the output for a range of issues including:
 
-This feature may increase the processing time but helps ensure higher quality output for your bulk conversions.
+      * volume distortions
+      * voice similarity
+      * mispronunciations
+      * missing or additional words
+
+      If any issues are detected, the tool will automatically regenerate the audio up to twice, at no extra cost.
+
+      This feature may increase the processing time but helps ensure higher quality output for your bulk conversions.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Studio?
+
+      Studio is our production workflow for creating professional audio and video content. It brings together text, visuals, and sound to help you produce narrations, audiobooks, video voiceovers, and more.
+
+      ### Creating Audio Content
+
+      To generate audio, you can upload a full book, document, or script, or even import an entire webpage via URL. Studio supports a wide range of formats, including:
+
+      * EPUB
+      * PDF
+      * DOCX
+      * TXT
+      * HTML
+      * URL
+
+      Once imported, you can edit and organize text directly in the interface and apply any voice from our Voice Library to bring your content to life. When your project is complete, you can export as either MP3 or WAV.
+
+      ### Creating Video and Voiceover Content
+
+      Studio also allows you to import videos and images to create voiceovers. The timeline includes a video track and caption layer, giving you precise control over timing and synchronization. You can also import music and sound effects on separate tracks for richer productions.
+
+      When your project is ready for review, you can share it using our built-in collaboration tools, which include feedback and commenting features.
+
+      ### Advanced Features
+
+      Studio includes powerful organization and editing tools that make it easy to manage complex projects:
+
+      * Assign different voices and settings to sections or characters.
+      * Regenerate individual paragraphs or words to fine-tune delivery.
+      * Lock sections once you’re satisfied with the result.
+      * Access Generation History to restore and download previous versions.
+      * Adjust playback speed between 0.8× and 2.0× for efficient review.
+
+      These controls make Studio ideal for creating everything from table reads and audio dramas to narrated videos and multimedia productions.
+
+      For a full overview and step-by-step guidance, see our [Studio documentation.](/docs/product-guides/products/studio)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### On what plans can I use Studio?
+
+      Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan. 
+
+      The exception being the <strong>Create a podcast (GenFM)</strong> feature, which requires a paid subscription to access.
+
+      You can find more information about all our subscription plans on our [Pricing page.](https://elevenlabs.io/pricing)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I add chapters to a Studio project?
+
+      When you create a Studio project using the <strong>New audiobook</strong> option and import a document that includes chapters, chapters will be automatically detected.
+
+      To manage chapters in an existing project, go to <strong>Project options</strong> in the top left corner, then select <strong>Manage chapters</strong>. This will open the <strong>Chapters sidebar</strong>.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/43294708987537" alt="" />
+
+      You can add a new chapter using the <strong>+</strong> button. You can also rename and remove chapters using the <strong>Chapter actions</strong> (three dots) button, and drag and drop the chapters to rearrange them.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/43294661341585" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Does it cost credits to regenerate in Studio?
+
+      We offer up to two free regenerations in Studio, provided you haven't changed the text that you're regenerating, or assigned a different voice, or changed the voice settings.
+
+      To regenerate, either click on the paragraph to regenerate the whole paragraph, or select one or more words that you want to regenerate. For the best results, we recommend regenerating a complete phrase or sentence. 
+
+      If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says <strong>Regenerate</strong>, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.  
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41237476632977" alt="" />
+
+      If your selection isn't eligible for a free regeneration, the button will say <strong>Generate</strong>, and you will be charged for the generation.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I create a voiceover for my video using Studio?
+
+      To create a voiceover for a video, you can either:
+
+      * Start a new project using the **New video voiceover** option, which lets you upload a video file, or
+      * Start a blank project using the **New blank project option** > **Video project**.
+
+      You can also add a video to an existing project:
+
+      * To upload a video, use the **Imports** option and either drag and drop your file, or specify the location using the **Upload file** option.
+      * To add a video that you've generated using Image & Video, click **Video** in the sidebar. You'll see your previously generated videos and can import using the **+** button.
+      * You can also generate a video directly in Studio using the Video prompt, which you can access by clicking **Video** in the sidebar.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41121870136209" alt="" />
+
+      You can:
+
+      * **Resize the video view** by dragging the vertical divider between the video and text panes.
+      * **Remove the video** by right-clicking it in the timeline and selecting **Delete**.
+      * **Export your project** as a full video or audio-only file by clicking **Export**.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Are there any limitations to the size of a project in Studio?
+
+      In general, most people won't reach these limits, but there are a few limitations that are good to keep in mind.
+
+      * Up to 500 chapters per project
+      * Each chapter can have up to 400 paragraphs
+      * Each paragraph can have a maximum of 5000 characters
+
+      Additionally, each subscription plan includes a limit on the total number of projects you can have. If you exceed this limit prior to downgrading or canceling your plan, you will retain access to your existing projects. However, you will not be able to create new projects until the total number falls within the limits of your current plan.<br /><strong><br />Project Limits by Plan:</strong>
+
+      * <strong>Free:</strong> 5 projects
+      * <strong>Starter:</strong> 20 projects
+      * <strong>Creator:</strong> 1,000 projects
+      * <strong>Pro:</strong> 3,000 projects
+      * <strong>Scale:</strong> 20,000 projects
+      * <strong>Business:</strong> 20,000 projects
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I assign more than one voice to a paragraph in Studio?
+
+      You can assign multiple voices to a single paragraph in Studio. To do this, you just need to select the text you want to assign to each voice, and change the voice using the voice selection drop-down in the Voices sidebar, on the left of the screen.  
+
+      Each voice will be designated with a different color icon to the left of the paragraph, and the text associated with each voice will be highlighted in a corresponding color.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41237759485201" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I regenerate individual words in Studio?
+
+      In Studio, you can either regenerate the whole of the selected paragraph, or if you select one or more words, you can regenerate only those words. For the best results, we recommend you regenerate a complete phrase or sentence at a time.
+
+      You need to have generated audio for the whole paragraph before you will see the option to regenerate selection.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41238632739601" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I change the voice and settings across multiple paragraphs in Studio?
+
+      #### To change the voice for specific sections or paragraphs
+
+      Simply highlight the section, sentence, or paragraph where you wish to change the voice, then select a voice that fits your character or narration using the voice selection drop-down in the <strong>Edit Speech</strong> sidebar to the left. When you change the voice, you'll need to generate new audio. 
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41239654317201" alt="" />
+
+      When finished, you’ll see the voice orb to the left of your paragraph change, and your text will be highlighted in the same color – a simple way to see which sentences have which voice. For a quick keyboard shortcut to show all voices and their color orbs per paragraph, press `Cmd+Opt+A` or `Ctrl+Alt+A`
+
+      You can also adjust the voice settings including stability, similarity, speaker boost, and more, to exaggerate and customize your output. You can use <strong>Override settings</strong> to change the settings for just the selected text or paragraph, or adjust the settings for all paragraphs using the <strong>Voice settings</strong> button in the <strong>Edit Speech</strong> sidebar.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/43295097244817" alt="" />
+
+      #### To change the voice for all paragraphs
+
+      If you want to change the voice for every paragraph currently associated with a specific voice, you can do this from <strong>Voice settings</strong> for the voice you want to change. In <strong>Voice settings</strong>, you'll see a button to <strong>Replace voice across project</strong>.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/43295097248785" alt="" />
+
+      Click this, and you'll then see the <strong>Replace voice</strong> pop-up, which shows you how many paragraphs will need regenerating when you make this change. 
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/43295097249937" alt="" />
+
+      Choose your new voice in the <strong>Replace with</strong> drop-down, then click <strong>Replace and clear impacted audio</strong> to confirm the change. 
+
+      The voice will be updated, and you'll need to generate new audio for all affected paragraphs.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I export a Studio project to InAudio?
+
+      Before exporting your audiobook to InAudio, you need to create your audiobook in Studio. This includes selecting the voices you want to use, arranging the content, and reviewing the audio to ensure everything sounds as expected.
+
+      Once your project is finalized, you can export it for distribution.
+
+      Here are the steps you need to follow to export your Studio project to InAudio:
+
+      Open your Studio project and go to <strong>Export > Publish > InAudio.</strong>
+
+      A modal will appear explaining the process. Click <strong>Continue</strong> to proceed.
+
+      On the <strong>Audio Preview</strong> screen, select which chapter you want to use for the free 
+      <strong>audio preview</strong> (the first 5 minutes of that chapter will be used). Please note
+      that you won't be able to listen to the preview in this modal, but you can change which chapter
+      is used.
+
+      Adjust the narrator names that will appear in the audiobook credits. By default, voices will be
+      labeled as "Digital Voice" followed by the name of the voice used.
+
+      Once everything is set, click <strong>Export</strong> to generate your audiobook in LPF format.
+
+      Log in to InAudio, or create an account.
+
+      In InAudio, select <strong>Start New Project.</strong>
+
+      Upload your LPF file and follow the platform’s steps to distribute your audiobook.
+
+      Please note that if your project includes an Instant Voice Clone, you must verify the voice before exporting. When prompted, click <strong>Verify</strong>, then go to <strong>Voices > My Voices</strong>, select the voice, and click <strong>Click to verify</strong>. Once verification is complete, you can continue with the export process.
+
+      All digitally narrated titles will be clearly marked in the metadata, and the book description will inform the listener that the title was created using digital voice narration. 
+
+      InAudio allows you to distribute your audiobook to Barnes and Noble, Rakuten, Everand, Scribd and many other more.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I export a Studio project to Spotify?
+
+      Before exporting your audiobook to Spotify, you need to create your audiobook in Studio. This includes selecting the voices you want to use, arranging the content, and reviewing the audio to ensure everything sounds as expected.
+
+      Once your project is finalized, you can export it for distribution.
+
+      Here are the steps you need to follow to export your Studio project to Spotify:
+
+      Open your Studio project and go to <strong>Export > Publish > Spotify.</strong>
+
+      A modal will appear explaining the process. Click <strong>Continue</strong> to proceed.
+
+      On the <strong>Audio Preview</strong> screen, select which chapter you want to use for the free{" "}
+      <strong>audio preview</strong> (the first 5 minutes of that chapter will be used). Please note
+      that you won't be able to listen to the preview in this modal, but you can change which chapter
+      is used.
+
+      Adjust the narrator names that will appear in the audiobook credits. By default, voices will be
+      labeled as "Digital Voice" followed by the name of the voice used.
+
+      Once everything is set, click <strong>Export</strong> to generate your audiobook in MP3 format.
+
+      Log in to Spotify for Authors, or create an account.
+
+      In Spotify for Authors, select <strong>New Audiobook.</strong>
+
+      Upload your MP3 files and follow the platform’s steps to distribute your audiobook.
+
+      Please note that if your project includes an Instant Voice Clone, you must verify the voice before exporting. When prompted, click <strong>Verify</strong>, then go to <strong>Voices > My Voices</strong>, select the voice, and click <strong>Click to verify</strong>. Once verification is complete, you can continue with the export process.
+
+      All digitally narrated titles will be clearly marked in the metadata on Spotify. The statement, “This audiobook is narrated by a digital voice.” will be added to the beginning of the audiobook description.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I use the Pronunciations Editor in Studio?
+
+      Sometimes you may want to specify the pronunciation of certain words, such as character or brand names, or specify how acronyms should be read. You can use the <strong>Pronunciations editor</strong> to add rules about how specified words should be pronounced, either using a phonetic alphabet (phoneme tags) or word substitutions (alias tags).
+
+      > <strong>
+      >   Note: Phoneme tags are only compatible with "Eleven Flash v2", "Eleven Turbo v2" and "Eleven
+      >   English v1" models.
+      > </strong>
+
+      These rules will be saved to a Pronunciation Dictionary which will be connected to your project. Whenever one of these words is encountered in a project, the AI will pronounce the word using the specified replacement.
+
+      You can add aliases and phonemes from directly within Studio by clicking the <strong>Open pronunciations editor</strong> button. 
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41121472322193" alt="" />
+
+      <br /> <br />
+      If you do this while you have a word selected, this word will automatically populate the input
+      field. Otherwise, you can enter the word yourself. You can use the Play button in the Output to
+      preview how it will sound.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41121483499537" alt="" />
+
+      When you add a new rule, you can either select an existing dictionary to add the rule to, or create a new dictionary. If you add the rule to an existing dictionary, this will automatically connect it to your project.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What does the grey line mean in Studio?
+
+      In Studio, the grey line to the left of a paragraph indicates the audio generation status. A light grey line signifies that audio has not yet been generated, while a dark grey line indicates that audio has been successfully generated.
+
+      In the image below, the highlighted paragraph has audio generated, whereas the second one does not.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41239023143953" alt="" />
+
+      In Dark Mode, this color scheme adjusts slightly: a light grey line still represents ungenerated audio, while a white line indicates that the paragraph has been converted to audio.
+
+      The image below demonstrates this: audio has been generated for the highlighted paragraph, but not for the second one.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41238992402449" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What does the lock icon mean in Studio?
+
+      In Studio, you can lock a paragraph once you're happy with it, and this will prevent any accidental changes. Locked paragraphs are indicated by a lock icon to the left of the paragraph. 
+
+      The lock button locks the current version of the selected paragraph. This means that you no longer have the option to regenerate the paragraph, change the voice or settings, or access the generation history for the paragraph. You can unlock a paragraph at any time by clicking the lock button.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41238554053521" alt="" />
+
+      This feature is only available after you have generated audio for the selected paragraph.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What happens to my Studio projects if I downgrade my subscription?
+
+      Studio is included in all subscription plans, including the Free plan. If you choose to downgrade your subscription, you will retain access to Studio.
+
+      However, canceling your subscription will result in the loss of certain paid features. This includes the ability to generate audio using your Instant and Professional Voice Clones, as well as access to specific library voices that have custom rates associated with them.
+
+      Additionally, your ability to create new projects will be limited based on your current plan. If you exceed the project limit before downgrading, you will still have access to your existing projects, but you won’t be able to create new ones until you're within the allowed limit.
+
+      <strong>
+        Project Limits by Plan:
+      </strong>
+
+      * <strong>Free:</strong> 5 projects
+      * <strong>Starter:</strong> 20 projects
+      * <strong>Creator:</strong> 1,000 projects
+      * <strong>Pro:</strong> 3,000 projects
+      * <strong>Scale:</strong> 20,000 projects
+      * <strong>Business:</strong> 20,000 projects
+
+      Please note that at the time of writing, we do not delete your data. All your content will remain intact and accessible should you choose to upgrade again in the future.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Auto-Regenerate?
+
+      Auto-Regenerate is a feature in Studio that automatically checks your generated audio for any mispronunciations or unwanted audio artefacts. If we detect any, we will automatically regenerate the audio up to two times, at no extra cost.  
+
+      This feature is enabled automatically, and it is done in the backend when you convert your whole chapter or project in one step from the Export dialog.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41237575574161" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Generation History in Studio?
+
+      Generation History allows you to listen to, download and restore previous audio generations for each paragraph.  
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41239431499409" alt="" />
+
+       
+
+      The Generation History for each paragraph appears in the left sidebar when you select it. You can see and listen to all the previous generations for the selected paragraph. 
+
+      If you prefer an earlier generation, you can restore this by clicking <strong>Restore previous generation</strong>. This audio will then appear as the current version of the paragraph in your project. You can use the lock button to lock the paragraph to prevent further changes. 
+
+      For each generation, you can download the individual audio file. To download, click <strong>More actions</strong> (three dots) > <strong>Download</strong>. 
+
+      You can also remove generations, but please bear in mind that removing a generation is permanent, and it cannot be recovered. To remove a generation, click <strong>More actions</strong> (three dots) > <strong>Remove</strong>. 
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41239431499921" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is the timeline in Studio?
+
+      The timeline is a visual representation of the audio in your Studio project, displayed as a horizontal track at the bottom of the interface. It’s enabled by default in all Studio projects.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41121970454161" alt="" />
+
+      The timeline gives you a clearer way to view and control the structure of your content. Clips appear automatically as you enter text, and you can rearrange them by dragging and dropping to adjust the flow of your audio.
+
+       
+
+      Click the <strong>Expand/Collapse</strong> button in the top-right of the timeline to adjust the view:
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41122015188241" alt="" />
+
+       
+
+      Use the <strong>Zoom In</strong> and <strong>Zoom Out</strong> buttons to change how much of the timeline is visible:
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41121970455057" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Which file formats can I import with Studio?
+
+      EPUB is the best file format to use to create your project. If the EPUB is well-structured and correctly formatted, it will automatically split each chapter into its own chapter in Studio, making it very easy to navigate.
+
+      To format your EPUB so that Studio can recognize your chapters, you need to make sure that each chapter heading is formatted as 'Heading 1'.
+
+      Other supported file formats are:
+
+      * PDF
+      * DOCX
+      * TXT
+      * HTML
+      * URL
+
+      For more details, please see our full [overview.](/docs/product-guides/products/studio)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Why aren't my changes reflected in my download from Studio?
+
+      If you make changes to your project, you need to export a new version of your chapter or project. This will save the updated audio to a new version so that it is reflected in your download. To do this, click <strong>Export</strong>, and choose your preferred options.
+
+      If you choose to export your full project, Studio will automatically convert any paragraphs that are not yet converted throughout all chapters in your project, which will cost credits. If this is the case, you will be notified of how many credits it will cost before you confirm the export.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41238430698385" alt="" />
+
+      If you have already generated audio for all paragraphs, there will be no cost, but the audio still needs to be exported to a new version before it is reflected in your download. You will be notified when the conversion is complete and your download is ready.
+
+      You can access and download previous exports by clicking the <strong>Export</strong> button, and selecting the <strong>History</strong> tab.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Why can't I download from Studio?
+
+      <strong>
+        Try using a different browser and turning off ad blockers and pop-up blockers.
+      </strong>
+
+      Under certain circumstances, some people might experience problems downloading their projects. The common denominator for this seems to be the browser. Most people who are experiencing issues are using a browser called <strong>Brave</strong>, however, we've also heard of some users experiencing issues with other browsers. In most cases, the issue seems to be resolved when they switch or test a different browser to download the files. We also recommend turning off any ad-blockers or pop-up blockers.
+
+      If you're having issues downloading from Studio, make sure you are following the correct flow as you don't download audio in Studio the same way you do in Speech Synthesis.
+
+      To create a new version of your chapter or project, which will then be downloaded, you need to use the <strong>Export</strong> button. You have the option to create a new export of either the current chapter, or your entire project. If you've made any changes since your last export, you will see a confirmation of how many credits it will take to create the new export. You'll only be charged credits for paragraphs that have not already been converted, or that have been edited since your last export and therefore need to be converted again.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41239695562385" alt="" />
+
+      You can also access all your previous exports. To do this, click the <strong>Export</strong> button, then select the <strong>History</strong> tab.
+    </td>
+  </tr>
+</tbody>

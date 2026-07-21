@@ -85,6 +85,7 @@ components:
         - Voice Library Removal Notices
         - Speech to Text
         - Agent QA Evaluations
+        - ConvAI Alerting
       title: WebhookUsageType
     WorkspaceWebhookUsageResponseModel:
       type: object

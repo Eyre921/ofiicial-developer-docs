@@ -43,22 +43,32 @@ will need to initiate calls individually rather than using the batch calling fea
 
 Follow these steps to create a new batch call:
 
+#### Navigate to Batch Calling
+
 Access the [Outbound calls interface](https://elevenlabs.io/app/agents/batch-calling) from the
 ElevenAgents dashboard
+
+#### Initiate a new batch call
 
 Click on the "Create a batch call" button. This will open the "Create a batch call" page.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/defec00e1f267346775021283bdc6038cfabcd27427dffb7cd7e5cd9382b53e0/assets/images/conversational-ai/batch-call-creation.png" alt="Create a batch call page showing fields for batch name, phone number, agent selection, recipient upload, and timing options." />
 
+#### Configure batch details
+
 * **Batch name**: Enter a descriptive name for your batch call (e.g., "Delivery notice", "Weekly Update Notifications").
 * **Phone number**: Select the phone number that will be used to make the outbound calls.
 * **Select agent**: Choose the pre-configured ElevenLabs agent that will handle the conversations for this batch.
 
-- **Upload File**: Upload your recipient list. Supported file formats are CSV and XLS.
-- **Formatting**:
+#### Upload recipients
+
+* **Upload File**: Upload your recipient list. Supported file formats are CSV and XLS.
+* **Formatting**:
   * The `phone_number` column is mandatory in your uploaded file (if your agent has a `phone_number` dynamic variable that also has to be set, please rename it).
   * You can include other columns (e.g., `name`, `user_name`) which will be passed as dynamic variables to personalize the calls.
   * A template is available for download to ensure correct formatting.
+
+#### Setting overrides
 
 The following column headers are special fields that are used to override an agent's initial
 configuration:
@@ -71,10 +81,14 @@ configuration:
 The batch call will fail if those fields are passed but are not set to be overridable in the agent's security settings. See more
 [here](/docs/eleven-agents/customization/personalization/overrides).
 
+#### Set timing
+
 * **Send immediately**: The batch call will start processing as soon as you submit it. -
   **Schedule for later**: Choose a specific date, time, and timezone for the batch call to begin.
 
-- You may "Test call" with a single recipient before submitting the entire batch. - Click "Submit
+#### Submit the batch call
+
+* You may "Test call" with a single recipient before submitting the entire batch. - Click "Submit
   a Batch Call" to finalize and initiate or schedule the batch.
 
 ## Managing and monitoring batch calls

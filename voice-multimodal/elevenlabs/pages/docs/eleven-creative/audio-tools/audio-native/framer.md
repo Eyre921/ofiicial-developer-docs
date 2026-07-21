@@ -11,6 +11,8 @@ path: docs/eleven-creative/audio-tools/audio-native/framer
 Follow the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native) to
 get started with Audio Native before continuing with this guide.
 
+#### Add Audio Native script to your page
+
 Navigate to your Framer page, sign in and go to your site settings. From the Audio Native embed code, extract the `<script>` tag and paste it in the "End of `<body>` tag" field.
 
 ```html title="Embed script "
@@ -18,6 +20,8 @@ Navigate to your Framer page, sign in and go to your site settings. From the Aud
 ```
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/00efa5ae0c085f442c015ebcf69066cc42c8e20d1c24c907444dd750e159dd4a/assets/images/product-guides/audio-native/audio-native-framer-1.webp" alt="Audio Native" />
+
+#### Add an Embed Element
 
 On your Framer blog page, add an Embed Element from Utilities.
 
@@ -41,6 +45,8 @@ In the config for the Embed Element, switch the type to HTML and paste the `<div
 ```
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/42ba6037aedc4982495e8ea0ba8f6a23601d1309a6c67f310c8ed326382022b9/assets/images/product-guides/audio-native/audio-native-framer-3.webp" alt="Audio Native" />
+
+#### Publish your changes
 
 Finally, publish your changes and navigate to the live version of your page. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 

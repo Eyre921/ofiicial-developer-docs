@@ -35,6 +35,8 @@ Subscribing creates a billing agreement on your AWS account. You are not charged
 
 The [AWSMarketplaceManageSubscriptions](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceManageSubscriptions.html) policy referenced in [Prerequisites](/docs/deploy-amazon-sagemaker#prerequisites) covers product discovery (`SearchListings`, `GetOffer`, `GetOfferTerms`, `ListPurchaseOptions`, and similar) but does **not** include the AWS Marketplace Agreement Service actions this flow also needs: `CreateAgreementRequest`, `AcceptAgreementRequest`, `DescribeAgreement`, `SearchAgreements`, and `GetAgreementTerms`. Either attach [AWSMarketplaceFullAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceFullAccess.html) or add those five actions to a custom policy alongside `AWSMarketplaceManageSubscriptions`.
 
+#### Find the product ID
+
 List Deepgram's SageMaker-deployable products, filtered by fulfillment type and seller:
 
 ```bash
@@ -64,6 +66,8 @@ aws marketplace-discovery search-listings \
 
 Calls the [`SearchListings`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_SearchListings.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
 
+#### Find the standard offer for that product
+
 ```bash
 aws marketplace-discovery list-purchase-options \
   --region us-east-1 \
@@ -75,6 +79,8 @@ This can return more than one purchase option — for example, a private offer y
 
 Calls the [`ListPurchaseOptions`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_ListPurchaseOptions.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
 
+#### Get the offer's proposal ID and pricing model
+
 ```bash
 aws marketplace-discovery get-offer --region us-east-1 --offer-id <offer-id-from-previous-step>
 ```
@@ -83,6 +89,8 @@ Note the `agreementProposalId` and `pricingModel.pricingModelType` from the resp
 
 Calls the [`GetOffer`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOffer.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
 
+#### Get the offer's terms
+
 ```bash
 aws marketplace-discovery get-offer-terms --region us-east-1 --offer-id <offer-id>
 ```
@@ -90,6 +98,8 @@ aws marketplace-discovery get-offer-terms --region us-east-1 --offer-id <offer-i
 The response lists one or more terms, each with an `id`. For a `USAGE`-priced Deepgram SageMaker product, expect `LegalTerm`, `SupportTerm`, and `UsageBasedPricingTerm` — collect all three `id` values. Deepgram's public SageMaker listings also include a `FreeTrialPricingTerm` (14 days); collect its `id` too if you want to claim the trial. See [Required terms by pricing model](https://docs.aws.amazon.com/marketplace/latest/developerguide/work-with-agreement-api-buyer.html#car-required-terms-by-pricing-model) if the offer uses a different pricing model.
 
 Calls the [`GetOfferTerms`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOfferTerms.html) action of the [AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Discovery.html).
+
+#### Generate a quote
 
 ```bash
 aws marketplace-agreement create-agreement-request \
@@ -110,6 +120,8 @@ Calls the [`CreateAgreementRequest`](https://docs.aws.amazon.com/marketplace/lat
 
 `FreeTrialPricingTerm` can be accepted only once per product. If your account has already used the trial for this product, omit that term's `id` from `requestedTerms` — including it again returns a `ValidationException`. If your account already has an active agreement for this product at all, the whole call fails with `ValidationException` / `UNSUPPORTED_ACTION` ("This action is not supported when an active agreement exists on the same resourceId"). Check first with the [`SearchAgreements`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html) action: `aws marketplace-agreement search-agreements --region us-east-1 --catalog AWSMarketplace --filters '[{"name":"PartyType","values":["Acceptor"]},{"name":"AgreementType","values":["PurchaseAgreement"]},{"name":"ResourceIdentifier","values":["<productId>"]}]'` — if an agreement with `"status": "ACTIVE"` already exists, you're already subscribed; skip to [Find the Model Package ARN](#find-the-model-package-arn).
 
+#### Accept the quote to subscribe
+
 ```bash
 aws marketplace-agreement accept-agreement-request \
   --region us-east-1 \
@@ -119,6 +131,8 @@ aws marketplace-agreement accept-agreement-request \
 Returns the new `agreementId`. This is the subscribe action — it's equivalent to clicking **Subscribe** in the console.
 
 Calls the [`AcceptAgreementRequest`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_AcceptAgreementRequest.html) action of the [AWS Marketplace Agreement Service API](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_Operations_AWS_Marketplace_Agreement_Service.html).
+
+#### Confirm the subscription is active
 
 ```bash
 aws marketplace-agreement describe-agreement --region us-east-1 --agreement-id <agreementId>
@@ -581,9 +595,13 @@ Do not commit `terraform.tfvars` to version control if it contains sensitive val
 
 ## Deploy
 
+#### Initialize the Terraform working directory
+
 ```bash
 terraform init
 ```
+
+#### Preview the resources Terraform will create
 
 ```bash
 terraform plan
@@ -591,11 +609,15 @@ terraform plan
 
 Verify the plan shows the expected resources: an IAM role, a SageMaker Model, an Endpoint Configuration, and an Endpoint.
 
+#### Apply the configuration
+
 ```bash
 terraform apply
 ```
 
 Terraform creates the resources and waits for the SageMaker Endpoint to reach `InService` status. This typically takes several minutes.
+
+#### Verify the endpoint
 
 Confirm the endpoint is running:
 

@@ -15,9 +15,15 @@ It helps you monitor live activity, understand user sentiment, and discover recu
 ![Spotlight dashboard showing recommendations, conversation volume, and success
 rate](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/21264fd2d522fee483b01b2c5ee71c79aa5bafda417a31034c7a675ddb217839/assets/images/spotlight-overview.png)
 
+#### [Real-time insights](/docs/eleven-agents/dashboard/spotlight/real-time-insights)
+
 Monitor current activity and recent conversation trends for an agent.
 
+#### [Sentiment analysis](/docs/eleven-agents/customization/agent-analysis/sentiment-analysis)
+
 Understand whether users are having positive, neutral, or negative conversations.
+
+#### [Topic discovery](/docs/eleven-agents/dashboard/spotlight/topic-discovery)
 
 Discover recurring topics and review the conversations behind each topic.
 
@@ -37,10 +43,18 @@ Some data appears in near real time, while deeper analysis is available after a 
 
 ## Next steps
 
+#### [Analytics](/docs/eleven-agents/dashboard)
+
 Review performance metrics across agents, branches, and time periods.
+
+#### [Real-time insights](/docs/eleven-agents/dashboard/spotlight/real-time-insights)
 
 Monitor current activity and recent conversation trends.
 
+#### [Sentiment analysis](/docs/eleven-agents/customization/agent-analysis/sentiment-analysis)
+
 Understand user sentiment across completed conversations.
+
+#### [Topic discovery](/docs/eleven-agents/dashboard/spotlight/topic-discovery)
 
 Review recurring topics and the conversations behind each topic.

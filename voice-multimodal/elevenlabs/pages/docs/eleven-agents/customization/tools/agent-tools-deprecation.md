@@ -155,10 +155,16 @@ A request must include **either** `prompt.tool_ids` **or** the legacy `prompt.to
 
 ## FAQ
 
+#### Will my existing integrations break?
+
 No. Until July 23, the API will silently migrate any `prompt.tools` array you send. However,
 starting July 15, GET and PATCH responses will no longer include full tool objects. After July
 23, any POST/PATCH requests containing `prompt.tools` will be rejected.
 
+#### Can I mix both fields in one request?
+
 No. A request must use **either** `prompt.tool_ids` **or** `prompt.tools` — never both.
+
+#### How do I find a tool's ID?
 
 List your tools via `GET /v1/convai/tools` or inspect the response when you create one.

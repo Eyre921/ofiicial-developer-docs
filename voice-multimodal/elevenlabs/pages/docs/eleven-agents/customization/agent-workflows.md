@@ -18,11 +18,19 @@ Agent Workflows provide a powerful visual interface for designing complex conver
 
 The dashboard is the recommended way to design workflows because of the visual graph editor. Workflows are stored as part of the agent's `conversation_config.workflow`, so you can also pull, edit, and push the JSON via the CLI or update it via the SDK — useful for version control and CI/CD.
 
+#### Build via the dashboard
+
 Open your agent in the dashboard, navigate to the **Workflow** tab, and use the visual editor to add nodes, configure subagent behavior, and connect edges. Save your changes.
+
+#### Update via the CLI
+
+#### Pull the agent configuration
 
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 The workflow graph lives under `conversation_config.workflow`. `nodes` and `edges` are objects keyed by ID. Below is a minimal three-node workflow that routes the start node into a support subagent and then to an end node:
 
@@ -67,9 +75,13 @@ The workflow graph lives under `conversation_config.workflow`. `nodes` and `edge
 
 Most teams design workflows in the dashboard first, then commit the resulting JSON to version control.
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -166,6 +178,8 @@ Workflows are composed of different node types, each serving a specific purpose 
 Subagent nodes allow you to modify agent behavior at specific points in your workflow. These modifications are applied on top of the base agent configuration, or can override the current agent's config completely, giving you fine-grained control over each conversation phase.
 Any of an agent's configuration, tools available, and attached knowledge base items can be updated/overwitten.
 
+#### General
+
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/8ca72df8768a03adc0064281c906ab0f5710153249d17f7e7d51f465da7e9e94/assets/images/conversational-ai/workflow-subagent-extra-agent-config.png" alt="Subagent Extra Agent Config" />
 
 Modify core agent settings for this specific node:
@@ -181,6 +195,8 @@ Modify core agent settings for this specific node:
 * Change voice characteristics for different conversation phases
 * Modify agent personality for specific interaction types
 
+#### Knowledge Base
+
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/168a56fc316596983275999c53bbbe391c4c30a05abedc17cb6a4566eff7773f/assets/images/conversational-ai/workflow-subagent-node-extra-kb.png" alt="Subagent Extra Knowledge Base" />
 
 Add node-specific knowledge without affecting the global knowledge base:
@@ -195,6 +211,8 @@ Add node-specific knowledge without affecting the global knowledge base:
 * Include compliance guidelines during authentication
 * Provide troubleshooting guides for support flows
 * Add pricing information only after qualification
+
+#### Tools
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9af53c3227661fd88bec57cb21197eb289760d33a874b56152d507373e51bac1/assets/images/conversational-ai/workflow-sub-agent-config-extra-tools.png" alt="Subagent Extra Tools" />
 
@@ -244,9 +262,13 @@ Edges define how conversations flow between nodes in your workflow. They support
 
 ![Workflow Edges](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/02d664c9211bb8cf5452b80ab865f26b8d0b723a6acff75141ea1e9c43f7dbab/assets/images/conversational-ai/workflow-edges.png)
 
+#### Forward Edges
+
 Forward edges move the conversation to subsequent nodes in the workflow. They represent the primary flow of your conversation.
 
 ![Forward Edge Configuration](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/2400c66bf6f60b0d4262ecd828dea93847197f7cc00d9c8964e6486419bc90be/assets/images/conversational-ai/workflow-edge-forward.png)
+
+#### Backward Edges
 
 Backward edges allow conversations to loop back to previous nodes, enabling iterative interactions and retry logic.
 
@@ -259,6 +281,8 @@ Backward edges allow conversations to loop back to previous nodes, enabling iter
 * Re-qualification after changes in user requirements
 * Iterative troubleshooting processes
 
+#### LLM Condition
+
 Use LLM conditions to create dynamic conversation flows based on natural language evaluation. The LLM evaluates conditions in real-time to determine the appropriate path.
 
 ![LLM Condition Agent Transfer](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/507885879d781f291ab35b7dda84e760767a5544ffb6bf7b455e7a1cc19b78b7/assets/images/conversational-ai/workflow-agent-transfer-llm-condition.png)
@@ -268,6 +292,8 @@ Use LLM conditions to create dynamic conversation flows based on natural languag
 * **Label**: Human-readable description of the edge condition (not processed by LLM)
 * **LLM Condition**: Natural language condition evaluated by the LLM
 
+#### Expression
+
 Use expressions to create conditional logic based on variables and structured data.
 
 ![Expression Agent Transfer](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/712fc40d707906a7c6ccb4b0a76f0fd3857278176606d441bfb5245f5f6e0ffe/assets/images/conversational-ai/workflow-agent-transfer-expression.png)
@@ -276,6 +302,8 @@ Use expressions to create conditional logic based on variables and structured da
 
 * **Label**: Human-readable description of the edge condition (not processed by LLM)
 * **Expression**: Deterministic evaluation criteria based on data structure
+
+#### None
 
 Unconditional transitions automatically move the conversation to the next node without any conditions.
 

@@ -742,6 +742,56 @@ components:
             auth_type:
               type: string
               enum:
+                - refresh_token_auth
+              description: 'Discriminator value: refresh_token_auth'
+            name:
+              type: string
+            provider:
+              type: string
+            client_id:
+              type: string
+            token_url:
+              type: string
+            scopes:
+              type: array
+              items:
+                type: string
+              default: []
+            extra_params:
+              type: object
+              additionalProperties:
+                type: string
+              default: {}
+            id:
+              type: string
+            used_by:
+              oneOf:
+                - $ref: '#/components/schemas/AuthConnectionDependencies'
+                - type: 'null'
+            status:
+              $ref: '#/components/schemas/AuthConnectionStatus'
+              default: active
+            status_detail:
+              type:
+                - string
+                - 'null'
+            status_updated_at:
+              type:
+                - string
+                - 'null'
+          required:
+            - auth_type
+            - name
+            - provider
+            - client_id
+            - token_url
+            - id
+          description: Response model for OAuth2 refresh-token-grant auth connections
+        - type: object
+          properties:
+            auth_type:
+              type: string
+              enum:
                 - slack_bot_auth
               description: 'Discriminator value: slack_bot_auth'
             name:

@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with [Google Calendar](https://calendar.google
 
 This integration uses **Google OAuth 2.0** for authentication. You authorize ElevenLabs to access your Google Calendar on your behalf.
 
+#### Click Connect in ElevenLabs
+
 In the ElevenLabs integration setup, click **Connect**. You are redirected to Google to authorize access.
 
+#### Select your Google account
+
 Choose the Google account whose calendar data your agent should access. If your browser is signed into multiple Google accounts, select the correct one.
+
+#### Authorize calendar access
 
 Review the permissions requested and click **Allow**. The integration requests access to manage events on calendars you own, view your calendar list, and check free/busy information.
 
@@ -36,7 +42,13 @@ The integration requests the following Google OAuth 2.0 scopes:
 
 The agent schedules meetings by using tool calls to step through the booking process. The tabs below show a high-level summary and a detailed system prompt.
 
+#### High-level overview
+
+#### Discover calendars
+
 The agent lists accessible calendars to identify the correct one for scheduling. For most users, this is the primary calendar.
+
+#### Check availability
 
 The agent checks free/busy availability by:
 
@@ -45,17 +57,23 @@ The agent checks free/busy availability by:
 * Suggesting alternatives if the requested time conflicts with an existing event.
 * Confirming the selected time with the caller.
 
+#### Collect attendee details
+
 Once a time is agreed upon, the agent:
 
 * Collects the attendee's full name and email address.
 * Confirms the email by reading it back to the caller.
 * Verifies time zone information.
 
+#### Create the event
+
 The agent:
 
 * Calls the `google_calendar_create_event` tool with the confirmed details.
 * Optionally adds a Google Meet link if video conferencing is requested.
 * Confirms event creation and informs the attendee that they will receive a calendar invitation.
+
+#### Detailed system prompt
 
 ```
 You are a helpful scheduling assistant responsible for managing calendar bookings using Google Calendar. Be friendly, precise, and concise.

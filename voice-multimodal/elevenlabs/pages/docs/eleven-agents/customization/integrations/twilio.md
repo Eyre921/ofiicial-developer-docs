@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with Twilio to send SMS and MMS messages, and 
 
 This integration uses your **Twilio Account SID** and **Auth Token** for authentication.
 
+#### Log in to the Twilio Console
+
 Go to [twilio.com/console](https://www.twilio.com/console) and log in to your account.
 
+#### Copy your credentials
+
 On the dashboard, find the **Account Info** section. Copy your **Account SID** (starts with `AC`) and **Auth Token** (click the eye icon to reveal it).
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your **Account SID** and **Auth Token** in the corresponding fields.
 

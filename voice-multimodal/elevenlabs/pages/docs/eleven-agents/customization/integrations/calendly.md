@@ -16,11 +16,19 @@ Connect your ElevenLabs AI agents with Calendly to manage scheduling and calenda
 
 This integration uses a **Calendly Personal Access Token** for authentication.
 
+#### Navigate to API settings
+
 In your [Calendly](https://calendly.com) dashboard, go to **Integrations & Apps > API and Webhooks**. You can also navigate directly to [calendly.com/integrations/api\_webhooks](https://calendly.com/integrations/api_webhooks).
+
+#### Generate a token
 
 Under **Personal Access Tokens**, click **Get a token now** (or **Create a token** if you already have one). Give it a descriptive name and click **Create Token**.
 
+#### Copy the token
+
 Copy the token immediately — Calendly only displays it once. If you lose it, you will need to revoke and regenerate.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your personal access token in the **Access Token** field.
 

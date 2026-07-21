@@ -11,7 +11,11 @@ path: docs/eleven-creative/audio-tools/audio-native/wix
 Follow the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native) to
 get started with Audio Native before continuing with this guide.
 
+#### Add HTML to your blog post
+
 Navigate to your Wix site, sign in and open the settings page for the page you wish to narrate.
+
+#### Add the embed code to your blog post
 
 Click the "+" symbol at the top of your content and select "HTML Code" from the menu.
 
@@ -37,7 +41,11 @@ Paste the Audio Native embed code into the HTML box and click "Save".
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/719f1f2d8f01aa94ea6550fc62666ec4c4dac024e3f26a8eed925de0f8c54e3d/assets/images/product-guides/audio-native/audio-native-wix-2.webp" alt="Audio Native" />
 
+#### Publish the page
+
 Click the "Publish" button in the top right corner of the editor.
+
+#### Navigate to the live version of the blog post
 
 Finally, navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 

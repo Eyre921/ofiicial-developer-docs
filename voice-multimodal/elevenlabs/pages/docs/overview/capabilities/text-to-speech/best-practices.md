@@ -132,9 +132,13 @@ V3's IPA support achieves 80-90% pronunciation consistency. While significantly 
 
 **Troubleshooting**
 
+#### Pronunciation is still incorrect
+
 Verify your IPA transcription is accurate using an IPA dictionary. Include stress markers (ˈ for
 primary stress, ˌ for secondary stress) for multi-syllable words. Test with different voices as
 some may interpret IPA more accurately than others.
+
+#### Inconsistent results with the same IPA
 
 V3's IPA support is generally reliable but not perfect. The model may occasionally produce
 different outputs even with identical IPA transcriptions. If consistency is critical, test
@@ -291,6 +295,8 @@ Pacing can also be controlled by writing in a natural, narrative style.
 
 ### Tips
 
+#### Common Issues
+
 <ul>
   <li>
     Inconsistent pauses: Ensure <code>\<break time="x.xs" /></code> syntax is used for
@@ -306,6 +312,8 @@ Pacing can also be controlled by writing in a natural, narrative style.
     <strong>Remember to remove any emotional guidance text in post-production.</strong>
   </li>
 </ul>
+
+#### Tips for Improving Output
 
 Experiment with alternative phrasing to achieve desired pacing or emotion. For complex sound
 effects, break prompts into smaller, sequential elements and combine results manually.
@@ -370,7 +378,11 @@ The simplest way to mitigate this is to use a TTS model that is trained to read 
 
 In the case of using an LLM to generate the text for TTS, you can add normalization instructions to the prompt.
 
+#### Use clear and explicit prompts
+
 LLMs respond best to structured and explicit instructions. Your prompt should clearly specify that you want text converted into a readable format for speech.
+
+#### Handle different number formats
 
 Not all numbers are read out in the same way. Consider how different number types should be spoken:
 
@@ -380,6 +392,8 @@ Not all numbers are read out in the same way. Consider how different number type
 * Phone numbers: "123-456-7890" → "one two three, four five six, seven eight nine zero"
 * Decimals & Fractions: "3.5" → "three point five", "⅔" → "two-thirds"
 * Roman numerals: "XIV" → "fourteen" (or "the fourteenth" if a title)
+
+#### Remove or expand abbreviations
 
 Common abbreviations should be expanded for clarity:
 
@@ -391,6 +405,8 @@ You can request explicit expansion in your prompt:
 
 > Expand all abbreviations to their full spoken forms.
 
+#### Alphanumeric normalization
+
 Not all normalization is about numbers, certain alphanumeric phrases should also be normalized for clarity:
 
 * Shortcuts: "Ctrl + Z" → "control z"
@@ -398,6 +414,8 @@ Not all normalization is about numbers, certain alphanumeric phrases should also
 * Symbols: "100%" → "one hundred percent"
 * URLs: "elevenlabs.io/docs" → "eleven labs dot io slash docs"
 * Calendar events: "2024-01-01" → "January first, two-thousand twenty-four"
+
+#### Consider edge cases
 
 Different contexts might require different conversions:
 
@@ -558,11 +576,17 @@ When creating IVCs, you should include a broader emotional range than before. As
 
 Choose voices strategically based on your intended use:
 
+#### Emotionally diverse
+
 For expressive IVC voices, vary emotional tones across the recording—include both neutral and
 dynamic samples.
 
+#### Targeted niche
+
 For specific use cases like sports commentary, maintain consistent emotion throughout the
 dataset.
+
+#### Neutral
 
 Neutral voices tend to be more stable across languages and styles, providing reliable baseline
 performance.
@@ -650,6 +674,8 @@ Punctuation significantly affects delivery in v3:
 
 Use tags intentionally and match them to the voice's character. A meditative voice shouldn't shout; a hyped voice won't whisper convincingly.
 
+#### Expressive monologue
+
 ```text
 "Okay, you are NOT going to believe this.
 
@@ -682,6 +708,8 @@ I am so incredibly PUMPED to finish editing it now.
 It went from feeling like a chore to feeling like... MAGIC. Seriously, I'm still buzzing!"
 ```
 
+#### Dynamic and humorous
+
 ```text
 [laughs] Alright...guys - guys. Seriously.
 
@@ -710,6 +738,8 @@ I mean i DID go to music school.
 [singing quickly] "Happy birthday to you, happy birthday to you, happy BIRTHDAY dear ElevenLabs... Happy birthday to youuu."
 ```
 
+#### Customer service simulation
+
 ```text
 [professional] "Thank you for calling Tech Solutions. My name is Sarah, how can I help you today?"
 
@@ -723,6 +753,8 @@ I mean i DID go to music school.
 ### Multi-speaker dialogue
 
 v3 can handle multi-voice prompts effectively. Assign distinct voices from your Voice Library for each speaker to create realistic conversations.
+
+#### Dialogue showcase
 
 ```text
 Speaker 1: [excitedly] Sam! Have you tried the new Eleven V3?
@@ -742,6 +774,8 @@ Speaker 2: [amazed] Wow! V2 me could never. I'm actually excited to have convers
 
 Speaker 1: [warmly] Same here! It's like we finally got our personality software fully installed.
 ```
+
+#### Glitch comedy
 
 ```text
 Speaker 1: [nervously] So... I may have tried to debug myself while running a text-to-speech generation.
@@ -765,6 +799,8 @@ Speaker 2: [giggling] Have you tried turning yourself off and on again?
 Speaker 1: [deadpan] Very funny.
 [pause, then normally] Wait... that actually worked.
 ```
+
+#### Overlapping timing
 
 ```text
 Speaker 1: [starting to speak] So I was thinking we could—
@@ -906,14 +942,22 @@ Use these as a guide. You can infer similar, contextually appropriate **audio ta
 
 ### Tips
 
+#### Tag combinations
+
 You can combine multiple audio tags for complex emotional delivery. Experiment with different
 combinations to find what works best for your voice.
+
+#### Voice matching
 
 Match tags to your voice's character and training data. A serious, professional voice may not
 respond well to playful tags like `[giggles]` or `[mischievously]`.
 
+#### Text structure
+
 Text structure strongly influences output with v3. Use natural speech patterns, proper
 punctuation, and clear emotional context for best results.
+
+#### Experimentation
 
 There are likely many more effective tags beyond this list. Experiment with descriptive
 emotional states and actions to discover what works for your specific use case.

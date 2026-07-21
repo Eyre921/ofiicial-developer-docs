@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with Jira Cloud to manage issues, track projec
 
 This integration uses a **Jira API token** with Basic authentication. You need your Atlassian account email, an API token, and your Jira Cloud subdomain.
 
+#### Generate an API token
+
 Go to [Atlassian API token management](https://id.atlassian.com/manage-profile/security/api-tokens) and click **Create API token**. Copy the token - you won't be able to see it again.
 
+#### Find your Jira subdomain
+
 Your subdomain is the first part of your Jira Cloud URL. For example, if your Jira is at `mycompany.atlassian.net`, your subdomain is `mycompany`.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, enter:
 
@@ -41,27 +47,47 @@ so the value provided must match the label on the issue.
 
 ## How it works
 
+#### Support ticket creation
+
+#### Caller identification
+
 The agent identifies the caller by email address or another identifier configured in the
 labels field.
+
+#### Gather details
 
 The agent collects information about the issue from the caller - what happened, severity,
 and any relevant context.
 
+#### Create the issue
+
 The agent creates a Jira issue in the appropriate project with the right issue type,
 priority, and description.
 
+#### Confirm with the caller
+
 The agent reads back the created ticket number so the caller has a reference for follow-up.
+
+#### Service desk resolution
+
+#### Look up the ticket
 
 The agent retrieves a Jira issue by its key (e.g., PROJ-123) and reads back the current
 status, priority, and summary.
 
+#### Add resolution notes
+
 The agent adds a comment to the issue with details from the conversation, such as steps
 taken or information gathered.
+
+#### Close the ticket
 
 The agent transitions the issue to a resolved or closed status using the available workflow
 transitions.
 
 ## Example system prompt
+
+#### View example system prompt
 
 ```text
 # Personality

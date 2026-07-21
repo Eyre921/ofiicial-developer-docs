@@ -67,6 +67,8 @@ It is important for the listener to validate all incoming webhooks. Webhooks cur
 
 The JavaScript SDK exposes `constructEvent`; the Python SDK exposes `construct_event` with **`rawBody`**, **`sig_header`**, and **`secret`** (these are not named `payload` / `signature` in Python). Both verify the signature, validate the timestamp, and parse the JSON payload.
 
+#### Python
+
 Example webhook handler using FastAPI:
 
 ```python
@@ -107,6 +109,10 @@ async def receive_message(request: Request):
     return {"status": "received"}
 ```
 
+#### JavaScript
+
+#### Express
+
 Example webhook handler using Express:
 
 ```javascript
@@ -138,6 +144,8 @@ app.post('/webhook', express.text({ type: 'application/json' }), async (req, res
   res.status(200).json({ received: true });
 });
 ```
+
+#### Next.js
 
 Example webhook handler using Next.js API route:
 

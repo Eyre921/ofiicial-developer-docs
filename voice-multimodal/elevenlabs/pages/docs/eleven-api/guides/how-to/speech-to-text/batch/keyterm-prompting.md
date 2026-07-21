@@ -137,6 +137,10 @@ wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v2_realtime&k
 
 ## Next steps
 
+#### [API reference](/docs/api-reference/speech-to-text)
+
 Full Speech to Text API reference and parameters.
+
+#### [Entity detection](/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection)
 
 Automatically detect and label entities like names, dates, and locations in transcripts.

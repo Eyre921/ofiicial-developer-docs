@@ -76,9 +76,15 @@ This fallback behavior means you only need to define values for environments tha
 
 Environment variables are not yet manageable via the ElevenLabs CLI — use the dashboard or SDK.
 
+#### Create via the dashboard
+
 Navigate to **Developers > Environment Variables** in the ElevenLabs dashboard.
 
+#### Create an environment
+
 Define environments that match your deployment stages (e.g., `eu`, `india`, `staging`). The `production` environment is always available by default.
+
+#### Create a variable
 
 Click **Add variable** and choose the variable type:
 
@@ -87,6 +93,10 @@ Click **Add variable** and choose the variable type:
 * **Auth connection**: Select an existing auth connection for each environment
 
 ![Create variable](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/8ab18d57956167aaa152e10b4d2890b208c8ba826ef0cbbf9082c8e1602f5246/assets/images/conversational-ai/env-vars-create-variable.png)
+
+#### Create via the API
+
+#### String
 
 ```python
 from elevenlabs import ElevenLabs
@@ -120,6 +130,8 @@ await elevenlabs.conversationalAi.environmentVariables.create({
 });
 ```
 
+#### Secret
+
 ```python
 from elevenlabs import ElevenLabs
 
@@ -149,6 +161,8 @@ await elevenlabs.conversationalAi.environmentVariables.create({
   },
 });
 ```
+
+#### Auth connection
 
 ```python
 from elevenlabs import ElevenLabs
@@ -470,6 +484,8 @@ function Agent() {
 
 This example demonstrates a complete setup with a single agent that uses different API backends and credentials across development, staging, and production.
 
+#### Create environment variables
+
 Create three environment variables in the dashboard or via API:
 
 | Label         | Type            | Development     | Staging             | Production       |
@@ -478,11 +494,15 @@ Create three environment variables in the dashboard or via API:
 | `api_key`     | Secret          | `dev-secret-id` | `staging-secret-id` | `prod-secret-id` |
 | `oauth_creds` | Auth connection | `dev-oauth-id`  | `staging-oauth-id`  | `prod-oauth-id`  |
 
+#### Configure tools with environment variable references
+
 Set up your webhook tools using template syntax:
 
 * **URL**: `https://{{system__env_api_host}}.example.com/v1/orders`
 * **Headers**: Reference `api_key` environment variable for the `X-Api-Key` header
 * **Auth**: Reference `oauth_creds` environment variable for OAuth authentication
+
+#### Specify environment at conversation time
 
 When starting a conversation, pass the target environment:
 
@@ -507,6 +527,8 @@ conversation = client.conversational_ai.conversation.get_signed_url(
 )
 ```
 
+#### Filter by environment
+
 The environment is tracked for every conversation. Filter your analytics dashboards and conversation history by environment to isolate metrics per deployment stage.
 
 ![Filter analytics by environment](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/640f45e330a6f58648bb79fb588b580bb1d938e20f46c453b6d0c0efdac04054/assets/images/conversational-ai/env-vars-filter-analytics.png)
@@ -521,10 +543,18 @@ The environment is tracked for every conversation. Filter your analytics dashboa
 
 ## Next steps
 
+#### [Webhook tools](/docs/eleven-agents/customization/tools/webhook-tools)
+
 Configure webhook tools with environment-aware URLs and authentication
+
+#### [MCP servers](/docs/eleven-agents/customization/tools/mcp)
 
 Connect MCP servers with per-environment configuration
 
+#### [Custom LLM](/docs/eleven-agents/customization/llm/custom-llm)
+
 Use different model endpoints across environments
+
+#### [Versioning](/docs/eleven-agents/operate/versioning)
 
 Combine environment variables with branches and traffic splitting

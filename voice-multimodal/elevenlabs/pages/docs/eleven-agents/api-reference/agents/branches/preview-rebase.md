@@ -679,7 +679,9 @@ components:
         - gemini-3.5-flash
         - claude-sonnet-4-5
         - claude-opus-4-7
+        - claude-opus-4-8
         - claude-sonnet-4-6
+        - claude-sonnet-5
         - claude-sonnet-4
         - claude-haiku-4-5
         - claude-3-7-sonnet
@@ -1103,6 +1105,12 @@ components:
             (just that line); 1 adds the latest user message onward.
         trigger_action:
           $ref: '#/components/schemas/type_:CustomGuardrailConfigTriggerAction'
+        evaluate_full_response_only:
+          type: boolean
+          default: false
+          description: >-
+            Evaluate once against the complete non-TTS response instead of
+            cumulative partials. Requires blocking mode.
       required:
         - name
         - prompt
@@ -1240,39 +1248,23 @@ components:
         - $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutput'
       description: Schema for array elements.
       title: ArrayJsonSchemaPropertyOutputItems
-    type_:ArrayJsonSchemaPropertyOutputConstantValueItem:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: ArrayJsonSchemaPropertyOutputConstantValueItem
     type_:ArrayJsonSchemaPropertyOutput:
       type: object
       properties:
-        type:
-          type: string
-          enum:
-            - array
         description:
           type: string
           default: ''
-        items:
-          $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutputItems'
-          description: Schema for array elements.
         dynamic_variable:
           type: string
           default: ''
           description: >-
-            When set, the entire array is populated from this dynamic variable
-            at runtime. Mutually exclusive with description (LLM-provided
-            array), constant_value, and is_omitted.
+            When set, the entire parameter is populated from this dynamic
+            variable at runtime. Mutually exclusive with description
+            (LLM-provided value), constant_value, and is_omitted.
         constant_value:
           type: array
           items:
-            $ref: >-
-              #/components/schemas/type_:ArrayJsonSchemaPropertyOutputConstantValueItem
+            description: Any type
           description: >-
             When set, the entire array uses this constant value at runtime.
             Mutually exclusive with description (LLM-provided array),
@@ -1281,9 +1273,16 @@ components:
           type: boolean
           default: false
           description: >-
-            If true, this array parameter will be completely omitted from the
-            request. Only valid for optional parameters. Mutually exclusive with
+            If true, this parameter will be completely omitted from the request.
+            Only valid for optional parameters. Mutually exclusive with
             description, dynamic_variable, and constant_value.
+        type:
+          type: string
+          enum:
+            - array
+        items:
+          $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutputItems'
+          description: Schema for array elements.
       title: ArrayJsonSchemaPropertyOutput
     type_:ObjectJsonSchemaPropertyOutputPropertiesValue:
       oneOf:
@@ -1320,6 +1319,31 @@ components:
     type_:ObjectJsonSchemaPropertyOutput:
       type: object
       properties:
+        description:
+          type: string
+          default: ''
+        dynamic_variable:
+          type: string
+          default: ''
+          description: >-
+            When set, the entire parameter is populated from this dynamic
+            variable at runtime. Mutually exclusive with description
+            (LLM-provided value), constant_value, and is_omitted.
+        constant_value:
+          type: object
+          additionalProperties:
+            description: Any type
+          description: >-
+            When set, the entire object uses this constant JSON value at
+            runtime. Mutually exclusive with description (LLM-provided object),
+            dynamic_variable, and is_omitted.
+        is_omitted:
+          type: boolean
+          default: false
+          description: >-
+            If true, this parameter will be completely omitted from the request.
+            Only valid for optional parameters. Mutually exclusive with
+            description, dynamic_variable, and constant_value.
         type:
           type: string
           enum:
@@ -1328,9 +1352,6 @@ components:
           type: array
           items:
             type: string
-        description:
-          type: string
-          default: ''
         properties:
           type: object
           additionalProperties:
@@ -2084,14 +2105,6 @@ components:
         - async
       default: immediate
       title: ToolExecutionMode
-    type_:ConstantSchemaOverrideConstantValueFourItem:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: ConstantSchemaOverrideConstantValueFourItem
     type_:ConstantSchemaOverrideConstantValue:
       oneOf:
         - type: string
@@ -2101,8 +2114,10 @@ components:
         - type: boolean
         - type: array
           items:
-            $ref: >-
-              #/components/schemas/type_:ConstantSchemaOverrideConstantValueFourItem
+            description: Any type
+        - type: object
+          additionalProperties:
+            description: Any type
       description: The constant value to use
       title: ConstantSchemaOverrideConstantValue
     type_:ApiIntegrationWebhookOverridesSchemaOverridesValue:
@@ -3290,6 +3305,31 @@ components:
           description: >-
             Status text displayed when the agent encounters an error during a
             tool call.
+        attach_file:
+          type: string
+          description: Text and ARIA label for the attach file button.
+        remove_file:
+          type: string
+          description: ARIA label for the remove file button.
+        file_upload_error:
+          type: string
+          description: Error message displayed when a file fails to upload.
+        file_type_unsupported:
+          type: string
+          description: >-
+            Error message displayed when an unsupported file type is selected.
+            Followed by the list of accepted types.
+        file_too_large:
+          type: string
+          description: Error message displayed when a file exceeds the maximum size limit.
+        file_limit_reached:
+          type: string
+          description: >-
+            Error message displayed when the maximum number of files for a
+            conversation is reached.
+        typing_indicator:
+          type: string
+          description: Status text displayed while the agent is typing.
       title: WidgetTextContents
     type_:WidgetStyles:
       type: object
@@ -4612,6 +4652,9 @@ components:
           type: boolean
           default: true
         enable_audio_message_response:
+          type: boolean
+          default: true
+        enable_typing_indicator:
           type: boolean
           default: true
         assigned_agent_name:
@@ -7143,6 +7186,7 @@ components:
       "assigned_agent_id": "assigned_agent_id",
       "enable_messaging": true,
       "enable_audio_message_response": true,
+      "enable_typing_indicator": true,
       "assigned_agent_name": "assigned_agent_name",
       "is_token_expired": true
     }

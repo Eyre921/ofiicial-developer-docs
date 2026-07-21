@@ -50,6 +50,8 @@ For streaming features on the EU endpoint, use the following URLs:
 
 ### SDK Configuration Examples
 
+#### Python
+
 ```python
 from deepgram import DeepgramClient
 from deepgram.environment import DeepgramClientEnvironment
@@ -63,6 +65,8 @@ eu_env = DeepgramClientEnvironment(
 client = DeepgramClient(api_key="YOUR_API_KEY", environment=eu_env)
 ```
 
+#### JavaScript
+
 ```javascript
 import { DeepgramClient } from "@deepgram/sdk";
 
@@ -72,6 +76,8 @@ const deepgram = new DeepgramClient({
 });
 ```
 
+#### .NET
+
 ```csharp
 using Deepgram;
 using Deepgram.Models.Authenticate.v1;
@@ -80,6 +86,8 @@ var client = new AnalyzeClient("YOUR_API_KEY",
     new DeepgramHttpClientOptions("YOUR_API_KEY", "https://api.eu.deepgram.com"));
 ```
 
+#### Go
+
 ```go
 import "github.com/deepgram/deepgram-go-sdk/pkg/client/interfaces"
 
@@ -87,6 +95,8 @@ client := client.New("YOUR_API_KEY", &interfaces.ClientOptions{
     Host: "api.eu.deepgram.com",
 })
 ```
+
+#### Java
 
 ```java
 import com.deepgram.DeepgramClient;
@@ -102,6 +112,8 @@ DeepgramClient client = DeepgramClient.builder()
     .environment(euEnv)
     .build();
 ```
+
+#### cURL
 
 ```bash
 curl -X POST "https://api.eu.deepgram.com/v1/listen" \
@@ -148,6 +160,8 @@ For streaming features on the AU endpoint, use the following URLs:
 
 ### SDK Configuration Examples
 
+#### Python
+
 ```python
 from deepgram import DeepgramClient
 from deepgram.environment import DeepgramClientEnvironment
@@ -161,6 +175,8 @@ au_env = DeepgramClientEnvironment(
 client = DeepgramClient(api_key="YOUR_API_KEY", environment=au_env)
 ```
 
+#### JavaScript
+
 ```javascript
 import { DeepgramClient } from "@deepgram/sdk";
 
@@ -170,6 +186,8 @@ const deepgram = new DeepgramClient({
 });
 ```
 
+#### .NET
+
 ```csharp
 using Deepgram;
 using Deepgram.Models.Authenticate.v1;
@@ -178,6 +196,8 @@ var client = new AnalyzeClient("YOUR_API_KEY",
     new DeepgramHttpClientOptions("YOUR_API_KEY", "https://api.au.deepgram.com"));
 ```
 
+#### Go
+
 ```go
 import "github.com/deepgram/deepgram-go-sdk/pkg/client/interfaces"
 
@@ -185,6 +205,8 @@ client := client.New("YOUR_API_KEY", &interfaces.ClientOptions{
     Host: "api.au.deepgram.com",
 })
 ```
+
+#### Java
 
 ```java
 import com.deepgram.DeepgramClient;
@@ -200,6 +222,8 @@ DeepgramClient client = DeepgramClient.builder()
     .environment(auEnv)
     .build();
 ```
+
+#### cURL
 
 ```bash
 curl -X POST "https://api.au.deepgram.com/v1/listen" \

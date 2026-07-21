@@ -27,12 +27,20 @@ transcripts can still be viewed. To modify transcript retention settings, please
 
 * A configured [ElevenLabs Conversational Agent](/docs/eleven-agents/quickstart)
 
+#### Update via the dashboard
+
+#### Access audio saving settings
+
 Find your agent in the ElevenAgents [page](https://elevenlabs.io/app/agents/agents) and select
 the "Advanced" tab. The audio saving control is located in the "Privacy Settings" section.
 
 ![Disable audio saving option](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/e2f7d92f9128bace5d992e76aa500da7e1bc62d22d423841b774c1e20fcaf891/assets/images/conversational-ai/no-audio-setting.png)
 
+#### Choose saving option
+
 Toggle the control to enable or disable audio saving and click save to confirm your selection.
+
+#### Review call history
 
 When audio saving is enabled, calls in the call history allow you to review the audio.
 
@@ -42,9 +50,15 @@ When audio saving is disabled, calls in the call history do not include audio.
 
 ![Call without audio saved](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/5dffbe46545eda166d48328b21f63ff0a6d3a0a8b05224213307da426ba6e47e/assets/images/conversational-ai/no-audio.png)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `platform_settings.privacy.record_voice`:
 
@@ -58,9 +72,13 @@ Set `platform_settings.privacy.record_voice`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs

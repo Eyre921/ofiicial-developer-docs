@@ -29,9 +29,13 @@ For streaming audio directly from the microphone, see the [Client-side streaming
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
 
+#### Configure the SDK
+
 The SDK provides two ways to transcribe audio in realtime: streaming from a URL or manually chunking the audio from either a file or your own audio stream.
 
 For a full list of parameters and options the API supports, please refer to the [API reference](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime).
+
+#### Stream from URL
 
 This example shows how to stream an audio file from a URL using the official SDK.
 
@@ -142,6 +146,8 @@ connection.on(RealtimeEvents.CLOSE, () => {
 });
 
 ```
+
+#### Manual audio chunking
 
 The easiest way to transcribe audio using Scribe is to use the official SDK. In case you aren't able to use the SDK, you can use the WebSocket API directly. See the WebSocket example below on how to use the WebSocket API.
 
@@ -536,6 +542,8 @@ asyncio.run(transcribe())
     }
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -548,6 +556,10 @@ You will see the transcription of the audio file printed to the console in parti
 
 ## Next steps
 
+#### [Transcripts and commit strategies](/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies)
+
 Control when transcripts are committed and how to handle partial results.
+
+#### [Event reference](/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference)
 
 Full list of events and error types from the realtime STT API.

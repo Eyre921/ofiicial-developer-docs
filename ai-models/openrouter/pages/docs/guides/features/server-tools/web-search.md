@@ -427,7 +427,7 @@ All pricing is in addition to standard LLM token costs for processing the search
 ## Migrating from the Web Search Plugin
 
 <Note>
-  The [web search plugin](/guides/features/plugins/web-search) (`plugins: [{ id: "web" }]`) and the [`:online` variant](/guides/routing/model-variants/online) are deprecated. Use the `openrouter:web_search` server tool instead.
+  The [web search plugin](/docs/guides/features/plugins/web-search) (`plugins: [{ id: "web" }]`) and the [`:online` variant](/docs/guides/routing/model-variants/online) are deprecated. Use the `openrouter:web_search` server tool instead.
 </Note>
 
 The key differences:
@@ -506,7 +506,7 @@ The key differences:
 
 ## Next Steps
 
-* [Server Tools Overview](/guides/features/server-tools) — Learn about server tools
-* [Datetime](/guides/features/server-tools/datetime) — Get the current date and time
-* [Tool Calling](/guides/features/tool-calling) — Learn about user-defined tool calling
+* [Server Tools Overview](/docs/guides/features/server-tools) — Learn about server tools
+* [Datetime](/docs/guides/features/server-tools/datetime) — Get the current date and time
+* [Tool Calling](/docs/guides/features/tool-calling) — Learn about user-defined tool calling
 

@@ -24,6 +24,8 @@ Audiobooks also supports dynamic narration, a mode that allows listeners to choo
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/6f40fdd9e48caf899c67599e82c64a3a2e09b1f2d87cd2af75e168ab62f516f7/assets/images/product-guides/studio/audiobooks-create-new-book.png" alt="Audiobooks - create new book" title="audiobooks-create-new-book" />
 
+#### Create a new audiobook
+
 Click **Create new book** from the Audiobooks page to start a new project.
 
 After opening the editor, you can begin by:
@@ -32,11 +34,15 @@ After opening the editor, you can begin by:
 * pasting text directly
 * importing content from a URL
 
+#### Add and organize chapters
+
 Use the **Chapters** panel to structure your audiobook.
 
 * Click the **+** button to add new chapters
 * Rename and reorder chapters as needed
 * If you upload a document with chapters, they will be detected automatically
+
+#### Generate narration
 
 Select a chapter and use the **Play** button in the player to generate or preview narration.
 
@@ -55,6 +61,8 @@ You can choose how playback and generation behave using the mode selector to the
 
 Playing already generated audio does not consume credits. Credits are only used when generating new narration.
 
+#### Enhance your audiobook
+
 You can enrich your audiobook with additional audio layers:
 
 * **Voices** — choose or update the narration voice
@@ -66,6 +74,8 @@ To add music or sound effects:
 * Click the **+** icon to import them into your project
 * They will appear as separate tracks on the timeline and play alongside narration
 
+#### Choose narration mode
+
 Audiobooks supports two narration modes:
 
 * **Original audio** — narration is pre-generated using a selected voice
@@ -74,6 +84,8 @@ Audiobooks supports two narration modes:
 To switch modes, open the project status panel from the top right of the editor and click **Change mode**.
 
 In dynamic narration mode, music, sound effects, and external audio are not included in playback.
+
+#### Export your audiobook
 
 To export your audiobook, click **Publish** in the top right corner and open the **Export** tab.
 
@@ -86,6 +98,8 @@ You can configure:
 
 If some sections are not yet generated, they will be completed during export.
 
+#### Publish and distribute
+
 To distribute your audiobook, click **Publish** in the top right corner and stay on the **Publish** tab.
 
 You can publish directly to:
@@ -95,6 +109,8 @@ You can publish directly to:
 * **ElevenLabs Video** or **Audio Native** for additional formats
 
 Publishing allows you to share your audiobook with listeners and, on supported platforms like ElevenReader, start earning from distribution.
+
+#### Publishing to ElevenReader
 
 When publishing to ElevenReader, you will go through a submission flow to prepare your audiobook for distribution.
 
@@ -128,6 +144,8 @@ The timeline allows you to review how narration, music, and sound effects play t
 
 You can customize how your audiobook sounds using **voice and model settings** in the editor sidebar and project settings.
 
+#### Voice and model selection
+
 * **Voice** — selects the narrator used for your audiobook
 * **Model** — determines speech quality, expressiveness, and supported languages
 
@@ -137,6 +155,8 @@ You can change these in two places:
 * **Project settings** — set default voice and model for the entire project
 
 To access project-level settings, open the menu in the top-left corner and select **Project settings**.
+
+#### Available models
 
 ElevenLabs supports multiple speech models with different strengths:
 
@@ -148,13 +168,19 @@ You can switch models at any time. However:
 
 Changing the model does not update already generated audio — you will need to regenerate affected paragraphs, which will use credits.
 
+#### Default settings
+
 When creating a new audiobook:
 
 * The default model is **Eleven Multilingual v2**
 * The default voice is selected automatically (can be changed anytime)
 * The default language is set to **automatic detection**
 
+#### Voice settings (per selection)
+
 When working inside the editor, you can override voice settings for specific paragraphs. Enable **Override settings** in the sidebar to adjust delivery without affecting the entire project
+
+#### Playback controls
 
 The contextual sidebar includes playback controls for fine-tuning narration:
 
@@ -163,12 +189,16 @@ The contextual sidebar includes playback controls for fine-tuning narration:
 
 These settings apply to the selected paragraph.
 
+#### AI tools
+
 The sidebar also provides AI-powered tools to improve your audiobook:
 
 * **Enhance text** — refine text to improve delivery and clarity
 * **Remove background audio** — clean up audio using voice isolation
 * **Use voice changer** — modify the voice in existing audio
 * **Direct speech with your voice** — record reference audio to guide delivery (Actor Mode)
+
+#### Quality and export settings
 
 Audio quality is automatically determined by your subscription plan and project settings, and does not affect credit usage.
 
@@ -276,18 +306,26 @@ Music, sound effects, and external audio are not included in dynamic narration p
 
 Audiobooks provides flexible export options depending on how you want to use your content.
 
+#### Export scope
+
 * Full project
 * Individual chapters
 
-- Audio
-- Timeline data (AAF)
-- Subtitles
+#### Media types
+
+* Audio
+* Timeline data (AAF)
+* Subtitles
+
+#### File structure
 
 * Single file
 * Chapter-based ZIP
 
-- MP3
-- WAV
+#### Audio formats
+
+* MP3
+* WAV
 
 Exporting will automatically generate any remaining sections before downloading.
 
@@ -309,9 +347,31 @@ To create a series:
 
 ## FAQ
 
-No. If some sections are not yet generated, they will be completed automatically during export, which will use credits.
+<tbody>
+  <tr>
+    <td>
+      #### Do I need to generate narration before exporting?
 
-Generated narration produces a fixed audio file using a selected voice. Dynamic narration allows
-listeners to choose their preferred narrator's voice during playback.
+      No. If some sections are not yet generated, they will be completed automatically during
+      export, which will use credits.
+    </td>
+  </tr>
 
-Yes. You can distribute your audiobook across multiple platforms, including ElevenReader and supported partner marketplaces.
+  <tr>
+    <td>
+      #### What is the difference between original audio and dynamic narration?
+
+      Generated narration produces a fixed audio file using a selected voice. Dynamic narration
+      allows listeners to choose their preferred narrator's voice during playback.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I publish to multiple platforms?
+
+      Yes. You can distribute your audiobook across multiple platforms, including ElevenReader
+      and supported partner marketplaces.
+    </td>
+  </tr>
+</tbody>

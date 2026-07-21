@@ -333,6 +333,10 @@ wss://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream-input?model_id={mode
 
 ## Next steps
 
+#### [TTS streaming](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
+
 Use HTTP streaming when input text is available up-front rather than generated in real time.
+
+#### [Latency optimization](/docs/eleven-api/guides/how-to/best-practices/latency-optimization)
 
 Reduce time-to-first-audio with model selection, voice choice, and geographic routing.

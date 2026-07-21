@@ -81,43 +81,6 @@ components:
         The category of the voice. Either 'premade', 'cloned', 'generated' or
         'professional'.
       title: SpeechHistoryItemResponseModelVoiceCategory
-    FeedbackResponseModel:
-      type: object
-      properties:
-        thumbs_up:
-          type: boolean
-          description: Whether the user liked the generated item.
-        feedback:
-          type: string
-          description: The feedback text provided by the user.
-        emotions:
-          type: boolean
-          description: Whether the user provided emotions.
-        inaccurate_clone:
-          type: boolean
-          description: Whether the user thinks the clone is inaccurate.
-        glitches:
-          type: boolean
-          description: Whether the user thinks there are glitches in the audio.
-        audio_quality:
-          type: boolean
-          description: Whether the user thinks the audio quality is good.
-        other:
-          type: boolean
-          description: Whether the user provided other feedback.
-        review_status:
-          type: string
-          default: not_reviewed
-          description: The review status of the item. Defaults to 'not_reviewed'.
-      required:
-        - thumbs_up
-        - feedback
-        - emotions
-        - inaccurate_clone
-        - glitches
-        - audio_quality
-        - other
-      title: FeedbackResponseModel
     SpeechHistoryItemResponseModelSource:
       type: string
       enum:
@@ -251,13 +214,6 @@ components:
           additionalProperties:
             description: Any type
           description: The settings of the history item.
-        feedback:
-          oneOf:
-            - $ref: '#/components/schemas/FeedbackResponseModel'
-            - type: 'null'
-          description: >-
-            Feedback associated with the generated item. Returns null if no
-            feedback has been provided.
         share_link_id:
           type:
             - string

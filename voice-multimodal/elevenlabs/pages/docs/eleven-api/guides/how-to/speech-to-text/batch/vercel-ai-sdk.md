@@ -125,6 +125,10 @@ The following provider options are available:
 
 ## Next steps
 
+#### [Server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming)
+
 Transcribe audio in real time using the WebSocket-based streaming API.
+
+#### [API reference](/docs/api-reference/speech-to-text)
 
 Full Speech to Text API reference and parameters.

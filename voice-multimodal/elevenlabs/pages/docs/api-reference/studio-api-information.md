@@ -10,3 +10,117 @@ path: docs/api-reference/studio-api-information
 
 The ElevenCreative Studio API is only available upon request. To get access, [contact
 sales](https://elevenlabs.io/contact-sales).
+
+## FAQ
+
+<tbody>
+  <tr>
+    <td>
+      #### What is Studio?
+
+      Studio is our production workflow for creating professional audio and video content. It brings together text, visuals, and sound to help you produce narrations, audiobooks, video voiceovers, and more.
+
+      ### Creating Audio Content
+
+      To generate audio, you can upload a full book, document, or script, or even import an entire webpage via URL. Studio supports a wide range of formats, including:
+
+      * EPUB
+      * PDF
+      * DOCX
+      * TXT
+      * HTML
+      * URL
+
+      Once imported, you can edit and organize text directly in the interface and apply any voice from our Voice Library to bring your content to life. When your project is complete, you can export as either MP3 or WAV.
+
+      ### Creating Video and Voiceover Content
+
+      Studio also allows you to import videos and images to create voiceovers. The timeline includes a video track and caption layer, giving you precise control over timing and synchronization. You can also import music and sound effects on separate tracks for richer productions.
+
+      When your project is ready for review, you can share it using our built-in collaboration tools, which include feedback and commenting features.
+
+      ### Advanced Features
+
+      Studio includes powerful organization and editing tools that make it easy to manage complex projects:
+
+      * Assign different voices and settings to sections or characters.
+      * Regenerate individual paragraphs or words to fine-tune delivery.
+      * Lock sections once you’re satisfied with the result.
+      * Access Generation History to restore and download previous versions.
+      * Adjust playback speed between 0.8× and 2.0× for efficient review.
+
+      These controls make Studio ideal for creating everything from table reads and audio dramas to narrated videos and multimedia productions.
+
+      For a full overview and step-by-step guidance, see our [Studio documentation.](/docs/product-guides/products/studio)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### On what plans can I use Studio?
+
+      Our professional end-to-end solution for long-form content, called Studio, is available on all our plans, including our free plan. 
+
+      The exception being the <strong>Create a podcast (GenFM)</strong> feature, which requires a paid subscription to access.
+
+      You can find more information about all our subscription plans on our [Pricing page.](https://elevenlabs.io/pricing)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I add chapters to a Studio project?
+
+      When you create a Studio project using the <strong>New audiobook</strong> option and import a document that includes chapters, chapters will be automatically detected.
+
+      To manage chapters in an existing project, go to <strong>Project options</strong> in the top left corner, then select <strong>Manage chapters</strong>. This will open the <strong>Chapters sidebar</strong>.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/43294708987537" alt="" />
+
+      You can add a new chapter using the <strong>+</strong> button. You can also rename and remove chapters using the <strong>Chapter actions</strong> (three dots) button, and drag and drop the chapters to rearrange them.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/43294661341585" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Does it cost credits to regenerate in Studio?
+
+      We offer up to two free regenerations in Studio, provided you haven't changed the text that you're regenerating, or assigned a different voice, or changed the voice settings.
+
+      To regenerate, either click on the paragraph to regenerate the whole paragraph, or select one or more words that you want to regenerate. For the best results, we recommend regenerating a complete phrase or sentence. 
+
+      If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says <strong>Regenerate</strong>, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.  
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41237476632977" alt="" />
+
+      If your selection isn't eligible for a free regeneration, the button will say <strong>Generate</strong>, and you will be charged for the generation.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I create a voiceover for my video using Studio?
+
+      To create a voiceover for a video, you can either:
+
+      * Start a new project using the **New video voiceover** option, which lets you upload a video file, or
+      * Start a blank project using the **New blank project option** > **Video project**.
+
+      You can also add a video to an existing project:
+
+      * To upload a video, use the **Imports** option and either drag and drop your file, or specify the location using the **Upload file** option.
+      * To add a video that you've generated using Image & Video, click **Video** in the sidebar. You'll see your previously generated videos and can import using the **+** button.
+      * You can also generate a video directly in Studio using the Video prompt, which you can access by clicking **Video** in the sidebar.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/41121870136209" alt="" />
+
+      You can:
+
+      * **Resize the video view** by dragging the vertical divider between the video and text panes.
+      * **Remove the video** by right-clicking it in the timeline and selecting **Delete**.
+      * **Export your project** as a full video or audio-only file by clicking **Export**.
+    </td>
+  </tr>
+</tbody>

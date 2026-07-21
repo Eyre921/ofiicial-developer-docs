@@ -24,6 +24,8 @@ streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-st
 
 ## Using the Speech to Text API
 
+#### Create an API key
+
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
@@ -31,6 +33,8 @@ Store the key as a managed secret and pass it to the SDKs either as a environmen
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
+
+#### Install the SDK
 
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
@@ -43,6 +47,8 @@ pip install python-dotenv
 npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
+
+#### Make the API request
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -100,6 +106,8 @@ const transcription = await elevenlabs.speechToText.convert({
 console.log(transcription);
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -112,8 +120,14 @@ You should see the transcription of the audio file printed to the console.
 
 ## Next steps
 
+#### [Batch transcription](/docs/eleven-api/guides/how-to/speech-to-text/batch)
+
 Transcribe pre-recorded audio files with speaker diarization and event tagging
 
+#### [Realtime transcription](/docs/eleven-api/guides/how-to/speech-to-text/realtime)
+
 Stream audio and receive transcriptions in real time
+
+#### [API reference](/docs/api-reference/speech-to-text/convert)
 
 Explore all Speech to Text parameters and response formats

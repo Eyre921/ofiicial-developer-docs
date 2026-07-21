@@ -16,6 +16,8 @@ This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quick
 the quickstart first if you haven't. To play audio through your speakers, you may also need
 [MPV](https://mpv.io/) and/or [ffmpeg](https://ffmpeg.org/).
 
+#### Make the API request
+
 Designing a voice via a prompt has two steps:
 
 1. Generate previews based on a prompt.
@@ -79,6 +81,8 @@ for (const preview of previews) {
 }
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -88,6 +92,8 @@ npx tsx example.mts
 ```
 
 You should hear the generated voice previews playing through your speakers, one at a time.
+
+#### Add generated voice to your library
 
 Once you've generated the previews and picked your favorite, you can add it to your voice library via the generated voice ID so it can be used with other APIs.
 
@@ -118,6 +124,10 @@ console.log(voice.voiceId);
 
 ## Next steps
 
+#### [Instant voice cloning](/docs/eleven-api/guides/how-to/voices/instant-voice-cloning)
+
 Clone a voice from existing audio instead of generating one from a description.
+
+#### [API reference](/docs/api-reference/text-to-voice/design)
 
 Full Voice Design API reference and parameters.

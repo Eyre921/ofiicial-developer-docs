@@ -27,6 +27,8 @@ seamless experience where:
 
 ## Configuration
 
+#### Configure webhook details
+
 In the [settings page](https://elevenlabs.io/app/agents/settings) of ElevenAgents, configure the webhook URL and add any
 secrets needed for authentication.
 
@@ -36,9 +38,13 @@ Click on the webhook to modify which secrets are sent in the headers.
 
 ![Add secrets to headers](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/416d30e6906cd209de92820bfc146ac9478fbb6ce61c8fbbc24d62cad54d9f05/assets/images/conversational-ai/convai-initiation-webhook.png)
 
+#### Enable fetching conversation initiation data
+
 In the "Security" tab of the [agent's page](https://elevenlabs.io/app/agents/agents/), enable fetching conversation initiation data for inbound Twilio calls, and define fields that can be overridden.
 
 ![Enable webhook](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/6024b7f7541b8f856514b56ebf391cd6ee24206fd89c07327de1b01d81795c20/assets/images/conversational-ai/enable-twilio-webhook.png)
+
+#### Implement the webhook endpoint to receive Twilio data
 
 The webhook will receive a POST request with the following parameters:
 
@@ -48,6 +54,8 @@ The webhook will receive a POST request with the following parameters:
 | `agent_id`      | string | The ID of the agent receiving the call |
 | `called_number` | string | The Twilio number that was called      |
 | `call_sid`      | string | Unique identifier for the Twilio call  |
+
+#### Return conversation initiation client data
 
 Your webhook must return a JSON response containing the initiation data for the agent.
 

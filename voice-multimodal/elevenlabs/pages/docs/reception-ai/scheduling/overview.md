@@ -48,8 +48,14 @@ Time-off exceptions block specific dates for the entire business, individual sta
 Add all known holidays at the beginning of the year so your receptionist never accidentally books
 during a closure.
 
+#### [Services](/docs/reception-ai/scheduling/services)
+
 Service types, pricing, variants, and add-ons.
 
+#### [Business hours](/docs/reception-ai/scheduling/business-hours)
+
 Operating hours, time-off exceptions, and availability logic.
+
+#### [Staff](/docs/reception-ai/scheduling/staff)
 
 Staff schedules, assignments, and calendar sync.

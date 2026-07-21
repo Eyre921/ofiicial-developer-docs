@@ -326,39 +326,23 @@ components:
         - $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutput'
       description: Schema for array elements.
       title: ArrayJsonSchemaPropertyOutputItems
-    type_:ArrayJsonSchemaPropertyOutputConstantValueItem:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: ArrayJsonSchemaPropertyOutputConstantValueItem
     type_:ArrayJsonSchemaPropertyOutput:
       type: object
       properties:
-        type:
-          type: string
-          enum:
-            - array
         description:
           type: string
           default: ''
-        items:
-          $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutputItems'
-          description: Schema for array elements.
         dynamic_variable:
           type: string
           default: ''
           description: >-
-            When set, the entire array is populated from this dynamic variable
-            at runtime. Mutually exclusive with description (LLM-provided
-            array), constant_value, and is_omitted.
+            When set, the entire parameter is populated from this dynamic
+            variable at runtime. Mutually exclusive with description
+            (LLM-provided value), constant_value, and is_omitted.
         constant_value:
           type: array
           items:
-            $ref: >-
-              #/components/schemas/type_:ArrayJsonSchemaPropertyOutputConstantValueItem
+            description: Any type
           description: >-
             When set, the entire array uses this constant value at runtime.
             Mutually exclusive with description (LLM-provided array),
@@ -367,9 +351,16 @@ components:
           type: boolean
           default: false
           description: >-
-            If true, this array parameter will be completely omitted from the
-            request. Only valid for optional parameters. Mutually exclusive with
+            If true, this parameter will be completely omitted from the request.
+            Only valid for optional parameters. Mutually exclusive with
             description, dynamic_variable, and constant_value.
+        type:
+          type: string
+          enum:
+            - array
+        items:
+          $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutputItems'
+          description: Schema for array elements.
       title: ArrayJsonSchemaPropertyOutput
     type_:ObjectJsonSchemaPropertyOutputPropertiesValue:
       oneOf:
@@ -406,6 +397,31 @@ components:
     type_:ObjectJsonSchemaPropertyOutput:
       type: object
       properties:
+        description:
+          type: string
+          default: ''
+        dynamic_variable:
+          type: string
+          default: ''
+          description: >-
+            When set, the entire parameter is populated from this dynamic
+            variable at runtime. Mutually exclusive with description
+            (LLM-provided value), constant_value, and is_omitted.
+        constant_value:
+          type: object
+          additionalProperties:
+            description: Any type
+          description: >-
+            When set, the entire object uses this constant JSON value at
+            runtime. Mutually exclusive with description (LLM-provided object),
+            dynamic_variable, and is_omitted.
+        is_omitted:
+          type: boolean
+          default: false
+          description: >-
+            If true, this parameter will be completely omitted from the request.
+            Only valid for optional parameters. Mutually exclusive with
+            description, dynamic_variable, and constant_value.
         type:
           type: string
           enum:
@@ -414,9 +430,6 @@ components:
           type: array
           items:
             type: string
-        description:
-          type: string
-          default: ''
         properties:
           type: object
           additionalProperties:
@@ -536,6 +549,12 @@ components:
             (just that line); 1 adds the latest user message onward.
         trigger_action:
           $ref: '#/components/schemas/type_:CustomGuardrailConfigTriggerAction'
+        evaluate_full_response_only:
+          type: boolean
+          default: false
+          description: >-
+            Evaluate once against the complete non-TTS response instead of
+            cumulative partials. Requires blocking mode.
       required:
         - name
         - prompt

@@ -294,6 +294,8 @@ If the conversation requires authorization, use the REST API to generate signed 
 
 `startSession` returns a promise resolving a `conversationId`. The value is a globally unique conversation ID you can use to identify separate conversations.
 
+#### WebSocket connection
+
 ```js maxLines=0
 // Node.js server
 
@@ -328,6 +330,8 @@ await conversation.startSession({
   signedUrl,
 });
 ```
+
+#### WebRTC connection
 
 ```js maxLines=0
 // Node.js server

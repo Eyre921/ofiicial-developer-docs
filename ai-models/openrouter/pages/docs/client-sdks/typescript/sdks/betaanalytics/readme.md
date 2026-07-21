@@ -23,7 +23,7 @@ beta.Analytics endpoints
 
 ## getAnalyticsMeta
 
-Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -100,7 +100,7 @@ run();
 
 ## queryAnalytics
 
-Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

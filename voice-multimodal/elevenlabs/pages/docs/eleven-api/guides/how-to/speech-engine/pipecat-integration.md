@@ -224,10 +224,18 @@ The pipeline shape stays the same — `Pipeline([processor_a, llm, processor_b, 
 
 ## Next steps
 
+#### [Speech Engine quickstart](/docs/eleven-api/guides/cookbooks/speech-engine)
+
 Build the brain server and browser client end-to-end.
+
+#### [LiveKit integration](/docs/eleven-api/guides/how-to/speech-engine/livekit-integration)
 
 Use Speech Engine as the voice layer for a LiveKit room.
 
+#### [Python SDK reference](/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference)
+
 Classes, methods, and events for the Speech Engine Python SDK.
+
+#### [JavaScript SDK reference](/docs/eleven-api/resources/libraries/speech-engine/javascript-sdk-reference)
 
 Classes, methods, and events for the Speech Engine JavaScript SDK.

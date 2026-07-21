@@ -23,15 +23,21 @@ Experiments replace guesswork with evidence. You test changes against live traff
 
 Experiments follow a four-step workflow:
 
+#### Create a variant
+
 Start from your current agent configuration and create a new branch. Modify anything — system prompt, workflow, voice, tools, knowledge base, guardrails, or evaluation criteria. Each change is tracked as a versioned configuration.
 
 Navigate to the **Branches** tab in your agent settings and click **Create branch**.
+
+#### Route traffic
 
 Define what percentage of live conversations should go to your variant. Start small (5–10%) to limit risk, then increase as confidence grows.
 
 Click **Edit traffic split** and set the percentages for each branch. Percentages must total exactly 100%.
 
 ![Configuring traffic split between branches](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/0d4fd1ae53a2fec09bf7572d4bbf4341c1c183cbf9b3618807f91ede1dd126ee/assets/images/conversational-ai/experiments-traffic-split.png)
+
+#### Measure impact
 
 Compare variant performance against your baseline using the [analytics dashboard](/docs/eleven-agents/dashboard). Click **See analytics** from the branches panel to jump directly to a branch-filtered view.
 
@@ -45,6 +51,8 @@ Teams can measure outcomes such as:
 * Average handling time
 * Median agent response latency
 * Cost per agent resolution
+
+#### Promote the winner
 
 Once a variant demonstrates measurable improvement, either increase its traffic share or merge it into the main branch to make it the new default. Full version history is preserved, enabling rollbacks if needed.
 
@@ -60,11 +68,17 @@ All traffic percentages must sum to exactly 100%. A deployment will fail if they
 
 Experiments support continuous optimization across customer-facing and operational workflows.
 
+#### Customer experience
+
 Test whether a revised escalation flow improves CSAT without increasing handling time. Compare
 different greeting styles, empathy levels, or resolution strategies.
 
+#### Revenue
+
 Test whether a more direct tone or different qualification logic increases conversion.
 Experiment with objection handling, pricing presentation, or follow-up timing.
+
+#### Operations
 
 Measure whether tool logic changes reduce average handling time or infrastructure cost. Test
 different knowledge base configurations or workflow structures.
@@ -88,33 +102,53 @@ Any aspect of agent configuration can be varied between branches:
 
 ## Best practices
 
+#### Start with a hypothesis
+
 Define what you expect to improve and how you'll measure it before creating a variant. For
 example: "Changing the escalation prompt to include a summary of the issue will improve our
 resolution-rate evaluation criterion by 10%."
 
+#### Change one thing at a time
+
 Isolating a single variable makes it clear what caused any performance difference. If you change
 the prompt, voice, and workflow simultaneously, you won't know which change drove the result.
+
+#### Set up evaluation criteria first
 
 Configure [success
 evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation) criteria before
 running experiments. These provide the structured metrics you need to compare variants
 objectively.
 
+#### Start with small traffic percentages
+
 Begin with 5–10% of traffic on the variant. This limits exposure if something goes wrong while
 still generating meaningful data.
 
+#### Give experiments enough time
+
 Allow enough conversations to accumulate before drawing conclusions. Small sample sizes lead to
 unreliable results. Monitor the analytics dashboard and wait for trends to stabilize.
+
+#### Keep experiments short-lived
 
 Merge or discard experiments promptly. Long-running branches become harder to merge and may
 drift from the main configuration.
 
 ## Next steps
 
+#### [Versioning](/docs/eleven-agents/operate/versioning)
+
 Learn the underlying versioning system — branches, versions, and API reference
+
+#### [Analytics](/docs/eleven-agents/dashboard)
 
 Monitor experiment performance with the analytics dashboard
 
+#### [Success evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation)
+
 Define custom success criteria to measure experiment outcomes
+
+#### [Testing](/docs/eleven-agents/customization/agent-testing)
 
 Set up automated tests before branching to establish a baseline

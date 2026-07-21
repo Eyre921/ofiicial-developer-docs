@@ -109,6 +109,8 @@ Speech Engine PCM is signed 16-bit little-endian throughout. See the [audio form
 
 The worker is a long-running process that connects to your LiveKit server, waits for jobs, joins assigned rooms, and bridges audio between the room and Speech Engine.
 
+#### Install dependencies
+
 ```bash title="Python"
 pip install "livekit-agents" "livekit-api" "elevenlabs" "aiohttp" "python-dotenv"
 ```
@@ -116,6 +118,8 @@ pip install "livekit-agents" "livekit-api" "elevenlabs" "aiohttp" "python-dotenv
 ```bash title="Node"
 npm install @livekit/agents @livekit/rtc-node @elevenlabs/elevenlabs-js ws dotenv
 ```
+
+#### Mint a Speech Engine signed URL
 
 The worker requests a short-lived signed URL for the Speech Engine conversation WebSocket. The signed URL embeds the engine ID and a one-time signature, so the worker can open the WebSocket without exposing your API key.
 
@@ -145,6 +149,8 @@ async function signedUrl(): Promise<string> {
   return response.signedUrl;
 }
 ```
+
+#### Define the worker entrypoint
 
 Each time the worker is dispatched to a room, its entrypoint runs. The entrypoint connects to the room, opens a Speech Engine conversation WebSocket, and starts two audio bridges: one for caller audio going to Speech Engine, and one for synthesized audio coming back.
 
@@ -382,6 +388,8 @@ Two ordering details matter for correctness:
 * **Listener timing**: `TrackSubscribed` is registered before `ctx.connect()`. LiveKit auto-subscribes to existing tracks during the connection handshake, and a listener registered afterwards may miss the event. The audio pump waits on a `Future` / `Promise` for the Speech Engine WebSocket so it can subscribe immediately and forward audio as soon as the connection is open.
 * **TypeScript only — capture serialization**: `@livekit/rtc-node`'s `AudioSource.captureFrame` throws `InvalidState` if called concurrently. The TypeScript handler serializes captures with a promise chain. Python's single `async for el_to_room` loop is naturally sequential and does not need this.
 
+#### Start the worker
+
 ```bash title="Python"
 python bridge.py dev
 ```
@@ -533,10 +541,18 @@ Speech Engine supports the following audio formats. Configure them on the engine
 
 ## Next steps
 
+#### [Speech Engine quickstart](/docs/eleven-api/guides/cookbooks/speech-engine)
+
 Build the brain server that responds to transcripts.
+
+#### [Pipecat integration](/docs/eleven-api/guides/how-to/speech-engine/pipecat-integration)
 
 Use Pipecat as the LLM pipeline behind Speech Engine.
 
+#### [Python SDK reference](/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference)
+
 Classes, methods, and events for the Speech Engine Python SDK.
+
+#### [JavaScript SDK reference](/docs/eleven-api/resources/libraries/speech-engine/javascript-sdk-reference)
 
 Classes, methods, and events for the Speech Engine JavaScript SDK.

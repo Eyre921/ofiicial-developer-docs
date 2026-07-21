@@ -107,24 +107,34 @@ everything works as expected.
 
 ## Common issues
 
+#### Call transfers are failing
+
 This typically indicates a regional routing mismatch. Verify that:
 
 * Your Twilio phone number is configured with the correct Edge Location
 * The routing region specified in ElevenLabs matches your Twilio configuration
 * You're using an isolated environment that matches the routing region
 
+#### My phone number is from Europe but routing through US
+
 The phone number's geographic origin doesn't determine routing behavior. You must explicitly
 configure regional routing in Twilio. By default, all numbers (including European numbers) route
 through `us1` unless configured otherwise.
 
+#### I'm not using an isolated environment - do I need this?
+
 If you're using the standard ElevenLabs environment (not EU residency or another isolated
 environment), regional routing configuration is optional.
+
+#### How do I know which region to use?
 
 Choose a region that:
 
 * Matches your data residency requirements (e.g., `ie1` for EU data residency)
 * Is closest to your users for optimal latency
 * Matches your ElevenLabs isolated environment (if applicable)
+
+#### I'm getting authentication errors with my Twilio credentials
 
 If you're seeing authentication errors when using regional routing, verify that you're using the correct **regional API key**:
 

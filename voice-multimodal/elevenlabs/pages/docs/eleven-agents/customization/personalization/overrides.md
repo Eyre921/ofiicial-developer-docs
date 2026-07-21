@@ -55,15 +55,25 @@ sensitive user data that shouldn't be stored in the agent's base configuration.
 
 This guide shows you how to override the default agent **System prompt**, **First message**, **LLM**, **Tools**, **Knowledge base**, and **TTS settings**.
 
+#### Enable overrides
+
 For security reasons, overrides are disabled by default. Enable the fields you want to allow overriding, such as `first_message`, `prompt.prompt`, `prompt.tool_ids`, `prompt.knowledge_base`, or `language`.
+
+#### Update via the dashboard
 
 Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, and any other overrides you need, such as `LLM`.
 
 ![Enable overrides](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set fields under `platform_settings.overrides.conversation_config_override` to `true` to allow runtime overrides for that field:
 
@@ -88,9 +98,13 @@ Set fields under `platform_settings.overrides.conversation_config_override` to `
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -142,6 +156,8 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
   },
 });
 ```
+
+#### Override the conversation
 
 In your code, where the conversation is started, pass the overrides as a parameter. Tool and knowledge base overrides replace the default arrays for that conversation.
 

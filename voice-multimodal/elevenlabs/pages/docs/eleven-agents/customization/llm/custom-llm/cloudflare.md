@@ -20,6 +20,8 @@ To make use of the full power of ElevenLabs Agents you need to use a model that 
 
 When browsing the [model catalog](https://developers.cloudflare.com/workers-ai/models/), look for models with the function calling property beside it.
 
+#### Try out DeepSeek R1
+
 Cloudflare Workers AI provides access to
 [DeepSeek-R1-Distill-Qwen-32B](https://developers.cloudflare.com/workers-ai/models/deepseek-r1-distill-qwen-32b/),
 a model distilled from DeepSeek-R1 based on Qwen2.5. It outperforms OpenAI-o1-mini across various

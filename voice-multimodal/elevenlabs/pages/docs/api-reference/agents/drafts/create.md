@@ -1399,7 +1399,9 @@ components:
         - gemini-3.5-flash
         - claude-sonnet-4-5
         - claude-opus-4-7
+        - claude-opus-4-8
         - claude-sonnet-4-6
+        - claude-sonnet-5
         - claude-sonnet-4
         - claude-haiku-4-5
         - claude-3-7-sonnet
@@ -1877,6 +1879,12 @@ components:
             (just that line); 1 adds the latest user message onward.
         trigger_action:
           $ref: '#/components/schemas/CustomGuardrailConfigTriggerAction'
+        evaluate_full_response_only:
+          type: boolean
+          default: false
+          description: >-
+            Evaluate once against the complete non-TTS response instead of
+            cumulative partials. Requires blocking mode.
       required:
         - name
         - prompt
@@ -1917,6 +1925,13 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersion-Input
+    ObjectJsonSchemaPropertyInputPropertyKind:
+      type: string
+      enum:
+        - array
+        - object
+      default: object
+      title: ObjectJsonSchemaPropertyInputPropertyKind
     LiteralJsonSchemaPropertyType0:
       type: string
       enum:
@@ -2010,6 +2025,13 @@ components:
         provides value), constant_value (fixed value), or is_omitted (parameter
         is omitted). These are mutually exclusive.
       title: LiteralJsonSchemaProperty
+    ArrayJsonSchemaPropertyInputPropertyKind:
+      type: string
+      enum:
+        - array
+        - object
+      default: array
+      title: ArrayJsonSchemaPropertyInputPropertyKind
     ArrayJsonSchemaPropertyInputItems:
       oneOf:
         - $ref: '#/components/schemas/LiteralJsonSchemaProperty'
@@ -2017,25 +2039,44 @@ components:
         - $ref: '#/components/schemas/ArrayJsonSchemaProperty-Input'
       description: Schema for array elements.
       title: ArrayJsonSchemaPropertyInputItems
-    ArrayJsonSchemaPropertyInputConstantValueItems:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: ArrayJsonSchemaPropertyInputConstantValueItems
     ArrayJsonSchemaProperty-Input:
       type: object
       properties:
+        property_kind:
+          $ref: '#/components/schemas/ArrayJsonSchemaPropertyInputPropertyKind'
+          default: array
+        description:
+          type: string
+          default: ''
+        dynamic_variable:
+          type: string
+          default: ''
+          description: >-
+            When set, the entire parameter is populated from this dynamic
+            variable at runtime. Mutually exclusive with description
+            (LLM-provided value), constant_value, and is_omitted.
+        constant_value:
+          type:
+            - array
+            - 'null'
+          items:
+            description: Any type
+          description: >-
+            When set, the entire array uses this constant value at runtime.
+            Mutually exclusive with description (LLM-provided array),
+            dynamic_variable, and is_omitted.
+        is_omitted:
+          type: boolean
+          default: false
+          description: >-
+            If true, this parameter will be completely omitted from the request.
+            Only valid for optional parameters. Mutually exclusive with
+            description, dynamic_variable, and constant_value.
         type:
           type: string
           enum:
             - array
           default: array
-        description:
-          type: string
-          default: ''
         items:
           $ref: '#/components/schemas/ArrayJsonSchemaPropertyInputItems'
           default:
@@ -2047,31 +2088,6 @@ components:
             is_system_provided: false
             type: string
           description: Schema for array elements.
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the entire array is populated from this dynamic variable
-            at runtime. Mutually exclusive with description (LLM-provided
-            array), constant_value, and is_omitted.
-        constant_value:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: >-
-              #/components/schemas/ArrayJsonSchemaPropertyInputConstantValueItems
-          description: >-
-            When set, the entire array uses this constant value at runtime.
-            Mutually exclusive with description (LLM-provided array),
-            dynamic_variable, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this array parameter will be completely omitted from the
-            request. Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, and constant_value.
       title: ArrayJsonSchemaProperty-Input
     ObjectJsonSchemaPropertyInput:
       oneOf:
@@ -2108,6 +2124,36 @@ components:
     ObjectJsonSchemaProperty-Input:
       type: object
       properties:
+        property_kind:
+          $ref: '#/components/schemas/ObjectJsonSchemaPropertyInputPropertyKind'
+          default: object
+        description:
+          type: string
+          default: ''
+        dynamic_variable:
+          type: string
+          default: ''
+          description: >-
+            When set, the entire parameter is populated from this dynamic
+            variable at runtime. Mutually exclusive with description
+            (LLM-provided value), constant_value, and is_omitted.
+        constant_value:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            description: Any type
+          description: >-
+            When set, the entire object uses this constant JSON value at
+            runtime. Mutually exclusive with description (LLM-provided object),
+            dynamic_variable, and is_omitted.
+        is_omitted:
+          type: boolean
+          default: false
+          description: >-
+            If true, this parameter will be completely omitted from the request.
+            Only valid for optional parameters. Mutually exclusive with
+            description, dynamic_variable, and constant_value.
         type:
           type: string
           enum:
@@ -2117,9 +2163,6 @@ components:
           type: array
           items:
             type: string
-        description:
-          type: string
-          default: ''
         properties:
           type: object
           additionalProperties:
@@ -2992,22 +3035,6 @@ components:
         - async
       default: immediate
       title: ToolExecutionMode
-    McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValueOneOf4Items:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: >-
-        McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValueOneOf4Items
-    McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue4:
-      type: array
-      items:
-        $ref: >-
-          #/components/schemas/McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValueOneOf4Items
-      title: >-
-        McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue4
     McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue:
       oneOf:
         - type: string
@@ -3015,8 +3042,12 @@ components:
         - type: number
           format: double
         - type: boolean
-        - $ref: >-
-            #/components/schemas/McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue4
+        - type: array
+          items:
+            description: Any type
+        - type: object
+          additionalProperties:
+            description: Any type
       description: The constant value to use
       title: >-
         McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue

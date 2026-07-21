@@ -39,7 +39,7 @@ Guardrails endpoints
 
 ## list
 
-List all guardrails for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+List all guardrails for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -100,14 +100,14 @@ run();
 
 | Parameter              | Type                                                                                                     | Required             | Description                                                                                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListGuardrailsRequest](/agent-sdk/typescript/api-reference/operations/listguardrailsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListGuardrailsRequest](/docs/agent-sdk/typescript/api-reference/operations/listguardrailsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                           | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                  | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListGuardrailsResponse](/agent-sdk/typescript/api-reference/operations/listguardrailsresponse)>**
+**Promise\<[operations.ListGuardrailsResponse](/docs/agent-sdk/typescript/api-reference/operations/listguardrailsresponse)>**
 
 ### Errors
 
@@ -119,7 +119,7 @@ run();
 
 ## create
 
-Create a new guardrail for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+Create a new guardrail for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -214,14 +214,14 @@ run();
 
 | Parameter              | Type                                                                                                       | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateGuardrailRequest](/agent-sdk/typescript/api-reference/operations/createguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.CreateGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/createguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                             | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                    | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.CreateGuardrailResponse](/agent-sdk/typescript/api-reference/models/createguardrailresponse)>**
+**Promise\<[models.CreateGuardrailResponse](/docs/agent-sdk/typescript/api-reference/models/createguardrailresponse)>**
 
 ### Errors
 
@@ -235,7 +235,7 @@ run();
 
 ## delete
 
-Delete an existing guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -296,14 +296,14 @@ run();
 
 | Parameter              | Type                                                                                                       | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteGuardrailRequest](/agent-sdk/typescript/api-reference/operations/deleteguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.DeleteGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/deleteguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                             | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                    | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.DeleteGuardrailResponse](/agent-sdk/typescript/api-reference/models/deleteguardrailresponse)>**
+**Promise\<[models.DeleteGuardrailResponse](/docs/agent-sdk/typescript/api-reference/models/deleteguardrailresponse)>**
 
 ### Errors
 
@@ -316,7 +316,7 @@ run();
 
 ## get
 
-Get a single guardrail by ID. [Management key](/guides/overview/auth/management-api-keys) required.
+Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -377,14 +377,14 @@ run();
 
 | Parameter              | Type                                                                                                 | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetGuardrailRequest](/agent-sdk/typescript/api-reference/operations/getguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.GetGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/getguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                       | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)              | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.GetGuardrailResponse](/agent-sdk/typescript/api-reference/models/getguardrailresponse)>**
+**Promise\<[models.GetGuardrailResponse](/docs/agent-sdk/typescript/api-reference/models/getguardrailresponse)>**
 
 ### Errors
 
@@ -397,7 +397,7 @@ run();
 
 ## update
 
-Update an existing guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+Update an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -470,14 +470,14 @@ run();
 
 | Parameter              | Type                                                                                                       | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.UpdateGuardrailRequest](/agent-sdk/typescript/api-reference/operations/updateguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.UpdateGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/updateguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                             | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                    | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                         | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.UpdateGuardrailResponse](/agent-sdk/typescript/api-reference/models/updateguardrailresponse)>**
+**Promise\<[models.UpdateGuardrailResponse](/docs/agent-sdk/typescript/api-reference/models/updateguardrailresponse)>**
 
 ### Errors
 
@@ -491,7 +491,7 @@ run();
 
 ## listGuardrailKeyAssignments
 
-List all API key assignments for a specific guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+List all API key assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -556,14 +556,14 @@ run();
 
 | Parameter              | Type                                                                                                                               | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListGuardrailKeyAssignmentsRequest](/agent-sdk/typescript/api-reference/operations/listguardrailkeyassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListGuardrailKeyAssignmentsRequest](/docs/agent-sdk/typescript/api-reference/operations/listguardrailkeyassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                                     | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                            | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                 | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                 | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListGuardrailKeyAssignmentsResponse](/agent-sdk/typescript/api-reference/operations/listguardrailkeyassignmentsresponse)>**
+**Promise\<[operations.ListGuardrailKeyAssignmentsResponse](/docs/agent-sdk/typescript/api-reference/operations/listguardrailkeyassignmentsresponse)>**
 
 ### Errors
 
@@ -576,7 +576,7 @@ run();
 
 ## bulkAssignKeys
 
-Assign multiple API keys to a specific guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+Assign multiple API keys to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -647,14 +647,14 @@ run();
 
 | Parameter              | Type                                                                                                                           | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkAssignKeysToGuardrailRequest](/agent-sdk/typescript/api-reference/operations/bulkassignkeystoguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.BulkAssignKeysToGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/bulkassignkeystoguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                                 | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                        | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                             | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                             | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.BulkAssignKeysResponse](/agent-sdk/typescript/api-reference/models/bulkassignkeysresponse)>**
+**Promise\<[models.BulkAssignKeysResponse](/docs/agent-sdk/typescript/api-reference/models/bulkassignkeysresponse)>**
 
 ### Errors
 
@@ -668,7 +668,7 @@ run();
 
 ## bulkUnassignKeys
 
-Unassign multiple API keys from a specific guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+Unassign multiple API keys from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -739,14 +739,14 @@ run();
 
 | Parameter              | Type                                                                                                                                   | Required             | Description                                                                                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkUnassignKeysFromGuardrailRequest](/agent-sdk/typescript/api-reference/operations/bulkunassignkeysfromguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.BulkUnassignKeysFromGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/bulkunassignkeysfromguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                                         | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                     | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                     | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.BulkUnassignKeysResponse](/agent-sdk/typescript/api-reference/models/bulkunassignkeysresponse)>**
+**Promise\<[models.BulkUnassignKeysResponse](/docs/agent-sdk/typescript/api-reference/models/bulkunassignkeysresponse)>**
 
 ### Errors
 
@@ -760,7 +760,7 @@ run();
 
 ## listGuardrailMemberAssignments
 
-List all organization member assignments for a specific guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+List all organization member assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -825,14 +825,14 @@ run();
 
 | Parameter              | Type                                                                                                                                     | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListGuardrailMemberAssignmentsRequest](/agent-sdk/typescript/api-reference/operations/listguardrailmemberassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListGuardrailMemberAssignmentsRequest](/docs/agent-sdk/typescript/api-reference/operations/listguardrailmemberassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                                           | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                  | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                       | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListGuardrailMemberAssignmentsResponse](/agent-sdk/typescript/api-reference/operations/listguardrailmemberassignmentsresponse)>**
+**Promise\<[operations.ListGuardrailMemberAssignmentsResponse](/docs/agent-sdk/typescript/api-reference/operations/listguardrailmemberassignmentsresponse)>**
 
 ### Errors
 
@@ -845,7 +845,7 @@ run();
 
 ## bulkAssignMembers
 
-Assign multiple organization members to a specific guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -918,14 +918,14 @@ run();
 
 | Parameter              | Type                                                                                                                                 | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkAssignMembersToGuardrailRequest](/agent-sdk/typescript/api-reference/operations/bulkassignmemberstoguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.BulkAssignMembersToGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/bulkassignmemberstoguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                                       | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                              | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                   | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.BulkAssignMembersResponse](/agent-sdk/typescript/api-reference/models/bulkassignmembersresponse)>**
+**Promise\<[models.BulkAssignMembersResponse](/docs/agent-sdk/typescript/api-reference/models/bulkassignmembersresponse)>**
 
 ### Errors
 
@@ -939,7 +939,7 @@ run();
 
 ## bulkUnassignMembers
 
-Unassign multiple organization members from a specific guardrail. [Management key](/guides/overview/auth/management-api-keys) required.
+Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -1012,14 +1012,14 @@ run();
 
 | Parameter              | Type                                                                                                                                         | Required             | Description                                                                                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkUnassignMembersFromGuardrailRequest](/agent-sdk/typescript/api-reference/operations/bulkunassignmembersfromguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.BulkUnassignMembersFromGuardrailRequest](/docs/agent-sdk/typescript/api-reference/operations/bulkunassignmembersfromguardrailrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                                               | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                      | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                           | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                                           | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.BulkUnassignMembersResponse](/agent-sdk/typescript/api-reference/models/bulkunassignmembersresponse)>**
+**Promise\<[models.BulkUnassignMembersResponse](/docs/agent-sdk/typescript/api-reference/models/bulkunassignmembersresponse)>**
 
 ### Errors
 
@@ -1033,7 +1033,7 @@ run();
 
 ## listKeyAssignments
 
-List all API key guardrail assignments for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -1094,14 +1094,14 @@ run();
 
 | Parameter              | Type                                                                                                             | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListKeyAssignmentsRequest](/agent-sdk/typescript/api-reference/operations/listkeyassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListKeyAssignmentsRequest](/docs/agent-sdk/typescript/api-reference/operations/listkeyassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                   | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                          | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                               | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListKeyAssignmentsResponse](/agent-sdk/typescript/api-reference/operations/listkeyassignmentsresponse)>**
+**Promise\<[operations.ListKeyAssignmentsResponse](/docs/agent-sdk/typescript/api-reference/operations/listkeyassignmentsresponse)>**
 
 ### Errors
 
@@ -1113,7 +1113,7 @@ run();
 
 ## listMemberAssignments
 
-List all organization member guardrail assignments for the authenticated user. [Management key](/guides/overview/auth/management-api-keys) required.
+List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -1174,14 +1174,14 @@ run();
 
 | Parameter              | Type                                                                                                                   | Required             | Description                                                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListMemberAssignmentsRequest](/agent-sdk/typescript/api-reference/operations/listmemberassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
+| `request`              | [operations.ListMemberAssignmentsRequest](/docs/agent-sdk/typescript/api-reference/operations/listmemberassignmentsrequest) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
 | `options`              | RequestOptions                                                                                                         | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](/agent-sdk/typescript/api-reference/lib/retryconfig)                                                     | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries`      | [RetryConfig](/docs/agent-sdk/typescript/api-reference/lib/retryconfig)                                                     | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ListMemberAssignmentsResponse](/agent-sdk/typescript/api-reference/operations/listmemberassignmentsresponse)>**
+**Promise\<[operations.ListMemberAssignmentsResponse](/docs/agent-sdk/typescript/api-reference/operations/listmemberassignmentsresponse)>**
 
 ### Errors
 

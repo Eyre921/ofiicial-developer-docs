@@ -65,11 +65,19 @@ Templates support:
 
 The template gallery spans product photography, mockups, video editing, style transfers, and more. [Browse the full gallery](https://elevenlabs.io/app/templates) to discover templates for your use case.
 
+#### Product Photography
+
 Transform product images with professional lighting, backgrounds, and composition.
+
+#### Mockups
 
 Place designs onto device screens, packaging, or physical products.
 
+#### Video Editing
+
 Apply effects, transitions, and enhancements to video content.
+
+#### Style Transfers
 
 Apply artistic styles from reference images to your content.
 
@@ -91,18 +99,28 @@ When saving your template, choose who can access it:
 
 ## Key features
 
+#### Powered by ElevenCreative Flows
+
 Each template is built using ElevenCreative Flows. The optimal models, settings, and connections
 between steps are all preselected and preconfigured for you.
+
+#### One-click execution
 
 Upload your image, video, or text, run the template, and get the output. Templates require no
 specialized configuration or manual model selection. Prompt engineering is built into each
 template to optimize results.
 
+#### Create and share
+
 Anyone can turn a flow into a template and share it with the community. Build a workflow in
 ElevenCreative Flows, define its inputs and outputs, and publish it as a template.
 
+#### Multi-input and multi-output
+
 Templates can accept multiple files, text fields, and selections. They can also return multiple
 generated assets depending on their design.
+
+#### Available on web and mobile
 
 Templates work the same way on web and the ElevenLabs mobile app. Browse the gallery and run
 templates from any device.
@@ -121,29 +139,79 @@ Credit usage is calculated based on:
 
 ## FAQ
 
-Templates are pre-built creative workflows that let you combine ElevenLabs' image, video, voice,
-music, and sound effect models into a single automated pipeline. Select a template, provide your
-inputs, and get polished outputs, with no manual configuration required.
+<tbody>
+  <tr>
+    <td>
+      #### What are Templates?
 
-Browse the template gallery, select one, upload the required inputs, and run. The template
-processes your inputs and delivers the finished outputs directly in your workspace.
+      Templates are pre-built creative workflows that let you combine ElevenLabs' image, video,
+      voice, music, and sound effect models into a single automated pipeline. Select a template,
+      provide your inputs, and get polished outputs, with no manual configuration required.
+    </td>
+  </tr>
 
-Yes. Build a workflow in [ElevenCreative Flows](https://elevenlabs.io/app/flows), define its
-inputs and outputs, and publish it as a template. You can keep your templates private for personal
-use or share them with the community for others to browse and run.
+  <tr>
+    <td>
+      #### How do I use a template?
 
-Yes. Published templates are shareable with the community. Anyone can run a shared template from
-the gallery.
+      Browse the template gallery, select one, upload the required inputs, and run. The template
+      processes your inputs and delivers the finished outputs directly in your workspace.
+    </td>
+  </tr>
 
-Templates can accept images, video files, audio files, and free text depending on the specific
-template. Each template lists exactly what it needs before you run it.
+  <tr>
+    <td>
+      #### Can I create my own templates?
 
-No. Templates consume credits from your existing plan. Credit cost depends on the models used in
-the template. You can preview the estimated cost before running.
+      Yes. Build a workflow in [ElevenCreative Flows](https://elevenlabs.io/app/flows), define
+      its inputs and outputs, and publish it as a template. You can keep your templates private
+      for personal use or share them with the community for others to browse and run.
+    </td>
+  </tr>
 
-Yes. Templates are available on web and the ElevenLabs mobile app with the same gallery and run
-experience.
+  <tr>
+    <td>
+      #### Can I share templates?
 
-Templates are built on ElevenCreative Flows. A template is a flow with defined inputs and outputs,
-packaged so you can run it without seeing or editing the underlying node graph. Anyone can turn a
-flow into a template.
+      Yes. Published templates are shareable with the community. Anyone can run a shared
+      template from the gallery.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What inputs can templates accept?
+
+      Templates can accept images, video files, audio files, and free text depending on the
+      specific template. Each template lists exactly what it needs before you run it.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Do templates cost extra?
+
+      No. Templates consume credits from your existing plan. Credit cost depends on the models
+      used in the template. You can preview the estimated cost before running.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Are templates available on mobile?
+
+      Yes. Templates are available on web and the ElevenLabs mobile app with the same gallery
+      and run experience.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is the relationship between Templates and Flows?
+
+      Templates are built on ElevenCreative Flows. A template is a flow with defined inputs and
+      outputs, packaged so you can run it without seeing or editing the underlying node graph.
+      Anyone can turn a flow into a template.
+    </td>
+  </tr>
+</tbody>

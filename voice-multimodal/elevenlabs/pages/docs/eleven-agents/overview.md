@@ -103,4 +103,6 @@ ElevenAgents coordinates 4 core components:
 3. A low-latency Text to Speech (TTS) model across 5k+ voices and 70+ languages
 4. A proprietary turn-taking model that handles conversation timing
 
+#### [Quickstart](/docs/eleven-agents/quickstart)
+
 Build your first agent in 5 minutes

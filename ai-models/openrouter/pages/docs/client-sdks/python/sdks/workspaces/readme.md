@@ -32,7 +32,7 @@ Workspaces endpoints
 
 ## list
 
-List all workspaces for the authenticated user. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all workspaces for the authenticated user. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -82,7 +82,7 @@ with OpenRouter(
 
 ## create
 
-Create a new workspace for the authenticated user. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Create a new workspace for the authenticated user. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -141,7 +141,7 @@ with OpenRouter(
 
 ## delete
 
-Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing workspace. The default workspace cannot be deleted. Workspaces with active API keys cannot be deleted; remove the keys first. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -191,7 +191,7 @@ with OpenRouter(
 
 ## get
 
-Get a single workspace by ID or slug. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Get a single workspace by ID or slug. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -239,7 +239,7 @@ with OpenRouter(
 
 ## update
 
-Update an existing workspace by ID or slug. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Update an existing workspace by ID or slug. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -300,7 +300,7 @@ with OpenRouter(
 
 ## list\_budgets
 
-List all budgets configured for a workspace. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all budgets configured for a workspace. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -348,7 +348,7 @@ with OpenRouter(
 
 ## delete\_budget
 
-Remove the budget for a given interval. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Remove the budget for a given interval. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -397,7 +397,7 @@ with OpenRouter(
 
 ## set\_budget
 
-Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Create or update the budget for a given interval. Budget limits must strictly decrease as the interval narrows (lifetime > monthly > weekly > daily). [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -448,7 +448,7 @@ with OpenRouter(
 
 ## list\_members
 
-List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List all members of a workspace. Returns paginated results. For the default workspace, returns all organization members (implicit membership). [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -501,7 +501,7 @@ with OpenRouter(
 
 ## bulk\_add\_members
 
-Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -555,7 +555,7 @@ with OpenRouter(
 
 ## bulk\_remove\_members
 
-Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Remove multiple members from a workspace. Members with active API keys in the workspace cannot be removed. SCIM-managed members cannot be removed; changes must be made in your identity provider. [Management key](/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

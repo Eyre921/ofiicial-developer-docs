@@ -34,6 +34,8 @@ switch to the eleven\_v3 model.
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
 
+#### Create a pronunciation dictionary file
+
 In this example, we will create a pronunciation dictionary file for the word `tomato`.
 
 This rule will use the "IPA" alphabet and update the pronunciation for `tomato` and `Tomato` with a different pronunciation. PLS files are case sensitive which is why we include it both with and without a capital "T".
@@ -58,6 +60,8 @@ You can use AI tools like Claude or ChatGPT to help generate IPA or CMU notation
 </lexeme>
 </lexicon>
 ```
+
+#### Create a pronunciation dictionary from a file via the SDK
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -125,6 +129,8 @@ play(audio1);
 play(audio2);
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -137,6 +143,10 @@ You should hear two versions of the audio playing through your speakers, one wit
 
 ## Next steps
 
+#### [API reference](/docs/api-reference/pronunciation-dictionaries/create-from-file)
+
 Full pronunciation dictionary API reference.
+
+#### [TTS streaming](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
 
 Stream text to speech progressively for lower latency playback.

@@ -12,6 +12,8 @@ This guide will show you how to dub an audio file across languages. In this exam
 
 ## Using the Dubbing API
 
+#### Create an API key
+
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
@@ -19,6 +21,8 @@ Store the key as a managed secret and pass it to the SDKs either as a environmen
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
+
+#### Install the SDK
 
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
@@ -34,6 +38,8 @@ npm install dotenv
 
 To play the audio through your speakers, you may be prompted to install [MPV](https://mpv.io/)
 and/or [ffmpeg](https://ffmpeg.org/).
+
+#### Make the API request
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -120,6 +126,8 @@ while (true) {
 }
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -132,8 +140,14 @@ You should hear the dubbed audio file playing through your speakers.
 
 ## Next steps
 
+#### [Dubbing overview](/docs/overview/capabilities/dubbing)
+
 Learn about supported languages, formats, and dubbing capabilities
 
+#### [Browse voices](https://elevenlabs.io/app/voice-library)
+
 Explore voices available for use in dubbed content
+
+#### [API reference](/docs/api-reference/dubbing/create)
 
 Explore all Dubbing API parameters and response formats

@@ -18,6 +18,8 @@ This tutorial will guide you through adding your ElevenLabs Agents agent to your
 
 ## Guide
 
+#### Get your embed code
+
 Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and copy your agent's embed code.
 
 ```html
@@ -25,15 +27,19 @@ Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and copy your
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 ```
 
+#### Enable Dev Mode
+
 1. Open your Wix site in the Editor
 2. Click on Dev Mode in the top menu
 3. If Dev Mode is not visible, ensure you're using the full Wix Editor, not Wix ADI
 
-1) Go to Settings > Custom Code
-2) Click + Add Custom Code
-3) Paste your ElevenLabs embed snippet from step 1 with the agent-id attribute filled in correctly
-4) Select the pages you would like to add the ElevenAgents widget to (all pages, or specific pages)
-5) Save and publish
+#### Add the embed snippet
+
+1. Go to Settings > Custom Code
+2. Click + Add Custom Code
+3. Paste your ElevenLabs embed snippet from step 1 with the agent-id attribute filled in correctly
+4. Select the pages you would like to add the ElevenAgents widget to (all pages, or specific pages)
+5. Save and publish
 
 ## Troubleshooting
 

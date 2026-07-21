@@ -29,7 +29,11 @@ When a caller asks a question, the receptionist:
 
 Go to **Business** → **Knowledge sources** tab to manage what your receptionist knows.
 
+#### [Website scraping](/docs/reception-ai/knowledge-base/website-scraping)
+
 Import content from your website.
+
+#### [File uploads](/docs/reception-ai/knowledge-base/file-uploads)
 
 Upload documents and files.
 

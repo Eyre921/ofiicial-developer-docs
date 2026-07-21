@@ -27,13 +27,21 @@ Because Intercom only sends notifications for end-user activity (not admin repli
 
 ## Setup
 
+#### Create an Intercom app and access token
+
 In Intercom, open **Settings → Integrations → Developer Hub** and create a new app for ElevenLabs (or open an existing one).
 
 Under **Authentication**, copy the **Access token** — this is the token labeled for accessing your own workspace data. You'll also need the **Client secret** from the **Basic information** page; ElevenLabs uses it to verify the authenticity of every webhook delivery.
 
+#### Find your Intercom admin ID
+
 The agent posts replies as an Intercom admin (typically a dedicated teammate seat). Open **Settings → Teammates** in Intercom and select the teammate the agent should post as. The admin ID is a numeric value (for example `1234567`) — you can also retrieve it programmatically via Intercom's [List all admins](https://developers.intercom.com/intercom-api-reference/reference/listadmins) API.
 
+#### Connect in ElevenLabs
+
 In the ElevenLabs Intercom integration page, click **Connect** and paste the **Access token** from Developer Hub.
+
+#### Enable the Intercom Conversation trigger
 
 Open the **Triggers** tab of the Intercom integration and enable **Intercom Conversation**. Fill in:
 
@@ -41,6 +49,8 @@ Open the **Triggers** tab of the Intercom integration and enable **Intercom Conv
 * **Client secret** — the value from Developer Hub → Basic information. Used to verify webhook signatures.
 * **Admin ID** — the numeric admin ID the agent should post replies as.
 * **Team inbox ID** *(optional)* — restrict the agent to a single Intercom team inbox. When set, the agent only responds to conversations currently assigned to that team; leave blank to respond to all conversations. See the next step for how to scope the agent to a dedicated inbox.
+
+#### (Optional) Scope the agent to a dedicated team inbox
 
 If you only want the agent to handle a specific subset of conversations, route those conversations into a dedicated **team inbox** and point the trigger at it:
 
@@ -54,6 +64,8 @@ Intercom assigns the team via your Workflow at the start of a conversation. If a
 `conversation.user.created` webhook is delivered before the assignment lands, that first message
 may be skipped; the agent picks up on the contact's next reply. Account for this when testing.
 
+#### Subscribe to webhook topics in Intercom
+
 In Intercom Developer Hub, open your app's **Webhooks** section and add a new subscription pointing at this URL:
 
 ```
@@ -66,6 +78,8 @@ Subscribe to both of the following topics:
 * `conversation.user.replied` — fires when an end-user replies to an existing conversation.
 
 Intercom signs every webhook with your client secret; ElevenLabs verifies the `X-Hub-Signature` header on every delivery. Deliveries with an invalid or missing signature are silently dropped.
+
+#### Verify the setup
 
 Open the Intercom Messenger as a test contact (or use Intercom's own preview), send a message to your workspace, and confirm that the configured agent replies as the admin you selected. You can review the resulting conversation transcript in the ElevenLabs **Conversations** view.
 

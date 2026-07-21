@@ -191,6 +191,8 @@ Deno.serve(async (req) => {
 
 There's a couple of things worth noting about the code. Let's step through it step by step.
 
+#### Handle the incoming request
+
 To handle the incoming request, use the `Deno.serve` handler. In the demo we don't validate the request origin, but you can for example validate the request origin, or append a user access token and validate it with [Supabase Auth](https://supabase.com/docs/guides/functions/auth).
 
 From the incoming request, the function extracts the `text` and `voiceId` parameters. The `voiceId` parameter is optional and defaults to the ElevenLabs ID for the "Allison" voice.
@@ -214,6 +216,8 @@ console.log("Request hash", requestHash);
 })
 ```
 
+#### Check for existing audio file in Supabase Storage
+
 Supabase Storage comes with a [smart CDN built-in](https://supabase.com/docs/guides/storage/cdn/smart-cdn) allowing you to easily cache and serve your files.
 
 Here, the function checks for an existing audio file in Supabase Storage. If the file exists, the function returns the file from Supabase Storage.
@@ -230,6 +234,8 @@ if (data) {
   if (storageRes.ok) return storageRes;
 }
 ```
+
+#### Generate Speech as a stream and split into two branches
 
 Using the streaming capabilities of the ElevenLabs API, the function generates a stream. The benefit here is that even for larger text, you can start streaming the audio back to your user immediately, and then upload the stream to Supabase Storage in the background.
 
@@ -272,6 +278,8 @@ try {
   });
 }
 ```
+
+#### Upload the audio stream to Supabase Storage in the background
 
 The `EdgeRuntime.waitUntil` method on line 20 in the previous step is used to upload the audio stream to Supabase Storage in the background using the `uploadAudioToStorage` function. This allows the function to return the streaming response immediately to the browser, while the audio is being uploaded to Supabase Storage.
 
@@ -348,6 +356,10 @@ The function is designed in a way that it can be used directly as a source for a
 
 ## Next steps
 
+#### [TTS streaming](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
+
 Stream audio progressively without Supabase as a simpler starting point.
+
+#### [API reference](/docs/api-reference/text-to-speech/stream)
 
 Full TTS streaming API reference and parameters.

@@ -20,6 +20,8 @@ The Eleven Music API is only available to paid users.
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
 
+#### Make the API request
+
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
 ```python
@@ -77,6 +79,8 @@ const audioStream = Buffer.concat(chunks);
 await play(audioStream);
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -89,6 +93,10 @@ You should hear the generated music playing.
 
 ## Next steps
 
+#### [Composition plans](/docs/eleven-api/guides/how-to/music/composition-plans)
+
 Use composition plans to structure and control how music is generated.
+
+#### [Music inpainting](/docs/eleven-api/guides/how-to/music/inpainting)
 
 Edit and blend sections of existing tracks with new generations.

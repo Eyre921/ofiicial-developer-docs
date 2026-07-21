@@ -16,9 +16,13 @@ With speech to text, you can transcribe spoken audio into text with state of the
 
 ## Creating a transcript
 
+#### Upload audio
+
 In the ElevenLabs dashboard, navigate to the Speech to Text page and click the "Transcribe files" button. From the modal, you can upload an audio or video file to transcribe.
 
 ![Speech to Text upload](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/596c6fceacbe4659b583db3ba6e2ba0c1f55177cf870654ae5ded693f1ffe43b/assets/images/product-guides/speech-to-text/speech-to-text-modal.webp)
+
+#### Select options
 
 * Select the primary language of the audio if you know it. You can leave this set to "Detect", and any languages within the audio will be automatically detected.
 
@@ -27,6 +31,8 @@ In the ElevenLabs dashboard, navigate to the Speech to Text page and click the "
 * Keyterm prompting allows you to add up to 1000 words or phrases to bias the model towards transcribing them. This is useful for transcribing specific words or sentences that are not common in the audio, such as product names, names, or other specific terms.
 
 When you're ready, click the "Upload files" button to submit.
+
+#### View results
 
 Click on the name of the audio file you uploaded in the center pane to view the results. You can click on a word to start a playback of the audio at that point.
 
@@ -38,14 +44,93 @@ Once you've created a transcript, you can edit it in our Transcript Editor. Lear
 
 ## FAQ
 
-### Supported languages
+<tbody>
+  <tr>
+    <td>
+      #### Can I upload video files?
 
-Scribe v2 supports 90+ languages, including:
+      Yes, the tool supports uploading both audio and video files. The maximum file size for either is 3GB.
+    </td>
+  </tr>
 
-*Afrikaans (afr), Amharic (amh), Arabic (ara), Armenian (hye), Assamese (asm), Asturian (ast), Azerbaijani (aze), Belarusian (bel), Bengali (ben), Bosnian (bos), Bulgarian (bul), Burmese (mya), Cantonese (yue), Catalan (cat), Cebuano (ceb), Chichewa (nya), Croatian (hrv), Czech (ces), Danish (dan), Dutch (nld), English (eng), Estonian (est), Filipino (fil), Finnish (fin), French (fra), Fulah (ful), Galician (glg), Ganda (lug), Georgian (kat), German (deu), Greek (ell), Gujarati (guj), Hausa (hau), Hebrew (heb), Hindi (hin), Hungarian (hun), Icelandic (isl), Igbo (ibo), Indonesian (ind), Irish (gle), Italian (ita), Japanese (jpn), Javanese (jav), Kabuverdianu (kea), Kannada (kan), Kazakh (kaz), Khmer (khm), Korean (kor), Kurdish (kur), Kyrgyz (kir), Lao (lao), Latvian (lav), Lingala (lin), Lithuanian (lit), Luo (luo), Luxembourgish (ltz), Macedonian (mkd), Malay (msa), Malayalam (mal), Maltese (mlt), Mandarin Chinese (zho), Māori (mri), Marathi (mar), Mongolian (mon), Nepali (nep), Northern Sotho (nso), Norwegian (nor), Occitan (oci), Odia (ori), Pashto (pus), Persian (fas), Polish (pol), Portuguese (por), Punjabi (pan), Romanian (ron), Russian (rus), Serbian (srp), Shona (sna), Sindhi (snd), Slovak (slk), Slovenian (slv), Somali (som), Spanish (spa), Swahili (swa), Swedish (swe), Tamil (tam), Tajik (tgk), Telugu (tel), Thai (tha), Turkish (tur), Ukrainian (ukr), Umbundu (umb), Urdu (urd), Uzbek (uzb), Vietnamese (vie), Welsh (cym), Wolof (wol), Xhosa (xho) and Zulu (zul).*
+  <tr>
+    <td>
+      #### Can I rename speakers?
 
-Yes, the tool supports uploading both audio and video files. The maximum file size for either is 3GB.
+      ### Renaming speakers
 
-### Renaming speakers
+      Yes, you can rename speakers by clicking the "edit" button next to the "Speakers" label.
+    </td>
+  </tr>
 
-Yes, you can rename speakers by clicking the "edit" button next to the "Speakers" label.
+  <tr>
+    <td>
+      #### What is Speech to Text?
+
+      Speech to Text converts spoken audio into written text. At ElevenLabs, our Speech to Text model is <strong>Scribe</strong>. It allows you to accurately transcribe speech in over 90 languages, making it easy to turn audio into readable, searchable text.
+
+      #### <strong>Key features of Scribe</strong>
+
+      * Industry-leading accuracy, with 98% accuracy in major languages such as English, French, Italian, Portuguese, Spanish, and German.
+      * Precise word-level timestamps, so you can see exactly when each word is spoken.
+      * Smart speaker diarization, which automatically identifies and separates different speakers.
+      * Dynamic audio tagging to detect non-speech sounds.
+      * Support for up to 32 speakers while maintaining high accuracy.
+
+      ## <strong>What’s new in Scribe v2</strong>
+
+      Scribe v2 builds on the core model with additional capabilities designed for more demanding use cases.
+
+      * <strong>Keyterm prompting</strong>. You can provide up to 100 words or phrases to guide the model
+        toward correctly transcribing important terms. Use of keyterm prompting increases the cost by 20%.
+      * <strong>Entity detection</strong>. You can choose specific categories of information to detect in
+        the transcript, such as credit card numbers, names, or medical conditions. Entity detection is
+        only available via API, and increases the cost by 30%
+      * <strong>Smart multi-language support</strong>. You can submit audio containing multiple languages,
+        and Scribe v2 will automatically detect and transcribe each one correctly.
+      * <strong>Improved stability</strong>. Scribe v2 handles pauses, changes in tone, and long silences
+        without breaking or losing accuracy.
+        <br />
+
+      #### <strong>Which version should you use?</strong>
+
+      We recommend <strong>Scribe v2</strong> when high-accuracy transcription is required. It's available through our [website](https://elevenlabs.io/app/speech-to-text) and [API](/docs/api-reference/speech-to-text/convert). When using Speech to Text via our website, Scribe v2 is the default model. 
+
+      For real-time use cases, we recommend <strong>Scribe v2 Realtime</strong>, available through [ElevenAgents](https://elevenlabs.io/app/agents) and via [API](/docs/api-reference/speech-to-text/convert). 
+
+      For more details, see our [Speech to Text documentation.](/docs/capabilities/speech-to-text)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Which languages does Speech to Text support?
+
+      Speech to Text supports over 90 languages. 
+
+      For a full breakdown of which languages are supported, please see the [language support section](/docs/capabilities/speech-to-text#breakdown-of-language-support) of our [Speech to Text documentation.](/docs/capabilities/speech-to-text)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How many Speech to Text requests can I make and can I increase it?
+
+      The concurrency limit (concurrent requests running in parallel) depends on your subscription and whether you're using Speech to Text or Realtime Speech to Text.
+
+      Below are the current concurrency rates for Speech to Text.
+
+      | Plan       | Speech to Text Concurrency Limit | Realtime Speech to Text Concurrency Limit |
+      | ---------- | -------------------------------- | ----------------------------------------- |
+      | Free       | 8                                | 6                                         |
+      | Starter    | 12                               | 9                                         |
+      | Creator    | 20                               | 15                                        |
+      | Pro        | 40                               | 30                                        |
+      | Scale      | 60                               | 45                                        |
+      | Business   | 60                               | 45                                        |
+      | Enterprise | Elevated                         | Elevated                                  |
+
+      If you require a higher number of concurrent requests, please reach out to our Enterprise Department directly via [this webpage](https://elevenlabs.io/enterprise). We will be happy to discuss a tailor-made plan that meets your specific requirements.
+    </td>
+  </tr>
+</tbody>

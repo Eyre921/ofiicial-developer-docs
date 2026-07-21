@@ -12,6 +12,8 @@ path: docs/flux/voice-agent-eager-eot
 
 Eager end of turn processing is the practice of starting LLM processing on **medium-confidence transcripts** (`EagerEndOfTurn` events) before waiting for a high-confidence `EndOfTurn`. By overlapping LLM generation with user speech, you can cut **hundreds of milliseconds** from your agent's response time.
 
+#### Important Note
+
 `EagerEndOfTurn` and `TurnResumed` events are ONLY triggered if you have configured the `eager_eot_threshold` in your connection string.
 
 ## How Eager End of Turn Processing Works

@@ -68,6 +68,8 @@ ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voi
 
 ## Meet the models
 
+#### [Eleven v3](/docs/overview/models#eleven-v3)
+
 Our most emotionally rich, expressive speech synthesis model
 
 Dramatic delivery and performance
@@ -77,6 +79,8 @@ Dramatic delivery and performance
 5,000 character limit
 
 Support for natural multi-speaker dialogue
+
+#### [Eleven Multilingual v2](/docs/overview/models#multilingual-v2)
 
 Lifelike, consistent quality speech synthesis model
 
@@ -88,6 +92,8 @@ Natural-sounding output
 
 Most stable on long-form generations
 
+#### [Eleven Flash v2.5](/docs/overview/models#flash-v25)
+
 Our fast, affordable speech synthesis model
 
 Ultra-low latency (\~75ms†)
@@ -97,6 +103,8 @@ Ultra-low latency (\~75ms†)
 40,000 character limit
 
 Faster model, 50% lower price per character for API generations
+
+#### [Scribe v2](/docs/overview/models#scribe-v2)
 
 State-of-the-art speech recognition model
 
@@ -113,6 +121,8 @@ Speaker diarization, up to 32 speakers
 Dynamic audio tagging
 
 Smart language detection
+
+#### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
 
 Real-time speech recognition model
 

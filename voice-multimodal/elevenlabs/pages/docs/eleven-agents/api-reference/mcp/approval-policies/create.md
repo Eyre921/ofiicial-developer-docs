@@ -327,14 +327,6 @@ components:
         Configuration for extracting values from tool responses and assigning
         them to dynamic variables.
       title: DynamicVariableAssignment
-    type_:ConstantSchemaOverrideConstantValueFourItem:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: ConstantSchemaOverrideConstantValueFourItem
     type_:ConstantSchemaOverrideConstantValue:
       oneOf:
         - type: string
@@ -344,8 +336,10 @@ components:
         - type: boolean
         - type: array
           items:
-            $ref: >-
-              #/components/schemas/type_:ConstantSchemaOverrideConstantValueFourItem
+            description: Any type
+        - type: object
+          additionalProperties:
+            description: Any type
       description: The constant value to use
       title: ConstantSchemaOverrideConstantValue
     type_:McpToolConfigOverrideOutputInputOverridesValue:

@@ -28,6 +28,8 @@ npm install @elevenlabs/elevenlabs-js
 
 Access response headers to retrieve generation metadata including character costs.
 
+#### Python
+
 ```python
 from elevenlabs.client import ElevenLabs
 
@@ -48,6 +50,8 @@ trace_id = response.headers.get("x-trace-id")
 
 audio_data = response.data
 ```
+
+#### JavaScript
 
 ```typescript
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';

@@ -20,6 +20,8 @@ Rate limits vary by region. North America, Europe, and Australia limits are show
 
 Limits to consider if you use the Pay as You Go plan with Deepgram.
 
+#### Rate limits apply per project
+
 Rate limits apply per project, not per account or API key. Creating additional projects under the same account will not grant you additional concurrency. Secondary projects created on a self-serve account are limited to a single concurrent stream by design. Bypassing rate limits by spreading traffic across multiple projects violates our Terms of Service.
 
 If you need higher concurrency, [contact sales](https://deepgram.com/contact-us) about a growth or enterprise agreement.

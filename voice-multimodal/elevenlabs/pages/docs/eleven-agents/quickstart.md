@@ -26,23 +26,35 @@ ElevenLabs Agents are managed either through the [ElevenAgents dashboard](https:
 
 In this quickstart guide we'll start by creating an agent via the API or the web dashboard. Next we'll test the agent, either by embedding it in your website or via the ElevenLabs dashboard.
 
+#### Build an agent via the web dashboard
+
 In this guide, we'll create a conversational support assistant capable of answering questions about your product, documentation, or service. This assistant can be embedded into your website or app to provide real-time support to your customers.
 
 ![ElevenLabs Agents](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png)
 
+#### Sign in to ElevenLabs
+
 Go to [elevenlabs.io](https://elevenlabs.io/app/sign-up) and sign in to or create your account.
+
+#### Create a new assistant
 
 In the **ElevenLabs Dashboard**, create a new assistant by entering a name and selecting the `Blank template` option.
 
 ![Dashboard](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/61b0e1df291ea587a8ff3e116579a47f66d48c74b24f44cfcd4804a568eb0a9d/assets/images/conversational-ai/assistant-create-flow.gif)
 
+#### Configure the assistant behavior
+
 Go to the **Agent** tab to configure the assistant's behavior. Set the following:
+
+#### First message
 
 This is the first message the assistant will speak out loud when a user starts a conversation.
 
 ```plaintext First message
 Hi, this is Alexis from <company name> support. How can I help you today?
 ```
+
+#### System prompt
 
 This prompt guides the assistant's behavior, tasks, and personality.
 
@@ -63,6 +75,8 @@ Guidelines:
 - Aim to provide concise answers. Limit responses to a couple of sentences and let the user guide you on where to provide more detail.
 ```
 
+#### Add a knowledge base
+
 Go to the **Knowledge Base** section to provide your assistant with context about your business.
 
 This is where you can upload relevant documents & links to external resources:
@@ -72,15 +86,21 @@ This is where you can upload relevant documents & links to external resources:
 
 Next we'll configure the voice for your assistant.
 
+#### Select a voice
+
 In the **Voice** tab, choose a voice that best matches your assistant from the [voice library](https://elevenlabs.io/voice-library):
 
 ![Voice settings](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/14aad328f468daafa9ec95d3b7a55489a8cb1a34869368020e05b207c9b0360a/assets/images/conversational-ai/voice-settings.jpg)
 
 &#x20;Using higher quality voices, models, and LLMs may increase response time. For an optimal customer experience, balance quality and latency based on your assistant's expected use case.
 
+#### Testing your assistant
+
 Press the **Test AI agent** button and try conversing with your assistant.
 
 Configure evaluation criteria and data collection to analyze conversations and improve your assistant's performance.
+
+#### Configure evaluation criteria
 
 Navigate to the **Analysis** tab in your assistant's settings to define custom criteria for evaluating conversations.
 
@@ -98,6 +118,8 @@ Success Criteria:
 - The user was redirected to a relevant support channel if needed.
 ```
 
+#### Configure data collection
+
 In the **Data collection** section, configure details to be extracted from each conversation.
 
 Click **Add item** and configure the following:
@@ -111,6 +133,8 @@ Extract the user's questions & inquiries from the conversation.
 ```
 
 Test your assistant by posing as a customer. Ask questions, evaluate its responses, and tweak the prompts until you're happy with how it performs.
+
+#### View conversation history
 
 View evaluation results and collected data for each conversation in the **Call history** tab.
 
@@ -129,15 +153,23 @@ If instead you want to quickly test the agent in your own website, you can use t
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 ```
 
+#### Build an agent via the CLI
+
+#### Install the CLI
+
 ```bash
 npm install -g @elevenlabs/cli
 ```
+
+#### Initialize a new project
 
 ```bash
 elevenlabs agents init
 ```
 
 This creates the project structure with configuration directories and registry files.
+
+#### Authenticate with ElevenLabs
 
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you'll use to securely [use the CLI](/docs/api-reference/authentication).
 
@@ -149,17 +181,23 @@ elevenlabs auth login
 
 Enter your ElevenLabs API key when prompted. The CLI will verify the key and store it securely.
 
+#### Create the agent
+
 Create your first agent using the assistant template:
 
 ```bash
 elevenlabs agents add "My Assistant" --template assistant
 ```
 
+#### Push to ElevenLabs platform
+
 ```bash
 elevenlabs agents push --agent "My Assistant"
 ```
 
 This uploads your local agent configuration to the ElevenLabs platform.
+
+#### Test the agent
 
 The newly created agent can be tested in a variety of ways, but the quickest way is to use the [ElevenLabs dashboard](https://elevenlabs.io/app/agents). From the dashboard, select your agent and click the **Test AI agent** button.
 
@@ -173,6 +211,10 @@ elevenlabs agents widget "My Assistant"
 
 This will output the HTML snippet you can then paste directly into your website.
 
+#### Build an agent via the API
+
+#### Create an API key
+
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
@@ -180,6 +222,8 @@ Store the key as a managed secret and pass it to the SDKs either as a environmen
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
+
+#### Install the SDK
 
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
@@ -192,6 +236,8 @@ pip install python-dotenv
 npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
+
+#### Create the agent
 
 Create a new file named `create_agent.py` or `createAgent.mts`, depending on your language of choice and add the following code:
 
@@ -287,6 +333,8 @@ console.log(`Agent created with ID: ${agent.agentId}`);
 
 The agent created above will have a `"test"` tag, this is useful to help classify and filter the agent. For example distinguishing between test agents and production agents.
 
+#### Run the code
+
 ```python
 python create_agent.py
 ```
@@ -296,6 +344,8 @@ npx tsx createAgent.mts
 ```
 
 The above will generate an agent with some baseline settings and print the ID of the agent to the console. We'll customize the agent in a subsequent step.
+
+#### Test the agent
 
 The newly created agent can be tested in a variety of ways, but the quickest way is to use the [ElevenLabs dashboard](https://elevenlabs.io/app/agents). From the dashboard, select your agent and click the **Test AI agent** button.
 

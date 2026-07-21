@@ -66,6 +66,8 @@ paths:
                   type: boolean
                 enable_audio_message_response:
                   type: boolean
+                enable_typing_indicator:
+                  type: boolean
 servers:
   - url: https://api.elevenlabs.io
     description: Production

@@ -45,13 +45,21 @@ Turn-taking behavior can be further tuned with the [turn eagerness](/docs/eleven
 
 Set your agent's TTS model to **V3 Conversational**. Expressive mode is enabled by default with this model.
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Agent Voice** tab, and select **V3 Conversational** as your Text to Speech model. Save your changes.
 
 ![Enabling expressive mode](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/4ced5ae6cf05746895f431d8b2685e30655ca98911798a029d5c12d0a9b7f055/assets/images/conversational-ai/expressivemode.gif)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.tts.model_id`:
 
@@ -65,9 +73,13 @@ Set `conversation_config.tts.model_id`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -146,13 +158,23 @@ Example: "That's great to hear! [laughs] I'm glad we could sort that out for you
 
 ## Best practices
 
+#### Match delivery to context
+
 Guide your agent to match its emotional delivery to the situation. A frustrated customer should hear a calm, empathetic response. A user sharing good news should hear genuine warmth. Mismatched tone erodes trust.
+
+#### Use system prompt rules for consistency
 
 Define clear tone guidelines in your system prompt rather than relying solely on the model's judgment. This ensures consistent delivery aligned with your brand voice and compliance requirements.
 
+#### Test across languages
+
 Expressive delivery may vary across languages. Test your agent in each target language to ensure the emotional nuance lands as intended, especially in languages where conversational norms differ.
 
+#### Combine with turn eagerness settings
+
 Pair expressive mode with appropriate [turn eagerness](/docs/eleven-agents/customization/conversation-flow#turn-eagerness) settings. Patient mode gives users more space in emotionally sensitive conversations, while eager mode works for fast-paced interactions.
+
+#### Monitor and iterate
 
 Use conversation analytics to track how users respond to expressive delivery. Refine your tone guidelines based on conversation outcomes and user feedback.
 
@@ -164,24 +186,44 @@ Use conversation analytics to track how users respond to expressive delivery. Re
 
 ## FAQ
 
+#### Does expressive mode cost more?
+
 No. Eleven v3 Conversational is priced the same as other ElevenLabs TTS models in Agents, starting at \$0.08 per minute.
+
+#### How do I enable expressive mode?
 
 Select **V3 Conversational** as your agent's TTS model. Expressive mode is enabled by default with this model.
 
+#### How does the turn-taking system work?
+
 The system uses real-time signals from Scribe v2 Realtime, including emotional cues and speech patterns, to predict when the agent should respond. It analyzes both the transcript and how words were spoken (prosody) to time responses naturally.
+
+#### Can I use expressive mode with my Professional Voice Clone?
 
 Eleven v3 Conversational does not currently preserve PVC characteristics well. If maintaining your PVC voice identity is critical, consider using Flash v2 instead.
 
+#### How many languages does Eleven v3 Conversational support?
+
 Eleven v3 Conversational supports 70+ languages, expanded from \~32 in Flash models. This includes improved expressiveness in languages like Japanese where nuance previously lagged.
+
+#### How does this compare to other TTS models in ElevenAgents?
 
 Eleven v3 Conversational offers a higher emotional range than Flash, and Multilingual v2, with the ability to adapt delivery based on conversational context. It supports 70+ languages compared to \~32 for Flash. It is priced the same as other models.
 
 ## Related features
 
+#### [Conversation flow](/docs/eleven-agents/customization/conversation-flow)
+
 Configure turn eagerness, timeouts, and interruption handling
+
+#### [Multi-voice support](/docs/eleven-agents/customization/voice/multi-voice-support)
 
 Use different voices for multi-character conversations and language tutoring
 
+#### [Speed control](/docs/eleven-agents/customization/voice/speed-control)
+
 Adjust the overall speaking speed of your agent
+
+#### [System prompt guide](/docs/eleven-agents/best-practices/prompting-guide)
 
 Optimize your agent's behavior with effective prompting

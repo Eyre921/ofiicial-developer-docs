@@ -17,13 +17,19 @@ You can connect your WhatsApp business account to an ElevenLabs Agent. The agent
 
 ## Importing a WhatsApp business account
 
+#### Import your account
+
 Go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp) and click the ***Import account*** button:
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/734d6e0c2af1c50b769700e084368bed2a8c7eccf47aece6cfb6fc5ca7623f44/assets/images/agents/whatsapp/main-page.png" alt="WhatsApp page" />
 
+#### Authorize ElevenLabs
+
 This will open the authorization flow where you select your account and give ElevenLabs permission to manage it:
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9e5238e98f926582db314e9debc187a7dc29fd38a980cb732b4563b373110351/assets/images/agents/whatsapp/auth-flow.png" alt="WhatsApp authorization flow" />
+
+#### Assign an agent
 
 When you finish importing your account, you will be taken to its settings page where you can assign an agent to it:
 
@@ -31,6 +37,8 @@ When you finish importing your account, you will be taken to its settings page w
 
 If you don't assign an agent to your account, inbound messages will be ignored and inbound calls
 will be rejected. However, you will still be able to make outbound calls.
+
+#### Configure WhatsApp Manager
 
 Go to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/) to:
 
@@ -119,14 +127,20 @@ selecting ***Copy phone number ID***.
 
 ## FAQ
 
+#### Pricing
+
 Meta charges for outbound calls and call permission requests sent outside of a [Customer Service
 Window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows).
 You will not be able to make outbound calls until you add a payment method to your WhatsApp
 business account. You can read more in [WhatsApp
 documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing).
 
+#### Zero-Retention Mode
+
 [Zero-Retention Mode](/docs/eleven-api/resources/zero-retention-mode) limits our ability to
 provide certain functionality: we ignore messages and disallow outbound calls.
+
+#### Joint account management
 
 If you have your own WhatsApp app responding to messages on your account, you can configure ElevenLabs to only respond to calls: go to the [WhatsApp page](https://elevenlabs.io/app/agents/whatsapp), select your account and turn off the ***Enable messaging*** switch.
 

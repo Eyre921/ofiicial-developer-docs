@@ -22,9 +22,15 @@ Listen to a sample:
 
 The voice isolator model extracts speech from background noise in both audio and video files.
 
+#### [Products](/docs/eleven-creative/audio-tools/voice-isolator)
+
 Step-by-step guide for using voice isolator in ElevenLabs.
 
+#### [Developers](/docs/eleven-api/guides/cookbooks/voice-isolator)
+
 Learn how to integrate voice isolator into your application.
+
+#### [API reference](/docs/api-reference/audio-isolation/convert)
 
 Full API reference for the Voice Isolator endpoint.
 

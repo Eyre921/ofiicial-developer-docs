@@ -95,38 +95,29 @@ channels:
           type: object
           properties:
             authorization:
-              type: string
+              description: Any type
             single_use_token:
-              type: string
+              description: Any type
             model_id:
-              type: string
+              description: Any type
             language_code:
-              type: string
+              description: Any type
             enable_logging:
-              type: boolean
-              default: true
-            enable_ssml_parsing:
-              type: boolean
-              default: false
+              description: Any type
             output_format:
-              $ref: >-
-                #/components/schemas//v1/text-to-speech/{voice_id}/multi-stream-input_output_format
-              default: mp3_44100
+              description: Any type
             inactivity_timeout:
-              type: integer
-              default: 20
+              description: Any type
             sync_alignment:
-              type: boolean
-              default: false
+              description: Any type
             auto_mode:
-              type: boolean
-              default: false
+              description: Any type
             apply_text_normalization:
-              $ref: >-
-                #/components/schemas//v1/text-to-speech/{voice_id}/multi-stream-input_apply_text_normalization
-              default: auto
+              description: Any type
             seed:
-              type: integer
+              description: Any type
+            enable_ssml_parsing:
+              description: Any type
         headers:
           type: object
           properties:
@@ -136,22 +127,26 @@ channels:
       operationId: >-
         subpackage_v1TextToSpeechVoiceIdMultiStreamInput.v1TextToSpeechVoiceIdMultiStreamInput-publish
       summary: subscribe
-      description: Receive messages from the multi-context WebSocket.
+      description: >-
+        Defines the message types that can be received by the client from the
+        server
       message:
         name: subscribe
         title: subscribe
-        description: Receive messages from the multi-context WebSocket.
+        description: >-
+          Defines the message types that can be received by the client from the
+          server
         payload:
           $ref: '#/components/schemas/V1TextToSpeechVoiceIdMultiStreamInputSubscribe'
     subscribe:
       operationId: >-
         subpackage_v1TextToSpeechVoiceIdMultiStreamInput.v1TextToSpeechVoiceIdMultiStreamInput-subscribe
       summary: publish
-      description: Send messages to the multi-context WebSocket.
+      description: Defines the message types that can be sent from client to server
       message:
         name: publish
         title: publish
-        description: Send messages to the multi-context WebSocket.
+        description: Defines the message types that can be sent from client to server
         payload:
           $ref: '#/components/schemas/V1TextToSpeechVoiceIdMultiStreamInputPublish'
 servers:
@@ -173,309 +168,120 @@ servers:
     protocol: wss
 components:
   schemas:
-    /v1/text-to-speech/{voice_id}/multi-stream-input_output_format:
-      type: string
-      enum:
-        - mp3_22050_32
-        - mp3_44100_32
-        - mp3_44100_64
-        - mp3_44100_96
-        - mp3_44100_128
-        - mp3_44100_192
-        - pcm_8000
-        - pcm_16000
-        - pcm_22050
-        - pcm_24000
-        - pcm_44100
-        - ulaw_8000
-        - alaw_8000
-        - opus_48000_32
-        - opus_48000_64
-        - opus_48000_96
-        - opus_48000_128
-        - opus_48000_192
-      description: The output audio format
-      title: /v1/text-to-speech/{voice_id}/multi-stream-input_output_format
-    /v1/text-to-speech/{voice_id}/multi-stream-input_apply_text_normalization:
-      type: string
-      enum:
-        - auto
-        - 'on'
-        - 'off'
-      default: auto
-      description: >-
-        This parameter controls text normalization with three modes - 'auto',
-        'on', and 'off'. When set to 'auto', the system will automatically
-        decide whether to apply text normalization (e.g., spelling out numbers).
-        With 'on', text normalization will always be applied, while with 'off',
-        it will be skipped. For the 'eleven_flash_v2_5' model, text
-        normalization can only be enabled with Enterprise plans. Defaults to
-        'auto'.
-      title: >-
-        /v1/text-to-speech/{voice_id}/multi-stream-input_apply_text_normalization
-    NormalizedAlignment:
+    AudioOutputMultiNormalizedAlignment:
       type: object
       properties:
-        charStartTimesMs:
-          type: array
-          items:
-            type: integer
-          description: >
-            A list of starting times (in milliseconds) for each character in the
-            normalized text as it
-
-            corresponds to the audio. For instance, the character 'H' starts at
-            time 0 ms in the audio.
-
-            Note these times are relative to the returned chunk from the model,
-            and not the
-
-            full audio response.
-        charDurationsMs:
-          type: array
-          items:
-            type: integer
-          description: >
-            A list of durations (in milliseconds) for each character in the
-            normalized text as it
-
-            corresponds to the audio. For instance, the character 'H' lasts for
-            3 ms in the audio.
-
-            Note these times are relative to the returned chunk from the model,
-            and not the
-
-            full audio response.
         chars:
           type: array
           items:
             type: string
-          description: >
-            A list of characters in the normalized text sequence. For instance,
-            the first character is 'H'.
-
-            Note that this list may contain spaces, punctuation, and other
-            special characters.
-
-            The length of this list should be the same as the lengths of
-            `charStartTimesMs` and `charDurationsMs`.
-      description: >
-        Alignment information for the generated audio given the input normalized
-        text sequence.
-      title: NormalizedAlignment
-    Alignment:
+        char_start_times_ms:
+          type: array
+          items:
+            type: integer
+        char_durations_ms:
+          type: array
+          items:
+            type: integer
+      required:
+        - chars
+        - char_start_times_ms
+        - char_durations_ms
+      title: AudioOutputMultiNormalizedAlignment
+    AudioOutputMultiAlignment:
       type: object
       properties:
-        charStartTimesMs:
-          type: array
-          items:
-            type: integer
-          description: >
-            A list of starting times (in milliseconds) for each character in the
-            text as it
-
-            corresponds to the audio. For instance, the character 'H' starts at
-            time 0 ms in the audio.
-
-            Note these times are relative to the returned chunk from the model,
-            and not the
-
-            full audio response.
-        charDurationsMs:
-          type: array
-          items:
-            type: integer
-          description: >
-            A list of durations (in milliseconds) for each character in the text
-            as it
-
-            corresponds to the audio. For instance, the character 'H' lasts for
-            3 ms in the audio.
-
-            Note these times are relative to the returned chunk from the model,
-            and not the
-
-            full audio response.
         chars:
           type: array
           items:
             type: string
-          description: >
-            A list of characters in the text sequence. For instance, the first
-            character is 'H'.
-
-            Note that this list may contain spaces, punctuation, and other
-            special characters.
-
-            The length of this list should be the same as the lengths of
-            `charStartTimesMs` and `charDurationsMs`.
-      description: >
-        Alignment information for the generated audio given the input text
-        sequence.
-      title: Alignment
+        char_start_times_ms:
+          type: array
+          items:
+            type: integer
+        char_durations_ms:
+          type: array
+          items:
+            type: integer
+      required:
+        - chars
+        - char_start_times_ms
+        - char_durations_ms
+      title: AudioOutputMultiAlignment
     AudioOutputMulti:
       type: object
       properties:
         audio:
           type: string
-          description: Base64 encoded audio chunk.
-        normalizedAlignment:
-          oneOf:
-            - $ref: '#/components/schemas/NormalizedAlignment'
-            - type: 'null'
+        is_final:
+          type: boolean
+        normalized_alignment:
+          $ref: '#/components/schemas/AudioOutputMultiNormalizedAlignment'
         alignment:
-          oneOf:
-            - $ref: '#/components/schemas/Alignment'
-            - type: 'null'
-        contextId:
+          $ref: '#/components/schemas/AudioOutputMultiAlignment'
+        context_id:
           type: string
-          description: The contextId for which this audio is.
       required:
         - audio
-      description: Server payload containing an audio chunk for a specific context.
       title: AudioOutputMulti
     FinalOutputMulti:
       type: object
       properties:
-        isFinal:
+        is_final:
           type: boolean
           enum:
             - true
-          description: Indicates this is the final message for the context.
-        contextId:
+          description: Indicates the generation is complete. When true, audio is null.
+        context_id:
           type: string
-          description: The context_id for which this is the final message.
-      required:
-        - isFinal
-      description: Server payload indicating the final output for a specific context.
       title: FinalOutputMulti
     V1TextToSpeechVoiceIdMultiStreamInputSubscribe:
       oneOf:
         - $ref: '#/components/schemas/AudioOutputMulti'
         - $ref: '#/components/schemas/FinalOutputMulti'
       title: V1TextToSpeechVoiceIdMultiStreamInputSubscribe
-    RealtimeVoiceSettings:
+    InitializeConnectionMultiVoiceSettings:
       type: object
       properties:
         stability:
           type: number
           format: double
           default: 0.5
-          description: Defines the stability for voice settings.
         similarity_boost:
           type: number
           format: double
           default: 0.75
-          description: Defines the similarity boost for voice settings.
         style:
           type: number
           format: double
           default: 0
-          description: >-
-            Defines the style for voice settings. This parameter is available on
-            V2+ models.
         use_speaker_boost:
           type: boolean
           default: true
-          description: >-
-            Defines the use speaker boost for voice settings. This parameter is
-            available on V2+ models.
         speed:
           type: number
           format: double
           default: 1
-          description: >-
-            Controls the speed of the generated speech. Values range from 0.7 to
-            1.2, with 1.0 being the default speed.
-      title: RealtimeVoiceSettings
-    GenerationConfig:
+      title: InitializeConnectionMultiVoiceSettings
+    InitializeConnectionMultiGenerationConfig:
       type: object
       properties:
         chunk_length_schedule:
           type: array
           items:
-            type: number
-            format: double
-          description: >
-            This is an advanced setting that most users shouldn't need to use.
-            It relates to our
-
-            generation schedule.
-
-
-            Our WebSocket service incorporates a buffer system designed to
-            optimize the Time To First Byte (TTFB) while maintaining
-            high-quality streaming.
-
-
-            All text sent to the WebSocket endpoint is added to this buffer and
-            only when that buffer reaches a certain size is an audio generation
-            attempted. This is because our model provides higher quality audio
-            when the model has longer inputs, and can deduce more context about
-            how the text should be delivered.
-
-
-            The buffer ensures smooth audio data delivery and is automatically
-            emptied with a final audio generation either when the stream is
-            closed, or upon sending a `flush` command. We have advanced settings
-            for changing the chunk schedule, which can improve latency at the
-            cost of quality by generating audio more frequently with smaller
-            text inputs.
-
-
-            The `chunk_length_schedule` determines the minimum amount of text
-            that needs to be sent and present in our
-
-            buffer before audio starts being generated. This is to maximise the
-            amount of context available to
-
-            the model to improve audio quality, whilst balancing latency of the
-            returned audio chunks.
-
-
-            The default value for `chunk_length_schedule` is: [120, 160, 250,
-            290].
-
-
-            This means that the first chunk of audio will not be generated until
-            you send text that
-
-            totals at least 120 characters long. The next chunk of audio will
-            only be generated once a
-
-            further 160 characters have been sent. The third audio chunk will be
-            generated after the
-
-            next 250 characters. Then the fourth, and beyond, will be generated
-            in sets of at least 290 characters.
-
-
-            Customize this array to suit your needs. If you want to generate
-            audio more frequently
-
-            to optimise latency, you can reduce the values in the array. Note
-            that setting the values
-
-            too low may result in lower quality audio. Please test and adjust as
-            needed.
-
-
-            Each item should be in the range 50-500.
-      title: GenerationConfig
-    PronunciationDictionaryLocator:
+            type: integer
+      title: InitializeConnectionMultiGenerationConfig
+    InitializeConnectionMultiPronunciationDictionaryLocatorsItems:
       type: object
       properties:
         pronunciation_dictionary_id:
           type: string
-          description: The unique identifier of the pronunciation dictionary
         version_id:
           type: string
-          description: The version identifier of the pronunciation dictionary
       required:
         - pronunciation_dictionary_id
         - version_id
-      description: Identifies a specific pronunciation dictionary to use
-      title: PronunciationDictionaryLocator
+      title: InitializeConnectionMultiPronunciationDictionaryLocatorsItems
     InitializeConnectionMulti:
       type: object
       properties:
@@ -483,152 +289,136 @@ components:
           type: string
           enum:
             - ' '
-          description: Must be a single space character to initiate the context.
+          description: The initial text that must be sent is a blank space.
         voice_settings:
-          $ref: '#/components/schemas/RealtimeVoiceSettings'
+          $ref: '#/components/schemas/InitializeConnectionMultiVoiceSettings'
         generation_config:
-          $ref: '#/components/schemas/GenerationConfig'
+          $ref: '#/components/schemas/InitializeConnectionMultiGenerationConfig'
         pronunciation_dictionary_locators:
           type: array
           items:
-            $ref: '#/components/schemas/PronunciationDictionaryLocator'
-          description: Optional pronunciation dictionaries for this context.
+            $ref: >-
+              #/components/schemas/InitializeConnectionMultiPronunciationDictionaryLocatorsItems
         xi_api_key:
           type: string
-          description: >-
-            Your ElevenLabs API key (if not in header). For this context's first
-            message only.
         authorization:
           type: string
-          description: >-
-            Your authorization bearer token (if not in header). For this
-            context's first message only.
         context_id:
           type: string
-          description: >-
-            A unique identifier for the first context created in the websocket.
-            If not provided, a default context will be used.
       required:
         - text
-      description: >-
-        Payload to initialize a new context in a multi-stream WebSocket
-        connection.
       title: InitializeConnectionMulti
+    InitialiseContextVoiceSettings:
+      type: object
+      properties:
+        stability:
+          type: number
+          format: double
+          default: 0.5
+        similarity_boost:
+          type: number
+          format: double
+          default: 0.75
+        style:
+          type: number
+          format: double
+          default: 0
+        use_speaker_boost:
+          type: boolean
+          default: true
+        speed:
+          type: number
+          format: double
+          default: 1
+      title: InitialiseContextVoiceSettings
+    InitialiseContextGenerationConfig:
+      type: object
+      properties:
+        chunk_length_schedule:
+          type: array
+          items:
+            type: integer
+      title: InitialiseContextGenerationConfig
+    InitialiseContextPronunciationDictionaryLocatorsItems:
+      type: object
+      properties:
+        pronunciation_dictionary_id:
+          type: string
+        version_id:
+          type: string
+      required:
+        - pronunciation_dictionary_id
+        - version_id
+      title: InitialiseContextPronunciationDictionaryLocatorsItems
     InitialiseContext:
       type: object
       properties:
         text:
           type: string
-          description: The initial text to synthesize. Should end with a single space.
         voice_settings:
-          $ref: '#/components/schemas/RealtimeVoiceSettings'
+          $ref: '#/components/schemas/InitialiseContextVoiceSettings'
         generation_config:
-          $ref: '#/components/schemas/GenerationConfig'
+          $ref: '#/components/schemas/InitialiseContextGenerationConfig'
         pronunciation_dictionary_locators:
           type: array
           items:
-            $ref: '#/components/schemas/PronunciationDictionaryLocator'
-          description: >-
-            Optional list of pronunciation dictionary locators to be used for
-            this context.
+            $ref: >-
+              #/components/schemas/InitialiseContextPronunciationDictionaryLocatorsItems
         xi_api_key:
           type: string
-          description: >-
-            Your ElevenLabs API key. Required if not provided in the WebSocket
-            connection's header or query parameters. This applies to the
-            (re)initialization of this specific context.
         authorization:
           type: string
-          description: >-
-            Your authorization bearer token. Required if not provided in the
-            WebSocket connection's header or query parameters. This applies to
-            the (re)initialization of this specific context.
         context_id:
           type: string
-          description: >-
-            An identifier for the text-to-speech context. If omitted, a default
-            context ID may be assigned by the server. If provided, this message
-            will create a new context with this ID or re-initialize an existing
-            one with the new settings and text.
       required:
         - text
-      description: >-
-        Payload to initialize or re-initialize a TTS context with specific
-        settings and initial text for multi-stream connections.
       title: InitialiseContext
     SendTextMulti:
       type: object
       properties:
         text:
           type: string
-          description: Text to synthesize. Should end with a single space.
         context_id:
           type: string
-          description: The target context_id for this text.
         flush:
           type: boolean
           default: false
-          description: >-
-            If true, flushes the audio buffer for the specified context. If
-            false, the text will be appended to the buffer to be generated.
       required:
         - text
-      description: Payload to send text for synthesis to an existing context.
       title: SendTextMulti
-    FlushContextClient:
+    FlushContext:
       type: object
       properties:
         context_id:
           type: string
-          description: The context_id to flush.
         text:
           type: string
-          description: The text to append to the buffer to be flushed.
         flush:
           type: boolean
           default: false
-          description: >-
-            If true, flushes the audio buffer for the specified context. If
-            false, the context will remain open and the text will be appended to
-            the buffer to be generated.
       required:
         - context_id
         - flush
-      description: Payload to flush the audio buffer for a specific context.
-      title: FlushContextClient
-    CloseContextClient:
+      title: FlushContext
+    CloseContext:
       type: object
       properties:
         context_id:
           type: string
-          description: The context_id to close.
         close_context:
           type: boolean
           default: false
-          description: >-
-            Must set the close_context to true, to close the specified context.
-            If false, the context will remain open and the text will be ignored.
-            If set to true, the context will close. If it has already been set
-            to flush it will continue flushing. The same context id can be used
-            again but will not be linked to the previous context with the same
-            name.
       required:
         - context_id
         - close_context
-      description: Payload to close a specific TTS context.
-      title: CloseContextClient
-    CloseSocketClient:
+      title: CloseContext
+    CloseSocket:
       type: object
       properties:
         close_socket:
           type: boolean
           default: false
-          description: >-
-            If true, closes all contexts and closes the entire WebSocket
-            connection. Any context that was previously set to flush will wait
-            to flush before closing.
-      description: Payload to signal closing the entire WebSocket connection.
-      title: CloseSocketClient
+      title: CloseSocket
     KeepContextAlive:
       type: object
       properties:
@@ -637,26 +427,22 @@ components:
           enum:
             - ''
           description: >-
-            An empty string. This text is ignored by the server but its presence
-            resets the inactivity timeout for the specified context.
+            An empty string. Ignored by the server but resets the inactivity
+            timeout for the context.
         context_id:
           type: string
-          description: The identifier of the context to keep alive.
       required:
         - text
         - context_id
-      description: >-
-        Payload to keep a specific context alive by resetting its inactivity
-        timeout. Empty text is ignored but resets the clock.
       title: KeepContextAlive
     V1TextToSpeechVoiceIdMultiStreamInputPublish:
       oneOf:
         - $ref: '#/components/schemas/InitializeConnectionMulti'
         - $ref: '#/components/schemas/InitialiseContext'
         - $ref: '#/components/schemas/SendTextMulti'
-        - $ref: '#/components/schemas/FlushContextClient'
-        - $ref: '#/components/schemas/CloseContextClient'
-        - $ref: '#/components/schemas/CloseSocketClient'
+        - $ref: '#/components/schemas/FlushContext'
+        - $ref: '#/components/schemas/CloseContext'
+        - $ref: '#/components/schemas/CloseSocket'
         - $ref: '#/components/schemas/KeepContextAlive'
       title: V1TextToSpeechVoiceIdMultiStreamInputPublish
 

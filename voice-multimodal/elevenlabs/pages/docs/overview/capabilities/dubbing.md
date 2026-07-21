@@ -29,7 +29,11 @@ We also offer a [fully managed dubbing service](https://elevenlabs.io/elevenstud
 
 The Dubbing v2 API is not yet live but is expected to launch in the coming weeks.
 
+#### [Products](/docs/eleven-creative/products/dubbing/dubbing-studio)
+
 Edit transcripts and translate videos step by step in Dubbing Studio.
+
+#### [Developers](/docs/eleven-api/guides/cookbooks/dubbing)
 
 Learn how to integrate dubbing into your application.
 
@@ -67,14 +71,22 @@ Supports 90+ languages including English, Spanish, French, German, Japanese, Chi
 
 ## FAQ
 
+#### Is realtime or live dubbing available?
+
 Realtime or live dubbing is not currently available.
+
+#### What happens if my dub fails or gets stuck?
 
 If a Dubbing Studio job fails or you cancel it, the credits are automatically refunded to your
 account. Dubbing v2 (priced per minute in US dollars on Automatic Dubbing) is not charged for
 failed jobs. If a dub is stuck in Queued or Loading for an extended period, cancel and resubmit
 it. You will not lose credits by doing so.
 
+#### Is Dubbing v2 available via API?
+
 The Dubbing v2 API is not yet live but is expected to launch in the coming weeks.
+
+#### How do I use the legacy V1 dubbing model?
 
 Automatic Dubbing on the main [Dubbing](https://elevenlabs.io/app/dubbing) page uses Dubbing v2
 by default. To use the legacy V1 dubbing model and the original dubbing dialog, click

@@ -15,12 +15,20 @@ customers.
 
 ElevenLabs is able to deploy its models through the AWS Marketplace and Amazon Sagemaker. In addition, the ElevenLabs Agents Platform can also be deployed using AWS Nitro Enclaves. This allows enterprise customers to run Text to Speech, Speech to Text models or full agent workflows within their own secure cloud infrastructure.
 
+#### State-of-the-art models
+
 Access to ElevenLabs' v2 and v2.5 TTS models, Scribe V2 models for STT and the ElevenLabs Agents
 Platform.
 
+#### Complete data control
+
 All text, audio or call data remains within your infrastructure
 
+#### Enhanced security
+
 Meet strict compliance and data residency requirements
+
+#### Enterprise support
 
 Dedicated engineering support and guidance for your deployment
 

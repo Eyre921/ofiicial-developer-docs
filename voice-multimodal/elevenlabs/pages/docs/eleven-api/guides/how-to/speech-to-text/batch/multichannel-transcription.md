@@ -34,6 +34,8 @@ Each channel is processed independently and automatically assigned a speaker ID 
 
 ## How it works
 
+#### Prepare your multichannel audio
+
 Ensure your audio file has speakers isolated on separate channels. The multichannel feature supports up to 5 channels, with each channel mapped to a specific speaker:
 
 * Channel 0 → `speaker_0`
@@ -41,6 +43,8 @@ Ensure your audio file has speakers isolated on separate channels. The multichan
 * Channel 2 → `speaker_2`
 * Channel 3 → `speaker_3`
 * Channel 4 → `speaker_4`
+
+#### Configure API parameters
 
 When making a speech-to-text request, you must set:
 
@@ -52,6 +56,8 @@ Optionally, control the response shape with:
 * `multichannel_output_style`: `separate` (default) returns one transcript per channel. `combined` merges all channels into a single transcript whose words are sorted by start time, each carrying a `channel_index` — matching the standard single-channel response shape. `combined` requires timestamps (`timestamps_granularity` must not be `none`) and is not supported with webhook delivery or entity detection/redaction.
 
 The `num_speakers` parameter cannot be used with multichannel mode as the speaker count is automatically determined by the number of channels. Multichannel mode assumes there will exactly one speaker per channel. If there are more, it will assign the same speaker id to all speakers in the channel.
+
+#### Process the response
 
 By default (`multichannel_output_style=separate`), multichannel audio returns a different response format than single-channel:
 
@@ -292,25 +298,35 @@ async def transcribe_multichannel_with_webhook(audio_file_path):
 
 ### Common validation errors
 
+#### Setting diarize=true with multichannel mode
+
 **Error**: Multichannel mode does not support diarization and assigns speakers based on the
 channel they speak on.
 
 **Solution**: Always set `diarize=false` when using multichannel mode.
 
+#### Providing num\_speakers parameter
+
 **Error**: Cannot specify num\_speakers when use\_multi\_channel is enabled. The number of speakers
 is automatically determined by the number of channels. **Solution**: Remove the `num_speakers`
 parameter from your request.
+
+#### Audio file with more than 5 channels
 
 **Error**: Multichannel mode supports up to 5 channels, but the audio file contains X channels.
 
 **Solution**: Process only the first 5 channels or pre-process your audio to reduce channel
 count.
 
+#### Using combined output without timestamps
+
 **Error**: multichannel\_output\_style='combined' requires timestamps; set timestamps\_granularity
 to 'word' or 'character'.
 
 **Solution**: Combined output sorts words by time, so set `timestamps_granularity` to `word`
 (the default) or `character`.
+
+#### Using combined output with webhooks
 
 **Error**: multichannel\_output\_style='combined' is not yet supported with webhook delivery.
 
@@ -469,19 +485,29 @@ async function processLargeMultichannelFile(filePath, chunkDuration = 300) {
 
 ## FAQ
 
+#### What happens if my audio has more than 5 channels?
+
 The API will return an error. You'll need to either select which 5 channels to send to the API
 or mix down some channels before sending them to the API.
 
+#### Can I process mono audio with multichannel mode?
+
 Yes, but it's unnecessary. If you send mono audio with `use_multi_channel=true`, you'll receive
 a standard single-channel response, not the multichannel format.
+
+#### Can I get one combined transcript instead of separate per-channel transcripts?
 
 Yes. Set `multichannel_output_style=combined` to receive a single transcript with all channels
 merged and sorted by start time, each word tagged with its `channel_index`. This matches the
 standard single-channel response shape. It requires timestamps and isn't available with webhook
 delivery.
 
+#### How are speaker IDs assigned?
+
 Speaker IDs are deterministic based on channel number: channel 0 becomes speaker\_0, channel 1
 becomes speaker\_1, and so on.
+
+#### Can channels have different languages?
 
 Yes, each channel is processed independently and can detect different languages. The language
 detection happens per channel. With `multichannel_output_style=combined`, the top-level
@@ -490,6 +516,10 @@ detection happens per channel. With `multichannel_output_style=combined`, the to
 
 ## Next steps
 
+#### [API reference](/docs/api-reference/speech-to-text)
+
 Full Speech to Text API reference and parameters.
+
+#### [Webhooks](/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks)
 
 Receive transcription results asynchronously via webhook.

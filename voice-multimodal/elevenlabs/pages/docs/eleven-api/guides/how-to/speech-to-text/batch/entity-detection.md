@@ -126,6 +126,8 @@ console.log("Entities detected:", transcription.entities);
 
 The following entity types are supported for detection. You can detect entire groups using `pii`, `phi`, or `pci`, or specify individual entity types by their label. To detect all entity types, use the `all` category.
 
+#### PII (Personally Identifiable Information)
+
 | Label                       | Description                                                                                  | Regulatory Compliance                                          |
 | --------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | `account_number`            | Customer account or membership identification number                                         | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI                    |
@@ -172,6 +174,8 @@ The following entity types are supported for detection. You can detect entire gr
 | `username`                  | Usernames, login names, or handles                                                           | CPRA, GDPR, APPI                                               |
 | `vehicle_id`                | Vehicle identification numbers (VINs), vehicle serial numbers, and license plate numbers     | CPRA, GDPR, HIPAA, APPI                                        |
 
+#### PHI (Protected Health Information)
+
 | Label             | Description                                                           | Regulatory Compliance                                 |
 | ----------------- | --------------------------------------------------------------------- | ----------------------------------------------------- |
 | `condition`       | Names of medical conditions, diseases, syndromes, deficits, disorders | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
@@ -181,11 +185,15 @@ The following entity types are supported for detection. You can detect entire gr
 | `medical_process` | Medical processes, including treatments, procedures, and tests        | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
 | `statistics`      | Medical statistics                                                    | HIPAA, Quebec Privacy Act                             |
 
+#### PCI (Payment Card Industry)
+
 | Label                    | Description                                           | Regulatory Compliance                       |
 | ------------------------ | ----------------------------------------------------- | ------------------------------------------- |
 | `credit_card`            | Credit card numbers                                   | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI |
 | `credit_card_expiration` | Expiration date of a credit card                      | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI |
 | `cvv`                    | 3- or 4-digit card verification codes and equivalents | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI |
+
+#### Other entities
 
 | Label                   | Description                                                    | Regulatory Compliance                                          |
 | ----------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
@@ -199,6 +207,10 @@ The following entity types are supported for detection. You can detect entire gr
 
 ## Next steps
 
+#### [API reference](/docs/api-reference/speech-to-text)
+
 Full Speech to Text API reference and parameters.
+
+#### [Multichannel transcription](/docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription)
 
 Transcribe multi-channel audio with per-channel speaker attribution.

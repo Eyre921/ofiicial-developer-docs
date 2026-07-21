@@ -72,6 +72,7 @@ components:
       type: string
       enum:
         - realtime_scribe
+        - batch_scribe
         - tts_websocket
       title: SingleUseTokenType
     SingleUseTokenResponseModel:

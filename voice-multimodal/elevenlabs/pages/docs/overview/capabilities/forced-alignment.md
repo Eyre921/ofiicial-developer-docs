@@ -19,7 +19,11 @@ The ElevenLabs [Forced Alignment](/docs/api-reference/forced-alignment/create) A
 
 The Forced Alignment API can be used by interfacing with the ElevenLabs API directly.
 
+#### [Developers](/docs/eleven-api/guides/cookbooks/forced-alignment)
+
 Learn how to integrate Forced Alignment into your application.
+
+#### [API reference](/docs/api-reference/forced-alignment/create)
 
 Full API reference for the Forced Alignment endpoint.
 

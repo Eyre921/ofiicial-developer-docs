@@ -18,6 +18,8 @@ This tutorial will guide you through adding your ElevenLabs Agents agent to your
 
 ## Guide
 
+#### Get your embed code
+
 Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and find your agent's embed widget.
 
 ```html
@@ -25,15 +27,19 @@ Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and find your
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 ```
 
+#### Add the widget to your page
+
 1. Open your Webflow project in Designer
 2. Drag an Embed Element to your desired location
 3. Paste the `<elevenlabs-convai agent-id="YOUR_AGENT_ID"></elevenlabs-convai>` snippet into the Embed Element's code editor
 4. Save & Close
 
-1) Go to Project Settings > Custom Code
-2) Paste the snippet `<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>` into the Footer Code section
-3) Save Changes
-4) Publish your site to see the changes
+#### Add the script globally
+
+1. Go to Project Settings > Custom Code
+2. Paste the snippet `<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>` into the Footer Code section
+3. Save Changes
+4. Publish your site to see the changes
 
 Note: The widget will only be visible after publishing your site, not in the Designer.
 

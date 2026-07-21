@@ -130,6 +130,8 @@ The bridge serves three routes:
 * `GET /media-stream` — Twilio Media Streams WebSocket. Relays audio to and from the Speech Engine conversation WebSocket.
 * `GET /ws` — Brain WebSocket. ElevenLabs connects here when a conversation starts. Runs the standard `engine.serve()` / `engine.attach()` server.
 
+#### Install dependencies
+
 ```bash title="Python"
 pip install "elevenlabs" "aiohttp" "twilio" "python-dotenv"
 ```
@@ -137,6 +139,8 @@ pip install "elevenlabs" "aiohttp" "twilio" "python-dotenv"
 ```bash title="Node"
 npm install @elevenlabs/elevenlabs-js express ws twilio dotenv openai
 ```
+
+#### Mint a signed URL for the Speech Engine
 
 The bridge requests a signed URL each time a new call arrives. The URL embeds the Speech Engine ID and a one-time signature, so the bridge never needs the raw API key.
 
@@ -166,6 +170,8 @@ async function signedUrl(): Promise<string> {
   return response.signedUrl;
 }
 ```
+
+#### Serve the TwiML response
 
 When a call arrives, Twilio POSTs to `/incoming-call`. The response is TwiML that opens a Media Stream to the bridge's own `/media-stream` WebSocket.
 
@@ -217,6 +223,8 @@ app.post(
 ```
 
 `RequestValidator` (Python) and `twilio.webhook({ validate: true })` (Node) check the `X-Twilio-Signature` header against `TWILIO_AUTH_TOKEN`. Without validation, anyone on the public internet could POST to `/incoming-call` and bill calls to your account.
+
+#### Bridge the Media Stream
 
 The Media Stream is a WebSocket that sends a sequence of JSON events: `connected`, `start`, `media` (the audio payload), and `stop`. The bridge opens a Speech Engine conversation WebSocket on `start` and relays audio in both directions until the stream closes.
 
@@ -377,6 +385,8 @@ async function openElevenLabsWebSocket(
 
 The `interruption` event from Speech Engine triggers a `clear` event on the Twilio stream, which discards any buffered audio so barge-in works cleanly. The `ping` event is answered with `pong` to keep the conversation WebSocket alive.
 
+#### Run the brain server alongside
+
 The brain server is the standard Speech Engine server shown in the [quickstart](/docs/eleven-api/guides/cookbooks/speech-engine). The only addition is the shared-secret check on the WebSocket upgrade — accept the connection only if `x-api-key` matches the value you set on the Speech Engine.
 
 ```python title="bridge.py" maxLines=0
@@ -442,12 +452,16 @@ See the [Speech Engine quickstart](/docs/eleven-api/guides/cookbooks/speech-engi
 
 ## Point Twilio at the bridge
 
+#### Start the bridge and a public tunnel
+
 ```bash
 ngrok http 3001
 python bridge.py
 ```
 
 Note the `https://` URL ngrok prints — Twilio will POST to it.
+
+#### Update the Speech Engine ws\_url
 
 Set `speech_engine.ws_url` to the public WebSocket URL of your brain endpoint so ElevenLabs knows where to connect.
 
@@ -464,6 +478,8 @@ await elevenlabs.speechEngine.update("seng_8k3m9xr4hjnfg983brhmhkd98n6", {
 });
 ```
 
+#### Configure the Twilio number
+
 In the Twilio console, open your phone number's **Voice Configuration**:
 
 * **A call comes in**: Webhook
@@ -471,6 +487,8 @@ In the Twilio console, open your phone number's **Voice Configuration**:
 * **HTTP method**: POST
 
 If the number is attached to an Elastic SIP Trunk, detach it first — a Twilio number routes either to a trunk or to a webhook, not both.
+
+#### Call the number
 
 Dial the number from any phone. The agent answers; speak into the call and you should hear the agent respond. With debug logging enabled, the bridge logs the call SID, conversation ID, and audio format for each turn.
 
@@ -485,12 +503,22 @@ Dial the number from any phone. The agent answers; speak into the call and you s
 
 ## Next steps
 
+#### [Twilio native integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration)
+
 Use the hosted LLM instead of a custom one.
+
+#### [Speech Engine quickstart](/docs/eleven-api/guides/cookbooks/speech-engine)
 
 Build the brain server end-to-end with a streaming LLM.
 
+#### [Custom LLM (OpenAI-compatible)](/docs/eleven-agents/customization/llm/custom-llm)
+
 An alternative custom-LLM mechanism using an OpenAI-compatible HTTP endpoint.
 
+#### [Python SDK reference](/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference)
+
 Classes, methods, and events for the Speech Engine Python SDK.
+
+#### [JavaScript SDK reference](/docs/eleven-api/resources/libraries/speech-engine/javascript-sdk-reference)
 
 Classes, methods, and events for the Speech Engine JavaScript SDK.

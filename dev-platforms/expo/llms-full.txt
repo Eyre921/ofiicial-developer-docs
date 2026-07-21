@@ -6169,7 +6169,7 @@ Some libraries distribute their config plugin as a separate package from their m
 ---
 
 ---
-modificationDate: June 26, 2026
+modificationDate: July 21, 2026
 title: Developing and debugging a plugin
 description: Learn about development best practices and debugging techniques for Expo config plugins.
 ---
@@ -6643,7 +6643,7 @@ The Expo CLI `npx expo prebuild` command uses [`@expo/prebuild-config`](https://
 
 For example, say you wanted to add support for managing the `ios/*/AppDelegate.h` file, you could do this by adding a `ios.appDelegateHeader` modifier.
 
-> This example uses `tsx` for simple local TypeScript support, this isn't strictly necessary. [Learn more](/guides/typescript.md#appconfigjs).
+> This example uses `tsx` for simple local TypeScript support, this isn't strictly necessary. See [using TypeScript with `app.config.js`](/guides/typescript.md#appconfigjs).
 
 ```ts
 import { ConfigPlugin, IOSConfig, Mod, withMod, BaseMods } from 'expo/config-plugins';
@@ -8368,7 +8368,7 @@ For more information, see [CLI Options](https://jestjs.io/docs/en/cli) in Jest d
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 21, 2026
 title: Overview of distributing apps for review
 description: Learn about how to distribute your app for review using app stores, internal distribution, and EAS Update.
 ---
@@ -8404,6 +8404,8 @@ TestFlight is another option to distribute your app to iOS devices. TestFlight a
 TestFlight also includes an external testing option that allows you to share your app with up to 10,000 users via an email or a public link.
 
 Both internal and external test distribution in TestFlight require you to [upload your app](/submit/ios.md) to App Store Connect and wait for the automated review before you can share a build. However, external test builds will need to go through a more formal App Store review (which is distinct from the review that your app must undergo before production release) before being distributed.
+
+For step-by-step instructions on setting up both options, see [Distribute an iOS app with TestFlight](/submit/testflight.md).
 
 [EAS Submit](/deploy/submit-to-app-stores.md) — Learn how to upload your app to app store testing and release tracks.
 
@@ -8707,7 +8709,7 @@ These guides assume your project has **android** and/or **ios** directories cont
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 21, 2026
 title: Submit to app stores
 description: An overview of how to submit your app to the Google Play Store and Apple App Store.
 ---
@@ -8732,7 +8734,7 @@ EAS Submit uploads your **.aab** to Google Play Console and places it in the tra
 
 ### iOS (Apple App Store)
 
-EAS Submit uploads your **.ipa** to App Store Connect, where it becomes available in TestFlight after processing (usually 10-15 minutes). A TestFlight build is not automatically released to the App Store. To ship it to production, sign in to App Store Connect, complete the app metadata and screenshots, select the build, and submit it for App Review.
+EAS Submit uploads your **.ipa** to App Store Connect, where it becomes available in [TestFlight](/submit/testflight.md) after processing (usually 10-15 minutes). A TestFlight build is not automatically released to the App Store. To ship it to production, sign in to App Store Connect, complete the app metadata and screenshots, select the build, and submit it for App Review.
 
 ## When to use EAS Submit
 
@@ -9180,7 +9182,7 @@ The team behind Expo also provides **Expo Application Services (EAS)**, deeply i
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 21, 2026
 title: FAQ
 description: A list of common questions and limitations about Expo and related services.
 ---
@@ -9307,7 +9309,7 @@ Source: [3.3.1 APIs and Functionality - B. Executable Code](https://developer.ap
 
 ## Should I use Expo CLI or React Native Community CLI?
 
-Expo CLI offers the same core functionality as React Native Community CLI (also known as "React Native CLI") with additional features such as automatic [TypeScript setup](/guides/typescript.md), [web support](/workflow/web.md), [auto installing compatible libraries](/more/expo-cli.md#install), [improved native build commands](/more/expo-cli.md#compiling), [tunneling](/more/expo-cli.md#tunneling), [Prebuild](/more/glossary-of-terms.md#prebuild), and [more](/more/expo-cli.md).
+Expo CLI offers the same core functionality as React Native Community CLI (also known as "React Native CLI") with additional features such as automatic [TypeScript setup](/guides/typescript.md), [web support](/workflow/web.md), [auto installing compatible libraries](/more/expo-cli.md#install), [improved native build commands](/more/expo-cli.md#compiling), [tunneling](/more/expo-cli.md#tunneling), [Prebuild](/more/glossary-of-terms.md#prebuild), and [more Expo CLI features](/more/expo-cli.md).
 
 It can be used simultaneously with React Native Community. Regardless of which CLI you use, you can use any part of the [Expo SDK](/versions/latest.md) and [Expo Application Services](/eas.md) with your project. For more information, see:
 
@@ -14286,7 +14288,7 @@ In the next chapter, learn about the process of creating a production build for 
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 21, 2026
 title: Create a production build for iOS
 description: Learn about the process of creating a production build for iOS and automating the release process.
 ---
@@ -14369,7 +14371,7 @@ After the submission process is complete, we'll need to log in to the Apple Deve
 
 After that, the app will download on our device so that we can test it.
 
-> **Note**: Similar to internal testing, we can also create a group for inviting external testers using TestFlight. Where internal testing has a limit of 100 users, TestFlight allows sharing a test release version externally with up to 10,000 testers and provides a publicly shareable link. For brevity, we are not going to cover those steps in this tutorial.
+> **Note**: Similar to internal testing, we can also create a group for inviting external testers using TestFlight. Where internal testing has a limit of 100 users, TestFlight allows sharing a test release version externally with up to 10,000 testers and provides a publicly shareable link. For step-by-step instructions, see [Distribute an iOS app with TestFlight](/submit/testflight.md).
 
 ## Submit the app to the Apple App Store
 
@@ -15417,7 +15419,7 @@ In the next chapter, learn how to create preview builds with Slack notifications
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 21, 2026
 title: 'Create preview builds for pull requests with EAS Workflows'
 description: Learn how to create preview build workflows for Slack notifications and PR previews using EAS Workflows.
 ---
@@ -15557,7 +15559,7 @@ To send messages from EAS Workflows to our Slack channel, we need a webhook URL 
 5.  Add the webhook URL as an EAS environment variable named `SLACK_WEBHOOK_URL`. Open our project's [Environment variables](https://expo.dev/accounts/%5Baccount%5D/projects/%5Bproject%5D/environment-variables) page on the EAS dashboard, create the variable for the `preview` environment, and set its [visibility](/eas/environment-variables.md#visibility-settings-for-environment-variables) to **secret** since only EAS servers need to read it. Alternatively, create it with [EAS CLI](/eas/environment-variables/manage.md):
 
 ```sh
-eas env:create --name SLACK_WEBHOOK_URL --value https://hooks.slack.com/services/TD000/B000/XXXXXXXXXX --environment preview --visibility secret
+eas env:set --name SLACK_WEBHOOK_URL --value https://hooks.slack.com/services/TD000/B000/XXXXXXXXXX --environment preview --visibility secret
 ```
 
 ### Add a Slack notification job
@@ -18724,7 +18726,7 @@ Here are some common tips to help you troubleshoot when implementing iOS Univers
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 21, 2026
 title: Add custom native code
 description: Learn how to add custom native code to your Expo project.
 ---
@@ -18746,7 +18748,7 @@ Expo and React Native developers typically spend the vast majority of their time
 
 #### Using Expo Go?
 
-If you are using [Expo Go](https://expo.dev/go), [you can only access native libraries that are included in the Expo SDK](/versions/latest/sdk/third-party-overview.md), or libraries that do not include any custom native code ([learn more](/workflow/using-libraries.md#third-party-libraries)). [Creating a development build](/develop/development-builds/introduction.md) allows you to change the native code or configuration as you would in any other native app.
+If you are using [Expo Go](https://expo.dev/go), [you can only access native libraries that are included in the Expo SDK](/versions/latest/sdk/third-party-overview.md), or libraries that do not include any custom native code ([learn more about third-party libraries](/workflow/using-libraries.md#third-party-libraries)). [Creating a development build](/develop/development-builds/introduction.md) allows you to change the native code or configuration as you would in any other native app.
 
 ### Installing libraries with custom native code in development builds
 
@@ -18829,7 +18831,7 @@ If you need to hook into Android lifecycle events or `AppDelegate` methods, use 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 21, 2026
 title: Adopt Prebuild
 description: Learn how to adopt Expo Prebuild in a project that was bootstrapped with React Native CLI.
 ---
@@ -18956,7 +18958,7 @@ If your project has any native modifications (changes to the **android** or **io
 -   Check to see if your changes overlap with the built-in [app config fields](/versions/latest/config/app.md). For example, if you have an app icon, be sure to define it as `expo.icon` in the **app.json** then re-run `npx expo prebuild`.
 -   Look up if any of the packages you are using require an [Expo config plugin](/config-plugins/introduction.md). If a package in your project requires additional changes inside the **android** or **ios** directories, then you will probably need a Config Plugin. Some plugins can be automatically added by running `npx expo install` with all of the packages in your **package.json** dependencies. If a package requires a plugin but doesn't supply one, then you can try checking the community plugins at [`expo/config-plugins`](https://github.com/expo/config-plugins) to see if one already exists.
 -   You can use the [VS Code Expo extension](https://marketplace.visualstudio.com/items?itemName=expo.vscode-expo-tools) to introspect your changes and debug if prebuild is generating the native code you expect. Just press Cmd ⌘ + Shift + P, type "Expo: Preview Modifier", and select the native file you wish to introspect.
--   Additionally, you can develop local config plugins to fit your needs. [Learn more](/config-plugins/development-and-debugging.md#develop-a-plugin).
+-   Additionally, you can develop local config plugins to fit your needs. See [how to develop a config plugin](/config-plugins/development-and-debugging.md#develop-a-plugin).
 
 ## Add more features
 
@@ -19500,7 +19502,7 @@ To inject custom options to your plugin you can use the `options` field and it w
 ---
 
 ---
-modificationDate: June 30, 2026
+modificationDate: July 21, 2026
 title: Precompiled Expo Modules
 description: Learn how precompiled Expo Modules reduce native build times on Android and iOS.
 ---
@@ -19548,7 +19550,7 @@ export EXPO_USE_PRECOMPILED_MODULES=0
 For EAS Build, create an [EAS environment variable](/eas/environment-variables/manage.md):
 
 ```sh
-eas env:create --name EXPO_USE_PRECOMPILED_MODULES --value 0 --visibility plaintext
+eas env:set --name EXPO_USE_PRECOMPILED_MODULES --value 0 --visibility plaintext
 ```
 
 The CLI will prompt you to select which environment(s) (`development`, `preview`, `production`) the variable applies to.
@@ -24447,7 +24449,7 @@ In release builds, the JavaScript bundle is embedded in the artifact (AAR or XCF
 ---
 
 ---
-modificationDate: July 01, 2026
+modificationDate: July 21, 2026
 title: How to add Expo to a native app using the integrated approach
 description: A guide for adding Expo and React Native to existing native (brownfield) apps using the integrated approach.
 ---
@@ -24522,7 +24524,7 @@ mv /path/to/your/ios-project my-project/ios/
 
 ### Set up a monorepo
 
-Monorepos, or "monolithic repositories", are single repositories containing multiple apps or packages. [Learn more](/guides/monorepos.md).
+Monorepos, or "monolithic repositories", are single repositories containing multiple apps or packages. See [how to work with monorepos](/guides/monorepos.md).
 
 Setting up a monorepo will ensure that Android and iOS scripts will be able to invoke commands from Node libraries even with a custom folder structure. To set up a Yarn monorepo, create a **package.json** file at the root of your project and add the following content:
 
@@ -25404,7 +25406,7 @@ To completely compile your app for production see [Compiling Android](/more/expo
 ---
 
 ---
-modificationDate: July 04, 2024
+modificationDate: July 21, 2026
 title: Common development errors
 description: A list of common development errors that are encountered by developers using Expo.
 ---
@@ -25425,7 +25427,7 @@ This page outlines a list of errors that are commonly encountered by developers 
 ### Module AppRegistry is not a registered callable module (calling runApplication)
 
 -   An error in your code is preventing the JavaScript bundle from being executed on startup.
--   Try running `npx expo start --no-dev --minify` to reproduce the production JS bundle locally. If possible, connect your device and access the device logs via Android Studio or Xcode. Device logs contain much more detailed stacktraces and information. Check to see if you have any changes or errors in your Babel configuration. In some rare cases, this issue could be caused by incompatibility between the Metro JavaScript minifier and certain code in your app ([more information](https://forums.expo.dev/t/change-minifierconfig-for-minify-uglify/36460/2)).
+-   Try running `npx expo start --no-dev --minify` to reproduce the production JS bundle locally. If possible, connect your device and access the device logs via Android Studio or Xcode. Device logs contain much more detailed stacktraces and information. Check to see if you have any changes or errors in your Babel configuration. In some rare cases, this issue could be caused by incompatibility between the Metro JavaScript minifier and certain code in your app.
 
 ### npm ERR! No git binary found in $PATH
 
@@ -31611,7 +31613,7 @@ There are different options to present a modal screen using the `presentation` o
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 21, 2026
 title: Web modals
 description: Learn how to implement and customize the behavior of a modal in your web app using Expo Router.
 ---
@@ -31728,7 +31730,7 @@ When working with stack or nested stack navigators, modals need to be properly a
 
 An _anchor_ serves as the base for the modal. In complex apps, when you have nested stacks, the anchor must be defined for the nested stack, and its value becomes the initial route of the stack.
 
-You can configure an anchor by exporting `unable_settings` from your stack's layout file:
+You can configure an anchor by exporting `unstable_settings` from your stack's layout file:
 
 ```tsx
 export const unstable_settings = {
@@ -45902,7 +45904,7 @@ Categorizes the type node within the abstract syntax tree.
 ---
 
 ---
-modificationDate: April 07, 2026
+modificationDate: July 21, 2026
 title: Android lifecycle listeners
 description: Learn about the mechanism that allows your library to hook into Android Activity and Application functions using Expo modules API.
 ---
@@ -45919,7 +45921,7 @@ The React Native module API does not provide any mechanism to hook into these, a
 
 ## Get started
 
-First, you need to have created an Expo module or integrated the Expo modules API in the library using the React Native module API. [Learn more](/modules/overview.md#what-is-the-expo-modules-api).
+First, you need to have created an Expo module or integrated the Expo modules API in the library using the React Native module API. See [what is the Expo Modules API](/modules/overview.md#what-is-the-expo-modules-api).
 
 Inside your module, create a concrete class that implements the [`Package`](https://github.com/expo/expo/tree/main/packages/expo-modules-core/android/src/main/java/expo/modules/core/interfaces/Package.java) interface. For most cases, you only need to implement the `createReactActivityLifecycleListeners` or `createApplicationLifecycleListeners` methods.
 
@@ -46598,7 +46600,7 @@ The listener interfaces may change from time to time between Expo SDK releases. 
 ---
 
 ---
-modificationDate: July 20, 2026
+modificationDate: July 21, 2026
 title: iOS AppDelegate subscribers
 description: Learn how to subscribe to iOS system events relevant to an app, such as inbound links and notifications using Expo modules API.
 ---
@@ -46617,7 +46619,7 @@ The React Native module API does not provide any mechanism to hook into these me
 
 ## Get started
 
-First, you need to have created an Expo module or integrated the Expo modules API in library using the React Native module API. [Learn more](/modules/overview.md#what-is-the-expo-modules-api).
+First, you need to have created an Expo module or integrated the Expo modules API in the library using the React Native module API. See [what is the Expo Modules API](/modules/overview.md#what-is-the-expo-modules-api).
 
 Create a new public Swift class that extends `ExpoAppDelegateSubscriber` from `ExpoModulesCore` and add its name to the `apple.appDelegateSubscribers` array in the [module config](/modules/module-config.md). Run `pod install`, and the subscriber will be generated in the **ExpoModulesProvider.swift** file within the application project.
 
@@ -48737,7 +48739,7 @@ On Android, users can set certain OS-level settings, usually revolving around pe
 ---
 
 ---
-modificationDate: October 06, 2025
+modificationDate: July 21, 2026
 title: Obtain Google Service Account Keys using FCM V1
 description: Learn how to create or use a Google Service Account Key for sending Android Notifications using FCM.
 ---
@@ -48803,7 +48805,7 @@ You're all set! You can now send notifications to Android devices via Expo Push 
 
 Open the [IAM Admin page](https://console.cloud.google.com/iam-admin/iam?authuser=0) in Google Cloud Console. In the Permissions tab, locate the **Principal** you intend to modify and click the pencil icon for **Edit Principal**.
 
-Click **Add Role** and select the **Firebase Messaging API Admin** role from the dropdown. Click **Save**.
+Click **Add Role** and select the **Firebase Cloud Messaging API Admin** role from the dropdown. Click **Save**.
 
 You have to specify to EAS which JSON credential file to use for sending FCM V1 notifications, using EAS CLI or in [EAS dashboard](https://expo.dev). You can upload a new JSON file or select a previously uploaded file.
 

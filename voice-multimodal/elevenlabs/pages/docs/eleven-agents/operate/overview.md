@@ -25,14 +25,26 @@ This section provides tools and best practices for running production agents, fr
 
 ## Next steps
 
+#### [Users](/docs/eleven-agents/operate/users)
+
 List end users by ID and drill into their conversations
+
+#### [Experiments](/docs/eleven-agents/operate/experiments)
 
 Run A/B tests to optimize agent performance
 
+#### [Testing](/docs/eleven-agents/customization/agent-testing)
+
 Set up automated tests
+
+#### [Analytics](/docs/eleven-agents/dashboard)
 
 View performance metrics
 
+#### [Spotlight](/docs/eleven-agents/dashboard/spotlight)
+
 Review real-time insights, sentiment, and discovered topics
+
+#### [Conversation analysis](/docs/eleven-agents/customization/agent-analysis)
 
 Analyze conversations

@@ -21,11 +21,19 @@ Topic discovery helps you answer questions such as:
 * Which topics are succeeding or failing against your configured evaluation criteria?
 * Which conversations contributed to a topic?
 
+#### Discovered topics
+
 Automatically groups similar conversations into recurring topics.
+
+#### Topic metrics
 
 Shows volume, sentiment, and success trends for each discovered topic.
 
+#### Conversation drill-down
+
 Opens the conversations behind a topic so you can review specific examples.
+
+#### Time windows
 
 Compares topics across the selected reporting period, such as 1, 7, or 30 days.
 
@@ -123,22 +131,36 @@ If older conversations show topics without sentiment or success rate, the underl
 
 ## Best practices
 
+#### Start with clear evaluation criteria
+
 Configure success criteria that match the actual goal of the conversation. Vague criteria make
 topic success rates harder to interpret.
+
+#### Use topic volume and sentiment together
 
 High-volume topics with negative sentiment usually deserve review before low-volume topics with
 similar sentiment.
 
+#### Compare time windows
+
 Use short windows for recent regressions and longer windows for stable product or support
 trends.
+
+#### Use drill-down before changing prompts
 
 A topic can contain several user situations. Review example conversations before changing the
 system prompt, tools, or knowledge base.
 
 ## Next steps
 
+#### [Spotlight](/docs/eleven-agents/dashboard/spotlight)
+
 Review the full Spotlight dashboard for conversation insights.
 
+#### [Sentiment analysis](/docs/eleven-agents/customization/agent-analysis/sentiment-analysis)
+
 Understand how sentiment is calculated and shown in Spotlight.
+
+#### [Success evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation)
 
 Configure evaluation criteria used to calculate success rate.

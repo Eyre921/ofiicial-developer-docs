@@ -33,9 +33,15 @@ purposes. For HIPAA compliance, retain records for a minimum of 6 years.
 * An [ElevenLabs account](https://elevenlabs.io)
 * A configured ElevenLabs Conversational Agent ([create one here](/docs/eleven-agents/quickstart))
 
+#### Update via the dashboard
+
+#### Access retention settings
+
 Navigate to your agent's settings and select the "Advanced" tab. The retention settings are located in the "Data Retention" section.
 
 ![Enable overrides](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/39019a60151b8d999d5e1719e1553508a91c3bf7a34e6f5729ea2942c3dc4d57/assets/images/conversational-ai/retention.png)
+
+#### Update retention period
 
 1. Enter the desired retention period in days
 2. Choose whether to apply changes to existing data
@@ -45,9 +51,15 @@ Navigate to your agent's settings and select the "Advanced" tab. The retention s
 
 When modifying retention settings, you'll have the option to apply the new retention period to existing conversation data or only to new conversations going forward.
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `platform_settings.privacy.retention_days`:
 
@@ -61,9 +73,13 @@ Set `platform_settings.privacy.retention_days`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs

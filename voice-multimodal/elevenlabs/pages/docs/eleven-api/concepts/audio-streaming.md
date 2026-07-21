@@ -71,10 +71,18 @@ In practice, you can expect time-to-first-audio to be significantly higher than 
 
 ## Related
 
+#### [Streaming how-to guide](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
+
 Practical implementation with code for HTTP streaming and WebSocket streaming.
+
+#### [WebSockets guide](/docs/eleven-api/guides/how-to/websockets/realtime-tts)
 
 Using the bidirectional WebSocket endpoint for real-time audio generation.
 
+#### [Understanding latency](/docs/eleven-api/concepts/latency)
+
 A broader look at what contributes to end-to-end latency in audio generation.
+
+#### [Latency optimisation](/docs/eleven-api/guides/how-to/best-practices/latency-optimization)
 
 Specific techniques and configuration options to reduce time-to-first-audio.

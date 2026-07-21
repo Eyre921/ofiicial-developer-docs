@@ -479,16 +479,45 @@ Once enabled, the autoscaler runs continuously in the background, responding to 
   Autoscaling works with both reserved and on-demand capacity. Scaling beyond reserved capacity will provision on-demand nodes at standard hourly rates.
 </Note>
 
-### Targeted Scale-down
+### Targeted scale-down
 
-To control which nodes are removed during scale-down:
+To control which specific nodes are removed during scale-down, mark them for deletion before triggering the scale-down. Annotated and cordoned nodes are prioritized for deletion above all others.
 
-1. **Cordon the node(s)** to prevent new workloads
-   * For Kubernetes: `kubectl cordon <node_to_cordon>`
-   * For Slurm: `sudo scontrol update NodeName=<node_name> State=drain Reason="<reason_for_cordoning>"`
-2. **Trigger scale-down** via UI, CLI, or API
+<Steps>
+  <Step title="Mark the node for deletion">
+    Choose one of the following approaches. Annotation is preferred because it leaves the node schedulable for existing workloads until scale-down runs.
 
-Cordoned and annotated nodes are prioritized for deletion above all others.
+    * **Kubernetes (preferred): annotate the node.**
+
+      ```bash theme={null}
+      kubectl annotate node <node_name> node.together.ai/delete-node-on-scale-down=true
+      ```
+
+    * **Kubernetes: cordon the node.** Use this if you also want to stop new pods from being scheduled onto the node immediately.
+
+      ```bash theme={null}
+      kubectl cordon <node_name>
+      ```
+
+    * **Slurm: drain the node.**
+
+      ```bash theme={null}
+      sudo scontrol update NodeName=<node_name> State=drain Reason="<reason_for_draining>"
+      ```
+  </Step>
+
+  <Step title="Wait for the node to start draining">
+    In the Together Cloud UI, wait until the node shows **Node is cordon/draining** before you trigger scale-down. This confirms the operator has picked up the annotation or cordon and is safely evicting workloads.
+  </Step>
+
+  <Step title="Trigger scale-down">
+    Scale the cluster down by one node via the UI, CLI, or API. The marked node is removed first.
+  </Step>
+</Steps>
+
+<Tip>
+  Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly and makes it easy to stop if something goes wrong.
+</Tip>
 
 ## Storage Management
 

@@ -29,7 +29,11 @@ tools](/docs/eleven-agents/customization/tools/webhook-tools) instead.
 * An [ElevenLabs account](https://elevenlabs.io)
 * A configured ElevenLabs Conversational Agent ([create one here](https://elevenlabs.io/app/agents))
 
+#### Create a new client-side tool
+
 Configure a client tool named `logMessage` with a required string parameter `message` ("The message to log in the console").
+
+#### Add via the dashboard
 
 Navigate to your agent dashboard. In the **Tools** section, click **Add Tool**. Ensure the **Tool Type** is set to **Client**. Then configure the following:
 
@@ -48,6 +52,10 @@ Then create a new parameter `message` with the following configuration:
 | Description | The message to log in the console. Ensure the message is informative and relevant. |
 
 ![logMessage client-tool setup](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg)
+
+#### Add via the CLI
+
+#### Create a tool config file
 
 Save the following as `tool_configs/log_message.json`:
 
@@ -69,15 +77,21 @@ Save the following as `tool_configs/log_message.json`:
 }
 ```
 
+#### Add the tool
+
 ```bash
 elevenlabs tools add "logMessage" --type "client" --config-path ./tool_configs/log_message.json
 ```
+
+#### Reference the tool from your agent
 
 Edit `agent_configs/<agent-name>.json` to add the tool's ID to `conversation_config.agent.prompt.tool_ids`, then push:
 
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Add via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -140,6 +154,8 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
+#### Register the client tool in your code
+
 Unlike webhook tools, client tools need to be registered in your code.
 
 Use the following code to register the client tool:
@@ -194,11 +210,15 @@ clientTools.register("logMessage") { parameters async throws -> String? in
 
 The tool and parameter names in the agent configuration are case-sensitive and **must** match those registered in your code.
 
+#### Testing
+
 Initiate a conversation with your agent and say something like:
 
 > *Log a message to the console that says Hello World*
 
 You should see a `Hello World` log appear in your console.
+
+#### Next steps
 
 Now that you've set up a basic client-side event, you can:
 
@@ -261,11 +281,15 @@ In this example, when the agent calls **getCustomerDetails**, the function will 
 
 ### Troubleshooting
 
+#### Tools not being triggered
+
 * Ensure the tool and parameter names in the agent configuration match those registered in your code.
 * View the conversation transcript in the agent dashboard to verify the tool is being executed.
 
-- Open the browser console to check for any errors.
-- Ensure that your code has necessary error handling for undefined or unexpected parameters.
+#### Console errors
+
+* Open the browser console to check for any errors.
+* Ensure that your code has necessary error handling for undefined or unexpected parameters.
 
 ## Best practices
 

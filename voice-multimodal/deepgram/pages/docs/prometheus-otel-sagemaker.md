@@ -36,6 +36,8 @@ Detailed observability is **on by default for newly created endpoints**, publish
 
 To set it explicitly — for example to change the publish frequency, or to add it to an endpoint created before the feature launched — use `MetricsConfig` on the endpoint configuration, the same field used for [enhanced metrics](/docs/observability-sagemaker#enable-enhanced-metrics). The publish frequency accepts 10, 30, 60 (default), 120, 180, 240, or 300 seconds.
 
+#### AWS CLI
+
 ```bash
 aws sagemaker create-endpoint-config \
   --endpoint-config-name YOUR_CONFIG_NAME \
@@ -43,6 +45,8 @@ aws sagemaker create-endpoint-config \
   --metrics-config '{"EnableDetailedObservability": true, "MetricPublishFrequencyInSeconds": 60}' \
   --region YOUR_AWS_REGION
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3

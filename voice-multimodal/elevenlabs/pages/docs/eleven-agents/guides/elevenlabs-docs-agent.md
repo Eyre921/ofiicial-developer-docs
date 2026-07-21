@@ -316,13 +316,19 @@ We continue to enhance our documentation agent through:
 
 ## FAQ
 
+#### Why did you choose a conversational approach for documentation?
+
 Documentation is traditionally static, but users often have specific questions that require
 contextual understanding. A conversational interface allows users to ask questions in natural
 language and receive targeted guidance that adapts to their needs and technical level.
 
+#### How do you prevent hallucinations in documentation responses?
+
 We use retrieval-augmented generation (RAG) with our e5-mistral-7b-instruct embedding model to
 ground responses in our documentation. We also implemented the `hallucination_kb` evaluation
 metric to identify and address any inaccuracies.
+
+#### How do you handle multilingual support?
 
 We implemented the language detection system tool that automatically detects the user's language
 and switches to it if supported. This allows users to interact with our documentation in their

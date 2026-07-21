@@ -162,12 +162,18 @@ components:
       description: The permissions of the XI API.
       title: >-
         BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchPermissions
+    BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchCharacterLimit1:
+      type: string
+      enum:
+        - clear
+        - no_update
+      title: >-
+        BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchCharacterLimit1
     BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchCharacterLimit:
       oneOf:
         - type: integer
-        - type: string
-          enum:
-            - no_update
+        - $ref: >-
+            #/components/schemas/BodyEditServiceAccountApiKeyV1ServiceAccountsServiceAccountUserIdApiKeysApiKeyIdPatchCharacterLimit1
       description: >-
         The character limit of the XI API key. If provided this will limit the
         usage of this api key to n characters per month where n is the chosen

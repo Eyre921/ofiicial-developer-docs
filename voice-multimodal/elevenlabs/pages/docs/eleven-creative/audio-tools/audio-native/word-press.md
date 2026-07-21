@@ -11,7 +11,11 @@ path: docs/eleven-creative/audio-tools/audio-native/word-press
 Follow the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native) to
 get started with Audio Native before continuing with this guide.
 
+#### Install the WPCode plugin
+
 Install the [WPCode plugin](https://wpcode.com/) into your WordPress website to embed HTML code.
+
+#### Create a new code snippet
 
 In the WordPress admin console, click on "Code Snippets". Add the Audio Native embed code to the new code snippet.
 
@@ -36,6 +40,8 @@ In the WordPress admin console, click on "Code Snippets". Add the Audio Native e
 Pick "Auto Insert" for the insert method and set the location to be "Insert Before Content".
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/301598cd60b04b9df9465b057eeb955518b94dfbf676c9cbfee194fe6653fa90/assets/images/product-guides/audio-native/audio-native-wordpress-2.webp" alt="Audio Native" />
+
+#### Publish your changes
 
 Finally, publish your changes and navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 

@@ -17,8 +17,12 @@ Understanding these events is crucial for building responsive and interactive co
 
 Events are broken down into two categories:
 
+#### [Client Events (Server-to-Client)](/docs/eleven-agents/customization/events/client-events)
+
 Events sent from the server to the client, delivering audio, transcripts, agent messages, and
 system signals.
+
+#### [Client-to-Server Events](/docs/eleven-agents/customization/events/client-to-server-events)
 
 Events sent from the client to the server, providing contextual updates or responding to server
 requests.

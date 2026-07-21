@@ -73,13 +73,19 @@ Human transfer supports transferring to external phone numbers using both [SIP t
 
 Human transfer is configured using the `transfer_to_number` system tool.
 
+#### Add the transfer tool
+
 Enable human transfer by selecting the `transfer_to_number` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to Human" when adding a tool.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45/assets/images/conversational-ai/transfer_human.png" alt="Add Human Transfer Tool" />
 
+#### Configure tool description (optional)
+
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde/assets/images/conversational-ai/transfer_human_tool.png" alt="Human Transfer Tool Description" />
+
+#### Define transfer rules
 
 Configure the specific rules for transferring to phone numbers or SIP URIs. For each rule, specify:
 
@@ -103,6 +109,8 @@ Ensure destinations are correctly formatted:
 * Phone numbers: E.164 format and associated with a properly configured account
 * SIP URIs: Valid SIP format (sip:user\@domain or sips:user\@domain)
 
+#### Configure custom SIP REFER headers (optional)
+
 When using SIP REFER transfers, you can include custom SIP headers to pass additional information to the receiving system.
 
 For each custom header, specify:
@@ -113,6 +121,8 @@ For each custom header, specify:
 Custom SIP REFER headers are only included with **SIP REFER transfers**. Conference transfers do not support custom headers.
 
 System headers `X-Conversation-ID` and `X-Caller-ID` are automatically included by ElevenLabs and will override any custom headers with the same names (case-insensitive).
+
+#### Configure User-to-User Information (UUI) (optional)
 
 SIP REFER transfers can carry [User-to-User Information (UUI)](https://www.rfc-editor.org/rfc/rfc7433), a small payload delivered to the receiving platform (for example Talkdesk or Genesys Cloud) in the `User-to-User` parameter of the `Refer-To` header. UUI is only sent on **SIP REFER transfers to a SIP URI** destination; phone-number (`tel:`) destinations do not carry it.
 
@@ -127,6 +137,8 @@ Talkdesk passes the value through unchanged, so omit the protocol discriminator.
 The 256-byte limit applies after dynamic variables are substituted. Pass identifiers or short codes such as an account ID, not free-form text like a full call summary, which exceeds the limit and is dropped from the transfer.
 
 To receive UUI on inbound SIP calls, no configuration is required. When an incoming INVITE contains a `User-to-User` header, its value is exposed to the agent as the `{{sip_uui_raw}}` and `{{sip_uui_data}}` dynamic variables. See the [SIP reference](/docs/eleven-agents/phone-numbers/sip-reference).
+
+#### Configure post-dial digits (optional)
 
 Post-dial digits are DTMF tones that are relayed after the phone connects to the transfer destination. This is useful for entering extensions or navigating IVR (Interactive Voice Response) menus automatically.
 

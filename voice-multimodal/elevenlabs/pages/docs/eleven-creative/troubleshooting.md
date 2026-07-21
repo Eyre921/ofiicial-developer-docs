@@ -12,6 +12,8 @@ Our models are non-deterministic, meaning outputs can vary based on inputs. Whil
 
 ## General
 
+#### Inconsistencies in volume and quality
+
 If the generated voice output varies in volume or tone, it is often due to inconsistencies in the voice clone training audio.
 
 * **Apply compression**: Compress the training audio to reduce dynamic range and ensure consistent audio. Aim for a RMS between -23 dB and -18 dB and the true peak below -3 dB.
@@ -26,11 +28,15 @@ To minimize issues, consider breaking your text into smaller segments. This appr
 Refer to our guides for optimizing Instant and Professional Voice Clones for best practices and
 advice.
 
+#### Mispronunciation
+
 The multilingual models may rarely mispronounce certain words, even in English. This issue appears to be somewhat arbitrary but seems to be voice and text-dependent. It occurs more frequently with certain voices and text, especially when using words that also appear in other languages.
 
 * **Use ElevenCreative Studio**: This feature helps minimize mispronunciation issues, which are more prevalent in longer text sections when using Speech Synthesis. While it won't completely eliminate the problem, it can help avoid it and make it easier to regenerate specific sections without redoing the entire text.
 * **Properly cloned voices**: Similar to addressing inconsistency issues, using a properly cloned voice in the desired languages can help reduce mispronunciation.
 * **Specify pronunciation**: When using our ElevenCreative Studio feature, consider specifying the pronunciation of certain words, such as character names and brand names, or how acronyms should be read. For more information, refer to the Pronunciation Dictionary section of our guide to ElevenCreative Studio.
+
+#### Language switching and accent drift
 
 The AI can sometimes switch languages or accents throughout a single generation, especially if that generation is longer in length. This issue is similar to the mispronunciation problem and is something we are actively working to improve.
 
@@ -39,26 +45,36 @@ The AI can sometimes switch languages or accents throughout a single generation,
 * **Language selection**: Currently, the AI determines the language based on the input text. Writing in the desired language is crucial, especially when using pre-made voices that are English-based, as they may introduce an English accent.
 * **Optimal text length**: The AI tends to maintain a consistent accent over shorter text segments. For best results, keep text generations under 800-900 characters when using Text-to-Speech. The ElevenCreative Studio workflow can help manage longer texts by breaking them into smaller, more manageable segments.
 
+#### Mispronounced numbers, symbols or acronyms
+
 The models may mispronounce certain numbers, symbols and acronyms. For example, the numbers "1, 2, 3" might be pronounced as "one," "two," "three" in English. To ensure correct pronunciation in another language, write them out phonetically or in words as you want them to be spoken.
 
 * **Example**: For the number "1" to be pronounced in French, write "un."
 * **Symbols**: Specify how symbols should be read, e.g., "\$" as "dollar" or "euro."
 * **Acronyms**: Spell out acronyms phonetically.
 
+#### Corrupt speech
+
 Corrupt speech is a rare issue where the model generates muffled or distorted audio. This occurs
 unpredictably, and we have not identified a cause. If encountered, regenerate the section to
 resolve the issue.
+
+#### Audio degradation over longer generations
 
 Audio quality may degrade during extended text-to-speech conversions. To mitigate this, break text into sections under 800 characters.
 
 * **Voice Selection**: Some voices are more susceptible to degradation. Use high-quality samples for cloned voices to minimize artifacts.
 * **Stability and Similarity**: Adjust these settings to influence voice behavior and artifact prominence. Hover over each setting for more details.
 
+#### Style exaggeration
+
 For some voices, this voice setting can lead to instability, including inconsistent speed,
 mispronunciation and the addition of extra sounds. We recommend keeping this setting at 0,
 especially if you find you are experiencing these issues in your generated audio.
 
 ## ElevenCreative Studio (formerly Projects)
+
+#### File imports
 
 The import function attempts to import the file you provide to the website. Given the variability in website structures and book formatting, including images, always verify the import for accuracy.
 
@@ -67,6 +83,8 @@ The import function attempts to import the file you provide to the website. Give
 * **Preferred format**: EPUB is the recommended file format for creating a project in ElevenCreative Studio. A well-structured EPUB will automatically split each chapter in ElevenCreative Studio, facilitating navigation. Ensure each chapter heading is formatted as "Heading 1" for proper recognition.
 
 Always double-check imported content for accuracy and structure.
+
+#### Glitches between paragraphs
 
 Occasionally, glitches or sharp breaths may occur between paragraphs. This is rare and differs
 from standard Text to Speech issues. If encountered, regenerate the preceding paragraph, as the

@@ -297,22 +297,6 @@ components:
         Configuration for extracting values from tool responses and assigning
         them to dynamic variables.
       title: DynamicVariableAssignment
-    McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValueOneOf4Items:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: >-
-        McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValueOneOf4Items
-    McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue4:
-      type: array
-      items:
-        $ref: >-
-          #/components/schemas/McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValueOneOf4Items
-      title: >-
-        McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue4
     McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue:
       oneOf:
         - type: string
@@ -320,8 +304,12 @@ components:
         - type: number
           format: double
         - type: boolean
-        - $ref: >-
-            #/components/schemas/McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue4
+        - type: array
+          items:
+            description: Any type
+        - type: object
+          additionalProperties:
+            description: Any type
       description: The constant value to use
       title: >-
         McpToolConfigOverrideUpdateRequestModelInputOverridesDiscriminatorMappingConstantConstantValue

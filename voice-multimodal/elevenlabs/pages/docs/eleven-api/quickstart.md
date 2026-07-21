@@ -20,6 +20,8 @@ npx skills add elevenlabs/skills --skill text-to-speech
 
 ## Using the Text to Speech API
 
+#### Create an API key
+
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
@@ -27,6 +29,8 @@ Store the key as a managed secret and pass it to the SDKs either as a environmen
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
+
+#### Install the SDK
 
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
@@ -42,6 +46,8 @@ npm install dotenv
 
 To play the audio through your speakers, you may be prompted to install [MPV](https://mpv.io/)
 and/or [ffmpeg](https://ffmpeg.org/).
+
+#### Make your first request
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -86,6 +92,8 @@ await play(audio);
 
 ```
 
+#### Run the code
+
 ```python
 python example.py
 ```
@@ -98,8 +106,14 @@ You should hear the audio play through your speakers.
 
 ## Next steps
 
+#### [Stream audio](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
+
 Reduce latency by streaming audio as it generates rather than waiting for the complete file
 
+#### [Browse voices](https://elevenlabs.io/app/voice-library)
+
 Explore 10,000+ voices and swap the example voice ID for one that fits your use case
+
+#### [Clone a voice](/docs/eleven-api/guides/how-to/voices/instant-voice-cloning)
 
 Create a custom voice from a short audio recording

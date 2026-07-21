@@ -75,16 +75,24 @@ TTS concurrency limits are managed from the billing workspace's settings page. F
 
 ## FAQ
 
+#### Can I set credit limits for each workspace?
+
 Yes. While all workspaces share the same credit pool, billing workspace admins can set an
 optional credit limit on each reporting workspace to cap how many credits it can consume during
 a billing cycle. See [Credit limits](#credit-limits).
 
+#### Can I have different subscription tiers for different workspaces?
+
 No, all workspaces must share the same subscription. The billing workspace determines the
 subscription level for all linked workspaces.
+
+#### Can I unlink a workspace from consolidated billing?
 
 Yes, you can disable consolidated billing on any reporting workspace. This will require setting
 up a new subscription for that workspace or removing that workspace entirely. To do so, get in
 touch with your dedicated Customer Success Manager.
+
+#### Can both workspaces be located on elevenlabs.io?
 
 Yes, both workspaces can be located on elevenlabs.io - this is useful if you want to have
 multiple segregated teams. Sharing resources between workspaces is not possible so consider

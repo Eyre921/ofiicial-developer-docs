@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with [Parallel](https://parallel.ai) to perfor
 
 This integration uses a **Parallel API key** for authentication.
 
+#### Create a Parallel account
+
 Sign up at [parallel.ai](https://parallel.ai) if you do not already have an account.
 
+#### Get your API key
+
 In the [Parallel Platform](https://platform.parallel.ai), go to **Settings > API Keys** and find the **App Keys** section. You can either copy the API key for the default app, or create a new app to track usage separately.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your Parallel API key in the **API Key** field.
 

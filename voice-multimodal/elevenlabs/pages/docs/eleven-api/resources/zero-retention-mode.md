@@ -127,18 +127,26 @@ currently available for users on Zero Retention Mode or those requiring HIPAA co
 
 ## FAQ
 
+#### What are some limitations of Zero Retention Mode?
+
 Troubleshooting and support for Zero Retention Mode is limited. Because of the configuration, we
 will not be able to diagnose issues with TTS/STS generations. Debugging will be more difficult
 as a result.
+
+#### How does retention work if Zero Retention Mode is not active?
 
 Customers by default have history preservation enabled. All customers can use the API to delete
 generations at any time. This action will immediately remove the corresponding audio and text
 from our database; however, debugging and moderation logs may still retain data related to the
 generation.
 
+#### Data backup (When Zero Retention Mode is not used)
+
 For any retained data, we regularly back up such data to prevent data loss in the event of any
 unexpected incidents. Following data deletion, database items are retained in backups for up to
 30 days After this period, the data expires and is not recoverable.
+
+#### Account deletion (When Zero Retention Mode is not used)
 
 All data is deleted from our systems permanently when you delete your account. This includes all
 data associated with your account, such as API keys, request history, and any other data stored

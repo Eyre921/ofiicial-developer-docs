@@ -65,10 +65,18 @@ Tailor each conversation to your users:
 
 ## Next steps
 
+#### [Workflows](/docs/eleven-agents/customization/agent-workflows)
+
 Build visual conversation flows
+
+#### [System Prompt](/docs/eleven-agents/best-practices/prompting-guide)
 
 Learn prompting best practices
 
+#### [Voice & Language](/docs/eleven-agents/customization/voice)
+
 Configure voice settings
+
+#### [Knowledge Base](/docs/eleven-agents/customization/knowledge-base)
 
 Add domain knowledge

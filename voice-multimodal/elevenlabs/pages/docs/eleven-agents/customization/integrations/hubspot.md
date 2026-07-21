@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with [HubSpot](https://www.hubspot.com/) CRM t
 
 This integration uses a **HubSpot Private App** token for authentication.
 
+#### Create a Private App in HubSpot
+
 Go to **Development** > **Legacy apps** in your [HubSpot account](https://developers.hubspot.com/docs/api/private-apps) and click **Create legacy app** > **Private**. Grant it the CRM scopes your agent needs (e.g., `crm.objects.contacts.read`, `crm.objects.contacts.write`).
 
+#### Copy the access token
+
 After creating the app, copy the generated access token. It starts with `pat-`.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your private app token in the **Private App Access Token** field.
 
@@ -32,11 +38,19 @@ configured automatically — no manual webhook setup is needed.
 
 ## How it works
 
+#### Customer identification
+
 The agent asks the caller for an identifying detail such as their email address, then searches the CRM to verify whether a record exists.
+
+#### Understand call intent
 
 The agent asks the caller about the purpose of their call. This step can be adapted to your particular workflow.
 
+#### Get previous interactions
+
 The agent fetches previous interactions from the CRM using the contact ID retrieved during identification.
+
+#### Ticket creation
 
 The agent discusses the issue with the caller, relates it to any previous interactions, and creates a ticket for follow-up items.
 

@@ -16,6 +16,8 @@ The ElevenLabs CLI allows you to access your ElevenLabs agents from your termina
 * Set up CI/CD integration to automatically deploy your agents
 * Let your coding agent access and manage your voice agents
 
+#### Prefer to jump straight to the code?
+
 Find the [complete source code and contribute on GitHub](https://github.com/elevenlabs/cli).
 
 ## Installation
@@ -127,16 +129,28 @@ elevenlabs agents add "Customer Support Bot" --template customer-service
 
 The CLI provides six pre-built templates for common use cases:
 
+#### default
+
 Complete configuration with all available fields, sensible defaults, full voice/text support, widget customization, and evaluation criteria.
+
+#### minimal
 
 Essential fields only including basic prompt, language, TTS, and conversation settings.
 
+#### voice-only
+
 Optimized for voice interactions with disabled text input and advanced voice settings.
+
+#### text-only
 
 Text-focused conversations with disabled voice features.
 
+#### customer-service
+
 Professional empathetic prompts, low temperature (0.1), 30-minute duration, and evaluation
 criteria.
+
+#### assistant
 
 General-purpose AI assistant with balanced creativity (temperature 0.3) and versatile voice/text support.
 

@@ -330,6 +330,31 @@ components:
           description: >-
             Status text displayed when the agent encounters an error during a
             tool call.
+        attach_file:
+          type: string
+          description: Text and ARIA label for the attach file button.
+        remove_file:
+          type: string
+          description: ARIA label for the remove file button.
+        file_upload_error:
+          type: string
+          description: Error message displayed when a file fails to upload.
+        file_type_unsupported:
+          type: string
+          description: >-
+            Error message displayed when an unsupported file type is selected.
+            Followed by the list of accepted types.
+        file_too_large:
+          type: string
+          description: Error message displayed when a file exceeds the maximum size limit.
+        file_limit_reached:
+          type: string
+          description: >-
+            Error message displayed when the maximum number of files for a
+            conversation is reached.
+        typing_indicator:
+          type: string
+          description: Status text displayed while the agent is typing.
       title: WidgetTextContents
     type_:WidgetStyles:
       type: object
@@ -775,7 +800,14 @@ components:
       "wrap": "wrap",
       "agent_working": "agent_working",
       "agent_done": "agent_done",
-      "agent_error": "agent_error"
+      "agent_error": "agent_error",
+      "attach_file": "attach_file",
+      "remove_file": "remove_file",
+      "file_upload_error": "file_upload_error",
+      "file_type_unsupported": "file_type_unsupported",
+      "file_too_large": "file_too_large",
+      "file_limit_reached": "file_limit_reached",
+      "typing_indicator": "typing_indicator"
     },
     "styles": {
       "base": "base",

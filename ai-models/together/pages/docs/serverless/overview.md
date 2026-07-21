@@ -38,6 +38,10 @@ Serverless uses the same [inference APIs](/docs/inference/overview#shared-infere
 
 Serverless models are [rate-limited](/docs/serverless/rate-limits), so they work best when you're prototyping or evaluating a model, or when your production traffic is variable, bursty, or low enough that per-token pricing is cost-effective. If your traffic is steady, you need higher rate limits, or you want reserved hardware, use a [dedicated endpoint](/docs/dedicated-endpoints/overview).
 
+## Region selection
+
+Together AI routes serverless requests across its own infrastructure, and the serving region is not selectable. If you need requests to run in a specific region (for latency, residency, or compliance reasons), use a [dedicated endpoint](/docs/dedicated-endpoints/overview) and pin its hardware to your target region.
+
 ## Pricing
 
 Serverless models bill based on usage, with no minimums and no provisioning cost. You pay per unit of work, with units determined by model type:

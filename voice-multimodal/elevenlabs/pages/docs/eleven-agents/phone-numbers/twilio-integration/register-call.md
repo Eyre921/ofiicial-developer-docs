@@ -8,6 +8,8 @@ path: docs/eleven-agents/phone-numbers/twilio-integration/register-call
 
 # Register Twilio calls
 
+#### Advanced
+
 This guide covers an advanced integration pattern for developers who need full control over their
 Twilio infrastructure. For a simpler setup, consider using the [native Twilio
 integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) which
@@ -56,11 +58,15 @@ does not have direct access to your Twilio account credentials.
 
 Before using the register call endpoint, configure your agent to use the correct audio format supported by Twilio.
 
+#### Configure TTS Output
+
 1. Navigate to your agent settings
 2. Go to the Voice section
 3. Select "μ-law 8000 Hz" from the dropdown
 
 ![](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b37196c36051755fb0b10a99b393501ec11573f963c83b6b092e1b5926c6617f/assets/images/conversational-ai/twilio-1.png)
+
+#### Set Input Format
 
 1. Navigate to your agent settings
 2. Go to the Advanced section
@@ -263,11 +269,15 @@ variables](/docs/eleven-agents/customization/personalization/dynamic-variables) 
 
 Configure your Twilio phone number to point to your server:
 
+#### Create a public URL
+
 For local development, use [ngrok](https://ngrok.com) to expose your server:
 
 ```bash
 ngrok http 8000
 ```
+
+#### Configure your Twilio number
 
 1. Go to the [Twilio Console](https://console.twilio.com)
 2. Navigate to Phone Numbers > Manage > Active numbers

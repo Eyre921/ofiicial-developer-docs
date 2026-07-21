@@ -86,13 +86,19 @@ getting right.
 
 ### Writing steps
 
+#### Let Ask steps wait for the user
+
 An Ask step does not advance until it has asked your question and received an appropriate
 answer. You do not need a follow-up step to check that the information was collected; the Ask
 step guarantees it before moving on.
 
+#### Keep Tool steps to the tool call
+
 A Tool step only runs the tool; the agent cannot speak or make a decision during it. To talk to
 the user or branch on what the tool returned, put that in a separate step before or after the
 Tool step.
+
+#### Choose Tell for phrasing, Say for exact words
 
 Use a Tell step when the agent should compose the message itself, and a Say step when the
 wording must be verbatim. Both deliver exactly one message, so there is no need to instruct a

@@ -10,14 +10,24 @@ path: docs/eleven-agents/customization/agent-analysis
 
 Conversation analysis provides tools to evaluate performance, extract information, improve prompts, and search customer interactions.
 
+#### [Success evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation)
+
 Define custom criteria to assess conversation quality, goal achievement, and customer
 satisfaction.
 
+#### [Data collection](/docs/eleven-agents/customization/agent-analysis/data-collection)
+
 Extract structured information from conversations such as contact details and business data.
+
+#### [Sentiment analysis](/docs/eleven-agents/customization/agent-analysis/sentiment-analysis)
 
 Understand whether users are having positive, neutral, or negative conversations.
 
+#### [Coaching](/docs/eleven-agents/customization/agent-analysis/coaching)
+
 Talk to an internal coach agent to improve your agent's system prompt, memories, and procedures.
+
+#### [Searching conversations](/docs/eleven-agents/customization/agent-analysis/smart-search)
 
 Find messages by keyword or meaning across your conversation history.
 
@@ -35,13 +45,21 @@ These features process conversation transcripts to provide insights that improve
 
 ## Key benefits
 
+#### Performance measurement
+
 Track conversation success rates, customer satisfaction, and goal completion across all interactions to identify improvement opportunities.
+
+#### Automated data extraction
 
 Capture valuable business information without manual processing, reducing operational overhead and
 improving data accuracy.
 
+#### Quality assurance
+
 Ensure agents follow required procedures and maintain consistent service quality through
 systematic evaluation.
+
+#### Business intelligence
 
 Gather structured insights about customer preferences, behavior patterns, and interaction outcomes for strategic decision-making.
 

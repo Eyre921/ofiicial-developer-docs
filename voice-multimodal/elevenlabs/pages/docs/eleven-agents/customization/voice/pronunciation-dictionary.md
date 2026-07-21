@@ -28,13 +28,21 @@ switch to the eleven\_v3 model.
 
 ### Attach a dictionary to your agent
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to **Voice Settings**, and add a pronunciation dictionary. Save your changes.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp" alt="Add a pronunciation dictionary from the agent's voice settings" />
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.tts.pronunciation_dictionary_locators`:
 
@@ -53,9 +61,13 @@ Set `conversation_config.tts.pronunciation_dictionary_locators`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -146,6 +158,8 @@ words.
 
 ## FAQ
 
+#### Which models support phoneme-based pronunciation?
+
 Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
 
 Other models skip dictionary phoneme tags and use the default pronunciation. For other models,
@@ -155,7 +169,11 @@ need.
 If you want to use IPA and CMU pronunciations in languages other than English, you will have to
 switch to the eleven\_v3 model.
 
+#### Can I use multiple dictionaries?
+
 Yes, you can upload multiple dictionary files to handle different sets of pronunciations.
+
+#### What happens if a word isn't in the dictionary?
 
 The model will use its default pronunciation rules for any words not specified in the
 dictionary.

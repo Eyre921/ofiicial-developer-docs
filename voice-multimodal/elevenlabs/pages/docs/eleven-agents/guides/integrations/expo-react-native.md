@@ -82,6 +82,8 @@ In the `app.json` file, add the following permissions:
 
 This will allow the React Native to prompt for microphone permissions when the conversation is started.
 
+#### Note
+
 For Android emulator you will need to enable "Virtual microphone uses host audio input" in the
 emulator microphone settings.
 
@@ -559,10 +561,16 @@ const startConversation = async () => {
 
 ## Agent configuration
 
+#### Sign in to ElevenLabs
+
 Go to [elevenlabs.io](https://elevenlabs.io/app/sign-up) and sign in to your account.
+
+#### Create a new agent
 
 Navigate to [Agents Platform > Agents](https://elevenlabs.io/app/agents/agents) and
 create a new agent from the blank template.
+
+#### Set the first message
 
 Set the first message and specify the dynamic variable for the platform.
 
@@ -570,11 +578,15 @@ Set the first message and specify the dynamic variable for the platform.
 Hi there, woah, so cool that I'm running on {{platform}}. What can I help you with?
 ```
 
+#### Set the system prompt
+
 Set the system prompt. You can also include dynamic variables here.
 
 ```txt
 You are a helpful assistant running on {{platform}}. You have access to certain tools that allow you to check the user device battery level and change the display brightness. Use these tools if the user asks about them. Otherwise, just answer the question.
 ```
+
+#### Set up the client tools
 
 Set up the following client tools:
 
@@ -623,6 +635,10 @@ npx expo run:ios --device
 
 ## Next steps
 
+#### [ElevenAgents](/docs/eleven-agents/quickstart)
+
 Build and deploy voice agents with the full ElevenAgents platform.
+
+#### [ElevenAgents integration overview](/docs/eleven-agents/integrate/overview)
 
 Explore all integration options including web widgets, native SDKs, and telephony.

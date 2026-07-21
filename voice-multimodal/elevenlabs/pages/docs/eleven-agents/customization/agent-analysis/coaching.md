@@ -64,15 +64,21 @@ Coaching is enabled for all agents by default. To talk to the coach from Slack, 
 
 ### Ask questions about a conversation in the dashboard
 
+#### Open a conversation
+
 Go to the **History** tab and select a completed conversation.
 
 ![Analyze with coach button in conversation history](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/803acba254d6521b34316802d9f3fea17a6a7dca70637ee07a3a86b3e2df34a4/assets/images/conversational-ai/analyze_with_coach_button.png)
+
+#### Start a coaching session
 
 Click **Analyze with coach** to open the coach chat panel next to the transcript.
 
 ![Coach chat panel alongside a conversation transcript](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/4f6db78527770f8f28b0bac370c709957fbef8f7e1624e531349ffcf03b89ec9/assets/images/conversational-ai/conversation_coaching_side_panel.png)
 
 Type a question or use a quick prompt (for example, "What went wrong?" or "How can the agent improve?"). Highlight a specific message in the transcript to focus the coach on that part of the conversation.
+
+#### Review proposals
 
 When the coach identifies an improvement, it creates a proposal.
 
@@ -82,7 +88,11 @@ When the coach identifies an improvement, it creates a proposal.
 
 When a coach Slack trigger is connected, you can manage the coached agent from Slack.
 
+#### Message the coach
+
 Send a message in the connected channel (for example, "Add a memory that refunds within 30 days are processed automatically").
+
+#### Review the proposal
 
 The coach replies in the thread and posts a proposal with the proposed change and a diff. Use **Approve** or **Reject** on the message, or review it later on the agent's **Coaching** tab.
 
@@ -98,13 +108,21 @@ If you ask the coach to focus on a specific issue, it addresses only that issue 
 
 ## Best practices
 
+#### Target specific messages
+
 Highlight a specific message in the transcript before asking the coach. Targeted questions produce more actionable proposals than broad reviews. Address multiple issues in separate questions within the same session.
+
+#### Audit memory entries periodically
 
 As the coach creates memories over time, review them on the **Memory** tab under **Knowledge Base** to remove duplicates or outdated information.
 
 ## Troubleshooting
 
+#### Proposal approval fails with a conflict error
+
 The underlying resource was modified after the proposal was created. Reject the stale proposal and start a new coaching session.
+
+#### Coach does not propose any changes
 
 The coach only proposes changes when it identifies a clear improvement. If the conversation went well and the configuration already handles similar scenarios, the coach explains this instead.
 

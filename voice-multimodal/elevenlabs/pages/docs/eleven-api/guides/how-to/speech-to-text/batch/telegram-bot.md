@@ -241,6 +241,8 @@ Deno.serve(async (req) => {
 
 There's a couple of things worth noting about the code. Let's step through it step by step.
 
+#### Handling the incoming request
+
 To handle the incoming request, use the `Deno.serve` handler. The handler checks whether the request has the correct secret and then passes the request to the `handleUpdate` function.
 
 ```ts {1,6,10}
@@ -259,6 +261,8 @@ Deno.serve(async (req) => {
   }
 });
 ```
+
+#### Handle voice, audio, and video messages
 
 The grammY frameworks provides a convenient way to [filter](https://grammy.dev/guide/filter-queries#combining-multiple-queries) for specific message types. In this case, the bot is listening for voice, audio, and video messages.
 
@@ -299,6 +303,8 @@ bot.on([':voice', ':audio', ':video'], async (ctx) => {
   }
 });
 ```
+
+#### Transcription with the ElevenLabs API
 
 Finally, in the background worker, the bot uses the ElevenLabs JavaScript SDK to transcribe the file. Once the transcription is complete, the bot replies to the user with the transcript and writes a log entry to the Supabase database using [supabase-js](https://supabase.com/docs/reference/javascript).
 
@@ -433,6 +439,10 @@ After you see the transcript as a reply, navigate back to your table editor in t
 
 ## Next steps
 
+#### [API reference](/docs/api-reference/speech-to-text)
+
 Full Speech to Text API reference and parameters.
+
+#### [Twilio integration](/docs/eleven-api/guides/how-to/text-to-speech/twilio)
 
 Integrate ElevenLabs TTS with Twilio for phone-based voice applications.

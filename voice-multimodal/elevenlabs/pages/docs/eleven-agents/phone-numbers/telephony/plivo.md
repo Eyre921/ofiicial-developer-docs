@@ -41,29 +41,45 @@ This section provides detailed instructions for creating SIP trunks in Plivo bef
 
 ### Setting up inbound trunks (calls from Plivo to ElevenLabs)
 
+#### Access Plivo Console
+
 Sign in to the Plivo Console.
 
+#### Navigate to Zentrunk Dashboard
+
 Go to the Zentrunk Dashboard in your Plivo account.
+
+#### Create inbound SIP trunk
 
 1. Select "Create New Inbound Trunk" and provide a descriptive name for your trunk.
 2. Under Trunk Authentication, click "Add New URI".
 3. Enter the ElevenLabs SIP URI: `sip.rtc.elevenlabs.io`
 4. Select "Create Trunk" to complete your inbound trunk creation.
 
-1) Navigate to the Phone Numbers Dashboard and select the number you want to route to your inbound trunk.
-2) Under Number Configuration, set "Trunk" to your newly created inbound trunk.
-3) Select "Update" to save the configuration.
+#### Assign phone number to trunk
+
+1. Navigate to the Phone Numbers Dashboard and select the number you want to route to your inbound trunk.
+2. Under Number Configuration, set "Trunk" to your newly created inbound trunk.
+3. Select "Update" to save the configuration.
 
 ### Setting up outbound trunks (calls from ElevenLabs to Plivo)
 
+#### Access Plivo Console
+
 Sign in to the Plivo Console.
 
+#### Navigate to Zentrunk Dashboard
+
 Go to the Zentrunk Dashboard in your Plivo account.
+
+#### Create outbound SIP trunk
 
 1. Select "Create New Outbound Trunk" and provide a descriptive name for your trunk.
 2. Under Trunk Authentication, click "Add New Credentials List".
 3. Add a username and password that you'll use to authenticate outbound calls.
 4. Select "Create Credentials List". 5. Save your credentials list and select "Create Trunk" to complete your outbound trunk configuration.
+
+#### Note your termination URI
 
 After creating the outbound trunk, note the termination URI (typically in the format
 `sip:yourusername@yourplivotrunk.sip.plivo.com`). You'll need this information when configuring

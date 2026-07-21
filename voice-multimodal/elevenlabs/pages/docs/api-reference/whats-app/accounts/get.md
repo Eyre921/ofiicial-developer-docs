@@ -89,6 +89,9 @@ components:
         enable_audio_message_response:
           type: boolean
           default: true
+        enable_typing_indicator:
+          type: boolean
+          default: true
         assigned_agent_name:
           type:
             - string
@@ -153,6 +156,7 @@ components:
   "assigned_agent_id": "string",
   "enable_messaging": true,
   "enable_audio_message_response": true,
+  "enable_typing_indicator": true,
   "is_token_expired": false
 }
 ```

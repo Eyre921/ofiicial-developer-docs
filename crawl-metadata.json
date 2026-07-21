@@ -47,7 +47,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1496,
+    "pages": 1500,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -103,7 +103,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -188,7 +188,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 105,
+    "pages": 92,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -204,8 +204,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 766,
+    "pages": 1175,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-20T23:30:42Z"
+  "_last_crawl": "2026-07-21T11:30:37Z"
 }

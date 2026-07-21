@@ -18,9 +18,15 @@ ElevenLabs [voice changer](/docs/api-reference/speech-to-speech/convert) API let
 
 Explore our [voice library](https://elevenlabs.io/voice-library) to find the perfect voice for your project.
 
+#### [Products](/docs/eleven-creative/playground/voice-changer)
+
 Step-by-step guide for using voice changer in ElevenLabs.
 
+#### [Developers](/docs/eleven-api/guides/cookbooks/voice-changer)
+
 Learn how to integrate voice changer into your application.
+
+#### [API reference](/docs/api-reference/speech-to-speech/convert)
 
 Full API reference for the Voice Changer endpoint.
 

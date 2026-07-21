@@ -19,6 +19,8 @@ This tutorial will guide you through adding your ElevenLabs Agents agent to your
 
 ## Guide
 
+#### Get your embed code
+
 Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and find your agent's embed widget.
 
 ```html
@@ -26,10 +28,14 @@ Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and find your
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 ```
 
+#### Add the widget to a page
+
 1. In WordPress, edit your desired page
 2. Add a Custom HTML block
 3. Paste the `<elevenlabs-convai agent-id="YOUR_AGENT_ID"></elevenlabs-convai>` snippet into the block
 4. Update/publish the page
+
+#### Add the script globally
 
 **Option A: Using a plugin**
 

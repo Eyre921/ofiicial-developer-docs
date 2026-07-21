@@ -47,8 +47,6 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | Qwen         | Qwen3 30B A3B Base                                 | `Qwen/Qwen3-30B-A3B-Base`                            |
   | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                 |
   | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                               |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
-  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                      |
   | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                    |
   | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |

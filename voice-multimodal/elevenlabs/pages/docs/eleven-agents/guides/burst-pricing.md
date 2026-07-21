@@ -56,11 +56,19 @@ anonymous-tier requests.
 
 Burst pricing is configured per agent in the call limits settings.
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Advanced** tab, scroll to **Call Limits**, and toggle on **Burst pricing**. Save your changes.
+
+#### Update via the CLI
+
+#### Pull the agent configuration
 
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `platform_settings.call_limits.bursting_enabled`:
 
@@ -76,9 +84,13 @@ Set `platform_settings.call_limits.bursting_enabled`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs

@@ -11,7 +11,11 @@ path: docs/eleven-creative/audio-tools/audio-native/squarespace
 Follow the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native) to
 get started with Audio Native before continuing with this guide.
 
+#### Add HTML to your blog post
+
 Navigate to your Squarespace site, sign in and open the page you wish to add narration to.
+
+#### Add the embed code to your blog post
 
 Click the "+" symbol on the spot you want to place the Audio Native player and select "Code" from the menu.
 
@@ -37,7 +41,11 @@ Paste the Audio Native embed code into the HTML box and press enter.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/c9bc7a9212ad6934ebd100aab3fc6d35436e01058d1ce41cf6ac9994a1aba91c/assets/images/product-guides/audio-native/audio-native-squarespace-2.png" alt="Audio Native" />
 
+#### Update the blog post
+
 Click the "Save" button in the top right corner of the editor, which should now be highlighted.
+
+#### Navigate to the live version of the blog post
 
 Finally, navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 

@@ -16,6 +16,8 @@ Aura-2 is a context-aware text-to-speech (TTS) model that applies natural pacing
 
 This guide provides essential formatting techniques to optimize text for Aura-2 text-to-speech conversion. Following these guidelines will produce more natural-sounding speech output with appropriate pacing, intonation, and emphasis.
 
+#### Note for LLM-Generated Text
+
 If you are using a Large Language Model (LLM) to generate input text for Aura-2, you can prompt the LLM to provide conversational responses. For example, instruct the LLM to "respond in a natural, conversational tone with appropriate punctuation for text-to-speech" to get output that will sound more natural when processed by Aura-2.
 
 ## Core Principles

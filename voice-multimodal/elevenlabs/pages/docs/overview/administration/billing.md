@@ -8,9 +8,15 @@ path: docs/overview/administration/billing
 
 # Billing
 
+#### [Pricing](https://elevenlabs.io/pricing)
+
 View the pricing page
 
+#### [Subscription details](https://elevenlabs.io/app/subscription)
+
 View your subscription details
+
+#### [Pay As You Go](/docs/overview/administration/pay-as-you-go)
 
 Prepay for usage
 
@@ -35,11 +41,474 @@ Cloning is only available on the Starter tier and above. The free plan offers th
 
 You can upgrade your subscription at any time, and any unused quota from your previous plan will roll over to the new one. As long as you don’t cancel or downgrade, unused credits at the end of the month will carry over to the next month, up to a maximum of two months’ worth of credits. For more information, please visit our Help Center articles:
 
-* ["How does credit rollover work?"](https://help.elevenlabs.io/hc/en-us/articles/27561768104081-How-does-credit-rollover-work)
-* ["What happens to my subscription and quota at the end of the month?"](https://help.elevenlabs.io/hc/en-us/articles/13514114771857-What-happens-to-my-subscription-and-quota-at-the-end-of-the-month)
+* ["How does credit rollover work?"](/docs/help-center/account/general/how-does-credit-rollover-work)
+* ["What happens to my subscription and quota at the end of the month?"](/docs/help-center/account/general/what-happens-to-my-subscription-and-quota-at-the-end-of-the-month)
 
 From the [subscription page](https://elevenlabs.io/app/subscription), you can also downgrade your subscription at any point in time if you would like. When downgrading, it won't take effect until the current cycle ends, ensuring that you won't lose any of the monthly quota before your month is up.
 
-When generating content on our paid plans, you get commercial rights to use that content. If you are on the free plan, you can use the content non-commercially with attribution. Read more about the license in our [Terms of Service](https://elevenlabs.io/terms-of-use) and in our Help Center [here](https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform).
+When generating content on our paid plans, you get commercial rights to use that content. If you are on the free plan, you can use the content non-commercially with attribution. Read more about the license in our [Terms of Service](https://elevenlabs.io/terms-of-use) and in our Help Center [here](/docs/help-center/legal/can-i-publish-the-content-i-generate-on-the-platform).
 
-For more information on payment methods, please refer to the [Help Center](https://help.elevenlabs.io/).
+For more information on payment methods, please refer to the [Help Center](/docs/help-center/account/payment-billing).
+
+## FAQ
+
+#### Core Billing Concepts
+
+#### What are credits?
+
+Credits were previously referred to as "characters." We updated this terminology to streamline pricing and make it easier to understand, though the value remains unchanged.
+
+Credits can be used across our platform. The number of credits used depends on your plan, whether you're generating via the website or API, the product you’re using, and the model. For full details, see our[ Pricing page. ](https://elevenlabs.io/pricing)
+
+ 
+
+<strong>
+  Credit Allocation and Rollover
+</strong>
+
+For self-serve monthly and annual plans, and Enterprise monthly plans: you will receive a set amount of credits each month, which reset monthly. Up to two months’ worth of unused credits can roll over to the next month.
+
+For enterprise annual plans, you will receive a yearly credit allocation upfront. These credits reset each year, with up to two months' worth of unused credits rolling over to the next year.
+
+If you downgrade or cancel your subscription, this does not take effect until the end of your current billing cycle, and unused credits are not rolled over.
+
+ 
+
+<strong>
+  Pay As You Go
+</strong>
+
+Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+
+#### What happens when I run out of credits?
+
+New subscriptions have the option of purchasing Pay As You Go credits. These credits last for 12 months, and will be used if you run out of credits from your monthly quota. 
+
+Pay As You Go is not available on Enterprise and legacy subscriptions. If you run out of credits on a legacy Starter plan, you’ll need to wait until your current billing cycle renews for your credits to reset. Alternatively, you can upgrade to a higher plan at any time. You can also set your subscription to cancel - when the cancellation takes effect at the end of your current billing cycle, you'll be able to resubscribe to our new Starter subscription with the option of Pay As You Go. 
+
+On Enterprise and legacy Creator, Pro, Scale, and Business plans, you can enable usage based billing. This allows you to pay for additional credits once you've used all of your included monthly credits. Usage based billing is typically charged at the end of each billing cycle. However, if your usage based charges exceed twice your monthly subscription fee, we will charge you immediately for the outstanding balance.
+
+If you decide to upgrade or downgrade your subscription while having an outstanding usage based billing balance, both the balance and the new subscription plan price will be charged at that time.
+
+For more information, see [What is usage based billing?](/docs/help-center/account/general/what-is-usage-based-billing)
+
+#### Where can I find out more about the pricing plans?
+
+Please refer to our [pricing page](https://elevenlabs.io/pricing) for a detailed overview of all available subscription plans.
+
+#### Subscription Management
+
+#### How do I downgrade or cancel my subscription?
+
+When you cancel or downgrade your subscription, this won't take effect until the end of your current billing cycle. When this happens, you will lose any unused credits on your account.
+
+Here's how to cancel or downgrade your subscription:
+
+Log in to your account at [https://elevenlabs.io](https://elevenlabs.io/)
+
+Click your profile icon in the top right corner of the website to open your account menu.
+
+Select <strong>Subscription</strong>.
+
+Click <strong>Manage subscription</strong>. This will appear on the left of the window.
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/42400545558417" alt="" />
+
+To cancel your subscription, click <strong>Cancel subscription</strong> and proceed through
+through the cancellation process. Once you click <strong>Cancel Subscription</strong>, your
+cancelation will be scheduled for the end of your current billing cycle.
+
+To downgrade your subscription, click <strong>Downgrade</strong> and select the plan you want to
+downgrade to. Confirm the downgrade, and it will be scheduled for the end of your current
+billing cycle.
+
+You will see confirmation of the scheduled downgrade or cancellation. At any time before the end
+of your billing cycle, you can click <strong>Resume subscription</strong> to remain on your
+current subscription plan.
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/34630854652305" alt="" />
+
+Your browser can sometimes block pop-ups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
+
+If you still have issues, please email [team@elevenlabs.io](mailto:team@elevenlabs.io) from the email you currently use for your ElevenLabs account.
+
+#### Can I pause my subscription?
+
+It's not possible to pause your paid subscription, but when you cancel your paid subscription, your account will be transferred to the free plan at the end of your current billing cycle.    
+
+While you're on the free plan, you will not have access to certain features such as voice cloning, but nothing will be deleted from your account unless you choose to remove it yourself.  
+
+You can resubscribe at any time any time from your [Subscription](https://elevenlabs.io/app/subscription) page.  Once you resubscribe, you will regain access to the features available to your new plan, including any content saved on your account.
+
+#### Do you offer annual or quarterly plans?
+
+Yes, we offer annual plans for all of our subscription tiers. At the moment, we do not offer quarterly plans. [ElevenReader](/docs/help-center/product/distribution-publishing/eleven-reader/what-is-eleven-reader) is currently free to use for all subscribers.
+
+On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/27833171668113" alt="" />
+
+Annual plans are billed on an annual cycle and will renew automatically unless canceled.
+
+On the <strong>self-serve plans</strong>, your credits will reset each month. If, by the end of the month, you have unused credits, you can carry over up to two months' worth of unspent credits into your next.
+
+On the <strong>enterprise plans</strong>, you can decide if you want to receive your credits to reset each month or if you want them in a lump sum and then have them reset annually. If, by the end of the month or year, you have unused credits, you can carry over up to two months' worth of unspent credits into your next cycle.
+
+If you upgrade to an annual plan while you have an active monthly subscription, this will start a new annual billing cycle. Any unused credits from your previous character quota will be added to the first month's quota of your new annual plan.
+
+You can read more about credit rollover [here](/docs/help-center/account/general/how-does-credit-rollover-work).
+
+#### Can I upgrade my annual subscription?
+
+You can upgrade from one annual subscription to another annual subscription, but you can't upgrade from an annual subscription to a monthly subscription.
+
+When upgrading your annual subscription, here's what happens:
+
+* If you have enabled usage based billing (legacy subscriptions only), and incurred a charge, this will be billed when you upgrade.
+* You will receive a prorated discount on your new plan. This discount is based on the unused months of your current plan, minus the two free months included in the annual subscription price.
+* You will be charged the full cost of your new annual plan, which also includes two free months, minus the prorated discount from your previous plan.
+* Your new annual subscription will begin immediately, resetting your billing cycle. It will automatically renew a year later unless canceled.  If you do cancel, the cancelation will take effect at the end of your current billing cycle.
+
+#### Payment Methods
+
+#### What kind of payment is accepted?
+
+At the moment we accept:
+
+* Credit Card
+* Apple Pay
+* Google Pay
+* UPI (India only)
+
+While you can try using a prepaid card, it is not something we directly support. We have encountered issues with the issuing banks and Stripe blocking such payments. Therefore, please be aware that attempting to use a prepaid card is done at your own risk.
+
+If this doesn't work, you will have to try using another card or explore an alternative payment method altogether.
+
+#### How do I change my billing information?
+
+You can update your billing information from your [Subscription](https://elevenlabs.io/app/subscription) page.
+
+Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
+
+Click <strong>Billing</strong>.
+
+At the bottom of the pop-up, click <strong>Manage billing information</strong>.
+
+Scroll down to <strong>Billing Information</strong> and click{" "}
+<strong>Update information</strong>.
+
+Make the necessary changes to your billing information.
+
+If you want to add or edit your Tax ID, you can do this in the <strong>Tax ID</strong> section.
+
+The updated details will be applied automatically to all future invoices.
+
+#### How can I use Apple Pay?
+
+# Apple Pay not showing at checkout?
+
+ElevenLabs accepts Apple Pay, but there are a few requirements for it to show at checkout.
+
+##  
+
+## Apple Pay is only available in certain countries
+
+##  
+
+## Safari browser on an Apple Device is required
+
+> The one browser exception is, starting with iOS 16, it's also possible to checkout with Apple Pay on Chrome and Firefox. On iOS other browsers still use Safari's WebKit rendering engine This is not true on Mac, so Safari is the only way to checkout with Apple Pay on Mac computers. It is not possible to add Apple Pay as a payment method on Windows, Android, or Linux operating systems. Apple devices only.
+
+##  
+
+## Ensure that a valid card is added to Apple Pay
+
+> Apple Pay checkout will not be available unless a valid card is already saved to your Apple Pay account. The device you are paying from must be using the same Apple ID as the Apple Pay account. You won't be able to use your Apple Pay account from someone's else's device.
+
+##  
+
+## Apple Pay may not be available on older devices
+
+> If your device is not on the latest update available, updating might allow you to checkout with Apple Pay.
+
+* iOS 10.1+ Apple Pay available in Safari
+* iOS 16+ Apple Pay additionally available in Chrome and Firefox
+* macOS 10.12.1+: Apply Pay available in Safari (no other browsers)
+
+#### How can I use Google Pay?
+
+ElevenLabs accepts Google Pay, but there are a few requirements for it to show at checkout.
+
+ 
+
+## Google Pay is only available in certain countries
+
+Currently, Google Pay is not available in India.
+
+##  
+
+## Google Chrome browser is required
+
+> Google Pay is not integrated with other web browsers, so the Google Pay button will only show at checkout if you are using Google Chrome. Google Pay is unavailable in Google Chrome for Apple iOS. It will not be possible to add Google Pay as a payment method using an iPhone or iPad (Mac computer is fine). <strong>Do not use an incognito window</strong> By default Google Pay will not be available in an incognito window. It is possible to get it working, but enabling in incognito mode is not covered here.
+
+ 
+
+## Sign in with the correct Google Account
+
+> Prior to checking out, log in to the Google account that is associated with the Google Pay account you intend to use for the transaction.
+
+ 
+
+## Check payment settings in Google Chrome
+
+> The Google Pay button will not show if certain payment settings are disabled in Chrome. <strong>Chrome for desktop</strong> Open Chrome settings and click Autofill in the menu followed by "Payment methods". Enable both "Save and fill payment methods" and "Allow sites to check if you have payment methods saved" <strong>Chrome for Android phones & tablets</strong> Open Chrome settings and tap on "Payment methods". Enable "Save and fill payment methods".
+
+ 
+
+## Ensure that a valid card is added to Google Pay
+
+> Google Pay checkout will not be available unless a valid card is already saved to your Google Pay account.
+
+ 
+
+## Google Pay may not be available on older devices
+
+> If your device and/or Google Chrome are not on the latest update available, updating might allow you to checkout with Google Pay.
+
+ 
+
+<strong>
+  Additional Google Pay troubleshooting info
+</strong>
+
+> Google Pay checkout may not be available or Google may not be able to verify your card if you are connected to a VPN or using a rooted device. If you do not know what "rooted" means, it is safe to say that it does not apply to you.
+
+ 
+
+### It may take up to 5 minutes for Google Pay checkout to become available after meeting the requirements listed above.
+
+The screenshots below show the browser payment settings to enable in Chrome for desktop & mobile as well as how the Google Chrome button will appear at checkout when all requirements have been met.
+
+ 
+
+ 
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/15308726622097" alt="" />
+
+ 
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/15308726595473" alt="" />
+
+ 
+
+ 
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/15308721578385" alt="" />
+
+#### Can I pay for my ElevenLabs subscription in INR?
+
+Yes, customers located in India can now pay for their ElevenLabs subscription in Indian Rupees (INR).
+
+If you're located in India, the INR option will automatically appear during checkout. Customers in all other countries will continue to be charged in USD.
+
+We also support UPI as a payment method for customers located in India.
+
+There’s no difference in pricing structure or available plans - only the billing currency and available payment methods change based on your location.
+
+#### Usage-Based Billing
+
+#### What is usage based billing?
+
+Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
+
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+
+On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. For full details on how to enable this feature, please see [How do I enable usage based billing for my account?](/docs/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account) 
+
+To allow for more control over charges, usage based billing has a maximum number of credits that can be used. You can set this threshold yourself when you enable usage based billing. For a guide on how to do this, please see [How do I change the usage based billing threshold for my account?](/docs/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account)
+
+The additional credits are either billed at the end of your billing cycle, or when the outstanding balance exceeds twice your usual subscription payment.
+
+If you decide to upgrade or downgrade your subscription, you will be immediately charged for any outstanding usage based balance, as well as the price of your new chosen subscription plan.
+
+Usage based billing offers a fixed price for each additional 1,000 credits used over your limit. The cost of these credits depends on your plan, and will be displayed when you enable usage based billing for your account, prior to confirmation.
+
+#### How do I enable usage based billing for my account?
+
+Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
+
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/44923897895953" alt="" />
+
+On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
+
+Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
+
+Click <strong>Manage Subscription</strong>.
+
+Use the <strong>Usage based billing</strong> toggle to turn usage based billing on or off.
+
+A pop-up will appear asking you to confirm that you want to enable usage based billing. You can
+either set the number of credits that can be used to <strong>Unlimited</strong>, or enter your
+own maximum.
+
+Click <strong>Confirm</strong> to save the changes.
+
+You may be asked to verify your payment card before proceeding, but no charges will be made
+during the verification process.
+
+For more information about usage based billing, please see:
+
+* [What is usage based billing?](/docs/help-center/account/general/what-is-usage-based-billing)
+* [What is the price for usage based billing?](/docs/help-center/account/general/what-is-the-price-for-usage-based-billing)
+
+#### How do I change the usage based billing threshold for my account?
+
+Usage based billing is a legacy feature, and is not available on new self-serve subscriptions. Enterprise contracts remain on overage-based billing and are not affected by this change.
+
+For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
+
+On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota. 
+
+<img src="https://help.elevenlabs.io/hc/article_attachments/44924089340561" alt="" />
+
+To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
+
+Here’s how to change the threshold:
+
+Go to your <strong>Subscription</strong> page.
+
+Click <strong>Manage Subscription</strong>.
+
+In the <strong>U</strong>
+<strong>sage based billing</strong> section, click <strong>Change threshold.</strong>
+
+A pop-up will appear where you can either enter your preferred maximum, or select{" "}
+<strong>Unlimited</strong>.
+
+Click <strong>Confirm</strong> to save the changes.
+
+You may be asked to verify your payment card before proceeding, but no charges will be made
+during the verification process.
+
+For more information about usage based billing, please see:
+
+* [What is usage based billing?](/docs/help-center/account/general/what-is-usage-based-billing)
+* [What is the price for usage based billing?](/docs/help-center/account/general/what-is-the-price-for-usage-based-billing)
+
+#### Invoices & Records
+
+#### Where can I find my invoices?
+
+We email copies of your invoices and receipts to your account email address. You can also access your entire invoice history through our website:
+
+Log into your account, and go to the [Subscription](https://elevenlabs.io/app/subscription)
+page.
+
+Click <strong>Manage subscription</strong>
+
+Click <strong>Manage billing information</strong> at the bottom of the pop-up.
+
+Scroll down to see your <strong>Invoice History</strong>.
+
+Click any invoice to view and download a PDF of the invoice and receipt.
+
+#### Payment Issues
+
+#### Why is my payment failing?
+
+Payment failures may happen for a variety of reasons:
+
+The payment was not verified on the card holders side. Upon checking out from the payment page
+users should be asked to verify their payment with their bank
+
+The user's bank may decline the payment
+
+The user had insufficient funds in their account
+
+#### What is the extra verification step upon checking out from the payment page?
+
+The extra verification step is a requirement from your bank or payment processor to verify your identity or to confirm your payment details.
+
+Typically, you will be prompted to provide additional information or complete an additional authentication step upon checking out from the payment page. Follow the instructions provided by your bank or payment processor carefully.
+
+#### Why am I getting a payment attempt after cancelling my subscription?
+
+This situation can occur when a user cancels their subscription too late. When you initiate a cancelation, it doesn't take effect immediately. Instead, it cancels the subscription at the end of the current billing cycle. This approach is designed to prevent users from losing any unused subscription time simply because they cancelled early.
+
+However, if you cancel the subscription after the current cycle ends, even if the new invoice hasn't been paid yet, the new cycle has already begun. In this case, the system will not cancel the subscription until the end of the new cycle.
+
+#### Refunds
+
+#### What is your refund policy?
+
+You are eligible for a refund if a request is filed within 14 days of payment and no credit quota was used in the period for which you are seeking the refund.
+
+You can find our full refund policies in the [Terms of Service](https://elevenlabs.io/terms#:~:text=Refund%20policy).
+
+#### How can I request a refund?
+
+You are eligible for a refund if a request is filed within 14 days of payment and no credit quota was used in the period for which you are seeking the refund.
+
+If you want to apply for a refund for your purchase, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io) and someone from the team will get back to you shortly.
+
+Please email directly from your ElevenLabs account email address, and state the reasons for your refund.
+
+#### Account Management
+
+#### How do I remove my card from my profile?
+
+You cannot remove a card that’s set as the default payment method during an active subscription. However, you can add a new payment method, set it as the default, and then remove the old card.
+
+Here’s how to update your payment method and remove your old card:
+
+Go to your [Subscription ](https://elevenlabs.io/app/subscription)page.
+
+Click <strong>Manage subscription</strong>.
+
+In the pop-up, click <strong>Manage billing information</strong>.
+
+Scroll down to <strong>Payment Methods</strong>.
+
+Click <strong>Add payment method</strong> and enter your new card details.
+
+Set the new card as the default payment method.
+
+Remove the old payment method.
+
+Once your subscription expires, you can remove all payment methods from your profile.
+
+#### Coupons & Promotions
+
+#### How do I use my coupon link?
+
+Coupon links can only be used if you are currently on the free plan.  Please email [team@elevenlabs.io](mailto:team@elevenlabs.io) if you are trying to use a coupon link but are currently on a paid subscription.
+
+Create a free account, or log into your free account.
+
+Click the coupon link.
+
+The coupon link will activate and be automatically applied. You will see a notification
+confirming this.
+
+Click your profile icon in the top right corner of the website to open your account menu, then
+select{" "}
+
+<a href="https://elevenlabs.io/app/subscription">
+  <strong>
+    Subscription
+  </strong>
+</a>
+
+.
+
+Make sure you have monthly billing selected, then select <strong>Subscribe</strong> underneath
+the plan that your coupon is valid for.
+
+The discount will be applied at checkout. You will see confirmation that it has been applied
+successfully before you complete checkout.
+
+#### Why did I not get the first-month off coupon?
+
+We sometimes offer discounts on the first month of your subscription.  Since the coupon is only valid for your first purchase of a subscription tier, unfortunately, if the payment fails the first time and the invoice has to be voided, the coupon will also be voided and spent. You will have to reach out to support directly so they can look into it and issue a new coupon for you.

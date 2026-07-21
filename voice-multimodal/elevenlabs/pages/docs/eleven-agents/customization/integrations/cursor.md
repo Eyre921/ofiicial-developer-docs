@@ -16,7 +16,11 @@ Connect your ElevenLabs AI agents with [Cursor](https://www.cursor.com/) to laun
 
 This integration uses a **Cursor API key** for authentication.
 
+#### Get your Cursor API key
+
 Go to your [Cursor Dashboard](https://cursor.com/settings), navigate to **Integrations & MCP**, and generate an API key.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your Cursor API key in the **API Key** field.
 

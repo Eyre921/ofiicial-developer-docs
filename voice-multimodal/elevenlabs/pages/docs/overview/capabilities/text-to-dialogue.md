@@ -22,9 +22,15 @@ Listen to a sample:
 
 <elevenlabs-audio-player audio-title="Dialogue example" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/dialogue.mp3" />
 
+#### [Developers](/docs/eleven-api/guides/cookbooks/text-to-dialogue)
+
 Learn how to integrate text to dialogue into your application.
 
+#### [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+
 Learn how to use the Eleven v3 model to generate expressive dialogue.
+
+#### [API reference](/docs/api-reference/text-to-dialogue/convert)
 
 Full API reference for the Text to Dialogue endpoint.
 
@@ -103,6 +109,8 @@ Ellipses can be used to indicate trailing sentences:
 
 <elevenlabs-audio-player audio-title="Ellipses" audio-src="https://storage.googleapis.com/eleven-public-cdn/documentation_assets/audio/dialogue-ellipses.mp3" />
 
+#### Supported output formats
+
 The default response format is `mp3`, but other formats like `pcm` and `ulaw` are available.
 
 * **MP3**
@@ -135,11 +143,17 @@ The Eleven v3 model supports 70+ languages, including:
 
 ## FAQ
 
+#### Which models can I use?
+
 Text to Dialogue is only available on the Eleven v3 model.
+
+#### Do I own the audio output?
 
 Yes. You retain ownership of any audio you generate. However, commercial usage rights are only
 available with paid plans. With a paid subscription, you may use generated audio for commercial
 purposes and monetize the outputs if you own the IP rights to the input content.
+
+#### What qualifies as a free regeneration?
 
 A free regeneration allows you to regenerate the same text to speech content without additional cost, subject to these conditions:
 
@@ -149,11 +163,17 @@ A free regeneration allows you to regenerate the same text to speech content wit
 
 Free regenerations are useful in case there is a slight distortion in the audio output. According to ElevenLabs' internal benchmarks, regenerations will solve roughly half of issues with quality, with remaining issues usually due to poor training data.
 
+#### How many speakers can my dialogue have?
+
 There is no limit to the number of speakers in a dialogue.
+
+#### Why is my output sometimes inconsistent?
 
 The models are nondeterministic. For consistency, use the optional [seed
 parameter](/docs/api-reference/text-to-speech/convert#request.body.seed), though subtle
 differences may still occur.
+
+#### What's the best practice for large text conversions?
 
 Keep the total length of all `inputs[].text` values at or below 2,000 characters per request for reliable generation. Split longer text into chunks and concatenate the resulting audio in your application.
 

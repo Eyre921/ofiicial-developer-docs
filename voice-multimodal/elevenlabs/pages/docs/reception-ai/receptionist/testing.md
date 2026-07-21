@@ -20,19 +20,31 @@ For a full end-to-end test, call your assigned phone number from any phone. This
 
 ## What to test
 
+#### Basic greeting
+
 Call in and verify the first message sounds natural and includes your business name.
+
+#### Appointment booking
 
 Ask to book an appointment. Verify the receptionist offers correct services, available times,
 and confirms the booking.
 
+#### Business questions
+
 Ask about hours, location, pricing, or services. Verify answers match your actual business
 information.
+
+#### Language switching
 
 If you support multiple languages, try speaking in a different language and verify the
 receptionist switches correctly.
 
+#### Edge cases
+
 Try asking something unusual or outside your business scope. Verify the receptionist handles it
 gracefully (takes a message, offers to connect you with someone, etc.).
+
+#### Transfer rules
 
 Trigger a transfer rule and verify the call routes to the correct number.
 

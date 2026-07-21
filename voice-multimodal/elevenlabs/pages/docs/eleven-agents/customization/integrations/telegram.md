@@ -14,9 +14,15 @@ Connect your ElevenLabs AI agents with Telegram to respond to messages sent to y
 
 ## Setup
 
+#### Create a Telegram bot
+
 Open Telegram and start a conversation with [@BotFather](https://t.me/BotFather). Send `/newbot` and follow the prompts to choose a name and username for your bot. BotFather will reply with a bot token.
 
+#### Connect in ElevenLabs
+
 In the ElevenLabs integration setup, click **Connect** and paste the bot token from BotFather.
+
+#### Enable the trigger
 
 After connecting, enable the **Telegram Message** trigger and select the agent that should handle incoming messages. ElevenLabs will automatically register a webhook with Telegram so your bot starts receiving messages.
 

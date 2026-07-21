@@ -20,6 +20,8 @@ The Eleven Music API is only available to paid users.
 
 ## Using the Eleven Music API
 
+#### Create an API key
+
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
@@ -27,6 +29,8 @@ Store the key as a managed secret and pass it to the SDKs either as a environmen
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
+
+#### Install the SDK
 
 We'll also use the `dotenv` library to load our API key from an environment variable.
 
@@ -39,6 +43,8 @@ pip install python-dotenv
 npm install @elevenlabs/elevenlabs-js
 npm install dotenv
 ```
+
+#### Make the API request
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -86,6 +92,8 @@ const track = await elevenlabs.music.compose({
 await pipeline(Readable.from(track), createWriteStream("path/to/music.mp3"));
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -99,6 +107,8 @@ You should hear the generated music playing.
 ## Composition plans
 
 A composition plan is a JSON object that describes the music you want to generate in finer detail. Use text prompts for quick prototyping and composition plans when you need specific chunk structure, precise lyrics timing, or complex arrangements.
+
+#### [Composition plans guide](/docs/eleven-api/guides/how-to/music/composition-plans)
 
 Learn how to structure songs with chunks, styles, and lyrics for precise control.
 
@@ -292,8 +302,14 @@ will be returned.
 
 ## Next steps
 
+#### [Stream music](/docs/eleven-api/guides/how-to/music/streaming)
+
 Stream generated music in real time rather than waiting for the full file
 
+#### [Music inpainting](/docs/eleven-api/guides/how-to/music/inpainting)
+
 Modify or extend specific sections of an existing music track
+
+#### [API reference](/docs/api-reference/music/compose)
 
 Explore all Music API parameters and response formats

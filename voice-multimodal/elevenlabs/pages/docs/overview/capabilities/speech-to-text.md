@@ -12,11 +12,19 @@ path: docs/overview/capabilities/speech-to-text
 
 The ElevenLabs [Speech to Text (STT) API](/docs/eleven-api/guides/cookbooks/speech-to-text) turns spoken audio into text with state of the art accuracy. Our [Scribe v2 model](/docs/overview/models) adapts to textual cues across 90+ languages and multiple voice styles. To try a live demo please visit our [Speech to Text](https://elevenlabs.io/speech-to-text) showcase page.
 
+#### [Products](/docs/eleven-creative/playground/speech-to-text)
+
 Step-by-step guide for using speech to text in ElevenLabs.
+
+#### [Developers](/docs/eleven-api/guides/cookbooks/speech-to-text)
 
 Learn how to integrate the speech to text API into your application.
 
+#### [Realtime speech to text](/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming)
+
 Learn how to transcribe audio with ElevenLabs in realtime with WebSockets.
+
+#### [API reference](/docs/api-reference/speech-to-text/convert)
 
 Full API reference for the Speech to Text endpoint.
 
@@ -26,6 +34,8 @@ agreement. Please ensure this step is completed before proceeding with any HIPAA
 integrations or deployments.
 
 ## Models
+
+#### [Scribe v2](/docs/overview/models#scribe-v2)
 
 State-of-the-art speech recognition model
 
@@ -42,6 +52,8 @@ Speaker diarization, up to 32 speakers
 Dynamic audio tagging
 
 Smart language detection
+
+#### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
 
 Real-time speech recognition model
 
@@ -60,6 +72,8 @@ Precise word-level timestamps
 The following example shows the output of the Speech to Text API using the Scribe v2 model for a sample audio file.
 
 <elevenlabs-audio-player audio-title="Nicole" audio-src="https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.mp3" />
+
+#### View full JSON response
 
 ```javascript
 {
@@ -487,6 +501,8 @@ Scribe v2 supports 90+ languages, including:
 
 Word Error Rate (WER) is a key metric used to evaluate the accuracy of transcription systems. It measures how many errors are present in a transcript compared to a reference transcript. Below is a breakdown of the WER for each language that Scribe v2 supports.
 
+#### Excellent (≤ 5% WER)
+
 Belarusian (bel), Bosnian (bos), Bulgarian (bul), Catalan (cat), Croatian (hrv), Czech (ces),
 Danish (dan), Dutch (nld), English (eng), Estonian (est), Finnish (fin), French (fra), Galician
 (glg), German (deu), Greek (ell), Hungarian (hun), Icelandic (isl), Indonesian (ind), Italian
@@ -494,14 +510,20 @@ Danish (dan), Dutch (nld), English (eng), Estonian (est), Finnish (fin), French 
 (mal), Norwegian (nor), Polish (pol), Portuguese (por), Romanian (ron), Russian (rus), Slovak
 (slk), Spanish (spa), Swedish (swe), Turkish (tur), Ukrainian (ukr) and Vietnamese (vie).
 
+#### High Accuracy (>5% to ≤10% WER)
+
 Armenian (hye), Azerbaijani (aze), Bengali (ben), Cantonese (yue), Filipino (fil), Georgian
 (kat), Gujarati (guj), Hindi (hin), Kazakh (kaz), Lithuanian (lit), Maltese (mlt), Mandarin
 (cmn), Marathi (mar), Nepali (nep), Odia (ori), Persian (fas), Serbian (srp), Slovenian (slv),
 Swahili (swa), Tamil (tam) and Telugu (tel)
 
+#### Good (>10% to ≤20% WER)
+
 Afrikaans (afr), Arabic (ara), Assamese (asm), Asturian (ast), Burmese (mya), Hausa (hau),
 Hebrew (heb), Javanese (jav), Korean (kor), Kyrgyz (kir), Luxembourgish (ltz), Māori (mri),
 Occitan (oci), Punjabi (pan), Tajik (tgk), Thai (tha), Uzbek (uzb) and Welsh (cym).
+
+#### Moderate (>25% to ≤50% WER)
 
 Amharic (amh), Ganda (lug), Igbo (ibo), Irish (gle), Khmer (khm), Kurdish (kur), Lao (lao),
 Mongolian (mon), Northern Sotho (nso), Pashto (pus), Shona (sna), Sindhi (snd), Somali (som),
@@ -509,12 +531,18 @@ Urdu (urd), Wolof (wol), Xhosa (xho), Yoruba (yor) and Zulu (zul).
 
 ## FAQ
 
+#### Can I use speech to text API with video files?
+
 Yes, the API supports uploading both audio and video files for transcription.
+
+#### What are the file size and duration limits for the Speech to Text API?
 
 Files up to 3 GB in size are supported. Duration limits depend on the transcription mode:
 
 * **Standard mode** (`use_multi_channel=false`): Up to 10 hours
 * **Multi-channel mode** (`use_multi_channel=true`): The combined duration of all channels must be less than 10 hours
+
+#### Which audio and video formats are supported in the API?
 
 The API supports the following audio and video formats:
 
@@ -548,11 +576,19 @@ Supported video formats include:
 * video/mpeg
 * video/3gpp
 
+#### When will you support more languages?
+
 ElevenLabs is constantly expanding the number of languages supported by our models. Please check back frequently for updates.
+
+#### Does speech to text API support webhooks?
 
 Yes, asynchronous transcription results can be sent to webhooks configured in webhook settings in the UI. Learn more in the [webhooks cookbook](/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks).
 
+#### Is a multichannel transcription mode supported in the API?
+
 Yes, the multichannel [STT](https://elevenlabs.io/speech-to-text) feature allows you to transcribe audio where each channel is processed independently and assigned a speaker ID based on its channel number. This feature supports up to 5 channels. Learn more in the [multichannel transcription cookbook](/docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription).
+
+#### How does billing work for the speech to text API?
 
 ElevenLabs charges for speech to text based on the duration of the audio sent for transcription. Billing is calculated per hour of audio, with rates varying by tier and model. See the [API pricing page](https://elevenlabs.io/pricing/api?price.section=speech_to_text#pricing-table) for detailed pricing information.
 

@@ -12,13 +12,19 @@ path: docs/eleven-creative/products/subtitles
 
 ## Subtitle Editor
 
+#### Open transcript editor
+
 You can use the subtitling mode of our transcript editor to edit your subtitles. Navigate to the Speech to Text page of your ElevenLabs account and click any transcript to get started.
 
 ![Open transcript](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/2359a7f6f5c82bf570c68adf2d41c78916a62f81f1dfc9445532de39eb5f2292/assets/images/product-guides/speech-to-text/click-transcript.png)
 
+#### Edit basic details
+
 You can rename your subtitles in the panel on the right side of the screen.
 
 ![Edit details](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/db9d9ad8c65bc54a6e99b7b9ce6797308cde744f35ebdfdaa9a8a3a29f10678d/assets/images/product-guides/transcripts/v2-editor-details.gif)
+
+#### Add subtitles
 
 If you didn't add subtitles when creating the transcript, you can do so by clicking the "+" next to "Subtitles" in the panel on the right side of the screen.
 You can switch between transcription and subtitling mode at any time using the tabs at the top of the editor.
@@ -29,6 +35,8 @@ You can switch between transcription and subtitling mode at any time using the t
 
 ![Add subtitles](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/239e34f933d4464e5887458985117ab8dad9cbb5e2a37acb6beecd96e8c096ca/assets/images/product-guides/subtitles/subtitles-dialog.png)
 
+#### Edit rules/constraints
+
 Our subtitle editor uses red and green colors to give you real-time feedback on whether your subtitles respect formatting rules like characters per line, lines on screen, and cue length.
 
 To edit these rules, click the three dots next to 'Subtitles' in the panel on the right side of the screen and select 'Edit rules'
@@ -37,11 +45,15 @@ To edit these rules, click the three dots next to 'Subtitles' in the panel on th
 
 ![Edit rules](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/208f20af0e907858ab03896fd0ba40276ec402ee9ec7094b3ee60c8dcdc67012/assets/images/product-guides/subtitles/subtitles-rules.png)
 
+#### Edit text
+
 Our subtitle editor is WYSIWYG. Click anywhere and start typing to edit the text.
 
 <b>Tip:</b> Use command+z to undo changes easily.
 
 ![Edit text](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/6b17224c439b82f5824b3d0abfc9d8634155bcd4d4bbb3726faec2dda8af9520/assets/images/product-guides/subtitles/subtitles-edit-text.gif)
+
+#### Adjust cue start and end times
 
 Drag the handles on the timeline to adjust the start and end timestamps for a cue. You can also type in exact timestamps in the panel on the right side of the screen.
 
@@ -49,11 +61,15 @@ Drag the handles on the timeline to adjust the start and end timestamps for a cu
 
 ![Adjust times](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/ab1595d83ebc540738f29b079bac0e137bb15719f8e9840fbfc54373f6929f74/assets/images/product-guides/subtitles/subtitles-adjust-times.gif)
 
+#### Split and merge cues
+
 To split a cue, click in the text where you want to split and press **Enter.**
 
 To merge two cues, click the 'merge cues' button.
 
 ![Split and merge](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/5de3d80fd08a0ca5599dbea713012a4ca125f641d8e70b4c822b8bc2ceb41381/assets/images/product-guides/subtitles/subtitles-split-merge.gif)
+
+#### Add or remove cues
 
 To add a cue, click 'Add cue' and select a location on the timeline.
 
@@ -61,9 +77,13 @@ To delete a cue, select the cue and click ‘Delete’ in the panel on the right
 
 ![Add/remove segments](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/5f5408ba7d6410a5f1052811c71e841449e6a69de0875f3335950e9204a67c20/assets/images/product-guides/subtitles/subtitles-add-delete.gif)
 
+#### Adjust playback speed
+
 You can adjust the playback speed of the source media by clicking the indicator next to the play button.
 
 ![Playback speed](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7e585e9029ecb71342124be24a0a40d7620f0551c362460cb460307222b53b65/assets/images/product-guides/transcripts/v2-editor-speed.png)
+
+#### Export subtitles
 
 Click the export button in the top right of the screen and select one of the subtitle export formats:
 
@@ -74,24 +94,44 @@ Click the export button in the top right of the screen and select one of the sub
 
 ## FAQ
 
-Yes – subtitles have specific formatting rules and requirements that do not apply to transcripts.
+<tbody>
+  <tr>
+    <td>
+      #### Are transcripts and subtitles different?
 
-Below is a summary of some (but not all) of the major differences between the two:
+      Yes – subtitles have specific formatting rules and requirements that do not apply to transcripts.
 
-| Feature                        | Transcripts | Subtitles                                                        |
-| ------------------------------ | ----------- | ---------------------------------------------------------------- |
-| Word-level timestamps          | Yes         | No - only start/end times of cues                                |
-| Speaker names/labels           | Yes         | No                                                               |
-| Constraints                    | No          | Yes - characters per line, lines on screen at once, cue duration |
-| Overlapping segments supported | Yes         | No                                                               |
+      Below is a summary of some (but not all) of the major differences between the two:
 
-For more information about transcripts, please see our [Transcripts guide](/docs/eleven-creative/products/transcripts).
+      | Feature                        | Transcripts | Subtitles                                                        |
+      | ------------------------------ | ----------- | ---------------------------------------------------------------- |
+      | Word-level timestamps          | Yes         | No - only start/end times of cues                                |
+      | Speaker names/labels           | Yes         | No                                                               |
+      | Constraints                    | No          | Yes - characters per line, lines on screen at once, cue duration |
+      | Overlapping segments supported | Yes         | No                                                               |
 
-No – transcripts and subtitles are completely separate from each other in our editor. That means that changes you make to one will NOT affect the other.
+      For more information about transcripts, please see our [Transcripts guide](/docs/eleven-creative/products/transcripts).
+    </td>
+  </tr>
 
-Yes – our Productions team offers human subtitling services from \$2.20 per minute. What you get from us:
+  <tr>
+    <td>
+      #### Do changes to subtitles affect the transcript too?
 
-* A subtitling expert edits your subtitles to ensure they adhere to all formatting rules and requirements
-* If you choose, our language teams translate your subtitles into different languages
+      No – transcripts and subtitles are completely separate from each other in our editor. That means that changes you make to one will NOT affect the other.
+    </td>
+  </tr>
 
-For more information please see the 'Productions' section of your ElevenLabs account (currently in beta and available to select users) or contact us at [productions@elevenlabs.io](mailto:productions@elevenlabs.io).
+  <tr>
+    <td>
+      #### Can ElevenLabs help me with my subtitles?
+
+      Yes – our Productions team offers human subtitling services from \$2.20 per minute. What you get from us:
+
+      * A subtitling expert edits your subtitles to ensure they adhere to all formatting rules and requirements
+      * If you choose, our language teams translate your subtitles into different languages
+
+      For more information please see the 'Productions' section of your ElevenLabs account (currently in beta and available to select users) or contact us at [productions@elevenlabs.io](mailto:productions@elevenlabs.io).
+    </td>
+  </tr>
+</tbody>

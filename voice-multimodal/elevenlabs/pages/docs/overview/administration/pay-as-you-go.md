@@ -146,33 +146,53 @@ If you move onto the new plan, it won't be possible to return to the legacy plan
 
 ## FAQ
 
+#### Who can use PAYG?
+
 All self-serve users, including those on the free plan. Enterprise contracts are not eligible.
 They remain on the overage billing model.
+
+#### Is PAYG a separate plan?
 
 Not exactly. Activating PAYG (by adding funds or enabling Auto Top Up) transitions your account
 display to show "Pay As You Go" rather than "Free," but your underlying plan tier (and its
 limits) remains the same unless you separately upgrade to a paid subscription.
 
+#### What happens when my balance hits \$0?
+
 Your usage pauses immediately. There is no postpaid billing or debt incurred. Top up manually to
 resume, or enable Auto Top Up to avoid this.
+
+#### Do funds expire?
 
 Yes. PAYG credits expire 12 months after purchase. Any unused credits will be removed from your
 balance after this period.
 
+#### Are Top Ups refundable?
+
 No. All Top Up purchases are non-refundable.
+
+#### Can I use PAYG alongside a subscription?
 
 Yes. If you have both a subscription and a PAYG balance, your subscription credits are consumed
 first. Once depleted, your PAYG balance is used. This effectively extends your plan beyond your
 monthly quota.
 
+#### Will PAYG give me access to Music, Video, and other APIs?
+
 Yes. PAYG is intended to unlock access to APIs that are otherwise disabled for users on the free
 plan, including Music, Sound Effects, and more.
 
+#### Is there a monthly spend cap?
+
 You can optionally set a monthly spend cap in the Top Up settings. This is off by default.
+
+#### What is the maximum I can purchase in one transaction?
 
 There is no fixed maximum. Your available Top Up limit depends on your account status and
 currency. Visit [Developer settings](https://elevenlabs.io/app/developers) → Top Up to see the
 amounts available to you.
+
+#### What was usage based billing, and how is PAYG different?
 
 Usage based billing was a postpaid mechanism that allowed users to spend beyond their plan
 limits and be charged later. PAYG replaces this with a prepaid model, where you load funds in

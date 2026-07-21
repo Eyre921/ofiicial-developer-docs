@@ -34,6 +34,8 @@ All tool configurations and parameter descriptions help the assistant determine 
 
 <br />
 
+#### Configuration
+
 Define a high-level `Name` and `Description` to describe the tool's purpose. This helps the LLM understand the tool and know when to call it.
 
 If the API requires path parameters, include variables in the URL path by wrapping them in curly
@@ -41,19 +43,27 @@ braces `{}`, for example: `/api/resource/{id}` where `id` is a path parameter.
 
 ![Configuration](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/fb6e6619e4e7a5f19c2a86f9c2a489f5cb33cfb0883c14a06f0eec3cb35d71d5/assets/images/conversational-ai/tool-configuration.jpg)
 
+#### Authentication
+
 Configure authentication by adding custom headers or using out-of-the-box authentication methods through auth connections.
 
 ![Tool authentication](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/5ffae070945a86b74975cd9b56679c2bb76f0ce70d05fe7b10e8e5dff6ddd630/assets/images/conversational-ai/tool-secrets.jpg)
 
+#### Headers
+
 Specify any headers that need to be included in the request.
 
 ![Headers](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9c8c3f2d42f84a6e40922a4c777199e79646b174fa51b9e4d5b21695d7da3f66/assets/images/conversational-ai/tool-headers.jpg)
+
+#### Path parameters
 
 Include variables in the URL path by wrapping them in curly braces `{}`:
 
 * **Example**: `/api/resource/{id}` where `id` is a path parameter.
 
 ![Path parameters](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/12dde95654a12f8fd5894eefe2bdbebb8b819072d3589ed32ddd578997f53c1d/assets/images/conversational-ai/tool-path-parameters.jpg)
+
+#### Body parameters
 
 Specify any body parameters to be included in the request.
 
@@ -75,9 +85,13 @@ URL-encoded format is useful when integrating with APIs that require form data s
 
 The content type setting only applies to POST, PUT, and PATCH requests with body parameters.
 
+#### Query parameters
+
 Specify any query parameters to be included in the request.
 
 ![Query parameters](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/4127f87fe066cdaa71df0e6f75caa24ec8174e7d156c74b3c62ea9df98b9712e/assets/images/conversational-ai/tool-query-parameters.jpg)
+
+#### Dynamic variable assignment
 
 Specify dynamic variables to update from the tool response for later use in the conversation.
 
@@ -87,9 +101,11 @@ Specify dynamic variables to update from the tool response for later use in the 
 
 In this guide, we'll create a weather assistant that can provide real-time weather information for any location. The assistant will use its geographic knowledge to convert location names into coordinates and fetch accurate weather data.
 
-<iframe src="https://player.vimeo.com/video/1061374724?h=bd9bdb535e&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" title="weatheragent" />
+#### Configure the weather tool
 
 The weather tool sends GET requests to `https://api.open-meteo.com/v1/forecast` with `latitude` and `longitude` as path parameters supplied by the LLM.
+
+#### Add via the dashboard
 
 On the **Agent** section of your agent settings page, choose **Add Tool**. Select **Webhook** as the Tool Type, then configure the weather API integration with these values:
 
@@ -106,6 +122,10 @@ Add two path parameters with `LLM Prompt` value type:
 | --------- | ---------- | --------------------------------------------------- |
 | string    | latitude   | The latitude coordinate for the requested location  |
 | string    | longitude  | The longitude coordinate for the requested location |
+
+#### Add via the CLI
+
+#### Create a tool config file
 
 Save the following as `tool_configs/get_weather.json`:
 
@@ -131,15 +151,21 @@ Save the following as `tool_configs/get_weather.json`:
 }
 ```
 
+#### Add the tool
+
 ```bash
 elevenlabs tools add "get_weather" --type "webhook" --config-path ./tool_configs/get_weather.json
 ```
+
+#### Reference the tool from your agent
 
 Edit `agent_configs/<agent-name>.json` and add the tool's ID to `conversation_config.agent.prompt.tool_ids`, then push:
 
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Add via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -211,6 +237,8 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 ```
 
 An API key is not required for this tool. If one is required, this should be passed in the headers and stored as a secret.
+
+#### Orchestration
 
 Configure your assistant to handle weather queries intelligently with this system prompt:
 

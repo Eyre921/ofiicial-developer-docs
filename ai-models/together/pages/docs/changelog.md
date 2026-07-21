@@ -4,13 +4,34 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 20, 2026">
+  ## Fine-tuning metrics dashboard
+
+  Fine-tuning jobs now have a **Metrics** tab in the [web dashboard](https://api.together.ai/fine-tuning) that charts training progress. Metrics stream in live while a job runs and stay available after it completes.
+
+  **What's new:**
+
+  * **Live training curves:** Watch training loss, learning rate, and gradient norm update as the job trains, without leaving the dashboard.
+  * **Preference-tuning metrics:** DPO and other preference jobs add reward accuracy, reward margin, chosen and rejected rewards and log-probabilities, and approximate KL.
+  * **Interactive charts:** Zoom and pan across all charts on a shared step axis, switch the x-axis between step and time, toggle linear or logarithmic scales, and sync a hover crosshair across every metric.
+  * **Compare runs:** Overlay metrics from multiple jobs to [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side.
+</Update>
+
+<Update label="July 17, 2026">
+  ## Privacy and training opt-in settings
+
+  Training opt-in and other privacy toggles now live under **Privacy** in [Organization Settings](https://api.together.ai/settings/organization/~current). Organization admins control data-sharing settings for all traffic sent under the organization's API keys.
+
+  See [Privacy and security](/docs/privacy-and-security).
+
+  ## Dedicated endpoint deployment listing
+
+  Endpoint get and list responses now include at most the 10 newest deployment summaries per endpoint. Use the deployments list API to retrieve every deployment on an endpoint.
+
+  See [Manage endpoints and deployments](/docs/dedicated-endpoints/manage).
+</Update>
+
 <Update label="July 16, 2026">
-  ## New serverless models
-
-  The following models are now available on [serverless](/docs/serverless/models):
-
-  * `thinkingmachines/Inkling`: 552.8B parameters, 524,288 context length, NVFP4 quantization. Pricing: \$1.00 input / \$4.05 output / \$0.17 cached input (per 1M tokens).
-
   ## Dedicated model inference
 
   [Dedicated model inference](/docs/dedicated-endpoints/overview) (DMI) serves a model on reserved GPUs, giving you higher throughput, lower latency, and predictable performance with no hard rate limits. It uses the same [inference APIs](/docs/inference/overview#shared-inference-api) as serverless, so you can prototype on serverless and deploy on dedicated hardware without changing your application code.
@@ -26,11 +47,51 @@ path: docs/changelog
     If you're already using dedicated endpoints, you can migrate to the v2 API by following the [migration guide](/docs/dedicated-endpoints/migrate-from-v1).
   </Note>
 
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `thinkingmachines/Inkling`: 552.8B parameters, 524,288 context length, NVFP4 quantization. Pricing: \$1.00 input / \$4.05 output / \$0.17 cached input (per 1M tokens).
+
   ## Image inputs for evaluations
 
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
 
   See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
+</Update>
+
+<Update label="July 15, 2026">
+  ## TogetherLink
+
+  TogetherLink is an open-source launcher that connects Claude Code, Codex, ChatGPT Desktop, Pi Code, and OpenCode to models hosted by Together AI. Install with one command and run your existing tools without hand-editing provider settings.
+
+  See [Configure Claude Code, Codex, and ChatGPT with Together AI models](/docs/how-to-use-togetherlink).
+
+  ## Slurm cluster OIDC SSH
+
+  Slurm GPU clusters with OIDC enabled now support browser-based SSH through the Together CLI. Choose **OIDC** on the cluster details page to sign in without uploading an SSH key. Key-based SSH remains available.
+
+  See [Cluster management](/docs/gpu-clusters-management#direct-ssh-access).
+
+  ## Fine-tuning model limits API
+
+  The model limits endpoint now returns `supports_full_training` so you can check whether a model supports full fine-tuning before submitting a job. When the field is `false`, the model is LoRA-only.
+
+  See [LoRA vs. full fine-tuning](/docs/fine-tuning/lora-vs-full#what-to-expect-from-full-fine-tuning).
+</Update>
+
+<Update label="July 14, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `google/gemma-4-12B-it`: 262,144 context length.
+
+  ## GPU cluster health monitoring
+
+  Passive health checks now document the full set of monitored failure signals and their recommended repair actions. Slurm node unavailability surfaces as a warning-only alert without an automated repair action.
+
+  See [Health checks](/docs/health-checks#passive-health-checks) and [Node repair](/docs/node-repair#recommended-repair-actions).
 </Update>
 
 <Update label="July 10, 2026">

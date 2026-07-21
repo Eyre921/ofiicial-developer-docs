@@ -46,6 +46,8 @@ This tutorial uses OpenAI's API for the LLM. You need an OpenAI API key set in t
 
 ## Server setup
 
+#### Create an API key
+
 [Create an API key in the dashboard here](https://elevenlabs.io/app/settings/api-keys), which you’ll use to securely [access the API](/docs/api-reference/authentication).
 
 Store the key as a managed secret and pass it to the SDKs either as a environment variable via an `.env` file, or directly in your app’s configuration depending on your preference.
@@ -53,6 +55,8 @@ Store the key as a managed secret and pass it to the SDKs either as a environmen
 ```js title=".env"
 ELEVENLABS_API_KEY=<your_api_key_here>
 ```
+
+#### Install dependencies
 
 ```python
 pip install elevenlabs openai python-dotenv
@@ -62,6 +66,8 @@ pip install elevenlabs openai python-dotenv
 npm install @elevenlabs/elevenlabs-js openai
 ```
 
+#### Expose the server
+
 Speech Engine needs a publicly reachable URL. Use [ngrok](https://ngrok.com) to expose your local server. The server is not built yet, but ngrok needs to be running first so you have the URL for the next step.
 
 ```bash
@@ -69,6 +75,8 @@ ngrok http 3001
 ```
 
 Copy the forwarding URL (e.g. `https://abc123.ngrok.io`).
+
+#### Create a Speech Engine instance
 
 Use the SDK to create a Speech Engine instance, passing your ngrok URL with the `/ws` path appended as the WebSocket URL.
 
@@ -120,6 +128,8 @@ console.log("Speech Engine ID:", engine.engineId);
 ```
 
 Run this script and copy the Speech Engine ID (e.g. `seng_8k3m9xr4hjnfg983brhmhkd98n6`) for the next step.
+
+#### Create the server
 
 Create a file called `server.py` or `server.mts` with the following contents. This sets up a server, attaches Speech Engine on the `/ws` path, and uses OpenAI to generate responses.
 
@@ -251,6 +261,8 @@ The `onTranscript` / `on_transcript` callback receives the full conversation his
 
 In the above example, the full transcript from the user is passed to the LLM. In a production environment you should add guardrails to prevent any prompt injection or manipulation attempts.
 
+#### Start the server
+
 ```python
 python server.py
 ```
@@ -261,13 +273,21 @@ npx tsx server.mts
 
 ## Client setup
 
+#### Install the client SDK
+
+#### React
+
 ```bash
 npm install @elevenlabs/react
 ```
 
+#### JavaScript
+
 ```bash
 npm install @elevenlabs/client
 ```
+
+#### Create a token endpoint
 
 Add a server-side endpoint that generates a conversation token. This keeps your API key out of the browser and uses WebRTC for the best audio quality.
 
@@ -328,7 +348,11 @@ app.listen(3002, () => {
 });
 ```
 
+#### Build the conversation UI
+
 Fetch the conversation token from your server and use it to start a session.
+
+#### React
 
 ```tsx title="App.tsx"
 import { useConversation } from "@elevenlabs/react";
@@ -374,6 +398,8 @@ export default function App() {
 }
 ```
 
+#### JavaScript
+
 ```typescript title="main.ts"
 import { Conversation } from "@elevenlabs/client";
 
@@ -410,6 +436,8 @@ document.getElementById("stop")!.addEventListener("click", () => {
   if (conversation) conversation.endSession();
 });
 ```
+
+#### Try it out
 
 Make sure three processes are running:
 
@@ -456,6 +484,8 @@ const engine = await elevenlabs.speechEngine.update("seng_8k3m9xr4hjnfg983brhmhk
 
 Then we configure the first message in the client SDK.
 
+#### React
+
 ```tsx
 conversation.startSession({
   conversationToken: token,
@@ -466,6 +496,8 @@ conversation.startSession({
   },
 });
 ```
+
+#### JavaScript
 
 ```typescript
 const conversation = await Conversation.startSession({
@@ -482,10 +514,18 @@ The first message is spoken by the agent as soon as the connection is establishe
 
 ## Next steps
 
+#### [JavaScript SDK reference](/docs/eleven-api/resources/libraries/speech-engine/javascript-sdk-reference)
+
 Classes, methods, and events for the JavaScript SDK.
+
+#### [Python SDK reference](/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference)
 
 Classes, methods, and events for the Python SDK.
 
+#### [API reference](/docs/api-reference/speech-engine/create)
+
 Explore all Speech Engine parameters and response formats.
+
+#### [Next.js example app](https://github.com/elevenlabs/examples/tree/main/speech-engine/nextjs/quickstart)
 
 Run a complete Speech Engine quickstart app locally.

@@ -8,6 +8,8 @@ path: docs/eleven-agents/customization/tools/mcp/security
 
 # MCP integration security
 
+#### User Responsibility
+
 You are responsible for the security, compliance, and behavior of any third-party MCP server you
 integrate with your ElevenLabs conversational agents. ElevenLabs provides the platform for
 integration but does not manage, endorse, or secure external MCP servers.
@@ -85,6 +87,8 @@ For additional security, you can add ElevenLabs' static egress IPs to your allow
 * **Approval Patterns**: Monitor tool approval requests to identify unusual patterns that might indicate security issues or misuse.
 
 ## Disclaimer
+
+#### Important Disclaimer
 
 By enabling MCP server integrations, you acknowledge that this may involve data sharing with
 third-party services not controlled by ElevenLabs. This could incur additional security risks.

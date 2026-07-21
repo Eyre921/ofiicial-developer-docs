@@ -26,13 +26,21 @@ Speed is controlled through the [`speed` parameter](/docs/api-reference/agents/c
 
 ### Update the speed
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Voice** tab, and adjust the speed control. Save your changes.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/4a1dfe1db33f9f03bb614b56173c7c00596f2d6c36b0f17ce43f151bd4d07f66/assets/images/conversational-ai/speed-control.png" alt="Speed control settings under the Voice tab" />
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.tts.speed`:
 
@@ -46,9 +54,13 @@ Set `conversation_config.tts.speed`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs

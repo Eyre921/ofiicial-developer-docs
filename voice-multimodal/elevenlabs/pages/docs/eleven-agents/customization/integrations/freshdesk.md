@@ -17,9 +17,15 @@ Connect your ElevenLabs AI agents with Freshdesk to drive customer support workf
 
 ## Setup
 
+#### Get your Freshdesk API key
+
 In Freshdesk, click your profile picture (top-right) → **Profile settings**. Your API key is shown below the change-password section. Copy it.
 
+#### Find your Freshdesk subdomain
+
 It's the part of your portal URL before `.freshdesk.com`. For example, if your portal is `acme.freshdesk.com`, your subdomain is `acme`.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs Freshdesk integration page, click **Connect** and provide:
 
@@ -27,6 +33,8 @@ In the ElevenLabs Freshdesk integration page, click **Connect** and provide:
 * **Subdomain**: the slug from step 2.
 
 ElevenLabs authenticates with HTTP Basic auth using your API key as the username and `X` as the password — the standard Freshdesk authentication scheme.
+
+#### Enable the trigger (optional)
 
 If you want the agent to respond automatically to customer activity on tickets, enable the **Freshdesk Ticket Event** trigger and select:
 

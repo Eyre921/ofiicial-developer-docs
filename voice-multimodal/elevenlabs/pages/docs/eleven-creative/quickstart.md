@@ -66,19 +66,29 @@ Once you're comfortable with basic text-to-speech:
 
 ## Next steps
 
+#### [Playground](/docs/eleven-creative/playground/text-to-speech)
+
 Experiment with text-to-speech, voice changing, and sound effects
 
 {' '}
+
+#### [ElevenCreative Studio](/docs/eleven-creative/products/studio)
 
 Create professional audiobooks, podcasts, and narration
 
 {' '}
 
+#### [Voice Cloning](/docs/eleven-creative/voices/voice-library)
+
 Clone your voice or create custom voices
+
+#### [API Integration](/docs/eleven-api/quickstart)
 
 Integrate ElevenLabs into your applications
 
 ## Common questions
+
+#### What can I create with ElevenCreative?
 
 ElevenCreative enables you to create a wide range of audio and visual content:
 
@@ -91,11 +101,15 @@ The platform supports 50+ languages and offers thousands of voices to choose fro
 
 {' '}
 
+#### Do I need coding skills to use ElevenCreative?
+
 No. ElevenCreative is designed for creators of all skill levels. Use our visual tools and
 playground to create audio without any coding. If you're a developer, check out our [API
 documentation](/docs/eleven-api/quickstart).
 
 {' '}
+
+#### Can I use my generated audio commercially?
 
 Yes, with a paid plan. Free tier is limited to personal, non-commercial use. See our [pricing
 page](https://elevenlabs.io/pricing) for plan details and our [terms of

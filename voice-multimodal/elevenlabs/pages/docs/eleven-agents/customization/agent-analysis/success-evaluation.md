@@ -23,6 +23,8 @@ Each evaluation criterion analyzes the conversation transcript using a custom pr
 
 ### Types of evaluation criteria
 
+#### Goal prompt criteria
+
 **Goal prompt criteria** pass the conversation transcript along with a custom prompt to an LLM to verify if a specific goal was met. This is the most flexible type of evaluation and can be used for complex business logic.
 
 **Examples:**
@@ -34,9 +36,13 @@ Each evaluation criterion analyzes the conversation transcript using a custom pr
 
 ## Configuration
 
+#### Access agent settings
+
 Navigate to your agent's dashboard and select the **Analysis** tab to configure evaluation criteria.
 
 ![Analysis settings](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438/assets/images/conversational-ai/analysis-settings.png)
+
+#### Add evaluation criteria
 
 Click **Add criteria** to create a new evaluation criterion.
 
@@ -49,22 +55,30 @@ Define your criterion with:
 
 Evaluation criteria are limited to 30 per agent.
 
+#### View results
+
 After conversations complete, evaluation results appear in your conversation history dashboard. Each conversation shows the evaluation outcome and rationale for every configured criterion.
 
 ![Evaluation results in conversation history](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/657888630b51010fa6920275cfbb8f3dce51c0cbcfdb8ecf3d5d938f17a8186a/assets/images/conversational-ai/evaluation_result.gif)
 
 ## Best Practices
 
+#### Writing effective evaluation prompts
+
 * Be specific about what constitutes success vs. failure
 * Include edge cases and examples in your prompt
 * Use clear, measurable criteria when possible
 * Test your prompts with various conversation scenarios
 
-- **Customer satisfaction**: "Mark as successful if the customer expresses satisfaction or their
+#### Common evaluation criteria
+
+* **Customer satisfaction**: "Mark as successful if the customer expresses satisfaction or their
   issue was resolved" - **Goal completion**: "Mark as successful if the customer completed the
   requested action (booking, purchase, etc.)" - **Compliance**: "Mark as successful if the agent
   followed all required compliance procedures" - **Issue resolution**: "Mark as successful if the
   customer's technical issue was resolved during the call"
+
+#### Handling ambiguous results
 
 The `unknown` result is returned when the LLM cannot determine success or failure from the transcript. This often happens with:
 
@@ -76,26 +90,40 @@ Monitor `unknown` results to identify areas where your criteria prompts may need
 
 ## Use Cases
 
+#### Customer Support Quality
+
 Measure issue resolution rates, customer satisfaction, and support quality metrics to improve
 service delivery.
 
+#### Sales Performance
+
 Track goal achievement, objection handling, and conversion rates across sales conversations.
+
+#### Compliance Monitoring
 
 Ensure agents follow required procedures and capture necessary consent or disclosure
 confirmations.
 
+#### Training & Development
+
 Identify coaching opportunities and measure improvement in agent performance over time.
 
 ## Troubleshooting
+
+#### Evaluation criteria returning unexpected results
 
 * Review your prompt for clarity and specificity
 * Test with sample conversations to validate logic
 * Consider edge cases in your evaluation criteria
 * Check if the transcript contains sufficient information for evaluation
 
-- Ensure your prompts are specific about what information to look for - Consider if conversations
+#### High frequency of 'unknown' results
+
+* Ensure your prompts are specific about what information to look for - Consider if conversations
   contain enough context for evaluation - Review transcript quality and completeness - Adjust
   criteria to handle common edge cases
+
+#### Performance considerations
 
 * Each evaluation criterion adds processing time to conversation analysis
 * Complex prompts may take longer to evaluate

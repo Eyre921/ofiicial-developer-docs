@@ -346,10 +346,18 @@ If you include copyrighted content in styles, the API returns a `bad_composition
 
 ## Next steps
 
+#### [Music quickstart](/docs/eleven-api/guides/cookbooks/music)
+
 Get started with basic music generation
+
+#### [Music inpainting](/docs/eleven-api/guides/how-to/music/inpainting)
 
 Remix, extend, and stitch together sections of existing songs
 
+#### [API reference](/docs/api-reference/music/compose)
+
 Complete API documentation
+
+#### [Prompting guide](/docs/overview/capabilities/music/best-practices)
 
 Best practices for music prompts

@@ -17,6 +17,8 @@ This guide covers the onboarding process, from account creation to a live AI rec
 
 ## Setup
 
+#### Automatic setup (recommended)
+
 Best for businesses with an existing website that describes their services.
 
 ### Sign up
@@ -56,6 +58,8 @@ Speak as if you were a customer — verify the greeting sounds natural, business
 ### Go live
 
 Complete the wizard. Your receptionist starts answering calls immediately on your new number.
+
+#### Manual setup
 
 Best for businesses without a website or who prefer to configure everything by hand.
 

@@ -12,11 +12,19 @@ path: docs/eleven-agents/customization/conversation-flow
 
 Conversation flow settings determine how your assistant handles periods of user silence, interruptions during speech, and turn-taking behavior. These settings help create more natural conversations and can be customized based on your use case.
 
+#### [Take turn after silence](#turn-timeout)
+
 Configure how long your assistant waits during periods of silence
+
+#### [Soft timeout](#soft-timeout)
 
 Provide natural audio feedback when your agent needs time to think
 
+#### [Interruptions](#interruptions)
+
 Control whether users can interrupt your assistant while speaking
+
+#### [Turn eagerness](#turn-eagerness)
 
 Adjust how quickly your assistant responds to user input
 
@@ -28,13 +36,21 @@ The **Take turn after silence** setting determines how long your assistant waits
 
 The value is specified in seconds and must be between 1 and 30 seconds. In the CLI and API, configure this setting with the `conversation_config.turn.turn_timeout` field.
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Take turn after silence** value. Save your changes.
 
 ![Take turn after silence setting](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/9de7653a0940ae3441b3470c2af53f4a72294ad3680946d4c3fa3b91df69c566/assets/images/conversational-ai/timeouts.png)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.turn.turn_timeout`:
 
@@ -48,9 +64,13 @@ Set `conversation_config.turn.turn_timeout`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -111,13 +131,21 @@ Soft timeout triggers only once per turn to prevent multiple fillers in successi
 
 ### Configuration
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Advanced** tab, and adjust the **Soft timeout** settings. Save your changes.
 
 ![Soft timeout settings](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7fdaca49ad50e6bc1f09f5eac46e36f0f4b071c5477e061a62791df9e100be75/assets/images/conversational-ai/soft-timeout.png)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.turn.soft_timeout_config`:
 
@@ -135,9 +163,13 @@ Set `conversation_config.turn.soft_timeout_config`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -268,11 +300,19 @@ Three modes are available:
 * **Normal** - Balanced turn-taking that works well for most conversational scenarios. The assistant waits for natural conversation breaks before responding.
 * **Patient** - The assistant waits longer before taking its turn, giving users more time to complete their thoughts. Ideal for collecting detailed information or when users need time to formulate responses.
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Agent** settings, and select the desired turn eagerness mode. Save your changes.
+
+#### Update via the CLI
+
+#### Pull the agent configuration
 
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.turn.turn_eagerness` to one of `"patient"`, `"normal"`, or `"eager"`:
 
@@ -286,9 +326,13 @@ Set `conversation_config.turn.turn_eagerness` to one of `"patient"`, `"normal"`,
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -329,17 +373,25 @@ or wait longer when collecting sensitive information like phone numbers or email
 
 ## Recommended configurations
 
+#### Customer service
+
 * Shorter timeouts (5-10 seconds) for responsive interactions - Enable interruptions to allow
   customers to interject with questions - **Eager** turn eagerness for quick, responsive
   conversations
 
-- Moderate timeouts (10-15 seconds) to allow users time to gather information - Enable
+#### Information collection
+
+* Moderate timeouts (10-15 seconds) to allow users time to gather information - Enable
   interruptions for natural conversation flow - **Patient** turn eagerness when collecting phone
   numbers, addresses, or email addresses
+
+#### Legal disclaimers
 
 * Longer timeouts (15-30 seconds) to allow for complex responses - Disable interruptions to
   ensure full delivery of legal information - **Normal** turn eagerness to maintain steady pacing
 
-- Longer timeouts (10-30 seconds) to allow time to think and formulate responses - Enable
+#### Conversational EdTech
+
+* Longer timeouts (10-30 seconds) to allow time to think and formulate responses - Enable
   interruptions to allow students to interject with questions - **Patient** turn eagerness to give
   students adequate time to respond

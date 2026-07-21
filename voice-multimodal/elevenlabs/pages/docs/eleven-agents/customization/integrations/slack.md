@@ -23,9 +23,15 @@ The integration offers two ways to connect:
 
 The user installing the app must have permission to add apps to the target Slack workspace.
 
+#### Open the integrations page
+
 In the ElevenLabs dashboard, go to **Agents** > **Integrations** and select **Slack**.
 
+#### Click Connect
+
 Pick the **OAuth** credential and click **Connect**. You are redirected to Slack to choose which workspace to install the ElevenLabs app into and to approve the requested scopes.
+
+#### Complete the redirect
 
 After approval, Slack redirects you back to ElevenLabs and the connection is created. The Slack workspace ID is recorded automatically and used when configuring triggers.
 
@@ -33,7 +39,11 @@ After approval, Slack redirects you back to ElevenLabs and the connection is cre
 
 Use this if you want the bot to show up under your own app name and icon, or if your workspace requires apps to be reviewed and installed by your admin.
 
+#### Create a Slack app
+
 Go to [Slack API: Your Apps](https://api.slack.com/apps) and click **Create New App** > **From scratch**. Name the app and pick the Slack workspace to install it into.
+
+#### Add bot scopes
 
 Open **OAuth & Permissions** and add the following Bot Token Scopes:
 
@@ -41,11 +51,17 @@ Open **OAuth & Permissions** and add the following Bot Token Scopes:
 
 Then click **Install to Workspace** and approve. Copy the **Bot User OAuth Token** (starts with `xoxb-`).
 
+#### Copy the signing secret
+
 Open **Basic Information** > **App Credentials** and copy the **Signing Secret**.
+
+#### Create the connection in ElevenLabs
 
 In the ElevenLabs dashboard, go to **Integrations**, click the **Add integration** button and choose **Slack**. Pick the **Bring your own app** credential. Paste the bot token and signing secret, then save. ElevenLabs verifies the token against Slack and records your workspace id.
 
 After the connection is created, the connection page shows two webhook URLs derived from your Slack app's identity. The same Slack app, reconnected from the same ElevenLabs workspace, always produces the same URLs — so you can delete and recreate the connection without re-updating your Slack app's configuration. Keep that page open for the next steps.
+
+#### Configure Event Subscriptions
 
 In your Slack app, open **Event Subscriptions**, enable events, and paste the **Events URL** from the ElevenLabs connection page into **Request URL**. Slack will verify the URL using the signing secret you provided.
 
@@ -58,7 +74,11 @@ If you use the **SlackDirectMessage** trigger, also subscribe to `message.im`.
 
 Do not subscribe to both `app_mention` and the `message.*` channel events unless you intend to handle duplicate deliveries. When a user `@`-mentions the bot, Slack can send both an `app_mention` event and a `message` event for the same message, which causes the agent to respond twice.
 
+#### Configure Interactivity
+
 Open **Interactivity & Shortcuts**, enable interactivity, and paste the **Interactivity URL** from the ElevenLabs connection page into **Request URL**.
+
+#### Reinstall if prompted
 
 If Slack prompts you to reinstall the app after changing scopes or events, do so to apply the changes.
 
@@ -102,12 +122,18 @@ For bring-your-own-app connections, ElevenLabs cannot uninstall an app it does n
 
 The integration exposes a single trigger, **SlackMessage**. It fires when the bot sees a new user message in a configured channel.
 
+#### Add a SlackMessage trigger
+
 On your agent's configuration page, add a new trigger and select **SlackMessage**.
+
+#### Pick the agent and channel
 
 Configure the trigger fields:
 
 * **Agent**: the agent that handles the conversation.
 * **Channel ID**: the Slack channel ID, for example `C0123456789`. The UI provides a deep link to open the channel in Slack.
+
+#### Save the trigger
 
 Save the trigger. ElevenLabs automatically invites the bot to public channels. Removing the trigger later causes the bot to leave that channel.
 
@@ -121,9 +147,15 @@ instead of creating a duplicate.
 
 The **SlackDirectMessage** trigger lets any Slack user chat with the agent by sending a direct message to the bot. Unlike the channel trigger, no `@` mention is needed — every message a user sends in a DM with the bot is processed.
 
+#### Add a SlackDirectMessage trigger
+
 On your agent's configuration page, add a new trigger and select **SlackDirectMessage**.
 
+#### Pick the agent
+
 Select the **Agent** that handles DM conversations.
+
+#### Save the trigger
 
 Save the trigger. Any Slack user in the workspace can now open a DM with the bot and start a
 conversation.
@@ -140,16 +172,24 @@ Once the trigger is active and the bot is in the channel, start a conversation i
 
 ### Mention-only (`app_mention`)
 
+#### Start a thread with a mention
+
 Mention the bot in a channel to start a new thread, for example `@Eleven what's the status of
     order 1234?`. The bot replies in a thread under that message.
+
+#### Continue the thread
 
 Mention the bot again on every message you want it to respond to, including follow-ups inside
 the same thread. Messages without a mention are ignored.
 
 ### All messages (`message.channels`, `message.groups`)
 
+#### Start a thread
+
 Send any message in a channel where the bot is present. The bot replies in a thread under that
 message. You do not need to `@`-mention the bot.
+
+#### Continue the thread
 
 Reply in the same thread without mentioning the bot. Every new message in the thread is
 processed.

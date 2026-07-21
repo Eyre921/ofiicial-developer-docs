@@ -55,6 +55,8 @@ Never expose your ElevenLabs API key on the client side.
 
 The following events can be sent from the client to the server:
 
+#### Contextual Updates
+
 Send non-interrupting contextual information to update the conversation state. This allows you to provide additional context without disrupting the ongoing conversation flow.
 
 ```javascript
@@ -79,6 +81,8 @@ Send non-interrupting contextual information to update the conversation state. T
 
 Contextual updates are processed asynchronously and do not require a direct response from the server.
 
+#### [WebSocket API Reference](/docs/eleven-agents/api-reference/eleven-agents/websocket)
+
 See the ElevenLabs Agents WebSocket API reference documentation for detailed message structures,
 parameters, and examples.
 
@@ -89,6 +93,8 @@ This example demonstrates how to implement a WebSocket-based conversational agen
 While this example uses the `voice-stream` package for microphone input handling, you can
 implement your own solution for capturing and encoding audio. The focus here is on demonstrating
 the WebSocket connection and event handling with the ElevenLabs API.
+
+#### Install required dependencies
 
 First, install the necessary packages:
 
@@ -108,6 +114,8 @@ npx tailwindcss init -p
 Then follow the [official Tailwind CSS setup guide for Next.js](https://tailwindcss.com/docs/guides/nextjs).
 
 Alternatively, you can replace the className attributes with your own CSS styles.
+
+#### Create WebSocket types
 
 Define the types for WebSocket events:
 
@@ -184,6 +192,8 @@ export type ElevenLabsWebSocketEvent =
   | PingEvent
   | AgentChatResponsePartEvent;
 ```
+
+#### Create WebSocket hook
 
 Create a custom hook to manage the WebSocket connection:
 
@@ -303,6 +313,8 @@ export const useAgentConversation = () => {
   };
 };
 ```
+
+#### Create the conversation component
 
 Create a component to use the WebSocket hook:
 

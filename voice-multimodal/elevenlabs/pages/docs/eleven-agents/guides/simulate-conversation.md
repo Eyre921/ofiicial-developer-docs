@@ -23,7 +23,11 @@ The ElevenLabs Agents API allows you to simulate and evaluate text-based convers
 
 ## Implementing a Simulation Testing Workflow
 
+#### Identify initial evaluation parameters
+
 Search through your agent's conversation history and find instances where your agent has underperformed. Use those conversations to create various prompts for a simulated user who will interact with your agent. Additionally, define any extra evaluation criteria not already specified in your agent configuration to test outcomes you may want for a specific simulated user.
+
+#### Simulate the conversation via the SDK
 
 Create a request to the simulation endpoint using the ElevenLabs SDK.
 
@@ -100,6 +104,8 @@ console.log(JSON.stringify(response, null, 4));
 This is a basic example. For a comprehensive list of input parameters, please refer to the API
 reference for [Simulate conversation](/docs/api-reference/agents/simulate-conversation) and
 [Stream simulate conversation](/docs/api-reference/agents/simulate-conversation-stream) endpoints.
+
+#### Analyze the response
 
 The SDK provides a comprehensive JSON object that includes the entire conversation transcript and detailed analysis.
 
@@ -242,10 +248,14 @@ The SDK provides a comprehensive JSON object that includes the entire conversati
 }
 ```
 
+#### Improve your evaluation criteria
+
 Review the simulated conversations thoroughly to assess the effectiveness of your evaluation
 criteria. Identify any gaps or areas where the criteria may fall short in evaluating the agent's
 performance. Refine and adjust the evaluation criteria accordingly to ensure they align with your
 desired outcomes and accurately measure the agent's capabilities.
+
+#### Improve your agent
 
 Once you are confident in the accuracy of your evaluation criteria, use the learnings from
 simulated conversations to enhance your agent's capabilities. Consider refining the system prompt
@@ -255,6 +265,8 @@ as adjusting the agent's tone, improving its ability to handle specific queries,
 additional data sources to enrich its responses. By systematically applying these learnings, you
 can create a more robust and effective conversational agent that delivers a superior user
 experience.
+
+#### Continuous iteration
 
 After completing an initial testing and improvement cycle, establishing a comprehensive testing
 suite can be a great way to cover a broad range of possible scenarios. This suite can explore

@@ -60,6 +60,8 @@ The model supports multilingual lyric generation. To change the language of a ge
 
 The model allows you to move beyond song descriptors and into intent for maximum creativity.
 
+#### Video Game with Musical Control
+
 ```text
 Create an intense, fast-paced electronic track for a high-adrenaline video game scene.
 Use driving synth arpeggios, punchy drums, distorted bass, glitch effects, and
@@ -67,11 +69,15 @@ aggressive rhythmic textures. The tempo should be fast, 130–150 bpm, with risi
 quick transitions, and dynamic energy bursts.
 ```
 
+#### Mascara Audio Ad Creative
+
 ```text
 Track for a high-end mascara commercial. Upbeat and polished. Voiceover only.
 The script begins: "We bring you the most volumizing mascara yet." Mention the brand
 name "X" at the end.
 ```
+
+#### Live Indie Rock Performance
 
 ```text
 Write a raw, emotionally charged track that fuses alternative R&B, gritty soul, indie rock,
@@ -87,6 +93,8 @@ But I keep singing to the smoke, hoping love is still alive"
 ## Advanced: Composition plans
 
 For precise control over section structure, lyrics placement, and multi-vocalist arrangements, use composition plans instead of simple text prompts.
+
+#### [Composition plans guide](/docs/eleven-api/guides/how-to/music/composition-plans)
 
 Learn how to structure songs with sections, global/local styles, and proper lyrics formatting for
 maximum control.

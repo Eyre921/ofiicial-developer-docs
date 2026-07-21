@@ -14,13 +14,19 @@ You can give your agent a tool to send messages on WhatsApp, even during convers
 
 ## Setup
 
+#### Import your account
+
 Follow the instructions [here](/docs/eleven-agents/whatsapp) to import your WhatsApp business
 account.
+
+#### Add an integration
 
 Go to the [Integrations page](https://elevenlabs.io/app/agents/integrations), click the ***Add
 integration*** button, select WhatsApp and connect your account:
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/e560b1b2a4345bd2fbe9519f7146b87d195268955d2b2aa2c6221629d97e4384/assets/images/agents/whatsapp/integration.png" alt="WhatsApp integration" />
+
+#### Add a tool
 
 Go to the [Tools page](https://elevenlabs.io/app/agents/tools), click the ***Add integration
 tool*** button, select the WhatsApp integration and the ***Send Message*** tool:
@@ -29,12 +35,16 @@ tool*** button, select the WhatsApp integration and the ***Send Message*** tool:
 
 ## Using the tool
 
+#### Create a message template
+
 Go to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/), open the
 ***Manage templates*** page and create a message template:
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/e2d2c8bcab0b4c664261a57658627fd4368fc00e4768e4bd4c16264c59d07e16/assets/images/agents/whatsapp/template-simple.png" alt="WhatsApp message template" />
 
 The tool currently only supports parameters in message body.
+
+#### Configure your agent
 
 Go to your agent configuration and add the tool:
 
@@ -44,6 +54,8 @@ In the system prompt, tell the agent: - when to use the tool - what template nam
 code to use - what parameters to pass
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/893aa34f7bd3e01a0cbb919f08f801398de318d46e1d8d1a6c72a945193f7de9/assets/images/agents/whatsapp/tool-agent-config-prompt.png" alt="Agent configuration: prompt" />
+
+#### Test
 
 Finally, it's time to test the tool configuration:
 

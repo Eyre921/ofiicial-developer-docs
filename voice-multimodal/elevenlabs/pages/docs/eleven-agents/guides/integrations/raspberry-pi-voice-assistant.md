@@ -225,16 +225,24 @@ while True:
 
 ## Agent configuration
 
+#### Sign in to ElevenLabs
+
 Go to [elevenlabs.io](https://elevenlabs.io/app/sign-up) and sign in to your account.
+
+#### Create a new agent
 
 Navigate to [Agents Platform > Agents](https://elevenlabs.io/app/agents/agents) and
 create a new agent from the blank template.
+
+#### Set the first message
 
 Set the first message and specify the dynamic variable for the platform.
 
 ```txt
 {{greeting}} {{user_name}}, Eleven here, what's up?
 ```
+
+#### Set the system prompt
 
 Set the system prompt. You can find our best practises docs [here](/docs/eleven-agents/best-practices/prompting-guide).
 
@@ -254,6 +262,8 @@ information conversationally, referring to locations by name only. For weather r
 For non-weather queries, provide friendly assistance within your knowledge boundaries. Always be
 concise, accurate, and helpful.
 ```
+
+#### Set up a webhook tool
 
 We'll set up a simple webhook tool that will fetch the weather data for us. Follow the setup steps [here](/docs/eleven-agents/customization/tools/webhook-tools#configure-the-weather-tool) to set up the tool.
 
@@ -294,6 +304,10 @@ This will generate the `hey_eleven_ref.json` file in the `hotword_refs` folder. 
 
 ## Next steps
 
+#### [ElevenAgents](/docs/eleven-agents/quickstart)
+
 Build a fully managed voice agent without handling audio streams manually.
+
+#### [TTS quickstart](/docs/eleven-api/quickstart)
 
 Explore more text-to-speech options and voice customisation.

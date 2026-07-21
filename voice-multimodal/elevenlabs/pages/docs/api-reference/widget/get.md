@@ -427,6 +427,45 @@ components:
           description: >-
             Status text displayed when the agent encounters an error during a
             tool call.
+        attach_file:
+          type:
+            - string
+            - 'null'
+          description: Text and ARIA label for the attach file button.
+        remove_file:
+          type:
+            - string
+            - 'null'
+          description: ARIA label for the remove file button.
+        file_upload_error:
+          type:
+            - string
+            - 'null'
+          description: Error message displayed when a file fails to upload.
+        file_type_unsupported:
+          type:
+            - string
+            - 'null'
+          description: >-
+            Error message displayed when an unsupported file type is selected.
+            Followed by the list of accepted types.
+        file_too_large:
+          type:
+            - string
+            - 'null'
+          description: Error message displayed when a file exceeds the maximum size limit.
+        file_limit_reached:
+          type:
+            - string
+            - 'null'
+          description: >-
+            Error message displayed when the maximum number of files for a
+            conversation is reached.
+        typing_indicator:
+          type:
+            - string
+            - 'null'
+          description: Status text displayed while the agent is typing.
       title: WidgetTextContents
     WidgetStyles:
       type: object

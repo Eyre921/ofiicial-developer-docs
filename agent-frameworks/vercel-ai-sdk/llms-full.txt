@@ -32223,7 +32223,7 @@ The following tool input lifecycle hooks are available:
 - **`onInputDelta`**: Called for each chunk of text as the input is streamed
 - **`onInputAvailable`**: Called when the complete input is available and validated
 
-`onInputStart` and `onInputDelta` are only called in streaming contexts (when using `streamText`). They are not called when using `generateText`.
+`onInputStart` is always called before `onInputAvailable`, including when using `generateText`. `onInputDelta` is only called in streaming contexts (when using `streamText`).
 
 ### Example
 
@@ -41702,10 +41702,6 @@ The following gateway provider options are available:
 
   Restricts routing requests to providers that have agreements with Vercel for AI Gateway to not use prompts for model training. If there are no providers available for the model that disallow prompt training, the request will fail. BYOK credentials are skipped when `disallowPromptTraining` is set to `true` to ensure that requests are only routed to providers that do not train on prompt data.
 
-- **hipaaCompliant** _boolean_
-
-  Restricts routing to models and tools from providers that have signed a BAA with Vercel for the use of AI Gateway (requires Vercel HIPAA BAA add on). BYOK credentials are skipped when `hipaaCompliant` is set to `true` to ensure that requests are only routed to providers that support HIPAA compliance.
-
 - **quotaEntityId** _string_
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
@@ -41794,25 +41790,6 @@ const { text } = await generateText({
   providerOptions: {
     gateway: {
       disallowPromptTraining: true,
-    } satisfies GatewayProviderOptions,
-  },
-});
-```
-
-#### HIPAA Compliance Example
-
-Set `hipaaCompliant` to true to route requests only to models or tools by providers that have signed a BAA with Vercel for the use of AI Gateway. If the model or tool does not have a HIPAA-compliant provider, the request will fail. When `hipaaCompliant` is `false` or not specified, there is no enforcement of restricting routing. BYOK credentials are skipped when `hipaaCompliant` is set to `true` to ensure that requests are only routed to providers that support HIPAA compliance.
-
-```ts
-import type { GatewayProviderOptions } from "@ai-sdk/gateway";
-import { generateText } from "ai";
-
-const { text } = await generateText({
-  model: "anthropic/claude-sonnet-4.6",
-  prompt: "Analyze this patient data...",
-  providerOptions: {
-    gateway: {
-      hipaaCompliant: true,
     } satisfies GatewayProviderOptions,
   },
 });
@@ -54737,7 +54714,7 @@ import { moonshotai } from '@ai-sdk/moonshotai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: moonshotai('kimi-k2.5'),
+  model: moonshotai('kimi-k3'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -54745,15 +54722,36 @@ const { text } = await generateText({
 You can also use the `.chatModel()` or `.languageModel()` factory methods:
 
 ```ts
-const model = moonshotai.chatModel('kimi-k2.5');
+const model = moonshotai.chatModel('kimi-k3');
 // or
-const model = moonshotai.languageModel('kimi-k2.5');
+const model = moonshotai.languageModel('kimi-k3');
 ```
 
 Moonshot AI language models can be used in the `streamText` function
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
 ### Reasoning Models
+
+Kimi K3 always reasons. It currently supports only the `max` reasoning effort,
+which you can configure through provider options:
+
+```ts
+import { moonshotai, type MoonshotAIProviderOptions } from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const { text, reasoningText } = await generateText({
+  model: moonshotai('kimi-k3'),
+  providerOptions: {
+    moonshotai: {
+      reasoningEffort: 'max',
+    } satisfies MoonshotAIProviderOptions,
+  },
+  prompt: 'How many "r"s are in the word "strawberry"?',
+});
+
+console.log(reasoningText);
+console.log(text);
+```
 
 Moonshot AI offers thinking models like `kimi-k2-thinking` that generate intermediate reasoning tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
 
@@ -54782,10 +54780,13 @@ See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on 
 
 The following optional provider options are available for Moonshot AI language models:
 
+- **reasoningEffort** _'max'_
+
+  Reasoning effort for Kimi K3. Currently, only `'max'` is supported.
+
 - **thinking** _object_
 
   Configuration for thinking/reasoning models like Kimi K2 Thinking.
-
   - **type** _'enabled' | 'disabled'_
 
     Whether to enable thinking mode
@@ -54797,7 +54798,6 @@ The following optional provider options are available for Moonshot AI language m
 - **reasoningHistory** _'disabled' | 'interleaved' | 'preserved'_
 
   Controls how reasoning history is handled in multi-turn conversations:
-
   - `'disabled'`: Remove reasoning from history
   - `'interleaved'`: Include reasoning between tool calls within a single turn
   - `'preserved'`: Keep all reasoning in history
@@ -54811,6 +54811,7 @@ The following optional provider options are available for Moonshot AI language m
 | `moonshot-v1-128k`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2.5`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k3`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2-thinking`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2-thinking-turbo` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2-turbo`          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -68180,7 +68181,7 @@ The following tool input lifecycle hooks are available:
 - **`onInputDelta`**: Called for each chunk of text as the input is streamed
 - **`onInputAvailable`**: Called when the complete input is available and validated
 
-`onInputStart` and `onInputDelta` are only called in streaming contexts (when using `streamText`). They are not called when using `generateText`.
+`onInputStart` is always called before `onInputAvailable`, including when using `generateText`. `onInputDelta` is only called in streaming contexts (when using `streamText`).
 
 ### Example
 
@@ -80603,10 +80604,6 @@ The following gateway provider options are available:
 
   Restricts routing requests to providers that have agreements with Vercel for AI Gateway to not use prompts for model training. If there are no providers available for the model that disallow prompt training, the request will fail. BYOK credentials are skipped when `disallowPromptTraining` is set to `true` to ensure that requests are only routed to providers that do not train on prompt data.
 
-- **hipaaCompliant** _boolean_
-
-  Restricts routing to models and tools from providers that have signed a BAA with Vercel for the use of AI Gateway (requires Vercel HIPAA BAA add on). BYOK credentials are skipped when `hipaaCompliant` is set to `true` to ensure that requests are only routed to providers that support HIPAA compliance.
-
 - **quotaEntityId** _string_
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
@@ -80721,25 +80718,6 @@ const { text } = await generateText({
   providerOptions: {
     gateway: {
       disallowPromptTraining: true,
-    } satisfies GatewayProviderOptions,
-  },
-});
-```
-
-#### HIPAA Compliance Example
-
-Set `hipaaCompliant` to true to route requests only to models or tools by providers that have signed a BAA with Vercel for the use of AI Gateway. If the model or tool does not have a HIPAA-compliant provider, the request will fail. When `hipaaCompliant` is `false` or not specified, there is no enforcement of restricting routing. BYOK credentials are skipped when `hipaaCompliant` is set to `true` to ensure that requests are only routed to providers that support HIPAA compliance.
-
-```ts
-import type { GatewayProviderOptions } from "@ai-sdk/gateway";
-import { generateText } from "ai";
-
-const { text } = await generateText({
-  model: "anthropic/claude-sonnet-4.6",
-  prompt: "Analyze this patient data...",
-  providerOptions: {
-    gateway: {
-      hipaaCompliant: true,
     } satisfies GatewayProviderOptions,
   },
 });
@@ -81796,6 +81774,7 @@ const { video } = await generateVideo({
   duration: 5,
   providerOptions: {
     xai: {
+      user: 'user-123',
       pollTimeoutMs: 600000, // 10 minutes
     } satisfies XaiVideoModelOptions,
   },
@@ -82057,6 +82036,14 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
   Video resolution. When using the SDK's standard `resolution` parameter,
   `1280x720` maps to `720p` and `854x480` maps to `480p`.
   Use this provider option to pass the native format directly.
+
+- **user** _string_
+
+  Optional identifier for the end user responsible for the request. xAI uses
+  this value for abuse monitoring. It is sent unchanged for video generation
+  (including reference-to-video) and video editing requests, and is omitted
+  when not configured. It is not sent for video extension requests. Use an
+  opaque stable identifier and avoid sending unnecessary personal information.
 
 - **mode** _'edit-video' | 'extend-video' | 'reference-to-video'_
 
@@ -99746,7 +99733,7 @@ import { moonshotai } from '@ai-sdk/moonshotai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: moonshotai('kimi-k2.5'),
+  model: moonshotai('kimi-k3'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -99754,9 +99741,9 @@ const { text } = await generateText({
 You can also use the `.chatModel()` or `.languageModel()` factory methods:
 
 ```ts
-const model = moonshotai.chatModel('kimi-k2.5');
+const model = moonshotai.chatModel('kimi-k3');
 // or
-const model = moonshotai.languageModel('kimi-k2.5');
+const model = moonshotai.languageModel('kimi-k3');
 ```
 
 Moonshot AI language models can be used in the `streamText` function
@@ -99771,6 +99758,30 @@ For other Moonshot models, object generation falls back to JSON mode instead of 
 For best reliability, it is strongly recommended to include your schema requirements in your prompt in addition to passing the schema through `Output`.
 
 ### Reasoning Models
+
+Kimi K3 always reasons. It currently supports only the `max` reasoning effort,
+which you can configure through provider options:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAILanguageModelOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const { text, reasoningText } = await generateText({
+  model: moonshotai('kimi-k3'),
+  providerOptions: {
+    moonshotai: {
+      reasoningEffort: 'max',
+    } satisfies MoonshotAILanguageModelOptions,
+  },
+  prompt: 'How many "r"s are in the word "strawberry"?',
+});
+
+console.log(reasoningText);
+console.log(text);
+```
 
 Moonshot AI offers thinking models like `kimi-k2-thinking` that generate intermediate reasoning tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
 
@@ -99802,10 +99813,13 @@ See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on 
 
 The following optional provider options are available for Moonshot AI language models:
 
+- **reasoningEffort** _'max'_
+
+  Reasoning effort for Kimi K3. Currently, only `'max'` is supported.
+
 - **thinking** _object_
 
   Configuration for thinking/reasoning models like Kimi K2 Thinking.
-
   - **type** _'enabled' | 'disabled'_
 
     Whether to enable thinking mode
@@ -99817,7 +99831,6 @@ The following optional provider options are available for Moonshot AI language m
 - **reasoningHistory** _'disabled' | 'interleaved' | 'preserved'_
 
   Controls how reasoning history is handled in multi-turn conversations:
-
   - `'disabled'`: Remove reasoning from history
   - `'interleaved'`: Include reasoning between tool calls within a single turn
   - `'preserved'`: Keep all reasoning in history
@@ -99831,6 +99844,7 @@ The following optional provider options are available for Moonshot AI language m
 | `moonshot-v1-128k`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2.5`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `kimi-k3`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2-thinking`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2-thinking-turbo` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `kimi-k2-turbo`          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -117841,7 +117855,7 @@ The following tool input lifecycle hooks are available:
 - **`onInputDelta`**: Called for each chunk of text as the input is streamed
 - **`onInputAvailable`**: Called when the complete input is available and validated
 
-`onInputStart` and `onInputDelta` are only called in streaming contexts (when using `streamText`). They are not called when using `generateText`.
+`onInputStart` is always called before `onInputAvailable`, including when using `generateText`. `onInputDelta` is only called in streaming contexts (when using `streamText`).
 
 ### Example
 
@@ -126037,6 +126051,10 @@ or a message-array `prompt`, `HarnessAgent` takes the latest user message as the
 fresh input for the turn. It does not replay the full prior conversation into
 the harness.
 
+A trailing tool message is handled differently: tool approval responses and
+client-provided tool results continue the unfinished harness turn that produced
+the corresponding request or tool call.
+
 This is different from model calls, where the application usually sends the full
 message history. In chat routes, persist and resume the harness session instead
 of relying on message replay.
@@ -126053,6 +126071,8 @@ End every session explicitly:
   the turn is unfinished, the resume state includes the continuation state.
 - `session.suspendTurn()` is for advanced active-turn continuation across a
   process boundary.
+- `session.hasUnfinishedTurn()` reports whether the current turn must be
+  continued or suspended before the session accepts a new prompt.
 
 Use `destroy()` for one-off scripts and tests. Use `detach()` or `stop()` for
 HTTP routes that need multi-turn continuity.
@@ -126102,8 +126122,10 @@ For advanced workflows that must hand off an active turn across a process
 boundary, suspend the turn and persist the continuation state:
 
 ```ts
-const continuationState = await session.suspendTurn();
-await persistContinuationState({ chatId, continuationState });
+if (session.hasUnfinishedTurn()) {
+  const continuationState = await session.suspendTurn();
+  await persistContinuationState({ chatId, continuationState });
+}
 ```
 
 When you only have raw continuation state from `suspendTurn()`, resume with
@@ -126370,6 +126392,46 @@ const agent = new HarnessAgent({
 
 When the harness calls `weather`, `HarnessAgent` executes the tool in your host
 process, then submits the result back to the harness runtime.
+
+## Client-Side Tools
+
+Omit `execute` when a browser, user interaction, or another external process
+provides the tool result:
+
+```ts
+const weather = tool({
+  description: 'Get the current temperature for a city.',
+  inputSchema: z.object({ city: z.string() }),
+});
+```
+
+When the harness calls a tool without `execute`, the returned result slice ends
+after the tool-call step while the underlying turn waits for a result.
+`session.hasUnfinishedTurn()` remains `true`, and `session.suspendTurn()`
+includes the pending tool call in its serializable continuation state.
+
+In UI flows, pass the model messages produced after `addToolOutput` to the next
+`stream()` or `generate()` call. `HarnessAgent` extracts the trailing tool
+result and continues the paused turn automatically.
+
+For direct agent calls, provide the raw result to `continueStream()` or
+`continueGenerate()`:
+
+```ts
+const continued = await agent.continueStream({
+  session,
+  toolResultContinuations: [
+    {
+      toolCallId,
+      output: { city: 'Paris', celsius: 12 },
+    },
+  ],
+});
+```
+
+Set `isError: true` when the external tool failed. To continue in another
+process, call `suspendTurn()`, recreate the session with `continueFrom`, and
+then pass the result to `continueStream()` or `continueGenerate()`.
 
 ## Tool Filtering
 
@@ -128847,7 +128909,7 @@ import { dataPartsSchema, metadataSchema } from '@util/schemas';
 const tools = {
   weather: tool({
     description: 'Get weather information',
-    parameters: z.object({
+    inputSchema: z.object({
       location: z.string(),
       units: z.enum(['celsius', 'fahrenheit']),
     }),
@@ -135595,7 +135657,7 @@ const { text } = await generateText({
   tools: {
     getWeather: tool({
       description: 'Get the current weather for a location',
-      parameters: z.object({
+      inputSchema: z.object({
         location: z.string().describe('The location to get weather for'),
       }),
       execute: async ({ location }) => {
@@ -136121,10 +136183,6 @@ The following gateway provider options are available:
 
   Restricts routing to providers that have agreements with Vercel for AI Gateway to not use prompts for model training. When using BYOK credentials, this filter is not applied. If BYOK credentials fail and the request falls back to system credentials, only providers that do not train on prompt data will be used. If there are no providers available for the model that disallow prompt training, the request will fail.
 
-- **hipaaCompliant** _boolean_
-
-  Restricts routing to models and tools from providers that have signed a BAA with Vercel for the use of AI Gateway (requires Vercel HIPAA BAA add on). BYOK credentials are skipped when `hipaaCompliant` is set to `true` to ensure that requests are only routed to providers that support HIPAA compliance.
-
 - **quotaEntityId** _string_
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
@@ -136149,7 +136207,7 @@ The following gateway provider options are available:
   per-provider option each provider expects, and overrides any tier
   also set in the per-provider options. Leave unset for provider
   default. See the [OpenAI](/providers/ai-sdk-providers/openai),
-  [Google Generative AI](/providers/ai-sdk-providers/google-generative-ai),
+  [Google Generative AI](/providers/ai-sdk-providers/google),
   and [Google Vertex AI](/providers/ai-sdk-providers/google-vertex)
   provider docs for tier semantics, model availability, and graceful
   downgrade behavior on each provider.
@@ -136245,25 +136303,6 @@ const { text } = await generateText({
   providerOptions: {
     gateway: {
       disallowPromptTraining: true,
-    } satisfies GatewayProviderOptions,
-  },
-});
-```
-
-#### HIPAA Compliance Example
-
-Set `hipaaCompliant` to true to route requests only to models or tools by providers that have signed a BAA with Vercel for the use of AI Gateway. If the model or tool does not have a HIPAA-compliant provider, the request will fail. When `hipaaCompliant` is `false` or not specified, there is no enforcement of restricting routing. BYOK credentials are skipped when `hipaaCompliant` is set to `true` to ensure that requests are only routed to providers that support HIPAA compliance.
-
-```ts
-import type { GatewayProviderOptions } from '@ai-sdk/gateway';
-import { generateText } from 'ai';
-
-const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-4.6',
-  prompt: 'Analyze this patient data...',
-  providerOptions: {
-    gateway: {
-      hipaaCompliant: true,
     } satisfies GatewayProviderOptions,
   },
 });
@@ -137280,6 +137319,7 @@ const { video } = await generateVideo({
   duration: 5,
   providerOptions: {
     xai: {
+      user: 'user-123',
       pollTimeoutMs: 600000, // 10 minutes
     } satisfies XaiVideoModelOptions,
   },
@@ -137549,6 +137589,14 @@ You can validate the provider options using the `XaiVideoModelOptions` type.
   Video resolution. When using the SDK's standard `resolution` parameter,
   `1280x720` maps to `720p` and `854x480` maps to `480p`.
   Use this provider option to pass the native format directly.
+
+- **user** _string_
+
+  Optional identifier for the end user responsible for the request. xAI uses
+  this value for abuse monitoring. It is sent unchanged for video generation
+  (including reference-to-video) and video editing requests, and is omitted
+  when not configured. It is not sent for video extension requests. Use an
+  opaque stable identifier and avoid sending unnecessary personal information.
 
 - **mode** _'edit-video' | 'extend-video' | 'reference-to-video'_
 
@@ -155579,7 +155627,7 @@ import { moonshotai } from '@ai-sdk/moonshotai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: moonshotai('kimi-k2.5'),
+  model: moonshotai('kimi-k3'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -155587,9 +155635,9 @@ const { text } = await generateText({
 You can also use the `.chatModel()` or `.languageModel()` factory methods:
 
 ```ts
-const model = moonshotai.chatModel('kimi-k2.5');
+const model = moonshotai.chatModel('kimi-k3');
 // or
-const model = moonshotai.languageModel('kimi-k2.5');
+const model = moonshotai.languageModel('kimi-k3');
 ```
 
 Moonshot AI language models can be used in the `streamText` function
@@ -155604,6 +155652,30 @@ For other Moonshot models, object generation falls back to JSON mode instead of 
 For best reliability, it is strongly recommended to include your schema requirements in your prompt in addition to passing the schema through `Output`.
 
 ### Reasoning Models
+
+Kimi K3 always reasons. It currently supports only the `max` reasoning effort,
+which you can configure through provider options:
+
+```ts
+import {
+  moonshotai,
+  type MoonshotAILanguageModelOptions,
+} from '@ai-sdk/moonshotai';
+import { generateText } from 'ai';
+
+const { text, reasoningText } = await generateText({
+  model: moonshotai('kimi-k3'),
+  providerOptions: {
+    moonshotai: {
+      reasoningEffort: 'max',
+    } satisfies MoonshotAILanguageModelOptions,
+  },
+  prompt: 'How many "r"s are in the word "strawberry"?',
+});
+
+console.log(reasoningText);
+console.log(text);
+```
 
 Moonshot AI offers thinking models like `kimi-k2-thinking` that generate intermediate reasoning tokens before their final response. The reasoning output is streamed through the standard AI SDK reasoning parts.
 
@@ -155635,6 +155707,10 @@ See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on 
 
 The following optional provider options are available for Moonshot AI language models:
 
+- **reasoningEffort** _'max'_
+
+  Reasoning effort for Kimi K3. Currently, only `'max'` is supported.
+
 - **thinking** _object_
 
   Configuration for thinking/reasoning models like Kimi K2 Thinking.
@@ -155665,6 +155741,7 @@ The following optional provider options are available for Moonshot AI language m
 | `kimi-k2-thinking`       | <Cross />   | <Check />         | <Check />  | <Check />      |
 | `kimi-k2-thinking-turbo` | <Cross />   | <Check />         | <Check />  | <Check />      |
 | `kimi-k2-turbo`          | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k3`                | <Check />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   Please see the [Moonshot AI docs](https://platform.moonshot.ai/docs/intro) for
@@ -155824,7 +155901,7 @@ const { text } = await generateText({
   tools: {
     weather: tool({
       description: 'Get the weather in a location',
-      parameters: z.object({
+      inputSchema: z.object({
         location: z.string().describe('The location to get the weather for'),
       }),
       execute: async ({ location }) => ({
@@ -160348,7 +160425,10 @@ const model = provider.imageModel('model-id');
 ### Basic Image Generation
 
 ```ts
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import {
+  createOpenAICompatible,
+  type OpenAICompatibleImageModelOptions,
+} from '@ai-sdk/openai-compatible';
 import { generateImage } from 'ai';
 
 const provider = createOpenAICompatible({
@@ -160361,8 +160441,49 @@ const { images } = await generateImage({
   model: provider.imageModel('model-id'),
   prompt: 'A futuristic cityscape at sunset',
   size: '1024x1024',
+  providerOptions: {
+    providerName: {
+      quality: 'high',
+      output_format: 'jpeg',
+      output_compression: 80,
+      background: 'opaque',
+    } satisfies OpenAICompatibleImageModelOptions,
+  },
 });
 ```
+
+### Image Model Options
+
+The following common provider options are available for image models:
+
+- **size** _string_
+
+  Dimensions of the generated image. Use the top-level `size` option for
+  standard dimensions, or this provider option for provider-specific values
+  such as `auto`.
+
+- **quality** _string_
+
+  Quality of the generated image. Supported values depend on the provider and
+  model.
+
+- **output_format** _string_
+
+  File format of the generated image.
+
+- **output_compression** _number_
+
+  Compression level from `0` to `100` for formats such as JPEG and WebP.
+
+- **background** _string_
+
+  Background behavior for the generated image. Supported values depend on the
+  provider and model.
+
+Providers and models may support `auto` for `size`, `quality`, or `background`.
+
+`OpenAICompatibleImageModelOptions` also accepts additional provider-specific
+options. These options are passed through to the provider API unchanged.
 
 ### Image Editing
 

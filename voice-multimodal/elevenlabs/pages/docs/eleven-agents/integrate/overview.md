@@ -32,16 +32,24 @@ The Integrate section provides everything you need to connect your agents to you
 
 This is a Next.js component from [ElevenLabs UI](https://ui.elevenlabs.io/blocks#voice-chat-01). View the source code to integrate it into your application.
 
-<iframe src="https://ui.elevenlabs.io/view/voice-chat-01" width="100%" height="600" allow="microphone; autoplay" />
-
 ## Next steps
+
+#### [Widget](/docs/eleven-agents/customization/widget)
 
 Add a web widget to your site
 
+#### [React SDK](/docs/eleven-agents/libraries/react)
+
 Build with React components
+
+#### [Twilio](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration)
 
 Deploy over phone
 
+#### [WebSocket API](/docs/eleven-agents/libraries/web-sockets)
+
 Build custom integrations
+
+#### [ElevenLabs UI](https://ui.elevenlabs.io)
 
 Pre-built React components

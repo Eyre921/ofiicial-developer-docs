@@ -16,14 +16,24 @@ This allows for richer, more capable interactions tailored to specific use cases
 
 ElevenLabs Agents supports the following kinds of tools:
 
+#### [Client Tools](/docs/eleven-agents/customization/tools/client-tools)
+
 Tools executed directly on the client-side application (e.g., web browser, mobile app).
+
+#### [Webhook tools](/docs/eleven-agents/customization/tools/webhook-tools)
 
 Custom tools that call external APIs through webhooks.
 
+#### [MCP Tools](/docs/eleven-agents/customization/tools/mcp)
+
 Model Context Protocol servers that provide tools and resources to agents.
+
+#### [System Tools](/docs/eleven-agents/customization/tools/system-tools)
 
 Built-in tools provided by the platform for common actions.
 
 ## Tool Features
+
+#### [Tool Call Sounds](/docs/eleven-agents/customization/tools/tool-configuration/tool-call-sounds)
 
 Add ambient audio during tool execution to enhance user experience.

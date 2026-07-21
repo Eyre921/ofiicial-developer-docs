@@ -46,13 +46,21 @@ Each supported voice has the following properties:
 * **Language**: Override the default language for this voice (optional)
 * **Description**: When the agent should use this voice
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Voice** tab, and locate the **Multi-voice support** section. Click **Add voice** to configure a new supported voice.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/e7a6e86ed58abb54f75e884214e6bc056c85e85fc60176924fb2683e16250aa1/assets/images/conversational-ai/add-supported-voice.png" alt="Multi-voice configuration interface" />
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.tts.supported_voices`:
 
@@ -73,9 +81,13 @@ Set `conversation_config.tts.supported_voices`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -122,16 +134,24 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 
 ### Voice properties
 
+#### Voice label
+
 A unique identifier that the LLM uses to reference this voice. Choose descriptive labels like: -
 Character names: "Alice", "Bob", "Narrator" - Languages: "Spanish", "French", "German" -
 Emotions: "Happy", "Sad", "Excited" - Roles: "Teacher", "Student", "Guide"
+
+#### Model family
 
 Override the agent's default model family for this specific voice: - **Flash**: Fastest eneration,
 optimized for real-time use - **Turbo**: Balanced speed and quality - **Multilingual**: Highest
 quality, best for non-English languages - **Same as agent**: Use agent's default setting
 
+#### Language override
+
 Specify a different language for this voice, useful for: - Multilingual conversations - Language
 tutoring applications - Region-specific pronunciations
+
+#### Description
 
 Provide context for when the agent should use this voice.
 Examples:
@@ -173,11 +193,15 @@ Available voices are as follows:
 
 ### Example usage
 
+#### Language tutoring
+
 ```
 Teacher: Let's practice greetings. In Spanish, we say <Spanish>¡Hola! ¿Cómo estás?</Spanish>
 Student: How do I respond?
 Teacher: You can say <Spanish>¡Hola! Estoy bien, gracias.</Spanish> which means Hello! I'm fine, thank you.
 ```
+
+#### Storytelling
 
 ```
 Once upon a time, a brave princess ventured into a dark cave.
@@ -188,24 +212,32 @@ But the princess stood her ground, ready for whatever came next.
 
 ## Best practices
 
+#### Voice selection
+
 * Choose voices that clearly differentiate between characters or contexts
 * Test voice combinations to ensure they work well together
 * Consider the emotional tone and personality for each voice
 * Ensure voices match the language and accent when switching languages
 
-- Use descriptive, intuitive labels that the LLM can understand
-- Keep labels short and memorable
-- Avoid special characters or spaces in labels
+#### Label naming
+
+* Use descriptive, intuitive labels that the LLM can understand
+* Keep labels short and memorable
+* Avoid special characters or spaces in labels
+
+#### Performance optimization
 
 * Limit the number of supported voices to what you actually need
 * Use the same model family when possible to reduce switching overhead
 * Test with your expected conversation patterns
 * Monitor response times with multiple voice switches
 
-- Provide clear descriptions for when each voice should be used
-- Test edge cases where voice switching might be unclear
-- Consider fallback behavior when voice labels are ambiguous
-- Ensure voice switches enhance rather than distract from the conversation
+#### Content guidelines
+
+* Provide clear descriptions for when each voice should be used
+* Test edge cases where voice switching might be unclear
+* Consider fallback behavior when voice labels are ambiguous
+* Ensure voice switches enhance rather than distract from the conversation
 
 ## Limitations
 
@@ -217,17 +249,27 @@ But the princess stood her ground, ready for whatever came next.
 
 ## FAQ
 
+#### What happens if I use an undefined voice label?
+
 If the agent uses a voice label that hasn't been configured, the text will be spoken using the
 default voice. The XML tags will be ignored.
+
+#### Can I change voices mid-sentence?
 
 Yes, you can switch voices within a single response. Each tagged section will use the specified
 voice, while untagged text uses the default voice.
 
+#### Do voice switches affect conversation latency?
+
 Voice switching adds minimal overhead. The first use of each voice in a conversation may have
 slightly higher latency as the voice is initialized.
 
+#### Can I use the same voice with different labels?
+
 Yes, you can configure multiple labels that use the same ElevenLabs voice but with different model
 families, languages, or contexts.
+
+#### How do I train my agent to use voice switching effectively?
 
 Provide clear examples in your system prompt and test thoroughly. You can include specific
 scenarios where voice switching should occur and examples of the XML markup format.

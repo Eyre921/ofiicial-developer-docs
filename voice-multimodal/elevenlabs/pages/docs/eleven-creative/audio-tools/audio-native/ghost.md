@@ -11,7 +11,11 @@ path: docs/eleven-creative/audio-tools/audio-native/ghost
 Follow the steps in the [Audio Native overview](/docs/eleven-creative/audio-tools/audio-native) to
 get started with Audio Native before continuing with this guide.
 
+#### Add HTML to your blog post
+
 Navigate to your Ghost blog, sign in and open the settings page for the blog post you wish to narrate.
+
+#### Add the embed code to your blog post
 
 Click the "+" symbol on the left and select "HTML" from the menu.
 
@@ -37,9 +41,13 @@ Paste the Audio Native embed code into the HTML box and press enter.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/2783aa5f50f84ce712957ccb1504381e4248b49b5ca408173c583a40bd38d58e/assets/images/product-guides/audio-native/audio-native-ghost-2.webp" alt="Audio Native" />
 
+#### Update the blog post
+
 Click the "Update" button in the top right corner of the editor, which should now be highlighted in green text.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1625ff60cbf3c92760d918a298ed65fe6f0911c345efbf9999185cf4fab95014/assets/images/product-guides/audio-native/audio-native-ghost-3.webp" alt="Audio Native" />
+
+#### Navigate to the live version of the blog post
 
 Finally, navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 

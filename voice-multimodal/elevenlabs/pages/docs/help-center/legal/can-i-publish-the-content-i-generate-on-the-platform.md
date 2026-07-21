@@ -1,0 +1,19 @@
+---
+title: "Can I publish the content I generate on the platform?"
+source: https://elevenlabs.io/docs/help-center/legal/can-i-publish-the-content-i-generate-on-the-platform.md
+path: docs/help-center/legal/can-i-publish-the-content-i-generate-on-the-platform
+---
+
+> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Can I publish the content I generate on the platform?
+
+The free plan does <strong>not</strong> include a commercial license and cannot be used for any commercial purpose. If you publish content generated using our Services on a free plan or without being signed-in to your account, you must attribute it to ElevenLabs by including "elevenlabs.io" or "11.ai" in the title (except in the case where your content is generated using Eleven Music on a free plan or without being signed-in to your account, you must attribute it to ElevenLabs by referencing "Eleven Music" when distributing such content).
+
+All paid plans include a commercial license, provided you're not using Beta Services. As long as you hold the necessary intellectual property rights to your generated content, and it complies with applicable laws, our [Terms of Service](https://elevenlabs.io/terms) and [Prohibited Use Policy](https://elevenlabs.io/use-policy), you may use it commercially. Attribution requirement is subject to the agreement you have with ElevenLabs. For full details, refer to our [Terms of Service](https://elevenlabs.io/terms).
+
+In summary:
+
+* Content generated during a paid subscription can be used commercially, and indefinitely. Attribution requirement is subject to the agreement you have with ElevenLabs.
+* Content created outside of a paid subscription (before or after) cannot be used commercially and always requires attribution when shared non-commercially.
+* Under our [Beta Services Addendum](https://elevenlabs.io/bsa), content generated using Beta Services cannot be used for any commercial purpose or in any production environment.

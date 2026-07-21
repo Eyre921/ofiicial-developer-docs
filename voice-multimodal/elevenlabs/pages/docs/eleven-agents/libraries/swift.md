@@ -14,6 +14,8 @@ Check out our [complete Swift quickstart project](https://github.com/elevenlabs/
 
 Add the ElevenLabs Swift SDK to your project using Swift Package Manager:
 
+#### Add the Package Dependency
+
 ```swift
 dependencies: [ .package(url: "https://github.com/elevenlabs/elevenlabs-swift-sdk.git",
 from: "2.0.0") ]
@@ -25,6 +27,8 @@ Or using Xcode:
 2. Go to `File` > `Add Package Dependencies...`
 3. Enter the repository URL: `https://github.com/elevenlabs/elevenlabs-swift-sdk.git`
 4. Select version 2.0.0 or later
+
+#### Import the SDK
 
 ```swift
 import ElevenLabs
@@ -72,6 +76,8 @@ await conversation.endConversation()
 
 There are two ways to authenticate and start a conversation:
 
+#### Public Agents
+
 For public agents, use the agent ID directly:
 
 ```swift
@@ -80,6 +86,8 @@ let conversation = try await ElevenLabs.startConversation(
     config: ConversationConfig()
 )
 ```
+
+#### Private Agents
 
 For private agents, use a conversation token obtained from your backend:
 

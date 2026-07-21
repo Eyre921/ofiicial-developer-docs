@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides
 path: langsmith/smith-api/experiment-view-overrides/create-new-experiment-view-override-configuration-for-a-dataset
 ---
 
-/langsmith/langsmith-platform-openapi.json post /datasets/{dataset_id}/experiment-view-overrides
+/langsmith/langsmith-platform-openapi.json post /v1/platform/datasets/{dataset_id}/experiment-view-overrides
 Creates a new experiment view override configuration for a dataset with column display settings.
 This endpoint allows you to customize how experiment results are displayed by configuring
 column-specific overrides including colors, precision, and visibility.

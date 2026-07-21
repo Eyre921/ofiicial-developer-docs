@@ -21,8 +21,12 @@ Finetunes are not compatible with Music v2, so plan migrations accordingly.
 
 ## Guide
 
+#### Create a new song
+
 Describe your song using natural language prompts. Refer to our [Prompting
 Guide](/docs/overview/capabilities/music/best-practices) for best practices on style and lyrics.
+
+#### Select a Finetune (optional)
 
 Choose a Finetune to shape the stylistic identity of your generation. You can select from:
 
@@ -33,16 +37,22 @@ Choose a Finetune to shape the stylistic identity of your generation. You can se
 If you don't select a Finetune, the standard music model will be used. Learn more about
 [creating custom Finetunes](/docs/eleven-creative/products/music/finetunes).
 
+#### Select settings
+
 Choose the number of **Variants** and the **Duration**. You can select a fixed length (e.g.,
 30s, 1m) or **Auto** for a dynamically determined length. For building complex songs, a workflow
 we've seen often is to start with a short duration like **30s** and iteratively adding new
 sections as you work on the song.
+
+#### Make edits
 
 Refine your track in the editor. You can edit lyrics, add or remove sections, adjust section
 durations, apply style keywords, or use direct conversational prompts for granular creative
 control. You can even generate completely new variations of the exact same prompt if you want a
 different track based on the same prompt in the same music project, or a different base to work
 from.
+
+#### Download and share
 
 Click the **Download** button to save your high-fidelity audio file, or use the **Share** button
 to generate a link with a customizable visualizer for your track.
@@ -53,9 +63,13 @@ Eleven Music is a versatile model that gives you control over many aspects of mu
 
 #### Full Songs with Vocals
 
+#### Full Songs with Vocals
+
 Create complete tracks with AI-generated lyrics and vocals in
 multiple languages including English, Spanish, German, and Japanese. The model understands
 nuanced prompts and can generate songs in most styles or genres.
+
+#### Instrumental Tracks
 
 #### Instrumental Tracks
 
@@ -65,15 +79,21 @@ requiring instrumental accompaniment.
 
 #### Specific Song Structures
 
+#### Specific Song Structures
+
 Use sectional descriptions in your prompt to build songs piece by
 piece, defining the Intro, Verse, Chorus, Breakdown, and Outro. This gives you granular control
 over your song's composition and flow.
 
 #### Music for Media
 
+#### Music for Media
+
 Design custom soundtracks for videos, advertisements, games, or other media
 by describing the scene or mood. For example: "A high-intensity orchestral track for an epic
 battle scene" or "Upbeat corporate jingle for a tech startup."
+
+#### Genre-Specific Music
 
 #### Genre-Specific Music
 
@@ -85,6 +105,8 @@ synthwave with analog synthesizers and retro drum machines."
 
 Once you've generated your initial track, Eleven Music provides powerful editing tools to refine every aspect
 of your composition.
+
+#### Adding and Removing Sections
 
 #### Adding and Removing Sections
 
@@ -102,11 +124,15 @@ of your composition.
 
 #### Editing Lyrics and Prompts
 
+#### Editing Lyrics and Prompts
+
 To change the lyrics or instrumental prompts of any existing section:
 
 * Click inside the text box for that section (e.g., Intro, Main Theme).
 * Type your new lyrics or edit the existing prompt.
 * Use bracketed descriptions like "\[energetic guitar solo]" or "\[drum fill]" for instrumental parts.
+
+#### Style Control
 
 #### Style Control
 
@@ -121,10 +147,14 @@ For advanced control over specific musical elements:
 
 #### Direct Prompting
 
+#### Direct Prompting
+
 Use the conversation interface at the bottom of the editor to make specific changes with natural language:
 
 * Type direct instructions like "Make the chorus more energetic" or "Add a guitar solo after the second verse."
 * This allows for creative editing beyond the structured tools.
+
+#### Regenerating Changes
 
 #### Regenerating Changes
 
@@ -140,11 +170,15 @@ The key to great results is a descriptive and detailed prompt. The more informat
 
 #### Be Specific with Genre and Style
 
+#### Be Specific with Genre and Style
+
 Instead of generic terms like "rock music," try detailed descriptions:
 
 * "Energetic 1980s synth-pop with a driving drum machine beat and male vocals"
 * "Melancholic indie folk with fingerpicked acoustic guitar and ethereal female harmonies"
 * "Heavy metal with palm-muted riffs, double bass drums, and aggressive vocals"
+
+#### Layer Multiple Descriptors
 
 #### Layer Multiple Descriptors
 
@@ -156,6 +190,8 @@ Combine mood, instrumentation, tempo, and use case for better results:
 
 #### Define Instrumentation
 
+#### Define Instrumentation
+
 Call out specific instruments you want to hear:
 
 * "Upbeat funk track with a prominent slap bass line, funky rhythm guitar, and a horn section"
@@ -164,10 +200,14 @@ Call out specific instruments you want to hear:
 
 #### Use Include/Exclude Styles
 
+#### Use Include/Exclude Styles
+
 Refine your output by explicitly including or excluding certain elements at the track or section level:
 
 * **Include:** "acoustic," "four-on-the-floor kick", "reverb-heavy vocals", "analog warmth"
 * **Exclude:** "repetitive structure", "electronic elements", "abrupt ending", "distorted vocals"
+
+#### Build Section by Section
 
 #### Build Section by Section
 
@@ -179,6 +219,8 @@ and build your song piece by piece.
 3. Specify the style and content for the new section (e.g., Verse, Chorus, Bridge).
 4. Use the conversation interface for specific instructions on each part.
 5. Build your track progressively, ensuring each section flows naturally.
+
+#### Iterate and Refine
 
 #### Iterate and Refine
 
@@ -203,8 +245,12 @@ When you're satisfied with your composition, use the **Download** button to expo
 
 #### Export Formats
 
+#### Export Formats
+
 Generated audio is provided in MP3 format with professional-grade quality (44.1kHz, 128-192kbps).
 Other audio formats will be supported soon.
+
+#### Quality Settings
 
 #### Quality Settings
 
@@ -213,6 +259,8 @@ Export quality varies by subscription tier:
 * **Free, Starter, and Creator:** Standard quality exports.
 * **Pro, Scale, Business, and Enterprise:** High-fidelity, studio-grade exports.
   All exports maintain the full dynamic range and frequency response of the original generation.
+
+#### Sharing
 
 #### Sharing
 
@@ -243,27 +291,201 @@ start creating.
 
 ## FAQ
 
-The cost for generating music is calculated based on your selected settings and is shown next to the Generate button. Unlike other ElevenLabs tools with fixed credit pricing, the number of credits used can vary depending on your subscription plan. This is because the cost is based on a fixed fiat price, which translates to a different number of credits for each plan.
+<tbody>
+  <tr>
+    <td>
+      #### How long can my generated songs be?
 
-When using the **Auto** duration setting, you are charged based on the actual number of seconds of audio generated. Before generation, we display the price per minute for reference, but the final cost is based on the exact duration of the generated track.
+      You can create everything from short clips to full-length tracks. For maximum control, you can
+      start with a short duration like **30s** to create an initial section, then iteratively use the
+      **"+ Add Section"** button to build out your song piece by piece, extending it to your desired
+      length.
 
-You can create everything from short clips to full-length tracks. For maximum control, you can
-start with a short duration like **30s** to create an initial section, then iteratively use the
-**"+ Add Section"** button to build out your song piece by piece, extending it to your desired
-length.
+      The minimum duration of a song is 3 seconds and the maximum is 5 minutes.
+    </td>
+  </tr>
 
-The minimum duration of a song is 3 seconds and the maximum is 5 minutes.
+  <tr>
+    <td>
+      #### What languages are supported for vocals?
 
-Eleven Music is cleared for broad commercial use. See our [Music
-Terms](https://elevenlabs.io/music-terms) for specific usage details per subscription tier.
+      Eleven Music supports vocals in multiple languages including English, Spanish, German, and
+      Japanese. The model can generate lyrics in these languages, or you can provide your own lyrics for
+      the AI to sing.
+    </td>
+  </tr>
 
-Eleven Music supports vocals in multiple languages including English, Spanish, German, and
-Japanese. The model can generate lyrics in these languages, or you can provide your own lyrics for
-the AI to sing.
+  <tr>
+    <td>
+      #### What is Eleven Music?
 
-You can edit individual sections, modify lyrics, adjust durations, add or remove sections, and fine-tune
-the style of specific parts. Changes take effect when you click **Generate** to create a new version.
+      Eleven Music is our AI model for generating high-fidelity, studio-grade music from natural language prompts.
 
-The key is detailed, specific prompting. Include genre, mood, instrumentation, tempo, and use case in your
-descriptions. Use the Include/Exclude styles feature for fine control, and build songs section by section for
-maximum precision. See our [Prompting Guide](/docs/overview/capabilities/music/best-practices) for comprehensive tips.
+      Eleven Music offers:
+
+      * <strong>Complete Music Tracks</strong> from a single text prompt
+      * <strong>Granular Control</strong> of genre, mood, style, structure, and instrumentation
+      * <strong>Vocals & Lyrics</strong> across multiple languages, including English, Spanish, German,
+        and Japanese
+      * <strong>Post-Generation Editing</strong> to adjust sections and lyrics of those sections via the
+        UI
+      * <strong>Studio-Ready Exports</strong> in MP3 for professional workflows
+
+      ### Use Cases & Commercial Use
+
+      Created in collaboration with artists, labels, publishers, and artists, Eleven Music is <strong>cleared for broad commercial use</strong>.
+
+      This model allows users to move beyond stock music libraries and create bespoke audio. For specific details on supported usage per tier, please refer to our [Music Terms](https://elevenlabs.io/music-terms).
+
+      ### Availability & API Access
+
+      Eleven Music is available today for all users on the ElevenLabs website.
+
+      API access is available for all users on paid subscription plans. See our [API documentation](/docs/cookbooks/music/quickstart) for more information. 
+
+      Visit the following resources for more information:
+
+      * [Eleven Music Product Page](/docs/product-guides/products/music)
+      * [Eleven Music Prompting Guide](/docs/overview/capabilities/music/best-practices)
+      * [Eleven Music Usage Terms](https://elevenlabs.io/music-terms)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What can I generate with Eleven Music?
+
+      Eleven Music is a versatile model that gives you control over many aspects of audio creation. You can generate:
+
+      * <strong>Full Songs with Vocals:</strong> Create complete tracks with AI-generated lyrics and
+        vocals in a variety of languages.
+      * <strong>Instrumental Tracks:</strong> Generate purely instrumental music across any genre, from
+        cinematic scores to ambient lo-fi beats.
+      * <strong>Specific Song Structures:</strong> Use sectional generation to build a song piece by
+        piece, defining the Intro, Verse, Chorus, Breakdown, and Outro.
+      * <strong>Music for Media:</strong> Design custom soundtracks for videos, ads, or games by
+        describing the scene or mood (e.g., "A high-intensity orchestral track for an epic battle scene").
+      * <strong>Genre-Specific Music:</strong> Generate highly specific styles by including detailed
+        prompts, such as "Traditional Spanish flamenco with palmas, nylon guitar, and Spanish-language
+        vocals."
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How much does Eleven Music cost?
+
+      The cost of Eleven Music depends on the length of your track and how many variants you're generating. You can see how much each generation will cost before you click <strong>Generate</strong> by hovering over the number of <strong>credits remaining</strong> for your account. 
+
+      For a breakdown of how many minutes of Music each of our subscription plans can generate with the included credit quota, see the Music table on our [Pricing page. ](https://elevenlabs.io/pricing)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Are there any best practices for prompting Eleven Music?
+
+      The key to great results is a descriptive and detailed prompt. The model understands nuance, so the more information you provide, the closer the output will be to your vision. Here are some best practices:
+
+      * <strong>Be Specific with Genre and Style:</strong> Instead of `rock music`, try `energetic 1980s
+        synth-pop with a driving drum machine beat and male vocals`.
+      * <strong>Layer Multiple Descriptors:</strong> Combine mood, instrumentation, tempo, and use case.
+      * Example: `A slow, melancholic piano melody over ambient synth textures, suitable for a tragic film scene`.
+      * <strong>Define Instrumentation:</strong> Call out the specific instruments you want to hear.
+      * Example: `Upbeat funk track with a prominent slap bass line, funky rhythm guitar, and a horn section`.
+      * <strong>Use the "Include/Exclude Styles" Feature:</strong> Refine your output by explicitly
+        including or excluding certain tags like acoustic, repetitive structure, or four-on-the-floor
+        kick.
+      * <strong>Build Section by Section:</strong> To have the most control when creating a full song,
+        generate the Intro first. Once you're happy with that first section, you can click the "+" sign
+        and specify the style for the next part. Then, use the "Continue the conversation..." prompt box
+        to generate the Main Groove or Chorus, building your track piece by piece.
+      * <strong>Iterate and Refine:</strong> If the first generation isn't perfect, don't start over!
+        Adjust your prompt and regenerate. Small changes can have a big impact.
+
+      For a complete list of tips and examples, please see our official [Prompting Guide](/docs/best-practices/prompting/eleven-music).
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I edit my track, add or remove sections, or change the style of a specific part in Eleven Music?
+
+      Eleven Music gives you granular control to edit your song composition without having to start over. You can easily add new parts, edit lyrics, delete sections, and even fine-tune the musical style of each individual section.
+
+      Here’s a step-by-step guide to editing your track:
+
+      <strong>
+        1\. Adding a New Section
+      </strong>
+
+      To add a new part to your song (like a bridge, a solo, or a second verse):
+
+      * To add a new section, there are two ways to achieve this:
+
+      * In the song structure, find the section you want the new section to follow. On the left-hand side of that section, you'll see a "+" symbol that will say "Add section below" when you hover over.<br />
+
+        <img src="https://help.elevenlabs.io/hc/article_attachments/37781794822289" alt="" />
+
+      * In the timeline, scroll to the end of your song structure and click the "+" sign, which will add a new empty section at the end.<br />
+
+        <img src="https://help.elevenlabs.io/hc/article_attachments/37781826544401" alt="" />
+
+      * Once you've added this new empty section, you can drag it to extend the duration, add lyrics, or a descriptive prompt (e.g., "\[energetic guitar solo]").
+
+      <strong>
+        2\. Editing Lyrics or Prompts
+      </strong>
+
+      To change the lyrics or the instrumental prompt of any existing section:
+
+      * Simply click inside the text box for that section (e.g., Main Groove 1, Breakdown).
+      * Type your new lyrics or edit the existing prompt.
+
+      <strong>
+        3\. Modifying the Style of a Section
+      </strong>
+
+      For more advanced control, you can define specific musical elements to include or exclude from a section.
+
+      * Hover over the section you want to edit and click the <strong>"Edit styles of this section"</strong> link.<br />
+
+        <img src="https://help.elevenlabs.io/hc/article_attachments/37781973640209" alt="" />
+
+      * A "Section styles" window will pop up. Here you can:
+
+      * <strong>Include styles:</strong> Add specific musical characteristics or production details. For
+        example: gradual filter cutoff, hi-hats fade out, long delay feedback on vocalise.
+
+      * <strong>Exclude styles:</strong> Prevent certain elements from appearing. For example: abrupt
+        ending, new elements.
+
+      * Click <strong>Save</strong> to apply these style rules to that specific section.
+
+      <strong>
+        4\. Deleting a Section
+      </strong>
+
+      If you want to remove a part of your song entirely:
+
+      * Hover over the section you wish to remove in the timeline.<br />
+
+        <img src="https://help.elevenlabs.io/hc/article_attachments/37782139028497" alt="" />
+
+      * Click the delete icon, the "X", in the upper left corner of the section.
+
+      * The section will be removed from the structure, and a notification like "Outro deleted" will briefly appear.
+
+      <strong>
+        5\. Generating Your Changes
+      </strong>
+
+      After you have made any edits—whether adding, deleting, or modifying a section—you will see a notice at the bottom that says <strong>"Song composition has changed."</strong>
+
+      * Your edits will <strong>not</strong> take effect until you click the <strong>Generate</strong> button.
+      * Once you click <strong>Generate</strong>, the model will create a new version of your track that incorporates all of your changes.
+
+      Feel free to experiment with different combinations of lyrics, styles, and structures to craft your perfect track
+    </td>
+  </tr>
+</tbody>

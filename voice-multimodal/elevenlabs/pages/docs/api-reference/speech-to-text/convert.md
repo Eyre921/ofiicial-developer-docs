@@ -40,6 +40,18 @@ paths:
       tags:
         - speechToText
       parameters:
+        - name: token
+          in: query
+          description: >-
+            A single-use authentication token created via POST
+            /v1/single-use-token/batch_scribe. This token can only be used once
+            and expires after 15 minutes. Alternative to API key or bearer token
+            authentication for frontend clients.
+          required: false
+          schema:
+            type:
+              - string
+              - 'null'
         - name: enable_logging
           in: query
           description: >-
@@ -774,7 +786,6 @@ components:
         - entity_type
         - start_char
         - end_char
-      description: An entity detected within transcribed text.
       title: DetectedEntity
     SpeechToTextChunkResponseModel:
       type: object

@@ -107,7 +107,11 @@ Before setting up SIP trunking, ensure you have:
 
 ## Setting up SIP trunking
 
+#### Navigate to Phone Numbers
+
 Go to the [Phone Numbers section](https://elevenlabs.io/app/agents/phone-numbers) in the ElevenLabs Agents dashboard.
+
+#### Import SIP Trunk
 
 Click on "Import a phone number from SIP trunk" button to open the configuration dialog.
 
@@ -115,12 +119,16 @@ Click on "Import a phone number from SIP trunk" button to open the configuration
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1f50bf163dee6de654322e84960d9e2f8c126a08aed6e90eba35692789ba2088/assets/images/conversational-ai/sip-trunk.png" alt="SIP trunk configuration dialog" />
 
+#### Enter basic configuration
+
 Complete the basic configuration with the following information:
 
 * **Label**: A descriptive name for the phone number
 * **Phone Number**: The E.164 formatted phone number to connect (e.g., +15551234567)
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/6ea0abfdeeafd24d8e4c480b935eacd25d63896a980b156a1420f362afa22650/assets/images/conversational-ai/sip-trunk-inbound.png" alt="SIP trunk basic configuration" />
+
+#### Configure transport and encryption
 
 Configure the transport protocol and media encryption settings for enhanced security:
 
@@ -138,6 +146,8 @@ Configure the transport protocol and media encryption settings for enhanced secu
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b8ab8b378bebe2c72ad3ea4fa84829a8d65a595558c95e2f464b47015d98be92/assets/images/conversational-ai/siptrunkmediaencryption.png" alt="Select media encryption setting" />
 
 **Security Best Practice**: Use TLS transport with Required media encryption for maximum security. This ensures both signaling and media are encrypted end-to-end.
+
+#### Configure outbound settings
 
 Configure where ElevenLabs should send calls for your phone number:
 
@@ -157,6 +167,8 @@ Configure where ElevenLabs should send calls for your phone number:
 
 The **Address** field specifies where ElevenLabs will send outbound calls from your AI agents. Enter only the hostname or IP address without the `sip:` protocol prefix.
 
+#### Add custom headers (optional)
+
 If your SIP trunk provider requires specific headers for call routing or identification:
 
 * Click "Add Header" to add custom SIP headers
@@ -168,6 +180,8 @@ Custom headers are included with all outbound calls and can be used for:
 * Call routing and identification
 * Billing and tracking purposes
 * Provider-specific requirements
+
+#### Configure authentication (optional)
 
 Provide digest authentication credentials if required by your SIP trunk provider:
 
@@ -182,6 +196,8 @@ If left empty, Access Control List (ACL) authentication will be used, which requ
 * **ACL Authentication**: Uses IP address allowlisting for access control
 
 **Digest Authentication is strongly recommended** as it provides better security without relying on IP allowlisting, which can be complex to manage with dynamic IP addresses.
+
+#### Complete Setup
 
 Click "Import" to finalize the configuration.
 
@@ -246,6 +262,8 @@ After importing your SIP trunk phone number, you can assign it to a ElevenLabs a
 
 ## Troubleshooting
 
+#### Connection Issues
+
 If you're experiencing connection problems:
 
 1. Verify your SIP trunk configuration on both the ElevenLabs side and your provider side
@@ -262,12 +280,16 @@ If you're experiencing connection problems:
 * SIP requests may come from different IP addresses due to our distributed infrastructure
 * If your security policy requires allowlisting inbound traffic, please contact our support team for assistance.
 
+#### Authentication Failures
+
 If calls are failing due to authentication issues:
 
 1. Double-check your SIP trunk username and password if using digest authentication
 2. Check your SIP trunk provider's logs for specific authentication error messages
 3. Verify that custom headers, if configured, match your provider's requirements
 4. Test with simplified configurations (no custom headers) to isolate authentication issues
+
+#### TLS and Encryption Issues
 
 If you're experiencing issues with TLS transport or media encryption:
 
@@ -278,6 +300,8 @@ If you're experiencing issues with TLS transport or media encryption:
 5. Try TCP transport to isolate TLS-specific problems (UDP support is experimental)
 6. Contact your SIP trunk provider to confirm TLS and SRTP support
 
+#### Custom Headers Issues
+
 If you're having problems with custom headers:
 
 1. Verify the exact header names and values required by your provider
@@ -287,6 +311,8 @@ If you're having problems with custom headers:
 5. For inbound custom header dynamic variables, confirm the headers use the `X-` prefix and review the **Phone Call** tab in the conversation history
 6. Review your provider's documentation for supported custom headers
 
+#### No Audio or One-Way Audio
+
 If the call connects but there's no audio or audio only flows one way:
 
 1. Verify that your firewall allows UDP traffic for the RTP media stream (typically ports 10000-60000)
@@ -295,6 +321,8 @@ If the call connects but there's no audio or audio only flows one way:
 4. If using "Required" media encryption, ensure both endpoints support SRTP
 5. Test with "Disabled" media encryption to isolate encryption-related audio issues
 
+#### Audio Quality Issues
+
 If you experience poor audio quality:
 
 1. Ensure your network has sufficient bandwidth (at least 100 Kbps per call) and low latency/jitter for UDP traffic
@@ -302,6 +330,8 @@ If you experience poor audio quality:
 3. Verify codec settings match on both ends
 4. If using media encryption, ensure both endpoints efficiently handle SRTP processing
 5. Test with different media encryption settings to isolate quality issues
+
+#### Call not disconnecting after sending the BYE request (receiving a 481 response)
 
 A 481 response on a BYE usually means the request reached a SIP server that does not have the dialog state for the call.
 This often happens when the initial TCP connection has already closed and the BYE is re-sent to the generic shared address (for example `sip.rtc.elevenlabs.io`)
@@ -323,17 +353,25 @@ See <a href="https://datatracker.ietf.org/doc/html/rfc3261#section-8.1.1.8">RFC 
 
 ## FAQ
 
+#### Can I use my existing phone numbers with ElevenLabs?
+
 Yes, SIP trunking allows you to connect your existing phone numbers directly to ElevenLabs'
 ElevenAgents without porting them.
+
+#### What SIP trunk providers are compatible with ElevenLabs?
 
 ElevenLabs is compatible with most standard SIP trunk providers including Twilio, Vonage,
 RingCentral, Sinch, Infobip, Telnyx, Exotel, Plivo, Bandwidth, and others that support SIP
 protocol standards. TLS transport and SRTP media encryption are supported for enhanced security.
 
+#### Should I use TLS transport for better security?
+
 Yes, TLS transport is highly recommended for production environments. It provides encrypted SIP
 signaling which enhances security for your calls. Combined with required media encryption, it
 ensures comprehensive protection of your communications. Always verify your SIP trunk provider
 supports TLS before enabling it.
+
+#### What's the difference between transport types?
 
 * **TCP**: Reliable but unencrypted signaling - **TLS**: Encrypted and reliable signaling
   (recommended for production) - **UDP**: Connectionless signaling, currently experimental
@@ -341,21 +379,31 @@ supports TLS before enabling it.
 UDP transport is experimental and intended for testing only. For production and
 security-critical applications, always use TLS transport.
 
+#### What are custom headers used for?
+
 Custom SIP headers allow you to include provider-specific information with outbound calls. Common
 uses include call routing, billing codes, caller identification, and meeting specific provider
 requirements.
 
+#### How many concurrent calls are supported?
+
 The number of concurrent calls depends on your subscription plan. Enterprise plans typically allow
 for higher volumes of concurrent calls.
 
+#### Can I route calls conditionally to different agents?
+
 Yes, you can use your existing PBX system's routing rules to direct calls to different phone
 numbers, each connected to different ElevenLabs agents.
+
+#### Do I need to match the leading + format when importing phone numbers?
 
 Yes, the phone number format must be consistent between your SIP URI and your imported phone
 number configuration. If you call the SIP URI with a leading + (e.g.,
 `sip:+19991234567@sip.rtc.elevenlabs.io:5060`), you must also import the phone number with the
 leading + (e.g., `+19991234567`). Similarly, if you call without the leading +, import the phone
 number without it. Mismatched formats will prevent proper call routing.
+
+#### Do you support SRV record lookups for SIP?
 
 Yes, ElevenLabs provides NAPTR and SRV records for RFC 3263 compliant SIP server discovery.
 

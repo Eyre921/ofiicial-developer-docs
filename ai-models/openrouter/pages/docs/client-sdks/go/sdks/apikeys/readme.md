@@ -79,7 +79,7 @@ func main() {
 
 ## List
 
-List all API keys for the authenticated user. [Management key](/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List all API keys for the authenticated user. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -136,7 +136,7 @@ func main() {
 
 ## Create
 
-Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. [Management key](/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -201,7 +201,7 @@ func main() {
 
 ## Delete
 
-Delete an existing API key. [Management key](/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing API key. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -256,7 +256,7 @@ func main() {
 
 ## Get
 
-Get a single API key by hash. [Management key](/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Get a single API key by hash. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -311,7 +311,7 @@ func main() {
 
 ## Update
 
-Update an existing API key. [Management key](/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Update an existing API key. [Management key](/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

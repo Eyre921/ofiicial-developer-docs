@@ -50,14 +50,20 @@ Our language detection tool triggers language switching in two cases, both based
 
 ## Enabling language detection
 
+#### Configure supported languages
+
 The languages that the agent can switch to must be defined in the `Agent` settings tab.
 
 ![Agent languages](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/633707d54276febd3baa054c4f41b186225b74f606307a46e8262607befc8381/assets/images/conversational-ai/agent-languages.png)
+
+#### Add the language detection tool
 
 Enable language detection by selecting the pre-configured system tool to your agent's tools in the `Agent` tab.
 This is automatically available as an option when selecting `add tool`.
 
 ![System tool](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/3d17048ab2bc1a0547c49056abb98f624caf866927ff1714af27f898b06ab18f/assets/images/conversational-ai/language-detection-preconfig.png)
+
+#### Configure tool description
 
 Add a description that specifies when to call the tool
 

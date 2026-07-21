@@ -16,21 +16,37 @@ Connect your ElevenLabs AI agents with ServiceNow to manage incidents, cases, ta
 
 This integration uses **Basic Authentication** with a ServiceNow instance username and password.
 
+#### Identify your instance
+
 Find your ServiceNow instance name — this is the subdomain in your ServiceNow URL (e.g., `mycompany` from `mycompany.service-now.com`).
+
+#### Create an integration user (recommended)
 
 In ServiceNow, create a dedicated user for the integration. Check **Web Service Access only** on the user record to restrict the account to API access. Assign the necessary roles for the objects your agent needs to access (e.g., `itil` for incident management).
 
+#### Set a password
+
 Set a password on the user record for the integration user. This password is used for Basic Authentication regardless of any SSO configuration.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, enter your **instance name**, **username**, and **password**.
 
 ## How it works
 
+#### Caller identification
+
 The agent identifies the caller by searching for their user record via email or phone number.
+
+#### Issue triage
 
 The agent searches the knowledge base for relevant articles and checks for existing incidents related to the caller's issue.
 
+#### Record creation
+
 If no existing record matches, the agent creates a new incident or case with details gathered from the conversation, including priority, category, and assignment group.
+
+#### Follow-up
 
 The agent creates follow-up tasks, updates incident states, and adds work notes to existing records.
 

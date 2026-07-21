@@ -42,6 +42,8 @@ For improved availability, configure your endpoint with multiple instance types 
 
 Before you can attach a scaling policy, register your SageMaker Endpoint variant as a scalable target with Application Auto Scaling. This defines the minimum and maximum instance count for horizontal scaling.
 
+#### AWS CLI
+
 ```bash
 aws application-autoscaling register-scalable-target \
   --service-namespace sagemaker \
@@ -50,6 +52,8 @@ aws application-autoscaling register-scalable-target \
   --min-capacity 1 \
   --max-capacity 4
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3
@@ -70,6 +74,8 @@ Replace `YOUR_ENDPOINT_NAME` with the name of your SageMaker Endpoint. `AllTraff
 ## Create a target tracking scaling policy
 
 Define a target tracking policy that uses the `ConcurrentRequestsPerModel` high-resolution metric. The `TargetValue` represents the desired number of concurrent streaming connections per instance. When the average concurrency across instances exceeds this value, SageMaker adds instances. When it drops below, SageMaker removes instances.
+
+#### AWS CLI
 
 Save the following policy configuration to a file named `scaling-policy.json`:
 
@@ -95,6 +101,8 @@ aws application-autoscaling put-scaling-policy \
   --policy-type TargetTrackingScaling \
   --target-tracking-scaling-policy-configuration file://scaling-policy.json
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3
@@ -146,11 +154,15 @@ If your endpoint uses [heterogeneous instance pools](#use-multiple-instance-type
 
 After applying the policy, confirm it is active:
 
+#### AWS CLI
+
 ```bash
 aws application-autoscaling describe-scaling-policies \
   --service-namespace sagemaker \
   --resource-id endpoint/YOUR_ENDPOINT_NAME/variant/AllTraffic
 ```
+
+#### Python (boto3)
 
 ```python
 import boto3

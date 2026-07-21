@@ -56,6 +56,8 @@ For enhanced security, define allowed domains in your agent's **Allowlist** (loc
 This basic embed code will display the widget with the default configuration defined in the agent's dashboard.
 The widget supports various HTML attributes for further customization:
 
+#### Core configuration
+
 ```html
 <elevenlabs-convai
   agent-id="agent_id"              // Required: Your agent ID
@@ -66,6 +68,8 @@ The widget supports various HTML attributes for further customization:
 ></elevenlabs-convai>
 ```
 
+#### Visual customization
+
 ```html
 <elevenlabs-convai
   avatar-image-url="https://..." // Optional: Custom avatar image
@@ -73,6 +77,8 @@ The widget supports various HTML attributes for further customization:
   avatar-orb-color-2="#F5CABB" // Optional: Orb gradient color 2
 ></elevenlabs-convai>
 ```
+
+#### Text customization
 
 ```html
 <elevenlabs-convai
@@ -84,6 +90,8 @@ The widget supports various HTML attributes for further customization:
   speaking-text="Assistant speaking" // Optional: Speaking state
 ></elevenlabs-convai>
 ```
+
+#### Markdown rendering
 
 The widget renders markdown in agent responses. Links display as plain text by default to prevent phishing.
 
@@ -138,13 +146,21 @@ See more in our [overrides guide](/docs/eleven-agents/customization/personalizat
 
 Customize the widget's appearance, text content, language selection, and more.
 
+#### Update via the dashboard
+
 Open your agent in the dashboard and navigate to the **Widget** tab to customize appearance, avatar, text, terms, language support, and more.
 
 ![Widget customization](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1f773d01a3c0925a47f11cf57153db23bc8bc03b93efe5d7085919886ae392cf/assets/images/conversational-ai/widget-overview.png)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set fields under `platform_settings.widget`. For example, to change the orb colors and feedback mode:
 
@@ -169,9 +185,13 @@ Set fields under `platform_settings.widget`. For example, to change the orb colo
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -216,9 +236,13 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
+#### Appearance
+
 Customize the widget colors and shapes to match your brand identity.
 
 ![Widget appearance](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/0c07c4569f8c5ad3b93933711c268601af411085aa7df1bb8e8ec547a01f2d8e/assets/images/conversational-ai/appearance.gif)
+
+#### Feedback
 
 Gather user insights to improve agent performance. This can be used to fine-tune your agent's knowledge-base & system prompt.
 
@@ -232,6 +256,8 @@ Gather user insights to improve agent performance. This can be used to fine-tune
 
 Send feedback programmatically via the [API](/docs/eleven-agents/api-reference/conversations/create) when using custom SDK implementations.
 
+#### Avatar
+
 Configure the voice orb or provide your own avatar.
 
 ![Widget orb customization](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7530f28ad124fc4533911eca4a2269ac1df19dffd2b6dab1e8b56d95cc1eb53c/assets/images/conversational-ai/avatar.gif)
@@ -241,9 +267,13 @@ Configure the voice orb or provide your own avatar.
 * <strong>Orb</strong>: Choose two gradient colors (e.g., #6DB035 & #F5CABB).
 * <strong>Link/image</strong>: Use a custom avatar image.
 
+#### Display text
+
 Customize all displayed widget text elements, for example to modify button labels.
 
 ![Widget text contents](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/4ad66ecae5df29e587afcf6e1898ccb41ca197abdaa2fde3ada4b10d256f8b7c/assets/images/conversational-ai/textcontents.gif)
+
+#### Terms
 
 Display custom terms and conditions before the conversation.
 
@@ -271,12 +301,16 @@ For more help with Markdown, see the [CommonMark help guide](https://commonmark.
 Once accepted, the status is stored locally and the user won't be prompted again on subsequent
 visits.
 
+#### Language
+
 Enable multi-language support in the widget.
 
 ![Widget language](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/049e871eb0f609b071599e405c3da76351ee4ea38e52400fc416194930c42327/assets/images/conversational-ai/language.gif)
 
 To enable language selection, you must first [add additional
 languages](/docs/eleven-agents/customization/voice/customization/language) to your agent.
+
+#### Muting
 
 Allow users to mute their audio in the widget.
 
@@ -286,6 +320,8 @@ To add the mute button please enable this in the `interface` card of the agent's
 settings.
 
 ![Widget's mute button](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7db9df78926f3f3b3db7c286d4efc033356ec9b79cabe20670f65a52a624fae8/assets/images/conversational-ai/widget-mute-button.png)
+
+#### Shareable page
 
 Customize your public widget landing page (shareable link).
 
@@ -315,6 +351,8 @@ To see examples of these tools in action, start a call with the agent in the bot
 #### Creating a Client Tool
 
 To create your first client tool, follow the [client tools guide](/docs/eleven-agents/customization/tools/client-tools).
+
+#### Example: Creating the \`redirectToExternalURL\` Tool
 
 ![Client tool configuration](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/d800b8c60cba2ab0a1d0aaaecc0652a678998a4161adaf10d83df51b928a7734/assets/images/conversational-ai/widget-client-tool-setup.png)
 

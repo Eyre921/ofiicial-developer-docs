@@ -18,11 +18,17 @@ Personalization allows you to adapt your agent's behavior for each individual us
 
 ## Personalization Methods
 
+#### [Dynamic Variables](/docs/eleven-agents/customization/personalization/dynamic-variables)
+
 Define runtime values using `{{ var_name }}` syntax to personalize your agent's messages, system
 prompts, and tools.
 
+#### [Overrides](/docs/eleven-agents/customization/personalization/overrides)
+
 Completely replace system prompts, first messages, language, or voice settings for each
 conversation.
+
+#### [Twilio Integration](/docs/eleven-agents/customization/personalization/twilio-personalization)
 
 Dynamically personalize inbound Twilio calls using webhook data.
 

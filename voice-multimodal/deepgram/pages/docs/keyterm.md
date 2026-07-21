@@ -22,6 +22,8 @@ Instantly increase accuracy and recognition of up to 100 important terminology, 
 
 Keyterm Prompting is available for both monolingual and multilingual transcription using the [Nova-3 Models](/docs/models-languages-overview#nova-3), as well as [Flux](/docs/models-languages-overview#flux). To boost recognition of keywords using another Deepgram model (such as Nova-2), use the [Keywords](/docs/keywords) feature.
 
+#### Migrating from Keywords? The syntax is different
+
 `keyterm` does **not** use the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. `keyterm` accepts plain terms only—it does not support weights or intensifiers. The `keywords=KEYWORD:INTENSIFIER` pattern is valid for `keywords`, not for `keyterm`.
 
 |                                                  | Example                        |

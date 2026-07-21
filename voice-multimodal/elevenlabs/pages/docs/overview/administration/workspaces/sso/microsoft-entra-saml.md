@@ -29,7 +29,11 @@ can cause sign-in issues.
 
 ## Set up Microsoft Entra SAML SSO
 
+#### Open SSO settings in ElevenLabs
+
 Go to **Workspace settings** > **Security & SSO**.
+
+#### Verify your email domain
 
 Under **User Auto Provisioning**, verify the email domain your Microsoft Entra users will sign in
 with. Enter the domain (subdomains are allowed), then follow the prompts to confirm ownership.
@@ -40,8 +44,12 @@ workspace.
 
 {" "}
 
+#### Select SAML as the SSO provider
+
 In **SSO Provider**, select **SAML**. Copy the **Service Provider Entity Id** and **Redirect URL**
 values. You will use these values in Microsoft Entra.
+
+#### Create a Microsoft Entra enterprise application
 
 In the Microsoft Entra admin center, open your directory **Overview**, then click **Add** >
 **Enterprise application**.
@@ -52,10 +60,14 @@ On **Browse Microsoft Entra App Gallery**, click **Create your own application**
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/e78db7434ea9a3b210ef75544126423d1a55fb04aa6e08408dc0abaed1aa2fb2/assets/images/entra-saml-create-application.png" alt="Microsoft Entra App Gallery with Create your own application" />
 
+#### Name the application
+
 Enter a name (for example, `ElevenLabs`), select **Integrate any other application you don't find
 in the gallery (Non-gallery)**, then click **Create**.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/4ab66649e94c88812f19c55412be1370aa3d8d7a9249f55576dfd62c3cb33558/assets/images/entra-saml-name-application.png" alt="Microsoft Entra Create your own application panel with a non-gallery app" />
+
+#### Start single sign-on setup
 
 On the application **Overview**, under **Getting Started**, select **Set up single sign on** >
 **Get started**.
@@ -65,6 +77,8 @@ On the application **Overview**, under **Getting Started**, select **Set up sing
 Select **SAML** as the single sign-on method.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/e0a67bdc3f893e3d00fefc2531db05e2ae5db569821ab59479f629bf9619d6e9/assets/images/entra-saml-select-saml.png" alt="Microsoft Entra Select a single sign-on method with SAML" />
+
+#### Configure basic SAML settings
 
 In **Basic SAML Configuration**, configure the app with the values from ElevenLabs:
 
@@ -80,6 +94,8 @@ For [data residency](/docs/overview/administration/data-residency) environments,
 `https://<region>.residency.elevenlabs.io/__/auth/handler` as the Reply URL, replacing
 `<region>` with your region code.
 
+#### Configure the Name ID claim
+
 In **Attributes & Claims**, edit the **Unique User Identifier (Name ID)** claim:
 
 * Set **Name identifier format** to **Email address**.
@@ -94,20 +110,28 @@ for all of your users, use `user.userprincipalname` instead.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1d94d0fecd19d9ca30ff5cce93294fda6a8c84ed98837ea89549f79b97ae153d/assets/images/entra-saml-attributes-claims.png" alt="Microsoft Entra Manage claim with Email address format and user.mail source attribute" />
 
+#### Download the signing certificate
+
 In **SAML Certificates**, next to **Certificate (Base64)**, click **Download**. Open the
 downloaded file in a text editor.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/684fac9e520103b4c6978ef8dd3e95ea30d04a34e31b6ec7d13d97128492af07/assets/images/entra-saml-download-certificate.png" alt="Microsoft Entra SAML Certificates with Certificate Base64 download" />
+
+#### Assign users or groups
 
 Open the app's **Users and groups**, then assign the users or groups that should be able to sign
 in to ElevenLabs.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/c07ddb7a33eb511ada81ce437cdf468aecbfb83ef11a5c3a25f3fa6c87f5afcc/assets/images/entra-saml-assign-users.png" alt="Microsoft Entra Add Assignment users list" />
 
+#### Add the Entra certificate to ElevenLabs
+
 In ElevenLabs, click **Add Certificate**. Paste the full PEM certificate from the Base64 file,
 including `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`, then click **Add**.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/bd8d3e047624b0c8f5b119d77e79ef4b721ef2917ad9049a2a44b36b6016201b/assets/images/entra-saml-add-certificate.png" alt="ElevenLabs Add X509 Certificate dialog" />
+
+#### Copy Entra identity provider values into ElevenLabs
 
 In the Microsoft Entra **Set up** section, copy the identity provider values into ElevenLabs:
 
@@ -116,10 +140,14 @@ In the Microsoft Entra **Set up** section, copy the identity provider values int
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/abddc7178305f0c220d6b9ad92d21320859824c024a84506933fd67a9045144e/assets/images/entra-saml-idp-values.png" alt="Microsoft Entra set up values showing Login URL and Microsoft Entra Identifier" />
 
+#### Add your allowed email domain
+
 In ElevenLabs, click **Add Domain** and select the verified domain that matches the email domain
 of your Microsoft Entra users.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/3039fce378edac35eaeab847e55a99ec82a241d7fc3bc46be24b23ec52e4a2bf/assets/images/entra-saml-add-domain.png" alt="ElevenLabs Add allowed email domains dialog" />
+
+#### Save the SSO provider
 
 Review the configuration, select **I acknowledge this change will log out users currently using
 SSO**, then click **Update SSO**.
@@ -142,9 +170,13 @@ Use this table to map Microsoft Entra SAML settings to ElevenLabs SSO fields.
 
 ## Troubleshooting
 
+#### Microsoft Entra shows a successful sign-in, but ElevenLabs says unable to sign in
+
 Check the browser Network response for `accounts:signInWithIdp`. Microsoft Entra sign-in logs only
 confirm that Entra authenticated the user. ElevenLabs can still reject the SAML response if the
 assertion values do not match the SSO configuration.
+
+#### INVALID\_IDP\_RESPONSE: Error when parsing certificate
 
 The browser Network response may show `INVALID_IDP_RESPONSE: Error when parsing certificate`.
 Remove the certificate from ElevenLabs, then re-add the Entra **Certificate (Base64)** in valid
@@ -152,11 +184,15 @@ PEM format. Do not use an LLM to format the certificate. Open the Base64 certifi
 editor and copy it exactly, including `-----BEGIN CERTIFICATE-----` and
 `-----END CERTIFICATE-----`.
 
+#### Unable to login with saml.workspace... or user mismatch errors
+
 Make sure Microsoft Entra sends the user's email address as the `NameID`. In **Attributes &
 Claims**, set the **Unique User Identifier (Name ID)** claim **Name identifier format** to **Email
 address** and **Source attribute** to the field that contains the email address for all users
 (usually `user.mail`, or `user.userprincipalname` if `user.mail` is not populated). Inside the
 `<saml:Subject>` field of the SAML response, `<saml:NameID>` must be the user's email address.
+
+#### Which Microsoft Entra values should I use?
 
 Use the **Microsoft Entra Identifier** for **Identity Provider Entity Id**, the **Login URL** for
 **Identity Provider Sign-In URL**, and the **Certificate (Base64)** for **Certificate**.

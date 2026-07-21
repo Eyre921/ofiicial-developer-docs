@@ -32,12 +32,16 @@ The `pyaudio` package installation might require additional system dependencies.
 
 See [PyAudio package README](https://pypi.org/project/PyAudio/) for more information.
 
+#### Linux
+
 On Debian-based systems you can install the dependencies with:
 
 ```shell
 sudo apt-get update
 sudo apt-get install libportaudio2 libportaudiocpp0 portaudio19-dev libasound-dev libsndfile1-dev -y
 ```
+
+#### macOS
 
 On macOS with Homebrew you can install the dependencies with:
 

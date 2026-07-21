@@ -8,6 +8,8 @@ path: docs/eleven-agents/customization/tools/mcp
 
 # Model Context Protocol
 
+#### User Responsibility
+
 You are responsible for the security, compliance, and behavior of any third-party MCP server you
 integrate with your ElevenLabs conversational agents. ElevenLabs provides the platform for
 integration but does not manage, endorse, or secure external MCP servers.
@@ -33,9 +35,15 @@ In this example, we'll use [Zapier MCP](https://zapier.com/mcp), which lets you 
 
 MCP servers are not yet manageable via the ElevenLabs CLI — use the dashboard or SDK.
 
+#### Add via the dashboard
+
+#### Open MCP integrations
+
 Navigate to the [MCP server integrations dashboard](https://elevenlabs.io/app/agents/integrations) and click **Add Custom MCP Server**.
 
 ![Creating your first MCP server](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/335d1d8fced3cd82eed4ed43ba0058d3a8dbc431f81cdb387bf3d5964e5ead80/assets/images/conversational-ai/mcp-create.png)
+
+#### Configure the MCP server
 
 Enter the following details:
 
@@ -45,13 +53,19 @@ Enter the following details:
 * **Secret Token** (optional): Authorization header value
 * **HTTP Headers** (optional): Any additional headers the server requires
 
+#### Save and test the connection
+
 Click **Add Integration** to save the integration and test the connection to list available tools.
 
 ![Zapier example tools](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7c9d83baedd0e2dc74014d4a690159333bbef0eec37c36fa9ee0fd6cd455df0e/assets/images/conversational-ai/mcp-zapier.png)
 
+#### Attach the server to an agent
+
 The MCP server is now available to add to your agents. MCP support is available for both public and private agents.
 
 ![Adding the MCP server to an agent](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b18756710b4466a5fa462080d6f3b237d84f76f898d5c94d4583f31d2fa0395b/assets/images/conversational-ai/mcp-add.png)
+
+#### Add via the API
 
 ```python
 from elevenlabs import ElevenLabs
@@ -135,6 +149,8 @@ requiring approval for tools that modify data or perform sensitive operations.
 ## Security and disclaimer
 
 Integrating external MCP servers can expose your agents and data to third-party services. It is crucial to understand the security implications.
+
+#### Important Disclaimer
 
 By enabling MCP server integrations, you acknowledge that this may involve data sharing with
 third-party services not controlled by ElevenLabs. This could incur additional security risks.

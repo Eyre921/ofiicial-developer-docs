@@ -203,6 +203,10 @@ const connection = await elevenlabs.speechToText.realtime.connect({
 
 ## Next steps
 
+#### [Server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming)
+
 Set up server-side audio transcription using the WebSocket API.
+
+#### [Event reference](/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference)
 
 Full list of events and error types from the realtime STT API.

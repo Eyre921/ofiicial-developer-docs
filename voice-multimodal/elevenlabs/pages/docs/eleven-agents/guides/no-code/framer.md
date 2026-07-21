@@ -19,7 +19,11 @@ This tutorial will guide you through adding your ElevenLabs agent to your Framer
 
 ## Guide
 
+#### Visit your Framer editor
+
 Open your website in the Framer editor and click on the primary desktop on the left.
+
+#### Add the ElevenAgents component
 
 Copy and paste the following url into the page you would like to add the ElevenLabs agent to:
 
@@ -28,6 +32,8 @@ https://framer.com/m/ConversationalAI-iHql.js@y7VwRka75sp0UFqGliIf
 ```
 
 You'll now see a ElevenAgents asset on the 'Layers' bar on the left and the ElevenAgents component's details on the right.
+
+#### Fill in the agent details
 
 Enable the ElevenLabs agent by filling in the agent ID in the bar on the right.
 You can find the agent ID in the [ElevenLabs dashboard](https://elevenlabs.io/app/agents).

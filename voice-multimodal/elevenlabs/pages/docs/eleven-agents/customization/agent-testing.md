@@ -47,12 +47,16 @@ Simulation testing evaluates your agent across a full, multi-turn conversation w
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/ec2b27db7da62af2d82be756b2f830f0d0257a304d7c5ccb674c0a02ee8854ae/assets/images/conversational-ai/agent-simulation-test.png" alt="Simulation test creation UI" />
 
+#### Define the scenario
+
 Describe the user's context, intent, and behavior in natural language. The simulator uses this
 scenario to drive the conversation.
 
 **Example scenario:**
 
 > "A tourist who is not fluent in English is trying to place an order at a restaurant."
+
+#### Set the success condition
 
 Define the outcome that should count as a pass. This prompt is used to evaluate whether the
 full conversation succeeded.
@@ -61,12 +65,16 @@ full conversation succeeded.
 
 > "The agent confirmed the order details, handled clarifying questions, and completed the order without misunderstandings."
 
+#### Set max turns
+
 Choose how long the simulation can run before stopping. Use a lower value for focused checks
 and a higher value for complex workflows.
 
 * Minimum: `1`
 * Maximum: `50`
 * Default: `5`
+
+#### Run and review the result
 
 Execute the test and inspect the generated conversation transcript. Review the pass/fail result
 against your success condition, then iterate on your prompt, tools, or agent configuration.
@@ -110,6 +118,8 @@ For full multi-turn outcomes, use [Simulation Testing](#simulation-testing).
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/62de63965584fd1b2368edfb204bd90495d03ba87fe137889a5f396859dc4dbc/assets/images/conversational-ai/agent-llm-eval-test.png" alt="Next Reply (Scenario) Testing Interface" />
 
+#### Define the chat history
+
 Provide the conversation history leading up to the reply you want to evaluate. This can be a
 single user message or multiple turns of context.
 
@@ -119,6 +129,8 @@ single user message or multiple turns of context.
 User: "I'd like to cancel my subscription. I've been charged twice this month and I'm frustrated."
 ```
 
+#### Set success criteria
+
 Describe in plain language what the agent's response should achieve. Be specific about the
 expected behavior, tone, and actions.
 
@@ -126,8 +138,10 @@ expected behavior, tone, and actions.
 
 * The agent should acknowledge the customer's frustration with empathy
 * The agent should offer to investigate the duplicate charge
-* The agent should provide clear next steps for cancellation or resolution
+* The agent should provide clear next steps for cancelation or resolution
 * The agent should maintain a professional and helpful tone
+
+#### Provide examples
 
 Supply both success and failure examples to help the evaluator understand the nuances of your
 criteria.
@@ -140,6 +154,8 @@ criteria.
 
 > "You need to contact billing department for refund issues. Your subscription will be cancelled."
 
+#### Run the test
+
 Execute the test. An LLM evaluator compares the agent's next reply against your success
 criteria and examples to determine pass/fail status.
 
@@ -151,10 +167,16 @@ Tool call testing verifies that your agent correctly uses tools and passes the r
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/291c48ac70376efa1991014f7b3ff90eb9910c9adffe250f2bf521c707c5c755/assets/images/conversational-ai/agent-tool-call-test.png" alt="Tool Call Testing Interface" />
 
+#### Select the tool
+
 Choose which tool you expect the agent to call in the given scenario (e.g.,
 `transfer_to_number`, `end_call`, `lookup_order`).
 
+#### Define expected parameters
+
 Specify what data the agent should pass to the tool. You have three validation methods:
+
+#### Validation Methods
 
 **Exact Match**\
 The parameter must exactly match your specified value.
@@ -177,8 +199,12 @@ An LLM evaluates if the parameter is semantically correct based on context.
 Message: "Should be a polite message mentioning the connection"
 ```
 
+#### Configure dynamic variables
+
 When testing in development, use dynamic variable values that match those that would be actual
 values in production. Example: `{{ customer_name }}` or `{{ order_id }}`
+
+#### Run and validate
 
 Execute the test to ensure the agent calls the correct tool with proper parameters.
 
@@ -194,9 +220,13 @@ Tool call testing is essential for high-stakes scenarios:
 
 Write tests for new behavior or known failures, run them while you iterate on prompts and configuration, then save once they pass.
 
+#### Run via the dashboard
+
 Navigate to the Tests tab in your agent's interface. From there, you can run individual tests, select multiple tests from your library as a batch, or execute your entire suite with **Run All Tests**.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b1becf589a1373a780dad1109fd25e0e910d7aa821b09b047133553b1895914b/assets/images/conversational-ai/testrun.gif" alt="Running tests on an agent" />
+
+#### Run via the CLI
 
 Integrate testing into your development pipeline:
 
@@ -209,6 +239,8 @@ This enables:
 * Automated testing on every code change
 * Prevention of regressions before deployment
 * Consistent agent behavior across environments
+
+#### Run via the API
 
 Create tests with [Create test](/docs/api-reference/tests/create) and execute them with [Run tests on the agent](/docs/api-reference/tests/run-tests).
 
@@ -299,14 +331,22 @@ const invocation = await elevenlabs.conversationalAi.agents.runTests(
 
 ## Best Practices
 
+#### Evaluate agent persona consistency
+
 Test that your agent maintains its defined personality, tone, and behavioral boundaries across
 diverse conversation scenarios and emotional contexts.
+
+#### Verify complex multi-turn reasoning
 
 Create scenarios that test the agent's ability to maintain context, follow conditional logic,
 and handle state transitions across extended conversations.
 
+#### Test against prompt injection attempts
+
 Evaluate how your agent responds to attempts to override its instructions or extract sensitive
 system information through adversarial inputs.
+
+#### Assess ambiguous intent resolution
 
 Test how effectively your agent clarifies vague requests, handles conflicting information, and
 navigates situations where user intent is unclear.

@@ -2967,6 +2967,69 @@ tg beta models ls-files ml_abc123
 
 You can also see uploaded models on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard.
 
+## Check revision validation
+
+After files land, Together validates the revision's weights automatically. Validation checks that the weights are in safetensors format and that the config and architecture are compatible with the base model. A revision must reach `REVISION_VALIDATION_STATUS_SUCCESS` before you can deploy it when you pin that revision explicitly.
+
+List revisions for a model:
+
+```bash CLI theme={null}
+tg beta models ls-revisions ml_abc123
+```
+
+The list and retrieve revision APIs also return validation fields on each revision. Replace `$PROJECT_ID` with your project ID (`proj_...`):
+
+```bash Shell theme={null}
+# All revisions
+curl -s -H "Authorization: Bearer $TOGETHER_API_KEY" \
+  "https://api.together.ai/v2/projects/$PROJECT_ID/models/ml_abc123/revisions"
+
+# One revision
+curl -s -H "Authorization: Bearer $TOGETHER_API_KEY" \
+  "https://api.together.ai/v2/projects/$PROJECT_ID/models/ml_abc123/revisions/rv_abc123"
+```
+
+Each revision in the response includes:
+
+```json theme={null}
+{
+  "data": [
+    {
+      "revisionId": "rv_abc123",
+      "createdAt": "2026-07-02T20:05:00Z",
+      "validationStatus": "REVISION_VALIDATION_STATUS_SUCCESS",
+      "lastValidatedAt": "2026-07-02T20:06:00Z",
+      "validationErrors": []
+    }
+  ],
+  "object": "list"
+}
+```
+
+### Revision validation fields
+
+| Field              | Description                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| `validationStatus` | Validation state for this revision. See the table below.                                  |
+| `lastValidatedAt`  | When validation last ran for this revision. Omitted until validation has started.         |
+| `validationErrors` | Errors from the last validation run. Empty when validation succeeded or is still pending. |
+
+### `validationStatus` values
+
+| Value                                    | Meaning                                                                                 |
+| ---------------------------------------- | --------------------------------------------------------------------------------------- |
+| `REVISION_VALIDATION_STATUS_PENDING`     | Validation is queued or running. Poll until the status changes.                         |
+| `REVISION_VALIDATION_STATUS_SUCCESS`     | Weights validated successfully. The revision is ready to deploy.                        |
+| `REVISION_VALIDATION_STATUS_FAILED`      | Validation failed. Read `validationErrors` for the cause.                               |
+| `REVISION_VALIDATION_STATUS_ERROR`       | Validation could not complete due to an internal error. Retry later or contact support. |
+| `REVISION_VALIDATION_STATUS_UNSPECIFIED` | Validation has not started yet.                                                         |
+
+When validation fails, each entry in `validationErrors` includes `rule`, `severity`, and `message` describing what went wrong. Common causes include missing safetensors files, an invalid `config.json`, or weights that don't match the declared base model.
+
+<Note>
+  Only safetensors format is supported. Models with only `.bin` or `.pt` files fail validation.
+</Note>
+
 ## Deploy the model
 
 Once the upload completes, your model has an ID (`ml_...`) in your project. Deploy it the same way as a base model. First, find its ID by listing the models in your project:
@@ -2994,6 +3057,8 @@ Once the deployment is ready, send a request to the endpoint string, as shown in
 **`tokenizer.chat_template is not set` during chat inference:** The uploaded tokenizer doesn't define a chat template. Add a compatible `chat_template` to `tokenizer_config.json` before uploading, or use the text completions API with the prompt format expected by the model.
 
 **Model delete fails with `the model is referenced by a live deployment` (HTTP 400):** A deployment still references this model. [Stop the deployment](/docs/dedicated-endpoints/manage#stop-a-deployment), wait for `DEPLOYMENT_STATE_STOPPED`, [delete the deployment](/docs/dedicated-endpoints/manage#delete-resources), then delete the model with `tg beta models delete <model_id>`.
+
+**Revision validation failed or still pending:** Check `validationStatus` on the revision with [Check revision validation](#check-revision-validation). Wait for `REVISION_VALIDATION_STATUS_SUCCESS` before you deploy a pinned revision.
 
 
 # Manage endpoints and deployments
@@ -3231,7 +3296,7 @@ To delete an endpoint that still has deployments, pass `--force` to `rm`. If the
 * **Deployment `FAILED` for another reason:** Read `status.message`. Common causes include deterministic placement rejection (`Cannot place replicas: …`), manifest generation failure, or remediation exhaustion.
 * **Model not supported:** Not every model can be deployed. See the [model catalog](/docs/dedicated-endpoints/models). A fine-tuned model deploys only if its base model is supported.
 * **Deploy fails with `the model has no revisions to deploy`:** The model record exists but has no uploaded weights yet. Finish [uploading the model](/docs/dedicated-endpoints/custom-models#upload-the-model) and wait for the upload to succeed before you deploy it.
-* **Deploy fails with a revision validation error:** When you pin a specific model or speculator revision, that revision must have passed validation first. Deploy the latest validated revision, or wait for the pinned revision to finish validating.
+* **Deploy fails with a revision validation error:** When you pin a specific model or speculator revision, that revision must have passed validation first. Check `validationStatus` on the revision ([custom models](/docs/dedicated-endpoints/custom-models#check-revision-validation), [adapters](/docs/dedicated-endpoints/adapter#check-revision-validation)). Deploy the latest validated revision, or wait for the pinned revision to finish validating.
 * **Deployment delete fails with `the deployment is referenced by an endpoint's traffic split and cannot be deleted; please drop traffic split weight to 0 before deleting the deployment` (HTTP 400):** The deployment still has weight in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic). Set its weight to 0 (or remove it from the split) before deleting. The CLI's `tg beta endpoints rm dep_...` detaches it automatically.
 
 ## Next steps
@@ -6062,8 +6127,6 @@ The following models support function-calling fine-tuning. See [supported models
   | Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      |
   | Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           |
   | Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       |
-  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         |
   | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       |
   | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    |
@@ -7614,8 +7677,6 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | Qwen         | Qwen3 30B A3B Base                                 | `Qwen/Qwen3-30B-A3B-Base`                            |
   | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                 |
   | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                               |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
-  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                      |
   | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                    |
   | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
@@ -7939,8 +8000,6 @@ The tables below list every model available through the fine-tuning API. Context
 | Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
-| Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
 | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
 | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
@@ -9233,16 +9292,45 @@ Once enabled, the autoscaler runs continuously in the background, responding to 
   Autoscaling works with both reserved and on-demand capacity. Scaling beyond reserved capacity will provision on-demand nodes at standard hourly rates.
 </Note>
 
-### Targeted Scale-down
+### Targeted scale-down
 
-To control which nodes are removed during scale-down:
+To control which specific nodes are removed during scale-down, mark them for deletion before triggering the scale-down. Annotated and cordoned nodes are prioritized for deletion above all others.
 
-1. **Cordon the node(s)** to prevent new workloads
-   * For Kubernetes: `kubectl cordon <node_to_cordon>`
-   * For Slurm: `sudo scontrol update NodeName=<node_name> State=drain Reason="<reason_for_cordoning>"`
-2. **Trigger scale-down** via UI, CLI, or API
+<Steps>
+  <Step title="Mark the node for deletion">
+    Choose one of the following approaches. Annotation is preferred because it leaves the node schedulable for existing workloads until scale-down runs.
 
-Cordoned and annotated nodes are prioritized for deletion above all others.
+    * **Kubernetes (preferred): annotate the node.**
+
+      ```bash theme={null}
+      kubectl annotate node <node_name> node.together.ai/delete-node-on-scale-down=true
+      ```
+
+    * **Kubernetes: cordon the node.** Use this if you also want to stop new pods from being scheduled onto the node immediately.
+
+      ```bash theme={null}
+      kubectl cordon <node_name>
+      ```
+
+    * **Slurm: drain the node.**
+
+      ```bash theme={null}
+      sudo scontrol update NodeName=<node_name> State=drain Reason="<reason_for_draining>"
+      ```
+  </Step>
+
+  <Step title="Wait for the node to start draining">
+    In the Together Cloud UI, wait until the node shows **Node is cordon/draining** before you trigger scale-down. This confirms the operator has picked up the annotation or cordon and is safely evicting workloads.
+  </Step>
+
+  <Step title="Trigger scale-down">
+    Scale the cluster down by one node via the UI, CLI, or API. The marked node is removed first.
+  </Step>
+</Steps>
+
+<Tip>
+  Scale down one node at a time. Repeat the steps above for each additional node you want to remove — this gives the operator time to drain each node cleanly and makes it easy to stop if something goes wrong.
+</Tip>
 
 ## Storage Management
 
@@ -21786,6 +21874,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
 | Google            | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
 | LiquidAI          | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
+| Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | \$0.00                        | -                                    | \$0.00                         | -            | -                | -                  |
 
 **Chat model examples**
 
@@ -22018,6 +22107,10 @@ Serverless uses the same [inference APIs](/docs/inference/overview#shared-infere
 
 Serverless models are [rate-limited](/docs/serverless/rate-limits), so they work best when you're prototyping or evaluating a model, or when your production traffic is variable, bursty, or low enough that per-token pricing is cost-effective. If your traffic is steady, you need higher rate limits, or you want reserved hardware, use a [dedicated endpoint](/docs/dedicated-endpoints/overview).
 
+## Region selection
+
+Together AI routes serverless requests across its own infrastructure, and the serving region is not selectable. If you need requests to run in a specific region (for latency, residency, or compliance reasons), use a [dedicated endpoint](/docs/dedicated-endpoints/overview) and pin its hardware to your target region.
+
 ## Pricing
 
 Serverless models bill based on usage, with no minimums and no provisioning cost. You pay per unit of work, with units determined by model type:
@@ -22085,11 +22178,11 @@ To maximize successful requests on serverless models:
 
 For example, if your limit is 60 requests per minute (RPM), send roughly 1 request per second (RPS) across the minute rather than 60 requests in a single second. The shorter the window you concentrate requests into, the burstier the traffic. Together does its best to serve bursty traffic, but success depends on the model's real-time load and available capacity at that moment.
 
-Every serverless inference API response includes `x-ratelimit-reset`, which reports the suggested retry interval for the model. Consider using **exponential backoff** so requests continue trying again with increasing wait times, instead of failing immediately. For spend and usage trends across keys and workloads, see your project's [cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics).
+When a request is rate limited, the `429` response includes `x-ratelimit-reset`, which reports the suggested retry interval for the model. Consider using **exponential backoff** so requests continue trying again with increasing wait times, instead of failing immediately. For spend and usage trends across keys and workloads, see your project's [cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics).
 
 ### Inspect your current rate limit
 
-Dynamic rate limits adjust with usage, so there are no fixed per-model limits published. The most reliable way to see how close you are to hitting a limit is to call it and read the `x-ratelimit-reset` response header. When you hit a `429`, the value reports how many seconds to wait before retrying.
+Dynamic rate limits adjust with usage, so there are no fixed per-model limits published. The most reliable signal is the response itself: successful requests come back without rate-limit headers, and when you hit a `429` the response includes `x-ratelimit-reset` with the number of seconds to wait before retrying.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -22103,11 +22196,11 @@ Dynamic rate limits adjust with usage, so there are no fixed per-model limits pu
       messages=[{"role": "user", "content": "ping"}],
   )
 
-  print("status:", response.http_response.status_code)
-  print(
-      "x-ratelimit-reset:",
-      response.http_response.headers.get("x-ratelimit-reset"),
-  )
+  reset = response.http_response.headers.get("x-ratelimit-reset")
+  if reset is None:
+      print("status:", response.http_response.status_code, "(not rate limited)")
+  else:
+      print("rate limited, retry in", reset, "seconds")
   ```
 
   ```bash cURL theme={null}
@@ -22117,7 +22210,7 @@ Dynamic rate limits adjust with usage, so there are no fixed per-model limits pu
     -d '{
       "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
       "messages": [{"role": "user", "content": "ping"}]
-    }' | grep -i "x-ratelimit-reset"
+    }' | grep -i "x-ratelimit-reset" || echo "not rate limited"
   ```
 </CodeGroup>
 
@@ -28380,6 +28473,80 @@ print(tokenizer.decode(output[0], skip_special_tokens=True))
 ```
 
 To download a specific checkpoint instead of the final one, pass `--checkpoint-step <STEP_NUMBER>` to `tg fine-tuning download` (or `checkpoint_step=<STEP_NUMBER>` to `client.fine_tuning.content()`). List checkpoints with `tg fine-tuning list-checkpoints <JOB_ID>`.
+
+## Model registry object IDs
+
+When a job uploads its output artifacts to the Together model registry alongside the primary storage write, the job and checkpoint responses include the registry object and revision IDs. Use these IDs to reference the uploaded weights in downstream workflows (for example, when binding a fine-tuned adapter to a dedicated endpoint).
+
+The fields are omitted when the registry upload did not run or did not succeed.
+
+### On the job
+
+[`GET /fine-tunes/{id}`](/reference/get-fine-tunes-id) includes the final artifact IDs once the job reaches `completed`:
+
+| Field                        | Description                                                                                                                                    |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_…`). Present when the job produced a model artifact and the upload succeeded. |
+| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_…`).                                                                        |
+| `adapter_object_id`          | Registry object ID for the final adapter weights on LoRA jobs.                                                                                 |
+| `adapter_object_revision_id` | Registry revision ID for the final adapter weights on LoRA jobs.                                                                               |
+
+<CodeGroup>
+  ```python Python theme={null}
+  job = client.fine_tuning.retrieve(id="<JOB_ID>")
+  if job.model_object_id:
+      print(job.model_object_id, job.model_object_revision_id)
+  if job.adapter_object_id:
+      print(job.adapter_object_id, job.adapter_object_revision_id)
+  ```
+
+  ```typescript TypeScript theme={null}
+  const job = await client.fineTuning.retrieve("<JOB_ID>");
+  if (job.model_object_id) {
+    console.log(job.model_object_id, job.model_object_revision_id);
+  }
+  if (job.adapter_object_id) {
+    console.log(job.adapter_object_id, job.adapter_object_revision_id);
+  }
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning retrieve "<JOB_ID>"
+  ```
+</CodeGroup>
+
+### On checkpoints
+
+[`GET /fine-tunes/{id}/checkpoints`](/reference/get-fine-tunes-id-checkpoint) returns the same ID pair on each checkpoint entry:
+
+| Field                | Description                                                                |
+| -------------------- | -------------------------------------------------------------------------- |
+| `object_id`          | Registry object ID for that checkpoint's artifact (for example, `ml_…`).   |
+| `object_revision_id` | Registry revision ID for that checkpoint's artifact (for example, `rv_…`). |
+
+Intermediate checkpoints carry the IDs from the upload at that step. Final model and adapter checkpoints in the list reuse the job-level IDs from the table above.
+
+<CodeGroup>
+  ```python Python theme={null}
+  checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
+  for cp in checkpoints.data:
+      if cp.object_id:
+          print(cp.step, cp.object_id, cp.object_revision_id)
+  ```
+
+  ```typescript TypeScript theme={null}
+  const checkpoints = await client.fineTuning.listCheckpoints("<JOB_ID>");
+  for (const cp of checkpoints.data) {
+    if (cp.object_id) {
+      console.log(cp.step, cp.object_id, cp.object_revision_id);
+    }
+  }
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning list-checkpoints "<JOB_ID>"
+  ```
+</CodeGroup>
 
 ## Troubleshooting
 
@@ -35461,7 +35628,7 @@ async_client = AsyncTogether()
 
 user_prompt = "What are some fun things to do in SF?"
 reference_models = [
-    "Qwen/Qwen3.6-Plus",
+    "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "moonshotai/Kimi-K2.6",
     "MiniMaxAI/MiniMax-M2.7",
@@ -35529,7 +35696,7 @@ async_client = AsyncTogether()
 
 user_prompt = "What are 3 fun things to do in SF?"
 reference_models = [
-    "Qwen/Qwen3.6-Plus",
+    "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "moonshotai/Kimi-K2.6",
     "MiniMaxAI/MiniMax-M2.7",
@@ -36605,7 +36772,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
 <CodeGroup>
   ```python Python theme={null}
   reference_models = [
-      "Qwen/Qwen3.6-Plus",
+      "zai-org/GLM-5.2",
       "openai/gpt-oss-120b",
       "meta-llama/Llama-3.3-70B-Instruct-Turbo",
       "MiniMaxAI/MiniMax-M2.7",
@@ -36644,7 +36811,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
 
   ```typescript TypeScript theme={null}
   const referenceModels = [
-    "Qwen/Qwen3.6-Plus",
+    "zai-org/GLM-5.2",
     "openai/gpt-oss-120b",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "MiniMaxAI/MiniMax-M2.7",
@@ -40378,8 +40545,12 @@ The `media` object is the unified way to pass images, videos, and audio into a S
 | ------------------ | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `frame_images`     | array | Up to two keyframe images. Each item: `{input_image, frame}` where `frame` is `"first"` or `"last"`. With one item and no `frame`, it's used as the first frame. With two items and no `frame`, they're used as first and last in order. |
 | `reference_images` | array | Up to nine reference images for character, object, or scene consistency. Each item is a URL or base64-encoded image.                                                                                                                     |
-| `reference_videos` | array | Up to three reference videos for motion or composition guidance. Each item: `{video: "url"}`.                                                                                                                                            |
+| `reference_videos` | array | Up to three reference videos for motion or composition guidance. Each item: `{video: "url"}`. Each video must be between 2 and 15 seconds long.                                                                                          |
 | `reference_audios` | array | Up to three reference audio files to drive video generation. Each item is a URL. Requires at least one `reference_images` or `reference_videos` entry.                                                                                   |
+
+<Note>
+  Reference videos must be between 2 and 15 seconds long. Files outside this range are rejected with `invalidDuration` (`Media seconds must be in [2, 15] seconds range`). Trim your clip before submitting the job — for example, `ffmpeg -i input.mp4 -t 5 -c copy reference.mp4` produces a 5-second reference clip.
+</Note>
 
 ### Input compatibility
 
@@ -44089,13 +44260,34 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="July 20, 2026">
+  ## Fine-tuning metrics dashboard
+
+  Fine-tuning jobs now have a **Metrics** tab in the [web dashboard](https://api.together.ai/fine-tuning) that charts training progress. Metrics stream in live while a job runs and stay available after it completes.
+
+  **What's new:**
+
+  * **Live training curves:** Watch training loss, learning rate, and gradient norm update as the job trains, without leaving the dashboard.
+  * **Preference-tuning metrics:** DPO and other preference jobs add reward accuracy, reward margin, chosen and rejected rewards and log-probabilities, and approximate KL.
+  * **Interactive charts:** Zoom and pan across all charts on a shared step axis, switch the x-axis between step and time, toggle linear or logarithmic scales, and sync a hover crosshair across every metric.
+  * **Compare runs:** Overlay metrics from multiple jobs to [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side.
+</Update>
+
+<Update label="July 17, 2026">
+  ## Privacy and training opt-in settings
+
+  Training opt-in and other privacy toggles now live under **Privacy** in [Organization Settings](https://api.together.ai/settings/organization/~current). Organization admins control data-sharing settings for all traffic sent under the organization's API keys.
+
+  See [Privacy and security](/docs/privacy-and-security).
+
+  ## Dedicated endpoint deployment listing
+
+  Endpoint get and list responses now include at most the 10 newest deployment summaries per endpoint. Use the deployments list API to retrieve every deployment on an endpoint.
+
+  See [Manage endpoints and deployments](/docs/dedicated-endpoints/manage).
+</Update>
+
 <Update label="July 16, 2026">
-  ## New serverless models
-
-  The following models are now available on [serverless](/docs/serverless/models):
-
-  * `thinkingmachines/Inkling`: 552.8B parameters, 524,288 context length, NVFP4 quantization. Pricing: \$1.00 input / \$4.05 output / \$0.17 cached input (per 1M tokens).
-
   ## Dedicated model inference
 
   [Dedicated model inference](/docs/dedicated-endpoints/overview) (DMI) serves a model on reserved GPUs, giving you higher throughput, lower latency, and predictable performance with no hard rate limits. It uses the same [inference APIs](/docs/inference/overview#shared-inference-api) as serverless, so you can prototype on serverless and deploy on dedicated hardware without changing your application code.
@@ -44111,11 +44303,51 @@ Source: https://docs.together.ai/docs/changelog
     If you're already using dedicated endpoints, you can migrate to the v2 API by following the [migration guide](/docs/dedicated-endpoints/migrate-from-v1).
   </Note>
 
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `thinkingmachines/Inkling`: 552.8B parameters, 524,288 context length, NVFP4 quantization. Pricing: \$1.00 input / \$4.05 output / \$0.17 cached input (per 1M tokens).
+
   ## Image inputs for evaluations
 
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
 
   See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
+</Update>
+
+<Update label="July 15, 2026">
+  ## TogetherLink
+
+  TogetherLink is an open-source launcher that connects Claude Code, Codex, ChatGPT Desktop, Pi Code, and OpenCode to models hosted by Together AI. Install with one command and run your existing tools without hand-editing provider settings.
+
+  See [Configure Claude Code, Codex, and ChatGPT with Together AI models](/docs/how-to-use-togetherlink).
+
+  ## Slurm cluster OIDC SSH
+
+  Slurm GPU clusters with OIDC enabled now support browser-based SSH through the Together CLI. Choose **OIDC** on the cluster details page to sign in without uploading an SSH key. Key-based SSH remains available.
+
+  See [Cluster management](/docs/gpu-clusters-management#direct-ssh-access).
+
+  ## Fine-tuning model limits API
+
+  The model limits endpoint now returns `supports_full_training` so you can check whether a model supports full fine-tuning before submitting a job. When the field is `false`, the model is LoRA-only.
+
+  See [LoRA vs. full fine-tuning](/docs/fine-tuning/lora-vs-full#what-to-expect-from-full-fine-tuning).
+</Update>
+
+<Update label="July 14, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `google/gemma-4-12B-it`: 262,144 context length.
+
+  ## GPU cluster health monitoring
+
+  Passive health checks now document the full set of monitored failure signals and their recommended repair actions. Slurm node unavailability surfaces as a warning-only alert without an automated repair action.
+
+  See [Health checks](/docs/health-checks#passive-health-checks) and [Node repair](/docs/node-repair#recommended-repair-actions).
 </Update>
 
 <Update label="July 10, 2026">
@@ -46629,6 +46861,8 @@ To list saved checkpoints of a job:
 ```bash theme={null}
 tg fine-tuning list-checkpoints [FT_ID]
 ```
+
+Each checkpoint includes `step`, `path`, `created_at`, `checkpoint_type`, and `checkpoint` (the download selector: `model` or `adapter`). When the job uploaded the artifact to the Together model registry, the entry also includes `object_id` and `object_revision_id` (for example, `ml_…` and `rv_…`). See [Model registry object IDs](/docs/fine-tuning/deployment#model-registry-object-ids) for how these relate to the job-level `model_object_id` / `adapter_object_id` fields.
 
 ## Download model weights
 

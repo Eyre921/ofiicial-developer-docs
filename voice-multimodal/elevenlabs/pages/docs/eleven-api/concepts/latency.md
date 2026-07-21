@@ -74,10 +74,18 @@ See [Understanding audio streaming](/docs/eleven-api/concepts/audio-streaming) f
 
 ## Related
 
+#### [Latency optimisation](/docs/eleven-api/guides/how-to/best-practices/latency-optimization)
+
 Specific techniques and configuration options to reduce end-to-end latency.
+
+#### [Understanding audio streaming](/docs/eleven-api/concepts/audio-streaming)
 
 How streaming reduces time-to-first-audio and when to use WebSockets.
 
+#### [Models reference](/docs/overview/models)
+
 Latency figures and tradeoffs for each available model.
+
+#### [Streaming how-to guide](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
 
 Practical implementation of TTS streaming.

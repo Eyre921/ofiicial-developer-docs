@@ -58,13 +58,19 @@ Orchestrator Agent (Initial Qualification)
 
 Agent transfer is configured using the `transfer_to_agent` system tool.
 
+#### Add the transfer tool
+
 Enable agent transfer by selecting the `transfer_to_agent` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to AI Agent" when adding a tool.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/3e2756669b192395680d48a17c622493faee9fb61649f491bbe66820a91d46ef/assets/images/conversational-ai/transfertool.png" alt="Add Transfer Tool" />
 
+#### Configure tool description (optional)
+
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/6b916200ef66cd0c6f5af7f6ba51b4b48eb1a266c7b10e863ae874c5a11452ae/assets/images/conversational-ai/transferconfig.png" alt="Transfer Tool Description" />
+
+#### Define transfer rules
 
 Configure the specific rules for transferring to other agents. For each rule, specify:
 

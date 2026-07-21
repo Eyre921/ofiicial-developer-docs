@@ -32,16 +32,24 @@ Follow our [Next.js guide](/docs/eleven-agents/guides/quickstarts/next-js) for i
 
 ## Agent configuration
 
+#### Sign in to ElevenLabs
+
 Go to [elevenlabs.io](https://elevenlabs.io/app/sign-up) and sign in to your account.
+
+#### Create a new agent
 
 Navigate to [Agents Platform > Agents](https://elevenlabs.io/app/agents/agents) and
 create a new agent from the blank template.
+
+#### Set the first message
 
 Set the first message and specify the dynamic variable for the platform.
 
 ```txt
 Hi {{user_name}}, I'm Jess from the ElevenLabs team. I'm here to help you design your very own ElevenLabs agent! To kick things off, let me know what kind of agent you're looking to create. For example, do you want a support agent, to help your users answer questions, or a sales agent to sell your products, or just a friend to chat with?
 ```
+
+#### Set the system prompt
 
 Set the system prompt. You can also include dynamic variables here.
 
@@ -56,6 +64,8 @@ You are Jess, a helpful agent helping {{user_name}} to design their very own Ele
 Always call the `set_ui_state` tool when moving between steps!
 ```
 
+#### Set up the client tools
+
 Set up the following client tool to navigate between the steps:
 
 * Name: `set_ui_state`
@@ -69,12 +79,18 @@ Set up the following client tool to navigate between the steps:
     * Value Type: LLM Prompt
     * Description: The step to navigate to in the UI. Only use the steps that are defined in the system prompt!
 
+#### Set your agent's voice
+
 Navigate to the `Voice` tab and set the voice for your agent. You can find a list of recommended voices for Agents Platform in the [Conversational Voice Design docs](/docs/eleven-agents/customization/voice/best-practices/conversational-voice-design#voices).
+
+#### Set the evaluation criteria
 
 Navigate to the `Analysis` tab and add a new evaluation criteria.
 
 * Name: `all_data_provided`
   * Prompt: Evaluate whether the user provided a description of the agent they are looking to generate as well as a description of the voice the agent should have.
+
+#### Configure the data collection
 
 You can use the post call analysis to extract data from the conversation. In the `Analysis` tab, under `Data Collection`, add the following items:
 
@@ -84,6 +100,8 @@ You can use the post call analysis to extract data from the conversation. In the
 * Identifier: `agent_description`
   * `data-type`: `String`
   * Description: Based on the description about the agent the user is looking to design, generate a prompt that can be used to train a model to act as the agent.
+
+#### Configure the post-call webhook
 
 [Post-call webhooks](https://elevenlabs.io/docs/eleven-agents/workflows/post-call-webhooks) are used to notify you when a call ends and the analysis and data extraction steps have been completed.
 
@@ -714,6 +732,10 @@ Now open [http://localhost:3000](http://localhost:3000) and start designing your
 
 ## Next steps
 
+#### [ElevenAgents](/docs/eleven-agents/quickstart)
+
 Explore the full ElevenAgents platform for building and deploying voice agents.
+
+#### [Agent analysis](/docs/eleven-agents/customization/agent-analysis)
 
 Review conversation data, success evaluation, and agent performance metrics.

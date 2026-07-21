@@ -19,11 +19,7 @@ Request stitching is not available for the `eleven_v3` model.
 
 Here's an example without Request Stitching:
 
-<video controls src="https://eleven-public-cdn.elevenlabs.io/audio/docs/without_request_stitching.mp3" />
-
 And the same example with Request Stitching:
-
-<video controls src="https://eleven-public-cdn.elevenlabs.io/audio/docs/with_request_stitching.mp3" />
 
 ## How to use Request Stitching
 
@@ -31,6 +27,8 @@ Request Stitching is easiest when using the ElevenLabs SDKs.
 
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
+
+#### Stitch multiple requests together
 
 Create a new file named `example.py` or `example.mts`, depending on your language of choice and add the following code:
 
@@ -136,6 +134,8 @@ const combinedStream = Readable.from(Buffer.concat(audioBuffers));
 play(combinedStream);
 ```
 
+#### Execute the code
+
 ```python
 python example.py
 ```
@@ -148,16 +148,28 @@ You should hear the combined stitched audio play.
 
 ## FAQ
 
+#### How does Request Stitching work with streaming?
+
 In order to use the request IDs of a previous request for conditioning it needs to have processed completely. In case of streaming this means the audio has to be read completely from the response body.
+
+#### How much difference does Request Stitching make?
 
 The difference depends on the model, voice and voice settings used.
 
+#### How old can the request IDs be?
+
 The request IDs should be no older than two hours.
+
+#### Is Request Stitching available on every plan?
 
 Yes, unless you are an enterprise user with increased privacy requirements.
 
 ## Next steps
 
+#### [TTS streaming](/docs/eleven-api/guides/how-to/text-to-speech/streaming)
+
 Stream audio progressively as it is generated for lower latency playback.
+
+#### [API reference](/docs/api-reference/text-to-speech/stream)
 
 Complete request stitching parameter reference.

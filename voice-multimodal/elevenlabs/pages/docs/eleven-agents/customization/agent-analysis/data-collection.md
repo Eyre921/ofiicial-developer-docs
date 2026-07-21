@@ -25,9 +25,13 @@ Data collection supports four data types to handle various information formats:
 
 ## Configuration
 
+#### Access data collection settings
+
 In the **Analysis** tab of your agent settings, navigate to the **Data collection** section.
 
 ![Setting up data collection](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1dd7120a0d0236e4b225f1054f17c13956dc5ccc7de275e600eaab9e20604634/assets/images/conversational-ai/collection.gif)
+
+#### Add data collection items
 
 Click **Add item** to create a new data extraction rule.
 
@@ -41,16 +45,22 @@ The description field is passed to the LLM and should be as specific as possible
 
 Data collection items are limited to 40 per agent for Trial and Enterprise plans, and 25 per agent for other plans.
 
+#### Review extracted data
+
 Extracted data appears in your conversation history, allowing you to review what information was captured from each interaction.
 
 ![Data collection results in conversation history](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/beddd4acf7a431f10b6d6ac602d4ef16604e93bc51040325e185df6517ba3021/assets/images/conversational-ai/collection_result.gif)
 
 ## Best Practices
 
+#### Writing effective extraction prompts
+
 * Be explicit about the expected format (e.g., "email address in the format [user@domain.com](mailto:user@domain.com)")
 * Specify what to do when information is missing or unclear
 * Include examples of valid and invalid data
 * Mention any validation requirements
+
+#### Common data collection examples
 
 **Contact Information:**
 
@@ -69,6 +79,8 @@ Extracted data appears in your conversation history, allowing you to review what
 * `was_angry`: "Determine if the customer expressed anger or frustration during the call"
 * `requested_callback`: "Determine if the customer requested a callback or follow-up"
 
+#### Handling missing or unclear data
+
 When the requested data cannot be found or is ambiguous in the transcript, the extraction will return null or empty values. Consider:
 
 * Using conditional logic in your applications to handle missing data
@@ -76,6 +88,8 @@ When the requested data cannot be found or is ambiguous in the transcript, the e
 * Training agents to consistently gather required information
 
 ## Data Type Guidelines
+
+#### String
 
 Use for text-based information that doesn't fit other types.
 
@@ -92,6 +106,8 @@ Use for text-based information that doesn't fit other types.
 * Include validation requirements
 * Consider standardization needs
 
+#### Boolean
+
 Use for yes/no, true/false determinations.
 
 **Examples:**
@@ -107,6 +123,8 @@ Use for yes/no, true/false determinations.
 * Handle ambiguous responses
 * Consider default values for unclear cases
 
+#### Integer
+
 Use for whole number values.
 
 **Examples:**
@@ -121,6 +139,8 @@ Use for whole number values.
 * Specify valid ranges when applicable
 * Handle non-numeric responses
 * Consider rounding rules if needed
+
+#### Number
 
 Use for decimal or floating-point values.
 
@@ -139,27 +159,41 @@ Use for decimal or floating-point values.
 
 ## Use Cases
 
+#### Lead Qualification
+
 Extract contact information, qualification criteria, and interest levels from sales conversations.
+
+#### Customer Intelligence
 
 Gather structured data about customer preferences, feedback, and behavior patterns for strategic
 insights.
 
+#### Support Analytics
+
 Capture issue categories, resolution details, and satisfaction scores for operational
 improvements.
+
+#### Compliance Documentation
 
 Extract required disclosures, consents, and regulatory information for audit trails.
 
 ## Troubleshooting
+
+#### Data extraction returning empty values
 
 * Verify the data exists in the conversation transcript
 * Check if your extraction prompt is specific enough
 * Ensure the data type matches the expected format
 * Consider if the information was communicated clearly during the conversation
 
-- Review extraction prompts for format specifications
-- Add validation requirements to prompts
-- Consider post-processing for data standardization
-- Test with various conversation scenarios
+#### Inconsistent data formats
+
+* Review extraction prompts for format specifications
+* Add validation requirements to prompts
+* Consider post-processing for data standardization
+* Test with various conversation scenarios
+
+#### Performance considerations
 
 * Each data collection rule adds processing time
 * Complex extraction logic may take longer to evaluate

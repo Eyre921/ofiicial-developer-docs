@@ -17,17 +17,31 @@ System tools provide this capability by allowing the assistant to perform action
 
 ### Available system tools
 
+#### [End call](/docs/eleven-agents/customization/tools/system-tools/end-call)
+
 Let your agent automatically terminate a conversation when appropriate conditions are met.
+
+#### [Language detection](/docs/eleven-agents/customization/tools/system-tools/language-detection)
 
 Enable your agent to automatically switch to the user's language during conversations.
 
+#### [Agent transfer](/docs/eleven-agents/customization/tools/system-tools/agent-transfer)
+
 Seamlessly transfer conversations between AI agents based on defined conditions.
+
+#### [Transfer to number](/docs/eleven-agents/customization/tools/system-tools/transfer-to-number)
 
 Transfer calls to external phone numbers or SIP URIs.
 
+#### [Skip turn](/docs/eleven-agents/customization/tools/system-tools/skip-turn)
+
 Enable the agent to skip their turns if the LLM detects the agent should not speak yet.
 
+#### [Play keypad touch tone](/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone)
+
 Enable agents to play DTMF tones to interact with automated phone systems and navigate menus.
+
+#### [Voicemail detection](/docs/eleven-agents/customization/tools/system-tools/voicemail-detection)
 
 Enable agents to automatically detect voicemail systems and optionally leave messages.
 
@@ -40,6 +54,8 @@ When creating an agent via API, you can add system tools to your agent configura
 When using a custom LLM with ElevenLabs agents, system tools are exposed as function definitions that your LLM can call. Each system tool has specific parameters and trigger conditions:
 
 ### Available system tools
+
+#### End call
 
 **Purpose**: Automatically terminate conversations when appropriate conditions are met.
 
@@ -70,6 +86,8 @@ When using a custom LLM with ElevenLabs agents, system tools are exposed as func
 
 Learn more: [End call tool](/docs/eleven-agents/customization/tools/system-tools/end-call)
 
+#### Language detection
+
 **Purpose**: Automatically switch to the user's detected language during conversations.
 
 **Trigger conditions**: The LLM should call this tool when:
@@ -99,6 +117,8 @@ Learn more: [End call tool](/docs/eleven-agents/customization/tools/system-tools
 
 Learn more: [Language detection tool](/docs/eleven-agents/customization/tools/system-tools/language-detection)
 
+#### Agent transfer
+
 **Purpose**: Transfer conversations between specialized AI agents based on user needs.
 
 **Trigger conditions**: The LLM should call this tool when:
@@ -127,6 +147,8 @@ Learn more: [Language detection tool](/docs/eleven-agents/customization/tools/sy
 **Implementation**: Define transfer rules mapping conditions to specific agent IDs. Configure which agents the current agent can transfer to. Agents are referenced by zero-indexed numbers in the transfer configuration.
 
 Learn more: [Agent transfer tool](/docs/eleven-agents/customization/tools/system-tools/agent-transfer)
+
+#### Transfer to number
 
 **Purpose**: Seamlessly hand off conversations to human operators when AI assistance is insufficient.
 
@@ -160,6 +182,8 @@ Learn more: [Agent transfer tool](/docs/eleven-agents/customization/tools/system
 
 Learn more: [Transfer to number tool](/docs/eleven-agents/customization/tools/system-tools/transfer-to-number)
 
+#### Skip turn
+
 **Purpose**: Allow the agent to pause and wait for user input without speaking.
 
 **Trigger conditions**: The LLM should call this tool when:
@@ -188,6 +212,8 @@ Learn more: [Transfer to number tool](/docs/eleven-agents/customization/tools/sy
 
 Learn more: [Skip turn tool](/docs/eleven-agents/customization/tools/system-tools/skip-turn)
 
+#### Play keypad touch tone
+
 **Parameters**:
 
 * `reason` (string, optional): The reason for playing the DTMF tones (e.g., "navigating to extension", "entering PIN")
@@ -206,6 +232,8 @@ Learn more: [Skip turn tool](/docs/eleven-agents/customization/tools/system-tool
 ```
 
 Learn more: [Play keypad touch tone tool](/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone)
+
+#### Voicemail detection
 
 **Parameters**:
 
@@ -295,6 +323,8 @@ await elevenlabs.conversationalAi.agents.create({
 ```
 
 ## FAQ
+
+#### Can system tools be combined with other tool types?
 
 Yes, system tools can be used alongside webhook tools and client tools in the same assistant.
 This allows for comprehensive functionality that combines internal state management with

@@ -23,6 +23,8 @@ A `music_v2` composition plan is an ordered list of **chunks**. Each chunk is on
 
 You can store a song for inpainting in two ways: generate a new song with `store_for_inpainting`, or upload an existing audio file.
 
+#### Generate and store
+
 ```python
 import os
 from dotenv import load_dotenv
@@ -61,6 +63,8 @@ const response = await elevenlabs.music.composeDetailed({
 });
 const songId = response.songId;
 ```
+
+#### Upload existing file
 
 ```python
 import os
@@ -662,6 +666,10 @@ for at least 6-7 styles in early chunks until the direction is established.
 
 ## Next steps
 
+#### [Composition plans](/docs/eleven-api/guides/how-to/music/composition-plans)
+
 Learn composition plan fundamentals
+
+#### [API reference](/docs/api-reference/music/compose)
 
 Complete API documentation

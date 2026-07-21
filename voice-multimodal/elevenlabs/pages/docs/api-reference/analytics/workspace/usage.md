@@ -89,7 +89,6 @@ components:
         - voice_multiplier
         - hashed_xi_api_key
         - billing_group_id
-        - modality
         - surface
         - actor
       title: >-
@@ -325,12 +324,7 @@ components:
     [
       "2024-04-01T01:00:00Z",
       "voice-cloning",
-      "75.0"
-    ],
-    [
-      "2024-04-01T02:00:00Z",
-      "text-to-speech",
-      "98.3"
+      "78.3"
     ]
   ],
   "column_units": [

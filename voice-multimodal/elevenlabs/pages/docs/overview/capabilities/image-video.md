@@ -21,6 +21,8 @@ availability.
 Free plan users can only generate images and are limited to three image requests per day. Video
 generation requires a paid plan.
 
+#### [Products](/docs/eleven-creative/playground/image-video)
+
 Complete guide to using Image & Video in ElevenLabs.
 
 ## Key capabilities
@@ -66,6 +68,10 @@ workspace members. By default, all models are disabled for Enterprise workspaces
 explicitly enabled by admins. Learn more about [Model
 approvals](/docs/overview/administration/workspaces/model-approvals).
 
+#### Video generative models
+
+#### Seedance 2.0
+
 A unified multimodal video model with audio-video joint generation, offering director-level control over performance, lighting, shadow, and camera movement for ultra-realistic, cinematic results.
 
 **Generation inputs:**
@@ -104,6 +110,8 @@ Settings can be toggled to adjust credit consumption.
 
 Seedance 2.0 is not available in the United States.
 
+#### Kling 3.0
+
 An advanced video model that functions like an AI director, maintaining high consistency for characters, items, and scenes across complex camera movements.
 
 **Generation inputs:**
@@ -135,6 +143,8 @@ An advanced video model that functions like an AI director, maintaining high con
 Supports negative prompts for granular control. Sound can be enabled or disabled per generation.
 
 Kling 3.0 is not available in the United States.
+
+#### Kling O3
 
 A high-consistency video model that functions like an AI director, preserving the identity of characters, items, and scenes across complex camera movements.
 
@@ -170,6 +180,8 @@ Settings can be toggled to adjust credit consumption.
 
 Kling O3 is not available in the United States.
 
+#### Kling O3 Edit
+
 A natural language-driven video-to-video editing model based on the O3 architecture, enabling complex visual transformations—such as character replacement and environment swaps—without the need for manual masking or frame-by-frame adjustments.
 
 **Generation inputs:**
@@ -200,6 +212,8 @@ A natural language-driven video-to-video editing model based on the O3 architect
 **Cost:** Varies based on video duration and selected settings
 
 Kling O3 Edit is not available in the United States.
+
+#### Google Veo 3.1
 
 A professional-grade model for high-quality, cinematic video generation.
 
@@ -232,6 +246,8 @@ A professional-grade model for high-quality, cinematic video generation.
 
 Enabling and disabling sound will change the generation credits.
 
+#### Google Veo 3.1 Fast
+
 A high-speed model optimized for rapid previews and generations, delivering sharper visuals with lower latency.
 
 **Generation inputs:**
@@ -259,6 +275,8 @@ A high-speed model optimized for rapid previews and generations, delivering shar
 
 **Cost:** Varies based on selected settings and duration
 
+#### Google Veo 3.1 Lite
+
 A cost-efficient, high-speed variant of Veo 3.1 optimized for rapid generation at reduced compute.
 
 **Generation inputs:**
@@ -283,6 +301,8 @@ A cost-efficient, high-speed variant of Veo 3.1 optimized for rapid generation a
 * Rapid concept exploration and previews
 
 **Cost:** Varies based on selected settings and duration
+
+#### Seedance 1.5 Pro
 
 An upgraded specialized model for creating dynamic, high-fidelity sequences with enhanced temporal stability and precise transition control between keyframes.
 
@@ -314,6 +334,8 @@ An upgraded specialized model for creating dynamic, high-fidelity sequences with
 
 Seedance 1.5 Pro is not available in the United States.
 
+#### OpenAI Sora 2
+
 The standard, high-speed version of OpenAI's advanced video model, tuned for everyday content creation.
 
 **Generation inputs:**
@@ -342,6 +364,8 @@ The standard, high-speed version of OpenAI's advanced video model, tuned for eve
 
 End frame is not currently supported. Cannot provide image references. Sound is enabled by default.
 
+#### OpenAI Sora 2 Pro
+
 The most advanced, high-fidelity video model for cinematic results at your disposal.
 
 **Generation inputs:**
@@ -369,6 +393,8 @@ The most advanced, high-fidelity video model for cinematic results at your dispo
 **Cost:** Varies based on selected settings and duration
 
 End frame is not currently supported. Cannot provide image references. Sound is enabled by default.
+
+#### Kling O1
 
 A state-of-the-art reasoning video model designed for superior prompt adherence and complex physical world simulation, utilizing advanced logical processing to interpret and execute intricate instructions.
 
@@ -401,6 +427,8 @@ A state-of-the-art reasoning video model designed for superior prompt adherence 
 
 Kling O1 is not available in the United States.
 
+#### Kling O1 Edit
+
 A natural language-driven video-to-video editing model that enables complex visual transformations—such as character replacement and environment swaps—without the need for manual masking or frame-by-frame adjustments.
 
 **Generation inputs:**
@@ -431,6 +459,8 @@ A natural language-driven video-to-video editing model that enables complex visu
 **Cost:** Varies based on video duration and selected settings
 
 Kling O1 Edit is not available in the United States.
+
+#### Kling 2.6 Motion Control
 
 A specialized model for precise motion transfer, allowing you to drive a character image with a reference video to replicate specific movements, gestures, and camera angles.
 
@@ -463,6 +493,8 @@ A specialized model for precise motion transfer, allowing you to drive a charact
 
 Kling 2.6 Motion Control is not available in the United States.
 
+#### Kling 3.0 Motion Control
+
 A specialized model for precise motion transfer built on the Kling 3.0 architecture, allowing you to drive a character image with a reference video to replicate specific movements, gestures, and camera angles with enhanced fidelity.
 
 **Generation inputs:**
@@ -494,6 +526,8 @@ A specialized model for precise motion transfer built on the Kling 3.0 architect
 
 Kling 3.0 Motion Control is not available in the United States.
 
+#### Kling 2.6
+
 An optimized generative model designed for enhanced motion fidelity and smoother transitions, providing a balance between high-speed iteration and production-quality visual output.
 
 **Generation inputs:**
@@ -522,6 +556,8 @@ An optimized generative model designed for enhanced motion fidelity and smoother
 **Cost:** Varies based on selected settings and duration
 
 Kling 2.6 is not available in the United States.
+
+#### Kling 2.5
 
 A balanced and versatile model for high-quality, full-HD video generation.
 
@@ -552,6 +588,8 @@ End frame is not currently supported. Cannot provide image references. Sound con
 
 Kling 2.5 is not available in the United States.
 
+#### Runway Gen-4.5
+
 State-of-the-art motion quality, prompt adherence, and visual fidelity for cinematic, highly realistic video.
 
 **Generation inputs:**
@@ -578,6 +616,8 @@ State-of-the-art motion quality, prompt adherence, and visual fidelity for cinem
 * High-fidelity visual storytelling
 
 **Cost:** Varies based on selected settings and duration
+
+#### Runway Gen-4 Turbo
 
 An advanced video model designed for rapid iteration and cost-effective creation, capable of producing high-quality videos.
 
@@ -606,6 +646,8 @@ An advanced video model designed for rapid iteration and cost-effective creation
 * Cinematic content with specific camera movement requirements
 
 **Cost:** Varies based on selected settings and duration
+
+#### Runway Gen-4 Aleph
 
 A state-of-the-art in-context video model designed for multi-task visual generation, capable of performing complex edits while maintaining the underlying structure of the source footage.
 
@@ -638,6 +680,8 @@ A state-of-the-art in-context video model designed for multi-task visual generat
 
 **Cost:** Varies based on selected settings and duration
 
+#### Runway Act-Two
+
 A specialized performance-transfer model that animates characters by mapping the motion, speech, and facial expressions from a driving video onto a character image or video reference.
 
 **Generation inputs:**
@@ -665,6 +709,8 @@ A specialized performance-transfer model that animates characters by mapping the
 * Rapidly producing talking-head content with integrated body gestures
 
 **Cost:** Varies based on selected settings and duration
+
+#### Seedance 1 Pro
 
 A specialized model for creating dynamic, multi-shot sequences with large movement and action.
 
@@ -696,6 +742,8 @@ Aspect ratio and resolution do not affect generation credits, but duration does.
 
 Seedance 1 Pro is not available in the United States.
 
+#### LTX Audio-to-Video
+
 A DiT-based foundation model designed to generate synchronized video and audio in a single pass, ensuring coherent speech and realistic motion.
 
 **Generation inputs:**
@@ -725,6 +773,8 @@ A DiT-based foundation model designed to generate synchronized video and audio i
 * Dynamic scenes with complex camera-aware motion logic
 
 **Cost:** Varies based on selected settings and duration
+
+#### LTX 2 Pro
 
 A high-fidelity generative model optimized for maximum visual detail and structural stability, capable of producing production-grade 4K output with fluid motion.
 
@@ -756,6 +806,8 @@ A high-fidelity generative model optimized for maximum visual detail and structu
 
 **Cost:** Varies based on selected settings and duration
 
+#### LTX 2 Retake
+
 A precision AI directing tool that allows for targeted redirection of dialogue, emotion, and action within existing shots without breaking continuity or regenerating the entire sequence.
 
 **Generation inputs:**
@@ -783,6 +835,8 @@ A precision AI directing tool that allows for targeted redirection of dialogue, 
 * Testing multiple brand messages and calls-to-action within a single marketing asset
 
 **Cost:** Varies based on selected settings and duration
+
+#### LTX 2 Fast
 
 A speed-optimized generative model built for tight feedback loops and high-velocity content creation, delivering high-resolution visuals with significantly reduced render times.
 
@@ -814,6 +868,8 @@ A speed-optimized generative model built for tight feedback loops and high-veloc
 * A/B testing different visual concepts and motion styles
 
 **Cost:** Varies based on selected settings and duration
+
+#### Wan 2.6
 
 A next-generation cinematic video platform that utilizes a unified multimodal architecture to deliver production-ready 1080p content with native audio synchronization and intelligent multi-shot sequencing.
 
@@ -847,6 +903,8 @@ A next-generation cinematic video platform that utilizes a unified multimodal ar
 
 Wan 2.6 is not available in the United States.
 
+#### Wan 2.5
+
 A versatile model that delivers cinematic motion and high prompt fidelity from text or a starting image.
 
 **Generation inputs:**
@@ -875,6 +933,10 @@ Generation cost varies based on selected settings.
 
 Wan 2.5 is not available in the United States.
 
+#### Image generative models
+
+#### GPT Image 2
+
 An advanced AI model designed for precise image generation with enhanced text rendering and high-resolution output capabilities.
 
 **Features:**
@@ -896,6 +958,8 @@ An advanced AI model designed for precise image generation with enhanced text re
 * Creative projects needing accurate text-based image control
 
 **Cost:** Varies based on selected settings and number of variations
+
+#### Nano Banana 2
 
 An advanced AI image generation model combining production-ready quality with ultra-fast processing, featuring improved world knowledge and subject consistency.
 
@@ -923,6 +987,8 @@ An advanced AI image generation model combining production-ready quality with ul
 
 **Cost:** Varies based on selected settings and number of variations
 
+#### Krea 2 Medium
+
 A versatile, production-ready image generation model from Krea AI, balancing quality and speed for a wide range of creative workflows.
 
 **Features:**
@@ -942,6 +1008,8 @@ A versatile, production-ready image generation model from Krea AI, balancing qua
 
 **Cost:** Varies based on selected settings and number of variations
 
+#### Krea 2 Large
+
 Krea AI's flagship image generation model, delivering maximum visual fidelity and advanced creative control for professional production workflows.
 
 **Features:**
@@ -960,6 +1028,8 @@ Krea AI's flagship image generation model, delivering maximum visual fidelity an
 * Complex creative compositions requiring maximum fidelity
 
 **Cost:** Varies based on selected settings and number of variations
+
+#### Seedream 5 Lite
 
 A lightweight, fast-generation image model from ByteDance delivering high-quality results with reduced compute requirements.
 
@@ -982,6 +1052,8 @@ A lightweight, fast-generation image model from ByteDance delivering high-qualit
 
 Seedream 5 Lite is not available in the United States.
 
+#### GPT Image 1.5
+
 A high-speed flagship model designed for precise text-based image generation and complex, non-destructive photo editing that preserves original details.
 
 **Features:**
@@ -1003,6 +1075,8 @@ A high-speed flagship model designed for precise text-based image generation and
 * Rapid iteration of text-to-image concepts
 
 **Cost:** Varies based on selected settings and number of variations
+
+#### Seedream 4.5
 
 A high-performance multimodal foundation model that unifies text-to-image synthesis, precise image editing, and complex multi-image composition into a single, efficient framework.
 
@@ -1029,6 +1103,8 @@ A high-performance multimodal foundation model that unifies text-to-image synthe
 
 Seedream 4.5 is not available in the United States.
 
+#### Kling O1 Image
+
 A high-fidelity image generation model with advanced reasoning capabilities, designed for superior prompt adherence and precise visual consistency across complex compositions.
 
 **Features:**
@@ -1051,6 +1127,8 @@ A high-fidelity image generation model with advanced reasoning capabilities, des
 **Cost:** Varies based on selected settings and number of variations
 
 Kling O1 Image is not available in the United States.
+
+#### FLUX.2 \[Pro]
 
 A production-grade image generation and editing model designed for professional workflows, offering state-of-the-art visual quality with a focus on speed, precision, and consistency.
 
@@ -1076,6 +1154,8 @@ A production-grade image generation and editing model designed for professional 
 * Generating product photography at scale and contextual lifestyle shots
 
 **Cost:** Varies based on selected settings and number of variations
+
+#### Nano Banana Pro
 
 A professional-grade, reasoning-based image generation and editing model designed for high-fidelity asset production, advanced creative control, and precise instruction following.
 
@@ -1107,6 +1187,8 @@ A professional-grade, reasoning-based image generation and editing model designe
 
 **Cost:** Varies based on selected settings and number of variations
 
+#### Nano Banana
+
 A high-speed model for quick, high-quality image generation and editing directly from text prompts.
 
 **Features:**
@@ -1123,6 +1205,8 @@ A high-speed model for quick, high-quality image generation and editing directly
 * Rapid image creation and iteration
 
 **Cost:** Varies based on selected settings and number of variations
+
+#### Runway Gen-4 Image
 
 An advanced base model designed for high-fidelity image generation, offering unprecedented stylistic control and visual memory to maintain consistency across scenes.
 
@@ -1145,6 +1229,8 @@ An advanced base model designed for high-fidelity image generation, offering unp
 * Exploring varied artistic directions while locking in core visual identity via image references
 
 **Cost:** Varies based on selected settings and number of variations
+
+#### Runway Gen-4 Image Turbo
 
 An optimized image generation model engineered for speed, delivering results 2.5x faster than the standard Gen-4 Image while maintaining identical output quality.
 
@@ -1171,6 +1257,8 @@ An optimized image generation model engineered for speed, delivering results 2.5
 
 **Cost:** Varies based on selected settings and number of variations
 
+#### Seedream 4
+
 A specialized image model for generating multi-shot sequences or scenes with large movement and action.
 
 **Features:**
@@ -1191,6 +1279,8 @@ A specialized image model for generating multi-shot sequences or scenes with lar
 
 Seedream 4 is not available in the United States.
 
+#### FLUX.1 Kontext \[Pro]
+
 A professional model for advanced image generation and editing, offering strong scene coherence and style control.
 
 **Features:**
@@ -1207,6 +1297,10 @@ A professional model for advanced image generation and editing, offering strong 
 * Professional content with precise style requirements
 
 **Cost:** Varies based on selected settings and number of variations
+
+#### Lip-sync models
+
+#### Creatify Aurora
 
 A state-of-the-art diffusion transformer (DiT) model designed for rendering ultra-realistic, reactive avatars driven by audio and text guidance.
 
@@ -1237,6 +1331,8 @@ A state-of-the-art diffusion transformer (DiT) model designed for rendering ultr
 
 **Cost:** Varies based on input, settings and duration
 
+#### Veed Fabric
+
 A fast, precise image-to-video lip-sync model that animates a still image to match provided audio.
 
 **Inputs:**
@@ -1259,6 +1355,8 @@ A fast, precise image-to-video lip-sync model that animates a still image to mat
 **Cost:** Varies based on input, settings and duration
 
 For best results, the image should contain a detectable figure.
+
+#### HeyGen Avatar 4
 
 HeyGen's latest avatar model for generating highly realistic, expressive talking-head videos from a single image and audio input.
 
@@ -1283,6 +1381,8 @@ HeyGen's latest avatar model for generating highly realistic, expressive talking
 
 For best results, the image should contain a clearly visible face.
 
+#### Sync 3
+
 The latest generation video lip-sync model from Sync, delivering studio-quality synchronization across a wide range of content types.
 
 **Generation inputs:**
@@ -1306,6 +1406,8 @@ The latest generation video lip-sync model from Sync, delivering studio-quality 
 
 For best results, the video should contain a detectable figure.
 
+#### Sync Lipsync 2 Pro
+
 A state-of-the-art video editing model designed for studio-grade lip-syncing that preserves unique facial details while scaling to high-resolution outputs.
 
 **Generation inputs:**
@@ -1328,6 +1430,8 @@ A state-of-the-art video editing model designed for studio-grade lip-syncing tha
 * High-resolution projects requiring pixel-perfect facial consistency and detail
 
 **Cost:** Varies based on input, settings and duration
+
+#### OmniHuman 1.5
 
 A dedicated utility model for generating exceptionally realistic, humanlike lip-sync.
 
@@ -1354,6 +1458,8 @@ For best results, the image should contain a detectable figure.
 
 OmniHuman 1.5 is not available in the United States.
 
+#### Veed Lipsync
+
 A fast, affordable, and precise utility model for applying realistic lip-sync to videos.
 
 **Inputs:**
@@ -1375,6 +1481,10 @@ A fast, affordable, and precise utility model for applying realistic lip-sync to
 **Cost:** Varies based on input, settings and duration
 
 For best results, the video should contain a detectable figure.
+
+#### Upscaling model
+
+#### Topaz Upscale
 
 A dedicated utility model for image and video upscaling, designed to enhance resolution and detail up to 4x.
 

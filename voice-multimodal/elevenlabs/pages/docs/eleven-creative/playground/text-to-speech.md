@@ -18,11 +18,21 @@ To get started generating your first audio using Text to Speech, it's very simpl
 
 ![Text to Speech demo](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png)
 
+#### Adjust settings (optional)
+
+#### Text input
+
 Type or paste your text into the input box on the Text to Speech page.
+
+#### Voice selection
 
 Select the voice you wish to use from your Voices at the bottom left of the screen.
 
+#### Adjust settings (optional)
+
 Modify the voice settings for the desired output.
+
+#### Generate
 
 Click the 'Generate' button to create your audio file.
 
@@ -33,6 +43,8 @@ Get familiar with the voices, models & settings for creating high-quality speech
 The settings you use, especially the voice and the model, significantly impact the output. It's quite important to get familiar with these and understand some best practices. While other settings also influence the output, their impact is less significant compared to the voice and model you select.
 
 The order of importance goes as follows: **Voice** selection is most important, followed by **Model** selection, and then model **Settings**. All of these, and their combination, will influence the output.
+
+#### Voices
 
 ### Voices
 
@@ -55,6 +67,8 @@ You can get some really good results with Voice Remixing, but they will not usua
 
 Keep in mind, voice remixing only works for specific voices. For example, you can't remix voices from the Voice Library; you can only remix voices that you have created yourself or the default voices.
 
+#### Models
+
 ### Models
 
 ![Text to Speech model
@@ -68,6 +82,8 @@ Model selection is the second most significant influence on your final audio out
 
 If your output will be exclusively in English, we strongly recommend using one of our English-only models. They are often easier to work with, more stable, and generally offer superior performance for English-only content. If your content will be in another language or potentially multilingual, you must use one of the multilingual models.
 
+#### [Eleven v3](/docs/overview/models#eleven-v3)
+
 Our most emotionally rich, expressive speech synthesis model
 
 Dramatic delivery and performance
@@ -78,6 +94,8 @@ Dramatic delivery and performance
 
 Support for natural multi-speaker dialogue
 
+#### [Eleven Multilingual v2](/docs/overview/models#multilingual-v2)
+
 Lifelike, consistent quality speech synthesis model
 
 Natural-sounding output
@@ -87,6 +105,8 @@ Natural-sounding output
 10,000 character limit
 
 Most stable on long-form generations
+
+#### [Eleven Flash v2.5](/docs/overview/models#flash-v25)
 
 Our fast, affordable speech synthesis model
 
@@ -99,6 +119,8 @@ Ultra-low latency (\~75ms†)
 Faster model, 50% lower price per character for API generations
 
 [Learn more about our models](/docs/overview/models)
+
+#### Voice settings
 
 ### Voice settings
 
@@ -155,26 +177,533 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
 ## FAQ
 
-The first factor, and one of the most important, is that good, high-quality, and consistent input will result in good, high-quality, and consistent output.
+<tbody>
+  <tr>
+    <td>
+      #### Good input equals good output
 
-If you provide the AI with audio that is less than ideal—for example, audio with a lot of noise, reverb on clear speech, multiple speakers, or inconsistency in volume or performance and delivery—the AI will become more unstable, and the output will be more unpredictable.
+      The first factor, and one of the most important, is that good, high-quality, and consistent input will result in good, high-quality, and consistent output.
 
-If you plan on cloning your own voice, we strongly recommend that you go through our guidelines in the documentation for creating proper voice clones, as this will provide you with the best possible foundation to start from. Even if you intend to use only Instant Voice Clones, it is advisable to read the Professional Voice Cloning section as well. This section contains valuable information about creating voice clones, even though the requirements for these two technologies are slightly different.
+      If you provide the AI with audio that is less than ideal—for example, audio with a lot of noise, reverb on clear speech, multiple speakers, or inconsistency in volume or performance and delivery—the AI will become more unstable, and the output will be more unpredictable.
 
-The second factor to consider is that the voice you select will have a tremendous effect on the output. Not only, as mentioned in the first factor, is the quality and consistency of the samples used to create that specific clone extremely important, but also the language and tonality of the voice.
+      If you plan on cloning your own voice, we strongly recommend that you go through our guidelines in the documentation for creating proper voice clones, as this will provide you with the best possible foundation to start from. Even if you intend to use only Instant Voice Clones, it is advisable to read the Professional Voice Cloning section as well. This section contains valuable information about creating voice clones, even though the requirements for these two technologies are slightly different.
+    </td>
+  </tr>
 
-If you want a voice that sounds happy and cheerful, you should use a voice that has been cloned using happy and cheerful samples. Conversely, if you desire a voice that sounds introspective and brooding, you should select a voice with those characteristics.
+  <tr>
+    <td>
+      #### Use the right voice
 
-However, it is also crucial to use a voice that has been trained in the correct language. For example, all of the professional voice clones we offer as default voices are English voices and have been trained on English samples. Therefore, if you have them speak other languages, their performance in those languages can be unpredictable. It is essential to use a voice that has been cloned from samples where the voice was speaking the language you want the AI to then speak.
+      The second factor to consider is that the voice you select will have a tremendous effect on the output. Not only, as mentioned in the first factor, is the quality and consistency of the samples used to create that specific clone extremely important, but also the language and tonality of the voice.
 
-This may seem slightly trivial, but it can make a big difference. The AI tries to understand how to read something based on the context of the text itself, which means not only the words used but also how they are put together, how punctuation is applied, the grammar, and the general formatting of the text.
+      If you want a voice that sounds happy and cheerful, you should use a voice that has been cloned using happy and cheerful samples. Conversely, if you desire a voice that sounds introspective and brooding, you should select a voice with those characteristics.
 
-This can have a small but impactful influence on the AI's delivery. If you were to misspell a word, the AI won't correct it and will try to read it as written.
+      However, it is also crucial to use a voice that has been trained in the correct language. For example, all of the professional voice clones we offer as default voices are English voices and have been trained on English samples. Therefore, if you have them speak other languages, their performance in those languages can be unpredictable. It is essential to use a voice that has been cloned from samples where the voice was speaking the language you want the AI to then speak.
+    </td>
+  </tr>
 
-The settings of the AI are nondeterministic, meaning that even with the same initial conditions (voice, settings, model), it will give you slightly different output, similar to how a voice actor will deliver a slightly different performance each time.
+  <tr>
+    <td>
+      #### Use proper formatting
 
-This variability can be due to various factors, such as the options mentioned earlier: voice, settings, model. Generally, the breadth of that variability can be controlled by the stability slider. A lower stability setting means a wider range of variability between generations, but it also introduces inter-generational variability, where the AI can be a bit more performative.
+      This may seem slightly trivial, but it can make a big difference. The AI tries to understand how to read something based on the context of the text itself, which means not only the words used but also how they are put together, how punctuation is applied, the grammar, and the general formatting of the text.
 
-A wider variability can often be desirable, as setting the stability too high can make certain voices sound monotone as it does give the AI the same leeway to generate more variable content. However, setting the stability too low can also introduce other issues where the generations become unstable, especially with certain voices that might have used less-than-ideal audio for the cloning process.
+      This can have a small but impactful influence on the AI's delivery. If you were to misspell a word, the AI won't correct it and will try to read it as written.
+    </td>
+  </tr>
 
-The default setting of 50 is generally a great starting point for most applications.
+  <tr>
+    <td>
+      #### Nondeterministic
+
+      The settings of the AI are nondeterministic, meaning that even with the same initial conditions (voice, settings, model), it will give you slightly different output, similar to how a voice actor will deliver a slightly different performance each time.
+
+      This variability can be due to various factors, such as the options mentioned earlier: voice, settings, model. Generally, the breadth of that variability can be controlled by the stability slider. A lower stability setting means a wider range of variability between generations, but it also introduces inter-generational variability, where the AI can be a bit more performative.
+
+      A wider variability can often be desirable, as setting the stability too high can make certain voices sound monotone as it does give the AI the same leeway to generate more variable content. However, setting the stability too low can also introduce other issues where the generations become unstable, especially with certain voices that might have used less-than-ideal audio for the cloning process.
+
+      The default setting of 50 is generally a great starting point for most applications.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Eleven v3 (Alpha)?
+
+      Eleven v3 is our latest and most expressive Text to Speech model, offering:
+
+      * More human-like generations with higher quality overall
+
+      * Support for audio tags
+
+      * emotions: \[sad] \[angry] \[happily]
+
+      * delivery direction: \[whispers] \[shouts]
+
+      * non-verbal reactions: \[laughs]\[clears throat] \[sighs]
+
+      * Dialogue mode to support natural sounding audio with multiple speakers
+
+      * Support for 70+ languages
+
+      It can produce breathtaking output, but its more variable consistency and higher latency mean it’s not suitable for real-time or conversational use cases. For those, we recommend the v2/v2.5 Turbo or Flash models. We’re working on a real-time version of Eleven v3.
+
+      You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
+
+      You can also use our [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue ](/docs/api-reference/text-to-dialogue/stream)endpoints to create a natural sounding dialogue with multiple speakers.
+
+      Visit the following resources for more information:
+
+      * [Eleven v3 overview](https://elevenlabs.io/v3)
+      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I change the pace of the voice?
+
+      Voice speed control is available for Text to Speech via Speech Synthesis, Studio, ElevenAgents and our API.
+
+      You can control the speed of the voice using the Speed setting.
+
+      Possible values range from 0.7 to 1.2. Values below 1 will slow the speech down, and values above 1 will speed it up. Extreme values may affect the quality of the generated speech. 
+
+      This setting is available for all voices and all models. You can find it in the voice settings.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/33272834798353" alt="" />
+
+      For information on how to control speech when using the API, please see our [API reference.](/docs/api-reference/text-to-speech/convert#request.body.voice_settings.speed)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I use the same cloned/designed voice across languages?
+
+      Any voice can speak any of the supported languages.
+
+      The way the current model works is that you don't select a specific language, you instead write in the language you want the AI to speak and the AI understands automatically. However, since there can be some overlap between different languages where they use similar words and vocabulary but with quite different pronunciations and accents, you should use a cloned voice that was cloned speaking the language with the correct accent.
+
+      The language is determined by the text, the accent and pronunciation is determined by the voice itself. It needs both of these contexts to function optimally.
+
+      We are looking into developing new technology to facilitate the selection of language, but the way the AI is built means that all of this is still in progress.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I download generated files from Text to Speech?
+
+      You can download the generated files in two ways:
+
+      You can download a generated file immediately by clicking the download button on the bottom right after generating the content.
+
+      Previously generated files can be downloaded from your history. 
+
+      To access your history, log in to your account and select "Text to Speech" in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the "Generate speech" button.
+
+      From your history, you can click the download icon to see the option to download as either an MP3 (128kbps) or WAV file. 
+
+      You can also click <strong>Advanced</strong> to download in additional file formats:
+
+      * MP3 (192kbps)
+      * MP3 (256kbps)
+      * M4A
+      * FLAC
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can you make voices produce the sound of breathing?
+
+      This is currently not possible.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Do you offer an AI model for conversational purposes or for chatbots?
+
+      Our Flash and Turbo models have been specially developed for low-latency applications.
+
+      Flash v2 and Flash v2.5 are our ultra-low-latency models, generating audio in less than 75ms. Flash v2 is English only, while Flash v2.5 supports 32 languages. You can see a full list of all supported languages here.
+
+      Our Turbo models are also low-latency, but as the Flash models give very similar results, we recommend using the Flash models over Turbo. Turbo v2 is English only, while Turbo v2.5 supports 32 languages, and is 25% faster than Turbo v2, generating audio in around 300ms.
+
+      Both Flash and Turbo are highly optimized models, specifically tailored for low-latency applications without sacrificing vocal performance and keeping inline with the quality standard that people have come to expect from our models.
+
+      Both models are discounted when you generate via API. For details, see our API Pricing.
+
+      We also offer ElevenAgents, our platform for deploying customized, interactive voice agents.  Visit our ElevenAgents documentation to learn more.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I add pauses?
+
+      There are a few ways to introduce a pause or break and influence the rhythm and cadence of the speaker. The most consistent way is programmatically using the syntax `<break time="1.5s" />`. This will create an exact and natural pause in the speech. It is not just added silence between words, but the AI has an actual understanding of this syntax and will add a natural pause.
+
+      However, since this is more than just inserted silence, how the AI handles these pauses can vary. As usual, the voice used plays a pivotal role in the output. Some voices, those trained with a few "uh"s and "ah"s in them, have shown to sometimes insert those vocal mannerisms during the pauses, like a real speaker might.
+
+      An example could look like this:
+
+      "Give me one second to think about it." `<break time="1.0s" />` "Yes, that would work."
+
+      Break time should be described in seconds, and the AI can handle pauses of up to 3 seconds in length and can be used in Speech Synthesis and via the API.
+
+      There is one caveat when using SSML breaks; if you use an excessive amount in your text, it might cause issues. The speech of the AI might start speeding up and become very fast, or it might introduce more noise in the audio and a few other strange artifacts. We are working on resolving this.
+
+      <strong>
+        Alternatives
+      </strong>
+
+      These options are inconsistent and might not always work. We recommend using the syntax above for consistency.
+
+      One trick that seems to provide the most consistent output - sans the above option - is a simple dash `-` or the em-dash `—`. You can even add multiple dashes such as `-- --` for a longer pause.
+
+      "It - is - getting late."
+
+      Ellipsis `...` can sometimes also work to add a pause between words but usually also adds some "hesitation" or "nervousness" to the voice that might not always fit.
+
+      I... yeah, I guess so..."
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How can I force a certain pronunciation of a word or name?
+
+      If you want to force a certain pronunciation, you can use SSML phoneme tags. We support both IPA and CMU. However, we have found that CMU, with the current implementation, seems to be a bit more predictable, consistent, and better overall. You can find out more about this in our [guide to Prompting.](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+
+      This is available on the following models:
+
+      * English v1
+      * Turbo v2
+      * Flash v2
+
+      Alternatively, a workaround is to find an alternative spelling and write a word more phonetically. You can employ various tricks such as capital letters, dashes, apostrophes, or even single quotation marks around a single letter or letters.
+
+      As an example, a word like "trapezii" could be spelt "trapezIi" to put more emphasis on the "ii" of the word.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do audio tags work with Eleven v3 (Alpha)?
+
+      Eleven v3 supports audio tags, giving unprecedented control over your generated audio:
+
+      * Emotions: \[curious] \[crying] \[mischievously]
+      * Delivery direction: \[whispers] \[shouts]
+      * Human reactions: \[laughs] \[clears throat] \[sighs]
+
+      For more detailed information, see our[ guide to prompting with Eleven v3](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3). 
+
+      You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
+
+      You can also use our [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue ](/docs/api-reference/text-to-dialogue/stream)endpoints to create a natural sounding dialogue with multiple speakers.
+
+      Visit the following resources for more information:
+
+      * [Eleven v3 overview](https://elevenlabs.io/v3)
+      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I download WAV, M4A and FLAC files?
+
+      Files that you have generated using Text to Speech or Voice Changer can be downloaded as MP3, WAV, M4A or FLAC files. WAV, M4A and FLAC files need to be downloaded from your history.   
+
+      #### <strong>How to download WAV files</strong>
+
+      Select either <strong>Text to Speech</strong> or <strong>Voice Changer</strong> in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the <strong>Generate speech</strong> button.
+
+      From your history, you can click the download icon to see the option to download as either an MP3 or WAV file.
+
+      #### <strong>How to download FLAC or M4A files</strong>
+
+      Select either <strong>Text to Speech</strong> or <strong>Voice Changer</strong> in the sidebar, then access your history by clicking the history tab in the panel on the right side of the screen. On narrow screens, you can access your history by clicking the history icon above the <strong>Generate speech</strong> button.
+
+      From your history, you can click the download icon to see the option to download as either an MP3 or WAV file. To access additional file formats, including FLAC and M4A, click <strong>Advanced</strong> and select your preferred format.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I select the language and accent?
+
+      <strong>
+        Language when generating via the website
+      </strong>
+
+      When you generate audio on the ElevenLabs website, our AI automatically detects the language based on the context of the text of your prompt. This means that it's best to avoid using multiple languages in a single prompt, as this can cause confusion about which language should be used. At the moment, it isn’t possible to specify a language when generating on the website. 
+
+       
+
+      <strong>
+        Language when generating via API
+      </strong>
+
+      If you generate audio through the API, you can manually specify the language of your prompt using the `language_code` parameter. This is an optional parameter that accepts ISO 639-1 language codes. 
+
+      This can be useful for short or ambiguous prompts, such as when the text includes only numbers. Specifying the language ensures the normalizer applies the correct rules for that language.
+
+      For more information on normalization, see [this article. ](/docs/help-center/product/speech-synthesis/text-to-speech/why-are-numbers-dates-symbols-and-acronyms-not-properly-pronounced-or-spoken-in-the-correct-language)
+
+       
+
+      <strong>
+        Accent
+      </strong>
+
+      The accent that is used for your generation comes from the voice you're using. If you use a voice that hasn’t been trained on the language you’re generating, you may notice a slight accent from the voice’s original language.
+
+      For the best results, we recommend using a voice that has been trained on audio in the language you’re generating, with your preferred accent. This helps the AI understand pronunciation and intonation more accurately.
+
+      This is especially important for languages that are similar or share many common words. Choosing a voice trained on the correct language ensures that the AI uses the correct pronunciation and accent.
+
+      You can:
+
+      * <strong>Create a cloned voice</strong> using audio in your preferred language and accent.
+      * <strong>Browse the Voice Library</strong> and use the search filters to find suitable voices that
+        match your needs.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/40034290968081" alt="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How much does it cost to generate using Eleven v3 (Alpha)?
+
+      The cost of generating with Eleven v3 is 1 credit per character on the website. API generations are discounted - see [API pricing](https://elevenlabs.io/pricing/api) for details. 
+
+      Visit the following resources for more information:
+
+      * [Eleven v3 overview](https://elevenlabs.io/v3)
+      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How to make the voice laugh?
+
+      We plan on introducing features allowing emotions such as laughter in the future.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How to produce emotions?
+
+      The model is sensitive to the wider situation surrounding each utterance - it assesses whether something makes sense by how it ties to preceding and succeeding text. This zoomed-out perspective allows it to intonate longer fragments properly by overlaying a particular train of thought stretching multiple sentences with a unifying emotional pattern.
+
+      There are a couple of tips for producing emotions: 
+
+      Context is key for generating specific emotions. Thus, if one inputs laughing/funny text they
+      might get a happy output. Similarly with anger, sadness, and other emotions, setting the context
+      is key. 
+
+      Punctuation and voice settings play the leading role in how the output is delivered. 
+
+      Add emphasis by putting the relevant words/phrases in quotation marks.
+
+      For speech generated using a cloned voice, the speaking style contained in the samples you
+      upload for cloning is replicated in the output. So if the speech in the uploaded sample is
+      monotone, the model will struggle to produce expressive output. 
+
+      These are the best tips for producing emotions but do not guarantee the result. We will be introducing features that will allow for the control of emotions within the text.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Is there a way to preview audio without losing quota before downloading?
+
+      Unfortunately, at this time, we do not offer download-based deduction as an alternative to generation-based deduction. There is currently no way to preview generations without deducting quota.
+
+      When you press 'Generate' on the website, you will be deducted credits since the servers need to spin up and the audio needs to be generated.  There's no way to test or preview a voice using your own text without using credits.
+
+      We do permit two free regenerations in Speech Synthesis via the website in the following circumstances:
+
+      * The prompt (for text-to-speech) or file (for speech-to-speech), voice and model remain the same.  You can change the voice setting sliders.
+      * The first generation was made less than two hours ago.
+      * You haven't refreshed the page since generating the original audio.
+
+      If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/28015504910609" alt="" />
+
+       
+
+      Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/28015488674961" alt="" />
+
+       
+
+      Free regenerations are only available in Speech Synthesis via the website.  They are not available via the API.
+
+      We are looking into whether there's a way for us to facilitate previews at this quality without raising prices or costs. We are also exploring ways to make the AI more controllable, so you don't have to preview and instead get the desired result, hopefully on the first try.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Dialogue mode?
+
+      Eleven v3 offers Dialogue mode, allowing you to generate dynamic multi-speaker conversations with natural pacing, that handle interruptions, shifts in tone, and emotional cues based on conversational context.
+
+      Dialogue mode is available when you use multiple speakers via the website. 
+
+      We’ve also created new Text to Dialogue API endpoints for generating multi-speaker interactions. For more information, see our[ API documentation](/docs/capabilities/text-to-dialogue):
+
+      * [Create dialogue](/docs/api-reference/text-to-dialogue/convert)
+      * [Stream dialogue](/docs/api-reference/text-to-dialogue/stream)
+
+      Visit the following resources for more information:
+
+      * [Eleven v3 overview](https://elevenlabs.io/v3)
+      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What languages can the AI speak?
+
+      Any voice can speak any language currently supported by the AI; however, if you do not use a voice that is native to the language you want the AI to speak, for example, you use a generated voice or a voice cloned speaking English, the AI might have a slight English accent or might drift in and out of similar languages.
+
+      For a full list of all supported languages, please see this article: [What languages do you support?](/docs/help-center/other/what-languages-do-you-support)
+
+      The way the current model works is that you don't select a specific language. Instead, you write in the language you want the AI to speak, and the AI understands automatically. However, since there can be some overlap between different languages where they use similar words and vocabulary but with quite different pronunciations and accents, you should use a cloned voice that was cloned speaking the language with the correct accent as this will ensure the AI has the most context for how to speak something and in what language.
+
+      <strong>
+        The language is determined by the text, while the accent and pronunciation are determined by the
+        voice itself.
+      </strong>
+
+      We are looking into developing new technology to facilitate the selection of language, but the way the AI is built means that all of this is still in progress.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What's the maximum amount of characters and text I can generate?
+
+      In [Speech Synthesis](/docs/speech-synthesis/), using the website, you can generate up to 5,000 characters in a single generation on any paid plan and up to 2,500 on all free plans.
+
+      However, if you plan on generating longer-form content of more than a few thousand characters, we highly recommend using [Studio](/docs/projects) (previously Projects) which allows you to generate extremely long-form content such as books and novels very easily. You can read more about it [here](/docs/projects).
+
+       
+
+      If you're generating using the API, the maximum length of input varies depending on which model you're using:
+
+      <strong>
+        Text-to-speech
+      </strong>
+
+      Flash v2.5 - up to 40,000 characters (\~40 minutes of audio)
+
+      Turbo v2.5 - up to 40,000 characters (\~40 minutes of audio)
+
+      Flash v2 - up to 30,000 characters (\~30 minutes of audio)
+
+      Turbo v2 - up to 30,000 characters (\~30 minutes of audio)
+
+      Multilingual v1 and v2 - up to 10,000 characters (\~10 minutes of audio)
+
+      English v1 and v2 - up to 10,000 characters (\~10 minutes of audio)
+
+      <strong>
+        Speech-to-speech
+      </strong>
+
+      Multilingual v2 - up to 10 minutes of audio
+
+      English v2 - up to 5 minutes of audio
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Which voices in the voice library are native to a specific language?
+
+      All pre-made voices and generated voices are English. This means that they might not have the correct accent or pronunciation when speaking other languages.
+
+      In the voice library, under the professional category, you can find voices that the community has shared with us. These voices are their own [Professional Voice Clones](/docs/product-guides/voices/voice-cloning/professional-voice-cloning) of their voices. These voices generally have a language tag that indicates the language in which they were cloned, making them native to that language.  You can also use the language search filter to filter for specific languages.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Why are numbers, dates, symbols and acronyms not properly pronounced or spoken in the correct language?
+
+      Numbers, dates, symbols and acronyms can present a challenge to the AI, as there are often multiple ways that they could be delivered correctly. This can also depend on the language that is being used, for example, “11” could be read as "Eleven," but it could also be "Once" in Spanish or "Elf" in German.  
+
+      There are several ways you can ensure the correct delivery of numbers, dates, acronyms and symbols.
+
+       
+
+      <strong>
+        Write out fully, in words
+      </strong>
+
+      For the best results, we recommend writing numbers, acronyms, dates and symbols fully, in words, in the way that you would like the AI to deliver them. This ensures that the AI has the most context so that it will provide the correct output. For example, for “\$100”, we would recommend writing either "a hundred dollars" or "one hundred dollars" to ensure you get the result you would like.  
+
+       
+
+      <strong>
+        Using an LLM
+      </strong>
+
+      If you are using a large language model to generate your text prompts, for example, when using [ElevenAgents](/docs/conversational-ai/overview), you can prompt the model to always write numbers, dates, symbols, and acronyms out in words in whichever way you would prefer them to be delivered by the AI.
+
+       
+
+      <strong>
+        Normalization
+      </strong>
+
+      If you’re generating via the API, you can specify whether to apply text normalization using the `apply_text_normalization` parameter. Text normalization spells out numbers and dates to ensure better pronunciation  This option does add latency as the normalization process takes additional processing time.
+
+      The`apply_text_normalization` parameter has three modes:
+
+      * on, which means it is always applied
+      * off, which means it is never applied
+      * auto, which means that the AI will automatically decide when to apply text normalization
+
+      You can also specify the language of your prompt using the `language_code`parameter. This is an optional parameter that accepts ISO 639-1 language codes. 
+
+      This can be useful for short or ambiguous prompts, such as when the text includes only numbers or symbols. Specifying the language ensures the normalizer applies the correct rules for that language.
+
+      For more information, see our <a href="/docs/api-reference/introduction">API reference.</a>
+
+      Normalization is enabled by default when generating using Text to Speech via the website.  
+
+      In Studio, the default is for normalization to be automatically applied, meaning that the AI will decide when to apply text normalization. You can also set normalization to be always applied - this option is in <strong>Project settings</strong> under the <strong>Advanced</strong> tab.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Why is my voice mispronouncing certain words?
+
+      Mispronunciations can happen for a few different reasons. The most common one is that the word is just misspelled. The AI will not try to correct any words that are misspelled, and it will try to read them exactly as they are written. So it's important to double-check and make sure that the text is proofread and finished before having the AI read it.
+
+      If you want to force a certain pronunciation, you can use SSML phoneme tags with our English V1 and Turbo V2 models. You can find out more about this in our [guide to Prompting.](/docs/best-practices/prompting/controls#pronunciation)  
+
+      Sometimes, the AI might mispronounce words or have a strange accent that is not the one you are expecting. This can happen for a few reasons, and in most cases, it's very voice-dependent and language-dependent. The best way to ensure the correct accent and pronunciation is to clone a voice with the correct accent and pronunciation. This will give the AI the most context when generating the voiceover.
+
+      The language is specified by the text, and the accent is specified by the voice. So if you're writing in a language that might share a lot of common words or is fairly closely related to another language, the AI might have a hard time understanding how to pronounce certain words or switch between accents.
+
+      However, under certain circumstances, the AI might mispronounce words that are written correctly, even in English. This seems to be highly dependent on the voice used and the text used, but should be a rare occurrence.
+    </td>
+  </tr>
+</tbody>

@@ -38,11 +38,19 @@ Beyond the three stages, the conversational hard parts are built in:
 
 ## How a single turn flows
 
+#### Audio in
+
 The customer's audio streams into the API over one connection, from a browser, app, or phone call.
+
+#### Transcribe
 
 Speech-to-text turns the audio into text in real time and detects when the user's turn ends.
 
+#### Think
+
 The transcript goes to the LLM, which decides what to say next — calling functions or external systems if needed.
+
+#### Speak
 
 Text-to-speech converts the reply to audio and streams it back to the customer. If the customer interrupts, the agent yields and the loop restarts.
 

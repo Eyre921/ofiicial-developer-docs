@@ -116,6 +116,12 @@ components:
           description: >-
             How long to ring the recipient before giving up, in seconds. Note
             that this will also be limited by the provider's own constraints.
+        twilio_call_recording_enabled:
+          type: boolean
+          default: false
+          description: >-
+            Whether to record the call using Twilio call recording. Ignored for
+            non-Twilio providers. Recordings are stored in your Twilio account.
       title: TelephonyCallConfig
     type_:BatchCallResponse:
       type: object
@@ -248,35 +254,37 @@ components:
 {
   "batch_calls": [
     {
-      "id": "bc_9f8e7d6c5b4a3210",
-      "name": "March Campaign Batch Call",
-      "agent_id": "agent_42f7c9d8e1b2",
-      "created_at_unix": 1712006400,
-      "scheduled_time_unix": 1712092800,
+      "id": "bc_9f8a7c6d-1234-4e56-8b9a-0f1e2d3c4b5a",
+      "name": "April Marketing Campaign Batch",
+      "agent_id": "agent_42f7e8d9-0abc-4def-9a12-3456789bcdef",
+      "created_at_unix": 1712000000,
+      "scheduled_time_unix": 1712604800,
       "total_calls_dispatched": 150,
       "total_calls_scheduled": 200,
       "total_calls_finished": 140,
-      "last_updated_at_unix": 1712100000,
+      "last_updated_at_unix": 1712650000,
       "status": "pending",
       "retry_count": 2,
       "telephony_call_config": {
-        "ringing_timeout_secs": 45
+        "ringing_timeout_secs": 45,
+        "twilio_call_recording_enabled": true
       },
-      "agent_name": "Support Agent Alpha",
-      "phone_number_id": "pn_1234567890abcdef",
+      "agent_name": "Sales Outreach Bot",
+      "phone_number_id": "pn_7d3f2a1b-4567-4c89-9e0f-1a2b3c4d5e6f",
       "phone_provider": "twilio",
       "whatsapp_params": {
-        "whatsapp_call_permission_request_template_name": "customer_consent_request",
-        "whatsapp_call_permission_request_template_language_code": "en_US"
+        "whatsapp_call_permission_request_template_name": "customer_permission_request",
+        "whatsapp_call_permission_request_template_language_code": "en_US",
+        "whatsapp_phone_number_id": "wpn_1234567890abcdef"
       },
-      "branch_id": "branch_nyc_01",
+      "branch_id": "branch_nyc_office",
       "environment": "production",
       "timezone": "America/New_York",
-      "target_concurrency_limit": 10,
+      "target_concurrency_limit": 20,
       "branch_name": "New York City Office"
     }
   ],
-  "next_doc": "bc_9f8e7d6c5b4a3211",
+  "next_doc": "bc_9f8a7c6d-1234-4e56-8b9a-0f1e2d3c4b5b",
   "has_more": true
 }
 ```

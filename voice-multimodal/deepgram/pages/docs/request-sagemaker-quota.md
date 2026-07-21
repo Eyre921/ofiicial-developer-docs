@@ -30,11 +30,21 @@ Quota values represent the maximum number of instances of that type you can run 
 
 Before requesting an increase, check the quota you already have.
 
+#### AWS Management Console
+
+#### Open Service Quotas
+
 Sign in to the [AWS Management Console](https://console.aws.amazon.com/) and navigate to [Service Quotas](https://console.aws.amazon.com/servicequotas/home).
+
+#### Select Amazon SageMaker
 
 In the left-hand menu, select **AWS services**, then search for and select **Amazon SageMaker**.
 
+#### Search for the instance quota
+
 In the search bar, enter the instance type you want to check (for example, `g5.2xlarge`). *Find the item named similar to ml.g5.2xlarge for endpoint usage.*
+
+#### AWS CLI
 
 Run the following command, replacing the `--query-text` value with the instance type you want to check:
 
@@ -61,15 +71,29 @@ done
 
 If your current quota is `0` or too low for your deployment, submit a quota increase request.
 
+#### AWS Management Console
+
+#### Open the quota detail page
+
 In the [Service Quotas console for Amazon SageMaker](https://console.aws.amazon.com/servicequotas/home/services/sagemaker/quotas), search for the instance type (for example, `g5.2xlarge`) and select the quota named **ml.g5.2xlarge for endpoint usage**.
+
+#### Request an increase
 
 Select **Request increase at account level**.
 
+#### Enter the new quota value
+
 In the **Increase quota value** field, enter the number of instances you need. For example, enter `4` if you plan to run up to four `ml.g5.2xlarge` endpoint instances in this region.
+
+#### Submit the request
 
 Select **Request**. AWS reviews most SageMaker quota requests within a few hours, though some may take several business days.
 
+#### Repeat for each instance type
+
 If you need quota for additional instance types (`ml.g6.2xlarge`, `ml.g6e.2xlarge`), repeat these steps for each.
+
+#### AWS CLI
 
 Use `request-service-quota-increase` to submit a request. You need the **quota code** for each instance type.
 

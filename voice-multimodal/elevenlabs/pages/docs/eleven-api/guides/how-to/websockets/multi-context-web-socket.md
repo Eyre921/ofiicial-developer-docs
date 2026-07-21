@@ -8,6 +8,8 @@ path: docs/eleven-api/guides/how-to/websockets/multi-context-web-socket
 
 # Multi-Context Websocket
 
+#### Advanced
+
 Orchestrating voice agents using this multi-context WebSocket API is a complex task recommended
 for advanced developers. For a more managed solution, consider exploring our [Agents Platform
 product](/docs/eleven-agents/overview), which simplifies many of these challenges.
@@ -36,19 +38,29 @@ This guide will walk you through connecting to the multi-context WebSocket, mana
 These best practices are essential for building responsive, efficient voice agents with our
 multi-context WebSocket API.
 
+#### Use a single WebSocket connection
+
 Establish one WebSocket connection for each end-user session. This reduces overhead and latency
 compared to creating multiple connections. Within this single connection, you can manage
 multiple contexts for different parts of the conversation.
+
+#### Stream responses in chunks, generate sentences
 
 When generating long responses, stream the text in smaller chunks and use the `flush: true` flag
 at the end of complete sentences. This improves the quality of the generated audio and improves
 responsiveness.
 
+#### Handle interruptions gracefully
+
 Stream text into one context until an interruption occurs, then create a new context and close
 the existing one. This approach ensures smooth transitions when the conversation flow changes.
 
+#### Manage context lifecycle
+
 Close unused contexts promptly. The server can maintain up to 5 concurrent contexts per
 connection, but you should close contexts when they are no longer needed.
+
+#### Prevent context timeouts
 
 Contexts by default timeout after 20 seconds and are closed automatically. The inactivity
 timeout is a websocket level parameter that applies to all contexts and can be up to 180 seconds
@@ -494,6 +506,10 @@ conversationAgentDemo();
 
 ## Next steps
 
+#### [ElevenAgents](/docs/eleven-agents/quickstart)
+
 Build production-ready voice agents with the full ElevenAgents platform.
+
+#### [Understanding audio streaming](/docs/eleven-api/concepts/audio-streaming)
 
 Learn how WebSocket streaming works under the hood and what affects latency.

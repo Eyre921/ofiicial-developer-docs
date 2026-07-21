@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with Tavily to search the web during conversat
 
 This integration uses a **Tavily API key** for authentication.
 
+#### Create a Tavily account
+
 Sign up at [tavily.com](https://tavily.com) if you do not already have an account.
 
+#### Get your API key
+
 Go to your [Tavily Dashboard](https://app.tavily.com) and copy your API key. It starts with `tvly-`.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your Tavily API key in the **API Key** field.
 

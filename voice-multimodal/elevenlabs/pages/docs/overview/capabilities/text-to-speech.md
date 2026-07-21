@@ -24,15 +24,23 @@ Explore our [voice library](https://elevenlabs.io/app/voice-library) to find the
 
 The voice library is not available via the API to free tier users.
 
+#### [Products](/docs/eleven-creative/playground/text-to-speech)
+
 Step-by-step guide for using text to speech in ElevenLabs.
 
+#### [Developers](/docs/eleven-api/quickstart)
+
 Learn how to integrate text to speech into your application.
+
+#### [API reference](/docs/api-reference/text-to-speech/convert)
 
 Full API reference for the Text to Speech endpoint.
 
 ### Voice quality
 
 For real-time applications, Flash v2.5 provides ultra-low 75ms latency, while Multilingual v2 delivers the highest quality audio with more nuanced expression.
+
+#### [Eleven v3](/docs/overview/models#eleven-v3)
 
 Our most emotionally rich, expressive speech synthesis model
 
@@ -44,6 +52,8 @@ Dramatic delivery and performance
 
 Support for natural multi-speaker dialogue
 
+#### [Eleven Multilingual v2](/docs/overview/models#multilingual-v2)
+
 Lifelike, consistent quality speech synthesis model
 
 Natural-sounding output
@@ -53,6 +63,8 @@ Natural-sounding output
 10,000 character limit
 
 Most stable on long-form generations
+
+#### [Eleven Flash v2.5](/docs/overview/models#flash-v25)
 
 Our fast, affordable speech synthesis model
 
@@ -76,6 +88,8 @@ ElevenLabs offers thousands of voices across 32 languages through multiple creat
 * [Voice design](/docs/overview/capabilities/voices#voice-design) to generate custom voices from text descriptions
 
 Learn more about our [voice options](/docs/overview/capabilities/voices).
+
+#### Supported output formats
 
 The default response format is `mp3`, but other formats like `pcm` and `ulaw` are available.
 
@@ -127,13 +141,19 @@ audio if desired.
 
 ## FAQ
 
+#### Can I clone my own voice?
+
 Yes, you can create [instant voice clones](/docs/overview/capabilities/voices#cloned) of your own voice
 from short audio clips. For high-fidelity clones, check out our [professional voice
 cloning](/docs/overview/capabilities/voices#cloned) feature.
 
+#### Do I own the audio output?
+
 Yes. You retain ownership of any audio you generate. However, commercial usage rights are only
 available with paid plans. With a paid subscription, you may use generated audio for commercial
 purposes and monetize the outputs if you own the IP rights to the input content.
+
+#### What qualifies as a free regeneration?
 
 A free regeneration allows you to regenerate the same text to speech content without additional cost, subject to these conditions:
 
@@ -142,13 +162,19 @@ A free regeneration allows you to regenerate the same text to speech content wit
 
 Free regenerations are useful in case there is a slight distortion in the audio output. According to ElevenLabs' internal benchmarks, regenerations will solve roughly half of issues with quality, with remaining issues usually due to poor training data.
 
+#### How do I reduce latency for real-time cases?
+
 Use the low-latency Flash [models](/docs/overview/models) (Flash v2 or v2.5) optimized for near real-time
 conversational or interactive scenarios. See our [latency optimization
 guide](/docs/eleven-api/guides/how-to/best-practices/latency-optimization) for more details.
 
+#### Why is my output sometimes inconsistent?
+
 The models are nondeterministic. For consistency, use the optional [seed
 parameter](/docs/api-reference/text-to-speech/convert#request.body.seed), though subtle
 differences may still occur.
+
+#### What's the best practice for large text conversions?
 
 Split long text into segments and use streaming for real-time playback and efficient processing.
 To maintain natural prosody flow between chunks, include [previous/next text or previous/next

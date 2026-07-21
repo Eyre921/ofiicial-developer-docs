@@ -65,6 +65,8 @@ Your account on the isolated environment will be separate to the one on elevenla
 
 When using ElevenLabs SDKs, you can specify the environment to connect to an isolated region. Below are examples for each SDK.
 
+#### Python
+
 ```python
 from elevenlabs import ElevenLabs, ElevenLabsEnvironment
 
@@ -76,6 +78,8 @@ client = ElevenLabs(
 
 ```
 
+#### TypeScript
+
 ```typescript
 import { ElevenLabsClient, ElevenLabsEnvironment } from "@elevenlabs/elevenlabs-js";
 
@@ -85,6 +89,8 @@ const client = new ElevenLabsClient({
   environment: ElevenLabsEnvironment.ProductionEu,
 });
 ```
+
+#### JavaScript (client)
 
 ```javascript
 import { Conversation } from "@elevenlabs/client";
@@ -97,6 +103,8 @@ const conversation = await Conversation.startSession({
   livekitUrl: "wss://livekit.rtc.eu.residency.elevenlabs.io"
 });
 ```
+
+#### React
 
 ```tsx
 import { useConversation } from "@elevenlabs/react";
@@ -128,12 +136,18 @@ Data residency is an exclusive feature available to ElevenLabs' Enterprise custo
 
 ## FAQ
 
+#### Can I run my isolated environment in parallel with the non-isolated one?
+
 Yes, it is possible to do this and to bill the usage for both of them on the same invoice. For
 more details on unified billing across multiple workspaces, see [consolidated
 billing](/docs/overview/administration/consolidated-billing).
 
+#### How does this relate to GDPR compliance?
+
 For customers subject to GDPR, ElevenLabs provides options to limit storage and, in some cases,
 processing to the EU to support customers' compliance efforts.
+
+#### Do isolated environments impact API performance?
 
 For users inside the isolated environment region, data residency may potentially reduce latency
 due to localized processing. For users outside the isolated environment region, performance is
@@ -141,17 +155,25 @@ expected to remain consistent with our global infrastructure. While there may be
 relates to latency, the purpose of these data residency options are not specifically to improve
 latency.
 
+#### Is Zero Retention Mode automatically enabled in isolated environments?
+
 No, Zero Retention Mode is an optional feature that can be enabled separately, even for accounts
 with data residency. It provides an additional layer of data minimization by preventing storage of
 content on our servers.
 
+#### My API requests to the isolated environment are failing
+
 Double check that you are using the correct API URL and the correct API key for the account on the
 isolated environment.
+
+#### How do I use an isolated environment in the SDK?
 
 When you create the ElevenLabs client object, it takes an environment parameter which is by
 default US but you can set it to your desired environment. See the [SDK
 configuration](#sdk-configuration) section above for code examples in Python, TypeScript,
 JavaScript, and React.
+
+#### How do I share a PVC from a non-isolated environment to an isolated environment?
 
 To share a PVC with an isolated environment, first enable link sharing for that voice. Then copy
 the link, and add the prefix of the isolated environment to the voice link: From:

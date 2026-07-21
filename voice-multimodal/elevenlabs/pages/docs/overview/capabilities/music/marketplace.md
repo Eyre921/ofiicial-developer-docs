@@ -84,19 +84,29 @@ Payouts are processed through the existing ElevenLabs payout system.
 
 ## FAQ
 
+#### Can I use purchased music after my subscription ends?
+
 Yes, you may continue using any music you have already purchased under the respective usage
 type. However, you will not be able to create new remixes or downloads without an active
 ElevenLabs subscription.
+
+#### What happens to remixes I create?
 
 Any derivative work (remixes) remain subject to the same usage type and licensing restrictions
 as the original track. You cannot upgrade the usage rights of a remix beyond the original
 license.
 
+#### How do creator payouts work?
+
 Creators earn a portion of each purchase, starting at 25% of the purchase price. Payouts are
 processed through the ElevenLabs payout system.
 
+#### Can I distribute purchased music to streaming platforms?
+
 No, distribution to music streaming platforms (Spotify, Apple Music, SoundCloud, etc.) is not
 permitted under any license type.
+
+#### What if my use case is not covered by the standard licenses?
 
 Contact our [Enterprise Sales team](https://elevenlabs.io/enterprise) to discuss an Enterprise
 license and custom terms for use cases like TV, cinema, streaming platforms, or large-scale

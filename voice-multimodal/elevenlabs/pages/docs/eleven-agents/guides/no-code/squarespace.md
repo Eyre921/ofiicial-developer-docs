@@ -18,6 +18,8 @@ This tutorial will guide you through adding your ElevenLabs Agents agent to your
 
 ## Guide
 
+#### Get your embed code
+
 Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and find your agent's embed widget.
 
 ```html
@@ -25,16 +27,20 @@ Visit the [ElevenLabs dashboard](https://elevenlabs.io/app/agents) and find your
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 ```
 
+#### Add the widget to your page
+
 1. Navigate to your desired page
 2. Click + to add a block
 3. Select Code from the menu
 4. Paste the `<elevenlabs-convai agent-id="YOUR_AGENT_ID"></elevenlabs-convai>` snippet into the Code Block
 5. Save the block
 
-1) Go to Settings > Advanced > Code Injection
-2) Paste the snippet `<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>` into the Footer section
-3) Save changes
-4) Publish your site to see the changes
+#### Add the script globally
+
+1. Go to Settings > Advanced > Code Injection
+2. Paste the snippet `<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>` into the Footer section
+3. Save changes
+4. Publish your site to see the changes
 
 Note: The widget will only be visible on your live site, not in the editor preview.
 

@@ -382,8 +382,12 @@ The `media` object is the unified way to pass images, videos, and audio into a S
 | ------------------ | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `frame_images`     | array | Up to two keyframe images. Each item: `{input_image, frame}` where `frame` is `"first"` or `"last"`. With one item and no `frame`, it's used as the first frame. With two items and no `frame`, they're used as first and last in order. |
 | `reference_images` | array | Up to nine reference images for character, object, or scene consistency. Each item is a URL or base64-encoded image.                                                                                                                     |
-| `reference_videos` | array | Up to three reference videos for motion or composition guidance. Each item: `{video: "url"}`.                                                                                                                                            |
+| `reference_videos` | array | Up to three reference videos for motion or composition guidance. Each item: `{video: "url"}`. Each video must be between 2 and 15 seconds long.                                                                                          |
 | `reference_audios` | array | Up to three reference audio files to drive video generation. Each item is a URL. Requires at least one `reference_images` or `reference_videos` entry.                                                                                   |
+
+<Note>
+  Reference videos must be between 2 and 15 seconds long. Files outside this range are rejected with `invalidDuration` (`Media seconds must be in [2, 15] seconds range`). Trim your clip before submitting the job — for example, `ffmpeg -i input.mp4 -t 5 -c copy reference.mp4` produces a 5-second reference clip.
+</Note>
 
 ### Input compatibility
 

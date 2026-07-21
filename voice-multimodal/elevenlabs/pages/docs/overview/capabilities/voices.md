@@ -35,6 +35,8 @@ We've paid out over **\$14M** already.
 
 Voice Library voices are not available via the API to free tier users.
 
+#### [Products](/docs/eleven-creative/voices/voice-library)
+
 Learn how to use voices from the Voice Library
 
 #### Cloned
@@ -48,9 +50,15 @@ Voice-captcha technology is used to verify that Professional Voice Clones are cr
 
 A Creator plan or above is required to create Professional Voice Clones.
 
+#### [Products](/docs/eleven-creative/voices/voice-cloning)
+
 Learn how to create Instant Voice Cloning & Professional Voice Cloning
 
+#### [Instant Voice Cloning](/docs/eleven-api/guides/how-to/voices/instant-voice-cloning)
+
 Clone a voice instantly
+
+#### [Professional Voice Cloning](/docs/eleven-api/guides/how-to/voices/professional-voice-cloning)
 
 Create a realistic voice clone
 
@@ -77,7 +85,11 @@ Using v3 gives the following benefits:
 * Audio tags supported in Preview generations.
 * Backward compatibility with v2 models.
 
+#### [Products](/docs/eleven-creative/voices/voice-design)
+
 Learn how to craft voices from a single prompt.
+
+#### [Developers](/docs/eleven-api/guides/how-to/voices/voice-design)
 
 Integrate Voice Design into your application.
 
@@ -85,7 +97,11 @@ Integrate Voice Design into your application.
 
 Voice Remixing allows you to transform voices you own by modifying their core attributes while maintaining their recognizable characteristics. You can adjust gender, accent, speaking style, pacing, and audio quality through natural language prompts. This feature is particularly useful for adapting voices to different contexts, creating character variations, or improving audio quality of existing voice profiles. Voice Remixing works with any cloned voice you personally own (Instant Voice Cloning or Professional Voice Cloning) or voices created through Voice Design.
 
+#### [Products](/docs/overview/capabilities/voice-remixing)
+
 Learn how to transform and enhance voices
+
+#### [Developers](/docs/eleven-api/guides/how-to/voices/remix-a-voice)
 
 Integrate Voice Remixing into your application
 

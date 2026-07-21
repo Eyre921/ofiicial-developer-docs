@@ -12,9 +12,15 @@ path: docs/overview/capabilities/speech-engine
 
 ElevenLabs Speech Engine adds voice capabilities to any chat agent. ElevenLabs handles speech-to-text and text-to-speech while your server provides the LLM logic. The SDK manages connection lifecycle, turn-taking, and interruption detection so you can focus on your agent's behavior.
 
+#### [Quickstart](/docs/eleven-api/guides/cookbooks/speech-engine)
+
 Build a voice agent with the ElevenLabs SDK.
 
+#### [JavaScript SDK reference](/docs/eleven-api/resources/libraries/speech-engine/javascript-sdk-reference)
+
 Classes, methods, and events for the JavaScript SDK.
+
+#### [Python SDK reference](/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference)
 
 Classes, methods, and events for the Python SDK.
 
@@ -72,13 +78,19 @@ systems.
 
 ## FAQ
 
+#### What LLMs are supported?
+
 Any LLM that produces text. The SDK has built-in stream extraction for OpenAI (Responses API and
 Chat Completions API), Anthropic Messages API, and Google Gemini API. For other providers, pass
 a plain string or an async iterable of string chunks.
 
+#### What is the difference between Speech Engine and ElevenAgents?
+
 ElevenAgents is a fully hosted platform where ElevenLabs provides the LLM, knowledge base, and
 tools. Speech Engine is for developers who want to bring their own LLM and control the
 conversation logic on their own server.
+
+#### What server frameworks are supported?
 
 In TypeScript, you can attach Speech Engine to any Node.js HTTP server (Express, Fastify, or
 plain `http.createServer()`), or run a standalone WebSocket server. In Python, the SDK provides

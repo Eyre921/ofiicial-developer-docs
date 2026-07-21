@@ -88,15 +88,23 @@ When sharing a folder, you can assign one of three roles:
 
 ## FAQ
 
+#### Can I share folders with people outside my workspace?
+
 Currently, folder sharing is only available within your workspace. To share with external
 collaborators, you'll need to download and share assets through other means.
+
+#### Can I recover a deleted asset?
 
 No, deleted assets cannot be recovered. Deleting an asset is permanent and cannot be undone, and
 you will be asked to confirm the deletion request.
 
+#### What file formats are supported?
+
 Assets supports a wide range of audio, video, and image formats. Common audio formats include
 MP3, WAV, FLAC, and AAC. Video formats include MP4, MOV, and WebM. Image formats include JPG,
 PNG, and WebP.
+
+#### Can I organize assets into nested folders?
 
 Yes, you can create nested folder structures to organize your assets in a way that makes sense
 for your workflow. Simply create a folder and then create additional folders inside it.

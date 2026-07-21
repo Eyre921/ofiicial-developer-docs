@@ -23,6 +23,8 @@ GitHub](https://github.com/elevenlabs/examples/tree/main/agents/nextjs/quickstar
 
 ## Setup
 
+#### Create a new Next.js project
+
 Open a terminal window and run the following command:
 
 ```bash
@@ -31,13 +33,19 @@ npm create next-app my-conversational-agent
 
 It will ask you some questions about how to build your project. We'll follow the default suggestions for this tutorial.
 
+#### Navigate to project directory
+
 ```shell
 cd my-conversational-agent
 ```
 
+#### Install the ElevenLabs dependency
+
 ```shell
 npm install @elevenlabs/react
 ```
+
+#### Test the setup
 
 Run the following command to start the development server and open the provided URL in your browser:
 
@@ -48,6 +56,8 @@ npm run dev
 ![](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a/assets/images/conversational-ai/nextjs-splash.png)
 
 ## Implement ElevenLabs Agents
+
+#### Create the conversation component
 
 Create a new file `app/components/conversation.tsx`:
 
@@ -114,6 +124,8 @@ export function Conversation() {
 }
 ```
 
+#### Update the main page
+
 Replace the contents of `app/page.tsx` with:
 
 ```tsx app/page.tsx
@@ -138,6 +150,8 @@ export default function Home() {
 }
 ```
 
+#### (Optional) Authenticate the agents with a signed URL
+
 This authentication step is only required for private agents. If you're using a public agent, you
 can skip this section and directly use the `agentId` in the `startSession` call.
 
@@ -148,6 +162,8 @@ a signed URL from your server. This section explains how to set this up.
 
 1. An ElevenLabs account and API key. Sign up [here](https://elevenlabs.io/app/sign-up).
 
+#### Create environment variables
+
 Create a `.env.local` file in your project root:
 
 ```yaml .env.local
@@ -157,6 +173,8 @@ NEXT_PUBLIC_AGENT_ID=your-agent-id-here
 
 1. Make sure to add `.env.local` to your `.gitignore` file to prevent accidentally committing sensitive credentials to version control.
 2. Never expose your API key in the client-side code. Always keep it secure on the server.
+
+#### Create an API route
 
 Create a new file `app/api/get-signed-url/route.ts`:
 
@@ -188,6 +206,8 @@ export async function GET() {
   }
 }
 ```
+
+#### Update the Conversation component
 
 Modify your `conversation.tsx` to fetch and use the signed URL:
 

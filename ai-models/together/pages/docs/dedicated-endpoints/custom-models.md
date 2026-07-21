@@ -159,6 +159,69 @@ tg beta models ls-files ml_abc123
 
 You can also see uploaded models on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard.
 
+## Check revision validation
+
+After files land, Together validates the revision's weights automatically. Validation checks that the weights are in safetensors format and that the config and architecture are compatible with the base model. A revision must reach `REVISION_VALIDATION_STATUS_SUCCESS` before you can deploy it when you pin that revision explicitly.
+
+List revisions for a model:
+
+```bash CLI theme={null}
+tg beta models ls-revisions ml_abc123
+```
+
+The list and retrieve revision APIs also return validation fields on each revision. Replace `$PROJECT_ID` with your project ID (`proj_...`):
+
+```bash Shell theme={null}
+# All revisions
+curl -s -H "Authorization: Bearer $TOGETHER_API_KEY" \
+  "https://api.together.ai/v2/projects/$PROJECT_ID/models/ml_abc123/revisions"
+
+# One revision
+curl -s -H "Authorization: Bearer $TOGETHER_API_KEY" \
+  "https://api.together.ai/v2/projects/$PROJECT_ID/models/ml_abc123/revisions/rv_abc123"
+```
+
+Each revision in the response includes:
+
+```json theme={null}
+{
+  "data": [
+    {
+      "revisionId": "rv_abc123",
+      "createdAt": "2026-07-02T20:05:00Z",
+      "validationStatus": "REVISION_VALIDATION_STATUS_SUCCESS",
+      "lastValidatedAt": "2026-07-02T20:06:00Z",
+      "validationErrors": []
+    }
+  ],
+  "object": "list"
+}
+```
+
+### Revision validation fields
+
+| Field              | Description                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| `validationStatus` | Validation state for this revision. See the table below.                                  |
+| `lastValidatedAt`  | When validation last ran for this revision. Omitted until validation has started.         |
+| `validationErrors` | Errors from the last validation run. Empty when validation succeeded or is still pending. |
+
+### `validationStatus` values
+
+| Value                                    | Meaning                                                                                 |
+| ---------------------------------------- | --------------------------------------------------------------------------------------- |
+| `REVISION_VALIDATION_STATUS_PENDING`     | Validation is queued or running. Poll until the status changes.                         |
+| `REVISION_VALIDATION_STATUS_SUCCESS`     | Weights validated successfully. The revision is ready to deploy.                        |
+| `REVISION_VALIDATION_STATUS_FAILED`      | Validation failed. Read `validationErrors` for the cause.                               |
+| `REVISION_VALIDATION_STATUS_ERROR`       | Validation could not complete due to an internal error. Retry later or contact support. |
+| `REVISION_VALIDATION_STATUS_UNSPECIFIED` | Validation has not started yet.                                                         |
+
+When validation fails, each entry in `validationErrors` includes `rule`, `severity`, and `message` describing what went wrong. Common causes include missing safetensors files, an invalid `config.json`, or weights that don't match the declared base model.
+
+<Note>
+  Only safetensors format is supported. Models with only `.bin` or `.pt` files fail validation.
+</Note>
+
 ## Deploy the model
 
 Once the upload completes, your model has an ID (`ml_...`) in your project. Deploy it the same way as a base model. First, find its ID by listing the models in your project:
@@ -186,3 +249,5 @@ Once the deployment is ready, send a request to the endpoint string, as shown in
 **`tokenizer.chat_template is not set` during chat inference:** The uploaded tokenizer doesn't define a chat template. Add a compatible `chat_template` to `tokenizer_config.json` before uploading, or use the text completions API with the prompt format expected by the model.
 
 **Model delete fails with `the model is referenced by a live deployment` (HTTP 400):** A deployment still references this model. [Stop the deployment](/docs/dedicated-endpoints/manage#stop-a-deployment), wait for `DEPLOYMENT_STATE_STOPPED`, [delete the deployment](/docs/dedicated-endpoints/manage#delete-resources), then delete the model with `tg beta models delete <model_id>`.
+
+**Revision validation failed or still pending:** Check `validationStatus` on the revision with [Check revision validation](#check-revision-validation). Wait for `REVISION_VALIDATION_STATUS_SUCCESS` before you deploy a pinned revision.

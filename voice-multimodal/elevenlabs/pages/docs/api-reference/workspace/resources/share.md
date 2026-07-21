@@ -137,6 +137,7 @@ components:
         - avatar_video_generations
         - resource_collection
         - studio_projects
+        - convai_analysis_items
       description: >-
         Resource types that can be shared in the workspace. The name always need
         to match the collection names

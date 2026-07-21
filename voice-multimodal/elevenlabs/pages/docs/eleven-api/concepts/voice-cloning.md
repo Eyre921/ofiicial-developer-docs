@@ -76,10 +76,18 @@ For most production applications with genuine quality requirements, PVC is the b
 
 ## Related
 
+#### [Instant Voice Cloning guide](/docs/eleven-api/guides/how-to/voices/instant-voice-cloning)
+
 How to create an Instant Voice Clone via the API.
+
+#### [Professional Voice Cloning guide](/docs/eleven-api/guides/how-to/voices/professional-voice-cloning)
 
 How to create a Professional Voice Clone via the API.
 
+#### [Voices reference](/docs/overview/capabilities/voices)
+
 Voice types, management, and the voice library.
+
+#### [Voice design guide](/docs/eleven-api/guides/how-to/voices/voice-design)
 
 How to generate a new voice from a text description instead of cloning one.

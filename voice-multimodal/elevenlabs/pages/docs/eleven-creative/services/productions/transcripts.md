@@ -23,6 +23,10 @@ We offer 2 types of human transcripts:
 
 ## How it works
 
+#### Order transcript
+
+#### Transcribing new files
+
 ### Productions page
 
 The easiest way to order a new transcript from Productions is from the [Productions](https://elevenlabs.io/app/productions) page in your ElevenLabs account.
@@ -35,15 +39,23 @@ You can also select the *Human Transcript* option in the [Speech to Text](/docs/
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9/assets/images/productions/productions-stt-dialog.png" alt="Productions STT Dialog" />
 
+#### Starting from an existing transcript
+
 Open an existing transcript and click the *Get human review* button to create a new Productions order for that transcript.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863/assets/images/productions/productions-get-human-review.png" alt="Productions Get Human Review" />
 
+#### Export transcript
+
 You will receive an email notification when your transcript is ready and see it marked as 'Done' on your Productions page.
+
+#### Quick export
 
 Open a transcript on your [Productions](https://elevenlabs.io/app/productions) page and click the three dots, then the *Export* button.
 
 ![Export menu](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7ba125ad4d96992a9a078b275cc0b85e3a21f6d5ca6bea1f36f775c10c98856b/assets/images/productions/productions-export.gif)
+
+#### Export from viewer
 
 Open a transcript on your [Productions](https://elevenlabs.io/app/productions) page and click the *View* icon to open the transcript viewer.
 
@@ -63,6 +75,8 @@ When ordering a Productions transcript, you will see the option to activate 'Ver
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/fdf172c15645a4cfe48e59cb436adcaae7ff6c16979374e358d4ce56071250a9/assets/images/productions/productions-style-guide.png" alt="Productions Style Guide" />
 
+#### Non-verbatim
+
 Non-verbatim transcription, also called *clean* or *intelligent verbatim*, focuses on clarity and readability. Unlike verbatim transcriptions, it removes unnecessary elements like filler words, stutters, and irrelevant sounds while preserving the speaker’s message.
 
 This is the default option for Productions transcriptions. Unless you explicitly select 'Verbatim' mode, we will deliver a non-verbatim transcript.
@@ -74,10 +88,14 @@ What gets left out in non-verbatim transcripts:
 * **Audio event tags,** including non-verbal sounds like \[coughing] or \[throat clearing] as well as environmental sounds like \[dog barking]
 * **Slang or incorrect grammar** (e.g. ‘ain’t’ → ‘is not’)
 
+#### Verbatim
+
 In verbatim transcription, the goal is to capture ***everything that can be heard,***, meaning:
 
 * All detailed verbal elements: stutters, repetitions, etc
 * All non-verbal elements like human sounds (\[cough]) and environmental sounds (\[dog barking])
+
+#### Non-verbatim vs. verbatim
 
 The following table provides a comprehensive breakdown of our non-verbatim vs. verbatim transcription services.
 
@@ -98,6 +116,22 @@ The following table provides a comprehensive breakdown of our non-verbatim vs. v
 
 ## FAQ
 
-You can leave feedback on a completed transcript by clicking the three dots (⋯) next to your deliverable and selecting *Feedback*.
+<tbody>
+  <tr>
+    <td>
+      #### What if I'm not happy with the result?
 
-No. You can export a completed transcript and make changes off platform. We plan to add support for this soon.
+      You can leave feedback on a completed transcript by clicking the three dots (⋯) next to
+      your deliverable and selecting *Feedback*.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I make changes once I receive the final version?
+
+      No. You can export a completed transcript and make changes off platform. We plan to add
+      support for this soon.
+    </td>
+  </tr>
+</tbody>

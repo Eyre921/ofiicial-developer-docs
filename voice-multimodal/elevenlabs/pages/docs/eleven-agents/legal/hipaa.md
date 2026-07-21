@@ -53,6 +53,8 @@ BAA.
 
 When operating in Zero Retention Mode, only the following LLMs are available:
 
+#### Google Models
+
 * Gemini 2.5 Flash
 * Gemini 2.5 Flash Lite
 * Gemini 2.0 Flash
@@ -61,16 +63,22 @@ When operating in Zero Retention Mode, only the following LLMs are available:
 * Gemini 1.5 Pro
 * Gemini 1.0 Pro
 
-- Claude Sonnet 4.5
-- Claude Sonnet 4
-- Claude Haiku 4.5
-- Claude 3.7 Sonnet
-- Claude 3.5 Sonnet
-- Claude 3 Haiku
+#### Anthropic Models
+
+* Claude Sonnet 4.5
+* Claude Sonnet 4
+* Claude Haiku 4.5
+* Claude 3.7 Sonnet
+* Claude 3.5 Sonnet
+* Claude 3 Haiku
+
+#### Hosted by ElevenLabs
 
 * Qwen3.5-397b-a17b
 
 Qwen3.5-397b-a17b is not currently available in non-US residency workspaces that use ZRM.
+
+#### Custom LLMs
 
 * [Custom LLM](/docs/eleven-agents/customization/llm/custom-llm) (supports any OpenAI-API
   compatible provider and requires you to bring your own API keys)
@@ -87,11 +95,17 @@ Zero Retention Mode implements several safeguards and is designed to:
 
 When working with Zero Retention Mode agents:
 
+#### LLMs (except the available LLMs as described above) are disabled in the UI
+
 ![Redacted conversation analysis showing Zero Retention Mode in
 action](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab/assets/images/conversational-ai/hipaa-model.png)
 
+#### Content is redacted from content history
+
 ![Redacted conversation history showing Zero Retention Mode in
 action](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f/assets/images/conversational-ai/redacted.png)
+
+#### Conversation analysis is limited
 
 ![Redacted conversation analysis showing HIPAA compliance in
 action](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb/assets/images/conversational-ai/redacted-summary.png)
@@ -102,16 +116,24 @@ API calls attempting to use unavailable LLMs will receive an HTTP 400 error. Ana
 
 ## FAQ
 
+#### Can I use any LLM if I am subject to HIPAA?
+
 No. In such case, you can only use LLMs from the approved list. Attempts to use other LLMs will
 produce an error. You can always use a custom LLM if you need a specific model not on the
 allowlist.
 
+#### Can I execute a BAA with ElevenLabs if I am subject to HIPAA?
+
 BAAs are only available to enterprise customers. Please refer to your account executive to
 discuss further.
+
+#### Does the application of Zero Retention Mode affect conversation quality?
 
 No. Zero Retention Mode and the execution of a BAA only affects how data is stored and which
 LLMs can be used. It does not impact the quality or functionality of conversations while they
 are active.
+
+#### Can I still analyze conversation data?
 
 Yes, but with limitations. Conversation analytics will only include non-sensitive metadata like
 call duration and success rates. Specific content from conversations will not be available.
@@ -126,6 +148,10 @@ When building voice agents, you may consider:
 
 ## Related resources
 
+#### [ElevenAgents Security](/docs/eleven-agents/customization/authentication)
+
 Learn about securing your ElevenLabs agents
+
+#### [Custom LLM Integration](/docs/eleven-agents/customization/llm/custom-llm)
 
 Set up your own LLM for maximum control and compliance

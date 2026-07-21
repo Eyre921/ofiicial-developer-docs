@@ -251,7 +251,7 @@ Example model references that work:
 
 ## Related
 
-* [Auto Router](/guides/routing/routers/auto-router) - Automatic single-model selection
-* [Model Fallbacks](/guides/routing/model-fallbacks) - Configure fallback models
-* [Structured Outputs](/guides/features/structured-outputs) - Get structured JSON responses
+* [Auto Router](/docs/guides/routing/routers/auto-router) - Automatic single-model selection
+* [Model Fallbacks](/docs/guides/routing/model-fallbacks) - Configure fallback models
+* [Structured Outputs](/docs/guides/features/structured-outputs) - Get structured JSON responses
 

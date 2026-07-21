@@ -12,11 +12,17 @@ path: docs/reception-ai/overview
 
 ## What Reception.ai does
 
+#### Answers calls
+
 Your AI receptionist picks up every call, greets callers, and handles inquiries using natural
 conversation.
 
+#### Books appointments
+
 Customers can schedule, reschedule, or cancel appointments directly over the phone or via your
 booking page.
+
+#### Manages your business
 
 Track clients, review conversations, monitor revenue, and fill knowledge gaps from one
 dashboard.
@@ -48,10 +54,18 @@ Get a dedicated phone number. Your AI receptionist starts answering calls immedi
 
 ## Get started
 
+#### [Quickstart](/docs/reception-ai/quickstart)
+
 Set up your AI receptionist in under 5 minutes.
+
+#### [Configure your receptionist](/docs/reception-ai/receptionist/overview)
 
 Customize voice, rules, and call behavior.
 
+#### [Set up scheduling](/docs/reception-ai/scheduling/overview)
+
 Configure services, staff, and availability.
+
+#### [View analytics](/docs/reception-ai/features/analytics)
 
 Monitor business performance and call metrics.

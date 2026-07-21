@@ -16,6 +16,8 @@ With our Productions dubbing offering, localize your content to reach any audien
 
 ## How it works
 
+#### Order a dub
+
 The easiest way to order a dub from Productions is through the [Productions](https://elevenlabs.io/app/productions) page in your ElevenLabs account. Simply share:
 
 * **Your video file** (MP4, MOV, AVI, MKV)
@@ -24,12 +26,16 @@ The easiest way to order a dub from Productions is through the [Productions](htt
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png" alt="Productions Home" />
 
+#### Processing
+
 Using proprietary AI models with human-in-the-loop craftsmanship, we:
 
 * Accurately **transcribe** the source audio
 * **Translate** into the requested target language with contextual accuracy
 * **Generate** synthetic voices matched to speaker identity and tone, or use custom voices
 * **Synchronize** dubbed speech with the original video timing
+
+#### Order delivery
 
 You'll receive a fully dubbed video with multiple export options: MP4 Video (default), AAC Audio, MP3 Audio, WAV Audio, Audio Tracks or Clips (Zip File), AAF (Timeline Data), SRT Captions, TXT Transcript.
 
@@ -62,10 +68,39 @@ We aim to deliver all dubbing projects **within 7 business days.** If you are an
 
 ## FAQ
 
-We support MP4, MOV, AVI, and MKV formats for video uploads. The final dubbed video is delivered in MP4 format by default.
+<tbody>
+  <tr>
+    <td>
+      #### What video formats do you support?
 
-You can leave feedback on a completed dub by clicking the three dots (⋯) next to your deliverable and selecting *Feedback*.
+      We support MP4, MOV, AVI, and MKV formats for video uploads. The final dubbed video is
+      delivered in MP4 format by default.
+    </td>
+  </tr>
 
-Yes, you can open the project in Dubbing Studio and make changes to refine the output.
+  <tr>
+    <td>
+      #### What if I'm not happy with the result?
 
-We do our best to match timing and visible mouth movements, but perfect lip sync is not guaranteed and may vary depending on the content.
+      You can leave feedback on a completed dub by clicking the three dots (⋯) next to your
+      deliverable and selecting *Feedback*.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I make changes once I receive the final version?
+
+      Yes, you can open the project in Dubbing Studio and make changes to refine the output.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Do you provide lip sync?
+
+      We do our best to match timing and visible mouth movements, but perfect lip sync is not
+      guaranteed and may vary depending on the content.
+    </td>
+  </tr>
+</tbody>

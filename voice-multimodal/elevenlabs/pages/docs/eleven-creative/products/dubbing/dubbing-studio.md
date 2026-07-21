@@ -11,12 +11,6 @@ path: docs/eleven-creative/products/dubbing/dubbing-studio
 Dubbing Studio is in maintenance mode. It continues to receive critical bug fixes only, and no new
 feature work is planned. Existing Dubbing Studio customers keep uninterrupted access.
 
-<video width="100%" height="400" controls>
-  <source src="https://storage.googleapis.com/eleven-public-cdn/video/dubbing/new-dubbing-tutorial.mp4" type="video/mp4" />
-
-  Your browser does not support the video tag.
-</video>
-
 ## Create a Dubbing Studio project
 
 1. Check the 'Create Dubbing Studio' box when creating a dub.
@@ -26,6 +20,8 @@ feature work is planned. Existing Dubbing Studio customers keep uninterrupted ac
 2. Click on **Create Dub**. Once the Dubbing Studio project is created, you will be able to open it.
 
 ## Core Concepts
+
+#### Speaker Cards
 
 ## Speaker Cards
 
@@ -42,6 +38,8 @@ Both transcriptions and translations can be edited freely - just click inside a 
 
 You can see the name of each speaker in the top left of the speaker card. To change the name of a speaker or reassign a clip to a different speaker,
 you'll need to use the Timeline.
+
+#### Timeline
 
 ## Timeline
 
@@ -109,6 +107,8 @@ Use the action buttons at the bottom of the timeline to add new audio tracks
 
 ![Dubbing Studio Add Tracks](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/6144bb02bb8a9da95cd4fbf76d9df479b2174e83fb8569bdeaf9b14743d19cdf/assets/images/product-guides/dubbing/dubbing-studio-add-tracks.png)
 
+#### Voice Settings
+
 ## Voice Settings
 
 ### Voice Selection
@@ -134,6 +134,8 @@ You can set voice settings at two levels:
 
 ![Dubbing Studio Voice
 Settings](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b4d2221711308a019b150e06634b62a9d9161ac9f51662d0aa3aaeb95e623b81/assets/images/product-guides/dubbing/dubbing-studio-clip-settings.gif)
+
+#### Exports
 
 ## Exports
 
@@ -208,3 +210,158 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 | Joe     | 0:00:17.000 | 0:00:23.000 | Traveling mostly.                 | Hauptsächlich gereist.                       |
 | Maria   | 0:00:23.000 | 0:00:30.000 | Oh, anywhere I would know?        | Oh, irgendwo, das ich kenne?                 |
 | Joe     | 0:00:30.000 | 0:00:36.000 | Spain.                            | Spanien.                                     |
+
+## FAQ
+
+<tbody>
+  <tr>
+    <td>
+      #### What is the difference between a track clone and a clip clone in the Dubbing Studio?
+
+      A track clone refers to a voice clone that is derived from the entire track in a dubbing project. This means that the voice clone will be made from a combination of all of the clips on that track. This is the default behavior and is good for creating voice clones that have a bit of the characteristics of all the clips combined and usually give the AI enough data to create a proper clone. However, if the voice changes quite drastically throughout, it might create a voice that is a bit more unstable.
+
+      On the other hand, a clip clone refers to a voice clone that is derived from a specific clip on a track. This allows you to create different voice clones from specific clips and assign that same voice to other clips where you want the tonality or performance. This can be great if you feel like a specific track has exactly the performance you want and want to apply this to other clips too, or perhaps, you want to apply this to the whole track.
+
+      One helpful tip mentioned in the content is to find a clip that you like, where you feel the voice is good, right-click to create a clone from that clip, and then assign that clone to the whole track to achieve a consistent voice throughout. This is just one tip and may not work for all circumstances, but it can work very well in some cases.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I access Dubbing Studio?
+
+      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
+
+      If you want to use Dubbing Studio, you can do this by selecting <strong>Use legacy v1 Dubbing model</strong> in the <strong>Advanced</strong> options when you create your dub, then check the <strong>Create Dubbing project</strong> option. 
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/38961100866449" alt="" />
+
+      It's not possible to convert an existing automatic dub to a Dubbing project.
+
+      The new dubbing project will appear at the top of your list of dubbing projects, and will go through various stages while generating.
+
+      Once it has completed processing, click the three dots icon and select <strong>Edit</strong> to open your dubbing project.
+
+      <img src="https://help.elevenlabs.io/hc/article_attachments/47309511976593" alt="" />
+
+      For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Why can't I see the edit button next to my dub?
+
+      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are completely automatic without any option to edit the content.
+
+      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, you will need to select <strong>Use legacy v1 Dubbing model</strong> in the <strong>Advanced</strong> options when you create your dub, then check the <strong>Create Dubbing project</strong> option. 
+
+      <strong>Note:</strong> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Why can't I download my dubs?
+
+      <strong>
+        Try using a different browser and turning off ad-blockers and pop-up blockers.
+      </strong>
+
+      Under certain circumstances, some people might experience problems downloading conversions done in Studio (previously Projects) and videos or audio dubbed using the dubbing feature. The common denominator for this seems to be the browser where most people are using a browser called <strong>Brave</strong>, which is causing issues for them. However, we've also heard certain users experience issues with other browsers. In most cases, the issue seems to be resolved when they switch or test a different browser to download the files. We also recommend turning off any ad-blocker or pop-up blocker.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What happens to my dubs if I downgrade my subscription?
+
+      If you downgrade your tier or cancel your subscription altogether, you will not be able to use the paid features anymore, such as Projects, Dubbing Studio, and Cloned Voices. However, at the time of writing this, we do not delete any of your data, and it will still be there when you feel ready to upgrade again.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Do you offer lip sync?
+
+      At the moment, ElevenLabs does not offer lip syncing as part of Dubbing. Lip sync is available in Image & Video, Flows, and Studio via third party models.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How much does Dubbing cost?
+
+      The cost for dubbing depends on the duration of your dub, and the number of languages you're dubbing into. The total cost will be displayed before you confirm your request.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### On what plans can I use Dubbing?
+
+      Dubbing is available on all our plans, including the free plan. Dubs generated on free plans are automatically watermarked, with no option to remove this. Watermarking is not available on our paid subscriptions.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Dubbing?
+
+      ElevenLabs was founded on the idea of creating amazing dubbing; a tool that would allow you to create a perfect dub in any language you desire, using the original voice of the actors and preserving the original performance, making all content more accessible.
+
+      To get started, go to [Dubbing](https://elevenlabs.io/app/dubbing) and upload your audio or video file, or paste a URL to dub a video from YouTube, TikTok or elsewhere online <strong>.</strong>
+
+      Select the language or languages you want to dub into in the <strong>Choose languages</strong> selector. You'll be charged for each language you select here. 
+
+      By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are completely automatic without any option to edit the content.
+
+      When using Dubbing v2 via the website, there's a 2 GB and 180 minutes limit for the uploaded file, and you need to stay below both. The Dubbing v2 API is not yet live but is expected to launch in the coming weeks.
+
+      If you want a more in-depth explanation and guide on what Dubbing is and how to use it, we highly recommend reading the full documentation [here](/docs/product-guides/products/dubbing/dubbing-studio).
+
+       
+
+      If you want to create a Dubbing Studio project, so you can edit your dubs, you can also choose <strong>Use legacy v1 dubbing model</strong> in the <strong>Advanced</strong> options. This will allow you to create a Dubbing Studio project by checking the <strong>Create Dubbing project</strong> option. 
+
+      <strong>Note:</strong> Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Which file formats are supported by Dubbing?
+
+      You can output in the following formats:
+
+      * MP4 (Video)
+      * AAC (Audio)
+      * AAF (Timeline data)
+      * SRT (Captions)
+      * WAV (Audio - separate tracks for each speaker, downloaded as zip file)
+
+      You can upload audio and video files in the following formats for Dubbing:
+
+      * AAC
+      * AIFF
+      * AVI
+      * FLAC
+      * M4A
+      * M4V
+      * MKV
+      * MOV
+      * MP3
+      * MP4
+      * MPEG
+      * MPG
+      * OGA
+      * OGG
+      * OPUS
+      * WAV
+      * WEBA
+      * WEBM
+      * WMV
+      * 3GPP
+    </td>
+  </tr>
+</tbody>

@@ -25,11 +25,19 @@ This guide covers both approaches and how to implement chat mode across differen
 
 Configure an agent for text-only mode to make it the default for every conversation with that agent.
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Advanced** tab, and enable the **Text only** toggle. Save your changes.
+
+#### Update via the CLI
+
+#### Pull the agent configuration
 
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.conversation.text_only`:
 
@@ -43,9 +51,13 @@ Set `conversation_config.conversation.text_only`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs

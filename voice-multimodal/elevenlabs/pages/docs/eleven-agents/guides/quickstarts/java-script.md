@@ -21,6 +21,8 @@ guide](/docs/eleven-agents/guides/quickstarts/next-js)
 
 ## Project Setup
 
+#### Create a Project Directory
+
 Open a terminal and create a new directory for your project:
 
 ```bash
@@ -28,12 +30,16 @@ mkdir elevenlabs-conversational-ai
 cd elevenlabs-conversational-ai
 ```
 
+#### Initialize npm and Install Dependencies
+
 Initialize a new npm project and install the required packages:
 
 ```bash
 npm init -y
 npm install vite @elevenlabs/client
 ```
+
+#### Set up Basic Project Structure
 
 Add this to your `package.json`:
 
@@ -58,6 +64,8 @@ elevenlabs-conversational-ai/
 ```
 
 ## Implementing the Voice Chat Interface
+
+#### Create the HTML Interface
 
 In `index.html`, set up a simple user interface:
 
@@ -85,6 +93,8 @@ In `index.html`, set up a simple user interface:
     </body>
 </html>
 ```
+
+#### Implement the Conversation Logic
 
 In `script.js`, implement the functionality:
 
@@ -139,13 +149,19 @@ startButton.addEventListener('click', startConversation);
 stopButton.addEventListener('click', stopConversation);
 ```
 
+#### Start the frontend server
+
 ```shell
 npm run dev:frontend
 ```
 
 Make sure to replace `'YOUR_AGENT_ID'` with your actual agent ID from ElevenLabs.
 
+#### (Optional) Authenticate with a Signed URL
+
 This authentication step is only required for private agents. If you're using a public agent, you can skip this section and directly use the `agentId` in the `startSession` call.
+
+#### Create Environment Variables
 
 Create a `.env` file in your project root:
 
@@ -155,6 +171,8 @@ AGENT_ID=your-agent-id-here
 ```
 
 Make sure to add `.env` to your `.gitignore` file to prevent accidentally committing sensitive credentials.
+
+#### Setup the Backend
 
 1. Install additional dependencies:
 
@@ -169,6 +187,8 @@ elevenlabs-conversational-ai/
 ├── backend
 ...
 ```
+
+#### Create the Server
 
 ```javascript backend/server.js
 require("dotenv").config();
@@ -209,6 +229,8 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 ```
+
+#### Update the Client Code
 
 Modify your `script.js` to fetch and use the signed URL:
 
@@ -260,6 +282,8 @@ async function startConversation() {
 
 Signed URLs expire after a short period. However, any conversations initiated before expiration will continue uninterrupted. In a production environment, implement proper error handling and URL refresh logic for starting new conversations.
 
+#### Update the package.json
+
 ```json package.json {4,5}
 {
     "scripts": {
@@ -269,6 +293,8 @@ Signed URLs expire after a short period. However, any conversations initiated be
     }
 }
 ```
+
+#### Run the Application
 
 Start the application with:
 

@@ -42,15 +42,23 @@ This process ensures that relevant information to the user's query is passed to 
 
 ### Enable RAG for your agent
 
+#### Update via the dashboard
+
 In your agent's settings, navigate to the **Knowledge Base** section and toggle on the **Use RAG** option. Configure the embedding model, maximum document chunks, and maximum vector distance under the **Advanced** tab as needed.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/bdcdf9c15b8eb653248909e11149d0c383fb45f761f3bfbc47ba56feb25d8899/assets/images/conversational-ai/rag-enabled.png" alt="Toggle switch to enable RAG in the agent settings" />
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/c9a0f81555c8fadd0324637c672f08950889e19b9cf56f971d60fcc520a06d0a/assets/images/conversational-ai/rag-config.png" alt="RAG configuration options including embedding model selection" />
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `conversation_config.agent.prompt.rag`:
 
@@ -72,9 +80,13 @@ Set `conversation_config.agent.prompt.rag`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 See the [API implementation](#api-implementation) section below for full code that triggers RAG indexing on a document and updates the agent configuration.
 

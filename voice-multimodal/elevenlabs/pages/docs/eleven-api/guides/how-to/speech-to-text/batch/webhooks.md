@@ -22,6 +22,8 @@ When a transcription is completed, ElevenLabs will send a POST request to your s
 This guide assumes you have [set up your API key and SDK](/docs/eleven-api/quickstart). Complete
 the quickstart first if you haven't.
 
+#### Create or edit a webhook
+
 In the ElevenLabs dashboard, go to
 [**Developers** > **Webhooks**](https://elevenlabs.io/app/developers/webhooks).
 Click **Create webhook**, or edit an existing webhook.
@@ -34,6 +36,8 @@ Configure the webhook with:
 * **Callback URL**: Your publicly accessible HTTPS endpoint
 * **Webhook Auth Method**: Either `HMAC` or `OAuth`. It is up to the client to implement the verification mechanism. ElevenLabs sends headers that allow for verification but we do not enforce it.
 * **Events**: Select **Transcription completed**.
+
+#### Make API calls with webhook parameter enabled
 
 When making speech-to-text API calls, include the `webhook` parameter set to `true` to enable webhook notifications for that specific request.
 
@@ -257,6 +261,10 @@ async function testWebhook() {
 
 ## Next steps
 
+#### [Server-side streaming](/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming)
+
 Transcribe audio in real time using the WebSocket-based streaming API.
+
+#### [API reference](/docs/api-reference/speech-to-text)
 
 Full Speech to Text API reference and parameters.

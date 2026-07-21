@@ -23,14 +23,20 @@ integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integra
 
 ## Enable SMS
 
+#### Import your Twilio phone number
+
 Phone numbers you imported before SMS support are not automatically enabled for SMS. To enable
 SMS, re-import your Twilio number.
 
 Follow the [Twilio native integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) guide to import your number and add your Twilio Account SID and Auth Token.
 
+#### Assign an agent
+
 On the [**Phone Numbers**](https://elevenlabs.io/app/agents/phone-numbers) page, open your imported number and assign the agent that should handle inbound SMS.
 
 ![Outbound call button](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/953a870b0ab0c0aa30872b3692260f0879f390d4b4b83c7f82e816385504034f/assets/images/conversational-ai/outbound-button.png)
+
+#### Test the integration
 
 Send a text message to your Twilio number from a mobile device. Your agent should reply over SMS.
 

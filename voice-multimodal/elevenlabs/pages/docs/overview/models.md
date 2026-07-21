@@ -14,6 +14,8 @@ path: docs/overview/models
 
 ### Text to Speech
 
+#### [Eleven v3](/docs/overview/models#eleven-v3)
+
 Our most emotionally rich, expressive speech synthesis model
 
 Dramatic delivery and performance
@@ -24,6 +26,8 @@ Dramatic delivery and performance
 
 Support for natural multi-speaker dialogue
 
+#### [Eleven Multilingual v2](/docs/overview/models#multilingual-v2)
+
 Lifelike, consistent quality speech synthesis model
 
 Natural-sounding output
@@ -33,6 +37,8 @@ Natural-sounding output
 10,000 character limit
 
 Most stable on long-form generations
+
+#### [Eleven Flash v2.5](/docs/overview/models#flash-v25)
 
 Our fast, affordable speech synthesis model
 
@@ -45,6 +51,8 @@ Ultra-low latency (\~75ms†)
 Faster model, 50% lower price per character for API generations
 
 ### Speech to Text
+
+#### [Scribe v2](/docs/overview/models#scribe-v2)
 
 State-of-the-art speech recognition model
 
@@ -62,6 +70,8 @@ Dynamic audio tagging
 
 Smart language detection
 
+#### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
+
 Real-time speech recognition model
 
 Accurate transcription in 90+ languages
@@ -73,6 +83,8 @@ Low latency (\~150ms†)
 Precise word-level timestamps
 
 ### Music
+
+#### [Eleven Music v2](/docs/overview/models#eleven-music)
 
 Studio-grade music with natural language prompts in any style
 
@@ -188,6 +200,8 @@ Flash v2.5 supports 32 languages - all languages from v2 models plus:
 
 ### Considerations
 
+#### Text normalization with numbers
+
 When using Flash v2.5, numbers aren't normalized by default in a way you might expect. For example, phone numbers might be read out in way that isn't clear for the user. Dates and currencies are affected in a similar manner.
 
 By default, normalization is disabled for Flash v2.5 to maintain the low latency. However, Enterprise customers can now enable text normalization for v2.5 models by setting the `apply_text_normalization` parameter to "on" in your request.
@@ -200,29 +214,47 @@ For low-latency or Agents Platform applications, best practice is to have your L
 
 For guidance on which model best fits your requirements and use case, see the [model selection guide](/docs/eleven-api/choosing-the-right-model).
 
+#### Requirements
+
+#### Quality
+
 Use `eleven_multilingual_v2`
 
 Best for high-fidelity audio output with rich emotional expression
+
+#### Low-latency
 
 Use Flash models
 
 Optimized for real-time applications (\~75ms latency)
 
+#### Multilingual
+
 Use either either `eleven_multilingual_v2` or `eleven_flash_v2_5`
 
 Both support up to 32 languages
+
+#### Balanced
 
 Use `eleven_flash_v2_5`
 
 Good balance between quality and speed
 
+#### Use case
+
+#### Content creation
+
 Use `eleven_multilingual_v2`
 
 Ideal for professional content, audiobooks & video narration.
 
+#### Agents Platform
+
 Use `eleven_flash_v2_5`, `eleven_flash_v2` or`eleven_multilingual_v2`
 
 Perfect for real-time conversational applications
+
+#### Voice changer
 
 Use `eleven_multilingual_sts_v2`
 
@@ -357,13 +389,19 @@ The diagram below is an example of how 4 concurrent calls with different users c
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png" alt="Concurrency limits" />
 
+#### Building AI Voice Agents
+
 Where TTS is used to facilitate dialogue, a concurrency limit of 5 can support about 100 broadcasts for balanced conversations between AI agents and human participants.
 
 For use cases in which the AI agent speaks less frequently than the human, such as customer support interactions, more than 100 simultaneous conversations could be supported.
 
+#### Character voiceovers
+
 Generally, more than 100 simultaneous character voiceovers can be supported for a concurrency limit of 5.
 
 The number can vary depending on the character’s dialogue frequency, the length of pauses, and in-game actions between lines.
+
+#### Live Dubbing
 
 Concurrent dubbing streams generally follow the provided heuristic.
 
@@ -389,6 +427,8 @@ It is heavily recommended to test end-to-end workflows as close to real world us
 * Capture latency metrics and any returned error codes from the API
 
 For example, to test an agent system designed to support 100 simultaneous conversations you would create up to 100 individual "users" each simulating a conversation. Conversations typically consist of a repeating cycle of \~10 seconds of user talking, followed by the TTS API call for \~150 characters, followed by \~10 seconds of audio playback to the user. Therefore, each user should follow the pattern of making a websocket Text-to-Speech API call for 150 characters of text every 20 seconds, with a small amount of randomness introduced to the wait period and the number of characters requested. The test would consist of spawning one user per second until 100 exist and then testing for 10 minutes in total to test overall stability.
+
+#### Scale testing script example
 
 This example uses [locust](https://locust.io/) as the testing framework with direct API calls to the ElevenLabs API.
 

@@ -256,6 +256,80 @@ print(tokenizer.decode(output[0], skip_special_tokens=True))
 
 To download a specific checkpoint instead of the final one, pass `--checkpoint-step <STEP_NUMBER>` to `tg fine-tuning download` (or `checkpoint_step=<STEP_NUMBER>` to `client.fine_tuning.content()`). List checkpoints with `tg fine-tuning list-checkpoints <JOB_ID>`.
 
+## Model registry object IDs
+
+When a job uploads its output artifacts to the Together model registry alongside the primary storage write, the job and checkpoint responses include the registry object and revision IDs. Use these IDs to reference the uploaded weights in downstream workflows (for example, when binding a fine-tuned adapter to a dedicated endpoint).
+
+The fields are omitted when the registry upload did not run or did not succeed.
+
+### On the job
+
+[`GET /fine-tunes/{id}`](/reference/get-fine-tunes-id) includes the final artifact IDs once the job reaches `completed`:
+
+| Field                        | Description                                                                                                                                    |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_…`). Present when the job produced a model artifact and the upload succeeded. |
+| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_…`).                                                                        |
+| `adapter_object_id`          | Registry object ID for the final adapter weights on LoRA jobs.                                                                                 |
+| `adapter_object_revision_id` | Registry revision ID for the final adapter weights on LoRA jobs.                                                                               |
+
+<CodeGroup>
+  ```python Python theme={null}
+  job = client.fine_tuning.retrieve(id="<JOB_ID>")
+  if job.model_object_id:
+      print(job.model_object_id, job.model_object_revision_id)
+  if job.adapter_object_id:
+      print(job.adapter_object_id, job.adapter_object_revision_id)
+  ```
+
+  ```typescript TypeScript theme={null}
+  const job = await client.fineTuning.retrieve("<JOB_ID>");
+  if (job.model_object_id) {
+    console.log(job.model_object_id, job.model_object_revision_id);
+  }
+  if (job.adapter_object_id) {
+    console.log(job.adapter_object_id, job.adapter_object_revision_id);
+  }
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning retrieve "<JOB_ID>"
+  ```
+</CodeGroup>
+
+### On checkpoints
+
+[`GET /fine-tunes/{id}/checkpoints`](/reference/get-fine-tunes-id-checkpoint) returns the same ID pair on each checkpoint entry:
+
+| Field                | Description                                                                |
+| -------------------- | -------------------------------------------------------------------------- |
+| `object_id`          | Registry object ID for that checkpoint's artifact (for example, `ml_…`).   |
+| `object_revision_id` | Registry revision ID for that checkpoint's artifact (for example, `rv_…`). |
+
+Intermediate checkpoints carry the IDs from the upload at that step. Final model and adapter checkpoints in the list reuse the job-level IDs from the table above.
+
+<CodeGroup>
+  ```python Python theme={null}
+  checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
+  for cp in checkpoints.data:
+      if cp.object_id:
+          print(cp.step, cp.object_id, cp.object_revision_id)
+  ```
+
+  ```typescript TypeScript theme={null}
+  const checkpoints = await client.fineTuning.listCheckpoints("<JOB_ID>");
+  for (const cp of checkpoints.data) {
+    if (cp.object_id) {
+      console.log(cp.step, cp.object_id, cp.object_revision_id);
+    }
+  }
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning list-checkpoints "<JOB_ID>"
+  ```
+</CodeGroup>
+
 ## Troubleshooting
 
 * **`x_model_output_name` is empty:** The job hasn't reached `completed`. Poll status with `client.fine_tuning.retrieve(id=...)` until it's done. See [Monitor a fine-tuning job](/docs/fine-tuning/monitoring#poll-until-the-job-is-done) for the polling pattern.

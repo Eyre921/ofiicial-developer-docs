@@ -76,6 +76,8 @@ Consider applying these techniques to reduce cost:
 | Tools (functions) | Avoids LLM calls for specific tasks; reduces tokens      | Delegate deterministic, calculation-heavy, or external API tasks to tools. Design clear tool descriptions for the LLM.                                              |
 | Agent transfer    | Enables use of cheaper models for simpler parts of tasks | Use simpler/cheaper agents for initial triage/FAQs; transfer to capable agents only when needed; decompose large prompts into smaller prompts across various agents |
 
+#### Conversation history management
+
 For stateful conversations, rather than passing in multiple conversation transcripts as a part of
 the system prompt, implement history summarization or sliding window techniques to keep context
 lean. This can be particularly effective when building consumer applications and can often be

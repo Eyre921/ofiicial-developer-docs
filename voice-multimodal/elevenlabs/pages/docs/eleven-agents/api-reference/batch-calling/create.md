@@ -205,7 +205,9 @@ components:
         - gemini-3.5-flash
         - claude-sonnet-4-5
         - claude-opus-4-7
+        - claude-opus-4-8
         - claude-sonnet-4-6
+        - claude-sonnet-5
         - claude-sonnet-4
         - claude-haiku-4-5
         - claude-3-7-sonnet
@@ -475,6 +477,12 @@ components:
           description: >-
             How long to ring the recipient before giving up, in seconds. Note
             that this will also be limited by the provider's own constraints.
+        twilio_call_recording_enabled:
+          type: boolean
+          default: false
+          description: >-
+            Whether to record the call using Twilio call recording. Ignored for
+            non-Twilio providers. Recordings are stored in your Twilio account.
       title: TelephonyCallConfig
     type_:TelephonyProvider:
       type: string
@@ -598,7 +606,7 @@ components:
 
 ```json
 {
-  "call_name": "Customer Satisfaction Survey April 2024",
+  "call_name": "Customer Support Follow-up",
   "agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
   "recipients": [
     {}
@@ -611,32 +619,33 @@ components:
 ```json
 {
   "id": "batchcall_1234567890abcdef",
-  "name": "Customer Satisfaction Survey April 2024",
+  "name": "Customer Support Follow-up",
   "agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
-  "created_at_unix": 1712000000,
-  "scheduled_time_unix": 1712604800,
+  "created_at_unix": 1711929600,
+  "scheduled_time_unix": 1712016000,
   "total_calls_dispatched": 150,
   "total_calls_scheduled": 200,
   "total_calls_finished": 140,
-  "last_updated_at_unix": 1712608400,
+  "last_updated_at_unix": 1712023200,
   "status": "pending",
-  "retry_count": 0,
+  "retry_count": 2,
   "telephony_call_config": {
-    "ringing_timeout_secs": 60
+    "ringing_timeout_secs": 60,
+    "twilio_call_recording_enabled": true
   },
   "agent_name": "Support Agent Team A",
   "phone_number_id": "phone_9876543210fedcba",
   "phone_provider": "twilio",
   "whatsapp_params": {
-    "whatsapp_call_permission_request_template_name": "permission_request_template_01",
+    "whatsapp_call_permission_request_template_name": "whatsapp_permission_template_01",
     "whatsapp_call_permission_request_template_language_code": "en_US",
     "whatsapp_phone_number_id": "wa_phone_1122334455"
   },
-  "branch_id": "branch_north_america_01",
+  "branch_id": "branch_nyc_001",
   "environment": "production",
   "timezone": "America/New_York",
   "target_concurrency_limit": 20,
-  "branch_name": "North America Support"
+  "branch_name": "New York City Branch"
 }
 ```
 
@@ -648,7 +657,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.batchCalls.create({
-        callName: "Customer Satisfaction Survey April 2024",
+        callName: "Customer Support Follow-up",
         agentId: "agent_9f8b7c6d5e4a3b2c1d0e",
         recipients: [
             {},
@@ -665,7 +674,7 @@ from elevenlabs import ElevenLabs, OutboundCallRecipient
 client = ElevenLabs()
 
 client.conversational_ai.batch_calls.create(
-    call_name="Customer Satisfaction Survey April 2024",
+    call_name="Customer Support Follow-up",
     agent_id="agent_9f8b7c6d5e4a3b2c1d0e",
     recipients=[
         OutboundCallRecipient()
@@ -688,7 +697,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/batch-calling/submit"
 
-	payload := strings.NewReader("{\n  \"call_name\": \"Customer Satisfaction Survey April 2024\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}")
+	payload := strings.NewReader("{\n  \"call_name\": \"Customer Support Follow-up\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -716,7 +725,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"call_name\": \"Customer Satisfaction Survey April 2024\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}"
+request.body = "{\n  \"call_name\": \"Customer Support Follow-up\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -728,7 +737,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/batch-calling/submit")
   .header("Content-Type", "application/json")
-  .body("{\n  \"call_name\": \"Customer Satisfaction Survey April 2024\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}")
+  .body("{\n  \"call_name\": \"Customer Support Follow-up\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}")
   .asString();
 ```
 
@@ -740,7 +749,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/batch-calling/submit', [
   'body' => '{
-  "call_name": "Customer Satisfaction Survey April 2024",
+  "call_name": "Customer Support Follow-up",
   "agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
   "recipients": [
     {}
@@ -760,7 +769,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/submit");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"call_name\": \"Customer Satisfaction Survey April 2024\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"call_name\": \"Customer Support Follow-up\",\n  \"agent_id\": \"agent_9f8b7c6d5e4a3b2c1d0e\",\n  \"recipients\": [\n    {}\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -769,7 +778,7 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "call_name": "Customer Satisfaction Survey April 2024",
+  "call_name": "Customer Support Follow-up",
   "agent_id": "agent_9f8b7c6d5e4a3b2c1d0e",
   "recipients": [[]]
 ] as [String : Any]

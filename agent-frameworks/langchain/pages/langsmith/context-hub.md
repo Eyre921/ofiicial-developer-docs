@@ -20,6 +20,10 @@ The Context Hub gives your team version-controlled, environment-aware management
   <Card title="Manage contexts with the SDK" icon="code" href="/langsmith/manage-contexts-sdk">
     Push, pull, list, and delete agent and skill repos in the Context Hub programmatically.
   </Card>
+
+  <Card title="Configure commit webhooks" icon="webhook" href="/langsmith/context-hub-webhooks">
+    Send every agent and skill commit in your workspace to an external HTTPS endpoint.
+  </Card>
 </CardGroup>
 
 ***

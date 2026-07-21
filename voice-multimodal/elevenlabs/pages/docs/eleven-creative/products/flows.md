@@ -82,7 +82,11 @@ ElevenCreative Flows is designed for both exploratory creation and structured pr
 
 #### Start from scratch
 
+#### Start from scratch
+
 Begin with a blank canvas. This is ideal for building custom pipelines from the ground up or experimenting with complex multi-step generation chains.
+
+#### Use a template
 
 #### Use a template
 
@@ -133,6 +137,8 @@ Nodes are the building blocks of a flow. Each node serves a specific purpose, fr
 
 #### Generation nodes
 
+#### Generation nodes
+
 These nodes house the generative models that create your assets:
 
 * **Text to Speech**: Generate narration using our latest models, including [v3](/docs/overview/models#eleven-v3)
@@ -145,6 +151,8 @@ See our [capabilities overview](/docs/overview/intro#capabilities) for detailed 
 
 #### Processing & utility nodes
 
+#### Processing & utility nodes
+
 Use these nodes to refine and combine your content:
 
 * **Text**: Add text input to your flow for prompts and instructions
@@ -152,6 +160,8 @@ Use these nodes to refine and combine your content:
 * **Composition**: A centralized preview node where you can layer audio and video to view the final output
 * **Lipsync Generation**: Chain a speech node with either a video or image node to create perfectly synced talking heads
 * **Upscale**: Increase the resolution and quality of your generated visual assets
+
+#### Contextual navigation
 
 #### Contextual navigation
 
@@ -212,52 +222,138 @@ For more information on using and managing templates, see the [Templates documen
 
 ## FAQ
 
-ElevenCreative Flows supports over 50 image and video models alongside ElevenLabs' [text to
-speech](/docs/overview/capabilities/text-to-speech), [music](/docs/overview/capabilities/music),
-and [sound effects](/docs/overview/capabilities/sound-effects) models. See our [Images & Video
-guide](/docs/eleven-creative/playground/image-video#models) for a complete list.
+<tbody>
+  <tr>
+    <td>
+      #### What models are available in ElevenCreative Flows?
 
-[ElevenCreative Studio](/docs/eleven-creative/products/studio) uses a linear timeline for
-precise frame-by-frame editing with tracks for video, audio, music, and captions. ElevenCreative
-Flows uses a node-based canvas for building multi-step generative pipelines. Use ElevenCreative
-Flows to orchestrate complex generation chains, then export to ElevenCreative Studio for final
-editing.
+      ElevenCreative Flows supports over 50 image and video models alongside ElevenLabs' [text
+      to speech](/docs/overview/capabilities/text-to-speech),
+      [music](/docs/overview/capabilities/music), and [sound
+      effects](/docs/overview/capabilities/sound-effects) models. See our [Images & Video
+      guide](/docs/eleven-creative/playground/image-video#models) for a complete list.
+    </td>
+  </tr>
 
-Yes. Each flow is automatically saved as a project. You can reload a flow, modify prompts or
-settings, and re-execute to create variations without rebuilding the entire pipeline. You can
-also create a template from any flow, allowing you to reuse the same flow structure with
-different inputs each time. See [Creating a template](#creating-a-template) for more details.
+  <tr>
+    <td>
+      #### How does ElevenCreative Flows differ from ElevenCreative Studio?
 
-No. ElevenCreative Flows supports non-destructive iteration. You can re-run a single node, and
-only downstream nodes connected to that path will need to be updated. Unconnected branches
-remain unchanged.
+      [ElevenCreative Studio](/docs/eleven-creative/products/studio) uses a linear timeline for
+      precise frame-by-frame editing with tracks for video, audio, music, and captions.
+      ElevenCreative Flows uses a node-based canvas for building multi-step generative
+      pipelines. Use ElevenCreative Flows to orchestrate complex generation chains, then export
+      to ElevenCreative Studio for final editing.
+    </td>
+  </tr>
 
-Each node generation costs credits based on the model and settings used, identical to standalone
-tool pricing. Re-running a node triggers a new generation and a new credit charge. The number of
-credits you will be charged is displayed when you hover over the **Run** button.
+  <tr>
+    <td>
+      #### Can I save and reuse flows?
 
-You can export individual assets or the final composition as downloadable files. To continue
-working with your outputs in [ElevenCreative Studio](/docs/eleven-creative/products/studio),
-save them to your Files library and import them from there.
+      Yes. Each flow is automatically saved as a project. You can reload a flow, modify prompts
+      or settings, and re-execute to create variations without rebuilding the entire pipeline.
+      You can also create a template from any flow, allowing you to reuse the same flow
+      structure with different inputs each time. See [Creating a template](#creating-a-template)
+      for more details.
+    </td>
+  </tr>
 
-Programmatic execution via API is planned for a future release. This will enable mass creative
-production use cases, such as connecting a CMS to a flow for automated content generation.
+  <tr>
+    <td>
+      #### Do I need to regenerate everything if I change one step?
 
-If a node fails during execution, only that node is affected and you are not charged for that
-execution. You can re-run the failed node without affecting other branches of your flow.
+      No. ElevenCreative Flows supports non-destructive iteration. You can re-run a single node,
+      and only downstream nodes connected to that path will need to be updated. Unconnected
+      branches remain unchanged.
+    </td>
+  </tr>
 
-Yes. When a flow is shared with your workspace, any team member can open it and start working.
-Changes sync instantly. You can see who else is in the flow and work on different parts of the
-pipeline simultaneously.
+  <tr>
+    <td>
+      #### How are credits charged in ElevenCreative Flows?
 
-Share a flow with anyone in your workspace. Shared flows appear in each collaborator's flows
-list automatically — no separate link required.
+      Each node generation costs credits based on the model and settings used, identical to
+      standalone tool pricing. Re-running a node triggers a new generation and a new credit
+      charge. The number of credits you will be charged is displayed when you hover over the
+      **Run** button.
+    </td>
+  </tr>
 
-Yes. Basic Seat members can open shared flows, watch pipelines run, review outputs, and leave
-comments. They do not need a full workspace seat.
+  <tr>
+    <td>
+      #### Can I export flows to other formats?
 
-On public flows, collaborators outside your workspace can view and follow along. They appear as
-anonymous participants.
+      You can export individual assets or the final composition as downloadable files. To
+      continue working with your outputs in [ElevenCreative
+      Studio](/docs/eleven-creative/products/studio), save them to your Files library and import
+      them from there.
+    </td>
+  </tr>
 
-No. Collaboration itself does not consume credits. Credits are consumed when nodes are executed,
-as normal.
+  <tr>
+    <td>
+      #### Is there an API for ElevenCreative Flows?
+
+      Programmatic execution via API is planned for a future release. This will enable mass
+      creative production use cases, such as connecting a CMS to a flow for automated content
+      generation.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What happens if a node fails?
+
+      If a node fails during execution, only that node is affected and you are not charged for
+      that execution. You can re-run the failed node without affecting other branches of your
+      flow.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can multiple people edit the same flow at the same time?
+
+      Yes. When a flow is shared with your workspace, any team member can open it and start
+      working. Changes sync instantly. You can see who else is in the flow and work on different
+      parts of the pipeline simultaneously.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I share a flow with my team?
+
+      Share a flow with anyone in your workspace. Shared flows appear in each collaborator's
+      flows list automatically — no separate link required.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can Basic Seat members collaborate in ElevenCreative Flows?
+
+      Yes. Basic Seat members can open shared flows, watch pipelines run, review outputs, and
+      leave comments. They do not need a full workspace seat.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can people outside my workspace see my flow?
+
+      On public flows, collaborators outside your workspace can view and follow along. They
+      appear as anonymous participants.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Does real-time collaboration cost additional credits?
+
+      No. Collaboration itself does not consume credits. Credits are consumed when nodes are
+      executed, as normal.
+    </td>
+  </tr>
+</tbody>

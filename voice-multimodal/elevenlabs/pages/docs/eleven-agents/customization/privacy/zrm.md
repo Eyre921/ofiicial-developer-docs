@@ -31,13 +31,21 @@ specific agent, as limited logs or call data will be available for review.
 
 For workspaces not operating under global Zero Retention Mode, you can enable ZRM for individual agents:
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, navigate to the **Privacy** settings block, select the **Advanced** tab, and toggle **Zero Retention Mode** on. Save your changes.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b11c36caf8829dd90829c3b51df2be879a77f718834af8988ecd33e9ae44a071/assets/images/conversational-ai/enabled-zrm.png" alt="Enable Zero Retention Mode for Agent" />
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent "<agent-name>"
 ```
+
+#### Edit \`agent\_configs/\<agent-name>.json\`
 
 Set `platform_settings.privacy.zero_retention_mode`:
 
@@ -51,9 +59,13 @@ Set `platform_settings.privacy.zero_retention_mode`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent "<agent-name>"
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs

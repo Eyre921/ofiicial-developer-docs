@@ -69,7 +69,11 @@ Once enabled, versioning cannot be disabled. This is a permanent change to your 
 
 ### Enable when creating an agent
 
+#### Enable via the dashboard
+
 Open your agent in the dashboard, go to **Settings**, and enable versioning. Once enabled, the **Versioning** tab becomes available for managing branches, drafts, versions, and traffic deployment.
+
+#### Enable via the API
 
 ```python
 from elevenlabs.client import ElevenLabs
@@ -114,7 +118,11 @@ console.log(`Agent created with versioning: ${agent.agentId}`);
 
 ### Enable on an existing agent
 
+#### Enable via the dashboard
+
 Open your agent in the dashboard, navigate to **Settings**, and toggle versioning on.
+
+#### Enable via the API
 
 ```python
 agent = client.conversational_ai.agents.update(
@@ -207,13 +215,19 @@ console.log(`Versions: ${branch.versions.length}`);
 
 When you update an agent with versioning enabled, specify the `branch_id` to create a new version on that branch.
 
+#### Update via the dashboard
+
 Open your agent's **Versioning** tab, switch to the target branch, edit the configuration, and save to create a new version.
+
+#### Update via the CLI
 
 Pass the `--branch` flag to push to a specific branch by name or ID. The branch must already exist.
 
 ```bash
 elevenlabs agents push --agent "<agent-name>" --branch "<branch-name>"
 ```
+
+#### Update via the API
 
 ```python
 agent = client.conversational_ai.agents.update(
@@ -403,41 +417,65 @@ Changes to name and tags on non-main branches don't persist to the agent until m
 
 ## Best practices
 
+#### Create tests before branching
+
 Set up [automated tests](/docs/eleven-agents/customization/agent-testing) that capture
 expected behavior before creating a new branch. This establishes a baseline and helps catch
 regressions early when iterating on your experiment.
+
+#### Use descriptive branch names
 
 Choose branch names that clearly communicate the purpose of the experiment. Include the feature
 name, hypothesis, or ticket number for easy reference (e.g., `feature/new-greeting-flow` or
 `experiment/shorter-responses`).
 
+#### Document branch purposes
+
 Use the branch description field to explain what hypothesis you're testing, what metrics define
 success, and any dependencies or considerations. This helps team members understand active
 experiments.
 
+#### Use drafts for work-in-progress
+
 Save drafts frequently while iterating on changes. This preserves your work without creating
 unnecessary versions. Only commit when you're ready to test or deploy.
 
+#### Start with small traffic percentages
+
 When deploying a new branch, begin with 5-10% of traffic. This limits exposure if issues arise
 while still providing meaningful data.
+
+#### Monitor key metrics before increasing traffic
 
 Use the [analytics dashboard](/docs/eleven-agents/dashboard) to compare branch performance.
 Look for call completion rates, average conversation duration, success evaluation scores, and
 tool execution rates. Only increase traffic when metrics meet or exceed your main branch
 baseline.
 
+#### Increase traffic gradually
+
 Scale up traffic in increments (10% → 25% → 50% → 100%) as confidence grows. This approach
 minimizes risk while validating performance at each stage.
+
+#### Keep branches short-lived
 
 Merge successful experiments promptly to avoid configuration drift. Long-running branches become
 harder to merge and may conflict with other changes made to main.
 
 ## Next steps
 
+#### [Experiments](/docs/eleven-agents/operate/experiments)
+
 Run A/B tests using branches and traffic deployment
+
+#### [Testing](/docs/eleven-agents/customization/agent-testing)
 
 Set up automated tests for your agent versions
 
+#### [Analytics](/docs/eleven-agents/dashboard)
+
 Monitor performance across different branches
+
+#### [CLI](/docs/eleven-agents/operate/cli)
 
 Manage versioning from the command line

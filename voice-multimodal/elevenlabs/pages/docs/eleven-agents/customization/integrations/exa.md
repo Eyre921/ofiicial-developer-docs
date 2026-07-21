@@ -16,9 +16,15 @@ Connect your ElevenLabs AI agents with Exa to perform semantic web searches duri
 
 This integration uses an **Exa API key** for authentication.
 
+#### Create an Exa account
+
 Sign up at [exa.ai](https://exa.ai) if you do not already have an account.
 
+#### Get your API key
+
 Navigate to your [Exa Dashboard API Keys page](https://dashboard.exa.ai/api-keys) and copy your API key.
+
+#### Connect in ElevenLabs
 
 In the ElevenLabs integration setup, paste your Exa API key in the **API Key** field.
 

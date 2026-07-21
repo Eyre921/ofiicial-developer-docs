@@ -57,14 +57,22 @@ and use voice behavior.
 
 Configure channel behavior with the `conversation_config.agent.text_behavior_overrides` field, a map from channel to the settings you want to override.
 
+#### Update via the dashboard
+
 Open your agent in the dashboard, select the **Agent** tab, and open **Agent behavior**. Expand a channel under **Text channels** and adjust its verbosity, output format, or response time. Save your changes.
 
 ![Agent behavior panel with per-channel text
 settings](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/372e6260e210a832be68a693b003abd63f2ae9b0f9f297d7b7049d1d0c978fec/assets/images/agents-agent-behavior-panel.png)
 
+#### Update via the CLI
+
+#### Pull the agent configuration
+
 ```bash
 elevenlabs agents pull --agent agent_7101k5zvyjhmfg983brhmhkd98n6
 ```
+
+#### Edit the agent's config file under \`agent\_configs/\`
 
 Set `conversation_config.agent.text_behavior_overrides`:
 
@@ -85,9 +93,13 @@ Set `conversation_config.agent.text_behavior_overrides`:
 }
 ```
 
+#### Push your changes
+
 ```bash
 elevenlabs agents push --agent agent_7101k5zvyjhmfg983brhmhkd98n6
 ```
+
+#### Update via the API
 
 ```python
 from elevenlabs import ElevenLabs

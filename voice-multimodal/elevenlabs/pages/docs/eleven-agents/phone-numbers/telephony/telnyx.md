@@ -37,28 +37,44 @@ Before setting up the Telnyx SIP trunk integration, ensure you have:
 
 ## Creating a SIP trunk using the Telnyx UI
 
+#### Sign in to Telnyx
+
 Log in to your Telnyx account at [portal.telnyx.com](https://portal.telnyx.com/).
+
+#### Purchase a phone number
 
 Navigate to the Numbers section and purchase a phone number that will be used with your ElevenLabs agent.
 
+#### Navigate to SIP Trunking
+
 Go to Voice » [SIP Trunking](https://portal.telnyx.com/#/voice/connections) in the Telnyx portal.
 
+#### Create a SIP connection
+
 Click on Create SIP Connection and choose FQDN as the connection type, then save.
+
+#### Configure authentication
 
 1. In the Authentication & Routing Configuration section, select Outbound Calls Authentication.
 2. In the Authentication Method field, select Credentials and enter a username and password.
 3. Select Add FQDN and enter `sip.rtc.elevenlabs.io` into the FQDN field.
 
-1) Select the Inbound tab.
-2) In the Destination Number Format field, select `+E.164`.
-3) For SIP Transport Protocol, select TCP.
-4) In the SIP Region field, select your region.
+#### Configure inbound settings
+
+1. Select the Inbound tab.
+2. In the Destination Number Format field, select `+E.164`.
+3. For SIP Transport Protocol, select TCP.
+4. In the SIP Region field, select your region.
+
+#### Configure outbound settings
 
 1. Select the Outbound tab.
 2. In the Outbound Voice Profile field, select or create an outbound voice profile.
 
-1) Select the Numbers tab.
-2) Assign your purchased phone number to this SIP connection.
+#### Assign phone number
+
+1. Select the Numbers tab.
+2. Assign your purchased phone number to this SIP connection.
 
 After setting up your Telnyx SIP trunk, follow the [SIP trunking
 guide](/docs/eleven-agents/phone-numbers/sip-trunking) to complete the configuration in
