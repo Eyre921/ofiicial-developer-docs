@@ -5,17 +5,7 @@ path: reference/api/2026-04/admin/delete_role_binding
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/role-bindings/{role_binding_id}
-Delete a role binding. Permissions are revoked when the deletion completes.
-Returns `202`. The binding is removed immediately, so it no longer appears in list or get requests and instead returns `404`. A repeat delete request for the same binding returns `404`.
-Returns `409` when deleting:
-- The last `OrgOwner` binding for a user in the organization.
-- The last organization-membership role binding for a user who still has
-
-  other role bindings.
-
-- The last organization-membership role binding for a pending invite
-
-  (delete the invite instead).
+Delete a role binding; permissions are revoked when the deletion completes.
 
 
 <RequestExample>

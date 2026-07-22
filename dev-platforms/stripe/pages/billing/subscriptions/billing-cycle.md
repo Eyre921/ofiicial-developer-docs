@@ -166,6 +166,10 @@ Your billing cycle date changes in these scenarios. However, if you create or up
 
 To reset the billing cycle anchor to the current time, make an update request with `billing_cycle_anchor` set to `now`. This sets the billing cycle anchor to the time of the update request. After you reset the billing cycle anchor, Stripe immediately sends an invoice. [Enable proration](https://docs.stripe.com/api/subscriptions/create.md#create_subscription-proration_behavior) to credit the customer for any days already paid in the previous period. Disabling proration might result in overcharging your customer.
 
+> **Flexible mode behavior:** If your subscription uses `billing_mode[type]=flexible`, resetting the billing cycle anchor to `now` doesn’t automatically generate a new invoice. To trigger an invoice on a BCA reset, you must also set `proration_behavior` to `always_invoice`.
+> 
+> Exception: If you also change subscription items alongside the BCA reset so that the prorations don’t fully cancel, Stripe generates an invoice immediately regardless of `proration_behavior`.
+
 #### API
 
 Call [update the subscription](https://docs.stripe.com/api.md#update_subscription), setting `billing_cycle_anchor` to `now` and `proration_behavior` to `create_prorations` to prevent overcharging the customer for any days they already paid in the previous cycle.

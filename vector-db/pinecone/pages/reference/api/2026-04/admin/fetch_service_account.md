@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin/fetch_service_account
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/service-accounts/{service_account_id}
-Get a service account by its ID. Returns `404` if the service account is not in your organization. The `client_secret` is not included.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them. Secrets are returned only from create and rotate-secret requests.
+Get a service account by ID; the client secret is returned only from create and rotate-secret requests.
 
 
 <RequestExample>

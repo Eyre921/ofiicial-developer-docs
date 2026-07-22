@@ -11,156 +11,261 @@ Once a fine-tuning job completes, your model is available for inference in two w
 ## Prerequisites
 
 * A completed fine-tuning job. See the [quickstart](/docs/fine-tuning/quickstart) for the full lifecycle.
-* The job's `x_model_output_name` (visible once status is `completed`). It follows the pattern `<your_account>/<base_model>:<suffix>:<job_id>`.
+* The job's **Model Object ID** (`model_object_id`, an `ml_...` value) — the model-registry ID of the trained weights and the identifier you deploy. It's available once the job status is `completed`, from the `tg fine-tuning retrieve` output.
 
 ## Deploy on a dedicated endpoint
 
+Together AI serves fine-tuned models through [dedicated model inference](/docs/dedicated-endpoints/overview) (DMI). A completed fine-tuning job is already a private model in your project, so you deploy it by its Model Object ID with no separate upload step. Deployment and lifecycle operations use the `tg beta` CLI.
+
 <Warning>
-  Dedicated model inference bills per minute even when idle. Stop or delete the endpoint when you're done to avoid charges.
+  Dedicated model inference bills per minute per running replica, even when idle. Scale the deployment to zero or delete the endpoint when you're done to stop charges.
 </Warning>
+
+<Note>
+  The dedicated model inference commands require Together CLI version `2.24.0` or later. Install or upgrade with `uv tool install "together[cli]"` (or `uv tool upgrade "together[cli]"`), and check your version with `tg --version`.
+</Note>
 
 <Tabs>
   <Tab title="CLI / SDK">
+    The CLI's `deploy` command creates the endpoint, attaches a deployment, and routes all traffic to it in one step. Pass the fine-tune's Model Object ID (`ml_...`) — not the `x_model_output_name`, which isn't a deployable identifier in dedicated model inference:
+
+    ```bash CLI theme={null}
+    # Retrieve the job to copy its Model Object ID (model_object_id, an ml_... value)
+    tg fine-tuning retrieve "<JOB_ID>"
+
+    # Deploy the fine-tuned model to a new endpoint
+    tg beta endpoints deploy "<MODEL_OBJECT_ID>" \
+      --endpoint my-finetuned-endpoint
+    ```
+
+    The SDK has no single-call equivalent, so it runs the same steps individually: create the endpoint, bind the model and a config to a deployment, then route traffic to it. Reference the fine-tune by its **Model Object ID** (`ml_...`, the job's `model_object_id`):
+
     <CodeGroup>
       ```python Python theme={null}
-      import os
-      import time
       from together import Together
 
       client = Together()
+      project_id = client.whoami().project_id
 
-      # 1. Get the output model name from the completed job
-      status = client.fine_tuning.retrieve(id="<JOB_ID>")
-      output_model = status.x_model_output_name
+      # Reference the fine-tune by its Model Object ID (ml_...) and a config
+      # for the base model. List configs: tg beta models configs <model>.
+      model = f"projects/{project_id}/models/<MODEL_OBJECT_ID>"
+      config = f"projects/{project_id}/configs/<CONFIG_ID>"
 
-      # 2. Preflight: confirm the base can host a fine-tune.
-      # A 404 means the base (often a `-Reference` model) can't be deployed.
-      client.endpoints.list_hardware(model=status.model)
+      # 1. Create the endpoint.
+      endpoint = client.beta.endpoints.create(
+          project_id=project_id,
+          name="my-finetuned-endpoint",
+      )
 
-      # 3. Create the endpoint. Use a hardware id returned by list_hardware
-      # above; the exact options depend on the base model.
-      endpoint = client.endpoints.create(
-          display_name="My fine-tuned endpoint",
-          model=output_model,
-          hardware="1x_nvidia_h100_80gb_sxm",
+      # 2. Bind the model and config to a deployment.
+      deployment = client.beta.endpoints.deployments.create(
+          endpoint.id,
+          project_id=project_id,
+          name="prod",
+          model=model,
+          config=config,
           autoscaling={"min_replicas": 1, "max_replicas": 1},
       )
 
-      # 4. Poll until ready
-      deadline = time.time() + 20 * 60  # safety cap: 20 minutes
-      while True:
-          ep = client.endpoints.retrieve(endpoint.id)
-          if ep.state == "STARTED":
-              break
-          if ep.state in ("FAILED", "STOPPED"):
-              raise RuntimeError(f"Endpoint ended with state: {ep.state}")
-          if time.time() > deadline:
-              raise TimeoutError(f"Endpoint still {ep.state} after 20 minutes")
-          time.sleep(30)
-
-      # 5. Send a request. Use endpoint.name (not the raw output model) as the model parameter.
-      response = client.chat.completions.create(
-          model=endpoint.name,
-          messages=[{"role": "user", "content": "Hello!"}],
+      # 3. Route 100% of traffic to the deployment.
+      client.beta.endpoints.update(
+          endpoint.id,
+          project_id=project_id,
+          traffic_split=[{"deployment_id": deployment.id, "weight": 1}],
       )
-      print(response.choices[0].message.content)
-
-      # 6. Delete when done to stop billing
-      client.endpoints.delete(endpoint.id)
+      print(endpoint.name)
       ```
 
       ```typescript TypeScript theme={null}
       import Together from "together-ai";
 
       const client = new Together();
+      const { project_id: projectId } = await client.whoami();
 
-      // 1. Get the output model name from the completed job
-      const status = await client.fineTuning.retrieve("<JOB_ID>");
-      const outputModel = status.x_model_output_name;
+      // Reference the fine-tune by its Model Object ID (ml_...) and a config
+      // for the base model. List configs: tg beta models configs <model>.
+      const model = `projects/${projectId}/models/<MODEL_OBJECT_ID>`;
+      const config = `projects/${projectId}/configs/<CONFIG_ID>`;
 
-      // 2. Preflight
-      await client.endpoints.listHardware({ model: status.model });
-
-      // 3. Create the endpoint
-      const endpoint = await client.endpoints.create({
-        display_name: "My fine-tuned endpoint",
-        model: outputModel,
-        hardware: "1x_nvidia_h100_80gb_sxm",
-        autoscaling: { min_replicas: 1, max_replicas: 1 },
+      // 1. Create the endpoint.
+      const endpoint = await client.beta.endpoints.create({
+        projectId,
+        name: "my-finetuned-endpoint",
       });
 
-      // 4. Poll until ready
-      const deadline = Date.now() + 20 * 60 * 1000;
-      while (true) {
-        const ep = await client.endpoints.retrieve(endpoint.id);
-        if (ep.state === "STARTED") break;
-        if (ep.state === "FAILED" || ep.state === "STOPPED") {
-          throw new Error(`Endpoint ended with state: ${ep.state}`);
-        }
-        if (Date.now() > deadline) {
-          throw new Error("Endpoint did not start within 20 minutes");
-        }
-        await new Promise((r) => setTimeout(r, 30000));
-      }
+      // 2. Bind the model and config to a deployment.
+      const deployment = await client.beta.endpoints.deployments.create(
+        endpoint.id,
+        {
+          projectId,
+          name: "prod",
+          model,
+          config,
+          autoscaling: { minReplicas: 1, maxReplicas: 1 },
+        },
+      );
 
-      // 5. Send a request
-      const response = await client.chat.completions.create({
-        model: endpoint.name,
-        messages: [{ role: "user", content: "Hello!" }],
+      // 3. Route 100% of traffic to the deployment.
+      await client.beta.endpoints.update(endpoint.id, {
+        projectId,
+        trafficSplit: [{ deploymentId: deployment.id, weight: 1 }],
       });
-      console.log(response.choices[0].message.content);
-
-      // 6. Delete when done
-      await client.endpoints.delete(endpoint.id);
-      ```
-
-      ```bash CLI theme={null}
-      # 1. Find your job and copy the output model name
-      tg fine-tuning retrieve "<JOB_ID>"
-
-      # 2. Create the endpoint (--wait blocks until it's ready)
-      tg endpoints create \
-        --model "<OUTPUT_MODEL_NAME>" \
-        --hardware 1x_nvidia_h100_80gb_sxm \
-        --display-name "My fine-tuned endpoint" \
-        --wait
-
-      # 3. Send a request — the CLI doesn't ship a chat command, so use curl.
-      curl -s https://api.together.ai/v1/chat/completions \
-        -H "Authorization: Bearer $TOGETHER_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{"model":"<ENDPOINT_NAME>","messages":[{"role":"user","content":"Hello!"}]}'
-
-      # 4. Delete when done
-      tg endpoints delete "<ENDPOINT_ID>"
+      console.log(endpoint.name);
       ```
     </CodeGroup>
 
+    Poll until the deployment reaches `DEPLOYMENT_STATE_READY`:
+
+    ```bash CLI theme={null}
+    tg beta endpoints get "<ENDPOINT_ID>"
+    ```
+
+    From the SDK, retrieve the deployment and read `status.state`:
+
+    <CodeGroup>
+      ```python Python theme={null}
+      deployment = client.beta.endpoints.deployments.retrieve(
+          deployment.id,
+          project_id=project_id,
+          endpoint_id=endpoint.id,
+      )
+      print(deployment.status.state)
+      ```
+
+      ```typescript TypeScript theme={null}
+      const current = await client.beta.endpoints.deployments.retrieve(
+        deployment.id,
+        { projectId, endpointId: endpoint.id },
+      );
+      console.log(current.status.state);
+      ```
+    </CodeGroup>
+
+    Once the deployment is `READY`, the endpoint serves at its **endpoint string** (`your-project-slug/my-finetuned-endpoint`, returned as `endpoint.name`). Pass it as the `model` parameter and point the base URL at `https://api-inference.together.ai/v1`:
+
+    <CodeGroup>
+      ```bash cURL theme={null}
+      curl -s https://api-inference.together.ai/v1/chat/completions \
+        -H "Authorization: Bearer $TOGETHER_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "model": "your-project-slug/my-finetuned-endpoint",
+          "messages": [{"role": "user", "content": "Hello!"}]
+        }'
+      ```
+
+      ```python Python theme={null}
+      from together import Together
+
+      # A dedicated client for inference: this base URL serves only
+      # inference, not the fine-tuning or files APIs.
+      inference_client = Together(base_url="https://api-inference.together.ai/v1")
+
+      response = inference_client.chat.completions.create(
+          model="your-project-slug/my-finetuned-endpoint",
+          messages=[{"role": "user", "content": "Hello!"}],
+      )
+      print(response.choices[0].message.content)
+      ```
+
+      ```typescript TypeScript theme={null}
+      import Together from "together-ai";
+
+      // A dedicated client for inference: this base URL serves only
+      // inference, not the fine-tuning or files APIs.
+      const inferenceClient = new Together({
+        baseURL: "https://api-inference.together.ai/v1",
+      });
+
+      const response = await inferenceClient.chat.completions.create({
+        model: "your-project-slug/my-finetuned-endpoint",
+        messages: [{ role: "user", content: "Hello!" }],
+      });
+      console.log(response.choices[0].message.content);
+      ```
+    </CodeGroup>
+
+    When you're done, delete the endpoint and its deployment to stop billing. The CLI's `rm --force` removes both in one step:
+
+    ```bash CLI theme={null}
+    tg beta endpoints rm "<ENDPOINT_ID>" --force
+    ```
+
+    The SDK has no smart-delete, so stop billing by scaling the deployment to zero, then delete the resources once it reaches `DEPLOYMENT_STATE_STOPPED`:
+
+    <CodeGroup>
+      ```python Python theme={null}
+      # Scale to zero to stop billing.
+      client.beta.endpoints.deployments.update(
+          deployment.id,
+          project_id=project_id,
+          endpoint_id=endpoint.id,
+          autoscaling={"min_replicas": 0, "max_replicas": 0},
+      )
+
+      # Once it's DEPLOYMENT_STATE_STOPPED, drop its traffic weight, then
+      # delete the deployment and the endpoint.
+      client.beta.endpoints.update(
+          endpoint.id,
+          project_id=project_id,
+          traffic_split=[{"deployment_id": deployment.id, "weight": 0}],
+      )
+      client.beta.endpoints.deployments.delete(
+          deployment.id, project_id=project_id, endpoint_id=endpoint.id
+      )
+      client.beta.endpoints.delete(endpoint.id, project_id=project_id)
+      ```
+
+      ```typescript TypeScript theme={null}
+      // Scale to zero to stop billing.
+      await client.beta.endpoints.deployments.update(deployment.id, {
+        projectId,
+        endpointId: endpoint.id,
+        autoscaling: { minReplicas: 0, maxReplicas: 0 },
+      });
+
+      // Once it's DEPLOYMENT_STATE_STOPPED, drop its traffic weight, then
+      // delete the deployment and the endpoint.
+      await client.beta.endpoints.update(endpoint.id, {
+        projectId,
+        trafficSplit: [{ deploymentId: deployment.id, weight: 0 }],
+      });
+      await client.beta.endpoints.deployments.delete(deployment.id, {
+        projectId,
+        endpointId: endpoint.id,
+      });
+      await client.beta.endpoints.delete(endpoint.id, { projectId });
+      ```
+    </CodeGroup>
+
+    To pause billing without deleting anything (for example, if you plan to use the endpoint again later), scale the deployment to zero and stop there. See [Delete resources](/docs/dedicated-endpoints/manage#delete-resources) for the full teardown order.
+
     <Note>
-      If endpoint creation fails immediately with "There was an issue starting your endpoint", the cause is almost always an incompatible base model. Verify with `client.endpoints.list_hardware(model=...)`; a 404 means the base (often a `-Reference` model) can't host a fine-tune. Pick a different base before retrying.
+      If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`. See [Choose a deployment profile](/docs/dedicated-endpoints/configs).
     </Note>
   </Tab>
 
   <Tab title="UI">
     <Steps>
-      <Step title="Open the models page">
-        Go to [the models dashboard](https://api.together.ai/models). Your completed fine-tuned models appear under **My Models**.
+      <Step title="Open your models">
+        Go to [My models](https://api.together.ai/models?category=my-models). Your completed fine-tuned models appear here once training finishes.
       </Step>
 
       <Step title="Create the endpoint">
         Select your fine-tuned model, then select **Create dedicated endpoint**.
       </Step>
 
-      <Step title="Pick hardware">
-        Choose hardware and set `min_replicas` and `max_replicas` (these set the maximum QPS the deployment can serve).
+      <Step title="Configure the deployment">
+        Choose a deployment configuration (hardware and GPU count) and set the replica bounds.
       </Step>
 
       <Step title="Deploy">
-        Select **Deploy**. The endpoint takes up to 10 minutes to come up. You can navigate away while it provisions.
+        Select **Deploy**. Provisioning takes up to 10 minutes. You can navigate away while it runs.
       </Step>
 
       <Step title="Stop when done">
-        Return to the dashboard and stop the endpoint when you're not using it to halt per-minute billing.
+        Open the endpoint from the dashboard and stop or delete it when you're not using it to halt per-minute billing.
       </Step>
     </Steps>
   </Tab>
@@ -332,9 +437,11 @@ Intermediate checkpoints carry the IDs from the upload at that step. Final model
 
 ## Troubleshooting
 
-* **`x_model_output_name` is empty:** The job hasn't reached `completed`. Poll status with `client.fine_tuning.retrieve(id=...)` until it's done. See [Monitor a fine-tuning job](/docs/fine-tuning/monitoring#poll-until-the-job-is-done) for the polling pattern.
-* **Endpoint creation fails immediately:** Run `client.endpoints.list_hardware(model=<base_model>)`. A 404 means the base can't host a fine-tune. `-Reference` models fall into this bucket.
-* **404 on inference:** Use `endpoint.name` as the `model` parameter, not the raw output model name. The endpoint name includes a unique suffix that routes traffic to your deployment.
+* **No Model Object ID yet:** The job hasn't reached `completed`, so `model_object_id` isn't populated. Poll status with `client.fine_tuning.retrieve(id=...)` until it's done. See [Monitor a fine-tuning job](/docs/fine-tuning/monitoring#poll-until-the-job-is-done) for the polling pattern.
+* **`endpoints_v1_create_access_disabled` (HTTP 403):** You're calling the retired v1 endpoints API (`client.endpoints.create(...)` or `tg endpoints create`). Deploy on dedicated model inference with `tg beta endpoints deploy` instead. See [Migrate from v1](/docs/dedicated-endpoints/migrate-from-v1).
+* **`deploy` reports multiple deployment profiles:** Re-run with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
+* **Deploy fails because the base isn't supported:** Not every base model can be hosted for dedicated inference. Confirm the base appears in the [supported models](/docs/dedicated-endpoints/models) list before training (`-Reference` models often can't be deployed).
+* **404 on inference:** Point the base URL at `https://api-inference.together.ai/v1` and pass the endpoint string (`your-project-slug/<endpoint_name>`, printed by the deploy output) as the `model` parameter, not the Model Object ID.
 
 ## Next steps
 
@@ -347,7 +454,7 @@ Intermediate checkpoints carry the IDs from the upload at that step. Final model
     Inspect, start, stop, update, and delete dedicated endpoints.
   </Card>
 
-  <Card title="Endpoint settings" icon="adjustments-horizontal" href="/docs/dedicated-endpoints/settings">
-    Tune autoscaling, decoding, and auto-shutdown.
+  <Card title="Configure autoscaling" icon="adjustments-horizontal" href="/docs/dedicated-endpoints/scaling">
+    Tune replica bounds and autoscale a deployment on the metric that fits your workload.
   </Card>
 </CardGroup>

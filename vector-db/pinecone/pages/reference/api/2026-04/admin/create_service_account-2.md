@@ -5,9 +5,7 @@ path: reference/api/2026-04/admin/create_service_account
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/service-accounts
-Create a service account with optional initial role bindings. The `client_secret` in the response is shown only once; store it securely.
-Grant roles with `role_bindings`: `organization`-scoped bindings omit `resource_id`, while `project`-scoped bindings include the project `resource_id`. Service accounts may receive any organization- or project-scoped role (see Role). Bindings are not returned in the response.
-Repeating the same request may create duplicate service accounts.
+Create a service account with optional initial role bindings; the client secret is returned only once.
 
 
 <RequestExample>

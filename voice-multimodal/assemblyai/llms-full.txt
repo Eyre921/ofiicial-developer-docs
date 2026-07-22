@@ -30297,7 +30297,7 @@ Description: Learn how to transcribe streaming audio.
 
 ## Overview
 
-By the end of this guide, you'll have a working script that transcribes your microphone live, printing each turn as you speak. Build it with an AI coding agent, or write it yourself — both are below.
+By the end of this guide, you'll have a working script that transcribes a live internet radio stream, printing each turn as it plays. No microphone required, so it runs anywhere, including a coding agent's sandbox. Build it with an AI coding agent, or write it yourself. Both are below.
 
 Prefer to try it first? Transcribe audio without writing any code in the [AssemblyAI Playground](https://www.assemblyai.com/playground).
 
@@ -30316,7 +30316,7 @@ You'll need:
   ```
 
 - **Python 3.8+ or Node.js 18+**, depending on which SDK you use.
-- **A working microphone** — these examples capture live audio from it.
+- **Nothing else.** The examples pull a public AAC radio stream over HTTP, so no microphone or audio hardware is needed.
 
 **Building with an AI coding agent?** Wire it up to AssemblyAI's live docs (MCP server) and the AssemblyAI skill so it writes correct, up-to-date code instead of relying on stale training data:
 
@@ -30328,33 +30328,35 @@ npx skills add AssemblyAI/assemblyai-skill --global
 Then describe what you want to build. To get the same result as the steps below, paste:
 
 ```text
-Use the AssemblyAI Python SDK to transcribe my microphone in real time and print each turn.
+Use the AssemblyAI Python SDK to transcribe a live AAC radio stream in real time and print each turn.
 ```
 
 ## Transcribe streaming audio
 
-Prefer to write it yourself? Follow these steps to stream your microphone live. The AssemblyAI SDK manages the WebSocket connection, microphone capture, and session termination for you.
+Prefer to write it yourself? Follow these steps to stream a live radio URL. The AssemblyAI SDK manages the WebSocket connection and session termination for you.
 
 ### Step 1: Install the SDK
 
 ```bash
-pip install assemblyai sounddevice
+pip install assemblyai requests
 ```
 
 ```bash
-npm install assemblyai @picovoice/pvrecorder-node
+npm install assemblyai
 ```
 
 ### Step 2: Stream your first session
 
-Save this as `transcribe.py` (Python) or `transcribe.js` (JavaScript). It streams your microphone and prints each turn until you press Ctrl+C:
+Save this as `transcribe.py` (Python) or `transcribe.js` (JavaScript). It streams about 25 seconds of a live radio URL, prints each turn, then closes the session:
 
 ```python expandable
 import os
+import time
 
-import sounddevice as sd
+import requests
 from assemblyai.streaming.v3 import (
     BeginEvent,
+    Encoding,
     StreamingClient,
     StreamingClientOptions,
     StreamingError,
@@ -30364,14 +30366,17 @@ from assemblyai.streaming.v3 import (
     TurnEvent,
 )
 
-SAMPLE_RATE = 16000
+# A live AAC (ADTS) internet radio stream, so no microphone is needed.
+STREAM_URL = "https://14123.live.streamtheworld.com/WBBRAMAAC.aac"
+RUN_SECONDS = 25
 
 def on_begin(client: StreamingClient, event: BeginEvent):
-    print(f"Session started: {event}")
-    print("Connected. Speak into your microphone; press Ctrl+C to stop.")
+    print(f"Session started: {event.id}")
+    print("Connected. Streaming live radio for ~25 seconds.")
 
 def on_turn(client: StreamingClient, event: TurnEvent):
-    print(event.transcript)
+    if event.transcript:
+        print(event.transcript)
 
 def on_terminated(client: StreamingClient, event: TerminationEvent):
     print(f"Session terminated: {event.audio_duration_seconds}s of audio processed")
@@ -30379,18 +30384,12 @@ def on_terminated(client: StreamingClient, event: TerminationEvent):
 def on_error(client: StreamingClient, error: StreamingError):
     print(f"Error: {error}")
 
-def mic_stream():
-    # sounddevice bundles PortAudio in its wheel — no system install needed.
-    with sd.RawInputStream(
-        samplerate=SAMPLE_RATE, channels=1, dtype="int16", blocksize=800
-    ) as mic:
-        while True:
-            frames, _ = mic.read(800)  # ~50 ms of audio
-            yield bytes(frames)
-
 def main():
     client = StreamingClient(
-        StreamingClientOptions(api_key=os.environ["ASSEMBLYAI_API_KEY"])
+        StreamingClientOptions(
+            api_key=os.environ["ASSEMBLYAI_API_KEY"],
+            terminate_timeout=30.0,
+        )
     )
 
     client.on(StreamingEvents.Begin, on_begin)
@@ -30398,15 +30397,23 @@ def main():
     client.on(StreamingEvents.Termination, on_terminated)
     client.on(StreamingEvents.Error, on_error)
 
+    # AAC is self-describing (ADTS headers carry the sample rate)
     client.connect(
-        StreamingParameters(speech_model="universal-3-5-pro", sample_rate=SAMPLE_RATE)
+        StreamingParameters(speech_model="universal-3-5-pro", encoding=Encoding.aac)
     )
 
+    # Pull the live radio stream and forward each chunk to the transcriber.
+    response = requests.get(STREAM_URL, stream=True)
+    deadline = time.time() + RUN_SECONDS
     try:
-        client.stream(mic_stream())
-    except KeyboardInterrupt:
-        pass
+        for chunk in response.iter_content(chunk_size=4096):
+            client.stream(chunk)
+            if time.time() > deadline:
+                break
     finally:
+        response.close()
+        # Terminate finalizes the open turn.
+        # Keep the connection open long enough to receive the last final.
         client.disconnect(terminate=True)
 
 if __name__ == "__main__":
@@ -30414,14 +30421,17 @@ if __name__ == "__main__":
 ```
 
 ```javascript expandable
-import { PvRecorder } from "@picovoice/pvrecorder-node";
 import { AssemblyAI } from "assemblyai";
+
+// A live AAC (ADTS) internet radio stream, so no microphone is needed.
+const STREAM_URL = "https://14123.live.streamtheworld.com/WBBRAMAAC.aac";
+const RUN_MS = 25_000;
 
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 const transcriber = client.streaming.transcriber({
   speechModel: "universal-3-5-pro",
-  sampleRate: 16_000,
+  encoding: "aac",
 });
 
 transcriber.on("open", ({ id }) => console.log(`Session opened with ID: ${id}`));
@@ -30433,38 +30443,35 @@ transcriber.on("turn", (turn) => {
   }
 });
 
-// PvRecorder ships prebuilt native binaries — no SoX or system audio install needed.
-const recorder = new PvRecorder(800, -1); // 800 samples ≈ 50 ms at 16 kHz
-
-let running = true;
-process.on("SIGINT", () => {
-  running = false;
-});
-
 const run = async () => {
   await transcriber.connect();
-  recorder.start();
-  console.log("Recording — press Ctrl+C to stop.");
+  console.log("Connected. Streaming live radio for ~25 seconds.");
 
-  while (running) {
-    const frame = await recorder.read();
-    transcriber.sendAudio(Buffer.from(frame.buffer, frame.byteOffset, frame.byteLength));
+  // Pull the live radio stream and forward each chunk to the transcriber.
+  const response = await fetch(STREAM_URL);
+  const reader = response.body.getReader();
+  const deadline = Date.now() + RUN_MS;
+  while (Date.now() < deadline) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    transcriber.sendAudio(Buffer.from(value));
   }
+  await reader.cancel();
 
-  recorder.stop();
-  recorder.release();
+  // close() sends terminate, which finalizes the open turn.
+  // Keep the connection open long enough to receive the last final.
   await transcriber.close();
 };
 
 run();
 ```
 
-Then run it — `python transcribe.py` or `node transcribe.js` — and start speaking. Each turn prints as you talk, and the session closes when you press Ctrl+C:
+Then run it with `python transcribe.py` or `node transcribe.js`. Each turn prints as the audio plays. Terminating finalizes the open turn, so its final transcript prints just before the session ends after about 25 seconds. Because internet radio bursts audio faster than real time, the server may still be catching up when you stop sending, so the last final can arrive a few seconds later than a real-time source like a microphone would show it:
 
 ```text
 Session started: 7f3a9c2e-...
-Smoke from hundreds of wildfires in Canada is triggering air quality alerts...
-Session terminated: 12.0s of audio processed
+markets are higher across the board this morning as investors weigh the latest earnings.
+Session terminated: 25.0s of audio processed
 ```
 
 That's a full real-time transcriber. Prefer raw WebSockets? See [Using the WebSocket API directly](#using-the-websocket-api-directly) below.
@@ -30487,11 +30494,13 @@ The transcriber emits JSON messages (the SDK surfaces them as `open` / `turn` / 
 }
 ```
 
+Live radio is continuous speech, so finalized turns arrive at natural pauses. Expect several partial updates before each `end_of_turn: true`.
+
 You also receive a `Begin` message when the session opens (`{ "type": "Begin", "id": "...", "expires_at": ... }`) and a `Termination` message when it closes (`{ "type": "Termination", "audio_duration_seconds": 10, "session_duration_seconds": 12 }`). Word timings are in milliseconds. See the [message sequence breakdown](/streaming/getting-started/transcribe-streaming-audio) for the full event flow.
 
 ## Using the WebSocket API directly
 
-Not using an SDK? Connect to the streaming WebSocket at `wss://streaming.assemblyai.com/v3/ws` directly. Authenticate with your key in the `Authorization` header (no `Bearer` prefix), and manage the connection, microphone capture, the `Begin` / `Turn` / `Termination` messages, and session termination yourself — the SDK above does all of this for you. See the [message sequence breakdown](/streaming/getting-started/transcribe-streaming-audio) for the event flow and [endpoints and data zones](/streaming/endpoints-and-data-zones) for regional endpoints.
+Not using an SDK? Connect to the streaming WebSocket at `wss://streaming.assemblyai.com/v3/ws` directly. Authenticate with your key in the `Authorization` header (no `Bearer` prefix), and manage the connection, the audio source, the `Begin` / `Turn` / `Termination` messages, and session termination yourself. The SDK above does all of this for you. See the [message sequence breakdown](/streaming/getting-started/transcribe-streaming-audio) for the event flow and [endpoints and data zones](/streaming/endpoints-and-data-zones) for regional endpoints.
 
 Both examples read your key from the same `ASSEMBLYAI_API_KEY` environment variable you set in [Before you begin](#before-you-begin).
 
@@ -30501,36 +30510,47 @@ Both examples read your key from the same `ASSEMBLYAI_API_KEY` environment varia
   short-lived [temporary token](/streaming/authenticate-with-a-temporary-token) instead.
 
 ```bash
-pip install sounddevice websocket-client
+pip install requests websocket-client
 ```
 
 ```python expandable
 import json
 import os
 import threading
+import time
 from urllib.parse import urlencode
 
-import sounddevice as sd
+import requests
 import websocket
 
 API_KEY = os.environ["ASSEMBLYAI_API_KEY"]
-SAMPLE_RATE = 16000
-CONNECTION_PARAMS = {"speech_model": "universal-3-5-pro", "sample_rate": SAMPLE_RATE}
+# A live AAC (ADTS) internet radio stream, so no microphone is needed.
+STREAM_URL = "https://14123.live.streamtheworld.com/WBBRAMAAC.aac"
+RUN_SECONDS = 25
+# AAC is self-describing (ADTS headers carry the sample rate)
+CONNECTION_PARAMS = {"speech_model": "universal-3-5-pro", "encoding": "aac"}
 API_ENDPOINT = f"wss://streaming.assemblyai.com/v3/ws?{urlencode(CONNECTION_PARAMS)}"
 
 stop = threading.Event()
 
 def on_open(ws):
-    print("Connected. Speak into your microphone; press Ctrl+C to stop.")
+    print("Connected. Streaming live radio for ~25 seconds.")
 
     def stream_audio():
-        # sounddevice bundles PortAudio in its wheel — no system install needed.
-        with sd.RawInputStream(
-            samplerate=SAMPLE_RATE, channels=1, dtype="int16", blocksize=800
-        ) as mic:
-            while not stop.is_set():
-                frames, _ = mic.read(800)  # ~50 ms of audio
-                ws.send(bytes(frames), websocket.ABNF.OPCODE_BINARY)
+        # Pull the live radio stream and forward each chunk as a binary frame.
+        response = requests.get(STREAM_URL, stream=True)
+        deadline = time.time() + RUN_SECONDS
+        try:
+            for chunk in response.iter_content(chunk_size=4096):
+                if stop.is_set() or time.time() > deadline:
+                    break
+                ws.send(chunk, websocket.ABNF.OPCODE_BINARY)
+        finally:
+            response.close()
+            if ws.sock and ws.sock.connected:
+                # Terminate finalizes the open turn.
+                # Keep the connection open long enough to receive the last final.
+                ws.send(json.dumps({"type": "Terminate"}))
 
     threading.Thread(target=stream_audio, daemon=True).start()
 
@@ -30579,42 +30599,42 @@ if __name__ == "__main__":
 ```
 
 ```bash
-npm install ws @picovoice/pvrecorder-node
+npm install ws
 ```
 
 ```javascript expandable
 const WebSocket = require("ws");
 const querystring = require("querystring");
-const { PvRecorder } = require("@picovoice/pvrecorder-node");
 
 const API_KEY = process.env.ASSEMBLYAI_API_KEY;
-const SAMPLE_RATE = 16000;
-const params = { speech_model: "universal-3-5-pro", sample_rate: SAMPLE_RATE };
+// A live AAC (ADTS) internet radio stream, so no microphone is needed.
+const STREAM_URL = "https://14123.live.streamtheworld.com/WBBRAMAAC.aac";
+const RUN_MS = 25_000;
+// AAC is self-describing (ADTS headers carry the sample rate)
+const params = { speech_model: "universal-3-5-pro", encoding: "aac" };
 const endpoint = `wss://streaming.assemblyai.com/v3/ws?${querystring.stringify(params)}`;
 
-// PvRecorder ships prebuilt native binaries — no SoX or system audio install needed.
-const recorder = new PvRecorder(800, -1); // 800 samples ≈ 50 ms at 16 kHz
 const ws = new WebSocket(endpoint, { headers: { Authorization: API_KEY } });
 
-let running = true;
-process.on("SIGINT", () => {
-  running = false;
-});
-
 ws.on("open", async () => {
-  console.log("Connected. Speak into your microphone; press Ctrl+C to stop.");
-  recorder.start();
-  while (running && ws.readyState === WebSocket.OPEN) {
-    const frame = await recorder.read();
-    ws.send(Buffer.from(frame.buffer, frame.byteOffset, frame.byteLength));
+  console.log("Connected. Streaming live radio for ~25 seconds.");
+
+  // Pull the live radio stream and forward each chunk as a binary frame.
+  const response = await fetch(STREAM_URL);
+  const reader = response.body.getReader();
+  const deadline = Date.now() + RUN_MS;
+  while (Date.now() < deadline && ws.readyState === WebSocket.OPEN) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    ws.send(value);
   }
-  recorder.stop();
-  recorder.release();
+  await reader.cancel();
+
   if (ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify({ type: "Terminate" })); // close the session
-    ws.close();
+    // Terminate finalizes the open turn.
+    // Keep the connection open long enough to receive the last final.
+    ws.send(JSON.stringify({ type: "Terminate" }));
   }
-  process.exit();
 });
 
 ws.on("message", (message) => {
@@ -30625,13 +30645,16 @@ ws.on("message", (message) => {
 });
 
 ws.on("error", (error) => console.error("\nError:", error));
-ws.on("close", () => console.log("\nDisconnected."));
+ws.on("close", () => {
+  console.log("\nDisconnected.");
+  process.exit();
+});
 ```
 
 ## Limits
 
 - **Session length:** a streaming session auto-closes after 3 hours.
-- **Audio:** mono 16-bit PCM; set `sample_rate` to match your source (16 kHz in these examples). Opus is also accepted (`encoding=ogg_opus` for Ogg streams, `encoding=opus` for raw packets) — see [Sending audio](/streaming/message-sequence#sending-audio).
+- **Audio:** mono 16-bit PCM by default; set `sample_rate` to match your source. These examples use AAC (`encoding=aac`, ADTS framing). Opus is also accepted (`encoding=ogg_opus` for Ogg streams, `encoding=opus` for raw Opus packets). See [Sending audio](/streaming/message-sequence#sending-audio).
 - **Rate limit:** new-session rate limits scale automatically with usage (default 5 for free accounts). Check yours on the [rate limits page](https://www.assemblyai.com/dashboard/home).
 
 ## Next steps
@@ -30867,7 +30890,7 @@ Two silence thresholds control this behavior.
 
 | Parameter | What it does | Default |
 | --- | --- | --- |
-| `min_turn_silence` | Silence in milliseconds before the model runs an end-of-turn check. If the turn reads as complete, the turn ends. Otherwise a partial is emitted and the turn stays open. | Set by `mode` (`min_latency: 128`, `balanced: 224`, `max_accuracy: 800`) |
+| `min_turn_silence` | Silence in milliseconds before the model runs an end-of-turn check. If the turn reads as complete, the turn ends. Otherwise a partial is emitted and the turn stays open. | Set by `mode` (`min_latency: 128`, `balanced: 128`, `max_accuracy: 800`) |
 | `max_turn_silence` | Maximum silence in milliseconds before the turn is forced to end, regardless of content. This is the fallback for turns that never read as complete. | `1536` |
 
 Lower values end turns faster. Higher values tolerate longer pauses without fragmenting the turn. Both parameters can be set on the connection and [updated mid-stream](#capturing-entities-like-phone-numbers), and their defaults come from the [`mode` preset](/streaming/getting-started/optimizing-accuracy-and-latency) you select.
@@ -33704,6 +33727,7 @@ sequenceDiagram
 | `SpeechStarted` | Per turn (Universal-3.5 Pro only) | Speech detected; precedes the turn's first `Turn` message. |
 | `Turn` | Repeatedly | Partial and final transcripts; see the walkthrough below. |
 | `SpeakerRevision` | If `speaker_labels=true` | Revised speaker labels for earlier turns. |
+| `Heartbeat` | Every 5s if `session_heartbeat=true` | Liveness ping with audio-received and real-time-factor stats. |
 | `Termination` | Once, last message | Session totals; nothing follows it. |
 | `Error` | On failure, before close | Error code and detail; the connection then closes. |
 
@@ -33732,12 +33756,13 @@ When the session begins, you receive a `Begin` message with the session ID, expi
 
 Audio is sent as **binary WebSocket frames** containing audio bytes in the encoding and sample rate you set at connection time (default: 16 kHz, 16-bit mono PCM). Do not wrap audio in JSON and do not base64-encode it. A text frame that isn't valid JSON is rejected and closes the session.
 
-Compressed audio is supported via Opus, at roughly 8× less bandwidth than 16 kHz PCM:
+Compressed audio is supported via Opus and AAC. Opus uses roughly 8× less bandwidth than 16 kHz PCM.
 
 - `encoding=ogg_opus` — an Ogg-encapsulated Opus byte stream (the format produced by ffmpeg, gstreamer, opusenc, and browser MediaRecorder). Binary frames can be arbitrary chunks of the stream; no page or packet alignment is required.
 - `encoding=opus` — raw Opus packets without a container. Each binary frame must contain exactly one Opus packet.
+- `encoding=aac` — an AAC stream in ADTS framing. Raw AAC packets and MP4/M4A containers are not supported. Binary frames can be arbitrary chunks of the stream; the server buffers partial frames.
 
-For both Opus encodings, `sample_rate` is ignored — the stream is self-describing.
+For AAC and both Opus encodings, `sample_rate` is ignored because each stream describes its own sample rate.
 
 For PCM, send audio in chunks of roughly 50 ms (800 samples at 16 kHz); for Opus, one 20 ms packet (or page) per frame is typical. You can send audio faster than real time (for example when streaming from a file), but throughput is throttled at ~1.25× real time. If more than five minutes of audio is buffered ahead of processing, the session closes with error `3007`.
 
@@ -33995,6 +34020,25 @@ transcriber.keepAlive();
 If the inactivity timeout elapses, the session closes with error `3006` and the message `Session terminated due to inactivity: No messages received for N seconds`.
 
   **Ordering guarantees.** `turn_order` is monotonically increasing, and all messages for a turn are delivered before the first message of the next turn. Within a turn, each `Turn` message supersedes the previous one. Render the latest `transcript`; do not append. A turn is complete on the message where both `end_of_turn` and `turn_is_formatted` are `true`.
+
+## Heartbeat
+
+When you set `session_heartbeat=true` at connection time, or toggle it on with `UpdateConfiguration`, the server sends a `Heartbeat` message every 5 seconds of wall-clock time for the life of the session, during both speech and silence. Use it to confirm the session is alive and to watch how the client's audio delivery compares to real time.
+
+```json
+{
+  "type": "Heartbeat",
+  "total_audio_received_ms": 45000,
+  "total_duration_ms": 45205,
+  "realtime_factor": 0.9964,
+  "max_speech_probability": 0.999954
+}
+```
+
+- `total_audio_received_ms` is the total audio received since the session started.
+- `total_duration_ms` is the wall-clock time since the session started.
+- `realtime_factor` is the ratio of audio received to wall-clock time over the window since the previous heartbeat. It sits around 1.0 when the client streams in real time and drops below 1.0 when the client is under-delivering audio.
+- `max_speech_probability` is the maximum voice-activity speech probability observed since the previous heartbeat. It runs near 1.0 during speech and near 0.0 during silence.
 
 ## Session termination
 
@@ -91639,6 +91683,12 @@ channels:
         location: $message.payload#/mode
         enum: ["max_accuracy", "min_latency", "balanced"]
 
+      session_heartbeat:
+        description: When enabled, the server sends a `Heartbeat` message every 5 seconds of wall-clock time for the life of the session, during both speech and silence. Use it to confirm the session is alive and to compare how fast the client is delivering audio against real time. Can also be toggled mid-session via `UpdateConfiguration`.
+        location: $message.payload#/session_heartbeat
+        enum: ["true", "false"]
+        default: "false"
+
       encoding:
         description: >-
           Encoding of the audio stream. `pcm_s16le` and `pcm_mulaw` are raw
@@ -91646,14 +91696,19 @@ channels:
           message must contain exactly one Opus packet. `ogg_opus` is an
           Ogg-encapsulated Opus byte stream (the format produced by ffmpeg,
           gstreamer, opusenc, and browser MediaRecorder); binary WebSocket
-          messages can be arbitrary chunks of the stream. For both Opus
-          encodings, `sample_rate` is ignored — the stream is self-describing.
+          messages can be arbitrary chunks of the stream. `aac` is an AAC
+          stream in ADTS framing; raw AAC packets and MP4/M4A containers are
+          not supported. Binary WebSocket messages can be arbitrary chunks of
+          the stream, and the server buffers partial frames. For `aac` and both
+          Opus encodings, `sample_rate` is ignored because each stream
+          describes its own sample rate. Audio is decoded to PCM server side
+          and transcription behavior is otherwise identical.
         location: $message.payload#/encoding
-        enum: ["pcm_s16le", "pcm_mulaw", "opus", "ogg_opus"]
+        enum: ["pcm_s16le", "pcm_mulaw", "opus", "ogg_opus", "aac"]
         default: "pcm_s16le"
 
       sample_rate:
-        description: Sample rate of the audio stream in Hz. Accepts any integer from 8000 to 96000. Ignored for Opus encodings (`opus`, `ogg_opus`).
+        description: Sample rate of the audio stream in Hz. Accepts any integer from 8000 to 96000. Ignored for Opus and AAC encodings (`opus`, `ogg_opus`, `aac`), which describe their own sample rate.
         location: $message.payload#/sample_rate
         default: "16000"
         examples:
@@ -91810,6 +91865,8 @@ channels:
         $ref: "#/components/messages/SpeakerRevision"
       termination:
         $ref: "#/components/messages/Termination"
+      heartbeat:
+        $ref: "#/components/messages/Heartbeat"
       llmGatewayResponse:
         $ref: "#/components/messages/LLMGatewayResponse"
 operations:
@@ -91827,7 +91884,7 @@ operations:
       $ref: "#/channels/streaming"
     messages:
       - $ref: "#/channels/streaming/messages/updateConfiguration"
-    description: Update streaming configuration parameters during an active session. You can update `prompt`, `keyterms_prompt`, `min_turn_silence`, `max_turn_silence`, `end_of_turn_confidence_threshold`, `continuous_partials`, `vad_threshold`, `interruption_delay`, `mode`, `language_codes`, and `agent_context`.
+    description: Update streaming configuration parameters during an active session. You can update `prompt`, `keyterms_prompt`, `min_turn_silence`, `max_turn_silence`, `end_of_turn_confidence_threshold`, `continuous_partials`, `vad_threshold`, `interruption_delay`, `mode`, `language_codes`, `session_heartbeat`, and `agent_context`.
 
   forceEndpoint:
     action: receive
@@ -91892,6 +91949,14 @@ operations:
     messages:
       - $ref: "#/channels/streaming/messages/termination"
     description: Receive confirmation that the session has been terminated by the server.
+
+  heartbeat:
+    action: send
+    channel:
+      $ref: "#/channels/streaming"
+    messages:
+      - $ref: "#/channels/streaming/messages/heartbeat"
+    description: Receive a periodic liveness message. Emitted every 5 seconds of wall-clock time for the life of the session when `session_heartbeat` is enabled, during both speech and silence.
 
   llmGatewayResponse:
     action: send
@@ -92055,6 +92120,21 @@ components:
       payload:
         $ref: "#/components/schemas/TerminationPayload"
 
+    Heartbeat:
+      name: Heartbeat
+      title: Heartbeat
+      summary: Server liveness message sent at a fixed interval when `session_heartbeat` is enabled.
+      contentType: application/json
+      payload:
+        $ref: "#/components/schemas/HeartbeatPayload"
+      examples:
+        - payload:
+            type: Heartbeat
+            total_audio_received_ms: 45000
+            total_duration_ms: 45205
+            realtime_factor: 0.9964
+            max_speech_probability: 0.999954
+
     LLMGatewayResponse:
       name: LLMGatewayResponse
       title: LLM Gateway Response
@@ -92131,6 +92211,9 @@ components:
           items:
             type: string
           description: Update the set of languages transcription is steered toward. Takes effect from the next turn. See the `language_codes` connection parameter for accepted codes and behavior. Pass an empty list to clear steering and return to native code-switching across all supported languages. Universal-3.5 Pro Streaming only.
+        session_heartbeat:
+          type: boolean
+          description: Turn periodic `Heartbeat` liveness messages on or off mid-session. See the `session_heartbeat` connection parameter for behavior.
       required:
         - type
 
@@ -92386,6 +92469,38 @@ components:
         - type
         - audio_duration_seconds
         - session_duration_seconds
+
+    HeartbeatPayload:
+      type: object
+      properties:
+        type:
+          type: string
+          const: Heartbeat
+          description: Identifies the type of the message.
+        total_audio_received_ms:
+          type: integer
+          format: ms
+          description: Total audio received since the session started, in milliseconds.
+        total_duration_ms:
+          type: integer
+          format: ms
+          description: Wall-clock time since the session started, in milliseconds.
+        realtime_factor:
+          type: number
+          format: float
+          description: Ratio of audio received to wall-clock time over the window since the previous heartbeat. Around 1.0 when the client streams in real time, and below 1.0 when the client is under-delivering audio.
+        max_speech_probability:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Maximum voice-activity speech probability observed since the previous heartbeat. Near 1.0 during speech and near 0.0 during silence.
+      required:
+        - type
+        - total_audio_received_ms
+        - total_duration_ms
+        - realtime_factor
+        - max_speech_probability
 
     LLMGatewayResponsePayload:
       type: object

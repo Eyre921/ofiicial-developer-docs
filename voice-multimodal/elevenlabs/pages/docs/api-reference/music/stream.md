@@ -412,15 +412,6 @@ components:
             - string
             - 'null'
           description: The ID of the finetune to use for the generation
-        finetune_strength:
-          type: number
-          format: double
-          default: 1
-          description: >-
-            How strongly the finetune influences the generation. Defaults to 1.0
-            (full strength). Lower values soften the influence of the finetune,
-            leaving more room for prompt-level steering. Only meaningful when
-            `finetune_id` is also provided.
         store_for_inpainting:
           type: boolean
           default: false

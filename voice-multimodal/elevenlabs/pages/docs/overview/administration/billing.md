@@ -80,6 +80,12 @@ If you downgrade or cancel your subscription, this does not take effect until th
 
 Pay As You Go (PAYG) allows you to prepay for credits without committing to a monthly subscription, or buy additional credits if you run out of your subscription credits. For full details, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
+If you change subscription plans, your PAYG credit balance may be adjusted because credits are
+stored as a dollar value and converted at your current plan's rate. See [What happens to my PAYG
+credits if I change subscription
+plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
+for details.
+
 #### What happens when I run out of credits?
 
 New subscriptions have the option of purchasing Pay As You Go credits. These credits last for 12 months, and will be used if you run out of credits from your monthly quota. 

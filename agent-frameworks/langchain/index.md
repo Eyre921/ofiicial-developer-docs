@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1500 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1505 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -353,6 +353,8 @@
 - `langsmith/manage-trace` — [Manage a trace](pages/langsmith/manage-trace.md) · [原文](https://docs.langchain.com/langsmith/manage-trace)
 - `langsmith/manage-with-terraform` — [Manage LangSmith with Terraform](pages/langsmith/manage-with-terraform.md) · [原文](https://docs.langchain.com/langsmith/manage-with-terraform)
 - `langsmith/managed-deep-agents` — [Managed Deep Agents](pages/langsmith/managed-deep-agents.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents)
+- `langsmith/managed-deep-agents-channels/index` — [Connect messaging channels to Managed Deep Agents](pages/langsmith/managed-deep-agents-channels/index.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-channels/index)
+- `langsmith/managed-deep-agents-channels/slack` — [Add a Slack channel to Managed Deep Agents](pages/langsmith/managed-deep-agents-channels/slack.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-channels/slack)
 - `langsmith/managed-deep-agents-cli` — [Managed Deep Agents CLI reference](pages/langsmith/managed-deep-agents-cli.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-cli)
 - `langsmith/managed-deep-agents-connectors/index` — [Connect tools and capabilities to Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/index.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/index)
 - `langsmith/managed-deep-agents-connectors/langsmith` — [Expose LangSmith capabilities with Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/langsmith.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/langsmith)
@@ -361,6 +363,7 @@
 - `langsmith/managed-deep-agents-examples` — [Managed Deep Agents example project](pages/langsmith/managed-deep-agents-examples.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-examples)
 - `langsmith/managed-deep-agents-how-it-works` — [How Managed Deep Agents work](pages/langsmith/managed-deep-agents-how-it-works.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-how-it-works)
 - `langsmith/managed-deep-agents-identity` — [Add identity to Managed Deep Agents](pages/langsmith/managed-deep-agents-identity.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-identity)
+- `langsmith/managed-deep-agents-memory` — [Add memory to Managed Deep Agents](pages/langsmith/managed-deep-agents-memory.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-memory)
 - `langsmith/managed-deep-agents-middleware` — [Add custom middleware to Managed Deep Agents](pages/langsmith/managed-deep-agents-middleware.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-middleware)
 - `langsmith/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-overview)
 - `langsmith/managed-deep-agents-quickstart` — [Managed Deep Agents quickstart](pages/langsmith/managed-deep-agents-quickstart.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart)
@@ -1118,6 +1121,7 @@
 - `oss/javascript/deepagents/backends` — [Backends](pages/oss/javascript/deepagents/backends.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/backends)
 - `oss/javascript/deepagents/changelog-js` — [Changelog](pages/oss/javascript/deepagents/changelog-js.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/changelog-js)
 - `oss/javascript/deepagents/code-link` — [Deep Agents Code](pages/oss/javascript/deepagents/code-link.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code-link)
+- `oss/javascript/deepagents/code/approval-modes` — [Approval modes](pages/oss/javascript/deepagents/code/approval-modes.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/approval-modes)
 - `oss/javascript/deepagents/code/cli-reference` — [Command reference](pages/oss/javascript/deepagents/code/cli-reference.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/cli-reference)
 - `oss/javascript/deepagents/code/config-file` — [Config file](pages/oss/javascript/deepagents/code/config-file.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/config-file)
 - `oss/javascript/deepagents/code/configuration` — [Configuration](pages/oss/javascript/deepagents/code/configuration.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/configuration)
@@ -1328,6 +1332,7 @@
 - `oss/python/deepagents/backends` — [Backends](pages/oss/python/deepagents/backends.md) · [原文](https://docs.langchain.com/oss/python/deepagents/backends)
 - `oss/python/deepagents/changelog-py` — [Changelog](pages/oss/python/deepagents/changelog-py.md) · [原文](https://docs.langchain.com/oss/python/deepagents/changelog-py)
 - `oss/python/deepagents/code-link` — [Deep Agents Code](pages/oss/python/deepagents/code-link.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code-link)
+- `oss/python/deepagents/code/approval-modes` — [Approval modes](pages/oss/python/deepagents/code/approval-modes.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/approval-modes)
 - `oss/python/deepagents/code/changelog` — [Changelog](pages/oss/python/deepagents/code/changelog.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/changelog)
 - `oss/python/deepagents/code/cli-reference` — [Command reference](pages/oss/python/deepagents/code/cli-reference.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/cli-reference)
 - `oss/python/deepagents/code/config-file` — [Config file](pages/oss/python/deepagents/code/config-file.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/config-file)

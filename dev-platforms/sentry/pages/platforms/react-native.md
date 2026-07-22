@@ -150,7 +150,7 @@ Alternatively, you can use the [Sentry Playground](https://docs.sentry.io/platfo
 - [Session Replay](https://docs.sentry.io/platforms/react-native/session-replay.md)
 - [Source Maps](https://docs.sentry.io/platforms/react-native/sourcemaps.md)
 - [Application Metrics](https://docs.sentry.io/platforms/react-native/metrics.md)
-- [AI Agent Monitoring](https://docs.sentry.io/platforms/react-native/ai-agent-monitoring.md)
+- [Agent Tracing](https://docs.sentry.io/platforms/react-native/agent-tracing.md)
 - [Debug Symbols](https://docs.sentry.io/platforms/react-native/upload-debug.md)
 - [Mobile SDK Releases](https://docs.sentry.io/platforms/react-native/releases.md)
 - [SDK Overhead](https://docs.sentry.io/platforms/react-native/overhead.md)

@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin-assistant/update_api_key
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/api-keys/{api_key_id}
-Update the name and roles of an API key.
-
+Update an API key's name and roles.
 
 <RequestExample>
   ```bash curl theme={null}

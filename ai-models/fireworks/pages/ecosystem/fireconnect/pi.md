@@ -67,22 +67,6 @@ fireconnect pi model select --search glm
 
 Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
 
-## FireRouter mode
-
-`fireconnect pi on --router` overrides Pi's built-in Anthropic provider so its existing Claude model catalog is sent through `https://router.fireworks.ai/v1`. The Fireworks key is supplied through `X-FireRouter-Fireworks-Key`; an Anthropic API key is also required:
-
-```bash theme={null}
-fireconnect pi on --router --anthropic-api-key sk-ant-...
-fireconnect pi on --router
-# Then choose an Anthropic model inside Pi with /model.
-```
-
-You can switch among Anthropic models inside Pi without re-running FireConnect. FireConnect backs up `settings.json`, `auth.json`, and `models.json`, and `fireconnect pi off` restores all three byte-for-byte. `model select` and `model reset` do not apply in router mode.
-
-<Note>
-  In router mode, Pi's `/model` picker still shows Anthropic's built-in model names (for example, Claude Sonnet 4.5). The selected name is passed through FireRouter, but the display label is Pi's own — it does **not** reflect the Fireworks model actually serving the request behind the router. Use `fireconnect pi status` to see the underlying routing.
-</Note>
-
 ## CLI reference
 
 ```bash theme={null}
@@ -101,7 +85,6 @@ Run `fireconnect pi help` for all options.
 
 ```bash theme={null}
 fireconnect pi on --main glm-5p1
-fireconnect pi on --router     # route Anthropic models through FireRouter
 ```
 
 ### Turn off Fireworks routing

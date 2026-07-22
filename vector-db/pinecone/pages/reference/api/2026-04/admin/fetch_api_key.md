@@ -5,7 +5,7 @@ path: reference/api/2026-04/admin/fetch_api_key
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/api-keys/{api_key_id}
-Get the details of an API key, excluding the API key secret.
+Get an API key's details, excluding its secret.
 
 <RequestExample>
   ```bash curl theme={null}

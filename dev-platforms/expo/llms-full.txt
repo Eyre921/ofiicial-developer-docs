@@ -16,7 +16,7 @@ Only submit when you have something specific and actionable to report. Replace <
 </AgentInstructions>
 
 ---
-modificationDate: June 30, 2026
+modificationDate: July 22, 2026
 title: Create a project
 description: Learn how to create a new Expo project.
 ---
@@ -97,6 +97,12 @@ bun create expo --example with-widgets
 ```
 
 > The rest of the guides in this **"Get started"** section follows the default project. An example app may be organized differently but the concepts are the same.
+
+## Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it where files live in a new Expo project:
+
+[expo-project-structure](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-project-structure/SKILL.md) — Folder structure for a new Expo app.
 
 ## Next step
 
@@ -1288,7 +1294,7 @@ You have a project and a development environment. Now it's time to start develop
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 22, 2026
 title: Start developing
 description: Make your first change to an Expo project and see it live on your device.
 ---
@@ -1847,12 +1853,12 @@ These capabilities enable more sophisticated workflows like automated testing, v
 | `playstore_crashes` | Fetch crash and ANR data from Google Play (Android Vitals). Without issueId, lists recent crash/ANR issues. With issueId, returns the full error report with stack trace. | "" | Server |
 | `playstore_reviews` | Fetch user reviews from Google Play. Returns review metadata including author, star rating, device info, and comment text. Note: Google Play only exposes production reviews with text from approximately the last week. | "" | Server |
 | `playstore_reply_review` | Post a public developer reply to a Google Play user review, or edit the existing reply. This is a write action: the reply is visible to users on the store listing. Each review has a single developer reply, so replying again replaces it. Reply text is limited to 350 characters. | "" | Server |
-| `expo_router_sitemap` | Query the all routes of the current expo-router project. This is useful if you were using expo-router and want to know all the routes of the app. | "check the expo-router-sitemap output" | Local (requires `expo-router` library) |
-| `open_devtools` | Open the React Native DevTools. | "open devtools" | Local |
-| `collect_app_logs` | Collect logs from native device (logcat/syslog) or JavaScript console. | "collect app logs from the iOS simulator" | Local |
-| `automation_tap` | Tap on the device at the given coordinates (x, y) or by react-native testID. Provide either (x AND y) or testID. | "tap the screen at x=12, y=22" | Local |
-| `automation_take_screenshot` | Take screenshot of the full app or a specific view by react-native testID. Optionally provide testID to screenshot a specific view. | "take a screenshot and verify the blue circle view" | Local |
-| `automation_find_view` | Find view and dump its properties. This is useful to verify the view is rendered correctly. | "dump properties for testID 'button-123'" | Local |
+| `expo_router_sitemap` | List all routes (the sitemap) of the current Expo Router project. Use this when you are working with Expo Router and need to know which routes or screens exist in the app. | "check the expo-router-sitemap output" | Local (requires `expo-router` library) |
+| `open_devtools` | Open React Native DevTools for the running app to debug JavaScript, inspect the component tree, and view console output. Requires a running dev server (Metro) for the project. | "open devtools" | Local |
+| `collect_app_logs` | Collect logs over a short time window from the native device (Android logcat / iOS syslog) and/or the JavaScript console. Use this to debug runtime errors, crashes, or unexpected behavior in a running app. | "collect app logs from the iOS simulator" | Local |
+| `automation_tap` | Tap on the running app at the given screen coordinates (x, y) or on the view with the given React Native testID. Provide either both x and y, or testID. Prefer testID when available, as it is resilient to layout changes. | "tap the screen at x=12, y=22" | Local |
+| `automation_take_screenshot` | Take a screenshot of the running app — the full screen, or a specific view if a React Native testID is provided. Use this to visually verify the current UI state. | "take a screenshot and verify the blue circle view" | Local |
+| `automation_find_view` | Find a view by its React Native testID and return its properties (position, size, and visibility). Use this to verify a view rendered correctly, or to obtain coordinates before calling automation_tap. | "dump properties for testID 'button-123'" | Local |
 
 ### Prompts
 
@@ -3151,7 +3157,7 @@ If you are targeting the web, set up `SafeAreaProvider` as described in the [usa
 ---
 
 ---
-modificationDate: June 02, 2026
+modificationDate: July 22, 2026
 title: System bars
 description: Learn how to handle and customize system bars for safe areas and edge-to-edge layout in your Expo project.
 ---
@@ -4193,7 +4199,7 @@ A list of useful resources to learn more about implementing navigation and UI in
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 22, 2026
 title: Introduction to development builds
 description: Learn how to create a development build in your Expo project and why use a development build instead of Expo Go.
 ---
@@ -4548,9 +4554,9 @@ Since your project has `expo-dev-client` installed, this command targets your de
 
 Launch the development build from your device's Home screen and connect to a development server from the launcher screen to start working on your app. To learn how to use your new build, including the launcher screen, rebuilding, and debugging, see [Use a development build](/develop/development-builds/use-development-builds.md). For common questions about development builds and Expo Go, including what you can't do in Expo Go and why, see the [FAQ](/develop/development-builds/faq.md).
 
-### Related Expo Skills
+### Expo Skills for AI agents
 
-If you use an AI agent, install [Expo Skills](/skills.md) to teach it the workflows on this page. The following skills are related to development builds:
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it the workflows on this page:
 
 [expo-dev-client](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-dev-client/SKILL.md) — Build and distribute Expo development clients locally or via TestFlight for internal testing.
 
@@ -6862,7 +6868,7 @@ It is recommended to regenerate patches after each SDK upgrade.
 ---
 
 ---
-modificationDate: June 16, 2024
+modificationDate: July 22, 2026
 title: Errors and warnings
 description: Learn about Redbox errors and stack traces in your Expo project.
 ---
@@ -7066,7 +7072,7 @@ The Expo community and the React and React Native communities are great resource
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 22, 2026
 title: Debugging and profiling tools
 description: Learn about different tools available to inspect your Expo project at runtime.
 ---
@@ -8700,7 +8706,7 @@ These guides assume your project has **android** and/or **ios** directories cont
 ---
 
 ---
-modificationDate: July 21, 2026
+modificationDate: July 22, 2026
 title: Submit to app stores
 description: An overview of how to submit your app to the Google Play Store and Apple App Store.
 ---
@@ -8747,6 +8753,12 @@ EAS Submit uploads your **.ipa** to App Store Connect, where it becomes availabl
 [Manually submit an Android app for the first time](/submit/android-manual.md) — Follow a step-by-step Play Console walkthrough to create your Android app's first release.
 
 [Manually submit an iOS app with Xcode](/submit/ios-manual.md) — Build, archive, and upload an iOS app to App Store Connect using Xcode on macOS.
+
+### Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it how to submit and release your app:
+
+[eas-app-stores](https://github.com/expo/skills/blob/main/plugins/expo/skills/eas-app-stores/SKILL.md) — Deploy Expo apps to the app stores with EAS - build and submit to the iOS App Store, Google Play Store, and TestFlight, configure eas.json build and submit profiles, manage app versions and build numbers, and publish App Store metadata and ASO.
 
 ## Frequently asked questions
 
@@ -8948,7 +8960,7 @@ You can learn how to [rollout an update](/eas-update/rollouts.md), [optimize ass
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 22, 2026
 title: Publish your web app
 description: Learn how to deploy your web app using EAS Hosting.
 ---
@@ -9035,6 +9047,12 @@ eas workflow:run deploy-web.yml
 ```
 
 Learn more about common patterns with the [workflows examples guide](/eas/workflows/examples/introduction.md).
+
+### Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it how to deploy your web app:
+
+[eas-hosting](https://github.com/expo/skills/blob/main/plugins/expo/skills/eas-hosting/SKILL.md) — Deploy Expo websites and Expo Router API routes to EAS Hosting - export the web bundle, run eas deploy for production and PR preview URLs, manage environment secrets and custom domains, and work within the Cloudflare Workers runtime.
 
 ## Learn more
 
@@ -13025,7 +13043,7 @@ We're ready for this journey after setting up an Expo project locally. In the ne
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 22, 2026
 title: Configure a development build in cloud
 description: Learn how to configure a development build for a project using EAS Build.
 ---
@@ -13239,7 +13257,7 @@ In the next chapter, let's create a development build for Android, install it on
 ---
 
 ---
-modificationDate: July 16, 2026
+modificationDate: July 22, 2026
 title: Create and run a cloud build for Android
 description: Learn how to configure a development build for Android devices and emulators using EAS Build.
 ---
@@ -13659,7 +13677,7 @@ In the next chapter, learn how to configure our app config to install multiple a
 ---
 
 ---
-modificationDate: July 16, 2026
+modificationDate: July 22, 2026
 title: Configure multiple app variants
 description: Learn how to configure dynamic app config to install multiple app variants on a single device.
 ---
@@ -13836,7 +13854,7 @@ In the next chapter, learn about what are internal distribution builds, why we n
 ---
 
 ---
-modificationDate: July 09, 2026
+modificationDate: July 22, 2026
 title: Create and share internal distribution build
 description: Learn about internal distribution builds, why we need them, and how to create them.
 ---
@@ -14089,7 +14107,7 @@ In the next chapter, learn about the process of creating a production build for 
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 22, 2026
 title: Create a production build for Android
 description: Learn about the process of creating a production build for Android and automating the release process.
 ---
@@ -14279,7 +14297,7 @@ In the next chapter, learn about the process of creating a production build for 
 ---
 
 ---
-modificationDate: July 21, 2026
+modificationDate: July 22, 2026
 title: Create a production build for iOS
 description: Learn about the process of creating a production build for iOS and automating the release process.
 ---
@@ -16830,7 +16848,7 @@ You can use [EAS Update](/eas-update/introduction.md) which provides first-class
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 22, 2026
 title: Configure with app config
 description: Learn about what app.json/app.config.js/app.config.ts files are and how you can customize and use them dynamically.
 ---
@@ -16891,11 +16909,13 @@ Library authors can extend the app config by using [Expo Config plugins](/config
 For more customization, you can use the JavaScript (**app.config.js**) or [TypeScript](/workflow/configuration.md#using-typescript-for-configuration-appconfigts-instead-of-appconfigjs) (**app.config.ts**). These configs have the following properties:
 
 -   Comments, variables, and single quotes.
--   ESM import syntax (the `import` keyword) is not supported, except when using [TypeScript with `tsx`](/guides/typescript.md#appconfigjs). JS files that are compatible with your current version of Node.js can be imported with `require()`.
--   TypeScript support with nullish coalescing and optional chaining.
+-   ESM `import` syntax in both **app.config.js** and **app.config.ts**, including importing other JavaScript files.
+-   TypeScript support (**app.config.ts**) with nullish coalescing and optional chaining. Importing other TypeScript files or customizing language features requires [`tsx`](/guides/typescript.md#appconfigjs).
 -   Updated whenever Metro bundler reloads.
 -   Provide environment information to your app.
 -   Does not support Promises.
+
+> **Note**: **app.config.mts**, **app.config.cts**, **app.config.mjs**, and **app.config.cjs** files are also discovered. By default, the config is transpiled to CommonJS and both `.js` and `.ts` files can mix ESM and CommonJS syntax. When that mix causes import or require issues, use one of the explicit extensions to lock the config to a single module format.
 
 For example, you can export an object to define your custom config:
 
@@ -20123,7 +20143,7 @@ For subsequent deployments and updates, run the `deploy` command and the GitHub 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 22, 2026
 title: Using React DOM in Expo native apps
 description: Learn about rendering React DOM components in Expo native apps using the 'use dom' directive.
 ---
@@ -20258,6 +20278,14 @@ export default function App() {
   );
 }
 ```
+
+## Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it when to reach for DOM components and how to migrate web code to native:
+
+[expo-dom](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-dom/SKILL.md) — Use Expo DOM components to run web code in a webview on native and as-is on web.
+
+[expo-web-to-native](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-web-to-native/SKILL.md) — Migrate an existing web React app to a native iOS/Android app with Expo.
 
 ## Features
 
@@ -21788,7 +21816,7 @@ If you host your website and visit with Chrome, you can inspect the service work
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 22, 2026
 title: Tailwind CSS
 description: Learn how to configure and use Tailwind CSS in your Expo project.
 ---
@@ -22014,6 +22042,12 @@ export default function Index() {
 ## Tailwind for Android and iOS
 
 Tailwind does not support Android and iOS platforms. You can use a compatibility library such as [NativeWind](https://www.nativewind.dev/) or [Uniwind](https://uniwind.dev/) for universal support.
+
+### Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it universal Tailwind CSS setup:
+
+[expo-tailwind-setup](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-tailwind-setup/SKILL.md) — Set up Tailwind CSS v4 in Expo with react-native-css and NativeWind v5 for universal styling.
 
 ## Alternative for Android and iOS
 
@@ -23957,7 +23991,7 @@ Choose your **from SDK version** and **to SDK version** to see the generated dif
 ---
 
 ---
-modificationDate: July 17, 2026
+modificationDate: July 22, 2026
 title: Integrating Expo tools into existing native apps
 description: An overview of how you can integrate Expo tools into existing native apps ("brownfield" apps).
 ---
@@ -24020,6 +24054,12 @@ This separation simplifies the workflow for native developers, as they don't nee
 -   You have separate teams for native and React Native development.
 -   You want to minimize the impact of adding React Native on your existing native build process.
 -   You prefer to treat the React Native part of your app as a self-contained module.
+
+## Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it both brownfield integration approaches:
+
+[expo-brownfield](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-brownfield/SKILL.md) — Integrate Expo and React Native into an existing native iOS or Android app.
 
 ## Next steps
 
@@ -26312,7 +26352,7 @@ module.exports = function (api) {
 ---
 
 ---
-modificationDate: June 30, 2026
+modificationDate: July 22, 2026
 title: Introduction to Expo Router
 description: Expo Router is an open-source routing library for Universal React Native applications built with Expo.
 ---
@@ -26373,6 +26413,12 @@ bun expo start
 [Expo Router API reference](/versions/latest/sdk/router.md) — API components, hooks, methods, and configuration options.
 
 [Expo Router video playlist](https://www.youtube.com/playlist?list=PLsXDmrmFV_AT17JDf-otXSNE_eH7s0uDD) — A tutorial series from core concepts to more complex navigation flows.
+
+### Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it file-based navigation patterns:
+
+[expo-router](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-router/SKILL.md) — Navigation and routing for Expo Router.
 
 ## Key features
 
@@ -35525,7 +35571,7 @@ The current bundling implementation opts to be more unified than flexible. This 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 22, 2026
 title: Data loaders
 description: Learn how to fetch data on the server using data loaders in Expo Router.
 isAlpha: true
@@ -35591,6 +35637,12 @@ pnpm expo start
 # bun
 bun expo start
 ```
+
+## Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it data fetching patterns, including data loaders:
+
+[expo-data-fetching](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-data-fetching/SKILL.md) — Use when implementing or debugging ANY network request, API call, or data fetching.
 
 ## Basic example
 
@@ -39900,7 +39952,7 @@ EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK=1 bun expo start
 ---
 
 ---
-modificationDate: May 23, 2026
+modificationDate: July 22, 2026
 title: 'Expo Modules API: Overview'
 description: An overview of the APIs and utilities provided by Expo to develop native modules.
 ---
@@ -39916,6 +39968,12 @@ An overview of the APIs and utilities provided by Expo to develop native modules
 The Expo Modules API allows you to write Swift and Kotlin to add new capabilities to your app with native modules and views. The API is designed to take advantage of modern language features, to be as consistent as possible on both platforms, to require minimal boilerplate, and provide comparable performance characteristics to React Native's Turbo Modules API. Expo Modules all support the New Architecture and are automatically backwards compatible with existing React Native apps using the old architecture.
 
 We believe that using the Expo Modules API makes building and maintaining nearly all kinds of React Native modules about as easy as it can be, and we think that the Expo Modules API is the best choice for the vast majority of developers building native modules for their apps.
+
+### Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it the module definition DSL and native view patterns:
+
+[expo-module](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-module/SKILL.md) — Guide for creating and writing Expo native modules and views using the Expo Modules API (Swift, Kotlin, TypeScript).
 
 ### Common questions
 
@@ -48730,7 +48788,7 @@ On Android, users can set certain OS-level settings, usually revolving around pe
 ---
 
 ---
-modificationDate: July 21, 2026
+modificationDate: July 22, 2026
 title: Obtain Google Service Account Keys using FCM V1
 description: Learn how to create or use a Google Service Account Key for sending Android Notifications using FCM.
 ---
@@ -53341,7 +53399,7 @@ module.exports = withExpo({
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 22, 2026
 title: Upgrade Expo SDK
 description: Learn how to incrementally upgrade the Expo SDK version in your project.
 ---
@@ -53363,6 +53421,8 @@ If you are looking to install a specific version of Expo Go, visit [expo.dev/go]
 ### Upgrade with an AI coding agent
 
 If you use an AI coding agent, install [Expo Skills](/skills.md) and use the [`expo-upgrade` skill](/skills.md#available-expo-skills). The skill provides guidelines for upgrading Expo SDK versions and fixing dependency issues. Review any proposed changes and check the SDK changelog for version-specific instructions.
+
+[expo-upgrade](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-upgrade/SKILL.md) — Guidelines for upgrading Expo SDK versions and fixing dependency issues.
 
 ### Upgrade manually
 
@@ -54787,7 +54847,7 @@ Hermes supports [Chrome DevTools Protocol](https://chromedevtools.github.io/devt
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 22, 2026
 title: iOS Developer Mode
 description: Learn how to enable iOS Developer Mode setting on iOS 16 and above to run internal distribution builds and local development builds.
 ---
@@ -56541,7 +56601,7 @@ These components emit one discrete value per interaction, so the cursor and flic
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 22, 2026
 title: Building SwiftUI apps with Expo UI
 description: Learn how to use Expo UI to integrate SwiftUI into your Expo apps.
 platforms: ['ios', 'macos', 'tvos']
@@ -56575,6 +56635,14 @@ You'll need to install the `@expo/ui` package in your Expo project. Run the foll
 ```sh
 npx expo install @expo/ui
 ```
+
+## Expo Skills for AI agents
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it how to build native-feeling screens:
+
+[expo-ui](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-ui/SKILL.md) — Build native UI with the @expo/ui package: real SwiftUI on iOS and Jetpack Compose on Android rendered from React in an Expo or React Native app.
+
+[expo-native-ui](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-native-ui/SKILL.md) — Build beautiful, native-feeling Expo screens.
 
 ## Usage
 

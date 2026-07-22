@@ -220,6 +220,8 @@ Visit [Streaming messages](/docs/en/build-with-claude/streaming) to learn about 
 </CardGroup>
 
 
+### Strengthen guardrails
+
 ---
 
-# Using the Evaluation Tool
+# Increase output consistency

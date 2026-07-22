@@ -103,7 +103,7 @@ BYOM jobs use the same lifecycle as catalog jobs:
 * [Poll the job](/docs/fine-tuning/monitoring#poll-until-the-job-is-done) with the SDK or CLI.
 * Deploy the result on a [dedicated endpoint](/docs/fine-tuning/deployment). Your fine-tuned model appears under **My Models** in the [dashboard](https://api.together.ai/models) once training completes.
 
-The base model dictates which hardware can host the result. If `client.endpoints.list_hardware(model=<base>)` returns 404, the base can't be deployed; pick a different one before training.
+The base model dictates whether the result can be hosted. If the base model isn't in the [supported models](/docs/dedicated-endpoints/models) list for dedicated model inference, the fine-tune can't be deployed as a dedicated endpoint. Pick a supported base before training.
 
 ## Troubleshooting
 

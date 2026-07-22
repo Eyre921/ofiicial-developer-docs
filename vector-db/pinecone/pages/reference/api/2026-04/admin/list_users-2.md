@@ -5,11 +5,7 @@ path: reference/api/2026-04/admin/list_users
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/users
-List users who are members of the caller's organization. Results are paginated.
-Optional filters:
-- `email` — case-insensitive match on the user's email address.
-Pagination tokens apply to the full query, including `email`. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
+List users in the caller's organization, optionally filtered by email address.
 
 
 <RequestExample>

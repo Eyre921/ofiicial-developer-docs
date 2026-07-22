@@ -9,7 +9,7 @@ Every base model available for fine-tuning, with context length and batch size l
 The tables below list every model available through the fine-tuning API. Context lengths are the maximum for that model in SFT and DPO modes. Batch sizes refer to packed batches for text formats. See [data preparation](/docs/fine-tuning/data-preparation) for details on packing.
 
 <Warning>
-  Some models can be fine-tuned but cannot be deployed as dedicated endpoints. To verify deployability before training, run `client.endpoints.list_hardware(model="<BASE_MODEL>")`. A 404 means the base can't host a fine-tune.
+  Some models can be fine-tuned but cannot be deployed as dedicated endpoints. To verify deployability before training, confirm the base model appears in the [supported models](/docs/dedicated-endpoints/models) list for dedicated model inference (or run `tg beta models configs <BASE_MODEL>`). If it isn't listed there, the fine-tune can't be hosted on a dedicated endpoint.
 </Warning>
 
 [Fill out this form](https://www.together.ai/forms/model-requests) to request a model that isn't in the list.
@@ -90,6 +90,8 @@ The tables below list every model available through the fine-tuning API. Context
 | Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
 | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
 | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |

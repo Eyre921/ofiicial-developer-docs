@@ -5,7 +5,7 @@ path: reference/api/2026-04/admin/fetch_project
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}
-Get details about a project.
+Get a project's details.
 
 <RequestExample>
   ```bash curl theme={null}

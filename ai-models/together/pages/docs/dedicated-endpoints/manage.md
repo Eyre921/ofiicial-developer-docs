@@ -174,7 +174,7 @@ The replicas keep serving until they finish draining, then the deployment moves 
 
 ## Restart a deployment
 
-A stopped deployment doesn't restart on its own. To bring it back, raise both bounds to `1` or more:
+A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way; [deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more:
 
 ```bash CLI theme={null}
 tg beta endpoints update dep_abc123 --min-replicas 1 --max-replicas 2
@@ -232,7 +232,9 @@ To delete an endpoint that still has deployments, pass `--force` to `rm`. If the
 * **`endpoint_not_configured` (HTTP 400) though the deployment is `READY`:** Confirm the deployment is in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic) with a non-zero weight.
 * **Deployment `DEGRADED` with `Cannot place replicas: insufficient GPU capacity`:** Hardware for the config is constrained, so the scheduler couldn't place all replicas yet. Compare `status.scheduledReplicas` to `desiredReplicas`. The scheduler keeps retrying and the deployment starts once capacity frees up. To improve the chance of placement, request fewer replicas or choose a config with a smaller hardware footprint.
 * **Deployment `DEGRADED` with `Startup stalled` or `Not ready`:** A placed replica is still booting or hit a startup failure. Read the detail after the colon in `status.message`. The deployment stays `DEGRADED` rather than `FAILED` once any replica has been successfully started.
-* **Deployment `FAILED` with `Timed out waiting for readiness`:** No replica could be provisioned within six hours of the current run's start. Read the stall cause at the end of `status.message`. Restart the deployment to begin a fresh budget.
+* **Deployment `FAILED` with `Timed out waiting for readiness`:** No replica could be provisioned within six hours of the current run's start. Read the stall cause at the end of `status.message`. [Deploy a new deployment](#create-a-deployment) to try again with a fresh readiness budget.
+* **Restart fails with `the deployment is in a terminal FAILED state and cannot be restarted; create a new deployment` (HTTP 400):** A `FAILED` deployment can't be brought back by raising replica bounds. [Deploy a new deployment](#create-a-deployment) on the endpoint instead.
+* **Restart fails with `the deployment must be stopped before it can be restarted` (HTTP 400):** Wait for the deployment to reach `DEPLOYMENT_STATE_STOPPED` after you [stop it](#stop-a-deployment), or confirm both replica bounds are `0`, before raising them again.
 * **Deployment `FAILED` for another reason:** Read `status.message`. Common causes include deterministic placement rejection (`Cannot place replicas: …`), manifest generation failure, or remediation exhaustion.
 * **Model not supported:** Not every model can be deployed. See the [model catalog](/docs/dedicated-endpoints/models). A fine-tuned model deploys only if its base model is supported.
 * **Deploy fails with `the model has no revisions to deploy`:** The model record exists but has no uploaded weights yet. Finish [uploading the model](/docs/dedicated-endpoints/custom-models#upload-the-model) and wait for the upload to succeed before you deploy it.

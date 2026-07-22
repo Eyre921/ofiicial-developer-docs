@@ -79,7 +79,7 @@ tg beta endpoints deploy google/gemma-4-E4B-it \
   --endpoint my-endpoint
 ```
 
-The command prints the new endpoint's **inference name** (`<project_slug>/<endpoint_name>`): this is the endpoint string you pass as the `model` parameter on inference requests.
+The command prints the new endpoint's **endpoint string** (`<project_slug>/<endpoint_name>`): pass it as the `model` parameter on inference requests.
 
 Once the deployment is ready, send inference requests to the endpoint using the same [inference API](/docs/inference/overview#shared-inference-api) as serverless models. Pass the endpoint string as the `model` parameter:
 

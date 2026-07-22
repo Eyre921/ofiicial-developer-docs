@@ -528,6 +528,33 @@ components:
         type:
           $ref: '#/components/schemas/ProcedureType'
           default: free_form
+        trigger:
+          type: string
+          default: ''
+          description: >-
+            When the agent should use this procedure. Empty string means this is
+            a sub-procedure that should only start when another procedure
+            references it.
+        referenced_tool_ids:
+          type: array
+          items:
+            type: string
+          description: Tool IDs referenced in the procedure content
+        referenced_kb_ids:
+          type: array
+          items:
+            type: string
+          description: Knowledge base IDs referenced in the procedure content
+        referenced_procedure_ids:
+          type: array
+          items:
+            type: string
+          description: Procedure IDs referenced in the procedure content
+        referenced_dynamic_variables:
+          type: array
+          items:
+            type: string
+          description: Dynamic variable names used in the procedure content
         content:
           type: string
           description: Procedure content

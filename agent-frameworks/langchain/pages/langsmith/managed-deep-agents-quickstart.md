@@ -191,6 +191,10 @@ Before you start, make sure you have:
     Scope threads and memory to the authenticated caller.
   </Card>
 
+  <Card title="Memory" icon="brain" href="/langsmith/managed-deep-agents-memory">
+    Persist preferences across threads with Context Hub `/memories`.
+  </Card>
+
   <Card title="Custom tools" icon="tool" href="/langsmith/managed-deep-agents-tools">
     Add authored LangChain tools from your project source.
   </Card>
@@ -201,6 +205,10 @@ Before you start, make sure you have:
 
   <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
     Attach remote MCP servers or constrained LangSmith capabilities.
+  </Card>
+
+  <Card title="Channels" icon="messages" href="/langsmith/managed-deep-agents-channels">
+    Receive Slack Events and reply from messaging channels.
   </Card>
 
   <Card title="Schedules" icon="calendar" href="/langsmith/managed-deep-agents-schedules">

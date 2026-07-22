@@ -127,13 +127,10 @@ Define `getOrCreateSandboxForThread` in a shared module. Both the agent graph
 factory and the custom API routes import it:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// src/api/utils.ts
 import { Client } from "@langchain/langgraph-sdk";
 import { LangSmithSandbox } from "deepagents";
 import { SandboxClient } from "langsmith/sandbox";
-
-async function seedSandbox(_sandbox: LangSmithSandbox) {
-  // See File transfers in Going to production for seeding patterns.
-}
 
 export async function getOrCreateSandboxForThread(threadId: string) {
   const client = new Client({ apiUrl: "http://localhost:2024" });
@@ -718,9 +715,10 @@ Before each agent run, snapshot the current file contents. After files refresh,
 compare against the snapshot to identify which files changed:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-type FileSnapshot = Record<string, string>;
-
-function detectChanges(current: FileSnapshot, original: FileSnapshot): Set<string> {
+function detectChanges(
+  current: FileSnapshot,
+  original: FileSnapshot,
+): Set<string> {
   const changed = new Set<string>();
   for (const [path, content] of Object.entries(current)) {
     if (original[path] !== content) changed.add(path);

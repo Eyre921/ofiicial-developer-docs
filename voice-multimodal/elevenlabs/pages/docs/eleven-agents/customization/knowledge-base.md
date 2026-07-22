@@ -8,198 +8,56 @@ path: docs/eleven-agents/customization/knowledge-base
 
 # Knowledge base
 
-**Knowledge bases** allow you to equip your agent with relevant, domain-specific information.
+A **knowledge base** is a collection of documents that give your agent domain-specific information beyond its pre-trained data. When a document is attached to an agent, the agent can draw on its contents to answer questions accurately and consistently.
+
+To create, edit, and organize documents, see [Manage documents](/docs/eleven-agents/customization/knowledge-base/manage-documents).
 
 ## Overview
 
-A well-curated knowledge base helps your agent go beyond its pre-trained data and deliver context-aware answers.
+A well-curated knowledge base gives your agent the information that matters to your use case. Common examples include:
 
-Here are a few examples where knowledge bases can be useful:
+* **Product catalogs**: Specifications, pricing, and availability.
+* **Policies**: HR, corporate, or support policies such as returns, benefits, or onboarding.
+* **Technical documentation**: Guides and API references for developers.
+* **Customer FAQs**: Consistent answers to common questions.
 
-* **Product catalogs**: Store product specifications, pricing, and other essential details.
-* **HR or corporate policies**: Provide quick answers about vacation policies, employee benefits, or onboarding procedures.
-* **Technical documentation**: Equip your agent with in-depth guides or API references to assist developers.
-* **Customer FAQs**: Answer common inquiries consistently.
+A single document can be attached to multiple agents, so you can maintain shared knowledge in one place.
 
-The agent on this page is configured with full knowledge of ElevenLabs' documentation and sitemap. Go ahead and ask it about anything about ElevenLabs.
+The agent on this page is configured with full knowledge of ElevenLabs' documentation and sitemap.
+Ask it anything about ElevenLabs.
 
-## Usage
+## How your agent uses knowledge
 
-#### Build a knowledge base via the web dashboard
+Each document's **usage mode** controls how the agent draws on it, in one of two ways:
 
-Files, URLs, and text can be added to the knowledge base in the dashboard.
+* **Full context**: The agent places the document's full text in its system prompt, keeping the whole document available on every turn. Because this consumes context, it works only for documents small enough to fit; larger documents must use RAG instead.
+* **Retrieval-Augmented Generation (RAG)**: The document is indexed ahead of time, and at conversation time only the passages most relevant to each user query are retrieved for the agent to use. This lets the agent draw on knowledge bases far larger than the context window. See the [RAG guide](/docs/eleven-agents/customization/knowledge-base/rag) for configuration and limits.
 
-#### File
+Set each document's usage mode to choose which path the agent takes:
 
-Upload files in formats like PDF, TXT, DOCX, HTML, and EPUB.
+| Usage mode       | Behavior                                                                                               |
+| :--------------- | :----------------------------------------------------------------------------------------------------- |
+| `auto` (default) | The agent uses RAG when you enable RAG and the document is indexed; otherwise it uses full context.    |
+| `prompt`         | The agent always places the document in the prompt, provided it is small enough to fit in the context. |
 
-![File upload interface showing supported formats (PDF, TXT, DOCX, HTML, EPUB) with a 21MB
-size limit](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/03218c6faaf2a65e8f93c6b0d0528db3b600944840b43c05d5518ed2db6a2630/assets/images/conversational-ai/knowledge-file.jpg)
+The agent always accesses folders through RAG and never places them in the prompt, so RAG must be enabled on the agent to use folders.
 
-#### URL
+## Supported file formats
 
-Import URLs from sources like documentation and product pages.
+Documents can be created from files, URLs, or text. Uploaded **files** can be in the following formats, up to 20MB per file:
 
-![URL import interface where users can paste documentation
-links](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/d100cbb5c15768d5f5f1880f07be9b59e04dcc68eaaa81bae3c58ca6d651f098/assets/images/conversational-ai/knowledge-url.jpg)
+| Format   | Extension |
+| :------- | :-------- |
+| PDF      | `.pdf`    |
+| Word     | `.docx`   |
+| Text     | `.txt`    |
+| Markdown | `.md`     |
+| HTML     | `.html`   |
+| EPUB     | `.epub`   |
 
-When creating a knowledge base item from a URL, we do not currently support scraping all pages
-linked to from the initial URL, or continuously updating the knowledge base over time.
-However, these features are coming soon.
+## Size limits
 
-Ensure you have permission to use the content from the URLs you provide
-
-#### Text
-
-Manually add text to the knowledge base.
-
-![Text input interface where users can name and add custom
-content](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/3db67ebc9c6fa40f1ad0ec9b60fc48abe08196cadb52aaf3d56dacc476034e75/assets/images/conversational-ai/knowledge-text.jpg)
-
-#### Attach knowledge base documents via the CLI
-
-The CLI does not upload knowledge base documents directly. Create them via the API or dashboard, then attach the resulting document IDs to your agent configuration.
-
-#### Pull the agent configuration
-
-```bash
-elevenlabs agents pull --agent "<agent-name>"
-```
-
-#### Edit \`agent\_configs/\<agent-name>.json\`
-
-Set `conversation_config.agent.prompt.knowledge_base`:
-
-```json
-{
-  "conversation_config": {
-    "agent": {
-      "prompt": {
-        "knowledge_base": [
-          {
-            "type": "file",
-            "name": "Unladen Swallow Facts",
-            "id": "<document-id>",
-            "usage_mode": "auto"
-          }
-        ]
-      }
-    }
-  }
-}
-```
-
-#### Push your changes
-
-```bash
-elevenlabs agents push --agent "<agent-name>"
-```
-
-#### Build a knowledge base via the API
-
-```python
-# First create the document from text
-knowledge_base_document_text = elevenlabs.conversational_ai.knowledge_base.documents.create_from_text(
-    text="The airspeed velocity of an unladen swallow (European) is 24 miles per hour or roughly 11 meters per second.",
-    name="Unladen Swallow facts",
-)
-
-# Alternatively, you can create a document from a URL
-knowledge_base_document_url = elevenlabs.conversational_ai.knowledge_base.documents.create_from_url(
-    url="https://en.wikipedia.org/wiki/Unladen_swallow",
-    name="Unladen Swallow Wikipedia page",
-)
-
-# Or create a document from a file
-knowledge_base_document_file = elevenlabs.conversational_ai.knowledge_base.documents.create_from_file(
-    file=open("/path/to/unladen-swallow-facts.txt", "rb"),
-    name="Unladen Swallow Facts",
-)
-
-# Then add the document to the agent
-agent = elevenlabs.conversational_ai.agents.update(
-    agent_id="agent-id",
-    conversation_config={
-        "agent": {
-            "prompt": {
-                "knowledge_base": [
-                    {
-                        "type": "text",
-                        "name": knowledge_base_document_text.name,
-                        "id": knowledge_base_document_text.id,
-                    },
-                    {
-                        "type": "url",
-                        "name": knowledge_base_document_url.name,
-                        "id": knowledge_base_document_url.id,
-                    },
-                    {
-                        "type": "file",
-                        "name": knowledge_base_document_file.name,
-                        "id": knowledge_base_document_file.id,
-                    }
-                ]
-            }
-        }
-    },
-)
-
-print("Agent updated:", agent)
-```
-
-```typescript
-import fs from "node:fs";
-
-// First create the document from text
-const knowledgeBaseDocumentText = await elevenlabs.conversationalAi.knowledgeBase.documents.createFromText({
-  name: "Unladen Swallow Facts",
-  text: "The airspeed velocity of an unladen swallow (European) is 24 miles per hour or roughly 11 meters per second.",
-});
-
-// Alternatively, you can create a document from a URL
-const knowledgeBaseDocumentUrl = await elevenlabs.conversationalAi.knowledgeBase.documents.createFromUrl({
-  name: "Unladen Swallow Facts",
-  url: "https://en.wikipedia.org/wiki/Unladen_swallow",
-});
-
-// Or create a document from a file
-const fileBuffer = fs.readFileSync("/path/to/unladen-swallow-facts.txt");
-const file = new File([fileBuffer], "unladen-swallow-facts.txt", { type: "text/plain" });
-
-const knowledgeBaseDocumentFile = await elevenlabs.conversationalAi.knowledgeBase.documents.createFromFile({
-  name: "Unladen Swallow Facts",
-  file: file,
-});
-
-// Then add the document to the agent
-const agent = await elevenlabs.conversationalAi.agents.update("agent-id", {
-    conversationConfig: {
-        agent: {
-            prompt: {
-                knowledgeBase: [
-                    {
-                        type: "text",
-                        name: knowledgeBaseDocumentText.name,
-                        id: knowledgeBaseDocumentText.id,
-                    },
-                    {
-                        type: "url",
-                        name: knowledgeBaseDocumentUrl.name,
-                        id: knowledgeBaseDocumentUrl.id,
-                    },
-                    {
-                        type: "file",
-                        name: knowledgeBaseDocumentFile.name,
-                        id: knowledgeBaseDocumentFile.id,
-                    }
-                ]
-            }
-        }
-    }
-});
-
-console.log("Agent updated:", agent);
-```
+A document can be used in full context only if its extracted text fits in the prompt, up to roughly 300,000 characters. Larger documents must be used through RAG instead. The total size of documents you can index for RAG depends on your subscription tier; see the [RAG usage limits](/docs/eleven-agents/customization/knowledge-base/rag#usage-limits).
 
 ## Best practices
 
@@ -207,29 +65,22 @@ console.log("Agent updated:", agent);
   Content quality
 </h4>
 
-Provide clear, well-structured information that's relevant to your agent's purpose.
+Provide clear, well-structured information that is relevant to your agent's purpose.
 
 <h4>
   Size management
 </h4>
 
-Break large documents into smaller, focused pieces for better processing.
+Break large documents into smaller, focused pieces for better retrieval and processing.
 
 <h4>
   Regular updates
 </h4>
 
-Regularly review and update the agent's knowledge base to ensure the information remains current and accurate.
+Review and refresh your knowledge base so information stays current and accurate.
 
 <h4>
   Identify knowledge gaps
 </h4>
 
-Review conversation transcripts to identify popular topics, queries and areas where users struggle to find information. Note any knowledge gaps and add the missing context to the knowledge base.
-
-## Enterprise features
-
-Non-enterprise accounts have a maximum of 20MB or 300k characters.
-
-Need higher limits? [Contact our sales team](https://elevenlabs.io/contact-sales) to discuss
-enterprise plans with expanded knowledge base capabilities.
+Review conversation transcripts to find topics where users struggle to get answers, then add the missing context to the knowledge base.

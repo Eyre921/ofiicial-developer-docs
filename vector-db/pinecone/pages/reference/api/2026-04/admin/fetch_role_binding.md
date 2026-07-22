@@ -5,7 +5,7 @@ path: reference/api/2026-04/admin/fetch_role_binding
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/role-bindings/{role_binding_id}
-Get a role binding by ID. Returns `404` if the binding is not in your organization.
+Get a role binding in the caller's organization by ID.
 
 
 <RequestExample>

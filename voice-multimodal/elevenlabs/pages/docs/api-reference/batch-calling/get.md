@@ -525,6 +525,88 @@ components:
           description: Tool names to mock. Only used when mocking_strategy is 'selected'.
       description: 'Orchestrator-side config: tools are identified by resolved names.'
       title: OrchestratorToolMockBehaviorConfig
+    UnitTestToolCallParameterEval:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - anything
+              description: 'Discriminator value: anything'
+          required:
+            - type
+          description: MatchAnythingParameterEvaluationStrategy variant
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - exact
+              description: 'Discriminator value: exact'
+            expected_value:
+              type: string
+              description: The exact string value that the parameter must match.
+          required:
+            - type
+            - expected_value
+          description: ExactParameterEvaluationStrategy variant
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - llm
+              description: 'Discriminator value: llm'
+            description:
+              type: string
+              description: A description of the evaluation strategy to use for the test.
+          required:
+            - type
+            - description
+          description: LLMParameterEvaluationStrategy variant
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - regex
+              description: 'Discriminator value: regex'
+            pattern:
+              type: string
+              description: A regex pattern to match the agent's response against.
+          required:
+            - type
+            - pattern
+          description: RegexParameterEvaluationStrategy variant
+      discriminator:
+        propertyName: type
+      title: UnitTestToolCallParameterEval
+    UnitTestToolCallParameter:
+      type: object
+      properties:
+        eval:
+          $ref: '#/components/schemas/UnitTestToolCallParameterEval'
+        path:
+          type: string
+      required:
+        - eval
+        - path
+      title: UnitTestToolCallParameter
+    ToolResponseMockConfig-Output:
+      type: object
+      properties:
+        parameter_conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnitTestToolCallParameter'
+          description: If the list is empty, the mock will always activate.
+        mock_result:
+          type: string
+          description: The return value the LLM sees when this mock is active.
+      required:
+        - mock_result
+      title: ToolResponseMockConfig-Output
     ConversationInitiationClientDataInternal:
       type: object
       properties:
@@ -567,6 +649,16 @@ components:
         tool_mock_config:
           $ref: '#/components/schemas/OrchestratorToolMockBehaviorConfig'
           description: Configuration for which tools to mock and fallback behavior
+        tool_mock_overrides:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolResponseMockConfig-Output'
+          description: >-
+            Per-tool response mock overrides keyed by resolved tool name,
+            applied ahead of the tool's shared mocks. Used for test-specific
+            mocks.
       title: ConversationInitiationClientDataInternal
     OutboundCallRecipientResponseModel:
       type: object
@@ -824,7 +916,8 @@ components:
           "mocked_tool_names": [
             "string"
           ]
-        }
+        },
+        "tool_mock_overrides": {}
       }
     }
   ]

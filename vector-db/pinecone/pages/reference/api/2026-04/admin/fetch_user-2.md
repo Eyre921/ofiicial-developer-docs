@@ -5,9 +5,7 @@ path: reference/api/2026-04/admin/fetch_user
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/users/{user_id}
-Get a user by ID. Returns `404` if the user is not in your organization.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+Get a user in the caller's organization by ID.
 
 <RequestExample>
   ```bash curl theme={null}

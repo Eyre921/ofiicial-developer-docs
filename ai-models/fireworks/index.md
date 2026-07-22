@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 384 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -51,8 +51,6 @@
 - `api-reference/delete-secret` — [Delete secret](pages/api-reference/delete-secret.md) · [原文](https://docs.fireworks.ai/api-reference/delete-secret)
 - `api-reference/delete-supervised-fine-tuning-job` — [Delete Supervised Fine-tuning Job](pages/api-reference/delete-supervised-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/delete-supervised-fine-tuning-job)
 - `api-reference/execute-reinforcement-fine-tuning-step` — [Execute reinforcement fine tuning step](pages/api-reference/execute-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/execute-reinforcement-fine-tuning-step)
-- `api-reference/generate-a-new-image-from-a-text-prompt` — [Generate an image with FLUX.1 [schnell] FP8](pages/api-reference/generate-a-new-image-from-a-text-prompt.md) · [原文](https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt)
-- `api-reference/generate-or-edit-image-using-flux-kontext` — [Generate or edit an image with FLUX.1 Kontext](pages/api-reference/generate-or-edit-image-using-flux-kontext.md) · [原文](https://docs.fireworks.ai/api-reference/generate-or-edit-image-using-flux-kontext)
 - `api-reference/get-account` — [Get Account](pages/api-reference/get-account.md) · [原文](https://docs.fireworks.ai/api-reference/get-account)
 - `api-reference/get-batch-inference-job` — [Get Batch Inference Job](pages/api-reference/get-batch-inference-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-batch-inference-job)
 - `api-reference/get-billing-summary` — [Get billing summary information for an account](pages/api-reference/get-billing-summary.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-summary)
@@ -72,7 +70,6 @@
 - `api-reference/get-evaluator-build-log-endpoint` — [Get Evaluator Build Log Endpoint](pages/api-reference/get-evaluator-build-log-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-evaluator-build-log-endpoint)
 - `api-reference/get-evaluator-source-code-endpoint` — [Get Evaluator Source Code Endpoint](pages/api-reference/get-evaluator-source-code-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-evaluator-source-code-endpoint)
 - `api-reference/get-evaluator-upload-endpoint` — [Get Evaluator Upload Endpoint](pages/api-reference/get-evaluator-upload-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-evaluator-upload-endpoint)
-- `api-reference/get-generated-image-from-flux-kontex` — [Get generated image from FLUX.1 Kontext](pages/api-reference/get-generated-image-from-flux-kontex.md) · [原文](https://docs.fireworks.ai/api-reference/get-generated-image-from-flux-kontex)
 - `api-reference/get-model` — [Get Model](pages/api-reference/get-model.md) · [原文](https://docs.fireworks.ai/api-reference/get-model)
 - `api-reference/get-model-download-endpoint` — [Get Model Download Endpoint](pages/api-reference/get-model-download-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-model-download-endpoint)
 - `api-reference/get-model-upload-endpoint` — [Get Model Upload Endpoint](pages/api-reference/get-model-upload-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-model-upload-endpoint)
@@ -150,12 +147,18 @@
 - `ecosystem/fireconnect/overview` — [Overview](pages/ecosystem/fireconnect/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/overview)
 - `ecosystem/fireconnect/pi` — [Pi](pages/ecosystem/fireconnect/pi.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/pi)
 - `ecosystem/fireconnect/vscode` — [VS Code](pages/ecosystem/fireconnect/vscode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/vscode)
+- `ecosystem/firerouter/authentication` — [Authentication](pages/ecosystem/firerouter/authentication.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/authentication)
+- `ecosystem/firerouter/litellm` — [LiteLLM](pages/ecosystem/firerouter/litellm.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/litellm)
+- `ecosystem/firerouter/overview` — [Overview](pages/ecosystem/firerouter/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/overview)
+- `ecosystem/firerouter/quickstart` — [Quickstart](pages/ecosystem/firerouter/quickstart.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/quickstart)
+- `ecosystem/firerouter/routing-preferences` — [Routing preferences](pages/ecosystem/firerouter/routing-preferences.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/routing-preferences)
 - `ecosystem/integrations/agent-frameworks` — [Agent Frameworks](pages/ecosystem/integrations/agent-frameworks.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks)
 - `ecosystem/integrations/azure-foundry` — [Microsoft Foundry](pages/ecosystem/integrations/azure-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/azure-foundry)
 - `ecosystem/integrations/byoc/how-setup-works` — [How Setup Works](pages/ecosystem/integrations/byoc/how-setup-works.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works)
 - `ecosystem/integrations/byoc/operational-model` — [Operational Model](pages/ecosystem/integrations/byoc/operational-model.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model)
 - `ecosystem/integrations/byoc/overview` — [Bring Your Own Cluster](pages/ecosystem/integrations/byoc/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/overview)
 - `ecosystem/integrations/development-setup` — [Development Setup with Fireworks Docs MCP](pages/ecosystem/integrations/development-setup.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/development-setup)
+- `ecosystem/integrations/litellm` — [LiteLLM](pages/ecosystem/integrations/litellm.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/litellm)
 - `ecosystem/integrations/mlops-observability` — [MLOps & Observability](pages/ecosystem/integrations/mlops-observability.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/mlops-observability)
 
 ## examples
@@ -192,7 +195,6 @@
 - `faq-new/deployment-infrastructure/why-am-i-experiencing-request-timeout-errors-and-slow-response-times-with-server` — [Why am I experiencing request timeout errors and slow response times with serverless LLM models?](pages/faq-new/deployment-infrastructure/why-am-i-experiencing-request-timeout-errors-and-slow-response-times-with-server.md) · [原文](https://docs.fireworks.ai/faq-new/deployment-infrastructure/why-am-i-experiencing-request-timeout-errors-and-slow-response-times-with-server)
 - `faq-new/models-inference/does-fireworks-support-custom-base-models` — [Does Fireworks support custom base models?](pages/faq-new/models-inference/does-fireworks-support-custom-base-models.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/does-fireworks-support-custom-base-models)
 - `faq-new/models-inference/does-the-api-support-batching-and-load-balancing` — [Does the API support batching and load balancing?](pages/faq-new/models-inference/does-the-api-support-batching-and-load-balancing.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/does-the-api-support-batching-and-load-balancing)
-- `faq-new/models-inference/flux-image-generation` — [FLUX image generation](pages/faq-new/models-inference/flux-image-generation.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/flux-image-generation)
 - `faq-new/models-inference/how-do-i-control-output-image-sizes-when-using-sdxl-controlnet` — [How do I control output image sizes when using SDXL ControlNet?](pages/faq-new/models-inference/how-do-i-control-output-image-sizes-when-using-sdxl-controlnet.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/how-do-i-control-output-image-sizes-when-using-sdxl-controlnet)
 - `faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless` — [How to check if a model is available on serverless?](pages/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless)
 - `faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques` — [There’s a model I would like to use that isn’t available on Fireworks. Can I request it?](pages/faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques)

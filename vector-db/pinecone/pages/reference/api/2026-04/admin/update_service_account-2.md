@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin/update_service_account
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/service-accounts/{service_account_id}
-Update a service account's mutable metadata. Only `name` is supported as a mutable field; fields that are omitted are left unchanged.
-Role bindings cannot be updated here; use the role binding endpoints to create or delete bindings.
+Update a service account's name; role bindings are managed through the role-binding endpoints.
 
 
 <RequestExample>

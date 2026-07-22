@@ -5,11 +5,7 @@ path: reference/api/2026-04/admin/create_invite
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/invites
-Invite a user to join the organization. Sends an email with an acceptance link.
-Grant roles with `role_bindings`. Include at least one `organization`-scoped binding that grants organization membership (`OrgOwner`, `OrgManager`, `OrgBillingAdmin`, or `OrgMember`; omit `resource_id`); add `project`-scoped bindings (with a `resource_id`) to grant project roles. Bindings are not returned in the response.
-If a pending or expired invite already exists for the email, returns `409` with the existing invite's ID in the error message. Use `POST /admin/invites/{invite_id}/resend` to resend the email, and the role-bindings endpoints to change the invite's bindings.
-If the email already belongs to a member of the organization, returns `409` (see shared conflict response). Manage that user's roles with the role-bindings endpoints instead.
-An invite's bindings are first-class role bindings: they appear in `GET /admin/role-bindings` with `principal_type=invite` and `principal_id` equal to the invite ID, and can be added or removed with the role-bindings endpoints.
+Invite a user to the organization by email and grant their initial role bindings.
 
 
 <RequestExample>

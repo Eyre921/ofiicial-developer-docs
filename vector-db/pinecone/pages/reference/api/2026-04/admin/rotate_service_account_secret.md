@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin/rotate_service_account_secret
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/service-accounts/{service_account_id}/rotate-secret
-Rotate the OAuth `client_secret` for a service account. The previous secret and tokens minted from it are revoked within a few seconds. The new secret is returned only in this response.
-Repeating the request may rotate again and invalidate the previous new secret.
+Rotate a service account's OAuth client secret; the previous secret and its tokens are revoked within seconds and the new secret is returned only once.
 
 
 <RequestExample>

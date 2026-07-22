@@ -75,6 +75,10 @@ These examples assume you have already created a sandbox/devbox using the provid
 
     <CodeGroup>
       ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+      from deepagents.backends import LangSmithSandbox
+      from langchain_anthropic import ChatAnthropic
+      from langsmith.sandbox import SandboxClient
 
       client = SandboxClient()
       ls_sandbox = client.create_sandbox()
@@ -101,6 +105,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+      from deepagents.backends import LangSmithSandbox
+      from langchain_anthropic import ChatAnthropic
+      from langsmith.sandbox import SandboxClient
 
       client = SandboxClient()
       ls_sandbox = client.create_sandbox()
@@ -127,6 +135,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+      from deepagents.backends import LangSmithSandbox
+      from langchain_anthropic import ChatAnthropic
+      from langsmith.sandbox import SandboxClient
 
       client = SandboxClient()
       ls_sandbox = client.create_sandbox()
@@ -153,6 +165,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+      from deepagents.backends import LangSmithSandbox
+      from langchain_anthropic import ChatAnthropic
+      from langsmith.sandbox import SandboxClient
 
       client = SandboxClient()
       ls_sandbox = client.create_sandbox()
@@ -179,6 +195,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+      from deepagents.backends import LangSmithSandbox
+      from langchain_anthropic import ChatAnthropic
+      from langsmith.sandbox import SandboxClient
 
       client = SandboxClient()
       ls_sandbox = client.create_sandbox()
@@ -205,6 +225,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+      from deepagents.backends import LangSmithSandbox
+      from langchain_anthropic import ChatAnthropic
+      from langsmith.sandbox import SandboxClient
 
       client = SandboxClient()
       ls_sandbox = client.create_sandbox()
@@ -231,6 +255,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+      from deepagents.backends import LangSmithSandbox
+      from langchain_anthropic import ChatAnthropic
+      from langsmith.sandbox import SandboxClient
 
       client = SandboxClient()
       ls_sandbox = client.create_sandbox()
@@ -271,6 +299,10 @@ These examples assume you have already created a sandbox/devbox using the provid
 
     <CodeGroup>
       ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from daytona import Daytona
+      from deepagents import create_deep_agent
+      from langchain_anthropic import ChatAnthropic
+      from langchain_daytona import DaytonaSandbox
 
       sandbox = Daytona().create()
       backend = DaytonaSandbox(sandbox=sandbox)
@@ -297,6 +329,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from daytona import Daytona
+      from deepagents import create_deep_agent
+      from langchain_anthropic import ChatAnthropic
+      from langchain_daytona import DaytonaSandbox
 
       sandbox = Daytona().create()
       backend = DaytonaSandbox(sandbox=sandbox)
@@ -323,6 +359,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from daytona import Daytona
+      from deepagents import create_deep_agent
+      from langchain_anthropic import ChatAnthropic
+      from langchain_daytona import DaytonaSandbox
 
       sandbox = Daytona().create()
       backend = DaytonaSandbox(sandbox=sandbox)
@@ -349,6 +389,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from daytona import Daytona
+      from deepagents import create_deep_agent
+      from langchain_anthropic import ChatAnthropic
+      from langchain_daytona import DaytonaSandbox
 
       sandbox = Daytona().create()
       backend = DaytonaSandbox(sandbox=sandbox)
@@ -375,6 +419,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from daytona import Daytona
+      from deepagents import create_deep_agent
+      from langchain_anthropic import ChatAnthropic
+      from langchain_daytona import DaytonaSandbox
 
       sandbox = Daytona().create()
       backend = DaytonaSandbox(sandbox=sandbox)
@@ -401,6 +449,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from daytona import Daytona
+      from deepagents import create_deep_agent
+      from langchain_anthropic import ChatAnthropic
+      from langchain_daytona import DaytonaSandbox
 
       sandbox = Daytona().create()
       backend = DaytonaSandbox(sandbox=sandbox)
@@ -427,6 +479,10 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
 
       ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from daytona import Daytona
+      from deepagents import create_deep_agent
+      from langchain_anthropic import ChatAnthropic
+      from langchain_daytona import DaytonaSandbox
 
       sandbox = Daytona().create()
       backend = DaytonaSandbox(sandbox=sandbox)
@@ -1389,7 +1445,6 @@ You can also call the backend `execute()` method directly in your application co
     from deepagents.backends.langsmith import LangSmithSandbox
     from langsmith.sandbox import SandboxClient
 
-
     client = SandboxClient()
     ls_sandbox = client.create_sandbox()
     backend = LangSmithSandbox(sandbox=ls_sandbox)
@@ -1641,7 +1696,6 @@ Use `upload_files()` to populate the sandbox before the agent runs. Paths must b
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents.backends.langsmith import LangSmithSandbox
     from langsmith.sandbox import SandboxClient
-
 
     client = SandboxClient()
     ls_sandbox = client.create_sandbox()

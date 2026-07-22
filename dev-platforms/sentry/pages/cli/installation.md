@@ -33,7 +33,7 @@ curl -sL https://sentry.io/get-cli/ | sh
 We do however, encourage you to pin the specific version of the CLI, so your builds are always reproducible. To do that, you can use the exact same method, with an additional version specifier:
 
 ```bash
-curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="3.6.1" sh
+curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="3.6.2" sh
 ```
 
 This will automatically download the correct version of `sentry-cli` for your operating system and install it. If necessary, it will prompt for your admin password for `sudo`. For a different installation location or for systems without `sudo` (like Windows), you can `export INSTALL_DIR=/custom/installation/path` before running this command.
@@ -151,29 +151,29 @@ When downloading an executable from a remote server, it's often a good practice 
 
 Below is the table of SHA256 checksums for all available build targets that our CLI supports. To calculate the hash of a downloaded file, you can use `sha256sum` utility, which is preinstalled in OSX and most Linux distributions.
 
-| Filename (v3.6.1)                                                                                        | Integrity Checksum                                                        |
+| Filename (v3.6.2)                                                                                        | Integrity Checksum                                                        |
 | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| sentry-cli-Darwin-arm64                                                                                  | `sha384-e12a52a68a9870219c60741e71741a06d1896e85cc7c96fffe1e75f9933d4804` |
-| sentry-cli-Darwin-universal                                                                              | `sha384-25f0cea3ad39690082c8c5df7a98eac068d7fcbec933f4cb2acecf914a105106` |
-| sentry-cli-Darwin-x86\_64                                                                                | `sha384-8117129416afef14deec082e205abe77707f3189ed826718a338e24c5a190838` |
-| sentry-cli-Linux-aarch64                                                                                 | `sha384-ea17bcce48fd8a252174db9743503b967351c1ed498c296fdfa40b4cb609bbc5` |
-| sentry-cli-Linux-armv7                                                                                   | `sha384-4554398346e78c6c7145c1e790e686b6afb18b3618a84ef1fcd5ebe5f5ec4f72` |
-| sentry-cli-Linux-i686                                                                                    | `sha384-097ffb42a386363c6052e65b3eede52f081e3b391fba5c1a24ebf05e39678f25` |
-| sentry-cli-Linux-x86\_64                                                                                 | `sha384-e25efd0278e2576d531fa9931faf61f6f0f6cda99024b55f694fb2588297f653` |
-| sentry-cli-Windows-aarch64.exe                                                                           | `sha384-b98dd81b23ab844fb1ddbf66a147aad11f3cb917532f87c019e37ffa6715bfd4` |
-| sentry-cli-Windows-i686.exe                                                                              | `sha384-60f0119ae60453de9633c9519c55ed0b39dcacb05d7871a52a6a6c5af66041c0` |
-| sentry-cli-Windows-x86\_64.exe                                                                           | `sha384-47e886ffdfcfe03f6f710667d1236ddf58b5ff6ade2d7cead8fe392d91959861` |
-| sentry\_cli-3.6.1-py3-none-macosx\_10\_15\_x86\_64.whl                                                   | `sha384-97b6a23eec09a8f897ca27168f76b966e9b46c587827b936c636bdd355d51f42` |
-| sentry\_cli-3.6.1-py3-none-macosx\_11\_0\_arm64.whl                                                      | `sha384-a1e91d0fac5ba73ae1eedd56ba344304b4d5de43ec9e67e00c516fbc3b0a5133` |
-| sentry\_cli-3.6.1-py3-none-macosx\_11\_0\_universal2.whl                                                 | `sha384-4977161b74072505aaa29c75240292abfc5f69add85a22181bed700141d4e82e` |
-| sentry\_cli-3.6.1-py3-none-manylinux\_2\_17\_aarch64.manylinux2014\_aarch64.musllinux\_1\_2\_aarch64.whl | `sha384-1a377dfc9a48fbb7e16ea917715a05699cf5978e6ea59013839780e92b38c242` |
-| sentry\_cli-3.6.1-py3-none-manylinux\_2\_17\_armv7l.manylinux2014\_armv7l.musllinux\_1\_2\_armv7l.whl    | `sha384-13e292d2901dd45a71d28b1212a0f796cdc5409cbfced04e99d64ff8f9eea3c2` |
-| sentry\_cli-3.6.1-py3-none-manylinux\_2\_17\_i686.manylinux2014\_i686.musllinux\_1\_2\_i686.whl          | `sha384-68c5e18da7e04ab1220b4581b9422ee03ed90f3c7773f7a3bd76ef62037b3748` |
-| sentry\_cli-3.6.1-py3-none-manylinux\_2\_17\_x86\_64.manylinux2014\_x86\_64.musllinux\_1\_2\_x86\_64.whl | `sha384-09aa60b6cf4b7b87150d9d1ba51f9cb2da2357a971100858571154d5b2f26572` |
-| sentry\_cli-3.6.1-py3-none-win32.whl                                                                     | `sha384-b44d6fb3201dd1ba8aa36226f23975217809a55ace3b9ab1208091a9337ec567` |
-| sentry\_cli-3.6.1-py3-none-win\_amd64.whl                                                                | `sha384-3ac47ea4c638dfdbca5d6ca8ba5c7c19327ffc96579930102625927f14132c00` |
-| sentry\_cli-3.6.1-py3-none-win\_arm64.whl                                                                | `sha384-e76da67810b9786edff49ec9a7dfeff9aca5f4e793ab7adb6bf33cc4d905d80a` |
-| sentry\_cli-3.6.1.tar.gz                                                                                 | `sha384-becab1f84f1d6a7c3df19f9d147d6a94d84deba19416aa6f4e726be5fb6369d4` |
+| sentry-cli-Darwin-arm64                                                                                  | `sha384-5a497deb1e388cc6445c09ddd6d2da4fc2aae8295405d6393c2e0ee635ca3687` |
+| sentry-cli-Darwin-universal                                                                              | `sha384-d1339bc39b2c681496d70fc0cb5263a6f4ff93939de21b1f34cffb310643ef1c` |
+| sentry-cli-Darwin-x86\_64                                                                                | `sha384-efe0a5289cdd0ea8ff727b1228a1bea6c840f2da38152e8f9f5ced05bd6659cd` |
+| sentry-cli-Linux-aarch64                                                                                 | `sha384-ff112ecf694b7d6b3629a6228ed4e3f7a0d51401bdf48a5051a79d8749dccd06` |
+| sentry-cli-Linux-armv7                                                                                   | `sha384-70a92a11d2d4d0c08202158120c0c054e83b6a5b5aff467e4a04cb19ca5440d9` |
+| sentry-cli-Linux-i686                                                                                    | `sha384-d1acfe1ab476c81dd2cc101e541e00403da7dcdf1cf21f4f2cfbe7353637b1de` |
+| sentry-cli-Linux-x86\_64                                                                                 | `sha384-3a4bbf2c0d06378d4e59b337647483751a0a2b1603db5fd4991847d0cfd6478c` |
+| sentry-cli-Windows-aarch64.exe                                                                           | `sha384-93ee7916c05c113a35daccf107c034af96f279561c103aa832668e4eecca3fb4` |
+| sentry-cli-Windows-i686.exe                                                                              | `sha384-e1f1a2d82425d0655bc8461fd37ded91f490c82fc60429066b9d844825d319e3` |
+| sentry-cli-Windows-x86\_64.exe                                                                           | `sha384-5c90cb0045cef3d3c36113c2aa21a7dcae11627d2d6e3098b679dea5b6681be3` |
+| sentry\_cli-3.6.2-py3-none-macosx\_10\_15\_x86\_64.whl                                                   | `sha384-b5f93ed3249a1a52e8fe203d7e2886206bc13899a0621d80fce157b5f5062737` |
+| sentry\_cli-3.6.2-py3-none-macosx\_11\_0\_arm64.whl                                                      | `sha384-6010960e0728cc43c4ec8222e73b0cba53c12e4f2efa40706bf253b7e2d51b0f` |
+| sentry\_cli-3.6.2-py3-none-macosx\_11\_0\_universal2.whl                                                 | `sha384-cd6552bb35ff5ff734e953a8b7f8e7934c9cafdd482a0d0695e66e3ffb6ecce0` |
+| sentry\_cli-3.6.2-py3-none-manylinux\_2\_17\_aarch64.manylinux2014\_aarch64.musllinux\_1\_2\_aarch64.whl | `sha384-8a1901112725926ce56151c94076bcd053473c84c813defbc391008bc2a8308c` |
+| sentry\_cli-3.6.2-py3-none-manylinux\_2\_17\_armv7l.manylinux2014\_armv7l.musllinux\_1\_2\_armv7l.whl    | `sha384-54ac0c40efb8d1f708a738b52db53782272a444314be37517fa1021a4aba2016` |
+| sentry\_cli-3.6.2-py3-none-manylinux\_2\_17\_i686.manylinux2014\_i686.musllinux\_1\_2\_i686.whl          | `sha384-5be2fee0e7dc5f2d2ee1ea095ee63f7410f4d4bb54a2e9f1ec7dcd9f60417667` |
+| sentry\_cli-3.6.2-py3-none-manylinux\_2\_17\_x86\_64.manylinux2014\_x86\_64.musllinux\_1\_2\_x86\_64.whl | `sha384-ecc607560ddefe9ecf4343455c972b5fdbe77713a11ffa07288ff174afe824b3` |
+| sentry\_cli-3.6.2-py3-none-win32.whl                                                                     | `sha384-df9b862f170f11b161535a8d07f4c263399b548eba83bf4c391f944b68ad3b4a` |
+| sentry\_cli-3.6.2-py3-none-win\_amd64.whl                                                                | `sha384-ff25968b7a0d4bb1f1398c7981df8c5a9526a8632545e5c651f6e1cda02ab2b5` |
+| sentry\_cli-3.6.2-py3-none-win\_arm64.whl                                                                | `sha384-5b32e20bcf91d5cd02ee627c0cd31cdc8a0f559bf8c63341104d677ad013828f` |
+| sentry\_cli-3.6.2.tar.gz                                                                                 | `sha384-ffee0c936bd671fc3b60f7c2a90e1c45c3b64fd6caff803a6090592c5707e4b2` |
 
 If you would like to verify checksums for historic versions of the `sentry-cli`, please refer to our release registry directly, which can be found at [https://release-registry.services.sentry.io/apps/sentry-cli/{version}](https://release-registry.services.sentry.io/apps/sentry-cli/latest). For example, <https://release-registry.services.sentry.io/apps/sentry-cli/1.74.4>.
 

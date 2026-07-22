@@ -5,7 +5,7 @@ path: reference/api/2026-04/admin/create_project
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects
-Creates a new project.
+Create a new project.
 
 <RequestExample>
   ```bash curl theme={null}

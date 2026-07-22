@@ -30,6 +30,8 @@ tg beta clusters create
 | `--gpu-type [string]`                  | GPU type to use for the cluster. One of `H100_SXM`, `H200_SXM`, `RTX_6000_PCI`, `L40_PCIE`, `B200_SXM`, `H100_SXM_INF`. Available types vary by region; see `tg beta clusters list-regions`.                                                                                                               |
 | `--cluster-type [KUBERNETES\|SLURM]`   | Cluster workload manager or orchestrator.                                                                                                                                                                                                                                                                  |
 | `--volume [string]`                    | Storage volume ID to attach to the cluster. List existing volumes with `tg beta clusters storage list`.                                                                                                                                                                                                    |
+| `--headlamp-addon`                     | Enable the Headlamp Kubernetes dashboard add-on.                                                                                                                                                                                                                                                           |
+| `--slurm-web-addon`                    | Enable the Slurm Web add-on.                                                                                                                                                                                                                                                                               |
 
 <Note>
   Run `tg beta clusters create` with no flags to launch an interactive prompt that walks through the required fields. Pass `--non-interactive` (or `--json`) to skip prompts in CI.
@@ -43,10 +45,12 @@ tg beta clusters update [CLUSTER_ID]
 
 ### Parameters
 
-| Flag                                 | Description                                |
-| ------------------------------------ | ------------------------------------------ |
-| `--num-gpus [integer]`               | Number of GPUs to allocate in the cluster. |
-| `--cluster-type [KUBERNETES\|SLURM]` | Cluster workload manager or orchestrator.  |
+| Flag                                 | Description                                                 |
+| ------------------------------------ | ----------------------------------------------------------- |
+| `--num-gpus [integer]`               | Number of GPUs to allocate in the cluster.                  |
+| `--cluster-type [KUBERNETES\|SLURM]` | Cluster workload manager or orchestrator.                   |
+| `--headlamp/--no-headlamp`           | Enable or disable the Headlamp Kubernetes dashboard add-on. |
+| `--slurm-web/--no-slurm-web`         | Enable or disable the Slurm Web add-on.                     |
 
 ## Retrieve a cluster
 
@@ -144,6 +148,10 @@ Copy the Dex issuer URL and login name from the cluster UI when **OIDC** is sele
   Any arguments after `DEX_URL` are passed through to `ssh` as a remote command.
 </Note>
 
+<Note>
+  On the bastion-to-target hop, the CLI disables SSH host key verification (`StrictHostKeyChecking=no`). Cluster hosts are reprovisioned frequently, so their host keys are not pinned. Authentication uses the short-lived step-ca user certificate from the OIDC flow, not the target host key.
+</Note>
+
 ## Get cluster credentials
 
 Download the cluster's configuration and credentials to your local `.kube/config` file to manage Kubernetes resources.
@@ -160,6 +168,21 @@ tg beta clusters get-credentials [CLUSTER_ID]
 | `--context-name [string]` | Name of the context to add to the kubeconfig. Defaults to the cluster name.                                                                   |
 | `--overwrite-existing`    | If there is a conflict with the existing kubeconfig, overwrite it instead of raising an error.                                                |
 | `--set-default-context`   | Change the current context for `kubectl` to the new context.                                                                                  |
+
+## Approve a node remediation
+
+Approve a pending [node repair](/docs/node-repair) remediation. Find pending remediations and their IDs in the **Repairs** tab of your cluster in the Together Cloud UI.
+
+```bash theme={null}
+tg beta clusters remediations approve [REMEDIATION_ID]
+```
+
+### Parameters
+
+| Flag                                                                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--comment [string]`                                                 | Comment explaining the approval.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `--mode [VM_ONLY\|HOST_AWARE\|EVICT_WITHOUT_REPLACEMENT\|REBOOT_VM]` | Remediation mode to apply after approval. When omitted, the remediation keeps its existing mode.<br /><br /><ul><li>`VM_ONLY` deletes the VM and provisions a new one on the same host (quick reprovision).</li><li>`HOST_AWARE` cordons the host, deletes the VM, and provisions a new one on a different host (migrate to new host).</li><li>`EVICT_WITHOUT_REPLACEMENT` evicts the VM without provisioning a replacement (remove).</li><li>`REBOOT_VM` reboots the VM in place (reboot).</li></ul> |
 
 ## Create cluster storage
 

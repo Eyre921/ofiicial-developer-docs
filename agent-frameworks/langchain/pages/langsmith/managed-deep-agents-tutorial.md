@@ -127,7 +127,7 @@ For a complete project that uses every primitive, see the [example project](/lan
   <Step title="Use durable memory">
     Managed memory is on by default, so you do not configure a backend. The runtime stores durable memory in Context Hub, and the agent reads and writes it during runs. Because the instructions tell the agent to remember topics of interest, tell it a preference in one turn ("I only care about open-source releases"), then start a new conversation and confirm it recalls the preference.
 
-    To turn off managed memory, set `disable_memory=True` or `disableMemory: true` in the agent definition. For how memory persists, see [How Managed Deep Agents work](/langsmith/managed-deep-agents-how-it-works#threads-and-memory).
+    To turn off managed memory, set `disable_memory=True` or `disableMemory: true` in the agent definition. For more information about hot/cold tiers, identity remounts, and org memory, see [Memory](/langsmith/managed-deep-agents-memory).
   </Step>
 
   <Step title="Schedule a daily digest">
@@ -184,8 +184,16 @@ For a complete project that uses every primitive, see the [example project](/lan
     Scope threads and memory to the authenticated caller.
   </Card>
 
+  <Card title="Memory" icon="brain" href="/langsmith/managed-deep-agents-memory">
+    Persist preferences across threads with Context Hub `/memories`.
+  </Card>
+
   <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
     Load MCP tools or constrained LangSmith capabilities.
+  </Card>
+
+  <Card title="Channels" icon="messages" href="/langsmith/managed-deep-agents-channels">
+    Receive Slack Events and reply from messaging channels.
   </Card>
 
   <Card title="Example project" icon="apps" href="/langsmith/managed-deep-agents-examples">

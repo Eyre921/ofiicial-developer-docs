@@ -8,7 +8,7 @@ Restore serverless indexes from backup snapshots.
 
 ## Create a serverless index from a backup
 
-When restoring a serverless index from backup, you can change the index name, tags, and deletion protection setting. All other properties of the restored index will remain identical to the source index, including cloud and region, dimension and similarity metric, and associated embedding model when restoring an index with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
+When restoring a serverless index from backup, you can change the index name, tags, and deletion protection setting. All other properties of the restored index will remain identical to the source index, including cloud and region by default, dimension and similarity metric, and associated embedding model when restoring an index with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding). To restore a backup into a different region than the source index, see [Restore to a different region](#restore-to-a-different-region).
 
 To [create a serverless index from a backup](/reference/api/latest/control-plane/create_index_from_backup), provide the ID of the backup, the name of the new index, and, optionally, changes to the index tags and deletion protection settings:
 
@@ -179,6 +179,47 @@ The example returns a response like the following:
 <Tip>
   You can create a serverless index from a backup using the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
 </Tip>
+
+## Restore to a different region
+
+The [create index from backup](/reference/api/latest/control-plane/create_index_from_backup) endpoint always creates the new index in the same cloud and region as the backup. To restore a backup into a different region, use the `unstable` version of the [create index](/reference/api/latest/control-plane/create_index) endpoint instead. Specify the backup as `source_backup_id` within `spec.serverless` and set the target `region` there.
+
+The following rules apply:
+
+* The target region must be on the same cloud provider as the backup. Restoring to a different cloud provider is not supported.
+* The backup must be in the current Pinecone project, and the new index is created in the same project.
+* The `dimension`, `metric`, and `vector_type` must match the source index.
+* Restoring to a different region is not supported for BYOC indexes.
+
+<Warning>
+  Restoring to a different region is in [public preview](/release-notes/feature-availability). It is available through the `unstable` API version and the REST API only.
+</Warning>
+
+For example, the following request restores a backup of a dense index hosted in the AWS `us-east-1` region into a new index in the AWS `us-west-2` region:
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: unstable" \
+  -d '{
+    "name": "restored-index",
+    "vector_type": "dense",
+    "dimension": 1536,
+    "metric": "cosine",
+    "spec": {
+      "serverless": {
+        "cloud": "aws",
+        "region": "us-west-2",
+        "source_backup_id": "a65ff585-d987-4da5-a622-72e19a6ed5f4"
+      }
+    }
+  }'
+```
+
+Because the backup data is copied between regions, restoring to a different region can take longer than restoring within the same region. If restoring to a different region is not yet available for the backup's region, the request fails with a `412 Precondition Failed` error.
 
 ## List restore jobs
 

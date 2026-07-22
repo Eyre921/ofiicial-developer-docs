@@ -253,20 +253,20 @@ components:
 
 ```json
 {
-  "id": "ftn_9a8b7c6d5e4f3g2h1i0j",
-  "name": "Ambient Chill Vibes",
+  "id": "ft_9a8b7c6d5e4f3g2h1i0j",
+  "name": "Chillwave Sunset Mix",
   "tags": [
-    "ambient",
-    "chill",
-    "relaxing"
+    "chillwave",
+    "electronic",
+    "summer vibes"
   ],
-  "model_id": "mdl_ambient_v1",
+  "model_id": "music_v1",
   "created_at": "2024-01-15T09:30:00Z",
   "visibility": "private",
   "created_by": "self",
   "status": "pending",
   "training_progress": 0,
-  "primary_genre": "ambient",
+  "primary_genre": "electronic",
   "failure_reason": "audio_processing_failed"
 }
 ```

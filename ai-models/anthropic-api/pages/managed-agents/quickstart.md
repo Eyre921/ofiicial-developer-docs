@@ -25,7 +25,7 @@ This guide walks you through creating an agent, setting up an environment, start
 
 ## Prerequisites
 
-* An Anthropic [Console account](https://platform.claude.com)
+* A [Claude Console account](https://platform.claude.com)
 * An [API key](/settings/keys)
 
 ## Install the CLI
@@ -41,7 +41,7 @@ This guide walks you through creating an agent, setting up an environment, start
     For Linux environments, download the release binary directly.
 
     ```bash
-    VERSION=1.17.0
+    VERSION=1.19.0
     OS=$(uname -s | tr '[:upper:]' '[:lower:]')
     case $(uname -m) in
       x86_64) ARCH=amd64 ;;
@@ -92,7 +92,7 @@ ant --version
 
   <Tab title="Java">
     ```groovy Gradle
-    implementation("com.anthropic:anthropic-java:2.48.0")
+    implementation("com.anthropic:anthropic-java:2.50.0")
     ```
   </Tab>
 

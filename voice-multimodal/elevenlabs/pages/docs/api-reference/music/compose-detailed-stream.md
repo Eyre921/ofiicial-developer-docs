@@ -417,15 +417,6 @@ components:
             - string
             - 'null'
           description: The ID of the finetune to use for the generation
-        finetune_strength:
-          type: number
-          format: double
-          default: 1
-          description: >-
-            How strongly the finetune influences the generation. Defaults to 1.0
-            (full strength). Lower values soften the influence of the finetune,
-            leaving more room for prompt-level steering. Only meaningful when
-            `finetune_id` is also provided.
         store_for_inpainting:
           type: boolean
           default: false
@@ -482,11 +473,12 @@ components:
 
 ```json
 [
-  "data: {\"event\":\"composition_plan\",\"data\":{\"plan\":\"[Intro] Smooth jazz with soft piano and light percussion\"}}\n\n",
-  "data: {\"event\":\"song_metadata\",\"data\":{\"title\":\"Evening Breeze\",\"artist\":\"Jazz Ensemble\",\"duration_ms\":180000}}\n\n",
-  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=\"}\n\n",
-  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAE=\"}\n\n",
-  "data: {\"event\":\"completion\",\"data\":{\"status\":\"finished\"}}\n\n"
+  "data: {\"event\":\"composition_plan\",\"data\":{\"plan\":\"Starting with a mellow intro, building up to an energetic chorus with layered synths and driving drums.\"}}\n",
+  "data: {\"event\":\"song_metadata\",\"data\":{\"title\":\"Sunset Drive\",\"artist\":\"Neon Horizon\",\"genre\":\"Synthwave\",\"bpm\":110}}\n",
+  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=\"}\n",
+  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAE=\"}\n",
+  "data: {\"event\":\"word_timestamps\",\"data\":{\"words\":[{\"word\":\"Sunset\",\"start\":0.0,\"end\":0.5},{\"word\":\"Drive\",\"start\":0.5,\"end\":1.0}]}}\n",
+  "data: {\"event\":\"completion\",\"data\":{\"message\":\"Stream ended successfully.\"}}\n"
 ]
 ```
 

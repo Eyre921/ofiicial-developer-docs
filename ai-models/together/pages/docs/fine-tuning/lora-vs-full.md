@@ -96,6 +96,8 @@ For the parameters that tune LoRA itself (`lora_r`, `lora_alpha`, `lora_dropout`
 
 When you don't set `lora_trainable_modules`, it defaults to `all-linear`, which applies LoRA to the modules listed for each model in the tables below. To customize, pass a comma-separated list of module names instead.
 
+Each module you list must appear in the model's allow-list. Whitespace around module names is ignored, but a non-empty value that parses to no modules (for example `","` or `" , "`) is rejected.
+
 <Accordion title="Default target modules by model">
   ### Text models
 
@@ -219,6 +221,59 @@ When you don't set `lora_trainable_modules`, it defaults to `all-linear`, which 
   | `google/gemma-3-27b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
   | `google/gemma-4-31B-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
 </Accordion>
+
+## Target MoE expert layers
+
+On mixture-of-experts (MoE) models, you can apply LoRA to the expert feed-forward projections instead of the attention projections. Set `lora_trainable_modules` to the expert modules `w_up`, `w_gate`, and `w_down`. Together uses a compact shared-factor adapter layout across experts, so the adapter stays small even on very large models.
+
+Use expert targeting when your task depends on the model's domain knowledge (the feed-forward experts) rather than its attention patterns — for example, adapting an MoE base to a new domain or task family.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  job = client.fine_tuning.create(
+      training_file="<FILE_ID>",
+      model="zai-org/GLM-4.6",
+      lora=True,
+      lora_trainable_modules="w_up,w_gate,w_down",
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const job = await client.fineTuning.create({
+    training_file: "<FILE_ID>",
+    model: "zai-org/GLM-4.6",
+    lora: true,
+    lora_trainable_modules: "w_up,w_gate,w_down",
+  });
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "zai-org/GLM-4.6" \
+    --lora \
+    --lora-trainable-modules "w_up,w_gate,w_down"
+  ```
+</CodeGroup>
+
+You can't combine expert and attention modules in one job. Pass either the attention projections (the default) or the expert projections, not both, or the job fails validation.
+
+Expert LoRA is available on these models:
+
+* Mixtral: `mistralai/Mixtral-8x7B-v0.1`, `mistralai/Mixtral-8x7B-Instruct-v0.1`.
+* Qwen3 MoE: `Qwen/Qwen3-30B-A3B-Base`, `Qwen/Qwen3-30B-A3B`, `Qwen/Qwen3-30B-A3B-Instruct-2507`, `Qwen/Qwen3-235B-A22B`, `Qwen/Qwen3-235B-A22B-Instruct-2507`, `Qwen/Qwen3-Coder-30B-A3B-Instruct`.
+* Qwen3-Next: `Qwen/Qwen3-Next-80B-A3B-Instruct`, `Qwen/Qwen3-Next-80B-A3B-Thinking`.
+* GLM-4: `zai-org/GLM-4.6`, `zai-org/GLM-4.7`.
+
+Every expert-LoRA job produces a LoRA adapter served on top of the base model. Unlike a standard LoRA, an expert-LoRA adapter is never merged into a full set of weights, so deploy it as an adapter on any of the models above. See [adapter upload](/docs/dedicated-endpoints/adapter).
 
 ## What to expect from full fine-tuning
 

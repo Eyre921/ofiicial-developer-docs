@@ -50822,7 +50822,9 @@ The following Zod features are known to not work with Google Generative AI:
 
 | Model                                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Google Search       | URL Context         |
 | ------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.6-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-3.5-flash-lite`               | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.1-pro-preview`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.1-flash-image-preview`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3-pro-preview`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -51770,13 +51772,15 @@ The following Zod features are known to not work with Google Vertex:
 
 ### Model Capabilities
 
-| Model                  | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ---------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `gemini-3.5-flash`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.0-flash-001` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.0-flash-exp` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-1.5-flash`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-1.5-pro`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                   | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
+| ----------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.6-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-3.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-3.5-flash-lite` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-2.0-flash-001`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-2.0-flash-exp`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-1.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-1.5-pro`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   The table above lists popular models. Please see the [Google Vertex AI
@@ -93335,7 +93339,9 @@ The following Zod features are known to not work with Google Generative AI:
 
 | Model                                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Google Search       | URL Context         |
 | ------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.6-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-3.5-flash-lite`               | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.1-pro-preview`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.1-flash-image-preview`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gemini-3.1-flash-lite-preview`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -95251,13 +95257,15 @@ The following Zod features are known to not work with Google Vertex:
 
 ### Model Capabilities
 
-| Model                  | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ---------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `gemini-3.5-flash`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3-pro-preview` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-pro`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-flash`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.0-flash-001` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                   | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
+| ----------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gemini-3.6-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-3.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-3.5-flash-lite` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-3-pro-preview`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-2.5-pro`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-2.5-flash`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gemini-2.0-flash-001`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   The table above lists popular models. Please see the [Google Vertex AI
@@ -119710,7 +119718,8 @@ You can specify the timeout either as a number (milliseconds) or as an object wi
 
 - `totalMs`: The total timeout for the entire call including all steps.
 - `stepMs`: The timeout for each individual step (LLM call). This is useful for multi-step generations where you want to limit the time spent on each step independently.
-- `chunkMs`: The timeout between stream chunks (streaming only). The call will abort if no new chunk is received within this duration. This is useful for detecting stalled streams.
+- `firstChunkMs`: The timeout until the first content-bearing output of each step (streaming only). Text deltas, reasoning deltas, tool-input deltas, generated files, and tool calls satisfy the timeout. Response metadata, stream starts, empty deltas, raw chunks, and transport activity do not satisfy or reset it.
+- `chunkMs`: The timeout between content-bearing output chunks after output has started (streaming only). Non-content chunks do not reset it. This is useful for detecting streams that stall after generation begins.
 - `toolMs`: The default timeout for all tool executions. If a tool takes longer, it aborts and returns a tool-error so the model can respond or retry.
 - `tools`: Per-tool timeout overrides using `{toolName}Ms` keys (e.g. `weatherMs`, `slowApiMs`). Takes precedence over `toolMs`. Tool names are type-checked for autocomplete.
 
@@ -119763,7 +119772,19 @@ const result = await generateText({
 const result = streamText({
   model: __MODEL__,
   prompt: 'Invent a new holiday and describe its traditions.',
-  timeout: { chunkMs: 5000 }, // abort if no chunk received for 5 seconds
+  timeout: { chunkMs: 5000 }, // abort if content stalls for 5 seconds
+});
+```
+
+#### Example: First-content timeout for streaming (streamText only)
+
+```ts
+const result = streamText({
+  model: __MODEL__,
+  prompt: 'Invent a new holiday and describe its traditions.',
+  timeout: {
+    firstChunkMs: 10000, // 10 seconds for first content in each step
+  },
 });
 ```
 
@@ -124641,6 +124662,12 @@ npx @ai-sdk/devtools@latest
 
 Open [http://localhost:4983](http://localhost:4983) to view your AI SDK interactions.
 
+### Choose a viewer theme
+
+The viewer uses the dark theme by default. Use the theme button in the viewer
+header to switch between dark and light themes. Your selection is stored in
+your browser and restored the next time you open the viewer at the same origin.
+
 ### Monorepo usage
 
 If you are using a monorepo setup (e.g. Turborepo, Nx), start DevTools from the same workspace where your AI SDK code runs.
@@ -124663,7 +124690,22 @@ DevTools captures the following information from your AI SDK calls:
 - **Input parameters and prompts**: View the complete input sent to your LLM
 - **Output content and tool calls**: Inspect generated text and tool invocations
 - **Token usage and timing**: Monitor resource consumption and performance
-- **Raw provider data**: Access complete request and response payloads
+- **Raw provider data**: Access provider request and response payloads when body retention is enabled
+
+Telemetry is enabled automatically, but AI SDK 7 excludes raw request and response bodies from step results by default. To make them available to DevTools for `generateText`, enable body retention on the call:
+
+```ts highlight="4-7"
+const result = await generateText({
+  model: openai('gpt-4o'),
+  prompt: 'Hello!',
+  include: {
+    requestBody: true,
+    responseBody: true,
+  },
+});
+```
+
+`ToolLoopAgent` accepts the same `include` setting in its constructor. For `streamText` and `ToolLoopAgent.stream()`, only the request body can be retained; use `include: { requestBody: true }`.
 
 ### Runs and steps
 
@@ -124691,7 +124733,7 @@ DevTools stores all AI interactions locally in plain text files, including:
 - User prompts and messages
 - LLM responses
 - Tool call arguments and results
-- API request and response data
+- API request and response data when body retention is enabled
 
 **Only use DevTools in local development environments.** Do not enable DevTools in production or when handling sensitive data.
 
@@ -126143,6 +126185,46 @@ const result = await agent.continueStream({ session });
 Use `continueStream()` for incremental output, or `continueGenerate()` to drain
 the continued turn and return a `GenerateTextResult`.
 
+## Stop After a Harness Step
+
+Use `stopWhen` to opt into semantic step boundaries. Predicates run after real
+harness tool steps that can continue into another model step, and receive the
+completed steps from the current invocation. When a predicate matches, the
+returned result finishes while the underlying turn remains unfinished. A
+terminal text-only step instead consumes the turn's `finish` event and finishes
+naturally.
+
+```ts
+import { isStepCount } from 'ai';
+
+const steppedAgent = new HarnessAgent({
+  harness: claudeCode,
+  sandbox: createVercelSandbox({
+    runtime: 'node24',
+    ports: [4000],
+  }),
+  stopWhen: isStepCount(1),
+});
+
+const session = await steppedAgent.createSession();
+const result = await steppedAgent.generate({
+  session,
+  prompt: 'Create a short TODO.md for this repository.',
+});
+
+if (session.hasUnfinishedTurn()) {
+  const continueFrom = await session.suspendTurn();
+  await persistContinuationState({ chatId, continuationState: continueFrom });
+}
+```
+
+`stopWhen` has no default. When omitted, `HarnessAgent` continues running until
+the turn naturally finishes or pauses for host input, preserving the behavior
+of agents without step control. Pass one predicate or an array; matching any
+predicate finishes the current result slice. Resume a stopped turn with
+`createSession({ continueFrom })` and `continueStream()` or
+`continueGenerate()`.
+
 ## Prepare the Sandbox
 
 Use `sandboxConfig` to prepare the sandbox before the harness starts.
@@ -126276,6 +126358,8 @@ console.log(preparation.identity);
 - `sandbox`: a `HarnessV1SandboxProvider`.
 - `id`: optional stable agent identifier.
 - `instructions`: instructions applied once to a fresh session.
+- `stopWhen`: condition(s) for finishing a result slice after a completed
+  harness tool step that can continue into another model step.
 - `tools`: AI SDK tools executed by the host when the harness calls them.
 - `activeTools`: allowlist of built-in and host-executed tools the harness can
   call.
@@ -149097,7 +149181,9 @@ The following Zod features are known to not work with Google:
 
 | Model                                 | Image Input | Object Generation | Tool Usage | Tool Streaming | Google Search | URL Context |
 | ------------------------------------- | ----------- | ----------------- | ---------- | -------------- | ------------- | ----------- |
+| `gemini-3.6-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.5-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-3.5-flash-lite`               | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.1-pro-preview`              | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.1-flash-image-preview`      | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 | `gemini-3.1-flash-lite-preview`       | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
@@ -149142,6 +149228,11 @@ const token = await google.experimental_realtime.getToken({
 Google realtime models may require provider-specific audio formats, depending
 on the model and modality. See [Realtime](/docs/ai-sdk-core/realtime) for the
 complete setup and tool calling pattern.
+
+Gemini lifecycle signals that do not have provider-neutral equivalents are
+emitted as custom events. Inspect `rawType` for `goAway`,
+`sessionResumptionUpdate`, and `generationComplete` and use the event's `raw`
+payload for provider-specific details.
 
 ### Live Translation
 
@@ -151177,13 +151268,15 @@ The following Zod features are known to not work with Google Vertex:
 
 ### Model Capabilities
 
-| Model                  | Image Input | Object Generation | Tool Usage | Tool Streaming |
-| ---------------------- | ----------- | ----------------- | ---------- | -------------- |
-| `gemini-3.5-flash`     | <Check />   | <Check />         | <Check />  | <Check />      |
-| `gemini-3-pro-preview` | <Check />   | <Check />         | <Check />  | <Check />      |
-| `gemini-2.5-pro`       | <Check />   | <Check />         | <Check />  | <Check />      |
-| `gemini-2.5-flash`     | <Check />   | <Check />         | <Check />  | <Check />      |
-| `gemini-2.0-flash-001` | <Check />   | <Check />         | <Check />  | <Check />      |
+| Model                   | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ----------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `gemini-3.6-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-3.5-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-3.5-flash-lite` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-3-pro-preview`  | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-2.5-pro`        | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-2.5-flash`      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-2.0-flash-001`  | <Check />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   The table above lists popular models. Please see the [Google Vertex AI

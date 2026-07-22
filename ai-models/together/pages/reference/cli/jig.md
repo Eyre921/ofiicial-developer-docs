@@ -179,6 +179,10 @@ tg beta jig queue-status
 
 Secrets are encrypted environment variables injected at runtime. Manage them with the `secrets` subcommand.
 
+<Warning>
+  A name cannot appear in both `[tool.jig.deploy.environment_variables]` and a secret. `jig deploy` fails and lists each colliding name if the same name is defined in both places. Remove the duplicate from your config or run `tg beta jig secrets unset --name <name>`.
+</Warning>
+
 ### jig secrets set
 
 ```bash theme={null}
@@ -537,7 +541,9 @@ Default: `null` (uses the image's CMD)
 
 #### environment\_variables
 
-Runtime environment variables injected into your container. For sensitive values like API keys, use [secrets](#secrets-commands) instead.
+Runtime environment variables injected into your container. For sensitive values like API keys, use [secrets](#secrets) instead.
+
+Each name must be unique across `[tool.jig.deploy.environment_variables]` and secrets. `jig deploy` rejects duplicate names.
 
 ```toml theme={null}
 [tool.jig.deploy.environment_variables]

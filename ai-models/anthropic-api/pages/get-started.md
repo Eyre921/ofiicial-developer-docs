@@ -10,7 +10,7 @@ Make your first API call to Claude and build a simple web search assistant.
 
 ## Prerequisites
 
-* An Anthropic [Console account](/)
+* A [Claude Console account](https://platform.claude.com)
 * An [API key](/settings/keys)
 
 ## Call the API
@@ -440,7 +440,7 @@ Make your first API call to Claude and build a simple web search assistant.
             }
 
             dependencies {
-                implementation("com.anthropic:anthropic-java:2.48.0")
+                implementation("com.anthropic:anthropic-java:2.50.0")
             }
 
             application {
@@ -466,7 +466,7 @@ Make your first API call to Claude and build a simple web search assistant.
                 <dependency>
                   <groupId>com.anthropic</groupId>
                   <artifactId>anthropic-java</artifactId>
-                  <version>2.48.0</version>
+                  <version>2.50.0</version>
                 </dependency>
               </dependencies>
             </project>

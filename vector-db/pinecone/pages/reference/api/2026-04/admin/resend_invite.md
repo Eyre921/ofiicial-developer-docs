@@ -5,12 +5,7 @@ path: reference/api/2026-04/admin/resend_invite
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/invites/{invite_id}/resend
-Resend the invite email and extend `expires_at` by 7 days.
-Resending an expired invite is allowed: it extends `expires_at` by 7 days from now, returning the invite to `pending`.
-Resending an already-accepted (processed) invite returns `409` (see shared conflict response).
-Limited to 100 invite emails per hour per organization. Returns `429` when exceeded.
-Repeat requests may send another email and extend expiry again.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
+Resend the invite email and extend its expiration to 7 days from now; limited to 100 emails per hour per organization.
 
 
 <RequestExample>

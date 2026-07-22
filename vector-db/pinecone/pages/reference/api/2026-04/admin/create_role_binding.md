@@ -6,8 +6,6 @@ path: reference/api/2026-04/admin/create_role_binding
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/role-bindings
 Grant a role to a principal at an organization or project scope.
-Set `resource_type` to select the scope. For `project` scope, `resource_id` is required and must be the project UUID. For `organization` scope, omit `resource_id`; the binding applies to the caller's organization.
-Returns `409` if an identical binding already exists, or if the target principal is an invite that has already been accepted (processed).
 
 
 <RequestExample>

@@ -214,19 +214,19 @@ components:
 
 ```json
 {
-  "id": "ftn_9a8b7c6d5e4f3g2h1i0j",
+  "id": "finetune_8a7c3d2f9b4e4a1d9f6c7b8e",
   "name": "Chillwave Sunset Mix",
   "tags": [
     "chillwave",
-    "sunset",
-    "electronic"
+    "electronic",
+    "sunset vibes"
   ],
-  "model_id": "mdl_1234abcd5678efgh",
+  "model_id": "music_v1",
   "created_at": "2024-01-15T09:30:00Z",
   "visibility": "private",
   "created_by": "self",
-  "status": "completed",
-  "training_progress": 1,
+  "status": "in_progress",
+  "training_progress": 0.45,
   "primary_genre": "electronic",
   "failure_reason": null
 }

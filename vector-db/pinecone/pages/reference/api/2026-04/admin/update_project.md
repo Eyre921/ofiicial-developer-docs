@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin/update_project
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/projects/{project_id}
-Update a project's configuration details.
-You can update the project's name, maximum number of Pods, or enable encryption with a customer-managed encryption key (CMEK).
+Update a project's name, maximum number of Pods, or customer-managed encryption key (CMEK).
 
 
 <RequestExample>

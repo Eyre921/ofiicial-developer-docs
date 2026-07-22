@@ -44,13 +44,14 @@ Currency support differs depending on the location of your business or represent
 
 You can store funds in a financial account in the Dashboard. You can fund your financial account balance with external funds or from your Stripe payments balance. In the US, funds in your financial account balance are eligible for FDIC insurance up to 250,000 USD.
 
-| Funding method | Funds available | Stripe fees | Where to initiate |
-| --- | --- | --- | --- |
-| Add money from your external bank account | 0–3 business days | - Free through a local bank network, such as ACH
-- 2 USD per wire | From your bank |
-| (US) Pull funds from your external bank account | 2–6 business days | Free | Stripe Dashboard |
-| Add money from your available Stripe payments balance | Immediately | Free | Stripe Dashboard |
-| [Add stablecoins](https://docs.stripe.com/treasury/stablecoins.md) through your preferred crypto network | Minutes | Free | From your crypto wallet |
+| Funding method | Funds available | Where to initiate |
+| --- | --- | --- |
+| Add money from your external bank account | 0–3 business days | From your bank |
+| (US) Pull funds from your external bank account | 2–6 business days | Stripe Dashboard |
+| Add money from your available Stripe payments balance | Immediately | Stripe Dashboard |
+| [Add stablecoins](https://docs.stripe.com/treasury/stablecoins.md) through your preferred crypto network | Minutes | From your crypto wallet |
+
+For pricing to fund your financial account, see the [Treasury pricing page](https://stripe.com/pricing#treasury).
 
 ### Transaction cutoff times
 

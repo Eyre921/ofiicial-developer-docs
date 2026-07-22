@@ -1983,6 +1983,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/download-activity-report
 /en/copilot/how-tos/administer-copilot/view-usage-and-adoption
 /en/copilot/how-tos/administer-copilot/view-code-generation
+/en/copilot/how-tos/administer-copilot/view-impact-dashboard
 /en/copilot/how-tos/troubleshoot-copilot
 /en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues
 /en/copilot/how-tos/troubleshoot-copilot/view-logs

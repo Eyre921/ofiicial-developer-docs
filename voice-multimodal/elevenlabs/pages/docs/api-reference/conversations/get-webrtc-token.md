@@ -104,8 +104,11 @@ components:
       properties:
         token:
           type: string
+        conversation_id:
+          type: string
       required:
         - token
+        - conversation_id
       title: TokenResponseModel
     ValidationErrorLocItems:
       oneOf:
@@ -147,7 +150,8 @@ components:
 
 ```json
 {
-  "token": "string"
+  "token": "string",
+  "conversation_id": "string"
 }
 ```
 

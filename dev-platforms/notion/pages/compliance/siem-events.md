@@ -176,7 +176,7 @@ For page events, the page audience describes the visibility level of the target 
 * **workspace.mcp.allowlist\_enabled**: The MCP allowlist was enabled for the workspace.
 * **workspace.mcp.client\_added**: An MCP client was added to the workspace's allowlist.
 * **workspace.mcp.client\_removed**: An MCP client was removed from the workspace's allowlist.
-* **workspace.mcp.server\_connected**: An MCP server was connected to the workspace.
+* **workspace.mcp.server\_connected**: An MCP server was connected to the workspace, including via enterprise-managed authentication.
 * **workspace.members\_exported**: A list of workspace members was exported.
 * **workspace.membership\_request\_resolved**: A membership request from a member to add a new person to the workspace was resolved, i.e. the workspace owner either approved or denied the request.
 * **workspace.permissions.guest\_removed**: A guest was removed from the workspace by a workspace owner or membership admin.

@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin/delete_service_account
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/service-accounts/{service_account_id}
-Delete a service account and its role bindings. Returns `202`; the service account is then no longer returned by get requests (returns `404`).
-OAuth tokens minted by the service account are revoked within a few seconds.
+Delete a service account and its role bindings; tokens it minted are revoked within a few seconds.
 
 
 <RequestExample>

@@ -380,14 +380,14 @@
 - [Convex Deployment API](/deployment-api/convex-deployment-api.md): Admin API for interacting with deployments.
 - [Create log stream](/deployment-api/create-log-stream.md): Create a new log stream for the deployment. Errors if a log stream of the
 - [Create usage limit](/deployment-api/create-usage-limit.md): Create a new usage limit config for a deployment.
-- [Data sync](/deployment-api/data-sync-post.md): **Early access:** this API is not yet stable and may change in
+- [Data sync](/deployment-api/data-sync.md): :::info[Beta]
 - [Delete log stream](/deployment-api/delete-log-stream.md): Delete the deployment's log stream with the given id.
 - [Delete usage limit](/deployment-api/delete-usage-limit.md): Delete an existing usage limit config for a deployment.
 - [Get canonical URLs](/deployment-api/get-canonical-urls.md): Get the canonical URLs for a deployment.
 - [Get current usage](/deployment-api/get-current-usage.md): :::info[Beta]
 - [Get deployment info](/deployment-api/get-deployment-info.md): Returns identity information about this deployment.
 - [Get log stream](/deployment-api/get-log-stream.md): Get the config for a specific log stream by id.
-- [List active data syncs](/deployment-api/list-active-syncs-get.md): **Early access:** this API is not yet stable and may change in
+- [List active data syncs](/deployment-api/list-active-syncs.md): :::info[Beta]
 - [List audit log events](/deployment-api/list-audit-log-events.md): List a deployment's audit log events on or after a timestamp, from least to
 - [List environment variables](/deployment-api/list-environment-variables.md): Get all environment variables in a deployment.
 - [List log streams](/deployment-api/list-log-streams.md): List configs for all existing log streams in a deployment.
@@ -11147,7 +11147,7 @@ Fetch a single document from the table by its [GenericId](/api/modules/values.md
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/database.ts:97](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L97)
+[server/database.ts:98](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L98)
 
 ***
 
@@ -11167,7 +11167,7 @@ Queries don't execute immediately, so calling this method and extending its quer
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/database.ts:109](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L109)
+[server/database.ts:110](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L110)
 
 
 ---
@@ -11215,7 +11215,7 @@ Fetch a single document from the table by its [GenericId](/api/modules/values.md
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/database.ts:97](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L97)
+[server/database.ts:98](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L98)
 
 ***
 
@@ -11239,7 +11239,7 @@ Queries don't execute immediately, so calling this method and extending its quer
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/database.ts:109](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L109)
+[server/database.ts:110](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L110)
 
 ***
 
@@ -11263,7 +11263,7 @@ Insert a new document into the table.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/database.ts:410](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L410)
+[server/database.ts:427](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L427)
 
 ***
 
@@ -11288,7 +11288,7 @@ New fields are added. Existing fields are overwritten. Fields set to `undefined`
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/database.ts:425](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L425)
+[server/database.ts:442](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L442)
 
 ***
 
@@ -11311,7 +11311,7 @@ Replace the value of an existing document, overwriting its old value.
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/database.ts:437](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L437)
+[server/database.ts:454](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L454)
 
 ***
 
@@ -11333,7 +11333,7 @@ Delete an existing document.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/database.ts:447](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L447)
+[server/database.ts:464](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L464)
 
 
 ---
@@ -12280,7 +12280,7 @@ const metadata = await ctx.db.system.get("_storage", storageId);
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/database.ts:162](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L162)
+[server/database.ts:163](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L163)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12321,7 +12321,7 @@ BaseDatabaseReader.get
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/database.ts:29](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L29)
+[server/database.ts:30](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L30)
 
 ▸ **get**<`TableName`>(`id`): `Promise`<`null` | [`DocumentByName`](/api/modules/server.md#documentbyname)<`DataModel`, `TableName`>>
 
@@ -12353,7 +12353,7 @@ BaseDatabaseReader.get
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/database.ts:43](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L43)
+[server/database.ts:44](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L44)
 
 ***
 
@@ -12389,7 +12389,7 @@ BaseDatabaseReader.query
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/database.ts:56](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L56)
+[server/database.ts:57](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L57)
 
 ***
 
@@ -12426,7 +12426,7 @@ BaseDatabaseReader.normalizeId
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/database.ts:72](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L72)
+[server/database.ts:73](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L73)
 
 
 ---
@@ -12464,7 +12464,7 @@ The two entry points are:
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/database.ts:178](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L178)
+[server/database.ts:179](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L179)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12496,7 +12496,7 @@ BaseDatabaseReaderWithTable.table
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/database.ts:82](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L82)
+[server/database.ts:83](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L83)
 
 
 ---
@@ -12597,7 +12597,7 @@ const metadata = await ctx.db.system.get("_storage", storageId);
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/database.ts:162](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L162)
+[server/database.ts:163](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L163)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -12638,7 +12638,7 @@ const user = await ctx.db.get("users", userId);
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/database.ts:29](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L29)
+[server/database.ts:30](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L30)
 
 ▸ **get**<`TableName`>(`id`): `Promise`<`null` | [`DocumentByName`](/api/modules/server.md#documentbyname)<`DataModel`, `TableName`>>
 
@@ -12670,7 +12670,7 @@ Supported for backwards compatibility. Prefer `db.get(tableName, id)` in new cod
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/database.ts:43](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L43)
+[server/database.ts:44](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L44)
 
 ***
 
@@ -12706,7 +12706,7 @@ Queries don't execute immediately, so calling this method and extending its quer
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/database.ts:56](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L56)
+[server/database.ts:57](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L57)
 
 ***
 
@@ -12743,7 +12743,7 @@ This does not guarantee that the ID exists (i.e. `db.get(tableName, id)` may ret
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/database.ts:72](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L72)
+[server/database.ts:73](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L73)
 
 ***
 
@@ -12786,7 +12786,7 @@ The [GenericId](/api/modules/values.md#genericid) of the new document.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/database.ts:239](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L239)
+[server/database.ts:240](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L240)
 
 ***
 
@@ -12836,7 +12836,7 @@ await ctx.db.patch("tasks", taskId, { assignee: undefined });
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[server/database.ts:270](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L270)
+[server/database.ts:271](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L271)
 
 ▸ **patch**<`TableName`>(`id`, `value`): `Promise`<`void`>
 
@@ -12867,7 +12867,7 @@ Supported for backwards compatibility. Prefer `db.patch(tableName, id, value)` i
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[server/database.ts:292](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L292)
+[server/database.ts:293](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L293)
 
 ***
 
@@ -12915,7 +12915,7 @@ await ctx.db.replace("users", userId, {
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[server/database.ts:320](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L320)
+[server/database.ts:321](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L321)
 
 ▸ **replace**<`TableName`>(`id`, `value`): `Promise`<`void`>
 
@@ -12944,7 +12944,7 @@ Supported for backwards compatibility. Prefer `db.replace(tableName, id, value)`
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[server/database.ts:339](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L339)
+[server/database.ts:340](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L340)
 
 ***
 
@@ -12979,7 +12979,7 @@ await ctx.db.delete("tasks", taskId);
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[server/database.ts:355](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L355)
+[server/database.ts:356](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L356)
 
 ▸ **delete**(`id`): `Promise`<`void`>
 
@@ -13001,7 +13001,7 @@ Supported for backwards compatibility. Prefer `db.delete(tableName, id)` in new 
 
 #### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[server/database.ts:372](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L372)
+[server/database.ts:373](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L373)
 
 
 ---
@@ -13047,7 +13047,7 @@ The two entry points are:
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/database.ts:178](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L178)
+[server/database.ts:179](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L179)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -13079,7 +13079,7 @@ Scope the database to a specific table.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/database.ts:395](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L395)
+[server/database.ts:412](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L412)
 
 
 ---
@@ -19202,12 +19202,12 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Type declaration[​](#type-declaration-2 "Direct link to Type declaration")
 
-| Name        | Type                                                                                                                    | Description                                                                                                                                                                                                                                                                                                                |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `use`       | \<Definition>(`definition`: `Definition`, `options?`: `UseOptions`<`Definition`>) => `InstalledComponent`<`Definition`> | Install a component with the given definition in this component definition. Takes a component definition and an optional name. For editor tooling this method expects a [ComponentDefinition](/api/modules/server.md#componentdefinition) but at runtime the object that is imported will be a ImportedComponentDefinition |
-| `__exports` | `Exports`                                                                                                               | Internal type-only property tracking exports provided. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                        |
-| `env`       | `EnvRefFromDefinition`<`Env`>                                                                                           | References to this component's declared env vars. Pass one of these in `app.use(child, { env: { ... } })` to bind a child's env var by reference to this component's env var.                                                                                                                                              |
-| `__env`     | `Env`                                                                                                                   | Internal type-only property tracking env definition. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                          |
+| Name        | Type                                                                                                                | Description                                                                                                                                                                                                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `use`       | \<Definition>(`definition`: `Definition`, ...`args`: `UseArgs`<`Definition`>) => `InstalledComponent`<`Definition`> | Install a component with the given definition in this component definition. Takes a component definition and an optional name. For editor tooling this method expects a [ComponentDefinition](/api/modules/server.md#componentdefinition) but at runtime the object that is imported will be a ImportedComponentDefinition |
+| `__exports` | `Exports`                                                                                                           | Internal type-only property tracking exports provided. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                        |
+| `env`       | `EnvRefFromDefinition`<`Env`>                                                                                       | References to this component's declared env vars. Pass one of these in `app.use(child, { env: { ... } })` to bind a child's env var by reference to this component's env var.                                                                                                                                              |
+| `__env`     | `Env`                                                                                                               | Internal type-only property tracking env definition. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                          |
 
 #### Defined in[​](#defined-in-16 "Direct link to Defined in")
 
@@ -19247,13 +19247,13 @@ const app = defineApp({
 
 #### Defined in[​](#defined-in-17 "Direct link to Defined in")
 
-[server/components/index.ts:215](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L215)
+[server/components/index.ts:226](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L226)
 
 ***
 
 ### EnvFromDefinition[​](#envfromdefinition "Direct link to EnvFromDefinition")
 
-Ƭ **EnvFromDefinition**<`E`>: [`Expand`](/api/modules/server.md#expand)<{ \[K in keyof E as E\[K] extends VOptional\<any> ? never : K]: Infer\<E\[K]> } & { \[K in keyof E as E\[K] extends VOptional\<any> ? K : never]?: Infer\<E\[K]> }>
+Ƭ **EnvFromDefinition**<`E`>: [`Expand`](/api/modules/server.md#expand)<{ \[K in keyof E as E\[K] extends Validator\<any, "optional", any> ? never : K]: Infer\<E\[K]> } & { \[K in keyof E as E\[K] extends Validator\<any, "optional", any> ? K : never]?: Infer\<E\[K]> }>
 
 Compute the typed environment object from an [EnvDefinition](/api/modules/server.md#envdefinition).
 
@@ -19267,7 +19267,7 @@ Required entries get the validator's inferred string type; optional entries are 
 
 #### Defined in[​](#defined-in-18 "Direct link to Defined in")
 
-[server/components/index.ts:228](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L228)
+[server/components/index.ts:239](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L239)
 
 ***
 
@@ -19285,7 +19285,7 @@ Extract the typed environment from an [AppDefinition](/api/modules/server.md#app
 
 #### Defined in[​](#defined-in-19 "Direct link to Defined in")
 
-[server/components/index.ts:263](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L263)
+[server/components/index.ts:276](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L276)
 
 ***
 
@@ -19305,15 +19305,15 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Type declaration[​](#type-declaration-3 "Direct link to Type declaration")
 
-| Name    | Type                                                                                                                    | Description                                                                                                                                                                                                                                                                                                                |
-| ------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `use`   | \<Definition>(`definition`: `Definition`, `options?`: `UseOptions`<`Definition`>) => `InstalledComponent`<`Definition`> | Install a component with the given definition in this component definition. Takes a component definition and an optional name. For editor tooling this method expects a [ComponentDefinition](/api/modules/server.md#componentdefinition) but at runtime the object that is imported will be a ImportedComponentDefinition |
-| `env`   | `EnvRefFromDefinition`<`Env`>                                                                                           | References to this app's declared env vars. Pass one of these in `app.use(child, { env: { ... } })` to bind a child's env var by reference to this app's env var.                                                                                                                                                          |
-| `__env` | `Env`                                                                                                                   | Internal type-only property tracking env definition. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                          |
+| Name    | Type                                                                                                                | Description                                                                                                                                                                                                                                                                                                                |
+| ------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `use`   | \<Definition>(`definition`: `Definition`, ...`args`: `UseArgs`<`Definition`>) => `InstalledComponent`<`Definition`> | Install a component with the given definition in this component definition. Takes a component definition and an optional name. For editor tooling this method expects a [ComponentDefinition](/api/modules/server.md#componentdefinition) but at runtime the object that is imported will be a ImportedComponentDefinition |
+| `env`   | `EnvRefFromDefinition`<`Env`>                                                                                       | References to this app's declared env vars. Pass one of these in `app.use(child, { env: { ... } })` to bind a child's env var by reference to this app's env var.                                                                                                                                                          |
+| `__env` | `Env`                                                                                                               | Internal type-only property tracking env definition. **`Deprecated`** This is a type-only property, don't use it.                                                                                                                                                                                                          |
 
 #### Defined in[​](#defined-in-20 "Direct link to Defined in")
 
-[server/components/index.ts:275](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L275)
+[server/components/index.ts:288](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L288)
 
 ***
 
@@ -19323,7 +19323,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-21 "Direct link to Defined in")
 
-[server/components/index.ts:766](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L766)
+[server/components/index.ts:779](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L779)
 
 ***
 
@@ -19333,7 +19333,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[server/components/index.ts:806](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L806)
+[server/components/index.ts:819](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L819)
 
 ***
 
@@ -21178,7 +21178,7 @@ Optionally define typed environment variables that will be available via the `en
 
 #### Defined in[​](#defined-in-105 "Direct link to Defined in")
 
-[server/components/index.ts:663](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L663)
+[server/components/index.ts:676](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L676)
 
 ***
 
@@ -21236,7 +21236,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-106 "Direct link to Defined in")
 
-[server/components/index.ts:726](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L726)
+[server/components/index.ts:739](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L739)
 
 ***
 
@@ -21250,7 +21250,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-107 "Direct link to Defined in")
 
-[server/components/index.ts:804](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L804)
+[server/components/index.ts:817](https://github.com/get-convex/convex-js/blob/main/src/server/components/index.ts#L817)
 
 ***
 
@@ -22719,7 +22719,7 @@ The JavaScript representation of the Convex value.
 
 #### Defined in[​](#defined-in-21 "Direct link to Defined in")
 
-[values/value.ts:187](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L187)
+[values/value.ts:232](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L232)
 
 ***
 
@@ -22747,7 +22747,7 @@ The JSON representation of `value`.
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[values/value.ts:429](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L429)
+[values/value.ts:483](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L483)
 
 
 ---
@@ -28652,7 +28652,7 @@ Generating code can require communicating with a convex deployment in order to e
 
 Convex AI files help AI coding assistants (Cursor, Claude Code, etc.) understand Convex patterns and APIs. They are set up during your first `npx convex dev` and can be managed at any time with the commands below.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex ai-files [options] [command]
@@ -28678,7 +28678,7 @@ Prints whether Convex AI files are enabled, and for each component:
 
 Fetches the latest hashes from version.convex.dev to report whether each file is up to date. If the network is unavailable the staleness check is skipped silently.
 
-### Usage[​](#usage-1 "Direct link to Usage")
+### Syntax[​](#syntax-1 "Direct link to Syntax")
 
 ```
 npx convex ai-files status [options]
@@ -28693,7 +28693,7 @@ Installs the following (or refreshes them if already present):
 * CLAUDE.md (Convex section only)
 * Agent skills (installed to each coding agent's native path, configured via convex.json)
 
-### Usage[​](#usage-2 "Direct link to Usage")
+### Syntax[​](#syntax-2 "Direct link to Syntax")
 
 ```
 npx convex ai-files install [options]
@@ -28703,7 +28703,7 @@ npx convex ai-files install [options]
 
 Re-enables Convex AI files by writing `aiFiles.enabled: true` to `convex.json`, then installs or refreshes the managed AI files.
 
-### Usage[​](#usage-3 "Direct link to Usage")
+### Syntax[​](#syntax-3 "Direct link to Syntax")
 
 ```
 npx convex ai-files enable [options]
@@ -28718,7 +28718,7 @@ Updates the following to their latest versions:
 * CLAUDE.md (Convex section only)
 * Agent skills (installed to each coding agent's native path, configured via convex.json)
 
-### Usage[​](#usage-4 "Direct link to Usage")
+### Syntax[​](#syntax-4 "Direct link to Syntax")
 
 ```
 npx convex ai-files update [options]
@@ -28732,7 +28732,7 @@ Files already installed are left untouched - use `npx convex ai-files remove` if
 
 Run `npx convex ai-files enable` to re-enable at any time.
 
-### Usage[​](#usage-5 "Direct link to Usage")
+### Syntax[​](#syntax-5 "Direct link to Syntax")
 
 ```
 npx convex ai-files disable [options]
@@ -28752,7 +28752,7 @@ Skills installed from other sources are not affected.
 
 Note: after `remove`, `npx convex dev` will suggest reinstalling AI files. Use `npx convex ai-files disable` to opt out entirely without deleting files.
 
-### Usage[​](#usage-6 "Direct link to Usage")
+### Syntax[​](#syntax-6 "Direct link to Syntax")
 
 ```
 npx convex ai-files remove [options]
@@ -28769,7 +28769,7 @@ This code is generated automatically while running `npx convex dev` and should b
 
 This doesn't modify the code running on the deployment.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex codegen [options]
@@ -28800,7 +28800,7 @@ npx convex codegen [options]
 
 Open the dashboard in the browser
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex dashboard [options]
@@ -28844,7 +28844,7 @@ By default, this inspects your dev deployment.
 
 This works with system tables, such as `_storage`, in addition to your own tables.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex data [options] [table]
@@ -28923,7 +28923,7 @@ The target deployment is chosen like this:
 5. Push your functions, indexes, and schema to the deployment.
 6. When deploying to a preview deployment, it runs the function specified by `--preview-run`. If any step fails, the next steps do not run.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex deploy [options]
@@ -28986,7 +28986,7 @@ npx convex deploy [options]
 
 Manage deployments in your project.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex deployment [options] [command]
@@ -29010,7 +29010,7 @@ The deployment will be used by all `npx convex` commands, except `npx convex dep
 * Select a deployment in another project in the same team: `npx convex deployment select some-project:dev/james`
 * Select a deployment in a particular team/project: `npx convex deployment select some-team:some-project:dev/james`
 
-### Usage[​](#usage-1 "Direct link to Usage")
+### Syntax[​](#syntax-1 "Direct link to Syntax")
 
 ```
 npx convex deployment select [options] <deployment>
@@ -29029,7 +29029,7 @@ Create a new deployment for a project.
 * Create a dev deployment and select it: `npx convex deployment create dev/my-new-feature --type dev --select`
 * Create a prod deployment named “staging”: `npx convex deployment create staging --type prod`
 
-### Usage[​](#usage-2 "Direct link to Usage")
+### Syntax[​](#syntax-2 "Direct link to Syntax")
 
 ```
 npx convex deployment create [options] [reference]
@@ -29067,7 +29067,7 @@ npx convex deployment create [options] [reference]
 
 Create and delete access tokens. Currently supports deploy keys.
 
-### Usage[​](#usage-3 "Direct link to Usage")
+### Syntax[​](#syntax-3 "Direct link to Syntax")
 
 ```
 npx convex deployment token [options] [command]
@@ -29082,7 +29082,7 @@ Creates a deploy key that, when set as `CONVEX_DEPLOY_KEY`, scopes all commands 
 * Save a new deploy key in a custom env file: `npx convex deployment token create ci-token --save-env .env.production`
 * Create a key for the project's prod: `npx convex deployment token create ci-token --deployment prod`
 
-#### Usage[​](#usage-4 "Direct link to Usage")
+#### Syntax[​](#syntax-4 "Direct link to Syntax")
 
 ```
 npx convex deployment token create [options] <name>
@@ -29124,7 +29124,7 @@ The positional `<nameOrToken>` can be the unique name of the deploy key (as pass
 * Delete by value: `npx convex deployment token delete 'dev:happy-animal-123|ey...'`
 * Target prod: `npx convex deployment token delete ci-token --deployment prod`
 
-#### Usage[​](#usage-5 "Direct link to Usage")
+#### Syntax[​](#syntax-5 "Direct link to Syntax")
 
 ```
 npx convex deployment token delete [options] <nameOrToken>
@@ -29164,7 +29164,7 @@ Develop against a dev deployment, watching for changes
 3. Runs the provided command (if `--start` or `--run` is used)
 4. Watches for file changes, and repeats step 2
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex dev [options]
@@ -29231,7 +29231,7 @@ npx convex dev [options]
 
 Open the docs in the browser
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex docs [options]
@@ -29262,7 +29262,7 @@ By default, this sets and views variables on your dev deployment.
 
 See the environment variables guide (<https://docs.convex.dev/production/environment-variables>) to learn more.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex env [options] [command]
@@ -29310,7 +29310,7 @@ To keep secrets out of your shell history, omit the value to pipe it in via stdi
 
 To update many variables at once, save them with `npx convex env list > .env.convex`, edit the file, then reapply the changes with `npx convex env set --force < .env.convex`.
 
-### Usage[​](#usage-1 "Direct link to Usage")
+### Syntax[​](#syntax-1 "Direct link to Syntax")
 
 ```
 npx convex env set [options] [name] [value]
@@ -29340,7 +29340,7 @@ npx convex env set [options] [name] [value]
 
 Print a variable's value: `npx convex env get NAME`
 
-### Usage[​](#usage-2 "Direct link to Usage")
+### Syntax[​](#syntax-2 "Direct link to Syntax")
 
 ```
 npx convex env get [options] <name>
@@ -29356,7 +29356,7 @@ npx convex env get [options] <name>
 
 Unset a variable: `npx convex env remove NAME` If the variable doesn't exist, the command doesn't do anything and succeeds.
 
-### Usage[​](#usage-3 "Direct link to Usage")
+### Syntax[​](#syntax-3 "Direct link to Syntax")
 
 ```
 npx convex env remove [options] <name>
@@ -29380,7 +29380,7 @@ npx convex env remove [options] <name>
 * Save all variables to a file: `npx convex env list > .env.convex`
 * Append to a file: `npx convex env list >> .env.convex`
 
-### Usage[​](#usage-4 "Direct link to Usage")
+### Syntax[​](#syntax-4 "Direct link to Syntax")
 
 ```
 npx convex env list [options]
@@ -29404,7 +29404,7 @@ The default environment variables read and written to by this command are the on
 * List only default variable names (no values): `npx convex env default list --names-only`
 * Print a default variable's value: `npx convex env default get NAME`
 
-### Usage[​](#usage-5 "Direct link to Usage")
+### Syntax[​](#syntax-5 "Direct link to Syntax")
 
 ```
 npx convex env default [options] [command]
@@ -29423,7 +29423,7 @@ When setting multiple values, it will refuse all changes if any variables are al
 
 The deployment type is determined by the current deployment (local maps to dev), or by --type if provided.
 
-#### Usage[​](#usage-6 "Direct link to Usage")
+#### Syntax[​](#syntax-6 "Direct link to Syntax")
 
 ```
 npx convex env default set [options] [name] [value]
@@ -29461,7 +29461,7 @@ npx convex env default set [options] [name] [value]
 
 Print a default variable's value: `npx convex env default get NAME` The deployment type is determined by the current deployment (local maps to dev), or by --type if provided.
 
-#### Usage[​](#usage-7 "Direct link to Usage")
+#### Syntax[​](#syntax-7 "Direct link to Syntax")
 
 ```
 npx convex env default get [options] <name>
@@ -29493,7 +29493,7 @@ If the variable doesn't exist, the command doesn't do anything and succeeds.
 
 The deployment type is determined by the current deployment (local maps to dev), or by --type if provided.
 
-#### Usage[​](#usage-8 "Direct link to Usage")
+#### Syntax[​](#syntax-8 "Direct link to Syntax")
 
 ```
 npx convex env default remove [options] <name>
@@ -29527,7 +29527,7 @@ npx convex env default remove [options] <name>
 
 The deployment type is determined by the current deployment (local maps to dev), or by --type if provided.
 
-#### Usage[​](#usage-9 "Direct link to Usage")
+#### Syntax[​](#syntax-9 "Direct link to Syntax")
 
 ```
 npx convex env default list [options]
@@ -29562,7 +29562,7 @@ By default, this exports from your dev deployment.
 
 See the data export guide (<https://docs.convex.dev/database/import-export/export>) for details and use cases.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex export [options]
@@ -29601,7 +29601,7 @@ List argument and return values to your Convex functions.
 
 By default, this inspects your dev deployment.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex function-spec [options]
@@ -29641,7 +29641,7 @@ By default, this imports into your dev deployment.
 
 See the data import guide (<https://docs.convex.dev/database/import-export/import>) for details and use cases.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex import [options] <path>
@@ -29715,7 +29715,7 @@ Show health insights for a Convex deployment over the last 72 hours. Displays OC
 
 This command is only available for Convex cloud deployments when logged in as a user.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex insights [options]
@@ -29752,7 +29752,7 @@ npx convex insights [options]
 
 Log out of Convex on this machine
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex logout [options]
@@ -29765,7 +29765,7 @@ npx convex logout [options]
 
 Stream function logs from your Convex deployment. By default, this streams from your project's dev deployment.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex logs [options]
@@ -29806,7 +29806,7 @@ npx convex logs [options]
 
 Commands to initialize and run a Model Context Protocol server for Convex that can be used with AI tools. This server exposes your Convex codebase to AI tools in a structured way.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex mcp [options] [command]
@@ -29820,7 +29820,7 @@ npx convex mcp [options] [command]
 
 Start the Model Context Protocol server for Convex that can be used with AI tools.
 
-### Usage[​](#usage-1 "Direct link to Usage")
+### Syntax[​](#syntax-1 "Direct link to Syntax")
 
 ```
 npx convex mcp start [options]
@@ -29865,7 +29865,7 @@ npx convex mcp start [options]
 
 Manage projects in your team.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex project [options] [command]
@@ -29884,7 +29884,7 @@ Provisioning a deployment is a separate step — after creating the project, run
 * Create a project in your only team: `npx convex project create my-app`
 * Pick the team: `npx convex project create my-app --team my-team`
 
-### Usage[​](#usage-1 "Direct link to Usage")
+### Syntax[​](#syntax-1 "Direct link to Syntax")
 
 ```
 npx convex project create [options] [name]
@@ -29917,7 +29917,7 @@ Run a function or evaluate an inline readonly query on your deployment.
 
 Arguments are specified as a JSON object. By default, this runs on your dev deployment.
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex run [options] [functionName] [args]
@@ -29996,7 +29996,7 @@ npx convex run [options] [functionName] [args]
 
 Print instructions for updating the convex package
 
-## Usage[​](#usage "Direct link to Usage")
+## Syntax[​](#syntax "Direct link to Syntax")
 
 ```
 npx convex update [options]
@@ -40499,17 +40499,17 @@ POST
 /data/sync
 ```
 
-**Early access:** this API is not yet stable and may change in backwards-incompatible ways without notice. Contact the Convex team before depending on it.
+Beta
 
-Streams a resumable export of some or all of a deployment's data. Streaming export must be enabled on the deployment, and the caller must have the `deployment:data:view` permission.
+This endpoint is in beta. Its behavior and response shape may change.
+
+Paginated streamable export of some or all of a deployment's data.
 
 Call this endpoint repeatedly, passing the opaque `pagination.nextCursor` from each response back in the next request as `cursor`. Omit `cursor` on the first call.
 
-To handle the response, first drop all tables listed in `truncates`. Then apply document updates from `values`, in order. Each update replaces the existing document with the same `_id` if present. Persist the results to each page atomically with the returned cursor.
+To do a one time data sync, keep fetching pages until reaching an `upToDate` page. For a continuous streaming export, continue fetching pages periodically. It's recommended to sleep between `upToDate` pages to reduce overhead.
 
-Continue calling the endpoint with the most recent cursor to progress the data sync. If `pagination.hasMore` is `true`, there is more progress to be made immediately, so you should call again soon. Otherwise, you can call back periodically to discover newly written data. This endpoint must be called at least once every 3 days, or the sync will expire and can no longer be resumed. When that happens the endpoint responds with a `400` (`DataSyncCursorExpired`), and you must restart the sync from scratch by calling again with no cursor.
-
-Each sync's progress is periodically recorded while the sync is in progress and can be monitored via `/data/list_active_syncs`, keyed by the `syncId` returned in every response.
+The caller must have the `deployment:data:view` permission.
 
 ## Request[​](#request "Direct link to request")
 
@@ -40635,11 +40635,13 @@ GET
 /data/list_active_syncs
 ```
 
-**Early access:** this API is not yet stable and may change in backwards-incompatible ways without notice. Contact the Convex team before depending on it.
+Beta
 
-Returns the progress of every active data sync: one that fetched a page from `/data/sync` within the past 3 days, whether it is still performing its initial traversal or is already synced and streaming changes. Progress is recorded periodically, so an in-flight sync's numbers may trail its most recent page.
+This endpoint is in beta. Its behavior and response shape may change.
 
-Results are paginated, most recently updated first. Pass the returned `nextCursor` back as `cursor` to fetch the next page.
+Returns the progress of active data sync (/v1/data/sync).
+
+A data sync is considered active for 3 days after the most recent API call. from `/data/sync` within the past 3 days.
 
 ## Request[​](#request "Direct link to request")
 
@@ -48581,6 +48583,7 @@ Schema:
   * `vector_search_write_query_bytes`: number, these two fields together track vector search query usage. Combined with the `text_search_*` fields, they make up the Search queries pricing metric.
   * `file_storage_read_bytes`: number, the bytes read from file storage using the [storage API within Convex functions](/file-storage/store-files.md) (e.g. `ctx.storage.get()`). This does not include bandwidth from clients downloading files directly from the storage HTTP API; see [`storage_api_bandwidth`](#storage_api_bandwidth-events).
   * `network_egress_bytes`: number, the bytes sent to clients or external services. This contributes to Data egress alongside [`storage_api_bandwidth`](#storage_api_bandwidth-events) events.
+  * `audit_log_egress_bytes`: number, the bytes egressed delivering [audit logs](/production/integrations/audit-logging.md) to S3 (if configured for a D1024 deployment).
   * `action_memory_used_mb`: optional number (actions and HTTP actions only), the memory used in MiB. This combined with `execution_time_ms` makes up Action compute.
 
 Example event for a query:
@@ -48628,7 +48631,9 @@ Example event for a query:
 
       "vector_search_write_query_bytes": 0,
 
-      "network_egress_bytes": 0
+      "network_egress_bytes": 0,
+
+      "audit_log_egress_bytes": 0
 
     }
 

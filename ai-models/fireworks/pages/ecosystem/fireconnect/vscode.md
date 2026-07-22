@@ -83,20 +83,6 @@ On macOS, `safeStorage` encrypts with a master key VS Code stores in the login K
 
 FireConnect snapshots the original `chatLanguageModels.json` under `~/.fireconnect/vscode/` before the first change. Running `fireconnect vscode off` restores it byte-for-byte and deletes the `chat.lm.secret.fw-*` secret row from `state.vscdb`.
 
-## FireRouter mode
-
-`fireconnect vscode on --router` retargets VS Code Chat at FireRouter so it speaks the **Anthropic Messages** wire format (`https://router.fireworks.ai/v1/messages`) and routes Anthropic models server-side. This requires both a Fireworks key and an Anthropic key:
-
-```bash theme={null}
-fireconnect vscode on --router --api-key fw_... --anthropic-api-key sk-ant-...
-fireconnect vscode status
-fireconnect vscode off
-```
-
-VS Code's custom endpoint resolves exactly **one** credential from secret storage (the provider `apiKey`), so FireRouter's two-header auth can't both be encrypted. FireConnect stores the **Anthropic key** encrypted in `state.vscdb` and writes the **Fireworks key** as a plaintext literal in each model's `requestHeaders["X-FireRouter-Fireworks-Key"]`.
-
-`on --router` registers the Claude models FireRouter advertises — **pick one in the VS Code Chat picker**. `--main` and the model commands (`list`/`select`/`add`/`reset`) are disabled in router mode; model choice lives entirely in the Chat picker. Fire Pass keys are rejected (router mode is Anthropic-only).
-
 ## CLI reference
 
 ```bash theme={null}
@@ -110,7 +96,7 @@ fireconnect vscode model reset     # Reset fireconnect-managed models to default
 fireconnect vscode help            # Show harness-specific help
 ```
 
-Run `fireconnect vscode help` for all options, including `--vscode-path` (explicit `chatLanguageModels.json` path), `--router` (FireRouter mode), and `--force`.
+Run `fireconnect vscode help` for all options, including `--vscode-path` (explicit `chatLanguageModels.json` path) and `--force`.
 
 ### Turn off Fireworks routing
 

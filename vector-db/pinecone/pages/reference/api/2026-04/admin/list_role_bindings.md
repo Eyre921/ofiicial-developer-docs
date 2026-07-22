@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin/list_role_bindings
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/role-bindings
-List role bindings in the organization. Results are paginated.
-Optional filters are described in the query parameters. Filters are combined with AND. Pagination tokens apply to the full query (including all filters).
+List role bindings in the caller's organization, optionally filtered by principal, resource, and role.
 
 
 <RequestExample>

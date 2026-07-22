@@ -195,8 +195,6 @@ Each IDE harness (`cursor`, `vscode`) supports:
 * `fireconnect <harness> model reset` — Reset fireconnect-managed models to defaults
 * `fireconnect <harness> help` — Harness-specific help
 
-VS Code also supports `fireconnect vscode on --router` for FireRouter (Anthropic models via `https://router.fireworks.ai/v1/messages`). Pi supports `fireconnect pi on --router` for the same routing pattern.
-
 Cursor stores settings in SQLite (`state.vscdb`). Commands that write to that database (`on`, `off`, `model add`, `model select`, `model reset`) require Cursor to be fully quit first. VS Code stores the API key in `state.vscdb` as well, so `on` and `off` require quitting VS Code; `model add`, `model select`, and `model reset` only edit `chatLanguageModels.json`, which VS Code hot-reloads.
 
 With **Fireworks on Microsoft Foundry** (`--provider azure`), pass your Foundry **deployment name** to `on` with `--main` instead of using `model list` or `model select`.

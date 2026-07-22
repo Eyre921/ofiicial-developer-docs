@@ -21,6 +21,9 @@ RAG is ideal for agents that need to reference large documents, technical manual
 knowledge bases that would exceed the context window limits of traditional prompting.
 RAG adds on slight latency to the response time of your agent, around 250ms.
 
+This video was recorded with an earlier version of the dashboard. The RAG configuration steps are
+unchanged, but some interface elements may look different.
+
 ## How RAG works
 
 When RAG is enabled, your agent processes user queries through these steps:
@@ -46,9 +49,7 @@ This process ensures that relevant information to the user's query is passed to 
 
 In your agent's settings, navigate to the **Knowledge Base** section and toggle on the **Use RAG** option. Configure the embedding model, maximum document chunks, and maximum vector distance under the **Advanced** tab as needed.
 
-<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/bdcdf9c15b8eb653248909e11149d0c383fb45f761f3bfbc47ba56feb25d8899/assets/images/conversational-ai/rag-enabled.png" alt="Toggle switch to enable RAG in the agent settings" />
-
-<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/c9a0f81555c8fadd0324637c672f08950889e19b9cf56f971d60fcc520a06d0a/assets/images/conversational-ai/rag-config.png" alt="RAG configuration options including embedding model selection" />
+<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/6e8a6273d26090d92a2ed237ffbc488f44e5e9a408aca6511afa94461d177c86/assets/images/conversational-ai/rag-config.png" alt="RAG configuration options including embedding model selection" />
 
 #### Update via the CLI
 
@@ -103,9 +104,9 @@ knowledge base list.
 For each document in your knowledge base, you can choose how it's used:
 
 * **Auto (default)**: The document is only retrieved when relevant to the query
-* **Prompt**: The document is always included in the system prompt, regardless of relevance, but can also be retrieved by RAG
+* **Prompt**: The document is always included in the system prompt, regardless of relevance
 
-<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/fb47404f1ac2a698ed9dfedaa5bd75ea9d4b00c701a97e8db0caec8d18ef60ce/assets/images/conversational-ai/rag-prompt.png" alt="Document usage mode options in the knowledge base" />
+<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/265aa612b4ad2da915b617552312b47c965892559b2a8615ecb42551763de4a5/assets/images/conversational-ai/rag-prompt.png" alt="Document usage mode options in the knowledge base" />
 
 Setting too many documents to "Prompt" mode may exceed context limits. Use this option sparingly
 for critical information.

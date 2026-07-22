@@ -249,7 +249,7 @@ Save the job ID.
 
 Jobs move through these states: `pending → queued → running → uploading → completed`. Queue wait time is typically under an hour. Once running, multiply the first epoch's duration by `n_epochs` to estimate the time remaining.
 
-Poll for completion (or error/cancellation), then read the output model name:
+Poll for completion (or error/cancellation), then read the Model Object ID:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -270,8 +270,9 @@ Poll for completion (or error/cancellation), then read the output model name:
   if status.status != "completed":
       raise RuntimeError(f"Job ended with status: {status.status}")
 
-  output_model = status.x_model_output_name
-  print(output_model)
+  # Model Object ID (ml_...); deploy references this, not the output name.
+  model_object_id = status.api_model_object_id
+  print(model_object_id)
   ```
 
   ```typescript TypeScript theme={null}
@@ -292,8 +293,9 @@ Poll for completion (or error/cancellation), then read the output model name:
     throw new Error(`Job ended with status: ${status.status}`);
   }
 
-  const outputModel = status.x_model_output_name;
-  console.log(outputModel);
+  // Model Object ID (ml_...); deploy references this, not the output name.
+  const modelObjectId = status.model_object_id;
+  console.log(modelObjectId);
   ```
 
   ```bash CLI theme={null}
@@ -325,98 +327,147 @@ You can also monitor the run on the [fine-tuning jobs dashboard](https://api.tog
 
 ## Step 4: Deploy and call your model
 
-Fine-tuned models can be run on Together AI using [dedicated endpoints](/docs/fine-tuning/deployment). The example below deploys, sends one request, and tears the endpoint down to stop billing:
+Fine-tuned models run on Together AI through [dedicated model inference](/docs/fine-tuning/deployment). A completed job is already a private model in your project, so there's no upload step: you deploy it with the `tg beta` CLI by its Model Object ID (`model_object_id`, the `ml_...` value from Step 3). The deploy commands require Together CLI version `2.24.0` or later.
+
+The CLI's `deploy` command creates the endpoint, attaches a deployment, and routes all traffic to it in one step. Then poll until the deployment reaches `DEPLOYMENT_STATE_READY`:
+
+```bash CLI theme={null}
+# Deploy the fine-tuned model to a new endpoint
+tg beta endpoints deploy "<MODEL_OBJECT_ID>" \
+  --endpoint qwen-finetune
+
+# Poll until the deployment reaches DEPLOYMENT_STATE_READY
+# (pass the endpoint ID from the deploy output)
+tg beta endpoints get "<ENDPOINT_ID>"
+```
+
+The SDK has no single-call equivalent, so it runs the same steps individually, referencing the fine-tune by its Model Object ID (`ml_...`):
 
 <CodeGroup>
   ```python Python theme={null}
-  # 1. Preflight: confirm the base can host a fine-tune
-  client.endpoints.list_hardware(model=status.model)
+  from together import Together
 
-  # 2. Create the endpoint. Use a hardware id returned by list_hardware
-  # above; for Qwen3.5 9B the platform currently serves 1x H100 80GB SXM.
-  endpoint = client.endpoints.create(
-      display_name="Qwen3.5 9B fine-tune",
-      model=output_model,
-      hardware="1x_nvidia_h100_80gb_sxm",
+  client = Together()
+  project_id = client.whoami().project_id
+
+  # Reference the fine-tune by its Model Object ID (ml_...) and a config
+  # for the base model. List configs: tg beta models configs <model>.
+  model = f"projects/{project_id}/models/<MODEL_OBJECT_ID>"
+  config = f"projects/{project_id}/configs/<CONFIG_ID>"
+
+  endpoint = client.beta.endpoints.create(
+      project_id=project_id,
+      name="qwen-finetune",
+  )
+  deployment = client.beta.endpoints.deployments.create(
+      endpoint.id,
+      project_id=project_id,
+      name="prod",
+      model=model,
+      config=config,
       autoscaling={"min_replicas": 1, "max_replicas": 1},
   )
+  client.beta.endpoints.update(
+      endpoint.id,
+      project_id=project_id,
+      traffic_split=[{"deployment_id": deployment.id, "weight": 1}],
+  )
 
-  # 3. Wait until ready
-  deadline = time.time() + 20 * 60
-  while True:
-      ep = client.endpoints.retrieve(endpoint.id)
-      if ep.state == "STARTED":
-          break
-      if ep.state in ("FAILED", "STOPPED"):
-          raise RuntimeError(f"Endpoint state: {ep.state}")
-      if time.time() > deadline:
-          raise TimeoutError(f"Endpoint still {ep.state} after 20 minutes")
-      time.sleep(30)
+  # Poll until ready
+  deployment = client.beta.endpoints.deployments.retrieve(
+      deployment.id, project_id=project_id, endpoint_id=endpoint.id
+  )
+  print(endpoint.name, deployment.status.state)
+  ```
 
-  # 4. Send a request
-  response = client.chat.completions.create(
-      model=endpoint.name,
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+  const { project_id: projectId } = await client.whoami();
+
+  // Reference the fine-tune by its Model Object ID (ml_...) and a config
+  // for the base model. List configs: tg beta models configs <model>.
+  const model = `projects/${projectId}/models/<MODEL_OBJECT_ID>`;
+  const config = `projects/${projectId}/configs/<CONFIG_ID>`;
+
+  const endpoint = await client.beta.endpoints.create({
+    projectId,
+    name: "qwen-finetune",
+  });
+  const deployment = await client.beta.endpoints.deployments.create(
+    endpoint.id,
+    {
+      projectId,
+      name: "prod",
+      model,
+      config,
+      autoscaling: { minReplicas: 1, maxReplicas: 1 },
+    },
+  );
+  await client.beta.endpoints.update(endpoint.id, {
+    projectId,
+    trafficSplit: [{ deploymentId: deployment.id, weight: 1 }],
+  });
+  console.log(endpoint.name);
+  ```
+</CodeGroup>
+
+Once the deployment is ready, send a request. The deploy output prints the **endpoint string** (`your-project-slug/qwen-finetune`): pass this as the `model` parameter. Point the base URL at `https://api-inference.together.ai/v1`:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  # A dedicated client for inference: this base URL serves only
+  # inference, not the fine-tuning or files APIs.
+  inference_client = Together(base_url="https://api-inference.together.ai/v1")
+
+  response = inference_client.chat.completions.create(
+      model="your-project-slug/qwen-finetune",
       messages=[{"role": "user", "content": "What is the capital of France?"}],
       max_tokens=128,
   )
   print(response.choices[0].message.content)
-
-  # 5. Delete when done
-  client.endpoints.delete(endpoint.id)
   ```
 
   ```typescript TypeScript theme={null}
-  await client.endpoints.listHardware({ model: status.model });
+  import Together from "together-ai";
 
-  const endpoint = await client.endpoints.create({
-    display_name: "Qwen3.5 9B fine-tune",
-    model: outputModel,
-    hardware: "1x_nvidia_h100_80gb_sxm",
-    autoscaling: { min_replicas: 1, max_replicas: 1 },
+  // A dedicated client for inference: this base URL serves only
+  // inference, not the fine-tuning or files APIs.
+  const inferenceClient = new Together({
+    baseURL: "https://api-inference.together.ai/v1",
   });
 
-  const deadline = Date.now() + 20 * 60 * 1000;
-  while (true) {
-    const ep = await client.endpoints.retrieve(endpoint.id);
-    if (ep.state === "STARTED") break;
-    if (ep.state === "FAILED" || ep.state === "STOPPED") {
-      throw new Error(`Endpoint state: ${ep.state}`);
-    }
-    if (Date.now() > deadline) {
-      throw new Error("Endpoint did not start within 20 minutes");
-    }
-    await new Promise((r) => setTimeout(r, 30000));
-  }
-
-  const response = await client.chat.completions.create({
-    model: endpoint.name,
+  const response = await inferenceClient.chat.completions.create({
+    model: "your-project-slug/qwen-finetune",
     messages: [{ role: "user", content: "What is the capital of France?" }],
     max_tokens: 128,
   });
   console.log(response.choices[0].message.content);
-
-  await client.endpoints.delete(endpoint.id);
   ```
 
-  ```bash CLI theme={null}
-  tg endpoints create \
-    --model "<OUTPUT_MODEL_NAME>" \
-    --hardware 1x_nvidia_h100_80gb_sxm \
-    --display-name "Qwen3.5 9B fine-tune" \
-    --wait
-
-  # The CLI doesn't ship a chat command — call the endpoint with curl.
-  curl -s https://api.together.ai/v1/chat/completions \
+  ```bash cURL theme={null}
+  curl -s https://api-inference.together.ai/v1/chat/completions \
     -H "Authorization: Bearer $TOGETHER_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"model":"<ENDPOINT_NAME>","messages":[{"role":"user","content":"What is the capital of France?"}],"max_tokens":128}'
-
-  tg endpoints delete "<ENDPOINT_ID>"
+    -d '{
+      "model": "your-project-slug/qwen-finetune",
+      "messages": [{"role": "user", "content": "What is the capital of France?"}],
+      "max_tokens": 128
+    }'
   ```
 </CodeGroup>
 
+When you're done, delete the endpoint and its deployment to stop billing:
+
+```bash CLI theme={null}
+tg beta endpoints rm "<ENDPOINT_ID>" --force
+```
+
 <Note>
-  Pass `endpoint.name` (not `output_model`) as the `model` parameter when calling inference APIs. The endpoint name includes a unique suffix that routes traffic to your deployment.
+  Pass the endpoint string (`your-project-slug/qwen-finetune`, printed by the deploy output) as the `model` parameter, not the Model Object ID. If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`; list a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
 </Note>
 
 <Check>
@@ -428,7 +479,7 @@ Fine-tuned models can be run on Together AI using [dedicated endpoints](/docs/fi
 To measure the impact of fine-tuning, run the same prompts through the base model and the fine-tuned model.
 
 <Note>
-  **Many fine-tunable base models aren't available on [serverless](/docs/serverless/models).** For example, calling `Qwen/Qwen3.5-9B` directly returns `Unable to access non-serverless model`. To compare, deploy the base on its own [dedicated endpoint](/docs/dedicated-endpoints/overview), evaluate against `endpoint.name`, then tear that endpoint down too. Serverless bases (those with a per-token price listed on the [models dashboard](https://api.together.ai/models)) can be called directly without deploying anything.
+  **Many fine-tunable base models aren't available on [serverless](/docs/serverless/models).** For example, calling `Qwen/Qwen3.5-9B` directly returns `Unable to access non-serverless model`. To compare, deploy the base on its own [dedicated endpoint](/docs/dedicated-endpoints/overview), evaluate against its endpoint string, then tear that endpoint down too. Serverless bases (those with a per-token price listed on the [models dashboard](https://api.together.ai/models)) can be called directly without deploying anything.
 </Note>
 
 This [GitHub notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Finetuning/Finetuning_Guide.ipynb) runs an Exact Match and F1 comparison on the CoQA validation split. Here's a sample result from one run:
@@ -440,13 +491,13 @@ This [GitHub notebook](https://github.com/togethercomputer/together-cookbook/blo
 
 ## Stop the endpoint
 
-Dedicated model inference bills per minute as long as the endpoint is running. Step 4 deletes the endpoint at the end of the script, but if you skipped that step or want to delete it later, run:
+Dedicated model inference bills per minute per running replica as long as the deployment is running. Step 4 deletes the endpoint at the end, but if you skipped that step or want to delete it later, run:
 
 ```bash theme={null}
-tg endpoints delete "<ENDPOINT_ID>"
+tg beta endpoints rm "<ENDPOINT_ID>" --force
 ```
 
-Find the endpoint ID by running `tg endpoints list`.
+Find the endpoint ID by running `tg beta endpoints ls`.
 
 ## Continue from a checkpoint
 

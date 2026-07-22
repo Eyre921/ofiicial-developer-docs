@@ -5,9 +5,7 @@ path: reference/api/2026-04/admin/list_service_accounts
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/service-accounts
-List service accounts in the caller's organization. Results are paginated. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+List service accounts in the caller's organization.
 
 <RequestExample>
   ```bash curl theme={null}

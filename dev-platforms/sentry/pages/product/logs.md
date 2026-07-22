@@ -81,6 +81,12 @@ You can export up to 10,000 log lines in CSV or [JSON Lines (JSONL)](https://jso
   * **Note:** Use either format to export the currently displayed columns, or use JSONL to export All Columns.
 * Depending on the size, the file will either download directly or be sent to you via email.
 
+### [Pinning Logs](https://docs.sentry.io/product/logs.md#pinning-logs)
+
+Logs can be pinned to the top of the logs view to keep them visible as you scroll through large datasets. This helps you to keep critical log lines (such as session start markers or specific state changes) visible as a "sticky header".
+
+To pin or un-pin a log, click the push pin icon that appears when you hover over a log row:
+
 ## [Visualizing Log Data](https://docs.sentry.io/product/logs.md#visualizing-log-data)
 
 The Logs Explorer includes a **Visualize** panel under **Advanced** that controls the charts displayed above the log table.

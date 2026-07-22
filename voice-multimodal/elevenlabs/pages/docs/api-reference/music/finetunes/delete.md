@@ -214,14 +214,14 @@ components:
 
 ```json
 {
-  "id": "ftn_9a8b7c6d5e4f3g2h1i0j",
+  "id": "finetune_8a7b3c2d4e5f6g7h8i9j0k",
   "name": "Chillwave Sunset",
   "tags": [
     "chillwave",
-    "synth",
-    "ambient"
+    "electronic",
+    "sunset vibes"
   ],
-  "model_id": "mdl_12345abcde67890fghij",
+  "model_id": "music_v1",
   "created_at": "2024-01-15T09:30:00Z",
   "visibility": "private",
   "created_by": "self",

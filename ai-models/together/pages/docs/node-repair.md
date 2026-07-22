@@ -17,8 +17,8 @@ When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/heal
 1. Health checks detect an issue on a node and create an alert with supporting evidence.
 2. The system evaluates the alert and generates a repair recommendation with a suggested mode (for example, migrate to new host).
 3. The recommendation appears in the **Repairs** tab of your cluster.
-4. You review the recommendation and accept or dismiss it.
-5. Once accepted, Together executes the repair: cordon, graceful drain, remediation action, and node rejoin.
+4. You review the recommendation and approve a repair action. The system marks its suggested action as recommended, but you can override it and approve a different action instead.
+5. Once approved, Together executes the repair with the action you chose: cordon, graceful drain, remediation action, and node rejoin.
 
 <Note>
   Auto repair accounts for in-flight work. Training jobs need to checkpoint before a node drains, and inference workloads need their replicas rebalanced. Review recommendations before accepting to confirm your workloads are ready for the disruption.
@@ -55,6 +55,21 @@ The detected issues come from [passive health check signals](/docs/health-checks
 <Note>
   Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today; some raise an internal alert that Together's team reviews first. Every recommendation is reviewed and accepted by you before a repair runs.
 </Note>
+
+### Override the recommended action
+
+When you review a recommendation, the system marks its suggested action as recommended. You can approve that action, or override it and approve a different action instead. Overriding lets you escalate or de-escalate the repair when you have more context than the automated policy. For example, you can choose migrate to new host instead of a recommended reboot when you suspect a hardware fault.
+
+The review shows the health check failures that triggered the recommendation alongside the four repair actions:
+
+* **Reboot:** Restart the VM in place on the same host.
+* **Quick reprovision:** Recreate the VM on the same physical host.
+* **Migrate to new host:** Provision a new VM on different physical hardware.
+* **Remove:** Permanently remove the node for RMA.
+
+Select an action to see its workload impact and an optional reason field, then confirm. Approving the recommended action runs the suggested repair. Selecting any other action overrides the recommendation and runs that repair instead.
+
+See [Available repair actions](#available-repair-actions) for guidance on when to use each action. You can also approve a recommendation from the command line with [`tg beta clusters remediations approve`](/reference/cli/clusters#approve-a-node-remediation), which exposes the same actions through its `--mode` flag.
 
 ### Behavioral details
 
@@ -131,7 +146,7 @@ Reboots the VM in place on the same physical host.
 
 **Quick reprovision**
 
-Reprovisions the GPU node VM on a random underlying physical host.
+Reprovisions the GPU node VM on the same underlying physical host.
 
 * **When to use:** Persistent software-level issues (driver crashes, library corruption), VM configuration problems, or application-level issues that a reboot did not resolve.
 * **What happens:** The node follows the Cordon → Drain → Reprovision lifecycle. The VM is recreated with a fresh software stack and rejoins the cluster automatically.
@@ -185,7 +200,7 @@ Cordon → Drain → Reboot/Reprovision/Migrate/Remove → Rejoin (or permanent 
 **Reboot/Reprovision/Migrate:**
 
 * **Reboot:** The VM restarts in place on the same hardware. Local `/scratch` and `/tmp` data is preserved.
-* **Quick reprovision:** The VM is recreated on a random physical node (could be the same as the original host). Local data is lost.
+* **Quick reprovision:** The VM is recreated on the same physical host. Local data is lost.
 * **Migrate to new host:** A new VM is created on different physical hardware. Local data is lost.
 * **Remove:** The node is permanently removed from the cluster for RMA. No rejoin occurs.
 

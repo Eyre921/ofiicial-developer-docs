@@ -109,6 +109,15 @@ To retrieve metadata for a job, including its current status:
 tg fine-tuning retrieve [FT_ID]
 ```
 
+Completed jobs also include Together model registry IDs for the final weights:
+
+| Field                        | Description                                                               |
+| ---------------------------- | ------------------------------------------------------------------------- |
+| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_...`).   |
+| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_...`). |
+| `adapter_object_id`          | Registry object ID for the final LoRA adapter weights on LoRA jobs.       |
+| `adapter_object_revision_id` | Registry revision ID for the final LoRA adapter weights on LoRA jobs.     |
+
 ## List events
 
 To list events of a past or running job:

@@ -104,18 +104,18 @@ The agent uses its built-in tools, skills, and memory to help you with tasks.
   <Accordion title="Keyboard shortcuts" icon="keyboard">
     **General**
 
-    | Shortcut                                              | Action                                      |
-    | ----------------------------------------------------- | ------------------------------------------- |
-    | `Enter`                                               | Submit prompt                               |
-    | `Shift+Enter`, `Ctrl+J`, `Alt+Enter`, or `Ctrl+Enter` | Insert newline                              |
-    | `@filename`                                           | Auto-complete files and inject content      |
-    | `Shift+Tab` or `Ctrl+T`                               | Toggle auto-approve                         |
-    | `Ctrl+X`                                              | Open prompt in external editor              |
-    | `Ctrl+N`                                              | Review pending notifications                |
-    | `Ctrl+O`                                              | Expand/collapse the most recent tool output |
-    | `Escape`                                              | Interrupt current operation                 |
-    | `Ctrl+C`                                              | Interrupt or quit                           |
-    | `Ctrl+D`                                              | Exit                                        |
+    | Shortcut                                              | Action                                                                                         |
+    | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+    | `Enter`                                               | Submit prompt                                                                                  |
+    | `Shift+Enter`, `Ctrl+J`, `Alt+Enter`, or `Ctrl+Enter` | Insert newline                                                                                 |
+    | `@filename`                                           | Auto-complete files and inject content                                                         |
+    | `Shift+Tab` or `Ctrl+T`                               | Toggle between Manual and Auto [approval mode](/oss/javascript/deepagents/code/approval-modes) |
+    | `Ctrl+X`                                              | Open prompt in external editor                                                                 |
+    | `Ctrl+N`                                              | Review pending notifications                                                                   |
+    | `Ctrl+O`                                              | Expand/collapse the most recent tool output                                                    |
+    | `Escape`                                              | Interrupt current operation                                                                    |
+    | `Ctrl+C`                                              | Interrupt or quit                                                                              |
+    | `Ctrl+D`                                              | Exit                                                                                           |
 
     **Text editing in the prompt**
 

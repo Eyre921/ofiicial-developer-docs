@@ -756,9 +756,10 @@ Before each agent run, snapshot the current file contents. After files refresh,
 compare against the snapshot to identify which files changed:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-type FileSnapshot = Record<string, string>;
-
-function detectChanges(current: FileSnapshot, original: FileSnapshot): Set<string> {
+function detectChanges(
+  current: FileSnapshot,
+  original: FileSnapshot,
+): Set<string> {
   const changed = new Set<string>();
   for (const [path, content] of Object.entries(current)) {
     if (original[path] !== content) changed.add(path);

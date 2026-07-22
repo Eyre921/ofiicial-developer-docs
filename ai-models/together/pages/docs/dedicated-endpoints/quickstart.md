@@ -50,7 +50,7 @@ The command returns as soon as the resources are created and prints the endpoint
 √ Model deployed to endpoint your-project-slug/quickstart-endpoint.
 
 ╭─ Endpoint Details for quickstart-endpoint ───────────────────────────────────╮
-│    Inference Name  your-project-slug/quickstart-endpoint                     │
+│    Endpoint string  your-project-slug/quickstart-endpoint                    │
 │       Endpoint ID  ep_abc123                                                 │
 │        Created at  07/13/2026, 06:52 PM                                      │
 │        Updated at  07/13/2026, 06:52 PM                                      │
@@ -68,7 +68,7 @@ Deployments
 ╰──────────────────────────────────────┴───────────────────┴───────────────────╯
 ```
 
-Note the **Inference Name** (`your-project-slug/quickstart-endpoint`): this is the endpoint string you pass as the `model` parameter when you send requests.
+Note the **endpoint string** (`your-project-slug/quickstart-endpoint`): pass it as the `model` parameter when you send requests.
 
 The deployment provisions in the background. For a model this size, first-time provisioning usually takes about 5 to 10 minutes while the weights download and hardware is allocated; larger models take longer. Check its status with the deployment ID from the output, and wait for `DEPLOYMENT_STATE_READY`:
 

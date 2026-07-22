@@ -2940,7 +2940,7 @@ components:
         allowed_models:
           - anthropic/*
           - openai/gpt-4o
-        cost_quality_tradeoff: 7
+        cost_quality_tradeoff: 9
         enabled: true
         id: auto-beta-router
       properties:
@@ -2964,8 +2964,8 @@ components:
             community spend share, then filters candidates by their average cost
             per generation for that task. Higher values favor cheaper models: 10
             keeps only models around the cheapest 10th percentile, while 0
-            permits models up to the 90th percentile for cost. Defaults to 7.
-          example: 7
+            permits models up to the 90th percentile for cost. Defaults to 9.
+          example: 9
           maximum: 10
           minimum: 0
           type: integer
@@ -2989,6 +2989,7 @@ components:
         cost_quality_tradeoff: 7
         enabled: true
         id: auto-router
+        pin_model: false
       properties:
         allowed_models:
           description: >-
@@ -3022,6 +3023,12 @@ components:
           enum:
             - auto-router
           type: string
+        pin_model:
+          description: >-
+            When true, reuses the model from the most recent assistant message's
+            `model` attribute for subsequent turns. Defaults to false.
+          example: false
+          type: boolean
       required:
         - id
       type: object
@@ -4592,6 +4599,7 @@ components:
       description: Assistant message for requests and responses
       example:
         content: The capital of France is Paris.
+        model: openai/gpt-4o
         role: assistant
       properties:
         audio:
@@ -4606,6 +4614,10 @@ components:
           description: Assistant message content
         images:
           $ref: '#/components/schemas/ChatAssistantImages'
+        model:
+          description: Model that generated this assistant message
+          example: openai/gpt-4o
+          type: string
         name:
           description: Optional name for the assistant
           type: string
@@ -5523,7 +5535,12 @@ components:
         trace:
           $ref: '#/components/schemas/TraceConfig'
         user:
-          description: Unique user identifier
+          description: >-
+            Per-end-user identifier for abuse isolation. Use a stable ID, hash,
+            or pseudonym. When a provider requires a user identity, OpenRouter
+            folds it into the hashed identity sent upstream and never forwards
+            it raw. If omitted, requests use an account-level identity, so
+            provider policy blocks can affect the whole account.
           example: user-123
           type: string
       required:
@@ -7451,6 +7468,7 @@ components:
         data:
           created_at: '2025-08-24T10:30:00Z'
           created_by: user_abc123
+          default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
           default_image_model: openai/dall-e-3
           default_provider_sort: price
           default_text_model: openai/gpt-4o
@@ -9785,6 +9803,7 @@ components:
         data:
           created_at: '2025-08-24T10:30:00Z'
           created_by: user_abc123
+          default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
           default_image_model: openai/dall-e-3
           default_provider_sort: price
           default_text_model: openai/gpt-4o
@@ -12004,6 +12023,7 @@ components:
         data:
           - created_at: '2025-08-24T10:30:00Z'
             created_by: user_abc123
+            default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
             default_image_model: openai/dall-e-3
             default_provider_sort: price
             default_text_model: openai/gpt-4o
@@ -17896,7 +17916,12 @@ components:
     OutputImageGenerationCallItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemImageGenerationCall'
-        - properties: {}
+        - properties:
+            prompt:
+              description: >-
+                The prompt (possibly rewritten) that the image was generated
+                from.
+              type: string
           type: object
       example:
         id: img-abc123
@@ -17917,6 +17942,9 @@ components:
         imageB64:
           type: string
         imageUrl:
+          type: string
+        prompt:
+          description: The prompt (possibly rewritten) that the image was generated from.
           type: string
         result:
           description: >-
@@ -18963,7 +18991,7 @@ components:
       example:
         enabled: true
         id: pareto-router
-        min_coding_score: 0.8
+        max_price: 5
         price_source: prompt
       properties:
         enabled:
@@ -18975,13 +19003,27 @@ components:
           enum:
             - pareto-router
           type: string
+        max_price:
+          description: >-
+            Maximum input price in USD per million tokens. When set,
+            quality-tier selection (min_coding_score) is bypassed: the router
+            computes the Pareto frontier over the top coding models and routes
+            to the best-scoring frontier model priced at or below this cap,
+            falling back through cheaper frontier models, then non-frontier
+            models. Enforced against the price source given by price_source.
+            Returns 404 when no candidate satisfies the cap.
+          example: 5
+          format: double
+          minimum: 0
+          type: number
         min_coding_score:
           description: >-
             Minimum coding quality score between 0 and 1. Maps to internal
             quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium
             (strong modern flagships), < 0.33 → low (capable coders above the
             median). Omit to default to the highest tier (equivalent to >=
-            0.66).
+            0.66). Not used when max_price is set (price-based selection takes
+            over).
           example: 0.8
           format: double
           maximum: 1
@@ -18989,11 +19031,11 @@ components:
           type: number
         price_source:
           description: >-
-            Price source for the Pareto frontier cost axis. "prompt" uses
-            catalog list price (endpoint.pricing.prompt). "weighted_avg" uses
-            traffic-weighted effective input price from ClickHouse, falling back
-            to prompt price for models without traffic data. Defaults to
-            "prompt".
+            Price source for the Pareto frontier cost axis and for enforcing
+            max_price. "prompt" uses catalog list price
+            (endpoint.pricing.prompt). "weighted_avg" uses traffic-weighted
+            effective input price from ClickHouse, falling back to prompt price
+            for models without traffic data. Defaults to "prompt".
           enum:
             - prompt
             - weighted_avg
@@ -21712,6 +21754,13 @@ components:
         route:
           $ref: '#/components/schemas/DeprecatedRoute'
         safety_identifier:
+          description: >-
+            Recommended per-end-user identifier for abuse isolation. Use a
+            stable ID, hash, or pseudonym. When a provider requires a user
+            identity, OpenRouter folds it into the hashed identity sent upstream
+            and never forwards it raw. If omitted, requests use an account-level
+            identity, so provider policy blocks can affect the whole account.
+          example: user-123
           type:
             - string
             - 'null'
@@ -24369,6 +24418,7 @@ components:
         data:
           created_at: '2025-08-24T10:30:00Z'
           created_by: user_abc123
+          default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
           default_image_model: openai/dall-e-3
           default_provider_sort: price
           default_text_model: openai/gpt-4o
@@ -25384,6 +25434,7 @@ components:
       example:
         created_at: '2025-08-24T10:30:00Z'
         created_by: user_abc123
+        default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
         default_image_model: openai/dall-e-3
         default_provider_sort: price
         default_text_model: openai/gpt-4o
@@ -25408,6 +25459,13 @@ components:
           type:
             - string
             - 'null'
+        default_guardrail_id:
+          description: >-
+            Deterministic ID of the workspace's implicitly-created default
+            guardrail
+          example: 595d5849-7e86-51fd-a7c0-705c34e4afff
+          format: uuid
+          type: string
         default_image_model:
           description: Default image model for this workspace
           example: openai/dall-e-3
@@ -25484,6 +25542,7 @@ components:
             - 'null'
       required:
         - id
+        - default_guardrail_id
         - name
         - slug
         - description
@@ -29319,6 +29378,7 @@ paths:
       summary: List files
       tags:
         - Files
+      x-hidden: true
       x-speakeasy-name-override: list
       x-speakeasy-pagination:
         inputs:
@@ -29441,6 +29501,7 @@ paths:
       summary: Upload a file
       tags:
         - Files
+      x-hidden: true
       x-speakeasy-name-override: upload
   /files/{file_id}:
     delete:
@@ -29521,6 +29582,7 @@ paths:
       summary: Delete a file
       tags:
         - Files
+      x-hidden: true
       x-speakeasy-name-override: delete
     get:
       description: Retrieves metadata for a single file owned by the requesting workspace.
@@ -29603,6 +29665,7 @@ paths:
       summary: Get file metadata
       tags:
         - Files
+      x-hidden: true
       x-speakeasy-name-override: retrieve
   /files/{file_id}/content:
     get:
@@ -29692,6 +29755,7 @@ paths:
       summary: Download file content
       tags:
         - Files
+      x-hidden: true
       x-speakeasy-name-override: download
   /generation:
     get:
@@ -37189,6 +37253,7 @@ paths:
                 data:
                   - created_at: '2025-08-24T10:30:00Z'
                     created_by: user_abc123
+                    default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
                     default_image_model: openai/dall-e-3
                     default_provider_sort: price
                     default_text_model: openai/gpt-4o
@@ -37267,6 +37332,7 @@ paths:
                 data:
                   created_at: '2025-08-24T10:30:00Z'
                   created_by: user_abc123
+                  default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
                   default_image_model: openai/dall-e-3
                   default_provider_sort: price
                   default_text_model: openai/gpt-4o
@@ -37431,6 +37497,7 @@ paths:
                 data:
                   created_at: '2025-08-24T10:30:00Z'
                   created_by: user_abc123
+                  default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
                   default_image_model: openai/dall-e-3
                   default_provider_sort: price
                   default_text_model: openai/gpt-4o
@@ -37513,6 +37580,7 @@ paths:
                 data:
                   created_at: '2025-08-24T10:30:00Z'
                   created_by: user_abc123
+                  default_guardrail_id: 595d5849-7e86-51fd-a7c0-705c34e4afff
                   default_image_model: openai/dall-e-3
                   default_provider_sort: price
                   default_text_model: openai/gpt-4o

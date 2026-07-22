@@ -170,13 +170,14 @@ my-agent/
   middleware/                             # Authored middleware the agent imports
   connectors/mcp.py | connectors/mcp.ts   # Remote MCP server declarations
   connectors/langsmith.py | langsmith.ts  # Optional: constrained LangSmith capabilities
+  channels/slack.py | channels/slack.ts   # Messaging channel ingress (for example Slack Events)
   schedules/<name>.py | <name>.ts         # Managed cron schedules
   skills/<name>/SKILL.md                  # Deploy-owned skills, synced to Context Hub
   sandbox/__init__.py | sandbox/index.ts  # Managed sandbox configuration
   sandbox/setup.sh                        # Sandbox provisioning script
 ```
 
-The only required file is the agent entry: `agent.py`, `agent.ts`, or `agent.tsx`. It must export a named `agent` definition created with `define_deep_agent` or `defineDeepAgent`. The `tools/` and `middleware/` folders are conventions, not special registries: Managed Deep Agents packages regular project files, so any local module the agent imports works. When present, the CLI treats the remaining files as the managed system prompt (`instructions.md`), identity (`identity.*`), connectors (`connectors/**`), cron schedules (`schedules/**`), skills (`skills/**`), and sandbox configuration (`sandbox/`).
+The only required file is the agent entry: `agent.py`, `agent.ts`, or `agent.tsx`. It must export a named `agent` definition created with `define_deep_agent` or `defineDeepAgent`. The `tools/` and `middleware/` folders are conventions, not special registries: Managed Deep Agents packages regular project files, so any local module the agent imports works. When present, the CLI treats the remaining files as the managed system prompt (`instructions.md`), identity (`identity.*`), connectors (`connectors/**`), messaging channels (`channels/**`), cron schedules (`schedules/**`), skills (`skills/**`), and sandbox configuration (`sandbox/`).
 
 Only a project-root `agent.ts`, `agent.tsx`, or `agent.py` is required. The CLI detects the first available entry in that order.
 
@@ -210,7 +211,7 @@ Put deploy-owned skills under `skills/` next to the project-root agent entry fil
 
 ### Memory
 
-Managed memory lives in the same Context Hub repo as the deployed instructions and skills, at `/memories/AGENTS.md`. Deploy creates that file if memory is enabled and it does not exist. Deploy syncs `instructions.md` and `skills/**`, but does not overwrite local or existing Context Hub `memories/**` files.
+Managed memory lives in the same Context Hub repo as the deployed instructions and skills. The runtime remounts a scoped tree as `/memories/user/` (hot `/memories/user/AGENTS.md` plus optional cold files) and optional org facts as `/memories/org/` (read-only). Deploy seeds agent memory when needed and syncs `instructions.md` and `skills/**`, but does not overwrite existing Context Hub `memories/**` files. For hot/cold tiers, identity remounts, org memory, and `disableMemory`, see [Memory](/langsmith/managed-deep-agents-memory).
 
 ### Connectors
 
@@ -220,6 +221,14 @@ Declare connectors as modules directly under `connectors/`. Discovery is name-ag
 * **LangSmith:** `connectors/langsmith.ts` or `connectors/langsmith.py` declares constrained LangSmith capabilities for untrusted callers. Requires [identity](/langsmith/managed-deep-agents-identity). The browser never receives `LANGSMITH_API_KEY`.
 
 For examples and defaults, see [Connectors](/langsmith/managed-deep-agents-connectors).
+
+### Channels
+
+Declare messaging channels as modules directly under `channels/`. Each file exports a named `channel` (for example `defineSlackChannel` / `define_slack_channel`). The file stem becomes the channel name and mounts `POST /channels/{name}/events` on the Agent Server.
+
+* **Slack:** `channels/slack.ts` or `channels/slack.py`. Requires a root [identity](/langsmith/managed-deep-agents-identity) declaration. When present, `mda deploy` preflights `SLACK_SIGNING_SECRET` and `SLACK_BOT_TOKEN`.
+
+For triggers, Slack app setup, and Connect-with-Slack, see [Channels](/langsmith/managed-deep-agents-channels) and [Slack](/langsmith/managed-deep-agents-channels/slack).
 
 ### Schedules
 

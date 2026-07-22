@@ -4,6 +4,17 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 21, 2026">
+  ## GPU cluster add-on CLI flags
+
+  `tg beta clusters create` and `tg beta clusters update` now expose flags for Headlamp and Slurm Web cluster add-ons.
+
+  * **Create:** Pass `--headlamp-addon` or `--slurm-web-addon` to enable an add-on at cluster creation.
+  * **Update:** Pass `--headlamp` / `--no-headlamp` or `--slurm-web` / `--no-slurm-web` to toggle add-ons on an existing cluster.
+
+  See the [clusters CLI reference](/reference/cli/clusters).
+</Update>
+
 <Update label="July 20, 2026">
   ## Fine-tuning metrics dashboard
 
@@ -58,6 +69,14 @@ path: docs/changelog
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
 
   See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
+
+  ## Fine-tuning artifact registry IDs
+
+  Fine-tune job and checkpoint responses now include Together model registry IDs for completed artifacts. Use `model_object_id` and `model_object_revision_id` on completed jobs, `adapter_object_id` and `adapter_object_revision_id` on LoRA jobs, and `object_id` and `object_revision_id` on [list checkpoints](/reference/cli/finetune#list-checkpoints) entries to reference weights in the model registry. The [Together Python SDK](https://github.com/togethercomputer/together-py) (2.24+) and [Together TypeScript SDK](https://github.com/togethercomputer/together-typescript) expose these fields on retrieve and list-checkpoints responses.
+
+  ## Together Python SDK 2.24
+
+  [Together Python SDK](https://github.com/togethercomputer/together-py) 2.24 is available. OIDC cluster SSH (`tg beta clusters ssh`) no longer requires a Together API key, and the bastion-to-target SSH hop skips host key prompts for ephemeral cluster nodes. See [SSH into a cluster](/reference/cli/clusters#ssh-into-a-cluster).
 </Update>
 
 <Update label="July 15, 2026">
@@ -186,6 +205,12 @@ path: docs/changelog
   * `google/gemma-4-31B-it-VLM`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## Cost analytics units view
+
+  Organization and project cost analytics now include a **Measure** control to switch between **Cost (\$)** and **Units**. Choose **Units** to chart daily billable quantities (for example, tokens) by product, line item, project, or API key instead of dollar spend.
+
+  See [Usage limits & analytics](/docs/billing-usage-limits#cost-analytics) for details.
 </Update>
 
 <Update label="July 2, 2026">

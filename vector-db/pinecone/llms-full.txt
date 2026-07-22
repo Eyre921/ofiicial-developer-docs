@@ -15330,7 +15330,7 @@ Backup and restore times depend upon the size of the index and number of namespa
 Backup limitations are as follows:
 
 * Backups are stored in the same project, cloud provider, and region as the source index.
-* You can only restore an index to the same project, cloud provider, and region as the source index.
+* You can only restore an index to the same project and cloud provider as the source index. Restoring to a different region on the same cloud provider is supported using the `unstable` API version. For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
 * Backups only include vectors that were in the index at least 15 minutes prior to the backup time. This means that if a vector was inserted into an index and a backup was immediately taken after, the recently inserted vector may not be backed up. More specifically, if a backup is created only a few minutes after the source index was created, the backup may have 0 vectors.
 * You can only perform operations on backups in the current Pinecone project.
 * Backups are supported for indexes without a schema definition and for integrated embedding indexes that use the records API. They are not supported for full-text search indexes with document schemas that include `full_text_search` string fields, `dense_vector` fields, or `sparse_vector` fields. Indexes with document schemas also do not support `semantic_text` fields.
@@ -19192,7 +19192,7 @@ Restore serverless indexes from backup snapshots.
 
 ## Create a serverless index from a backup
 
-When restoring a serverless index from backup, you can change the index name, tags, and deletion protection setting. All other properties of the restored index will remain identical to the source index, including cloud and region, dimension and similarity metric, and associated embedding model when restoring an index with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
+When restoring a serverless index from backup, you can change the index name, tags, and deletion protection setting. All other properties of the restored index will remain identical to the source index, including cloud and region by default, dimension and similarity metric, and associated embedding model when restoring an index with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding). To restore a backup into a different region than the source index, see [Restore to a different region](#restore-to-a-different-region).
 
 To [create a serverless index from a backup](/reference/api/latest/control-plane/create_index_from_backup), provide the ID of the backup, the name of the new index, and, optionally, changes to the index tags and deletion protection settings:
 
@@ -19363,6 +19363,47 @@ The example returns a response like the following:
 <Tip>
   You can create a serverless index from a backup using the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
 </Tip>
+
+## Restore to a different region
+
+The [create index from backup](/reference/api/latest/control-plane/create_index_from_backup) endpoint always creates the new index in the same cloud and region as the backup. To restore a backup into a different region, use the `unstable` version of the [create index](/reference/api/latest/control-plane/create_index) endpoint instead. Specify the backup as `source_backup_id` within `spec.serverless` and set the target `region` there.
+
+The following rules apply:
+
+* The target region must be on the same cloud provider as the backup. Restoring to a different cloud provider is not supported.
+* The backup must be in the current Pinecone project, and the new index is created in the same project.
+* The `dimension`, `metric`, and `vector_type` must match the source index.
+* Restoring to a different region is not supported for BYOC indexes.
+
+<Warning>
+  Restoring to a different region is in [public preview](/release-notes/feature-availability). It is available through the `unstable` API version and the REST API only.
+</Warning>
+
+For example, the following request restores a backup of a dense index hosted in the AWS `us-east-1` region into a new index in the AWS `us-west-2` region:
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: unstable" \
+  -d '{
+    "name": "restored-index",
+    "vector_type": "dense",
+    "dimension": 1536,
+    "metric": "cosine",
+    "spec": {
+      "serverless": {
+        "cloud": "aws",
+        "region": "us-west-2",
+        "source_backup_id": "a65ff585-d987-4da5-a622-72e19a6ed5f4"
+      }
+    }
+  }'
+```
+
+Because the backup data is copied between regions, restoring to a different region can take longer than restoring within the same region. If restoring to a different region is not yet available for the backup's region, the request fails with a `412 Precondition Failed` error.
 
 ## List restore jobs
 
@@ -36672,7 +36713,7 @@ To ensure you always know about upcoming API changes, follow the [Release notes]
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects/{project_id}/api-keys
-Create a new API key for a project. Developers can use the API key to authenticate requests to Pinecone's Data Plane and Control Plane APIs.
+Create an API key for a project to authenticate Data Plane and Control Plane requests.
 
 
 <RequestExample>
@@ -36711,11 +36752,7 @@ Create a new API key for a project. Developers can use the API key to authentica
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/invites
-Invite a user to join the organization. Sends an email with an acceptance link.
-Grant roles with `role_bindings`. Include at least one `organization`-scoped binding that grants organization membership (`OrgOwner`, `OrgManager`, `OrgBillingAdmin`, or `OrgMember`; omit `resource_id`); add `project`-scoped bindings (with a `resource_id`) to grant project roles. Bindings are not returned in the response.
-If a pending or expired invite already exists for the email, returns `409` with the existing invite's ID in the error message. Use `POST /admin/invites/{invite_id}/resend` to resend the email, and the role-bindings endpoints to change the invite's bindings.
-If the email already belongs to a member of the organization, returns `409` (see shared conflict response). Manage that user's roles with the role-bindings endpoints instead.
-An invite's bindings are first-class role bindings: they appear in `GET /admin/role-bindings` with `principal_type=invite` and `principal_id` equal to the invite ID, and can be added or removed with the role-bindings endpoints.
+Invite a user to the organization by email and grant their initial role bindings.
 
 
 <RequestExample>
@@ -36762,7 +36799,7 @@ An invite's bindings are first-class role bindings: they appear in `GET /admin/r
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects
-Creates a new project.
+Create a new project.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -36796,8 +36833,6 @@ Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_role_binding
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/role-bindings
 Grant a role to a principal at an organization or project scope.
-Set `resource_type` to select the scope. For `project` scope, `resource_id` is required and must be the project UUID. For `organization` scope, omit `resource_id`; the binding applies to the caller's organization.
-Returns `409` if an identical binding already exists, or if the target principal is an invite that has already been accepted (processed).
 
 
 <RequestExample>
@@ -36836,9 +36871,7 @@ Returns `409` if an identical binding already exists, or if the target principal
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/service-accounts
-Create a service account with optional initial role bindings. The `client_secret` in the response is shown only once; store it securely.
-Grant roles with `role_bindings`: `organization`-scoped bindings omit `resource_id`, while `project`-scoped bindings include the project `resource_id`. Service accounts may receive any organization- or project-scoped role (see Role). Bindings are not returned in the response.
-Repeating the same request may create duplicate service accounts.
+Create a service account with optional initial role bindings; the client secret is returned only once.
 
 
 <RequestExample>
@@ -36899,8 +36932,7 @@ Delete an API key from a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/invites/{invite_id}
-Delete a pending or expired invite and its role bindings, revoking the acceptance link. Returns `202`; the invite is then no longer returned by get requests (returns `404`).
-Deleting an already-accepted (processed) invite returns `409`; the underlying user is unaffected. To remove an accepted user, use `DELETE /admin/users/{user_id}` instead. Deleting an invite that does not exist in your organization returns `404`.
+Delete a pending or expired invite and its role bindings; to remove an accepted user, delete the user instead.
 
 
 <RequestExample>
@@ -36919,8 +36951,7 @@ Deleting an already-accepted (processed) invite returns `409`; the underlying us
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/projects/{project_id}
-Delete a project and all its associated configuration.
-Before deleting a project, you must delete all indexes, assistants, backups, and collections associated with the project. Other project resources, such as API keys, are automatically deleted when the project is deleted.
+Delete a project and all its configuration; delete its indexes, assistants, backups, and collections first.
 
 
 <RequestExample>
@@ -36939,17 +36970,7 @@ Before deleting a project, you must delete all indexes, assistants, backups, and
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_role_binding
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/role-bindings/{role_binding_id}
-Delete a role binding. Permissions are revoked when the deletion completes.
-Returns `202`. The binding is removed immediately, so it no longer appears in list or get requests and instead returns `404`. A repeat delete request for the same binding returns `404`.
-Returns `409` when deleting:
-- The last `OrgOwner` binding for a user in the organization.
-- The last organization-membership role binding for a user who still has
-
-  other role bindings.
-
-- The last organization-membership role binding for a pending invite
-
-  (delete the invite instead).
+Delete a role binding; permissions are revoked when the deletion completes.
 
 
 <RequestExample>
@@ -36968,8 +36989,7 @@ Returns `409` when deleting:
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/service-accounts/{service_account_id}
-Delete a service account and its role bindings. Returns `202`; the service account is then no longer returned by get requests (returns `404`).
-OAuth tokens minted by the service account are revoked within a few seconds.
+Delete a service account and its role bindings; tokens it minted are revoked within a few seconds.
 
 
 <RequestExample>
@@ -36988,9 +37008,7 @@ OAuth tokens minted by the service account are revoked within a few seconds.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_user
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/users/{user_id}
-Remove a user from the organization and revoke their role bindings. Does not delete the user's Pinecone account.
-Returns `202`. The user's role bindings are revoked immediately, so the user no longer appears in get or list requests and instead returns `404`. A repeat request for the same user returns `404`.
-Returns `409` when removing the last `OrgOwner` in the organization.
+Remove a user from the organization and revoke their role bindings; their Pinecone account is not deleted.
 
 
 <RequestExample>
@@ -37009,7 +37027,7 @@ Returns `409` when removing the last `OrgOwner` in the organization.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/api-keys/{api_key_id}
-Get the details of an API key, excluding the API key secret.
+Get an API key's details, excluding its secret.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -37041,9 +37059,7 @@ Get the details of an API key, excluding the API key secret.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/invites/{invite_id}
-Get an invite by ID. Returns `404` if the invite is not in your organization.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+Get an invite in the caller's organization by ID.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -37075,7 +37091,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}
-Get details about a project.
+Get a project's details.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -37107,7 +37123,7 @@ Get details about a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_role_binding
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/role-bindings/{role_binding_id}
-Get a role binding by ID. Returns `404` if the binding is not in your organization.
+Get a role binding in the caller's organization by ID.
 
 
 <RequestExample>
@@ -37141,8 +37157,7 @@ Get a role binding by ID. Returns `404` if the binding is not in your organizati
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/service-accounts/{service_account_id}
-Get a service account by its ID. Returns `404` if the service account is not in your organization. The `client_secret` is not included.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them. Secrets are returned only from create and rotate-secret requests.
+Get a service account by ID; the client secret is returned only from create and rotate-secret requests.
 
 
 <RequestExample>
@@ -37174,9 +37189,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_user
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/users/{user_id}
-Get a user by ID. Returns `404` if the user is not in your organization.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+Get a user in the caller's organization by ID.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -37272,9 +37285,7 @@ List all API keys in a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_invites
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/invites
-List invites in the caller's organization. Results are paginated. Returns pending and expired invites (processed and deleted invites are excluded); use `status` to distinguish pending from expired. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+List pending and expired invites in the caller's organization.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -37344,8 +37355,7 @@ List all projects in an organization.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_role_bindings
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/role-bindings
-List role bindings in the organization. Results are paginated.
-Optional filters are described in the query parameters. Filters are combined with AND. Pagination tokens apply to the full query (including all filters).
+List role bindings in the caller's organization, optionally filtered by principal, resource, and role.
 
 
 <RequestExample>
@@ -37385,9 +37395,7 @@ Optional filters are described in the query parameters. Filters are combined wit
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_service_accounts
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/service-accounts
-List service accounts in the caller's organization. Results are paginated. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+List service accounts in the caller's organization.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -37424,11 +37432,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_users
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/users
-List users who are members of the caller's organization. Results are paginated.
-Optional filters:
-- `email` — case-insensitive match on the user's email address.
-Pagination tokens apply to the full query, including `email`. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
+List users in the caller's organization, optionally filtered by email address.
 
 
 <RequestExample>
@@ -37466,12 +37470,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/resend_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/invites/{invite_id}/resend
-Resend the invite email and extend `expires_at` by 7 days.
-Resending an expired invite is allowed: it extends `expires_at` by 7 days from now, returning the invite to `pending`.
-Resending an already-accepted (processed) invite returns `409` (see shared conflict response).
-Limited to 100 invite emails per hour per organization. Returns `429` when exceeded.
-Repeat requests may send another email and extend expiry again.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
+Resend the invite email and extend its expiration to 7 days from now; limited to 100 emails per hour per organization.
 
 
 <RequestExample>
@@ -37503,8 +37502,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/rotate_service_account_secret
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/service-accounts/{service_account_id}/rotate-secret
-Rotate the OAuth `client_secret` for a service account. The previous secret and tokens minted from it are revoked within a few seconds. The new secret is returned only in this response.
-Repeating the request may rotate again and invalidate the previous new secret.
+Rotate a service account's OAuth client secret; the previous secret and its tokens are revoked within seconds and the new secret is returned only once.
 
 
 <RequestExample>
@@ -37538,8 +37536,7 @@ Repeating the request may rotate again and invalidate the previous new secret.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/update_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/api-keys/{api_key_id}
-Update the name and roles of an API key.
-
+Update an API key's name and roles.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -37577,8 +37574,7 @@ Update the name and roles of an API key.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/update_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/projects/{project_id}
-Update a project's configuration details.
-You can update the project's name, maximum number of Pods, or enable encryption with a customer-managed encryption key (CMEK).
+Update a project's name, maximum number of Pods, or customer-managed encryption key (CMEK).
 
 
 <RequestExample>
@@ -37614,8 +37610,7 @@ You can update the project's name, maximum number of Pods, or enable encryption 
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/update_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/service-accounts/{service_account_id}
-Update a service account's mutable metadata. Only `name` is supported as a mutable field; fields that are omitted are left unchanged.
-Role bindings cannot be updated here; use the role binding endpoints to create or delete bindings.
+Update a service account's name; role bindings are managed through the role-binding endpoints.
 
 
 <RequestExample>
@@ -45418,7 +45413,7 @@ To stream upsert embeddings to Pinecone:
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects/{project_id}/api-keys
-Create a new API key for a project. Developers can use the API key to authenticate requests to Pinecone's Data Plane and Control Plane APIs.
+Create an API key for a project to authenticate Data Plane and Control Plane requests.
 
 
 <RequestExample>
@@ -45457,11 +45452,7 @@ Create a new API key for a project. Developers can use the API key to authentica
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/invites
-Invite a user to join the organization. Sends an email with an acceptance link.
-Grant roles with `role_bindings`. Include at least one `organization`-scoped binding that grants organization membership (`OrgOwner`, `OrgManager`, `OrgBillingAdmin`, or `OrgMember`; omit `resource_id`); add `project`-scoped bindings (with a `resource_id`) to grant project roles. Bindings are not returned in the response.
-If a pending or expired invite already exists for the email, returns `409` with the existing invite's ID in the error message. Use `POST /admin/invites/{invite_id}/resend` to resend the email, and the role-bindings endpoints to change the invite's bindings.
-If the email already belongs to a member of the organization, returns `409` (see shared conflict response). Manage that user's roles with the role-bindings endpoints instead.
-An invite's bindings are first-class role bindings: they appear in `GET /admin/role-bindings` with `principal_type=invite` and `principal_id` equal to the invite ID, and can be added or removed with the role-bindings endpoints.
+Invite a user to the organization by email and grant their initial role bindings.
 
 
 <RequestExample>
@@ -45508,7 +45499,7 @@ An invite's bindings are first-class role bindings: they appear in `GET /admin/r
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects
-Creates a new project.
+Create a new project.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -45542,8 +45533,6 @@ Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_role_binding
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/role-bindings
 Grant a role to a principal at an organization or project scope.
-Set `resource_type` to select the scope. For `project` scope, `resource_id` is required and must be the project UUID. For `organization` scope, omit `resource_id`; the binding applies to the caller's organization.
-Returns `409` if an identical binding already exists, or if the target principal is an invite that has already been accepted (processed).
 
 
 <RequestExample>
@@ -45582,9 +45571,7 @@ Returns `409` if an identical binding already exists, or if the target principal
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/create_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/service-accounts
-Create a service account with optional initial role bindings. The `client_secret` in the response is shown only once; store it securely.
-Grant roles with `role_bindings`: `organization`-scoped bindings omit `resource_id`, while `project`-scoped bindings include the project `resource_id`. Service accounts may receive any organization- or project-scoped role (see Role). Bindings are not returned in the response.
-Repeating the same request may create duplicate service accounts.
+Create a service account with optional initial role bindings; the client secret is returned only once.
 
 
 <RequestExample>
@@ -45645,8 +45632,7 @@ Delete an API key from a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/invites/{invite_id}
-Delete a pending or expired invite and its role bindings, revoking the acceptance link. Returns `202`; the invite is then no longer returned by get requests (returns `404`).
-Deleting an already-accepted (processed) invite returns `409`; the underlying user is unaffected. To remove an accepted user, use `DELETE /admin/users/{user_id}` instead. Deleting an invite that does not exist in your organization returns `404`.
+Delete a pending or expired invite and its role bindings; to remove an accepted user, delete the user instead.
 
 
 <RequestExample>
@@ -45665,8 +45651,7 @@ Deleting an already-accepted (processed) invite returns `409`; the underlying us
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/projects/{project_id}
-Delete a project and all its associated configuration.
-Before deleting a project, you must delete all indexes, assistants, backups, and collections associated with the project. Other project resources, such as API keys, are automatically deleted when the project is deleted.
+Delete a project and all its configuration; delete its indexes, assistants, backups, and collections first.
 
 
 <RequestExample>
@@ -45685,17 +45670,7 @@ Before deleting a project, you must delete all indexes, assistants, backups, and
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_role_binding
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/role-bindings/{role_binding_id}
-Delete a role binding. Permissions are revoked when the deletion completes.
-Returns `202`. The binding is removed immediately, so it no longer appears in list or get requests and instead returns `404`. A repeat delete request for the same binding returns `404`.
-Returns `409` when deleting:
-- The last `OrgOwner` binding for a user in the organization.
-- The last organization-membership role binding for a user who still has
-
-  other role bindings.
-
-- The last organization-membership role binding for a pending invite
-
-  (delete the invite instead).
+Delete a role binding; permissions are revoked when the deletion completes.
 
 
 <RequestExample>
@@ -45714,8 +45689,7 @@ Returns `409` when deleting:
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/service-accounts/{service_account_id}
-Delete a service account and its role bindings. Returns `202`; the service account is then no longer returned by get requests (returns `404`).
-OAuth tokens minted by the service account are revoked within a few seconds.
+Delete a service account and its role bindings; tokens it minted are revoked within a few seconds.
 
 
 <RequestExample>
@@ -45734,9 +45708,7 @@ OAuth tokens minted by the service account are revoked within a few seconds.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/delete_user
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/users/{user_id}
-Remove a user from the organization and revoke their role bindings. Does not delete the user's Pinecone account.
-Returns `202`. The user's role bindings are revoked immediately, so the user no longer appears in get or list requests and instead returns `404`. A repeat request for the same user returns `404`.
-Returns `409` when removing the last `OrgOwner` in the organization.
+Remove a user from the organization and revoke their role bindings; their Pinecone account is not deleted.
 
 
 <RequestExample>
@@ -45755,7 +45727,7 @@ Returns `409` when removing the last `OrgOwner` in the organization.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/api-keys/{api_key_id}
-Get the details of an API key, excluding the API key secret.
+Get an API key's details, excluding its secret.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -45787,9 +45759,7 @@ Get the details of an API key, excluding the API key secret.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/invites/{invite_id}
-Get an invite by ID. Returns `404` if the invite is not in your organization.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+Get an invite in the caller's organization by ID.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -45821,7 +45791,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}
-Get details about a project.
+Get a project's details.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -45853,7 +45823,7 @@ Get details about a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_role_binding
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/role-bindings/{role_binding_id}
-Get a role binding by ID. Returns `404` if the binding is not in your organization.
+Get a role binding in the caller's organization by ID.
 
 
 <RequestExample>
@@ -45887,8 +45857,7 @@ Get a role binding by ID. Returns `404` if the binding is not in your organizati
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/service-accounts/{service_account_id}
-Get a service account by its ID. Returns `404` if the service account is not in your organization. The `client_secret` is not included.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them. Secrets are returned only from create and rotate-secret requests.
+Get a service account by ID; the client secret is returned only from create and rotate-secret requests.
 
 
 <RequestExample>
@@ -45920,9 +45889,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/fetch_user
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/users/{user_id}
-Get a user by ID. Returns `404` if the user is not in your organization.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+Get a user in the caller's organization by ID.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -46018,9 +45985,7 @@ List all API keys in a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_invites
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/invites
-List invites in the caller's organization. Results are paginated. Returns pending and expired invites (processed and deleted invites are excluded); use `status` to distinguish pending from expired. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+List pending and expired invites in the caller's organization.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -46090,8 +46055,7 @@ List all projects in an organization.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_role_bindings
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/role-bindings
-List role bindings in the organization. Results are paginated.
-Optional filters are described in the query parameters. Filters are combined with AND. Pagination tokens apply to the full query (including all filters).
+List role bindings in the caller's organization, optionally filtered by principal, resource, and role.
 
 
 <RequestExample>
@@ -46131,9 +46095,7 @@ Optional filters are described in the query parameters. Filters are combined wit
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_service_accounts
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/service-accounts
-List service accounts in the caller's organization. Results are paginated. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+List service accounts in the caller's organization.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -46170,11 +46132,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/list_users
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/users
-List users who are members of the caller's organization. Results are paginated.
-Optional filters:
-- `email` — case-insensitive match on the user's email address.
-Pagination tokens apply to the full query, including `email`. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
+List users in the caller's organization, optionally filtered by email address.
 
 
 <RequestExample>
@@ -46212,12 +46170,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/resend_invite
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/invites/{invite_id}/resend
-Resend the invite email and extend `expires_at` by 7 days.
-Resending an expired invite is allowed: it extends `expires_at` by 7 days from now, returning the invite to `pending`.
-Resending an already-accepted (processed) invite returns `409` (see shared conflict response).
-Limited to 100 invite emails per hour per organization. Returns `429` when exceeded.
-Repeat requests may send another email and extend expiry again.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
+Resend the invite email and extend its expiration to 7 days from now; limited to 100 emails per hour per organization.
 
 
 <RequestExample>
@@ -46249,8 +46202,7 @@ Role bindings are not included. Use `GET /admin/role-bindings` with `principal_t
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/rotate_service_account_secret
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/service-accounts/{service_account_id}/rotate-secret
-Rotate the OAuth `client_secret` for a service account. The previous secret and tokens minted from it are revoked within a few seconds. The new secret is returned only in this response.
-Repeating the request may rotate again and invalidate the previous new secret.
+Rotate a service account's OAuth client secret; the previous secret and its tokens are revoked within seconds and the new secret is returned only once.
 
 
 <RequestExample>
@@ -46284,8 +46236,7 @@ Repeating the request may rotate again and invalidate the previous new secret.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/update_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/api-keys/{api_key_id}
-Update the name and roles of an API key.
-
+Update an API key's name and roles.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -46323,8 +46274,7 @@ Update the name and roles of an API key.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/update_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/projects/{project_id}
-Update a project's configuration details.
-You can update the project's name, maximum number of Pods, or enable encryption with a customer-managed encryption key (CMEK).
+Update a project's name, maximum number of Pods, or customer-managed encryption key (CMEK).
 
 
 <RequestExample>
@@ -46360,8 +46310,7 @@ You can update the project's name, maximum number of Pods, or enable encryption 
 Source: https://docs.pinecone.io/reference/api/2026-04/admin/update_service_account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/service-accounts/{service_account_id}
-Update a service account's mutable metadata. Only `name` is supported as a mutable field; fields that are omitted are left unchanged.
-Role bindings cannot be updated here; use the role binding endpoints to create or delete bindings.
+Update a service account's name; role bindings are managed through the role-binding endpoints.
 
 
 <RequestExample>
@@ -85382,6 +85331,14 @@ Pinecone release notes — 2026 releases:
   You can assign and manage roles in the [Pinecone console](https://app.pinecone.io) or programmatically with the Admin API. For more information, see [Manage roles and access](/guides/production/manage-rbac), [Organization roles](/guides/organizations/understanding-organizations#organization-roles), and [Project roles](/guides/projects/understanding-projects#project-roles).
 </Update>
 
+<Update label="2026-07-02">
+  ### Public preview: Restore a backup to a different region
+
+  You can now restore a [serverless backup](/guides/manage-data/backups-overview) into a different region on the same cloud provider. Use the `unstable` version of the create index endpoint, specifying the backup as `source_backup_id` within `spec.serverless` and the target region there. Restoring to a different cloud provider is not supported, and the feature is currently available through the REST API only.
+
+  For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
+</Update>
+
 <Update label="2026-07-01">
   ### Cohere Rerank 4.0 Fast is generally available, and cohere-rerank-3.5 is deprecated
 
@@ -87537,7 +87494,7 @@ To find the ID of a project, go to the project list in the [Pinecone console](ht
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects/{project_id}/api-keys
-Create a new API key for a project. Developers can use the API key to authenticate requests to Pinecone's Data Plane and Control Plane APIs.
+Create an API key for a project to authenticate Data Plane and Control Plane requests.
 
 
 <RequestExample>
@@ -87576,7 +87533,7 @@ Create a new API key for a project. Developers can use the API key to authentica
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects
-Creates a new project.
+Create a new project.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -87627,8 +87584,7 @@ Delete an API key from a project.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/projects/{project_id}
-Delete a project and all its associated configuration.
-Before deleting a project, you must delete all indexes, assistants, backups, and collections associated with the project. Other project resources, such as API keys, are automatically deleted when the project is deleted.
+Delete a project and all its configuration; delete its indexes, assistants, backups, and collections first.
 
 
 <RequestExample>
@@ -87647,7 +87603,7 @@ Before deleting a project, you must delete all indexes, assistants, backups, and
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/fetch_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/api-keys/{api_key_id}
-Get the details of an API key, excluding the API key secret.
+Get an API key's details, excluding its secret.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -87679,7 +87635,7 @@ Get the details of an API key, excluding the API key secret.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/fetch_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}
-Get details about a project.
+Get a project's details.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -87807,8 +87763,7 @@ List all projects in an organization.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/update_api_key
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/api-keys/{api_key_id}
-Update the name and roles of an API key.
-
+Update an API key's name and roles.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -87846,8 +87801,7 @@ Update the name and roles of an API key.
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/update_project
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/projects/{project_id}
-Update a project's configuration details.
-You can update the project's name, maximum number of Pods, or enable encryption with a customer-managed encryption key (CMEK).
+Update a project's name, maximum number of Pods, or customer-managed encryption key (CMEK).
 
 
 <RequestExample>
@@ -90523,6 +90477,14 @@ Pinecone release notes — 2026 releases:
   If you used the previous role model, the **User** role has been renamed to **Manager**: the organization-level **User** role is now **Organization manager**, and the project-level **User** role is now **Project manager**. This is a name change only—permissions are unchanged and existing assignments are migrated automatically.
 
   You can assign and manage roles in the [Pinecone console](https://app.pinecone.io) or programmatically with the Admin API. For more information, see [Manage roles and access](/guides/production/manage-rbac), [Organization roles](/guides/organizations/understanding-organizations#organization-roles), and [Project roles](/guides/projects/understanding-projects#project-roles).
+</Update>
+
+<Update label="2026-07-02">
+  ### Public preview: Restore a backup to a different region
+
+  You can now restore a [serverless backup](/guides/manage-data/backups-overview) into a different region on the same cloud provider. Use the `unstable` version of the create index endpoint, specifying the backup as `source_backup_id` within `spec.serverless` and the target region there. Restoring to a different cloud provider is not supported, and the feature is currently available through the REST API only.
+
+  For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
 </Update>
 
 <Update label="2026-07-01">

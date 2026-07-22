@@ -1,6 +1,6 @@
 # ai-models/anthropic-api 文档索引
 
-> 共 165 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 163 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -99,7 +99,6 @@
 - `build-with-claude/prompt-engineering/prompting-claude-fable-5` — [Prompting Claude Fable 5](pages/build-with-claude/prompt-engineering/prompting-claude-fable-5.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5)
 - `build-with-claude/prompt-engineering/prompting-claude-opus-4-8` — [Prompting Claude Opus 4.8](pages/build-with-claude/prompt-engineering/prompting-claude-opus-4-8.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-4-8)
 - `build-with-claude/prompt-engineering/prompting-claude-sonnet-5` — [Prompting Claude Sonnet 5](pages/build-with-claude/prompt-engineering/prompting-claude-sonnet-5.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5)
-- `build-with-claude/prompt-engineering/prompting-tools` — [Console prompting tools](pages/build-with-claude/prompt-engineering/prompting-tools.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-tools)
 - `build-with-claude/refusals-and-fallback` — [Refusals and fallback](pages/build-with-claude/refusals-and-fallback.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback)
 - `build-with-claude/search-results` — [Search results](pages/build-with-claude/search-results.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/search-results)
 - `build-with-claude/skills-guide` — [Using Agent Skills with the API](pages/build-with-claude/skills-guide.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/skills-guide)
@@ -181,7 +180,6 @@
 ## test-and-evaluate
 
 - `test-and-evaluate/develop-tests` — [Define success criteria and build evaluations](pages/test-and-evaluate/develop-tests.md) · [原文](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests)
-- `test-and-evaluate/eval-tool` — [Using the Evaluation Tool](pages/test-and-evaluate/eval-tool.md) · [原文](https://platform.claude.com/docs/en/test-and-evaluate/eval-tool)
 - `test-and-evaluate/strengthen-guardrails/handle-streaming-refusals` — [Handle streaming refusals](pages/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md) · [原文](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals)
 - `test-and-evaluate/strengthen-guardrails/increase-consistency` — [Increase output consistency](pages/test-and-evaluate/strengthen-guardrails/increase-consistency.md) · [原文](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency)
 - `test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks` — [Mitigate jailbreaks and prompt injections](pages/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks.md) · [原文](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks)

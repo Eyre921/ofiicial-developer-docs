@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1181 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1182 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -515,7 +515,7 @@
 - `docs/eleven-agents/customization/integrations/twilio` — [Twilio API](pages/docs/eleven-agents/customization/integrations/twilio.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/twilio.md)
 - `docs/eleven-agents/customization/integrations/zendesk` — [Zendesk](pages/docs/eleven-agents/customization/integrations/zendesk.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/zendesk.md)
 - `docs/eleven-agents/customization/knowledge-base` — [Knowledge base](pages/docs/eleven-agents/customization/knowledge-base.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/knowledge-base.md)
-- `docs/eleven-agents/customization/knowledge-base/dashboard` — [Knowledge base dashboard](pages/docs/eleven-agents/customization/knowledge-base/dashboard.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/knowledge-base/dashboard.md)
+- `docs/eleven-agents/customization/knowledge-base/manage-documents` — [Manage documents](pages/docs/eleven-agents/customization/knowledge-base/manage-documents.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/knowledge-base/manage-documents.md)
 - `docs/eleven-agents/customization/knowledge-base/rag` — [Retrieval-Augmented Generation](pages/docs/eleven-agents/customization/knowledge-base/rag.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/knowledge-base/rag.md)
 - `docs/eleven-agents/customization/llm` — [Models](pages/docs/eleven-agents/customization/llm.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm.md)
 - `docs/eleven-agents/customization/llm/custom-llm` — [Integrate your own model](pages/docs/eleven-agents/customization/llm/custom-llm.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm.md)
@@ -750,6 +750,7 @@
 - `docs/help-center/account/general/what-happens-to-my-cloned-voices-when-i-downgrade-the-tier` — [What happens to my cloned voices when I downgrade the tier?](pages/docs/help-center/account/general/what-happens-to-my-cloned-voices-when-i-downgrade-the-tier.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-to-my-cloned-voices-when-i-downgrade-the-tier.md)
 - `docs/help-center/account/general/what-happens-to-my-content-after-my-subscription-ends` — [What happens to my content after my subscription ends?](pages/docs/help-center/account/general/what-happens-to-my-content-after-my-subscription-ends.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-to-my-content-after-my-subscription-ends.md)
 - `docs/help-center/account/general/what-happens-to-my-credits-when-i-upgrade-or-downgrade-my-subscription` — [What happens to my credits when I upgrade or downgrade my subscription?](pages/docs/help-center/account/general/what-happens-to-my-credits-when-i-upgrade-or-downgrade-my-subscription.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-to-my-credits-when-i-upgrade-or-downgrade-my-subscription.md)
+- `docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans` — [What happens to my PAYG credits if I change subscription plans?](pages/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans.md)
 - `docs/help-center/account/general/what-happens-to-my-subscription-and-quota-at-the-end-of-the-month` — [What happens to my subscription and quota at the end of the month?](pages/docs/help-center/account/general/what-happens-to-my-subscription-and-quota-at-the-end-of-the-month.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-to-my-subscription-and-quota-at-the-end-of-the-month.md)
 - `docs/help-center/account/general/what-happens-when-i-run-out-of-credits` — [What happens when I run out of credits?](pages/docs/help-center/account/general/what-happens-when-i-run-out-of-credits.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-happens-when-i-run-out-of-credits.md)
 - `docs/help-center/account/general/what-is-a-subscription` — [What is a subscription?](pages/docs/help-center/account/general/what-is-a-subscription.md) · [原文](https://elevenlabs.io/docs/help-center/account/general/what-is-a-subscription.md)

@@ -1169,6 +1169,33 @@ components:
           description: Procedure name
         type:
           $ref: '#/components/schemas/type_:ProcedureType'
+        trigger:
+          type: string
+          default: ''
+          description: >-
+            When the agent should use this procedure. Empty string means this is
+            a sub-procedure that should only start when another procedure
+            references it.
+        referenced_tool_ids:
+          type: array
+          items:
+            type: string
+          description: Tool IDs referenced in the procedure content
+        referenced_kb_ids:
+          type: array
+          items:
+            type: string
+          description: Knowledge base IDs referenced in the procedure content
+        referenced_procedure_ids:
+          type: array
+          items:
+            type: string
+          description: Procedure IDs referenced in the procedure content
+        referenced_dynamic_variables:
+          type: array
+          items:
+            type: string
+          description: Dynamic variable names used in the procedure content
         content:
           type: string
           description: Procedure content
@@ -3734,6 +3761,138 @@ components:
         inheritance, so this generalizes cleanly to object/array schemas in the
         future.
       title: AnalysisProperty
+    type_:AttachedSystemEvaluationRefAnalysisItemId:
+      type: string
+      enum:
+        - __system_eval_criteria_sentiment
+        - __system_eval_criteria_frustration
+      description: Id of the referenced built-in system evaluation.
+      title: AttachedSystemEvaluationRefAnalysisItemId
+    type_:AgentAnalysisItemsInputEvaluationCriteriaItem:
+      oneOf:
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - system
+              description: 'Discriminator value: system'
+            analysis_item_id:
+              $ref: >-
+                #/components/schemas/type_:AttachedSystemEvaluationRefAnalysisItemId
+              description: Id of the referenced built-in system evaluation.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+            weight:
+              type: number
+              format: double
+              description: Optional relative weight for aggregate scoring.
+          required:
+            - source
+            - analysis_item_id
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - user
+              description: 'Discriminator value: user'
+            analysis_item_id:
+              type: string
+              description: Id of the referenced user evaluation item.
+            version_id:
+              type: string
+              description: >-
+                Primary item version whose result feeds scoring. None tracks the
+                item's latest published version.
+            additional_version_ids:
+              type: array
+              items:
+                type: string
+              description: >-
+                Extra item versions to also run for comparison (A/B). These are
+                executed and stored but excluded from scoring; the primary
+                version_id is the one that scores.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+            weight:
+              type: number
+              format: double
+              description: Optional relative weight for aggregate scoring.
+          required:
+            - source
+            - analysis_item_id
+      discriminator:
+        propertyName: source
+      title: AgentAnalysisItemsInputEvaluationCriteriaItem
+    type_:AgentAnalysisItemsInputDataCollectionItem:
+      oneOf:
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - system
+              description: 'Discriminator value: system'
+            analysis_item_id:
+              type: string
+              enum:
+                - __system_data_collection_topic
+              description: Id of the referenced built-in system data-collection item.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+          required:
+            - source
+            - analysis_item_id
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - user
+              description: 'Discriminator value: user'
+            analysis_item_id:
+              type: string
+              description: Id of the referenced user data-collection item.
+            version_id:
+              type: string
+              description: >-
+                Pinned item version. None tracks the item's latest published
+                version.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+          required:
+            - source
+            - analysis_item_id
+      discriminator:
+        propertyName: source
+      title: AgentAnalysisItemsInputDataCollectionItem
+    type_:AgentAnalysisItemsInput:
+      type: object
+      properties:
+        evaluation_criteria:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/type_:AgentAnalysisItemsInputEvaluationCriteriaItem
+        data_collection:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/type_:AgentAnalysisItemsInputDataCollectionItem
+      title: AgentAnalysisItemsInput
     type_:AsrConversationalConfigOverrideConfig:
       type: object
       properties:
@@ -4319,6 +4478,13 @@ components:
           description: >-
             Scope per data collection item ID. Missing keys default to
             conversation scope.
+        analysis_items:
+          $ref: '#/components/schemas/type_:AgentAnalysisItemsInput'
+          description: >-
+            Evaluation + data-collection items attached by reference. None means
+            the agent has not been migrated onto analysis items yet (distinct
+            from an empty, migrated set); reads fall back to the legacy
+            evaluation/data_collection fields in that case.
         overrides:
           $ref: >-
             #/components/schemas/type_:ConversationInitiationClientDataConfigInput
@@ -5283,6 +5449,33 @@ components:
           description: Procedure name
         type:
           $ref: '#/components/schemas/type_:ProcedureType'
+        trigger:
+          type: string
+          default: ''
+          description: >-
+            When the agent should use this procedure. Empty string means this is
+            a sub-procedure that should only start when another procedure
+            references it.
+        referenced_tool_ids:
+          type: array
+          items:
+            type: string
+          description: Tool IDs referenced in the procedure content
+        referenced_kb_ids:
+          type: array
+          items:
+            type: string
+          description: Knowledge base IDs referenced in the procedure content
+        referenced_procedure_ids:
+          type: array
+          items:
+            type: string
+          description: Procedure IDs referenced in the procedure content
+        referenced_dynamic_variables:
+          type: array
+          items:
+            type: string
+          description: Dynamic variable names used in the procedure content
         content:
           type: string
           description: Procedure content
@@ -6873,6 +7066,131 @@ components:
         Agents are evaluated against a set of criteria, with success being
         defined as meeting some combination of those criteria.
       title: EvaluationSettingsOutput
+    type_:AgentAnalysisItemsOutputEvaluationCriteriaItem:
+      oneOf:
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - system
+              description: 'Discriminator value: system'
+            analysis_item_id:
+              $ref: >-
+                #/components/schemas/type_:AttachedSystemEvaluationRefAnalysisItemId
+              description: Id of the referenced built-in system evaluation.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+            weight:
+              type: number
+              format: double
+              description: Optional relative weight for aggregate scoring.
+          required:
+            - source
+            - analysis_item_id
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - user
+              description: 'Discriminator value: user'
+            analysis_item_id:
+              type: string
+              description: Id of the referenced user evaluation item.
+            version_id:
+              type: string
+              description: >-
+                Primary item version whose result feeds scoring. None tracks the
+                item's latest published version.
+            additional_version_ids:
+              type: array
+              items:
+                type: string
+              description: >-
+                Extra item versions to also run for comparison (A/B). These are
+                executed and stored but excluded from scoring; the primary
+                version_id is the one that scores.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+            weight:
+              type: number
+              format: double
+              description: Optional relative weight for aggregate scoring.
+          required:
+            - source
+            - analysis_item_id
+      discriminator:
+        propertyName: source
+      title: AgentAnalysisItemsOutputEvaluationCriteriaItem
+    type_:AgentAnalysisItemsOutputDataCollectionItem:
+      oneOf:
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - system
+              description: 'Discriminator value: system'
+            analysis_item_id:
+              type: string
+              enum:
+                - __system_data_collection_topic
+              description: Id of the referenced built-in system data-collection item.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+          required:
+            - source
+            - analysis_item_id
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - user
+              description: 'Discriminator value: user'
+            analysis_item_id:
+              type: string
+              description: Id of the referenced user data-collection item.
+            version_id:
+              type: string
+              description: >-
+                Pinned item version. None tracks the item's latest published
+                version.
+            scope:
+              $ref: '#/components/schemas/type_:AnalysisScope'
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+          required:
+            - source
+            - analysis_item_id
+      discriminator:
+        propertyName: source
+      title: AgentAnalysisItemsOutputDataCollectionItem
+    type_:AgentAnalysisItemsOutput:
+      type: object
+      properties:
+        evaluation_criteria:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/type_:AgentAnalysisItemsOutputEvaluationCriteriaItem
+        data_collection:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/type_:AgentAnalysisItemsOutputDataCollectionItem
+      title: AgentAnalysisItemsOutput
     type_:ConversationConfigClientOverrideConfigOutput:
       type: object
       properties:
@@ -7066,6 +7384,13 @@ components:
           description: >-
             Scope per data collection item ID. Missing keys default to
             conversation scope.
+        analysis_items:
+          $ref: '#/components/schemas/type_:AgentAnalysisItemsOutput'
+          description: >-
+            Evaluation + data-collection items attached by reference. None means
+            the agent has not been migrated onto analysis items yet (distinct
+            from an empty, migrated set); reads fall back to the legacy
+            evaluation/data_collection fields in that case.
         overrides:
           $ref: >-
             #/components/schemas/type_:ConversationInitiationClientDataConfigOutput
@@ -9554,6 +9879,20 @@ components:
     },
     "data_collection_scopes": {
       "key": "conversation"
+    },
+    "analysis_items": {
+      "evaluation_criteria": [
+        {
+          "source": "system",
+          "analysis_item_id": "__system_eval_criteria_sentiment"
+        }
+      ],
+      "data_collection": [
+        {
+          "source": "system",
+          "analysis_item_id": "__system_data_collection_topic"
+        }
+      ]
     },
     "overrides": {
       "custom_llm_extra_body": true,

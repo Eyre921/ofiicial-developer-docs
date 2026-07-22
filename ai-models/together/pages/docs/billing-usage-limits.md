@@ -32,21 +32,30 @@ If your workload depends on predictable, reserved capacity, [dedicated model inf
 
 Occasionally, due to the popularity of a specific model, we may apply custom rate limits or access restrictions. These exceptions are called out in the relevant model documentation.
 
-## Cost Analytics
+## Cost analytics
 
 Together AI provides built-in spend analytics so you can track usage and costs across products and models over time.
 
-To access cost analytics, navigate to your [billing settings](https://api.together.ai/settings/organization/~current/billing) and scroll to the **Usage** section. You can also click the **Current Usage** button to see a draft view of your monthly invoice.
+To access organization-level cost analytics, open your [billing settings](https://api.together.ai/settings/organization/~current/billing) and scroll to the **Usage** section. You can also click **See detailed cost analytics** on the monthly spend card, or open your [project's cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics) to scope the view to a single project. Click **Current Usage** on the billing page to see a draft view of your monthly invoice.
 
 <img alt="Cost analytics dashboard showing daily spend by product" />
 
-### Filtering and Grouping
+### Measure and grouping
 
-The dashboard supports several ways to slice your data:
+The chart toolbar lets you choose how to measure and group usage:
 
-* **Group by Product** - See daily costs broken down by product (Endpoints, Storage, Serverless Inference)
-* **Group by Line Item** - View a more granular breakdown of individual usage line items
-* **Filter by Product** - Focus on a specific product to isolate its spend
-* **Filter by Time Range** - Adjust the date range to analyze any period of usage history
+* **Measure: Cost (\$)** - Chart daily spend in US dollars for the selected period. This is the default view.
+* **Measure: Units** - Chart daily billable units (for example, tokens) instead of dollar amounts. Totals and tooltips show unit counts; the chart subtitle updates to **Daily Units by …**.
+* **Group by Product** - Break down by product (Endpoints, Storage, Serverless Inference).
+* **Group by Line items** - Show individual usage line items.
+* **Group by Project** (beta) - Attribute spend or units to projects in your organization.
+* **Group by API key** (beta) - Attribute spend or units to API keys.
 
-The chart updates in real time as you change filters, and the total cost for the selected period is shown in the top right of the chart.
+When **Measure** is **Units**, grouping by product, project, or API key aggregates line-item quantities for that dimension. Group by **Line items** shows each billable line item's unit count directly.
+
+### Filtering and time range
+
+* **Filter** - Include or exclude specific series from the current group-by dimension with a multi-select filter (type to search options). The control shows **All usage** until you apply a filter, and filtering is not available when you group by line items.
+* **Time range** - Adjust the start and end dates to analyze any period of usage history. All dates are in UTC.
+
+The chart updates as you change controls. The summary in the top right shows the total cost or total units for the selected period, depending on the measure.

@@ -144,6 +144,10 @@ Since the local workspace is mounted to `/app`, model weights and example inputs
 
 Secrets are encrypted environment variables injected into your container at runtime. Use them for API keys, tokens, and other sensitive values that shouldn't be baked into the image.
 
+<Warning>
+  A name cannot appear in both `[tool.jig.deploy.environment_variables]` and a secret. `jig deploy` fails and lists each colliding name if the same name is defined in both places. Remove the duplicate from your config or run `tg beta jig secrets unset --name <name>`.
+</Warning>
+
 <CodeGroup>
   ```shell Shell theme={null}
   tg beta jig secrets set --name HF_TOKEN --value hf_xxxxx --description "Hugging Face token"
@@ -152,7 +156,7 @@ Secrets are encrypted environment variables injected into your container at runt
   ```
 </CodeGroup>
 
-Reference your secrets in `pyproject.toml` as environment variables, and they'll be available to your container at runtime. See the [Jig CLI reference](/reference/cli/jig#secrets) for all secrets commands.
+Secrets are available to your container as environment variables at runtime. Do not also define the same name under `[tool.jig.deploy.environment_variables]`. See the [Jig CLI reference](/reference/cli/jig#secrets) for all secrets commands.
 
 ## Volumes
 

@@ -299,9 +299,9 @@ components:
       "tags": [
         "chillwave",
         "electronic",
-        "summer vibes"
+        "ambient"
       ],
-      "model_id": "model_12345abcde",
+      "model_id": "music_v1",
       "created_at": "2024-01-15T09:30:00Z",
       "visibility": "private",
       "created_by": "self",
@@ -311,7 +311,7 @@ components:
       "failure_reason": null
     }
   ],
-  "next_cursor": "cursor_eyJpZCI6IjEyMzQ1NiJ9",
+  "next_cursor": "eyJwYWdlIjoxLCJpZCI6ImZ0bl85YWJjNmQ1ZTRmM2EyYjFjMGQifQ==",
   "has_more": true
 }
 ```

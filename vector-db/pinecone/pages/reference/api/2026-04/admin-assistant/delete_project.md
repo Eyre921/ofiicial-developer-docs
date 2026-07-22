@@ -5,8 +5,7 @@ path: reference/api/2026-04/admin-assistant/delete_project
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/projects/{project_id}
-Delete a project and all its associated configuration.
-Before deleting a project, you must delete all indexes, assistants, backups, and collections associated with the project. Other project resources, such as API keys, are automatically deleted when the project is deleted.
+Delete a project and all its configuration; delete its indexes, assistants, backups, and collections first.
 
 
 <RequestExample>

@@ -10,11 +10,16 @@ path: docs/help-center/account/general/how-does-credit-rollover-work
 
 Credit rollover allows you to carry over up to twice your usual subscription credit quota when you begin a new billing cycle, provided you remain on the same subscription.
 
-Note: Pay As You Go credits are not affected by monthly credit rollover. PAYG credits will expire 12 months after purchase.
+Pay As You Go credits are not affected by monthly credit rollover, and will expire 12 months after
+purchase. However, if you change subscription plans, your PAYG credit balance may be adjusted
+because credits are stored as a dollar value and converted at your current plan's rate. See [What
+happens to my PAYG credits if I change subscription
+plans?](/docs/help-center/account/general/what-happens-to-my-payg-credits-if-i-change-subscription-plans)
+for details.
 
 On our standard subscription plans (Starter, Creator, Pro, Scale and Business), your monthly credit quota will reset at the beginning of each billing cycle. If you have unused subscription credits at the end of your billing cycle, you will automatically rollover up to twice your usual monthly quota.
 
-Please note that credit rollover does not apply to accounts on the free tier. If you cancel or downgrade your subscription, this will take effect at the end of your current billing cycle, and you will lose any unused credits on your account when this happens. This does not affect PAYG credits, which are handed separately. 
+Please note that credit rollover does not apply to accounts on the free tier. If you cancel or downgrade your subscription, this will take effect at the end of your current billing cycle, and you will lose any unused credits on your account when this happens. This does not affect PAYG credits, which are handled separately. 
 
 On our Enterprise plans, you can decide whether you want to receive your usage quota on a monthly or annual basis. If you have unused usage quota at the end of the month or year, depending on your choice, you will automatically rollover up to twice your usual quota. 
 

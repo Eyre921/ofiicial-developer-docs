@@ -5,9 +5,7 @@ path: reference/api/2026-04/admin/list_invites
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/invites
-List invites in the caller's organization. Results are paginated. Returns pending and expired invites (processed and deleted invites are excluded); use `status` to distinguish pending from expired. See query parameters for cursor rules.
-Role bindings are not included. Use `GET /admin/role-bindings` with `principal_type` and `principal_id` to list them.
-
+List pending and expired invites in the caller's organization.
 
 <RequestExample>
   ```bash curl theme={null}

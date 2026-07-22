@@ -74394,7 +74394,7 @@ pip install vecs boto3
 You'll also need:
 
 - [Credentials to your AWS account](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html)
-- [A Postgres Database with the pgvector extension](hosting.md)
+- [A Postgres database with the pgvector extension](https://supabase.com/docs/guides/database/extensions/pgvector)
 
 ## Create embeddings
 
@@ -89360,7 +89360,7 @@ Tip: **Build a settings page for your users**
 
 It's a good practice to provide a settings page where users can view all authorized applications and revoke access to any they no longer trust or use. This increases transparency and gives users control over their data.
 
-For complete API reference, see the [OAuth methods in supabase-js](https://supabase.com/docs/reference/javascript/auth-oauth).
+For complete API reference, see the [OAuth methods in supabase-js](https://supabase.com/docs/reference/javascript/auth-admin-oauth-server).
 
 ## Next steps
 
@@ -93457,6 +93457,13 @@ SUPABASE_URL=supabase_project_url
 SUPABASE_PUBLISHABLE_KEY=supabase_publishable_key
 ```
 
+**TanStack Start**
+
+```bash .env.local
+VITE_SUPABASE_URL=supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=supabase_publishable_key
+```
+
 ## Create a client
 
 You need setup code to configure a Supabase client to use cookies. Once you have the utility code, you can use the `createClient` utility functions to get a properly configured Supabase client.
@@ -93750,7 +93757,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   )
 
-  // Use `supabase` here for server-side work, e.g. await supabase.auth.getUser()
+  // Use `supabase` here for server-side work, e.g. await supabase.auth.getClaims()
 
   // Return the environment variables so the browser can create its own client.
   return json(
@@ -93898,7 +93905,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   )
 
-  // Use `supabase` here for server-side work, e.g. await supabase.auth.getUser()
+  // Use `supabase` here for server-side work, e.g. await supabase.auth.getClaims()
 
   // Return the env vars so the browser can create its own client.
   return data(
@@ -94016,6 +94023,58 @@ The Supabase Auth SDK contains three different functions for authenticating user
 - [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
 
 **In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
+
+**TanStack Start**
+
+### Write utility functions to create Supabase clients
+
+TanStack Start renders matched routes on the server by default, so `beforeLoad` and `loader` run server-side on the initial request. Unlike Next.js, this means you don't need a proxy or middleware layer to keep sessions fresh — the server client reads and writes the session cookie directly on each request.
+
+Create a `lib/supabase` folder at the root of your project, or inside the `./src` folder if you are using one, then add a file for each type of client:
+
+1. **Create a browser client in `lib/supabase/client.ts`.** Use it to access Supabase from components that run in the browser.
+2. **Create a server client in `lib/supabase/server.ts`.** Use it to access Supabase from loaders, server functions, and other code that runs only on the server.
+
+The Supabase Auth SDK contains three different functions for authenticating user access to applications:
+
+### Summary of the methods
+
+- Use [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) to protect pages and user data. It reads the access token from storage and verifies it. Locally via the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) and a cached JWKS endpoint when the project uses asymmetric signing keys (the default for new projects), or by calling `getUser` solely to validate when symmetric keys are in use. The returned claims always come from decoding the JWT, not from a user lookup.
+- [`getUser`](https://supabase.com/docs/reference/javascript/auth-getuser) makes a network call to the project's Auth instance to get the user record, which includes the most up-to-date information about the user at the cost of a network call.
+- [`getSession`](https://supabase.com/docs/reference/javascript/auth-getsession) when you need the raw session (the access token, refresh token, and expiry). For example to forward the access token to another service. The session is loaded directly from local storage and isn't re-validated against the Auth server, so the embedded user object shouldn't be trusted on its own when storage is shared with the client (cookies, request headers). To verify identity, validate the access token with `getClaims`, or call `getUser` for a fresh, server-confirmed user record.
+
+**In summary**: use `getClaims` to verify identity (typically for protecting pages and data), `getUser` when you need an up-to-date user record from the Auth server, and `getSession` when you need the access or refresh token directly, but don't rely on the user object it returns for authorization decisions.
+
+Copy the lib utility functions below into each file:
+
+
+
+### Protecting routes
+
+TanStack Start has no global middleware layer, so protect each route explicitly.
+
+To protect your routes:
+
+1. Write a server function, `fetchClaims`, that calls `supabase.auth.getClaims()` and returns the claims, or `null` if the session isn't valid.
+2. Call `fetchClaims` from a layout route's `beforeLoad` hook — for example, `_protected.tsx` — before any nested route renders, and redirect to `/login` when it returns `null`.
+
+Danger: Skipping the check inside the server function exposes private data to unauthenticated users. `beforeLoad` runs on the server for the initial request and on the client for later navigation, but either way it only gates the route's render — it doesn't stop the server function from being called directly. Because there's no proxy re-checking every request, the server function is the only checkpoint that always runs, so it must call `supabase.auth.getClaims()` to authorize the request itself.
+
+`getClaims()` validates the JWT signature on every call, the same check the Next.js Proxy relies on. Calling it inside the server function gives TanStack Start's per-route check that same guarantee, because the function runs on every request to a protected route.
+
+
+
+Any other server function that returns or mutates private data needs this same check. Don't rely on a route being nested under `_protected` alone.
+
+## Congratulations
+
+You're done! To recap, you've successfully:
+
+- Set up a Supabase client utility to call Supabase from a browser component. You can use this if you need to call Supabase from the browser, for example to set up a realtime subscription.
+- Set up a server client utility to call Supabase from loaders and server functions.
+- Protected a route with `beforeLoad`, backed by a server function that authorizes the request itself.
+
+You can now use any Supabase features from your client or server code!
 
 ## Caching considerations
 
@@ -124381,7 +124440,7 @@ ELEVENLABS_API_KEY=your_api_key
 The project uses a couple of dependencies:
 
 - The [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) library to interact with the Supabase database.
-- The ElevenLabs [JavaScript SDK](https://supabase.com/docs/quickstart) to interact with the text-to-speech API.
+- The ElevenLabs [JavaScript SDK](https://github.com/elevenlabs/elevenlabs-js) to interact with the text-to-speech API.
 - The open-source [object-hash](https://www.npmjs.com/package/object-hash) to generate a hash from the request parameters.
 
 Since Supabase Edge Function uses the [Deno runtime](https://deno.land/), you don't need to install the dependencies, rather you can [import](https://docs.deno.com/examples/npm/) them via the `npm:` prefix.
@@ -124632,7 +124691,7 @@ The project uses a couple of dependencies:
 
 - The open-source [grammY Framework](https://grammy.dev/) to handle the Telegram webhook requests.
 - The [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) library to interact with the Supabase database.
-- The ElevenLabs [JavaScript SDK](https://supabase.com/docs/quickstart) to interact with the speech-to-text API.
+- The ElevenLabs [JavaScript SDK](https://github.com/elevenlabs/elevenlabs-js) to interact with the speech-to-text API.
 
 Since Supabase Edge Function uses the [Deno runtime](https://deno.land/), you don't need to install the dependencies, rather you can [import](https://docs.deno.com/examples/npm/) them via the `npm:` prefix.
 
@@ -129120,7 +129179,7 @@ Resources for getting started with Supabase.
 
 [Expo React Native: Learn how to build a user management app with Expo React Native and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-expo-react-native)
 
-[Expo React Native Social Auth: Learn how to implement social authentication in an app with Expo React Native and Supabase Database and Auth functionality.](/docs/guides/getting-started/tutorials/with-expo-react-native-social-auth)
+[Expo React Native Social Auth: Learn how to implement social authentication in an app with Expo React Native and Supabase Database and Auth functionality.](/docs/guides/auth/quickstarts/with-expo-react-native-social-auth)
 
 [Android Kotlin: Learn how to build a product management app with Android and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-kotlin)
 
@@ -132391,7 +132450,7 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 Create a TanStack Start app using the official CLI.
 
 ```bash
-npm create @tanstack/start@latest my-app -- --package-manager npm --toolchain biome
+npx @tanstack/cli@latest create my-app
 ```
 
 ## 4. Install Agent Skills (optional)
@@ -132404,51 +132463,81 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
-## 5. Install the Supabase client library
+## 5. Install the Supabase client libraries
 
-The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a TanStack Start app.
-
-Navigate to the TanStack Start app and install `supabase-js`.
+Navigate to the TanStack Start app and install `supabase-js` and `@supabase/ssr`, the helper package that manages cookie-based sessions for server-side rendering.
 
 ```bash
-cd my-app && npm install @supabase/supabase-js
+cd my-app && npm install @supabase/supabase-js @supabase/ssr
 ```
 
 ## 6. Declare Supabase environment variables
 
-Create a `.env` file in the root of your project and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true):
+Create a `.env.local` file in the root of your project and populate it with your Supabase connection variables. Get the values from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=tanstack).
 
 Open Connect panel
 
-```text name=.env
+```text name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 7. Create a Supabase client utility
+## 7. Create Supabase client utilities
 
-Create a new file at `src/utils/supabase.ts` to initialize the Supabase client.
+TanStack Start needs two Supabase clients: a browser client for components that run in the browser, and a server client for loaders and server functions. Create a `src/lib/supabase` folder with a file for each client.
 
-```ts name=src/utils/supabase.ts
-import { createClient } from '@supabase/supabase-js'
+```ts name=src/lib/supabase/client.ts
+/// <reference types="vite/types/importMeta.d.ts" />
+import { createBrowserClient } from '@supabase/ssr'
 
-export const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-)
+export function createClient() {
+  return createBrowserClient(
+    import.meta.env.VITE_SUPABASE_URL!,
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY!
+  )
+}
 ```
 
-## 8. Query data from the app
+```ts name=src/lib/supabase/server.ts
+import { createServerClient } from '@supabase/ssr'
+import { getCookies, setCookie, setResponseHeader } from '@tanstack/react-start/server'
 
-Replace the contents of `src/routes/index.tsx` with the following code to add a loader function that fetches the instruments data and displays it on the page.
+export function createClient() {
+  return createServerClient(
+    process.env.VITE_SUPABASE_URL!,
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return Object.entries(getCookies()).map(([name, value]) => ({ name, value }))
+        },
+        setAll(cookies, headers) {
+          cookies.forEach(({ name, value, options }) => {
+            setCookie(name, value, options)
+          })
+
+          Object.entries(headers).forEach(([name, value]) => {
+            setResponseHeader(name, value)
+          })
+        },
+      },
+    }
+  )
+}
+```
+
+## 8. Query Supabase data from TanStack Start
+
+Replace the contents of `src/routes/index.tsx` with the following to add a loader that queries the `instruments` table through the server client. The loader runs on the server, so the data is part of the initial server-rendered response.
 
 ```tsx name=src/routes/index.tsx
 import { createFileRoute } from '@tanstack/react-router'
 
-import { supabase } from '../utils/supabase'
+import { createClient } from '@/lib/supabase/server'
 
 export const Route = createFileRoute('/')({
   loader: async () => {
+    const supabase = createClient()
     const { data: instruments } = await supabase.from('instruments').select()
     return { instruments }
   },
@@ -132478,8 +132567,9 @@ npm run dev
 
 ## Next steps
 
+- Learn how to [protect routes and check sessions](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=tanstack) with the server client
+- Set up a complete [login and sign-up flow](https://supabase.com/ui/docs/tanstack/password-based-auth) from the Supabase UI Library
 - Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
-- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
@@ -149840,6 +149930,10 @@ Note that any changes made to your billing details will only be reflected in you
 
 When an invoice becomes overdue, we will pause your projects and downgrade your organization to the Free Plan. You will be able to restore your projects once you have paid all outstanding invoices.
 
+#### Can I use a credit top-up to pay an outstanding invoice?
+
+Credit top-ups apply only to future invoices. They cannot be used to pay or adjust outstanding invoices.
+
 #### Why am I overdue?
 
 We were unable to charge your payment method. This likely means that the payment was not successfully processed with the credit card on your account profile.
@@ -150328,6 +150422,10 @@ Note: If you are interested in larger (> $2000) credit packages, [reach out](htt
 ### Will I get an invoice for the credits purchase?
 
 Yes, once the payment is confirmed, you will get a matching invoice that can be accessed through your [organization's invoices page](https://supabase.com/dashboard/org/_/billing#invoices).
+
+### Can I use a credit top-up to pay an outstanding invoice?
+
+Credit top-ups apply only to future invoices. They cannot be used to pay or adjust outstanding invoices.
 
 ### Can I transfer credits to another organization?
 
@@ -163157,7 +163255,7 @@ List of operational codes to help understand your deployment and usage.
 | `PoolingReplicationError` | Error when pooling the replication slot. |  |
 | `PoolingReplicationPreparationError` | Error when preparing the replication slot. |  |
 | `RealtimeDisabledForConfiguration` | The configuration provided to Realtime on connect will not be able to provide you any Postgres Changes. | Verify your configuration on channel startup as you might not have your tables properly registered. |
-| `RealtimeDisabledForTenant` | Realtime has been disabled for the tenant. Learn more: [Troubleshooting guide for suspended projects](https://supabase.com/docs/troubleshooting/realtime-project-suspended-for-exceeding-quotas) | Your project may have been suspended for exceeding usage quotas. Contact support with your project reference ID and a description of your Realtime use case. |
+| `RealtimeDisabledForTenant` | Realtime has been disabled for the tenant. Learn more: [Troubleshooting guide for suspended projects](https://supabase.com/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas) | Your project may have been suspended for exceeding usage quotas. Contact support with your project reference ID and a description of your Realtime use case. |
 | `RealtimeNodeDisconnected` | Realtime is a distributed application and this means that one the system is unable to communicate with one of the distributed nodes. |  |
 | `RealtimeRestarting` | Realtime is currently restarting. |  |
 | `ReconnectSubscribeToPostgres` | Postgres changes still waiting to be subscribed. |  |
@@ -168984,7 +169082,7 @@ Various products at Supabase have their own hardening and configuration guides, 
 - [Managing Postgres roles](https://supabase.com/docs/guides/database/postgres/roles)
 - [Managing secrets with Vault](https://supabase.com/docs/guides/database/vault)
 - [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging)
-- [Superuser access and unsupported operations](docs/guides/database/postgres/roles-superuser)
+- [Superuser access and unsupported operations](https://supabase.com/docs/guides/database/postgres/roles-superuser)
 
 ## Storage
 
@@ -201449,11 +201547,31 @@ final data = await supabase
   .single();
 ```
 
+## stripNulls
+
+Omits `null`-valued properties from the response objects.
+
+- This uses the `nulls=stripped` variant of the `Accept` header and requires PostgREST 11.2 or higher.
+
+### Examples
+
+#### Strip null values from the response
+
+```dart
+final data = await supabase
+  .from('users')
+  .select()
+  .stripNulls();
+```
+
 ## Auth
 
 ## currentSession
 
 Returns the session data, if there is an active session.
+
+- `currentSession` is a synchronous getter that returns whatever session is stored, even one whose access token has already expired.
+- `getSession()` is an asynchronous alternative that guarantees a valid access token when it resolves: a still-valid session is returned as-is, while an expired one is refreshed on demand first. It returns `null` when there is no session and throws an `AuthException` when an expired session cannot be refreshed.
 
 ### Examples
 
@@ -201461,6 +201579,12 @@ Returns the session data, if there is an active session.
 
 ```dart
 final Session? session = supabase.auth.currentSession;
+```
+
+#### Get the session data, refreshing if needed
+
+```dart
+final session = await supabase.auth.getSession();
 ```
 
 ## currentUser
@@ -201678,7 +201802,10 @@ import 'package:passkeys/authenticator.dart';
 
 final authenticator = PasskeyAuthenticator();
 
-final Passkey passkey = await supabase.auth.registerPasskey(authenticator);
+final Passkey passkey = await supabase.auth.registerPasskey(
+  authenticator,
+  friendlyName: 'Work laptop',
+);
 ```
 
 ## resend
@@ -202043,6 +202170,39 @@ await supabase.auth.signInWithSSO(
 );
 ```
 
+## signInWithWeb3
+
+Signs in a user by verifying a message signed with their Web3 wallet.
+
+- Supports Ethereum (Sign-In with Ethereum) and Solana (Sign-In with Solana), both of which derive from the [EIP-4361](https://eips.ethereum.org/EIPS/eip-4361) standard.
+- Handle the wallet interaction and message signing yourself with the wallet library of your choice, then provide the signed `message` together with its `signature`.
+- For `Web3Chain.ethereum` the signature is a hex encoded string. For `Web3Chain.solana` it is a base64url encoded string.
+- On success, it signs the user in and returns a session. On failure, it throws an `AuthException`.
+
+### Examples
+
+#### Sign in with an Ethereum wallet
+
+```dart
+final response = await supabase.auth.signInWithWeb3(
+  chain: Web3Chain.ethereum,
+  message: message, // The EIP-4361 message signed by the wallet.
+  signature: signature, // Hex encoded signature.
+);
+final session = response.session;
+```
+
+#### Sign in with a Solana wallet
+
+```dart
+final response = await supabase.auth.signInWithWeb3(
+  chain: Web3Chain.solana,
+  message: message, // The message signed by the wallet.
+  signature: signature, // base64url encoded signature.
+);
+final session = response.session;
+```
+
 ## signOut
 
 Signs out the current user, if there is a logged in user.
@@ -202170,6 +202330,18 @@ final User? updatedUser = res.user;
 final UserResponse res = await supabase.auth.updateUser(
   UserAttributes(
     password: 'new password',
+  ),
+);
+final User? updatedUser = res.user;
+```
+
+#### Update the password with the current password
+
+```dart
+final UserResponse res = await supabase.auth.updateUser(
+  UserAttributes(
+    password: 'new password',
+    currentPassword: 'current password',
   ),
 );
 final User? updatedUser = res.user;
@@ -202444,6 +202616,15 @@ final res = await supabase.auth.mfa.challenge(
 );
 ```
 
+#### Create a challenge for a phone factor over WhatsApp
+
+```dart
+final res = await supabase.auth.mfa.challenge(
+  factorId: '34e770dd-9ff9-416c-87fa-43b31d7ef225',
+  channel: OtpChannel.whatsapp,
+);
+```
+
 ## challengeAndVerify
 
 Helper method which creates a challenge and immediately uses the given code to verify against it thereafter. The verification code is provided by the user by entering a code seen in their authenticator app.
@@ -202615,6 +202796,7 @@ Starts the registration of a new passkey for the signed in user.
 
 - Requires a signed in (non-anonymous) user.
 - Pass the returned `options` to the platform's passkey API to create the credential, then call [`passkey.verifyRegistration()`](https://supabase.com/docs/reference/dart/auth-passkey-verifyregistration) with the result.
+- When the server omits `user.name`/`displayName` in the registration options, they are backfilled with `friendlyName` (or a generic `Passkey` default) before the platform ceremony.
 
 ### Examples
 
@@ -202622,7 +202804,9 @@ Starts the registration of a new passkey for the signed in user.
 
 ```dart
 final PasskeyRegistrationOptionsResponse registration =
-    await supabase.auth.passkey.startRegistration();
+    await supabase.auth.passkey.startRegistration(
+  friendlyName: 'Work laptop',
+);
 
 // Hand registration.options to the platform passkey API.
 ```
@@ -202769,11 +202953,11 @@ final CustomOAuthProvider provider =
 
 ## OAuth Server
 
-Methods under the `supabase.auth.oauth` namespace are used when your Supabase project acts as an OAuth 2.1 server. They drive the user-facing consent flow and require a signed-in user. The OAuth 2.1 server feature must be enabled in your Supabase Auth configuration.
+Methods under the `supabase.auth.oauth` namespace are used when your Supabase project acts as an OAuth 2.1 server. They drive the user-facing consent flow, let users manage the grants they have issued to third-party clients, and require a signed-in user. The OAuth 2.1 server feature must be enabled in your Supabase Auth configuration.
 
 ## OAuth Server
 
-Methods under the `supabase.auth.oauth` namespace are used when your Supabase project acts as an OAuth 2.1 server. They drive the user-facing consent flow and require a signed-in user. The OAuth 2.1 server feature must be enabled in your Supabase Auth configuration.
+Methods under the `supabase.auth.oauth` namespace are used when your Supabase project acts as an OAuth 2.1 server. They drive the user-facing consent flow, let users manage the grants they have issued to third-party clients, and require a signed-in user. The OAuth 2.1 server feature must be enabled in your Supabase Auth configuration.
 
 ## approveAuthorization
 
@@ -202828,6 +203012,36 @@ switch (response) {
     // Render a consent screen for `client` requesting `scope`.
     break;
 }
+```
+
+## listGrants
+
+Lists the OAuth grants the signed-in user has issued to third-party OAuth clients.
+
+- Requires an authenticated user. Returns the grants issued by the current user.
+
+### Examples
+
+#### List OAuth grants
+
+```dart
+final List<OAuthGrant> grants = await supabase.auth.oauth.listGrants();
+
+for (final grant in grants) {
+  print('${grant.client.clientId}: ${grant.scopes}');
+}
+```
+
+## revokeGrant
+
+Revokes a grant the signed-in user previously issued to a third-party OAuth client.
+
+### Examples
+
+#### Revoke an OAuth grant
+
+```dart
+await supabase.auth.oauth.revokeGrant('client-id');
 ```
 
 ## Passkey Admin
@@ -202899,6 +203113,23 @@ final res = await supabase.functions.invoke(
     'Authorization': 'Bearer ${supabase.auth.currentSession?.accessToken}'
   },
 );
+```
+
+#### Aborting a request
+
+```dart
+import 'package:http/http.dart' as http;
+
+try {
+  final res = await supabase.functions.invoke(
+    'hello',
+    body: {'foo': 'baa'},
+    abortSignal: Future.delayed(const Duration(seconds: 5)),
+  );
+  final data = res.data;
+} on http.RequestAbortedException catch (error) {
+  print('Request was aborted: $error');
+}
 ```
 
 ## Realtime
@@ -203230,6 +203461,108 @@ channel.onPresenceSync((payload) {
 
 ## Storage
 
+## Analytics Buckets
+
+This section contains methods for working with analytics buckets backed by Apache Iceberg.
+
+## Analytics Buckets
+
+This section contains methods for working with analytics buckets backed by Apache Iceberg.
+
+## analyticsCatalog
+
+Returns an Iceberg REST Catalog client for an analytics bucket, used to manage the namespaces and tables (the warehouse) inside it.
+
+- Analytics buckets are backed by the Apache Iceberg table format.
+- `analyticsCatalog()` returns an `IcebergRestCatalog` scoped to a single analytics bucket. Use it to create and manage namespaces and tables within that bucket.
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Get an analytics catalog client
+
+```dart
+final catalog = supabase
+  .storage
+  .analyticsCatalog('my-analytics-bucket');
+
+await catalog.createNamespace(['analytics']);
+```
+
+## createAnalyticsBucket
+
+Creates a new analytics bucket backed by the Apache Iceberg table format.
+
+- Policy permissions required:
+  - `buckets` permissions: `insert`
+  - `objects` permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Create analytics bucket
+
+```dart
+final AnalyticsBucket bucket = await supabase
+  .storage
+  .createAnalyticsBucket('warehouse');
+```
+
+## deleteAnalyticsBucket
+
+Deletes an existing analytics bucket. A bucket can't be deleted while it still contains namespaces or tables.
+
+- Policy permissions required:
+  - `buckets` permissions: `select` and `delete`
+  - `objects` permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Delete analytics bucket
+
+```dart
+final String res = await supabase
+  .storage
+  .deleteAnalyticsBucket('warehouse');
+```
+
+## listAnalyticsBuckets
+
+Retrieves the details of all analytics buckets within an existing project.
+
+- Calling `listAnalyticsBuckets()` without any options returns all analytics buckets.
+- Policy permissions required:
+  - `buckets` permissions: `select`
+  - `objects` permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### List analytics buckets
+
+```dart
+final List<AnalyticsBucket> buckets = await supabase
+  .storage
+  .listAnalyticsBuckets();
+```
+
+#### With filter, sort and pagination
+
+```dart
+final List<AnalyticsBucket> buckets = await supabase
+  .storage
+  .listAnalyticsBuckets(
+    const ListBucketsOptions(
+      limit: 10,
+      offset: 0,
+      search: 'ware',
+      sortColumn: BucketSortColumn.createdAt,
+      sortOrder: BucketSortOrder.descending,
+    ),
+  );
+```
+
 ## File Buckets
 
 This section contains methods for working with File Buckets.
@@ -203338,6 +203671,19 @@ final String signedUrl = await supabase
   );
 ```
 
+#### Bypass the CDN cache
+
+```dart
+final String signedUrl = await supabase
+  .storage
+  .from('avatars')
+  .createSignedUrl(
+    'avatar1.png',
+    60,
+    cacheNonce: 'v2',
+  );
+```
+
 ## deleteBucket
 
 Deletes an existing bucket. A bucket can't be deleted with existing objects inside it. You must first `empty()` the bucket.
@@ -203390,6 +203736,44 @@ final Uint8List file = await supabase
       height: 200,
     ),
   );
+```
+
+#### Bypass the CDN cache
+
+```dart
+final Uint8List file = await supabase
+  .storage
+  .from('avatars')
+  .download(
+    'avatar1.png',
+    cacheNonce: 'v2',
+  );
+```
+
+## downloadStream
+
+Downloads a file as a lazy `Stream<Uint8List>`, streaming the bytes instead of buffering the whole file into memory like `download()`.
+
+- The request is sent when the stream is listened to. A non-success response surfaces as a `StorageException` on the stream before any bytes are emitted.
+- Prefer this over [`download()`](https://supabase.com/docs/reference/dart/storage-from-download) for large files to keep memory usage low.
+- Policy permissions required:
+  - `buckets` permissions: none
+  - `objects` permissions: `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Download a file as a stream
+
+```dart
+final Stream<Uint8List> stream = supabase
+  .storage
+  .from('avatars')
+  .downloadStream('avatar1.png');
+
+await for (final chunk in stream) {
+  // Handle each chunk of bytes as it arrives
+}
 ```
 
 ## emptyBucket
@@ -203478,6 +203862,18 @@ final String publicUrl = supabase
   );
 ```
 
+#### Bypass the CDN cache
+
+```dart
+final String publicUrl = supabase
+  .storage
+  .from('public-bucket')
+  .getPublicUrl(
+    'avatar1.png',
+    cacheNonce: 'v2',
+  );
+```
+
 ## list
 
 Lists all the files within a bucket.
@@ -203517,6 +203913,79 @@ final List<Bucket> buckets = await supabase
   .listBuckets();
 ```
 
+#### With filter, sort and pagination
+
+```dart
+final List<Bucket> buckets = await supabase
+  .storage
+  .listBuckets(
+    const ListBucketsOptions(
+      limit: 10,
+      offset: 0,
+      search: 'avatar',
+      sortColumn: BucketSortColumn.createdAt,
+      sortOrder: BucketSortOrder.descending,
+    ),
+  );
+```
+
+## listPaginated
+
+Lists files and folders within a bucket with cursor-based pagination and hierarchical (delimiter) listing.
+
+- Folder entries in `PaginatedListResult.folders` only contain a name (and optionally a key). Full metadata is only available on the file entries in `PaginatedListResult.objects`.
+- To fetch the next page, pass the `PaginatedListResult.nextCursor` value from the previous request as `PaginatedSearchOptions.cursor`. Use `PaginatedListResult.hasNext` to check whether more results are available.
+- Policy permissions required:
+  - `buckets` permissions: none
+  - `objects` permissions: `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### List files with pagination
+
+```dart
+final PaginatedListResult result = await supabase
+  .storage
+  .from('avatars')
+  .listPaginated(
+    options: const PaginatedSearchOptions(
+      prefix: 'folder/',
+      limit: 100,
+      withDelimiter: true,
+      sortBy: FileSort(
+        column: FileSortColumn.createdAt,
+        order: FileSortOrder.descending,
+      ),
+    ),
+  );
+
+for (final folder in result.folders) {
+  // Handle each folder
+}
+for (final object in result.objects) {
+  // Handle each file
+}
+```
+
+#### Fetch the next page
+
+```dart
+var result = await supabase
+  .storage
+  .from('avatars')
+  .listPaginated();
+
+while (result.hasNext) {
+  result = await supabase
+    .storage
+    .from('avatars')
+    .listPaginated(
+      options: PaginatedSearchOptions(cursor: result.nextCursor),
+    );
+}
+```
+
 ## move
 
 Moves an existing file, optionally renaming it at the same time.
@@ -203535,6 +204004,58 @@ final String result = await supabase
   .storage
   .from('avatars')
   .move('public/avatar1.png', 'private/avatar2.png');
+```
+
+## purgeBucketCache
+
+Invalidates the CDN cache for every object in a bucket.
+
+- Requires the `secret` key and the `purgeCache` feature enabled for your project on the storage server.
+- When `transformations` is `true`, only the resized/formatted variants are purged, leaving the original cached objects intact. Otherwise the bucket's object cache is purged.
+- Policy permissions required:
+  - `buckets` permissions: `select`
+  - `objects` permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Purge the CDN cache for a bucket
+
+```dart
+final String res = await supabase
+  .storage
+  .purgeBucketCache('avatars');
+```
+
+## purgeCache
+
+Invalidates the CDN cache for a single object in a bucket.
+
+- Requires the `secret` key and the `purgeCache` feature enabled for your project on the storage server.
+- When `transformations` is `true`, only the resized/formatted variants are purged, leaving the original cached object intact. Otherwise the object's cache is purged.
+- Policy permissions required:
+  - `buckets` permissions: none
+  - `objects` permissions: `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Purge the CDN cache for an object
+
+```dart
+final String res = await supabase
+  .storage
+  .from('avatars')
+  .purgeCache('avatar1.png');
+```
+
+#### Purge only the transformed variants
+
+```dart
+final String res = await supabase
+  .storage
+  .from('avatars')
+  .purgeCache('avatar1.png', transformations: true);
 ```
 
 ## remove
@@ -203640,6 +204161,347 @@ final String fullPath = await supabase.storage.from('avatars').uploadBinary(
       avatarFile,
       fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
     );
+```
+
+## Vector Buckets
+
+This section contains methods for working with Vector Buckets, invoked behind the `supabase.storage.vectors` namespace.
+
+## Vector Buckets
+
+This section contains methods for working with Vector Buckets, invoked behind the `supabase.storage.vectors` namespace.
+
+## createBucket
+
+Creates a new vector bucket. Access the vectors client through `supabase.storage.vectors`.
+
+### Examples
+
+#### Create a vector bucket
+
+```dart
+final vectors = supabase.storage.vectors;
+
+await vectors.createBucket('embeddings');
+```
+
+## createIndex
+
+Creates a new vector index in the scoped bucket. `dimension` is the length of the vectors the index will store and `distanceMetric` is the metric used for similarity queries. Keys listed in `nonFilterableMetadataKeys` can be stored on vectors but not used in query filters. `dataType` defaults to `VectorDataType.float32`.
+
+### Examples
+
+#### Create an index
+
+```dart
+final bucket = supabase.storage.vectors.from('embeddings');
+
+await bucket.createIndex(
+  name: 'documents',
+  dimension: 3,
+  distanceMetric: DistanceMetric.cosine,
+);
+```
+
+#### Create an index with non-filterable metadata
+
+```dart
+final bucket = supabase.storage.vectors.from('embeddings');
+
+await bucket.createIndex(
+  name: 'documents',
+  dimension: 3,
+  distanceMetric: DistanceMetric.euclidean,
+  nonFilterableMetadataKeys: ['rawText'],
+);
+```
+
+## deleteBucket
+
+Deletes a vector bucket. The bucket must have no indexes before it can be deleted.
+
+### Examples
+
+#### Delete a vector bucket
+
+```dart
+final vectors = supabase.storage.vectors;
+
+await vectors.deleteBucket('embeddings');
+```
+
+## deleteIndex
+
+Deletes an index and all of its vectors from the scoped bucket.
+
+### Examples
+
+#### Delete an index
+
+```dart
+final bucket = supabase.storage.vectors.from('embeddings');
+
+await bucket.deleteIndex('documents');
+```
+
+## deleteVectors
+
+Deletes vectors by their keys. The batch must contain between 1 and 500 keys.
+
+### Examples
+
+#### Delete vectors
+
+```dart
+final index = supabase.storage.vectors
+    .from('embeddings')
+    .index('documents');
+
+await index.deleteVectors(['doc-1', 'doc-2']);
+```
+
+## from
+
+Scopes index operations to a single vector bucket. Returns a `StorageVectorBucketApi`.
+
+### Examples
+
+#### Scope operations to a bucket
+
+```dart
+final bucket = supabase.storage.vectors.from('embeddings');
+
+await bucket.createIndex(
+  name: 'documents',
+  dimension: 3,
+  distanceMetric: DistanceMetric.cosine,
+);
+```
+
+## getBucket
+
+Retrieves the metadata of an existing vector bucket.
+
+### Examples
+
+#### Get a vector bucket
+
+```dart
+final vectors = supabase.storage.vectors;
+
+final VectorBucket bucket = await vectors.getBucket('embeddings');
+```
+
+## getIndex
+
+Retrieves the metadata of an index in the scoped bucket.
+
+### Examples
+
+#### Get an index
+
+```dart
+final bucket = supabase.storage.vectors.from('embeddings');
+
+final VectorIndex index = await bucket.getIndex('documents');
+
+print(index.dimension);
+print(index.distanceMetric);
+```
+
+## getVectors
+
+Retrieves vectors by their keys. Set `returnData` and `returnMetadata` to include the embeddings and metadata in the result. Keys that do not exist are omitted from the returned list.
+
+### Examples
+
+#### Get vectors by key
+
+```dart
+final index = supabase.storage.vectors
+    .from('embeddings')
+    .index('documents');
+
+final List<VectorMatch> vectors = await index.getVectors(
+  keys: ['doc-1', 'doc-2'],
+  returnData: true,
+  returnMetadata: true,
+);
+
+for (final vector in vectors) {
+  print('${vector.key}: ${vector.metadata}');
+}
+```
+
+## index
+
+Scopes vector data operations to a single index within a bucket. Returns a `StorageVectorIndexApi`.
+
+### Examples
+
+#### Scope operations to an index
+
+```dart
+final bucket = supabase.storage.vectors.from('embeddings');
+
+final index = bucket.index('documents');
+
+await index.putVectors([
+  Vector(key: 'doc-1', data: [0.1, 0.2, 0.3]),
+]);
+```
+
+## listBuckets
+
+Lists vector buckets. Use `prefix` to filter by name and `maxResults` / `nextToken` to paginate.
+
+### Examples
+
+#### List vector buckets
+
+```dart
+final vectors = supabase.storage.vectors;
+
+final VectorBucketList result = await vectors.listBuckets();
+
+for (final bucket in result.buckets) {
+  print(bucket.name);
+}
+```
+
+#### Paginate and filter buckets
+
+```dart
+final vectors = supabase.storage.vectors;
+
+final result = await vectors.listBuckets(
+  prefix: 'prod-',
+  maxResults: 50,
+);
+
+final nextToken = result.nextToken;
+```
+
+## listIndexes
+
+Lists indexes in the scoped bucket. Use `prefix` to filter by name and `maxResults` / `nextToken` to paginate.
+
+### Examples
+
+#### List indexes
+
+```dart
+final bucket = supabase.storage.vectors.from('embeddings');
+
+final VectorIndexList result = await bucket.listIndexes();
+
+for (final index in result.indexes) {
+  print(index.name);
+}
+```
+
+## listVectors
+
+Lists vectors in the scoped index with pagination. A full-index scan can be distributed across multiple workers by giving each worker a different `segmentIndex` (0 to `segmentCount - 1`) for the same `segmentCount` (1 to 16).
+
+### Examples
+
+#### List vectors
+
+```dart
+final index = supabase.storage.vectors
+    .from('embeddings')
+    .index('documents');
+
+final VectorList result = await index.listVectors(
+  maxResults: 100,
+  returnMetadata: true,
+);
+
+for (final vector in result.vectors) {
+  print(vector.key);
+}
+```
+
+#### Parallel scan with segments
+
+```dart
+final index = supabase.storage.vectors
+    .from('embeddings')
+    .index('documents');
+
+// Worker 2 of a 4-way parallel scan.
+final result = await index.listVectors(
+  segmentCount: 4,
+  segmentIndex: 2,
+);
+```
+
+## putVectors
+
+Inserts or updates a batch of vectors in the scoped index. The batch must contain between 1 and 500 vectors, and each vector's `data` length must match the index dimension.
+
+### Examples
+
+#### Put vectors
+
+```dart
+final index = supabase.storage.vectors
+    .from('embeddings')
+    .index('documents');
+
+await index.putVectors([
+  Vector(
+    key: 'doc-1',
+    data: [0.1, 0.2, 0.3],
+    metadata: {'title': 'Intro'},
+  ),
+  Vector(
+    key: 'doc-2',
+    data: [0.4, 0.5, 0.6],
+    metadata: {'title': 'Guide'},
+  ),
+]);
+```
+
+## queryVectors
+
+Searches the scoped index for the vectors most similar to `queryVector`. `topK` limits the number of matches returned. `filter` restricts the search to vectors whose metadata matches the given expression. Set `returnDistance` and `returnMetadata` to include the distance scores and metadata in the result.
+
+### Examples
+
+#### Query vectors
+
+```dart
+final index = supabase.storage.vectors
+    .from('embeddings')
+    .index('documents');
+
+final VectorQueryResult result = await index.queryVectors(
+  queryVector: [0.1, 0.2, 0.3],
+  topK: 5,
+  returnDistance: true,
+  returnMetadata: true,
+);
+
+for (final match in result.matches) {
+  print('${match.key}: ${match.distance}');
+}
+```
+
+#### Query with a metadata filter
+
+```dart
+final index = supabase.storage.vectors
+    .from('embeddings')
+    .index('documents');
+
+final result = await index.queryVectors(
+  queryVector: [0.1, 0.2, 0.3],
+  topK: 10,
+  filter: {'category': 'docs'},
+  returnMetadata: true,
+);
 ```
 
 

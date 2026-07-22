@@ -5,9 +5,7 @@ path: reference/api/2026-04/admin/delete_user
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/users/{user_id}
-Remove a user from the organization and revoke their role bindings. Does not delete the user's Pinecone account.
-Returns `202`. The user's role bindings are revoked immediately, so the user no longer appears in get or list requests and instead returns `404`. A repeat request for the same user returns `404`.
-Returns `409` when removing the last `OrgOwner` in the organization.
+Remove a user from the organization and revoke their role bindings; their Pinecone account is not deleted.
 
 
 <RequestExample>

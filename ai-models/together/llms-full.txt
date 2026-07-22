@@ -3234,7 +3234,7 @@ The replicas keep serving until they finish draining, then the deployment moves 
 
 ## Restart a deployment
 
-A stopped deployment doesn't restart on its own. To bring it back, raise both bounds to `1` or more:
+A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way; [deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more:
 
 ```bash CLI theme={null}
 tg beta endpoints update dep_abc123 --min-replicas 1 --max-replicas 2
@@ -3292,7 +3292,9 @@ To delete an endpoint that still has deployments, pass `--force` to `rm`. If the
 * **`endpoint_not_configured` (HTTP 400) though the deployment is `READY`:** Confirm the deployment is in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic) with a non-zero weight.
 * **Deployment `DEGRADED` with `Cannot place replicas: insufficient GPU capacity`:** Hardware for the config is constrained, so the scheduler couldn't place all replicas yet. Compare `status.scheduledReplicas` to `desiredReplicas`. The scheduler keeps retrying and the deployment starts once capacity frees up. To improve the chance of placement, request fewer replicas or choose a config with a smaller hardware footprint.
 * **Deployment `DEGRADED` with `Startup stalled` or `Not ready`:** A placed replica is still booting or hit a startup failure. Read the detail after the colon in `status.message`. The deployment stays `DEGRADED` rather than `FAILED` once any replica has been successfully started.
-* **Deployment `FAILED` with `Timed out waiting for readiness`:** No replica could be provisioned within six hours of the current run's start. Read the stall cause at the end of `status.message`. Restart the deployment to begin a fresh budget.
+* **Deployment `FAILED` with `Timed out waiting for readiness`:** No replica could be provisioned within six hours of the current run's start. Read the stall cause at the end of `status.message`. [Deploy a new deployment](#create-a-deployment) to try again with a fresh readiness budget.
+* **Restart fails with `the deployment is in a terminal FAILED state and cannot be restarted; create a new deployment` (HTTP 400):** A `FAILED` deployment can't be brought back by raising replica bounds. [Deploy a new deployment](#create-a-deployment) on the endpoint instead.
+* **Restart fails with `the deployment must be stopped before it can be restarted` (HTTP 400):** Wait for the deployment to reach `DEPLOYMENT_STATE_STOPPED` after you [stop it](#stop-a-deployment), or confirm both replica bounds are `0`, before raising them again.
 * **Deployment `FAILED` for another reason:** Read `status.message`. Common causes include deterministic placement rejection (`Cannot place replicas: …`), manifest generation failure, or remediation exhaustion.
 * **Model not supported:** Not every model can be deployed. See the [model catalog](/docs/dedicated-endpoints/models). A fine-tuned model deploys only if its base model is supported.
 * **Deploy fails with `the model has no revisions to deploy`:** The model record exists but has no uploaded weights yet. Finish [uploading the model](/docs/dedicated-endpoints/custom-models#upload-the-model) and wait for the upload to succeed before you deploy it.
@@ -3805,7 +3807,7 @@ tg beta endpoints deploy google/gemma-4-E4B-it \
   --endpoint my-endpoint
 ```
 
-The command prints the new endpoint's **inference name** (`<project_slug>/<endpoint_name>`): this is the endpoint string you pass as the `model` parameter on inference requests.
+The command prints the new endpoint's **endpoint string** (`<project_slug>/<endpoint_name>`): pass it as the `model` parameter on inference requests.
 
 Once the deployment is ready, send inference requests to the endpoint using the same [inference API](/docs/inference/overview#shared-inference-api) as serverless models. Pass the endpoint string as the `model` parameter:
 
@@ -3988,7 +3990,7 @@ The command returns as soon as the resources are created and prints the endpoint
 √ Model deployed to endpoint your-project-slug/quickstart-endpoint.
 
 ╭─ Endpoint Details for quickstart-endpoint ───────────────────────────────────╮
-│    Inference Name  your-project-slug/quickstart-endpoint                     │
+│    Endpoint string  your-project-slug/quickstart-endpoint                    │
 │       Endpoint ID  ep_abc123                                                 │
 │        Created at  07/13/2026, 06:52 PM                                      │
 │        Updated at  07/13/2026, 06:52 PM                                      │
@@ -4006,7 +4008,7 @@ Deployments
 ╰──────────────────────────────────────┴───────────────────┴───────────────────╯
 ```
 
-Note the **Inference Name** (`your-project-slug/quickstart-endpoint`): this is the endpoint string you pass as the `model` parameter when you send requests.
+Note the **endpoint string** (`your-project-slug/quickstart-endpoint`): pass it as the `model` parameter when you send requests.
 
 The deployment provisions in the background. For a model this size, first-time provisioning usually takes about 5 to 10 minutes while the weights download and hardware is allocated; larger models take longer. Check its status with the deployment ID from the output, and wait for `DEPLOYMENT_STATE_READY`:
 
@@ -4847,6 +4849,10 @@ Since the local workspace is mounted to `/app`, model weights and example inputs
 
 Secrets are encrypted environment variables injected into your container at runtime. Use them for API keys, tokens, and other sensitive values that shouldn't be baked into the image.
 
+<Warning>
+  A name cannot appear in both `[tool.jig.deploy.environment_variables]` and a secret. `jig deploy` fails and lists each colliding name if the same name is defined in both places. Remove the duplicate from your config or run `tg beta jig secrets unset --name <name>`.
+</Warning>
+
 <CodeGroup>
   ```shell Shell theme={null}
   tg beta jig secrets set --name HF_TOKEN --value hf_xxxxx --description "Hugging Face token"
@@ -4855,7 +4861,7 @@ Secrets are encrypted environment variables injected into your container at runt
   ```
 </CodeGroup>
 
-Reference your secrets in `pyproject.toml` as environment variables, and they'll be available to your container at runtime. See the [Jig CLI reference](/reference/cli/jig#secrets) for all secrets commands.
+Secrets are available to your container as environment variables at runtime. Do not also define the same name under `[tool.jig.deploy.environment_variables]`. See the [Jig CLI reference](/reference/cli/jig#secrets) for all secrets commands.
 
 ## Volumes
 
@@ -5596,7 +5602,7 @@ BYOM jobs use the same lifecycle as catalog jobs:
 * [Poll the job](/docs/fine-tuning/monitoring#poll-until-the-job-is-done) with the SDK or CLI.
 * Deploy the result on a [dedicated endpoint](/docs/fine-tuning/deployment). Your fine-tuned model appears under **My Models** in the [dashboard](https://api.together.ai/models) once training completes.
 
-The base model dictates which hardware can host the result. If `client.endpoints.list_hardware(model=<base>)` returns 404, the base can't be deployed; pick a different one before training.
+The base model dictates whether the result can be hosted. If the base model isn't in the [supported models](/docs/dedicated-endpoints/models) list for dedicated model inference, the fine-tune can't be deployed as a dedicated endpoint. Pick a supported base before training.
 
 ## Troubleshooting
 
@@ -6127,6 +6133,8 @@ The following models support function-calling fine-tuning. See [supported models
   | Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      |
   | Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           |
   | Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       |
+  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         |
   | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       |
   | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    |
@@ -6403,6 +6411,8 @@ For the parameters that tune LoRA itself (`lora_r`, `lora_alpha`, `lora_dropout`
 
 When you don't set `lora_trainable_modules`, it defaults to `all-linear`, which applies LoRA to the modules listed for each model in the tables below. To customize, pass a comma-separated list of module names instead.
 
+Each module you list must appear in the model's allow-list. Whitespace around module names is ignored, but a non-empty value that parses to no modules (for example `","` or `" , "`) is rejected.
+
 <Accordion title="Default target modules by model">
   ### Text models
 
@@ -6526,6 +6536,59 @@ When you don't set `lora_trainable_modules`, it defaults to `all-linear`, which 
   | `google/gemma-3-27b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
   | `google/gemma-4-31B-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
 </Accordion>
+
+## Target MoE expert layers
+
+On mixture-of-experts (MoE) models, you can apply LoRA to the expert feed-forward projections instead of the attention projections. Set `lora_trainable_modules` to the expert modules `w_up`, `w_gate`, and `w_down`. Together uses a compact shared-factor adapter layout across experts, so the adapter stays small even on very large models.
+
+Use expert targeting when your task depends on the model's domain knowledge (the feed-forward experts) rather than its attention patterns — for example, adapting an MoE base to a new domain or task family.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  job = client.fine_tuning.create(
+      training_file="<FILE_ID>",
+      model="zai-org/GLM-4.6",
+      lora=True,
+      lora_trainable_modules="w_up,w_gate,w_down",
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const job = await client.fineTuning.create({
+    training_file: "<FILE_ID>",
+    model: "zai-org/GLM-4.6",
+    lora: true,
+    lora_trainable_modules: "w_up,w_gate,w_down",
+  });
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "zai-org/GLM-4.6" \
+    --lora \
+    --lora-trainable-modules "w_up,w_gate,w_down"
+  ```
+</CodeGroup>
+
+You can't combine expert and attention modules in one job. Pass either the attention projections (the default) or the expert projections, not both, or the job fails validation.
+
+Expert LoRA is available on these models:
+
+* Mixtral: `mistralai/Mixtral-8x7B-v0.1`, `mistralai/Mixtral-8x7B-Instruct-v0.1`.
+* Qwen3 MoE: `Qwen/Qwen3-30B-A3B-Base`, `Qwen/Qwen3-30B-A3B`, `Qwen/Qwen3-30B-A3B-Instruct-2507`, `Qwen/Qwen3-235B-A22B`, `Qwen/Qwen3-235B-A22B-Instruct-2507`, `Qwen/Qwen3-Coder-30B-A3B-Instruct`.
+* Qwen3-Next: `Qwen/Qwen3-Next-80B-A3B-Instruct`, `Qwen/Qwen3-Next-80B-A3B-Thinking`.
+* GLM-4: `zai-org/GLM-4.6`, `zai-org/GLM-4.7`.
+
+Every expert-LoRA job produces a LoRA adapter served on top of the base model. Unlike a standard LoRA, an expert-LoRA adapter is never merged into a full set of weights, so deploy it as an adapter on any of the models above. See [adapter upload](/docs/dedicated-endpoints/adapter).
 
 ## What to expect from full fine-tuning
 
@@ -7390,7 +7453,7 @@ Save the job ID.
 
 Jobs move through these states: `pending → queued → running → uploading → completed`. Queue wait time is typically under an hour. Once running, multiply the first epoch's duration by `n_epochs` to estimate the time remaining.
 
-Poll for completion (or error/cancellation), then read the output model name:
+Poll for completion (or error/cancellation), then read the Model Object ID:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -7411,8 +7474,9 @@ Poll for completion (or error/cancellation), then read the output model name:
   if status.status != "completed":
       raise RuntimeError(f"Job ended with status: {status.status}")
 
-  output_model = status.x_model_output_name
-  print(output_model)
+  # Model Object ID (ml_...); deploy references this, not the output name.
+  model_object_id = status.api_model_object_id
+  print(model_object_id)
   ```
 
   ```typescript TypeScript theme={null}
@@ -7433,8 +7497,9 @@ Poll for completion (or error/cancellation), then read the output model name:
     throw new Error(`Job ended with status: ${status.status}`);
   }
 
-  const outputModel = status.x_model_output_name;
-  console.log(outputModel);
+  // Model Object ID (ml_...); deploy references this, not the output name.
+  const modelObjectId = status.model_object_id;
+  console.log(modelObjectId);
   ```
 
   ```bash CLI theme={null}
@@ -7466,98 +7531,147 @@ You can also monitor the run on the [fine-tuning jobs dashboard](https://api.tog
 
 ## Step 4: Deploy and call your model
 
-Fine-tuned models can be run on Together AI using [dedicated endpoints](/docs/fine-tuning/deployment). The example below deploys, sends one request, and tears the endpoint down to stop billing:
+Fine-tuned models run on Together AI through [dedicated model inference](/docs/fine-tuning/deployment). A completed job is already a private model in your project, so there's no upload step: you deploy it with the `tg beta` CLI by its Model Object ID (`model_object_id`, the `ml_...` value from Step 3). The deploy commands require Together CLI version `2.24.0` or later.
+
+The CLI's `deploy` command creates the endpoint, attaches a deployment, and routes all traffic to it in one step. Then poll until the deployment reaches `DEPLOYMENT_STATE_READY`:
+
+```bash CLI theme={null}
+# Deploy the fine-tuned model to a new endpoint
+tg beta endpoints deploy "<MODEL_OBJECT_ID>" \
+  --endpoint qwen-finetune
+
+# Poll until the deployment reaches DEPLOYMENT_STATE_READY
+# (pass the endpoint ID from the deploy output)
+tg beta endpoints get "<ENDPOINT_ID>"
+```
+
+The SDK has no single-call equivalent, so it runs the same steps individually, referencing the fine-tune by its Model Object ID (`ml_...`):
 
 <CodeGroup>
   ```python Python theme={null}
-  # 1. Preflight: confirm the base can host a fine-tune
-  client.endpoints.list_hardware(model=status.model)
+  from together import Together
 
-  # 2. Create the endpoint. Use a hardware id returned by list_hardware
-  # above; for Qwen3.5 9B the platform currently serves 1x H100 80GB SXM.
-  endpoint = client.endpoints.create(
-      display_name="Qwen3.5 9B fine-tune",
-      model=output_model,
-      hardware="1x_nvidia_h100_80gb_sxm",
+  client = Together()
+  project_id = client.whoami().project_id
+
+  # Reference the fine-tune by its Model Object ID (ml_...) and a config
+  # for the base model. List configs: tg beta models configs <model>.
+  model = f"projects/{project_id}/models/<MODEL_OBJECT_ID>"
+  config = f"projects/{project_id}/configs/<CONFIG_ID>"
+
+  endpoint = client.beta.endpoints.create(
+      project_id=project_id,
+      name="qwen-finetune",
+  )
+  deployment = client.beta.endpoints.deployments.create(
+      endpoint.id,
+      project_id=project_id,
+      name="prod",
+      model=model,
+      config=config,
       autoscaling={"min_replicas": 1, "max_replicas": 1},
   )
+  client.beta.endpoints.update(
+      endpoint.id,
+      project_id=project_id,
+      traffic_split=[{"deployment_id": deployment.id, "weight": 1}],
+  )
 
-  # 3. Wait until ready
-  deadline = time.time() + 20 * 60
-  while True:
-      ep = client.endpoints.retrieve(endpoint.id)
-      if ep.state == "STARTED":
-          break
-      if ep.state in ("FAILED", "STOPPED"):
-          raise RuntimeError(f"Endpoint state: {ep.state}")
-      if time.time() > deadline:
-          raise TimeoutError(f"Endpoint still {ep.state} after 20 minutes")
-      time.sleep(30)
+  # Poll until ready
+  deployment = client.beta.endpoints.deployments.retrieve(
+      deployment.id, project_id=project_id, endpoint_id=endpoint.id
+  )
+  print(endpoint.name, deployment.status.state)
+  ```
 
-  # 4. Send a request
-  response = client.chat.completions.create(
-      model=endpoint.name,
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+  const { project_id: projectId } = await client.whoami();
+
+  // Reference the fine-tune by its Model Object ID (ml_...) and a config
+  // for the base model. List configs: tg beta models configs <model>.
+  const model = `projects/${projectId}/models/<MODEL_OBJECT_ID>`;
+  const config = `projects/${projectId}/configs/<CONFIG_ID>`;
+
+  const endpoint = await client.beta.endpoints.create({
+    projectId,
+    name: "qwen-finetune",
+  });
+  const deployment = await client.beta.endpoints.deployments.create(
+    endpoint.id,
+    {
+      projectId,
+      name: "prod",
+      model,
+      config,
+      autoscaling: { minReplicas: 1, maxReplicas: 1 },
+    },
+  );
+  await client.beta.endpoints.update(endpoint.id, {
+    projectId,
+    trafficSplit: [{ deploymentId: deployment.id, weight: 1 }],
+  });
+  console.log(endpoint.name);
+  ```
+</CodeGroup>
+
+Once the deployment is ready, send a request. The deploy output prints the **endpoint string** (`your-project-slug/qwen-finetune`): pass this as the `model` parameter. Point the base URL at `https://api-inference.together.ai/v1`:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  # A dedicated client for inference: this base URL serves only
+  # inference, not the fine-tuning or files APIs.
+  inference_client = Together(base_url="https://api-inference.together.ai/v1")
+
+  response = inference_client.chat.completions.create(
+      model="your-project-slug/qwen-finetune",
       messages=[{"role": "user", "content": "What is the capital of France?"}],
       max_tokens=128,
   )
   print(response.choices[0].message.content)
-
-  # 5. Delete when done
-  client.endpoints.delete(endpoint.id)
   ```
 
   ```typescript TypeScript theme={null}
-  await client.endpoints.listHardware({ model: status.model });
+  import Together from "together-ai";
 
-  const endpoint = await client.endpoints.create({
-    display_name: "Qwen3.5 9B fine-tune",
-    model: outputModel,
-    hardware: "1x_nvidia_h100_80gb_sxm",
-    autoscaling: { min_replicas: 1, max_replicas: 1 },
+  // A dedicated client for inference: this base URL serves only
+  // inference, not the fine-tuning or files APIs.
+  const inferenceClient = new Together({
+    baseURL: "https://api-inference.together.ai/v1",
   });
 
-  const deadline = Date.now() + 20 * 60 * 1000;
-  while (true) {
-    const ep = await client.endpoints.retrieve(endpoint.id);
-    if (ep.state === "STARTED") break;
-    if (ep.state === "FAILED" || ep.state === "STOPPED") {
-      throw new Error(`Endpoint state: ${ep.state}`);
-    }
-    if (Date.now() > deadline) {
-      throw new Error("Endpoint did not start within 20 minutes");
-    }
-    await new Promise((r) => setTimeout(r, 30000));
-  }
-
-  const response = await client.chat.completions.create({
-    model: endpoint.name,
+  const response = await inferenceClient.chat.completions.create({
+    model: "your-project-slug/qwen-finetune",
     messages: [{ role: "user", content: "What is the capital of France?" }],
     max_tokens: 128,
   });
   console.log(response.choices[0].message.content);
-
-  await client.endpoints.delete(endpoint.id);
   ```
 
-  ```bash CLI theme={null}
-  tg endpoints create \
-    --model "<OUTPUT_MODEL_NAME>" \
-    --hardware 1x_nvidia_h100_80gb_sxm \
-    --display-name "Qwen3.5 9B fine-tune" \
-    --wait
-
-  # The CLI doesn't ship a chat command — call the endpoint with curl.
-  curl -s https://api.together.ai/v1/chat/completions \
+  ```bash cURL theme={null}
+  curl -s https://api-inference.together.ai/v1/chat/completions \
     -H "Authorization: Bearer $TOGETHER_API_KEY" \
     -H "Content-Type: application/json" \
-    -d '{"model":"<ENDPOINT_NAME>","messages":[{"role":"user","content":"What is the capital of France?"}],"max_tokens":128}'
-
-  tg endpoints delete "<ENDPOINT_ID>"
+    -d '{
+      "model": "your-project-slug/qwen-finetune",
+      "messages": [{"role": "user", "content": "What is the capital of France?"}],
+      "max_tokens": 128
+    }'
   ```
 </CodeGroup>
 
+When you're done, delete the endpoint and its deployment to stop billing:
+
+```bash CLI theme={null}
+tg beta endpoints rm "<ENDPOINT_ID>" --force
+```
+
 <Note>
-  Pass `endpoint.name` (not `output_model`) as the `model` parameter when calling inference APIs. The endpoint name includes a unique suffix that routes traffic to your deployment.
+  Pass the endpoint string (`your-project-slug/qwen-finetune`, printed by the deploy output) as the `model` parameter, not the Model Object ID. If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`; list a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
 </Note>
 
 <Check>
@@ -7569,7 +7683,7 @@ Fine-tuned models can be run on Together AI using [dedicated endpoints](/docs/fi
 To measure the impact of fine-tuning, run the same prompts through the base model and the fine-tuned model.
 
 <Note>
-  **Many fine-tunable base models aren't available on [serverless](/docs/serverless/models).** For example, calling `Qwen/Qwen3.5-9B` directly returns `Unable to access non-serverless model`. To compare, deploy the base on its own [dedicated endpoint](/docs/dedicated-endpoints/overview), evaluate against `endpoint.name`, then tear that endpoint down too. Serverless bases (those with a per-token price listed on the [models dashboard](https://api.together.ai/models)) can be called directly without deploying anything.
+  **Many fine-tunable base models aren't available on [serverless](/docs/serverless/models).** For example, calling `Qwen/Qwen3.5-9B` directly returns `Unable to access non-serverless model`. To compare, deploy the base on its own [dedicated endpoint](/docs/dedicated-endpoints/overview), evaluate against its endpoint string, then tear that endpoint down too. Serverless bases (those with a per-token price listed on the [models dashboard](https://api.together.ai/models)) can be called directly without deploying anything.
 </Note>
 
 This [GitHub notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Finetuning/Finetuning_Guide.ipynb) runs an Exact Match and F1 comparison on the CoQA validation split. Here's a sample result from one run:
@@ -7581,13 +7695,13 @@ This [GitHub notebook](https://github.com/togethercomputer/together-cookbook/blo
 
 ## Stop the endpoint
 
-Dedicated model inference bills per minute as long as the endpoint is running. Step 4 deletes the endpoint at the end of the script, but if you skipped that step or want to delete it later, run:
+Dedicated model inference bills per minute per running replica as long as the deployment is running. Step 4 deletes the endpoint at the end, but if you skipped that step or want to delete it later, run:
 
 ```bash theme={null}
-tg endpoints delete "<ENDPOINT_ID>"
+tg beta endpoints rm "<ENDPOINT_ID>" --force
 ```
 
-Find the endpoint ID by running `tg endpoints list`.
+Find the endpoint ID by running `tg beta endpoints ls`.
 
 ## Continue from a checkpoint
 
@@ -7677,6 +7791,8 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | Qwen         | Qwen3 30B A3B Base                                 | `Qwen/Qwen3-30B-A3B-Base`                            |
   | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                 |
   | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                               |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                      |
   | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                    |
   | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
@@ -7919,7 +8035,7 @@ Every base model available for fine-tuning, with context length and batch size l
 The tables below list every model available through the fine-tuning API. Context lengths are the maximum for that model in SFT and DPO modes. Batch sizes refer to packed batches for text formats. See [data preparation](/docs/fine-tuning/data-preparation) for details on packing.
 
 <Warning>
-  Some models can be fine-tuned but cannot be deployed as dedicated endpoints. To verify deployability before training, run `client.endpoints.list_hardware(model="<BASE_MODEL>")`. A 404 means the base can't host a fine-tune.
+  Some models can be fine-tuned but cannot be deployed as dedicated endpoints. To verify deployability before training, confirm the base model appears in the [supported models](/docs/dedicated-endpoints/models) list for dedicated model inference (or run `tg beta models configs <BASE_MODEL>`). If it isn't listed there, the fine-tune can't be hosted on a dedicated endpoint.
 </Warning>
 
 [Fill out this form](https://www.together.ai/forms/model-requests) to request a model that isn't in the list.
@@ -8000,6 +8116,8 @@ The tables below list every model available through the fine-tuning API. Context
 | Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
 | Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
 | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
 | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
 | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
@@ -21040,8 +21158,8 @@ When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/heal
 1. Health checks detect an issue on a node and create an alert with supporting evidence.
 2. The system evaluates the alert and generates a repair recommendation with a suggested mode (for example, migrate to new host).
 3. The recommendation appears in the **Repairs** tab of your cluster.
-4. You review the recommendation and accept or dismiss it.
-5. Once accepted, Together executes the repair: cordon, graceful drain, remediation action, and node rejoin.
+4. You review the recommendation and approve a repair action. The system marks its suggested action as recommended, but you can override it and approve a different action instead.
+5. Once approved, Together executes the repair with the action you chose: cordon, graceful drain, remediation action, and node rejoin.
 
 <Note>
   Auto repair accounts for in-flight work. Training jobs need to checkpoint before a node drains, and inference workloads need their replicas rebalanced. Review recommendations before accepting to confirm your workloads are ready for the disruption.
@@ -21078,6 +21196,21 @@ The detected issues come from [passive health check signals](/docs/health-checks
 <Note>
   Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today; some raise an internal alert that Together's team reviews first. Every recommendation is reviewed and accepted by you before a repair runs.
 </Note>
+
+### Override the recommended action
+
+When you review a recommendation, the system marks its suggested action as recommended. You can approve that action, or override it and approve a different action instead. Overriding lets you escalate or de-escalate the repair when you have more context than the automated policy. For example, you can choose migrate to new host instead of a recommended reboot when you suspect a hardware fault.
+
+The review shows the health check failures that triggered the recommendation alongside the four repair actions:
+
+* **Reboot:** Restart the VM in place on the same host.
+* **Quick reprovision:** Recreate the VM on the same physical host.
+* **Migrate to new host:** Provision a new VM on different physical hardware.
+* **Remove:** Permanently remove the node for RMA.
+
+Select an action to see its workload impact and an optional reason field, then confirm. Approving the recommended action runs the suggested repair. Selecting any other action overrides the recommendation and runs that repair instead.
+
+See [Available repair actions](#available-repair-actions) for guidance on when to use each action. You can also approve a recommendation from the command line with [`tg beta clusters remediations approve`](/reference/cli/clusters#approve-a-node-remediation), which exposes the same actions through its `--mode` flag.
 
 ### Behavioral details
 
@@ -21154,7 +21287,7 @@ Reboots the VM in place on the same physical host.
 
 **Quick reprovision**
 
-Reprovisions the GPU node VM on a random underlying physical host.
+Reprovisions the GPU node VM on the same underlying physical host.
 
 * **When to use:** Persistent software-level issues (driver crashes, library corruption), VM configuration problems, or application-level issues that a reboot did not resolve.
 * **What happens:** The node follows the Cordon → Drain → Reprovision lifecycle. The VM is recreated with a fresh software stack and rejoins the cluster automatically.
@@ -21208,7 +21341,7 @@ Cordon → Drain → Reboot/Reprovision/Migrate/Remove → Rejoin (or permanent 
 **Reboot/Reprovision/Migrate:**
 
 * **Reboot:** The VM restarts in place on the same hardware. Local `/scratch` and `/tmp` data is preserved.
-* **Quick reprovision:** The VM is recreated on a random physical node (could be the same as the original host). Local data is lost.
+* **Quick reprovision:** The VM is recreated on the same physical host. Local data is lost.
 * **Migrate to new host:** A new VM is created on different physical hardware. Local data is lost.
 * **Remove:** The node is permanently removed from the cluster for RMA. No rejoin occurs.
 
@@ -25652,24 +25785,33 @@ If your workload depends on predictable, reserved capacity, [dedicated model inf
 
 Occasionally, due to the popularity of a specific model, we may apply custom rate limits or access restrictions. These exceptions are called out in the relevant model documentation.
 
-## Cost Analytics
+## Cost analytics
 
 Together AI provides built-in spend analytics so you can track usage and costs across products and models over time.
 
-To access cost analytics, navigate to your [billing settings](https://api.together.ai/settings/organization/~current/billing) and scroll to the **Usage** section. You can also click the **Current Usage** button to see a draft view of your monthly invoice.
+To access organization-level cost analytics, open your [billing settings](https://api.together.ai/settings/organization/~current/billing) and scroll to the **Usage** section. You can also click **See detailed cost analytics** on the monthly spend card, or open your [project's cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics) to scope the view to a single project. Click **Current Usage** on the billing page to see a draft view of your monthly invoice.
 
 <img alt="Cost analytics dashboard showing daily spend by product" />
 
-### Filtering and Grouping
+### Measure and grouping
 
-The dashboard supports several ways to slice your data:
+The chart toolbar lets you choose how to measure and group usage:
 
-* **Group by Product** - See daily costs broken down by product (Endpoints, Storage, Serverless Inference)
-* **Group by Line Item** - View a more granular breakdown of individual usage line items
-* **Filter by Product** - Focus on a specific product to isolate its spend
-* **Filter by Time Range** - Adjust the date range to analyze any period of usage history
+* **Measure: Cost (\$)** - Chart daily spend in US dollars for the selected period. This is the default view.
+* **Measure: Units** - Chart daily billable units (for example, tokens) instead of dollar amounts. Totals and tooltips show unit counts; the chart subtitle updates to **Daily Units by …**.
+* **Group by Product** - Break down by product (Endpoints, Storage, Serverless Inference).
+* **Group by Line items** - Show individual usage line items.
+* **Group by Project** (beta) - Attribute spend or units to projects in your organization.
+* **Group by API key** (beta) - Attribute spend or units to API keys.
 
-The chart updates in real time as you change filters, and the total cost for the selected period is shown in the top right of the chart.
+When **Measure** is **Units**, grouping by product, project, or API key aggregates line-item quantities for that dimension. Group by **Line items** shows each billable line item's unit count directly.
+
+### Filtering and time range
+
+* **Filter** - Include or exclude specific series from the current group-by dimension with a multi-select filter (type to search options). The control shows **All usage** until you apply a filter, and filtering is not available when you group by line items.
+* **Time range** - Adjust the start and end dates to analyze any period of usage history. All dates are in UTC.
+
+The chart updates as you change controls. The summary in the top right shows the total cost or total units for the selected period, depending on the measure.
 
 
 # Build a RAG workflow
@@ -28229,156 +28371,261 @@ Once a fine-tuning job completes, your model is available for inference in two w
 ## Prerequisites
 
 * A completed fine-tuning job. See the [quickstart](/docs/fine-tuning/quickstart) for the full lifecycle.
-* The job's `x_model_output_name` (visible once status is `completed`). It follows the pattern `<your_account>/<base_model>:<suffix>:<job_id>`.
+* The job's **Model Object ID** (`model_object_id`, an `ml_...` value) — the model-registry ID of the trained weights and the identifier you deploy. It's available once the job status is `completed`, from the `tg fine-tuning retrieve` output.
 
 ## Deploy on a dedicated endpoint
 
+Together AI serves fine-tuned models through [dedicated model inference](/docs/dedicated-endpoints/overview) (DMI). A completed fine-tuning job is already a private model in your project, so you deploy it by its Model Object ID with no separate upload step. Deployment and lifecycle operations use the `tg beta` CLI.
+
 <Warning>
-  Dedicated model inference bills per minute even when idle. Stop or delete the endpoint when you're done to avoid charges.
+  Dedicated model inference bills per minute per running replica, even when idle. Scale the deployment to zero or delete the endpoint when you're done to stop charges.
 </Warning>
+
+<Note>
+  The dedicated model inference commands require Together CLI version `2.24.0` or later. Install or upgrade with `uv tool install "together[cli]"` (or `uv tool upgrade "together[cli]"`), and check your version with `tg --version`.
+</Note>
 
 <Tabs>
   <Tab title="CLI / SDK">
+    The CLI's `deploy` command creates the endpoint, attaches a deployment, and routes all traffic to it in one step. Pass the fine-tune's Model Object ID (`ml_...`) — not the `x_model_output_name`, which isn't a deployable identifier in dedicated model inference:
+
+    ```bash CLI theme={null}
+    # Retrieve the job to copy its Model Object ID (model_object_id, an ml_... value)
+    tg fine-tuning retrieve "<JOB_ID>"
+
+    # Deploy the fine-tuned model to a new endpoint
+    tg beta endpoints deploy "<MODEL_OBJECT_ID>" \
+      --endpoint my-finetuned-endpoint
+    ```
+
+    The SDK has no single-call equivalent, so it runs the same steps individually: create the endpoint, bind the model and a config to a deployment, then route traffic to it. Reference the fine-tune by its **Model Object ID** (`ml_...`, the job's `model_object_id`):
+
     <CodeGroup>
       ```python Python theme={null}
-      import os
-      import time
       from together import Together
 
       client = Together()
+      project_id = client.whoami().project_id
 
-      # 1. Get the output model name from the completed job
-      status = client.fine_tuning.retrieve(id="<JOB_ID>")
-      output_model = status.x_model_output_name
+      # Reference the fine-tune by its Model Object ID (ml_...) and a config
+      # for the base model. List configs: tg beta models configs <model>.
+      model = f"projects/{project_id}/models/<MODEL_OBJECT_ID>"
+      config = f"projects/{project_id}/configs/<CONFIG_ID>"
 
-      # 2. Preflight: confirm the base can host a fine-tune.
-      # A 404 means the base (often a `-Reference` model) can't be deployed.
-      client.endpoints.list_hardware(model=status.model)
+      # 1. Create the endpoint.
+      endpoint = client.beta.endpoints.create(
+          project_id=project_id,
+          name="my-finetuned-endpoint",
+      )
 
-      # 3. Create the endpoint. Use a hardware id returned by list_hardware
-      # above; the exact options depend on the base model.
-      endpoint = client.endpoints.create(
-          display_name="My fine-tuned endpoint",
-          model=output_model,
-          hardware="1x_nvidia_h100_80gb_sxm",
+      # 2. Bind the model and config to a deployment.
+      deployment = client.beta.endpoints.deployments.create(
+          endpoint.id,
+          project_id=project_id,
+          name="prod",
+          model=model,
+          config=config,
           autoscaling={"min_replicas": 1, "max_replicas": 1},
       )
 
-      # 4. Poll until ready
-      deadline = time.time() + 20 * 60  # safety cap: 20 minutes
-      while True:
-          ep = client.endpoints.retrieve(endpoint.id)
-          if ep.state == "STARTED":
-              break
-          if ep.state in ("FAILED", "STOPPED"):
-              raise RuntimeError(f"Endpoint ended with state: {ep.state}")
-          if time.time() > deadline:
-              raise TimeoutError(f"Endpoint still {ep.state} after 20 minutes")
-          time.sleep(30)
-
-      # 5. Send a request. Use endpoint.name (not the raw output model) as the model parameter.
-      response = client.chat.completions.create(
-          model=endpoint.name,
-          messages=[{"role": "user", "content": "Hello!"}],
+      # 3. Route 100% of traffic to the deployment.
+      client.beta.endpoints.update(
+          endpoint.id,
+          project_id=project_id,
+          traffic_split=[{"deployment_id": deployment.id, "weight": 1}],
       )
-      print(response.choices[0].message.content)
-
-      # 6. Delete when done to stop billing
-      client.endpoints.delete(endpoint.id)
+      print(endpoint.name)
       ```
 
       ```typescript TypeScript theme={null}
       import Together from "together-ai";
 
       const client = new Together();
+      const { project_id: projectId } = await client.whoami();
 
-      // 1. Get the output model name from the completed job
-      const status = await client.fineTuning.retrieve("<JOB_ID>");
-      const outputModel = status.x_model_output_name;
+      // Reference the fine-tune by its Model Object ID (ml_...) and a config
+      // for the base model. List configs: tg beta models configs <model>.
+      const model = `projects/${projectId}/models/<MODEL_OBJECT_ID>`;
+      const config = `projects/${projectId}/configs/<CONFIG_ID>`;
 
-      // 2. Preflight
-      await client.endpoints.listHardware({ model: status.model });
-
-      // 3. Create the endpoint
-      const endpoint = await client.endpoints.create({
-        display_name: "My fine-tuned endpoint",
-        model: outputModel,
-        hardware: "1x_nvidia_h100_80gb_sxm",
-        autoscaling: { min_replicas: 1, max_replicas: 1 },
+      // 1. Create the endpoint.
+      const endpoint = await client.beta.endpoints.create({
+        projectId,
+        name: "my-finetuned-endpoint",
       });
 
-      // 4. Poll until ready
-      const deadline = Date.now() + 20 * 60 * 1000;
-      while (true) {
-        const ep = await client.endpoints.retrieve(endpoint.id);
-        if (ep.state === "STARTED") break;
-        if (ep.state === "FAILED" || ep.state === "STOPPED") {
-          throw new Error(`Endpoint ended with state: ${ep.state}`);
-        }
-        if (Date.now() > deadline) {
-          throw new Error("Endpoint did not start within 20 minutes");
-        }
-        await new Promise((r) => setTimeout(r, 30000));
-      }
+      // 2. Bind the model and config to a deployment.
+      const deployment = await client.beta.endpoints.deployments.create(
+        endpoint.id,
+        {
+          projectId,
+          name: "prod",
+          model,
+          config,
+          autoscaling: { minReplicas: 1, maxReplicas: 1 },
+        },
+      );
 
-      // 5. Send a request
-      const response = await client.chat.completions.create({
-        model: endpoint.name,
-        messages: [{ role: "user", content: "Hello!" }],
+      // 3. Route 100% of traffic to the deployment.
+      await client.beta.endpoints.update(endpoint.id, {
+        projectId,
+        trafficSplit: [{ deploymentId: deployment.id, weight: 1 }],
       });
-      console.log(response.choices[0].message.content);
-
-      // 6. Delete when done
-      await client.endpoints.delete(endpoint.id);
-      ```
-
-      ```bash CLI theme={null}
-      # 1. Find your job and copy the output model name
-      tg fine-tuning retrieve "<JOB_ID>"
-
-      # 2. Create the endpoint (--wait blocks until it's ready)
-      tg endpoints create \
-        --model "<OUTPUT_MODEL_NAME>" \
-        --hardware 1x_nvidia_h100_80gb_sxm \
-        --display-name "My fine-tuned endpoint" \
-        --wait
-
-      # 3. Send a request — the CLI doesn't ship a chat command, so use curl.
-      curl -s https://api.together.ai/v1/chat/completions \
-        -H "Authorization: Bearer $TOGETHER_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{"model":"<ENDPOINT_NAME>","messages":[{"role":"user","content":"Hello!"}]}'
-
-      # 4. Delete when done
-      tg endpoints delete "<ENDPOINT_ID>"
+      console.log(endpoint.name);
       ```
     </CodeGroup>
 
+    Poll until the deployment reaches `DEPLOYMENT_STATE_READY`:
+
+    ```bash CLI theme={null}
+    tg beta endpoints get "<ENDPOINT_ID>"
+    ```
+
+    From the SDK, retrieve the deployment and read `status.state`:
+
+    <CodeGroup>
+      ```python Python theme={null}
+      deployment = client.beta.endpoints.deployments.retrieve(
+          deployment.id,
+          project_id=project_id,
+          endpoint_id=endpoint.id,
+      )
+      print(deployment.status.state)
+      ```
+
+      ```typescript TypeScript theme={null}
+      const current = await client.beta.endpoints.deployments.retrieve(
+        deployment.id,
+        { projectId, endpointId: endpoint.id },
+      );
+      console.log(current.status.state);
+      ```
+    </CodeGroup>
+
+    Once the deployment is `READY`, the endpoint serves at its **endpoint string** (`your-project-slug/my-finetuned-endpoint`, returned as `endpoint.name`). Pass it as the `model` parameter and point the base URL at `https://api-inference.together.ai/v1`:
+
+    <CodeGroup>
+      ```bash cURL theme={null}
+      curl -s https://api-inference.together.ai/v1/chat/completions \
+        -H "Authorization: Bearer $TOGETHER_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "model": "your-project-slug/my-finetuned-endpoint",
+          "messages": [{"role": "user", "content": "Hello!"}]
+        }'
+      ```
+
+      ```python Python theme={null}
+      from together import Together
+
+      # A dedicated client for inference: this base URL serves only
+      # inference, not the fine-tuning or files APIs.
+      inference_client = Together(base_url="https://api-inference.together.ai/v1")
+
+      response = inference_client.chat.completions.create(
+          model="your-project-slug/my-finetuned-endpoint",
+          messages=[{"role": "user", "content": "Hello!"}],
+      )
+      print(response.choices[0].message.content)
+      ```
+
+      ```typescript TypeScript theme={null}
+      import Together from "together-ai";
+
+      // A dedicated client for inference: this base URL serves only
+      // inference, not the fine-tuning or files APIs.
+      const inferenceClient = new Together({
+        baseURL: "https://api-inference.together.ai/v1",
+      });
+
+      const response = await inferenceClient.chat.completions.create({
+        model: "your-project-slug/my-finetuned-endpoint",
+        messages: [{ role: "user", content: "Hello!" }],
+      });
+      console.log(response.choices[0].message.content);
+      ```
+    </CodeGroup>
+
+    When you're done, delete the endpoint and its deployment to stop billing. The CLI's `rm --force` removes both in one step:
+
+    ```bash CLI theme={null}
+    tg beta endpoints rm "<ENDPOINT_ID>" --force
+    ```
+
+    The SDK has no smart-delete, so stop billing by scaling the deployment to zero, then delete the resources once it reaches `DEPLOYMENT_STATE_STOPPED`:
+
+    <CodeGroup>
+      ```python Python theme={null}
+      # Scale to zero to stop billing.
+      client.beta.endpoints.deployments.update(
+          deployment.id,
+          project_id=project_id,
+          endpoint_id=endpoint.id,
+          autoscaling={"min_replicas": 0, "max_replicas": 0},
+      )
+
+      # Once it's DEPLOYMENT_STATE_STOPPED, drop its traffic weight, then
+      # delete the deployment and the endpoint.
+      client.beta.endpoints.update(
+          endpoint.id,
+          project_id=project_id,
+          traffic_split=[{"deployment_id": deployment.id, "weight": 0}],
+      )
+      client.beta.endpoints.deployments.delete(
+          deployment.id, project_id=project_id, endpoint_id=endpoint.id
+      )
+      client.beta.endpoints.delete(endpoint.id, project_id=project_id)
+      ```
+
+      ```typescript TypeScript theme={null}
+      // Scale to zero to stop billing.
+      await client.beta.endpoints.deployments.update(deployment.id, {
+        projectId,
+        endpointId: endpoint.id,
+        autoscaling: { minReplicas: 0, maxReplicas: 0 },
+      });
+
+      // Once it's DEPLOYMENT_STATE_STOPPED, drop its traffic weight, then
+      // delete the deployment and the endpoint.
+      await client.beta.endpoints.update(endpoint.id, {
+        projectId,
+        trafficSplit: [{ deploymentId: deployment.id, weight: 0 }],
+      });
+      await client.beta.endpoints.deployments.delete(deployment.id, {
+        projectId,
+        endpointId: endpoint.id,
+      });
+      await client.beta.endpoints.delete(endpoint.id, { projectId });
+      ```
+    </CodeGroup>
+
+    To pause billing without deleting anything (for example, if you plan to use the endpoint again later), scale the deployment to zero and stop there. See [Delete resources](/docs/dedicated-endpoints/manage#delete-resources) for the full teardown order.
+
     <Note>
-      If endpoint creation fails immediately with "There was an issue starting your endpoint", the cause is almost always an incompatible base model. Verify with `client.endpoints.list_hardware(model=...)`; a 404 means the base (often a `-Reference` model) can't host a fine-tune. Pick a different base before retrying.
+      If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`. See [Choose a deployment profile](/docs/dedicated-endpoints/configs).
     </Note>
   </Tab>
 
   <Tab title="UI">
     <Steps>
-      <Step title="Open the models page">
-        Go to [the models dashboard](https://api.together.ai/models). Your completed fine-tuned models appear under **My Models**.
+      <Step title="Open your models">
+        Go to [My models](https://api.together.ai/models?category=my-models). Your completed fine-tuned models appear here once training finishes.
       </Step>
 
       <Step title="Create the endpoint">
         Select your fine-tuned model, then select **Create dedicated endpoint**.
       </Step>
 
-      <Step title="Pick hardware">
-        Choose hardware and set `min_replicas` and `max_replicas` (these set the maximum QPS the deployment can serve).
+      <Step title="Configure the deployment">
+        Choose a deployment configuration (hardware and GPU count) and set the replica bounds.
       </Step>
 
       <Step title="Deploy">
-        Select **Deploy**. The endpoint takes up to 10 minutes to come up. You can navigate away while it provisions.
+        Select **Deploy**. Provisioning takes up to 10 minutes. You can navigate away while it runs.
       </Step>
 
       <Step title="Stop when done">
-        Return to the dashboard and stop the endpoint when you're not using it to halt per-minute billing.
+        Open the endpoint from the dashboard and stop or delete it when you're not using it to halt per-minute billing.
       </Step>
     </Steps>
   </Tab>
@@ -28550,9 +28797,11 @@ Intermediate checkpoints carry the IDs from the upload at that step. Final model
 
 ## Troubleshooting
 
-* **`x_model_output_name` is empty:** The job hasn't reached `completed`. Poll status with `client.fine_tuning.retrieve(id=...)` until it's done. See [Monitor a fine-tuning job](/docs/fine-tuning/monitoring#poll-until-the-job-is-done) for the polling pattern.
-* **Endpoint creation fails immediately:** Run `client.endpoints.list_hardware(model=<base_model>)`. A 404 means the base can't host a fine-tune. `-Reference` models fall into this bucket.
-* **404 on inference:** Use `endpoint.name` as the `model` parameter, not the raw output model name. The endpoint name includes a unique suffix that routes traffic to your deployment.
+* **No Model Object ID yet:** The job hasn't reached `completed`, so `model_object_id` isn't populated. Poll status with `client.fine_tuning.retrieve(id=...)` until it's done. See [Monitor a fine-tuning job](/docs/fine-tuning/monitoring#poll-until-the-job-is-done) for the polling pattern.
+* **`endpoints_v1_create_access_disabled` (HTTP 403):** You're calling the retired v1 endpoints API (`client.endpoints.create(...)` or `tg endpoints create`). Deploy on dedicated model inference with `tg beta endpoints deploy` instead. See [Migrate from v1](/docs/dedicated-endpoints/migrate-from-v1).
+* **`deploy` reports multiple deployment profiles:** Re-run with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`.
+* **Deploy fails because the base isn't supported:** Not every base model can be hosted for dedicated inference. Confirm the base appears in the [supported models](/docs/dedicated-endpoints/models) list before training (`-Reference` models often can't be deployed).
+* **404 on inference:** Point the base URL at `https://api-inference.together.ai/v1` and pass the endpoint string (`your-project-slug/<endpoint_name>`, printed by the deploy output) as the `model` parameter, not the Model Object ID.
 
 ## Next steps
 
@@ -28565,8 +28814,8 @@ Intermediate checkpoints carry the IDs from the upload at that step. Final model
     Inspect, start, stop, update, and delete dedicated endpoints.
   </Card>
 
-  <Card title="Endpoint settings" icon="adjustments-horizontal" href="/docs/dedicated-endpoints/settings">
-    Tune autoscaling, decoding, and auto-shutdown.
+  <Card title="Configure autoscaling" icon="adjustments-horizontal" href="/docs/dedicated-endpoints/scaling">
+    Tune replica bounds and autoscale a deployment on the metric that fits your workload.
   </Card>
 </CardGroup>
 
@@ -43854,7 +44103,7 @@ Lists endpoints shared with every project in the specified organization. Project
 Source: https://docs.together.ai/reference/dmi/endpoints-update
 
 PATCH /projects/{projectId}/endpoints/{id}
-Updates mutable endpoint fields such as its inference name, visibility, or deployment traffic split. Use `updateMask` to select fields explicitly and `etag` in the request body for optimistic concurrency.
+Updates mutable endpoint fields such as its endpoint string, visibility, or deployment traffic split. Use `updateMask` to select fields explicitly and `etag` in the request body for optimistic concurrency.
 
 
 
@@ -44260,6 +44509,17 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="July 21, 2026">
+  ## GPU cluster add-on CLI flags
+
+  `tg beta clusters create` and `tg beta clusters update` now expose flags for Headlamp and Slurm Web cluster add-ons.
+
+  * **Create:** Pass `--headlamp-addon` or `--slurm-web-addon` to enable an add-on at cluster creation.
+  * **Update:** Pass `--headlamp` / `--no-headlamp` or `--slurm-web` / `--no-slurm-web` to toggle add-ons on an existing cluster.
+
+  See the [clusters CLI reference](/reference/cli/clusters).
+</Update>
+
 <Update label="July 20, 2026">
   ## Fine-tuning metrics dashboard
 
@@ -44314,6 +44574,14 @@ Source: https://docs.together.ai/docs/changelog
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
 
   See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
+
+  ## Fine-tuning artifact registry IDs
+
+  Fine-tune job and checkpoint responses now include Together model registry IDs for completed artifacts. Use `model_object_id` and `model_object_revision_id` on completed jobs, `adapter_object_id` and `adapter_object_revision_id` on LoRA jobs, and `object_id` and `object_revision_id` on [list checkpoints](/reference/cli/finetune#list-checkpoints) entries to reference weights in the model registry. The [Together Python SDK](https://github.com/togethercomputer/together-py) (2.24+) and [Together TypeScript SDK](https://github.com/togethercomputer/together-typescript) expose these fields on retrieve and list-checkpoints responses.
+
+  ## Together Python SDK 2.24
+
+  [Together Python SDK](https://github.com/togethercomputer/together-py) 2.24 is available. OIDC cluster SSH (`tg beta clusters ssh`) no longer requires a Together API key, and the bastion-to-target SSH hop skips host key prompts for ephemeral cluster nodes. See [SSH into a cluster](/reference/cli/clusters#ssh-into-a-cluster).
 </Update>
 
 <Update label="July 15, 2026">
@@ -44442,6 +44710,12 @@ Source: https://docs.together.ai/docs/changelog
   * `google/gemma-4-31B-it-VLM`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## Cost analytics units view
+
+  Organization and project cost analytics now include a **Measure** control to switch between **Cost (\$)** and **Units**. Choose **Units** to chart daily billable quantities (for example, tokens) by product, line item, project, or API key instead of dollar spend.
+
+  See [Usage limits & analytics](/docs/billing-usage-limits#cost-analytics) for details.
 </Update>
 
 <Update label="July 2, 2026">
@@ -45905,6 +46179,8 @@ tg beta clusters create
 | `--gpu-type [string]`                  | GPU type to use for the cluster. One of `H100_SXM`, `H200_SXM`, `RTX_6000_PCI`, `L40_PCIE`, `B200_SXM`, `H100_SXM_INF`. Available types vary by region; see `tg beta clusters list-regions`.                                                                                                               |
 | `--cluster-type [KUBERNETES\|SLURM]`   | Cluster workload manager or orchestrator.                                                                                                                                                                                                                                                                  |
 | `--volume [string]`                    | Storage volume ID to attach to the cluster. List existing volumes with `tg beta clusters storage list`.                                                                                                                                                                                                    |
+| `--headlamp-addon`                     | Enable the Headlamp Kubernetes dashboard add-on.                                                                                                                                                                                                                                                           |
+| `--slurm-web-addon`                    | Enable the Slurm Web add-on.                                                                                                                                                                                                                                                                               |
 
 <Note>
   Run `tg beta clusters create` with no flags to launch an interactive prompt that walks through the required fields. Pass `--non-interactive` (or `--json`) to skip prompts in CI.
@@ -45918,10 +46194,12 @@ tg beta clusters update [CLUSTER_ID]
 
 ### Parameters
 
-| Flag                                 | Description                                |
-| ------------------------------------ | ------------------------------------------ |
-| `--num-gpus [integer]`               | Number of GPUs to allocate in the cluster. |
-| `--cluster-type [KUBERNETES\|SLURM]` | Cluster workload manager or orchestrator.  |
+| Flag                                 | Description                                                 |
+| ------------------------------------ | ----------------------------------------------------------- |
+| `--num-gpus [integer]`               | Number of GPUs to allocate in the cluster.                  |
+| `--cluster-type [KUBERNETES\|SLURM]` | Cluster workload manager or orchestrator.                   |
+| `--headlamp/--no-headlamp`           | Enable or disable the Headlamp Kubernetes dashboard add-on. |
+| `--slurm-web/--no-slurm-web`         | Enable or disable the Slurm Web add-on.                     |
 
 ## Retrieve a cluster
 
@@ -46019,6 +46297,10 @@ Copy the Dex issuer URL and login name from the cluster UI when **OIDC** is sele
   Any arguments after `DEX_URL` are passed through to `ssh` as a remote command.
 </Note>
 
+<Note>
+  On the bastion-to-target hop, the CLI disables SSH host key verification (`StrictHostKeyChecking=no`). Cluster hosts are reprovisioned frequently, so their host keys are not pinned. Authentication uses the short-lived step-ca user certificate from the OIDC flow, not the target host key.
+</Note>
+
 ## Get cluster credentials
 
 Download the cluster's configuration and credentials to your local `.kube/config` file to manage Kubernetes resources.
@@ -46035,6 +46317,21 @@ tg beta clusters get-credentials [CLUSTER_ID]
 | `--context-name [string]` | Name of the context to add to the kubeconfig. Defaults to the cluster name.                                                                   |
 | `--overwrite-existing`    | If there is a conflict with the existing kubeconfig, overwrite it instead of raising an error.                                                |
 | `--set-default-context`   | Change the current context for `kubectl` to the new context.                                                                                  |
+
+## Approve a node remediation
+
+Approve a pending [node repair](/docs/node-repair) remediation. Find pending remediations and their IDs in the **Repairs** tab of your cluster in the Together Cloud UI.
+
+```bash theme={null}
+tg beta clusters remediations approve [REMEDIATION_ID]
+```
+
+### Parameters
+
+| Flag                                                                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--comment [string]`                                                 | Comment explaining the approval.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `--mode [VM_ONLY\|HOST_AWARE\|EVICT_WITHOUT_REPLACEMENT\|REBOOT_VM]` | Remediation mode to apply after approval. When omitted, the remediation keeps its existing mode.<br /><br /><ul><li>`VM_ONLY` deletes the VM and provisions a new one on the same host (quick reprovision).</li><li>`HOST_AWARE` cordons the host, deletes the VM, and provisions a new one on a different host (migrate to new host).</li><li>`EVICT_WITHOUT_REPLACEMENT` evicts the VM without provisioning a replacement (remove).</li><li>`REBOOT_VM` reboots the VM in place (reboot).</li></ul> |
 
 ## Create cluster storage
 
@@ -46838,6 +47135,15 @@ To retrieve metadata for a job, including its current status:
 tg fine-tuning retrieve [FT_ID]
 ```
 
+Completed jobs also include Together model registry IDs for the final weights:
+
+| Field                        | Description                                                               |
+| ---------------------------- | ------------------------------------------------------------------------- |
+| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_...`).   |
+| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_...`). |
+| `adapter_object_id`          | Registry object ID for the final LoRA adapter weights on LoRA jobs.       |
+| `adapter_object_revision_id` | Registry revision ID for the final LoRA adapter weights on LoRA jobs.     |
+
 ## List events
 
 To list events of a past or running job:
@@ -47292,6 +47598,10 @@ tg beta jig queue-status
 
 Secrets are encrypted environment variables injected at runtime. Manage them with the `secrets` subcommand.
 
+<Warning>
+  A name cannot appear in both `[tool.jig.deploy.environment_variables]` and a secret. `jig deploy` fails and lists each colliding name if the same name is defined in both places. Remove the duplicate from your config or run `tg beta jig secrets unset --name <name>`.
+</Warning>
+
 ### jig secrets set
 
 ```bash theme={null}
@@ -47650,7 +47960,9 @@ Default: `null` (uses the image's CMD)
 
 #### environment\_variables
 
-Runtime environment variables injected into your container. For sensitive values like API keys, use [secrets](#secrets-commands) instead.
+Runtime environment variables injected into your container. For sensitive values like API keys, use [secrets](#secrets) instead.
+
+Each name must be unique across `[tool.jig.deploy.environment_variables]` and secrets. `jig deploy` rejects duplicate names.
 
 ```toml theme={null}
 [tool.jig.deploy.environment_variables]

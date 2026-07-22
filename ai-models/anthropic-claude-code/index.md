@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 170 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 171 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -44,6 +44,7 @@
 - `debug-your-config` — [Debug your configuration](pages/debug-your-config.md) · [原文](https://code.claude.com/docs/en/debug-your-config)
 - `deep-links` — [Launch sessions from links](pages/deep-links.md) · [原文](https://code.claude.com/docs/en/deep-links)
 - `desktop` — [Desktop application](pages/desktop.md) · [原文](https://code.claude.com/docs/en/desktop)
+- `desktop-ios-simulator` — [Test iOS apps in the simulator](pages/desktop-ios-simulator.md) · [原文](https://code.claude.com/docs/en/desktop-ios-simulator)
 - `desktop-linux` — [Claude Desktop on Linux (beta)](pages/desktop-linux.md) · [原文](https://code.claude.com/docs/en/desktop-linux)
 - `desktop-quickstart` — [Get started with the desktop app](pages/desktop-quickstart.md) · [原文](https://code.claude.com/docs/en/desktop-quickstart)
 - `desktop-scheduled-tasks` — [Schedule recurring tasks in Claude Code Desktop](pages/desktop-scheduled-tasks.md) · [原文](https://code.claude.com/docs/en/desktop-scheduled-tasks)

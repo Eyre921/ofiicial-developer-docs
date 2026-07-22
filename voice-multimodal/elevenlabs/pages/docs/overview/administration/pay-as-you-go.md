@@ -109,6 +109,16 @@ There is no monthly rollover cap on PAYG funds.
 PAYG credits expire 12 months after purchase. Any unused credits will be removed from your balance
 after this period.
 
+## Plan changes and credit conversion
+
+Your PAYG balance is stored as a dollar value, not a fixed number of credits. Each plan has its own credit-to-dollar rate, so when you change subscription plans, your remaining dollar balance is converted using the new plan's rate.
+
+If you downgrade to a plan with a different rate that gives you fewer credits per dollar, your credit balance will go down, even though you haven't used credits. The dollar value of your unused credits stays the same; only the number of credits it converts to changes.
+
+If you upgrade your subscription, your remaining dollar amount is converted at the new plan's higher rate, so you may see your credit balance increase. The dollar value remains the same across all plans.
+
+Before you confirm a downgrade, we show you how your existing PAYG credit balance will be affected.
+
 ## Concurrency and rate limits
 
 For paid subscriptions, your subscription plan limits apply. For free plans with PAYG enabled, the following limits apply:
@@ -197,3 +207,11 @@ amounts available to you.
 Usage based billing was a postpaid mechanism that allowed users to spend beyond their plan
 limits and be charged later. PAYG replaces this with a prepaid model, where you load funds in
 advance.
+
+#### What happens to my PAYG credits if I change subscription plans?
+
+Your PAYG balance is stored as a dollar value and converted to credits at your current plan's
+rate. When you change plans, the dollar value stays the same, but the number of credits it
+converts to may change. If you downgrade to a plan with fewer credits per dollar, your credit
+balance will go down. If you upgrade, it may increase. The system shows you the impact before
+you confirm a downgrade.

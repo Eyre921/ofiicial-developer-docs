@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 297 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -245,9 +245,7 @@
 - `docs/guides/features/server-tools` — [Server Tools](pages/docs/guides/features/server-tools.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools.md)
 - `docs/guides/features/server-tools/advisor` — [Advisor](pages/docs/guides/features/server-tools/advisor.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/advisor.md)
 - `docs/guides/features/server-tools/apply-patch` — [Apply Patch](pages/docs/guides/features/server-tools/apply-patch.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/apply-patch.md)
-- `docs/guides/features/server-tools/bash` — [Bash](pages/docs/guides/features/server-tools/bash.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/bash.md)
 - `docs/guides/features/server-tools/datetime` — [Datetime](pages/docs/guides/features/server-tools/datetime.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/datetime.md)
-- `docs/guides/features/server-tools/files` — [Files](pages/docs/guides/features/server-tools/files.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/files.md)
 - `docs/guides/features/server-tools/fusion` — [Fusion](pages/docs/guides/features/server-tools/fusion.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/fusion.md)
 - `docs/guides/features/server-tools/image-generation` — [Image Generation](pages/docs/guides/features/server-tools/image-generation.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/image-generation.md)
 - `docs/guides/features/server-tools/search-models` — [Search Models](pages/docs/guides/features/server-tools/search-models.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/search-models.md)

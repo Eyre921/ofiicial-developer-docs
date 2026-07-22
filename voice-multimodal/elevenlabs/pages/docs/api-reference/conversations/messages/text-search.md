@@ -189,6 +189,31 @@ paths:
               - 'null'
             items:
               type: string
+        - name: exclude_statuses
+          in: query
+          description: >-
+            Exclude conversations with the given statuses. Useful for hiding
+            in-progress / processing conversations from list views.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              $ref: >-
+                #/components/schemas/V1ConvaiConversationsMessagesTextSearchGetParametersExcludeStatusesSchemaItems
+        - name: termination_reasons
+          in: query
+          description: >-
+            Filter conversations by their stored termination_reason
+            (metadata.termination_reason). Repeat param to match any of several.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
         - name: page_size
           in: query
           description: Number of results per page. Max 50.
@@ -298,6 +323,16 @@ components:
         - failure
         - unknown
       title: EvaluationSuccessResult
+    V1ConvaiConversationsMessagesTextSearchGetParametersExcludeStatusesSchemaItems:
+      type: string
+      enum:
+        - initiated
+        - in-progress
+        - processing
+        - done
+        - failed
+      title: >-
+        V1ConvaiConversationsMessagesTextSearchGetParametersExcludeStatusesSchemaItems
     V1ConvaiConversationsMessagesTextSearchGetParametersSummaryMode:
       type: string
       enum:

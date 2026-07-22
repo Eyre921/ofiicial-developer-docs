@@ -260,16 +260,16 @@ components:
 ```json
 {
   "files": [
-    "<file: indie_rock_sample1.wav>",
-    "<file: indie_rock_sample2.mp3>"
+    "<file: acoustic_guitar_01.wav>",
+    "<file: vocals_01.wav>"
   ],
-  "model_id": "music_v1",
-  "name": "Indie Rock Vibes Finetune",
-  "primary_genre": "indie rock",
+  "model_id": "music_v2",
+  "name": "Indie Acoustic Vibes",
+  "primary_genre": "indie",
   "tags": [
+    "acoustic",
     "indie",
-    "rock",
-    "guitar"
+    "relaxing"
   ],
   "visibility": "workspace"
 }
@@ -279,20 +279,20 @@ components:
 
 ```json
 {
-  "id": "a3f47b9e-8c2d-4f1a-9b7e-2d5f3c9a7e4b",
-  "name": "Indie Rock Vibes Finetune",
+  "id": "a3f47b9e-8c2d-4f1a-9b7e-2d3f5c6a7b8d",
+  "name": "Indie Acoustic Vibes",
   "tags": [
+    "acoustic",
     "indie",
-    "rock",
-    "guitar"
+    "relaxing"
   ],
-  "model_id": "music_v1",
-  "created_at": "2024-01-15T09:30:00Z",
-  "visibility": "private",
+  "model_id": "music_v2",
+  "created_at": "2024-04-20T14:45:00Z",
+  "visibility": "workspace",
   "created_by": "self",
-  "status": "pending",
-  "training_progress": 0,
-  "primary_genre": "indie rock",
+  "status": "in_progress",
+  "training_progress": 0.35,
+  "primary_genre": "indie",
   "failure_reason": null
 }
 ```
@@ -335,7 +335,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/music/finetunes"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample1.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample2.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v1\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Rock Vibes Finetune\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie rock\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"indie\",\n  \"rock\",\n  \"guitar\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"acoustic_guitar_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"vocals_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Acoustic Vibes\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"acoustic\",\n  \"indie\",\n  \"relaxing\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -363,7 +363,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample1.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample2.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v1\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Rock Vibes Finetune\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie rock\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"indie\",\n  \"rock\",\n  \"guitar\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"acoustic_guitar_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"vocals_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Acoustic Vibes\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"acoustic\",\n  \"indie\",\n  \"relaxing\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -375,7 +375,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/music/finetunes")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample1.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample2.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v1\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Rock Vibes Finetune\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie rock\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"indie\",\n  \"rock\",\n  \"guitar\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"acoustic_guitar_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"vocals_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Acoustic Vibes\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"acoustic\",\n  \"indie\",\n  \"relaxing\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -389,32 +389,32 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/music/finetun
   'multipart' => [
     [
         'name' => 'files',
-        'filename' => 'indie_rock_sample1.wav',
+        'filename' => 'acoustic_guitar_01.wav',
         'contents' => null
     ],
     [
         'name' => 'files',
-        'filename' => 'indie_rock_sample2.mp3',
+        'filename' => 'vocals_01.wav',
         'contents' => null
     ],
     [
         'name' => 'model_id',
-        'contents' => 'music_v1'
+        'contents' => 'music_v2'
     ],
     [
         'name' => 'name',
-        'contents' => 'Indie Rock Vibes Finetune'
+        'contents' => 'Indie Acoustic Vibes'
     ],
     [
         'name' => 'primary_genre',
-        'contents' => 'indie rock'
+        'contents' => 'indie'
     ],
     [
         'name' => 'tags',
         'contents' => '[
+  "acoustic",
   "indie",
-  "rock",
-  "guitar"
+  "relaxing"
 ]'
     ],
     [
@@ -432,7 +432,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/music/finetunes");
 var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample1.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"indie_rock_sample2.mp3\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v1\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Rock Vibes Finetune\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie rock\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"indie\",\n  \"rock\",\n  \"guitar\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"acoustic_guitar_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"files\"; filename=\"vocals_01.wav\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\nmusic_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"name\"\r\n\r\nIndie Acoustic Vibes\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"primary_genre\"\r\n\r\nindie\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"tags\"\r\n\r\n[\n  \"acoustic\",\n  \"indie\",\n  \"relaxing\"\n]\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"visibility\"\r\n\r\nworkspace\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -443,30 +443,30 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "files",
-    "fileName": "indie_rock_sample1.wav"
+    "fileName": "acoustic_guitar_01.wav"
   ],
   [
     "name": "files",
-    "fileName": "indie_rock_sample2.mp3"
+    "fileName": "vocals_01.wav"
   ],
   [
     "name": "model_id",
-    "value": "music_v1"
+    "value": "music_v2"
   ],
   [
     "name": "name",
-    "value": "Indie Rock Vibes Finetune"
+    "value": "Indie Acoustic Vibes"
   ],
   [
     "name": "primary_genre",
-    "value": "indie rock"
+    "value": "indie"
   ],
   [
     "name": "tags",
     "value": "[
+  \"acoustic\",
   \"indie\",
-  \"rock\",
-  \"guitar\"
+  \"relaxing\"
 ]"
   ],
   [

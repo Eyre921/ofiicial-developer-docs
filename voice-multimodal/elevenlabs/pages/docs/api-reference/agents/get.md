@@ -1243,6 +1243,33 @@ components:
         type:
           $ref: '#/components/schemas/ProcedureType'
           default: free_form
+        trigger:
+          type: string
+          default: ''
+          description: >-
+            When the agent should use this procedure. Empty string means this is
+            a sub-procedure that should only start when another procedure
+            references it.
+        referenced_tool_ids:
+          type: array
+          items:
+            type: string
+          description: Tool IDs referenced in the procedure content
+        referenced_kb_ids:
+          type: array
+          items:
+            type: string
+          description: Knowledge base IDs referenced in the procedure content
+        referenced_procedure_ids:
+          type: array
+          items:
+            type: string
+          description: Procedure IDs referenced in the procedure content
+        referenced_dynamic_variables:
+          type: array
+          items:
+            type: string
+          description: Dynamic variable names used in the procedure content
         content:
           type: string
           description: Procedure content
@@ -4255,6 +4282,148 @@ components:
         inheritance, so this generalizes cleanly to object/array schemas in the
         future.
       title: AnalysisProperty
+    AttachedSystemEvaluationRefAnalysisItemId:
+      type: string
+      enum:
+        - __system_eval_criteria_sentiment
+        - __system_eval_criteria_frustration
+      description: Id of the referenced built-in system evaluation.
+      title: AttachedSystemEvaluationRefAnalysisItemId
+    AgentAnalysisItemsOutputEvaluationCriteriaItems:
+      oneOf:
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - system
+            analysis_item_id:
+              $ref: '#/components/schemas/AttachedSystemEvaluationRefAnalysisItemId'
+              description: Id of the referenced built-in system evaluation.
+            scope:
+              $ref: '#/components/schemas/AnalysisScope'
+              default: conversation
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+            weight:
+              type:
+                - number
+                - 'null'
+              format: double
+              description: Optional relative weight for aggregate scoring.
+          required:
+            - source
+            - analysis_item_id
+          description: AttachedSystemEvaluationRef variant
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - user
+            analysis_item_id:
+              type: string
+              description: Id of the referenced user evaluation item.
+            version_id:
+              type:
+                - string
+                - 'null'
+              description: >-
+                Primary item version whose result feeds scoring. None tracks the
+                item's latest published version.
+            additional_version_ids:
+              type: array
+              items:
+                type: string
+              description: >-
+                Extra item versions to also run for comparison (A/B). These are
+                executed and stored but excluded from scoring; the primary
+                version_id is the one that scores.
+            scope:
+              $ref: '#/components/schemas/AnalysisScope'
+              default: conversation
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+            weight:
+              type:
+                - number
+                - 'null'
+              format: double
+              description: Optional relative weight for aggregate scoring.
+          required:
+            - source
+            - analysis_item_id
+          description: AttachedUserEvaluationRef variant
+      discriminator:
+        propertyName: source
+      title: AgentAnalysisItemsOutputEvaluationCriteriaItems
+    AgentAnalysisItemsOutputDataCollectionItems:
+      oneOf:
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - system
+            analysis_item_id:
+              type: string
+              enum:
+                - __system_data_collection_topic
+              description: Id of the referenced built-in system data-collection item.
+            scope:
+              $ref: '#/components/schemas/AnalysisScope'
+              default: conversation
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+          required:
+            - source
+            - analysis_item_id
+          description: AttachedSystemDataCollectionRef variant
+        - type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - user
+            analysis_item_id:
+              type: string
+              description: Id of the referenced user data-collection item.
+            version_id:
+              type:
+                - string
+                - 'null'
+              description: >-
+                Pinned item version. None tracks the item's latest published
+                version.
+            scope:
+              $ref: '#/components/schemas/AnalysisScope'
+              default: conversation
+              description: >-
+                Transcript context ('conversation' or 'agent') used when running
+                this item.
+          required:
+            - source
+            - analysis_item_id
+          description: AttachedUserDataCollectionRef variant
+      discriminator:
+        propertyName: source
+      title: AgentAnalysisItemsOutputDataCollectionItems
+    AgentAnalysisItems-Output:
+      type: object
+      properties:
+        evaluation_criteria:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/AgentAnalysisItemsOutputEvaluationCriteriaItems
+        data_collection:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentAnalysisItemsOutputDataCollectionItems'
+      title: AgentAnalysisItems-Output
     ASRConversationalConfigOverrideConfig:
       type: object
       properties:
@@ -4867,6 +5036,15 @@ components:
           description: >-
             Scope per data collection item ID. Missing keys default to
             conversation scope.
+        analysis_items:
+          oneOf:
+            - $ref: '#/components/schemas/AgentAnalysisItems-Output'
+            - type: 'null'
+          description: >-
+            Evaluation + data-collection items attached by reference. None means
+            the agent has not been migrated onto analysis items yet (distinct
+            from an empty, migrated set); reads fall back to the legacy
+            evaluation/data_collection fields in that case.
         overrides:
           $ref: '#/components/schemas/ConversationInitiationClientDataConfig-Output'
           description: Additional overrides for the agent during conversation initiation
