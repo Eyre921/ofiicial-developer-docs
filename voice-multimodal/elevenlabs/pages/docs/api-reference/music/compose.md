@@ -405,6 +405,20 @@ components:
             If true, guarantees that the generated song will be instrumental. If
             false, the song may or may not be instrumental depending on the
             `prompt`. Can only be used with `prompt`.
+        finetune_id:
+          type:
+            - string
+            - 'null'
+          description: The ID of the finetune to use for the generation
+        finetune_strength:
+          type: number
+          format: double
+          default: 1
+          description: >-
+            How strongly the finetune influences the generation. Defaults to 1.0
+            (full strength). Lower values soften the influence of the finetune,
+            leaving more room for prompt-level steering. Only meaningful when
+            `finetune_id` is also provided.
         respect_sections_durations:
           type: boolean
           default: true

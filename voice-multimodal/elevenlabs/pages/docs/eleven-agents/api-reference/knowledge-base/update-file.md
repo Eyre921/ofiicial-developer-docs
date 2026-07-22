@@ -261,6 +261,34 @@ components:
         - source_modified_time
       description: Tracks the link back to the original file in an external source.
       title: ExternalFileSyncInfo
+    type_:CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    type_:FileRefreshStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/type_:CrawlStatus'
+        enqueued_at:
+          type: integer
+        started_at:
+          type: integer
+        completed_at:
+          type: integer
+        last_synced_at:
+          type: integer
+        error_message:
+          type: string
+      description: In-flight/last refresh state for an externally-synced KB file.
+      title: FileRefreshStatus
     type_:ExternalFolderSyncInfo:
       type: object
       properties:
@@ -295,17 +323,6 @@ components:
         - on_connect
         - auto
       title: ExternalSyncJobTrigger
-    type_:CrawlStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - succeeded
-        - failed
-        - skipped
-        - cancelled
-      default: queued
-      title: CrawlStatus
     type_:ExternalSyncJobType:
       type: string
       enum:
@@ -447,6 +464,14 @@ components:
               type: string
             external_sync_info:
               $ref: '#/components/schemas/type_:ExternalFileSyncInfo'
+            auto_sync_info:
+              $ref: '#/components/schemas/type_:AutoSyncInfo'
+            refresh_status:
+              $ref: '#/components/schemas/type_:FileRefreshStatus'
+              description: >-
+                In-flight or last refresh state for an externally-synced file.
+                Used by clients to render sync progress and disable re-sync
+                while a refresh is queued or processing.
             is_frozen:
               type: boolean
               default: false
@@ -606,7 +631,7 @@ components:
 
 ```json
 {
-  "file": "<file: U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=>"
+  "file": "<file: U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==>"
 }
 ```
 
@@ -623,18 +648,18 @@ components:
     "anonymous_access_level_override": "viewer",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<p>This is the extracted content of the product manual PDF for 2024.</p>",
+  "extracted_inner_html": "<p>Welcome to the Q2 2024 product documentation. This document covers all updates and features released in this quarter.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685600000,
     "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 2457600
+    "size_bytes": 2540000
   },
-  "name": "Product_Manual_2024.pdf",
+  "name": "Product Documentation Q2 2024",
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://docs.example.com/product_manuals/2024/Product_Manual_2024.pdf",
+  "url": "https://docs.company.com/product-q2-2024.pdf",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
     "auto_remove": false,
@@ -642,11 +667,11 @@ components:
     "next_refresh_by": 1688806400
   },
   "content_format": "html",
-  "folder_parent_id": "folder_9X7b2Lq3",
+  "folder_parent_id": "folder_9X7b2LkPq3",
   "folder_path": [
     {
-      "id": "folder_9X7b2Lq3",
-      "name": "Product Documentation"
+      "id": "folder_root",
+      "name": "Company Knowledge Base"
     }
   ]
 }
@@ -691,7 +716,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -719,7 +744,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -731,7 +756,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -745,7 +770,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=',
+        'filename' => 'U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==',
         'contents' => null
     ]
   ]
@@ -759,7 +784,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ==\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -770,7 +795,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "file",
-    "fileName": "U29tZSBiaW5hcnkgY29udGVudCBvZiB0aGUgZG9jdW1lbnQ="
+    "fileName": "U29tZSBleGFtcGxlIGJpbmFyeSBkYXRhIGZvciB0aGUgZG9jdW1lbnQgc2VydmljZQ=="
   ]
 ]
 

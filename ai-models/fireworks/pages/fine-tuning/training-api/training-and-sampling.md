@@ -24,6 +24,10 @@ For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookb
 6. **Refresh the sampler** with `service.create_deployment_sampler(model_path=saved.path, ...)`.
 7. **Sample and evaluate** through the deployment endpoint.
 
+<Note>
+  **Keep each logical batch in one API call.** Pass all datums that should run together to one `forward(...)`, `forward_backward(...)`, or `forward_backward_custom(...)` call. The SDK may submit forward, backward, or combined forward/backward chunks in parallel, but it ensures that all chunks from the call run together as one trainer batch. Separate calls can fragment the work into smaller batches and reduce trainer throughput. See [Logical batches and parallel submission](/fine-tuning/training-api/reference/service-client#logical-batches-and-parallel-submission) for details.
+</Note>
+
 The SDK owns trainer provisioning, deployment provisioning, bucket wiring, base-vs-delta sampler checkpoint selection, and weight sync. It performs teardown according to configured cleanup flags; resources are not deleted or scaled down unless those flags request it. You do not construct `TrainerJobManager`, `DeploymentManager`, or `WeightSyncer` for the normal SDK flow.
 
 ## End-to-end example

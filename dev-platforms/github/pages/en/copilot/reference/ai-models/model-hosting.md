@@ -74,6 +74,7 @@ Used for:
 * Gemini 3 Flash
 * Gemini 3.1 Pro
 * Gemini 3.5 Flash
+* Gemini 3.6 Flash
 
 GitHub Copilot uses Gemini 3.1 Pro, Gemini 3 Flash, and Gemini 2.5 Pro hosted on Google Cloud Platform (GCP). When using Gemini models, prompts and metadata are sent to GCP, which makes the [following data commitment](https://cloud.google.com/vertex-ai/generative-ai/docs/data-governance): *Gemini doesn't use your prompts, or its responses, as data to train its models.*
 

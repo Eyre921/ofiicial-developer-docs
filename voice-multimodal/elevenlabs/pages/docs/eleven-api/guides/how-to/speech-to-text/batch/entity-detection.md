@@ -124,7 +124,7 @@ console.log("Entities detected:", transcription.entities);
 
 ## Entity types
 
-The following entity types are supported for detection. You can detect entire groups using `pii`, `phi`, or `pci`, or specify individual entity types by their label. To detect all entity types, use the `all` category.
+The following entity types are supported for detection. You can detect entire groups using the category keywords `pii`, `phi`, `pci`, `other`, or `offensive_language`, or specify individual entity types by their label. To detect all entity types, use the `all` category.
 
 #### PII (Personally Identifiable Information)
 
@@ -144,7 +144,9 @@ The following entity types are supported for detection. You can detect entire gr
 | `email_address`             | Email addresses                                                                              | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI                    |
 | `event`                     | Names of events or holidays                                                                  |                                                                |
 | `filename`                  | Names of computer files, including the extension or filepath                                 |                                                                |
-| `gender_sexuality`          | Terms indicating gender identity or sexual orientation, including slang terms                | CPRA, GDPR, GDPR Sensitive, APPI Sensitive                     |
+| `gender`                    | Terms indicating gender identity, including slang terms                                      | CPRA, GDPR, GDPR Sensitive, APPI Sensitive                     |
+| `gender_sexuality`          | Legacy alias covering both `gender` and `sexual_orientation`                                 | CPRA, GDPR, GDPR Sensitive, APPI Sensitive                     |
+| `sexual_orientation`        | Terms indicating sexual orientation, including slang terms                                   | CPRA, GDPR, GDPR Sensitive, APPI Sensitive                     |
 | `healthcare_number`         | Healthcare numbers and health plan beneficiary numbers                                       | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI                    |
 | `ip_address`                | Internet IP address, including IPv4 and IPv6 formats                                         | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI                    |
 | `location`                  | Metaclass for any named location reference                                                   | GDPR, HIPAA, APPI                                              |
@@ -176,14 +178,15 @@ The following entity types are supported for detection. You can detect entire gr
 
 #### PHI (Protected Health Information)
 
-| Label             | Description                                                           | Regulatory Compliance                                 |
-| ----------------- | --------------------------------------------------------------------- | ----------------------------------------------------- |
-| `condition`       | Names of medical conditions, diseases, syndromes, deficits, disorders | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
-| `drug`            | Medications, vitamins, and supplements                                | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
-| `injury`          | Bodily injuries, including mutations, miscarriages, and dislocations  | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
-| `blood_type`      | Blood types                                                           | CPRA, GDPR, HIPAA, Quebec Privacy Act                 |
-| `medical_process` | Medical processes, including treatments, procedures, and tests        | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
-| `statistics`      | Medical statistics                                                    | HIPAA, Quebec Privacy Act                             |
+| Label                  | Description                                                           | Regulatory Compliance                                 |
+| ---------------------- | --------------------------------------------------------------------- | ----------------------------------------------------- |
+| `condition`            | Names of medical conditions, diseases, syndromes, deficits, disorders | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
+| `drug`                 | Medications, vitamins, and supplements                                | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
+| `injury`               | Bodily injuries, including mutations, miscarriages, and dislocations  | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
+| `blood_type`           | Blood types                                                           | CPRA, GDPR, HIPAA, Quebec Privacy Act                 |
+| `medical_process`      | Medical processes, including treatments, procedures, and tests        | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
+| `clinical_measurement` | Clinical measurements, vitals, and lab results                        | CPRA, GDPR, HIPAA, Quebec Privacy Act, APPI Sensitive |
+| `statistics`           | Legacy alias for `clinical_measurement`                               | HIPAA, Quebec Privacy Act                             |
 
 #### PCI (Payment Card Industry)
 
@@ -204,6 +207,66 @@ The following entity types are supported for detection. You can detect entire gr
 | `religion`              | Terms indicating religious affiliation                         | CPRA, GDPR, GDPR Sensitive, Quebec Privacy Act, APPI Sensitive |
 | `routing_number`        | Routing number associated with a bank or financial institution |                                                                |
 | `zodiac_sign`           | Names of Zodiac signs                                          |                                                                |
+| `product_or_service`    | Names of commercial products or services                       |                                                                |
+| `food_or_beverage`      | Names of foods, drinks, and dishes                             |                                                                |
+| `document_reference`    | References to documents, case numbers, or file identifiers     |                                                                |
+| `generic_id`            | Generic identifiers that don't fall under other ID categories  |                                                                |
+| `measurement`           | Physical measurements and quantities with units                |                                                                |
+| `time_duration`         | Expressions indicating a length or span of time                |                                                                |
+
+#### Offensive language
+
+| Label                     | Description                                  | Regulatory Compliance |
+| ------------------------- | -------------------------------------------- | --------------------- |
+| `very_offensive_language` | Strongly offensive language, including slurs |                       |
+| `less_offensive_language` | Mildly offensive or inappropriate language   |                       |
+
+## Entity redaction
+
+In addition to detecting entities, you can redact them from the transcript text with the
+`entity_redaction` parameter. It accepts the same format as `entity_detection`: `all`, a
+category keyword, or a list of specific entity types. The redacted types must be a subset of
+the detected types.
+
+When redaction is enabled, matched entity text is replaced with a marker in both the
+transcript text and the word-level output, and the `entities` field is not returned in the
+response.
+
+```python
+transcription = elevenlabs.speech_to_text.convert(
+    file=audio_file,
+    model_id="scribe_v2",
+    entity_detection=["pii"],
+    entity_redaction=["pii"],
+    entity_redaction_mode="enumerated_entity_type",
+)
+
+print(transcription.text)
+# "Hi {NAME_0}, your card ending in {CREDIT_CARD_0} was declined."
+```
+
+```typescript
+const transcription = await elevenlabs.speechToText.convert({
+  file: audioBlob,
+  modelId: "scribe_v2",
+  entityDetection: ["pii"],
+  entityRedaction: ["pii"],
+  entityRedactionMode: "enumerated_entity_type",
+});
+
+console.log(transcription.text);
+// "Hi {NAME_0}, your card ending in {CREDIT_CARD_0} was declined."
+```
+
+The `entity_redaction_mode` parameter controls the marker format:
+
+| Mode                     | Marker                                     | Example                 |
+| ------------------------ | ------------------------------------------ | ----------------------- |
+| `redacted`               | `{REDACTED}` for every entity              | `Hi {REDACTED}`         |
+| `entity_type`            | The entity type in braces                  | `Hi {NAME}`             |
+| `enumerated_entity_type` | The entity type plus an occurrence counter | `Hi {NAME_0}` (default) |
+
+Entity detection and redaction are not supported with the `combined` multichannel output style.
 
 ## Next steps
 

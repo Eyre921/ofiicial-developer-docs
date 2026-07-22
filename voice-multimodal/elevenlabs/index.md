@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1176 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1181 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -152,6 +152,11 @@
 - `docs/api-reference/music/compose-detailed` — [Compose music with details](pages/docs/api-reference/music/compose-detailed.md) · [原文](https://elevenlabs.io/docs/api-reference/music/compose-detailed.md)
 - `docs/api-reference/music/compose-detailed-stream` — [Stream music with details](pages/docs/api-reference/music/compose-detailed-stream.md) · [原文](https://elevenlabs.io/docs/api-reference/music/compose-detailed-stream.md)
 - `docs/api-reference/music/create-composition-plan` — [Create composition plan](pages/docs/api-reference/music/create-composition-plan.md) · [原文](https://elevenlabs.io/docs/api-reference/music/create-composition-plan.md)
+- `docs/api-reference/music/finetunes/create` — [Create Music Finetune](pages/docs/api-reference/music/finetunes/create.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/create.md)
+- `docs/api-reference/music/finetunes/delete` — [Delete Music Finetune](pages/docs/api-reference/music/finetunes/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/delete.md)
+- `docs/api-reference/music/finetunes/get` — [Get Music Finetune](pages/docs/api-reference/music/finetunes/get.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/get.md)
+- `docs/api-reference/music/finetunes/list` — [Get Music Finetunes](pages/docs/api-reference/music/finetunes/list.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/list.md)
+- `docs/api-reference/music/finetunes/update` — [Update Music Finetune](pages/docs/api-reference/music/finetunes/update.md) · [原文](https://elevenlabs.io/docs/api-reference/music/finetunes/update.md)
 - `docs/api-reference/music/separate-stems` — [Stem Separation](pages/docs/api-reference/music/separate-stems.md) · [原文](https://elevenlabs.io/docs/api-reference/music/separate-stems.md)
 - `docs/api-reference/music/stream` — [Stream music](pages/docs/api-reference/music/stream.md) · [原文](https://elevenlabs.io/docs/api-reference/music/stream.md)
 - `docs/api-reference/music/upload` — [Upload Music](pages/docs/api-reference/music/upload.md) · [原文](https://elevenlabs.io/docs/api-reference/music/upload.md)

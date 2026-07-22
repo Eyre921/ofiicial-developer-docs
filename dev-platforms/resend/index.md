@@ -5,9 +5,9 @@
 
 ## docs
 
-- `docs/add-a-domain` — [Add a domain](pages/docs/add-a-domain.md) · [原文](https://resend.com/docs/add-a-domain)
+- `docs/add-a-domain` — [Add and verify a domain](pages/docs/add-a-domain.md) · [原文](https://resend.com/docs/add-a-domain)
 - `docs/agent-email-inbox-skill` — [Agent Email Inbox Skill](pages/docs/agent-email-inbox-skill.md) · [原文](https://resend.com/docs/agent-email-inbox-skill)
-- `docs/ai-onboarding` — [AI Onboarding](pages/docs/ai-onboarding.md) · [原文](https://resend.com/docs/ai-onboarding)
+- `docs/ai-onboarding` — [AI onboarding](pages/docs/ai-onboarding.md) · [原文](https://resend.com/docs/ai-onboarding)
 - `docs/anything-integration` — [How to add the Resend integration to your Anything project](pages/docs/anything-integration.md) · [原文](https://resend.com/docs/anything-integration)
 - `docs/api-reference/api-keys/create-api-key` — [Create API key](pages/docs/api-reference/api-keys/create-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/create-api-key)
 - `docs/api-reference/api-keys/delete-api-key` — [Delete API key](pages/docs/api-reference/api-keys/delete-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/delete-api-key)
@@ -161,8 +161,8 @@
 - `docs/dashboard/webhooks/how-to-store-webhooks-data` — [How to Store Webhooks Data](pages/docs/dashboard/webhooks/how-to-store-webhooks-data.md) · [原文](https://resend.com/docs/dashboard/webhooks/how-to-store-webhooks-data)
 - `docs/dmarc-analyzer` — [DMARC Analyzer](pages/docs/dmarc-analyzer.md) · [原文](https://resend.com/docs/dmarc-analyzer)
 - `docs/email-best-practices-skill` — [Email Best Practices Skill](pages/docs/email-best-practices-skill.md) · [原文](https://resend.com/docs/email-best-practices-skill)
+- `docs/email-types` — [Sending emails with Resend](pages/docs/email-types.md) · [原文](https://resend.com/docs/email-types)
 - `docs/examples` — [Examples](pages/docs/examples.md) · [原文](https://resend.com/docs/examples)
-- `docs/explore-sending-features` — [Sending emails with Resend](pages/docs/explore-sending-features.md) · [原文](https://resend.com/docs/explore-sending-features)
 - `docs/guides/building-a-resend-oauth-client` — [Building an OAuth client for Resend](pages/docs/guides/building-a-resend-oauth-client.md) · [原文](https://resend.com/docs/guides/building-a-resend-oauth-client)
 - `docs/guides/devin` — [Send emails with Devin and Resend](pages/docs/guides/devin.md) · [原文](https://resend.com/docs/guides/devin)
 - `docs/guides/paper` — [Turn Paper designs into Resend emails](pages/docs/guides/paper.md) · [原文](https://resend.com/docs/guides/paper)

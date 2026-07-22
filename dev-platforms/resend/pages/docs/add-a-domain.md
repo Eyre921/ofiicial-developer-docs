@@ -1,5 +1,5 @@
 ---
-title: "Add a domain"
+title: "Add and verify a domain"
 source: https://resend.com/docs/add-a-domain
 path: docs/add-a-domain
 ---

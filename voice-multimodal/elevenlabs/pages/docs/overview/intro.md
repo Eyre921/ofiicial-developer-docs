@@ -112,7 +112,7 @@ Accurate transcription in 90+ languages
 
 Keyterm prompting, up to 1000 terms
 
-Entity detection, up to 56
+Entity detection, 65 entity types
 
 Precise word-level timestamps
 

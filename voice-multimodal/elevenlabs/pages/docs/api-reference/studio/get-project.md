@@ -2787,6 +2787,10 @@ components:
         is_fallback_name:
           type: boolean
           default: false
+        chapter_id:
+          type:
+            - string
+            - 'null'
       required:
         - chapter_name
         - word_count

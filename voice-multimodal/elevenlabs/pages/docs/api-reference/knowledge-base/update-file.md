@@ -285,6 +285,45 @@ components:
         - source_modified_time
       description: Tracks the link back to the original file in an external source.
       title: ExternalFileSyncInfo
+    CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    FileRefreshStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CrawlStatus'
+          default: queued
+        enqueued_at:
+          type:
+            - integer
+            - 'null'
+        started_at:
+          type:
+            - integer
+            - 'null'
+        completed_at:
+          type:
+            - integer
+            - 'null'
+        last_synced_at:
+          type:
+            - integer
+            - 'null'
+        error_message:
+          type:
+            - string
+            - 'null'
+      description: In-flight/last refresh state for an externally-synced KB file.
+      title: FileRefreshStatus
     ExternalFolderSyncInfo:
       type: object
       properties:
@@ -325,17 +364,6 @@ components:
         - on_connect
         - auto
       title: ExternalSyncJobTrigger
-    CrawlStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - succeeded
-        - failed
-        - skipped
-        - cancelled
-      default: queued
-      title: CrawlStatus
     ExternalSyncJobType:
       type: string
       enum:
@@ -495,6 +523,18 @@ components:
               oneOf:
                 - $ref: '#/components/schemas/ExternalFileSyncInfo'
                 - type: 'null'
+            auto_sync_info:
+              oneOf:
+                - $ref: '#/components/schemas/AutoSyncInfo'
+                - type: 'null'
+            refresh_status:
+              oneOf:
+                - $ref: '#/components/schemas/FileRefreshStatus'
+                - type: 'null'
+              description: >-
+                In-flight or last refresh state for an externally-synced file.
+                Used by clients to render sync progress and disable re-sync
+                while a refresh is queued or processing.
             is_frozen:
               type: boolean
               default: false
@@ -695,20 +735,20 @@ components:
   "supported_usages": [
     "auto"
   ],
-  "content_format": "html",
-  "folder_parent_id": "folder_9a8b7c6d5e4f3g2h1i0j",
-  "folder_path": [
-    {
-      "id": "folder_1234567890abcdef",
-      "name": "Product Documentation"
-    }
-  ],
   "auto_sync_info": {
+    "minimum_frequency_days": 7,
     "auto_remove": false,
     "consec_failures": 0,
-    "minimum_frequency_days": 7,
     "next_refresh_by": 1688806400
   },
+  "content_format": "html",
+  "folder_parent_id": "folder12345",
+  "folder_path": [
+    {
+      "id": "folder12345",
+      "name": "User Guides"
+    }
+  ],
   "url": ""
 }
 ```

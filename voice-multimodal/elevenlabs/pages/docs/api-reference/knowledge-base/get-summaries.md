@@ -293,6 +293,68 @@ components:
         - source_modified_time
       description: Tracks the link back to the original file in an external source.
       title: ExternalFileSyncInfo
+    AutoSyncInfo:
+      type: object
+      properties:
+        minimum_frequency_days:
+          type: integer
+          default: 7
+          description: Maximum number of days between automatic syncs
+        auto_remove:
+          type: boolean
+          default: false
+          description: Whether to remove the document if the URL becomes unavailable
+        consec_failures:
+          type: integer
+          default: 0
+          description: Number of consecutive sync failures
+        next_refresh_by:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            Unix timestamp for the next scheduled sync or None (in case of
+            folders)
+      title: AutoSyncInfo
+    CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    FileRefreshStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CrawlStatus'
+          default: queued
+        enqueued_at:
+          type:
+            - integer
+            - 'null'
+        started_at:
+          type:
+            - integer
+            - 'null'
+        completed_at:
+          type:
+            - integer
+            - 'null'
+        last_synced_at:
+          type:
+            - integer
+            - 'null'
+        error_message:
+          type:
+            - string
+            - 'null'
+      description: In-flight/last refresh state for an externally-synced KB file.
+      title: FileRefreshStatus
     V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFolderDependentAgentsItems:
       oneOf:
         - type: object
@@ -351,29 +413,6 @@ components:
         propertyName: type
       title: >-
         V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFolderDependentAgentsItems
-    AutoSyncInfo:
-      type: object
-      properties:
-        minimum_frequency_days:
-          type: integer
-          default: 7
-          description: Maximum number of days between automatic syncs
-        auto_remove:
-          type: boolean
-          default: false
-          description: Whether to remove the document if the URL becomes unavailable
-        consec_failures:
-          type: integer
-          default: 0
-          description: Number of consecutive sync failures
-        next_refresh_by:
-          type:
-            - integer
-            - 'null'
-          description: >-
-            Unix timestamp for the next scheduled sync or None (in case of
-            folders)
-      title: AutoSyncInfo
     ExternalFolderSyncInfo:
       type: object
       properties:
@@ -570,6 +609,14 @@ components:
             external_sync_info:
               oneOf:
                 - $ref: '#/components/schemas/ExternalFileSyncInfo'
+                - type: 'null'
+            auto_sync_info:
+              oneOf:
+                - $ref: '#/components/schemas/AutoSyncInfo'
+                - type: 'null'
+            refresh_status:
+              oneOf:
+                - $ref: '#/components/schemas/FileRefreshStatus'
                 - type: 'null'
             is_frozen:
               type: boolean

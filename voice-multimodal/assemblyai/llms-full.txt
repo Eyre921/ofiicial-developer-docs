@@ -271,6 +271,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Implement a Sales Playbook Using LLM Gateway](#implement-a-sales-playbook-using-llm-gateway-docs-guides-sales-playbook-mdx)
 - [Segment A Phone Call using LLM Gateway](#segment-a-phone-call-using-llm-gateway-docs-guides-phone-call-segmentation-mdx)
 - [Generate SOAP Notes using LLM Gateway](#generate-soap-notes-using-llm-gateway-docs-guides-soap-note-generation-mdx)
+- [Single Sign-On (SSO)](#single-sign-on-sso-docs-sso-mdx)
 - [Frequently Asked Questions](#frequently-asked-questions-docs-faq-mdx)
 - [Has AssemblyAI certified to the EU-U.S. Data Privacy Framework?](#has-assemblyai-certified-to-the-eu-u-s-data-privacy-framework-docs-faq-has-assemblyai-certified-to-the-eu-us-data-privacy-framework-mdx)
 - [Can I sign a DPA agreement with AssemblyAI?](#can-i-sign-a-dpa-agreement-with-assemblyai-docs-faq-can-i-sign-a-dpa-agreement-with-assemblyai-mdx)
@@ -77523,6 +77524,293 @@ Answer Format: ${q.format}
 
 ---
 
+<a id="single-sign-on-sso-docs-sso-mdx"></a>
+
+# Single Sign-On (SSO)
+
+URL: https://www.assemblyai.com/docs/sso
+Source: docs/sso.mdx
+Navigation: Single Sign-On > Single Sign-On
+Description: Set up SAML or OIDC Single Sign-On for your AssemblyAI organization, including step-by-step configuration for Okta, Google Workspace, and Microsoft Entra ID.
+
+Single Sign-On is currently in beta. Details on this page may change before
+  general availability.
+
+AssemblyAI supports SAML and OIDC Single Sign-On (SSO) for organizations on Contract and PAYG plans. SSO lets your organization members sign in with your company's identity provider (IdP) — such as Okta, Google Workspace, or Microsoft Entra ID — instead of a password or magic link.
+
+SSO is self-served: you configure it yourself from [**Settings → Organization & Access**](https://www.assemblyai.com/dashboard/settings/organization-and-access) in the AssemblyAI dashboard. No contact with support is required to get started.
+
+  Only organization **owners** and **admins** can access and configure SSO and
+  billing settings.
+
+With SSO you can:
+
+- Let members sign in through your company's IdP
+- Auto-create new members on their first SSO login with Just-in-Time (JIT) provisioning
+- Enforce SSO-only login by disabling all other sign-in methods
+
+## Pricing
+
+| Detail      | Info                                                     |
+| ----------- | -------------------------------------------------------- |
+| Price       | $199/month per connection                                 |
+| Limit       | 1 connection per organization                             |
+| Billing     | Line item on invoice — review in [**Settings → Billing**](https://www.assemblyai.com/dashboard/settings/billing) |
+| Eligibility | Contract and PAYG plans                                   |
+
+  Billing starts when a connection becomes **Active**, not when you create it —
+  a connection sitting in **Pending** while you finish IdP configuration is not
+  charged. SSO billing does not prorate: once a connection goes active, you're
+  charged the full month's price regardless of how many days remain in the
+  billing period. If you delete a connection mid-month, the connection is
+  terminated immediately but the current period's charge is not refunded.
+
+## How SSO login works
+
+**SP-initiated (standard) flow:**
+
+1. A user clicks **Sign in with SSO** on the AssemblyAI login page.
+2. The user is redirected to your company's IdP.
+3. The IdP authenticates the user and sends the authentication response back to AssemblyAI — a signed SAML assertion for SAML connections, or an authorization code for OIDC connections.
+4. AssemblyAI validates the response and logs the user in.
+
+**IdP-initiated flow:**
+
+1. A user clicks the AssemblyAI tile in their IdP dashboard (for example, Okta).
+2. The IdP sends a SAML assertion directly to AssemblyAI's callback URL.
+3. AssemblyAI processes the assertion and logs the user in.
+
+## Set up SSO
+
+You configure SSO from [**Settings → Organization & Access**](https://www.assemblyai.com/dashboard/settings/organization-and-access) in the dashboard. When you create a connection, you choose a **connection type**: SAML or OIDC. Which one to pick depends on your IdP — most enterprise IdPs support both, and either works with AssemblyAI.
+
+### SAML setup
+
+SAML setup always follows the same pattern, regardless of IdP:
+
+1. **AssemblyAI → IdP**: Copy the **ACS URL** and **Audience URI** from your AssemblyAI SSO connection into your IdP's application settings (sometimes labeled **SP SSO URL** and **SP Entity ID**).
+2. **In your IdP**: Configure attribute mapping so the IdP sends the required attributes (see below).
+3. **IdP → AssemblyAI**: Copy your IdP's **Metadata URL** (recommended) — or the IdP Entity ID, IdP SSO URL, and X.509 certificate individually — into your AssemblyAI connection.
+4. Once all required fields are present and valid, the connection status flips from **Pending** to **Active**.
+
+  Configuring via **Metadata URL** is recommended wherever your IdP provides
+  one. AssemblyAI auto-populates the Entity ID, SSO URL, and certificate from
+  it, and can re-fetch updated metadata later — for example, after your IdP
+  rotates its signing certificate.
+
+### OIDC setup
+
+OIDC setup follows a similar two-direction pattern:
+
+1. **AssemblyAI → IdP**: Copy the **Redirect URL** from your AssemblyAI SSO connection into your IdP as the **Sign-in Redirect URI**, using the **Authorization Code** grant type.
+2. **IdP → AssemblyAI**: Copy the **Client ID**, **Client Secret**, and **Issuer URL** (usually your IdP's hostname) from the IdP application into your AssemblyAI connection.
+3. Once all required fields are present and valid, the connection status flips from **Pending** to **Active**.
+
+  The **Issuer URL** must be the plain issuer base URL — not the discovery URL
+  ending in `/.well-known/openid-configuration`. Using the discovery URL is a
+  common cause of failed OIDC setups.
+
+### Required SAML attributes
+
+For SAML connections, your IdP must send the following attributes in the SAML assertion:
+
+| SAML attribute | Maps to    |
+| -------------- | ---------- |
+| `email`        | Email      |
+| `firstName`    | First name |
+| `lastName`     | Last name  |
+
+Your IdP can send a combined `full_name` attribute instead of separate `firstName` and `lastName` attributes.
+
+If these attributes are missing or incorrectly named, login fails with an attribute mapping error. If your IdP lets you configure a **NameID** format, set it to the user's email address.
+
+### JIT provisioning
+
+Just-in-Time provisioning controls whether new members are automatically created on their first SSO login:
+
+- **Anyone**: Any user who authenticates via SSO is automatically added as a member — no prior invite required.
+- **Nobody**: Only pre-invited members can log in via SSO.
+
+  An **Active** connection alone doesn't mean new users can log in. If you want
+  new users auto-created on first login, you also need to set **JIT
+  Provisioning → Anyone**. This is a separate step from the IdP configuration
+  itself.
+
+### Sign-in methods
+
+The **Sign-in Methods** setting controls which authentication methods are available to your organization's members: Magic Link, Password, Google OAuth, and SSO. To enforce SSO-only login, disable all non-SSO methods. At least one method must always be enabled.
+
+  Deleting an SSO connection while SSO-only login is enforced will lock out all
+  members once their sessions expire. Re-enable an alternative sign-in method
+  before deleting the connection.
+
+### MFA
+
+Authenticator app (TOTP) is the supported MFA method. Enabling **Require MFA for all members** forces all members to enroll on their next sign-in.
+
+If your IdP already enforces MFA, AssemblyAI's MFA requirement may not trigger for SSO users — MFA has already been handled at the IdP level.
+
+## IdP configuration guides
+
+The steps below cover the most common identity providers. For IdPs not listed here, follow the generic patterns in [Set up SSO](#set-up-sso) — any SAML 2.0- or OIDC-compliant IdP works.
+
+### Okta (SAML)
+
+1. In the Okta Admin console, go to **Applications → Create App Integration → SAML 2.0**.
+2. On the **Configure SAML** screen, enter:
+   - **Single sign-on URL** = your AssemblyAI **ACS URL**
+   - **Audience URI (SP Entity ID)** = your AssemblyAI **Audience URI**
+   - **Name ID format** = EmailAddress
+   - **Application username** = Email
+   - **Attribute Statements**:
+     - `firstName` → `user.firstName`
+     - `lastName` → `user.lastName`
+     - `id` → `user.id`
+3. Copy the **Metadata URL** from Okta's **Sign On** settings tab into the Single Sign-On section of your AssemblyAI settings.
+4. Assign the app to users under **Assignments** in Okta.
+
+  If a user isn't assigned to the application in Okta, they can't sign in via
+  SSO — even if JIT provisioning is set to Anyone. If a user exists in Okta but
+  their SSO login fails, check their app assignment first.
+
+For more detail, see Okta's [SAML app integration documentation](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_saml.htm).
+
+### Okta (OIDC)
+
+1. In the Okta Admin console, go to **Applications → Create App Integration → OIDC - OpenID Connect** and select **Web Application** as the application type.
+2. Under **General Settings**:
+   - **Grant type** = Authorization Code
+   - **Sign-in redirect URIs** = your AssemblyAI **Redirect URL**
+3. Assign the app to users or groups under **Assignments**.
+4. Save the app, then copy the following from the **Client Credentials** section into your AssemblyAI SSO connection:
+   - **Client ID**
+   - **Client Secret**
+   - **Issuer URL** = your Okta org URL (for example, `https://your-company.okta.com`)
+
+  The same assignment requirement applies as with SAML: users who aren't
+  assigned to the application in Okta can't sign in via SSO, even if JIT
+  provisioning is set to Anyone.
+
+For more detail, see Okta's [OIDC app integration documentation](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
+
+### Google Workspace (SAML)
+
+1. In the Google Admin console, go to **Apps → Web and mobile apps → Add app → Add custom SAML app**.
+2. Google displays an **Option 2** panel with the **IdP Entity ID**, **SSO URL**, and **Certificate**. Paste these into your AssemblyAI SSO connection using the manual configuration option.
+3. Back in Google, under **Service provider details**, enter:
+   - **ACS URL** = your AssemblyAI **ACS URL**
+   - **Entity ID** = your AssemblyAI **Audience URI**
+   - **Name ID format** = EMAIL
+   - **Name ID** = Primary email
+4. Under **Attributes**, map:
+   - First name → `firstName`
+   - Last name → `lastName`
+5. Set **User access** (Service status) to **ON** for the relevant organizational unit or group.
+
+  Google Workspace doesn't provide a metadata URL for custom SAML apps — the
+  manual configuration option (Entity ID, SSO URL, certificate) is the expected
+  path. This is normal, not a misconfiguration.
+
+For more detail, see Google's [custom SAML app documentation](https://support.google.com/a/answer/6087519).
+
+### Microsoft Entra ID / Azure AD (SAML)
+
+1. In the Entra admin center, go to **Enterprise applications → New application → Create your own application → Non-gallery**.
+2. Under **Single Sign-On → SAML → Basic SAML Configuration**, enter:
+   - **Identifier (Entity ID)** = your AssemblyAI **Audience URI**
+   - **Reply URL (ACS URL)** = your AssemblyAI **ACS URL**
+3. Under **Attributes & Claims**:
+   - Edit the **Unique User Identifier (Name ID)** claim and set its source to `user.primaryauthoritativeemail`.
+   - Add additional claims: `firstName` → `user.givenname`, `lastName` → `user.surname`, `id` → `user.objectid`.
+4. Copy the **App Federation Metadata Url** from the **SAML Certificates** section into your AssemblyAI SSO connection.
+5. Add users or groups under **Users and groups** in the Entra application.
+
+  Entra's default Name ID claim is often not the user's email address. If SSO
+  login fails with an "Email format is invalid" error and you're using Entra
+  ID, check the Name ID claim source first — this is the most common Entra
+  misconfiguration.
+
+For more detail, see Microsoft's [SAML-based single sign-on documentation](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/add-application-portal-setup-sso).
+
+### Microsoft Entra ID / Azure AD (OIDC)
+
+1. In the Entra admin center, go to **App registrations → New registration** and select **Accounts in this organizational directory only**.
+2. Under **Authentication → Add a platform → Web**, set the **Redirect URI** to your AssemblyAI **Redirect URL**.
+3. Under **Certificates & secrets → New client secret**, create a secret and copy the secret **value** into the Client Secret field of your AssemblyAI connection.
+4. From the app's **Overview** page:
+   - **Client ID** = the **Application (client) ID**
+   - **Issuer URL** = `https://login.microsoftonline.com/<DIRECTORY_ID>/v2.0`, substituting your **Directory (tenant) ID**
+
+  Two common copy-paste errors to watch for: copy the client secret's
+  **value**, not its secret ID — and build the Issuer URL in the exact format
+  above with your tenant ID substituted in. The Issuer isn't a value you can
+  copy verbatim from a single field in the Entra UI, and it isn't just your
+  Entra domain.
+
+For more detail, see Microsoft's [OpenID Connect documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc).
+
+### Attribute name cheat sheet
+
+| IdP                | Email                                                    | First name                    | Last name                   |
+| ------------------ | -------------------------------------------------------- | ----------------------------- | --------------------------- |
+| Okta               | email (via NameID)                                       | `firstName`                   | `lastName`                  |
+| Google Workspace   | email (via NameID)                                       | `firstName`                   | `lastName`                  |
+| Microsoft Entra ID | email (via NameID, from `user.primaryauthoritativeemail`) | `firstName` (`user.givenname`) | `lastName` (`user.surname`) |
+| Auth0              | email                                                    | `firstName`                   | `lastName`                  |
+
+## Troubleshooting
+
+### I set up SSO but login still goes to the regular login page
+
+The most likely causes:
+
+1. **SSO is not enabled as a sign-in method.** Check [**Settings → Organization & Access**](https://www.assemblyai.com/dashboard/settings/organization-and-access) **→ Sign-in Methods** — SSO must be toggled on.
+2. **The connection is in Pending status.** The configuration is incomplete. Finish configuring the connection — for SAML, the Entity ID, SSO URL, and certificate must all be present; for OIDC, the Client ID, Client Secret, and Issuer URL.
+3. **You're testing an IdP-initiated flow.** Some flows only work SP-initiated. Try initiating login from the AssemblyAI login page instead.
+4. **The ACS URL or Audience URI wasn't saved in your IdP.** Copy AssemblyAI's ACS URL and Audience URI into your IdP configuration.
+
+### "SAML Connection attribute mapping is missing either the 'full_name' or both the 'first_name' and 'last_name' fields"
+
+Your IdP isn't sending the required name attributes. Configure your IdP to send `firstName` and `lastName` (or a combined `full_name` attribute). This is configured on the IdP side — see the [attribute name cheat sheet](#attribute-name-cheat-sheet) for the IdP-specific field names.
+
+### "Email format is invalid" error
+
+Your IdP is sending the email in an unexpected format, or the email attribute mapping points to the wrong field. Ensure your IdP sends the email as a standard email attribute in the SAML assertion. On Microsoft Entra ID, check that the Name ID claim source is set to `user.primaryauthoritativeemail`.
+
+### A user logged in via SSO but wasn't added as a member
+
+JIT provisioning is set to **Nobody**. Either change JIT provisioning to **Anyone**, or pre-invite the user from the Members page before they log in via SSO.
+
+### OIDC login fails after setup
+
+The most common OIDC misconfigurations:
+
+1. **Redirect URI mismatch.** The Sign-in Redirect URI in your IdP must exactly match the Redirect URL from your AssemblyAI connection.
+2. **Wrong Issuer URL.** Use the plain issuer base URL, not the discovery URL ending in `/.well-known/openid-configuration`.
+3. **Missing or wrong client secret.** Make sure a client secret is set, and that you copied the secret's value (not its ID). If the secret has expired, generate a new one and update your connection.
+
+### SSO was working, but broke after our IdP certificate rotated
+
+If you configured the connection manually (not via Metadata URL), update the X.509 certificate in your AssemblyAI SSO connection with the new certificate. If you used the Metadata URL option, re-save your connection so AssemblyAI re-fetches the updated metadata.
+
+  If your IdP has multiple signing certificates, make sure the **active** one
+  is configured in your connection.
+
+### What happens if I delete my SSO connection while members are using it?
+
+- The connection is deleted immediately.
+- Members who logged in through the SSO connection being deleted are signed out immediately. Members who signed in through another method (magic link, password, Google OAuth, or a different SSO connection) keep their active sessions.
+- Future SSO logins will fail on that connection.
+- If SSO was the only allowed sign-in method, members will be locked out on their next login. Re-enable another sign-in method before deleting the connection.
+
+## Current limitations
+
+- Maximum of 1 SSO connection per organization
+- No SCIM support — user provisioning and deprovisioning from the IdP isn't automated
+- Custom attribute mapping is limited to email, first name, and last name
+
+---
+
 <a id="frequently-asked-questions-docs-faq-mdx"></a>
 
 # Frequently Asked Questions
@@ -77950,6 +78238,8 @@ Navigation: FAQ > Overview > Privacy & Security
 Description: Do you support SAML in your product? documentation.
 
 We do not currently support SAML-based SSO, but it is on our roadmap and expected to be available soon.
+
+  Interested in SAML SSO? Reach out to our team at [support@assemblyai.com](mailto:support@assemblyai.com) for more information.
 
 ---
 
@@ -83509,6 +83799,87 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Transcript"
+              example:
+                id: 0072a82b-aa22-4962-add2-6121c36c17c6
+                language_model: assemblyai_default
+                acoustic_model: assemblyai_default
+                language_code: null
+                speech_understanding: null
+                translated_texts: null
+                status: processing
+                audio_url: "https://assembly.ai/wildfires.mp3"
+                text: null
+                words: null
+                utterances: null
+                confidence: null
+                audio_duration: null
+                punctuate: true
+                format_text: true
+                dual_channel: false
+                webhook_url: null
+                webhook_status_code: null
+                webhook_auth: false
+                webhook_auth_header_name: null
+                speed_boost: false
+                auto_highlights_result: null
+                auto_highlights: true
+                audio_start_from: null
+                audio_end_at: null
+                word_boost: []
+                boost_param: null
+                prompt: null
+                keyterms_prompt: null
+                filter_profanity: true
+                redact_pii: false
+                redact_pii_audio: false
+                redact_pii_audio_quality: null
+                redact_pii_audio_options: null
+                redact_pii_policies: null
+                redact_pii_sub: null
+                redact_static_entities: null
+                speaker_labels: true
+                speaker_options:
+                  min_speakers_expected: 2
+                  max_speakers_expected: 2
+                  advanced_speaker_segmentation: true
+                content_safety: true
+                iab_categories: true
+                content_safety_labels: {}
+                iab_categories_result: {}
+                language_detection: true
+                language_detection_options: null
+                language_detection_results: null
+                language_confidence_threshold: 0.7
+                language_confidence: null
+                custom_spelling: null
+                throttled: false
+                auto_chapters: false
+                summarization: false
+                summary_type: null
+                summary_model: null
+                custom_topics: false
+                topics: []
+                speech_threshold: null
+                speech_model: null
+                speech_models:
+                  - universal-3-pro
+                  - universal-2
+                speech_model_used: null
+                temperature: null
+                remove_audio_tags: all
+                chapters: null
+                disfluencies: false
+                entity_detection: true
+                sentiment_analysis: true
+                sentiment_analysis_results: null
+                entities: null
+                speakers_expected: 2
+                summary: null
+                custom_topics_results: null
+                is_deleted: null
+                multichannel: null
+                project_id: 14296
+                token_id: 14296
           links:
             GetTranscriptById:
               $ref: "#/components/links/GetTranscriptById"

@@ -6,8 +6,9 @@ path: docs/qstash/features/security
 
 ### Request Authorization
 
-When interacting with the QStash API, you will need an authorization token. You
-can get your token from the [Console](https://console.upstash.com/qstash).
+When interacting with the QStash API, you will need an authorization token. To
+get your token, go to the [QStash tab in the Console](https://console.upstash.com/qstash),
+pick a region, and copy the `QSTASH_TOKEN` from the **Quickstart** section.
 
   <img />
 

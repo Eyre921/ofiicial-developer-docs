@@ -412,6 +412,20 @@ components:
             If true, guarantees that the generated song will be instrumental. If
             false, the song may or may not be instrumental depending on the
             `prompt`. Can only be used with `prompt`.
+        finetune_id:
+          type:
+            - string
+            - 'null'
+          description: The ID of the finetune to use for the generation
+        finetune_strength:
+          type: number
+          format: double
+          default: 1
+          description: >-
+            How strongly the finetune influences the generation. Defaults to 1.0
+            (full strength). Lower values soften the influence of the finetune,
+            leaving more room for prompt-level steering. Only meaningful when
+            `finetune_id` is also provided.
         store_for_inpainting:
           type: boolean
           default: false
@@ -468,7 +482,11 @@ components:
 
 ```json
 [
-  "event: composition_plan\ndata: {\"chunks\":[{\"duration_ms\":15000,\"positive_styles\":[\"pop\",\"warm synths\",\"steady groove\",\"layered harmonies\"],\"text\":\"[Verse]\\nCity lights are fading\\nWe keep moving thru'\\"
+  "data: {\"event\":\"composition_plan\",\"data\":{\"plan\":\"[Intro] Smooth jazz with soft piano and light percussion\"}}\n\n",
+  "data: {\"event\":\"song_metadata\",\"data\":{\"title\":\"Evening Breeze\",\"artist\":\"Jazz Ensemble\",\"duration_ms\":180000}}\n\n",
+  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=\"}\n\n",
+  "data: {\"event\":\"audio_chunk\",\"data\":\"UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAE=\"}\n\n",
+  "data: {\"event\":\"completion\",\"data\":{\"status\":\"finished\"}}\n\n"
 ]
 ```
 

@@ -60,10 +60,11 @@ messages to. If you don't, you can use something like
 
 For example, you can use this URL to test your messages: [https://firstqstashmessage.requestcatcher.com](https://firstqstashmessage.requestcatcher.com)
 
-### Get your token
+### Get your QStash Token
 
-Go to the [Upstash Console](https://console.upstash.com/qstash) and copy the
-`QSTASH_TOKEN`.
+Go to the [QStash tab in the Upstash Console](https://console.upstash.com/qstash),
+pick the region you want to use (see [Select a Region](/docs/qstash/howto/multi-region)),
+and copy the `QSTASH_TOKEN` from the **Quickstart** section.
 
   <img />
 

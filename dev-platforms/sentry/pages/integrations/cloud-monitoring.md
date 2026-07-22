@@ -12,7 +12,6 @@ url: https://docs.sentry.io/integrations/cloud-monitoring/
 
 # Cloud Monitoring
 
-* [Cloudflare Workers](https://docs.sentry.io/integrations/cloud-monitoring/cloudflare-workers.md)
 * [Google Cloud Run](https://docs.sentry.io/integrations/cloud-monitoring/gcp-cloud-run.md)
 * [Google Cloud Functions - Python](https://docs.sentry.io/platforms/python/integrations/gcp-functions.md)
 * [Google Cloud Functions - Node](https://docs.sentry.io/platforms/javascript/guides/gcp-functions.md)
@@ -24,6 +23,5 @@ url: https://docs.sentry.io/integrations/cloud-monitoring/
 ## Pages in this section
 
 - [AWS Lambda](https://docs.sentry.io/integrations/cloud-monitoring/aws-lambda.md)
-- [Cloudflare Workers](https://docs.sentry.io/integrations/cloud-monitoring/cloudflare-workers.md)
 - [Google Cloud Run](https://docs.sentry.io/integrations/cloud-monitoring/gcp-cloud-run.md)
 

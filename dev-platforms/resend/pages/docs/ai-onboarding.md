@@ -1,5 +1,5 @@
 ---
-title: "AI Onboarding"
+title: "AI onboarding"
 source: https://resend.com/docs/ai-onboarding
 path: docs/ai-onboarding
 ---

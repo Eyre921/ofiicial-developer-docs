@@ -16,6 +16,12 @@ path: api/pagelist/en/free-pro-team-latest
 /en/get-started/start-your-journey/downloading-files-from-github
 /en/get-started/start-your-journey/uploading-a-project-to-github
 /en/get-started/start-your-journey/git-and-github-learning-resources
+/en/get-started/start-your-journey/creating-a-repository-for-your-project-on-github
+/en/get-started/start-your-journey/planning-your-work
+/en/get-started/start-your-journey/connecting-to-your-code-locally
+/en/get-started/start-your-journey/writing-and-storing-your-code
+/en/get-started/start-your-journey/reviewing-your-proposed-changes
+/en/get-started/start-your-journey/deploying-your-website-automatically
 /en/get-started/onboarding
 /en/get-started/onboarding/getting-started-with-your-github-account
 /en/get-started/onboarding/getting-started-with-github-team

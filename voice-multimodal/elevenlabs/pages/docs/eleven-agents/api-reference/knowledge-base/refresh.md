@@ -245,6 +245,34 @@ components:
         - source_modified_time
       description: Tracks the link back to the original file in an external source.
       title: ExternalFileSyncInfo
+    type_:CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    type_:FileRefreshStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/type_:CrawlStatus'
+        enqueued_at:
+          type: integer
+        started_at:
+          type: integer
+        completed_at:
+          type: integer
+        last_synced_at:
+          type: integer
+        error_message:
+          type: string
+      description: In-flight/last refresh state for an externally-synced KB file.
+      title: FileRefreshStatus
     type_:ExternalFolderSyncInfo:
       type: object
       properties:
@@ -279,17 +307,6 @@ components:
         - on_connect
         - auto
       title: ExternalSyncJobTrigger
-    type_:CrawlStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - succeeded
-        - failed
-        - skipped
-        - cancelled
-      default: queued
-      title: CrawlStatus
     type_:ExternalSyncJobType:
       type: string
       enum:
@@ -431,6 +448,14 @@ components:
               type: string
             external_sync_info:
               $ref: '#/components/schemas/type_:ExternalFileSyncInfo'
+            auto_sync_info:
+              $ref: '#/components/schemas/type_:AutoSyncInfo'
+            refresh_status:
+              $ref: '#/components/schemas/type_:FileRefreshStatus'
+              description: >-
+                In-flight or last refresh state for an externally-synced file.
+                Used by clients to render sync progress and disable re-sync
+                while a refresh is queued or processing.
             is_frozen:
               type: boolean
               default: false
@@ -605,11 +630,11 @@ components:
     "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<div><h1>ElevenLabs API Documentation</h1><p>Use this API to access ElevenLabs services programmatically.</p></div>",
+  "extracted_inner_html": "<div><h1>ElevenLabs API Documentation</h1><p>Welcome to the API docs.</p></div>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688201600,
+    "created_at_unix_secs": 1685606400,
+    "last_updated_at_unix_secs": 1688198400,
     "size_bytes": 45230
   },
   "name": "ElevenLabs API Documentation",
@@ -621,7 +646,7 @@ components:
     "minimum_frequency_days": 7,
     "auto_remove": false,
     "consec_failures": 0,
-    "next_refresh_by": 1688806400
+    "next_refresh_by": 1688803200
   },
   "content_format": "html",
   "folder_parent_id": null,

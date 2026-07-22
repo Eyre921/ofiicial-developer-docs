@@ -266,6 +266,55 @@ components:
         - source_modified_time
       description: Tracks the link back to the original file in an external source.
       title: ExternalFileSyncInfo
+    type_:AutoSyncInfo:
+      type: object
+      properties:
+        minimum_frequency_days:
+          type: integer
+          default: 7
+          description: Maximum number of days between automatic syncs
+        auto_remove:
+          type: boolean
+          default: false
+          description: Whether to remove the document if the URL becomes unavailable
+        consec_failures:
+          type: integer
+          default: 0
+          description: Number of consecutive sync failures
+        next_refresh_by:
+          type: integer
+          description: >-
+            Unix timestamp for the next scheduled sync or None (in case of
+            folders)
+      title: AutoSyncInfo
+    type_:CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    type_:FileRefreshStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/type_:CrawlStatus'
+        enqueued_at:
+          type: integer
+        started_at:
+          type: integer
+        completed_at:
+          type: integer
+        last_synced_at:
+          type: integer
+        error_message:
+          type: string
+      description: In-flight/last refresh state for an externally-synced KB file.
+      title: FileRefreshStatus
     type_:GetKnowledgeBaseSummaryFolderResponseModelDependentAgentsItem:
       oneOf:
         - type: object
@@ -319,27 +368,6 @@ components:
       discriminator:
         propertyName: type
       title: GetKnowledgeBaseSummaryFolderResponseModelDependentAgentsItem
-    type_:AutoSyncInfo:
-      type: object
-      properties:
-        minimum_frequency_days:
-          type: integer
-          default: 7
-          description: Maximum number of days between automatic syncs
-        auto_remove:
-          type: boolean
-          default: false
-          description: Whether to remove the document if the URL becomes unavailable
-        consec_failures:
-          type: integer
-          default: 0
-          description: Number of consecutive sync failures
-        next_refresh_by:
-          type: integer
-          description: >-
-            Unix timestamp for the next scheduled sync or None (in case of
-            folders)
-      title: AutoSyncInfo
     type_:ExternalFolderSyncInfo:
       type: object
       properties:
@@ -518,6 +546,10 @@ components:
                 the separate endpoint to get dependent agents instead.
             external_sync_info:
               $ref: '#/components/schemas/type_:ExternalFileSyncInfo'
+            auto_sync_info:
+              $ref: '#/components/schemas/type_:AutoSyncInfo'
+            refresh_status:
+              $ref: '#/components/schemas/type_:FileRefreshStatus'
             is_frozen:
               type: boolean
               default: false

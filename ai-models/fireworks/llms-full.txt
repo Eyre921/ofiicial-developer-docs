@@ -15646,6 +15646,16 @@ service.hotload_sampler_snapshot(saved.path)
 
 The training client returned by `create_training_client()`. Core training RPCs like `forward(...)`, `forward_backward_custom(...)`, `optim_step(...)`, `save_state(...)`, and `load_state_with_optimizer(...)` return **futures**. Fireworks convenience helpers like `save_weights_for_sampler_ext(...)`, `list_checkpoints()`, and `resolve_checkpoint_path(...)` return concrete values directly.
 
+### Logical batches and parallel submission
+
+One `forward(...)`, `forward_backward(...)`, or `forward_backward_custom(...)` call defines one logical batch. Pass every datum that should run together in that call.
+
+For large logical batches, the SDK may split the request into smaller transport chunks. It submits those chunks in parallel for forward passes, backward passes used by `forward_backward_custom(...)`, and combined `forward_backward(...)` passes. The chunks remain parts of the same logical batch; they do not become independent trainer batches.
+
+To preserve that boundary, the SDK reserves consecutive sequence IDs, submits chunks `2..N` in parallel, and submits chunk `1` last. The trainer holds the later chunks until chunk `1` arrives, then runs all chunks from that call together as one batch.
+
+Separate API calls define separate logical batches. Do not split one intended batch across several calls and rely on the trainer to merge them. The fragments may run as smaller trainer batches, paying fixed batch overhead more often and using the accelerators less efficiently. This reduces trainer throughput.
+
 ### `forward(datums, loss_type)`
 
 Forward-only pass (no gradient computation). Useful for computing reference logprobs in GRPO/DPO:
@@ -15659,6 +15669,15 @@ logprobs = result.loss_fn_outputs[0]["logprobs"].data
   Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail. Use the target-token `tinker.Datum` example in [Loss Functions](/fine-tuning/training-api/loss-functions#using-tinkerdatum-directly-target-token-based) for built-in losses, or use `forward_backward_custom` with the weight-based format in [Building datums](/fine-tuning/training-api/loss-functions#building-datums) and the custom-loss pattern in [Example: simple cross-entropy](/fine-tuning/training-api/loss-functions#example-simple-cross-entropy).
 </Note>
 
+### `forward_backward(datums, loss_type, loss_fn_config=None)`
+
+Run a combined forward and backward pass with a built-in trainer-side loss. The complete `datums` argument is one logical batch, even when the SDK splits it into parallel transport chunks:
+
+```python theme={null}
+result = training_client.forward_backward(datums, "cross_entropy").result()
+print(result.metrics)
+```
+
 ### `forward_backward_custom(datums, loss_fn)`
 
 Forward + backward with your custom loss function. See [Loss Functions](/fine-tuning/training-api/loss-functions) for details:
@@ -15671,6 +15690,8 @@ def my_loss(data, logprobs_list):
 result = training_client.forward_backward_custom(datums, my_loss).result()
 print(result.metrics)  # {"loss": 0.42}
 ```
+
+This method performs a forward pass, computes your loss and output gradients locally, and then runs the trainer backward pass. Both remote phases use parallel chunk submission while preserving the input as one logical batch.
 
 For embedding-space objectives, pass `output="embedding"` and choose `pooling="mean"` or `"last"`; your loss function then receives pooled embedding tensors instead of logprobs:
 
@@ -16677,6 +16698,10 @@ For production RL, prefer the [cookbook recipes](/fine-tuning/training-api/cookb
 5. **Save sampler weights** with `training_client.save_weights_for_sampler(...).result()`.
 6. **Refresh the sampler** with `service.create_deployment_sampler(model_path=saved.path, ...)`.
 7. **Sample and evaluate** through the deployment endpoint.
+
+<Note>
+  **Keep each logical batch in one API call.** Pass all datums that should run together to one `forward(...)`, `forward_backward(...)`, or `forward_backward_custom(...)` call. The SDK may submit forward, backward, or combined forward/backward chunks in parallel, but it ensures that all chunks from the call run together as one trainer batch. Separate calls can fragment the work into smaller batches and reduce trainer throughput. See [Logical batches and parallel submission](/fine-tuning/training-api/reference/service-client#logical-batches-and-parallel-submission) for details.
+</Note>
 
 The SDK owns trainer provisioning, deployment provisioning, bucket wiring, base-vs-delta sampler checkpoint selection, and weight sync. It performs teardown according to configured cleanup flags; resources are not deleted or scaled down unless those flags request it. You do not construct `TrainerJobManager`, `DeploymentManager`, or `WeightSyncer` for the normal SDK flow.
 
@@ -24268,27 +24293,27 @@ Looking for the right open source model? Whether you're exploring by use case or
     <tr>
       <td><strong>Code & Development</strong></td>
       <td><strong>Code generation, reasoning & agentic tasks</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p7-code">Kimi K2.7 Code</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
     </tr>
 
     <tr>
       <td><strong>AI Applications</strong></td>
       <td><strong>AI agents with tool use</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
     </tr>
 
     <tr>
       <td />
 
       <td><strong>General reasoning & planning</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/gpt-oss-120b">GPT-OSS 120B</a> <em>(medium)</em></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/gpt-oss-120b">GPT-OSS 120B</a> <em>(medium)</em></td>
     </tr>
 
     <tr>
       <td />
 
       <td><strong>Long context & summarization</strong></td>
-      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3p6-plus">Qwen3.6 Plus</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash">DeepSeek V4 Flash</a></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3p6-plus">Qwen3.6 Plus</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p2">GLM 5.2</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash">DeepSeek V4 Flash</a></td>
     </tr>
 
     <tr>
@@ -24331,23 +24356,23 @@ If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide
 
 ### Claude Alternatives
 
-| **Closed Source**                | **Use Case**                                             | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                            |
-| -------------------------------- | -------------------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases<br />• Coding<br />• Research agents | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)<br />• [Qwen3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus) |
-| **Claude Haiku 4.5**             | • Agentic use cases<br />• Coding<br />• Research agents | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)<br />• [MiniMax M2.5](https://app.fireworks.ai/models/fireworks/minimax-m2p5)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em>                                  |
+| **Closed Source**                | **Use Case**                                             | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                                      |
+| -------------------------------- | -------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases<br />• Coding<br />• Research agents | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)<br />• [Qwen3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus) |
+| **Claude Haiku 4.5**             | • Agentic use cases<br />• Coding<br />• Research agents | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)<br />• [MiniMax M2.5](https://app.fireworks.ai/models/fireworks/minimax-m2p5)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em>                                            |
 
 ### OpenAI GPT Alternatives
 
 | **Closed Source**         | **Use Case**                                          | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                           |
 | ------------------------- | ----------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **GPT-5.5 / GPT-5.5 Pro** | • Agentic use cases<br />• Research agents            | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                              |
+| **GPT-5.5 / GPT-5.5 Pro** | • Agentic use cases<br />• Research agents            | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                              |
 | **GPT-5.4 mini & nano**   | • Chatbots<br />• Intent classification<br />• Search | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)<br />• [MiniMax M2.5](https://app.fireworks.ai/models/fireworks/minimax-m2p5)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em> |
 
 ### Google Gemini Alternatives
 
 | **Closed Source**                     | **Use Case**                                                 | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                            |
 | ------------------------------------- | ------------------------------------------------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Gemini 3.1 Pro**                    | • Agentic use cases<br />• Research agents<br />• Multimodal | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)<br />• [Qwen3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7) |
+| **Gemini 3.1 Pro**                    | • Agentic use cases<br />• Research agents<br />• Multimodal | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)<br />• [Qwen3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7) |
 | **Gemini 3.5 Flash & 3.1 Flash-Lite** | • Chatbots<br />• Intent classification<br />• Search        | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)<br />• [MiniMax M2.5](https://app.fireworks.ai/models/fireworks/minimax-m2p5)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em>                                  |
 
 **Understanding Latency Budget:**
@@ -24361,7 +24386,7 @@ If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide
   You can explore and filter every available model in the [Fireworks Model Library](https://app.fireworks.ai/models).
 </Tip>
 
-*Last updated: June 2026*
+*Last updated: July 2026*
 
 
 # Reliability and Error Handling

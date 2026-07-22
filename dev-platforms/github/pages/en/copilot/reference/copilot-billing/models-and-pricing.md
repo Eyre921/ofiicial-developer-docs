@@ -110,6 +110,8 @@ Anthropic models include a cache write cost in addition to cached input.
 |                  |                |             |              |                          |       |              |        |
 | Gemini 3.5 Flash | GA             | Lightweight | Default      | Not applicable           | $1.50 |        $0.15 |  $9.00 |
 |                  |                |             |              |                          |       |              |        |
+| Gemini 3.6 Flash | GA             | Versatile   | Default      | Not applicable           | $1.50 |        $0.15 |  $7.50 |
+|                  |                |             |              |                          |       |              |        |
 
 ### Fine-tuned (GitHub)
 

@@ -1,9 +1,9 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
@@ -23,8 +23,7 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 318,
-    "status": "ok"
+    "status": "error: curl failed (22) for https://docs.together.ai/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "ai-models/fireworks": {
     "pages": 384,
@@ -43,12 +42,11 @@
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "pages": 0,
+    "pages": 165,
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1500,
-    "status": "ok"
+    "status": "error: curl failed (22) for https://docs.langchain.com/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "voice-multimodal/assemblyai": {
     "pages": 0,
@@ -59,8 +57,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 502,
-    "status": "ok"
+    "status": "error: curl failed (22) for https://docs.pinecone.io/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "vector-db/qdrant": {
     "pages": 0,
@@ -103,7 +100,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -122,7 +119,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 590,
+    "pages": 591,
     "status": "ok"
   },
   "dev-platforms/expo": {
@@ -188,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 90,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -196,16 +193,15 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 297,
-    "status": "ok"
+    "status": "error: curl failed (22) for https://openrouter.ai/docs/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "voice-multimodal/deepgram": {
     "pages": 374,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1176,
+    "pages": 1181,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-21T23:30:35Z"
+  "_last_crawl": "2026-07-22T11:30:39Z"
 }

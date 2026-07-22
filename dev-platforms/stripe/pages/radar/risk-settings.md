@@ -46,6 +46,14 @@ Risk controls and risk settings won’t override the custom rules you created. Y
 
 You can find the following controls on the [risk controls](https://dashboard.stripe.com/settings/radar/risk-controls) page in the Dashboard.
 
+### Fraudulent card payments 
+
+This risk control blocks payments that Stripe Radar determines are likely fraudulent, even when those payments are unlikely to result in a dispute or early fraud warning. Rather than waiting for issuer reports or chargebacks, it acts at the time of payment, stopping fraud before it completes.
+
+Radar determines the blocking threshold based on your risk setting. You can monitor performance and review affected payments on the [risk controls](https://dashboard.stripe.com/settings/radar/risk-controls) page in the Dashboard. You can also backtest this control to simulate how it would have affected past payments and understand the impact on conversion and fraud prevention.
+
+> Fraudulent card payments is included with Radar Standard and above.
+
 ### Fraudulent dispute
 
 This risk control uses the [fraudulent dispute score](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute-score) and blocks payments that are likely to result in fraudulent disputes. Radar determines the number of payments to block versus accept based on your risk setting, and maximizes conversion while preventing the risk of entering [monitoring programs](https://docs.stripe.com/disputes/monitoring-programs.md).
@@ -81,6 +89,14 @@ Radar scores are numerical signals that represent the likelihood of fraud or abu
 ### Overall risk level 
 
 The overall risk level combines the [fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute-score), [early fraud warning](https://docs.stripe.com/radar/risk-settings.md#early-fraud-warning-score), and [risk](https://docs.stripe.com/radar/risk-settings.md#risk-score) scores that factored into the payment decision. It takes the maximum of these scores and appears as a single signal (**Normal**, **Elevated**, or **Highest**) on the payment details page. The overall risk level is separate from the `:risk_level:` Radar rules attribute, which only corresponds to the [risk score](https://docs.stripe.com/radar/risk-settings.md#risk-score). The highest applicable score also appears on the Radar [Reviews](https://dashboard.stripe.com/radar/reviews) page and in the **Related payments** section of the payment details page in the Dashboard.
+
+### Fraudulent payment score 
+
+Stripe Radar assigns each card payment a fraudulent payment score between 0 and 99. The score represents the likelihood that a payment is fraudulent, where 0 is the lowest likelihood and 99 is the highest. Radar determines the score based on attributes Stripe has identified as indicators of high fraud risk across the Stripe network.
+
+> Fraudulent payment scores apply to card payments only.
+
+The [Fraudulent card payments](https://docs.stripe.com/radar/risk-settings.md#fraudulent-card-payments) risk control uses this score to determine which payments to block. If your Radar plan supports custom rules and you want to block payments based on the fraudulent payment score, you can write custom rules on `:fraudulent_payment_score:`.
 
 ### Fraudulent dispute score 
 

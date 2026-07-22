@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 590 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 591 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -556,6 +556,7 @@
 - `docs/workflow/howto/configure` — [Configure a Run](pages/docs/workflow/howto/configure.md) · [原文](https://upstash.com/docs/workflow/howto/configure)
 - `docs/workflow/howto/failures` — [Handle Failed Runs](pages/docs/workflow/howto/failures.md) · [原文](https://upstash.com/docs/workflow/howto/failures)
 - `docs/workflow/howto/flow-control` — [Flow control](pages/docs/workflow/howto/flow-control.md) · [原文](https://upstash.com/docs/workflow/howto/flow-control)
+- `docs/workflow/howto/get-token` — [Get your QStash Token](pages/docs/workflow/howto/get-token.md) · [原文](https://upstash.com/docs/workflow/howto/get-token)
 - `docs/workflow/howto/local-development/development-server` — [Development Server](pages/docs/workflow/howto/local-development/development-server.md) · [原文](https://upstash.com/docs/workflow/howto/local-development/development-server)
 - `docs/workflow/howto/local-development/local-tunnel` — [Local Tunnel](pages/docs/workflow/howto/local-development/local-tunnel.md) · [原文](https://upstash.com/docs/workflow/howto/local-development/local-tunnel)
 - `docs/workflow/howto/middlewares` — [Middlewares](pages/docs/workflow/howto/middlewares.md) · [原文](https://upstash.com/docs/workflow/howto/middlewares)

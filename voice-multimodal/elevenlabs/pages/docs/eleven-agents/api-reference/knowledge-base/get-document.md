@@ -251,6 +251,34 @@ components:
         - source_modified_time
       description: Tracks the link back to the original file in an external source.
       title: ExternalFileSyncInfo
+    type_:CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    type_:FileRefreshStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/type_:CrawlStatus'
+        enqueued_at:
+          type: integer
+        started_at:
+          type: integer
+        completed_at:
+          type: integer
+        last_synced_at:
+          type: integer
+        error_message:
+          type: string
+      description: In-flight/last refresh state for an externally-synced KB file.
+      title: FileRefreshStatus
     type_:ExternalFolderSyncInfo:
       type: object
       properties:
@@ -285,17 +313,6 @@ components:
         - on_connect
         - auto
       title: ExternalSyncJobTrigger
-    type_:CrawlStatus:
-      type: string
-      enum:
-        - queued
-        - processing
-        - succeeded
-        - failed
-        - skipped
-        - cancelled
-      default: queued
-      title: CrawlStatus
     type_:ExternalSyncJobType:
       type: string
       enum:
@@ -437,6 +454,14 @@ components:
               type: string
             external_sync_info:
               $ref: '#/components/schemas/type_:ExternalFileSyncInfo'
+            auto_sync_info:
+              $ref: '#/components/schemas/type_:AutoSyncInfo'
+            refresh_status:
+              $ref: '#/components/schemas/type_:FileRefreshStatus'
+              description: >-
+                In-flight or last refresh state for an externally-synced file.
+                Used by clients to render sync progress and disable re-sync
+                while a refresh is queued or processing.
             is_frozen:
               type: boolean
               default: false
@@ -611,7 +636,7 @@ components:
     "anonymous_access_level_override": "viewer",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. This guide provides all the necessary information to integrate with our platform.</p>",
+  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. This guide provides all the necessary information to get started with our API.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685606400,
@@ -630,14 +655,10 @@ components:
     "next_refresh_by": 1688899200
   },
   "content_format": "html",
-  "folder_parent_id": "folder_9X7b2LqP",
+  "folder_parent_id": "folder_9X8Y7Z6W5V",
   "folder_path": [
     {
-      "id": "folder_root",
-      "name": "Root"
-    },
-    {
-      "id": "folder_9X7b2LqP",
+      "id": "folder_1A2B3C4D5E",
       "name": "API Documentation"
     }
   ]

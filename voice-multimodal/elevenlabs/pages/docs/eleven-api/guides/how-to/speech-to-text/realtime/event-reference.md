@@ -27,6 +27,7 @@ Review the API reference for the [Realtime Speech to Text API](/docs/api-referen
 | `partial_transcript`                   | Live transcript update                                                                   | During audio processing, before a commit is made                                                                                           |
 | `committed_transcript`                 | Transcript of the audio segment                                                          | After a commit (either manual or VAD triggered)                                                                                            |
 | `committed_transcript_with_timestamps` | Sent after the committed transcript of the audio segment. Contains word-level timestamps | Sent after the committed transcript of the audio segment. Only received when `include_timestamps=true` is included in the query parameters |
+| `committed_transcript_entities`        | Entities detected in the committed transcript segment, with character offsets            | Sent shortly after each committed transcript. Only received when `entity_detection` is included in the query parameters                    |
 
 ## Error handling
 

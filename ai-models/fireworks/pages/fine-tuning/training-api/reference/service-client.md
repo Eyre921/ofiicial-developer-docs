@@ -179,6 +179,16 @@ service.hotload_sampler_snapshot(saved.path)
 
 The training client returned by `create_training_client()`. Core training RPCs like `forward(...)`, `forward_backward_custom(...)`, `optim_step(...)`, `save_state(...)`, and `load_state_with_optimizer(...)` return **futures**. Fireworks convenience helpers like `save_weights_for_sampler_ext(...)`, `list_checkpoints()`, and `resolve_checkpoint_path(...)` return concrete values directly.
 
+### Logical batches and parallel submission
+
+One `forward(...)`, `forward_backward(...)`, or `forward_backward_custom(...)` call defines one logical batch. Pass every datum that should run together in that call.
+
+For large logical batches, the SDK may split the request into smaller transport chunks. It submits those chunks in parallel for forward passes, backward passes used by `forward_backward_custom(...)`, and combined `forward_backward(...)` passes. The chunks remain parts of the same logical batch; they do not become independent trainer batches.
+
+To preserve that boundary, the SDK reserves consecutive sequence IDs, submits chunks `2..N` in parallel, and submits chunk `1` last. The trainer holds the later chunks until chunk `1` arrives, then runs all chunks from that call together as one batch.
+
+Separate API calls define separate logical batches. Do not split one intended batch across several calls and rely on the trainer to merge them. The fragments may run as smaller trainer batches, paying fixed batch overhead more often and using the accelerators less efficiently. This reduces trainer throughput.
+
 ### `forward(datums, loss_type)`
 
 Forward-only pass (no gradient computation). Useful for computing reference logprobs in GRPO/DPO:
@@ -192,6 +202,15 @@ logprobs = result.loss_fn_outputs[0]["logprobs"].data
   Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail. Use the target-token `tinker.Datum` example in [Loss Functions](/fine-tuning/training-api/loss-functions#using-tinkerdatum-directly-target-token-based) for built-in losses, or use `forward_backward_custom` with the weight-based format in [Building datums](/fine-tuning/training-api/loss-functions#building-datums) and the custom-loss pattern in [Example: simple cross-entropy](/fine-tuning/training-api/loss-functions#example-simple-cross-entropy).
 </Note>
 
+### `forward_backward(datums, loss_type, loss_fn_config=None)`
+
+Run a combined forward and backward pass with a built-in trainer-side loss. The complete `datums` argument is one logical batch, even when the SDK splits it into parallel transport chunks:
+
+```python theme={null}
+result = training_client.forward_backward(datums, "cross_entropy").result()
+print(result.metrics)
+```
+
 ### `forward_backward_custom(datums, loss_fn)`
 
 Forward + backward with your custom loss function. See [Loss Functions](/fine-tuning/training-api/loss-functions) for details:
@@ -204,6 +223,8 @@ def my_loss(data, logprobs_list):
 result = training_client.forward_backward_custom(datums, my_loss).result()
 print(result.metrics)  # {"loss": 0.42}
 ```
+
+This method performs a forward pass, computes your loss and output gradients locally, and then runs the trainer backward pass. Both remote phases use parallel chunk submission while preserving the input as one logical batch.
 
 For embedding-space objectives, pass `output="embedding"` and choose `pooling="mean"` or `"last"`; your loss function then receives pooled embedding tensors instead of logprobs:
 

@@ -608,7 +608,7 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
 * [Getting started with the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/getting-started)
 
-  Sign in to the GitHub Copilot app, ask your first question in a quick chat, and then create a full agent session to make changes to your code.
+  Sign in to the GitHub Copilot app, connect a repository or local folder, and create your first agent session to make code changes.
 
 * [Customizing the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/customize-github-copilot-app)
 
@@ -637,6 +637,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Using deep links to open the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/open-with-deep-links)
 
   Use deep links to launch the GitHub Copilot app from the terminal, tickets, and internal tools, so people can jump directly into the right repository, pull request, automation, or session.
+
+* [Build your first Copilot-powered app](/en/copilot/how-tos/copilot-sdk/getting-started)
+
+  In this tutorial, you'll use the Copilot SDK to build a command-line assistant. You'll start with the basics, add streaming responses, then add custom tools - giving Copilot the ability to call your code.
 
 * [Authentication](/en/copilot/how-tos/copilot-sdk/auth/authenticate)
 
@@ -702,10 +706,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Every action the Copilot agent takes—thinking, writing code, running tools—is emitted as a **session event** you can subscribe to. This guide is a field-level reference for each event type so you know exactly what data to expect without reading the SDK source.
 
-* [Build your first Copilot-powered app](/en/copilot/how-tos/copilot-sdk/getting-started)
-
-  In this tutorial, you'll use the Copilot SDK to build a command-line assistant. You'll start with the basics, add streaming responses, then add custom tools - giving Copilot the ability to call your code.
-
 * [Error handling hook](/en/copilot/how-tos/copilot-sdk/hooks/error-handling)
 
   The `onErrorOccurred` hook is called when errors occur during session execution. Use it to:
@@ -740,7 +740,7 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
 * [Azure managed identity with BYOK](/en/copilot/how-tos/copilot-sdk/setup/azure-managed-identity)
 
-  The Copilot SDK's BYOK (bring your own key) accepts static API keys, but Azure deployments often use Managed Identity (Microsoft Entra ID) instead of long-lived keys. Since the SDK doesn't natively support Microsoft Entra authentication, you can use a short-lived bearer token via the bearer\_token provider config field.
+  The GitHub Copilot SDK's BYOK (bring your own key) supports static API keys, but Azure deployments often use Managed Identity (Microsoft Entra ID) instead of long-lived keys. The GitHub Copilot SDK is designed to compose with the Azure Identity SDK for maximum flexibility. Supply a bearer token provider callback that can fetch fresh tokens on demand using an Azure Identity SDK API.
 
 * [Backend services setup](/en/copilot/how-tos/copilot-sdk/setup/backend-services)
 
