@@ -44,7 +44,7 @@ You'll see that the second agent will respond using information from the [checkp
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants \
@@ -79,7 +79,7 @@ We can see that these agents are different:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/assistants/<OPENAI_ASSISTANT_ID>
@@ -117,7 +117,7 @@ Output:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/assistants/<DEFAULT_ASSISTANT_ID>
@@ -184,7 +184,7 @@ We can now run the OpenAI assistant on the thread first.
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     thread_id=$(curl --request POST \
         --url <DEPLOYMENT_URL>/threads \
@@ -281,7 +281,7 @@ Now, we can run it on the default assistant and see that this second assistant i
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \

@@ -38,13 +38,14 @@ For the full file layout and packaging rules, see the [CLI project file referenc
 
 The managed runtime owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Do not set those fields in the agent definition.
 
-| Concern                                         | Owner                                  | Where you configure it                                              |
-| ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------- |
-| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                   |
-| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory. |
-| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                         |
-| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                   |
-| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                          |
+| Concern                                         | Owner                                  | Where you configure it                                                                  |
+| ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------- |
+| `name`                                          | You                                    | Required in the agent definition; used as the assistant ID and default deployment name. |
+| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                                       |
+| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory.                     |
+| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                                             |
+| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                                       |
+| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                                              |
 
 For the full field list, see the [agent definition reference](/langsmith/managed-deep-agents-cli#agent-definition-reference).
 
@@ -108,7 +109,10 @@ Use a sandbox when the agent needs isolated code execution or filesystem work. E
   ```
 </CodeGroup>
 
-Sandboxes are scoped per thread. Each durable thread or conversation gets its own sandbox.
+Sandbox scope controls reuse:
+
+* `thread` (default): Each durable thread or conversation gets its own sandbox.
+* `agent`: All threads handled by the agent process share one sandbox.
 
 If `sandbox/setup.sh` exists, Managed Deep Agents runs it once when a new managed sandbox is provisioned. Use it to install packages, seed files, or prepare workspace state.
 
@@ -187,7 +191,7 @@ DATABASE_URL=<DATABASE_URL>
 
 `LANGSMITH_API_KEY`, `LANGGRAPH_HOST_API_KEY`, `LANGCHAIN_API_KEY`, and other platform variables are reserved. They can authenticate the deploy, but they are not uploaded as user-managed deployment secrets.
 
-Non-reserved `.env` entries, such as model provider keys, MCP tokens, Slack channel secrets, and custom tool credentials, are forwarded as hosted deployment secrets when `mda deploy` creates or updates the deployment. If the configured model requires a provider key, deploy fails before upload unless that key is available from `.env`, the shell environment, or LangSmith workspace secrets. When the provider key is only in the shell environment, `mda deploy` forwards it as a secret for that deploy. When the project declares `channels/`, deploy also preflights `SLACK_SIGNING_SECRET` and `SLACK_BOT_TOKEN`—see [Slack](/langsmith/managed-deep-agents-channels/slack).
+Non-reserved `.env` entries, such as model provider keys, MCP tokens, channel secrets, and custom tool credentials, are forwarded as hosted deployment secrets when `mda deploy` creates or updates the deployment. If the configured model requires a provider key, deploy fails before upload unless that key is available from `.env`, the shell environment, or LangSmith workspace secrets. When the provider key is only in the shell environment, `mda deploy` forwards it as a secret for that deploy. When the project declares `channels/`, deploy also preflights each channel manifest’s `requiredEnv` (for example Slack or GitHub App secrets)—see [Channels](/langsmith/managed-deep-agents-channels).
 
 Reserved platform variables, empty values, `.env`, and `.env.*` files are not copied into the compiled build archive.
 

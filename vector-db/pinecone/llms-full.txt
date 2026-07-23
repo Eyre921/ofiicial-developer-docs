@@ -26505,18 +26505,16 @@ For details on what each [project role](/guides/projects/understanding-projects#
 | Project owner        | `pinecone:project:<projectID>:ProjectOwner`       |
 | Project manager      | `pinecone:project:<projectID>:ProjectManager`     |
 | Project member       | `pinecone:project:<projectID>:ProjectMember`      |
-| Project editor       | `pinecone:project:<projectID>:ProjectEditor`      |
-| Project viewer       | `pinecone:project:<projectID>:ProjectViewer`      |
 | Control plane editor | `pinecone:project:<projectID>:ControlPlaneEditor` |
 | Control plane viewer | `pinecone:project:<projectID>:ControlPlaneViewer` |
 | Data plane editor    | `pinecone:project:<projectID>:DataPlaneEditor`    |
 | Data plane viewer    | `pinecone:project:<projectID>:DataPlaneViewer`    |
 
-For example, to make a user an organization owner who is also an editor on one project, send these two values in the `roles` attribute:
+For example, to make a user an organization manager who is also a project owner on one project, send these two values in the `roles` attribute:
 
 ```text theme={null}
-pinecone:OrgOwner
-pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectEditor
+pinecone:OrgManager
+pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 ```
 
 ## 1. Send roles from Okta
@@ -26544,7 +26542,7 @@ Use this option to set roles directly on each user's Okta profile.
 
 Use this option to assign roles by adding users to Okta groups.
 
-1. In Okta, create a group for each Pinecone role you want to assign, naming each group exactly as the role's attribute value (for example, `pinecone:OrgOwner` or `pinecone:project:<projectID>:ProjectEditor`), and add the appropriate users to each group.
+1. In Okta, create a group for each Pinecone role you want to assign, naming each group exactly as the role's attribute value (for example, `pinecone:OrgOwner` or `pinecone:project:<projectID>:ProjectManager`), and add the appropriate users to each group.
 2. In **Applications > Pinecone > Sign On**, send those group names in the `roles` attribute using either:
 
    * A **Group Attribute Statement** with **Name** `roles`, **Name format** `Unspecified`, and **Filter** **Starts with** `pinecone:`.
@@ -26614,6 +26612,10 @@ When SCIM provisioning is enabled, your IdP manages organization membership and 
   Before you enable SCIM, provision at least one current [organization owner](/guides/organizations/understanding-organizations#organization-roles) with the `pinecone:OrgOwner` role. Pinecone blocks enabling SCIM until a current owner has been provisioned as an owner, so that handing role management to your IdP cannot lock you out.
 </Warning>
 
+<Warning>
+  SCIM provisioning is not compatible with members who belong to more than one SSO-connected Pinecone organization. If a member is part of multiple SSO-connected organizations, do not provision them through SCIM; manage their roles manually instead.
+</Warning>
+
 ## Role attribute values
 
 Pinecone reads roles from the `roles` attribute. Each value uses one of the following formats:
@@ -26645,18 +26647,16 @@ For details on what each [project role](/guides/projects/understanding-projects#
 | Project owner        | `pinecone:project:<projectID>:ProjectOwner`       |
 | Project manager      | `pinecone:project:<projectID>:ProjectManager`     |
 | Project member       | `pinecone:project:<projectID>:ProjectMember`      |
-| Project editor       | `pinecone:project:<projectID>:ProjectEditor`      |
-| Project viewer       | `pinecone:project:<projectID>:ProjectViewer`      |
 | Control plane editor | `pinecone:project:<projectID>:ControlPlaneEditor` |
 | Control plane viewer | `pinecone:project:<projectID>:ControlPlaneViewer` |
 | Data plane editor    | `pinecone:project:<projectID>:DataPlaneEditor`    |
 | Data plane viewer    | `pinecone:project:<projectID>:DataPlaneViewer`    |
 
-For example, to make a user an organization owner who is also an editor on one project, send these two values in the `roles` attribute:
+For example, to make a user an organization manager who is also a project owner on one project, send these two values in the `roles` attribute:
 
 ```text theme={null}
-pinecone:OrgOwner
-pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectEditor
+pinecone:OrgManager
+pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 ```
 
 ## 1. Start SCIM setup in Pinecone
@@ -26712,7 +26712,7 @@ Okta does not send a member's Pinecone roles by default. You define one app attr
 2. For each role you want to assign, click **Add Attribute** and configure:
 
    * **Data type**: `string`
-   * **External name**: `roles.^[type=='<label>'].value`, where `<label>` is any unique label for the role (for example, `orgOwner` or `projEditor`). Pinecone reads only the value, so the label is only used to keep attributes distinct in Okta.
+   * **External name**: `roles.^[type=='<label>'].value`, where `<label>` is any unique label for the role (for example, `orgOwner` or `projManager`). Pinecone reads only the value, so the label is only used to keep attributes distinct in Okta.
    * **External namespace**: `urn:ietf:params:scim:schemas:core:2.0:User`
 
 3. Go to **Provisioning > To App > Pinecone Attribute Mappings** (or **Mappings** in the Profile Editor) and map each attribute to the role value for the members who should hold it. Set the mapping to apply **on create and update**. Source the value however you manage users, for example:
@@ -26722,7 +26722,7 @@ Okta does not send a member's Pinecone roles by default. You define one app attr
 
 4. Click **Preview** for a representative user and confirm the `roles` attribute resolves to the expected `pinecone:*` values (including `pinecone:OrgOwner` for a current owner).
 
-For example, an organization owner who is also an editor on one project needs two attributes: one mapped to `pinecone:OrgOwner` and one mapped to `pinecone:project:<projectID>:ProjectEditor`. Project values include the project's [unique ID](/guides/projects/understanding-projects#project-ids), not its name.
+For example, an organization manager who is also a project owner on one project needs two attributes: one mapped to `pinecone:OrgManager` and one mapped to `pinecone:project:<projectID>:ProjectOwner`. Project values include the project's [unique ID](/guides/projects/understanding-projects#project-ids), not its name.
 
 <Note>
   Send roles in the user's `roles` attribute. SCIM group push is not supported.

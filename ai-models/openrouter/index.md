@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -11,6 +11,7 @@
 - `docs/agent-sdk/call-model/examples/skills-loader` — [Skills Loader](pages/docs/agent-sdk/call-model/examples/skills-loader.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/examples/skills-loader.md)
 - `docs/agent-sdk/call-model/examples/weather-tool` — [Weather Tool](pages/docs/agent-sdk/call-model/examples/weather-tool.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/examples/weather-tool.md)
 - `docs/agent-sdk/call-model/items` — [Working with Items](pages/docs/agent-sdk/call-model/items.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/items.md)
+- `docs/agent-sdk/call-model/lifecycle-hooks` — [Lifecycle Hooks](pages/docs/agent-sdk/call-model/lifecycle-hooks.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/lifecycle-hooks.md)
 - `docs/agent-sdk/call-model/message-formats` — [Message Formats](pages/docs/agent-sdk/call-model/message-formats.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/message-formats.md)
 - `docs/agent-sdk/call-model/next-turn-params` — [Next Turn Params](pages/docs/agent-sdk/call-model/next-turn-params.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/next-turn-params.md)
 - `docs/agent-sdk/call-model/overview` — [Call Model (Typescript)](pages/docs/agent-sdk/call-model/overview.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/overview.md)

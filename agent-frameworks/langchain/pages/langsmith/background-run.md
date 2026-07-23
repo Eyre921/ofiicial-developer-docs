@@ -38,7 +38,7 @@ First let's set up our client and thread:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -81,7 +81,7 @@ If we list the current runs on this thread, we will see that it's empty:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
@@ -114,7 +114,7 @@ Now let's kick off a run:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -141,7 +141,7 @@ The first time we poll it, we can see `status=pending`:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
@@ -212,7 +212,7 @@ Now we can join the run, wait for it to finish and check that status again:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join &&
@@ -285,7 +285,7 @@ Perfect! The run succeeded as we would expect. We can double check that the run 
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state
@@ -462,7 +462,7 @@ We can also just print the content of the last AIMessage:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | jq -r '.values.messages[-1].content.[0].text'

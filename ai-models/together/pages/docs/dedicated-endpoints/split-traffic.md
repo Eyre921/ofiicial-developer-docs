@@ -10,14 +10,22 @@ Running more than one deployment on an endpoint lets you serve traffic across th
 
 A weight sets a deployment's share of traffic relative to its capacity: the actual share a deployment receives is proportional to its weight times its number of ready replicas.
 
-Set each deployment's weight with `endpoints update --traffic-weight`. Pass the deployment ID (`dep_...`); the CLI resolves its parent endpoint and preserves the weights of the other deployments in the split, so run it once per deployment.
+You set each deployment's weight individually, and the split preserves the other deployments' weights. When each deployment has the same number of ready replicas, the weights behave like a direct ratio. For example, with equal replica counts, these weights send roughly 70% of traffic to one deployment and 30% to the other.
 
-When each deployment has the same number of ready replicas, the weights behave like a direct ratio. For example, with equal replica counts, these weights send roughly 70% of traffic to one deployment and 30% to the other:
+<Tabs>
+  <Tab title="CLI">
+    Set each weight with `endpoints update --traffic-weight`. Pass the deployment ID (`dep_...`); the CLI resolves its parent endpoint and preserves the other deployments' weights, so run it once per deployment:
 
-```bash Shell theme={null}
-tg beta endpoints update dep_abc123 --traffic-weight 70
-tg beta endpoints update dep_def456 --traffic-weight 30
-```
+    ```bash Shell theme={null}
+    tg beta endpoints update dep_abc123 --traffic-weight 70
+    tg beta endpoints update dep_def456 --traffic-weight 30
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    Set each deployment's **Traffic weight** in its **Deployment configuration** (open the deployment, select **Edit**, then **Save changes**). When you create an endpoint with more than one deployment, you can set all the weights together in the create form's **Traffic weights** card.
+  </Tab>
+</Tabs>
 
 Weights are relative ratios, not percentages, so they don't have to sum to any particular number: a split of `7` and `3` is equivalent to a split of `70` and `30`. But weight sets *relative capacity*, not a fixed percentage. Each weight must be non-negative and finite.
 

@@ -11,9 +11,10 @@ path: docs/eleven-api/guides/how-to/best-practices/security
 Whether you're building voicemail apps, interactive characters, or audio-driven games, the ElevenLabs API gives you direct access to powerful voice capabilities.
 But with that access comes the responsibility to secure your users’ data and manage voice resources carefully.
 
-This guide outlines two critical security practices for developers:
+This guide outlines three critical security practices for developers:
 
 * Isolating environments using **service accounts**
+* Limiting the lifetime of **user API keys**
 * Implementing **resource-level permissions**
 
 ## Use service accounts to isolate environments
@@ -41,6 +42,12 @@ Each service account should only have access to the minimum necessary resources.
 
 **Better observability**\
 Track API usage and performance by environment. Separate service accounts make it easier to debug issues and monitor activity.
+
+## Limit the lifetime of user API keys
+
+[User API keys](/docs/overview/administration/workspaces/api-keys) are tied to an individual and inherit that a subset of that person's access. That makes them convenient for personal development and scripts, but a poor choice for credentials that live indefinitely, particularly if they make their way into shared scripts, notebooks, or CI pipelines.
+
+User API keys can be set to expire. When you create a key set an expiry between 15 minutes and 30 days, after which the key stops authenticating. The expiry can be edited or extended after creation if needed.
 
 ## Apply resource-level permissions in your backend
 

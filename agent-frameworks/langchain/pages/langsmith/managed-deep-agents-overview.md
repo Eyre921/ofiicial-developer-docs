@@ -36,7 +36,7 @@ Choose the path that matches your control and infrastructure needs:
 
 ## Structure your agent project
 
-A Managed Deep Agent is a local project directory. A file's location determines its role: the CLI reads the directory to find the agent entry, managed instructions, skills, connectors, channels, schedules, optional identity, and sandbox configuration, then packages everything into a hosted deployment.
+A Managed Deep Agent is a local project directory. A file's location determines its role: the CLI reads the directory to find the agent entry, managed instructions, skills, connectors, channels, schedules, optional identity, sandbox configuration, and local eval tasks, then packages the deploy-owned pieces into a hosted deployment.
 
 For the full directory layout and packaging rules, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference). For how the CLI compiles this directory and what a deploy creates, see [How Managed Deep Agents work](/langsmith/managed-deep-agents-how-it-works).
 
@@ -45,9 +45,10 @@ For the full directory layout and packaging rules, see the [CLI project file ref
 1. Install `managed-deepagents` for Python or TypeScript.
 2. Create a local code-first agent project with `mda init`.
 3. Put the agent system prompt in `instructions.md`.
-4. Add authored tools, middleware, schedules, skills, MCP connectors, messaging channels, optional identity, and an optional sandbox.
-5. Use `mda dev` to test your agent locally in LangSmith Studio, then `mda deploy` to deploy to LangSmith.
-6. Inspect the deployment, traces, and runtime state in LangSmith.
+4. Add authored tools, middleware, schedules, skills, connectors, messaging channels, optional identity, and an optional sandbox.
+5. Optionally compile Harbor-style [evals](/langsmith/managed-deep-agents-evals) with `mda evals compile` and run them with Harbor.
+6. Use `mda dev` to test your agent locally in LangSmith Studio, then `mda deploy` to deploy to LangSmith.
+7. Inspect the deployment, traces, and runtime state in LangSmith.
 
 New to Managed Deep Agents? Start with the [quickstart](/langsmith/managed-deep-agents-quickstart), then build a complete agent step by step in the [tutorial](/langsmith/managed-deep-agents-tutorial).
 
@@ -80,10 +81,6 @@ Managed Deep Agents is available on LangSmith Cloud in the US region only during
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/managed-deep-agents-quickstart">
-    Deploy a first code-first agent with the `mda` CLI.
-  </Card>
-
   <Card title="Tutorial" icon="book" href="/langsmith/managed-deep-agents-tutorial">
     Build a scheduled research agent from an empty directory.
   </Card>
@@ -98,6 +95,10 @@ Managed Deep Agents is available on LangSmith Cloud in the US region only during
 
   <Card title="Memory" icon="brain" href="/langsmith/managed-deep-agents-memory">
     Persist preferences across threads with Context Hub `/memories`.
+  </Card>
+
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Compile a Harbor handoff and run Harbor-style tasks.
   </Card>
 
   <Card title="Custom tools" icon="tool" href="/langsmith/managed-deep-agents-tools">
@@ -125,11 +126,11 @@ Managed Deep Agents is available on LangSmith Cloud in the US region only during
   </Card>
 
   <Card title="Examples" icon="apps" href="/langsmith/managed-deep-agents-examples">
-    Explore a complete project that uses every primitive.
+    Explore a complete project that combines common features.
   </Card>
 
   <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
-    Review `mda init`, `mda dev`, and `mda deploy`.
+    Review `mda init`, `mda evals`, `mda dev`, and `mda deploy`.
   </Card>
 </CardGroup>
 

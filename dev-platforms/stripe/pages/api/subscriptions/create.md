@@ -190,7 +190,7 @@ The newly created `Subscription` object, if the call succeeded. If the attempted
     - `add_invoice_items.discounts.promotion_code` (string, optional)
       ID of the promotion code to create a new discount for.
 
-  - `add_invoice_items.metadata` (object, optional)
+  - `add_invoice_items.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
   - `add_invoice_items.period` (object, optional)
@@ -510,7 +510,7 @@ Possible enum values:
     - `items.discounts.promotion_code` (string, optional)
       ID of the promotion code to create a new discount for.
 
-  - `items.metadata` (object, optional)
+  - `items.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
   - `items.price` (string, optional)
@@ -558,7 +558,7 @@ Possible enum values:
   - `items.tax_rates` (array of strings, optional)
     A list of [Tax Rate](https://docs.stripe.com/docs/api/tax_rates.md) ids. These Tax Rates will override the [`default_tax_rates`](https://docs.stripe.com/docs/api/subscriptions/create.md#create_subscription-default_tax_rates) on the Subscription. When updating, pass an empty string to remove previously-defined tax rates.
 
-- `metadata` (object, optional)
+- `metadata` (map, optional)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
 - `off_session` (boolean, optional)
@@ -1064,7 +1064,7 @@ Possible enum values:
   - `transfer_data.amount_percent` (float, optional)
     A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
 
-- `trial_end` (string | timestamp, optional)
+- `trial_end` (string, value is "now" | timestamp, optional)
   Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. The special value `now` can be provided to end the customer’s trial immediately. Can be at most two years from `billing_cycle_anchor`. See [Using trial periods on subscriptions](https://docs.stripe.com/docs/billing/subscriptions/trials.md) to learn more.
 
 - `trial_from_plan` (boolean, optional)

@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides
 path: langsmith/smith-api/experiment-view-overrides/delete-experiment-view-override-configuration
 ---
 
-/langsmith/langsmith-platform-openapi.json delete /v1/platform/datasets/{dataset_id}/experiment-view-overrides/{id}
+/langsmith/langsmith-platform-openapi.json delete /datasets/{dataset_id}/experiment-view-overrides/{id}
 Permanently deletes an experiment view override configuration for a dataset.
 This operation removes all column override settings including color gradients,
 precision configurations, and visibility settings.

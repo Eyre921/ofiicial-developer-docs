@@ -616,6 +616,10 @@ Identity misconfiguration usually surfaces as 401 (auth) or 403 (store/thread sc
     Read `runtime.identity` from authored tools.
   </Card>
 
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Supply `identity.json` fixtures for Harbor tasks when identity is declared.
+  </Card>
+
   <Card title="Schedules" icon="clock" href="/langsmith/managed-deep-agents-schedules">
     Run cron agents, including the `service` preset shape.
   </Card>

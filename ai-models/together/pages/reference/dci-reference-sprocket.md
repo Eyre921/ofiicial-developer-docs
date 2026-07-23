@@ -43,7 +43,7 @@ Base class for inference workers.
 
 
   if __name__ == "__main__":
-      sprocket.run(MyModel(), "my-org/my-model")
+      sprocket.run(MyModel())
   ```
 </CodeGroup>
 
@@ -52,14 +52,20 @@ Base class for inference workers.
 Entry point for starting a Sprocket worker.
 
 ```python theme={null}
-def run(sprocket: Sprocket, name: str, use_torchrun: bool = False) -> None:
+def run(
+    sprocket: Sprocket,
+    name: Optional[str] = None,
+    use_torchrun: bool = False,
+    predict_path: Optional[str] = None,
+) -> None:
 ```
 
-| Parameter      | Type       | Description                                          |
-| -------------- | ---------- | ---------------------------------------------------- |
-| `sprocket`     | `Sprocket` | Your Sprocket instance                               |
-| `name`         | `str`      | Deployment name (used for queue routing)             |
-| `use_torchrun` | `bool`     | Enable multi-GPU mode via torchrun. Default: `False` |
+| Parameter      | Type            | Description                                                                                                                                                                                                                             |
+| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sprocket`     | `Sprocket`      | Your Sprocket instance                                                                                                                                                                                                                  |
+| `name`         | `Optional[str]` | Deployment name (used for queue routing). On the Together platform it is injected automatically via `TOGETHER_DEPLOYMENT_NAME`. Pass it explicitly (or set the env var) when running locally.                                           |
+| `use_torchrun` | `bool`          | Enable multi-GPU mode via torchrun. Default: `False`                                                                                                                                                                                    |
+| `predict_path` | `Optional[str]` | HTTP route that serves inference requests. Default: `/generate` (or the `SPROCKET_PREDICT_PATH` env var). Set this to serve an OpenAI-compatible route such as `/v1/images/generations`. Must not collide with `/health` or `/metrics`. |
 
 ## `sprocket.FileOutput`
 
@@ -150,11 +156,11 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 ## HTTP Endpoints
 
-| Endpoint    | Method | Response                                                     |
-| ----------- | ------ | ------------------------------------------------------------ |
-| `/health`   | GET    | `200 {"status": "healthy"}` or `503 {"status": "unhealthy"}` |
-| `/metrics`  | GET    | `requests_inflight 0.0` or `1.0` (Prometheus format)         |
-| `/generate` | POST   | Direct HTTP inference (non-queue mode)                       |
+| Endpoint    | Method | Response                                                                                                                           |
+| ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `/health`   | GET    | `200 {"status": "healthy"}` or `503 {"status": "unhealthy"}`                                                                       |
+| `/metrics`  | GET    | `requests_inflight 0.0` or `1.0` (Prometheus format)                                                                               |
+| `/generate` | POST   | Direct HTTP inference (non-queue mode). Route is configurable via the `predict_path` parameter of [`sprocket.run`](#sprocket-run). |
 
 ## CLI Arguments
 
@@ -165,12 +171,14 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 ## Environment Variables
 
-| Variable                           | Default                   | Description                                             |
-| ---------------------------------- | ------------------------- | ------------------------------------------------------- |
-| `TOGETHER_API_KEY`                 | Required                  | API key for queue authentication                        |
-| `TOGETHER_API_BASE_URL`            | `https://api.together.ai` | API base URL                                            |
-| `TERMINATION_GRACE_PERIOD_SECONDS` | `300`                     | Max time for graceful shutdown and prediction timeout   |
-| `WORLD_SIZE`                       | `1`                       | Number of GPU processes (set automatically by torchrun) |
+| Variable                           | Default                   | Description                                                               |
+| ---------------------------------- | ------------------------- | ------------------------------------------------------------------------- |
+| `TOGETHER_API_KEY`                 | Required                  | API key for queue authentication                                          |
+| `TOGETHER_API_BASE_URL`            | `https://api.together.ai` | API base URL                                                              |
+| `TOGETHER_DEPLOYMENT_NAME`         | Set by platform           | Deployment name. Used when `name` is not passed to `sprocket.run`         |
+| `SPROCKET_PREDICT_PATH`            | `/generate`               | Inference route. Used when `predict_path` is not passed to `sprocket.run` |
+| `TERMINATION_GRACE_PERIOD_SECONDS` | `300`                     | Max time for graceful shutdown and prediction timeout                     |
+| `WORLD_SIZE`                       | `1`                       | Number of GPU processes (set automatically by torchrun)                   |
 
 ## Complete Examples
 
@@ -197,7 +205,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 
   if __name__ == "__main__":
-      sprocket.run(ImageClassifier(), "my-org/classifier")
+      sprocket.run(ImageClassifier())
   ```
 </CodeGroup>
 
@@ -221,7 +229,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 
   if __name__ == "__main__":
-      sprocket.run(VideoGenerator(), "my-org/video-gen")
+      sprocket.run(VideoGenerator())
   ```
 </CodeGroup>
 
@@ -246,6 +254,6 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 
   if __name__ == "__main__":
-      sprocket.run(SpeechToSpeech(), "my-org/speech-to-speech")
+      sprocket.run(SpeechToSpeech())
   ```
 </CodeGroup>

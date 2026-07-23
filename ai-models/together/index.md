@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 318 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 319 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -54,6 +54,7 @@
 - `docs/dedicated-endpoints/shadow-experiments` — [Run a shadow experiment](pages/docs/dedicated-endpoints/shadow-experiments.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/shadow-experiments)
 - `docs/dedicated-endpoints/split-traffic` — [Split traffic across deployments](pages/docs/dedicated-endpoints/split-traffic.md) · [原文](https://docs.together.ai/docs/dedicated-endpoints/split-traffic)
 - `docs/dedicated_containers_image` — [Image generation with Flux2](pages/docs/dedicated_containers_image.md) · [原文](https://docs.together.ai/docs/dedicated_containers_image)
+- `docs/dedicated_containers_openai` — [Serve an OpenAI-compatible endpoint](pages/docs/dedicated_containers_openai.md) · [原文](https://docs.together.ai/docs/dedicated_containers_openai)
 - `docs/dedicated_containers_video` — [Video generation with Wan 2.1](pages/docs/dedicated_containers_video.md) · [原文](https://docs.together.ai/docs/dedicated_containers_video)
 - `docs/deepseek-v4-quickstart` — [DeepSeek V4 Pro quickstart](pages/docs/deepseek-v4-quickstart.md) · [原文](https://docs.together.ai/docs/deepseek-v4-quickstart)
 - `docs/deployments-jig` — [Jig CLI](pages/docs/deployments-jig.md) · [原文](https://docs.together.ai/docs/deployments-jig)

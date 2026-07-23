@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1505 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1511 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -333,6 +333,7 @@
 - `langsmith/llm-gateway-coding-agents` — [Set up coding agents](pages/langsmith/llm-gateway-coding-agents.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-coding-agents)
 - `langsmith/llm-gateway-custom-providers` — [Custom model providers](pages/langsmith/llm-gateway-custom-providers.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-custom-providers)
 - `langsmith/llm-gateway-quickstart` — [Quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
+- `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
 - `langsmith/llm-gateway-redaction` — [PII and secrets redaction](pages/langsmith/llm-gateway-redaction.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-redaction)
 - `langsmith/llm-gateway-spend-policies` — [Spend policies](pages/langsmith/llm-gateway-spend-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-spend-policies)
 - `langsmith/local` — [How to run an evaluation locally (Python only)](pages/langsmith/local.md) · [原文](https://docs.langchain.com/langsmith/local)
@@ -353,13 +354,16 @@
 - `langsmith/manage-trace` — [Manage a trace](pages/langsmith/manage-trace.md) · [原文](https://docs.langchain.com/langsmith/manage-trace)
 - `langsmith/manage-with-terraform` — [Manage LangSmith with Terraform](pages/langsmith/manage-with-terraform.md) · [原文](https://docs.langchain.com/langsmith/manage-with-terraform)
 - `langsmith/managed-deep-agents` — [Managed Deep Agents](pages/langsmith/managed-deep-agents.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents)
+- `langsmith/managed-deep-agents-channels/github` — [Add a GitHub channel to Managed Deep Agents](pages/langsmith/managed-deep-agents-channels/github.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-channels/github)
 - `langsmith/managed-deep-agents-channels/index` — [Connect messaging channels to Managed Deep Agents](pages/langsmith/managed-deep-agents-channels/index.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-channels/index)
 - `langsmith/managed-deep-agents-channels/slack` — [Add a Slack channel to Managed Deep Agents](pages/langsmith/managed-deep-agents-channels/slack.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-channels/slack)
 - `langsmith/managed-deep-agents-cli` — [Managed Deep Agents CLI reference](pages/langsmith/managed-deep-agents-cli.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-cli)
+- `langsmith/managed-deep-agents-connectors/github` — [Connect GitHub repositories to Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/github.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/github)
 - `langsmith/managed-deep-agents-connectors/index` — [Connect tools and capabilities to Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/index.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/index)
 - `langsmith/managed-deep-agents-connectors/langsmith` — [Expose LangSmith capabilities with Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/langsmith.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/langsmith)
 - `langsmith/managed-deep-agents-connectors/mcp` — [Connect MCP tools to Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/mcp.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/mcp)
 - `langsmith/managed-deep-agents-deploy` — [Deploy a Managed Deep Agent](pages/langsmith/managed-deep-agents-deploy.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-deploy)
+- `langsmith/managed-deep-agents-evals` — [Evaluate Managed Deep Agents](pages/langsmith/managed-deep-agents-evals.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-evals)
 - `langsmith/managed-deep-agents-examples` — [Managed Deep Agents example project](pages/langsmith/managed-deep-agents-examples.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-examples)
 - `langsmith/managed-deep-agents-how-it-works` — [How Managed Deep Agents work](pages/langsmith/managed-deep-agents-how-it-works.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-how-it-works)
 - `langsmith/managed-deep-agents-identity` — [Add identity to Managed Deep Agents](pages/langsmith/managed-deep-agents-identity.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-identity)
@@ -599,6 +603,7 @@
 - `langsmith/smith-api/commits/get-a-commit` — [Get a commit](pages/langsmith/smith-api/commits/get-a-commit.md) · [原文](https://docs.langchain.com/langsmith/smith-api/commits/get-a-commit)
 - `langsmith/smith-api/commits/list-commits` — [List commits](pages/langsmith/smith-api/commits/list-commits.md) · [原文](https://docs.langchain.com/langsmith/smith-api/commits/list-commits)
 - `langsmith/smith-api/data_planes/create-a-new-data-plane` — [Create a new data plane](pages/langsmith/smith-api/data_planes/create-a-new-data-plane.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/create-a-new-data-plane)
+- `langsmith/smith-api/data_planes/delete-a-data-plane` — [Delete a data plane](pages/langsmith/smith-api/data_planes/delete-a-data-plane.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/delete-a-data-plane)
 - `langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization` — [List data planes for the current organization](pages/langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization.md) · [原文](https://docs.langchain.com/langsmith/smith-api/data_planes/list-data-planes-for-the-current-organization)
 - `langsmith/smith-api/datasets/clone-dataset` — [Clone dataset](pages/langsmith/smith-api/datasets/clone-dataset.md) · [原文](https://docs.langchain.com/langsmith/smith-api/datasets/clone-dataset)
 - `langsmith/smith-api/datasets/create-comparative-experiment` — [Create comparative experiment](pages/langsmith/smith-api/datasets/create-comparative-experiment.md) · [原文](https://docs.langchain.com/langsmith/smith-api/datasets/create-comparative-experiment)
@@ -880,6 +885,7 @@
 - `langsmith/smith-api/run/validate-runs-query` — [Validate runs query](pages/langsmith/smith-api/run/validate-runs-query.md) · [原文](https://docs.langchain.com/langsmith/smith-api/run/validate-runs-query)
 - `langsmith/smith-api/runs/create-a-run` — [Create a run](pages/langsmith/smith-api/runs/create-a-run.md) · [原文](https://docs.langchain.com/langsmith/smith-api/runs/create-a-run)
 - `langsmith/smith-api/runs/get-a-public-shared-trace-run-v2` — [Get a public shared trace run (v2)](pages/langsmith/smith-api/runs/get-a-public-shared-trace-run-v2.md) · [原文](https://docs.langchain.com/langsmith/smith-api/runs/get-a-public-shared-trace-run-v2)
+- `langsmith/smith-api/runs/get-the-langsmith-ui-url-for-a-run-v2` — [Get the LangSmith UI URL for a run (v2)](pages/langsmith/smith-api/runs/get-the-langsmith-ui-url-for-a-run-v2.md) · [原文](https://docs.langchain.com/langsmith/smith-api/runs/get-the-langsmith-ui-url-for-a-run-v2)
 - `langsmith/smith-api/runs/ingest-runs-batch-json` — [Ingest runs (batch json)](pages/langsmith/smith-api/runs/ingest-runs-batch-json.md) · [原文](https://docs.langchain.com/langsmith/smith-api/runs/ingest-runs-batch-json)
 - `langsmith/smith-api/runs/ingest-runs-multipart` — [Ingest runs (multipart)](pages/langsmith/smith-api/runs/ingest-runs-multipart.md) · [原文](https://docs.langchain.com/langsmith/smith-api/runs/ingest-runs-multipart)
 - `langsmith/smith-api/runs/list-runs-in-a-trace-v2` — [List runs in a trace (v2)](pages/langsmith/smith-api/runs/list-runs-in-a-trace-v2.md) · [原文](https://docs.langchain.com/langsmith/smith-api/runs/list-runs-in-a-trace-v2)

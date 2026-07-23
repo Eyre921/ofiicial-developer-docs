@@ -23,7 +23,7 @@ Best for businesses with an existing website that describes their services.
 
 ### Sign up
 
-Go to [app.reception.ai](https://app.reception.ai) and choose **Scan my website**. New accounts start with a 30-day free trial that includes 30 phone minutes, a dedicated phone number, and full access to all features. No credit card required.
+Go to [app.reception.ai](https://app.reception.ai) and choose **Scan my website**. New accounts start with a 14-day free trial that includes 30 phone minutes, a dedicated phone number, and full access to all features. No credit card required.
 
 ### Choose scan depth
 

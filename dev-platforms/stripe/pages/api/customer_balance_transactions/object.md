@@ -67,7 +67,7 @@ path: api/customer_balance_transactions/object
 - `livemode` (boolean)
   If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-- `metadata` (object, nullable)
+- `metadata` (map, nullable)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `type` (enum)

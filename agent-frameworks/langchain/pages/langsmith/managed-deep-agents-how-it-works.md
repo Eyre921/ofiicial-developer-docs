@@ -40,13 +40,14 @@ When you deploy a Managed Deep Agent, LangSmith creates or updates a hosted Lang
 
 The managed runtime owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Do not set those fields in the agent definition.
 
-| Concern                                         | Owner                                  | Where you configure it                                              |
-| ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------- |
-| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                   |
-| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory. |
-| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                         |
-| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                   |
-| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                          |
+| Concern                                         | Owner                                  | Where you configure it                                                                  |
+| ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------- |
+| `name`                                          | You                                    | Required in the agent definition; used as the assistant ID and default deployment name. |
+| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                                       |
+| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory.                     |
+| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                                             |
+| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                                       |
+| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                                              |
 
 For the full field list, see the [agent definition reference](/langsmith/managed-deep-agents-cli#agent-definition-reference).
 
@@ -71,18 +72,19 @@ Scheduled runs choose their thread behavior explicitly. An ephemeral thread is c
 
 ## Sandboxes
 
-A [sandbox](/langsmith/sandboxes) gives the agent an isolated environment for code execution and filesystem work. Configure one by exporting `sandbox` from `sandbox/index.ts` or `sandbox/__init__.py`, and use `sandbox/setup.sh` to provision it the first time it is created. Each thread gets its own sandbox. For configuration options and examples, see [Configure a sandbox](/langsmith/managed-deep-agents-deploy#configure-a-sandbox).
+A [sandbox](/langsmith/sandboxes) gives the agent an isolated environment for code execution and filesystem work. Configure one by exporting `sandbox` from `sandbox/index.ts` or `sandbox/__init__.py`, and use `sandbox/setup.sh` to provision it the first time it is created. Sandboxes default to one per thread; set `scope` to `agent` to share one across the agent process. Connectors can also provision files, CLIs, and credentials when a sandbox starts. For configuration options and examples, see [Configure a sandbox](/langsmith/managed-deep-agents-deploy#configure-a-sandbox).
 
 ## Channels
 
-Optional modules under `channels/` mount public provider Events URLs on the Agent Server (for example Slack at `POST /channels/slack/events`). The runtime verifies provider signatures, acknowledges delivery, then invokes the graph over trusted loopback with identity stamps and optional auto-reply. Channels require a root identity declaration. For authoring and Slack app setup, see [Channels](/langsmith/managed-deep-agents-channels).
+Optional modules under `channels/` mount public provider Events URLs on the Agent Server (for example Slack at `POST /channels/slack/events`, or GitHub at `POST /channels/github/events`). The runtime verifies provider signatures, acknowledges delivery, then invokes the graph over trusted loopback with identity stamps and optional auto-reply. Channels require a root identity declaration. For authoring and provider setup, see [Channels](/langsmith/managed-deep-agents-channels).
 
 ## See also
 
 * [Overview](/langsmith/managed-deep-agents-overview): when to use Managed Deep Agents and beta limits.
 * [Identity](/langsmith/managed-deep-agents-identity): authenticate callers and scope threads and memory.
 * [Memory](/langsmith/managed-deep-agents-memory): persist preferences across threads with Context Hub `/memories`.
-* [Channels](/langsmith/managed-deep-agents-channels): receive Slack Events and reply from messaging channels.
+* [Evals](/langsmith/managed-deep-agents-evals): compile a Harbor handoff and run Harbor-style tasks.
+* [Channels](/langsmith/managed-deep-agents-channels): receive Slack or GitHub events and reply from messaging channels.
 * [Deploy an agent](/langsmith/managed-deep-agents-deploy): the full deploy workflow, secrets, and troubleshooting.
 * [CLI reference](/langsmith/managed-deep-agents-cli): every `mda` command, flag, and project file rule.
 

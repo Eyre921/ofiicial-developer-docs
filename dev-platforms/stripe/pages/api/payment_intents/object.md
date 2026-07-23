@@ -1473,7 +1473,7 @@ Possible enum values:
     - `last_payment_error.payment_method.mb_way` (object, nullable)
       If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
 
-    - `last_payment_error.payment_method.metadata` (object, nullable)
+    - `last_payment_error.payment_method.metadata` (map, nullable)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
     - `last_payment_error.payment_method.mobilepay` (object, nullable)
@@ -2033,7 +2033,7 @@ Possible enum values:
     - `last_payment_error.source.last4` (string)
       The last four digits of the card.
 
-    - `last_payment_error.source.metadata` (object, nullable)
+    - `last_payment_error.source.metadata` (map, nullable)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
     - `last_payment_error.source.name` (string, nullable)
@@ -2083,7 +2083,7 @@ Possible enum values:
   - `managed_payments.enabled` (boolean)
     Indicates whether [Managed Payments](https://docs.stripe.com/payments/managed-payments.md) is enabled for this transaction.
 
-- `metadata` (object)
+- `metadata` (map)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Learn more about [storing information in metadata](https://docs.stripe.com/docs/payments/payment-intents/creating-payment-intents.md#storing-information-in-metadata).
 
 - `next_action` (object, nullable)
@@ -2719,7 +2719,7 @@ Possible enum values:
       - `next_action.upi_handle_redirect_or_display_qr_code.qr_code.image_url_svg` (string)
         The image_url_svg string used to render QR code
 
-  - `next_action.use_stripe_sdk` (object, nullable)
+  - `next_action.use_stripe_sdk` (map, nullable)
     When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
 
   - `next_action.verify_with_microdeposits` (object, nullable)
@@ -4578,7 +4578,7 @@ Possible enum values:
   - `transfer_data.destination` (string, expandable (can be expanded into an object with the `expand` request parameter))
     The account (if any) that the payment is attributed to for tax reporting, and where funds from the payment are transferred to after payment success.
 
-  - `transfer_data.metadata` (object, nullable)
+  - `transfer_data.metadata` (map, nullable)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
   - `transfer_data.payment_data` (object, nullable)
@@ -4587,7 +4587,7 @@ Possible enum values:
     - `transfer_data.payment_data.description` (string, nullable)
       An arbitrary string attached to the destination payment. Often useful for displaying to users.
 
-    - `transfer_data.payment_data.metadata` (object, nullable)
+    - `transfer_data.payment_data.metadata` (map, nullable)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `transfer_group` (string, nullable)

@@ -425,7 +425,7 @@ Possible enum values:
   - `default_tax_rates.livemode` (boolean)
     If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-  - `default_tax_rates.metadata` (object, nullable)
+  - `default_tax_rates.metadata` (map, nullable)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
   - `default_tax_rates.percentage` (float)
@@ -595,7 +595,7 @@ Possible enum values:
     - `items.data.discounts` (array of strings, expandable (can be expanded into an object with the `expand` request parameter))
       The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.
 
-    - `items.data.metadata` (object)
+    - `items.data.metadata` (map)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
     - `items.data.price` (object)
@@ -622,7 +622,7 @@ Possible enum values:
       - `items.data.price.currency` (enum)
         Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
-      - `items.data.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+      - `items.data.price.currency_options` (map, nullable, expandable (can be expanded into an object with the `expand` request parameter))
         Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `items.data.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
@@ -686,7 +686,7 @@ Possible enum values:
       - `items.data.price.lookup_key` (string, nullable)
         A lookup key used to retrieve prices dynamically from a static string. This may be up to 200 characters.
 
-      - `items.data.price.metadata` (object)
+      - `items.data.price.metadata` (map)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
       - `items.data.price.nickname` (string, nullable)
@@ -823,7 +823,7 @@ Possible enum values:
       - `items.data.tax_rates.livemode` (boolean)
         If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-      - `items.data.tax_rates.metadata` (object, nullable)
+      - `items.data.tax_rates.metadata` (map, nullable)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
       - `items.data.tax_rates.percentage` (float)
@@ -928,7 +928,7 @@ Possible enum values:
   - `managed_payments.enabled` (boolean)
     Indicates whether [Managed Payments](https://docs.stripe.com/payments/managed-payments.md) is enabled for this Subscription and resulting [Invoices](https://docs.stripe.com/api/invoices/object.md) and [PaymentIntents](https://docs.stripe.com/api/payment_intents/object.md).
 
-- `metadata` (object)
+- `metadata` (map)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `next_pending_invoice_item_invoice` (timestamp, nullable)
@@ -1526,7 +1526,7 @@ Possible enum values:
   - `pending_update.expires_at` (timestamp)
     The point after which the changes reflected by this update will be discarded and no longer applied.
 
-  - `pending_update.metadata` (object, nullable)
+  - `pending_update.metadata` (map, nullable)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
   - `pending_update.subscription_items` (array of objects, nullable)
@@ -1559,7 +1559,7 @@ Possible enum values:
     - `pending_update.subscription_items.discounts` (array of strings, expandable (can be expanded into an object with the `expand` request parameter))
       The discounts applied to the subscription item. Subscription item discounts are applied before subscription discounts. Use `expand[]=discounts` to expand each discount.
 
-    - `pending_update.subscription_items.metadata` (object)
+    - `pending_update.subscription_items.metadata` (map)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
     - `pending_update.subscription_items.price` (object)
@@ -1586,7 +1586,7 @@ Possible enum values:
       - `pending_update.subscription_items.price.currency` (enum)
         Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
-      - `pending_update.subscription_items.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+      - `pending_update.subscription_items.price.currency_options` (map, nullable, expandable (can be expanded into an object with the `expand` request parameter))
         Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `pending_update.subscription_items.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
@@ -1650,7 +1650,7 @@ Possible enum values:
       - `pending_update.subscription_items.price.lookup_key` (string, nullable)
         A lookup key used to retrieve prices dynamically from a static string. This may be up to 200 characters.
 
-      - `pending_update.subscription_items.price.metadata` (object)
+      - `pending_update.subscription_items.price.metadata` (map)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
       - `pending_update.subscription_items.price.nickname` (string, nullable)
@@ -1787,7 +1787,7 @@ Possible enum values:
       - `pending_update.subscription_items.tax_rates.livemode` (boolean)
         If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-      - `pending_update.subscription_items.tax_rates.metadata` (object, nullable)
+      - `pending_update.subscription_items.tax_rates.metadata` (map, nullable)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
       - `pending_update.subscription_items.tax_rates.percentage` (float)

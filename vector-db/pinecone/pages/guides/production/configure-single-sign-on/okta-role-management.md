@@ -60,18 +60,16 @@ For details on what each [project role](/guides/projects/understanding-projects#
 | Project owner        | `pinecone:project:<projectID>:ProjectOwner`       |
 | Project manager      | `pinecone:project:<projectID>:ProjectManager`     |
 | Project member       | `pinecone:project:<projectID>:ProjectMember`      |
-| Project editor       | `pinecone:project:<projectID>:ProjectEditor`      |
-| Project viewer       | `pinecone:project:<projectID>:ProjectViewer`      |
 | Control plane editor | `pinecone:project:<projectID>:ControlPlaneEditor` |
 | Control plane viewer | `pinecone:project:<projectID>:ControlPlaneViewer` |
 | Data plane editor    | `pinecone:project:<projectID>:DataPlaneEditor`    |
 | Data plane viewer    | `pinecone:project:<projectID>:DataPlaneViewer`    |
 
-For example, to make a user an organization owner who is also an editor on one project, send these two values in the `roles` attribute:
+For example, to make a user an organization manager who is also a project owner on one project, send these two values in the `roles` attribute:
 
 ```text theme={null}
-pinecone:OrgOwner
-pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectEditor
+pinecone:OrgManager
+pinecone:project:a2f7dddb-1597-4eff-9f71-535fde243f58:ProjectOwner
 ```
 
 ## 1. Send roles from Okta
@@ -99,7 +97,7 @@ Use this option to set roles directly on each user's Okta profile.
 
 Use this option to assign roles by adding users to Okta groups.
 
-1. In Okta, create a group for each Pinecone role you want to assign, naming each group exactly as the role's attribute value (for example, `pinecone:OrgOwner` or `pinecone:project:<projectID>:ProjectEditor`), and add the appropriate users to each group.
+1. In Okta, create a group for each Pinecone role you want to assign, naming each group exactly as the role's attribute value (for example, `pinecone:OrgOwner` or `pinecone:project:<projectID>:ProjectManager`), and add the appropriate users to each group.
 2. In **Applications > Pinecone > Sign On**, send those group names in the `roles` attribute using either:
 
    * A **Group Attribute Statement** with **Name** `roles`, **Name format** `Unspecified`, and **Filter** **Starts with** `pinecone:`.

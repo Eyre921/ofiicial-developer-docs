@@ -67,6 +67,7 @@ Import the middleware into the project-root agent entry and pass it in the `midd
   from middleware.audit import log_tool_calls
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       middleware=[log_tool_calls],
   )
@@ -78,6 +79,7 @@ Import the middleware into the project-root agent entry and pass it in the `midd
   import { logToolCalls } from "./middleware/audit";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     middleware: [logToolCalls],
   });
@@ -96,6 +98,7 @@ You can also pass LangChain prebuilt middleware directly in the agent definition
   from managed_deepagents import define_deep_agent
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       middleware=[
           PIIMiddleware("email", strategy="redact", apply_to_input=True),
@@ -109,6 +112,7 @@ You can also pass LangChain prebuilt middleware directly in the agent definition
   import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     middleware: [
       piiMiddleware("email", { strategy: "redact", applyToInput: true }),
@@ -131,6 +135,7 @@ Pause the agent before sensitive tool calls so a person can approve, edit, or re
   from tools.customer import lookup_customer
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       tools=[lookup_customer],
       interrupt_on={"lookup_customer": True},
@@ -143,6 +148,7 @@ Pause the agent before sensitive tool calls so a person can approve, edit, or re
   import { lookupCustomer } from "./tools/customer";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     tools: [lookupCustomer],
     interruptOn: {

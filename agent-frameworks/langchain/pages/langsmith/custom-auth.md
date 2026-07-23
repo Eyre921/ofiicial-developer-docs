@@ -117,7 +117,7 @@ To leverage custom authentication and access user-level metadata in your deploym
        ```
      </Tab>
 
-     <Tab title="CURL">
+     <Tab title="cURL">
        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
        curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
        ```

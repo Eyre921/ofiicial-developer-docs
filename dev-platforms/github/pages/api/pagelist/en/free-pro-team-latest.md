@@ -1653,6 +1653,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/cloud-agent/agent-management
 /en/copilot/concepts/agents/cloud-agent/about-custom-agents
 /en/copilot/concepts/agents/cloud-agent/about-automations
+/en/copilot/concepts/agents/cloud-agent/about-automation-rationale-and-approvals
 /en/copilot/concepts/agents/cloud-agent/access-management
 /en/copilot/concepts/agents/cloud-agent/mcp-and-cloud-agent
 /en/copilot/concepts/agents/cloud-agent/risks-and-mitigations
@@ -1882,6 +1883,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/use-copilot-agents/cloud-agent
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/start-copilot-sessions
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/create-automations
+/en/copilot/how-tos/use-copilot-agents/cloud-agent/manage-rationale-confidence-approvals
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/changing-the-ai-model
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/configuring-agent-settings
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide

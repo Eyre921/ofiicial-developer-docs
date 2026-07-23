@@ -4,9 +4,9 @@ source: https://docs.together.ai/docs/serverless/overview
 path: docs/serverless/overview
 ---
 
-Run any supported model through a shared, per-token API with no provisioning and no minimums.
+Call 100+ open-source models with per-token pricing and no provisioning latency.
 
-Serverless models are the fastest way to run inference on Together AI. Call any supported model through a shared, per-token API, with no provisioning, no GPUs to size, and no minimum cost. You pay only for the tokens, megapixels, or seconds of audio/video/speech you process.
+Serverless models are the fastest way to run inference on Together AI. Call any [supported model](/docs/serverless/models) instantly, with no minimum cost or provisioning latency. You pay only for the tokens, megapixels, or seconds of audio/video/speech you process.
 
 Serverless uses the same [inference APIs](/docs/inference/overview#shared-inference-api) as [dedicated model inference](/docs/dedicated-endpoints/overview), so you can prototype on serverless and move to reserved hardware later without changing your application code.
 
@@ -36,7 +36,7 @@ Serverless uses the same [inference APIs](/docs/inference/overview#shared-infere
 
 ## Rate limits
 
-Serverless models are [rate-limited](/docs/serverless/rate-limits), so they work best when you're prototyping or evaluating a model, or when your production traffic is variable, bursty, or low enough that per-token pricing is cost-effective. If your traffic is steady, you need higher rate limits, or you want reserved hardware, use a [dedicated endpoint](/docs/dedicated-endpoints/overview).
+Serverless models are [rate-limited](/docs/serverless/rate-limits), so they work best when you're prototyping or evaluating a model, or when your production traffic is variable, bursty, or low enough that per-token pricing is cost-effective. If your traffic is steady, you need higher rate limits, or you want reserved hardware, you can request [provisioned throughput](/docs/inference/provisioned-throughput) or use a [dedicated endpoint](/docs/dedicated-endpoints/overview).
 
 ## Region selection
 

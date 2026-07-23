@@ -55,7 +55,7 @@ Before making API calls, set up your assistant and thread.
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
@@ -124,7 +124,7 @@ For example, if your server listens for webhook events at `https://my-server.app
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \

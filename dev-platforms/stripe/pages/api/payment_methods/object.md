@@ -994,7 +994,7 @@ Possible enum values:
 - `mb_way` (object, nullable)
   If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
 
-- `metadata` (object, nullable)
+- `metadata` (map, nullable)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `mobilepay` (object, nullable)

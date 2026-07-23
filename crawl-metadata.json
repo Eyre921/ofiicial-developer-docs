@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -13,7 +13,7 @@
     "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
-    "pages": 171,
+    "pages": 172,
     "status": "ok"
   },
   "ai-models/groq": {
@@ -23,11 +23,11 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 318,
+    "pages": 319,
     "status": "ok"
   },
   "ai-models/fireworks": {
-    "pages": 386,
+    "pages": 387,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -47,7 +47,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1505,
+    "pages": 1511,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -103,7 +103,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -188,7 +188,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 90,
+    "pages": 93,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -196,7 +196,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 295,
+    "pages": 296,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -204,8 +204,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1182,
+    "pages": 1184,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-23T11:31:02Z"
+  "_last_crawl": "2026-07-23T23:30:51Z"
 }

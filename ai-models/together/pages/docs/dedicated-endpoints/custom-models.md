@@ -135,9 +135,31 @@ The response is the upload job object, with `id`, `modelId`, and `status` at the
 
 Save the job `id`. You use it to poll for upload status.
 
-<Tip>
-  You can also upload a model from the dashboard. Sign in and go to [Models > Upload a model](https://api.together.ai/models/upload), enter your Hugging Face repo path or an S3 presigned URL as the source, name the model, and select **Upload**.
-</Tip>
+### Upload from the console
+
+The console combines creating the model record and uploading its weights into a single form. Go to [Models > Upload a model](https://api.together.ai/models/upload).
+
+<Steps>
+  <Step title="Set the upload type">
+    Leave **Upload type** set to **Full model**.
+  </Step>
+
+  <Step title="Choose the source">
+    Under **Model source**, select **Import from Hugging Face** and enter the repo path or URL (add a **Hugging Face token** for gated or private repos), or select **Download from S3** and paste a presigned archive URL. **Upload from your machine** shows a CLI command instead: the browser can't upload local weights, so use [`tg beta models upload`](#upload-from-your-machine) for files on your machine.
+  </Step>
+
+  <Step title="Name and configure the model">
+    Enter a **Model name**, choose a **Visibility**, and complete the **Compatible base model** and **Quantization** fields.
+  </Step>
+
+  <Step title="Import">
+    Select **Import**. The upload runs server-side, with progress shown below the form.
+  </Step>
+</Steps>
+
+<Frame>
+  <img alt="The Upload model form in the Together AI console, set to Full model with Import from Hugging Face selected, showing fields for repository or URL, Hugging Face token, model name, visibility, compatible base model, and quantization." />
+</Frame>
 
 ## Check upload status
 

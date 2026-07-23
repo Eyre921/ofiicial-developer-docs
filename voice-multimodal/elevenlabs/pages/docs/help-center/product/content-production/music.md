@@ -20,6 +20,14 @@ path: docs/help-center/product/content-production/music
 
     <tr>
       <td>
+        <a href="/docs/help-center/product/content-production/music/can-audio-reference-remix-a-song-or-change-its-genre">
+          Can Audio Reference remix a song or change its genre?
+        </a>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
         <a href="/docs/help-center/product/content-production/music/how-can-i-edit-my-track-add-or-remove-sections-or-change-the-style-of-a-specific-part-in-eleven-music">
           How can I edit my track, add or remove sections, or change the style of a specific part in
           Eleven Music?
@@ -39,6 +47,14 @@ path: docs/help-center/product/content-production/music
       <td>
         <a href="/docs/help-center/product/content-production/music/what-can-i-generate-with-eleven-music">
           What can I generate with Eleven Music?
+        </a>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <a href="/docs/help-center/product/content-production/music/what-is-audio-reference">
+          What is Audio Reference?
         </a>
       </td>
     </tr>

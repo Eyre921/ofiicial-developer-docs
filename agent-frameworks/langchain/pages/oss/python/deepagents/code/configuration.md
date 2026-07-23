@@ -355,7 +355,7 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REDACT" type="string">
-  Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace inputs and outputs. Accepts `1`, `true`, `yes`, or `on` to enable redaction and `0`, `false`, `no`, or `off` to disable it, case-insensitively. If redaction cannot be configured, tracing is disabled for that run. See [Configure LangSmith trace redaction](/oss/python/deepagents/code/config-file#redact-langsmith-trace-secrets).
+  Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace inputs and outputs. Accepts `1`, `true`, `yes`, or `on` to enable redaction and `0`, `false`, `no`, or `off` to disable it, case-insensitively. When redaction is enabled, tracing is disabled for that run if redaction cannot be configured. See [Configure LangSmith trace redaction](/oss/python/deepagents/code/config-file#redact-langsmith-trace-secrets).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS" type="string">

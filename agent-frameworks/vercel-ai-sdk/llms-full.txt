@@ -49913,6 +49913,16 @@ const { text } = await generateText({
 Google Generative AI language models can also be used in the `streamText`, `generateObject`, and `streamObject` functions
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+<Note>
+  To remain forward-compatible, the provider treats unrecognized `gemini-*`
+  model IDs and `-latest` aliases like the newest supported Gemini generation.
+  Currently, this means Gemini 3 request behavior for provider-defined and mixed
+  tools, `thinkingLevel` reasoning, multimodal function responses, and thought
+  signatures. Known legacy Gemini model IDs keep their generation-specific
+  request behavior. This SDK default controls request serialization; the
+  selected model must still support each feature in the Google API.
+</Note>
+
 Google Generative AI also supports some model specific settings that are not part of the [standard call settings](/docs/ai-sdk-core/settings).
 You can pass them as an options argument:
 
@@ -49984,7 +49994,7 @@ The following optional provider options are available for Google Generative AI m
 
   - **thinkingLevel** _'low' | 'high'_
 
-    Optional. Controls the thinking depth for Gemini 3 models. Use 'low' for faster responses or 'high' for deeper reasoning. Gemini 3.1 Pro supports 'low', 'medium', and 'high', Gemini 3 Pro supports 'low' and 'high', while Gemini 3 Flash supports all four levels: 'minimal', 'low', 'medium', and 'high'. Only supported by Gemini 3 models.
+    Optional. Controls the thinking depth for Gemini 3 and later models. Use 'low' for faster responses or 'high' for deeper reasoning. Gemini 3.1 Pro supports 'low', 'medium', and 'high', Gemini 3 Pro supports 'low' and 'high', while Gemini 3 Flash supports all four levels: 'minimal', 'low', 'medium', and 'high'.
 
   - **thinkingBudget** _number_
 
@@ -49992,7 +50002,7 @@ The following optional provider options are available for Google Generative AI m
     For more information about the possible value ranges for each model see [Google Generative AI thinking documentation](https://ai.google.dev/gemini-api/docs/thinking#set-budget).
 
     <Note>
-      This option is for Gemini 2.5 models. Gemini 3 models should use
+      This option is for Gemini 2.5 models. Gemini 3 and later models should use
       `thinkingLevel` instead.
     </Note>
 
@@ -50061,11 +50071,11 @@ The following optional provider options are available for Google Generative AI m
 
 ### Thinking
 
-The Gemini 2.5 and Gemini 3 series models use an internal "thinking process" that significantly improves their reasoning and multi-step planning abilities, making them highly effective for complex tasks such as coding, advanced mathematics, and data analysis. For more information see [Google Generative AI thinking documentation](https://ai.google.dev/gemini-api/docs/thinking).
+The Gemini 2.5 and Gemini 3-and-later series models use an internal "thinking process" that significantly improves their reasoning and multi-step planning abilities, making them highly effective for complex tasks such as coding, advanced mathematics, and data analysis. For more information see [Google Generative AI thinking documentation](https://ai.google.dev/gemini-api/docs/thinking).
 
-#### Gemini 3 Models
+#### Gemini 3 and Later Models
 
-For Gemini 3 models, use the `thinkingLevel` parameter to control the depth of reasoning:
+For Gemini 3 and later models, use the `thinkingLevel` parameter to control the depth of reasoning:
 
 ```ts
 import { google, GoogleGenerativeAIProviderOptions } from '@ai-sdk/google';
@@ -50414,7 +50424,7 @@ Example response:
 
 ### File Search
 
-The [File Search tool](https://ai.google.dev/gemini-api/docs/file-search) lets Gemini retrieve context from your own documents that you have indexed in File Search stores. Only Gemini 2.5 models support this feature.
+The [File Search tool](https://ai.google.dev/gemini-api/docs/file-search) lets Gemini retrieve context from your own documents that you have indexed in File Search stores. The provider enables this tool for Gemini 2.5 and Gemini 3-and-later model IDs, including unrecognized future Gemini IDs.
 
 ```ts highlight="9-13"
 import { google } from '@ai-sdk/google';
@@ -51150,6 +51160,14 @@ The Google Vertex, Google Vertex Anthropic, Google Vertex xAI, and Google Vertex
 ## Google Vertex Provider Usage
 
 The Google Vertex provider instance is used to create model instances that call the Vertex AI API. The models available with this provider include [Google's Gemini models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models). If you're looking to use [Anthropic's Claude models](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude), see the [Google Vertex Anthropic Provider](#google-vertex-anthropic-provider-usage) section below.
+
+<Note>
+  Vertex Gemini models share the Google provider's forward-compatible model
+  classification. Unrecognized `gemini-*` IDs and `-latest` aliases use the
+  newest supported Gemini request behavior, while known legacy IDs keep their
+  generation-specific tool, reasoning, function-response, and thought-signature
+  handling. The selected Vertex model must still support each requested feature.
+</Note>
 
 ### Provider Instance
 
@@ -76189,6 +76207,11 @@ There are three things worth mentioning:
    It asks the user for confirmation and displays the result once the user confirms or denies the execution.
    The result is added to the chat using `addToolOutput` with the `tool` parameter for type safety.
 
+Typed tool parts also include the `approval-requested`, `approval-responded`,
+and `output-denied` states. Include these states when handling `part.state`
+exhaustively, even when a tool does not require approval. See
+[Tool execution approval](#tool-execution-approval) for a complete approval UI.
+
 ```tsx filename='app/page.tsx' highlight="6,11,16,19-23,25-26,28-33,51,66-70,77-81"
 'use client';
 
@@ -76278,6 +76301,10 @@ export default function Chat() {
                         </div>
                       </div>
                     );
+                  case 'approval-requested':
+                    return <div key={callId}>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div key={callId}>Approval response received.</div>;
                   case 'output-available':
                     return (
                       <div key={callId}>
@@ -76286,6 +76313,8 @@ export default function Chat() {
                     );
                   case 'output-error':
                     return <div key={callId}>Error: {part.errorText}</div>;
+                  case 'output-denied':
+                    return <div key={callId}>Tool call denied.</div>;
                 }
                 break;
               }
@@ -76300,6 +76329,10 @@ export default function Chat() {
                     );
                   case 'input-available':
                     return <div key={callId}>Getting location...</div>;
+                  case 'approval-requested':
+                    return <div key={callId}>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div key={callId}>Approval response received.</div>;
                   case 'output-available':
                     return <div key={callId}>Location: {part.output}</div>;
                   case 'output-error':
@@ -76308,6 +76341,8 @@ export default function Chat() {
                         Error getting location: {part.errorText}
                       </div>
                     );
+                  case 'output-denied':
+                    return <div key={callId}>Location request denied.</div>;
                 }
                 break;
               }
@@ -76327,6 +76362,10 @@ export default function Chat() {
                         Getting weather information for {part.input.city}...
                       </div>
                     );
+                  case 'approval-requested':
+                    return <div key={callId}>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div key={callId}>Approval response received.</div>;
                   case 'output-available':
                     return (
                       <div key={callId}>
@@ -76340,6 +76379,8 @@ export default function Chat() {
                         {part.errorText}
                       </div>
                     );
+                  case 'output-denied':
+                    return <div key={callId}>Weather request denied.</div>;
                 }
                 break;
               }
@@ -76625,10 +76666,16 @@ export default function Chat() {
                     return <pre>{JSON.stringify(part.input, null, 2)}</pre>;
                   case 'input-available':
                     return <pre>{JSON.stringify(part.input, null, 2)}</pre>;
+                  case 'approval-requested':
+                    return <div>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div>Approval response received.</div>;
                   case 'output-available':
                     return <pre>{JSON.stringify(part.output, null, 2)}</pre>;
                   case 'output-error':
                     return <div>Error: {part.errorText}</div>;
+                  case 'output-denied':
+                    return <div>Tool call denied.</div>;
                 }
             }
           })}
@@ -92372,6 +92419,16 @@ Google Generative AI language models can also be used in the `streamText` functi
 and support structured data generation with [`Output`](/docs/reference/ai-sdk-core/output)
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+<Note>
+  To remain forward-compatible, the provider treats unrecognized `gemini-*`
+  model IDs and `-latest` aliases like the newest supported Gemini generation.
+  Currently, this means Gemini 3 request behavior for provider-defined and mixed
+  tools, `thinkingLevel` reasoning, multimodal function responses, and thought
+  signatures. Known legacy Gemini model IDs keep their generation-specific
+  request behavior. This SDK default controls request serialization; the
+  selected model must still support each feature in the Google API.
+</Note>
+
 Google Generative AI also supports some model specific settings that are not part of the [standard call settings](/docs/ai-sdk-core/settings).
 You can pass them as an options argument:
 
@@ -92448,7 +92505,7 @@ The following optional provider options are available for Google Generative AI m
 
   - **thinkingLevel** _'minimal' | 'low' | 'medium' | 'high'_
 
-    Optional. Controls the thinking depth for Gemini 3 models. Gemini 3.1 Pro supports 'low', 'medium', and 'high', Gemini 3 Pro supports 'low' and 'high', while Gemini 3 Flash supports all four levels: 'minimal', 'low', 'medium', and 'high'. Only supported by Gemini 3 models.
+    Optional. Controls the thinking depth for Gemini 3 and later models. Gemini 3.1 Pro supports 'low', 'medium', and 'high', Gemini 3 Pro supports 'low' and 'high', while Gemini 3 Flash supports all four levels: 'minimal', 'low', 'medium', and 'high'.
 
   - **thinkingBudget** _number_
 
@@ -92456,7 +92513,7 @@ The following optional provider options are available for Google Generative AI m
     For more information about the possible value ranges for each model see [Google Generative AI thinking documentation](https://ai.google.dev/gemini-api/docs/thinking#set-budget).
 
     <Note>
-      This option is for Gemini 2.5 models. Gemini 3 models should use
+      This option is for Gemini 2.5 models. Gemini 3 and later models should use
       `thinkingLevel` instead.
     </Note>
 
@@ -92531,11 +92588,11 @@ The following optional provider options are available for Google Generative AI m
 
 ### Thinking
 
-The Gemini 2.5 and Gemini 3 series models use an internal "thinking process" that significantly improves their reasoning and multi-step planning abilities, making them highly effective for complex tasks such as coding, advanced mathematics, and data analysis. For more information see [Google Generative AI thinking documentation](https://ai.google.dev/gemini-api/docs/thinking).
+The Gemini 2.5 and Gemini 3-and-later series models use an internal "thinking process" that significantly improves their reasoning and multi-step planning abilities, making them highly effective for complex tasks such as coding, advanced mathematics, and data analysis. For more information see [Google Generative AI thinking documentation](https://ai.google.dev/gemini-api/docs/thinking).
 
-#### Gemini 3 Models
+#### Gemini 3 and Later Models
 
-For Gemini 3 models, use the `thinkingLevel` parameter to control the depth of reasoning:
+For Gemini 3 and later models, use the `thinkingLevel` parameter to control the depth of reasoning:
 
 ```ts
 import { google, GoogleLanguageModelOptions } from '@ai-sdk/google';
@@ -92923,7 +92980,7 @@ Enterprise Web Search provides the following benefits:
 
 ### File Search
 
-The [File Search tool](https://ai.google.dev/gemini-api/docs/file-search) lets Gemini retrieve context from your own documents that you have indexed in File Search stores. Only Gemini 2.5 and Gemini 3 models support this feature.
+The [File Search tool](https://ai.google.dev/gemini-api/docs/file-search) lets Gemini retrieve context from your own documents that you have indexed in File Search stores. The provider enables this tool for Gemini 2.5 and Gemini 3-and-later model IDs, including unrecognized future Gemini IDs.
 
 ```ts highlight="9-13"
 import { google } from '@ai-sdk/google';
@@ -94408,6 +94465,14 @@ The Google Vertex, Google Vertex Anthropic, Google Vertex xAI, and Google Vertex
 ## Google Vertex Provider Usage
 
 The Google Vertex provider instance is used to create model instances that call the Vertex AI API. The models available with this provider include [Google's Gemini models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models). If you're looking to use [Anthropic's Claude models](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude), see the [Google Vertex Anthropic Provider](#google-vertex-anthropic-provider-usage) section below.
+
+<Note>
+  Vertex Gemini models share the Google provider's forward-compatible model
+  classification. Unrecognized `gemini-*` IDs and `-latest` aliases use the
+  newest supported Gemini request behavior, while known legacy IDs keep their
+  generation-specific tool, reasoning, function-response, and thought-signature
+  handling. The selected Vertex model must still support each requested feature.
+</Note>
 
 ### Provider Instance
 
@@ -130019,6 +130084,11 @@ There are three things worth mentioning:
    It asks the user for confirmation and displays the result once the user confirms or denies the execution.
    The result is added to the chat using `addToolOutput` with the `tool` parameter for type safety.
 
+Typed tool parts also include the `approval-requested`, `approval-responded`,
+and `output-denied` states. Include these states when handling `part.state`
+exhaustively, even when a tool does not require approval. See
+[Tool execution approval](#tool-execution-approval) for a complete approval UI.
+
 ```tsx filename='app/page.tsx' highlight="6,11,16,19-23,25-26,28-33,51,66-70,77-81"
 'use client';
 
@@ -130108,6 +130178,10 @@ export default function Chat() {
                         </div>
                       </div>
                     );
+                  case 'approval-requested':
+                    return <div key={callId}>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div key={callId}>Approval response received.</div>;
                   case 'output-available':
                     return (
                       <div key={callId}>
@@ -130116,6 +130190,8 @@ export default function Chat() {
                     );
                   case 'output-error':
                     return <div key={callId}>Error: {part.errorText}</div>;
+                  case 'output-denied':
+                    return <div key={callId}>Tool call denied.</div>;
                 }
                 break;
               }
@@ -130130,6 +130206,10 @@ export default function Chat() {
                     );
                   case 'input-available':
                     return <div key={callId}>Getting location...</div>;
+                  case 'approval-requested':
+                    return <div key={callId}>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div key={callId}>Approval response received.</div>;
                   case 'output-available':
                     return <div key={callId}>Location: {part.output}</div>;
                   case 'output-error':
@@ -130138,6 +130218,8 @@ export default function Chat() {
                         Error getting location: {part.errorText}
                       </div>
                     );
+                  case 'output-denied':
+                    return <div key={callId}>Location request denied.</div>;
                 }
                 break;
               }
@@ -130157,6 +130239,10 @@ export default function Chat() {
                         Getting weather information for {part.input.city}...
                       </div>
                     );
+                  case 'approval-requested':
+                    return <div key={callId}>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div key={callId}>Approval response received.</div>;
                   case 'output-available':
                     return (
                       <div key={callId}>
@@ -130170,6 +130256,8 @@ export default function Chat() {
                         {part.errorText}
                       </div>
                     );
+                  case 'output-denied':
+                    return <div key={callId}>Weather request denied.</div>;
                 }
                 break;
               }
@@ -130522,10 +130610,16 @@ export default function Chat() {
                     return <pre>{JSON.stringify(part.input, null, 2)}</pre>;
                   case 'input-available':
                     return <pre>{JSON.stringify(part.input, null, 2)}</pre>;
+                  case 'approval-requested':
+                    return <div>Approval requested.</div>;
+                  case 'approval-responded':
+                    return <div>Approval response received.</div>;
                   case 'output-available':
                     return <pre>{JSON.stringify(part.output, null, 2)}</pre>;
                   case 'output-error':
                     return <div>Error: {part.errorText}</div>;
+                  case 'output-denied':
+                    return <div>Tool call denied.</div>;
                 }
             }
           })}
@@ -132116,11 +132210,13 @@ export default function Chat() {
 }
 ```
 
-#### Alternative: replace last message
+#### Alternative: replace the failed message
 
-Alternatively you can write a custom submit handler that replaces the last message when an error is present.
+Alternatively, you can write a custom submit handler that replaces the failed
+user message with new input. If the assistant response started streaming before
+the error, remove both the partial assistant response and its user message.
 
-```tsx file="app/page.tsx" highlight="13-15,17-18,35"
+```tsx file="app/page.tsx" highlight="13-19,21-22,39"
 'use client';
 
 import { useChat } from '@ai-sdk/react';
@@ -132134,7 +132230,11 @@ export default function Chat() {
     event.preventDefault();
 
     if (error != null) {
-      setMessages(messages.slice(0, -1)); // remove last message
+      setMessages(messages =>
+        messages.at(-1)?.role === 'assistant'
+          ? messages.slice(0, -2)
+          : messages.slice(0, -1),
+      );
     }
 
     sendMessage({ text: input });
@@ -138316,6 +138416,68 @@ If you persist or reconstruct messages for later turns, preserve the OpenAI prov
 metadata on tool-call parts. The SDK uses `providerMetadata.openai.namespace` or
 `providerOptions.openai.namespace` to round-trip the namespace back to OpenAI on
 subsequent requests.
+
+#### Programmatic Tool Calling
+
+OpenAI Programmatic Tool Calling lets supported Responses models generate and run
+hosted JavaScript that coordinates client-side function tools. Add the hosted tool
+with `openai.tools.programmaticToolCalling()`, then opt each eligible function into
+programmatic calls with `allowedCallers`.
+
+```ts
+import { openai, type OpenAIToolOptions } from '@ai-sdk/openai';
+import { generateText, isStepCount, tool } from 'ai';
+import { z } from 'zod';
+
+const result = await generateText({
+  model: openai('gpt-5.6'),
+  stopWhen: isStepCount(10),
+  prompt: 'Compare inventory with demand for sku_123.',
+  tools: {
+    program: openai.tools.programmaticToolCalling(),
+    getInventory: tool({
+      description: 'Get available inventory for a SKU.',
+      inputSchema: z.object({ sku: z.string() }),
+      execute: async ({ sku }) => ({ sku, availableUnits: 42 }),
+      providerOptions: {
+        openai: {
+          allowedCallers: ['programmatic'],
+          outputSchema: {
+            type: 'object',
+            properties: {
+              sku: { type: 'string' },
+              availableUnits: { type: 'number' },
+            },
+            required: ['sku', 'availableUnits'],
+            additionalProperties: false,
+          },
+        } satisfies OpenAIToolOptions,
+      },
+    }),
+  },
+});
+```
+
+`allowedCallers` supports:
+
+- `['direct']` (or omitted): only direct model tool calls
+- `['programmatic']`: only calls from hosted JavaScript
+- `['direct', 'programmatic']`: both invocation modes
+
+Use `outputSchema` to describe the JSON value returned by the function. This schema
+is sent to OpenAI as `output_schema` so generated JavaScript can safely use the
+returned fields. It does not replace the tool's AI SDK output validation or execution
+logic.
+
+The provider preserves program code, replay fingerprints, program outputs, and nested
+function caller metadata across the `generateText` and `streamText` tool loops,
+including stateless requests with `store: false`. Programmatic invocation is
+currently supported for AI SDK function tools; other OpenAI tool types remain
+direct-only through this integration.
+
+Treat generated programs and tool arguments as untrusted. Enforce authorization and
+approval inside every tool, avoid programmatic access to side-effecting tools unless
+the operation is idempotent, and set explicit step limits.
 
 #### Web Search Tool
 
@@ -148241,6 +148403,16 @@ Google language models can also be used in the `streamText` function
 and support structured data generation with [`Output`](/docs/reference/ai-sdk-core/output)
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+<Note>
+  To remain forward-compatible, the provider treats unrecognized `gemini-*`
+  model IDs and `-latest` aliases like the newest supported Gemini generation.
+  Currently, this means Gemini 3 request behavior for provider-defined and mixed
+  tools, `thinkingLevel` reasoning, multimodal function responses, and thought
+  signatures. Known legacy Gemini model IDs keep their generation-specific
+  request behavior. This SDK default controls request serialization; the
+  selected model must still support each feature in the Google API.
+</Note>
+
 Google also supports some model specific settings that are not part of the [standard call settings](/docs/ai-sdk-core/settings).
 You can pass them as an options argument:
 
@@ -148313,7 +148485,7 @@ The following optional provider options are available for Google models:
   Optional. Configuration for the model's thinking process. Only supported by specific [Google models](https://ai.google.dev/gemini-api/docs/thinking).
   - **thinkingLevel** _'minimal' | 'low' | 'medium' | 'high'_
 
-    Optional. Controls the thinking depth for Gemini 3 models. Gemini 3.1 Pro supports 'low', 'medium', and 'high', Gemini 3 Pro supports 'low' and 'high', while Gemini 3 Flash supports all four levels: 'minimal', 'low', 'medium', and 'high'. Only supported by Gemini 3 models.
+    Optional. Controls the thinking depth for Gemini 3 and later models. Gemini 3.1 Pro supports 'low', 'medium', and 'high', Gemini 3 Pro supports 'low' and 'high', while Gemini 3 Flash supports all four levels: 'minimal', 'low', 'medium', and 'high'.
 
   - **thinkingBudget** _number_
 
@@ -148321,7 +148493,7 @@ The following optional provider options are available for Google models:
     For more information about the possible value ranges for each model see [Google thinking documentation](https://ai.google.dev/gemini-api/docs/thinking#set-budget).
 
     <Note>
-      This option is for Gemini 2.5 models. Gemini 3 models should use
+      This option is for Gemini 2.5 models. Gemini 3 and later models should use
       `thinkingLevel` instead.
     </Note>
 
@@ -148392,11 +148564,11 @@ The following optional provider options are available for Google models:
 
 ### Thinking
 
-The Gemini 2.5 and Gemini 3 series models use an internal "thinking process" that significantly improves their reasoning and multi-step planning abilities, making them highly effective for complex tasks such as coding, advanced mathematics, and data analysis. For more information see [Google thinking documentation](https://ai.google.dev/gemini-api/docs/thinking).
+The Gemini 2.5 and Gemini 3-and-later series models use an internal "thinking process" that significantly improves their reasoning and multi-step planning abilities, making them highly effective for complex tasks such as coding, advanced mathematics, and data analysis. For more information see [Google thinking documentation](https://ai.google.dev/gemini-api/docs/thinking).
 
-#### Gemini 3 Models
+#### Gemini 3 and Later Models
 
-For Gemini 3 models, use the `thinkingLevel` parameter to control the depth of reasoning:
+For Gemini 3 and later models, use the `thinkingLevel` parameter to control the depth of reasoning:
 
 ```ts
 import { google, GoogleLanguageModelOptions } from '@ai-sdk/google';
@@ -148778,7 +148950,7 @@ Enterprise Web Search provides the following benefits:
 
 ### File Search
 
-The [File Search tool](https://ai.google.dev/gemini-api/docs/file-search) lets Gemini retrieve context from your own documents that you have indexed in File Search stores. Only Gemini 2.5 and Gemini 3 models support this feature.
+The [File Search tool](https://ai.google.dev/gemini-api/docs/file-search) lets Gemini retrieve context from your own documents that you have indexed in File Search stores. The provider enables this tool for Gemini 2.5 and Gemini 3-and-later model IDs, including unrecognized future Gemini IDs.
 
 ```ts highlight="9-13"
 import { google } from '@ai-sdk/google';
@@ -150395,6 +150567,14 @@ The Google Vertex, Google Vertex Anthropic, Google Vertex xAI, and Google Vertex
 ## Google Vertex Provider Usage
 
 The Google Vertex provider instance is used to create model instances that call the Vertex AI API. The models available with this provider include [Google's Gemini models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models). If you're looking to use [Anthropic's Claude models](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude), see the [Google Vertex Anthropic Provider](#google-vertex-anthropic-provider-usage) section below.
+
+<Note>
+  Vertex Gemini models share the Google provider's forward-compatible model
+  classification. Unrecognized `gemini-*` IDs and `-latest` aliases use the
+  newest supported Gemini request behavior, while known legacy IDs keep their
+  generation-specific tool, reasoning, function-response, and thought-signature
+  handling. The selected Vertex model must still support each requested feature.
+</Note>
 
 ### Provider Instance
 
@@ -159609,6 +159789,8 @@ Settings:
   Gateway, use the `creator/model` slug (e.g. `anthropic/claude-sonnet-4-6`,
   `google/gemini-2.5-flash`, `openai/gpt-4.1-mini`).
 - `port`: bridge port override.
+- `recursionLimit`: maximum LangGraph super-steps per turn. When omitted, the
+  Deep Agents default applies.
 - `startupTimeoutMs`: maximum time to wait for the bridge to start.
 
 ## Authentication

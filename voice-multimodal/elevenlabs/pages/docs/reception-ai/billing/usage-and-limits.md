@@ -34,11 +34,11 @@ Each plan has hard limits on:
 
 | Resource               | Basic | Plus | Premium |
 | ---------------------- | ----- | ---- | ------- |
-| Phone numbers          | 1     | 3    | 5       |
-| Receptionists          | 1     | 3    | 5       |
-| Locations              | 1     | 5    | 20      |
+| Phone numbers          | 1     | 1    | 3       |
+| Receptionists          | 1     | 1    | 3       |
+| Locations              | 1     | 1    | 20      |
 | Knowledge sources      | 10    | 20   | 50      |
-| Concurrent calls       | 3     | 10   | 20      |
+| Concurrent calls       | 1     | 3    | 10      |
 | Assistant messages/day | 150   | 300  | 500     |
 
 ## Credit refresh

@@ -87,11 +87,11 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 
 ## Client integrations
 
-| Integration                                    | When to use                                                        |
-| ---------------------------------------------- | ------------------------------------------------------------------ |
-| [Quickstart](/ecosystem/firerouter/quickstart) | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client) |
-| [LiteLLM](/ecosystem/firerouter/litellm)       | Add FireRouter to a LiteLLM Proxy deployment                       |
-| [FireConnect](/ecosystem/fireconnect/overview) | Coding harnesses (Claude Code, OpenCode, Codex, and others)        |
+| Integration                                      | When to use                                                        |
+| ------------------------------------------------ | ------------------------------------------------------------------ |
+| [Quickstart](/ecosystem/firerouter/quickstart)   | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client) |
+| [Claude Code](/ecosystem/firerouter/claude-code) | Coding harness setup with `settings.json`                          |
+| [LiteLLM](/ecosystem/firerouter/litellm)         | Add FireRouter to a LiteLLM Proxy deployment                       |
 
 ## What FireRouter is not
 
@@ -105,6 +105,10 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
     Make your first API call
   </Card>
 
+  <Card title="Claude Code" icon="terminal" href="/ecosystem/firerouter/claude-code">
+    Configure FireRouter in Claude Code
+  </Card>
+
   <Card title="Authentication" icon="key" href="/ecosystem/firerouter/authentication">
     BYOK headers and API key requirements
   </Card>
@@ -115,9 +119,5 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 
   <Card title="LiteLLM" icon="server" href="/ecosystem/firerouter/litellm">
     Add FireRouter to LiteLLM Proxy
-  </Card>
-
-  <Card title="FireConnect" icon="plug" href="/ecosystem/fireconnect/overview">
-    Connect coding harnesses to Fireworks
   </Card>
 </CardGroup>

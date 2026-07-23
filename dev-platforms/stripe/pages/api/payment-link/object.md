@@ -335,7 +335,7 @@ Possible enum values:
         - `self`
           Indicates that the account being referenced is the account making the API request.
 
-    - `invoice_creation.invoice_data.metadata` (object, nullable)
+    - `invoice_creation.invoice_data.metadata` (map, nullable)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
     - `invoice_creation.invoice_data.rendering_options` (object, nullable)
@@ -437,7 +437,7 @@ Possible enum values:
         - `line_items.data.discounts.discount.subscription_item` (string, nullable)
           The subscription item that this coupon is applied to, if it is applied to a particular subscription item.
 
-    - `line_items.data.metadata` (object, nullable)
+    - `line_items.data.metadata` (map, nullable)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
     - `line_items.data.price` (object, nullable)
@@ -464,7 +464,7 @@ Possible enum values:
       - `line_items.data.price.currency` (enum)
         Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
-      - `line_items.data.price.currency_options` (object, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+      - `line_items.data.price.currency_options` (map, nullable, expandable (can be expanded into an object with the `expand` request parameter))
         Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `line_items.data.price.currency_options.<currency>.custom_unit_amount` (object, nullable)
@@ -528,7 +528,7 @@ Possible enum values:
       - `line_items.data.price.lookup_key` (string, nullable)
         A lookup key used to retrieve prices dynamically from a static string. This may be up to 200 characters.
 
-      - `line_items.data.price.metadata` (object)
+      - `line_items.data.price.metadata` (map)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
       - `line_items.data.price.nickname` (string, nullable)
@@ -668,7 +668,7 @@ Possible enum values:
         - `line_items.data.taxes.rate.livemode` (boolean)
           If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-        - `line_items.data.taxes.rate.metadata` (object, nullable)
+        - `line_items.data.taxes.rate.metadata` (map, nullable)
           Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
         - `line_items.data.taxes.rate.percentage` (float)
@@ -821,7 +821,7 @@ Possible enum values:
   - `managed_payments.enabled` (boolean)
     Indicates whether [Managed Payments](https://docs.stripe.com/payments/managed-payments.md) is enabled for this transaction.
 
-- `metadata` (object)
+- `metadata` (map)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `name_collection` (object, nullable)
@@ -869,7 +869,7 @@ Possible enum values:
   - `payment_intent_data.description` (string, nullable)
     An arbitrary string attached to the object. Often useful for displaying to users.
 
-  - `payment_intent_data.metadata` (object)
+  - `payment_intent_data.metadata` (map)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that will set metadata on [Payment Intents](https://docs.stripe.com/docs/api/payment_intents.md) generated from this payment link.
 
   - `payment_intent_data.setup_future_usage` (enum, nullable)
@@ -1246,7 +1246,7 @@ Possible enum values:
         - `self`
           Indicates that the account being referenced is the account making the API request.
 
-  - `subscription_data.metadata` (object)
+  - `subscription_data.metadata` (map)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that will set metadata on [Subscriptions](https://docs.stripe.com/docs/api/subscriptions.md) generated from this payment link.
 
   - `subscription_data.trial_period_days` (integer, nullable)

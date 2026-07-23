@@ -31,7 +31,7 @@ First, let's setup our client:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
@@ -98,7 +98,7 @@ We can stream the results of a stateless run in an almost identical fashion to h
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/stream \
@@ -147,7 +147,7 @@ In addition to streaming, you can also wait for a stateless result by using the 
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/wait \

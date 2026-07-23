@@ -427,6 +427,7 @@ When you're done, delete the deployment:
 ## Next Steps
 
 * [Video Generation Example](/docs/dedicated_containers_video) – Multi-GPU inference with torchrun
+* [OpenAI-Compatible Endpoint Example](/docs/dedicated_containers_openai) – Serve the same model behind the OpenAI Images API
 * [Quickstart](/docs/containers-quickstart) – Deploy your first container in 20 minutes
 * [Sprocket SDK](/reference/dci-reference-sprocket) – Full SDK reference for workers
 * [Jig CLI Reference](/reference/cli/jig) – CLI commands and configuration options

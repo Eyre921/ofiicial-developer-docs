@@ -33,7 +33,7 @@ Create a client and thread:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -86,7 +86,7 @@ Use **interrupt** when you want to stop a run but keep it for debugging, auditin
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run (use the run_id and thread_id from the response)
     curl --request POST \
@@ -151,7 +151,7 @@ Use **rollback** when you want to fully discard a run and its effects (for examp
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run, then cancel with rollback
     curl --request POST \
@@ -214,7 +214,7 @@ By default, the cancel request returns after the cancellation is requested and t
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run
     curl --request POST \
@@ -276,7 +276,7 @@ Cancel specific runs by passing their IDs.
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create two runs (capture run_id from each response)
     curl --request POST \
@@ -340,7 +340,7 @@ Cancel all runs that match a status across all threads in a deployment. Valid st
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run
     curl --request POST \
@@ -454,7 +454,7 @@ When starting a run with streaming or when waiting on a run, you can set `on_dis
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # runs.wait: create run and wait for output; cancel if client disconnects
     curl --request POST \

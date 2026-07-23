@@ -10,7 +10,7 @@ The guide covers the `rollback` option for double texting, which interrupts the 
 
 ## Setup
 
-First, we will define a quick helper function for printing out JS and CURL model outputs (you can skip this if using Python):
+First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
   <Tab title="Javascript">
@@ -28,7 +28,7 @@ First, we will define a quick helper function for printing out JS and CURL model
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
@@ -80,7 +80,7 @@ Now, let's import our required packages and instantiate our client, assistant, a
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -137,7 +137,7 @@ Now let's run a thread with the multitask parameter set to "rollback":
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
@@ -182,7 +182,7 @@ We can see that the thread has data only from the second run
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \

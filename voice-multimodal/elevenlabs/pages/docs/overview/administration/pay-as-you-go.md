@@ -48,6 +48,7 @@ Key limits:
 
 * **Minimum Top Up**: \$5 USD / ₹500 INR
 * **Supported currencies**: USD, INR
+* **Maximum Top Ups per month**: 250
 
 Your balance is displayed in USD or INR in [Developer settings](https://elevenlabs.io/app/developers) → Top Up, but is converted to credits and displayed as credits elsewhere in the platform.
 
@@ -195,6 +196,10 @@ plan, including Music, Sound Effects, and more.
 #### Is there a monthly spend cap?
 
 You can optionally set a monthly spend cap in the Top Up settings. This is off by default.
+
+#### How many Top Ups can I make per month?
+
+You can make up to 250 Top Ups per month, whether Manual or via Auto Top Up.
 
 #### What is the maximum I can purchase in one transaction?
 

@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides
 path: langsmith/smith-api/experiment-view-overrides/update-existing-experiment-view-override-configuration
 ---
 
-/langsmith/langsmith-platform-openapi.json patch /v1/platform/datasets/{dataset_id}/experiment-view-overrides/{id}
+/langsmith/langsmith-platform-openapi.json patch /datasets/{dataset_id}/experiment-view-overrides/{id}
 Updates an existing experiment view override configuration by completely replacing
 the column overrides for the specified dataset and override ID.
 

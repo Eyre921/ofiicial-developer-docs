@@ -37,44 +37,80 @@ tg --help
 
 ## Step 1: Deploy a model
 
-Deploy `google/gemma-4-E4B-it`, one of the [supported models](/docs/dedicated-endpoints/models) Together hosts. The `endpoints deploy` command creates an endpoint, attaches a deployment on the model's default hardware, and routes all traffic to it:
+Deploy `google/gemma-4-E4B-it`, one of the [supported models](/docs/dedicated-endpoints/models) Together hosts. The deployment provisions in the background: for a model this size, first-time provisioning usually takes about 5 to 10 minutes while the weights download and hardware is allocated, and larger models take longer.
 
-```bash theme={null}
-tg beta endpoints deploy google/gemma-4-E4B-it \
-  --endpoint quickstart-endpoint
-```
+<Tabs>
+  <Tab title="CLI">
+    The `endpoints deploy` command creates an endpoint, attaches a deployment on the model's default hardware, and routes all traffic to it:
 
-The command returns as soon as the resources are created and prints the endpoint's details:
+    ```bash theme={null}
+    tg beta endpoints deploy google/gemma-4-E4B-it \
+      --endpoint quickstart-endpoint
+    ```
 
-```bash theme={null}
-√ Model deployed to endpoint your-project-slug/quickstart-endpoint.
+    The command returns as soon as the resources are created and prints the endpoint's details:
 
-╭─ Endpoint Details for quickstart-endpoint ───────────────────────────────────╮
-│    Endpoint string  your-project-slug/quickstart-endpoint                    │
-│       Endpoint ID  ep_abc123                                                 │
-│        Created at  07/13/2026, 06:52 PM                                      │
-│        Updated at  07/13/2026, 06:52 PM                                      │
-│        Visibility  Private                                                   │
-│           Web URL  https://api.together.ai/endpoints/ep_abc123               │
-╰──────────────────────────────────────────────────────────────────────────────╯
+    ```bash theme={null}
+    √ Model deployed to endpoint your-project-slug/quickstart-endpoint.
 
-Deployments
-╭──────────────────────────────────────┬───────────────────┬───────────────────╮
-│  Deployment                          │  Model            │                   │
-├──────────────────────────────────────┼───────────────────┼───────────────────┤
-│  Name:                               │  google/gemma-4…  │    Status:        │
-│  google-gemma-4-E4B-it-BF16-abc123…  │                   │  Provisioning     │
-│    ID: dep_abc123                    │                   │  Replicas: 0 / 1  │
-╰──────────────────────────────────────┴───────────────────┴───────────────────╯
-```
+    ╭─ Endpoint Details for quickstart-endpoint ───────────────────────────────────╮
+    │    Endpoint string  your-project-slug/quickstart-endpoint                    │
+    │       Endpoint ID  ep_abc123                                                 │
+    │        Created at  07/13/2026, 06:52 PM                                      │
+    │        Updated at  07/13/2026, 06:52 PM                                      │
+    │        Visibility  Private                                                   │
+    │           Web URL  https://api.together.ai/endpoints/ep_abc123               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
 
-Note the **endpoint string** (`your-project-slug/quickstart-endpoint`): pass it as the `model` parameter when you send requests.
+    Deployments
+    ╭──────────────────────────────────────┬───────────────────┬───────────────────╮
+    │  Deployment                          │  Model            │                   │
+    ├──────────────────────────────────────┼───────────────────┼───────────────────┤
+    │  Name:                               │  google/gemma-4…  │    Status:        │
+    │  google-gemma-4-E4B-it-BF16-abc123…  │                   │  Provisioning     │
+    │    ID: dep_abc123                    │                   │  Replicas: 0 / 1  │
+    ╰──────────────────────────────────────┴───────────────────┴───────────────────╯
+    ```
 
-The deployment provisions in the background. For a model this size, first-time provisioning usually takes about 5 to 10 minutes while the weights download and hardware is allocated; larger models take longer. Check its status with the deployment ID from the output, and wait for `DEPLOYMENT_STATE_READY`:
+    Note the **endpoint string** (`your-project-slug/quickstart-endpoint`): pass it as the `model` parameter when you send requests.
 
-```bash theme={null}
-tg beta endpoints get dep_abc123
-```
+    Check the deployment's status with the deployment ID from the output, and wait for `DEPLOYMENT_STATE_READY`:
+
+    ```bash theme={null}
+    tg beta endpoints get dep_abc123
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    <Steps>
+      <Step title="Open the create form">
+        Go to the [Endpoints page](https://api.together.ai/endpoints) and select **New endpoint**.
+      </Step>
+
+      <Step title="Name the endpoint and deployment">
+        In **Endpoint name**, enter `quickstart-endpoint`. In **Deployment name**, enter `quickstart-deployment`. The console requires a deployment name, unlike the CLI, which generates one for you.
+      </Step>
+
+      <Step title="Choose the model">
+        Under **Model**, select `google/gemma-4-E4B-it`, and leave the default **Quantization**.
+      </Step>
+
+      <Step title="Keep the defaults">
+        Leave the default **Hardware** and **Region**, and keep **Min replicas** and **Max replicas** at `1`.
+      </Step>
+
+      <Step title="Create the endpoint">
+        Select **Create endpoint**. You land on the endpoint's page, where the deployment starts in **Provisioning** and moves to **Ready** once it's live.
+      </Step>
+    </Steps>
+
+    Copy the **endpoint string** shown on the endpoint's page (in the form `your-project-slug/quickstart-endpoint`): this is what you pass as the `model` parameter when you send requests.
+
+    <Frame>
+      <img alt="The Create endpoint form in the Together AI console, configured with the model Gemma 4 E4B IT, BF16 quantization, 1x NVIDIA-H100-80GB hardware, Any region, and min and max replicas both set to 1. The Summary panel shows an estimated $5.49 per hour and a Create endpoint button." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 ## Step 2: Send a request
 
@@ -155,13 +191,25 @@ You should see output similar to this:
 
 ## Step 3: Clean up resources
 
-Dedicated model inference bills per minute per running replica, so tear down what you deployed once you're done. Pass the endpoint ID (`ep_abc123`) from the deploy output to `rm` with `--force` to delete the endpoint and its deployment in one step:
+Dedicated model inference bills per minute per running replica, so tear down what you deployed once you're done.
 
-```bash theme={null}
-tg beta endpoints rm ep_abc123 --force
-```
+<Tabs>
+  <Tab title="CLI">
+    Pass the endpoint ID (`ep_abc123`) from the deploy output to `rm` with `--force` to delete the endpoint and its deployment in one step:
 
-To stop charges without deleting anything (for example, to redeploy later), [scale the deployment](/docs/dedicated-endpoints/manage#stop-a-deployment) to zero instead, then re-run the status command above to confirm it reaches `DEPLOYMENT_STATE_STOPPED`.
+    ```bash theme={null}
+    tg beta endpoints rm ep_abc123 --force
+    ```
+
+    To stop charges without deleting anything (for example, to redeploy later), [scale the deployment](/docs/dedicated-endpoints/manage#stop-a-deployment) to zero instead, then re-run the status command above to confirm it reaches `DEPLOYMENT_STATE_STOPPED`.
+  </Tab>
+
+  <Tab title="Console">
+    On the endpoint's page, open the deployment and select **Stop** to scale it to zero, which stops the per-minute charges. To bring it back later, select **Start**.
+
+    To remove the endpoint entirely, delete it once the deployment is stopped: open **Endpoint actions** and select **Delete endpoint**, then confirm. The console keeps **Delete endpoint** disabled until every deployment under the endpoint is stopped or deleted.
+  </Tab>
+</Tabs>
 
 ## Next steps
 

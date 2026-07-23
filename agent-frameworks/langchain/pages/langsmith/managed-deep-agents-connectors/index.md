@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/managed-deep-agents-connectors/inde
 path: langsmith/managed-deep-agents-connectors/index
 ---
 
-Declare MCP servers and LangSmith capabilities with Managed Deep Agents connectors.
+Add MCP tools, LangSmith capabilities, and GitHub sandbox access with Managed Deep Agents connectors.
 
 Managed Deep Agents discovers connector modules under `connectors/`. Each file directly under that folder is a connector; you do not register connectors in the agent entry.
 
@@ -18,10 +18,21 @@ Managed Deep Agents discovers connector modules under `connectors/`. Each file d
 | ---------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [MCP](/langsmith/managed-deep-agents-connectors/mcp)             | `connectors/mcp.{py\|ts}`       | Loads tools from remote MCP servers at runtime and appends them to authored tools.                                                                                                     |
 | [LangSmith](/langsmith/managed-deep-agents-connectors/langsmith) | `connectors/langsmith.{py\|ts}` | Lets browsers and other untrusted callers invoke allowlisted LangSmith operations without receiving `LANGSMITH_API_KEY`. Requires [identity](/langsmith/managed-deep-agents-identity). |
+| [GitHub](/langsmith/managed-deep-agents-connectors/github)       | `connectors/github.{py\|ts}`    | Clones repositories, installs `gh`, and injects credentials into the managed sandbox.                                                                                                  |
 
 For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
 
 The current `mda` CLI does not include workspace MCP server management commands. Do not use older `deepagents mcp-servers ...` examples for Managed Deep Agents projects.
+
+## Choose the right integration
+
+| You want to                                    | Use                                                                        |
+| ---------------------------------------------- | -------------------------------------------------------------------------- |
+| Add tools, HTTP capabilities, or sandbox setup | A connector                                                                |
+| Receive provider webhooks and optionally reply | A [channel](/langsmith/managed-deep-agents-channels)                       |
+| Let a signed-in user link an external account  | Identity connect under [identity](/langsmith/managed-deep-agents-identity) |
+
+For example, the GitHub connector prepares repositories in a sandbox, while the GitHub channel receives App webhooks.
 
 ## Combine connectors with authored tools
 
@@ -44,6 +55,10 @@ Connector misconfiguration usually surfaces during local startup or first tool l
 
   <Card title="LangSmith connector" icon="chart-line" href="/langsmith/managed-deep-agents-connectors/langsmith">
     Expose constrained LangSmith capabilities to untrusted callers.
+  </Card>
+
+  <Card title="GitHub connector" icon="brand-github" href="/langsmith/managed-deep-agents-connectors/github">
+    Prepare repositories, the GitHub CLI, and credentials in a sandbox.
   </Card>
 
   <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">

@@ -44,6 +44,7 @@ The agent entry is the wiring diagram for the project. It imports the authored t
   from tools.query_db import query_db
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       tools=[query_db],
       middleware=[
@@ -62,6 +63,7 @@ The agent entry is the wiring diagram for the project. It imports the authored t
   import { queryDB } from "./tools/query-db";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     tools: [queryDB],
     middleware: [

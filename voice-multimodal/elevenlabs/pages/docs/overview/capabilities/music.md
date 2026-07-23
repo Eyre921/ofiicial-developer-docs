@@ -23,6 +23,20 @@ Listen to a sample:
 
 Created in collaboration with labels, publishers, and artists, Eleven Music is cleared for nearly all commercial uses, from film and television to podcasts and social media videos, and from advertisements to gaming. For more information on supported usage across our different plans, [see our music terms](https://elevenlabs.io/music-terms).
 
+## Audio Reference
+
+Audio Reference lets you upload a short audio track to guide the style and sound of a new Music v2 generation. This gives the model an additional creative reference alongside your text prompt.
+
+You can upload a reference track of up to approximately 30 seconds in commonly used audio formats. Every uploaded reference is screened for copyright compliance before it can be used.
+
+Audio Reference influences characteristics such as the overall sound, production style, instrumentation, tempo, and mood of the generated track. It does not copy or remix the uploaded audio, and the result remains a newly generated composition.
+
+Audio Reference is intended to guide a generation toward a similar style and sound. It is not
+designed for genre transformation — for example, uploading a jazz track and requesting a rap
+version may not produce reliable results.
+
+Audio Reference is available with Music v2 on all plans, including the Free plan.
+
 ## Music Finetunes
 
 Fine-tune the ElevenLabs Music model to your sound. Music Finetunes lets you fine-tune the model to your own audio. By uploading non-copyrighted tracks you own, you can create a personalized version of our music model that consistently reflects your style, sonic identity, or brand.
@@ -87,9 +101,15 @@ Learn how to train a custom music model on your own audio.
 #### What is Music v2?
 
 Music v2 is the next generation of ElevenLabs' AI music model, with improved prompt adherence,
-composition, prompt understanding, and multilingual output over Music v1. New capabilities
-include long-form section-by-section composition, mid-track genre transitions, fast rap and
-complex vocal delivery, improved inpainting, and sound effects embedded inside tracks.
+composition, prompt understanding, multilingual output, and vocal delivery over Music v1. New capabilities
+include:
+
+* Audio Reference for guiding generations with a short uploaded track
+* Long-form section-by-section composition
+* Mid-track genre transitions
+* Faster and more complex vocal delivery, including fast rap and dense lyrical patterns
+* Improved inpainting
+* Sound effects embedded inside tracks
 
 #### Is Music v1 still available?
 
@@ -122,3 +142,15 @@ terms](https://elevenlabs.io/music-terms).
 #### What audio formats are supported?
 
 Generated audio is available in MP3 (44.1kHz, 128-192kbps) and WAV formats.
+
+#### What is Audio Reference?
+
+Audio Reference lets you upload a track of up to approximately 30 seconds to guide the style and sound of a new
+Music v2 generation. The uploaded track is used as creative guidance alongside your prompt, and every upload is
+screened for copyright compliance.
+
+#### Can Audio Reference remix a song or change its genre?
+
+Audio Reference is not a remixing or genre-transfer tool. It guides characteristics such as sound, mood,
+instrumentation, and production style. Results may be less reliable when the requested output is substantially
+different from the uploaded reference — for example, when using a jazz reference to request a rap track.

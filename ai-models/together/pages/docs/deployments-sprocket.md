@@ -28,7 +28,7 @@ Install Sprocket from Together's package index:
 
 * **Model definition** — Subclass `Sprocket`, implement `setup()` to load your model and `predict(args) -> dict` to handle each request
 * **Startup** — Calls `setup()` once, optionally runs warmup inputs for cache generation, then starts accepting traffic
-* **HTTP endpoints** — `/health` for readiness checks, `/metrics` for autoscaler, `/generate` for direct HTTP inference
+* **HTTP endpoints** — `/health` for readiness checks, `/metrics` for autoscaler, `/generate` for direct HTTP inference (route configurable via `predict_path`)
 * **Job processing** — In queue mode, pulls jobs from Together's managed queue, downloads input URLs, calls `predict()`, uploads output files, and reports job status
 * **Graceful shutdown** — On SIGTERM, finishes the current job, calls `shutdown()` for cleanup, and exits
 * **Distributed inference** — With `use_torchrun=True`, launches one process per GPU and coordinates inputs/outputs across ranks
@@ -132,11 +132,11 @@ The total time allowed is controlled by `TERMINATION_GRACE_PERIOD_SECONDS` (defa
 
 ## Running Modes
 
-Sprocket supports two modes: **Queue mode** and **Request mode**.
+Sprocket supports two modes: **Queue mode** and **HTTP server mode**.
 
 * **Queue mode** is for workloads that need job durability and tracking — model generations, video rendering, or anything that takes more than a few hundred milliseconds. Jobs are persisted in the queue, survive worker restarts, and support priority ordering and progress reporting.
 
-* **Request mode** (direct HTTP) is for low-latency workloads that don't need queueing — embedding inference, streaming voice models, or other "fire-and-forget" requests where the result must be returned immediately.
+* **HTTP server mode** (direct HTTP) is for synchronous workloads that don't need queueing — embedding inference, streaming voice models, or OpenAI-compatible endpoints where the result must be returned immediately.
 
 ### Queue Mode
 
@@ -151,7 +151,7 @@ Sprocket supports two modes: **Queue mode** and **Request mode**.
 * Graceful shutdown support
 * Integrated with autoscaling
 
-### HTTP Mode (Development/Testing)
+### HTTP Server Mode
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -159,9 +159,19 @@ Sprocket supports two modes: **Queue mode** and **Request mode**.
   ```
 </CodeGroup>
 
-* Direct HTTP requests to `/generate`
-* Useful for local testing
-* Single concurrent request
+* Serves inference requests directly over HTTP at `predict_path` (default `/generate`).
+* Returns results synchronously; jobs are not persisted in a queue.
+* Receives the raw JSON request body in `predict()`, so your worker controls the request and response shapes.
+
+Set `predict_path` in `sprocket.run()` to serve a custom route. This is how you serve an OpenAI-compatible API from a container:
+
+<CodeGroup>
+  ```python Python theme={null}
+  sprocket.run(MyModel(), predict_path="/v1/images/generations")
+  ```
+</CodeGroup>
+
+See [Serve an OpenAI-compatible endpoint](/docs/dedicated_containers_openai) for a complete example.
 
 ## Progress Reporting
 

@@ -65251,6 +65251,60 @@ To explore the underlying technology, visit the open-source [Supabase ETL reposi
 ---
 
 ---
+title: Observability for every Supabase project with Grafana Cloud
+description: >-
+  Connect your Supabase project to Grafana Cloud in one click. A pre-built
+  dashboard, alerting, and metrics: available on every plan, including free.
+author: raminder_singh
+date: '2026-07-23'
+tags:
+  - integrations
+  - observability
+  - monitoring
+  - postgres
+categories:
+  - product
+---
+The [Grafana Cloud integration](https://supabase.com/dashboard/project/_/integrations/grafana-cloud/overview?utm_source=supabase-announcement\&utm_medium=blog\&utm_campaign=supabase_grafana_cloud_one_click_integration_launch) is available in Supabase. You've been able to connect Supabase to Grafana Cloud for years, and now you can connect to it instantly with the push of a button.
+
+From your Supabase Dashboard, in a single click, you get a fully-configured Grafana Cloud instance with authentication, metric scraping, and a pre-built observability dashboard already set up on any plan, including free.
+
+[Grafana Cloud](https://grafana.com/products/cloud/) is the AI-powered open observability cloud built on open source and open standards. Used by developers everywhere, the full-stack observability platform helps you improve the reliability of your applications, resolve incidents quickly, and optimize your telemetry to reduce noise and costs.
+
+
+
+## What the Grafana Cloud integration includes
+
+The integration ships with a pre-built Grafana Cloud dashboard for tracking more than 200 metrics, organized around the signals that matter when you're debugging a production issue:
+
+- CPU and memory pressure
+- Disk IO and throughput
+- Network traffic
+- Connection counts and pooler behavior
+- Replication lag
+- Scheduled and requested checkpoints
+- Database size and query stats
+
+The integration reads from Supabase's [Metrics API](https://supabase.com/docs/guides/telemetry/metrics). It's one place to monitor your entire stack, whether that's your database, your servers, or anything else your team already tracks in Grafana Cloud.
+
+The dashboards are [open source](https://github.com/supabase/supabase-grafana) and work the same everywhere. The same dashboard definitions power self-hosted Grafana, the existing Grafana Cloud integration, and the new one-click setup. No matter how you connect, you're viewing the same dashboards.
+
+## What's next
+
+This release covers metrics. The integration is built to accommodate logs without any architectural changes, with support for log drains to Grafana Cloud already in progress.
+
+## Get started with Grafana Cloud on Supabase
+
+The Grafana Cloud integration is available now on Supabase, on every plan (including free). Get started using the Grafana Cloud free tier with no credit card required on either side.
+
+→ [Connect your project to Grafana Cloud](https://supabase.com/dashboard/project/_/integrations/grafana-cloud/overview?utm_source=supabase-announcement\&utm_medium=blog\&utm_campaign=supabase_grafana_cloud_one_click_integration_launch)
+
+→ [Read the Grafana Labs' launch post](https://grafana.com/blog/grafana-cloud-supabase-one-click-integration)
+
+
+---
+
+---
 name: Quivr
 title: >-
   Scaling Beyond No-Code: asap.work’s Journey to a Faster, Flexible Solution
@@ -69873,7 +69927,7 @@ type: webinar
 date: '2026-07-22T19:00:00.000-07:00'
 timezone: America/Los_Angeles
 duration: 45 mins
-onDemand: false
+onDemand: true
 ---
 Shipping AI-generated code doesn't mean sacrificing quality.
 
@@ -69881,18 +69935,21 @@ More people than ever are shipping real products with AI tools. The gap between 
 
 TRAE and Supabase are built for both. TRAE gives you the speed of a fully autonomous AI coding agent that takes you from prompt to working app. Supabase handles the backend: open-source managed Postgres with Auth, Storage, Edge Functions, and Realtime built in. When TRAE has live context of your Supabase projects, the code it generates is production-ready from the start.
 
-In this session, Gerardo Estaba from Supabase and Gary Qi from TRAE will show you how to go from prompt to production without compromising on code quality.
+In this session, Gerardo Estaba from Supabase and Gary Qi from TRAE show you how to go from prompt to production without compromising on code quality.
 
-### What we'll cover
 
-- Where AI-generated apps break in production and how TRAE and Supabase catch those problems before they ship
-- How TRAE SOLO uses your live Supabase context (schema, auth config, RLS policies, and logs) to generate more accurate code
-- Managing your Supabase backend with natural language via the Supabase and TRAE SOLO integration: running migrations, modifying RLS policies, creating storage buckets, and managing secrets
-- Live build: a full-stack app from prompt to deployed, with Auth, Storage, and a secure database, built entirely inside TRAE
 
-You'll leave with a clear picture of what the TRAE and Supabase workflow looks like end to end, and what to set up first on your own project.
+## Key Takeaways
 
-Plus, bring your questions for the live Q\&A. Can't make it? Register anyway and we'll send you the recording.
+- Where AI-generated apps break in production, and how TRAE and Supabase catch those problems before they ship
+
+- How TRAE SOLO uses your live Supabase context (schema, Auth config, RLS policies, and logs) to generate more accurate code
+
+- How to manage your Supabase backend in natural language through the Supabase and TRAE SOLO integration: running migrations, modifying RLS policies, creating Storage buckets, and managing secrets
+
+- A full live build of a full-stack app, from prompt to deployed, with Auth, Storage, and a secure database, built entirely inside TRAE
+
+We hope you enjoy the recording!
 
 
 ---
@@ -70158,21 +70215,39 @@ Yes, you can pause a project at any time. Our Free Plan gives you 2 free project
 
 # AI Tools
 
-Plugins, MCP, and skills for AI-first Supabase development.
+Connect your AI coding agent to Supabase.
 
-Supabase provides integrations and resources that your AI coding agents can use to build on Supabase:
+Supabase provides everything you need to connect an AI coding agent to your project: a live connection to your database and platform (MCP), portable instructions your agent can reuse (Agent Skills), a one-step bundle of both (Plugin), and copy-paste prompts for tools that don't support any of the above.
 
-- [Agent Plugin](https://supabase.com/docs/guides/ai-tools/plugins): One-click setup that bundles the MCP server and agent skills into a single install for your AI coding agent.
-- [MCP Server](https://supabase.com/docs/guides/ai-tools/mcp): Connect your AI agent to your Supabase project using the Model Context Protocol (MCP). Gives your agent tools to read your schema, run queries, manage migrations, and more - directly from your IDE.
-- [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills): Curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
-- [Prompts](https://supabase.com/docs/guides/ai-tools/ai-prompts): Ready-to-use prompts for common Supabase tasks. Copy them into your project and reference them from your AI tool for consistent, accurate output.
+## Pick your agent
+
+- **[Antigravity](https://supabase.com/docs/guides/ai-tools/mcp):** Experience liftoff with the next-gen agent platform.
+- **[Claude Code](https://supabase.com/docs/guides/ai-tools/plugins):** Work with Claude directly in your codebase, from your terminal, IDE, and more.
+- **[Codex](https://supabase.com/docs/guides/ai-tools/plugins):** A lightweight coding agent that runs in your terminal.
+- **[Cursor](https://supabase.com/docs/guides/ai-tools/plugins):** Your coding agent for building ambitious software.
+- **[Factory](https://supabase.com/docs/guides/ai-tools/mcp):** A self-improving system for your SDLC.
+- **[Gemini CLI](https://supabase.com/docs/guides/ai-tools/plugins):** Build, debug & deploy with AI.
+- **[GitHub Copilot](https://supabase.com/docs/guides/ai-tools/plugins):** Your AI accelerator for every workflow, from the editor to the enterprise.
+- **[Goose](https://supabase.com/docs/guides/ai-tools/mcp):** Your native open source AI agent — desktop app, CLI, and API.
+- **[Kimi Code](https://supabase.com/docs/guides/ai-tools/plugins):** Engineered to drop into any dev workflow and get programming tasks done fast.
+- **[Kiro](https://supabase.com/docs/guides/ai-tools/mcp):** Move beyond AI coding to agentic engineering.
+- **[OpenCode](https://supabase.com/docs/guides/ai-tools/mcp):** The open source AI coding agent.
+- **[VS Code](https://supabase.com/docs/guides/ai-tools/plugins):** The open source AI code editor — your home for multi-agent development.
+- **[Windsurf](https://supabase.com/docs/guides/ai-tools/mcp):** The first agentic IDE. Tomorrow's editor, today.
+
+## Key concepts
+
+- **MCP (Model Context Protocol)**: a live connection between your agent and your actual Supabase project. Once connected, your agent can call tools to query data, run migrations, deploy Edge Functions, and more.
+- **Agent Skills**: portable, on-demand instructions your agent loads when it needs Supabase- or Postgres-specific procedural knowledge. Skills don't require a live connection, and work across different agents.
+- **Plugin**: a single install that bundles the MCP server and Agent Skills together for a specific agent.
+- **Prompts**: static prompt files you copy into your project for agents that don't support MCP, plugins, or skills natively.
 
 ## Building AI into your app?
 
 The tools above are for your development workflow. If you're building AI capabilities into your own product:
 
-- [Deploy MCP servers](https://supabase.com/docs/guides/ai-tools/byo-mcp) - Host your own MCP server on Supabase Edge Functions so your users can connect their AI agents to your product
-- [Vectors / Embeddings](https://supabase.com/docs/guides/ai) - Build semantic search, RAG pipelines, and other AI-powered features using pgvector
+- **[Deploy MCP servers](https://supabase.com/docs/guides/ai-tools/byo-mcp):** Host your own MCP server on Supabase Edge Functions so your users can connect their AI agents to your product
+- **[Vectors / Embeddings](https://supabase.com/docs/guides/ai):** Build semantic search, RAG pipelines, and other AI-powered features using pgvector
 
 
 ---
@@ -70471,15 +70546,13 @@ Connect your AI tools to Supabase using MCP
 
 The [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) is a standard for connecting Large Language Models (LLMs) to platforms like Supabase. Once connected, your AI assistants can interact with and query your Supabase projects on your behalf.
 
+Caution: Connecting an LLM to your Supabase projects carries security risks. Read our [security best practices](#security-risks) before running the MCP server.
+
 ## Remote MCP installation
 
-### Step 1: Follow our security best practices
-
-Before running the MCP server, we recommend you read our [security best practices](#security-risks) to understand the risks of connecting an LLM to your Supabase projects and how to mitigate them.
-
-### Step 2: Configure your AI tool
-
 Choose your Supabase platform, project, and MCP client and follow the installation instructions:
+
+
 
 The hosted Supabase MCP server is available at `https://mcp.supabase.com/mcp`. If you're developing locally with the Supabase CLI, use `http://localhost:54321/mcp` instead.
 
@@ -70827,7 +70900,7 @@ Additionally, you can install Supabase agent skills alongside the MCP server, us
 
 ## Available tools
 
-The Supabase MCP server provides tools organized into feature groups. All groups except Storage are enabled by default. You can enable or disable specific groups using the [configuration panel above](#step-2-configure-your-ai-tool).
+The Supabase MCP server provides tools organized into feature groups. All groups except Storage are enabled by default. You can enable or disable specific groups using the [configuration panel above](#configure-your-ai-tool).
 
 ### Database
 
@@ -70881,7 +70954,7 @@ Note: Requires a paid plan.
 
 ## Configuration options
 
-The [configuration panel above](#step-2-configure-your-ai-tool) can set these options for you. If you prefer to configure manually, the following URL query parameters are available:
+The [configuration panel above](#configure-your-ai-tool) can set these options for you. If you prefer to configure manually, the following URL query parameters are available:
 
 | Parameter           | Description                                          | Example                   |
 | ------------------- | ---------------------------------------------------- | ------------------------- |
@@ -70985,7 +71058,17 @@ One-click setup for Supabase in your AI coding agent
 
 The Supabase plugin for AI coding agents bundles the MCP server and agent skills into a single install for your AI coding agent.
 
-The Supabase Plugin for AI Coding Agents is a single install that gives your AI coding agent everything it needs to work with Supabase. It bundles the [Supabase MCP server](https://supabase.com/docs/guides/getting-started/mcp) and [Supabase agent skills](https://supabase.com/docs/guides/getting-started/ai-skills) so your agent can query your database, manage migrations, deploy Edge Functions, and follow Supabase and Postgres best practices — without manual configuration.
+The Supabase Plugin for AI Coding Agents gives your AI coding agent everything it needs to work with Supabase. It bundles the [Supabase MCP server](https://supabase.com/docs/guides/getting-started/mcp) and [Supabase agent skills](https://supabase.com/docs/guides/getting-started/ai-skills) so your agent can query your database, manage migrations, deploy Edge Functions, and follow Supabase and Postgres best practices — without manual configuration.
+
+## Quick installation
+
+```bash
+npx plugins add supabase-community/supabase-plugin
+```
+
+The [`plugins`](https://www.npmjs.com/package/plugins) package auto-detects your installed AI coding agents and installs the Supabase plugin to all of them with one command. Use `--yes` to skip the confirmation prompt.
+
+Or, follow the [manual installation](#manual-installation) steps for your specific agent.
 
 ## Why use the plugin?
 
@@ -70998,24 +71081,6 @@ Plugins for AI coding agents are packages of AI agent extensions. A single plugi
 - **Slash commands** — custom commands you can invoke directly in chat
 
 Bundling the [MCP server](https://supabase.com/docs/guides/getting-started/mcp) and [agent skills](https://supabase.com/docs/guides/getting-started/ai-skills) into a single plugin means you can set up both in one step. You can also install them separately if you prefer. You can install the plugin globally to use it across all your projects, or per project to keep it isolated.
-
-## Installation
-
-### Quick install
-
-The [`plugins`](https://www.npmjs.com/package/plugins) package installs the Supabase plugin into any supported AI coding agent with a single command. It auto-detects which agent tools you have installed and installs the plugin to all of them.
-
-```bash
-npx plugins add supabase-community/supabase-plugin
-```
-
-Add the `--yes` flag to install the Supabase plugin without the confirmation prompt/UI.
-
-### Manual install
-
-Alternatively, choose your AI coding agent and follow the installation steps:
-
-
 
 ## What's included
 
@@ -71031,6 +71096,11 @@ Skills provide your agent with Supabase-specific procedural knowledge:
 - **`supabase-postgres-best-practices`** — Postgres query optimization, schema design, connection management, and RLS patterns
 
 For a full list of available skills and supported agents, see [Agent Skills](https://supabase.com/docs/guides/getting-started/ai-skills).
+
+## Manual installation
+
+Alternatively, choose your AI coding agent and follow the installation steps:
+
 
 
 ---
@@ -180910,66 +180980,51 @@ Use Grafana Cloud’s managed Prometheus to visualize Supabase metrics
 
 Grafana Cloud gives you a fully managed Prometheus endpoint plus hosted Grafana dashboards, which makes it the fastest way to explore the Supabase Metrics API without operating your own infrastructure.
 
-Note: Grafana maintains a [Supabase integration guide](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-supabase/) for Grafana Cloud. It runs on the same Metrics API documented here, but is community-maintained by Grafana, so feature coverage might differ from what Supabase officially supports.
+## Installation
 
-## Prerequisites
+The Grafana Cloud integration is available in the Supabase Dashboard. [Add the integration](https://supabase.com/dashboard/project/_/integrations/grafana-cloud/overview?utm_source=metrics-api\&utm_medium=docs\&utm_campaign=supabase_grafana_cloud_one_click_integration) and select a project to get a fully-configured instance in one click: authentication, metric scraping, and a pre-built dashboard tracking 200+ metrics, set up automatically.
+
+By integrating Supabase with Grafana Cloud, users gain monitoring capabilities for Supabase performance and operations. The included dashboard offers a comprehensive overview of Supabase performance, supplemented with Postgres metrics.
+
+## Manual setup
+
+The [Grafana Cloud integration](https://supabase.com/dashboard/project/_/integrations/grafana-cloud/overview?utm_source=metrics-api\&utm_medium=docs\&utm_campaign=supabase_grafana_cloud_one_click_integration) available in the Supabase Dashboard is the recommended path. You can still configure and run the setup manually by following the steps below.
+
+Caution: Use this guide only if you need full manual control (custom scrape topology, self-hosted
+Prometheus or non-standard auth).
+
+### Prerequisites
 
 - A Supabase project with access to the Metrics API (Secret API key `sb_secret_...`).
 - A Grafana Cloud account with Prometheus metrics enabled (Free or Pro tier).
 - A Grafana API token with the `metrics:write` and `metrics:read` scopes if you plan to push data manually.
 
-**What you can do with the Metrics API**
-
-Every Supabase project exposes a metrics feed at `https://<project-ref>.supabase.co/customer/v1/privileged/metrics`. Replace `<project-ref>` with the identifier from your project URL or from the dashboard sidebar.
-
-1. Copy your project reference and confirm the base URL using the helper below.
-
-
-
-2. Configure your collector to scrape once per minute. The endpoint already emits the full set of metrics on each request.
-3. Authenticate with HTTP Basic Auth:
-
-- **Username**: `service_role`
-- **Password**: a **Secret API key** (`sb_secret_...`). You can create/copy it in [**Project Settings → API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys). For more context, see [Understanding API keys](https://supabase.com/docs/guides/getting-started/api-keys).
-
-To test locally, run `curl` with your Secret API key:
-
-```bash
-curl <project-url>/customer/v1/privileged/metrics \
---user 'service_role:sb_secret_...'
-```
-
-You can provision long-lived automation tokens in two ways:
-
-- Create an account access token once at [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) and reuse it wherever you configure observability tooling.
-- **Optional**: programmatically exchange an access token for project API keys via the [Management API](https://supabase.com/docs/reference/api/management-projects-api-keys-retrieve).
-
-```bash
-# (Optional) Exchange an account access token for project API keys
-export SUPABASE_ACCESS_TOKEN="your-access-token"
-export PROJECT_REF="your-project-ref"
-
-curl -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-"https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys?reveal=true"
-```
-
-## 1. Create a Grafana Cloud stack
+### 1. Create a Grafana Cloud stack
 
 1. Sign in to [Grafana Cloud](https://grafana.com/auth/sign-in).
-2. Create (or select) a stack that has **Prometheus Metrics** enabled (Free and Pro tiers both work for this guide).
+2. Create or select a stack that has **Prometheus Metrics** enabled.
 
-## 2. Configure the Supabase integration
+### 2. Install the Supabase integration for Grafana Cloud
+
+1. In your Grafana Cloud stack, click **Connections** in the left-hand menu.
+2. Select the **Supabase** integration and follow the steps outlined on the **Configuration** page:
+3. Give your scrape job a descriptive name like `production-eu-central-1`.
+4. Set your Project ID and enter the service account API key.
+5. Test the connection and save the scrape job.
+6. Once scrape jobs are configured, click Install to add the prebuilt dashboards to your Grafana Cloud instance.
+
+### 3. Configure the Supabase integration
 
 1. Navigate to **Connections → Add new connection → Supabase** inside Grafana Cloud.
 2. Provide:
    - Your Supabase project ref (e.g. `abcd1234`).
-   - The Metrics API endpoint: `https://<project-ref>.supabase.co/customer/v1/privileged/metrics`.
+   - The Metrics API endpoint (e.g. `https://<project-ref>.supabase.co/customer/v1/privileged/metrics`).
    - HTTP Basic Auth credentials (`sb_secret_...`).
-3. Choose the scrape interval (1 minute recommended) and test the connection. Grafana Cloud will deploy an agent in the background that scrapes the Metrics API and forwards the data to Prometheus.
+3. Choose the scrape interval. 1 minute is recommended, and test the connection. Grafana Cloud will deploy an agent in the background that scrapes the Metrics API and forwards the data to Prometheus.
 
 If you prefer to reuse an existing Grafana Agent deployment, configure an [integration pipeline](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-supabase/) with the same URL and credentials.
 
-## 3. Import the Supabase dashboard
+### 4. Import the Supabase dashboard
 
 1. Open your Grafana Cloud dashboard list and click **New → Import**.
 2. Paste the raw contents of [`supabase-grafana/dashboard.json`](https://raw.githubusercontent.com/supabase/supabase-grafana/refs/heads/main/grafana/dashboard.json).
@@ -180979,11 +181034,11 @@ This dashboard includes 200+ charts grouped by CPU, IO, connections, replication
 
 ![Supabase Grafana dashboard showcasing database metrics](https://supabase.com/docs/img/guides/platform/supabase-grafana-prometheus.png)
 
-## 4. Configure alerts (optional)
+### 5. Configure alerts (optional)
 
 The [`docs/example-alerts.md`](https://github.com/supabase/supabase-grafana/blob/main/docs/example-alerts.md) file contains suggested alert rules (disk saturation, long-running queries, replication lag, etc.). Import the alert rules into Grafana Cloud’s Alerting UI or translate them into Grafana Cloud’s managed alert rule format.
 
-## 5. Troubleshooting
+### 6. Troubleshooting
 
 - Metrics missing? Ensure the Grafana Cloud agent can reach `https://<project-ref>.supabase.co` and that the selected Secret API key is still valid.
 - 401 errors? Create/rotate a Secret API key in [Project Settings → API Keys](https://supabase.com/dashboard/project/_/settings/api-keys) and update the Grafana Cloud credentials.
@@ -180998,48 +181053,15 @@ Deploy Prometheus and Grafana yourself to monitor Supabase metrics
 
 Self-hosting [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/) and Grafana gives you full control over retention, alert routing, and dashboards. The Supabase Metrics API slots into any standard Prometheus scrape job, so you can run everything locally, on a VM, or inside Kubernetes.
 
-**What you can do with the Metrics API**
+Caution: Use this guide only if you need full manual control (custom scrape topology, self-hosted Prometheus or non-standard auth).
 
-Every Supabase project exposes a metrics feed at `https://<project-ref>.supabase.co/customer/v1/privileged/metrics`. Replace `<project-ref>` with the identifier from your project URL or from the dashboard sidebar.
-
-1. Copy your project reference and confirm the base URL using the helper below.
-
-
-
-2. Configure your collector to scrape once per minute. The endpoint already emits the full set of metrics on each request.
-3. Authenticate with HTTP Basic Auth:
-
-- **Username**: `service_role`
-- **Password**: a **Secret API key** (`sb_secret_...`). You can create/copy it in [**Project Settings → API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys). For more context, see [Understanding API keys](https://supabase.com/docs/guides/getting-started/api-keys).
-
-To test locally, run `curl` with your Secret API key:
-
-```bash
-curl <project-url>/customer/v1/privileged/metrics \
---user 'service_role:sb_secret_...'
-```
-
-You can provision long-lived automation tokens in two ways:
-
-- Create an account access token once at [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) and reuse it wherever you configure observability tooling.
-- **Optional**: programmatically exchange an access token for project API keys via the [Management API](https://supabase.com/docs/reference/api/management-projects-api-keys-retrieve).
-
-```bash
-# (Optional) Exchange an account access token for project API keys
-export SUPABASE_ACCESS_TOKEN="your-access-token"
-export PROJECT_REF="your-project-ref"
-
-curl -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-"https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys?reveal=true"
-```
-
-Note: Grafana also documents a [Supabase integration reference](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-supabase/). While it targets Grafana Cloud, the scrape and agent settings apply equally to self-hosted clusters and offer a community-maintained companion to this guide.
+Otherwise, use the [Grafana Cloud integration](https://supabase.com/docs/guides/telemetry/metrics/grafana-cloud#installation) available in the Supabase Dashboard.
 
 ## Architecture
 
 1. **Prometheus** scrapes `https://<project-ref>.supabase.co/customer/v1/privileged/metrics` every minute using HTTP Basic Auth.
 2. **Grafana** reads from Prometheus and renders dashboards/alerts.
-3. (Optional) **Alertmanager** or your preferred system sends notifications when Prometheus rules fire.
+3. **Prometheus Alertmanager** or your preferred system sends notifications when Prometheus rules fire (optional) .
 
 ## 1. Deploy Prometheus
 

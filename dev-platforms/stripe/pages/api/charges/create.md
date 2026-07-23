@@ -132,7 +132,7 @@ Returns the charge object if the charge succeeded. This call raises [an error](h
 - `description` (string, optional)
   An arbitrary string which you can attach to a `Charge` object. It is displayed when in the web interface alongside the charge. Note that if you use Stripe to send automatic email receipts to your customers, your receipt emails will include the `description` of the charge(s) that they are describing.
 
-- `metadata` (object, optional)
+- `metadata` (map, optional)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
 - `on_behalf_of` (string, optional)

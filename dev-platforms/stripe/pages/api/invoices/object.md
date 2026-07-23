@@ -522,7 +522,7 @@ Possible enum values:
   - `default_tax_rates.livemode` (boolean)
     If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-  - `default_tax_rates.metadata` (object, nullable)
+  - `default_tax_rates.metadata` (map, nullable)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
   - `default_tax_rates.percentage` (float)
@@ -740,7 +740,7 @@ Possible enum values:
     - `lines.data.livemode` (boolean)
       If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-    - `lines.data.metadata` (object)
+    - `lines.data.metadata` (map)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Note that for line items with `type=subscription`, `metadata` reflects the current metadata from the subscription associated with the line item, unless the invoice line was directly updated with different metadata after creation.
 
     - `lines.data.parent` (object, nullable)
@@ -948,7 +948,7 @@ Possible enum values:
 - `livemode` (boolean)
   If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-- `metadata` (object, nullable)
+- `metadata` (map, nullable)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `next_payment_attempt` (timestamp, nullable)
@@ -972,7 +972,7 @@ Possible enum values:
   - `parent.subscription_details` (object, nullable)
     Details about the subscription that generated this invoice
 
-    - `parent.subscription_details.metadata` (object, nullable)
+    - `parent.subscription_details.metadata` (map, nullable)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) defined as subscription metadata when an invoice is created. Becomes an immutable snapshot of the subscription metadata at the time of invoice finalization. *Note: This attribute is populated only for invoices created on or after June 29, 2023.*
 
     - `parent.subscription_details.subscription` (string, expandable (can be expanded into an object with the `expand` request parameter))
@@ -1605,7 +1605,7 @@ Possible enum values:
       - `shipping_cost.taxes.rate.livemode` (boolean)
         If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
 
-      - `shipping_cost.taxes.rate.metadata` (object, nullable)
+      - `shipping_cost.taxes.rate.metadata` (map, nullable)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
       - `shipping_cost.taxes.rate.percentage` (float)

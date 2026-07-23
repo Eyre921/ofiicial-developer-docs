@@ -139,7 +139,7 @@ To opt out of sending your customers emails for successful payments:
 1. In the Stripe Dashboard, go to **Settings** > **Business** > [Customer emails](https://dashboard.stripe.com/settings/emails).
 2. Under Payments, disable **Successful payments**.
 
-If you [automatically charge](https://docs.stripe.com/invoicing/automatic-charging.md) a customer and you disable email notifications for successful payments, they don’t receive an [email receipt](https://docs.stripe.com/invoicing/dashboard.md#invoice-receipts). To set up automatic email receipts, see [Email receipts and paid invoices](https://docs.stripe.com/receipts.md#automatically-send-receipts).
+If you [automatically charge](https://docs.stripe.com/invoicing/automatic-charging.md) a customer and you disable email notifications for successful payments, they don’t receive an [email receipt](https://docs.stripe.com/invoicing/dashboard.md#invoice-receipts). To set up automatic email receipts, see [Email receipts and paid invoices](https://docs.stripe.com/receipts.md#automatic).
 
 ## Disable Stripe invoice emails and send your own 
 

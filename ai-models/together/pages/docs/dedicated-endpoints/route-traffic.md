@@ -24,11 +24,19 @@ Each weight must be non-negative and finite.
 
 To stop routing traffic to a deployment without rebalancing the rest of the split, set its weight to `0`. A zero weight unsets the deployment and removes it from the split entirely, while preserving the weights of the other deployments. The deployment keeps running, so you can scale it or bring it back into rotation later by setting a non-zero weight again.
 
-For example, to remove `dep_def456` while leaving the other deployments untouched:
+<Tabs>
+  <Tab title="CLI">
+    For example, to remove `dep_def456` while leaving the other deployments untouched:
 
-```bash Shell theme={null}
-tg beta endpoints update dep_def456 --traffic-weight 0
-```
+    ```bash Shell theme={null}
+    tg beta endpoints update dep_def456 --traffic-weight 0
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    Open the deployment, select **Edit** on the **Deployment configuration** card, set **Traffic weight** to `0`, and select **Save changes**.
+  </Tab>
+</Tabs>
 
 ## Routing strategies
 

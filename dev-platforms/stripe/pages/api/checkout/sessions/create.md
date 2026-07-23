@@ -580,7 +580,7 @@ Possible enum values:
       - `invoice_creation.invoice_data.issuer.account` (string, required only if type is account)
         The connected account being referenced when `type` is `account`.
 
-    - `invoice_creation.invoice_data.metadata` (object, optional)
+    - `invoice_creation.invoice_data.metadata` (map, optional)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
     - `invoice_creation.invoice_data.rendering_options` (object, optional)
@@ -617,7 +617,7 @@ Possible enum values:
   - `line_items.dynamic_tax_rates` (array of strings, optional)
     The [tax rates](https://docs.stripe.com/docs/api/tax_rates.md) that will be applied to this line item depending on the customer’s billing/shipping address. We currently support the following countries: US, GB, AU, and all countries in the EU. You can’t set this parameter if `ui_mode` is `custom`.
 
-  - `line_items.metadata` (object, optional)
+  - `line_items.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
   - `line_items.price` (string, required conditionally)
@@ -644,7 +644,7 @@ Possible enum values:
       - `line_items.price_data.product_data.images` (array of strings, optional)
         A list of up to 8 URLs of images for this product, meant to be displayable to the customer.
 
-      - `line_items.price_data.product_data.metadata` (object, optional)
+      - `line_items.price_data.product_data.metadata` (map, optional)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
       - `line_items.price_data.product_data.tax_code` (string, recommended if calculating taxes)
@@ -748,7 +748,7 @@ Possible enum values:
   - `managed_payments.enabled` (boolean, optional)
     Set to `true` to enable [Managed Payments](https://docs.stripe.com/payments/managed-payments.md), Stripe’s merchant of record solution, for this session.
 
-- `metadata` (object, optional)
+- `metadata` (map, optional)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
 - `mode` (enum, required)
@@ -847,7 +847,7 @@ Possible enum values:
   - `payment_intent_data.description` (string, optional)
     An arbitrary string attached to the object. Often useful for displaying to users.
 
-  - `payment_intent_data.metadata` (object, optional)
+  - `payment_intent_data.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
   - `payment_intent_data.on_behalf_of` (string, optional)
@@ -2453,7 +2453,7 @@ Possible enum values:
   - `setup_intent_data.description` (string, optional)
     An arbitrary string attached to the object. Often useful for displaying to users.
 
-  - `setup_intent_data.metadata` (object, optional)
+  - `setup_intent_data.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
   - `setup_intent_data.on_behalf_of` (string, optional)
@@ -2778,7 +2778,7 @@ Possible enum values:
       - `shipping_options.shipping_rate_data.fixed_amount.currency` (enum, required)
         Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
-      - `shipping_options.shipping_rate_data.fixed_amount.currency_options` (object, optional)
+      - `shipping_options.shipping_rate_data.fixed_amount.currency_options` (map, optional)
         Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://docs.stripe.com/currencies.md).
 
         - `shipping_options.shipping_rate_data.fixed_amount.currency_options.<currency>.amount` (integer, required)
@@ -2791,7 +2791,7 @@ Possible enum values:
           - `inclusive`
           - `unspecified`
 
-    - `shipping_options.shipping_rate_data.metadata` (object, optional)
+    - `shipping_options.shipping_rate_data.metadata` (map, optional)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
     - `shipping_options.shipping_rate_data.tax_behavior` (enum, recommended if calculating taxes)
@@ -2905,7 +2905,7 @@ Possible enum values:
       - `subscription_data.invoice_settings.issuer.account` (string, required only if type is account)
         The connected account being referenced when `type` is `account`.
 
-  - `subscription_data.metadata` (object, optional)
+  - `subscription_data.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
   - `subscription_data.on_behalf_of` (string, optional)

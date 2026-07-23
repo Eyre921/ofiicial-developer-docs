@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 171 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 172 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -31,6 +31,7 @@
 - `claude-code-on-the-web` — [Use Claude Code on the web](pages/claude-code-on-the-web.md) · [原文](https://code.claude.com/docs/en/claude-code-on-the-web)
 - `claude-directory` — [Explore the .claude directory](pages/claude-directory.md) · [原文](https://code.claude.com/docs/en/claude-directory)
 - `claude-platform-on-aws` — [Claude Code on Claude Platform on AWS](pages/claude-platform-on-aws.md) · [原文](https://code.claude.com/docs/en/claude-platform-on-aws)
+- `claude-security` — [Scan your codebase for vulnerabilities](pages/claude-security.md) · [原文](https://code.claude.com/docs/en/claude-security)
 - `cli-reference` — [CLI reference](pages/cli-reference.md) · [原文](https://code.claude.com/docs/en/cli-reference)
 - `code-review` — [Code Review](pages/code-review.md) · [原文](https://code.claude.com/docs/en/code-review)
 - `commands` — [Commands](pages/commands.md) · [原文](https://code.claude.com/docs/en/commands)

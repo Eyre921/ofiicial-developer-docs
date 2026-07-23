@@ -62,6 +62,8 @@ Before you start, make sure you have:
     | `README.md`                        | Local project notes and deploy command.                                     |
     | `.env`                             | Deploy auth and runtime secrets. Do not commit real secrets.                |
     | `.gitignore`                       | Ignores `.env`, `.env.*`, `.mda/`, and dependency caches.                   |
+    | `sandbox/`                         | Managed LangSmith sandbox declaration. Delete it to opt out.                |
+    | `evals/`                           | Example Harbor tasks for `mda evals compile`.                               |
 
     For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
   </Step>
@@ -91,6 +93,7 @@ Before you start, make sure you have:
       from managed_deepagents import define_deep_agent
 
       agent = define_deep_agent(
+          name="research-assistant",
           model="openai:gpt-5.5",
       )
       ```
@@ -99,20 +102,24 @@ Before you start, make sure you have:
       import { defineDeepAgent } from "managed-deepagents";
 
       export const agent = defineDeepAgent({
+        name: "research-assistant",
         model: "openai:gpt-5.5",
       });
       ```
     </CodeGroup>
 
+    `name` is required. It becomes the LangGraph assistant ID and the default LangSmith deployment name.
+
     The managed runtime owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Do not set those fields in the agent definition.
 
-    | Concern                                         | Owner                                  | Where you configure it                                              |
-    | ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------- |
-    | `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                   |
-    | `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory. |
-    | `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                         |
-    | System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                   |
-    | Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                          |
+    | Concern                                         | Owner                                  | Where you configure it                                                                  |
+    | ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------- |
+    | `name`                                          | You                                    | Required in the agent definition; used as the assistant ID and default deployment name. |
+    | `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                                       |
+    | `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory.                     |
+    | `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                                             |
+    | System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                                       |
+    | Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                                              |
 
     For the full field list, see the [agent definition reference](/langsmith/managed-deep-agents-cli#agent-definition-reference).
 
@@ -175,10 +182,6 @@ Before you start, make sure you have:
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/managed-deep-agents-quickstart">
-    Deploy a first code-first agent with the `mda` CLI.
-  </Card>
-
   <Card title="Tutorial" icon="book" href="/langsmith/managed-deep-agents-tutorial">
     Build a scheduled research agent from an empty directory.
   </Card>
@@ -193,6 +196,10 @@ Before you start, make sure you have:
 
   <Card title="Memory" icon="brain" href="/langsmith/managed-deep-agents-memory">
     Persist preferences across threads with Context Hub `/memories`.
+  </Card>
+
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Compile a Harbor handoff and run Harbor-style tasks.
   </Card>
 
   <Card title="Custom tools" icon="tool" href="/langsmith/managed-deep-agents-tools">
@@ -220,11 +227,11 @@ Before you start, make sure you have:
   </Card>
 
   <Card title="Examples" icon="apps" href="/langsmith/managed-deep-agents-examples">
-    Explore a complete project that uses every primitive.
+    Explore a complete project that combines common features.
   </Card>
 
   <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
-    Review `mda init`, `mda dev`, and `mda deploy`.
+    Review `mda init`, `mda evals`, `mda dev`, and `mda deploy`.
   </Card>
 </CardGroup>
 

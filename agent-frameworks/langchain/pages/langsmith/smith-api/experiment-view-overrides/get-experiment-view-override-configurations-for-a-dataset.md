@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides
 path: langsmith/smith-api/experiment-view-overrides/get-experiment-view-override-configurations-for-a-dataset
 ---
 
-/langsmith/langsmith-platform-openapi.json get /v1/platform/datasets/{dataset_id}/experiment-view-overrides
+/langsmith/langsmith-platform-openapi.json get /datasets/{dataset_id}/experiment-view-overrides
 Retrieves all experiment view override configurations for a specific dataset.
 This endpoint returns column display overrides including color gradients,
 precision settings, and column visibility configurations that customize how

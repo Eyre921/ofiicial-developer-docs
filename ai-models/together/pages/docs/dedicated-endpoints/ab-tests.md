@@ -45,36 +45,72 @@ The examples below use these example IDs, which you should replace with your own
 
 ## Create an A/B test
 
-<Steps>
-  <Step title="Route traffic to the control">
-    Attach the control (and only the control) to the endpoint's traffic split. Pass the control's deployment ID—the CLI resolves its parent endpoint and preserves the other deployments' weights. For a single deployment, any non-zero weight routes all traffic to it:
+<Tabs>
+  <Tab title="CLI">
+    <Steps>
+      <Step title="Route traffic to the control">
+        Attach the control (and only the control) to the endpoint's traffic split. Pass the control's deployment ID—the CLI resolves its parent endpoint and preserves the other deployments' weights. For a single deployment, any non-zero weight routes all traffic to it:
 
-    ```bash CLI theme={null}
-    tg beta endpoints update dep_control123 --traffic-weight 1
-    ```
-  </Step>
+        ```bash CLI theme={null}
+        tg beta endpoints update dep_control123 --traffic-weight 1
+        ```
+      </Step>
 
-  <Step title="Start the test">
-    The CLI's `ab` command creates the variant deployment for the model you pass and starts the experiment, assigning `--percent` to the variant and the remainder to the control. Start the variant small, for example 5% (the CLI assigns the remaining 95% to the control). Percents must be integers in `[1, 100]`.
+      <Step title="Start the test">
+        The CLI's `ab` command creates the variant deployment for the model you pass and starts the experiment, assigning `--percent` to the variant and the remainder to the control. Start the variant small, for example 5% (the CLI assigns the remaining 95% to the control). Percents must be integers in `[1, 100]`.
 
-    ```bash CLI theme={null}
-    tg beta endpoints ab ml_CbJNwQC2ZqCU2iFT3mrCh \
-      --control dep_control123 \
-      --percent 5 \
-      --name sampling-tweak-v1
-    ```
+        ```bash CLI theme={null}
+        tg beta endpoints ab ml_CbJNwQC2ZqCU2iFT3mrCh \
+          --control dep_control123 \
+          --percent 5 \
+          --name sampling-tweak-v1
+        ```
 
-    Note the experiment ID (`abx_...`) and the variant's deployment ID (`dep_...`) from the response. You use the experiment ID to adjust or delete the test, and the variant's deployment ID to ramp or promote it.
-  </Step>
+        Note the experiment ID (`abx_...`) and the variant's deployment ID (`dep_...`) from the response. You use the experiment ID to adjust or delete the test, and the variant's deployment ID to ramp or promote it.
+      </Step>
 
-  <Step title="Send requests">
-    [Send requests](/docs/dedicated-endpoints/requests) to the endpoint, using the endpoint string as the `model` field.
-  </Step>
-</Steps>
+      <Step title="Send requests">
+        [Send requests](/docs/dedicated-endpoints/requests) to the endpoint, using the endpoint string as the `model` field.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Console">
+    The console doesn't create the variant deployment for you, so first add it to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)). The endpoint then has a control in the traffic split and at least one variant at weight `0`.
+
+    <Steps>
+      <Step title="Open the A/B test form">
+        On the endpoint, select the **Traffic Tests** tab, then **New A/B test**. The console blocks the form until the endpoint has at least two deployments with one at traffic weight `0`.
+      </Step>
+
+      <Step title="Name the test">
+        Enter a **Name** and an optional **Description**.
+      </Step>
+
+      <Step title="Set the control and variants">
+        Confirm the **Control** deployment and select each **Variant** deployment, then set each member's traffic percentage. The percentages divide the control's share of traffic and must sum to 100.
+      </Step>
+
+      <Step title="Start the test">
+        Select **Start A/B test**.
+      </Step>
+    </Steps>
+
+    <Frame>
+      <img alt="The Start an A/B test dialog in the Together AI console, with a name field, a traffic-split bar, and Control and Variants sections that each pair a deployment with a traffic percentage." />
+    </Frame>
+
+    The test appears in the **A/B tests** table on the Traffic Tests tab, where you can edit or stop it.
+
+    <Frame>
+      <img alt="The Traffic Tests tab in the Together AI console showing an A/B test row with its name, variant count, traffic split, and creation time." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 ## Ramp the variant
 
-To change an existing member's share, update the experiment's members from the SDK or API. The CLI's `ab` command can start an experiment and add variants to it, but it can't change a member's percentage, so ramping is an SDK or API operation. Updating `members` replaces the whole set and re-validates the shape, so resend every member each time.
+To change an existing member's share, update the experiment's members from the SDK or API. The CLI's `ab` command can start an experiment and add variants to it, but it can't change a member's percentage, so ramping is an SDK or API operation. Updating `members` replaces the whole set and re-validates the shape, so resend every member each time. In the console, open the test's actions menu on the **Traffic Tests** tab and select **Edit A/B test** to change member percentages.
 
 <Frame>
   <img alt="Ramping the variant. In week 1 the split is 95 percent control and 5 percent variant. A single update to the member set is atomic and ETag-guarded. In week 2 the split is 80 percent control and 20 percent variant." />
@@ -145,6 +181,8 @@ The CLI's smart-delete `rm` accepts the experiment ID:
 ```bash CLI theme={null}
 tg beta endpoints rm abx_abc123
 ```
+
+In the console, open the test's actions menu on the **Traffic Tests** tab and select **Stop A/B test**.
 
 To clean up the member deployments, follow the teardown order in [Manage deployments](/docs/dedicated-endpoints/manage#delete-resources) for each deployment.
 

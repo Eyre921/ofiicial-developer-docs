@@ -2416,36 +2416,72 @@ The examples below use these example IDs, which you should replace with your own
 
 ## Create an A/B test
 
-<Steps>
-  <Step title="Route traffic to the control">
-    Attach the control (and only the control) to the endpoint's traffic split. Pass the control's deployment ID—the CLI resolves its parent endpoint and preserves the other deployments' weights. For a single deployment, any non-zero weight routes all traffic to it:
+<Tabs>
+  <Tab title="CLI">
+    <Steps>
+      <Step title="Route traffic to the control">
+        Attach the control (and only the control) to the endpoint's traffic split. Pass the control's deployment ID—the CLI resolves its parent endpoint and preserves the other deployments' weights. For a single deployment, any non-zero weight routes all traffic to it:
 
-    ```bash CLI theme={null}
-    tg beta endpoints update dep_control123 --traffic-weight 1
-    ```
-  </Step>
+        ```bash CLI theme={null}
+        tg beta endpoints update dep_control123 --traffic-weight 1
+        ```
+      </Step>
 
-  <Step title="Start the test">
-    The CLI's `ab` command creates the variant deployment for the model you pass and starts the experiment, assigning `--percent` to the variant and the remainder to the control. Start the variant small, for example 5% (the CLI assigns the remaining 95% to the control). Percents must be integers in `[1, 100]`.
+      <Step title="Start the test">
+        The CLI's `ab` command creates the variant deployment for the model you pass and starts the experiment, assigning `--percent` to the variant and the remainder to the control. Start the variant small, for example 5% (the CLI assigns the remaining 95% to the control). Percents must be integers in `[1, 100]`.
 
-    ```bash CLI theme={null}
-    tg beta endpoints ab ml_CbJNwQC2ZqCU2iFT3mrCh \
-      --control dep_control123 \
-      --percent 5 \
-      --name sampling-tweak-v1
-    ```
+        ```bash CLI theme={null}
+        tg beta endpoints ab ml_CbJNwQC2ZqCU2iFT3mrCh \
+          --control dep_control123 \
+          --percent 5 \
+          --name sampling-tweak-v1
+        ```
 
-    Note the experiment ID (`abx_...`) and the variant's deployment ID (`dep_...`) from the response. You use the experiment ID to adjust or delete the test, and the variant's deployment ID to ramp or promote it.
-  </Step>
+        Note the experiment ID (`abx_...`) and the variant's deployment ID (`dep_...`) from the response. You use the experiment ID to adjust or delete the test, and the variant's deployment ID to ramp or promote it.
+      </Step>
 
-  <Step title="Send requests">
-    [Send requests](/docs/dedicated-endpoints/requests) to the endpoint, using the endpoint string as the `model` field.
-  </Step>
-</Steps>
+      <Step title="Send requests">
+        [Send requests](/docs/dedicated-endpoints/requests) to the endpoint, using the endpoint string as the `model` field.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Console">
+    The console doesn't create the variant deployment for you, so first add it to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)). The endpoint then has a control in the traffic split and at least one variant at weight `0`.
+
+    <Steps>
+      <Step title="Open the A/B test form">
+        On the endpoint, select the **Traffic Tests** tab, then **New A/B test**. The console blocks the form until the endpoint has at least two deployments with one at traffic weight `0`.
+      </Step>
+
+      <Step title="Name the test">
+        Enter a **Name** and an optional **Description**.
+      </Step>
+
+      <Step title="Set the control and variants">
+        Confirm the **Control** deployment and select each **Variant** deployment, then set each member's traffic percentage. The percentages divide the control's share of traffic and must sum to 100.
+      </Step>
+
+      <Step title="Start the test">
+        Select **Start A/B test**.
+      </Step>
+    </Steps>
+
+    <Frame>
+      <img alt="The Start an A/B test dialog in the Together AI console, with a name field, a traffic-split bar, and Control and Variants sections that each pair a deployment with a traffic percentage." />
+    </Frame>
+
+    The test appears in the **A/B tests** table on the Traffic Tests tab, where you can edit or stop it.
+
+    <Frame>
+      <img alt="The Traffic Tests tab in the Together AI console showing an A/B test row with its name, variant count, traffic split, and creation time." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 ## Ramp the variant
 
-To change an existing member's share, update the experiment's members from the SDK or API. The CLI's `ab` command can start an experiment and add variants to it, but it can't change a member's percentage, so ramping is an SDK or API operation. Updating `members` replaces the whole set and re-validates the shape, so resend every member each time.
+To change an existing member's share, update the experiment's members from the SDK or API. The CLI's `ab` command can start an experiment and add variants to it, but it can't change a member's percentage, so ramping is an SDK or API operation. Updating `members` replaces the whole set and re-validates the shape, so resend every member each time. In the console, open the test's actions menu on the **Traffic Tests** tab and select **Edit A/B test** to change member percentages.
 
 <Frame>
   <img alt="Ramping the variant. In week 1 the split is 95 percent control and 5 percent variant. A single update to the member set is atomic and ETag-guarded. In week 2 the split is 80 percent control and 20 percent variant." />
@@ -2516,6 +2552,8 @@ The CLI's smart-delete `rm` accepts the experiment ID:
 ```bash CLI theme={null}
 tg beta endpoints rm abx_abc123
 ```
+
+In the console, open the test's actions menu on the **Traffic Tests** tab and select **Stop A/B test**.
 
 To clean up the member deployments, follow the teardown order in [Manage deployments](/docs/dedicated-endpoints/manage#delete-resources) for each deployment.
 
@@ -2943,9 +2981,31 @@ The response is the upload job object, with `id`, `modelId`, and `status` at the
 
 Save the job `id`. You use it to poll for upload status.
 
-<Tip>
-  You can also upload a model from the dashboard. Sign in and go to [Models > Upload a model](https://api.together.ai/models/upload), enter your Hugging Face repo path or an S3 presigned URL as the source, name the model, and select **Upload**.
-</Tip>
+### Upload from the console
+
+The console combines creating the model record and uploading its weights into a single form. Go to [Models > Upload a model](https://api.together.ai/models/upload).
+
+<Steps>
+  <Step title="Set the upload type">
+    Leave **Upload type** set to **Full model**.
+  </Step>
+
+  <Step title="Choose the source">
+    Under **Model source**, select **Import from Hugging Face** and enter the repo path or URL (add a **Hugging Face token** for gated or private repos), or select **Download from S3** and paste a presigned archive URL. **Upload from your machine** shows a CLI command instead: the browser can't upload local weights, so use [`tg beta models upload`](#upload-from-your-machine) for files on your machine.
+  </Step>
+
+  <Step title="Name and configure the model">
+    Enter a **Model name**, choose a **Visibility**, and complete the **Compatible base model** and **Quantization** fields.
+  </Step>
+
+  <Step title="Import">
+    Select **Import**. The upload runs server-side, with progress shown below the form.
+  </Step>
+</Steps>
+
+<Frame>
+  <img alt="The Upload model form in the Together AI console, set to Full model with Import from Hugging Face selected, showing fields for repository or URL, Hugging Face token, model name, visibility, compatible base model, and quantization." />
+</Frame>
 
 ## Check upload status
 
@@ -3072,123 +3132,133 @@ The CLI's `tg beta endpoints deploy` command bundles several API/SDK operations 
 
 To create your first deployment end-to-end, [follow the quickstart](/docs/dedicated-endpoints/quickstart).
 
+You can run every operation on this page from the Together CLI and SDK or from the [web console](https://api.together.ai/endpoints). Each section below shows both: the CLI or SDK command, and the equivalent steps in the console.
+
 ## Create an endpoint
 
-Before you can create a deployment, you must [select a model](/docs/dedicated-endpoints/models), [choose a config](/docs/dedicated-endpoints/configs), and create an endpoint.
+When you deploy a model to a new endpoint, Together creates the endpoint, attaches the deployment, and routes all traffic to it. (To create an endpoint resource with no deployments, use the [SDK or API](/reference/dmi/endpoints-create).)
 
-The CLI has no standalone create-endpoint command: `tg beta endpoints deploy` creates the endpoint and its first deployment together (see [Create a deployment](#create-a-deployment) below). To create an empty endpoint on its own, use the SDK or API:
+Before you deploy, choose a [supported model](/docs/dedicated-endpoints/models) and a [deployment profile](/docs/dedicated-endpoints/configs).
 
-```python Python theme={null}
-from together import Together
+<Tabs>
+  <Tab title="CLI">
+    Pass a model and a new endpoint name to `tg beta endpoints deploy`. It creates the endpoint, attaches a deployment on the model's default hardware, and routes 100% of traffic to it:
 
-client = Together()
-project_id = client.whoami().project_id
+    ```bash CLI theme={null}
+    tg beta endpoints deploy google/gemma-4-E4B-it \
+      --endpoint my-endpoint
+    ```
 
-endpoint = client.beta.endpoints.create(
-    project_id=project_id,
-    name="my-endpoint",
-)
-print(endpoint)
-```
+    Add `--config <cr_...>` when the model has more than one deployment profile, and `--min-replicas` / `--max-replicas` to set the [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds).
+  </Tab>
+
+  <Tab title="Console">
+    <Steps>
+      <Step title="Open the create form">
+        On the [Endpoints page](https://api.together.ai/endpoints), select **New endpoint**.
+      </Step>
+
+      <Step title="Name the endpoint and deployment">
+        Enter an **Endpoint name** and a **Deployment name**.
+      </Step>
+
+      <Step title="Choose the model and hardware">
+        Select the **Model** and its **Quantization**, then pick a **Hardware** configuration and a **Region**. The console lists one hardware card per [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), so the model and quantization you choose determine the config.
+      </Step>
+
+      <Step title="Set autoscaling">
+        Set **Min replicas** and **Max replicas** (both default to `1`).
+      </Step>
+
+      <Step title="Create the endpoint">
+        Select **Create endpoint**. Together creates the endpoint and its first deployment and routes all traffic to it.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 The endpoint serves as a logical grouping of deployments, and the entry point for [routing traffic to your models](/docs/dedicated-endpoints/route-traffic).
 
 ## Create a deployment
 
-A deployment binds a model and a hardware config to an endpoint, and sets the [autoscaling policy](/docs/dedicated-endpoints/scaling) for spinning replicas up and down based on demand. `--min-replicas` and `--max-replicas` set the [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds).
+Add more deployments to an endpoint to run several models or hardware configs behind it, for [traffic splitting](/docs/dedicated-endpoints/split-traffic), [A/B tests](/docs/dedicated-endpoints/ab-tests), or [shadow experiments](/docs/dedicated-endpoints/shadow-experiments). It works like [creating an endpoint](#create-an-endpoint), except you target an existing endpoint and give the deployment a traffic weight so it takes a share of the [traffic split](/docs/dedicated-endpoints/route-traffic).
 
-Pass an existing endpoint ID (or a new endpoint name) to `tg beta endpoints deploy --endpoint` to add a deployment. The model is the positional argument, and the config is `--config`:
+<Tabs>
+  <Tab title="CLI">
+    Pass an existing endpoint ID (or a new endpoint name) to `tg beta endpoints deploy --endpoint` to add a deployment. The model is the positional argument, and the config is `--config`:
 
-```bash CLI theme={null}
-tg beta endpoints deploy ml_CbJNwQC2ZqCU2iFT3mrCh \
-  --endpoint ep_abc123 \
-  --deployment-name my-deployment \
-  --config cr_CbzGdmn14t3HYrXXitmKa \
-  --min-replicas 1 --max-replicas 2
-```
+    ```bash CLI theme={null}
+    tg beta endpoints deploy ml_CbJNwQC2ZqCU2iFT3mrCh \
+      --endpoint ep_abc123 \
+      --deployment-name my-deployment \
+      --config cr_CbzGdmn14t3HYrXXitmKa \
+      --min-replicas 1 --max-replicas 2
+    ```
 
-When a model has more than one [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), `deploy` returns an error that lists the available profiles, for example:
+    When a model has more than one [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), `deploy` returns an error that lists the available profiles, for example:
 
-```text theme={null}
-Model has multiple deployment profiles. Re-run with --config <config_id>:
-  cr_CbzGdmn14t3HYrXXitmKa  NVIDIA-H100 x1  BF16  TP1
-  cr_CciJqTB35QmpMupbQNPPW  NVIDIA-H100 x1  FP8   TP1
-```
+    ```text theme={null}
+    Model has multiple deployment profiles. Re-run with --config <config_id>:
+      cr_CbzGdmn14t3HYrXXitmKa  NVIDIA-H100 x1  BF16  TP1
+      cr_CciJqTB35QmpMupbQNPPW  NVIDIA-H100 x1  FP8   TP1
+    ```
 
-Re-run with `--config <cr_...>` to choose one. When a model has a single profile, the CLI selects it automatically. List a model's profiles anytime with `tg beta models configs <model_id>`.
+    Re-run with `--config <cr_...>` to choose one. When a model has a single profile, the CLI selects it automatically. List a model's profiles anytime with `tg beta models configs <model_id>`.
 
-The CLI defaults `--min-replicas` and `--max-replicas` to `1`, so a bare `deploy` creates a single-replica deployment.
+    The CLI defaults `--min-replicas` and `--max-replicas` to `1`, so a bare `deploy` creates a single-replica deployment.
 
-List and retrieve responses return a flat deployment object whose `model` and `config` resource names you can copy straight into a new create request:
+    For the full flag list, including placement, the autoscaling windows, and the scaling percentile, see the [CLI reference](/reference/cli/endpoints-beta#deploy).
+  </Tab>
 
-```json theme={null}
-{
-  "id": "dep_abc123",
-  "projectId": "proj_abc123",
-  "endpointId": "ep_abc123",
-  "name": "your-project-slug/my-endpoint/my-deployment",
-  "createdAt": "2026-07-13T18:52:00Z",
-  "updatedAt": "2026-07-13T18:52:00Z",
-  "model": "projects/proj_abc123/models/ml_CbJNwQC2ZqCU2iFT3mrCh/revisions/rv_CbJ9yNrws93VQrZum1fTE",
-  "config": "projects/proj_abc123/configs/cr_CbzGdmn14t3HYrXXitmKa",
-  "autoscaling": {"minReplicas": 1, "maxReplicas": 2},
-  "hardware": "1xnvidia-h100-80gb",
-  "trafficMode": "TRAFFIC_MODE_LIVE",
-  "desiredReplicas": 1,
-  "status": {"state": "DEPLOYMENT_STATE_PROVISIONING", "scheduledReplicas": 0, "readyReplicas": 0, "message": "Scheduling replicas"}
-}
-```
+  <Tab title="Console">
+    Open the endpoint from the [Endpoints page](https://api.together.ai/endpoints) and select **New deployment**. The dialog has the same fields as the create form ([Create an endpoint](#create-an-endpoint)), plus a **Traffic weight**: leave it at `0` to add the deployment without serving live traffic (for example, as an [A/B](/docs/dedicated-endpoints/ab-tests) variant). Fill in the fields and select **Create deployment**.
 
-The `hardware` field reports the deployment's instance type in `<count>x<accelerator-type>` form (for example `1xnvidia-h100-80gb`). It may be empty when the config has no fixed instance type (for example disaggregated serving).
+    <Frame>
+      <img alt="The New deployment dialog in the Together AI console, with fields for deployment name, model, quantization, hardware, region, autoscaling replica bounds, and traffic weight." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 After you've created a deployment, you'll need to [route traffic](/docs/dedicated-endpoints/route-traffic) to it before it can serve requests.
 
-### Create request flags
-
-Set these flags on `tg beta endpoints deploy` when you create a deployment:
-
-| Flag                | Required | Description                                                                                                                                                             |
-| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MODEL`             | Yes      | Positional argument. The model to deploy: a public model name, a private model name, a private model ID (`ml_...`), or a fully resolved model path.                     |
-| `--endpoint`        | Yes      | The endpoint to deploy to. Pass an existing endpoint name or ID, or a new name to create the endpoint first.                                                            |
-| `--config`          | No       | Config ID (`cr_...`). Required when the model has more than one deployment profile; auto-selected when it has a single one.                                             |
-| `--deployment-name` | No       | Name for the deployment. Defaults to a combination of the endpoint and model names.                                                                                     |
-| `--min-replicas`    | No       | Minimum replicas. Default `1`.                                                                                                                                          |
-| `--max-replicas`    | No       | Maximum replicas. Default `1`.                                                                                                                                          |
-| `--scaling-metric`  | No       | Metric to autoscale on, set together with `--scaling-target`. Omit to use the default metric. See [scaling metrics](/docs/dedicated-endpoints/scaling#scaling-metrics). |
-| `--scaling-target`  | No       | Target value for `--scaling-metric`.                                                                                                                                    |
-| `--enable-lora`     | No       | Run the multi-LoRA kernel so adapters hot-load after deploy. Set at create time only: it can't be changed on a running deployment, so redeploy to toggle it.            |
-
-For the full flag list, including placement, the autoscaling windows, and the scaling percentile, see the [CLI reference](/reference/cli/endpoints-beta#deploy).
-
-[Decoding optimizations](/docs/dedicated-endpoints/configs#decoding-optimizations), including speculative decoding, come from the config you select.
-
 ## Poll deployment status
 
-To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
+<Tabs>
+  <Tab title="CLI / SDK">
+    To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
 
-```bash CLI theme={null}
-# Show the endpoint with each deployment's state and replica counts
-tg beta endpoints get ep_abc123
-```
+    ```bash CLI theme={null}
+    # Show the endpoint with each deployment's state and replica counts
+    tg beta endpoints get ep_abc123
+    ```
 
-For the full set of status fields (scheduled replicas, status message), retrieve the deployment from the SDK or API and read `status`:
+    For the full set of status fields (scheduled replicas, status message), retrieve the deployment from the SDK or API and read `status`:
 
-```python Python theme={null}
-from together import Together
+    ```python Python theme={null}
+    from together import Together
 
-client = Together()
-project_id = client.whoami().project_id
+    client = Together()
+    project_id = client.whoami().project_id
 
-deployment = client.beta.endpoints.deployments.retrieve(
-    "dep_abc123",
-    project_id=project_id,
-    endpoint_id="ep_abc123",
-)
-print(deployment.status.state)
-```
+    deployment = client.beta.endpoints.deployments.retrieve(
+        "dep_abc123",
+        project_id=project_id,
+        endpoint_id="ep_abc123",
+    )
+    print(deployment.status.state)
+    ```
+  </Tab>
 
-From here you can track its progress scaling up:
+  <Tab title="Console">
+    Open the deployment from the endpoint's **Overview** tab to watch its status live. The **Status** card shows the current state (for example, Ready), the ready and scheduled replica counts, and a status message, and the **Replicas** chart plots desired versus ready replicas over time.
+
+    <Frame>
+      <img alt="A deployment detail page in the Together AI console, showing the Model, Hardware and placement, Status, and Deployment configuration cards, a replica-count chart, and the deployment's logs." />
+    </Frame>
+  </Tab>
+</Tabs>
+
+The status object exposes these fields:
 
 | Field                      | Description                                                                                                                                                                    |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -3216,41 +3286,89 @@ A deployment that never reaches `READY` within six hours after starting will be 
 
 ## Scale a deployment
 
-Deployment scale is controlled by the deployment's [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), and optionally autoscaled using [scaling metrics](/docs/dedicated-endpoints/scaling#scaling-metrics). Set the initial bounds at deploy time (`--min-replicas`/`--max-replicas`), then change them on a running deployment:
+Deployment scale is controlled by the deployment's [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), and optionally autoscaled using [scaling metrics](/docs/dedicated-endpoints/scaling#scaling-metrics). Set the initial bounds when you create the deployment, then change them on a running deployment.
 
-```bash CLI theme={null}
-tg beta endpoints update dep_abc123 --min-replicas 2 --max-replicas 4
-```
+<Tabs>
+  <Tab title="CLI">
+    ```bash CLI theme={null}
+    tg beta endpoints update dep_abc123 --min-replicas 2 --max-replicas 4
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    On the deployment's detail page, select **Edit** on the **Deployment configuration** card. Change **Min replicas** and **Max replicas** (and, optionally, the **Scaling metric**), then select **Save changes**. The console applies the change in place, without restarting the deployment or creating a new one.
+
+    <Frame>
+      <img alt="The Edit configuration dialog in the Together AI console, with inputs for min and max replicas, scale-up and scale-down windows, traffic weight, and a scaling-metric target." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 ## Stop a deployment
 
-A deployment runs until you stop it. To stop a deployment and release its hardware, set both its replica bounds to `0`:
+A deployment runs until you stop it. Stopping scales it to zero replicas and releases its hardware.
 
-```bash CLI theme={null}
-tg beta endpoints update dep_abc123 --min-replicas 0 --max-replicas 0
-```
+<Tabs>
+  <Tab title="CLI">
+    Set both replica bounds to `0`:
+
+    ```bash CLI theme={null}
+    tg beta endpoints update dep_abc123 --min-replicas 0 --max-replicas 0
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    On the deployment's detail page, select **Stop**. Stopping scales the deployment to zero without deleting it, so you can start it again later.
+  </Tab>
+</Tabs>
 
 The replicas keep serving until they finish draining, then the deployment moves to `DEPLOYMENT_STATE_STOPPED` and billing stops.
 
 ## Restart a deployment
 
-A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way; [deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more:
+A stopped deployment doesn't restart on its own. Only deployments in `DEPLOYMENT_STATE_STOPPED` can be restarted. A deployment in `FAILED` is terminal and can't be brought back this way; [deploy a new deployment](#create-a-deployment) instead. To restart a stopped deployment, raise both bounds to `1` or more.
 
-```bash CLI theme={null}
-tg beta endpoints update dep_abc123 --min-replicas 1 --max-replicas 2
-```
+<Tabs>
+  <Tab title="CLI">
+    ```bash CLI theme={null}
+    tg beta endpoints update dep_abc123 --min-replicas 1 --max-replicas 2
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    On the deployment's detail page, select **Start**, then confirm the **Min replicas** and **Max replicas** to bring it back with.
+  </Tab>
+</Tabs>
 
 ## List resources
 
-List and get endpoints with the CLI:
+<Tabs>
+  <Tab title="CLI">
+    List and get endpoints with the CLI:
 
-```bash CLI theme={null}
-# All endpoints in the project
-tg beta endpoints ls
+    ```bash CLI theme={null}
+    # All endpoints in the project
+    tg beta endpoints ls
 
-# One endpoint (includes up to the 10 newest deployments' state and replica counts)
-tg beta endpoints get ep_abc123
-```
+    # One endpoint (includes up to the 10 newest deployments' state and replica counts)
+    tg beta endpoints get ep_abc123
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    The [Endpoints page](https://api.together.ai/endpoints) lists every endpoint in the current project with its status, model, GPU, and ready/desired replica counts. Single-deployment endpoints collapse into one row; endpoints with more than one deployment expand to show each deployment.
+
+    <Frame>
+      <img alt="The Endpoints list in the Together AI console, with columns for name, status, model, GPU, replicas, and created date, and a New endpoint button." />
+    </Frame>
+
+    Select an endpoint to open its detail page. The **Overview** tab lists its deployments alongside the endpoint's details and a ready-to-run code sample.
+
+    <Frame>
+      <img alt="An endpoint detail page in the Together AI console, showing the Overview, Traffic Tests, Analytics, and Logs tabs, a deployments table, a code sample, and the endpoint's details." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 Endpoint get and list responses embed lightweight deployment summaries in each endpoint's `deployments` array. The array includes at most the 10 newest deployments per endpoint (ordered by `createdAt`, descending). To list every deployment on an endpoint, use the [SDK or API](/reference/dmi/deployments-list).
 
@@ -3275,17 +3393,29 @@ Deletion is permanent. A deployment must be stopped before it can be deleted. Fo
 2. Delete the deployment. If you use the SDK or API (not the CLI), set the deployment's [traffic split](/docs/dedicated-endpoints/route-traffic) weight to 0 on the endpoint first.
 3. Delete the endpoint once it has no deployments.
 
-The CLI's `rm` command is a smart-delete: it resolves the resource by its ID prefix, so the same command deletes an endpoint (`ep_`), a deployment (`dep_`), an A/B experiment (`abx_`), or a shadow experiment (`exp_`). When you run `tg beta endpoints rm dep_...`, the CLI automatically detaches the deployment from the traffic split and from any experiments it belongs to:
+<Tabs>
+  <Tab title="CLI">
+    The CLI's `rm` command is a smart-delete: it resolves the resource by its ID prefix, so the same command deletes an endpoint (`ep_`), a deployment (`dep_`), an A/B experiment (`abx_`), or a shadow experiment (`exp_`). When you run `tg beta endpoints rm dep_...`, the CLI automatically detaches the deployment from the traffic split and from any experiments it belongs to:
 
-```bash CLI theme={null}
-# Delete the deployment (must be stopped first; auto-detaches from the traffic split)
-tg beta endpoints rm dep_abc123
+    ```bash CLI theme={null}
+    # Delete the deployment (must be stopped first; auto-detaches from the traffic split)
+    tg beta endpoints rm dep_abc123
 
-# Delete the endpoint once it has no deployments
-tg beta endpoints rm ep_abc123
-```
+    # Delete the endpoint once it has no deployments
+    tg beta endpoints rm ep_abc123
+    ```
 
-To delete an endpoint that still has deployments, pass `--force` to `rm`. If the endpoint has other deployments you want to keep, rebalance the remaining weights instead of clearing the split. See [Route traffic](/docs/dedicated-endpoints/route-traffic).
+    To delete an endpoint that still has deployments, pass `--force` to `rm`. If the endpoint has other deployments you want to keep, rebalance the remaining weights instead of clearing the split. See [Route traffic](/docs/dedicated-endpoints/route-traffic).
+  </Tab>
+
+  <Tab title="Console">
+    First [stop](#stop-a-deployment) every deployment under the endpoint. Then open the endpoint, select **Endpoint actions**, and select **Delete endpoint**. The console keeps **Delete endpoint** disabled until every deployment is stopped or deleted, so there's no console equivalent of the CLI's `rm --force` on a running endpoint.
+
+    <Frame>
+      <img alt="The Endpoint actions menu open in the Together AI console, with a Delete endpoint item that is disabled while a deployment is still running." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 ## Troubleshooting
 
@@ -3561,11 +3691,27 @@ Dedicated model inference records latency, throughput, and utilization metrics f
 
 ## Analytics dashboard
 
-The [Together AI dashboard](https://api.together.ai/endpoints) shows per-endpoint charts for latency, throughput, replica count, and utilization, built on the metric series below. Use the dashboards to monitor an endpoint at a glance and to compare deployments during an A/B test.
+The [Together AI console](https://api.together.ai/endpoints) shows per-endpoint charts for requests, tokens per second, input and output tokens, latency, and time to first token, built on the metric series below.
+
+Open an endpoint and select the **Analytics** tab. Switch between **Usage** and **Errors**, view the endpoint **Total** or break it down **By deployment**, and adjust the time range. Use the dashboard to monitor an endpoint at a glance and to compare deployments during an [A/B test](/docs/dedicated-endpoints/ab-tests).
+
+<Frame>
+  <img alt="The Analytics tab for an endpoint in the Together AI console, with charts for requests, tokens per second, input tokens, and output tokens, plus Usage and Errors toggles, a Total and By deployment breakdown, and a time-range selector." />
+</Frame>
+
+The charts populate once the endpoint starts serving requests.
 
 ## Events
 
-Each endpoint has an audit feed of events, newest first. It merges endpoint-scoped events with the deployment-scoped events for every deployment under the endpoint, so scale-ups, traffic shifts, readiness changes, and pauses across every deployment all surface here. Use it to trace what happened during an autoscaling event or a traffic-split change. Use the SDK/API to list events:
+Each endpoint has an audit feed of events, newest first. It merges endpoint-scoped events with the deployment-scoped events for every deployment under the endpoint, so scale-ups, traffic shifts, readiness changes, and pauses across every deployment all surface here. Use it to trace what happened during an autoscaling event or a traffic-split change.
+
+In the console, open an endpoint and select the **Logs** tab to browse the feed, with columns for time, type, source, level, and message.
+
+<Frame>
+  <img alt="The Logs tab for an endpoint in the Together AI console, an event feed with Time, Type, Source, Level, and Message columns showing the deployment's lifecycle events." />
+</Frame>
+
+To read the feed programmatically, use the SDK or API to list events:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -3596,7 +3742,15 @@ Each endpoint has an audit feed of events, newest first. It merges endpoint-scop
   ```
 </CodeGroup>
 
-Optional parameters narrow the feed: `types` restricts to specific event-type strings, `min_level` sets the minimum severity, `source_kinds` selects endpoint- or deployment-scoped events, `since` and `until` bound a time range, `subject_id` filters to a single subject, `deployment_ids` scopes to specific deployments, and `limit` / `after` paginate (max `500`, default `50`).
+Optional parameters narrow the feed:
+
+* `types` restricts to specific event-type strings.
+* `min_level` sets the minimum severity.
+* `source_kinds` selects endpoint- or deployment-scoped events.
+* `since` and `until` bound a time range.
+* `subject_id` filters to a single subject.
+* `deployment_ids` scopes to specific deployments.
+* `limit` / `after` paginate (max `500`, default `50`).
 
 <Note>
   Endpoint mutation events such as `endpoint.updated` record when a change happened, but they don't include a field-level diff. Keep configuration history in your deployment system if you need to reconstruct exactly what changed.
@@ -3686,14 +3840,16 @@ Metrics are grouped by the stage of the request path they measure: the edge (fro
 
 #### Worker (model server)
 
-| Metric                               | Type      | Unit     | Notes                                        |
-| ------------------------------------ | --------- | -------- | -------------------------------------------- |
-| `worker_inference_request_total`     | Counter   | requests | Broken down by `status_code`.                |
-| `worker_ttft_seconds`                | Histogram | seconds  | Time to first token.                         |
-| `worker_generation_duration_seconds` | Histogram | seconds  | Total generation duration.                   |
-| `worker_tpot_seconds`                | Histogram | seconds  | Time per output token (inter-token latency). |
-| `worker_token_total`                 | Counter   | tokens   | Broken down by `token_type`.                 |
-| `worker_tokens_per_request`          | Histogram | tokens   | Broken down by `token_type`.                 |
+| Metric                               | Type      | Unit        | Notes                                                                                    |
+| ------------------------------------ | --------- | ----------- | ---------------------------------------------------------------------------------------- |
+| `worker_inference_request_total`     | Counter   | requests    | Broken down by `status_code`.                                                            |
+| `worker_ttft_seconds`                | Histogram | seconds     | Time to first token.                                                                     |
+| `worker_generation_duration_seconds` | Histogram | seconds     | Total generation duration.                                                               |
+| `worker_tpot_seconds`                | Histogram | seconds     | Time per output token (inter-token latency).                                             |
+| `worker_token_total`                 | Counter   | tokens      | Broken down by `token_type`.                                                             |
+| `worker_tokens_per_request`          | Histogram | tokens      | Broken down by `token_type`.                                                             |
+| `worker_engine_kv_cache_utilization` | Gauge     | ratio (0-1) | Fraction of the engine's KV-cache capacity in use.                                       |
+| `worker_engine_cache_hit_rate`       | Gauge     | ratio (0-1) | Hit rate of the engine's KV cache. Higher values mean more prefix reuse across requests. |
 
 ### Labels
 
@@ -3977,44 +4133,80 @@ tg --help
 
 ## Step 1: Deploy a model
 
-Deploy `google/gemma-4-E4B-it`, one of the [supported models](/docs/dedicated-endpoints/models) Together hosts. The `endpoints deploy` command creates an endpoint, attaches a deployment on the model's default hardware, and routes all traffic to it:
+Deploy `google/gemma-4-E4B-it`, one of the [supported models](/docs/dedicated-endpoints/models) Together hosts. The deployment provisions in the background: for a model this size, first-time provisioning usually takes about 5 to 10 minutes while the weights download and hardware is allocated, and larger models take longer.
 
-```bash theme={null}
-tg beta endpoints deploy google/gemma-4-E4B-it \
-  --endpoint quickstart-endpoint
-```
+<Tabs>
+  <Tab title="CLI">
+    The `endpoints deploy` command creates an endpoint, attaches a deployment on the model's default hardware, and routes all traffic to it:
 
-The command returns as soon as the resources are created and prints the endpoint's details:
+    ```bash theme={null}
+    tg beta endpoints deploy google/gemma-4-E4B-it \
+      --endpoint quickstart-endpoint
+    ```
 
-```bash theme={null}
-√ Model deployed to endpoint your-project-slug/quickstart-endpoint.
+    The command returns as soon as the resources are created and prints the endpoint's details:
 
-╭─ Endpoint Details for quickstart-endpoint ───────────────────────────────────╮
-│    Endpoint string  your-project-slug/quickstart-endpoint                    │
-│       Endpoint ID  ep_abc123                                                 │
-│        Created at  07/13/2026, 06:52 PM                                      │
-│        Updated at  07/13/2026, 06:52 PM                                      │
-│        Visibility  Private                                                   │
-│           Web URL  https://api.together.ai/endpoints/ep_abc123               │
-╰──────────────────────────────────────────────────────────────────────────────╯
+    ```bash theme={null}
+    √ Model deployed to endpoint your-project-slug/quickstart-endpoint.
 
-Deployments
-╭──────────────────────────────────────┬───────────────────┬───────────────────╮
-│  Deployment                          │  Model            │                   │
-├──────────────────────────────────────┼───────────────────┼───────────────────┤
-│  Name:                               │  google/gemma-4…  │    Status:        │
-│  google-gemma-4-E4B-it-BF16-abc123…  │                   │  Provisioning     │
-│    ID: dep_abc123                    │                   │  Replicas: 0 / 1  │
-╰──────────────────────────────────────┴───────────────────┴───────────────────╯
-```
+    ╭─ Endpoint Details for quickstart-endpoint ───────────────────────────────────╮
+    │    Endpoint string  your-project-slug/quickstart-endpoint                    │
+    │       Endpoint ID  ep_abc123                                                 │
+    │        Created at  07/13/2026, 06:52 PM                                      │
+    │        Updated at  07/13/2026, 06:52 PM                                      │
+    │        Visibility  Private                                                   │
+    │           Web URL  https://api.together.ai/endpoints/ep_abc123               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
 
-Note the **endpoint string** (`your-project-slug/quickstart-endpoint`): pass it as the `model` parameter when you send requests.
+    Deployments
+    ╭──────────────────────────────────────┬───────────────────┬───────────────────╮
+    │  Deployment                          │  Model            │                   │
+    ├──────────────────────────────────────┼───────────────────┼───────────────────┤
+    │  Name:                               │  google/gemma-4…  │    Status:        │
+    │  google-gemma-4-E4B-it-BF16-abc123…  │                   │  Provisioning     │
+    │    ID: dep_abc123                    │                   │  Replicas: 0 / 1  │
+    ╰──────────────────────────────────────┴───────────────────┴───────────────────╯
+    ```
 
-The deployment provisions in the background. For a model this size, first-time provisioning usually takes about 5 to 10 minutes while the weights download and hardware is allocated; larger models take longer. Check its status with the deployment ID from the output, and wait for `DEPLOYMENT_STATE_READY`:
+    Note the **endpoint string** (`your-project-slug/quickstart-endpoint`): pass it as the `model` parameter when you send requests.
 
-```bash theme={null}
-tg beta endpoints get dep_abc123
-```
+    Check the deployment's status with the deployment ID from the output, and wait for `DEPLOYMENT_STATE_READY`:
+
+    ```bash theme={null}
+    tg beta endpoints get dep_abc123
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    <Steps>
+      <Step title="Open the create form">
+        Go to the [Endpoints page](https://api.together.ai/endpoints) and select **New endpoint**.
+      </Step>
+
+      <Step title="Name the endpoint and deployment">
+        In **Endpoint name**, enter `quickstart-endpoint`. In **Deployment name**, enter `quickstart-deployment`. The console requires a deployment name, unlike the CLI, which generates one for you.
+      </Step>
+
+      <Step title="Choose the model">
+        Under **Model**, select `google/gemma-4-E4B-it`, and leave the default **Quantization**.
+      </Step>
+
+      <Step title="Keep the defaults">
+        Leave the default **Hardware** and **Region**, and keep **Min replicas** and **Max replicas** at `1`.
+      </Step>
+
+      <Step title="Create the endpoint">
+        Select **Create endpoint**. You land on the endpoint's page, where the deployment starts in **Provisioning** and moves to **Ready** once it's live.
+      </Step>
+    </Steps>
+
+    Copy the **endpoint string** shown on the endpoint's page (in the form `your-project-slug/quickstart-endpoint`): this is what you pass as the `model` parameter when you send requests.
+
+    <Frame>
+      <img alt="The Create endpoint form in the Together AI console, configured with the model Gemma 4 E4B IT, BF16 quantization, 1x NVIDIA-H100-80GB hardware, Any region, and min and max replicas both set to 1. The Summary panel shows an estimated $5.49 per hour and a Create endpoint button." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 ## Step 2: Send a request
 
@@ -4095,13 +4287,25 @@ You should see output similar to this:
 
 ## Step 3: Clean up resources
 
-Dedicated model inference bills per minute per running replica, so tear down what you deployed once you're done. Pass the endpoint ID (`ep_abc123`) from the deploy output to `rm` with `--force` to delete the endpoint and its deployment in one step:
+Dedicated model inference bills per minute per running replica, so tear down what you deployed once you're done.
 
-```bash theme={null}
-tg beta endpoints rm ep_abc123 --force
-```
+<Tabs>
+  <Tab title="CLI">
+    Pass the endpoint ID (`ep_abc123`) from the deploy output to `rm` with `--force` to delete the endpoint and its deployment in one step:
 
-To stop charges without deleting anything (for example, to redeploy later), [scale the deployment](/docs/dedicated-endpoints/manage#stop-a-deployment) to zero instead, then re-run the status command above to confirm it reaches `DEPLOYMENT_STATE_STOPPED`.
+    ```bash theme={null}
+    tg beta endpoints rm ep_abc123 --force
+    ```
+
+    To stop charges without deleting anything (for example, to redeploy later), [scale the deployment](/docs/dedicated-endpoints/manage#stop-a-deployment) to zero instead, then re-run the status command above to confirm it reaches `DEPLOYMENT_STATE_STOPPED`.
+  </Tab>
+
+  <Tab title="Console">
+    On the endpoint's page, open the deployment and select **Stop** to scale it to zero, which stops the per-minute charges. To bring it back later, select **Start**.
+
+    To remove the endpoint entirely, delete it once the deployment is stopped: open **Endpoint actions** and select **Delete endpoint**, then confirm. The console keeps **Delete endpoint** disabled until every deployment under the endpoint is stopped or deleted.
+  </Tab>
+</Tabs>
 
 ## Next steps
 
@@ -4230,11 +4434,19 @@ Each weight must be non-negative and finite.
 
 To stop routing traffic to a deployment without rebalancing the rest of the split, set its weight to `0`. A zero weight unsets the deployment and removes it from the split entirely, while preserving the weights of the other deployments. The deployment keeps running, so you can scale it or bring it back into rotation later by setting a non-zero weight again.
 
-For example, to remove `dep_def456` while leaving the other deployments untouched:
+<Tabs>
+  <Tab title="CLI">
+    For example, to remove `dep_def456` while leaving the other deployments untouched:
 
-```bash Shell theme={null}
-tg beta endpoints update dep_def456 --traffic-weight 0
-```
+    ```bash Shell theme={null}
+    tg beta endpoints update dep_def456 --traffic-weight 0
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    Open the deployment, select **Edit** on the **Deployment configuration** card, set **Traffic weight** to `0`, and select **Save changes**.
+  </Tab>
+</Tabs>
 
 ## Routing strategies
 
@@ -4522,21 +4734,57 @@ The examples below use these example IDs, which you should replace with your own
 
 ## Create a shadow experiment
 
-Create an experiment that samples 10% of gateway traffic uniformly and mirrors it to one target. The CLI's `shadow` command creates a new shadow deployment from a model, then starts mirroring sampled traffic to it. The SDK mirrors to an existing target deployment, with the sampling strategy in the `source.endpoint` block:
+Create an experiment that samples 10% of gateway traffic uniformly and mirrors it to one target.
 
-```bash theme={null}
-tg beta endpoints shadow \
-  --endpoint ep_abc123 \
-  --model ml_CbJNwQC2ZqCU2iFT3mrCh \
-  --rate 0.1 \
-  --name candidate-v2
-```
+<Tabs>
+  <Tab title="CLI">
+    The CLI's `shadow` command creates a new shadow deployment from a model, then starts mirroring sampled traffic to it (the SDK mirrors to an existing target deployment instead, with the sampling strategy in the `source.endpoint` block):
 
-Note the experiment ID (`exp_...`) from the response. You use it to inspect, update, or delete the experiment.
+    ```bash theme={null}
+    tg beta endpoints shadow \
+      --endpoint ep_abc123 \
+      --model ml_CbJNwQC2ZqCU2iFT3mrCh \
+      --rate 0.1 \
+      --name candidate-v2
+    ```
 
-<Note>
-  `name` is immutable after creation and must be unique within the endpoint. `description` can't be set on create. Set it by [updating the experiment](#update-an-experiment).
-</Note>
+    Note the experiment ID (`exp_...`) from the response. You use it to inspect, update, or delete the experiment.
+
+    <Note>
+      `name` is immutable after creation and must be unique within the endpoint. `description` can't be set on create. Set it by [updating the experiment](#update-an-experiment).
+    </Note>
+  </Tab>
+
+  <Tab title="Console">
+    The console mirrors to a target deployment you've already created, so first add the candidate to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)).
+
+    <Steps>
+      <Step title="Open the shadow test form">
+        On the endpoint, select the **Traffic Tests** tab, then **New shadow test**.
+      </Step>
+
+      <Step title="Name the test">
+        Enter a **Name** and an optional **Description**. The **Source deployment** is the endpoint's live deployment and is fixed.
+      </Step>
+
+      <Step title="Choose the target">
+        Select the weight-`0` candidate as the **Target deployment**.
+      </Step>
+
+      <Step title="Set the sampling strategy">
+        Choose a **Sampling strategy** (Uniform, Key-based, Adaptive, or Adaptive + key) and set the **Sample rate**.
+      </Step>
+
+      <Step title="Create the test">
+        Select **Create shadow test**.
+      </Step>
+    </Steps>
+
+    <Frame>
+      <img alt="The New shadow test dialog in the Together AI console, with name and description fields, source and target deployment pickers, a sampling-strategy selector offering Uniform, Key-based, Adaptive, and Adaptive plus key, and a sample-rate input." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 After creating the experiment, [send requests](/docs/dedicated-endpoints/requests) to the endpoint as you normally would, using the endpoint string as the `model` field. The request path doesn't change, but a sampled fraction of requests is mirrored to each target in the background.
 
@@ -4614,6 +4862,8 @@ Deletion cascade-deletes all targets, and mirroring stops shortly after. The CLI
 tg beta endpoints rm exp_abc123
 ```
 
+In the console, stop a shadow test from its actions menu on the endpoint's **Traffic Tests** tab.
+
 ## Troubleshooting
 
 * **A target receives no mirrored traffic:** The experiment may be `INACTIVE` (no targets), the sampling `rate` may be `0`, or the change may not have propagated yet. Confirm the experiment is `ACTIVE` with at least one target and a non-zero rate, then re-check after the 30-to-60-second propagation window. Mirroring also needs live traffic on the endpoint: a sampled fraction of zero requests is zero.
@@ -4660,14 +4910,22 @@ Running more than one deployment on an endpoint lets you serve traffic across th
 
 A weight sets a deployment's share of traffic relative to its capacity: the actual share a deployment receives is proportional to its weight times its number of ready replicas.
 
-Set each deployment's weight with `endpoints update --traffic-weight`. Pass the deployment ID (`dep_...`); the CLI resolves its parent endpoint and preserves the weights of the other deployments in the split, so run it once per deployment.
+You set each deployment's weight individually, and the split preserves the other deployments' weights. When each deployment has the same number of ready replicas, the weights behave like a direct ratio. For example, with equal replica counts, these weights send roughly 70% of traffic to one deployment and 30% to the other.
 
-When each deployment has the same number of ready replicas, the weights behave like a direct ratio. For example, with equal replica counts, these weights send roughly 70% of traffic to one deployment and 30% to the other:
+<Tabs>
+  <Tab title="CLI">
+    Set each weight with `endpoints update --traffic-weight`. Pass the deployment ID (`dep_...`); the CLI resolves its parent endpoint and preserves the other deployments' weights, so run it once per deployment:
 
-```bash Shell theme={null}
-tg beta endpoints update dep_abc123 --traffic-weight 70
-tg beta endpoints update dep_def456 --traffic-weight 30
-```
+    ```bash Shell theme={null}
+    tg beta endpoints update dep_abc123 --traffic-weight 70
+    tg beta endpoints update dep_def456 --traffic-weight 30
+    ```
+  </Tab>
+
+  <Tab title="Console">
+    Set each deployment's **Traffic weight** in its **Deployment configuration** (open the deployment, select **Edit**, then **Save changes**). When you create an endpoint with more than one deployment, you can set all the weights together in the create form's **Traffic weights** card.
+  </Tab>
+</Tabs>
 
 Weights are relative ratios, not percentages, so they don't have to sum to any particular number: a split of `7` and `3` is equivalent to a split of `70` and `30`. But weight sets *relative capacity*, not a fixed percentage. Each weight must be non-negative and finite.
 
@@ -5162,7 +5420,7 @@ Install Sprocket from Together's package index:
 
 * **Model definition** — Subclass `Sprocket`, implement `setup()` to load your model and `predict(args) -> dict` to handle each request
 * **Startup** — Calls `setup()` once, optionally runs warmup inputs for cache generation, then starts accepting traffic
-* **HTTP endpoints** — `/health` for readiness checks, `/metrics` for autoscaler, `/generate` for direct HTTP inference
+* **HTTP endpoints** — `/health` for readiness checks, `/metrics` for autoscaler, `/generate` for direct HTTP inference (route configurable via `predict_path`)
 * **Job processing** — In queue mode, pulls jobs from Together's managed queue, downloads input URLs, calls `predict()`, uploads output files, and reports job status
 * **Graceful shutdown** — On SIGTERM, finishes the current job, calls `shutdown()` for cleanup, and exits
 * **Distributed inference** — With `use_torchrun=True`, launches one process per GPU and coordinates inputs/outputs across ranks
@@ -5266,11 +5524,11 @@ The total time allowed is controlled by `TERMINATION_GRACE_PERIOD_SECONDS` (defa
 
 ## Running Modes
 
-Sprocket supports two modes: **Queue mode** and **Request mode**.
+Sprocket supports two modes: **Queue mode** and **HTTP server mode**.
 
 * **Queue mode** is for workloads that need job durability and tracking — model generations, video rendering, or anything that takes more than a few hundred milliseconds. Jobs are persisted in the queue, survive worker restarts, and support priority ordering and progress reporting.
 
-* **Request mode** (direct HTTP) is for low-latency workloads that don't need queueing — embedding inference, streaming voice models, or other "fire-and-forget" requests where the result must be returned immediately.
+* **HTTP server mode** (direct HTTP) is for synchronous workloads that don't need queueing — embedding inference, streaming voice models, or OpenAI-compatible endpoints where the result must be returned immediately.
 
 ### Queue Mode
 
@@ -5285,7 +5543,7 @@ Sprocket supports two modes: **Queue mode** and **Request mode**.
 * Graceful shutdown support
 * Integrated with autoscaling
 
-### HTTP Mode (Development/Testing)
+### HTTP Server Mode
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -5293,9 +5551,19 @@ Sprocket supports two modes: **Queue mode** and **Request mode**.
   ```
 </CodeGroup>
 
-* Direct HTTP requests to `/generate`
-* Useful for local testing
-* Single concurrent request
+* Serves inference requests directly over HTTP at `predict_path` (default `/generate`).
+* Returns results synchronously; jobs are not persisted in a queue.
+* Receives the raw JSON request body in `predict()`, so your worker controls the request and response shapes.
+
+Set `predict_path` in `sprocket.run()` to serve a custom route. This is how you serve an OpenAI-compatible API from a container:
+
+<CodeGroup>
+  ```python Python theme={null}
+  sprocket.run(MyModel(), predict_path="/v1/images/generations")
+  ```
+</CodeGroup>
+
+See [Serve an OpenAI-compatible endpoint](/docs/dedicated_containers_openai) for a complete example.
 
 ## Progress Reporting
 
@@ -22007,7 +22275,6 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
 | Google            | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
 | LiquidAI          | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
-| Prism ML          | Ternary Bonsai 27B           | Prism-ML/Ternary-Bonsai-27B             | 262144         | \$0.00                        | -                                    | \$0.00                         | -            | -                | -                  |
 
 **Chat model examples**
 
@@ -22206,9 +22473,9 @@ There are currently no moderation models offered via serverless.
 # Overview
 Source: https://docs.together.ai/docs/serverless/overview
 
-Run any supported model through a shared, per-token API with no provisioning and no minimums.
+Call 100+ open-source models with per-token pricing and no provisioning latency.
 
-Serverless models are the fastest way to run inference on Together AI. Call any supported model through a shared, per-token API, with no provisioning, no GPUs to size, and no minimum cost. You pay only for the tokens, megapixels, or seconds of audio/video/speech you process.
+Serverless models are the fastest way to run inference on Together AI. Call any [supported model](/docs/serverless/models) instantly, with no minimum cost or provisioning latency. You pay only for the tokens, megapixels, or seconds of audio/video/speech you process.
 
 Serverless uses the same [inference APIs](/docs/inference/overview#shared-inference-api) as [dedicated model inference](/docs/dedicated-endpoints/overview), so you can prototype on serverless and move to reserved hardware later without changing your application code.
 
@@ -22238,7 +22505,7 @@ Serverless uses the same [inference APIs](/docs/inference/overview#shared-infere
 
 ## Rate limits
 
-Serverless models are [rate-limited](/docs/serverless/rate-limits), so they work best when you're prototyping or evaluating a model, or when your production traffic is variable, bursty, or low enough that per-token pricing is cost-effective. If your traffic is steady, you need higher rate limits, or you want reserved hardware, use a [dedicated endpoint](/docs/dedicated-endpoints/overview).
+Serverless models are [rate-limited](/docs/serverless/rate-limits), so they work best when you're prototyping or evaluating a model, or when your production traffic is variable, bursty, or low enough that per-token pricing is cost-effective. If your traffic is steady, you need higher rate limits, or you want reserved hardware, you can request [provisioned throughput](/docs/inference/provisioned-throughput) or use a [dedicated endpoint](/docs/dedicated-endpoints/overview).
 
 ## Region selection
 
@@ -23716,7 +23983,7 @@ Base class for inference workers.
 
 
   if __name__ == "__main__":
-      sprocket.run(MyModel(), "my-org/my-model")
+      sprocket.run(MyModel())
   ```
 </CodeGroup>
 
@@ -23725,14 +23992,20 @@ Base class for inference workers.
 Entry point for starting a Sprocket worker.
 
 ```python theme={null}
-def run(sprocket: Sprocket, name: str, use_torchrun: bool = False) -> None:
+def run(
+    sprocket: Sprocket,
+    name: Optional[str] = None,
+    use_torchrun: bool = False,
+    predict_path: Optional[str] = None,
+) -> None:
 ```
 
-| Parameter      | Type       | Description                                          |
-| -------------- | ---------- | ---------------------------------------------------- |
-| `sprocket`     | `Sprocket` | Your Sprocket instance                               |
-| `name`         | `str`      | Deployment name (used for queue routing)             |
-| `use_torchrun` | `bool`     | Enable multi-GPU mode via torchrun. Default: `False` |
+| Parameter      | Type            | Description                                                                                                                                                                                                                             |
+| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sprocket`     | `Sprocket`      | Your Sprocket instance                                                                                                                                                                                                                  |
+| `name`         | `Optional[str]` | Deployment name (used for queue routing). On the Together platform it is injected automatically via `TOGETHER_DEPLOYMENT_NAME`. Pass it explicitly (or set the env var) when running locally.                                           |
+| `use_torchrun` | `bool`          | Enable multi-GPU mode via torchrun. Default: `False`                                                                                                                                                                                    |
+| `predict_path` | `Optional[str]` | HTTP route that serves inference requests. Default: `/generate` (or the `SPROCKET_PREDICT_PATH` env var). Set this to serve an OpenAI-compatible route such as `/v1/images/generations`. Must not collide with `/health` or `/metrics`. |
 
 ## `sprocket.FileOutput`
 
@@ -23823,11 +24096,11 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 ## HTTP Endpoints
 
-| Endpoint    | Method | Response                                                     |
-| ----------- | ------ | ------------------------------------------------------------ |
-| `/health`   | GET    | `200 {"status": "healthy"}` or `503 {"status": "unhealthy"}` |
-| `/metrics`  | GET    | `requests_inflight 0.0` or `1.0` (Prometheus format)         |
-| `/generate` | POST   | Direct HTTP inference (non-queue mode)                       |
+| Endpoint    | Method | Response                                                                                                                           |
+| ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `/health`   | GET    | `200 {"status": "healthy"}` or `503 {"status": "unhealthy"}`                                                                       |
+| `/metrics`  | GET    | `requests_inflight 0.0` or `1.0` (Prometheus format)                                                                               |
+| `/generate` | POST   | Direct HTTP inference (non-queue mode). Route is configurable via the `predict_path` parameter of [`sprocket.run`](#sprocket-run). |
 
 ## CLI Arguments
 
@@ -23838,12 +24111,14 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 ## Environment Variables
 
-| Variable                           | Default                   | Description                                             |
-| ---------------------------------- | ------------------------- | ------------------------------------------------------- |
-| `TOGETHER_API_KEY`                 | Required                  | API key for queue authentication                        |
-| `TOGETHER_API_BASE_URL`            | `https://api.together.ai` | API base URL                                            |
-| `TERMINATION_GRACE_PERIOD_SECONDS` | `300`                     | Max time for graceful shutdown and prediction timeout   |
-| `WORLD_SIZE`                       | `1`                       | Number of GPU processes (set automatically by torchrun) |
+| Variable                           | Default                   | Description                                                               |
+| ---------------------------------- | ------------------------- | ------------------------------------------------------------------------- |
+| `TOGETHER_API_KEY`                 | Required                  | API key for queue authentication                                          |
+| `TOGETHER_API_BASE_URL`            | `https://api.together.ai` | API base URL                                                              |
+| `TOGETHER_DEPLOYMENT_NAME`         | Set by platform           | Deployment name. Used when `name` is not passed to `sprocket.run`         |
+| `SPROCKET_PREDICT_PATH`            | `/generate`               | Inference route. Used when `predict_path` is not passed to `sprocket.run` |
+| `TERMINATION_GRACE_PERIOD_SECONDS` | `300`                     | Max time for graceful shutdown and prediction timeout                     |
+| `WORLD_SIZE`                       | `1`                       | Number of GPU processes (set automatically by torchrun)                   |
 
 ## Complete Examples
 
@@ -23870,7 +24145,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 
   if __name__ == "__main__":
-      sprocket.run(ImageClassifier(), "my-org/classifier")
+      sprocket.run(ImageClassifier())
   ```
 </CodeGroup>
 
@@ -23894,7 +24169,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 
   if __name__ == "__main__":
-      sprocket.run(VideoGenerator(), "my-org/video-gen")
+      sprocket.run(VideoGenerator())
   ```
 </CodeGroup>
 
@@ -23919,7 +24194,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 
 
   if __name__ == "__main__":
-      sprocket.run(SpeechToSpeech(), "my-org/speech-to-speech")
+      sprocket.run(SpeechToSpeech())
   ```
 </CodeGroup>
 
@@ -27300,10 +27575,285 @@ When you're done, delete the deployment:
 ## Next Steps
 
 * [Video Generation Example](/docs/dedicated_containers_video) – Multi-GPU inference with torchrun
+* [OpenAI-Compatible Endpoint Example](/docs/dedicated_containers_openai) – Serve the same model behind the OpenAI Images API
 * [Quickstart](/docs/containers-quickstart) – Deploy your first container in 20 minutes
 * [Sprocket SDK](/reference/dci-reference-sprocket) – Full SDK reference for workers
 * [Jig CLI Reference](/reference/cli/jig) – CLI commands and configuration options
 * [Deployments API Reference](/reference/deployments-list) – REST API for deployments, secrets, storage, and queues
+
+
+# Serve an OpenAI-compatible endpoint
+Source: https://docs.together.ai/docs/dedicated_containers_openai
+
+Deploy a custom model behind an OpenAI-compatible endpoint using dedicated containers.
+
+This guide deploys FLUX.2 behind an OpenAI-compatible `/v1/images/generations` endpoint using Sprocket and Jig. Clients call it with the OpenAI SDK or plain HTTP, with no Together-specific request or response shapes.
+
+Two things make a container OpenAI-compatible:
+
+* **HTTP server mode:** Run the worker without the `--queue` flag. Requests go straight to your container and return synchronously, instead of through the managed queue.
+* **`predict_path`:** Pass the OpenAI route to `sprocket.run()`. In HTTP server mode the raw JSON request body is passed straight to `predict()`, so `predict()` owns both parsing the OpenAI request and returning the OpenAI response shape.
+
+## Prerequisites
+
+* **Together API key**: Get one from [together.ai](https://together.ai).
+* **Dedicated containers access**: Contact [support@together.ai](mailto:support@together.ai) to enable it for your organization.
+* **Docker**: For building container images. [Install Docker](https://docs.docker.com/engine/install).
+* **Together CLI**: Install with `pip install "together[cli]" --upgrade` or `uv tool install "together[cli]"`.
+* **Hugging Face token**: The FLUX.2 weights are gated. Request access to [black-forest-labs/FLUX.2-klein-9B](https://huggingface.co/black-forest-labs/FLUX.2-klein-9B).
+
+## HTTP server mode vs queue mode
+
+The [image generation example](/docs/dedicated_containers_image) serves the same model family through the managed queue. The difference is entirely in how requests are served:
+
+|                 | Queue mode                                                   | HTTP server mode (this guide)                      |
+| --------------- | ------------------------------------------------------------ | -------------------------------------------------- |
+| Startup command | `python3 run.py --queue`                                     | `python3 run.py`                                   |
+| Request shape   | Your own payload dict                                        | Whatever your route expects (here, OpenAI)         |
+| How you call it | `tg beta jig submit`, then poll                              | OpenAI client or `curl` against the endpoint URL   |
+| Best for        | Long-running jobs that need durability and progress tracking | Synchronous requests and OpenAI-compatible clients |
+
+## Write the worker
+
+The worker validates the OpenAI Images request with Pydantic, generates the image(s), and returns the OpenAI response shape. The last line sets the endpoint path:
+
+```python run.py theme={null}
+import base64
+import time
+from io import BytesIO
+from typing import Literal
+
+import sprocket
+import torch
+from diffusers import Flux2KleinPipeline
+from pydantic import BaseModel, Field, ValidationError
+
+# FLUX.2-klein is distilled for few-step inference.
+NUM_INFERENCE_STEPS = 4
+GUIDANCE_SCALE = 1.0
+
+
+class ImageGenerationRequest(BaseModel):
+    """The subset of the OpenAI Images API this worker accepts."""
+
+    prompt: str = Field(min_length=1)
+    model: str | None = None
+    n: int = Field(default=1, ge=1, le=10)
+    size: str = Field(default="1024x1024", pattern=r"^\d+x\d+$")
+    response_format: Literal["b64_json"] = "b64_json"
+
+
+class Flux2OpenAISprocket(sprocket.Sprocket):
+    def setup(self) -> None:
+        self.pipe = Flux2KleinPipeline.from_pretrained(
+            "black-forest-labs/FLUX.2-klein-9B",
+            torch_dtype=torch.bfloat16,
+        ).to("cuda")
+
+    def _generate_one(self, req: ImageGenerationRequest) -> str:
+        width, height = (int(d) for d in req.size.split("x"))
+        image = self.pipe(
+            prompt=req.prompt,
+            width=width,
+            height=height,
+            num_inference_steps=NUM_INFERENCE_STEPS,
+            guidance_scale=GUIDANCE_SCALE,
+        ).images[0]
+        buffer = BytesIO()
+        image.save(buffer, format="PNG")
+        return base64.b64encode(buffer.getvalue()).decode()
+
+    def predict(self, args: dict) -> dict:
+        try:
+            req = ImageGenerationRequest.model_validate(args)
+        except ValidationError as e:
+            raise ValueError(f"invalid request: {e}") from e
+
+        return {
+            "created": int(time.time()),
+            "data": [
+                {"b64_json": self._generate_one(req)} for _ in range(req.n)
+            ],
+        }
+
+
+if __name__ == "__main__":
+    sprocket.run(Flux2OpenAISprocket(), predict_path="/v1/images/generations")
+```
+
+Three details to note:
+
+* **`predict_path` sets the route:** Without it, the worker serves `POST /generate`. Setting it to `/v1/images/generations` is what lets OpenAI clients call the deployment unmodified. The path can't collide with the reserved `/health` and `/metrics` routes.
+* **`predict()` owns the contract:** Pydantic rejects bad types, out-of-range `n`, or an unsupported `response_format` before generation runs. The returned dict is sent back as the JSON response body, so it must match the OpenAI response shape exactly.
+* **`b64_json` only:** Returning base64 keeps the image in the response with no external storage dependency, and it is what `gpt-image-1` itself returns. Serving the `url` response format would require publicly fetchable storage, which this guide doesn't cover.
+
+To support more of the OpenAI Images API (`quality`, `output_format`, `output_compression`), add the fields to `ImageGenerationRequest` and map them to pipeline arguments. Pydantic ignores fields you don't declare, so clients sending extra OpenAI parameters won't get errors.
+
+## Configure the deployment
+
+```toml pyproject.toml theme={null}
+[project]
+name = "flux2-openai"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "diffusers==0.38.0",
+    "transformers==4.57.1",
+    "torch==2.6.0",
+    "torchvision==0.21.0",
+    "pillow==12.2.0",
+    "accelerate==1.13.0",
+    "safetensors==0.7.0",
+    "sprocket>=0.1.6",
+    "pydantic==2.12.3",
+]
+
+[[tool.uv.index]]
+name = "together-pypi"
+url = "https://pypi.together.ai/"
+
+[tool.uv.sources]
+sprocket = { index = "together-pypi" }
+
+[tool.jig.image]
+python_version = "3.11"
+cmd = "python3 run.py"
+auto_include_git = false
+copy = ["run.py"]
+
+[tool.jig.deploy]
+description = "FLUX.2 with an OpenAI-compatible endpoint"
+gpu_type = "h100-80gb"
+gpu_count = 1
+cpu = 4
+memory = 32
+storage = 50
+port = 8000
+min_replicas = 1
+max_replicas = 1
+```
+
+Unlike the queue examples, `cmd` has no `--queue` flag. That single difference switches the worker into HTTP server mode. The example also pins one always-on replica so requests never wait for a cold start.
+
+## Set the Hugging Face token
+
+The model weights are gated, so the container needs your Hugging Face token at runtime. Store it as a [secret](/reference/cli/jig#jig-secrets-set):
+
+```shell theme={null}
+tg beta jig secrets set --name HF_TOKEN --value <YOUR_HF_TOKEN>
+```
+
+## Deploy
+
+```shell theme={null}
+# Build, push, and create the deployment
+tg beta jig deploy
+
+# Watch startup (the model download takes a few minutes on first deploy)
+tg beta jig logs --follow
+
+# Confirm the deployment is running
+tg beta jig status
+```
+
+Then get the endpoint URL:
+
+```shell theme={null}
+tg beta jig endpoint
+```
+
+The URL has the form `https://api.together.ai/v1/deployment-request/<DEPLOYMENT_NAME>`. Requests to any path under it are forwarded to your container, authenticated with your Together API key. Your worker never handles auth.
+
+## Call the endpoint
+
+Point any OpenAI client at the endpoint URL plus `/v1`, using your Together API key:
+
+<CodeGroup>
+  ```python OpenAI Python SDK theme={null}
+  import base64
+  import os
+
+  from openai import OpenAI
+
+  client = OpenAI(
+      base_url="https://api.together.ai/v1/deployment-request/flux2-openai/v1",
+      api_key=os.environ["TOGETHER_API_KEY"],
+  )
+
+  result = client.images.generate(
+      model="black-forest-labs/FLUX.2-klein-9B",
+      prompt="a cat sitting on a red chair",
+      n=1,
+      size="1024x1024",
+      response_format="b64_json",
+  )
+
+  with open("out.png", "wb") as f:
+      f.write(base64.b64decode(result.data[0].b64_json))
+  ```
+
+  ```bash cURL theme={null}
+  curl "$(tg beta jig endpoint)/v1/images/generations" \
+    -H "Authorization: Bearer $TOGETHER_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "black-forest-labs/FLUX.2-klein-9B",
+      "prompt": "a cat sitting on a red chair",
+      "n": 1,
+      "size": "1024x1024",
+      "response_format": "b64_json"
+    }'
+  ```
+</CodeGroup>
+
+The response is the standard OpenAI Images shape:
+
+```json theme={null}
+{
+  "created": 1700000000,
+  "data": [{ "b64_json": "iVBORw0KGgoAAAANSUhEUgAA..." }]
+}
+```
+
+### Supported parameters
+
+| Parameter         | Notes                                                        |
+| ----------------- | ------------------------------------------------------------ |
+| `prompt`          | Required.                                                    |
+| `model`           | Accepted for compatibility; the deployment serves one model. |
+| `n`               | 1 to 10, default 1.                                          |
+| `size`            | `WIDTHxHEIGHT`, default `1024x1024`.                         |
+| `response_format` | Only `b64_json` is supported.                                |
+
+Any other OpenAI parameter is accepted and ignored, so standard clients work without modification.
+
+## Clean up
+
+Delete the deployment when you're done:
+
+```shell theme={null}
+tg beta jig destroy
+```
+
+## Next steps
+
+<CardGroup>
+  <Card title="Image generation with queues" icon="photo" href="/docs/dedicated_containers_image">
+    Serve the same model through the managed queue for async jobs.
+  </Card>
+
+  <Card title="Sprocket overview" icon="settings" href="/docs/deployments-sprocket">
+    Understand queue mode, HTTP server mode, and the worker lifecycle.
+  </Card>
+
+  <Card title="Sprocket SDK reference" icon="code" href="/reference/dci-reference-sprocket">
+    Full reference for `sprocket.run()`, including `predict_path`.
+  </Card>
+
+  <Card title="Jig CLI reference" icon="terminal-2" href="/reference/cli/jig">
+    All deploy, secrets, and endpoint commands.
+  </Card>
+</CardGroup>
 
 
 # Video generation with Wan 2.1
@@ -43601,14 +44151,6 @@ Generate vector embeddings for one or more text inputs. Returns numerical arrays
 
 
 
-# List all jobs
-Source: https://docs.together.ai/reference/get-fine-tunes
-
-GET /fine-tunes
-List the metadata for all fine-tuning jobs. Returns a list of FinetuneResponseTruncated objects.
-
-
-
 # Fetch video metadata
 Source: https://docs.together.ai/reference/get-videos-id
 
@@ -44147,14 +44689,6 @@ Lists custom model resources owned by the specified project. Use the organizatio
 
 
 
-# Update a model
-Source: https://docs.together.ai/reference/dmi/models-update
-
-PATCH /projects/{projectId}/models/{id}
-Updates mutable model metadata such as its inference name, description, base model, or visibility.
-
-
-
 # Get a placement profile
 Source: https://docs.together.ai/reference/dmi/placement-profiles-get
 
@@ -44302,6 +44836,14 @@ Source: https://docs.together.ai/reference/get-files-id-content
 
 GET /files/{id}/content
 Get the contents of a single uploaded data file.
+
+
+
+# List all jobs
+Source: https://docs.together.ai/reference/get-fine-tunes
+
+GET /fine-tunes
+List the metadata for all fine-tuning jobs. Returns a list of FinetuneResponseTruncated objects.
 
 
 
@@ -48583,6 +49125,14 @@ Source: https://docs.together.ai/reference/dmi/models-list-revisions
 
 GET /projects/{projectId}/models/{id}/revisions
 Lists the immutable file revisions available for a custom model, newest first.
+
+
+
+# Update a model
+Source: https://docs.together.ai/reference/dmi/models-update
+
+PATCH /projects/{projectId}/models/{id}
+Updates mutable model metadata such as its inference name, description, base model, or visibility.
 
 
 

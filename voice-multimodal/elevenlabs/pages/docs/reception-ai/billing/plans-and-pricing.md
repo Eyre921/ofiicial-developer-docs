@@ -14,30 +14,30 @@ Reception.ai offers four tiers. All new accounts start with a free trial and can
 
 |                            | Free Trial    | Basic      | Plus       | Premium    |
 | -------------------------- | ------------- | ---------- | ---------- | ---------- |
-| **Price**                  | \$0 (30 days) | \$22/month | \$55/month | \$99/month |
+| **Price**                  | \$0 (14 days) | \$22/month | \$55/month | \$99/month |
 | **Annual price**           | —             | \$17/month | \$43/month | \$77/month |
 | **Phone minutes**          | 30            | 60         | 200        | 500        |
 | **Web chat minutes**       | 60            | 120        | 400        | 1,000      |
-| **Receptionists**          | 1             | 1          | 3          | 5          |
-| **Phone numbers**          | 1             | 1          | 3          | 5          |
-| **Locations**              | 20            | 1          | 5          | 20         |
+| **Receptionists**          | 1             | 1          | 1          | 3          |
+| **Phone numbers**          | 1             | 1          | 1          | 3          |
+| **Locations**              | 20            | 1          | 1          | 20         |
 | **Knowledge sources**      | 50            | 10         | 20         | 50         |
 | **Assistant messages/day** | 500           | 150        | 300        | 500        |
-| **Concurrent calls**       | 20            | 3          | 10         | 20         |
+| **Concurrent calls**       | 20            | 1          | 3          | 10         |
 | **Overage rate**           | —             | \$0.40/min | \$0.40/min | \$0.40/min |
 | **Zapier, Webhooks, MCP**  | Yes           | No         | Yes        | Yes        |
 | **Google Calendar**        | Yes           | Yes        | Yes        | Yes        |
 
 ## Free trial
 
-Every new account starts with a **30-day free trial** that includes:
+Every new account starts with a **14-day free trial** that includes:
 
 * 30 phone minutes and 60 web chat minutes
 * A dedicated phone number
 * Full access to all features (including advanced integrations)
 * No credit card required
 
-After 30 days, upgrade to a paid plan to continue.
+After 14 days, upgrade to a paid plan to continue.
 
 ## How credits work
 

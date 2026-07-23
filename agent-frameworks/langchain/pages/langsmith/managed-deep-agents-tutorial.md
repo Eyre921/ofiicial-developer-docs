@@ -8,7 +8,7 @@ Build a Managed Deep Agent with a tool, durable memory, and a daily schedule, th
 
 This tutorial builds a research assistant one capability at a time. Complete the [quickstart](/langsmith/managed-deep-agents-quickstart) first to scaffold a project, add API keys, and run `mda dev` locally. Then add a search tool, use durable memory, run the agent on a daily schedule, and deploy it to LangSmith.
 
-For a complete project that uses every primitive, see the [example project](/langsmith/managed-deep-agents-examples).
+For a complete project that combines common features, see the [example project](/langsmith/managed-deep-agents-examples).
 
 <Note>
   Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
@@ -86,6 +86,7 @@ For a complete project that uses every primitive, see the [example project](/lan
       from tools.search import web_search
 
       agent = define_deep_agent(
+          name="research-assistant",
           model="openai:gpt-5.5",
           tools=[web_search],
       )
@@ -97,6 +98,7 @@ For a complete project that uses every primitive, see the [example project](/lan
       import { webSearch } from "./tools/search";
 
       export const agent = defineDeepAgent({
+        name: "research-assistant",
         model: "openai:gpt-5.5",
         tools: [webSearch],
       });
@@ -188,6 +190,10 @@ For a complete project that uses every primitive, see the [example project](/lan
     Persist preferences across threads with Context Hub `/memories`.
   </Card>
 
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Compile a Harbor handoff and run Harbor-style tasks.
+  </Card>
+
   <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
     Load MCP tools or constrained LangSmith capabilities.
   </Card>
@@ -197,7 +203,7 @@ For a complete project that uses every primitive, see the [example project](/lan
   </Card>
 
   <Card title="Example project" icon="apps" href="/langsmith/managed-deep-agents-examples">
-    See a complete project that uses every primitive.
+    See a complete project that combines common features.
   </Card>
 </CardGroup>
 

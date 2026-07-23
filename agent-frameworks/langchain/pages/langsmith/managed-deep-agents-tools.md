@@ -72,6 +72,7 @@ Import the tools into the project-root agent entry and pass them in the `tools` 
   from tools.customer import lookup_customer
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       tools=[lookup_customer],
   )
@@ -83,6 +84,7 @@ Import the tools into the project-root agent entry and pass them in the `tools` 
   import { lookupCustomer } from "./tools/customer";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     tools: [lookupCustomer],
   });

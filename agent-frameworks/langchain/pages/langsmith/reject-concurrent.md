@@ -10,7 +10,7 @@ The guide covers the `reject` option for double texting, which rejects the new r
 
 ## Setup
 
-First, we will define a quick helper function for printing out JS and CURL model outputs (you can skip this if using Python):
+First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
   <Tab title="Javascript">
@@ -28,7 +28,7 @@ First, we will define a quick helper function for printing out JS and CURL model
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
@@ -78,7 +78,7 @@ Now, let's import our required packages and instantiate our client, assistant, a
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -137,7 +137,7 @@ Now we can run a thread and try to run a second one with the "reject" option, wh
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
@@ -193,7 +193,7 @@ We can verify that the original thread finished executing:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \

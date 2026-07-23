@@ -55,7 +55,7 @@ First, let's set up our SDK client, assistant, and thread:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
@@ -117,7 +117,7 @@ To create a cron job associated with a specific thread, you can write:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/crons \
@@ -144,7 +144,7 @@ Note that it is **very** important to delete `Cron` jobs that are no longer usef
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request DELETE \
         --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
@@ -181,7 +181,7 @@ You can also create stateless cron jobs by using the following code. Stateless c
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/crons \
@@ -208,7 +208,7 @@ Again, remember to delete your job once you are done with it!
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request DELETE \
         --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
@@ -270,7 +270,7 @@ Every time a stateless cron is triggered, a new thread is created. Control what 
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a stateless cron that keeps threads after execution.
     # Configure checkpointer.ttl in langgraph.json to auto-delete old threads.

@@ -171,8 +171,6 @@ To refund a payment using the Dashboard:
 3. By default, you issue a full refund. For a partial refund, enter a different refund amount.
 4. Select a reason for the refund. If you select **Other**, you must add a note that explains the reason for the refund. Click **Refund**.
 
-Alternatively, you can click  a specific payment and issue a refund from its details page. You can also send [refund receipts](https://docs.stripe.com/receipts.md#refund-receipts) automatically or manually send a receipt for each refund.
-
 ### Bulk refunds
 
 The Dashboard supports the bulk refunding of full payments. Select what payments you want to refund by checking the box to the left of each payment—even over multiple pages of results. Then, click **Refund** and select a reason. You can only issue full refunds in this way; partial refunds must be issued individually.

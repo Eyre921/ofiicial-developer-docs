@@ -12,7 +12,7 @@ path: docs/overview/administration/workspaces/api-keys
 
 API keys authenticate your requests to the ElevenLabs API and track usage against your workspace's quota. There are two types:
 
-* **User API keys** belong to an individual user and inherit that user's access to workspace resources. They are well suited to personal development and scripts. Because they are tied to a person, a user API key is affected if that user's access changes or they leave the workspace. Creating personal API keys requires a [Full Seat](/docs/overview/administration/workspaces/members#full-seats).
+* **User API keys** belong to an individual user and inherit that user's access to workspace resources. They are well suited to personal development and scripts, and can be given an [expiry](#expiring-user-api-keys) so they stop working automatically after a set period. Because they are tied to a person, a user API key is affected if that user's access changes or they leave the workspace. Creating personal API keys requires a [Full Seat](/docs/overview/administration/workspaces/members#full-seats).
 * **Service account API keys** belong to a [service account](/docs/overview/administration/workspaces/service-accounts) rather than an individual, so they keep working regardless of changes to individual membership. They are recommended for backend systems, automation, and production workloads. Service accounts are available to multi-seat customers and are managed by workspace admins.
 
 **Your API key is a secret.** Do not share it with others or expose it in client-side code (browsers, apps). For details on how to send your key with a request, see the [API Authentication](/docs/api-reference/authentication) reference.
@@ -22,6 +22,17 @@ Both types of key can be restricted in several ways:
 1. **Scope restriction:** limit which API endpoints the key can access.
 2. **Credit quota:** set a custom credit limit to control usage.
 3. **IP allowlisting:** restrict the key to specific IP addresses or CIDR ranges. See [IP allowlisting](#ip-allowlisting).
+
+## Expiring user API keys
+
+User API keys can be given an expiry so they stop working automatically after a set period. This limits the window in which a leaked or forgotten key can be used and suits the short-lived nature of keys tied to an individual.
+
+Set an expiry when you create or edit a key from your [personal API keys settings](https://elevenlabs.io/app/settings/api-keys). Use the **Expire After** selector to choose a preset ranging from 15 minutes to 30 days, or leave it as **Never** (the default). The **Expires** column shows when each key will lapse.
+
+Once a key passes its expiry it stops authenticating, and requests made with it are rejected with a [`401` error](/docs/eleven-api/resources/errors). You can extend or clear the expiry by editing the key before it lapses; otherwise, [rotate](#rotating-api-keys) to a new key.
+
+Expiry applies only to user API keys. Service account API keys are intended for long-lived backend
+and production workloads, so they do not expire.
 
 ## Rotating API keys
 

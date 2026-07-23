@@ -71,21 +71,57 @@ The examples below use these example IDs, which you should replace with your own
 
 ## Create a shadow experiment
 
-Create an experiment that samples 10% of gateway traffic uniformly and mirrors it to one target. The CLI's `shadow` command creates a new shadow deployment from a model, then starts mirroring sampled traffic to it. The SDK mirrors to an existing target deployment, with the sampling strategy in the `source.endpoint` block:
+Create an experiment that samples 10% of gateway traffic uniformly and mirrors it to one target.
 
-```bash theme={null}
-tg beta endpoints shadow \
-  --endpoint ep_abc123 \
-  --model ml_CbJNwQC2ZqCU2iFT3mrCh \
-  --rate 0.1 \
-  --name candidate-v2
-```
+<Tabs>
+  <Tab title="CLI">
+    The CLI's `shadow` command creates a new shadow deployment from a model, then starts mirroring sampled traffic to it (the SDK mirrors to an existing target deployment instead, with the sampling strategy in the `source.endpoint` block):
 
-Note the experiment ID (`exp_...`) from the response. You use it to inspect, update, or delete the experiment.
+    ```bash theme={null}
+    tg beta endpoints shadow \
+      --endpoint ep_abc123 \
+      --model ml_CbJNwQC2ZqCU2iFT3mrCh \
+      --rate 0.1 \
+      --name candidate-v2
+    ```
 
-<Note>
-  `name` is immutable after creation and must be unique within the endpoint. `description` can't be set on create. Set it by [updating the experiment](#update-an-experiment).
-</Note>
+    Note the experiment ID (`exp_...`) from the response. You use it to inspect, update, or delete the experiment.
+
+    <Note>
+      `name` is immutable after creation and must be unique within the endpoint. `description` can't be set on create. Set it by [updating the experiment](#update-an-experiment).
+    </Note>
+  </Tab>
+
+  <Tab title="Console">
+    The console mirrors to a target deployment you've already created, so first add the candidate to the endpoint at traffic weight `0` (see [Create a deployment](/docs/dedicated-endpoints/manage#create-a-deployment)).
+
+    <Steps>
+      <Step title="Open the shadow test form">
+        On the endpoint, select the **Traffic Tests** tab, then **New shadow test**.
+      </Step>
+
+      <Step title="Name the test">
+        Enter a **Name** and an optional **Description**. The **Source deployment** is the endpoint's live deployment and is fixed.
+      </Step>
+
+      <Step title="Choose the target">
+        Select the weight-`0` candidate as the **Target deployment**.
+      </Step>
+
+      <Step title="Set the sampling strategy">
+        Choose a **Sampling strategy** (Uniform, Key-based, Adaptive, or Adaptive + key) and set the **Sample rate**.
+      </Step>
+
+      <Step title="Create the test">
+        Select **Create shadow test**.
+      </Step>
+    </Steps>
+
+    <Frame>
+      <img alt="The New shadow test dialog in the Together AI console, with name and description fields, source and target deployment pickers, a sampling-strategy selector offering Uniform, Key-based, Adaptive, and Adaptive plus key, and a sample-rate input." />
+    </Frame>
+  </Tab>
+</Tabs>
 
 After creating the experiment, [send requests](/docs/dedicated-endpoints/requests) to the endpoint as you normally would, using the endpoint string as the `model` field. The request path doesn't change, but a sampled fraction of requests is mirrored to each target in the background.
 
@@ -162,6 +198,8 @@ Deletion cascade-deletes all targets, and mirroring stops shortly after. The CLI
 ```bash theme={null}
 tg beta endpoints rm exp_abc123
 ```
+
+In the console, stop a shadow test from its actions menu on the endpoint's **Traffic Tests** tab.
 
 ## Troubleshooting
 

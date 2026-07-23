@@ -9566,7 +9566,7 @@ The Agent Server API provides several endpoints for creating and managing assist
   Assistants are a [LangSmith Deployment](/langsmith/deployment) concept. They are not available in the open source LangGraph library.
 </Info>
 
-## Default assistants
+## How assistants work with deployments
 
 When you deploy a graph with LangSmith Deployment, [Agent Server](/langsmith/agent-server) automatically creates a **default assistant** tied to that graph's default configuration. You can then create additional assistants for the same graph, each with its own configuration.
 
@@ -9581,6 +9581,8 @@ If your deployment defines multiple graphs in [`langgraph.json`](/langsmith/appl
 }
 ```
 
+That is, there can be multiple default assistants—one for each graph defined in your deployment.
+
 Assistants have several key features:
 
 * **[Managed via API and UI](/langsmith/configuration-cloud)**: Create, list, update, version, and get assistants using the Agent Server/LangGraph SDKs or the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-assistants).
@@ -9591,13 +9593,13 @@ Assistants have several key features:
 <Note>
   When invoking an assistant, you can specify either in [`langgraph.json`](/langsmith/application-structure#configuration-file):
 
-  * A **graph ID** (the key in `langgraph.json`, e.g., `"agent"`): Uses the default assistant for that graph.
-  * An **assistant ID** (UUID): Uses a specific assistant configuration.
+  * A **graph ID** (e.g., `"agent"`): Uses the default assistant for that graph
+  * An **assistant ID** (UUID): Uses a specific assistant configuration
 
   This flexibility allows you to quickly test with default settings or precisely control which configuration is used.
 </Note>
 
-## Configuration
+### Configuration
 
 Assistants build on the LangGraph open source concept of [configuration](/oss/python/langgraph/graph-api#runtime-context).
 
@@ -9659,47 +9661,6 @@ graph TD
     style C fill:#B3E0F2,stroke:#4A90E2,stroke-width:2px,color:#1E3A5F
     style D fill:#B3E0F2,stroke:#4A90E2,stroke-width:2px,color:#1E3A5F
 ```
-
-## How assistants work with deployments
-
-When you deploy a graph with LangSmith Deployment, [Agent Server](/langsmith/agent-server) automatically creates a **default assistant** tied to that graph's default configuration. You can then create additional assistants for the same graph, each with its own configuration.
-
-If your deployment defines multiple graphs in [`langgraph.json`](/langsmith/application-structure#configuration-file), each graph gets its own default assistant:
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-    "graphs": {
-        "graph_id_1": "path_to_graph_id_1",  // default assistant created for graph_id_1
-        "graph_id_2": "path_to_graph_id_2"   // default assistant created for graph_id_2
-    }
-}
-```
-
-That is, there can be multiple default assistants—one for each graph defined in your deployment.
-
-Assistants have several key features:
-
-* **[Managed via API and UI](/langsmith/configuration-cloud)**: Create, list, update, version, and get assistants using the Agent Server/LangGraph SDKs or the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-assistants).
-* **One graph, multiple assistants**: A single deployed graph can support multiple assistants, each with different configurations (e.g., prompts, models, tools).
-* **[Versioned](#versioning) configurations**: Each assistant maintains its own configuration history through versioning. Editing an assistant creates a new version, and you can promote or roll back to any version.
-* **[Configuration](#configuration) updates without graph changes**: Update prompts, model selection, and other settings through assistant configurations, enabling rapid iteration without modifying or redeploying your graph code.
-
-<Note>
-  When invoking an assistant, you can specify either in [`langgraph.json`](/langsmith/application-structure#configuration-file):
-
-  * A **graph ID** (e.g., `"agent"`): Uses the default assistant for that graph
-  * An **assistant ID** (UUID): Uses a specific assistant configuration
-
-  This flexibility allows you to quickly test with default settings or precisely control which configuration is used.
-</Note>
-
-### Configuration
-
-Assistants build on the LangGraph open source concept of [configuration](/oss/python/langgraph/graph-api#runtime-context).
-
-While configuration is available in the open source LangGraph library, assistants are only present in [LangSmith Deployment](/langsmith/deployment) because they are tightly coupled to your deployed graph. Upon deployment, [Agent Server](/langsmith/agent-server) will automatically create a default assistant for each graph using the graph's default configuration settings.
-
-In practice, an assistant is just an *instance* of a graph with a specific configuration. Therefore, multiple assistants can reference the same graph but can contain different configurations (e.g. prompts, models, tools). The LangSmith Deployment API provides several endpoints for creating and managing assistants. See the [API reference](/langsmith/server-api-ref) and [this how-to](/langsmith/configuration-cloud) for more details on how to create assistants.
 
 ### Versioning
 
@@ -11129,7 +11090,7 @@ First let's set up our client and thread:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -11172,7 +11133,7 @@ If we list the current runs on this thread, we will see that it's empty:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
@@ -11205,7 +11166,7 @@ Now let's kick off a run:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
@@ -11232,7 +11193,7 @@ The first time we poll it, we can see `status=pending`:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
@@ -11303,7 +11264,7 @@ Now we can join the run, wait for it to finish and check that status again:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join &&
@@ -11376,7 +11337,7 @@ Perfect! The run succeeded as we would expect. We can double check that the run 
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state
@@ -11553,7 +11514,7 @@ We can also just print the content of the last AIMessage:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | jq -r '.values.messages[-1].content.[0].text'
@@ -12382,7 +12343,7 @@ Create a client and thread:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -12435,7 +12396,7 @@ Use **interrupt** when you want to stop a run but keep it for debugging, auditin
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run (use the run_id and thread_id from the response)
     curl --request POST \
@@ -12500,7 +12461,7 @@ Use **rollback** when you want to fully discard a run and its effects (for examp
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run, then cancel with rollback
     curl --request POST \
@@ -12563,7 +12524,7 @@ By default, the cancel request returns after the cancellation is requested and t
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run
     curl --request POST \
@@ -12625,7 +12586,7 @@ Cancel specific runs by passing their IDs.
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create two runs (capture run_id from each response)
     curl --request POST \
@@ -12689,7 +12650,7 @@ Cancel all runs that match a status across all threads in a deployment. Valid st
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a run
     curl --request POST \
@@ -12803,7 +12764,7 @@ When starting a run with streaming or when waiting on a run, you can set `on_dis
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # runs.wait: create run and wait for output; cancel if client disconnects
     curl --request POST \
@@ -12870,6 +12831,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability) and [LangSmith Fle
 
       ### Datasets and experiments
 
+      * The legacy feedback formula endpoints (`POST/GET /feedback/formulas` and `GET/PUT/DELETE /feedback/formulas/{feedback_formula_id}`) that back composite scores are deprecated in favor of [composite evaluators](/langsmith/composite-evaluators-ui), which implement a composite score as a code evaluator plus a run rule, and are scheduled for removal on 2026-08-20. Migrate existing feedback formulas to the new composite model.
       * Model, prompt, and tool chips in the Experiments table config cells now lay out from real measurements for accurate truncation, and the +N overflow badge is a clickable dropdown whose entries expose the same actions (filter, group by, open in playground, and details) as a chip's own menu.
       * Expanding the run tree for repetition runs in [experiment comparison](/langsmith/compare-experiment-results) views now works reliably when a repetition root has a project ID but no session ID.
       * [Evaluators](/langsmith/evaluators) linked to Hub prompts now load correctly for flat and playground-shaped prompt commits, fixing crashes when editing existing evaluators.
@@ -20719,7 +20681,7 @@ First, let's set up our SDK client, assistant, and thread:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
@@ -20781,7 +20743,7 @@ To create a cron job associated with a specific thread, you can write:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/crons \
@@ -20808,7 +20770,7 @@ Note that it is **very** important to delete `Cron` jobs that are no longer usef
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request DELETE \
         --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
@@ -20845,7 +20807,7 @@ You can also create stateless cron jobs by using the following code. Stateless c
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/crons \
@@ -20872,7 +20834,7 @@ Again, remember to delete your job once you are done with it!
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request DELETE \
         --url <DEPLOYMENT_URL>/runs/crons/<CRON_ID>
@@ -20934,7 +20896,7 @@ Every time a stateless cron is triggered, a new thread is created. Control what 
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # Create a stateless cron that keeps threads after execution.
     # Configure checkpointer.ttl in langgraph.json to auto-delete old threads.
@@ -21083,7 +21045,7 @@ To leverage custom authentication and access user-level metadata in your deploym
        ```
      </Tab>
 
-     <Tab title="CURL">
+     <Tab title="cURL">
        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
        curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
        ```
@@ -22135,7 +22097,9 @@ Dashboards give you high-level insights into your [trace](/langsmith/observabili
 LangSmith offers two dashboard types:
 
 * **Prebuilt dashboards**: Automatically generated for every tracing project.
-* **Custom dashboards**: Fully configurable collections of charts tailored to your needs.
+* **Custom dashboards**: Collections of charts you can configure to your needs. Two experiences are available depending on your [platform setup](/langsmith/platform-setup):
+  * [**Custom dashboards**](#custom-dashboards): Available for LangSmith Cloud US.
+  * [**Custom dashboards (legacy)**](#custom-dashboards-legacy): Available for LangSmith Self-hosted and LangSmith Cloud EU/APAC.
 
 ## Prebuilt dashboards
 
@@ -22161,6 +22125,115 @@ You can use group by [run tag or metadata](/langsmith/add-metadata-tags) to spli
 <Note>When adding metadata to runs, we recommend having the same metadata on the trace, as well as the specific run (e.g., LLM call). Metadata and tags are not propagated from parent to child runs, or vice versa. If you want to see both trace charts and LLM call charts grouped by a metadata key, both traces (root runs) and LLM runs need that [metadata attached](/langsmith/add-metadata-tags).</Note>
 
 ## Custom dashboards
+
+<Note>Available for LangSmith [Cloud](/langsmith/cloud) US.</Note>
+
+Create tailored collections of charts for tracking metrics that matter most for your application.
+
+### Create a new dashboard
+
+1. Navigate to the **Monitoring** tab in the left sidebar.
+2. Click on the **+ New Dashboard** button.
+3. Give your dashboard a name and a description.
+4. Click on **Create**.
+
+### Add charts to your dashboard
+
+1. Within a dashboard, click the **+ New Chart** button to open the chart creation pane.
+2. Give your chart a name and description using the **Edit** icon at the top of the pane.
+
+### Chart configuration
+
+#### Start from a template (Optional)
+
+To start from a template, select one of the templates, which include some common observability use cases:
+
+* Error rate over time
+* Average latency by model
+* Run volume
+* Token usage over time
+* Most expensive models
+
+Alternatively, use **Search templates** to find another template.
+
+#### Choose a tracing project or dataset
+
+Open **+ Select project or dataset** to find sources. Switch between the two source types with the tabs at the top of the popover.
+
+* **Tracing projects**: add one or multiple as needed per chart. Metrics are computed by pooling runs across every selected project into a single set, not shown per project. To break out results per project, use [Group by](#filter-and-group).
+* **Datasets**: pick a single dataset per chart.
+  * Selecting a second dataset silently replaces the previous one.
+  * A chart is either tracing-project-backed or dataset-backed. Picking a dataset while projects are selected (or vice versa) clears the existing selection.
+
+#### Pick a metric
+
+Choose a metric from the dropdown. Options are grouped by what you are measuring:
+
+| Metric              | Description                                                                                                       | Aggregations                     |
+| :------------------ | :---------------------------------------------------------------------------------------------------------------- | :------------------------------- |
+| Count               | Number of runs.                                                                                                   | —                                |
+| Latency             | Aggregates over `latency_seconds`.                                                                                | Average, Percentile (p50 or p99) |
+| Time to first token | Aggregates over `first_token_seconds`.                                                                            | Percentile (p50 or p99), Average |
+| Tokens              | Choose Total, Input, or Output tokens.                                                                            | Sum, Average, Percentile         |
+| Cost                | Choose Total, Input, or Output cost.                                                                              | Sum, Average, Percentile         |
+| Feedback score      | Select a feedback key.                                                                                            | Average, Minimum, Maximum        |
+| Ratio               | Define a numerator and denominator, each a metric with its own filter. Useful for error rate, LLM run share, etc. | —                                |
+
+For filtering with multiple metrics, read the following [Filter and group](#filter-and-group) section.
+
+#### Filter and group
+
+Refine what data appears on the chart with filters, and split it into multiple series with a group.
+
+Where **filters** appear depends on how many metrics your chart has:
+
+* **Single metric**: one **+ Filter** in the **Filter & group** panel (the `where` slot). It applies to that metric.
+* **Multiple metrics or a ratio**: each metric (or ratio) gets its own **+ Filter** inline in its card under **Pick a metric**. There is no separate chart-wide filter.
+
+When you add a filter, it defaults to filtering at the [run](/langsmith/observability-concepts#runs) level. To broaden the scope, open the filter picker, then the **Advanced** submenu at the bottom, and choose:
+
+* **Trace filter**: filters at the [trace](/langsmith/observability-concepts#traces) (root-run) level.
+* **Tree filter**: includes the entire trace tree if any run in it matches the condition.
+
+The active scope appears as a suffix on the **Advanced** item (for example, **Advanced Tree Filter**). Click the **X** next to it to reset back to a plain run filter.
+
+Dataset sources do not expose run/trace/tree filters. Data is scoped by the selected dataset. For filter syntax, refer to [filtering traces in application](/langsmith/filter-traces-in-application).
+
+**Grouping** creates multiple series on the same chart in one of two ways:
+
+1. **Group by**: Automatically splits data into series based on one attribute. Available attributes: Run Name, Run Type, Tag, Project, [Metadata](/langsmith/add-metadata-tags) (with a path such as `metadata.ls_model_name`), and Feedback Label. Groups are ranked by frequency and capped at the top 20.
+2. **Data series**: Manually add metrics with the **Add another metric** button. Each series can carry its own filter, so you can compare, for example, "count where status is error" against "count where status is success" on the same chart.
+
+<Note>
+  Group by and multi-metric are mutually exclusive on a single chart. Only one group-by attribute is allowed. Donut, ranked bar, and table charts do not support multiple data series (extras are dropped or blocked).
+</Note>
+
+#### Choose visualization
+
+Choose a visualization type:
+
+* Line
+* Stacked bar
+* KPI
+* Ranked bar
+* Donut
+* Table
+
+### Save and manage charts
+
+* Click **Save** to save your chart to the dashboard.
+* Edit or delete a chart by clicking the triple dot button in the top right of the chart.
+* Clone a chart by clicking the triple line button in the top right of the chart and selecting **+ Clone**. This will open a new chart creation pane with the same configurations as the original.
+
+### Arrange your dashboard
+
+* **Reorder charts**: drag any chart by its header to move it in the grid.
+* **Dashboard time range**: set once at the top of the dashboard. Every chart uses this range unless it overrides its own bucket size.
+* **Clone a dashboard**: use the copy icon in the dashboard header. Cloning a [prebuilt dashboard](#prebuilt-dashboards) converts its charts into fully editable custom charts.
+
+## Custom dashboards (legacy)
+
+<Note>Available for LangSmith [Self-hosted](/langsmith/self-hosted) and LangSmith [Cloud](/langsmith/cloud) EU/APAC customers.</Note>
 
 Create tailored collections of charts for tracking metrics that matter most for your application.
 
@@ -30660,7 +30733,7 @@ Enqueue is the default double texting (multi-tasking) strategy when creating run
 
 ## Setup
 
-First, we will define a quick helper function for printing out JS and CURL model outputs (you can skip this if using Python):
+First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
   <Tab title="Javascript">
@@ -30678,7 +30751,7 @@ First, we will define a quick helper function for printing out JS and CURL model
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
@@ -30731,7 +30804,7 @@ Then, let's import our required packages and instantiate our client, assistant, 
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -30779,7 +30852,7 @@ Now let's start two runs, with the second interrupting the first one with a mult
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
@@ -30828,7 +30901,7 @@ Verify that the thread has data from both runs:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
@@ -48692,7 +48765,7 @@ The guide covers the `interrupt` option for double texting, which interrupts the
 
 ## Setup
 
-First, we will define a quick helper function for printing out JS and CURL model outputs (you can skip this if using Python):
+First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
   <Tab title="Javascript">
@@ -48710,7 +48783,7 @@ First, we will define a quick helper function for printing out JS and CURL model
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
@@ -48761,7 +48834,7 @@ Now, let's import our required packages and instantiate our client, assistant, a
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -48822,7 +48895,7 @@ Now we can start our two runs and join the second one until it has completed:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
@@ -48867,7 +48940,7 @@ We can see that the thread has partial data from the first run + data from the s
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
@@ -52709,6 +52782,97 @@ Routing through the gateway requires no application code changes.
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Rate limit policies
+Source: https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies
+
+Limit the number of requests or tokens a user, workspace, or API key can send through the LLM Gateway in a rolling time window.
+
+<Note>
+  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+</Note>
+
+A rate limit policy restricts how many **requests** or **tokens** a subject can consume through the [LLM Gateway](/langsmith/llm-gateway) in a short rolling time window. The gateway enforces the limit in real time and blocks any request that would push the subject past it, returning a `429` response with a `Retry-After` header:
+
+```
+API Error: 429 request blocked by gateway policies: Dev Team Rate Limit
+Retry-After: 42
+```
+
+The `Retry-After` value is the number of seconds until the current window resets. Clients should honor this header and back off before retrying.
+
+Rate limit policies and [spend cap policies](/langsmith/llm-gateway-spend-policies) are complementary and can be applied together—spend caps for cost control, rate limits for throughput and traffic control.
+
+## Policy dimensions
+
+Rate limit policies are evaluated for every incoming request. You can set a policy as a default (applying a blanket rate limit to all users, [workspaces](/langsmith/administration-overview#workspaces), or [API keys](/langsmith/create-account-api-key) or as a granular policy (an individual limit or a limit on a group of subjects).
+
+| Subject       | What it limits                                                                                 | Example                                                                    |
+| ------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **User**      | Requests or tokens from a single user or group of users (resolved from the API key's identity) | "No individual developer can send more than 100 requests per minute"       |
+| **Workspace** | Requests or tokens within a single workspace or group of workspaces                            | "The R\&D workspace cannot exceed 1,000,000 tokens per hour"               |
+| **API key**   | Requests or tokens from a single API key or group of API keys                                  | "The customer support agent keys share a limit of 200 requests per minute" |
+
+### Defaults vs. granular policies
+
+Rate limit policies have two modes:
+
+1. **Default policies** apply automatically to every member of a subject dimension. Example: "Every user in this workspace gets a default cap of 100 requests per minute." No need to create a policy per person.
+2. **Granular policies** target a named subject and override the default for that subject only. Example: "The on-call engineer gets 500 requests per minute." Editing the default updates everyone still on it.
+
+### Independent enforcement
+
+Each subject is tracked and enforced separately. One user hitting their limit does not affect other users.
+
+## Limits
+
+A single rate limit policy can enforce **multiple limits at once**. For example, one policy can enforce both *100 requests per minute* and *1,000,000 tokens per hour* simultaneously.
+
+Each limit has three fields:
+
+| Field      | Allowed values                                                    |
+| ---------- | ----------------------------------------------------------------- |
+| **Metric** | `requests` or `tokens` (total tokens as reported by the provider) |
+| **Window** | `minute` or `hour`                                                |
+| **Value**  | A positive integer (the cap)                                      |
+
+Rules:
+
+* At least one limit is required per policy.
+* You cannot have two limits with the same metric and window combination within one policy.
+
+## Create a rate limit policy
+
+<Warning>
+  Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
+</Warning>
+
+1. Go to **Settings → Gateway → LLM Gateway**.
+2. Click **Create policy**.
+3. Select **Rate limit** as the policy type.
+4. Select the subject scope (user, workspace, or API key).
+5. Add one or more limits, each with a metric, window, and value.
+6. Save.
+
+Policies take effect immediately.
+
+## Next steps
+
+* [Spend policies](/langsmith/llm-gateway-spend-policies): set cost caps alongside rate limits.
+* [PII and secrets redaction](/langsmith/llm-gateway-redaction): add data protection policies.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-rate-limit-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -59964,10 +60128,213 @@ Source: https://docs.langchain.com/langsmith/managed-deep-agents
 </div>
 
 
+# Add a GitHub channel to Managed Deep Agents
+Source: https://docs.langchain.com/langsmith/managed-deep-agents-channels/github
+
+Declare a GitHub App webhook channel so any webhook event can invoke your agent and optionally reply with an issue or PR comment.
+
+The GitHub channel lets a GitHub App send webhooks to your Managed Deep Agent. You declare **handlers** under `channels/` (event filter + `prompt`), point the App webhook at your deployment, and the runtime verifies signatures, runs the agent, and can auto-reply as a pull request or issue comment.
+
+<Note>
+  Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
+</Note>
+
+For the channel model and current limits, see [Channels](/langsmith/managed-deep-agents-channels).
+
+This page covers the **channel** (conversation ingress/egress). Use the [GitHub connector](/langsmith/managed-deep-agents-connectors/github) for sandbox checkouts, or Connect-with-GitHub under [identity](/langsmith/managed-deep-agents-identity) for user OAuth.
+
+## Prerequisites
+
+* A Managed Deep Agents project with a root [identity](/langsmith/managed-deep-agents-identity) declaration (`channels/` requires identity).
+* A [GitHub App](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps) you control (customer-brought App), installed on the target org or repos.
+* Deploy or local Agent Server URL for the webhook (after first deploy, copy it from the LangSmith deployment dashboard).
+
+## Add a GitHub channel
+
+Add `channels/github.py` or `channels/github.ts` next to your agent entry. The file name becomes the channel name (`github` → `POST /channels/github/events`). Export a named `channel` created with `define_github_channel` / `defineGitHubChannel`.
+
+Handlers are ordered: the first match for a delivery wins. Each handler needs `on` and a `prompt` callback that builds the **human message** for that turn. The agent system prompt remains `instructions.md`.
+
+<CodeGroup>
+  ```python channels/github.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from managed_deepagents.channels.github import define_github_channel
+
+  channel = define_github_channel(
+      handlers=[
+          {
+              "on": "pull_request.opened",
+              "repositories": ["acme/api"],  # optional; omit = any repo
+              "auto_reply": True,  # default; comment when address is owner/repo#N
+              "prompt": lambda event: (
+                  f"Review {event['repository']}#"
+                  f"{event.get('issue_or_pull_number')}: "
+                  f"{event['payload']['pull_request']['title']}"
+              ),
+          },
+      ],
+  )
+  ```
+
+  ```ts channels/github.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import type { PullRequestOpenedEvent } from "@octokit/webhooks-types";
+  import { defineGitHubChannel } from "managed-deepagents/channels/github";
+
+  export const channel = defineGitHubChannel({
+    handlers: [
+      {
+        on: "pull_request.opened",
+        repositories: ["acme/api"], // optional; omit = any repo
+        autoReply: true, // default; comment when address is owner/repo#N
+        prompt(event) {
+          // MDA keeps payload untyped — narrow with Octokit in the agent project
+          const pr = event.payload as PullRequestOpenedEvent;
+          return `Review ${event.repository}#${pr.pull_request.number}: ${pr.pull_request.title}`;
+        },
+      },
+    ],
+  });
+  ```
+</CodeGroup>
+
+Pair with a shared-bot (or equivalent) identity for channel-only installs. The channel actor is the installation/service principal `github-app:<installationId>`, not the pull request author. Replies use the App installation token—Connect-with-GitHub OAuth is not required for this path.
+
+### Event filters (`on`)
+
+Any GitHub webhook event is accepted. Filter with `on`:
+
+| `on` value              | Matches                              |
+| ----------------------- | ------------------------------------ |
+| `"pull_request"`        | Any action for that `X-GitHub-Event` |
+| `"pull_request.opened"` | Event + `payload.action`             |
+| `"*"`                   | Every delivery                       |
+
+Managed Deep Agents does **not** ship copies of GitHub webhook payload schemas. The envelope passes common routing fields (`eventName` / `event_name`, `action`, `repository`, `issueOrPullNumber` / `issue_or_pull_number`, …) and leaves the verified JSON on `payload` as untyped. In TypeScript, narrow with [`@octokit/webhooks-types`](https://www.npmjs.com/package/@octokit/webhooks-types). In Python, narrow with your own TypedDicts or runtime checks.
+
+### `prompt` vs `instructions.md`
+
+| Source                  | Role                                                |
+| ----------------------- | --------------------------------------------------- |
+| `instructions.md`       | Agent **system** prompt (shared across turns)       |
+| Handler `prompt(event)` | **Human** message for that webhook turn (task text) |
+
+## How GitHub webhooks work
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+flowchart LR
+    A["GitHub webhook"] --> B["POST /channels/github/events"]
+    B --> C["Verify HMAC + ack 202"]
+    C --> D["Match handler + prompt"]
+    D --> E["Trusted loopback run"]
+    E --> F["Optional issue/PR comment"]
+
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710;
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33;
+    class A,B,C,D,E process;
+    class F output;
+```
+
+1. GitHub POSTs to `https://<agent-server>/channels/github/events` (the file stem `github` becomes the path segment).
+2. The runtime verifies `X-Hub-Signature-256` against `GITHUB_WEBHOOK_SECRET`, dedupes on `X-GitHub-Delivery`, and returns HTTP 202.
+3. It picks the first matching handler, calls `prompt` to build the inbound text, then invokes the graph over trusted loopback with actor and source-thread identity (`source.provider: "github"`).
+4. When the matched handler has `autoReply` enabled and the conversation address is `owner/repo#N`, it posts the agent response as an issue/PR comment with the App installation token. Events without an issue/PR number skip the comment even when `autoReply` is `true`.
+
+LangGraph auth is bypassed only on `POST /channels/{name}/events` so GitHub can deliver without an ingress secret; the loopback invoke still uses `MDA_INGRESS_SECRET`.
+
+## Channel options
+
+Top-level option:
+
+| Option     | Default      | Meaning                                 |
+| ---------- | ------------ | --------------------------------------- |
+| `handlers` | *(required)* | Ordered handler list. First match wins. |
+
+Per-handler options (Python / TypeScript):
+
+| Option                     | Default      | Meaning                                                               |
+| -------------------------- | ------------ | --------------------------------------------------------------------- |
+| `on`                       | *(required)* | Event filter: `event`, `event.action`, or `*`                         |
+| `prompt`                   | *(required)* | Builds the human message for the agent turn from the webhook envelope |
+| `repositories`             | *(none)*     | Allowlist of `owner/repo` full names; omit = any repo                 |
+| `auto_reply` / `autoReply` | `true`       | Post the agent response as an issue/PR comment when addressable       |
+
+Compile extracts only `{ on, repositories, autoReply }` into the deploy manifest. Live `prompt` callbacks stay on the imported channel module.
+
+## Required secrets
+
+Put these in the project `.env` (or LangSmith workspace secrets) before `mda deploy`. Deploy preflights each channel’s `requiredEnv` from the compiled manifest.
+
+| Variable                 | Required                                                    | Role                                               |
+| ------------------------ | ----------------------------------------------------------- | -------------------------------------------------- |
+| `GITHUB_WEBHOOK_SECRET`  | Yes                                                         | Verifies `X-Hub-Signature-256`                     |
+| `GITHUB_APP_ID`          | Yes                                                         | App id for JWT minting                             |
+| `GITHUB_APP_PRIVATE_KEY` | Yes                                                         | PEM private key for the App                        |
+| `GITHUB_INSTALLATION_ID` | Yes                                                         | Installation the channel acts as (single-install)  |
+| `MDA_INGRESS_SECRET`     | Yes when identity uses trusted loopback / `trusted_backend` | Trusted invoke from the Events path into the graph |
+
+## Configure the GitHub App
+
+1. Create a GitHub App (or reuse one you control) with permissions implied by your handlers (at minimum `metadata:read`; `issues:write` and `pull_requests:read` when any handler has `autoReply` enabled). Tighten App permissions in GitHub settings to match what you actually use.
+2. Subscribe the App to the webhook events your handlers need (for example `Pull request` for `pull_request.opened`, or broader events if you use `"*"` / event-level filters).
+3. Set the webhook URL to `https://<agent-server>/channels/github/events` and configure the webhook secret as `GITHUB_WEBHOOK_SECRET`.
+4. Install the App on the target org or repositories and copy the installation id into `GITHUB_INSTALLATION_ID`.
+5. Copy the App id and private key into `GITHUB_APP_ID` and `GITHUB_APP_PRIVATE_KEY`.
+
+## Deploy and smoke-test
+
+1. Put GitHub App secrets in `.env` and ensure [identity](/langsmith/managed-deep-agents-identity) is declared.
+2. Run `mda deploy` (or `mda dev` with a reachable webhook URL).
+3. Trigger a matching webhook (for example open a pull request on an allowed repository).
+4. Confirm the agent run appears in LangSmith and, when `autoReply` is `true` and the event has an issue/PR number, a comment appears.
+
+Test the project locally with [`mda dev`](/langsmith/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
+
+## Troubleshooting
+
+| Symptom                                  | Likely cause                                                                                                                             |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Webhook deliveries fail signature checks | Wrong `GITHUB_WEBHOOK_SECRET`, or body was rewritten before verification                                                                 |
+| Events ACK but agent never runs          | Missing `MDA_INGRESS_SECRET`, no handler matched (`on` / `repositories`), or `prompt` returned empty text                                |
+| Deploy fails citing GitHub secrets       | `channels/` GitHub channel present but App env vars missing from `.env` / workspace secrets                                              |
+| Auto-reply skipped                       | Handler `autoReply` is `false`, event has no issue/PR number, missing App JWT/installation credentials, or App lacks comment permissions |
+| Double comments on Host                  | Delivery dedupe is process-local; GitHub retries can double-invoke on multi-replica Host                                                 |
+
+## Next steps
+
+<CardGroup>
+  <Card title="Channels" icon="messages" href="/langsmith/managed-deep-agents-channels">
+    See how channel discovery and Events ingress work.
+  </Card>
+
+  <Card title="Slack" icon="brand-slack" href="/langsmith/managed-deep-agents-channels/slack">
+    Add a Slack Events channel alongside GitHub.
+  </Card>
+
+  <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
+    Choose identity presets for channel callers.
+  </Card>
+
+  <Card title="Deploy an agent" icon="upload" href="/langsmith/managed-deep-agents-deploy">
+    Route secrets and deploy the channel-enabled agent.
+  </Card>
+</CardGroup>
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels/github.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Connect messaging channels to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/managed-deep-agents-channels/index
 
-Declare messaging channels under channels/ so Managed Deep Agents can receive events and reply from Slack and future providers.
+Declare messaging channels under channels/ so Managed Deep Agents can receive events and reply from Slack, GitHub, and future providers.
 
 Managed Deep Agents discovers channel modules under `channels/`. Each file is a messaging ingress: the managed runtime mounts a public Events URL, verifies the provider signature, invokes your agent with [identity](/langsmith/managed-deep-agents-identity) stamps, and can auto-reply on the same conversation.
 
@@ -59977,38 +60344,41 @@ Managed Deep Agents discovers channel modules under `channels/`. Each file is a 
 
 ## Channel types
 
-| Channel                                                | File                      | What it does                                                                                                               |
-| ------------------------------------------------------ | ------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| [Slack](/langsmith/managed-deep-agents-channels/slack) | `channels/slack.{py\|ts}` | Receives Slack Events (`app_mention`, DMs, thread replies), runs the agent, and optionally replies with the Slack Web API. |
+| Channel                                                  | File                       | What it does                                                                                                                            |
+| -------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| [Slack](/langsmith/managed-deep-agents-channels/slack)   | `channels/slack.{py\|ts}`  | Receives Slack Events (`app_mention`, DMs, thread replies), runs the agent, and optionally replies with the Slack Web API.              |
+| [GitHub](/langsmith/managed-deep-agents-channels/github) | `channels/github.{py\|ts}` | Receives GitHub App webhooks (any event via handlers), runs the agent as the App installation, and optionally comments on the issue/PR. |
 
-Slack is the supported channel today. Declare each channel as its own file under `channels/`, you do not register channels in the agent entry.
+Declare each channel as its own file under `channels/`; you do not register channels in the agent entry.
+
+Channels receive provider events. Connectors add tools, HTTP capabilities, or sandbox setup, while identity connect links a user's external account. For a comparison, see [Choose the right integration](/langsmith/managed-deep-agents-connectors#choose-the-right-integration).
 
 For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
 
 ## How channels work
 
-1. You declare a channel under `channels/` (for example `defineSlackChannel` / `define_slack_channel`).
+1. You declare a channel under `channels/` (for example `defineSlackChannel` / `defineGitHubChannel`).
 2. Compile and deploy discover the file name as the channel name (`channels/slack.ts` → `slack`).
-3. The runtime mounts provider ingress for that channel on the Agent Server.
+3. The runtime mounts provider ingress for that channel on the Agent Server (`POST /channels/{name}/events`).
 4. Inbound messages invoke your agent with [identity](/langsmith/managed-deep-agents-identity) stamps so tools and memory see the same caller model as HTTP runs.
 5. When enabled, the runtime can reply on the originating conversation.
 
-Channels require a root identity declaration. Provider-specific delivery details (for example Slack Events verification and auto-reply) live on each channel page, see [Slack](/langsmith/managed-deep-agents-channels/slack).
+Channels require a root identity declaration. Provider-specific delivery details live on each channel page.
 
 ## Identity and threading
 
-| Pattern              | Identity approach                                                   | Thread behavior                                                                                                                    |
-| -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Shared workspace bot | `shared-bot` preset (`threads: "channel"`)                          | Conversations are scoped by Slack source thread; Slack users stay as `slack:T…:U…` actors unless you add linking.                  |
-| Linked web + Slack   | `validated_token` (for example Supabase/guest) + Connect-with-Slack | Unlinked users get a connect prompt; linked users run as the web actor so browser and Slack share history when `threads: "actor"`. |
+| Pattern              | Identity approach                                                   | Thread behavior                                                                                                                          |
+| -------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared workspace bot | `shared-bot` preset (`threads: "channel"`)                          | Conversations are scoped by provider source thread (for example Slack `slack:T…:U…` or GitHub `github-app:<installationId>`).            |
+| Linked web + Slack   | `validated_token` (for example Supabase/guest) + Connect-with-Slack | Unlinked Slack users get a connect prompt; linked users run as the web actor so browser and Slack share history when `threads: "actor"`. |
 
-For Slack app setup, secrets, Event Subscriptions, and Connect-with-Slack, see [Slack](/langsmith/managed-deep-agents-channels/slack).
+The GitHub channel uses an installation/service actor and does not require Connect-with-GitHub. For Slack app setup, secrets, Event Subscriptions, and Connect-with-Slack, see [Slack](/langsmith/managed-deep-agents-channels/slack). For GitHub App webhooks, see [GitHub](/langsmith/managed-deep-agents-channels/github).
 
 ## Test and deploy
 
 Test the project locally with [`mda dev`](/langsmith/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-When `channels/` is present, `mda deploy` preflights Slack secrets (`SLACK_SIGNING_SECRET`, `SLACK_BOT_TOKEN`) before upload. Missing secrets fail the deploy early.
+When `channels/` is present, `mda deploy` preflights secrets listed in each compiled channel manifest’s `requiredEnv` (for example Slack’s signing secret and bot token, or GitHub App webhook/App credentials) before upload. Missing secrets fail the deploy early.
 
 ## Next steps
 
@@ -60017,12 +60387,12 @@ When `channels/` is present, `mda deploy` preflights Slack secrets (`SLACK_SIGNI
     Declare a Slack channel, configure the Slack app, and enable Connect-with-Slack.
   </Card>
 
-  <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
-    Choose `shared-bot` or linked `validated_token` for channel callers.
+  <Card title="GitHub" icon="brand-github" href="/langsmith/managed-deep-agents-channels/github">
+    Declare a GitHub App webhook channel with handlers for any event.
   </Card>
 
-  <Card title="Schedules" icon="calendar" href="/langsmith/managed-deep-agents-schedules">
-    Run managed cron schedules alongside channel bots.
+  <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
+    Choose `shared-bot` or linked `validated_token` for channel callers.
   </Card>
 
   <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
@@ -60320,7 +60690,7 @@ The `mda` CLI tests and deploys code-first [Managed Deep Agents](/langsmith/mana
   Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
 </Note>
 
-For the fastest end-to-end path, see the [quickstart](/langsmith/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/managed-deep-agents-identity), [Custom tools](/langsmith/managed-deep-agents-tools), [Custom middleware](/langsmith/managed-deep-agents-middleware), [Connectors](/langsmith/managed-deep-agents-connectors), [Schedules](/langsmith/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/managed-deep-agents-deploy).
+For the fastest end-to-end path, see the [quickstart](/langsmith/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/managed-deep-agents-identity), [Evals](/langsmith/managed-deep-agents-evals), [Custom tools](/langsmith/managed-deep-agents-tools), [Custom middleware](/langsmith/managed-deep-agents-middleware), [Connectors](/langsmith/managed-deep-agents-connectors), [Schedules](/langsmith/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/managed-deep-agents-deploy).
 
 ## Install
 
@@ -60338,7 +60708,7 @@ Install the package for the language you use to author your agent. Both packages
 
 For Python, `pip install --pre managed-deepagents` installs the `mda` CLI. A Python project generated by `mda init` has its own `pyproject.toml`; run `uv sync` inside that project to install project dependencies before local development or deploy.
 
-The TypeScript package provides `defineDeepAgent`, `defineIdentity`, `defineMcpServers`, `defineSchedule`, and `defineSandbox`. The Python package provides `define_deep_agent`, `define_identity`, `define_schedule`, `define_sandbox`, the `managed_deepagents.connectors` module, and the `mda` console script.
+The TypeScript package provides agent, identity, connector, channel, schedule, and sandbox authoring APIs. The Python package provides the same surfaces with snake-case names, plus the `mda` console script.
 
 ## Authentication
 
@@ -60368,6 +60738,7 @@ The LangSmith API key authenticates the deploy. The agent's model provider also 
 | `mda --help`        | Show CLI help.                                                      |
 | `mda --version`     | Show the installed CLI version.                                     |
 | `mda init <name>`   | Scaffold a TypeScript or Python Managed Deep Agents project.        |
+| `mda evals …`       | Scaffold Harbor-style eval tasks and compile a Harbor handoff.      |
 | `mda dev [path]`    | Compile a project and run it on the local LangGraph dev server.     |
 | `mda deploy [path]` | Compile, sync Context Hub context, upload, and deploy to LangSmith. |
 
@@ -60401,6 +60772,30 @@ The scaffold creates:
 | `README.md`                        | Local project instructions.                                                   |
 | `.env`                             | Deploy auth and runtime secrets. Do not commit real secrets.                  |
 | `.gitignore`                       | Ignores `.env`, `.env.*`, `.mda/`, and dependency caches.                     |
+| `evals/`                           | Example Harbor-style eval tasks for Harbor trials.                            |
+
+## Evaluate projects
+
+Use `mda evals` to scaffold Harbor-style tasks and compile a Harbor handoff. Harbor runs the trials:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mda evals init
+mda evals compile .
+# then run the printed `harbor run` command
+```
+
+| Subcommand                 | Use                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| `mda evals init [path]`    | Scaffold the example `evals/` suite, or a single task directory.               |
+| `mda evals compile [path]` | Compile the managed agent into `.mda/evals/` and print a `harbor run` command. |
+
+`mda evals compile` flag:
+
+| Flag                       | Use                                                                                                                               |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `--model <provider:model>` | Model for the example Harbor job config. Repeat to record a matrix in the artifact manifest; the job config uses the first value. |
+
+For task layout, verifiers, identity fixtures, and running Harbor, see [Evals](/langsmith/managed-deep-agents-evals).
 
 ## Develop locally
 
@@ -60478,14 +60873,17 @@ my-agent/
   middleware/                             # Authored middleware the agent imports
   connectors/mcp.py | connectors/mcp.ts   # Remote MCP server declarations
   connectors/langsmith.py | langsmith.ts  # Optional: constrained LangSmith capabilities
-  channels/slack.py | channels/slack.ts   # Messaging channel ingress (for example Slack Events)
+  connectors/github.py | github.ts        # Optional: GitHub sandbox setup
+  channels/slack.py | channels/slack.ts   # Optional: Slack Events ingress
+  channels/github.py | channels/github.ts # Optional: GitHub App webhook ingress
   schedules/<name>.py | <name>.ts         # Managed cron schedules
   skills/<name>/SKILL.md                  # Deploy-owned skills, synced to Context Hub
   sandbox/__init__.py | sandbox/index.ts  # Managed sandbox configuration
   sandbox/setup.sh                        # Sandbox provisioning script
+  evals/<task>/                           # Harbor-style eval tasks (`mda evals compile` + Harbor)
 ```
 
-The only required file is the agent entry: `agent.py`, `agent.ts`, or `agent.tsx`. It must export a named `agent` definition created with `define_deep_agent` or `defineDeepAgent`. The `tools/` and `middleware/` folders are conventions, not special registries: Managed Deep Agents packages regular project files, so any local module the agent imports works. When present, the CLI treats the remaining files as the managed system prompt (`instructions.md`), identity (`identity.*`), connectors (`connectors/**`), messaging channels (`channels/**`), cron schedules (`schedules/**`), skills (`skills/**`), and sandbox configuration (`sandbox/`).
+The only required file is the agent entry: `agent.py`, `agent.ts`, or `agent.tsx`. It must export a named `agent` definition created with `define_deep_agent` or `defineDeepAgent`. The `tools/` and `middleware/` folders are conventions, not special registries: Managed Deep Agents packages regular project files, so any local module the agent imports works. When present, the CLI treats the remaining files as the managed system prompt (`instructions.md`), identity (`identity.*`), connectors (`connectors/**`), messaging channels (`channels/**`), cron schedules (`schedules/**`), skills (`skills/**`), sandbox configuration (`sandbox/`), and local Harbor eval tasks (`evals/`).
 
 Only a project-root `agent.ts`, `agent.tsx`, or `agent.py` is required. The CLI detects the first available entry in that order.
 
@@ -60526,29 +60924,37 @@ Managed memory lives in the same Context Hub repo as the deployed instructions a
 Declare connectors as modules directly under `connectors/`. Discovery is name-agnostic: each file is a connector module (package `__init__.py` files are ignored).
 
 * **MCP:** `connectors/mcp.ts` or `connectors/mcp.py` must export a named `mcp` declaration. Supports remote `http` and `sse` servers; stdio is rejected. When present, `mda` injects `@langchain/mcp-adapters` or `langchain-mcp-adapters` and appends loaded MCP tools to authored tools.
+* **GitHub:** `connectors/github.ts` or `connectors/github.py` declares repository checkouts, GitHub CLI installation, and credential injection for the managed sandbox.
 * **LangSmith:** `connectors/langsmith.ts` or `connectors/langsmith.py` declares constrained LangSmith capabilities for untrusted callers. Requires [identity](/langsmith/managed-deep-agents-identity). The browser never receives `LANGSMITH_API_KEY`.
 
 For examples and defaults, see [Connectors](/langsmith/managed-deep-agents-connectors).
 
 ### Channels
 
-Declare messaging channels as modules directly under `channels/`. Each file exports a named `channel` (for example `defineSlackChannel` / `define_slack_channel`). The file stem becomes the channel name and mounts `POST /channels/{name}/events` on the Agent Server.
+Declare messaging channels as modules directly under `channels/`. Each file exports a named `channel` (for example `defineSlackChannel` / `defineGitHubChannel`). The file stem becomes the channel name and mounts `POST /channels/{name}/events` on the Agent Server. Channels require a root [identity](/langsmith/managed-deep-agents-identity) declaration.
 
-* **Slack:** `channels/slack.ts` or `channels/slack.py`. Requires a root [identity](/langsmith/managed-deep-agents-identity) declaration. When present, `mda deploy` preflights `SLACK_SIGNING_SECRET` and `SLACK_BOT_TOKEN`.
+* **Slack:** `channels/slack.ts` or `channels/slack.py`. Deploy preflights `SLACK_SIGNING_SECRET` and `SLACK_BOT_TOKEN` (from the channel manifest `requiredEnv`).
+* **GitHub:** `channels/github.ts` or `channels/github.py` with ordered `handlers` (`on`, `prompt`, optional `repositories` / `autoReply`). Deploy preflights `GITHUB_WEBHOOK_SECRET`, `GITHUB_APP_ID`, `GITHUB_APP_PRIVATE_KEY`, and `GITHUB_INSTALLATION_ID`.
 
-For triggers, Slack app setup, and Connect-with-Slack, see [Channels](/langsmith/managed-deep-agents-channels) and [Slack](/langsmith/managed-deep-agents-channels/slack).
+For handlers, triggers, and provider setup, see [Channels](/langsmith/managed-deep-agents-channels), [Slack](/langsmith/managed-deep-agents-channels/slack), and [GitHub](/langsmith/managed-deep-agents-channels/github).
 
 ### Schedules
 
 Declare managed cron schedules under `schedules/`. Each direct child schedule file must export a named `schedule` declaration from `defineSchedule(...)` or `define_schedule(...)`.
 
-Deploy extracts schedule declarations from static literals, arrays, objects, and top-level literal constants. After the deployment reaches `DEPLOYED`, `mda deploy` replaces the existing managed LangSmith cron jobs with the current local schedule declarations. For examples and constraints, see [Schedules](/langsmith/managed-deep-agents-schedules).
+Deploy extracts schedule declarations from static literals, arrays, objects, and top-level literal constants. A schedule can deliver its final response to a configured Slack channel with `deliver_to` / `deliverTo`. After the deployment reaches `DEPLOYED`, `mda deploy` replaces the existing managed LangSmith cron jobs with the current local schedule declarations. For examples and constraints, see [Schedules](/langsmith/managed-deep-agents-schedules).
 
 ### Sandbox
 
-To configure a managed sandbox, export `sandbox` from `sandbox/index.ts` for TypeScript or `sandbox/__init__.py` for Python. Sandboxes are scoped per thread. `sandbox/setup.sh`, when present, runs once when a new managed sandbox is provisioned for a thread.
+To configure a managed sandbox, export `sandbox` from `sandbox/index.ts` for TypeScript or `sandbox/__init__.py` for Python. Scope defaults to one sandbox per thread; `scope: "agent"` shares one across the agent process. `sandbox/setup.sh`, when present, runs once when a new managed sandbox is provisioned.
 
 For configuration examples and lifecycle behavior, see [Configure a sandbox](/langsmith/managed-deep-agents-deploy#configure-a-sandbox).
+
+### Evals
+
+Put Harbor-style eval tasks under `evals/`. Each task directory includes `instruction.md`, `task.toml`, an `environment/` image, and a `tests/test.sh` verifier. When the project declares [identity](/langsmith/managed-deep-agents-identity), each task also needs `identity.json`.
+
+`mda init` scaffolds starter evals under `evals/`. For existing projects, use `mda evals init`. Compile a Harbor handoff with `mda evals compile`, then run trials with Harbor. Artifacts land under `.mda/evals/` and are not part of the deploy archive. For the full workflow, see [Evals](/langsmith/managed-deep-agents-evals).
 
 ### Ignored paths
 
@@ -60566,32 +60972,33 @@ It also skips `.env` and `.env.*` files when copying files into the compiled bui
 
 ### Author-set fields
 
-| Field (Python / TypeScript)          | Purpose                                                        |
-| ------------------------------------ | -------------------------------------------------------------- |
-| `model`                              | The chat model instance or `{provider}:{model_id}` identifier. |
-| `tools`                              | Authored tools imported into the agent entry.                  |
-| `middleware`                         | Ordered list of middleware around model and tool calls.        |
-| `subagents`                          | Subagent definitions the agent can delegate to.                |
-| `permissions`                        | Tool permission rules.                                         |
-| `interrupt_on` / `interruptOn`       | Tool calls that pause for human review before running.         |
-| `response_format` / `responseFormat` | Structured output format.                                      |
-| `context_schema` / `contextSchema`   | Schema for per-run runtime context.                            |
-| `name`                               | Agent name.                                                    |
-| `cache`                              | Model cache configuration.                                     |
-| `debug`                              | Enable debug behavior.                                         |
-| `disable_memory` / `disableMemory`   | Disable only the managed agent memory.                         |
+| Field (Python / TypeScript)          | Purpose                                                                    |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| `name`                               | Required agent name, used as the assistant ID and default deployment name. |
+| `model`                              | The chat model instance or `{provider}:{model_id}` identifier.             |
+| `tools`                              | Authored tools imported into the agent entry.                              |
+| `middleware`                         | Ordered list of middleware around model and tool calls.                    |
+| `subagents`                          | Subagent definitions the agent can delegate to.                            |
+| `permissions`                        | Tool permission rules.                                                     |
+| `interrupt_on` / `interruptOn`       | Tool calls that pause for human review before running.                     |
+| `response_format` / `responseFormat` | Structured output format.                                                  |
+| `context_schema` / `contextSchema`   | Schema for per-run runtime context.                                        |
+| `cache`                              | Model cache configuration.                                                 |
+| `debug`                              | Enable debug behavior.                                                     |
+| `disable_memory` / `disableMemory`   | Disable only the managed agent memory.                                     |
 
 ### Managed fields
 
 The managed runtime owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Do not set those fields in the agent definition.
 
-| Concern                                         | Owner                                  | Where you configure it                                              |
-| ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------- |
-| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                   |
-| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory. |
-| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                         |
-| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                   |
-| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                          |
+| Concern                                         | Owner                                  | Where you configure it                                                                  |
+| ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------- |
+| `name`                                          | You                                    | Required in the agent definition; used as the assistant ID and default deployment name. |
+| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                                       |
+| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory.                     |
+| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                                             |
+| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                                       |
+| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                                              |
 
 For the full field list, see the [agent definition reference](/langsmith/managed-deep-agents-cli#agent-definition-reference).
 
@@ -60622,10 +61029,119 @@ For the full field list, see the [agent definition reference](/langsmith/managed
 </div>
 
 
+# Connect GitHub repositories to Managed Deep Agents
+Source: https://docs.langchain.com/langsmith/managed-deep-agents-connectors/github
+
+Clone GitHub repositories, install the GitHub CLI, and inject credentials into a Managed Deep Agents sandbox.
+
+The GitHub connector prepares repositories, the `gh` CLI, and credentials inside a [managed sandbox](/langsmith/managed-deep-agents-deploy#configure-a-sandbox). Use it when the agent needs to inspect or change GitHub repositories.
+
+<Note>
+  The GitHub connector requires `managed-deepagents>=0.4.0`.
+</Note>
+
+<Note>
+  Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
+</Note>
+
+This connector is separate from the [GitHub channel](/langsmith/managed-deep-agents-channels/github), which receives App webhooks, and Connect-with-GitHub under [identity](/langsmith/managed-deep-agents-identity).
+
+## Add the connector
+
+Create `connectors/github.py` or `connectors/github.ts`:
+
+<CodeGroup>
+  ```python connectors/github.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from managed_deepagents.connectors import github
+
+  connector = github.connector(
+      repositories=[
+          {
+              "repo": "acme/api",
+              "path": "workspace/api",
+              "ref": "main",
+              "depth": 1,
+              "on_reuse": "fetch",
+          }
+      ],
+  )
+  ```
+
+  ```ts connectors/github.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { github } from "managed-deepagents";
+
+  export default github.connector({
+    repositories: [
+      {
+        repo: "acme/api",
+        path: "workspace/api",
+        ref: "main",
+        depth: 1,
+        onReuse: "fetch",
+      },
+    ],
+  });
+  ```
+</CodeGroup>
+
+The connector clones each repository when the sandbox is created. On reuse, `on_reuse` / `onReuse` controls whether it keeps, resets, or fetches the checkout. The default is `fetch`.
+
+## Configure options
+
+| Option (Python / TypeScript)               | Default | Purpose                                               |
+| ------------------------------------------ | ------- | ----------------------------------------------------- |
+| `repositories`                             | `[]`    | Repository checkouts and their sandbox paths.         |
+| `allowlist`                                | `[]`    | Allowed repositories as `owner/repo` or `owner/*`.    |
+| `install_cli` / `installCLI`               | `true`  | Install the GitHub CLI in the sandbox.                |
+| `inject_credentials` / `injectCredentials` | `true`  | Expose resolved GitHub credentials to `git` and `gh`. |
+
+Repository paths must be relative and unique. Set `write` to `true` on a checkout that needs write credentials.
+
+For private repositories, configure GitHub credentials through [identity](/langsmith/managed-deep-agents-identity#custom-downstream-credentials). The runtime injects the resolved token as `GH_TOKEN` and configures Git credentials without storing it in thread state.
+
+## Test and deploy
+
+Test the project locally with [`mda dev`](/langsmith/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
+
+The connector runs only when the project declares a managed sandbox. After startup, ask the agent to inspect the configured path or run `gh auth status`.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
+    Compare connector types.
+  </Card>
+
+  <Card title="GitHub channel" icon="brand-github" href="/langsmith/managed-deep-agents-channels/github">
+    Receive GitHub App webhooks.
+  </Card>
+
+  <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
+    Scope callers and resolve credentials.
+  </Card>
+
+  <Card title="Configure a sandbox" icon="box" href="/langsmith/managed-deep-agents-deploy#configure-a-sandbox">
+    Configure sandbox scope and lifecycle.
+  </Card>
+</CardGroup>
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-connectors/github.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Connect tools and capabilities to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/managed-deep-agents-connectors/index
 
-Declare MCP servers and LangSmith capabilities with Managed Deep Agents connectors.
+Add MCP tools, LangSmith capabilities, and GitHub sandbox access with Managed Deep Agents connectors.
 
 Managed Deep Agents discovers connector modules under `connectors/`. Each file directly under that folder is a connector; you do not register connectors in the agent entry.
 
@@ -60639,10 +61155,21 @@ Managed Deep Agents discovers connector modules under `connectors/`. Each file d
 | ---------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [MCP](/langsmith/managed-deep-agents-connectors/mcp)             | `connectors/mcp.{py\|ts}`       | Loads tools from remote MCP servers at runtime and appends them to authored tools.                                                                                                     |
 | [LangSmith](/langsmith/managed-deep-agents-connectors/langsmith) | `connectors/langsmith.{py\|ts}` | Lets browsers and other untrusted callers invoke allowlisted LangSmith operations without receiving `LANGSMITH_API_KEY`. Requires [identity](/langsmith/managed-deep-agents-identity). |
+| [GitHub](/langsmith/managed-deep-agents-connectors/github)       | `connectors/github.{py\|ts}`    | Clones repositories, installs `gh`, and injects credentials into the managed sandbox.                                                                                                  |
 
 For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
 
 The current `mda` CLI does not include workspace MCP server management commands. Do not use older `deepagents mcp-servers ...` examples for Managed Deep Agents projects.
+
+## Choose the right integration
+
+| You want to                                    | Use                                                                        |
+| ---------------------------------------------- | -------------------------------------------------------------------------- |
+| Add tools, HTTP capabilities, or sandbox setup | A connector                                                                |
+| Receive provider webhooks and optionally reply | A [channel](/langsmith/managed-deep-agents-channels)                       |
+| Let a signed-in user link an external account  | Identity connect under [identity](/langsmith/managed-deep-agents-identity) |
+
+For example, the GitHub connector prepares repositories in a sandbox, while the GitHub channel receives App webhooks.
 
 ## Combine connectors with authored tools
 
@@ -60665,6 +61192,10 @@ Connector misconfiguration usually surfaces during local startup or first tool l
 
   <Card title="LangSmith connector" icon="chart-line" href="/langsmith/managed-deep-agents-connectors/langsmith">
     Expose constrained LangSmith capabilities to untrusted callers.
+  </Card>
+
+  <Card title="GitHub connector" icon="brand-github" href="/langsmith/managed-deep-agents-connectors/github">
+    Prepare repositories, the GitHub CLI, and credentials in a sandbox.
   </Card>
 
   <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
@@ -61208,13 +61739,14 @@ For the full file layout and packaging rules, see the [CLI project file referenc
 
 The managed runtime owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Do not set those fields in the agent definition.
 
-| Concern                                         | Owner                                  | Where you configure it                                              |
-| ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------- |
-| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                   |
-| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory. |
-| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                         |
-| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                   |
-| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                          |
+| Concern                                         | Owner                                  | Where you configure it                                                                  |
+| ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------- |
+| `name`                                          | You                                    | Required in the agent definition; used as the assistant ID and default deployment name. |
+| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                                       |
+| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory.                     |
+| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                                             |
+| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                                       |
+| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                                              |
 
 For the full field list, see the [agent definition reference](/langsmith/managed-deep-agents-cli#agent-definition-reference).
 
@@ -61278,7 +61810,10 @@ Use a sandbox when the agent needs isolated code execution or filesystem work. E
   ```
 </CodeGroup>
 
-Sandboxes are scoped per thread. Each durable thread or conversation gets its own sandbox.
+Sandbox scope controls reuse:
+
+* `thread` (default): Each durable thread or conversation gets its own sandbox.
+* `agent`: All threads handled by the agent process share one sandbox.
 
 If `sandbox/setup.sh` exists, Managed Deep Agents runs it once when a new managed sandbox is provisioned. Use it to install packages, seed files, or prepare workspace state.
 
@@ -61357,7 +61892,7 @@ DATABASE_URL=<DATABASE_URL>
 
 `LANGSMITH_API_KEY`, `LANGGRAPH_HOST_API_KEY`, `LANGCHAIN_API_KEY`, and other platform variables are reserved. They can authenticate the deploy, but they are not uploaded as user-managed deployment secrets.
 
-Non-reserved `.env` entries, such as model provider keys, MCP tokens, Slack channel secrets, and custom tool credentials, are forwarded as hosted deployment secrets when `mda deploy` creates or updates the deployment. If the configured model requires a provider key, deploy fails before upload unless that key is available from `.env`, the shell environment, or LangSmith workspace secrets. When the provider key is only in the shell environment, `mda deploy` forwards it as a secret for that deploy. When the project declares `channels/`, deploy also preflights `SLACK_SIGNING_SECRET` and `SLACK_BOT_TOKEN`—see [Slack](/langsmith/managed-deep-agents-channels/slack).
+Non-reserved `.env` entries, such as model provider keys, MCP tokens, channel secrets, and custom tool credentials, are forwarded as hosted deployment secrets when `mda deploy` creates or updates the deployment. If the configured model requires a provider key, deploy fails before upload unless that key is available from `.env`, the shell environment, or LangSmith workspace secrets. When the provider key is only in the shell environment, `mda deploy` forwards it as a secret for that deploy. When the project declares `channels/`, deploy also preflights each channel manifest’s `requiredEnv` (for example Slack or GitHub App secrets)—see [Channels](/langsmith/managed-deep-agents-channels).
 
 Reserved platform variables, empty values, `.env`, and `.env.*` files are not copied into the compiled build archive.
 
@@ -61410,6 +61945,200 @@ If a deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED`, open the printed depl
 </div>
 
 
+# Evaluate Managed Deep Agents
+Source: https://docs.langchain.com/langsmith/managed-deep-agents-evals
+
+Scaffold Harbor-style eval tasks, compile a Harbor handoff with mda, and run trials with Harbor.
+
+Evals let you run your Managed Deep Agent against checked-in [Harbor](https://www.harborframework.com/docs/tasks) tasks in isolated environments. Managed Deep Agents **compiles** your agent into a Harbor-ready artifact; you run trials with Harbor yourself (local Docker by default, or another Harbor environment you configure).
+
+Each task describes what the agent should do, Harbor runs the compiled agent once, then grades the result with a Harbor verifier.
+
+<Note>
+  Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
+</Note>
+
+## Prerequisites
+
+* A Managed Deep Agents project created with `mda init` (or an existing project that already has an agent entry).
+* Harbor tasks under `evals/` (scaffold with `mda evals init` if needed).
+* [Docker](https://docs.docker.com/get-docker/) running locally when using Harbor’s default `docker` environment.
+* Model credentials in the project `.env` or your shell (for example `OPENAI_API_KEY` for `openai:…` models).
+* The `mda` CLI from `managed-deepagents` (same install as [CLI reference](/langsmith/managed-deep-agents-cli#install)).
+* [Harbor](https://www.harborframework.com/docs) on your `PATH`, or [`uv`](https://docs.astral.sh/uv/) so you can run `uv run --with harbor …`.
+
+## Concepts
+
+| Term        | Meaning                                                                                                  |
+| ----------- | -------------------------------------------------------------------------------------------------------- |
+| **Task**    | One checked-in scenario under `evals/` (instruction + image + verifier).                                 |
+| **Compile** | `mda evals compile` builds a Harbor handoff under `.mda/evals/` (artifact, adapter, example job config). |
+| **Trial**   | One Harbor run of a task against the compiled agent.                                                     |
+| **Reward**  | Numeric score written by the verifier to `/logs/verifier/` (`reward.txt` or `reward.json`).              |
+
+## Scaffold tasks
+
+From your project root:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mda evals init
+```
+
+With no path (or with `evals`), the command creates starter tasks under `evals/` when that directory does not already exist. `mda init` also scaffolds starter evals for new projects.
+
+To add one more task later:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mda evals init evals/my-task
+```
+
+## Task layout
+
+Each task is a Harbor task directory under `evals/`. The layout matches Harbor’s [task structure](https://www.harborframework.com/docs/tasks):
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+evals/
+  my-task/
+    instruction.md              # Prompt given to the agent
+    task.toml                   # Timeouts, metadata, verifier env
+    identity.json               # Required when the project declares identity
+    environment/
+      Dockerfile                # Trial image
+    tests/
+      test.sh                   # Verifier entrypoint
+      # optional helpers used by test.sh
+```
+
+### Instruction
+
+`instruction.md` is the natural-language task description Harbor shows the agent. Keep it specific and verifiable.
+
+### Verifier
+
+After the agent finishes, Harbor grades the trial by running your [verifier](https://www.harborframework.com/docs/tasks#tests) script: `tests/test.sh` on Linux (or `tests/test.bat` on Windows). Inside the container that grades the run, paths look like this:
+
+| Path              | What it is                                                                             |
+| ----------------- | -------------------------------------------------------------------------------------- |
+| `/app`            | The agent’s working directory (files the agent created or edited).                     |
+| `/tests`          | Your task’s `tests/` folder during grading (so `test.sh` can call helpers next to it). |
+| `/logs/verifier/` | Where the verifier must write its score.                                               |
+
+Your script inspects `/app` (or other outputs), then **must** write a reward file:
+
+| Reward file                  | Format                                                           |
+| ---------------------------- | ---------------------------------------------------------------- |
+| `/logs/verifier/reward.txt`  | A single integer or float (commonly `1` for pass, `0` for fail). |
+| `/logs/verifier/reward.json` | A JSON object of numeric metrics (for multi-dimensional scores). |
+
+Use either format. Harbor accepts both. Prefer absolute paths (`/app/...`, `/tests/...`) so the script does not depend on the working directory. You can implement checks in shell, call a test runner, or run custom grading logic—as long as the reward file is written.
+
+Minimal example:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p /logs/verifier
+
+# Replace with your real checks (files, APIs, unit tests, …).
+if [[ -f /app/output.txt ]]; then
+  echo 1 > /logs/verifier/reward.txt
+else
+  echo 0 > /logs/verifier/reward.txt
+  exit 1
+fi
+```
+
+For multi-metric rewards, verifier env vars in `task.toml`, and LLM-as-a-judge patterns, see Harbor’s [task structure](https://www.harborframework.com/docs/tasks) and [LLM-as-a-judge](https://www.harborframework.com/docs/tutorials/llm-as-a-judge) docs.
+
+### Identity-aware projects
+
+If the project exports [identity](/langsmith/managed-deep-agents-identity) (`identity.ts` or `identity.py`), every eval task must include `identity.json`. Scaffolding adds a default fixture automatically. Customize the fixture when your agent or tests depend on a specific actor, tenant, or claims.
+
+```json identity.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "actor": {
+    "type": "user",
+    "id": "eval_user_1",
+    "email": "eval@example.com"
+  },
+  "tenant": {
+    "id": "acme"
+  },
+  "source": {
+    "provider": "cli"
+  },
+  "claims": {
+    "permissions": ["billing:read"]
+  }
+}
+```
+
+The fixture is injected as the trial identity envelope. It is not left under `/app` as an agent-writable file.
+
+## Compile a Harbor handoff
+
+From your project root:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mda evals compile .
+```
+
+Compile requires at least one Harbor task under `evals/` (a subdirectory with `instruction.md` and `tests/`). It writes a handoff under `.mda/evals/`:
+
+| Path                         | Contents                                                       |
+| ---------------------------- | -------------------------------------------------------------- |
+| `.mda/evals/artifact/`       | Compiled managed agent (manifest + project archive).           |
+| `.mda/evals/harbor-adapter/` | Embedded `mda_harbor` adapter Harbor imports to run the agent. |
+| `.mda/evals/harbor-job.json` | Example Harbor job config pointing at your `evals/` dataset.   |
+
+Optional compile flag:
+
+| Flag                       | Purpose                                                                                                                                                                                      |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--model <provider:model>` | Model recorded in the example job config. Repeat to record a matrix in the artifact manifest; the job config uses the first value. Defaults to the model from your agent entry when omitted. |
+
+`.mda/evals/` is local output. Do not commit it, and it is not part of the deploy archive.
+
+## Run trials with Harbor
+
+`mda evals compile` prints a copy-pasteable Harbor command. From the project root:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PYTHONPATH=.mda/evals/harbor-adapter \
+  uv run --with harbor harbor run --config .mda/evals/harbor-job.json --yes
+```
+
+If `harbor` is already on your `PATH`, the printed command uses `harbor run` directly instead of `uv run --with harbor`.
+
+Edit `.mda/evals/harbor-job.json` to change tasks, model, environment type, concurrency, or attempts. Harbor owns trial orchestration, backends, and reporting—not the `mda` CLI. For Harbor flags and job config fields, see the [Harbor docs](https://www.harborframework.com/docs).
+
+Re-run `mda evals compile` after you change the agent or want a fresh example job config (each compile uses a new Harbor jobs directory under `.mda/evals/harbor-jobs/`).
+
+### Sandbox setup scripts
+
+If the project has `sandbox/setup.sh`, the Managed Deep Agents Harbor adapter runs it once while preparing the trial environment (with `bash`, so bashisms such as `set -o pipefail` are supported). Authored sandbox provider config is ignored during evals; the trial environment owns isolation.
+
+## Next steps
+
+* [Identity](/langsmith/managed-deep-agents-identity) — when tasks need `identity.json`
+* [CLI reference](/langsmith/managed-deep-agents-cli) — full `mda` command surface
+* [Deploy an agent](/langsmith/managed-deep-agents-deploy) — ship the agent after local evals pass
+* [Harbor documentation](https://www.harborframework.com/docs) — job config, environments, and trial runners
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-evals.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Managed Deep Agents example project
 Source: https://docs.langchain.com/langsmith/managed-deep-agents-examples
 
@@ -61453,6 +62182,7 @@ The agent entry is the wiring diagram for the project. It imports the authored t
   from tools.query_db import query_db
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       tools=[query_db],
       middleware=[
@@ -61471,6 +62201,7 @@ The agent entry is the wiring diagram for the project. It imports the authored t
   import { queryDB } from "./tools/query-db";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     tools: [queryDB],
     middleware: [
@@ -61584,13 +62315,14 @@ When you deploy a Managed Deep Agent, LangSmith creates or updates a hosted Lang
 
 The managed runtime owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Do not set those fields in the agent definition.
 
-| Concern                                         | Owner                                  | Where you configure it                                              |
-| ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------- |
-| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                   |
-| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory. |
-| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                         |
-| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                   |
-| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                          |
+| Concern                                         | Owner                                  | Where you configure it                                                                  |
+| ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------- |
+| `name`                                          | You                                    | Required in the agent definition; used as the assistant ID and default deployment name. |
+| `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                                       |
+| `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory.                     |
+| `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                                             |
+| System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                                       |
+| Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                                              |
 
 For the full field list, see the [agent definition reference](/langsmith/managed-deep-agents-cli#agent-definition-reference).
 
@@ -61615,18 +62347,19 @@ Scheduled runs choose their thread behavior explicitly. An ephemeral thread is c
 
 ## Sandboxes
 
-A [sandbox](/langsmith/sandboxes) gives the agent an isolated environment for code execution and filesystem work. Configure one by exporting `sandbox` from `sandbox/index.ts` or `sandbox/__init__.py`, and use `sandbox/setup.sh` to provision it the first time it is created. Each thread gets its own sandbox. For configuration options and examples, see [Configure a sandbox](/langsmith/managed-deep-agents-deploy#configure-a-sandbox).
+A [sandbox](/langsmith/sandboxes) gives the agent an isolated environment for code execution and filesystem work. Configure one by exporting `sandbox` from `sandbox/index.ts` or `sandbox/__init__.py`, and use `sandbox/setup.sh` to provision it the first time it is created. Sandboxes default to one per thread; set `scope` to `agent` to share one across the agent process. Connectors can also provision files, CLIs, and credentials when a sandbox starts. For configuration options and examples, see [Configure a sandbox](/langsmith/managed-deep-agents-deploy#configure-a-sandbox).
 
 ## Channels
 
-Optional modules under `channels/` mount public provider Events URLs on the Agent Server (for example Slack at `POST /channels/slack/events`). The runtime verifies provider signatures, acknowledges delivery, then invokes the graph over trusted loopback with identity stamps and optional auto-reply. Channels require a root identity declaration. For authoring and Slack app setup, see [Channels](/langsmith/managed-deep-agents-channels).
+Optional modules under `channels/` mount public provider Events URLs on the Agent Server (for example Slack at `POST /channels/slack/events`, or GitHub at `POST /channels/github/events`). The runtime verifies provider signatures, acknowledges delivery, then invokes the graph over trusted loopback with identity stamps and optional auto-reply. Channels require a root identity declaration. For authoring and provider setup, see [Channels](/langsmith/managed-deep-agents-channels).
 
 ## See also
 
 * [Overview](/langsmith/managed-deep-agents-overview): when to use Managed Deep Agents and beta limits.
 * [Identity](/langsmith/managed-deep-agents-identity): authenticate callers and scope threads and memory.
 * [Memory](/langsmith/managed-deep-agents-memory): persist preferences across threads with Context Hub `/memories`.
-* [Channels](/langsmith/managed-deep-agents-channels): receive Slack Events and reply from messaging channels.
+* [Evals](/langsmith/managed-deep-agents-evals): compile a Harbor handoff and run Harbor-style tasks.
+* [Channels](/langsmith/managed-deep-agents-channels): receive Slack or GitHub events and reply from messaging channels.
 * [Deploy an agent](/langsmith/managed-deep-agents-deploy): the full deploy workflow, secrets, and troubleshooting.
 * [CLI reference](/langsmith/managed-deep-agents-cli): every `mda` command, flag, and project file rule.
 
@@ -62258,6 +62991,10 @@ Identity misconfiguration usually surfaces as 401 (auth) or 403 (store/thread sc
     Read `runtime.identity` from authored tools.
   </Card>
 
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Supply `identity.json` fixtures for Harbor tasks when identity is declared.
+  </Card>
+
   <Card title="Schedules" icon="clock" href="/langsmith/managed-deep-agents-schedules">
     Run cron agents, including the `service` preset shape.
   </Card>
@@ -62433,6 +63170,7 @@ Use `disableMemory` for stateless agents or when you manage persistence external
   from managed_deepagents import define_deep_agent
 
   agent = define_deep_agent(
+      name="stateless-agent",
       model="openai:gpt-5.5",
       disable_memory=True,
   )
@@ -62442,6 +63180,7 @@ Use `disableMemory` for stateless agents or when you manage persistence external
   import { defineDeepAgent } from "managed-deepagents";
 
   export const agent = defineDeepAgent({
+    name: "stateless-agent",
     model: "openai:gpt-5.5",
     disableMemory: true,
   });
@@ -62573,6 +63312,7 @@ Import the middleware into the project-root agent entry and pass it in the `midd
   from middleware.audit import log_tool_calls
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       middleware=[log_tool_calls],
   )
@@ -62584,6 +63324,7 @@ Import the middleware into the project-root agent entry and pass it in the `midd
   import { logToolCalls } from "./middleware/audit";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     middleware: [logToolCalls],
   });
@@ -62602,6 +63343,7 @@ You can also pass LangChain prebuilt middleware directly in the agent definition
   from managed_deepagents import define_deep_agent
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       middleware=[
           PIIMiddleware("email", strategy="redact", apply_to_input=True),
@@ -62615,6 +63357,7 @@ You can also pass LangChain prebuilt middleware directly in the agent definition
   import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     middleware: [
       piiMiddleware("email", { strategy: "redact", applyToInput: true }),
@@ -62637,6 +63380,7 @@ Pause the agent before sensitive tool calls so a person can approve, edit, or re
   from tools.customer import lookup_customer
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       tools=[lookup_customer],
       interrupt_on={"lookup_customer": True},
@@ -62649,6 +63393,7 @@ Pause the agent before sensitive tool calls so a person can approve, edit, or re
   import { lookupCustomer } from "./tools/customer";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     tools: [lookupCustomer],
     interruptOn: {
@@ -62731,7 +63476,7 @@ Choose the path that matches your control and infrastructure needs:
 
 ## Structure your agent project
 
-A Managed Deep Agent is a local project directory. A file's location determines its role: the CLI reads the directory to find the agent entry, managed instructions, skills, connectors, channels, schedules, optional identity, and sandbox configuration, then packages everything into a hosted deployment.
+A Managed Deep Agent is a local project directory. A file's location determines its role: the CLI reads the directory to find the agent entry, managed instructions, skills, connectors, channels, schedules, optional identity, sandbox configuration, and local eval tasks, then packages the deploy-owned pieces into a hosted deployment.
 
 For the full directory layout and packaging rules, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference). For how the CLI compiles this directory and what a deploy creates, see [How Managed Deep Agents work](/langsmith/managed-deep-agents-how-it-works).
 
@@ -62740,9 +63485,10 @@ For the full directory layout and packaging rules, see the [CLI project file ref
 1. Install `managed-deepagents` for Python or TypeScript.
 2. Create a local code-first agent project with `mda init`.
 3. Put the agent system prompt in `instructions.md`.
-4. Add authored tools, middleware, schedules, skills, MCP connectors, messaging channels, optional identity, and an optional sandbox.
-5. Use `mda dev` to test your agent locally in LangSmith Studio, then `mda deploy` to deploy to LangSmith.
-6. Inspect the deployment, traces, and runtime state in LangSmith.
+4. Add authored tools, middleware, schedules, skills, connectors, messaging channels, optional identity, and an optional sandbox.
+5. Optionally compile Harbor-style [evals](/langsmith/managed-deep-agents-evals) with `mda evals compile` and run them with Harbor.
+6. Use `mda dev` to test your agent locally in LangSmith Studio, then `mda deploy` to deploy to LangSmith.
+7. Inspect the deployment, traces, and runtime state in LangSmith.
 
 New to Managed Deep Agents? Start with the [quickstart](/langsmith/managed-deep-agents-quickstart), then build a complete agent step by step in the [tutorial](/langsmith/managed-deep-agents-tutorial).
 
@@ -62775,10 +63521,6 @@ Managed Deep Agents is available on LangSmith Cloud in the US region only during
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/managed-deep-agents-quickstart">
-    Deploy a first code-first agent with the `mda` CLI.
-  </Card>
-
   <Card title="Tutorial" icon="book" href="/langsmith/managed-deep-agents-tutorial">
     Build a scheduled research agent from an empty directory.
   </Card>
@@ -62793,6 +63535,10 @@ Managed Deep Agents is available on LangSmith Cloud in the US region only during
 
   <Card title="Memory" icon="brain" href="/langsmith/managed-deep-agents-memory">
     Persist preferences across threads with Context Hub `/memories`.
+  </Card>
+
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Compile a Harbor handoff and run Harbor-style tasks.
   </Card>
 
   <Card title="Custom tools" icon="tool" href="/langsmith/managed-deep-agents-tools">
@@ -62820,11 +63566,11 @@ Managed Deep Agents is available on LangSmith Cloud in the US region only during
   </Card>
 
   <Card title="Examples" icon="apps" href="/langsmith/managed-deep-agents-examples">
-    Explore a complete project that uses every primitive.
+    Explore a complete project that combines common features.
   </Card>
 
   <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
-    Review `mda init`, `mda dev`, and `mda deploy`.
+    Review `mda init`, `mda evals`, `mda dev`, and `mda deploy`.
   </Card>
 </CardGroup>
 
@@ -62902,6 +63648,8 @@ Before you start, make sure you have:
     | `README.md`                        | Local project notes and deploy command.                                     |
     | `.env`                             | Deploy auth and runtime secrets. Do not commit real secrets.                |
     | `.gitignore`                       | Ignores `.env`, `.env.*`, `.mda/`, and dependency caches.                   |
+    | `sandbox/`                         | Managed LangSmith sandbox declaration. Delete it to opt out.                |
+    | `evals/`                           | Example Harbor tasks for `mda evals compile`.                               |
 
     For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
   </Step>
@@ -62931,6 +63679,7 @@ Before you start, make sure you have:
       from managed_deepagents import define_deep_agent
 
       agent = define_deep_agent(
+          name="research-assistant",
           model="openai:gpt-5.5",
       )
       ```
@@ -62939,20 +63688,24 @@ Before you start, make sure you have:
       import { defineDeepAgent } from "managed-deepagents";
 
       export const agent = defineDeepAgent({
+        name: "research-assistant",
         model: "openai:gpt-5.5",
       });
       ```
     </CodeGroup>
 
+    `name` is required. It becomes the LangGraph assistant ID and the default LangSmith deployment name.
+
     The managed runtime owns `backend`, `store`, `checkpointer`, `memory`, `skills`, and the system prompt. Do not set those fields in the agent definition.
 
-    | Concern                                         | Owner                                  | Where you configure it                                              |
-    | ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------- |
-    | `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                   |
-    | `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory. |
-    | `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                         |
-    | System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                   |
-    | Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                          |
+    | Concern                                         | Owner                                  | Where you configure it                                                                  |
+    | ----------------------------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------- |
+    | `name`                                          | You                                    | Required in the agent definition; used as the assistant ID and default deployment name. |
+    | `backend`, `store`, `checkpointer`              | Managed runtime                        | Not configurable.                                                                       |
+    | `memory`                                        | Managed runtime, backed by Context Hub | `disableMemory` / `disable_memory` to turn off agent-scoped memory.                     |
+    | `skills`                                        | Managed runtime, backed by Context Hub | `skills/**` in the project.                                                             |
+    | System prompt                                   | Managed runtime, backed by Context Hub | `instructions.md` in the project.                                                       |
+    | Model, tools, middleware, subagents, interrupts | You                                    | The agent definition and imported modules.                                              |
 
     For the full field list, see the [agent definition reference](/langsmith/managed-deep-agents-cli#agent-definition-reference).
 
@@ -63015,10 +63768,6 @@ Before you start, make sure you have:
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/managed-deep-agents-quickstart">
-    Deploy a first code-first agent with the `mda` CLI.
-  </Card>
-
   <Card title="Tutorial" icon="book" href="/langsmith/managed-deep-agents-tutorial">
     Build a scheduled research agent from an empty directory.
   </Card>
@@ -63033,6 +63782,10 @@ Before you start, make sure you have:
 
   <Card title="Memory" icon="brain" href="/langsmith/managed-deep-agents-memory">
     Persist preferences across threads with Context Hub `/memories`.
+  </Card>
+
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Compile a Harbor handoff and run Harbor-style tasks.
   </Card>
 
   <Card title="Custom tools" icon="tool" href="/langsmith/managed-deep-agents-tools">
@@ -63060,11 +63813,11 @@ Before you start, make sure you have:
   </Card>
 
   <Card title="Examples" icon="apps" href="/langsmith/managed-deep-agents-examples">
-    Explore a complete project that uses every primitive.
+    Explore a complete project that combines common features.
   </Card>
 
   <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
-    Review `mda init`, `mda dev`, and `mda deploy`.
+    Review `mda init`, `mda evals`, `mda dev`, and `mda deploy`.
   </Card>
 </CardGroup>
 
@@ -63184,6 +63937,50 @@ Use a persistent thread only when scheduled runs should accumulate durable threa
   });
   ```
 </CodeGroup>
+
+## Deliver results to Slack
+
+Set `deliver_to` / `deliverTo` to post the final response through a configured Slack channel. Use a Slack channel ID because scheduled runs have no originating thread.
+
+<Note>
+  Schedule delivery requires `managed-deepagents>=0.4.0`.
+</Note>
+
+<CodeGroup>
+  ```python schedules/monday_greeting.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from managed_deepagents import define_schedule
+
+  schedule = define_schedule(
+      cron="0 9 * * 1",
+      prompt="Write a short Monday greeting.",
+      deliver_to={
+          "channel": "slack",
+          "to": {
+              "type": "provider_conversation",
+              "conversation_id": "C0123456789",
+          },
+      },
+  )
+  ```
+
+  ```ts schedules/monday-greeting.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { defineSchedule } from "managed-deepagents";
+
+  export const schedule = defineSchedule({
+    cron: "0 9 * * 1",
+    prompt: "Write a short Monday greeting.",
+    deliverTo: {
+      channel: "slack",
+      to: {
+        type: "provider_conversation",
+        conversationId: "C0123456789",
+      },
+    },
+  });
+  ```
+</CodeGroup>
+
+The Slack bot must have access to the destination. For channel setup and required secrets, see [Slack](/langsmith/managed-deep-agents-channels/slack).
 
 ## Use static declarations
 
@@ -63307,6 +64104,7 @@ Import the tools into the project-root agent entry and pass them in the `tools` 
   from tools.customer import lookup_customer
 
   agent = define_deep_agent(
+      name="support-agent",
       model="openai:gpt-5.5",
       tools=[lookup_customer],
   )
@@ -63318,6 +64116,7 @@ Import the tools into the project-root agent entry and pass them in the `tools` 
   import { lookupCustomer } from "./tools/customer";
 
   export const agent = defineDeepAgent({
+    name: "support-agent",
     model: "openai:gpt-5.5",
     tools: [lookupCustomer],
   });
@@ -63362,7 +64161,7 @@ Build a Managed Deep Agent with a tool, durable memory, and a daily schedule, th
 
 This tutorial builds a research assistant one capability at a time. Complete the [quickstart](/langsmith/managed-deep-agents-quickstart) first to scaffold a project, add API keys, and run `mda dev` locally. Then add a search tool, use durable memory, run the agent on a daily schedule, and deploy it to LangSmith.
 
-For a complete project that uses every primitive, see the [example project](/langsmith/managed-deep-agents-examples).
+For a complete project that combines common features, see the [example project](/langsmith/managed-deep-agents-examples).
 
 <Note>
   Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
@@ -63440,6 +64239,7 @@ For a complete project that uses every primitive, see the [example project](/lan
       from tools.search import web_search
 
       agent = define_deep_agent(
+          name="research-assistant",
           model="openai:gpt-5.5",
           tools=[web_search],
       )
@@ -63451,6 +64251,7 @@ For a complete project that uses every primitive, see the [example project](/lan
       import { webSearch } from "./tools/search";
 
       export const agent = defineDeepAgent({
+        name: "research-assistant",
         model: "openai:gpt-5.5",
         tools: [webSearch],
       });
@@ -63542,6 +64343,10 @@ For a complete project that uses every primitive, see the [example project](/lan
     Persist preferences across threads with Context Hub `/memories`.
   </Card>
 
+  <Card title="Evals" icon="flask" href="/langsmith/managed-deep-agents-evals">
+    Compile a Harbor handoff and run Harbor-style tasks.
+  </Card>
+
   <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
     Load MCP tools or constrained LangSmith capabilities.
   </Card>
@@ -63551,7 +64356,7 @@ For a complete project that uses every primitive, see the [example project](/lan
   </Card>
 
   <Card title="Example project" icon="apps" href="/langsmith/managed-deep-agents-examples">
-    See a complete project that uses every primitive.
+    See a complete project that combines common features.
   </Card>
 </CardGroup>
 
@@ -69800,13 +70605,15 @@ Comparative experiments for evaluating LLM outputs.
 
 Scores, labels, and corrections on LLM outputs.
 
+<Note>The feedback formula operations are deprecated in favor of [composite evaluators](/langsmith/composite-evaluators-ui) and are scheduled for removal on 2026-08-20.</Note>
+
 | Operation                                     | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
 | --------------------------------------------- | :-------------: | :--------------: | :--------------: | ------------------- |
-| List feedback formulas                        |        ✓        |         ✓        |         ✓        | `feedback:read`     |
-| Get feedback formula                          |        ✓        |         ✓        |         ✓        | `feedback:read`     |
-| Create feedback formula                       |        ✓        |         ✓        |         ✗        | `feedback:create`   |
-| Update feedback formula                       |        ✓        |         ✓        |         ✗        | `feedback:update`   |
-| Delete feedback formula                       |        ✓        |         ✓        |         ✗        | `feedback:delete`   |
+| List feedback formulas (deprecated)           |        ✓        |         ✓        |         ✓        | `feedback:read`     |
+| Get feedback formula (deprecated)             |        ✓        |         ✓        |         ✓        | `feedback:read`     |
+| Create feedback formula (deprecated)          |        ✓        |         ✓        |         ✗        | `feedback:create`   |
+| Update feedback formula (deprecated)          |        ✓        |         ✓        |         ✗        | `feedback:update`   |
+| Delete feedback formula (deprecated)          |        ✓        |         ✓        |         ✗        | `feedback:delete`   |
 | View specific feedback                        |        ✓        |         ✓        |         ✓        | `feedback:read`     |
 | List feedbacks                                |        ✓        |         ✓        |         ✓        | `feedback:read`     |
 | Create feedback                               |        ✓        |         ✓        |         ✗        | `feedback:create`   |
@@ -74842,7 +75649,7 @@ The guide covers the `reject` option for double texting, which rejects the new r
 
 ## Setup
 
-First, we will define a quick helper function for printing out JS and CURL model outputs (you can skip this if using Python):
+First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
   <Tab title="Javascript">
@@ -74860,7 +75667,7 @@ First, we will define a quick helper function for printing out JS and CURL model
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
@@ -74910,7 +75717,7 @@ Now, let's import our required packages and instantiate our client, assistant, a
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -74969,7 +75776,7 @@ Now we can run a thread and try to run a second one with the "reject" option, wh
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
@@ -75025,7 +75832,7 @@ We can verify that the original thread finished executing:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join && \
@@ -75663,7 +76470,7 @@ The guide covers the `rollback` option for double texting, which interrupts the 
 
 ## Setup
 
-First, we will define a quick helper function for printing out JS and CURL model outputs (you can skip this if using Python):
+First, we will define a quick helper function for printing out JS and cURL model outputs (you can skip this if using Python):
 
 <Tabs>
   <Tab title="Javascript">
@@ -75681,7 +76488,7 @@ First, we will define a quick helper function for printing out JS and CURL model
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     # PLACE THIS IN A FILE CALLED pretty_print.sh
     pretty_print() {
@@ -75733,7 +76540,7 @@ Now, let's import our required packages and instantiate our client, assistant, a
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
       --url <DEPLOYMENT_URL>/threads \
@@ -75790,7 +76597,7 @@ Now let's run a thread with the multitask parameter set to "rollback":
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
     --url <DEPLOY<ENT_URL>>/threads/<THREAD_ID>/runs \
@@ -75835,7 +76642,7 @@ We can see that the thread has data only from the second run
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     source pretty_print.sh && curl --request GET \
     --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/state | \
@@ -77060,7 +77867,7 @@ You'll see that the second agent will respond using information from the [checkp
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants \
@@ -77095,7 +77902,7 @@ We can see that these agents are different:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/assistants/<OPENAI_ASSISTANT_ID>
@@ -77133,7 +77940,7 @@ Output:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/assistants/<DEFAULT_ASSISTANT_ID>
@@ -77200,7 +78007,7 @@ We can now run the OpenAI assistant on the thread first.
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     thread_id=$(curl --request POST \
         --url <DEPLOYMENT_URL>/threads \
@@ -77297,7 +78104,7 @@ Now, we can run it on the default assistant and see that this second assistant i
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
@@ -98975,9 +99782,9 @@ Commit resolution logic:
 Source: https://docs.langchain.com/langsmith/smith-api/commits/list-commits
 
 /langsmith/langsmith-platform-openapi.json get /commits/{owner}/{repo}
-Lists all commits for a repository with pagination support.
+List commits for a repository, with pagination support.
 This endpoint supports both authenticated and unauthenticated access.
-Authenticated users can access private repos, while unauthenticated users can only access public repos.
+Authenticated users can access private repositories; unauthenticated users can only access public repositories.
 The include_stats parameter controls whether download and view statistics are computed (defaults to true).
 
 
@@ -98987,6 +99794,14 @@ Source: https://docs.langchain.com/langsmith/smith-api/data_planes/create-a-new-
 
 /langsmith/langsmith-platform-openapi.json post /orgs/current/data-planes
 Creates a new data plane object. Persists the rendered data plane spec, and returns 202 with the data plane in status=requested. Requires BYOC enabled org and org admin.
+
+
+
+# Delete a data plane
+Source: https://docs.langchain.com/langsmith/smith-api/data_planes/delete-a-data-plane
+
+/langsmith/langsmith-platform-openapi.json delete /orgs/current/data-planes/{id}
+Verifies that the stored customer AWS role has delete permissions, removes linked workspaces, and starts asynchronous deprovisioning for a data plane owned by the caller's organization. Requires BYOC to be enabled for the org and org admin permissions.
 
 
 
@@ -99447,7 +100262,7 @@ Validate examples in bulk.
 # Create new experiment view override configuration for a dataset
 Source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides/create-new-experiment-view-override-configuration-for-a-dataset
 
-/langsmith/langsmith-platform-openapi.json post /v1/platform/datasets/{dataset_id}/experiment-view-overrides
+/langsmith/langsmith-platform-openapi.json post /datasets/{dataset_id}/experiment-view-overrides
 Creates a new experiment view override configuration for a dataset with column display settings.
 This endpoint allows you to customize how experiment results are displayed by configuring
 column-specific overrides including colors, precision, and visibility.
@@ -99481,7 +100296,7 @@ This operation fails if an override already exists for the dataset (use PATCH to
 # Delete experiment view override configuration
 Source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides/delete-experiment-view-override-configuration
 
-/langsmith/langsmith-platform-openapi.json delete /v1/platform/datasets/{dataset_id}/experiment-view-overrides/{id}
+/langsmith/langsmith-platform-openapi.json delete /datasets/{dataset_id}/experiment-view-overrides/{id}
 Permanently deletes an experiment view override configuration for a dataset.
 This operation removes all column override settings including color gradients,
 precision configurations, and visibility settings.
@@ -99499,7 +100314,7 @@ appropriate permissions for the dataset.
 # Get experiment view override configuration by specific ID
 Source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides/get-experiment-view-override-configuration-by-specific-id
 
-/langsmith/langsmith-platform-openapi.json get /v1/platform/datasets/{dataset_id}/experiment-view-overrides/{id}
+/langsmith/langsmith-platform-openapi.json get /datasets/{dataset_id}/experiment-view-overrides/{id}
 Retrieves a specific experiment view override configuration using both dataset ID and override ID.
 This endpoint provides more precise access to experiment view overrides when you have
 the specific override ID, useful for direct links or cached references.
@@ -99517,7 +100332,7 @@ Both the dataset and override must exist and be accessible by the authenticated 
 # Get experiment view override configurations for a dataset
 Source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides/get-experiment-view-override-configurations-for-a-dataset
 
-/langsmith/langsmith-platform-openapi.json get /v1/platform/datasets/{dataset_id}/experiment-view-overrides
+/langsmith/langsmith-platform-openapi.json get /datasets/{dataset_id}/experiment-view-overrides
 Retrieves all experiment view override configurations for a specific dataset.
 This endpoint returns column display overrides including color gradients,
 precision settings, and column visibility configurations that customize how
@@ -99534,7 +100349,7 @@ The response includes all column overrides with their display settings:
 # Update existing experiment view override configuration
 Source: https://docs.langchain.com/langsmith/smith-api/experiment-view-overrides/update-existing-experiment-view-override-configuration
 
-/langsmith/langsmith-platform-openapi.json patch /v1/platform/datasets/{dataset_id}/experiment-view-overrides/{id}
+/langsmith/langsmith-platform-openapi.json patch /datasets/{dataset_id}/experiment-view-overrides/{id}
 Updates an existing experiment view override configuration by completely replacing
 the column overrides for the specified dataset and override ID.
 
@@ -99663,6 +100478,8 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback-
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback/formulas
 Create a new feedback formula
 
+Deprecated: use POST /api/v1/feedback/composite-evaluators instead to create a code evaluator from the feedback formula.
+
 
 
 # Create feedback ingest token
@@ -99703,6 +100520,9 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback/delete-feedback-
 /langsmith/langsmith-platform-openapi.json delete /api/v1/feedback/formulas/{feedback_formula_id}
 Delete a feedback formula by id
 
+Deprecated: superseded by composite-feedback v2, where composites are run
+rules (see DELETE /api/v1/runs/rules/{rule_id}). Tenants on v2 receive HTTP 410.
+
 
 
 # Eagerly create feedback
@@ -99722,6 +100542,8 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback/get-feedback-for
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback/formulas/{feedback_formula_id}
 Get a feedback formula by id
 
+Deprecated: superseded by composite-feedback v2, where composites are code evaluators with run rules
+
 
 
 # List feedback formula ep
@@ -99729,6 +100551,8 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback/list-feedback-fo
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/feedback/formulas
 List feedback formulas for a given dataset or tracing project
+
+Deprecated: superseded by composite-feedback v2, where composites are code evaluators with run rules.
 
 
 
@@ -99770,6 +100594,8 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback/update-feedback-
 /langsmith/langsmith-platform-openapi.json put /api/v1/feedback/formulas/{feedback_formula_id}
 Update a feedback formula
 
+Deprecated: superseded by composite-feedback v2, where composites are code evaluators with run rules
+
 
 
 # Create a gateway policy
@@ -99779,7 +100605,8 @@ Source: https://docs.langchain.com/langsmith/smith-api/gateway-policies/create-a
 Creates a gateway policy for the calling organization.
 
 **policy_type** is one of `spend_cap`, `default_spend_cap`,
-`guard`, or `route_config`. The shape of `config` depends on policy_type:
+`guard`, `route_config`, `rate_limit`, or `default_rate_limit`.
+The shape of `config` depends on policy_type:
 - `spend_cap` / `default_spend_cap`:
 `{"window": "hourly"|"daily"|"weekly"|"monthly", "limit_usd": <number>}`
 - `guard`:
@@ -99788,23 +100615,28 @@ Creates a gateway policy for the calling organization.
 - `route_config`:
 `{"strategy": "priority_fallback", "triggers": {"status_codes": [<int>]}, "fallbacks": [{"model_configs": [{"model_config_id": "<playground-settings-uuid>"}]}]}`
 `triggers` is required, with no default: `status_codes` must be a non-empty list (include 502 and 504 for upstream transport failures). `fallbacks` contains an entry whose `model_configs` are tried in priority order (1–5). `subject_matchers` must be a single `workspace_id` entry.
+- `rate_limit` / `default_rate_limit`:
+`{"version": 1, "limits": [{"metric": "requests"|"tokens", "window": "minute"|"hour", "value": <integer>}]}`
+`limits` must be non-empty; each `metric`/`window` pair may appear at most once. `value` is 1..1000000000000000.
 
 **subject_matchers** is a list of `{key, value}` pairs.
 `key` is one of `organization_id`, `workspace_id`, `user_id`,
 `api_key_id`, or `run_rule_id`. Multiple matchers AND together. A
-`default_spend_cap` uses `{key, value: ""}` so the runtime
-materializes a per-subject child for every distinct subject
-of that kind it sees in request metadata.
+`default_spend_cap` or `default_rate_limit` uses `{key, value: ""}`
+so the runtime materializes a per-subject child for every distinct
+subject of that kind it sees in request metadata.
 
 **action** is currently always `block`. Spend caps reject the
-request with 402 when the limit is hit; guard policies redact
-matched content in-place before forwarding upstream.
+request with 402 when the limit is hit; rate limits reject with
+429 (with a `Retry-After` hint) when a limit is exceeded; guard
+policies redact matched content in-place before forwarding upstream.
 
-**Upsert by matchers:** for `spend_cap`, `default_spend_cap`, and
-`guard`, if a policy with the same `subject_matchers` already exists
-in this organization, the existing policy is updated in place instead
-of a duplicate being created. `id` is preserved. `route_config` does
-not upsert by matchers — name must be unique per organization (409 on
+**Upsert by matchers:** for `spend_cap`, `default_spend_cap`,
+`rate_limit`, `default_rate_limit`, and `guard`, if a policy with
+the same `subject_matchers` already exists in this organization,
+the existing policy is updated in place instead of a duplicate
+being created. `id` is preserved. `route_config` does not upsert
+by matchers — name must be unique per organization (409 on
 conflict). Returns 201 either way.
 
 
@@ -99815,8 +100647,9 @@ Source: https://docs.langchain.com/langsmith/smith-api/gateway-policies/delete-a
 /langsmith/langsmith-platform-openapi.json delete /v1/platform/gateway-policies/{id}
 Deletes a gateway policy. Subsequent reads return 404.
 
-**default_spend_cap cascade:** deleting a `default_spend_cap`
-also deletes every child policy materialized from it.
+**default cascade:** deleting a `default_spend_cap` or
+`default_rate_limit` also deletes every child policy
+materialized from it.
 
 
 
@@ -99840,15 +100673,15 @@ Source: https://docs.langchain.com/langsmith/smith-api/gateway-policies/list-gat
 /langsmith/langsmith-platform-openapi.json get /v1/platform/gateway-policies
 Returns every gateway policy in the current organization.
 The response includes both admin-created policies and
-runtime-materialized children of `default_spend_cap`
-policies (children carry `parent_policy_id`).
+runtime-materialized children of `default_spend_cap` and
+`default_rate_limit` policies (children carry `parent_policy_id`).
 
 **Spend tracking:** each spend-cap policy carries
 `current_spend_usd` — the spend accumulated in the policy's
 active window.
 
 **Filters** (all optional):
-- `policy_type` — `spend_cap`, `default_spend_cap`, `guard`, or `route_config`
+- `policy_type` — `spend_cap`, `default_spend_cap`, `guard`, `route_config`, `rate_limit`, or `default_rate_limit`
 - `subject_matcher_key` + `subject_matcher_value` — narrow to
 policies whose subject_matchers contain `{key, value}`
 
@@ -99887,14 +100720,15 @@ unchanged. `policy_type` is immutable — to change a
 policy's type, delete it and create a new one.
 
 **config** if supplied must match the policy's type:
-- spend-cap: `{"window": ..., "limit_usd": ...}`
-- guard:     `{"version": 1, "detect": {...}, "timeout_seconds": <number>, "timeout_action": "allow"|"block"}`
+- spend-cap:  `{"window": ..., "limit_usd": ...}`
+- guard:      `{"version": 1, "detect": {...}, "timeout_seconds": <number>, "timeout_action": "allow"|"block"}`
+- rate-limit: `{"version": 1, "limits": [{"metric": "requests"|"tokens", "window": "minute"|"hour", "value": <integer>}]}`
 Mismatched shapes are rejected with 400.
 
-**default_spend_cap cascade:** editing a `default_spend_cap`
-updates the config/action/enabled/priority on every
-attached child policy so the template stays the source of
-truth across rollouts.
+**default cascade:** editing a `default_spend_cap` or
+`default_rate_limit` updates the config/action/enabled/priority
+on every attached child policy so the template stays the source
+of truth across rollouts.
 
 
 
@@ -99988,19 +100822,16 @@ Removes the agent config, its issues, and the agent-overview hub repo.
 Source: https://docs.langchain.com/langsmith/smith-api/issues-agent/get-issues-agent-engine-lcu-spend-per-project-for-the-calling-org
 
 /langsmith/langsmith-platform-openapi.json get /issues-agent/lcu-spend
-Returns one flat row per (tenant, session) pair in the
-caller's organization that has Engine spend in the
-window, each carrying its workspace name, project
-(session) name, and Engine LCU spend. The caller groups
-rows by tenant for display and sums the `lcu_total`
-field across items for the org-wide total (the UI tile
-does both). The window defaults to the current calendar
-month (UTC) and can be overridden with `start` and `end`
-(RFC 3339, capped at 31 days). Hours where the rate card
-did not price a (provider, model) pair are excluded from
-each row's `lcu_total` and surfaced as
-`lcu_unpriced_row_count` so callers can detect billing
-coverage gaps without inflating the spend number.
+Returns the authoritative Engine LCU spend for the caller's
+organization in the window (`total_lcu`, independent of
+pagination). Set `group_by=tenant` for a workspace breakdown or
+`group_by=session` for a (tenant, session) breakdown — each
+spend-ranked and cursor-paginated (`page_size`, `cursor`); omit
+`group_by` for the total only. The window defaults to the current
+calendar month (UTC) and can be overridden with `start`/`end`
+(RFC 3339, capped at 31 days). Hours the rate card did not price
+are excluded from LCU and surfaced via the `*_unpriced_row_count`
+fields so callers can detect coverage gaps without inflating spend.
 
 
 
@@ -101472,6 +102303,15 @@ Returns one run within the trace identified by the share token. The request supp
 
 
 
+# Get the LangSmith UI URL for a run (v2)
+Source: https://docs.langchain.com/langsmith/smith-api/runs/get-the-langsmith-ui-url-for-a-run-v2
+
+/langsmith/langsmith-platform-openapi.json get /v2/runs/{run_id}/url
+Returns the URL to view a specific run in the LangSmith UI. The caller must supply the
+run's project_id and trace_id as query parameters; start_time is optional.
+
+
+
 # Ingest runs (batch json)
 Source: https://docs.langchain.com/langsmith/smith-api/runs/ingest-runs-batch-json
 
@@ -101540,7 +102380,7 @@ Source: https://docs.langchain.com/langsmith/smith-api/runs/read-run-v2
 
 /langsmith/langsmith-platform-openapi.json get /v2/runs/{run_id}
 **Alpha:** The request and response contract may change;
-Returns one run by ID for the given session and start_time. Use the `selects` query parameter (repeatable) to select fields to return.
+Returns one run by ID for the given session. Use the `selects` query parameter (repeatable) to select fields to return.
 
 
 
@@ -102728,7 +103568,7 @@ First, let's setup our client:
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
@@ -102795,7 +103635,7 @@ We can stream the results of a stateless run in an almost identical fashion to h
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/stream \
@@ -102844,7 +103684,7 @@ In addition to streaming, you can also wait for a stateless result by using the 
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/runs/wait \
@@ -119526,7 +120366,7 @@ Before making API calls, set up your assistant and thread.
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants/search \
@@ -119595,7 +120435,7 @@ For example, if your server listens for webhook events at `https://my-server.app
     ```
   </Tab>
 
-  <Tab title="CURL">
+  <Tab title="cURL">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
@@ -127176,7 +128016,7 @@ Source: https://docs.langchain.com/oss/javascript/deepagents/code/cli-reference
 
 Deep Agents Code command-line flags and management subcommands
 
-Deep Agents Code (`dcode`) accepts command-line flags at launch and exposes management subcommands for agents, sessions, skills, credentials, and configuration. Use this page as a reference when you need to override defaults from the shell, run non-interactive tasks in scripts, or automate administration without opening a session. For installation and daily interactive use, see [Quickstart](/oss/javascript/deepagents/code/quickstart). For how CLI flags fit into the broader configuration model, see [Configuration](/oss/javascript/deepagents/code/configuration).
+Deep Agents Code (`dcode`) accepts command-line flags at launch and exposes management subcommands for tools, agents, sessions, skills, credentials, and configuration. Use this page as a reference when you need to override defaults from the shell, run non-interactive tasks in scripts, or automate administration without opening a session. For installation and daily interactive use, see [Quickstart](/oss/javascript/deepagents/code/quickstart). For how CLI flags fit into the broader configuration model, see [Configuration](/oss/javascript/deepagents/code/configuration).
 
 ## Example usage
 
@@ -127375,6 +128215,44 @@ dcode --yolo
 
 The `-S`/`--shell-allow-list` flag applies in both interactive and non-interactive modes. Pass a comma-separated list of command names, `recommended` for safe read-only defaults, or `all` to permit any command. You can also set `DEEPAGENTS_CODE_SHELL_ALLOW_LIST` in the environment.
 
+## Restrict filesystem tools
+
+By default, Deep Agents Code exposes all filesystem tools. To expose only a subset, pass a comma-separated list:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode -n "Audit this repository" --allow-fs-tools ls,read_file,glob,grep
+```
+
+Valid names are `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, `grep`, and `execute`. Explicit lists must include `read_file`. The allowlist applies to the main agent and synchronous subagents in every session mode, but not to async subagents or non-filesystem tools.
+
+<Note>
+  `--allow-fs-tools` and `-S`/`--shell-allow-list` control different layers of shell access:
+
+  * **`--allow-fs-tools`** controls which filesystem tools are available. Shell access requires `execute`.
+  * **`-S`/`--shell-allow-list`** controls which shell commands are permitted through `execute`. It does not affect other filesystem tools.
+
+  | `--allow-fs-tools` includes `execute`? | `-S` set? | Shell access                                                               |
+  | -------------------------------------- | --------- | -------------------------------------------------------------------------- |
+  | Yes                                    | Yes       | Allowed commands run (interactive confirms; non-interactive auto-approves) |
+  | Yes                                    | No        | Tool exists, but no command is pre-approved                                |
+  | No                                     | Yes       | No shell access — `execute` is absent, so `-S` has nothing to gate         |
+  | No                                     | No        | No shell access                                                            |
+
+  In non-interactive mode, pass both to enable commands without a human to approve them:
+
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
+  ```
+</Note>
+
+Run `/tools` in a session to inspect the active tool set. From the shell, place tool-shaping flags before the subcommand:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode tools list
+dcode --allow-fs-tools ls,read_file tools list
+dcode --allow-fs-tools ls,read_file tools list --json
+```
+
 ## Startup commands and initial prompts
 
 Use `-m`/`--message` to auto-submit an initial prompt when an interactive session starts. Combine with `--startup-cmd` to run a shell command first:
@@ -127453,7 +128331,8 @@ Run OAuth login for MCP servers marked `auth: "oauth"` with `dcode mcp login <se
 | `-y`, `--auto-approve`          | Enable classifier-backed [Auto](/oss/javascript/deepagents/code/approval-modes) mode. Requires an interactive local session; toggle with `Shift+Tab` during an interactive session                                                                                                                                                                                                             |
 | `--yolo`                        | Run gated actions without review after the one-time local risk acknowledgement. Interactive mode only                                                                                                                                                                                                                                                                                          |
 | `-S`, `--shell-allow-list LIST` | Comma-separated shell commands to auto-approve, `'recommended'` for safe defaults, or `'all'` to allow any command. Applies to both `-n` and interactive modes                                                                                                                                                                                                                                 |
-| `--json`                        | Emit machine-readable JSON from management subcommands (`agents`, `threads`, `skills`, `update`). Output envelope: `{"schema_version": 1, "command": "...", "data": ...}`                                                                                                                                                                                                                      |
+| `--allow-fs-tools LIST`         | Filesystem tools to expose. Defaults to `all`. See [Restrict filesystem tools](#restrict-filesystem-tools)                                                                                                                                                                                                                                                                                     |
+| `--json`                        | Emit machine-readable JSON from supported management subcommands, including `tools`, `agents`, `threads`, `skills`, and `update`. Output envelope: `{"schema_version": 1, "command": "...", "data": ...}`                                                                                                                                                                                      |
 | `--sandbox TYPE`                | Remote sandbox for code execution: `none` (default), `langsmith`, `agentcore`, `daytona`, `modal`, `runloop`, `vercel`, and third-party providers. LangSmith is included; other built-ins require extras. Pass `--sandbox` with no value to use `[sandboxes].default` from config                                                                                                              |
 | `--sandbox-id ID`               | Reuse an existing sandbox (skips creation and cleanup)                                                                                                                                                                                                                                                                                                                                         |
 | `--sandbox-snapshot-name NAME`  | Sandbox snapshot name to use or create (`langsmith`, `runloop`, and providers that advertise snapshot support)                                                                                                                                                                                                                                                                                 |
@@ -127515,6 +128394,7 @@ Pair `dcode doctor` with `dcode config show` when you need both a high-level hea
 | Command                                           | Description                                                                                                                                                                                                                                                                                                                                                                               |
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `dcode help`                                      | Show help                                                                                                                                                                                                                                                                                                                                                                                 |
+| `dcode tools list [--json]`                       | List the tools available to the configured agent. Place top-level tool-shaping flags, such as `--allow-fs-tools`, `--no-mcp`, `--mcp-config`, and `--trust-project-mcp`, before `tools list`                                                                                                                                                                                              |
 | `dcode agents list`                               | List all agents (alias: `ls`)                                                                                                                                                                                                                                                                                                                                                             |
 | `dcode agents reset --agent NAME`                 | Clear agent memory and reset to default. Supports `--dry-run`                                                                                                                                                                                                                                                                                                                             |
 | `dcode agents reset --agent NAME --target SOURCE` | Copy memory from another agent                                                                                                                                                                                                                                                                                                                                                            |
@@ -127598,24 +128478,30 @@ Explicit `-a`/`--agent` always overrides both, and `-r`/`--resume` bypasses both
 
 ## Redact LangSmith trace secrets
 
-With LangSmith tracing enabled, Deep Agents Code redacts detected secrets from agent-trace inputs and outputs by default. If redaction cannot be configured, tracing is disabled for that run. To opt out:
+With LangSmith tracing enabled, Deep Agents Code sends agent-trace inputs and outputs without client-side secret redaction by default.
+
+<Warning>
+  Without redaction, secrets may be uploaded to LangSmith as part of agent traces.
+</Warning>
+
+To redact detected secrets before upload:
 
 <Tabs>
   <Tab title="Config file">
     ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     [tracing]
-    langsmith_redact = false
+    langsmith_redact = true
     ```
   </Tab>
 
   <Tab title="Environment variable">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export DEEPAGENTS_CODE_LANGSMITH_REDACT=0
+    export DEEPAGENTS_CODE_LANGSMITH_REDACT=true
     ```
   </Tab>
 </Tabs>
 
-The environment variable takes precedence over the config file. This setting does not redact general personally identifiable information (PII), trace metadata, or traces emitted by shell processes. For broader options, see [Redact secrets from traces](/langsmith/redact-secrets).
+The environment variable takes precedence over the config file. When redaction is enabled, Deep Agents Code disables tracing for that run if redaction cannot be configured. Secret redaction does not redact general personally identifiable information (PII), trace metadata, or traces emitted by shell processes. For broader options, see [Redact secrets from traces](/langsmith/redact-secrets).
 
 ## Provider configuration
 
@@ -128370,7 +129256,7 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REDACT" type="string">
-  Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace inputs and outputs. Accepts `1`, `true`, `yes`, or `on` to enable redaction and `0`, `false`, `no`, or `off` to disable it, case-insensitively. If redaction cannot be configured, tracing is disabled for that run. See [Configure LangSmith trace redaction](/oss/javascript/deepagents/code/config-file#redact-langsmith-trace-secrets).
+  Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace inputs and outputs. Accepts `1`, `true`, `yes`, or `on` to enable redaction and `0`, `false`, `no`, or `off` to disable it, case-insensitively. When redaction is enabled, tracing is disabled for that run if redaction cannot be configured. See [Configure LangSmith trace redaction](/oss/javascript/deepagents/code/config-file#redact-langsmith-trace-secrets).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS" type="string">
@@ -130799,10 +131685,12 @@ To customize the project name or configure tracing without the TUI, add keys to 
 ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=lsv2_...
-LANGSMITH_PROJECT=optional-project-name  # Specify a project name or default to "deepagents-code"
+DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code  # Project for Deep Agents Code's own traces; defaults to "deepagents-code"
 ```
 
-To override for a specific project, add the same keys to a `.env` in the project directory. See [environment variables](/oss/javascript/deepagents/code/configuration#environment-variables) for the full loading order.
+Use `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to name the project that receives Deep Agents Code's own traces. It is scoped to Deep Agents Code, so it is not affected by a `LANGSMITH_PROJECT` set in a project's `.env` (which routes that project's application traces; see **Separate agent traces from app traces** below).
+
+To override the project for a specific working directory, add `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to a `.env` in that directory. See [environment variables](/oss/javascript/deepagents/code/configuration#environment-variables) for the full loading order.
 
 For CI, headless runs, or temporary overrides, set shell environment variables instead. Shell exports always take precedence over `.env` values:
 
@@ -144711,7 +145599,7 @@ export LANGSMITH_API_KEY="your-langsmith-api-key"
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const result = await agent.invoke({
-  messages: [{ role: "user", content: "What is langgraph?" }],
+  messages: [{ role: "user", content: "What is Deep Agents and how does it work?" }],
 });
 
 // Print the agent's response
@@ -207873,6 +208761,8 @@ We will commonly use [LangChain](/oss/javascript/langchain/overview) components 
 
 LangGraph is focused on the underlying capabilities important for agent orchestration: durable execution, streaming, human-in-the-loop, and more.
 
+One of LangGraph's core strengths is the ability to mix deterministic steps with LLM-driven agentic steps in a single graph. This lets you build bespoke workflows where parts of the logic are fully predictable and auditable while other parts are flexible and model-driven, giving you fine-grained control over exactly where and how AI is applied.
+
 <Expandable title="how LangChain products fit together">
   * [Deep Agents](/oss/javascript/deepagents/overview) is an [agent harness](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk): planning, subagents, filesystem tools, and context management on top of LangGraph.
   * [LangChain](/oss/javascript/langchain/overview) is the agent framework: abstractions and integrations for models, tools, and agent loops.
@@ -223758,7 +224648,7 @@ Source: https://docs.langchain.com/oss/python/deepagents/code/cli-reference
 
 Deep Agents Code command-line flags and management subcommands
 
-Deep Agents Code (`dcode`) accepts command-line flags at launch and exposes management subcommands for agents, sessions, skills, credentials, and configuration. Use this page as a reference when you need to override defaults from the shell, run non-interactive tasks in scripts, or automate administration without opening a session. For installation and daily interactive use, see [Quickstart](/oss/python/deepagents/code/quickstart). For how CLI flags fit into the broader configuration model, see [Configuration](/oss/python/deepagents/code/configuration).
+Deep Agents Code (`dcode`) accepts command-line flags at launch and exposes management subcommands for tools, agents, sessions, skills, credentials, and configuration. Use this page as a reference when you need to override defaults from the shell, run non-interactive tasks in scripts, or automate administration without opening a session. For installation and daily interactive use, see [Quickstart](/oss/python/deepagents/code/quickstart). For how CLI flags fit into the broader configuration model, see [Configuration](/oss/python/deepagents/code/configuration).
 
 ## Example usage
 
@@ -223957,6 +224847,44 @@ dcode --yolo
 
 The `-S`/`--shell-allow-list` flag applies in both interactive and non-interactive modes. Pass a comma-separated list of command names, `recommended` for safe read-only defaults, or `all` to permit any command. You can also set `DEEPAGENTS_CODE_SHELL_ALLOW_LIST` in the environment.
 
+## Restrict filesystem tools
+
+By default, Deep Agents Code exposes all filesystem tools. To expose only a subset, pass a comma-separated list:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode -n "Audit this repository" --allow-fs-tools ls,read_file,glob,grep
+```
+
+Valid names are `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, `grep`, and `execute`. Explicit lists must include `read_file`. The allowlist applies to the main agent and synchronous subagents in every session mode, but not to async subagents or non-filesystem tools.
+
+<Note>
+  `--allow-fs-tools` and `-S`/`--shell-allow-list` control different layers of shell access:
+
+  * **`--allow-fs-tools`** controls which filesystem tools are available. Shell access requires `execute`.
+  * **`-S`/`--shell-allow-list`** controls which shell commands are permitted through `execute`. It does not affect other filesystem tools.
+
+  | `--allow-fs-tools` includes `execute`? | `-S` set? | Shell access                                                               |
+  | -------------------------------------- | --------- | -------------------------------------------------------------------------- |
+  | Yes                                    | Yes       | Allowed commands run (interactive confirms; non-interactive auto-approves) |
+  | Yes                                    | No        | Tool exists, but no command is pre-approved                                |
+  | No                                     | Yes       | No shell access — `execute` is absent, so `-S` has nothing to gate         |
+  | No                                     | No        | No shell access                                                            |
+
+  In non-interactive mode, pass both to enable commands without a human to approve them:
+
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
+  ```
+</Note>
+
+Run `/tools` in a session to inspect the active tool set. From the shell, place tool-shaping flags before the subcommand:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode tools list
+dcode --allow-fs-tools ls,read_file tools list
+dcode --allow-fs-tools ls,read_file tools list --json
+```
+
 ## Startup commands and initial prompts
 
 Use `-m`/`--message` to auto-submit an initial prompt when an interactive session starts. Combine with `--startup-cmd` to run a shell command first:
@@ -224035,7 +224963,8 @@ Run OAuth login for MCP servers marked `auth: "oauth"` with `dcode mcp login <se
 | `-y`, `--auto-approve`          | Enable classifier-backed [Auto](/oss/python/deepagents/code/approval-modes) mode. Requires an interactive local session; toggle with `Shift+Tab` during an interactive session                                                                                                                                                                                                                 |
 | `--yolo`                        | Run gated actions without review after the one-time local risk acknowledgement. Interactive mode only                                                                                                                                                                                                                                                                                          |
 | `-S`, `--shell-allow-list LIST` | Comma-separated shell commands to auto-approve, `'recommended'` for safe defaults, or `'all'` to allow any command. Applies to both `-n` and interactive modes                                                                                                                                                                                                                                 |
-| `--json`                        | Emit machine-readable JSON from management subcommands (`agents`, `threads`, `skills`, `update`). Output envelope: `{"schema_version": 1, "command": "...", "data": ...}`                                                                                                                                                                                                                      |
+| `--allow-fs-tools LIST`         | Filesystem tools to expose. Defaults to `all`. See [Restrict filesystem tools](#restrict-filesystem-tools)                                                                                                                                                                                                                                                                                     |
+| `--json`                        | Emit machine-readable JSON from supported management subcommands, including `tools`, `agents`, `threads`, `skills`, and `update`. Output envelope: `{"schema_version": 1, "command": "...", "data": ...}`                                                                                                                                                                                      |
 | `--sandbox TYPE`                | Remote sandbox for code execution: `none` (default), `langsmith`, `agentcore`, `daytona`, `modal`, `runloop`, `vercel`, and third-party providers. LangSmith is included; other built-ins require extras. Pass `--sandbox` with no value to use `[sandboxes].default` from config                                                                                                              |
 | `--sandbox-id ID`               | Reuse an existing sandbox (skips creation and cleanup)                                                                                                                                                                                                                                                                                                                                         |
 | `--sandbox-snapshot-name NAME`  | Sandbox snapshot name to use or create (`langsmith`, `runloop`, and providers that advertise snapshot support)                                                                                                                                                                                                                                                                                 |
@@ -224097,6 +225026,7 @@ Pair `dcode doctor` with `dcode config show` when you need both a high-level hea
 | Command                                           | Description                                                                                                                                                                                                                                                                                                                                                                               |
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `dcode help`                                      | Show help                                                                                                                                                                                                                                                                                                                                                                                 |
+| `dcode tools list [--json]`                       | List the tools available to the configured agent. Place top-level tool-shaping flags, such as `--allow-fs-tools`, `--no-mcp`, `--mcp-config`, and `--trust-project-mcp`, before `tools list`                                                                                                                                                                                              |
 | `dcode agents list`                               | List all agents (alias: `ls`)                                                                                                                                                                                                                                                                                                                                                             |
 | `dcode agents reset --agent NAME`                 | Clear agent memory and reset to default. Supports `--dry-run`                                                                                                                                                                                                                                                                                                                             |
 | `dcode agents reset --agent NAME --target SOURCE` | Copy memory from another agent                                                                                                                                                                                                                                                                                                                                                            |
@@ -224180,24 +225110,30 @@ Explicit `-a`/`--agent` always overrides both, and `-r`/`--resume` bypasses both
 
 ## Redact LangSmith trace secrets
 
-With LangSmith tracing enabled, Deep Agents Code redacts detected secrets from agent-trace inputs and outputs by default. If redaction cannot be configured, tracing is disabled for that run. To opt out:
+With LangSmith tracing enabled, Deep Agents Code sends agent-trace inputs and outputs without client-side secret redaction by default.
+
+<Warning>
+  Without redaction, secrets may be uploaded to LangSmith as part of agent traces.
+</Warning>
+
+To redact detected secrets before upload:
 
 <Tabs>
   <Tab title="Config file">
     ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     [tracing]
-    langsmith_redact = false
+    langsmith_redact = true
     ```
   </Tab>
 
   <Tab title="Environment variable">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export DEEPAGENTS_CODE_LANGSMITH_REDACT=0
+    export DEEPAGENTS_CODE_LANGSMITH_REDACT=true
     ```
   </Tab>
 </Tabs>
 
-The environment variable takes precedence over the config file. This setting does not redact general personally identifiable information (PII), trace metadata, or traces emitted by shell processes. For broader options, see [Redact secrets from traces](/langsmith/redact-secrets).
+The environment variable takes precedence over the config file. When redaction is enabled, Deep Agents Code disables tracing for that run if redaction cannot be configured. Secret redaction does not redact general personally identifiable information (PII), trace metadata, or traces emitted by shell processes. For broader options, see [Redact secrets from traces](/langsmith/redact-secrets).
 
 ## Provider configuration
 
@@ -224952,7 +225888,7 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REDACT" type="string">
-  Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace inputs and outputs. Accepts `1`, `true`, `yes`, or `on` to enable redaction and `0`, `false`, `no`, or `off` to disable it, case-insensitively. If redaction cannot be configured, tracing is disabled for that run. See [Configure LangSmith trace redaction](/oss/python/deepagents/code/config-file#redact-langsmith-trace-secrets).
+  Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace inputs and outputs. Accepts `1`, `true`, `yes`, or `on` to enable redaction and `0`, `false`, `no`, or `off` to disable it, case-insensitively. When redaction is enabled, tracing is disabled for that run if redaction cannot be configured. See [Configure LangSmith trace redaction](/oss/python/deepagents/code/config-file#redact-langsmith-trace-secrets).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_LANGSMITH_REPLICA_PROJECTS" type="string">
@@ -227449,10 +228385,12 @@ To customize the project name or configure tracing without the TUI, add keys to 
 ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=lsv2_...
-LANGSMITH_PROJECT=optional-project-name  # Specify a project name or default to "deepagents-code"
+DEEPAGENTS_CODE_LANGSMITH_PROJECT=deepagents-code  # Project for Deep Agents Code's own traces; defaults to "deepagents-code"
 ```
 
-To override for a specific project, add the same keys to a `.env` in the project directory. See [environment variables](/oss/python/deepagents/code/configuration#environment-variables) for the full loading order.
+Use `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to name the project that receives Deep Agents Code's own traces. It is scoped to Deep Agents Code, so it is not affected by a `LANGSMITH_PROJECT` set in a project's `.env` (which routes that project's application traces; see **Separate agent traces from app traces** below).
+
+To override the project for a specific working directory, add `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to a `.env` in that directory. See [environment variables](/oss/python/deepagents/code/configuration#environment-variables) for the full loading order.
 
 For CI, headless runs, or temporary overrides, set shell environment variables instead. Shell exports always take precedence over `.env` values:
 
@@ -243966,7 +244904,7 @@ export LANGSMITH_API_KEY="your-langsmith-api-key"
 ## Step 6: Run the agent
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-result = agent.invoke({"messages": [{"role": "user", "content": "What is langgraph?"}]})
+result = agent.invoke({"messages": [{"role": "user", "content": "What is Deep Agents and how does it work?"}]})
 
 # Print the agent's response
 print(result["messages"][-1].content)
@@ -305254,6 +306192,8 @@ LangGraph is very low-level, and focused entirely on agent **orchestration**. Be
 We will commonly use [LangChain](/oss/python/langchain/overview) components throughout the documentation to integrate models and tools, but you don't need to use LangChain to use LangGraph. If you are just getting started with agents or want a higher-level abstraction, we recommend you use LangChain's [agents](/oss/python/langchain/agents) that provide prebuilt architectures for common LLM and tool-calling loops.
 
 LangGraph is focused on the underlying capabilities important for agent orchestration: durable execution, streaming, human-in-the-loop, and more.
+
+One of LangGraph's core strengths is the ability to mix deterministic steps with LLM-driven agentic steps in a single graph. This lets you build bespoke workflows where parts of the logic are fully predictable and auditable while other parts are flexible and model-driven, giving you fine-grained control over exactly where and how AI is applied.
 
 <Expandable title="how LangChain products fit together">
   * [Deep Agents](/oss/python/deepagents/overview) is an [agent harness](/oss/python/concepts/products#agent-harnesses-like-the-deep-agents-sdk): planning, subagents, filesystem tools, and context management on top of LangGraph.

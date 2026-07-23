@@ -10,11 +10,27 @@ Dedicated model inference records latency, throughput, and utilization metrics f
 
 ## Analytics dashboard
 
-The [Together AI dashboard](https://api.together.ai/endpoints) shows per-endpoint charts for latency, throughput, replica count, and utilization, built on the metric series below. Use the dashboards to monitor an endpoint at a glance and to compare deployments during an A/B test.
+The [Together AI console](https://api.together.ai/endpoints) shows per-endpoint charts for requests, tokens per second, input and output tokens, latency, and time to first token, built on the metric series below.
+
+Open an endpoint and select the **Analytics** tab. Switch between **Usage** and **Errors**, view the endpoint **Total** or break it down **By deployment**, and adjust the time range. Use the dashboard to monitor an endpoint at a glance and to compare deployments during an [A/B test](/docs/dedicated-endpoints/ab-tests).
+
+<Frame>
+  <img alt="The Analytics tab for an endpoint in the Together AI console, with charts for requests, tokens per second, input tokens, and output tokens, plus Usage and Errors toggles, a Total and By deployment breakdown, and a time-range selector." />
+</Frame>
+
+The charts populate once the endpoint starts serving requests.
 
 ## Events
 
-Each endpoint has an audit feed of events, newest first. It merges endpoint-scoped events with the deployment-scoped events for every deployment under the endpoint, so scale-ups, traffic shifts, readiness changes, and pauses across every deployment all surface here. Use it to trace what happened during an autoscaling event or a traffic-split change. Use the SDK/API to list events:
+Each endpoint has an audit feed of events, newest first. It merges endpoint-scoped events with the deployment-scoped events for every deployment under the endpoint, so scale-ups, traffic shifts, readiness changes, and pauses across every deployment all surface here. Use it to trace what happened during an autoscaling event or a traffic-split change.
+
+In the console, open an endpoint and select the **Logs** tab to browse the feed, with columns for time, type, source, level, and message.
+
+<Frame>
+  <img alt="The Logs tab for an endpoint in the Together AI console, an event feed with Time, Type, Source, Level, and Message columns showing the deployment's lifecycle events." />
+</Frame>
+
+To read the feed programmatically, use the SDK or API to list events:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -45,7 +61,15 @@ Each endpoint has an audit feed of events, newest first. It merges endpoint-scop
   ```
 </CodeGroup>
 
-Optional parameters narrow the feed: `types` restricts to specific event-type strings, `min_level` sets the minimum severity, `source_kinds` selects endpoint- or deployment-scoped events, `since` and `until` bound a time range, `subject_id` filters to a single subject, `deployment_ids` scopes to specific deployments, and `limit` / `after` paginate (max `500`, default `50`).
+Optional parameters narrow the feed:
+
+* `types` restricts to specific event-type strings.
+* `min_level` sets the minimum severity.
+* `source_kinds` selects endpoint- or deployment-scoped events.
+* `since` and `until` bound a time range.
+* `subject_id` filters to a single subject.
+* `deployment_ids` scopes to specific deployments.
+* `limit` / `after` paginate (max `500`, default `50`).
 
 <Note>
   Endpoint mutation events such as `endpoint.updated` record when a change happened, but they don't include a field-level diff. Keep configuration history in your deployment system if you need to reconstruct exactly what changed.
@@ -135,14 +159,16 @@ Metrics are grouped by the stage of the request path they measure: the edge (fro
 
 #### Worker (model server)
 
-| Metric                               | Type      | Unit     | Notes                                        |
-| ------------------------------------ | --------- | -------- | -------------------------------------------- |
-| `worker_inference_request_total`     | Counter   | requests | Broken down by `status_code`.                |
-| `worker_ttft_seconds`                | Histogram | seconds  | Time to first token.                         |
-| `worker_generation_duration_seconds` | Histogram | seconds  | Total generation duration.                   |
-| `worker_tpot_seconds`                | Histogram | seconds  | Time per output token (inter-token latency). |
-| `worker_token_total`                 | Counter   | tokens   | Broken down by `token_type`.                 |
-| `worker_tokens_per_request`          | Histogram | tokens   | Broken down by `token_type`.                 |
+| Metric                               | Type      | Unit        | Notes                                                                                    |
+| ------------------------------------ | --------- | ----------- | ---------------------------------------------------------------------------------------- |
+| `worker_inference_request_total`     | Counter   | requests    | Broken down by `status_code`.                                                            |
+| `worker_ttft_seconds`                | Histogram | seconds     | Time to first token.                                                                     |
+| `worker_generation_duration_seconds` | Histogram | seconds     | Total generation duration.                                                               |
+| `worker_tpot_seconds`                | Histogram | seconds     | Time per output token (inter-token latency).                                             |
+| `worker_token_total`                 | Counter   | tokens      | Broken down by `token_type`.                                                             |
+| `worker_tokens_per_request`          | Histogram | tokens      | Broken down by `token_type`.                                                             |
+| `worker_engine_kv_cache_utilization` | Gauge     | ratio (0-1) | Fraction of the engine's KV-cache capacity in use.                                       |
+| `worker_engine_cache_hit_rate`       | Gauge     | ratio (0-1) | Hit rate of the engine's KV cache. Higher values mean more prefix reuse across requests. |
 
 ### Labels
 

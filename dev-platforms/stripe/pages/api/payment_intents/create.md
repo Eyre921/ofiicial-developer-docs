@@ -688,7 +688,7 @@ Possible enum values:
       - `mandate_data.customer_acceptance.online.user_agent` (string, required)
         The user agent of the browser from which the Mandate was accepted by the customer.
 
-- `metadata` (object, optional)
+- `metadata` (map, optional)
   Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
 - `off_session` (boolean | string, optional)
@@ -905,7 +905,7 @@ Possible enum values:
   - `payment_method_data.mb_way` (object, optional)
     If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
 
-  - `payment_method_data.metadata` (object, optional)
+  - `payment_method_data.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
   - `payment_method_data.mobilepay` (object, optional)
@@ -3352,7 +3352,7 @@ Possible enum values:
   - `transfer_data.description` (string, optional)
     An arbitrary string attached to the transfer. Often useful for displaying to users.
 
-  - `transfer_data.metadata` (object, optional)
+  - `transfer_data.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
   - `transfer_data.payment_data` (object, optional)
@@ -3361,7 +3361,7 @@ Possible enum values:
     - `transfer_data.payment_data.description` (string, optional)
       An arbitrary string attached to the destination payment. Often useful for displaying to users.
 
-    - `transfer_data.payment_data.metadata` (object, optional)
+    - `transfer_data.payment_data.metadata` (map, optional)
       Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
 - `transfer_group` (string, optional)

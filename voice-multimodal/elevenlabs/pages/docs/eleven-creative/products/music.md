@@ -10,11 +10,13 @@ path: docs/eleven-creative/products/music
 
 ## Overview
 
-Eleven Music offers an end-to-end workflow for music creation. Generate songs in any style, at your desired length,
-and refine every detail with intuitive editing tools. Once complete, export your track as a high-fidelity MP3 audio file,
-ready for professional use.
+Eleven Music offers an end-to-end workflow for music creation. Generate songs in any style and at your desired length
+using natural language prompts. You can also add an Audio Reference or select a curated or custom
+[Music Finetune](/docs/eleven-creative/products/music/finetunes) to guide the sound and stylistic identity of your
+generation.
 
-Use [Music Finetunes](/docs/eleven-creative/products/music/finetunes) to fine-tune the ElevenLabs Music model on your own original audio for consistent, personalized generation that reflects your unique sonic identity.
+Refine individual sections, lyrics, styles, and song structure with intuitive editing tools. Once complete, download
+your track as a high-quality audio file or share it using a customizable visualizer.
 
 ## Guide
 
@@ -22,6 +24,12 @@ Use [Music Finetunes](/docs/eleven-creative/products/music/finetunes) to fine-tu
 
 Describe your song using natural language prompts. Refer to our [Prompting
 Guide](/docs/overview/capabilities/music/best-practices) for best practices on style and lyrics.
+
+#### Add an Audio Reference (optional)
+
+Upload a short audio track (up to approximately 30 seconds) to guide the style and sound of your Music v2
+generation. Every uploaded reference is screened for copyright compliance. Audio Reference influences sound,
+production style, instrumentation, tempo, and mood — it does not copy or remix the uploaded audio.
 
 #### Select a Finetune (optional)
 
@@ -62,9 +70,10 @@ Eleven Music is a versatile model that gives you control over many aspects of mu
 
 #### Full Songs with Vocals
 
-Create complete tracks with AI-generated lyrics and vocals in
-multiple languages including English, Spanish, German, and Japanese. The model understands
-nuanced prompts and can generate songs in most styles or genres.
+Create complete tracks with AI-generated lyrics and vocals in multiple languages, including English, Spanish,
+German, and Japanese. Music v2 supports more natural vocal performances and more complex delivery patterns,
+including fast rap and dense lyrical phrasing. You can provide your own lyrics or ask the model to generate
+lyrics based on your prompt.
 
 #### Instrumental Tracks
 
@@ -269,13 +278,18 @@ Use the **Share** button to:
 
 ## Music v2
 
-Music v2 is the default model in the UI, with improved prompt adherence, composition, prompt understanding, and multilingual output over Music v1. New capabilities include:
+Music v2 is the default model in the Eleven Music interface. It offers improved prompt adherence, composition, prompt understanding, multilingual output, and vocal delivery over Music v1.
 
-* Long-form section-by-section composition
+Music v2 capabilities include:
+
+* Audio Reference for guiding a generation with a short uploaded track
+* Long-form, section-by-section composition
 * Mid-track genre transitions
 * Fast rap and complex vocal delivery
 * Improved inpainting
 * Sound effects embedded inside tracks
+
+Audio Reference is available on all Music v2 plans, including Free. Every uploaded reference track is screened for copyright compliance.
 
 ## Availability & API Access
 
@@ -323,7 +337,9 @@ start creating.
       * <strong>Complete Music Tracks</strong> from a single text prompt
       * <strong>Granular Control</strong> of genre, mood, style, structure, and instrumentation
       * <strong>Vocals & Lyrics</strong> across multiple languages, including English, Spanish, German,
-        and Japanese
+        and Japanese, with Music v2 supporting more natural vocal performances and complex delivery
+        patterns such as fast rap
+      * <strong>Audio Reference</strong> to guide Music v2 generations with a short uploaded track
       * <strong>Post-Generation Editing</strong> to adjust sections and lyrics of those sections via the
         UI
       * <strong>Studio-Ready Exports</strong> in MP3 for professional workflows
@@ -355,7 +371,8 @@ start creating.
       Eleven Music is a versatile model that gives you control over many aspects of audio creation. You can generate:
 
       * <strong>Full Songs with Vocals:</strong> Create complete tracks with AI-generated lyrics and
-        vocals in a variety of languages.
+        vocals in a variety of languages. Music v2 supports more natural vocal performances and more
+        complex delivery patterns, including fast rap and dense lyrical phrasing.
       * <strong>Instrumental Tracks:</strong> Generate purely instrumental music across any genre, from
         cinematic scores to ambient lo-fi beats.
       * <strong>Specific Song Structures:</strong> Use sectional generation to build a song piece by
@@ -483,6 +500,32 @@ start creating.
       * Once you click <strong>Generate</strong>, the model will create a new version of your track that incorporates all of your changes.
 
       Feel free to experiment with different combinations of lyrics, styles, and structures to craft your perfect track
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Audio Reference?
+
+      Audio Reference lets you upload a short audio track to guide the style and sound of a new Music v2 generation. The uploaded track is used as creative guidance alongside your text prompt.
+
+      You can upload a reference track of up to approximately 30 seconds in commonly used audio formats. Every uploaded reference is screened for copyright compliance before it can be used.
+
+      Audio Reference influences characteristics such as the overall sound, production style, instrumentation, tempo, and mood of the generated track. It does not copy or remix the uploaded audio, and the result remains a newly generated composition.
+
+      Audio Reference is available with Music v2 on all plans, including the Free plan.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can Audio Reference remix a song or change its genre?
+
+      Audio Reference is not a remixing or genre-transfer tool. It guides characteristics such as sound, mood, instrumentation, and production style.
+
+      Results may be less reliable when the requested output is substantially different from the uploaded reference — for example, when using a jazz reference to request a rap track.
+
+      Audio Reference is intended to guide a generation toward a similar style and sound. It is not designed for genre transformation.
     </td>
   </tr>
 </tbody>
