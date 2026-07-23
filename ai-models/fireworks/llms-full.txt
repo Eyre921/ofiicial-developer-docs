@@ -5999,12 +5999,12 @@ Request handling capacity depends on several factors:
 * **Deployment type** (serverless vs. on-demand)
 
 
-# Train from Your Coding Agent
+# Agent Skills
 Source: https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents
 
-Install one Fireworks training skill and run managed or Training API workflows from Claude Code, Cursor, Codex, or another compatible agent.
+Install the Fireworks training skill for your coding agent.
 
-The Fireworks training skill teaches your coding agent to run training end to end: choose managed or Training API, choose serverless or dedicated infrastructure when needed, prepare and validate data, launch and monitor the run, evaluate, deploy, and troubleshoot.
+The `fireworks-training` skill helps coding agents configure, run, and troubleshoot training jobs using current Fireworks best practices.
 
 ## Install
 
@@ -6046,17 +6046,17 @@ npx --yes skills add fw-ai/cookbook -g \
 
 ## Prerequisites
 
-* [`firectl`](/tools-sdks/firectl/firectl) installed. Authenticate with either `firectl signin` or `FIREWORKS_API_KEY`.
+* [Fireworks CLI (`firectl`)](/tools-sdks/firectl/firectl) installed. Authenticate with either `firectl signin` or `FIREWORKS_API_KEY`.
 * Export `FIREWORKS_API_KEY` for Training API Python workflows.
 
 ## What it does
 
-Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and deploy it."* The skill uses current Fireworks docs and cookbook recipes to choose the right path, validate inputs, run and monitor training, evaluate the result, deploy it, and troubleshoot failures.
+Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and deploy it."* The skill configures the job, validates inputs, runs it, and helps troubleshoot failures.
 
-Before any upload, registration, paid inference, job creation, promotion, or deployment, it shows the resolved parameters, defaults, cost ceiling, evaluation, and teardown for approval. Material changes require approval again; promotion and deployment each have separate confirmation.
+Before creating cost or resources, it shows the resolved parameters and estimated cost for confirmation.
 
 <Note>
-  `firectl` may block mutating commands inside any AI-agent environment. When that happens, the skill gives you the exact command to run manually in your terminal, then resumes read-only monitoring and reporting. It does not bypass the guard.
+  The Fireworks CLI (`firectl`) may block mutating commands inside an AI-agent environment. When that happens, the skill gives you the exact command to run manually, then resumes monitoring and reporting.
 </Note>
 
 Use [managed fine-tuning](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/choose-infrastructure).
@@ -6076,8 +6076,12 @@ Use [managed fine-tuning](/fine-tuning/managed-finetuning-intro) for standard jo
     Compare serverless and dedicated training.
   </Card>
 
-  <Card title="firectl" icon="terminal" href="/tools-sdks/firectl/firectl">
-    The CLI the skill drives.
+  <Card title="CLI reference" icon="terminal" href="/tools-sdks/firectl/firectl">
+    Automate managed training with `firectl`.
+  </Card>
+
+  <Card title="API reference" icon="brackets-curly" href="/api-reference/introduction">
+    Automate managed training through REST APIs.
   </Card>
 
   <Card title="Cookbook" icon="book" href="/fine-tuning/training-api/cookbook/overview">
@@ -6095,7 +6099,7 @@ Make three choices independently:
 
 1. **Workflow:** Managed Fine-Tuning or Training API.
 2. **Infrastructure:** Serverless or dedicated, only when you choose Training API.
-3. **Interaction surface:** Coding agent, UI, CLI or REST API, or Python SDK.
+3. **Interface:** Your agent, the Fireworks UI, CLI or API, or Python SDK.
 
 ## Step 1: Choose the workflow
 
@@ -6104,7 +6108,7 @@ Make three choices independently:
 | You need a standard SFT, DPO, ORPO, or RFT job                       | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop                |
 | You want Fireworks to own the training loop and checkpoint lifecycle | You want to fork or write Python training logic                                            |
 | A supported model and managed configuration cover the task           | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
-| You want to launch through UI, CLI, REST API, or a coding agent      | You want to launch through the Python SDK, cookbook, or a coding agent                     |
+| You want to launch through the UI, CLI or API, or your agent         | You want to launch through the Python SDK or your agent                                    |
 
 <CardGroup>
   <Card title="Managed Fine-Tuning" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
@@ -6141,14 +6145,16 @@ See the detailed [serverless versus dedicated comparison](/fine-tuning/training-
 
 The interface does not determine the workflow or infrastructure:
 
-| Interface                                   | What it does                                                                                                                      |
-| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Coding agent + Fireworks training skill** | Chooses the path, validates inputs, shows the full parameters and cost for confirmation, then runs and troubleshoots the workflow |
-| **Fireworks UI**                            | Guided creation and monitoring for managed jobs                                                                                   |
-| **`firectl` or REST API**                   | Reproducible managed job and resource automation                                                                                  |
-| **Python SDK and cookbook**                 | Training API loops on serverless or dedicated infrastructure                                                                      |
+| Interface        | What it does                                                                   |
+| ---------------- | ------------------------------------------------------------------------------ |
+| **Your agent**   | Uses the Fireworks training skill to configure, run, and troubleshoot training |
+| **Fireworks UI** | Guided creation and monitoring for managed jobs                                |
+| **CLI or API**   | Reproducible managed job and resource automation                               |
+| **Python SDK**   | Custom Training API loops on serverless or dedicated infrastructure            |
 
-[Install the Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to bring your own coding agent.
+The Fireworks CLI is called `firectl`. [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) are recommended starting points for the Python SDK and can also be used by your agent.
+
+[Install the Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent.
 
 ## Examples
 
@@ -6156,19 +6162,19 @@ The interface does not determine the workflow or infrastructure:
 
 * **Workflow:** Managed Fine-Tuning
 * **Infrastructure:** Managed by the platform; no Training API infrastructure choice
-* **Interface:** Coding agent, UI, CLI, or REST API
+* **Interface:** Your agent, UI, CLI, or API
 
 ### First custom GRPO experiment
 
 * **Workflow:** Training API
 * **Infrastructure:** Serverless when the model and LoRA workload are supported
-* **Interface:** Cookbook through Python or a coding agent
+* **Interface:** Python SDK with a Cookbook recipe, or your agent
 
 ### Sustained full-parameter RL
 
 * **Workflow:** Training API
 * **Infrastructure:** Dedicated
-* **Interface:** Cookbook or direct SDK, optionally orchestrated by a coding agent
+* **Interface:** Python SDK with a Cookbook recipe, optionally orchestrated by your agent
 
 ## Before launch
 
@@ -9179,7 +9185,7 @@ Managed jobs and dedicated Training API runs need training GPU quota, granted au
 | Tier 3            | Spend or add \$500 in credits            |            24           |  24  |      24     |
 | Tier 4            | Spend or add \$5,000 in credits          |            32           |  32  |      32     |
 
-Check your quota with `firectl quota list`. A job rejected with HTTP 429 `quota_exceeded` (sometimes a `403` on the job poll) is a tier issue, not a dataset/config problem.
+Check your quota with the Fireworks CLI (`firectl quota list`). A job rejected with HTTP 429 `quota_exceeded` (sometimes a `403` on the job poll) is a tier issue, not a dataset/config problem.
 
 [Serverless Training](/fine-tuning/training-api/serverless) uses a shared pool with its own model, concurrency, and rate limits instead of dedicated training GPU quota.
 
@@ -9189,15 +9195,15 @@ Check your quota with `firectl quota list`. A job rejected with HTTP 429 `quota_
 
 ## Start here
 
-Use [Choose a Training Path](/fine-tuning/choose-training-path) to choose managed or Training API, serverless or dedicated infrastructure, and the interface you want to use.
+Use [Choose a Training Path](/fine-tuning/choose-training-path) to select the right workflow. That page owns the detailed workflow, infrastructure, and interface decisions.
 
 <CardGroup>
   <Card title="Choose a training path" icon="route" href="/fine-tuning/choose-training-path">
     Compare workflows, infrastructure, and interfaces.
   </Card>
 
-  <Card title="Train from your coding agent" icon="robot" href="/fine-tuning/agent/use-with-coding-agents">
-    Install one skill and ask in plain language.
+  <Card title="Agent Skills" icon="robot" href="/fine-tuning/agent/use-with-coding-agents">
+    Configure, run, and troubleshoot training with your agent.
   </Card>
 </CardGroup>
 
@@ -9219,21 +9225,23 @@ However, SFT may struggle in situations where:
 * You lack ground-truth outputs (a.k.a. "golden generations").
 * The task requires multi-step reasoning.
 
-Here is a simple decision tree:
+<div>
+  <div>
+    <strong>Start with SFT</strong>
 
-```mermaid theme={null}
-flowchart TD
-        B{"Do you have labeled ground truth data?"}
-        B --"Yes"--> C{"How much?"}
-        C --"more than 1000 examples"--> D["SFT"]
-        C --"100-1000 examples"-->F{"Does reasoning help?"}
-        C --"~100s examples"--> E["RFT"]
-        F --"No"-->D
-        F -- "Yes" -->E
-        B --"No"--> G{"Is this a verifiable task (see below)?"}
-        G -- "Yes" -->E
-        G -- "No"-->H["RLHF / LLM as judge"]
-```
+    <div>
+      You have high-quality labeled examples that cover the expected task.
+    </div>
+  </div>
+
+  <div>
+    <strong>Consider RFT</strong>
+
+    <div>
+      The task is verifiable, benefits from reasoning, or lacks complete ground-truth outputs.
+    </div>
+  </div>
+</div>
 
 <Tip>
   `Verifiable` refers to whether it is relatively easy to make a judgement on the quality of the model generation.
@@ -9321,13 +9329,13 @@ Give Fireworks your data and configuration. The platform handles scheduling, tra
 
 These interfaces create the same underlying managed jobs:
 
-| Interface                                   | Use when                                                                                                                     |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| **Fireworks UI**                            | You want guided configuration and visual monitoring                                                                          |
-| **`firectl` or REST API**                   | You want scripted and reproducible job operations                                                                            |
-| **Coding agent + Fireworks training skill** | You want natural-language planning, validation, complete parameter and cost confirmation, orchestration, and troubleshooting |
+| Interface        | Use when                                                         |
+| ---------------- | ---------------------------------------------------------------- |
+| **Fireworks UI** | You want guided configuration and visual monitoring              |
+| **CLI or API**   | You want scripted and reproducible job operations                |
+| **Your agent**   | You want help configuring, running, and troubleshooting training |
 
-[Install the training skill](/fine-tuning/agent/use-with-coding-agents) or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
+The Fireworks CLI is called `firectl`. [Install the training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent, or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
 
 ## Methods
 
@@ -12606,23 +12614,23 @@ The Training API uses the same Tinker-compatible primitives on two infrastructur
 
 ## Quick decision
 
-```mermaid theme={null}
-flowchart TD
-  Start["What does the run require?"]
-  Supported["Is the model and method supported on serverless?"]
-  FullParam["Do you need full-parameter, DPO, dedicated resume, or explicit deployment control?"]
-  Scale["Is the run sustained enough to benefit from time-based dedicated compute?"]
-  Serverless["Use Serverless Training"]
-  Dedicated["Use Dedicated Training"]
+<div aria-label="Decision guide comparing serverless and dedicated Training API infrastructure">
+  <div>
+    <strong>Start with Serverless Training</strong>
 
-  Start --> Supported
-  Supported -->|"No"| Dedicated
-  Supported -->|"Yes"| FullParam
-  FullParam -->|"Yes"| Dedicated
-  FullParam -->|"No"| Scale
-  Scale -->|"No"| Serverless
-  Scale -->|"Yes"| Dedicated
-```
+    <div>
+      The model is supported, LoRA SFT or RL covers the task, and you want pooled compute with per-token billing.
+    </div>
+  </div>
+
+  <div>
+    <strong>Choose Dedicated Training</strong>
+
+    <div>
+      You need full-parameter training, DPO, explicit resume or deployment control, or sustained provisioned compute.
+    </div>
+  </div>
+</div>
 
 ## Comparison
 
@@ -12661,7 +12669,7 @@ Always verify current models, limits, prices, and feature status in the [Serverl
 
 Serverless and dedicated describe **how training compute is provided**. They are not separate coding-agent modes.
 
-You can ask the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to choose and run either path. You can also use the Python SDK or cookbook directly. Managed fine-tuning is a separate workflow for standard jobs where Fireworks owns the training loop.
+You can ask the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to choose and run either path. You can also run a Cookbook recipe with the Python SDK. Managed fine-tuning is a separate workflow for standard jobs where Fireworks owns the training loop.
 
 ## Next steps
 
@@ -13614,7 +13622,7 @@ For checkpointing, resume, and promote — see the dedicated [Checkpoints and Re
 
 ## Skills reference
 
-Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md).
+Agent-facing operational guidance for gradient accumulation normalization lives in the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md).
 
 ## Deprecated managed infra (InfraConfig)
 
@@ -13751,8 +13759,8 @@ The stock recipe has one direct client-side GRPO path and no `policy_loss` or `l
 
 Keep implementation and tuning detail out of the recipe page:
 
-* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — admission math, metrics, tuning, failure policy, and resume semantics
-* [Customize RL loss skill](https://github.com/fw-ai/cookbook/blob/main/skills/customize-rl-loss/SKILL.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
+* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
+* [Custom RL loss reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
 * [Checkpointing](/fine-tuning/training-api/cookbook/checkpoints) — resumable checkpoints and final model promotion
 * [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated policy weights reach the sampler
 * [`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
@@ -13912,7 +13920,7 @@ The recipe dispatches on this single field and wires the rest correctly. The two
 
 ## Diagnosing errors
 
-The control plane catches scope-mix mistakes at create time and returns an error that names both resources and suggests the fix. For the full list of server error strings and per-error recovery steps, see the **[Fireworks training skill hotload reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/hotload.md)**. It also covers trainer retention, the unified promote API, and runtime bucket-mismatch warnings.
+The control plane catches scope-mix mistakes at create time and returns an error that names both resources and suggests the fix. For the full list of server error strings and per-error recovery steps, see the **[Fireworks training skill hotload reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)**. It also covers trainer retention, the unified promote API, and runtime bucket-mismatch warnings.
 
 ## See also
 
@@ -13936,6 +13944,42 @@ If LoRA SFT or RL on the shared pool is sufficient, compare this path with [Serv
 <Tip>
   **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), then fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes). Recipes own provisioning, checkpoints, reconnect, and sampling where applicable. Cleanup is configuration-specific; review and set each recipe's cleanup flags before launch.
 </Tip>
+
+## How dedicated training runs
+
+<div aria-label="Dedicated Training lifecycle using provisioned trainer and inference resources">
+  <div>
+    <div>1 · Local</div>
+    <strong>Your Python loop</strong>
+    <div>Controls data, losses, rewards, and experiment logic.</div>
+  </div>
+
+  <div>
+    <div>2 · Provisioned</div>
+    <strong>Dedicated trainer</strong>
+    <div>Runs remote model and optimizer operations on the selected shape.</div>
+  </div>
+
+  <div>
+    <div>3 · Persistent</div>
+    <strong>Training artifacts</strong>
+    <div>Stores sampler snapshots or resumable training state.</div>
+  </div>
+
+  <div>
+    <div>4 · Optional</div>
+    <strong>Inference deployment</strong>
+    <div>Loads sampler weights for rollouts and evaluation.</div>
+  </div>
+
+  <div>
+    <div>5 · Explicit</div>
+    <strong>Promote and clean up</strong>
+    <div>Register the selected model, then release billable compute.</div>
+  </div>
+</div>
+
+The trainer and inference deployment are separate resources with separate billing and cleanup. Promotion registers a model but does not deploy it.
 
 ## What you can run
 
@@ -14086,21 +14130,21 @@ Fireworks Training API — custom training loops with full Python control over o
 </Info>
 
 <Tip>
-  **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents). One skill covers managed training and Training API serverless or dedicated cookbook workflows.
+  **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to help configure, run, and troubleshoot training jobs using current Fireworks best practices.
 </Tip>
 
 ## What is the Training API?
 
 Fireworks Training API lets you write training logic in plain Python on your local machine while model computation runs on remote GPUs managed by Fireworks.
 
-Most users should start from [cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and experimental async RL loops for agentic RL. Fork a recipe when you want to adapt an existing loop with your own loss, reward, rollout function, data loading, or checkpointing behavior.
+Most users should start from [Cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and experimental async RL loops for agentic RL. Recipes use the Python SDK and can be run directly or through your agent.
 
-Use the Direct SDK when you need full control over Training API behavior.
+Use the Python SDK directly when you need full control over Training API behavior.
 
-| Mode                 | Best for                                                                                                               | Infrastructure                                                                            |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Cookbook recipes** | Recommended entry point for adapting existing SFT/DPO/GRPO-style loops, including experimental async RL for agentic RL | You configure and implement simple loss, reward, or rollout functions; platform runs GPUs |
-| **Direct SDK**       | Full control over training behavior                                                                                    | You drive the training flow; platform runs GPUs                                           |
+| Starting point      | Best for                                                               | How you use it                                              |
+| ------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------- |
+| **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent   |
+| **Python SDK**      | Full control over training behavior                                    | Write the training flow in Python while Fireworks runs GPUs |
 
 ## Choose serverless or dedicated infrastructure
 
@@ -14113,7 +14157,7 @@ Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrast
 
 ## Who does what
 
-| Fireworks handles                                                        | Cookbook recipes handle                                                    | Direct SDK users implement                                                     |
+| Fireworks handles                                                        | Cookbook recipes handle                                                    | Python SDK users implement                                                     |
 | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | GPU provisioning and cluster management                                  | Training loop structure for supported recipes                              | Training loop logic (`forward_backward_custom` + `optim_step`)                 |
 | Service-mode trainer lifecycle (create, health-check, reconnect, delete) | Resource setup, health checks, reconnect, and cleanup                      | Managed service setup with `FiretitanServiceClient.from_firetitan_config(...)` |
@@ -14125,10 +14169,54 @@ Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrast
 
 ## System architecture
 
-```mermaid theme={null}
-flowchart LR
-  local["Your Python Code<br/>(loss function, data loading, metrics)"] <-->|HTTP API| gpu["Fireworks GPUs<br/>(forward pass, backward pass, optimizer)"]
-```
+<div aria-label="Training API lifecycle from a local Python loop through Fireworks training and sampling infrastructure">
+  <div>
+    <div>1 · Your laptop</div>
+    <strong>Python loop</strong>
+
+    <div>
+      Loads data, builds batches, computes rewards, and controls the experiment.
+    </div>
+  </div>
+
+  <div>
+    <div>2 · Fireworks API</div>
+    <strong>Control plane</strong>
+
+    <div>
+      Authenticates requests, routes operations, and manages the selected infrastructure.
+    </div>
+  </div>
+
+  <div>
+    <div>3 · Remote compute</div>
+    <strong>GPU trainer</strong>
+
+    <div>
+      Runs forward passes, backward passes, and optimizer steps.
+    </div>
+  </div>
+
+  <div>
+    <div>4 · Separate compute</div>
+    <strong>Sampling</strong>
+
+    <div>
+      Serves saved weights for rollouts and evaluation outside the trainer.
+    </div>
+  </div>
+
+  <div>
+    <div>5 · Persistent output</div>
+    <strong>Artifacts</strong>
+
+    <div>
+      Stores sampler snapshots and resumable training state for later use.
+    </div>
+  </div>
+</div>
+
+Your Python process stays on your laptop throughout the run. It sends model operations to Fireworks and receives metrics or completions back. Sampling uses separate inference infrastructure rather than the trainer itself.
 
 ## How service-mode training works
 
@@ -14193,7 +14281,7 @@ For dedicated RL rollouts that continue across weight sync, see [KV cache behavi
 
 ## Renderers
 
-Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, the implementation depth lives in the cookbook's [`skills/renderer/`](https://github.com/fw-ai/cookbook/tree/main/skills/renderer) skill.
+Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, use the canonical training skill's [renderer implementation reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer.md) and [verification reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
 
 ## Comparing Training API pricing vs DIY bare metal
 
@@ -14241,9 +14329,9 @@ Let the SDK select automatically. LoRA snapshots contain the full adapter; full-
 
 No. You implement training logic while Fireworks manages GPU provisioning and distributed infrastructure.
 
-### Should I start with Cookbook or Direct SDK?
+### Should I start with a Cookbook recipe or the Python SDK?
 
-Start with Cookbook for most SFT/DPO/GRPO adaptations. Use the Direct SDK when you need custom loop semantics and full control.
+Start with a Cookbook recipe for most SFT, DPO, or GRPO adaptations. Use the Python SDK directly when you need custom loop semantics and full control.
 
 ### Can I evaluate serving behavior during training?
 
@@ -14575,7 +14663,7 @@ training_client.optim_step(tinker.AdamParams(learning_rate=1e-5, ...)).result()
 ```
 
 <Note>
-  Advanced optimizer-step controls such as server-side gradient accumulation normalization are intentionally kept out of this user-facing guide. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md) for agent-facing operational guidance.
+  Advanced optimizer-step controls such as server-side gradient accumulation normalization are intentionally kept out of this user-facing guide. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for agent-facing operational guidance.
 </Note>
 
 ## Common pitfalls
@@ -15706,7 +15794,7 @@ training_client.optim_step(
 ).result()
 ```
 
-Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md) for operational guidance.
+Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
 
 ### `save_weights_for_sampler(name, ttl_seconds=None, checkpoint_type=None)`
 
@@ -16514,6 +16602,36 @@ Not sure whether the shared pool fits your workload? [Compare serverless and ded
 You write the training loop, for supervised fine-tuning or reinforcement learning, and Fireworks runs the forward pass, backward pass, and optimizer on remote GPUs, then serves your latest weights for sampling in the same session.
 
 The [quickstart](#quickstart) shows the exact client setup and operation order. The complete implementation lives in the cookbook's [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl).
+
+### Serverless lifecycle
+
+<div aria-label="Serverless Training lifecycle using shared pooled training and sampling infrastructure">
+  <div>
+    <div>1 · Local</div>
+    <strong>Your Python loop</strong>
+    <div>Builds batches, rewards, and optimizer requests.</div>
+  </div>
+
+  <div>
+    <div>2 · Shared</div>
+    <strong>Pooled trainer</strong>
+    <div>Runs remote LoRA forward, backward, and optimizer work.</div>
+  </div>
+
+  <div>
+    <div>3 · In session</div>
+    <strong>Sampler snapshot</strong>
+    <div>Captures the current adapter weights for sampling.</div>
+  </div>
+
+  <div>
+    <div>4 · Shared</div>
+    <strong>Pooled sampler</strong>
+    <div>Returns rollouts for local scoring and the next step.</div>
+  </div>
+</div>
+
+You do not create or delete a trainer job or inference deployment. Close each sampler and the service client when the run finishes.
 
 ## What you can run
 

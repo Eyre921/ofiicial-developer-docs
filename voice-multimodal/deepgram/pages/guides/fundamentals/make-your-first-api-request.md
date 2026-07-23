@@ -64,7 +64,7 @@ Open your terminal, navigate to the location on your drive where you want to cre
 ```shell Python
 # Install the Deepgram Python SDK
 # https://github.com/deepgram/deepgram-python-sdk
-pip install deepgram-sdk==3.*
+pip install deepgram-sdk
 ```
 
 ```shell JavaScript

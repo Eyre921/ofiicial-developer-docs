@@ -20,23 +20,23 @@ The Training API uses the same Tinker-compatible primitives on two infrastructur
 
 ## Quick decision
 
-```mermaid theme={null}
-flowchart TD
-  Start["What does the run require?"]
-  Supported["Is the model and method supported on serverless?"]
-  FullParam["Do you need full-parameter, DPO, dedicated resume, or explicit deployment control?"]
-  Scale["Is the run sustained enough to benefit from time-based dedicated compute?"]
-  Serverless["Use Serverless Training"]
-  Dedicated["Use Dedicated Training"]
+<div aria-label="Decision guide comparing serverless and dedicated Training API infrastructure">
+  <div>
+    <strong>Start with Serverless Training</strong>
 
-  Start --> Supported
-  Supported -->|"No"| Dedicated
-  Supported -->|"Yes"| FullParam
-  FullParam -->|"Yes"| Dedicated
-  FullParam -->|"No"| Scale
-  Scale -->|"No"| Serverless
-  Scale -->|"Yes"| Dedicated
-```
+    <div>
+      The model is supported, LoRA SFT or RL covers the task, and you want pooled compute with per-token billing.
+    </div>
+  </div>
+
+  <div>
+    <strong>Choose Dedicated Training</strong>
+
+    <div>
+      You need full-parameter training, DPO, explicit resume or deployment control, or sustained provisioned compute.
+    </div>
+  </div>
+</div>
 
 ## Comparison
 
@@ -75,7 +75,7 @@ Always verify current models, limits, prices, and feature status in the [Serverl
 
 Serverless and dedicated describe **how training compute is provided**. They are not separate coding-agent modes.
 
-You can ask the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to choose and run either path. You can also use the Python SDK or cookbook directly. Managed fine-tuning is a separate workflow for standard jobs where Fireworks owns the training loop.
+You can ask the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to choose and run either path. You can also run a Cookbook recipe with the Python SDK. Managed fine-tuning is a separate workflow for standard jobs where Fireworks owns the training loop.
 
 ## Next steps
 

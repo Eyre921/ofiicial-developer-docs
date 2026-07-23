@@ -36,6 +36,13 @@ Instead of sending one email per HTTP request, Resend provides a batching endpoi
   strings.
 </ParamField>
 
+<ResendParamField type="string">
+  Schedule email to be sent later. The date should be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g:
+  `2026-08-05T11:52:01.858Z`).
+
+  [See examples](/docs/dashboard/emails/schedule-email)
+</ResendParamField>
+
 <ResendParamField type="string | string[]">
   Reply-to email address. For multiple addresses, send as an array of strings.
 </ResendParamField>
@@ -161,7 +168,7 @@ Instead of sending one email per HTTP request, Resend provides a batching endpoi
 
 ## Limitations
 
-The `attachments` and `scheduled_at` fields are not supported yet.
+The `attachments` field is not supported yet.
 
 ## Response format
 

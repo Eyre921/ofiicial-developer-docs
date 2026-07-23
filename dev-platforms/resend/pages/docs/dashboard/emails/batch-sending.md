@@ -287,7 +287,6 @@ When using batch sending, keep in mind:
 
 * Maximum of **100 emails** per batch request
 * The `attachments` field is not supported yet
-* The `scheduled_at` field is not supported yet
 * Each email in the batch is processed independently
 * The request will fail and return an error if any email in your payload is invalid (for example, required fields are missing or fields contain invalid data).
 

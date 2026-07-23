@@ -220,8 +220,7 @@ npm install @deepgram/sdk
 ```
 
 ```csharp C#
-COMING SOON!
-// Install the Deepgram .NET SDK
+// Install the Deepgram .NET SDK (Flux support requires v6.9.0+)
 // https://github.com/deepgram/deepgram-dotnet-sdk
 
 // $ dotnet add package Deepgram
@@ -240,10 +239,10 @@ COMING SOON!
 <dependency>
   <groupId>com.deepgram</groupId>
   <artifactId>deepgram-java-sdk</artifactId>
-  <version>0.3.0</version>
+  <version>0.7.0</version>
 </dependency>
 
-// Gradle: implementation 'com.deepgram:deepgram-java-sdk:0.3.0'
+// Gradle: implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
 // https://github.com/deepgram/deepgram-java-sdk
 ```
 
@@ -261,7 +260,9 @@ npm install fluent-ffmpeg
 ```
 
 ```csharp C#
-COMING SOON!
+// No additional NuGet packages are required.
+// FFmpeg must be installed on your machine (see step 3).
+// Set DEEPGRAM_API_KEY as an environment variable.
 ```
 
 ```Go
@@ -386,7 +387,27 @@ function getConfidenceColor(confidence) {
 ```
 
 ```csharp C#
-COMING SOON!
+using System.Diagnostics;
+using Deepgram;
+using Deepgram.Models.Flux.WebSocket;
+
+// URL for the realtime streaming audio to transcribe
+const string StreamUrl = "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service";
+
+// ANSI color codes for confidence visualization
+const string Green  = "\u001b[92m"; // 0.90-1.00
+const string Yellow = "\u001b[93m"; // 0.80-0.90
+const string Orange = "\u001b[91m"; // 0.70-0.80
+const string Red    = "\u001b[31m"; // <= 0.69
+const string Reset  = "\u001b[0m";
+
+string GetConfidenceColor(double confidence)
+{
+    if (confidence >= 0.90) return Green;
+    if (confidence >= 0.80) return Yellow;
+    if (confidence >= 0.70) return Orange;
+    return Red;
+}
 ```
 
 ```Go
@@ -580,7 +601,71 @@ main().catch(console.error);
 ```
 
 ```csharp C#
-COMING SOON!
+// Initialize logging (defaults to "Info" level).
+Library.Initialize();
+
+// Create the Flux WebSocket client. The API key is read from the
+// DEEPGRAM_API_KEY environment variable, and the SDK targets /v2/listen automatically.
+var fluxClient = ClientFactory.CreateFluxWebSocketClient();
+
+await fluxClient.Subscribe(new EventHandler<ConnectedResponse>((_, e) =>
+    Console.WriteLine($"{Green}Connected to Deepgram Flux - Ready for audio!{Reset}")));
+
+// Print each turn's transcript once Flux confirms end-of-turn, with per-word
+// confidence color-coding. Keep handlers fast — they run on the receive loop.
+await fluxClient.Subscribe(new EventHandler<TurnInfoResponse>((_, e) =>
+{
+    if (e.EventType != TurnEvent.EndOfTurn || string.IsNullOrEmpty(e.Transcript))
+    {
+        return;
+    }
+
+    Console.WriteLine($"Transcript: {e.Transcript}");
+
+    foreach (var word in e.Words ?? new List<Word>())
+    {
+        var color = GetConfidenceColor(word.Confidence ?? 0);
+        Console.Write($"{color}{word.HeardWord}({word.Confidence:F2}){Reset} | ");
+    }
+    Console.WriteLine();
+}));
+
+await fluxClient.Subscribe(new EventHandler<ErrorResponse>((_, e) =>
+    Console.WriteLine($"Error: {e.Code} - {e.Description}")));
+
+// Connect to Flux. Model is required.
+var fluxSchema = new FluxSchema
+{
+    Model = "flux-general-en",
+    Encoding = "linear16",
+    SampleRate = 16000,
+};
+if (!await fluxClient.Connect(fluxSchema))
+{
+    Console.WriteLine("Failed to connect to Deepgram Flux");
+    return;
+}
+
+// Use FFmpeg to convert the BBC stream to linear16 PCM at 16 kHz, mono.
+Console.WriteLine($"Starting audio stream from: {StreamUrl}");
+using var ffmpeg = Process.Start(new ProcessStartInfo
+{
+    FileName = "ffmpeg",
+    ArgumentList = { "-i", StreamUrl, "-f", "s16le", "-ar", "16000", "-ac", "1", "-" },
+    RedirectStandardOutput = true,
+})!;
+
+// Send audio in ~80ms chunks (16000 Hz * 2 bytes * 0.080s = 2560 bytes).
+var buffer = new byte[2560];
+int bytesRead;
+while ((bytesRead = await ffmpeg.StandardOutput.BaseStream.ReadAsync(buffer)) > 0)
+{
+    fluxClient.Send(buffer, bytesRead);
+}
+
+// Clean shutdown: CloseStream, flush the final turn, then tear down.
+await fluxClient.Stop();
+Library.Terminate();
 ```
 
 ```Go

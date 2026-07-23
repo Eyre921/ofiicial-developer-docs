@@ -25,14 +25,16 @@ When you connect, your client opens a browser window to log in to Resend and app
 <Tabs>
   <Tab title="Claude Code">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add --transport http resend https://mcp.resend.com/mcp
+    claude plugin install resend@claude-plugins-official
     ```
 
-    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
+    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login. The plugin bundles the MCP server and every [Resend skill](/docs/resend-skill).
   </Tab>
 
   <Tab title="Claude">
-    In Claude (web or desktop), open **Settings** > **Connectors** > **Add custom connector** and enter:
+    Connect Resend in one click from the [connector directory](https://claude.ai/directory/connectors/resend). The connector bundles the MCP server and every Resend skill.
+
+    To install only the MCP server, add it manually in Claude (web or desktop) from **Settings** > **Connectors** > **Add custom connector**:
 
     ```
     https://mcp.resend.com/mcp
@@ -54,8 +56,26 @@ When you connect, your client opens a browser window to log in to Resend and app
   </Tab>
 
   <Tab title="Codex">
+    Install the [Resend plugin](https://chatgpt.com/plugins/plugin_asdk_app_6a3c407853888191beddc2151c2b6f8b?open_in_codex) in one click. It bundles the MCP server and every Resend skill.
+
+    To connect the MCP server on its own, use the Codex CLI:
+
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
     codex mcp add resend --url https://mcp.resend.com/mcp
+    ```
+  </Tab>
+
+  <Tab title="Antigravity">
+    Add this to your `~/.gemini/config/mcp_config.json` file:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "serverUrl": "https://mcp.resend.com/mcp"
+        }
+      }
+    }
     ```
   </Tab>
 
@@ -155,6 +175,24 @@ Choose your preferred mode and client below to get started. Remember to replace 
     codex mcp add resend \
       --env RESEND_API_KEY=re_xxxxxxxxx \
       -- npx -y resend-mcp
+    ```
+  </Tab>
+
+  <Tab title="Antigravity">
+    Add this to your `~/.gemini/config/mcp_config.json` file:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "command": "npx",
+          "args": ["-y", "resend-mcp"],
+          "env": {
+            "RESEND_API_KEY": "re_xxxxxxxxx"
+          }
+        }
+      }
+    }
     ```
   </Tab>
 

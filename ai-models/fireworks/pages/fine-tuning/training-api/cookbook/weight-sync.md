@@ -32,7 +32,7 @@ The recipe dispatches on this single field and wires the rest correctly. The two
 
 ## Diagnosing errors
 
-The control plane catches scope-mix mistakes at create time and returns an error that names both resources and suggests the fix. For the full list of server error strings and per-error recovery steps, see the **[Fireworks training skill hotload reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/hotload.md)**. It also covers trainer retention, the unified promote API, and runtime bucket-mismatch warnings.
+The control plane catches scope-mix mistakes at create time and returns an error that names both resources and suggests the fix. For the full list of server error strings and per-error recovery steps, see the **[Fireworks training skill hotload reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-hotload.md)**. It also covers trainer retention, the unified promote API, and runtime bucket-mismatch warnings.
 
 ## See also
 

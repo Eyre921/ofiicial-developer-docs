@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 308 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 309 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -244,6 +244,7 @@
 - `docs/send-with-auth0` — [Send Auth0 transactional emails with Resend](pages/docs/send-with-auth0.md) · [原文](https://resend.com/docs/send-with-auth0)
 - `docs/send-with-aws-lambda` — [Send emails with AWS Lambda](pages/docs/send-with-aws-lambda.md) · [原文](https://resend.com/docs/send-with-aws-lambda)
 - `docs/send-with-axum` — [Send emails with Axum](pages/docs/send-with-axum.md) · [原文](https://resend.com/docs/send-with-axum)
+- `docs/send-with-better-auth` — [Send Better Auth emails with Resend](pages/docs/send-with-better-auth.md) · [原文](https://resend.com/docs/send-with-better-auth)
 - `docs/send-with-bun` — [Send emails with Bun](pages/docs/send-with-bun.md) · [原文](https://resend.com/docs/send-with-bun)
 - `docs/send-with-cloudflare-workers` — [Send emails with Cloudflare Workers](pages/docs/send-with-cloudflare-workers.md) · [原文](https://resend.com/docs/send-with-cloudflare-workers)
 - `docs/send-with-customer-io-smtp` — [Send emails using Customer.io with SMTP](pages/docs/send-with-customer-io-smtp.md) · [原文](https://resend.com/docs/send-with-customer-io-smtp)

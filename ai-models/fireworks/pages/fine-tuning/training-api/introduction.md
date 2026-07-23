@@ -11,21 +11,21 @@ Fireworks Training API — custom training loops with full Python control over o
 </Info>
 
 <Tip>
-  **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents). One skill covers managed training and Training API serverless or dedicated cookbook workflows.
+  **Using a coding agent?** Install the [Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to help configure, run, and troubleshoot training jobs using current Fireworks best practices.
 </Tip>
 
 ## What is the Training API?
 
 Fireworks Training API lets you write training logic in plain Python on your local machine while model computation runs on remote GPUs managed by Fireworks.
 
-Most users should start from [cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and experimental async RL loops for agentic RL. Fork a recipe when you want to adapt an existing loop with your own loss, reward, rollout function, data loading, or checkpointing behavior.
+Most users should start from [Cookbook recipes](/fine-tuning/training-api/cookbook/overview), the recommended entry point for standard SFT, DPO, GRPO-style training, and experimental async RL loops for agentic RL. Recipes use the Python SDK and can be run directly or through your agent.
 
-Use the Direct SDK when you need full control over Training API behavior.
+Use the Python SDK directly when you need full control over Training API behavior.
 
-| Mode                 | Best for                                                                                                               | Infrastructure                                                                            |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Cookbook recipes** | Recommended entry point for adapting existing SFT/DPO/GRPO-style loops, including experimental async RL for agentic RL | You configure and implement simple loss, reward, or rollout functions; platform runs GPUs |
-| **Direct SDK**       | Full control over training behavior                                                                                    | You drive the training flow; platform runs GPUs                                           |
+| Starting point      | Best for                                                               | How you use it                                              |
+| ------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------- |
+| **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent   |
+| **Python SDK**      | Full control over training behavior                                    | Write the training flow in Python while Fireworks runs GPUs |
 
 ## Choose serverless or dedicated infrastructure
 
@@ -38,7 +38,7 @@ Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrast
 
 ## Who does what
 
-| Fireworks handles                                                        | Cookbook recipes handle                                                    | Direct SDK users implement                                                     |
+| Fireworks handles                                                        | Cookbook recipes handle                                                    | Python SDK users implement                                                     |
 | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | GPU provisioning and cluster management                                  | Training loop structure for supported recipes                              | Training loop logic (`forward_backward_custom` + `optim_step`)                 |
 | Service-mode trainer lifecycle (create, health-check, reconnect, delete) | Resource setup, health checks, reconnect, and cleanup                      | Managed service setup with `FiretitanServiceClient.from_firetitan_config(...)` |
@@ -50,10 +50,54 @@ Use the [infrastructure decision guide](/fine-tuning/training-api/choose-infrast
 
 ## System architecture
 
-```mermaid theme={null}
-flowchart LR
-  local["Your Python Code<br/>(loss function, data loading, metrics)"] <-->|HTTP API| gpu["Fireworks GPUs<br/>(forward pass, backward pass, optimizer)"]
-```
+<div aria-label="Training API lifecycle from a local Python loop through Fireworks training and sampling infrastructure">
+  <div>
+    <div>1 · Your laptop</div>
+    <strong>Python loop</strong>
+
+    <div>
+      Loads data, builds batches, computes rewards, and controls the experiment.
+    </div>
+  </div>
+
+  <div>
+    <div>2 · Fireworks API</div>
+    <strong>Control plane</strong>
+
+    <div>
+      Authenticates requests, routes operations, and manages the selected infrastructure.
+    </div>
+  </div>
+
+  <div>
+    <div>3 · Remote compute</div>
+    <strong>GPU trainer</strong>
+
+    <div>
+      Runs forward passes, backward passes, and optimizer steps.
+    </div>
+  </div>
+
+  <div>
+    <div>4 · Separate compute</div>
+    <strong>Sampling</strong>
+
+    <div>
+      Serves saved weights for rollouts and evaluation outside the trainer.
+    </div>
+  </div>
+
+  <div>
+    <div>5 · Persistent output</div>
+    <strong>Artifacts</strong>
+
+    <div>
+      Stores sampler snapshots and resumable training state for later use.
+    </div>
+  </div>
+</div>
+
+Your Python process stays on your laptop throughout the run. It sends model operations to Fireworks and receives metrics or completions back. Sampling uses separate inference infrastructure rather than the trainer itself.
 
 ## How service-mode training works
 
@@ -118,7 +162,7 @@ For dedicated RL rollouts that continue across weight sync, see [KV cache behavi
 
 ## Renderers
 
-Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, the implementation depth lives in the cookbook's [`skills/renderer/`](https://github.com/fw-ai/cookbook/tree/main/skills/renderer) skill.
+Chat-template formatting, stop-token handling, and loss-weight masking for SFT/DPO datasets are handled by **renderers** — pluggable per-model classes that turn raw conversations into the trainer's `Datum` shape. Most users never touch a renderer directly; cookbook recipes pick the right one for the `base_model` you set. If you need to author a new one or debug parity against HuggingFace, use the canonical training skill's [renderer implementation reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer.md) and [verification reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/renderer-verification.md).
 
 ## Comparing Training API pricing vs DIY bare metal
 
@@ -166,9 +210,9 @@ Let the SDK select automatically. LoRA snapshots contain the full adapter; full-
 
 No. You implement training logic while Fireworks manages GPU provisioning and distributed infrastructure.
 
-### Should I start with Cookbook or Direct SDK?
+### Should I start with a Cookbook recipe or the Python SDK?
 
-Start with Cookbook for most SFT/DPO/GRPO adaptations. Use the Direct SDK when you need custom loop semantics and full control.
+Start with a Cookbook recipe for most SFT, DPO, or GRPO adaptations. Use the Python SDK directly when you need custom loop semantics and full control.
 
 ### Can I evaluate serving behavior during training?
 

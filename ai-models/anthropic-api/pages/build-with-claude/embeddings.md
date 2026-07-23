@@ -343,4 +343,4 @@ Visit Voyage's [pricing page](https://docs.voyageai.com/docs/pricing?ref=anthrop
 
 ---
 
-# Extended thinking
+# Fast mode (research preview)

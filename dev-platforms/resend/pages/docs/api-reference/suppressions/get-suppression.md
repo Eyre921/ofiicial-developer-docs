@@ -63,6 +63,14 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   curl -X GET 'https://api.resend.com/suppressions/steve.wozniak@example.com' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Retrieve by suppression id
+  resend suppressions get e169aa45-1ecf-4183-9955-b1499d5701d3
+
+  # Retrieve by email
+  resend suppressions get steve.wozniak@example.com
+  ```
 </RequestExample>
 
 <ResponseExample>

@@ -64,7 +64,7 @@ Open your terminal, navigate to the location on your drive where you want to cre
 // </dependency>
 
 // Gradle — add to build.gradle:
-// implementation 'com.deepgram:deepgram-java-sdk:0.2.1'
+// implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
 ```
 
 ### Add Dependencies
@@ -86,7 +86,7 @@ Open your terminal, navigate to the location on your drive where you want to cre
 // In your .csproj file, add the Package Reference:
 
 // <ItemGroup>
-//     <PackageReference Include="Deepgram" Version="4.4.0" />
+//     <PackageReference Include="Deepgram" Version="6.9.0" />
 // </ItemGroup>
 ```
 

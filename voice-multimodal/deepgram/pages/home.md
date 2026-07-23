@@ -37,6 +37,7 @@ path: home
 * [JavaScript SDK](https://github.com/deepgram/deepgram-js-sdk/)
 * [Go SDK](https://github.com/deepgram/deepgram-go-sdk)
 * [.NET SDK](https://github.com/deepgram/deepgram-dotnet-sdk)
+* [Java SDK](https://github.com/deepgram/deepgram-java-sdk)
 
 ## Resources
 

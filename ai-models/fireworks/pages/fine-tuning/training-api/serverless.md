@@ -34,6 +34,36 @@ You write the training loop, for supervised fine-tuning or reinforcement learnin
 
 The [quickstart](#quickstart) shows the exact client setup and operation order. The complete implementation lives in the cookbook's [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl).
 
+### Serverless lifecycle
+
+<div aria-label="Serverless Training lifecycle using shared pooled training and sampling infrastructure">
+  <div>
+    <div>1 · Local</div>
+    <strong>Your Python loop</strong>
+    <div>Builds batches, rewards, and optimizer requests.</div>
+  </div>
+
+  <div>
+    <div>2 · Shared</div>
+    <strong>Pooled trainer</strong>
+    <div>Runs remote LoRA forward, backward, and optimizer work.</div>
+  </div>
+
+  <div>
+    <div>3 · In session</div>
+    <strong>Sampler snapshot</strong>
+    <div>Captures the current adapter weights for sampling.</div>
+  </div>
+
+  <div>
+    <div>4 · Shared</div>
+    <strong>Pooled sampler</strong>
+    <div>Returns rollouts for local scoring and the next step.</div>
+  </div>
+</div>
+
+You do not create or delete a trainer job or inference deployment. Close each sampler and the service client when the run finishes.
+
 ## What you can run
 
 <CardGroup>

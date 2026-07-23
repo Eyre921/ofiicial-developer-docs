@@ -57,6 +57,14 @@ Remove a single suppression by ID or email.
   curl -X DELETE 'https://api.resend.com/suppressions/steve.wozniak@example.com' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by suppression id
+  resend suppressions delete e169aa45-1ecf-4183-9955-b1499d5701d3
+
+  # Remove by email
+  resend suppressions delete steve.wozniak@example.com
+  ```
 </RequestExample>
 
 <ResponseExample>

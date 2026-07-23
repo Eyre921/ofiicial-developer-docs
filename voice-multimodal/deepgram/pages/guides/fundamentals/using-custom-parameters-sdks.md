@@ -252,12 +252,12 @@ The Deepgram Java SDK uses a typed builder pattern for all request parameters. F
 // <dependency>
 //   <groupId>com.deepgram</groupId>
 //   <artifactId>deepgram-java-sdk</artifactId>
-//   <version>0.3.0</version>
+//   <version>0.7.0</version>
 // </dependency>
 
 import com.deepgram.DeepgramClient;
-import com.deepgram.resources.listen.v1.media.ListenV1RequestUrl;
-import com.deepgram.resources.listen.v1.media.MediaTranscribeRequestModel;
+import com.deepgram.resources.listen.v1.media.requests.ListenV1RequestUrl;
+import com.deepgram.resources.listen.v1.media.types.MediaTranscribeRequestModel;
 import com.deepgram.core.RequestOptions;
 
 DeepgramClient client = DeepgramClient.builder().build();

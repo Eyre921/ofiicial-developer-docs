@@ -48,6 +48,10 @@ does not exist or was already revoked.
   curl -X DELETE 'https://api.resend.com/oauth/grants/650e8400-e29b-41d4-a716-446655440001' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend oauth-grants revoke 650e8400-e29b-41d4-a716-446655440001
+  ```
 </RequestExample>
 
 <ResponseExample>

@@ -10,7 +10,7 @@ Make three choices independently:
 
 1. **Workflow:** Managed Fine-Tuning or Training API.
 2. **Infrastructure:** Serverless or dedicated, only when you choose Training API.
-3. **Interaction surface:** Coding agent, UI, CLI or REST API, or Python SDK.
+3. **Interface:** Your agent, the Fireworks UI, CLI or API, or Python SDK.
 
 ## Step 1: Choose the workflow
 
@@ -19,7 +19,7 @@ Make three choices independently:
 | You need a standard SFT, DPO, ORPO, or RFT job                       | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop                |
 | You want Fireworks to own the training loop and checkpoint lifecycle | You want to fork or write Python training logic                                            |
 | A supported model and managed configuration cover the task           | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
-| You want to launch through UI, CLI, REST API, or a coding agent      | You want to launch through the Python SDK, cookbook, or a coding agent                     |
+| You want to launch through the UI, CLI or API, or your agent         | You want to launch through the Python SDK or your agent                                    |
 
 <CardGroup>
   <Card title="Managed Fine-Tuning" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
@@ -56,14 +56,16 @@ See the detailed [serverless versus dedicated comparison](/fine-tuning/training-
 
 The interface does not determine the workflow or infrastructure:
 
-| Interface                                   | What it does                                                                                                                      |
-| ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Coding agent + Fireworks training skill** | Chooses the path, validates inputs, shows the full parameters and cost for confirmation, then runs and troubleshoots the workflow |
-| **Fireworks UI**                            | Guided creation and monitoring for managed jobs                                                                                   |
-| **`firectl` or REST API**                   | Reproducible managed job and resource automation                                                                                  |
-| **Python SDK and cookbook**                 | Training API loops on serverless or dedicated infrastructure                                                                      |
+| Interface        | What it does                                                                   |
+| ---------------- | ------------------------------------------------------------------------------ |
+| **Your agent**   | Uses the Fireworks training skill to configure, run, and troubleshoot training |
+| **Fireworks UI** | Guided creation and monitoring for managed jobs                                |
+| **CLI or API**   | Reproducible managed job and resource automation                               |
+| **Python SDK**   | Custom Training API loops on serverless or dedicated infrastructure            |
 
-[Install the Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to bring your own coding agent.
+The Fireworks CLI is called `firectl`. [Cookbook recipes](/fine-tuning/training-api/cookbook/overview) are recommended starting points for the Python SDK and can also be used by your agent.
+
+[Install the Fireworks training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent.
 
 ## Examples
 
@@ -71,19 +73,19 @@ The interface does not determine the workflow or infrastructure:
 
 * **Workflow:** Managed Fine-Tuning
 * **Infrastructure:** Managed by the platform; no Training API infrastructure choice
-* **Interface:** Coding agent, UI, CLI, or REST API
+* **Interface:** Your agent, UI, CLI, or API
 
 ### First custom GRPO experiment
 
 * **Workflow:** Training API
 * **Infrastructure:** Serverless when the model and LoRA workload are supported
-* **Interface:** Cookbook through Python or a coding agent
+* **Interface:** Python SDK with a Cookbook recipe, or your agent
 
 ### Sustained full-parameter RL
 
 * **Workflow:** Training API
 * **Infrastructure:** Dedicated
-* **Interface:** Cookbook or direct SDK, optionally orchestrated by a coding agent
+* **Interface:** Python SDK with a Cookbook recipe, optionally orchestrated by your agent
 
 ## Before launch
 

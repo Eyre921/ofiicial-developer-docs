@@ -73,6 +73,14 @@ Provide either `emails` or `ids`, but not both.
     "ids": ["e169aa45-1ecf-4183-9955-b1499d5701d3"]
   }'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by email
+  resend suppressions batch remove --file suppressions.json
+
+  # Remove by id
+  resend suppressions batch remove --file suppression-ids.json --ids
+  ```
 </RequestExample>
 
 <ResponseExample>

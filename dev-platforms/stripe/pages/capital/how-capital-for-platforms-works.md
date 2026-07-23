@@ -140,9 +140,9 @@ Stripe and our financial partners handle support and servicing for your connecte
 
 Four types of financing offers are available to US connected accounts:
 
-- **Flex Loans**: Celtic Bank makes Flex term loans available to eligible businesses. These loans have a maximum term and periodic payments. If withholdings from payment processing receivables don’t meet a minimum amount (typically on a 30 or 60-day basis), Stripe debits any shortfall from the connected account’s external bank account.
+- **Flex Loans**: Flex term loans are made available by Celtic Bank or Lead Bank to eligible businesses. These loans have a maximum term and periodic payments. If withholdings from payment processing receivables don’t meet a minimum amount (typically on a 30 or 60-day basis), Stripe debits any shortfall from the connected account’s external bank account.
 - **Merchant Cash Advance (MCA)**: MCAs are a purchase of future receivables—not a loan or credit transaction. YouLend purchases a percentage of the connected account’s payment processing volume as specified in the YouLend Advance Agreement. The MCA has no fixed payment schedule or regular debits; payments vary based on the connected account’s processing volume. Applying for an MCA might require a personal credit check, but this won’t affect the connected account’s personal credit score.
-- **Fixed term loan**: Celtic Bank provides fixed term loans to connected accounts that process payments off Stripe, whose payments data you [imported to Stripe](https://docs.stripe.com/capital/import-non-stripe-data.md). A fixed term loan has weekly payment minimums with a capped withholding structure.
+- **Fixed term loan**: Celtic Bank or Lead Bank provide fixed term loans to connected accounts that process payments off Stripe, whose payments data you [imported to Stripe](https://docs.stripe.com/capital/import-non-stripe-data.md). A fixed term loan has weekly payment minimums with a capped withholding structure.
 - **Line of credit**: With a line of credit, a connected account can borrow up to a prequalified credit limit through a series of loans. They apply to draw the exact amount they need within their available limit and can access the remaining capital for 90 days. As repayments are made, the available credit replenishes, allowing them to request more capital. After 90 days, connected accounts are reevaluated for their credit limit. Each draw is reviewed and approved as a separate loan. They repay each draw as principal plus a fixed fee in nine monthly payments.
 
 The following table compares these financing options:
@@ -171,7 +171,7 @@ curl https://docs.stripe.com/preview/register \
   -d '{"email": "EMAIL", "preview": "capital_review_preview"}'
 ```
 
-*Stripe Capital offers financing types that include loans and merchant cash advances. All financing applications are subject to review prior to approval. In the US, Stripe Capital loans are issued by Celtic Bank, and YouLend provides Stripe Capital merchant cash advances.*
+*Stripe Capital offers financing types that include loans and merchant cash advances. All financing applications are subject to review prior to approval. In the US, Stripe Capital loans are issued by Celtic Bank or Lead Bank, and YouLend provides Stripe Capital merchant cash advances.*
 
 #### AU
 

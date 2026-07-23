@@ -398,6 +398,265 @@ You can also use a date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) fo
   ```
 </CodeGroup>
 
+## Schedule emails on the `POST /emails/batch` endpoint
+
+Each email in a batch request can be scheduled independently using natural language or ISO 8601 date format.
+
+<CodeGroup>
+  ```ts Node.js {11,18} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.batch.send([
+    {
+      from: 'Acme <onboarding@resend.dev>',
+      to: ['foo@gmail.com'],
+      subject: 'hello world',
+      html: '<h1>it works!</h1>',
+      scheduledAt: 'in 1 min',
+    },
+    {
+      from: 'Acme <onboarding@resend.dev>',
+      to: ['bar@outlook.com'],
+      subject: 'world hello',
+      html: '<p>it works!</p>',
+      scheduledAt: 'in 5 min',
+    },
+  ]);
+  ```
+
+  ```php PHP {9,16} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->batch->send([
+    [
+      'from' => 'Acme <onboarding@resend.dev>',
+      'to' => ['foo@gmail.com'],
+      'subject' => 'hello world',
+      'html' => '<h1>it works!</h1>',
+      'scheduled_at' => 'in 1 min'
+    ],
+    [
+      'from' => 'Acme <onboarding@resend.dev>',
+      'to' => ['bar@outlook.com'],
+      'subject' => 'world hello',
+      'html' => '<p>it works!</p>',
+      'scheduled_at' => 'in 5 min'
+    ]
+  ]);
+  ```
+
+  ```py Python {12,19} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+  from typing import List
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: List[resend.Emails.SendParams] = [
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["foo@gmail.com"],
+      "subject": "hello world",
+      "html": "<h1>it works!</h1>",
+      "scheduled_at": "in 1 min"
+    },
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["bar@outlook.com"],
+      "subject": "world hello",
+      "html": "<p>it works!</p>",
+      "scheduled_at": "in 5 min"
+    }
+  ]
+
+  resend.Batch.send(params)
+  ```
+
+  ```rb Ruby {11,18} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = 're_xxxxxxxxx'
+
+  params = [
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["foo@gmail.com"],
+      "subject": "hello world",
+      "html": "<h1>it works!</h1>",
+      "scheduled_at": "in 1 min"
+    },
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["bar@outlook.com"],
+      "subject": "world hello",
+      "html": "<p>it works!</p>",
+      "scheduled_at": "in 5 min"
+    }
+  ]
+
+  Resend::Batch.send(params)
+  ```
+
+  ```go Go {22,29} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"context"
+  	"fmt"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+
+    ctx := context.TODO()
+
+    client := resend.NewClient("re_xxxxxxxxx")
+
+    var batchEmails = []*resend.SendEmailRequest{
+      {
+        From:        "Acme <onboarding@resend.dev>",
+        To:          []string{"foo@gmail.com"},
+        Subject:     "hello world",
+        Html:        "<h1>it works!</h1>",
+        ScheduledAt: "in 1 min",
+      },
+      {
+        From:        "Acme <onboarding@resend.dev>",
+        To:          []string{"bar@outlook.com"},
+        Subject:     "world hello",
+        Html:        "<p>it works!</p>",
+        ScheduledAt: "in 5 min",
+      },
+    }
+
+    sent, err := client.Batch.SendWithContext(ctx, batchEmails)
+
+    if err != nil {
+      panic(err)
+    }
+    fmt.Println(sent.Data)
+  }
+  ```
+
+  ```rust Rust {15,22} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::CreateEmailBaseOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let emails = vec![
+      CreateEmailBaseOptions::new(
+        "Acme <onboarding@resend.dev>",
+        vec!["foo@gmail.com"],
+        "hello world",
+      )
+      .with_html("<h1>it works!</h1>")
+      .with_scheduled_at("in 1 min"),
+      CreateEmailBaseOptions::new(
+        "Acme <onboarding@resend.dev>",
+        vec!["bar@outlook.com"],
+        "world hello",
+      )
+      .with_html("<p>it works!</p>")
+      .with_scheduled_at("in 5 min"),
+    ];
+
+    let _emails = resend.batch.send(emails).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java {13,21} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import java.util.Arrays;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          CreateEmailOptions firstEmail = CreateEmailOptions.builder()
+              .from("Acme <onboarding@resend.dev>")
+              .to("foo@gmail.com")
+              .subject("hello world")
+              .html("<h1>it works!</h1>")
+              .scheduledAt("in 1 min")
+              .build();
+
+          CreateEmailOptions secondEmail = CreateEmailOptions.builder()
+              .from("Acme <onboarding@resend.dev>")
+              .to("bar@outlook.com")
+              .subject("world hello")
+              .html("<p>it works!</p>")
+              .scheduledAt("in 5 min")
+              .build();
+
+          CreateBatchEmailsResponse data = resend.batch().send(
+              Arrays.asList(firstEmail, secondEmail)
+          );
+      }
+  }
+  ```
+
+  ```csharp .NET {11,20} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var mail1 = new EmailMessage()
+  {
+      From = "Acme <onboarding@resend.dev>",
+      To = "foo@gmail.com",
+      Subject = "hello world",
+      HtmlBody = "<h1>it works!</h1>",
+      MomentSchedule = "in 1 min",
+  };
+
+  var mail2 = new EmailMessage()
+  {
+      From = "Acme <onboarding@resend.dev>",
+      To = "bar@outlook.com",
+      Subject = "world hello",
+      HtmlBody = "<p>it works!</p>",
+      MomentSchedule = "in 5 min",
+  };
+
+  var resp = await resend.EmailBatchAsync( [ mail1, mail2 ] );
+  Console.WriteLine( "Nr Emails={0}", resp.Content.Count );
+  ```
+
+  ```bash cURL {10,17} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/emails/batch' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'[
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["foo@gmail.com"],
+      "subject": "hello world",
+      "html": "<h1>it works!</h1>",
+      "scheduled_at": "in 1 min"
+    },
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["bar@outlook.com"],
+      "subject": "world hello",
+      "html": "<p>it works!</p>",
+      "scheduled_at": "in 5 min"
+    }
+  ]'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Each email in emails.json can set its own scheduled_at
+  resend emails batch --file ./emails.json
+  ```
+</CodeGroup>
+
 ## View a scheduled email
 
 Once you schedule an email, you can see the scheduled time in the Resend dashboard.

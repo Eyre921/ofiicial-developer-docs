@@ -99,7 +99,7 @@ go get github.com/deepgram/deepgram-go-sdk
 # </dependency>
 
 # Gradle — add to build.gradle:
-# implementation 'com.deepgram:deepgram-java-sdk:0.2.1'
+# implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
 ```
 
 ### Transcribe a remote file

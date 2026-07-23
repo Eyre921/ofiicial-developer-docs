@@ -33,7 +33,7 @@ Each offer specifies the type of financing being offered, which might be a loan 
 
 |  |
 | **Merchant cash advance** | A merchant cash advance is YouLend’s purchase of your business’s future receivables; it isn’t a loan or a credit transaction. Stripe withholds the purchased receivables from your payment processing volume at the percentage stated in your YouLend Advance Agreement. Unlike a loan, you don’t have a fixed payment schedule or periodic debits. Your payments vary with your payment processing volume. |
-| **Loans** | Celtic Bank issues business-purpose term loans to eligible businesses. These loans have a maximum term and periodic payments. If withholdings from your payment processing receivables don’t meet the minimum amount (typically on a 30- or 60-day basis), Stripe debits the shortfall from your linked bank account or account balance.
+| **Loans** | Business-purpose term loans are issued by Celtic Bank or Lead Bank to eligible businesses. These loans have a maximum term and periodic payments. If withholdings from your payment processing receivables don’t meet the minimum amount (typically on a 30- or 60-day basis), Stripe debits the shortfall from your linked bank account or account balance.
 - **Line of credit**: You might be given a choice to borrow (up to a prequalified credit limit) through a line of credit. Apply to draw the exact amount you need within your available limit and access the remaining capital for 90 days. As you make repayments, your available credit replenishes, so you can request more capital. After 90 days, we reevaluate your credit limit. We review and approve each draw as a separate loan. |
 
 ## Eligibility

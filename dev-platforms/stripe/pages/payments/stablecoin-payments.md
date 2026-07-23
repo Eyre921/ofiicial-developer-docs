@@ -20,6 +20,10 @@ Stablecoin payments allow you to accept *stablecoins* (A cryptocurrency that's p
 
 - **Presentment currency**
 
+  USD (other currencies available in private preview)
+
+- **Accepted tokens**
+
   USDC (Tempo, Ethereum, Solana, Polygon, and Base networks), USDP (Ethereum and Solana, US-only), USDG (Ethereum, US-only)
 
 - **Payment confirmation**

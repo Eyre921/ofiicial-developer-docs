@@ -22,11 +22,11 @@ If an SDK doesn't have support for an API feature please refer to our documentat
 
 ## Listen API (v2): Turn-based streaming
 
-| API Reference                                 | Options         | Status | SDK Availability       |
-| --------------------------------------------- | --------------- | ------ | ---------------------- |
-| [Flux](/reference/speech-to-text/listen-flux) | All Available\* | `GA`   | `JS`, `Python`, `Java` |
+| API Reference                                 | Options         | Status | SDK Availability               |
+| --------------------------------------------- | --------------- | ------ | ------------------------------ |
+| [Flux](/reference/speech-to-text/listen-flux) | All Available\* | `GA`   | `JS`, `.NET`, `Python`, `Java` |
 
-* Flux Multilingual (`flux-general-multi`) is available in JS, Python, and Java. See the Flux multilingual
+* Flux Multilingual (`flux-general-multi`) is available in JS, .NET, Python, and Java. See the Flux multilingual
   guide for SDK-specific `language_hint` and `language_hints` examples.
 
 ## Listen API (v1): Streaming

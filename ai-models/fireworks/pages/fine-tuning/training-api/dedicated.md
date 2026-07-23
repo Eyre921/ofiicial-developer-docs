@@ -18,6 +18,42 @@ If LoRA SFT or RL on the shared pool is sufficient, compare this path with [Serv
   **Start from the cookbook.** Clone [`fw-ai/cookbook`](https://github.com/fw-ai/cookbook), then fork the closest recipe under [`training/recipes/`](https://github.com/fw-ai/cookbook/tree/main/training/recipes). Recipes own provisioning, checkpoints, reconnect, and sampling where applicable. Cleanup is configuration-specific; review and set each recipe's cleanup flags before launch.
 </Tip>
 
+## How dedicated training runs
+
+<div aria-label="Dedicated Training lifecycle using provisioned trainer and inference resources">
+  <div>
+    <div>1 · Local</div>
+    <strong>Your Python loop</strong>
+    <div>Controls data, losses, rewards, and experiment logic.</div>
+  </div>
+
+  <div>
+    <div>2 · Provisioned</div>
+    <strong>Dedicated trainer</strong>
+    <div>Runs remote model and optimizer operations on the selected shape.</div>
+  </div>
+
+  <div>
+    <div>3 · Persistent</div>
+    <strong>Training artifacts</strong>
+    <div>Stores sampler snapshots or resumable training state.</div>
+  </div>
+
+  <div>
+    <div>4 · Optional</div>
+    <strong>Inference deployment</strong>
+    <div>Loads sampler weights for rollouts and evaluation.</div>
+  </div>
+
+  <div>
+    <div>5 · Explicit</div>
+    <strong>Promote and clean up</strong>
+    <div>Register the selected model, then release billable compute.</div>
+  </div>
+</div>
+
+The trainer and inference deployment are separate resources with separate billing and cleanup. Promotion registers a model but does not deploy it.
+
 ## What you can run
 
 <CardGroup>

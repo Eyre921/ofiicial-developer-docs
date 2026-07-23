@@ -51,6 +51,10 @@ Add up to 100 email addresses to the suppression list at once.
     "emails": ["steve.wozniak@example.com", "susan.kare@example.com"]
   }'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend suppressions batch add --file suppressions.json
+  ```
 </RequestExample>
 
 <ResponseExample>

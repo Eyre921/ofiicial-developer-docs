@@ -123,7 +123,7 @@ Templates require compliance review. All in-product marketing materials, includi
 
 ## Required disclaimers 
 
-All marketing collateral must mention our banking partners Celtic and YouLend. You must add the following disclaimer on any user-facing materials wherever you reference Stripe Capital, such as promotional offer emails and marketing pages. The disclaimer doesn’t need to be the same font size as the marketing message, but it must be clear, conspicuous, and in a font color or drop shadow that’s in contrast to its background.
+All marketing collateral must mention our banking partners Celtic Bank, Lead Bank, and YouLend. You must add the following disclaimer on any user-facing materials wherever you reference Stripe Capital, such as promotional offer emails and marketing pages. The disclaimer doesn’t need to be the same font size as the marketing message, but it must be clear, conspicuous, and in a font color or drop shadow that’s in contrast to its background.
 
 The table below lists the required disclaimer based on the location of your connected account’s business. For financing offer emails sent by your platform via the Capital API or custom banner notifications, the [disclaimer_variant](https://docs.stripe.com/api/capital/connect_financing_object.md#financing_offer_object-disclaimer_variant) property identifies the required disclaimer.
 
@@ -143,7 +143,7 @@ YouLend SAS is registered in the Single Register of Insurance, Banking, and Fina
 
 YouLend SAS est immatriculée à l’organisme pour le registre unique des intermédiaires en assurance, banque et finance ([ORIAS](https://www.orias.fr/)) sous le numéro d’immatriculation N 21001409 en tant qu’intermédiaire en opérations bancaires et services de paiement (MOBSPL). Le siège social de YouLend SAS est situé à la gare SNCF, 14 rue de Dunkerque, 75010, Paris. | `youlend_fr_financing` |
 | UK | All financing applications are subject to review prior to approval. In the UK, Stripe Capital loans and merchant cash advances are provided by YouLend. | `youlend_uk_mca` |
-| US | Stripe Capital offers financing types that include loans and merchant cash advances. All financing applications are subject to review prior to approval. In the US, Stripe Capital loans are issued by Celtic Bank, and YouLend provides Stripe Capital merchant cash advances.
+| US | Stripe Capital offers financing types that include loans and merchant cash advances. All financing applications are subject to review prior to approval. In the US, Stripe Capital loans are issued by Celtic Bank or Lead Bank, and YouLend provides Stripe Capital merchant cash advances.
 
 Stripe Capital loans have a minimum amount due each payment period. If the amount that you pay through sales doesn’t meet the minimum required, your bank account will be automatically debited the remaining amount at the end of the period. | `celtic_us_loan` or `youlend_us_mca` |
 

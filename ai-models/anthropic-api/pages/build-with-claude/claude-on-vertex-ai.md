@@ -350,7 +350,7 @@ For the full feature list with Google Cloud availability, see [Features overview
 
 * [Messages API](/docs/en/api/messages/create)
 * [Prompt caching](/docs/en/build-with-claude/prompt-caching)
-* [Extended thinking](/docs/en/build-with-claude/extended-thinking)
+* [Thinking](/docs/en/build-with-claude/thinking)
 * [Tool use](/docs/en/agents-and-tools/tool-use/overview), including the [Bash tool](/docs/en/agents-and-tools/tool-use/bash-tool), [Computer use tool](/docs/en/agents-and-tools/tool-use/computer-use-tool), [Memory tool](/docs/en/agents-and-tools/tool-use/memory-tool), and [Text editor tool](/docs/en/agents-and-tools/tool-use/text-editor-tool)
 * [Web search tool](/docs/en/agents-and-tools/tool-use/web-search-tool)
 * [Citations](/docs/en/build-with-claude/citations)

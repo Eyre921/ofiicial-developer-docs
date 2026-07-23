@@ -63470,7 +63470,7 @@ For full API details, see [Retrieve branch consumption metrics](https://neon.com
 
 --- [Document source](https://neon.com/docs/guides/datadog.md) ---
 
-> Summary: The Neon Datadog integration exports Postgres metrics and logs from all project computes to Datadog, available on Scale plan projects. Use this page to set up monitoring of CPU, memory, connection counts, replication lag, database size, deadlocks, and PgBouncer stats, or to forward Postgres logs for error and activity visibility. Postgres log export is a preview feature. Log transmission counts toward network egress billed after 500 GB on paid plans.
+> Summary: The Neon Datadog integration exports Postgres metrics and logs from all project computes to Datadog, available on Scale plan projects. Use this page to set up monitoring of CPU, memory, connection counts, replication lag, database size, deadlocks, and PgBouncer stats, or to forward Postgres logs for error and activity visibility. Postgres log export is a preview feature. Log transmission counts toward network egress billed after 500 GB per project on paid plans.
 
 # Datadog integration
 
@@ -64153,7 +64153,7 @@ You can export your Postgres logs from your Neon compute to your Datadog account
 Enabling this feature may result in:
 
 - An increase in compute resource usage for log processing
-- Additional network egress for log transmission, which is billed after 500 GB on paid plans
+- Additional network egress for log transmission, which is billed after 500 GB per project on paid plans
 - Associated costs based on log volume in Datadog
 
 ## Feedback and future improvements
@@ -69883,7 +69883,7 @@ You can export your Postgres logs from your Neon compute to your Grafana Cloud s
 Enabling this feature may result in:
 
 - An increase in compute resource usage for log processing
-- Additional network egress for log transmission, which is billed after 500 GB on paid plans
+- Additional network egress for log transmission, which is billed after 500 GB per project on paid plans
 - Associated costs based on log volume in Grafana Cloud
 
 ### Querying logs in Grafana Cloud
@@ -100557,7 +100557,7 @@ For more, see [Session context](https://neon.com/docs/reference/compatibility#se
 
 --- [Document source](https://neon.com/docs/introduction/cost-optimization.md) ---
 
-> Summary: Practical strategies for cutting Neon costs across every billing metric: compute (CU-hours), storage, instant restore history, extra branches, and public data transfer. Use this page to diagnose an unexpectedly high bill or to proactively reduce spend. Key tactics include right-sizing compute, enabling scale to zero, running VACUUM FULL to reclaim storage space, and trimming the PITR history window. Instant restore storage is billed at $0.20/GB-month on paid plans for root branches only. Extra branches cost $1.50/branch-month over the plan allowance. Paid plans include 500 GB/month of public data transfer, then $0.10/GB.
+> Summary: Practical strategies for cutting Neon costs across every billing metric: compute (CU-hours), storage, instant restore history, extra branches, and public data transfer. Use this page to diagnose an unexpectedly high bill or to proactively reduce spend. Key tactics include right-sizing compute, enabling scale to zero, running VACUUM FULL to reclaim storage space, and trimming the PITR history window. Instant restore storage is billed at $0.20/GB-month on paid plans for root branches only. Extra branches cost $1.50/branch-month over the plan allowance. Paid plans include 500 GB of public data transfer per project per month, then $0.10/GB.
 
 # Cost optimization
 
@@ -100725,7 +100725,7 @@ Extra branches beyond your plan's allowance are billed at $1.50/branch-month, pr
 
 ## Public data transfer
 
-Public network transfer (egress) is the data sent from your databases over the public internet. Free plans include 5 GB/month. On paid plans, the first 500 GB/month is included, then $0.10/GB. You see no data transfer cost until you exceed that allowance, so the charge might show up unexpectedly if you're not monitoring data transfer. For a deeper look at what causes high network transfer and how to monitor it, see [Network transfer](https://neon.com/docs/introduction/network-transfer).
+Public network transfer (egress) is the data sent from your databases over the public internet. Free plans include 5 GB/month. On paid plans, the first 500 GB per project per month is included, then $0.10/GB. You see no data transfer cost until a project exceeds that allowance, so the charge might show up unexpectedly if you're not monitoring data transfer. For a deeper look at what causes high network transfer and how to monitor it, see [Network transfer](https://neon.com/docs/introduction/network-transfer).
 
 **Optimization strategies:**
 
@@ -101781,7 +101781,7 @@ There are two types of network transfer:
 
 - **Public network transfer**: Data sent over the public internet. [Logical replication](https://neon.com/docs/guides/logical-replication-neon) to any destination counts as public network transfer.
   - **Free plan**: 5 GB/month included. Exceeding this suspends your compute until the next billing cycle or you upgrade.
-  - **Launch / Scale plans**: 500 GB/month included, then $0.10/GB.
+  - **Launch / Scale plans**: 500 GB per project per month included, then $0.10/GB.
 - **Private network transfer**: Traffic routed over AWS PrivateLink. Available on the Scale plan only. Billed at $0.01/GB, bi-directional. Unlike public network transfer, which only counts outbound data, private network transfer counts traffic in both directions: data sent from your database to clients and data sent from clients to your database.
 
 In the Console, these appear as **Public network transfer** and **Private network transfer**. In the Consumption API, the fields are `public_network_transfer_bytes` and `private_network_transfer_bytes`. In project and branch detail API responses, the combined field is `data_transfer_bytes`.
@@ -102063,32 +102063,32 @@ Compare Neon's **Free**, **Launch**, and **Scale** plans.
 
 For AI agent platforms that provision thousands of databases, Neon offers an **Agent Plan** with custom resource limits and credits for **your** free tier. [Learn more](https://neon.com/docs/introduction/agent-plan)
 
-| Plan feature                                                                                  | **Free**                                   | **Launch**                                | **Scale**                                                                                                         |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| [Price](https://neon.com/docs/introduction/plans#price)                                       | $0/month                                   | Pay for what you use                      | Pay for what you use                                                                                              |
-| [Who it's for](https://neon.com/docs/introduction/plans#who-its-for)                          | Prototypes, side projects, and small teams | Startups and growing teams                | Production-grade workloads and larger companies                                                                   |
-| [Organization members](https://neon.com/docs/introduction/plans#organization-members)         | Unlimited                                  | Unlimited                                 | Unlimited                                                                                                         |
-| [Projects](https://neon.com/docs/introduction/plans#projects)                                 | 100                                        | 100                                       | 1,000 (can be increased on request)                                                                               |
-| [Branches](https://neon.com/docs/introduction/plans#branches)                                 | 10/project                                 | 10/project                                | 25/project                                                                                                        |
-| [Extra branches](https://neon.com/docs/introduction/plans#extra-branches)                     | —                                          | $1.50/branch-month (prorated hourly)      | $1.50/branch-month (prorated hourly)                                                                              |
-| [Compute](https://neon.com/docs/introduction/plans#compute)                                   | 100 CU-hours/project                       | $0.106/CU-hour                            | $0.222/CU-hour                                                                                                    |
-| [Autoscaling](https://neon.com/docs/introduction/plans#autoscaling)                           | Up to 2 CU (8 GB RAM)                      | Up to 16 CU (64 GB RAM)                   | Up to 16 CU autoscaling, or fixed sizes up to 56 CU (224 GB RAM)                                                  |
-| [Scale to zero](https://neon.com/docs/introduction/plans#scale-to-zero)                       | After 5 min                                | After 5 min, can be disabled              | Configurable (1 minute to always on)                                                                              |
-| [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 0.5 GB/project                             | $0.35/GB-month                            | $0.35/GB-month                                                                                                    |
-| [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB included                              | 500 GB included, then $0.10/GB            | 500 GB included, then $0.10/GB                                                                                    |
-| [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                      | 3 days                                    | 14 days                                                                                                           |
-| [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | —                                          | —                                         | ✅                                                                                                                 |
-| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | —                                          | $0.20/GB-month                            | $0.20/GB-month                                                                                                    |
-| [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB-month                  | Up to 7 days                              | Up to 30 days                                                                                                     |
-| [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                          | 100 manual snapshots                      | 100 manual snapshots                                                                                              |
-| [Auth](https://neon.com/docs/introduction/plans#auth) (Beta)                                  | Up to 60k MAU                              | Up to 1M MAU                              | Up to 1M MAU                                                                                                      |
-| [Object Storage](https://neon.com/docs/introduction/plans#object-storage) (Beta)              | No charge during beta, usage limits apply  | No charge during beta, usage limits apply | No charge during beta, usage limits apply                                                                         |
-| [Functions](https://neon.com/docs/introduction/plans#functions) (Beta)                        | No charge during beta, usage limits apply  | No charge during beta, usage limits apply | No charge during beta, usage limits apply                                                                         |
-| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway) (Beta)                      | —                                          | Free during beta                          | Free during beta                                                                                                  |
-| [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | —                                          | —                                         | $0.01/GB                                                                                                          |
-| [Compliance and security](https://neon.com/docs/introduction/plans#compliance-and-security)   | —                                          | Protected branches                        | SOC 2, ISO, GDPR, [HIPAA](https://neon.com/docs/security/hipaa), Protected branches, IP Allow, Private Networking |
-| [Uptime SLA](https://neon.com/docs/introduction/plans#uptime-sla)                             | —                                          | —                                         | ✅                                                                                                                 |
-| [Support](https://neon.com/docs/introduction/plans#support)                                   | Community                                  | Billing support                           | Standard, Business, or Production                                                                                 |
+| Plan feature                                                                                  | **Free**                                   | **Launch**                                 | **Scale**                                                                                                         |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| [Price](https://neon.com/docs/introduction/plans#price)                                       | $0/month                                   | Pay for what you use                       | Pay for what you use                                                                                              |
+| [Who it's for](https://neon.com/docs/introduction/plans#who-its-for)                          | Prototypes, side projects, and small teams | Startups and growing teams                 | Production-grade workloads and larger companies                                                                   |
+| [Organization members](https://neon.com/docs/introduction/plans#organization-members)         | Unlimited                                  | Unlimited                                  | Unlimited                                                                                                         |
+| [Projects](https://neon.com/docs/introduction/plans#projects)                                 | 100                                        | 100                                        | 1,000 (can be increased on request)                                                                               |
+| [Branches](https://neon.com/docs/introduction/plans#branches)                                 | 10/project                                 | 10/project                                 | 25/project                                                                                                        |
+| [Extra branches](https://neon.com/docs/introduction/plans#extra-branches)                     | —                                          | $1.50/branch-month (prorated hourly)       | $1.50/branch-month (prorated hourly)                                                                              |
+| [Compute](https://neon.com/docs/introduction/plans#compute)                                   | 100 CU-hours/project                       | $0.106/CU-hour                             | $0.222/CU-hour                                                                                                    |
+| [Autoscaling](https://neon.com/docs/introduction/plans#autoscaling)                           | Up to 2 CU (8 GB RAM)                      | Up to 16 CU (64 GB RAM)                    | Up to 16 CU autoscaling, or fixed sizes up to 56 CU (224 GB RAM)                                                  |
+| [Scale to zero](https://neon.com/docs/introduction/plans#scale-to-zero)                       | After 5 min                                | After 5 min, can be disabled               | Configurable (1 minute to always on)                                                                              |
+| [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 0.5 GB/project                             | $0.35/GB-month                             | $0.35/GB-month                                                                                                    |
+| [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB included                              | 500 GB per project included, then $0.10/GB | 500 GB per project included, then $0.10/GB                                                                        |
+| [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                      | 3 days                                     | 14 days                                                                                                           |
+| [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | —                                          | —                                          | ✅                                                                                                                 |
+| [Instant restore](https://neon.com/docs/introduction/plans#instant-restore)                   | —                                          | $0.20/GB-month                             | $0.20/GB-month                                                                                                    |
+| [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB-month                  | Up to 7 days                               | Up to 30 days                                                                                                     |
+| [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                          | 100 manual snapshots                       | 100 manual snapshots                                                                                              |
+| [Auth](https://neon.com/docs/introduction/plans#auth) (Beta)                                  | Up to 60k MAU                              | Up to 1M MAU                               | Up to 1M MAU                                                                                                      |
+| [Object Storage](https://neon.com/docs/introduction/plans#object-storage) (Beta)              | No charge during beta, usage limits apply  | No charge during beta, usage limits apply  | No charge during beta, usage limits apply                                                                         |
+| [Functions](https://neon.com/docs/introduction/plans#functions) (Beta)                        | No charge during beta, usage limits apply  | No charge during beta, usage limits apply  | No charge during beta, usage limits apply                                                                         |
+| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway) (Beta)                      | —                                          | Free during beta                           | Free during beta                                                                                                  |
+| [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | —                                          | —                                          | $0.01/GB                                                                                                          |
+| [Compliance and security](https://neon.com/docs/introduction/plans#compliance-and-security)   | —                                          | Protected branches                         | SOC 2, ISO, GDPR, [HIPAA](https://neon.com/docs/security/hipaa), Protected branches, IP Allow, Private Networking |
+| [Uptime SLA](https://neon.com/docs/introduction/plans#uptime-sla)                             | —                                          | —                                          | ✅                                                                                                                 |
+| [Support](https://neon.com/docs/introduction/plans#support)                                   | Community                                  | Billing support                            | Standard, Business, or Production                                                                                 |
 
 ## Plan features
 
@@ -102265,8 +102265,8 @@ Public network transfer (egress) is the total volume of data sent from your data
 Allowances per plan:
 
 - **Free**: 5 GB/month
-- **Launch**: 500 GB/month, then $0.10/GB
-- **Scale**: 500 GB/month, then $0.10/GB
+- **Launch**: 500 GB per project per month, then $0.10/GB
+- **Scale**: 500 GB per project per month, then $0.10/GB
 
 ### Monitoring
 
@@ -102558,7 +102558,7 @@ How are read replicas billed?
 : Each read replica is its own compute and contributes to CU-hours.
 
 Do public network transfer limits reset each month?
-: Yes. Free plan includes 5 GB/month, Launch and Scale include 500 GB/month. Beyond that, it's $0.10/GB.
+: Yes. Free includes 5 GB/month. Launch and Scale include 500 GB per project per month. Beyond that, it's $0.10/GB.
 
 How is private network transfer billed?
 : Only available on Scale: $0.01/GB, bidirectional, between Neon and private network services.
@@ -102852,7 +102852,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Lakebase Search**: Vector and BM25 full-text search are now available to all users on Postgres 16+ through the `lakebase_vector` and `lakebase_text` extensions, so you can run semantic, keyword, and hybrid search in Postgres without a separate search stack. [Learn more](https://neon.com/docs/ai/lakebase-search)
 - **neon.ts**: A TypeScript config file you commit to your repo to declare branch policies, compute settings, and Neon services as code. Apply changes with `neon deploy` and preview them with `neon config plan`. [Learn more](https://neon.com/docs/reference/neon-ts)
 - **Branch-first development workflow**: New CLI commands (`neon link`, `neon checkout`, `neon env pull`, `neon psql`, `neon data-api`) bring project linking and branch switching to the terminal. Your `DATABASE_URL` updates automatically when you check out a branch. [Learn more](https://neon.com/docs/cli)
-- **More network transfer on paid plans**: The public network transfer allowance on all paid plans increased from 100 GB to 500 GB per month. [Learn more](https://neon.com/docs/introduction/network-transfer)
+- **More network transfer on paid plans**: The public network transfer allowance on all paid plans increased from 100 GB to 500 GB per project per month. [Learn more](https://neon.com/docs/introduction/network-transfer)
 - **Schema Diff for larger schemas**: The schema comparison line limit has been raised from 8,000 to 20,000 lines, unblocking diffs on larger production schemas. [Learn more](https://neon.com/docs/guides/schema-diff).
 - **Per-branch consumption metrics**: A new API endpoint returns compute, storage, and transfer usage broken down by branch, making it easier to attribute costs in multi-branch workflows. [Learn more](https://neon.com/docs/guides/consumption-metrics).
 - **Neon MCP Server branch forking**: The `create_branch` MCP tool now accepts a `parentId` parameter so agents can fork any branch, not only the project default. [Learn more](https://neon.com/docs/ai/neon-mcp-server).
@@ -103583,11 +103583,11 @@ Repeat for each day in the billing period and sum the billable branch-hours acro
 
 ### Public transfer allowance
 
-On paid plans, the 500 GB free allowance applies **org-wide**, not per project. Sum public transfer across all projects before subtracting the allowance:
+On paid plans, each project receives a 500 GB free allowance. Subtract the allowance from each project's public transfer, then sum the billable usage:
 
 ```
-billable GB = max(0, total_org_GB - 500)
-cost = billable_GB x $0.10
+billable GB per project = max(0, project_GB - 500)
+total cost = sum(billable_GB per project) x $0.10
 ```
 
 ### Granularity and precision
@@ -103611,7 +103611,7 @@ To reconcile the numbers yourself:
 1. Fetch consumption history for the billing month (`from` = month start, `to` = month end or current date).
 2. Sum each metric across all projects.
 3. Convert to billing units using the formulas above.
-4. Apply allowances (500 GB public transfer, branch allowance per project).
+4. Apply the 500 GB public transfer allowance and branch allowance to each project.
 5. Multiply by your plan's rates.
 
 The result should closely match the costs in your weekly email. Small differences can occur due to:
@@ -115136,7 +115136,7 @@ For common authentication troubleshooting (missing environment variables, CSS co
 
 --- [Document source](https://neon.com/docs/reference/metrics-logs.md) ---
 
-> Summary: Complete field-level reference for all metrics and Postgres log fields that Neon exports to Datadog, Grafana Cloud, and OpenTelemetry, including metric names, label keys (project_id, endpoint_id, compute_id, job), and log metadata. Use this page to identify exact metric identifiers such as neon_connection_counts, neon_lfc_hits, and host_cpu_seconds_total when building dashboards or alerts. Metrics are not sent while a compute is suspended by Scale to Zero, which can cause gaps; log export may also incur network egress charges on paid plans above 500 GB.
+> Summary: Complete field-level reference for all metrics and Postgres log fields that Neon exports to Datadog, Grafana Cloud, and OpenTelemetry, including metric names, label keys (project_id, endpoint_id, compute_id, job), and log metadata. Use this page to identify exact metric identifiers such as neon_connection_counts, neon_lfc_hits, and host_cpu_seconds_total when building dashboards or alerts. Metrics are not sent while a compute is suspended by Scale to Zero, which can cause gaps; log export may also incur network egress charges when a project on a paid plan exceeds 500 GB.
 
 # Metrics and logs reference
 
@@ -115228,7 +115228,7 @@ Logs include the following labels and metadata for filtering and organization:
 Enabling log export may result in:
 
 - An increase in compute resource usage for log processing
-- Additional network egress for log transmission, billed on paid plans for usage over 500 GB
+- Additional network egress for log transmission, billed when a project on a paid plan exceeds 500 GB
 - Associated costs based on log volume in your observability platform
 
 **Note:** Neon computes only send logs and metrics when they are active. If the [Scale to Zero](https://neon.com/docs/introduction/scale-to-zero) feature is enabled and a compute is suspended due to inactivity, no logs or metrics will be sent during the suspension. This may result in gaps in your data.

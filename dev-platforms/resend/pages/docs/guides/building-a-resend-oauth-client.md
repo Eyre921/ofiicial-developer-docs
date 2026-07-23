@@ -8,7 +8,12 @@ Implement an OAuth 2.1 + PKCE client against the Resend API, from scratch or wit
 
 Resend implements OAuth 2.0 and 2.1, including Proof Key for Code Exchange (PKCE) for authorization code exchanges. Resend also supports Dynamic Client Registration (DCR), which lets a client register itself at runtime via POST /oauth/register. Use DCR when a client, such as a MCP host, can't know its deployment details in advance.
 
-Resend does not yet support confidential clients, so all clients are public, and PKCE is required on every authorization code exchange. Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
+Resend supports both **public** and **confidential** clients. PKCE is required on every authorization code exchange regardless of type:
+
+* **Public clients** authenticate with PKCE alone. Register them with `token_endpoint_auth_method: "none"` (the default). Use a public client when it can't keep a secret, such as native apps, CLIs, and single-page apps.
+* **Confidential clients** additionally present a `client_secret` at the token and revocation endpoints. Register them with `token_endpoint_auth_method: "client_secret_basic"` (or `client_secret_post`) to have Resend issue the secret. Use a confidential client when it has a backend that can store the secret privately, such as a server-side web app.
+
+Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
 
 The Resend dashboard hosts the login and consent screen. Your client only needs to open the authorization URL in a browser and handle the callback. You don't build any consent UI yourself.
 
@@ -17,6 +22,8 @@ The Resend dashboard hosts the login and consent screen. Your client only needs 
 Before getting to the integration, decide between registering the client dynamically or registering it beforehand and reusing a fixed `client_id`.
 
 Dynamic registration is for clients that can't predict their own deployment details ahead of time, like an MCP server. The standard case is registering beforehand, and the rest of this guide assumes that path.
+
+Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
 
 If you're registering beforehand, ask us to mark the client `manual_verified`. That gets it a verified badge on the consent screen. It's the only effect it has today. It doesn't change scopes, rate limits, or anything else.
 
@@ -65,6 +72,8 @@ For a remote client, store `state` and `codeVerifier` server-side before redirec
 
 A remote client must use an HTTPS redirect URI owned by the app, for example `https://example.com/oauth/callback`.
 
+Because a remote client has a backend that can keep a secret, register it as confidential: pass `token_endpoint_auth_method: "client_secret_basic"` and store the `client_secret` Resend returns. That secret is shown only once at registration, so persist it securely and never expose it in browser or client-side code. It's then presented on every token and revocation call, in addition to PKCE.
+
 For remote apps, you can still use [POST /oauth/register](/docs/api-reference/oauth/register) manually while we don't have a central place in the app to create clients.
 
 ```mermaid theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -86,12 +95,12 @@ sequenceDiagram
 
     Note over C: Verify state against the stored session value
 
-    C->>AS: POST /oauth/token<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
+    C->>AS: POST /oauth/token<br>Basic auth (client_id + client_secret)<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
     AS-->>C: access_token + refresh_token
 ```
 
 <Steps>
-  <Step title="Load the pre-issued client_id" />
+  <Step title="Load the pre-issued client_id and client_secret" />
 
   <Step title="Generate PKCE and state">
     `code_verifier`, `code_challenge`, and `state`. See
@@ -112,7 +121,8 @@ sequenceDiagram
   </Step>
 
   <Step title="Exchange the code server-side">
-    Use the original `code_verifier`.
+    Use the original `code_verifier`, and present the `client_secret` via HTTP
+    Basic auth.
   </Step>
 
   <Step title="Store the refresh token securely" />
@@ -129,12 +139,13 @@ GET /oauth/authorize?client_id=550e8400-e29b-41d4-a716-446655440000&response_typ
 Host: api.resend.com
 ```
 
-Example code exchange:
+Example code exchange. The `-u` flag sends the `client_id` and `client_secret` as HTTP Basic auth, so `client_id` isn't repeated in the body:
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X POST 'https://api.resend.com/oauth/token' \
      -H 'Content-Type: application/x-www-form-urlencoded' \
-     -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+     -u '550e8400-e29b-41d4-a716-446655440000:CLIENT_SECRET' \
+     -d 'grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
 ```
 
 ## Local client
@@ -309,5 +320,7 @@ curl -X POST 'https://api.resend.com/oauth/revoke' \
      -H 'Content-Type: application/x-www-form-urlencoded' \
      -d 'client_id=550e8400-e29b-41d4-a716-446655440000&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
 ```
+
+A confidential client must authenticate this request too, the same way it does at the token endpoint. For example, pass its `client_secret` with `curl -u 'CLIENT_ID:CLIENT_SECRET'` instead of sending `client_id` in the body.
 
 Access tokens are JWTs and can't be revoked individually. Revoking the refresh token revokes the grant. See [Revoke Token](/docs/api-reference/oauth/revoke).

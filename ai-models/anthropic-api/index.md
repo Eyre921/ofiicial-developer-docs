@@ -1,6 +1,6 @@
 # ai-models/anthropic-api 文档索引
 
-> 共 163 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 166 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -69,7 +69,6 @@
 
 ## build-with-claude
 
-- `build-with-claude/adaptive-thinking` — [Adaptive thinking](pages/build-with-claude/adaptive-thinking.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking)
 - `build-with-claude/batch-processing` — [Batch processing](pages/build-with-claude/batch-processing.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
 - `build-with-claude/cache-diagnostics` — [Cache diagnostics](pages/build-with-claude/cache-diagnostics.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics)
 - `build-with-claude/citations` — [Citations](pages/build-with-claude/citations.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/citations)
@@ -83,9 +82,9 @@
 - `build-with-claude/context-windows` — [Context windows](pages/build-with-claude/context-windows.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/context-windows)
 - `build-with-claude/effort` — [Effort](pages/build-with-claude/effort.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/effort)
 - `build-with-claude/embeddings` — [Embeddings](pages/build-with-claude/embeddings.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/embeddings)
-- `build-with-claude/extended-thinking` — [Pricing](pages/build-with-claude/extended-thinking.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+- `build-with-claude/extended-thinking` — [Extended thinking](pages/build-with-claude/extended-thinking.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
 - `build-with-claude/fallback-credit` — [Fallback credit](pages/build-with-claude/fallback-credit.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/fallback-credit)
-- `build-with-claude/fast-mode` — [Fast mode (research preview)](pages/build-with-claude/fast-mode.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
+- `build-with-claude/fast-mode` — [Pricing](pages/build-with-claude/fast-mode.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
 - `build-with-claude/files` — [Files API](pages/build-with-claude/files.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/files)
 - `build-with-claude/handling-stop-reasons` — [Stop reasons and fallback](pages/build-with-claude/handling-stop-reasons.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons)
 - `build-with-claude/mid-conversation-effort-example` — [Build an orchestration mode](pages/build-with-claude/mid-conversation-effort-example.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-effort-example)
@@ -105,6 +104,10 @@
 - `build-with-claude/streaming` — [Streaming messages](pages/build-with-claude/streaming.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/streaming)
 - `build-with-claude/structured-outputs` — [Structured outputs](pages/build-with-claude/structured-outputs.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
 - `build-with-claude/task-budgets` — [Task budgets](pages/build-with-claude/task-budgets.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/task-budgets)
+- `build-with-claude/thinking` — [Thinking](pages/build-with-claude/thinking.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/thinking)
+- `build-with-claude/thinking-steering-and-cost` — [Steering thinking](pages/build-with-claude/thinking-steering-and-cost.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/thinking-steering-and-cost)
+- `build-with-claude/thinking-tool-workflows` — [Thinking in tool and multi-turn workflows](pages/build-with-claude/thinking-tool-workflows.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/thinking-tool-workflows)
+- `build-with-claude/thinking-troubleshooting` — [Troubleshooting thinking](pages/build-with-claude/thinking-troubleshooting.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting)
 - `build-with-claude/token-counting` — [Token counting](pages/build-with-claude/token-counting.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/token-counting)
 - `build-with-claude/vision` — [Vision](pages/build-with-claude/vision.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/vision)
 - `build-with-claude/vision-coordinates` — [Coordinates and bounding boxes](pages/build-with-claude/vision-coordinates.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/vision-coordinates)

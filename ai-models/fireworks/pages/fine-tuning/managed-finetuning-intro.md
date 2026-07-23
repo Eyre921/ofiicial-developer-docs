@@ -12,13 +12,13 @@ Give Fireworks your data and configuration. The platform handles scheduling, tra
 
 These interfaces create the same underlying managed jobs:
 
-| Interface                                   | Use when                                                                                                                     |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| **Fireworks UI**                            | You want guided configuration and visual monitoring                                                                          |
-| **`firectl` or REST API**                   | You want scripted and reproducible job operations                                                                            |
-| **Coding agent + Fireworks training skill** | You want natural-language planning, validation, complete parameter and cost confirmation, orchestration, and troubleshooting |
+| Interface        | Use when                                                         |
+| ---------------- | ---------------------------------------------------------------- |
+| **Fireworks UI** | You want guided configuration and visual monitoring              |
+| **CLI or API**   | You want scripted and reproducible job operations                |
+| **Your agent**   | You want help configuring, running, and troubleshooting training |
 
-[Install the training skill](/fine-tuning/agent/use-with-coding-agents) or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
+The Fireworks CLI is called `firectl`. [Install the training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent, or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
 
 ## Methods
 

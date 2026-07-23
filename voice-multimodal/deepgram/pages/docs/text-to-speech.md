@@ -113,7 +113,7 @@ dotnet add package Deepgram
 # </dependency>
 
 # Gradle — add to build.gradle:
-# implementation 'com.deepgram:deepgram-java-sdk:0.2.1'
+# implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
 ```
 
 ### Add Dependencies

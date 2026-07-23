@@ -7,7 +7,9 @@ path: docs/api-reference/oauth/register
 POST /oauth/register
 Dynamically register an OAuth client for the authorization code + PKCE flow (RFC 7591).
 
-Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime instead of being pre-registered by Resend. This endpoint is unauthenticated (no API key), but only ever issues **public** clients: Resend does not support confidential clients or client secrets.
+Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime instead of being pre-registered by Resend. This endpoint is unauthenticated (no API key).
+
+By default it issues a **public** client that authenticates at the token endpoint with PKCE alone. Register with a `client_secret_*` [authentication method](#param-token-endpoint-auth-method) to get a **confidential** client, which is issued a `client_secret` in the response. Confidential clients still complete PKCE on every authorization code exchange. The secret is an additional factor, not a replacement.
 
 <Note>
   This endpoint is rate-limited to 20 registrations per hour per IP address.
@@ -42,8 +44,13 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
 </ParamField>
 
 <ParamField type="string">
-  Only `none` is supported. Resend clients authenticate at the token endpoint
-  with PKCE, not a client secret.
+  How the client authenticates at the [token](/docs/api-reference/oauth/token) and
+  [revocation](/docs/api-reference/oauth/revoke) endpoints. `none` (the default) is a
+  public client that proves itself with PKCE alone. `client_secret_basic` and
+  `client_secret_post` are confidential clients that also present a
+  `client_secret`, sent in the HTTP `Authorization: Basic` header or as a body
+  parameter respectively. A `client_secret_*` method issues a `client_secret` in
+  the response. See [Confidential clients](#confidential-clients).
 </ParamField>
 
 <ParamField type="string">
@@ -53,6 +60,23 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
 <ParamField type="string">
   A URL for the client's logo. Shown on the consent screen.
 </ParamField>
+
+### Confidential clients
+
+Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `client_secret_post` returns two extra fields:
+
+<ResponseField name="client_secret" type="string">
+  The generated client secret. Returned **only once**, in this response. Resend
+  stores a hash and can't show it again, so persist it securely at registration
+  time. If it's lost, register a new client.
+</ResponseField>
+
+<ResponseField name="client_secret_expires_at" type="number">
+  Unix time at which the secret expires. Always `0`, meaning the secret does not
+  expire.
+</ResponseField>
+
+Only register a confidential client when it has a backend that can keep the secret private, such as a server-side web app. Native, CLI, and other clients that can't protect a secret should stay public (`none`) and rely on PKCE. See [Building an OAuth client](/docs/guides/building-a-resend-oauth-client) for how each client type authenticates.
 
 ### Allowed redirect URIs
 
@@ -65,7 +89,7 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
   are rejected, and none of the URIs may include a fragment.
 
 <RequestExample>
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/oauth/register' \
        -H 'Content-Type: application/json' \
        -d $'{
@@ -77,10 +101,23 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
     "scope": "emails:send"
   }'
   ```
+
+  ```bash Confidential client theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/register' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "client_name": "Example OAuth Client",
+    "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+    "grant_types": ["authorization_code", "refresh_token"],
+    "response_types": ["code"],
+    "token_endpoint_auth_method": "client_secret_basic",
+    "scope": "emails:send"
+  }'
+  ```
 </RequestExample>
 
 <ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```json Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
     "client_id": "550e8400-e29b-41d4-a716-446655440000",
     "client_id_issued_at": 1750000000,
@@ -90,6 +127,21 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
     "response_types": ["code"],
     "token_endpoint_auth_method": "none",
     "scope": "emails:send"
+  }
+  ```
+
+  ```json Confidential client theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "client_id": "550e8400-e29b-41d4-a716-446655440000",
+    "client_id_issued_at": 1750000000,
+    "client_name": "Example OAuth Client",
+    "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+    "grant_types": ["authorization_code", "refresh_token"],
+    "response_types": ["code"],
+    "token_endpoint_auth_method": "client_secret_basic",
+    "scope": "emails:send",
+    "client_secret": "3vProAFw7...store-this-now...KpQ",
+    "client_secret_expires_at": 0
   }
   ```
 </ResponseExample>

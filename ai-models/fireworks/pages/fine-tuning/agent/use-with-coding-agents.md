@@ -1,12 +1,12 @@
 ---
-title: "Train from Your Coding Agent"
+title: "Agent Skills"
 source: https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents
 path: fine-tuning/agent/use-with-coding-agents
 ---
 
-Install one Fireworks training skill and run managed or Training API workflows from Claude Code, Cursor, Codex, or another compatible agent.
+Install the Fireworks training skill for your coding agent.
 
-The Fireworks training skill teaches your coding agent to run training end to end: choose managed or Training API, choose serverless or dedicated infrastructure when needed, prepare and validate data, launch and monitor the run, evaluate, deploy, and troubleshoot.
+The `fireworks-training` skill helps coding agents configure, run, and troubleshoot training jobs using current Fireworks best practices.
 
 ## Install
 
@@ -48,17 +48,17 @@ npx --yes skills add fw-ai/cookbook -g \
 
 ## Prerequisites
 
-* [`firectl`](/tools-sdks/firectl/firectl) installed. Authenticate with either `firectl signin` or `FIREWORKS_API_KEY`.
+* [Fireworks CLI (`firectl`)](/tools-sdks/firectl/firectl) installed. Authenticate with either `firectl signin` or `FIREWORKS_API_KEY`.
 * Export `FIREWORKS_API_KEY` for Training API Python workflows.
 
 ## What it does
 
-Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and deploy it."* The skill uses current Fireworks docs and cookbook recipes to choose the right path, validate inputs, run and monitor training, evaluate the result, deploy it, and troubleshoot failures.
+Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and deploy it."* The skill configures the job, validates inputs, runs it, and helps troubleshoot failures.
 
-Before any upload, registration, paid inference, job creation, promotion, or deployment, it shows the resolved parameters, defaults, cost ceiling, evaluation, and teardown for approval. Material changes require approval again; promotion and deployment each have separate confirmation.
+Before creating cost or resources, it shows the resolved parameters and estimated cost for confirmation.
 
 <Note>
-  `firectl` may block mutating commands inside any AI-agent environment. When that happens, the skill gives you the exact command to run manually in your terminal, then resumes read-only monitoring and reporting. It does not bypass the guard.
+  The Fireworks CLI (`firectl`) may block mutating commands inside an AI-agent environment. When that happens, the skill gives you the exact command to run manually, then resumes monitoring and reporting.
 </Note>
 
 Use [managed fine-tuning](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/choose-infrastructure).
@@ -78,8 +78,12 @@ Use [managed fine-tuning](/fine-tuning/managed-finetuning-intro) for standard jo
     Compare serverless and dedicated training.
   </Card>
 
-  <Card title="firectl" icon="terminal" href="/tools-sdks/firectl/firectl">
-    The CLI the skill drives.
+  <Card title="CLI reference" icon="terminal" href="/tools-sdks/firectl/firectl">
+    Automate managed training with `firectl`.
+  </Card>
+
+  <Card title="API reference" icon="brackets-curly" href="/api-reference/introduction">
+    Automate managed training through REST APIs.
   </Card>
 
   <Card title="Cookbook" icon="book" href="/fine-tuning/training-api/cookbook/overview">

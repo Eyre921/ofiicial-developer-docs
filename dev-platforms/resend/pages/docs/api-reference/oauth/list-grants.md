@@ -39,6 +39,10 @@ once the grant is revoked.
   curl -X GET 'https://api.resend.com/oauth/grants' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend oauth-grants list
+  ```
 </RequestExample>
 
 <ResponseExample>

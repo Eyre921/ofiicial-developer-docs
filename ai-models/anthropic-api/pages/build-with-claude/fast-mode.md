@@ -1,5 +1,5 @@
 ---
-title: "Fast mode (research preview)"
+title: "Pricing"
 source: https://platform.claude.com/docs/en/build-with-claude/fast-mode
 path: build-with-claude/fast-mode
 ---

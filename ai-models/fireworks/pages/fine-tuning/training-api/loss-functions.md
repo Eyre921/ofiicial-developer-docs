@@ -307,7 +307,7 @@ training_client.optim_step(tinker.AdamParams(learning_rate=1e-5, ...)).result()
 ```
 
 <Note>
-  Advanced optimizer-step controls such as server-side gradient accumulation normalization are intentionally kept out of this user-facing guide. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/gradient-accumulation.md) for agent-facing operational guidance.
+  Advanced optimizer-step controls such as server-side gradient accumulation normalization are intentionally kept out of this user-facing guide. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for agent-facing operational guidance.
 </Note>
 
 ## Common pitfalls

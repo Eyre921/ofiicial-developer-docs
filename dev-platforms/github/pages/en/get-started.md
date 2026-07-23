@@ -16,7 +16,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
-  <p>Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.</p>
+  Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.
 
 * [Creating an account on GitHub](/en/get-started/start-your-journey/creating-an-account-on-github)
 
@@ -32,7 +32,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
+  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
@@ -91,6 +91,30 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 * [Git and GitHub learning resources](/en/get-started/start-your-journey/git-and-github-learning-resources)
 
   There are a lot of helpful Git and GitHub resources available.
+
+* [Creating a repository for your project on GitHub](/en/get-started/start-your-journey/creating-a-repository-for-your-project-on-github)
+
+  Create a repository on GitHub to store your code, track its history, and build a software project you can share.
+
+* [Planning your work](/en/get-started/start-your-journey/planning-your-work)
+
+  Organize your work and track your progress so you always know what to build next.
+
+* [Connecting to your code locally](/en/get-started/start-your-journey/connecting-to-your-code-locally)
+
+  Connect GitHub Desktop to your account and clone your repository to edit files locally.
+
+* [Writing and storing your code](/en/get-started/start-your-journey/writing-and-storing-your-code)
+
+  Follow the core developer workflow to create a branch, write code, and open a pull request using Copilot and GitHub Desktop.
+
+* [Reviewing your proposed changes](/en/get-started/start-your-journey/reviewing-your-proposed-changes)
+
+  Review your own pull request before you merge to catch bugs and improve quality, with an optional AI assist from Copilot.
+
+* [Deploying your website automatically](/en/get-started/start-your-journey/deploying-your-website-automatically)
+
+  Automate your code deployment with GitHub Actions and GitHub Pages to publish updates to a live site with every push to the main branch.
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 

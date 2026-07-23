@@ -50,6 +50,10 @@ Add an email address to the suppression list.
     "email": "steve.wozniak@example.com"
   }'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend suppressions add steve.wozniak@example.com
+  ```
 </RequestExample>
 
 <ResponseExample>

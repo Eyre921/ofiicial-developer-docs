@@ -20,7 +20,7 @@ Flux Multilingual is available on the hosted API, on self-hosted deployments, an
 
 * Python `deepgram-sdk` `v7.0.0+`
 * JavaScript `@deepgram/sdk` `v5.1.0+`
-* Java `deepgram-java-sdk` `v0.3.0+`
+* Java `deepgram-java-sdk` `v0.7.0+`
 
 Use `language_hint` values when you connect, and use `language_hints` in `Configure` messages to update them
 mid-stream. See the SDK examples below for the syntax in each SDK.

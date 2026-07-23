@@ -1064,4 +1064,4 @@ Claude can read both text and images in requests. You can supply images using th
 
 ---
 
-# Adaptive thinking
+# Batch processing

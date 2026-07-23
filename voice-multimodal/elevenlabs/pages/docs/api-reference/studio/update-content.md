@@ -147,13 +147,14 @@ components:
     ProjectCreationMetaResponseModelStatus:
       type: string
       enum:
+        - draft
         - pending
         - creating
         - finished
         - failed
       description: The status of the project creation action.
       title: ProjectCreationMetaResponseModelStatus
-    ProjectCreationMetaResponseModelType:
+    ProjectCreationMetaType:
       type: string
       enum:
         - blank
@@ -161,8 +162,7 @@ components:
         - auto_assign_voices
         - dub_video
         - import_speech
-      description: The type of the project creation action.
-      title: ProjectCreationMetaResponseModelType
+      title: ProjectCreationMetaType
     ProjectCreationMetaResponseModel:
       type: object
       properties:
@@ -174,7 +174,7 @@ components:
           $ref: '#/components/schemas/ProjectCreationMetaResponseModelStatus'
           description: The status of the project creation action.
         type:
-          $ref: '#/components/schemas/ProjectCreationMetaResponseModelType'
+          $ref: '#/components/schemas/ProjectCreationMetaType'
           description: The type of the project creation action.
       required:
         - creation_progress

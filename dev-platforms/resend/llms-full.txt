@@ -239,17 +239,16 @@ Resend hosts the MCP server, so you can connect any MCP client without installin
 https://mcp.resend.com/mcp
 ```
 
-For example, with Claude Code:
-
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-claude mcp add --transport http resend https://mcp.resend.com/mcp
-```
-
 When you connect, your client authenticates with OAuth by opening a browser to log in to Resend. Clients that can't complete a browser login can pass an API key as a Bearer token instead. You can also run the server locally with `npx` using the `resend-mcp` package on NPM.
 
+Claude and Codex also offer one-click installs that bundle the MCP server and every Resend skill:
+
+* [Resend connector for Claude](https://claude.ai/directory/connectors/resend)
+* [Resend plugin for Codex](https://chatgpt.com/plugins/plugin_asdk_app_6a3c407853888191beddc2151c2b6f8b?open_in_codex)
+
 <Card title="MCP Server" icon="microchip-ai" href="/mcp-server">
-  View setup instructions for Claude, Cursor, Codex, Copilot, Windsurf, and
-  more.
+  View setup instructions for Claude, Cursor, Codex, Copilot, Windsurf,
+  Antigravity, and more.
 </Card>
 
 ## Resend CLI
@@ -7669,6 +7668,13 @@ Instead of sending one email per HTTP request, Resend provides a batching endpoi
   strings.
 </ParamField>
 
+<ResendParamField type="string">
+  Schedule email to be sent later. The date should be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g:
+  `2026-08-05T11:52:01.858Z`).
+
+  [See examples](/docs/dashboard/emails/schedule-email)
+</ResendParamField>
+
 <ResendParamField type="string | string[]">
   Reply-to email address. For multiple addresses, send as an array of strings.
 </ResendParamField>
@@ -7794,7 +7800,7 @@ Instead of sending one email per HTTP request, Resend provides a batching endpoi
 
 ## Limitations
 
-The `attachments` and `scheduled_at` fields are not supported yet.
+The `attachments` field is not supported yet.
 
 ## Response format
 
@@ -9247,6 +9253,10 @@ once the grant is revoked.
   curl -X GET 'https://api.resend.com/oauth/grants' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend oauth-grants list
+  ```
 </RequestExample>
 
 <ResponseExample>
@@ -9293,7 +9303,9 @@ Source: https://resend.com/docs/api-reference/oauth/register
 POST /oauth/register
 Dynamically register an OAuth client for the authorization code + PKCE flow (RFC 7591).
 
-Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime instead of being pre-registered by Resend. This endpoint is unauthenticated (no API key), but only ever issues **public** clients: Resend does not support confidential clients or client secrets.
+Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime instead of being pre-registered by Resend. This endpoint is unauthenticated (no API key).
+
+By default it issues a **public** client that authenticates at the token endpoint with PKCE alone. Register with a `client_secret_*` [authentication method](#param-token-endpoint-auth-method) to get a **confidential** client, which is issued a `client_secret` in the response. Confidential clients still complete PKCE on every authorization code exchange. The secret is an additional factor, not a replacement.
 
 <Note>
   This endpoint is rate-limited to 20 registrations per hour per IP address.
@@ -9328,8 +9340,13 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
 </ParamField>
 
 <ParamField type="string">
-  Only `none` is supported. Resend clients authenticate at the token endpoint
-  with PKCE, not a client secret.
+  How the client authenticates at the [token](/docs/api-reference/oauth/token) and
+  [revocation](/docs/api-reference/oauth/revoke) endpoints. `none` (the default) is a
+  public client that proves itself with PKCE alone. `client_secret_basic` and
+  `client_secret_post` are confidential clients that also present a
+  `client_secret`, sent in the HTTP `Authorization: Basic` header or as a body
+  parameter respectively. A `client_secret_*` method issues a `client_secret` in
+  the response. See [Confidential clients](#confidential-clients).
 </ParamField>
 
 <ParamField type="string">
@@ -9339,6 +9356,23 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
 <ParamField type="string">
   A URL for the client's logo. Shown on the consent screen.
 </ParamField>
+
+### Confidential clients
+
+Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `client_secret_post` returns two extra fields:
+
+<ResponseField name="client_secret" type="string">
+  The generated client secret. Returned **only once**, in this response. Resend
+  stores a hash and can't show it again, so persist it securely at registration
+  time. If it's lost, register a new client.
+</ResponseField>
+
+<ResponseField name="client_secret_expires_at" type="number">
+  Unix time at which the secret expires. Always `0`, meaning the secret does not
+  expire.
+</ResponseField>
+
+Only register a confidential client when it has a backend that can keep the secret private, such as a server-side web app. Native, CLI, and other clients that can't protect a secret should stay public (`none`) and rely on PKCE. See [Building an OAuth client](/docs/guides/building-a-resend-oauth-client) for how each client type authenticates.
 
 ### Allowed redirect URIs
 
@@ -9351,7 +9385,7 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
   are rejected, and none of the URIs may include a fragment.
 
 <RequestExample>
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/oauth/register' \
        -H 'Content-Type: application/json' \
        -d $'{
@@ -9363,10 +9397,23 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
     "scope": "emails:send"
   }'
   ```
+
+  ```bash Confidential client theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/register' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "client_name": "Example OAuth Client",
+    "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+    "grant_types": ["authorization_code", "refresh_token"],
+    "response_types": ["code"],
+    "token_endpoint_auth_method": "client_secret_basic",
+    "scope": "emails:send"
+  }'
+  ```
 </RequestExample>
 
 <ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```json Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
     "client_id": "550e8400-e29b-41d4-a716-446655440000",
     "client_id_issued_at": 1750000000,
@@ -9376,6 +9423,21 @@ Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime 
     "response_types": ["code"],
     "token_endpoint_auth_method": "none",
     "scope": "emails:send"
+  }
+  ```
+
+  ```json Confidential client theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "client_id": "550e8400-e29b-41d4-a716-446655440000",
+    "client_id_issued_at": 1750000000,
+    "client_name": "Example OAuth Client",
+    "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+    "grant_types": ["authorization_code", "refresh_token"],
+    "response_types": ["code"],
+    "token_endpoint_auth_method": "client_secret_basic",
+    "scope": "emails:send",
+    "client_secret": "3vProAFw7...store-this-now...KpQ",
+    "client_secret_expires_at": 0
   }
   ```
 </ResponseExample>
@@ -9401,13 +9463,24 @@ RFC 7009 token revocation. Revoking a refresh token revokes the entire grant: ev
 
 Access tokens can't be revoked individually. Revoke the grant's refresh token instead. Per RFC 7009, this endpoint always returns `200` with an empty body.
 
+Confidential clients must authenticate the same way they do at the [token endpoint](/docs/api-reference/oauth/token#client-authentication), using `client_secret_basic` or `client_secret_post`. Public clients (`none`) send only `client_id`.
+
 ## Body Parameters
 
 <ParamField type="string">
   The refresh token to revoke.
 </ParamField>
 
-<ParamField type="string" />
+<ParamField type="string">
+  Required, except with `client_secret_basic`, where the `Authorization` header
+  already carries it.
+</ParamField>
+
+<ParamField type="string">
+  Required for a confidential client using `client_secret_post`. Omit for public
+  clients and for `client_secret_basic` (send the secret in the `Authorization`
+  header instead).
+</ParamField>
 
 <ParamField type="string">
   Optional per RFC 7009. If set to `"access_token"`, the request fails: access
@@ -9417,10 +9490,23 @@ Access tokens can't be revoked individually. Revoke the grant's refresh token in
 </ParamField>
 
 <RequestExample>
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/oauth/revoke' \
        -H 'Content-Type: application/x-www-form-urlencoded' \
        -d 'client_id=550e8400-e29b-41d4-a716-446655440000&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
+  ```
+
+  ```bash Client Secret Basic theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/revoke' \
+       -H 'Content-Type: application/x-www-form-urlencoded' \
+       -u '550e8400-e29b-41d4-a716-446655440000:CLIENT_SECRET' \
+       -d 'token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
+  ```
+
+  ```bash Client Secret Post theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/revoke' \
+       -H 'Content-Type: application/x-www-form-urlencoded' \
+       -d 'client_id=550e8400-e29b-41d4-a716-446655440000&client_secret=CLIENT_SECRET&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
   ```
 </RequestExample>
 
@@ -9432,10 +9518,10 @@ Access tokens can't be revoked individually. Revoke the grant's refresh token in
 
 ## Errors
 
-| Status | `error`           | When                                                                         |
-| ------ | ----------------- | ---------------------------------------------------------------------------- |
-| `400`  | `invalid_request` | `token` or `client_id` is missing, or `token_type_hint` is `"access_token"`. |
-| `401`  | `invalid_client`  | Unknown or disabled `client_id`.                                             |
+| Status | `error`           | When                                                                                                                                  |
+| ------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `400`  | `invalid_request` | `token` or `client_id` is missing, `token_type_hint` is `"access_token"`, or the client sent credentials via more than one mechanism. |
+| `401`  | `invalid_client`  | Unknown or disabled `client_id`, or a confidential client failed authentication (missing or wrong `client_secret`).                   |
 
 
 # Revoke Grant
@@ -9485,6 +9571,10 @@ does not exist or was already revoked.
   curl -X DELETE 'https://api.resend.com/oauth/grants/650e8400-e29b-41d4-a716-446655440001' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend oauth-grants revoke 650e8400-e29b-41d4-a716-446655440001
+  ```
 </RequestExample>
 
 <ResponseExample>
@@ -9508,6 +9598,17 @@ Exchange an authorization code for tokens, or refresh an access token.
 Handles two grants, selected by the `grant_type` body field: `authorization_code` (with mandatory PKCE) and `refresh_token` (with rotation and reuse detection). Accepts both `application/json` and `application/x-www-form-urlencoded`. Prefer form encoding, since that's what most OAuth libraries send by default.
 
 Access tokens are JWTs signed with `ES256`, valid for 900 seconds. Refresh tokens are opaque strings, valid for 60 days from whenever they were last issued, and rotate on every use.
+
+## Client authentication
+
+How the client proves its identity depends on the `token_endpoint_auth_method` it [registered](/docs/api-reference/oauth/register#param-token-endpoint-auth-method) with:
+
+* **Public clients (`none`)** don't send a secret. PKCE (`code_verifier`) is the only proof. This is the default and covers native, CLI, and other clients that can't keep a secret.
+* **Confidential clients** additionally present their `client_secret`, on top of PKCE:
+  * `client_secret_basic`: send `client_id` and `client_secret` in the HTTP `Authorization: Basic` header (each URL-encoded, joined with `:`, base64-encoded). With this method `client_id` can be omitted from the body.
+  * `client_secret_post`: send `client_secret` as a body parameter alongside `client_id`.
+
+A client must use exactly one mechanism. Sending both a Basic header and a body `client_secret` fails with `invalid_request`.
 
 ## PKCE
 
@@ -9540,7 +9641,16 @@ const codeChallenge = base64url(
   Must be `"authorization_code"`.
 </ParamField>
 
-<ParamField type="string" />
+<ParamField type="string">
+  Required, except with `client_secret_basic`, where the `Authorization` header
+  already carries it.
+</ParamField>
+
+<ParamField type="string">
+  Required for a confidential client using `client_secret_post`. Omit for public
+  clients and for `client_secret_basic` (send the secret in the `Authorization`
+  header instead). See [Client authentication](#client-authentication).
+</ParamField>
 
 <ParamField type="string">
   The code from the `/oauth/authorize` callback. Single-use: redeeming it twice
@@ -9558,10 +9668,23 @@ const codeChallenge = base64url(
 </ParamField>
 
 <RequestExample>
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/oauth/token' \
        -H 'Content-Type: application/x-www-form-urlencoded' \
        -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+  ```
+
+  ```bash Client Secret Basic theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/token' \
+       -H 'Content-Type: application/x-www-form-urlencoded' \
+       -u '550e8400-e29b-41d4-a716-446655440000:CLIENT_SECRET' \
+       -d 'grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+  ```
+
+  ```bash Client Secret Post theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/token' \
+       -H 'Content-Type: application/x-www-form-urlencoded' \
+       -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&client_secret=CLIENT_SECRET&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
   ```
 </RequestExample>
 
@@ -9583,7 +9706,16 @@ const codeChallenge = base64url(
   Must be `"refresh_token"`.
 </ParamField>
 
-<ParamField type="string" />
+<ParamField type="string">
+  Required, except with `client_secret_basic`, where the `Authorization` header
+  already carries it.
+</ParamField>
+
+<ParamField type="string">
+  Required for a confidential client using `client_secret_post`. Omit for public
+  clients and for `client_secret_basic`. See [Client
+  authentication](#client-authentication).
+</ParamField>
 
 <ParamField type="string" />
 
@@ -9616,10 +9748,10 @@ const codeChallenge = base64url(
 
 | Status | `error`               | When                                                                                                                                                                                           |
 | ------ | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `400`  | `invalid_request`     | A required field is missing or malformed.                                                                                                                                                      |
+| `400`  | `invalid_request`     | A required field is missing or malformed, or the client sent credentials via more than one mechanism (both a Basic header and a body `client_secret`).                                         |
 | `400`  | `invalid_scope`       | Refresh requests a scope outside what the grant already has.                                                                                                                                   |
 | `400`  | `invalid_grant`       | The code/refresh token is invalid, expired, already used, or reused after rotation (which also revokes the grant). Also returned when PKCE verification fails or `redirect_uri` doesn't match. |
-| `401`  | `invalid_client`      | Unknown or disabled `client_id`.                                                                                                                                                               |
+| `401`  | `invalid_client`      | Unknown or disabled `client_id`, or a confidential client failed authentication (missing or wrong `client_secret`, or `client_id` in the Basic header doesn't match the request).              |
 | `400`  | `unauthorized_client` | The client isn't registered for the grant type it's using.                                                                                                                                     |
 
 
@@ -10787,6 +10919,10 @@ Add an email address to the suppression list.
     "email": "steve.wozniak@example.com"
   }'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend suppressions add steve.wozniak@example.com
+  ```
 </RequestExample>
 
 <ResponseExample>
@@ -10848,6 +10984,10 @@ Add up to 100 email addresses to the suppression list at once.
        -d $'{
     "emails": ["steve.wozniak@example.com", "susan.kare@example.com"]
   }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend suppressions batch add --file suppressions.json
   ```
 </RequestExample>
 
@@ -10931,6 +11071,14 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   curl -X GET 'https://api.resend.com/suppressions/steve.wozniak@example.com' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Retrieve by suppression id
+  resend suppressions get e169aa45-1ecf-4183-9955-b1499d5701d3
+
+  # Retrieve by email
+  resend suppressions get steve.wozniak@example.com
+  ```
 </RequestExample>
 
 <ResponseExample>
@@ -10997,6 +11145,10 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/suppressions' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend suppressions list
   ```
 </RequestExample>
 
@@ -11084,6 +11236,14 @@ Remove a single suppression by ID or email.
   curl -X DELETE 'https://api.resend.com/suppressions/steve.wozniak@example.com' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by suppression id
+  resend suppressions delete e169aa45-1ecf-4183-9955-b1499d5701d3
+
+  # Remove by email
+  resend suppressions delete steve.wozniak@example.com
+  ```
 </RequestExample>
 
 <ResponseExample>
@@ -11168,6 +11328,14 @@ Provide either `emails` or `ids`, but not both.
        -d $'{
     "ids": ["e169aa45-1ecf-4183-9955-b1499d5701d3"]
   }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by email
+  resend suppressions batch remove --file suppressions.json
+
+  # Remove by id
+  resend suppressions batch remove --file suppression-ids.json --ids
   ```
 </RequestExample>
 
@@ -14695,6 +14863,28 @@ resend emails batch --file ./emails.json
 | `--react-email <path>`      | No       | Path to a React Email template (`.tsx`). Rendered HTML applies to every email in the batch |
 | `--idempotency-key <key>`   | No       | Deduplicate this batch request                                                             |
 | `--batch-validation <mode>` | No       | `strict` (default, entire batch fails on any error) or `permissive`                        |
+
+Each email in the JSON array supports the same fields as `resend emails send`, including per-email `scheduled_at` (natural language or ISO 8601) and `tags`. The `attachments` field is not supported in batch sends.
+
+```json emails.json theme={"theme":{"light":"github-light","dark":"vesper"}}
+[
+  {
+    "from": "Acme <onboarding@resend.dev>",
+    "to": ["foo@gmail.com"],
+    "subject": "hello world",
+    "html": "<h1>it works!</h1>",
+    "scheduled_at": "in 1 min",
+    "tags": [{ "name": "category", "value": "welcome" }]
+  },
+  {
+    "from": "Acme <onboarding@resend.dev>",
+    "to": ["bar@outlook.com"],
+    "subject": "world hello",
+    "html": "<p>it works!</p>",
+    "scheduled_at": "in 5 min"
+  }
+]
+```
 
 **Other email commands**
 
@@ -24675,7 +24865,6 @@ When using batch sending, keep in mind:
 
 * Maximum of **100 emails** per batch request
 * The `attachments` field is not supported yet
-* The `scheduled_at` field is not supported yet
 * Each email in the batch is processed independently
 * The request will fail and return an error if any email in your payload is invalid (for example, required fields are missing or fields contain invalid data).
 
@@ -26533,6 +26722,265 @@ You can also use a date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) fo
     --subject "hello world" \
     --html "<p>it works!</p>" \
     --scheduled-at "2026-08-20T11:52:01.858Z"
+  ```
+</CodeGroup>
+
+## Schedule emails on the `POST /emails/batch` endpoint
+
+Each email in a batch request can be scheduled independently using natural language or ISO 8601 date format.
+
+<CodeGroup>
+  ```ts Node.js {11,18} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.batch.send([
+    {
+      from: 'Acme <onboarding@resend.dev>',
+      to: ['foo@gmail.com'],
+      subject: 'hello world',
+      html: '<h1>it works!</h1>',
+      scheduledAt: 'in 1 min',
+    },
+    {
+      from: 'Acme <onboarding@resend.dev>',
+      to: ['bar@outlook.com'],
+      subject: 'world hello',
+      html: '<p>it works!</p>',
+      scheduledAt: 'in 5 min',
+    },
+  ]);
+  ```
+
+  ```php PHP {9,16} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->batch->send([
+    [
+      'from' => 'Acme <onboarding@resend.dev>',
+      'to' => ['foo@gmail.com'],
+      'subject' => 'hello world',
+      'html' => '<h1>it works!</h1>',
+      'scheduled_at' => 'in 1 min'
+    ],
+    [
+      'from' => 'Acme <onboarding@resend.dev>',
+      'to' => ['bar@outlook.com'],
+      'subject' => 'world hello',
+      'html' => '<p>it works!</p>',
+      'scheduled_at' => 'in 5 min'
+    ]
+  ]);
+  ```
+
+  ```py Python {12,19} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+  from typing import List
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: List[resend.Emails.SendParams] = [
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["foo@gmail.com"],
+      "subject": "hello world",
+      "html": "<h1>it works!</h1>",
+      "scheduled_at": "in 1 min"
+    },
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["bar@outlook.com"],
+      "subject": "world hello",
+      "html": "<p>it works!</p>",
+      "scheduled_at": "in 5 min"
+    }
+  ]
+
+  resend.Batch.send(params)
+  ```
+
+  ```rb Ruby {11,18} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = 're_xxxxxxxxx'
+
+  params = [
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["foo@gmail.com"],
+      "subject": "hello world",
+      "html": "<h1>it works!</h1>",
+      "scheduled_at": "in 1 min"
+    },
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["bar@outlook.com"],
+      "subject": "world hello",
+      "html": "<p>it works!</p>",
+      "scheduled_at": "in 5 min"
+    }
+  ]
+
+  Resend::Batch.send(params)
+  ```
+
+  ```go Go {22,29} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"context"
+  	"fmt"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+
+    ctx := context.TODO()
+
+    client := resend.NewClient("re_xxxxxxxxx")
+
+    var batchEmails = []*resend.SendEmailRequest{
+      {
+        From:        "Acme <onboarding@resend.dev>",
+        To:          []string{"foo@gmail.com"},
+        Subject:     "hello world",
+        Html:        "<h1>it works!</h1>",
+        ScheduledAt: "in 1 min",
+      },
+      {
+        From:        "Acme <onboarding@resend.dev>",
+        To:          []string{"bar@outlook.com"},
+        Subject:     "world hello",
+        Html:        "<p>it works!</p>",
+        ScheduledAt: "in 5 min",
+      },
+    }
+
+    sent, err := client.Batch.SendWithContext(ctx, batchEmails)
+
+    if err != nil {
+      panic(err)
+    }
+    fmt.Println(sent.Data)
+  }
+  ```
+
+  ```rust Rust {15,22} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::CreateEmailBaseOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let emails = vec![
+      CreateEmailBaseOptions::new(
+        "Acme <onboarding@resend.dev>",
+        vec!["foo@gmail.com"],
+        "hello world",
+      )
+      .with_html("<h1>it works!</h1>")
+      .with_scheduled_at("in 1 min"),
+      CreateEmailBaseOptions::new(
+        "Acme <onboarding@resend.dev>",
+        vec!["bar@outlook.com"],
+        "world hello",
+      )
+      .with_html("<p>it works!</p>")
+      .with_scheduled_at("in 5 min"),
+    ];
+
+    let _emails = resend.batch.send(emails).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java {13,21} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import java.util.Arrays;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          CreateEmailOptions firstEmail = CreateEmailOptions.builder()
+              .from("Acme <onboarding@resend.dev>")
+              .to("foo@gmail.com")
+              .subject("hello world")
+              .html("<h1>it works!</h1>")
+              .scheduledAt("in 1 min")
+              .build();
+
+          CreateEmailOptions secondEmail = CreateEmailOptions.builder()
+              .from("Acme <onboarding@resend.dev>")
+              .to("bar@outlook.com")
+              .subject("world hello")
+              .html("<p>it works!</p>")
+              .scheduledAt("in 5 min")
+              .build();
+
+          CreateBatchEmailsResponse data = resend.batch().send(
+              Arrays.asList(firstEmail, secondEmail)
+          );
+      }
+  }
+  ```
+
+  ```csharp .NET {11,20} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var mail1 = new EmailMessage()
+  {
+      From = "Acme <onboarding@resend.dev>",
+      To = "foo@gmail.com",
+      Subject = "hello world",
+      HtmlBody = "<h1>it works!</h1>",
+      MomentSchedule = "in 1 min",
+  };
+
+  var mail2 = new EmailMessage()
+  {
+      From = "Acme <onboarding@resend.dev>",
+      To = "bar@outlook.com",
+      Subject = "world hello",
+      HtmlBody = "<p>it works!</p>",
+      MomentSchedule = "in 5 min",
+  };
+
+  var resp = await resend.EmailBatchAsync( [ mail1, mail2 ] );
+  Console.WriteLine( "Nr Emails={0}", resp.Content.Count );
+  ```
+
+  ```bash cURL {10,17} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/emails/batch' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'[
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["foo@gmail.com"],
+      "subject": "hello world",
+      "html": "<h1>it works!</h1>",
+      "scheduled_at": "in 1 min"
+    },
+    {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["bar@outlook.com"],
+      "subject": "world hello",
+      "html": "<p>it works!</p>",
+      "scheduled_at": "in 5 min"
+    }
+  ]'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Each email in emails.json can set its own scheduled_at
+  resend emails batch --file ./emails.json
   ```
 </CodeGroup>
 
@@ -32771,7 +33219,12 @@ Implement an OAuth 2.1 + PKCE client against the Resend API, from scratch or wit
 
 Resend implements OAuth 2.0 and 2.1, including Proof Key for Code Exchange (PKCE) for authorization code exchanges. Resend also supports Dynamic Client Registration (DCR), which lets a client register itself at runtime via POST /oauth/register. Use DCR when a client, such as a MCP host, can't know its deployment details in advance.
 
-Resend does not yet support confidential clients, so all clients are public, and PKCE is required on every authorization code exchange. Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
+Resend supports both **public** and **confidential** clients. PKCE is required on every authorization code exchange regardless of type:
+
+* **Public clients** authenticate with PKCE alone. Register them with `token_endpoint_auth_method: "none"` (the default). Use a public client when it can't keep a secret, such as native apps, CLIs, and single-page apps.
+* **Confidential clients** additionally present a `client_secret` at the token and revocation endpoints. Register them with `token_endpoint_auth_method: "client_secret_basic"` (or `client_secret_post`) to have Resend issue the secret. Use a confidential client when it has a backend that can store the secret privately, such as a server-side web app.
+
+Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
 
 The Resend dashboard hosts the login and consent screen. Your client only needs to open the authorization URL in a browser and handle the callback. You don't build any consent UI yourself.
 
@@ -32780,6 +33233,8 @@ The Resend dashboard hosts the login and consent screen. Your client only needs 
 Before getting to the integration, decide between registering the client dynamically or registering it beforehand and reusing a fixed `client_id`.
 
 Dynamic registration is for clients that can't predict their own deployment details ahead of time, like an MCP server. The standard case is registering beforehand, and the rest of this guide assumes that path.
+
+Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
 
 If you're registering beforehand, ask us to mark the client `manual_verified`. That gets it a verified badge on the consent screen. It's the only effect it has today. It doesn't change scopes, rate limits, or anything else.
 
@@ -32828,6 +33283,8 @@ For a remote client, store `state` and `codeVerifier` server-side before redirec
 
 A remote client must use an HTTPS redirect URI owned by the app, for example `https://example.com/oauth/callback`.
 
+Because a remote client has a backend that can keep a secret, register it as confidential: pass `token_endpoint_auth_method: "client_secret_basic"` and store the `client_secret` Resend returns. That secret is shown only once at registration, so persist it securely and never expose it in browser or client-side code. It's then presented on every token and revocation call, in addition to PKCE.
+
 For remote apps, you can still use [POST /oauth/register](/docs/api-reference/oauth/register) manually while we don't have a central place in the app to create clients.
 
 ```mermaid theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -32849,12 +33306,12 @@ sequenceDiagram
 
     Note over C: Verify state against the stored session value
 
-    C->>AS: POST /oauth/token<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
+    C->>AS: POST /oauth/token<br>Basic auth (client_id + client_secret)<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
     AS-->>C: access_token + refresh_token
 ```
 
 <Steps>
-  <Step title="Load the pre-issued client_id" />
+  <Step title="Load the pre-issued client_id and client_secret" />
 
   <Step title="Generate PKCE and state">
     `code_verifier`, `code_challenge`, and `state`. See
@@ -32875,7 +33332,8 @@ sequenceDiagram
   </Step>
 
   <Step title="Exchange the code server-side">
-    Use the original `code_verifier`.
+    Use the original `code_verifier`, and present the `client_secret` via HTTP
+    Basic auth.
   </Step>
 
   <Step title="Store the refresh token securely" />
@@ -32892,12 +33350,13 @@ GET /oauth/authorize?client_id=550e8400-e29b-41d4-a716-446655440000&response_typ
 Host: api.resend.com
 ```
 
-Example code exchange:
+Example code exchange. The `-u` flag sends the `client_id` and `client_secret` as HTTP Basic auth, so `client_id` isn't repeated in the body:
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 curl -X POST 'https://api.resend.com/oauth/token' \
      -H 'Content-Type: application/x-www-form-urlencoded' \
-     -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+     -u '550e8400-e29b-41d4-a716-446655440000:CLIENT_SECRET' \
+     -d 'grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
 ```
 
 ## Local client
@@ -33072,6 +33531,8 @@ curl -X POST 'https://api.resend.com/oauth/revoke' \
      -H 'Content-Type: application/x-www-form-urlencoded' \
      -d 'client_id=550e8400-e29b-41d4-a716-446655440000&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
 ```
+
+A confidential client must authenticate this request too, the same way it does at the token endpoint. For example, pass its `client_secret` with `curl -u 'CLIENT_ID:CLIENT_SECRET'` instead of sending `client_id` in the body.
 
 Access tokens are JWTs and can't be revoked individually. Revoking the refresh token revokes the grant. See [Revoke Token](/docs/api-reference/oauth/revoke).
 
@@ -40620,14 +41081,16 @@ When you connect, your client opens a browser window to log in to Resend and app
 <Tabs>
   <Tab title="Claude Code">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add --transport http resend https://mcp.resend.com/mcp
+    claude plugin install resend@claude-plugins-official
     ```
 
-    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
+    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login. The plugin bundles the MCP server and every [Resend skill](/docs/resend-skill).
   </Tab>
 
   <Tab title="Claude">
-    In Claude (web or desktop), open **Settings** > **Connectors** > **Add custom connector** and enter:
+    Connect Resend in one click from the [connector directory](https://claude.ai/directory/connectors/resend). The connector bundles the MCP server and every Resend skill.
+
+    To install only the MCP server, add it manually in Claude (web or desktop) from **Settings** > **Connectors** > **Add custom connector**:
 
     ```
     https://mcp.resend.com/mcp
@@ -40649,8 +41112,26 @@ When you connect, your client opens a browser window to log in to Resend and app
   </Tab>
 
   <Tab title="Codex">
+    Install the [Resend plugin](https://chatgpt.com/plugins/plugin_asdk_app_6a3c407853888191beddc2151c2b6f8b?open_in_codex) in one click. It bundles the MCP server and every Resend skill.
+
+    To connect the MCP server on its own, use the Codex CLI:
+
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
     codex mcp add resend --url https://mcp.resend.com/mcp
+    ```
+  </Tab>
+
+  <Tab title="Antigravity">
+    Add this to your `~/.gemini/config/mcp_config.json` file:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "serverUrl": "https://mcp.resend.com/mcp"
+        }
+      }
+    }
     ```
   </Tab>
 
@@ -40750,6 +41231,24 @@ Choose your preferred mode and client below to get started. Remember to replace 
     codex mcp add resend \
       --env RESEND_API_KEY=re_xxxxxxxxx \
       -- npx -y resend-mcp
+    ```
+  </Tab>
+
+  <Tab title="Antigravity">
+    Add this to your `~/.gemini/config/mcp_config.json` file:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "command": "npx",
+          "args": ["-y", "resend-mcp"],
+          "env": {
+            "RESEND_API_KEY": "re_xxxxxxxxx"
+          }
+        }
+      }
+    }
     ```
   </Tab>
 
@@ -42249,6 +42748,185 @@ Before you start, you'll need:
     Double opt-in subscription flow
   </Card>
 </CardGroup>
+
+
+# Send Better Auth emails with Resend
+Source: https://resend.com/docs/send-with-better-auth
+
+Learn how to send Better Auth transactional emails through Resend using email hooks.
+
+[Better Auth](https://better-auth.com) is a framework-agnostic authentication library for TypeScript. It relies on transactional email for password resets, email verification, magic links, and one-time codes, all of which you can deliver with Resend.
+
+## Prerequisites
+
+Before you start, you'll need:
+
+* A Resend [API key](/docs/create-an-api-key)
+* A [verified domain](/docs/add-a-domain)
+* A project with [Better Auth installed](https://better-auth.com/docs/installation)
+
+## Install the Resend SDK
+
+<CodeGroup>
+  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+  npm install resend
+  ```
+
+  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+  pnpm add resend
+  ```
+
+  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+  yarn add resend
+  ```
+</CodeGroup>
+
+Add your API key to the environment:
+
+```bash .env theme={"theme":{"light":"github-light","dark":"vesper"}}
+RESEND_API_KEY=re_xxxxxxxxx
+```
+
+<Note>
+  The hook examples below call `void resend.emails.send(...)` instead of
+  awaiting it, [as Better Auth
+  recommends](https://better-auth.com/docs/concepts/email), so the response time
+  doesn't reveal whether an account exists. On serverless platforms, wrap the
+  send in `waitUntil` (or your platform's equivalent) so the function doesn't
+  terminate before the email is sent.
+</Note>
+
+## Send password reset and verification emails
+
+Better Auth calls your `sendResetPassword` and `sendVerificationEmail` hooks when a user requests a reset or needs to confirm their address. Send the email with Resend inside each hook.
+
+```typescript auth.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { betterAuth } from 'better-auth';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export const auth = betterAuth({
+  emailAndPassword: {
+    enabled: true,
+    sendResetPassword: ({ user, url }) => {
+      void resend.emails.send({
+        from: 'Acme <onboarding@example.com>',
+        to: user.email,
+        subject: 'Reset your password',
+        html: `Click <a href="${url}">here</a> to reset your password.`,
+      });
+    },
+  },
+  emailVerification: {
+    sendVerificationEmail: ({ user, url }) => {
+      void resend.emails.send({
+        from: 'Acme <onboarding@example.com>',
+        to: user.email,
+        subject: 'Verify your email address',
+        html: `Click <a href="${url}">here</a> to verify your email.`,
+      });
+    },
+  },
+});
+```
+
+<Info>
+  Set the `from` address to match your [verified domain](/docs/add-a-domain).
+</Info>
+
+## Send magic links (optional)
+
+If you use the [magic link plugin](https://better-auth.com/docs/plugins/magic-link), send the sign-in link through the `sendMagicLink` hook.
+
+```typescript auth.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { betterAuth } from 'better-auth';
+import { magicLink } from 'better-auth/plugins';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export const auth = betterAuth({
+  plugins: [
+    magicLink({
+      sendMagicLink: ({ email, url }) => {
+        void resend.emails.send({
+          from: 'Acme <onboarding@example.com>',
+          to: email,
+          subject: 'Sign in to Acme',
+          html: `Click <a href="${url}">here</a> to sign in.`,
+        });
+      },
+    }),
+  ],
+});
+```
+
+<Info>
+  Set the `from` address to match your [verified domain](/docs/add-a-domain).
+</Info>
+
+## Send one-time codes (optional)
+
+The [email OTP plugin](https://better-auth.com/docs/plugins/email-otp) sends a one-time password (OTP), a numeric code, instead of a link. The `type` argument tells you which flow triggered the request so you can tailor the subject line.
+
+```typescript auth.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { betterAuth } from 'better-auth';
+import { emailOTP } from 'better-auth/plugins';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export const auth = betterAuth({
+  plugins: [
+    emailOTP({
+      sendVerificationOTP: ({ email, otp, type }) => {
+        void resend.emails.send({
+          from: 'Acme <onboarding@example.com>',
+          to: email,
+          subject:
+            type === 'sign-in' ? 'Your sign-in code' : 'Your verification code',
+          html: `Your code is <strong>${otp}</strong>.`,
+        });
+      },
+    }),
+  ],
+});
+```
+
+<Info>
+  Set the `from` address to match your [verified domain](/docs/add-a-domain).
+</Info>
+
+## Customize email templates
+
+For richer, reusable emails, author your templates with [React Email](https://react.email) and pass the rendered component to Resend's `react` field, or reference a [Resend template](/docs/dashboard/templates/introduction) by `id`.
+
+```typescript auth.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { ResetPasswordEmail } from './emails/reset-password';
+
+sendResetPassword: ({ user, url }) => {
+  void resend.emails.send({
+    from: 'Acme <onboarding@example.com>',
+    to: user.email,
+    subject: 'Reset your password',
+    react: ResetPasswordEmail({ url }),
+  });
+},
+```
+
+<Info>
+  Set the `from` address to match your [verified domain](/docs/add-a-domain).
+</Info>
+
+## Debugging email delivery
+
+When a flow doesn't behave as expected, check both sides:
+
+* **Better Auth logs** show the hook invocation and any errors thrown while sending.
+* [**Resend Logs**](https://resend.com/logs) show the delivery side: accepted, delivered, opened, bounced.
+
+Together, you get end-to-end visibility across the entire delivery chain.
 
 
 # Send emails with Bun

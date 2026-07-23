@@ -202,7 +202,7 @@
 
 ## fine-tuning
 
-- `fine-tuning/agent/use-with-coding-agents` — [Train from Your Coding Agent](pages/fine-tuning/agent/use-with-coding-agents.md) · [原文](https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents)
+- `fine-tuning/agent/use-with-coding-agents` — [Agent Skills](pages/fine-tuning/agent/use-with-coding-agents.md) · [原文](https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents)
 - `fine-tuning/choose-training-path` — [Choose a Training Path](pages/fine-tuning/choose-training-path.md) · [原文](https://docs.fireworks.ai/fine-tuning/choose-training-path)
 - `fine-tuning/cli-reference` — [Training Overview](pages/fine-tuning/cli-reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/cli-reference)
 - `fine-tuning/cmek` — [Customer-Managed Encryption Keys (CMEK)](pages/fine-tuning/cmek.md) · [原文](https://docs.fireworks.ai/fine-tuning/cmek)

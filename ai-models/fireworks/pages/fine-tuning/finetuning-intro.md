@@ -22,7 +22,7 @@ Managed jobs and dedicated Training API runs need training GPU quota, granted au
 | Tier 3            | Spend or add \$500 in credits            |            24           |  24  |      24     |
 | Tier 4            | Spend or add \$5,000 in credits          |            32           |  32  |      32     |
 
-Check your quota with `firectl quota list`. A job rejected with HTTP 429 `quota_exceeded` (sometimes a `403` on the job poll) is a tier issue, not a dataset/config problem.
+Check your quota with the Fireworks CLI (`firectl quota list`). A job rejected with HTTP 429 `quota_exceeded` (sometimes a `403` on the job poll) is a tier issue, not a dataset/config problem.
 
 [Serverless Training](/fine-tuning/training-api/serverless) uses a shared pool with its own model, concurrency, and rate limits instead of dedicated training GPU quota.
 
@@ -32,15 +32,15 @@ Check your quota with `firectl quota list`. A job rejected with HTTP 429 `quota_
 
 ## Start here
 
-Use [Choose a Training Path](/fine-tuning/choose-training-path) to choose managed or Training API, serverless or dedicated infrastructure, and the interface you want to use.
+Use [Choose a Training Path](/fine-tuning/choose-training-path) to select the right workflow. That page owns the detailed workflow, infrastructure, and interface decisions.
 
 <CardGroup>
   <Card title="Choose a training path" icon="route" href="/fine-tuning/choose-training-path">
     Compare workflows, infrastructure, and interfaces.
   </Card>
 
-  <Card title="Train from your coding agent" icon="robot" href="/fine-tuning/agent/use-with-coding-agents">
-    Install one skill and ask in plain language.
+  <Card title="Agent Skills" icon="robot" href="/fine-tuning/agent/use-with-coding-agents">
+    Configure, run, and troubleshoot training with your agent.
   </Card>
 </CardGroup>
 
@@ -62,21 +62,23 @@ However, SFT may struggle in situations where:
 * You lack ground-truth outputs (a.k.a. "golden generations").
 * The task requires multi-step reasoning.
 
-Here is a simple decision tree:
+<div>
+  <div>
+    <strong>Start with SFT</strong>
 
-```mermaid theme={null}
-flowchart TD
-        B{"Do you have labeled ground truth data?"}
-        B --"Yes"--> C{"How much?"}
-        C --"more than 1000 examples"--> D["SFT"]
-        C --"100-1000 examples"-->F{"Does reasoning help?"}
-        C --"~100s examples"--> E["RFT"]
-        F --"No"-->D
-        F -- "Yes" -->E
-        B --"No"--> G{"Is this a verifiable task (see below)?"}
-        G -- "Yes" -->E
-        G -- "No"-->H["RLHF / LLM as judge"]
-```
+    <div>
+      You have high-quality labeled examples that cover the expected task.
+    </div>
+  </div>
+
+  <div>
+    <strong>Consider RFT</strong>
+
+    <div>
+      The task is verifiable, benefits from reasoning, or lacks complete ground-truth outputs.
+    </div>
+  </div>
+</div>
 
 <Tip>
   `Verifiable` refers to whether it is relatively easy to make a judgement on the quality of the model generation.

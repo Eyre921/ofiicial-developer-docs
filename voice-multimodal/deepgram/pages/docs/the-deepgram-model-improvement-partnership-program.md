@@ -54,7 +54,7 @@ Add `mip_opt_out=true` as a query parameter of all API requests that you want to
 
 Here are some examples of opting out for Speech-to-Text requests.
 
-The SDK examples below use a custom add on parameter to set `mip_opt_out=true`. To learn more about using custom add on parameters with our SDKs refer to [the Documentation on using custom add on Parameters](/guides/fundamentals/using-custom-parameters-sdks).
+Depending on the SDK, set `mip_opt_out` either as a first-class parameter (Java, JavaScript, Python) or as a custom add-on parameter (Go, .NET). To learn more about custom add-on parameters, see [Using Custom Parameters with SDKs](/guides/fundamentals/using-custom-parameters-sdks).
 
 #### Pre-recorded Audio
 
@@ -249,6 +249,31 @@ namespace PreRecorded
             Library.Terminate();
         }
     }
+}
+```
+
+```java Java
+// Add to pom.xml: com.deepgram:deepgram-java-sdk
+
+import com.deepgram.DeepgramClient;
+import com.deepgram.resources.listen.v1.media.requests.ListenV1RequestUrl;
+import com.deepgram.resources.listen.v1.media.types.MediaTranscribeRequestModel;
+
+public class Main {
+  public static void main(String[] args) {
+      // Create a client using DEEPGRAM_API_KEY from the environment
+      DeepgramClient client = DeepgramClient.builder().build();
+
+      var response = client.listen().v1().media().transcribeUrl(
+          ListenV1RequestUrl.builder()
+              .url("https://dpgr.am/spacewalk.wav")
+              .model(MediaTranscribeRequestModel.NOVA3)
+              // Opt out of the Model Improvement Program
+              .mipOptOut(true)
+              .build());
+
+      System.out.println(response);
+  }
 }
 ```
 
@@ -524,6 +549,69 @@ namespace SampleApp
 }
 ```
 
+```java Java
+// Add to pom.xml: com.deepgram:deepgram-java-sdk
+
+import java.io.InputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import com.deepgram.DeepgramClient;
+import com.deepgram.resources.listen.v1.websocket.V1ConnectOptions;
+import com.deepgram.resources.listen.v1.websocket.V1WebSocketClient;
+import com.deepgram.types.ListenV1Model;
+import com.deepgram.types.ListenV1MipOptOut;
+
+public class Main {
+  static final String STREAM_URL = "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service";
+
+  public static void main(String[] args) throws Exception {
+      // Create a client using DEEPGRAM_API_KEY from the environment
+      DeepgramClient client = DeepgramClient.builder().build();
+
+      V1WebSocketClient wsClient = client.listen().v1().v1WebSocket();
+
+      wsClient.onResults(result -> {
+          if (result.getChannel() != null
+                  && result.getChannel().getAlternatives() != null
+                  && !result.getChannel().getAlternatives().isEmpty()) {
+              String transcript = result.getChannel().getAlternatives().get(0).getTranscript();
+              if (transcript != null && !transcript.isEmpty()) {
+                  System.out.println("Speaker: " + transcript);
+              }
+          }
+      });
+
+      CompletableFuture<Void> connectFuture = wsClient.connect(
+          V1ConnectOptions.builder()
+              .model(ListenV1Model.NOVA3)
+              // Opt out of the Model Improvement Program
+              .mipOptOut(ListenV1MipOptOut.of(true))
+              .build());
+      connectFuture.get(10, TimeUnit.SECONDS);
+
+      // Stream the BBC World Service into Deepgram
+      HttpClient http = HttpClient.newHttpClient();
+      HttpResponse<InputStream> response = http.send(
+          HttpRequest.newBuilder(URI.create(STREAM_URL)).build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+
+      byte[] buffer = new byte[2048];
+      int bytesRead;
+      try (InputStream audio = response.body()) {
+          while ((bytesRead = audio.read(buffer)) != -1) {
+              wsClient.sendMedia(okio.ByteString.of(buffer, 0, bytesRead));
+          }
+      }
+
+      wsClient.disconnect();
+  }
+}
+```
+
 ### Text-to-Speech Examples
 
 Here are some examples of opting out for Text-to-Speech requests.
@@ -718,6 +806,36 @@ namespace SampleApp
           // Teardown Library
           Library.Terminate();
       }
+  }
+}
+```
+
+```java Java
+// Add to pom.xml: com.deepgram:deepgram-java-sdk
+
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import com.deepgram.DeepgramClient;
+import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
+import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+      // Create a client using DEEPGRAM_API_KEY from the environment
+      DeepgramClient client = DeepgramClient.builder().build();
+
+      InputStream audioStream = client.speak().v1().audio().generate(
+          SpeakV1Request.builder()
+              .text("Hello, how can I help you today?")
+              .model(AudioGenerateRequestModel.AURA2THALIA_EN)
+              // Opt out of the Model Improvement Program
+              .mipOptOut(true)
+              .build());
+
+      Files.copy(audioStream, Path.of("mip_opt_out.wav"), StandardCopyOption.REPLACE_EXISTING);
+      System.out.println("Audio saved to mip_opt_out.wav");
   }
 }
 ```
@@ -1396,6 +1514,68 @@ namespace SampleApp
               Console.WriteLine($"Exception: {ex.Message}");
           }
       }
+  }
+}
+```
+
+```java Java
+// Add to pom.xml: com.deepgram:deepgram-java-sdk
+
+import java.io.FileOutputStream;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import com.deepgram.DeepgramClient;
+import com.deepgram.resources.speak.v1.types.SpeakV1Close;
+import com.deepgram.resources.speak.v1.types.SpeakV1CloseType;
+import com.deepgram.resources.speak.v1.types.SpeakV1Flush;
+import com.deepgram.resources.speak.v1.types.SpeakV1FlushType;
+import com.deepgram.resources.speak.v1.types.SpeakV1Text;
+import com.deepgram.resources.speak.v1.websocket.V1ConnectOptions;
+import com.deepgram.resources.speak.v1.websocket.V1WebSocketClient;
+import com.deepgram.types.SpeakV1Model;
+import com.deepgram.types.SpeakV1MipOptOut;
+
+public class Main {
+  public static void main(String[] args) throws Exception {
+      DeepgramClient client = DeepgramClient.builder().build();
+      V1WebSocketClient wsClient = client.speak().v1().v1WebSocket();
+      CountDownLatch closeLatch = new CountDownLatch(1);
+
+      FileOutputStream audioOutput = new FileOutputStream("mip_opt_out.wav");
+
+      wsClient.onSpeakV1Audio(audioData -> {
+          try {
+              audioOutput.write(audioData.toByteArray());
+          } catch (Exception e) {
+              System.err.println("Error writing audio: " + e.getMessage());
+          }
+      });
+
+      wsClient.onFlushed(flushed -> System.out.println("Flush complete"));
+      wsClient.onDisconnected(reason -> {
+          try { audioOutput.close(); } catch (Exception ignored) {}
+          closeLatch.countDown();
+      });
+
+      // Connect and opt out of the Model Improvement Program
+      CompletableFuture<Void> connectFuture = wsClient.connect(
+          V1ConnectOptions.builder()
+              .model(SpeakV1Model.AURA2THALIA_EN)
+              .mipOptOut(SpeakV1MipOptOut.of(true))
+              .build());
+      connectFuture.get(10, TimeUnit.SECONDS);
+
+      wsClient.sendText(SpeakV1Text.builder().text("Hello, how can I help you today?").build());
+      wsClient.sendFlush(SpeakV1Flush.builder().type(SpeakV1FlushType.FLUSH).build());
+
+      Thread.sleep(5000);
+
+      wsClient.sendClose(SpeakV1Close.builder().type(SpeakV1CloseType.CLOSE).build());
+      closeLatch.await(10, TimeUnit.SECONDS);
+      wsClient.disconnect();
+
+      System.out.println("Audio saved to mip_opt_out.wav");
   }
 }
 ```

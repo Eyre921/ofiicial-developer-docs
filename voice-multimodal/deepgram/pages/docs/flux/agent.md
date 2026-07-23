@@ -129,8 +129,7 @@ npm install @deepgram/sdk
 ```
 
 ```csharp C#
-COMING SOON!
-// Install the Deepgram .NET SDK
+// Install the Deepgram .NET SDK (Flux support requires v6.9.0+)
 // https://github.com/deepgram/deepgram-dotnet-sdk
 
 // $ dotnet add package Deepgram
@@ -158,7 +157,9 @@ npm install dotenv
 ```
 
 ```csharp C#
-COMING SOON!
+// No additional NuGet packages are required — HttpClient (used for the OpenAI
+// request) ships with .NET. Set DEEPGRAM_API_KEY and OPENAI_API_KEY as
+// environment variables.
 ```
 
 ```Go
@@ -210,7 +211,18 @@ const client = new DeepgramClient();
 ```
 
 ```csharp C#
-COMING SOON!
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using Deepgram;
+using Deepgram.Models.Flux.WebSocket;
+using Deepgram.Models.Speak.v2.WebSocket;
+
+Library.Initialize();
+
+// Raw: linear16, linear32, mulaw, alaw, opus, ogg-opus; Containerized: linear16 in WAV, opus in Ogg
+const string AudioFile = "audio/spacewalk_linear16.wav";
 ```
 
 ```Go
@@ -307,7 +319,50 @@ if (!transcript) {
 ```
 
 ```csharp C#
-COMING SOON!
+Console.WriteLine("\n🎤 Transcribing with Flux...");
+var audioData = await File.ReadAllBytesAsync(AudioFile);
+
+var transcript = "";
+var turnComplete = new TaskCompletionSource();
+
+var fluxClient = ClientFactory.CreateFluxWebSocketClient();
+
+// Capture the transcript once Flux confirms the speaker's turn has ended.
+await fluxClient.Subscribe(new EventHandler<TurnInfoResponse>((_, e) =>
+{
+    if (e.EventType == TurnEvent.EndOfTurn && !string.IsNullOrEmpty(e.Transcript))
+    {
+        transcript = e.Transcript.Trim();
+        Console.WriteLine($"✓ Transcript: '{transcript}'");
+        turnComplete.TrySetResult();
+    }
+}));
+
+await fluxClient.Connect(new FluxSchema
+{
+    Model = "flux-general-en",
+    Encoding = "linear16",
+    SampleRate = 16000,
+});
+
+// Send audio in ~80ms chunks (16000 Hz * 2 bytes * 0.080s = 2560 bytes).
+const int chunkSize = 2560;
+for (var offset = 0; offset < audioData.Length; offset += chunkSize)
+{
+    var length = Math.Min(chunkSize, audioData.Length - offset);
+    fluxClient.Send(audioData[offset..(offset + length)]);
+    await Task.Delay(10);
+}
+
+// Wait up to 30s for the end-of-turn transcript, then close the stream.
+await Task.WhenAny(turnComplete.Task, Task.Delay(TimeSpan.FromSeconds(30)));
+await fluxClient.Stop();
+
+if (string.IsNullOrEmpty(transcript))
+{
+    Console.WriteLine("❌ No transcript received");
+    return;
+}
 ```
 
 ```Go
@@ -392,7 +447,41 @@ try {
 ```
 
 ```csharp C#
-COMING SOON!
+Console.WriteLine("\n🤖 Generating OpenAI response...");
+
+string response;
+using var http = new HttpClient();
+http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+    "Bearer", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+
+try
+{
+    var openAiResponse = await http.PostAsJsonAsync(
+        "https://api.openai.com/v1/chat/completions",
+        new
+        {
+            model = "gpt-4o-mini",
+            messages = new[]
+            {
+                new { role = "system", content = "You are a helpful assistant. Keep responses concise and conversational." },
+                new { role = "user", content = transcript },
+            },
+            temperature = 0.7,
+            max_tokens = 100,
+        });
+    openAiResponse.EnsureSuccessStatusCode();
+
+    using var json = JsonDocument.Parse(await openAiResponse.Content.ReadAsStringAsync());
+    response = json.RootElement
+        .GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? "";
+    Console.WriteLine($"✓ Response: '{response}'");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"❌ OpenAI API error: {ex.Message}");
+    response = $"I heard you say: {transcript}"; // Fallback
+    Console.WriteLine($"✓ Fallback response: '{response}'");
+}
 ```
 
 ```Go
@@ -460,7 +549,29 @@ ttsConnection.close();
 ```
 
 ```csharp C#
-COMING SOON!
+Console.WriteLine("\n🔊 Generating TTS...");
+
+using var ttsAudio = new MemoryStream();
+var ttsComplete = new TaskCompletionSource();
+
+var speakClient = ClientFactory.CreateSpeakWebSocketClient();
+
+// Collect audio chunks as they stream back, and stop when Deepgram flushes.
+await speakClient.Subscribe(new EventHandler<AudioResponse>((_, e) => e.Stream?.WriteTo(ttsAudio)));
+await speakClient.Subscribe(new EventHandler<FlushedResponse>((_, e) => ttsComplete.TrySetResult()));
+
+await speakClient.Connect(new SpeakSchema
+{
+    Model = "aura-2-phoebe-en",
+    Encoding = "linear16",
+    SampleRate = 16000,
+});
+
+speakClient.SpeakWithText(response);
+speakClient.Flush();
+
+await Task.WhenAny(ttsComplete.Task, Task.Delay(TimeSpan.FromSeconds(15)));
+await speakClient.Stop();
 ```
 
 ```Go
@@ -537,7 +648,46 @@ console.log(`🤖 Agent: '${response}'`);
 ```
 
 ```csharp C#
-COMING SOON!
+if (ttsAudio.Length > 0)
+{
+    Directory.CreateDirectory("audio/responses");
+    const string outputFile = "audio/responses/agent_response.wav";
+    var pcm = ttsAudio.ToArray();
+
+    await using var file = File.Create(outputFile);
+    file.Write(BuildWavHeader(pcm.Length, sampleRate: 16000));
+    file.Write(pcm);
+
+    Console.WriteLine($"💾 Saved TTS audio: {outputFile}");
+}
+
+Console.WriteLine("\n🎉 Demo complete!");
+Console.WriteLine($"📝 User: '{transcript}'");
+Console.WriteLine($"🤖 Agent: '{response}'");
+
+Library.Terminate();
+
+// Builds a minimal 44-byte PCM WAV header for 16-bit mono audio.
+static byte[] BuildWavHeader(int dataLength, int sampleRate)
+{
+    using var header = new MemoryStream();
+    using var writer = new BinaryWriter(header);
+    writer.Write(Encoding.ASCII.GetBytes("RIFF"));
+    writer.Write(36 + dataLength);
+    writer.Write(Encoding.ASCII.GetBytes("WAVE"));
+    writer.Write(Encoding.ASCII.GetBytes("fmt "));
+    writer.Write(16);              // PCM fmt chunk size
+    writer.Write((short)1);        // audio format = PCM
+    writer.Write((short)1);        // channels = mono
+    writer.Write(sampleRate);
+    writer.Write(sampleRate * 2);  // byte rate = sampleRate * channels * bytesPerSample
+    writer.Write((short)2);        // block align
+    writer.Write((short)16);       // bits per sample
+    writer.Write(Encoding.ASCII.GetBytes("data"));
+    writer.Write(dataLength);
+    writer.Flush();
+    return header.ToArray();
+}
 ```
 
 ```Go
@@ -888,7 +1038,171 @@ main().catch((error) => {
 ```
 
 ```csharp C#
-COMING SOON!
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using Deepgram;
+using Deepgram.Models.Flux.WebSocket;
+using Deepgram.Models.Speak.v2.WebSocket;
+
+Console.WriteLine("🚀 Deepgram Flux Agent Demo");
+Console.WriteLine(new string('=', 40));
+
+Library.Initialize();
+
+// Raw: linear16, linear32, mulaw, alaw, opus, ogg-opus; Containerized: linear16 in WAV, opus in Ogg
+const string audioFile = "audio/spacewalk_linear16.wav";
+if (!File.Exists(audioFile))
+{
+    Console.WriteLine($"❌ Audio file '{audioFile}' not found");
+    return;
+}
+
+Console.WriteLine($"📁 Reading {audioFile}...");
+var audioData = await File.ReadAllBytesAsync(audioFile);
+Console.WriteLine($"✓ Read {audioData.Length} bytes");
+
+// 1. Transcribe with Flux
+Console.WriteLine("\n🎤 Transcribing with Flux...");
+var transcript = "";
+var turnComplete = new TaskCompletionSource();
+
+var fluxClient = ClientFactory.CreateFluxWebSocketClient();
+await fluxClient.Subscribe(new EventHandler<TurnInfoResponse>((_, e) =>
+{
+    if (e.EventType == TurnEvent.EndOfTurn && !string.IsNullOrEmpty(e.Transcript))
+    {
+        transcript = e.Transcript.Trim();
+        Console.WriteLine($"✓ Transcript: '{transcript}'");
+        turnComplete.TrySetResult();
+    }
+}));
+
+await fluxClient.Connect(new FluxSchema
+{
+    Model = "flux-general-en",
+    Encoding = "linear16",
+    SampleRate = 16000,
+});
+
+const int chunkSize = 2560; // ~80ms at 16kHz linear16
+for (var offset = 0; offset < audioData.Length; offset += chunkSize)
+{
+    var length = Math.Min(chunkSize, audioData.Length - offset);
+    fluxClient.Send(audioData[offset..(offset + length)]);
+    await Task.Delay(10);
+}
+
+await Task.WhenAny(turnComplete.Task, Task.Delay(TimeSpan.FromSeconds(30)));
+await fluxClient.Stop();
+
+if (string.IsNullOrEmpty(transcript))
+{
+    Console.WriteLine("❌ No transcript received");
+    return;
+}
+
+// 2. Generate an OpenAI response
+Console.WriteLine("\n🤖 Generating OpenAI response...");
+string response;
+using (var http = new HttpClient())
+{
+    http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        "Bearer", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+    try
+    {
+        var openAiResponse = await http.PostAsJsonAsync(
+            "https://api.openai.com/v1/chat/completions",
+            new
+            {
+                model = "gpt-4o-mini",
+                messages = new[]
+                {
+                    new { role = "system", content = "You are a helpful assistant. Keep responses concise and conversational." },
+                    new { role = "user", content = transcript },
+                },
+                temperature = 0.7,
+                max_tokens = 100,
+            });
+        openAiResponse.EnsureSuccessStatusCode();
+
+        using var json = JsonDocument.Parse(await openAiResponse.Content.ReadAsStringAsync());
+        response = json.RootElement
+            .GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? "";
+        Console.WriteLine($"✓ Response: '{response}'");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ OpenAI API error: {ex.Message}");
+        response = $"I heard you say: {transcript}"; // Fallback
+        Console.WriteLine($"✓ Fallback response: '{response}'");
+    }
+}
+
+// 3. Synthesize the response with Aura TTS
+Console.WriteLine("\n🔊 Generating TTS...");
+using var ttsAudio = new MemoryStream();
+var ttsComplete = new TaskCompletionSource();
+
+var speakClient = ClientFactory.CreateSpeakWebSocketClient();
+await speakClient.Subscribe(new EventHandler<AudioResponse>((_, e) => e.Stream?.WriteTo(ttsAudio)));
+await speakClient.Subscribe(new EventHandler<FlushedResponse>((_, e) => ttsComplete.TrySetResult()));
+
+await speakClient.Connect(new SpeakSchema
+{
+    Model = "aura-2-phoebe-en",
+    Encoding = "linear16",
+    SampleRate = 16000,
+});
+
+speakClient.SpeakWithText(response);
+speakClient.Flush();
+
+await Task.WhenAny(ttsComplete.Task, Task.Delay(TimeSpan.FromSeconds(15)));
+await speakClient.Stop();
+
+// 4. Save the synthesized audio to a WAV file
+if (ttsAudio.Length > 0)
+{
+    Directory.CreateDirectory("audio/responses");
+    const string outputFile = "audio/responses/agent_response.wav";
+    var pcm = ttsAudio.ToArray();
+
+    await using var file = File.Create(outputFile);
+    file.Write(BuildWavHeader(pcm.Length, sampleRate: 16000));
+    file.Write(pcm);
+
+    Console.WriteLine($"💾 Saved TTS audio: {outputFile}");
+}
+
+Console.WriteLine("\n🎉 Demo complete!");
+Console.WriteLine($"📝 User: '{transcript}'");
+Console.WriteLine($"🤖 Agent: '{response}'");
+
+Library.Terminate();
+
+// Builds a minimal 44-byte PCM WAV header for 16-bit mono audio.
+static byte[] BuildWavHeader(int dataLength, int sampleRate)
+{
+    using var header = new MemoryStream();
+    using var writer = new BinaryWriter(header);
+    writer.Write(Encoding.ASCII.GetBytes("RIFF"));
+    writer.Write(36 + dataLength);
+    writer.Write(Encoding.ASCII.GetBytes("WAVE"));
+    writer.Write(Encoding.ASCII.GetBytes("fmt "));
+    writer.Write(16);
+    writer.Write((short)1);
+    writer.Write((short)1);
+    writer.Write(sampleRate);
+    writer.Write(sampleRate * 2);
+    writer.Write((short)2);
+    writer.Write((short)16);
+    writer.Write(Encoding.ASCII.GetBytes("data"));
+    writer.Write(dataLength);
+    writer.Flush();
+    return header.ToArray();
+}
 ```
 
 ```Go

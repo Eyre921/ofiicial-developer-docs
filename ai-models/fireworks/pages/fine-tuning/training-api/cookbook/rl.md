@@ -106,8 +106,8 @@ The stock recipe has one direct client-side GRPO path and no `policy_loss` or `l
 
 Keep implementation and tuning detail out of the recipe page:
 
-* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk/rl/async-rl.md) — admission math, metrics, tuning, failure policy, and resume semantics
-* [Customize RL loss skill](https://github.com/fw-ai/cookbook/blob/main/skills/customize-rl-loss/SKILL.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
+* [Async RL skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) — admission math, metrics, tuning, failure policy, and resume semantics
+* [Custom RL loss reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) — fork the recipe deliberately when you need a trainer built-in or another research objective
 * [Checkpointing](/fine-tuning/training-api/cookbook/checkpoints) — resumable checkpoints and final model promotion
 * [Weight sync](/fine-tuning/training-api/cookbook/weight-sync) — how updated policy weights reach the sampler
 * [`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
