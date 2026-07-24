@@ -10,6 +10,8 @@ path: checkout/quickstart
 
 Explore a full, working code sample of an integration with [Stripe Checkout](https://docs.stripe.com/payments/checkout.md) where customers click a button on your site and get redirected to a payment page hosted by Stripe. The example includes client- and server-side code, and the payment page is prebuilt.
 
+You can also build and preview your hosted Checkout integration through [Checkout studio](https://docs.stripe.com/payments/checkout-studio.md), which allows you to configure and monitor your checkout without writing code first.
+
 ### Install the Stripe Node library
 
 Install the package and import it in your code. Alternatively, if you’re starting from scratch and need a package.json file, download the project files using the Download link in the code editor.
@@ -160,9 +162,13 @@ npm install --save stripe @stripe/stripe-js next
 
 Add an endpoint on your server that creates a [Checkout Session](https://docs.stripe.com/api/checkout/sessions.md). A Checkout Session controls what your customer sees on the payment page such as line items, the order amount and currency, and acceptable payment methods. We enable cards and other common payment methods for you by default, and you can enable or disable payment methods directly in the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
 
+To track and compare the performance of this integration against other Checkout implementations, pass an `integration_identifier` when you create the session. For example, if you run the same Hosted Checkout flow for two different user segments, you can assign each a unique identifier and measure their conversion rates independently.
+
 ### Create a Checkout Session
 
 Add a [Route Handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) in your application that creates a [Checkout Session](https://docs.stripe.com/api/checkout/sessions.md). A Checkout Session controls what your customer sees on the payment page such as line items, the order amount and currency, and acceptable payment methods. We enable cards and other common payment methods for you by default, and you can enable or disable payment methods directly in the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
+
+To track and compare the performance of this integration against other Checkout implementations, pass an `integration_identifier` when you create the session. For example, if you run the same Hosted Checkout flow for two different user segments, you can assign each a unique identifier and measure their conversion rates independently.
 
 ### Define a product to sell
 
@@ -319,6 +325,8 @@ const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
     customer_creation: 'always',
     // Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
     // customer: '{{CUSTOMER_ID}}'
+    // Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
+    integration_identifier: '{{INTEGRATION_ID}}',
   });
 
   res.redirect(303, session.url);
@@ -402,6 +410,8 @@ client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
     customer_creation: 'always',
     \# Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
     # customer: '{{CUSTOMER_ID}}'
+    \# Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
+    integration_identifier: '{{INTEGRATION_ID}}',
   })
   redirect session.url, 303
 import stripe
@@ -431,6 +441,8 @@ client = stripe.StripeClient('<<YOUR_SECRET_KEY>>')
             'customer_creation': 'always',
             \# Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
             # customer='{{CUSTOMER_ID}}'
+            \# Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
+            'integration_identifier': '{{INTEGRATION_ID}}',
         })
     return redirect(checkout_session.url, code=303)
 certifi==2026.1.4
@@ -467,6 +479,8 @@ $checkout_session = $stripe->checkout->sessions->create([
   'customer_creation' => 'always',
   \# Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
   # 'customer' => '{{CUSTOMER_ID}}'
+  // Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
+  'integration_identifier' => '{{INTEGRATION_ID}}',
 ]);
 
 header("HTTP/1.1 303 See Other");
@@ -536,6 +550,8 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
     CustomerCreation: stripe.String(stripe.CheckoutSessionCustomerCreationAlways),
     // Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
     // Customer:   stripe.String("{{CUSTOMER_ID}}"),
+    // Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
+    IntegrationIdentifier: stripe.String("{{INTEGRATION_ID}}"),
   }
 
   s, err := sc.V1CheckoutSessions.Create(context.TODO(), params)
@@ -577,6 +593,8 @@ require github.com/stripe/stripe-go/v86 v86.1.0
                 // Provide the exact Price ID (for example, price_1234) of the product you want to sell
                 .setPrice("{{PRICE_ID}}")
                 .build())
+            // Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
+            .setIntegrationIdentifier("{{INTEGRATION_ID}}")
             .build();
       response.redirect(session.getUrl(), 303);
       return "";
@@ -809,6 +827,8 @@ require github.com/stripe/stripe-go/v86 v86.1.0
       mode: {{CHECKOUT_MODE}},
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       automatic_tax: {enabled: true},
+      // Provide a name (for example, hosted_web_0001) to label this Checkout integration and measure its conversion independently
+      integration_identifier: '{{INTEGRATION_ID}}',
     });
     return NextResponse.redirect(session.url, 303)
 \# https://dashboard.stripe.com/apikeys

@@ -86,8 +86,6 @@ To archive your tax customization:
 
 ## Verify which transactions have a tax customization rule applied
 
-To verify which tax customization applies to a transaction, view the **customizations\_applied\_ids** column of the [itemized export](https://docs.stripe.com/tax/reports.md?#itemized-exports).
-
 We don’t include transactions that contain tax customizations in the US-specific location reports or summarized reports. Learn more about the [different tax reports](https://docs.stripe.com/tax/reports.md).
 
 ## How we pick which customization applies

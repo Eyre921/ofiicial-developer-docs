@@ -363,37 +363,45 @@ To download a specific checkpoint instead of the final one, pass `--checkpoint-s
 
 ## Model registry object IDs
 
-When a job uploads its output artifacts to the Together model registry alongside the primary storage write, the job and checkpoint responses include the registry object and revision IDs. Use these IDs to reference the uploaded weights in downstream workflows (for example, when binding a fine-tuned adapter to a dedicated endpoint).
+When a job uploads its output artifacts to the Together model registry alongside the primary storage write, the job and checkpoint responses include the registry object and revision IDs, plus qualified object names in `<project_slug>/<model_name>` form. Use the IDs to reference the uploaded weights in downstream workflows (for example, when binding a fine-tuned adapter to a dedicated endpoint).
 
-The fields are omitted when the registry upload did not run or did not succeed.
+On a completed job in the [fine-tuning jobs dashboard](https://api.together.ai/jobs), the **Output model** field shows `model_object_name` and links to that model in the registry by `model_object_id`.
+
+The fields are omitted when the registry upload did not run or did not succeed. Object names are resolved on the fly on [`GET /fine-tunes/{id}`](/reference/get-fine-tunes-id) and [`GET /fine-tunes/{id}/checkpoints`](/reference/get-fine-tunes-id-checkpoint) only (not on list jobs). If the project slug cannot be resolved, the name fields fall back to the corresponding object ID.
 
 ### On the job
 
 [`GET /fine-tunes/{id}`](/reference/get-fine-tunes-id) includes the final artifact IDs once the job reaches `completed`:
 
-| Field                        | Description                                                                                                                                    |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_…`). Present when the job produced a model artifact and the upload succeeded. |
-| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_…`).                                                                        |
-| `adapter_object_id`          | Registry object ID for the final adapter weights on LoRA jobs.                                                                                 |
-| `adapter_object_revision_id` | Registry revision ID for the final adapter weights on LoRA jobs.                                                                               |
+| Field                        | Description                                                                                                                                                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_…`). Present when the job produced a model artifact and the upload succeeded.                                                                                 |
+| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_…`).                                                                                                                                                        |
+| `model_object_name`          | Qualified registry name for the final model weights (for example, `acme-corp/my-model-abc123`). The `<model_name>` part comes from `model_output_name` (the segment after `/` when namespaced, or the whole string otherwise). |
+| `adapter_object_id`          | Registry object ID for the final adapter weights on LoRA jobs.                                                                                                                                                                 |
+| `adapter_object_revision_id` | Registry revision ID for the final adapter weights on LoRA jobs.                                                                                                                                                               |
+| `adapter_object_name`        | Qualified adapter name on LoRA jobs (for example, `acme-corp/my-model-abc123-adapter`).                                                                                                                                        |
 
 <CodeGroup>
   ```python Python theme={null}
   job = client.fine_tuning.retrieve(id="<JOB_ID>")
   if job.model_object_id:
       print(job.model_object_id, job.model_object_revision_id)
+      print(job.model_object_name)
   if job.adapter_object_id:
       print(job.adapter_object_id, job.adapter_object_revision_id)
+      print(job.adapter_object_name)
   ```
 
   ```typescript TypeScript theme={null}
   const job = await client.fineTuning.retrieve("<JOB_ID>");
   if (job.model_object_id) {
     console.log(job.model_object_id, job.model_object_revision_id);
+    console.log(job.model_object_name);
   }
   if (job.adapter_object_id) {
     console.log(job.adapter_object_id, job.adapter_object_revision_id);
+    console.log(job.adapter_object_name);
   }
   ```
 
@@ -406,10 +414,11 @@ The fields are omitted when the registry upload did not run or did not succeed.
 
 [`GET /fine-tunes/{id}/checkpoints`](/reference/get-fine-tunes-id-checkpoint) returns the same ID pair on each checkpoint entry:
 
-| Field                | Description                                                                |
-| -------------------- | -------------------------------------------------------------------------- |
-| `object_id`          | Registry object ID for that checkpoint's artifact (for example, `ml_…`).   |
-| `object_revision_id` | Registry revision ID for that checkpoint's artifact (for example, `rv_…`). |
+| Field                | Description                                                                                                                                                                                    |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `object_id`          | Registry object ID for that checkpoint's artifact (for example, `ml_…`).                                                                                                                       |
+| `object_revision_id` | Registry revision ID for that checkpoint's artifact (for example, `rv_…`).                                                                                                                     |
+| `object_name`        | Qualified registry name for that checkpoint (for example, `acme-corp/my-model-abc123-100` for an intermediate model checkpoint, or `acme-corp/my-model-abc123-adapter` for the final adapter). |
 
 Intermediate checkpoints carry the IDs from the upload at that step. Final model and adapter checkpoints in the list reuse the job-level IDs from the table above.
 
@@ -418,14 +427,14 @@ Intermediate checkpoints carry the IDs from the upload at that step. Final model
   checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
   for cp in checkpoints.data:
       if cp.object_id:
-          print(cp.step, cp.object_id, cp.object_revision_id)
+          print(cp.step, cp.object_id, cp.object_revision_id, cp.object_name)
   ```
 
   ```typescript TypeScript theme={null}
   const checkpoints = await client.fineTuning.listCheckpoints("<JOB_ID>");
   for (const cp of checkpoints.data) {
     if (cp.object_id) {
-      console.log(cp.step, cp.object_id, cp.object_revision_id);
+      console.log(cp.step, cp.object_id, cp.object_revision_id, cp.object_name);
     }
   }
   ```

@@ -28,4 +28,4 @@ Once installed, mention **@Deepgram** in any channel to ask questions. The bot s
 
 If your organization has a contracted Premium or VIP Support Plan, please contact Deepgram Support; otherwise, visit our Community or GitHub Discussions for assistance.
 
-![Deepgram Support](https://files.buildwithfern.com/https://deepgram.docs.buildwithfern.com/a152026aeb9a7151f2b03b7a4ba568001089e9c52ddff3b719133fe418b58e67/images/529aca7-dg_support_image.svg)
+![Deepgram Support](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/a152026aeb9a7151f2b03b7a4ba568001089e9c52ddff3b719133fe418b58e67/images/529aca7-dg_support_image.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260724%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260724T233101Z&X-Amz-Expires=604800&X-Amz-Signature=334832573495355e3072a7874a5c3da8c46cc101df76af9b9521aaa81efe32d6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)

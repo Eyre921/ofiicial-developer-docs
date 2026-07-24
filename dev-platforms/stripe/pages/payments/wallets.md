@@ -17,7 +17,19 @@ At checkout, the wallet typically authenticates your customer and passes payment
 
 > #### Join the waitlist
 > 
-> Interested in using MoMo and GCash for one-time and recurring payments for customers in Vietnam and the Philippines? 
+> Interested in using MoMo and GCash for one-time and recurring payments for customers in Vietnam and the Philippines? [Join the preview waitlist](https://docs.stripe.com/payments/wallets.md#lpm_betas_preview).
+
+### Interested in joining the waitlist for MoMo and GCash?
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/payments/wallets" \
+  -d '{"email": "EMAIL", "preview": "lpm_betas_preview"}'
+```
 
 ## Considerations 
 

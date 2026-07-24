@@ -4,6 +4,36 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 24, 2026">
+  ## Python SDK realtime transcription
+
+  The Together Python SDK now includes `client.beta.realtime.transcription()` for streaming speech-to-text over WebSocket. Install with `pip install "together[realtime]"`. The session reconnects with audio replay on transient drops, exposes normalized events such as `TranscriptDelta` and `TranscriptCompleted`, and supports application-level failover across endpoints with `RealtimeConnectionError` (`code="no_healthy_workers"`) and `session.pending_audio()`.
+
+  See [Streaming transcription](/docs/inference/transcription/streaming#python-sdk).
+</Update>
+
+<Update label="July 23, 2026">
+  ## Fine-tuning output object names
+
+  Fine-tune retrieve and list-checkpoints responses now include qualified Together model registry names alongside object IDs. On [`GET /fine-tunes/{id}`](/reference/get-fine-tunes-id), use `model_object_name` and `adapter_object_name` (LoRA jobs) for the final artifacts in `<project_slug>/<model_name>` form. On [`GET /fine-tunes/{id}/checkpoints`](/reference/get-fine-tunes-id-checkpoint), each entry adds `object_name` with the same naming pattern (including `-<step>` or `-adapter` suffixes). Names are resolved on retrieve only, not on list jobs. If the project slug cannot be resolved, the name field falls back to the object ID.
+
+  On a completed job in the [fine-tuning jobs dashboard](https://api.together.ai/jobs), **Output model** shows the same qualified `model_object_name` and links to the registry model page.
+
+  See [Model registry object IDs](/docs/fine-tuning/deployment#model-registry-object-ids).
+
+  ## Fine-tuning checkpoint CLI output
+
+  `tg fine-tuning list-checkpoints` now displays registry artifact IDs in the table output. The **Registry Artifact** column shows `object_id@object_revision_id`, and a copyable **Registry artifacts** block prints below the table.
+
+  See [List checkpoints](/reference/cli/finetune#list-checkpoints).
+
+  ## Fine-tuning preview CLI command
+
+  `tg fine-tuning preview` samples rows from an uploaded JSONL training file and shows how a base model tokenizes them before you start a job. The table output highlights masked tokens, trained spans, and truncation; pass `--json` for the full response.
+
+  See [Preview](/reference/cli/finetune#preview).
+</Update>
+
 <Update label="July 21, 2026">
   ## GPU cluster add-on CLI flags
 

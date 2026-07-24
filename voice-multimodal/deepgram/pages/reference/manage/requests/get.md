@@ -168,26 +168,39 @@ components:
 
 
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
   "request": {
-    "request_id": "123e4567-e89b-12d3-a456-426614174000",
-    "project_uuid": "987f6543-e21b-45d6-b789-123456789abc",
-    "created": "2024-01-15T09:30:00Z",
-    "path": "/v1/projects/987f6543-e21b-45d6-b789-123456789abc/requests/123e4567-e89b-12d3-a456-426614174000",
-    "api_key_id": "api_4f7a9b2c3d6e8f1a2b3c4d5e",
-    "response": {},
-    "code": 200,
-    "deployment": "production-us-east-1",
-    "callback": "https://webhook.example.com/deepgram/callback"
+    "request_id": "a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d",
+    "project_uuid": "12345678-90ab-cdef-1234-567890abcdef",
+    "created": "2024-01-15T09:48:20.000Z",
+    "path": "/v1/listen?",
+    "api_key_id": "b1e2c3d4-5678-90ab-cdef-1234567890ab",
+    "response": {
+      "details": {
+        "usd": 0.0075,
+        "duration": 30,
+        "total_audio": 30,
+        "channels": 1,
+        "streams": 1,
+        "tier": "base",
+        "metadata": {},
+        "models": [
+          "1a2b3c4d-5e6f-4a8b-9c0d-1e2f3a4b5c6d"
+        ],
+        "method": "sync",
+        "tags": [],
+        "features": [],
+        "config": {}
+      },
+      "token_details": [],
+      "code": 200,
+      "completed": "2024-01-15T09:48:21.000Z",
+      "deployment": "hosted:us"
+    },
+    "callback": null
   }
 }
 ```
@@ -197,26 +210,18 @@ components:
 ```python
 import requests
 
-url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234"
+url = "https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d"
 
-payload = {}
-headers = {
-    "Authorization": "Token <apiKey>",
-    "Content-Type": "application/json"
-}
+headers = {"Authorization": "Token <apiKey>"}
 
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234';
-const options = {
-  method: 'GET',
-  headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{}'
-};
+const url = 'https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d';
+const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
   const response = await fetch(url, options);
@@ -232,21 +237,17 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234"
+	url := "https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
+	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("Authorization", "Token <apiKey>")
-	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -263,15 +264,13 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234")
+url = URI("https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
 request["Authorization"] = 'Token <apiKey>'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -281,10 +280,8 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234")
+HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d")
   .header("Authorization", "Token <apiKey>")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -294,11 +291,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234', [
-  'body' => '{}',
+$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d', [
   'headers' => [
     'Authorization' => 'Token <apiKey>',
-    'Content-Type' => 'application/json',
   ],
 ]);
 
@@ -308,31 +303,22 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234");
+var client = new RestClient("https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "Authorization": "Token <apiKey>",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
+let headers = ["Authorization": "Token <apiKey>"]
 
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests/123456-7890-1234-5678-901234")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests/a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

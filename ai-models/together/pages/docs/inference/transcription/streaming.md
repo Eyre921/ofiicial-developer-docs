@@ -8,15 +8,154 @@ Use the real-time WebSocket API for low-latency, incremental speech-to-text.
 
 For applications requiring the lowest latency, use the real-time WebSocket API. This provides streaming transcription with incremental results.
 
+You have two ways to connect:
+
+* The [Python SDK](#python-sdk) (`client.beta.realtime.transcription()`), which handles the WebSocket, reconnection, and audio replay for you. Use this for most applications.
+* The [raw WebSocket protocol](#raw-websocket-protocol), for languages other than Python or when you need full control over the wire.
+
 <Tip>
   The server uses Voice Activity Detection (VAD) to automatically segment speech. You can tune VAD parameters for your audio characteristics. See the [Voice activity detection guide](/docs/inference/transcription/voice-activity-detection) for configuration details and common presets.
 </Tip>
 
-<Warning>
-  The WebSocket API is currently only available via raw WebSocket connections. SDK support coming soon.
-</Warning>
+## Python SDK
 
-## Establish a connection
+<Note>
+  The Python SDK for real-time transcription is in beta, and the API surface may change before it stabilizes. Share feedback with [support@together.ai](mailto:support@together.ai).
+</Note>
+
+The SDK opens the WebSocket, streams your audio, and returns transcription events. When the connection drops mid-conversation, the session holds on to the speech the server hadn't transcribed yet, reconnects automatically, and picks up where the transcript left off, so words spoken during the outage still come back as text.
+
+Install the SDK with the `realtime` extra:
+
+```bash theme={null}
+pip install "together[realtime]"
+```
+
+### Basic usage
+
+Call `client.beta.realtime.transcription()` to open a session, feed audio with `session.append()`, and consume events by iterating the session. Each `TranscriptDelta` is an interim result that updates while a phrase is being spoken; each `TranscriptCompleted` is the finalized transcript for one utterance.
+
+```python theme={null}
+import asyncio
+
+from together import AsyncTogether
+from together.realtime import TranscriptCompleted, TranscriptDelta
+
+
+async def main():
+    client = AsyncTogether()
+
+    async with client.beta.realtime.transcription(
+        model="openai/whisper-large-v3",
+        sample_rate=16_000,
+    ) as session:
+        # Feed audio from your capture source as it arrives (any chunk size).
+        await session.append(pcm_chunk)  # 16 kHz mono 16-bit PCM
+
+        async for event in session:
+            if isinstance(event, TranscriptDelta):
+                print("interim:", event.text)
+            elif isinstance(event, TranscriptCompleted):
+                print("final:", event.text)
+
+        # Finalize whatever was said last.
+        transcript = await session.flush()
+        print("full transcript:", transcript)
+
+
+asyncio.run(main())
+```
+
+`session.append()` never blocks on network state, so it is safe to call from a capture loop. Instead of iterating the session, you can pass an `event_callback=` function to handle events as they arrive.
+
+### Audio format
+
+Audio in is 16 kHz mono 16-bit PCM (`pcm_s16le_16000`). Resample your source before appending. Passing `sample_rate=` lets the SDK reject a mismatch loudly instead of silently transcribing the wrong sample rate.
+
+### Utterance boundaries
+
+Utterance boundaries are detected server-side by default. Final transcripts arrive on their own as the speaker pauses. To control segmentation yourself, pass `turn_detection={"type": "none"}` and call `await session.commit()` when each segment ends.
+
+### Session events
+
+Iterate the session (or pass `event_callback=`) to receive normalized events. Import them from `together.realtime`.
+
+| Event                 | Meaning                                                                                                 |
+| :-------------------- | :------------------------------------------------------------------------------------------------------ |
+| `SessionStarted`      | The session opened. `session_id` is useful for correlating with server-side logs.                       |
+| `TranscriptDelta`     | Interim text for the current utterance. Updates as the phrase is spoken.                                |
+| `TranscriptCompleted` | Finalized transcript for one utterance.                                                                 |
+| `TranscriptFailed`    | One utterance failed server-side. The session continues.                                                |
+| `Reconnecting`        | A transient failure occurred and the SDK is reconnecting with backoff. No action needed.                |
+| `Reconnected`         | The connection recovered. `replayed_seconds` reports how much speech was replayed.                      |
+| `BufferGap`           | Audio was dropped beyond recovery (an outage longer than the retention window). `dropped_seconds` lost. |
+
+`TranscriptDelta` and `TranscriptCompleted` may also include optional quality fields when the server sends them: `logprobs` (`avg_logprob`, `token_logprobs`, `token_texts`) and `tokens` (per-token `token_id`, `text`, and `confidence`).
+
+### Reconnection and replay
+
+When the connection drops, the session emits `Reconnecting` and `Reconnected` events and retries on its own. By default the SDK makes up to two same-endpoint reconnect attempts (`reconnect={"max_attempts": 2}`) before raising. Transcripts recomputed from speech carried across the reconnect are marked `replayed=True` and may overlap text you already received. Voice agents that act on each final result can set `buffer={"max_replay_seconds": 0}` to resume live with no re-emission instead.
+
+### Failover across endpoints
+
+If an endpoint fails for good, calls raise `RealtimeConnectionError`. When the server reports it cannot currently serve (`exc.code == "no_healthy_workers"`, including WebSocket close code `4503`), the SDK raises immediately with no same-endpoint retry so you can rotate. To keep a conversation alive across endpoint outages, run a failover ring: on failure, `session.pending_audio()` hands you the un-transcribed speech to seed a new session on another endpoint.
+
+```python theme={null}
+from together import AsyncTogether
+from together.realtime import RealtimeConnectionError
+
+# Independent deployments of the same model. On failure, move to the next.
+endpoints = [
+    ("https://api.together.ai/v1", "openai/whisper-large-v3-endpoint1"),
+    ("https://api.together.ai/v1", "openai/whisper-large-v3-endpoint2"),
+]
+
+carry_over = b""  # audio a failed endpoint received but never transcribed
+
+for base_url, model in endpoints:
+    client = AsyncTogether(base_url=base_url)
+    session = client.beta.realtime.transcription(
+        model=model,
+        sample_rate=16_000,
+        reconnect={"max_attempts": 0},  # switch endpoints immediately
+    )
+    try:
+        async with session:
+            if carry_over:
+                await session.append(carry_over)
+            # ... stream the rest of your audio ...
+        break
+    except RealtimeConnectionError as exc:
+        # Includes exc.code == "no_healthy_workers". Take back untranscribed audio.
+        carry_over = session.pending_audio()
+```
+
+### Synchronous usage
+
+`Together().beta.realtime.transcription(...)` mirrors the async API on a background thread. Use it for a handful of concurrent sessions. For high concurrency, use the async client.
+
+### Key parameters
+
+| Parameter            | Description                                                                                                 |
+| :------------------- | :---------------------------------------------------------------------------------------------------------- |
+| `model`              | Model to use, for example `openai/whisper-large-v3`.                                                        |
+| `sample_rate`        | Sample rate of the audio you append. Lets the SDK validate the format.                                      |
+| `input_audio_format` | Wire audio format. Defaults to `pcm_s16le_16000`.                                                           |
+| `language`           | Source language hint passed through to the service.                                                         |
+| `prompt`             | Text prompt to bias transcription, passed through to the service.                                           |
+| `turn_detection`     | Turn-detection config (for example `{"type": "none"}`, `min_silence_duration_ms`, `max_speech_duration_s`). |
+| `reconnect`          | Reconnection policy. Defaults to `max_attempts=2`. Use `{"max_attempts": 0}` to fail over immediately.      |
+| `buffer`             | Replay buffer config, for example `{"max_replay_seconds": 0}` to resume live without re-emitting speech.    |
+| `keepalive_silence`  | When `True`, send silence so idle sessions stay alive past the server idle timeout.                         |
+| `event_callback`     | A function called with each event, as an alternative to iterating the session.                              |
+
+For full manual control over the raw wire events with no automatic recovery, use `client.beta.realtime.connect()`.
+
+## Raw WebSocket protocol
+
+Use the raw WebSocket protocol from languages other than Python, or when you need full control over the wire. The SDK above wraps this same protocol.
+
+### Establish a connection
 
 Connect to: `wss://api.together.ai/v1/realtime?model={model}&input_audio_format=pcm_s16le_16000`
 
@@ -29,16 +168,16 @@ Connect to: `wss://api.together.ai/v1/realtime?model={model}&input_audio_format=
 }
 ```
 
-## Query parameters
+### Query parameters
 
 | Parameter            | Type   | Required | Description                                    |
 | :------------------- | :----- | :------- | :--------------------------------------------- |
 | model                | string | Yes      | Model to use (e.g., `openai/whisper-large-v3`) |
 | input\_audio\_format | string | Yes      | Audio format: `pcm_s16le_16000`                |
 
-## Client-to-server messages
+### Client-to-server messages
 
-### Append audio to buffer
+#### Append audio to buffer
 
 ```json theme={null}
 {
@@ -49,7 +188,7 @@ Connect to: `wss://api.together.ai/v1/realtime?model={model}&input_audio_format=
 
 Send audio data in base64-encoded PCM format.
 
-### Commit audio buffer
+#### Commit audio buffer
 
 ```json theme={null}
 {
@@ -59,9 +198,9 @@ Send audio data in base64-encoded PCM format.
 
 Forces transcription of any remaining audio in the server-side buffer.
 
-## Server-to-client messages
+### Server-to-client messages
 
-### Delta events (intermediate results)
+#### Delta events (intermediate results)
 
 ```json theme={null}
 {
@@ -72,7 +211,7 @@ Forces transcription of any remaining audio in the server-side buffer.
 
 Delta events are intermediate transcriptions. The model is still processing and may revise the output. Each delta message overrides the previous delta.
 
-### Completed events (final results)
+#### Completed events (final results)
 
 ```json theme={null}
 {
@@ -83,7 +222,7 @@ Delta events are intermediate transcriptions. The model is still processing and 
 
 Completed events are final transcriptions. The model is confident about this text. The next delta event continues from where this completed.
 
-## Real-time example
+### Real-time example
 
 <CodeGroup>
   ```python Python theme={null}

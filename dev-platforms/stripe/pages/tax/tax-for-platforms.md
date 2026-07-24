@@ -147,7 +147,7 @@ For the Payment Links API calls:
 
 - Include [automatic_tax[liability]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-automatic_tax-liability) with `type=account` and `account` with the value of the connected account ID.
 - Include [transfer_data[destination]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-transfer_data) with the value of the connected account ID.
-- (Optional) If you’re [automatically sending invoices](https://docs.stripe.com/payment-links/post-payment.md#automatically-send-paid-invoices), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
+- (Optional) If you [automatically send invoices](https://docs.stripe.com/receipts.md#automatically-send-paid-invoices), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
 - (Optional) If the connected account is the [settlement merchant](https://docs.stripe.com/connect/destination-charges.md#settlement-merchant), include [on_behalf_of](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-on_behalf_of) with the value of the connected account ID.
 
 ```curl
@@ -169,7 +169,7 @@ curl https://api.stripe.com/v1/payment_links \
 For the Payment Links API calls:
 
 - Include [automatic_tax[liability]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-automatic_tax-liability) with `type=account` and `account` with the value of the connected account ID.
-- (Optional) If you’re [automatically sending invoices](https://docs.stripe.com/payment-links/post-payment.md#automatically-send-paid-invoices), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
+- (Optional) If you [automatically send invoices](https://docs.stripe.com/receipts.md#automatically-send-paid-invoices), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
 - (Optional) If the connected account is the [settlement merchant](https://docs.stripe.com/connect/separate-charges-and-transfers.md#settlement-merchant), include [on_behalf_of](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-on_behalf_of) with the value of the connected account ID.
 
 ```curl
@@ -303,7 +303,7 @@ For the Checkout Sessions API calls:
 
 - Include [automatic_tax[liability]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-automatic_tax-liability) with `type=account` and `account` with the value of the connected account ID.
 - Include [payment_intent_data[transfer_data][destination]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-payment_intent_data-transfer_data-destination) with the value of the connected account ID.
-- (Optional) If you’re [automatically sending invoices](https://docs.stripe.com/payments/checkout/receipts.md?payment-ui=stripe-hosted#automatically-send-receipts), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
+- (Optional) If you [automatically send invoices](https://docs.stripe.com/receipts.md#automatic), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
 - (Optional) If the connected account is the [settlement merchant](https://docs.stripe.com/connect/destination-charges.md#settlement-merchant), include [payment_intent_data[on_behalf_of]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-payment_intent_data-on_behalf_of) with the value of the connected account ID.
 
 ```curl
@@ -327,7 +327,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
 For the Checkout Sessions API calls:
 
 - Include [automatic_tax[liability]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-automatic_tax-liability) with `type=account` and `account` with the value of the connected account ID.
-- (Optional) If you’re [automatically sending invoices](https://docs.stripe.com/payments/checkout/receipts.md?payment-ui=stripe-hosted#automatically-send-receipts), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
+- (Optional) If you [automatically send invoices](https://docs.stripe.com/receipts.md#automatic), include [invoice_creation[invoice_data][issuer]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-invoice_creation-invoice_data-issuer) with `type=account` and `account` with the value of the connected account ID.
 - (Optional) If the connected account is the [settlement merchant](https://docs.stripe.com/connect/separate-charges-and-transfers.md#settlement-merchant), include [payment_intent_data[on_behalf_of]](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-payment_intent_data-on_behalf_of) with the value of the connected account ID.
 
 ```curl

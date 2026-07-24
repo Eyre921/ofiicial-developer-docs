@@ -6,6 +6,10 @@ path: docs/dedicated-endpoints/overview
 
 Deploy a model for inference on dedicated GPUs.
 
+<Tip>
+  Using a coding agent? Install the [together-dedicated-model-inference](https://github.com/togethercomputer/skills/tree/main/skills/together-dedicated-model-inference) skill to let your agent deploy and manage dedicated endpoints automatically. See [agent skills](/docs/agent-skills) for details.
+</Tip>
+
 Dedicated model inference (DMI) lets you serve a model on reserved hardware, providing several advantages over [serverless models](/docs/serverless/overview):
 
 * **Better performance:** Dedicated GPUs provide higher throughput, lower latency, and more predictable performance.

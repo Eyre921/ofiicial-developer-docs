@@ -373,7 +373,7 @@ Run a local data validation check before uploading to avoid unnecessary charges.
 }
 ```
 
-Successful upload returns a file object with an `id` field. Save the ID—you'll pass it as `training_file` to `client.fine_tuning.create()`. See the [quickstart](/docs/fine-tuning/quickstart) for the full fine-tuning lifecycle.
+Successful upload returns a file object with an `id` field. Save the ID—you'll pass it as `training_file` to `client.fine_tuning.create()`. Before starting a job, preview how the file tokenizes with [`tg fine-tuning preview`](/reference/cli/finetune#preview). See the [quickstart](/docs/fine-tuning/quickstart) for the full fine-tuning lifecycle.
 
 <Note>
   If you upload a file whose contents already exist on Together AI, `client.files.upload()` doesn't create a duplicate. It returns the existing file's metadata, including its `id`, so you can reuse it directly. To force a re-upload, delete the existing file first with `client.files.delete(<file_id>)`.

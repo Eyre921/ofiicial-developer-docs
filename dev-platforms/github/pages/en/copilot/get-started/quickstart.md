@@ -103,7 +103,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Windows Terminal, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Windows Terminal, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 * **Windows Terminal Canary**. Terminal Chat is only available in [Windows Terminal Canary](https://github.com/microsoft/terminal?tab=readme-ov-file#installing-windows-terminal-canary).
 
 ## Use Copilot in Terminal Chat
@@ -170,9 +170,9 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 ## Prerequisites
 
-* **Copilot subscription** - To use GitHub Copilot in VS Code, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Copilot subscription** - To use GitHub Copilot in VS Code, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 * **Latest version of Visual Studio Code**. See the [Visual Studio Code download page](https://code.visualstudio.com/Download?ref_product=copilot\&ref_type=engagement\&ref_style=text).
-* **Sign in to GitHub in Visual Studio Code**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues#troubleshooting-authentication-issues-in-your-editor).
+* **Sign in to GitHub in Visual Studio Code**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues#authentication-problems-in-visual-studio-code).
 
 ## Chat with GitHub Copilot
 
@@ -241,7 +241,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Visual Studio, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Visual Studio, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 * **Compatible version of Visual Studio**. To use GitHub Copilot in Visual Studio, you must have version 2022 17.8 or later of Visual Studio for Windows installed. For more information, see [Install Visual Studio](https://learn.microsoft.com/en-us/visualstudio/install/install-visual-studio?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the Microsoft documentation.
 * **GitHub Copilot extension for Visual Studio**. For instructions on how to install the Copilot extension, see [Install GitHub Copilot in Visual Studio](https://learn.microsoft.com/visualstudio/ide/visual-studio-github-copilot-install-and-states?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the Microsoft documentation.
 * **Add your GitHub account to Visual Studio**. See [Add your GitHub accounts to your Visual Studio keychain](https://learn.microsoft.com/en-us/visualstudio/ide/work-with-github-accounts?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the Microsoft documentation.
@@ -318,7 +318,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in a JetBrains IDE, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in a JetBrains IDE, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 * **A compatible JetBrains IDE**. Copilot is supported in a large number of JetBrains IDEs. For a full list, see [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=jetbrains).
 * **Latest version of the GitHub Copilot extension**. See the [GitHub Copilot plugin](https://plugins.jetbrains.com/plugin/17718-github-copilot?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the JetBrains Marketplace. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=jetbrains).
 * **Sign in to GitHub in your JetBrains IDE**. For authentication instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=jetbrains#installing-the-github-copilot-plugin-in-your-jetbrains-ide).
@@ -395,7 +395,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Xcode, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Xcode, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 * **Latest version of the GitHub Copilot extension**. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=xcode).
 * **Sign in to GitHub in Xcode**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues).
 
@@ -479,7 +479,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Eclipse, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Eclipse, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 * **Latest version of the GitHub Copilot extension**. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=eclipse).
 * **Sign in to GitHub in Eclipse**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues).
 

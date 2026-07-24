@@ -458,18 +458,61 @@ startActivity(
 
 ## Device management [Client-side]
 
-You can access the device’s admin settings by launching the `stripe://settings/` deep-link URI from your app.
+Your app can deep-link directly to specific device settings screens, allowing users to access the exact configuration they need without navigating the full admin menu. For example, add a “WiFi settings” button that opens network configuration, or let staff adjust screen brightness without needing to navigate through the top-level settings menu.
 
-See an example of [launching the admin settings deep-link URI](https://github.com/stripe-samples/terminal-apps-on-devices/blob/718c2de38c7b8003fcf58c536c266bb990ad43a7/app/src/main/java/com/stripe/aod/sampleapp/fragment/HomeFragment.kt#L30).
+### Available deep links
+
+Launch any of these URIs using an Android `ACTION_VIEW` intent:
+
+| Destination | URI | Admin PIN required |
+| --- | --- | --- |
+| All settings | `stripe://settings/` | Always |
+| Network | `stripe://settings/network/` | Always |
+| Advanced | `stripe://settings/advanced/` | Always |
+| Registration code | `stripe://settings/registration_code/` | Always |
+| Appearance | `stripe://settings/appearance/` | Bypassable |
+| Language | `stripe://settings/language/` | Bypassable |
+| Bug report | `stripe://settings/bug_report/` | Bypassable |
+
+Screens marked **Bypassable** prompt for the admin PIN by default, but your app can skip the prompt. See [Bypass the admin PIN](https://docs.stripe.com/terminal/features/apps-on-devices/build.md#bypass-the-admin-pin) below.
+
+- **Network** lets users select and configure WiFi networks, including static IP and custom DNS settings.
+- **Advanced** provides access to additional settings such as [diagnostics](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md#diagnostics) and factory reset.
+- **Registration code** generates a pairing code to [register the reader](https://docs.stripe.com/terminal/fleet/register-readers.md#smart-readers) to a Stripe account.
+- **Appearance** controls screen brightness and theme.
+- **Bug report** collects device logs and diagnostic information and sends them to Stripe support for troubleshooting.
+- **Language** controls the reader display language.
+
+### Launch a settings screen
+
+Use a standard Android `ACTION_VIEW` intent to open a settings screen. To customize the transition animation, pass an `ActivityOptions` bundle as described in [Customize transitions when opening device settings](https://docs.stripe.com/terminal/features/apps-on-devices/build.md#customize-transitions-when-opening-device-settings).
+
+See the [Apps on Devices sample app](https://github.com/stripe-samples/terminal-apps-on-devices) for a complete working example.
 
 #### Kotlin
 
 ```kotlin
 startActivity(
     Intent(Intent.ACTION_VIEW)
-        .setData(Uri.parse("stripe://settings/"))
+        .setData(Uri.parse("stripe://settings/network/"))
 )
 ```
+
+### Bypass the admin PIN
+
+For appearance, language, and bug report screens, the device prompts for the admin PIN by default. You can skip this prompt by adding the `bypass_admin_menu_passcode` extra to the intent. This is useful for low-risk screens where you don’t want staff to enter a PIN every time.
+
+#### Kotlin
+
+```kotlin
+startActivity(
+    Intent(Intent.ACTION_VIEW)
+        .setData(Uri.parse("stripe://settings/appearance/"))
+        .putExtra("bypass_admin_menu_passcode", true)
+)
+```
+
+> Only bypass the admin PIN for non-sensitive screens. All settings, network, advanced, and registration code screens always require the PIN regardless of this flag.
 
 ## Instrument the app [Client-side]
 

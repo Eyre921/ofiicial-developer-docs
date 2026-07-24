@@ -133,7 +133,8 @@ curl https://api.stripe.com/v1/test_helpers/issuing/authorizations \
 After approval, Stripe creates an `Authorization` in a `pending` state while it waits for [capture](https://docs.stripe.com/issuing/purchases/transactions.md). Note the authorization `id` that you’ll use to capture the funds:
 
 ```json
-{"id": "iauth_1NvPyY2SSJdH5vn2xZQE8C7k",
+{
+  "id": "iauth_1NvPyY2SSJdH5vn2xZQE8C7k",
   "object": "issuing.authorization",
   "amount": 1000,
   ...

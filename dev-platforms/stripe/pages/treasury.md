@@ -8,8 +8,6 @@ path: treasury
 
 Learn how to securely manage money with a financial account.
 Available in: US, GB
-> Treasury is in a limited public preview and is only available for some Stripe users.
-
 With Stripe Treasury, you can securely store funds, open local accounts, [convert currencies](https://docs.stripe.com/instant-currency-conversion.md), send money, manage expenses, and [borrow money](https://docs.stripe.com/capital/how-stripe-capital-works.md) directly in the Stripe Dashboard.
 
 Your financial account is on the [Balances](https://dashboard.stripe.com/balances) page in the Dashboard. On your Balances page you have a payments balance and a financial account, which serve different purposes. For eligible businesses, payment proceeds settle in your financial account.

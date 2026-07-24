@@ -4570,9 +4570,12 @@ Tools are grouped into categories. Use the `?category=` URL parameter to restric
 | SQL (`querying`)                  | Execute queries and transactions; inspect database structure                        |
 | Managed Better Auth (`neon_auth`) | Set up and configure app authentication for a branch                                |
 | Neon Data API (`data_api`)        | Enable HTTP-based Data API access for a branch                                      |
+| Observability (`observability`)   | Query logs from your serverless functions and storage                               |
 | Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)           |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
+
+**Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS `us-east-2` only. Log querying returns results only for projects in a supported region.
 
 ## Troubleshooting
 
@@ -14339,7 +14342,7 @@ function
 ├───────┼───────┼─────────────────────────────────────────────────────────────────────────────┼─────────────────────────────┤
 │ hello │ hello │ https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon.tech/ │ 2026-06-12T00:14:57.942988Z │
 └───────┴───────┴─────────────────────────────────────────────────────────────────────────────┴─────────────────────────────┘
-active deployment
+deployment (current, active)
 ┌────┬───────────┬──────────┬────────────┬─────────────────────────────┐
 │ Id │ Status    │ Runtime  │ Memory Mib │ Created At                  │
 ├────┼───────────┼──────────┼────────────┼─────────────────────────────┤
@@ -16056,7 +16059,15 @@ neon projects create [options]
 
 The `--region-id` value defaults to `aws-us-east-2` if not specified. `--block-public-connections` and `--block-vpc-connections` are part of [Private Networking](https://neon.com/docs/guides/neon-private-networking); `--hipaa` enables [HIPAA compliance](https://neon.com/docs/security/hipaa) for the project.
 
-**Note:** Projects created using the CLI use the default Postgres version (Postgres 18) unless you specify `--pg-version`.
+**Note:**
+
+Neon projects created using the CLI use the default Postgres version, which is Postgres 18. To create a project with a different Postgres version, pass `--pg-version`:
+
+```bash
+neon projects create --name mynewproject --pg-version 17
+```
+
+You can also enable logical replication for an existing project with `neon projects update <project-id> --enable-logical-replication` (add `--yes` to skip the confirmation prompt), and create protected branches with `neon branches create --protected`.
 
 Create a project with a user-defined name in a specific region:
 
@@ -17136,7 +17147,7 @@ neon vpc endpoint list [options]
 | `--region-id` | The region ID. Possible values: aws-us-west-2, aws-ap-southeast-1, aws-ap-southeast-2, aws-eu-central-1, aws-us-east-2, aws-us-east-1, azure-eastus2 | string | —       |    Yes   |
 
 ```bash
-neon vpc endpoint list --org-id org-bold-bonus-12345678
+neon vpc endpoint list --org-id org-bold-bonus-12345678 --region-id aws-us-east-1
 ```
 
 ### neon vpc endpoint assign
@@ -17175,7 +17186,7 @@ neon vpc endpoint remove <id> [options]
 | `--region-id` | The region ID. Possible values: aws-us-west-2, aws-ap-southeast-1, aws-ap-southeast-2, aws-eu-central-1, aws-us-east-2, aws-us-east-1, azure-eastus2 | string | —       |    Yes   |
 
 ```bash
-neon vpc endpoint remove vpce-1234567890abcdef0 --org-id org-bold-bonus-12345678
+neon vpc endpoint remove vpce-1234567890abcdef0 --org-id org-bold-bonus-12345678 --region-id aws-us-east-1
 ```
 
 **Note:** A removed VPC endpoint cannot be added back to the Neon organization.
@@ -17194,7 +17205,7 @@ neon vpc endpoint status <id> [options]
 | `--region-id` | The region ID. Possible values: aws-us-west-2, aws-ap-southeast-1, aws-ap-southeast-2, aws-eu-central-1, aws-us-east-2, aws-us-east-1, azure-eastus2 | string | —       |    Yes   |
 
 ```bash
-neon vpc endpoint status vpce-1234567890abcdef0 --org-id org-bold-bonus-12345678
+neon vpc endpoint status vpce-1234567890abcdef0 --org-id org-bold-bonus-12345678 --region-id aws-us-east-1
 ```
 
 ## Project VPC restrictions
@@ -19200,9 +19211,12 @@ Tools are grouped into categories. Use the `?category=` URL parameter to restric
 | SQL (`querying`)                  | Execute queries and transactions; inspect database structure                        |
 | Managed Better Auth (`neon_auth`) | Set up and configure app authentication for a branch                                |
 | Neon Data API (`data_api`)        | Enable HTTP-based Data API access for a branch                                      |
+| Observability (`observability`)   | Query logs from your serverless functions and storage                               |
 | Documentation (`docs`)            | Look up Neon documentation from within your assistant (no OAuth required)           |
 
 Search and navigation tools (search across projects, fetch resource details by ID) are available by default but disabled in [project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode).
+
+**Note:** The `observability` tools query [Neon Functions logs](https://neon.com/docs/compute/functions/logs) and [object storage logs](https://neon.com/docs/storage/logs), which are part of the Neon backend beta, currently available in AWS `us-east-2` only. Log querying returns results only for projects in a supported region.
 
 ---
 
@@ -20833,7 +20847,7 @@ GET /projects/{project_id}/branches/{branch_id}/functions/{slug}
 The response includes `invocation_url`, the public URL for your function:
 
 ```
-https://<branch_id>-<slug>.compute.<cell>.us-east-2.aws.neon.tech
+https://<branch_id>-<slug>.compute.<cell>.us-east-2.aws.neon.tech/
 ```
 
 ### List functions
@@ -21160,13 +21174,13 @@ neon functions get hello
 The `invocation_url` field contains the public URL for your function:
 
 ```
-https://<branch_id>-<slug>.compute.<cell>.us-east-2.aws.neon.tech
+https://<branch_id>-<slug>.compute.<cell>.us-east-2.aws.neon.tech/
 ```
 
 Call it with curl:
 
 ```bash
-curl https://<branch_id>-hello.compute.<cell>.us-east-2.aws.neon.tech
+curl https://<branch_id>-hello.compute.<cell>.us-east-2.aws.neon.tech/
 ```
 
 The response is a JSON object with your branch's Postgres version:
@@ -21399,7 +21413,7 @@ Slugs must match `^[a-z0-9]{1,20}$` and are immutable after the first deployment
 
 ## Environment variables
 
-See [Environment variables](https://neon.com/docs/compute/functions/environment-variables#constraints) for limits on variable count, total size, and the reserved `NEON_` prefix.
+See [Environment variables](https://neon.com/docs/compute/functions/environment-variables#constraints) for limits on variable count and total size.
 
 --- [Document source](https://neon.com/docs/compute/functions/websockets.md) ---
 
@@ -22005,7 +22019,7 @@ This section covers all the ways to connect to your Neon database, from standard
 - [Connect with psql](https://neon.com/docs/connect/query-with-psql-editor): Connect with psql, the native command-line client for Postgres
 - [GUI applications](https://neon.com/docs/connect/connect-postgres-gui): Connect from GUI tools like pgAdmin, DBeaver, and TablePlus
 - [VS Code Extension](https://neon.com/docs/local/vscode-extension): Connect to Neon branches and manage your database directly in VS Code, Cursor, and other editors
-- [Passwordless auth](https://neon.com/docs/connect/passwordless-connect): Connect to psql without a password using Neon's passwordless auth
+- [Neon CLI (neon psql)](https://neon.com/docs/cli/psql): Open a psql session from the Neon CLI without a connection string or a psql install
 
 ## Optimize and secure your connections
 
@@ -23323,11 +23337,21 @@ PgBouncer metrics are also available via [OpenTelemetry](https://neon.com/docs/g
 
 --- [Document source](https://neon.com/docs/connect/passwordless-connect.md) ---
 
-> Summary: Neon's passwordless auth lets you connect to Postgres via `psql` without a password. Run `psql -h pg.neon.tech` and confirm your identity through a browser link to authenticate quickly without storing or typing credentials. Passwordless auth connects to the first database on the branch; switching databases with `\c` restarts the authentication flow.
+> Summary: Use the Neon CLI's `neon psql` command to open a `psql` session against any branch, role, and database in your project, without a connection string or a local psql install. It's the recommended alternative to the older `psql -h pg.neon.tech` passwordless auth flow, which connects only to the first database on the branch and is planned for deprecation in favor of `neon psql`.
 
 # Passwordless auth
 
 Learn how to connect to Neon without a password
+
+**Tip: Try neon psql instead**
+
+The [Neon CLI](https://neon.com/docs/cli) offers a more capable way to open a `psql` session: [`neon psql`](https://neon.com/docs/cli/psql). It connects to any branch, role, and database in your project, works without a local `psql` install, and supports [pooled connections](https://neon.com/docs/connect/connection-pooling) and [time travel](https://neon.com/docs/guides/time-travel-assist). The `psql -h pg.neon.tech` flow on this page is planned for deprecation in favor of it.
+
+```bash
+neon psql
+```
+
+To get a connection string instead of an interactive session, use [`neon connection-string`](https://neon.com/docs/cli/connection-string). For all the ways to connect, see [Connect to Neon](https://neon.com/docs/connect/connect-intro).
 
 Neon's `psql` passwordless auth feature helps you quickly authenticate a connection to Neon without providing a password.
 
@@ -23404,7 +23428,7 @@ The following instructions require a working installation of [psql](https://www.
 
 **Note:** A Neon compute runs Postgres, which means that any Postgres application or standard utility such as `psql` is compatible with Neon. You can also use Postgres client libraries and drivers to connect. However, please be aware that some older client libraries and drivers, including older `psql` executables, are built without [Server Name Indication (SNI)](https://neon.com/docs/reference/glossary#sni) support and require a workaround. For more information, see [Connection errors](https://neon.com/docs/connect/connection-errors).
 
-Neon also provides a passwordless auth feature that uses `psql`. For more information, see [Passwordless auth](https://neon.com/docs/connect/passwordless-connect).
+The [Neon CLI](https://neon.com/docs/cli) also provides a [`neon psql`](https://neon.com/docs/cli/psql) command that opens a `psql` session without a connection string, and doesn't require `psql` to be installed.
 
 ## How to install psql
 
@@ -57828,7 +57852,7 @@ PUT /projects/{project_id}/branches/{branch_id}/backup_schedule
 
 The request body must include a `schedule` array. Each item in the array can specify:
 
-- `frequency` (required): `hourly`, `daily`, `weekly`, `monthly`, or `yearly`
+- `frequency` (required): `daily`, `weekly`, or `monthly`
 - `hour` (optional): Hour of the day (0–23) to take the snapshot
 - `day` (optional): Day of the week or month (1–31) to take the snapshot
 - `month` (optional): Month of the year (1–12) to take the snapshot
@@ -91716,6 +91740,378 @@ You're now using Sequin with Neon to capture and stream changes from your databa
 - Tailor your consumer's [filtering](https://sequinstream.com/docs/core-concepts#filtering) and settings to meet your requirements.
 - Try a [pull consumer](https://sequinstream.com/docs/core-concepts#pull-consumers) with [our SDKs](https://sequinstream.com/docs/sdks) to completely manage how you retrieve changes at scale.
 
+--- [Document source](https://neon.com/docs/guides/serverless-connection-pooling.md) ---
+
+> Summary: Learn how to manage database connection lifecycles and prevent connection exhaustion when using Neon from highly elastic serverless platforms such as AWS Fargate, Google Cloud Run, Modal, and Vercel.
+
+# Using Neon from highly elastic serverless platforms
+
+Manage connection lifecycles and prevent connection exhaustion in highly elastic serverless environments
+
+Highly elastic serverless platforms such as AWS Fargate, Google Cloud Run, Modal, and Vercel can scale compute from zero to hundreds of concurrent instances within seconds. While Neon's [lakebase architecture](https://neon.com/docs/introduction/architecture-overview) is designed for dynamic workloads, rapidly scaling out hundreds of workers can overwhelm your database unless connection lifecycles and local pool sizes are carefully managed.
+
+This guide explains how database connection protocols interact with serverless runtimes, provides strategies to prevent connection leaks during container suspension, and demonstrates how to implement safe, resilient connection pooling configurations.
+
+## The problem with serverless and databases
+
+To understand why serverless architectures require a specialized database connection strategy, it helps to understand how different cloud platforms handle concurrent traffic.
+
+### The serverless connection storm
+
+Traditional relational databases including PostgreSQL were designed under the assumption of persistent, long-lived connections from a static number of application servers. Each PostgreSQL connection spawns a dedicated backend process on the database host, consuming memory and CPU.
+
+Serverless architectures completely invert these design assumptions by introducing three new behaviors that can overwhelm a database:
+
+1. **Massive Fan-out:** Highly elastic serverless platforms can scale compute from zero to hundreds of concurrent instances within seconds to handle sudden spikes in traffic.
+2. **Ephemeral lifecycles:** Containers are continuously provisioned, suspended, and terminated as traffic fluctuates, leading to severe connection churn.
+3. **High latency overhead:** Establishing a standard Postgres connection over TCP requires a TCP handshake, TLS negotiation, authentication, and backend process initialization, which typically takes **50 to 100 milliseconds** per request.
+
+Without proper pooling and lifecycle management, this behavior can quickly exhaust your database's connection capacity and degrade application performance.
+
+### How modern platforms handle parallel requests
+
+To mitigate connection churn and cold starts, serverless platforms have evolved. They generally handle bursts of parallel requests in one of two ways, and your database pooling strategy depends entirely on which model your platform uses:
+
+#### Multi request concurrency (Google Cloud Run, AWS Fargate, Vercel Fluid Compute, Modal Functions)
+
+These platforms allow a single container instance to process multiple requests or tasks concurrently inside the same memory space using async threads or runtime loops.
+
+If 10 parallel requests hit a single container, they can safely share a single global, client-side TCP connection pool. This drops query latency to near zero on subsequent requests without overwhelming the database.
+
+#### Single request isolation (AWS Lambda)
+
+By default, traditional serverless functions enforce strict isolation, executing only one request or task per instance at any given millisecond.
+
+If 10 parallel requests arrive, the platform instantly spins up 10 separate instances. By default, most standard database clients automatically initialize a local connection pool (typically 5 to 10 connections) out of the box. Unless optimized, these 10 instances will attempt to open up to 100 total database connections, causing a sudden connection spike that risks immediate database exhaustion.
+
+### Choosing your connection strategy
+
+#### The HTTP Driver (For single request isolation)
+
+If you are deploying to strictly ephemeral or single-request environments like AWS Lambda, traditional client-side connection pooling can cause "zombie" connections when instances are abruptly frozen or destroyed.
+
+The workaround is to use HTTP-based drivers like [`@neondatabase/serverless`](https://neon.com/docs/serverless/serverless-driver). These skip the heavy TCP/TLS handshake entirely, reducing connection setup from ~8 network roundtrips to ~3, making it safe to open and close connections on every single invocation without overloading the database.
+
+#### The safe pooling strategy (For multi request concurrency)
+
+If you are using a concurrent platform like Cloud Run, Fargate, Vercel Fluid Compute, or Modal, you _should_ use a traditional client-side TCP connection pool. You can initialize the database client globally at container startup to reuse it across hundreds of subsequent requests.
+
+To safely throttle your database connection count when these platforms inevitably scale out to hundreds of worker instances globally, you can restrict the max pool size per container instance (often to a small number).
+
+## Why container suspension leaks connections
+
+In standard server environments, database connection pools cleanly close idle connections using internal background timers. However, in serverless environments, **container suspension introduces a connection leak blind spot**.
+
+When a serverless instance becomes idle, the platform's orchestration layer suspends the container in memory. During suspension:
+
+- The container's CPU allocation is paused.
+- Internal client-side timers (such as `idleTimeoutMillis` in Node.js or pool cleanup threads in Python) **stop executing**.
+- Because these timers cannot run, the client-side pooler never closes idle connections.
+- The physical TCP socket remains open on the database or proxy side until either the container is fully terminated by the platform or the server-side idle timeout closes the connection.
+
+During a traffic burst or a new application deployment, this state of suspension can cause "phantom" connection accumulation, where hundreds of inactive containers hold open sockets, blocking new instances from connecting.
+
+## The math of serverless connection pooling
+
+To manage connections effectively, you must coordinate client-side pool sizes with your platform's concurrency limits.
+
+The total number of database connections attempted during a peak traffic event is determined by:
+
+```bash
+Total Connections = C × P
+```
+
+Where:
+
+- C is the number of active, concurrent containers/functions.
+- P is the client-side pool size configured inside each container.
+
+### Comparing connection footprints by compute model
+
+| Compute model               | Concurrent containers (C) | Local pool size (P) | Total pool clients | Key Risk                                                  |
+| :-------------------------- | :------------------------ | :------------------ | :----------------- | :-------------------------------------------------------- |
+| **Monolithic Server**       | 5                         | 20                  | 100                | Static, easily predictable.                               |
+| **Unconfigured Serverless** | 300                       | 10                  | **3,000**          | Instantly exhausts `max_connections` or PgBouncer limits. |
+| **Optimized Serverless**    | 300                       | 1                   | **300**            | Clean execution; matches live concurrency.                |
+
+To support massive serverless scale-out, keep your client-side pool sizes small (1–2 connections per container) and rely on Neon's built-in PgBouncer pooling to multiplex traffic to Postgres.
+
+## Best practices for serverless connection pooling
+
+### Always use Neon's pooled endpoint
+
+Neon provides built-in connection pooling through PgBouncer in transaction mode. The pooled endpoint accepts up to **10,000 concurrent client connections** and multiplexes them into a smaller number of actual Postgres connections.
+
+Use the pooled connection string with `-pooler` in the hostname for all your serverless app traffic:
+
+![Pooled Connection String](https://neon.com/docs/connect/connection_details.png)
+
+> Ensure **Connection pooling** is enabled when you copy the connection string from the Neon Console.
+
+```text
+# App traffic: use the pooled endpoint
+DATABASE_URL="postgresql://user:pass@ep-cool-rain-123456-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+```
+
+Reserve the direct connection string no `-pooler` suffix, for administrative tasks that need session-level state, such as database migrations (e.g., `prisma migrate dev` or `drizzle-kit push`) or `pg_dump`:
+
+```text
+# Migrations only: direct Postgres connection
+DIRECT_URL="postgresql://user:pass@ep-cool-rain-123456.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+```
+
+Checkout the [Connection pooling](https://neon.com/docs/connect/connection-pooling) guide for a deeper explanation of how Neon's managed PgBouncer pooling works and the `max_connections` limits that govern your Postgres connection capacity for each compute size.
+
+### Keep client-side pool sizes small
+
+On a traditional fixed server, a pool size of `max: 20` is standard. In serverless, the number of containers is dynamic, if 200 containers each hold 10 connections, that's 2,000 simultaneous connections before you've processed a single query.
+
+Set your local pool's maximum to **1 or 2 per container**. Let Neon's PgBouncer handle the multiplexing to Postgres.
+
+### Initialize your pool globally
+
+Never create your database client or pool inside a request handler. Doing so opens a new connection on every invocation, degrading performance and exhausting connections almost immediately.
+
+Always declare your pool in the global scope, outside your handler function. This lets the runtime reuse the same connections across warm invocations:
+
+**TypeScript**
+
+```typescript
+// ✅ Correct: global scope, reused across invocations
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 2,
+});
+
+export default async function handler(req) {
+  const client = await pool.connect();
+  // ...
+}
+
+// ❌ Wrong: inside handler, new connection every request
+export default async function handler(req) {
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const client = await pool.connect();
+  // ...
+}
+```
+
+**Python**
+
+```python
+import os
+from psycopg_pool import ConnectionPool
+
+# ✅ Correct: global scope, reused across invocations
+pool = ConnectionPool(
+    conninfo=os.environ["DATABASE_URL"],
+    min_size=1,
+    max_size=2,
+    open=True,
+)
+
+def handler(request):
+    with pool.connection() as conn:
+        # ...
+
+# ❌ Wrong: inside handler, new pool every request
+def handler(request):
+    pool = ConnectionPool(
+        conninfo=os.environ["DATABASE_URL"],
+        min_size=1,
+        max_size=2,
+        open=True,
+    )
+    with pool.connection() as conn:
+        # ...
+```
+
+### Handle suspension leaks
+
+When a container goes idle, you need to close its database connections before the platform suspends the container. Some platforms provide lifecycle hooks that let you clean up just before suspension or termination. The implementation differs by platform:
+
+**Vercel Fluid Compute**
+
+On Vercel Fluid Compute, use `attachDatabasePool` from `@vercel/functions`. It keeps the instance alive just long enough to close idle connections before suspension:
+
+```typescript
+import { Pool } from 'pg';
+import { attachDatabasePool } from '@vercel/functions';
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 2,
+  idleTimeoutMillis: 5000,
+});
+attachDatabasePool(pool);
+```
+
+**Modal**
+
+Modal provides lifecycle hooks for container startup and shutdown. Use `@modal.enter()` to open your pool when the container starts and `@modal.exit()` to close it before the container exits (including preemption, with a 30-second grace period). These hooks run once per container regardless of how many concurrent inputs it processes.
+
+When using Modal's input concurrency, match your pool's `max_size` to number of concurrent inputs per container.
+
+```python
+import os
+import modal
+from psycopg_pool import ConnectionPool
+
+app = modal.App("neon-resilient-worker")
+
+CONCURRENCY = 10
+
+@app.cls(
+    secrets=[modal.Secret.from_name("neon-db-secrets")],
+)
+@modal.concurrent(max_inputs=CONCURRENCY)
+class DatabaseWorker:
+    @modal.enter()
+    def open_pool(self):
+        self.pool = ConnectionPool(
+            conninfo=os.environ["DATABASE_URL"],
+            min_size=1,
+            max_size=CONCURRENCY,
+            open=True,
+        )
+
+    @modal.method()
+    def process_task(self, task_id: int):
+        with self.pool.connection() as conn:
+            # Run queries
+            pass
+
+    @modal.exit()
+    def close_pool(self):
+        self.pool.close()
+```
+
+See the [Modal lifecycle hooks guide](https://modal.com/docs/guide/lifecycle-functions#modalexit) and [concurrent inputs guide](https://modal.com/docs/guide/concurrent-inputs) for details.
+
+**Google Cloud Run**
+
+Google Cloud Run doesn't expose a pre-suspension hook, but it sends a `SIGTERM` signal before terminating a container (with a configurable grace period). Register a signal handler to close the pool, and set a short idle timeout so connections don't linger while idle:
+
+```python
+import os
+import signal
+import sys
+from psycopg_pool import ConnectionPool
+
+pool = ConnectionPool(
+    conninfo=os.environ["DATABASE_URL"],
+    min_size=1,
+    max_size=2,
+    timeout=10,
+)
+
+def shutdown(signum, frame):
+    pool.close()
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, shutdown)
+signal.signal(signal.SIGINT, shutdown)
+```
+
+For platforms without dedicated lifecycle hooks, configure a short **idle timeout** of 5 to 10 seconds on your pool, and listen for shutdown signals (`SIGTERM`, `SIGINT`) to close connections cleanly.
+
+### Coordinate with Neon autoscaling
+
+Neon's [autoscaling](https://neon.com/docs/introduction/autoscaling) adjusts your database compute based on load. Connection limits scale with compute size. A 0.25 CU instance handles far fewer connections than a 1 CU instance. While PgBouncer accepts up to 10,000 client connections, the number of active parallel transactions it sends to Postgres is capped by `default_pool_size` (set to `0.9 × max_connections` for [your compute](https://neon.com/docs/connect/connection-pooling).
+
+#### Neon's connection limits
+
+Neon enforces three layers of connection limits. Understanding how they stack is essential for sizing your serverless tier:
+
+| Limit               | Value                    | Controls                                   | What happens when exceeded                                          |
+| :------------------ | :----------------------- | :----------------------------------------- | :------------------------------------------------------------------ |
+| `max_client_conn`   | 10,000                   | Client connections to PgBouncer            | New connections rejected                                            |
+| `default_pool_size` | 90% of `max_connections` | Active transactions per user, per database | Queries queue, then fail after 120s (`query_wait_timeout`)          |
+| `max_connections`   | Varies by compute size   | Direct Postgres connections                | New connections rejected: "remaining connection slots are reserved" |
+
+The `max_connections` limit and therefore your `default_pool_size` depends on your compute size:
+
+| Compute size (CU) | RAM         | max\_connections | default\_pool\_size (90%) |
+| :---------------- | :---------- | :--------------- | :------------------------ |
+| 0.25              | 1 GB        | 104              | 93                        |
+| 0.50              | 2 GB        | 209              | 188                       |
+| 1                 | 4 GB        | 419              | 377                       |
+| 2                 | 8 GB        | 839              | 755                       |
+| 3                 | 12 GB       | 1258             | 1132                      |
+| 4                 | 16 GB       | 1678             | 1510                      |
+| 9 – 56            | 36 – 224 GB | 4000 (capped)    | 3600                      |
+
+**Note:** Seven connections are reserved for the Neon superuser account. On a 0.25 CU compute, this leaves 97 connections available to your application (104 − 7) via direct connections. The pooled endpoint's `default_pool_size` already reserves similar headroom.
+
+For the complete up-to-date table including intermediate compute sizes, see [Postgres settings that differ by compute size](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size).
+
+If your database idles at a small compute size and your serverless tier suddenly bursts to 500 containers running heavy queries, some requests will queue in PgBouncer. After **120 seconds** in the queue, they fail with a `query_wait_timeout` error.
+
+To prevent this, set your **minimum compute size** high enough to handle expected traffic bursts. A minimum of 1 or 2 CU gives your baseline connection pool enough headroom to absorb spikes without waiting for a scaling event. See the [autoscaling guide](https://neon.com/docs/guides/autoscaling-guide) for details.
+
+You can monitor pooler client and server connections on the [Monitoring page](https://neon.com/docs/introduction/monitoring-page) in the Neon Console.
+
+## The Bulkhead Pattern: Protecting Transactional APIs
+
+In many architectures, different systems share a single database. If high-concurrency background workers (such as image processors or batch jobs) scale up, they can consume all available slots in the database pool, starving your user-facing APIs.
+
+To prevent this, implement the **Bulkhead Pattern** by isolating your workloads at the database layer.
+
+PgBouncer manages connection pools based on the distinct combination of **database user (role) and database name**. You can exploit this behavior to partition your database limits:
+
+### Create distinct roles in PostgreSQL
+
+```sql
+-- Create a role for your web API
+CREATE ROLE web_api_user WITH LOGIN PASSWORD 'secure_web_pass';
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO web_api_user;
+
+-- Create a role for your background workers
+CREATE ROLE worker_user WITH LOGIN PASSWORD 'secure_worker_pass';
+GRANT SELECT, INSERT ON ALL TABLES IN SCHEMA public TO worker_user;
+```
+
+### Configure different credentials in your systems
+
+- **Web application:** Use a connection string signed in as `web_api_user`.
+- **Background worker:** Use a connection string signed in as `worker_user`.
+
+Because the roles are different, PgBouncer assigns them to separate internal pools. This gives you soft isolation: if your background workers saturate their share of the connection pool, your web application still has breathing room under its own pool. However, both pools share the same total connection budget from Postgres, so heavy worker activity can still reduce the connections available to your web app.
+
+For hard isolation with guaranteed per-role connection limits, you would need to run your own PgBouncer instance and configure per-user `pool_size` or `max_db_connections` settings in `pgbouncer.ini`
+
+## Troubleshooting
+
+### `max_connections` errors
+
+```
+Remaining connection slots are reserved for roles with the SUPERUSER attribute
+```
+
+You're connecting directly to Postgres bypassing PgBouncer or your client-side pool sizes are too large for the number of containers running. Check that your `DATABASE_URL` contains `-pooler` in the hostname and reduce pool sizes to `max: 1` or `max: 2`. See [Connection errors](https://neon.com/docs/connect/connection-errors) for more.
+
+### Double pooling
+
+If you use a client-side pooler like Prisma's connection manager with large pool sizes on top of Neon's pooled endpoint, containers will hoard idle connections that other containers need. Set client-side pool sizes to `1` or `2` and use a short idle timeout 10 seconds works well. See [Choose a connection method](https://neon.com/docs/connect/choose-connection) for guidance.
+
+### `query_wait_timeout` errors
+
+```
+query_wait_timeout SSL connection has been closed unexpectedly
+```
+
+A sudden burst of queries exceeded what your current compute size could handle. Queries sat in PgBouncer's queue for longer than 120 seconds and timed out. Optimize slow queries and increase your **minimum compute size** to 1 or 2 CU to raise the baseline execution capacity. See [Connection errors](https://neon.com/docs/connect/connection-errors) for more.
+
+**Note:** Neon's autoscaling handles gradual traffic increases well, but sudden bursts from serverless scale-outs can outpace it. A higher minimum compute size gives you a safety buffer.
+
+## Resources
+
+- [Connection pooling](https://neon.com/docs/connect/connection-pooling)
+- [Autoscaling guide](https://neon.com/docs/guides/autoscaling-guide)
+- [Connection latency and timeouts](https://neon.com/docs/connect/connection-latency)
+- [Vercel connection methods](https://neon.com/docs/guides/vercel-connection-methods)
+- [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver)
+
 --- [Document source](https://neon.com/docs/guides/solid-start.md) ---
 
 > Summary: SolidStart integration with Neon walks through creating a Neon project and querying a serverless Postgres database from a SolidJS meta-framework app. Covers server-side data loading and API routes using node-postgres, postgres.js, or the Neon serverless driver.
@@ -108450,37 +108846,7 @@ In your Organization's **Settings** page, you'll find the **Delete** section. It
 
 Complete any necessary steps. Once cleared, you can go ahead and delete. This action will permanently remove the organization and cancel its associated billing. _It can't be reversed._
 
-## More actions
-
-Here are a couple additional things you can do with your organization: **passwordless authentication** and **renaming an organization**.
-
-### Passwordless authentication
-
-If you want the simplest way to connect to your database from the command line, passwordless authentication using `pg.neon.tech` lets you directly start a `psql` connection with any of your organization's databases. This saves you time versus logging in to the Console and copying your connection string manually.
-
-```bash
-   psql -h pg.neon.tech
-```
-
-In the output, you'll get a URL you can paste into your browser. Log in if you need to. Or if you're already logged in, you'll be asked to select from your personal or organization account, select your project, and then your compute. After that, go back to your terminal and you'll be connected to your selected database.
-
-For example:
-
-```bash
-alexlopez@alex-machine ~ % psql -h pg.neon.tech
-NOTICE:  Welcome to Neon!
-Authenticate by visiting:
-    https://console.neon.tech/psql_session/secure_token
-
-NOTICE:  Connecting to database.
-psql (16.1, server 16.3)
-SSL connection (secure connection details hidden)
-Type "help" for help.
-
-alexlopez=>
-```
-
-### Rename an organization
+## Rename an organization
 
 Only Admins can rename an organization. Go to the **Settings** page under **General information**. Changing the organization name applies globally; the new name will appear for everyone in the organization.
 
@@ -113010,7 +113376,7 @@ If you are a Neon [Scale plan](https://neon.com/docs/introduction/plans) user an
 | `password_encryption`                 | scram-sha-256 |                                                                                                                                                                                                                                                                                                                                             |
 | `restart_after_crash`                 | off           |                                                                                                                                                                                                                                                                                                                                             |
 | `shared_buffers`                      | 128MB         | Neon uses a [Local File Cache (LFC)](https://neon.com/docs/extensions/neon#what-is-the-local-file-cache) in addition to `shared_buffers` to extend cache memory to 75% of your compute's RAM. The value differs by compute size. See [below](https://neon.com/docs/reference/compatibility#parameter-settings-that-differ-by-compute-size). |
-| `superuser_reserved_connections`      | 4             |                                                                                                                                                                                                                                                                                                                                             |
+| `superuser_reserved_connections`      | 7             |                                                                                                                                                                                                                                                                                                                                             |
 | `synchronous_standby_names`           | 'walproposer' |                                                                                                                                                                                                                                                                                                                                             |
 | `wal_level`                           | replica       | Support for `wal_level=logical` is coming soon. See [logical replication](https://neon.com/docs/introduction/logical-replication).                                                                                                                                                                                                          |
 | `wal_log_hints`                       | off           |                                                                                                                                                                                                                                                                                                                                             |
@@ -113113,10 +113479,10 @@ _For most applications, we recommend using connection pooling, which supports up
 - The formula for `max_worker_processes` is:
 
   ```go
-  max_worker_processes := 12 + floor(2 * max_compute_size)
+  max_worker_processes := 13 + floor(2 * max_compute_size)
   ```
 
-  For example, if your `max_compute_size` is 4 CU, your `max_worker_processes` setting would be 20.
+  For example, if your `max_compute_size` is 4 CU, your `max_worker_processes` setting would be 21.
 
 - The formula for `shared_buffers` is:
 
@@ -115667,9 +116033,9 @@ Run `neon deploy` to apply. When `neon checkout` creates a new branch, the closu
 `dataApi: true` uses Managed Better Auth as the JWT verifier (the default). When using this form, `auth: true` must also be set. Omitting it raises a TypeScript error at the `dataApi` field that includes the fix:
 
 ```text
-Type 'true' is not assignable to type '"`dataApi` with Managed Better Auth (the default
-`authProvider: 'neon'`) requires Managed Better Auth, so add `auth: true`. To enable the
-Data API WITHOUT Managed Better Auth, verify a third-party IdP instead: `dataApi: {
+Type 'true' is not assignable to type '"`dataApi` with Neon Auth (the default
+`authProvider: 'neon'`) requires Neon Auth, so add `auth: true`. To enable the
+Data API WITHOUT Neon Auth, verify a third-party IdP instead: `dataApi: {
 authProvider: 'external', jwksUrl: 'https://your-idp/.well-known/jwks.json' }`"'
 ```
 

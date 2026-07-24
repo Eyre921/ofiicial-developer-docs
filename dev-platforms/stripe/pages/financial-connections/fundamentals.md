@@ -18,6 +18,36 @@ To initialize and complete the Financial Connections authentication flow:
 4. Initiate the authentication flow using [collectFinancialConnectionsAccounts](https://docs.stripe.com/js/financial_connections/collect_financial_connections_accounts).
 5. Your user completes the flow, which attaches [accounts](https://docs.stripe.com/api/financial_connections/accounts.md) to the session.
 An overview of the Financial Connections authentication flow (See full diagram at https://docs.stripe.com/financial-connections/fundamentals)
+A completed session contains the linked accounts:
+
+```json
+{
+  "id": "fcsess_1Oacb82eZvKYlo2Cd4v3gvnD",
+  "object": "financial_connections.session",
+  "permissions": ["payment_method"],
+  "accounts": {
+    "object": "list",
+    "data": [
+      {
+        "id": "fca_1Oabc12eZvKYlo2Ce3f4g5h6",
+        "object": "financial_connections.account",
+        "category": "checking",
+        "display_name": "Premier Checking",
+        "institution_name": "Test Bank",
+        "last4": "6789",
+        "status": "active",
+        "subcategory": "checking",
+        "supported_payment_method_types": ["us_bank_account"]
+      }
+    ],
+    "has_more": false,
+    "total_count": 1,
+    "url": "/v1/financial_connections/accounts?session=fcsess_1Oacb82eZvKYlo2Cd4v3gvnD"
+  },
+  "status": "succeeded"
+}
+```
+
 After you have your user’s authenticated accounts, you can initiate data refreshes from your server. When the refreshes are complete, you can retrieve the account data.
 
 ## Authentication flow 
@@ -26,6 +56,16 @@ The authentication flow is the client-side UI that allows your user to consent t
 
 Embed the UI in your client-side user flow. It works across all major browsers and platforms, including web, iOS, Android, and mobile web views.
 ![Authentication flow](https://docs.stripecdn.com/56bf3180f82d9867256f66e31a94b1ed537c7700fc034d899309f8ca3d2c73ec.png)
+
+Use [collectFinancialConnectionsAccounts](https://docs.stripe.com/js/financial_connections/collect_financial_connections_accounts) to launch the authentication flow from your client using the `client_secret` returned by your server:
+
+```javascript
+const stripe = new Stripe('<<YOUR_PUBLISHABLE_KEY>>');
+const result = await stripe.collectFinancialConnectionsAccounts({
+  clientSecret: "{{SESSION_CLIENT_SECRET}}",
+});
+// result.financialConnectionsSession.accounts contains the linked accounts
+```
 
 Your user follows these steps during the authentication flow:
 
@@ -89,6 +129,18 @@ To access additional account data such as balances or transactions, you must req
 | Transactions | `transactions` | Pending and posted transactions |
 
 > Account numbers are tokenized by default and can be used for ACH pay-ins and payouts on Stripe. Full account numbers for ACH processing off Stripe are available in certain cases to businesses who meet risk and eligibility criteria.
+
+For example, to request access to balances and ownership data, set the `permissions` array when creating a session:
+
+```curl
+curl https://api.stripe.com/v1/financial_connections/sessions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "account_holder[type]=customer" \
+  -d "account_holder[customer]={{CUSTOMER_ID}}" \
+  -d "permissions[]=balances" \
+  -d "permissions[]=ownership" \
+  -d "permissions[]=payment_method"
+```
 
 Consider the data required to fulfill your use case and request permission to access only the data you need. Requesting permissions that go well beyond your application’s scope may erode your users’ trust in how you use their data. For example, if you’re building a personal financial management application or a lending product, you might request `transactions` data. If you’re mitigating fraud such as account takeovers, you might want to request `ownership` details.
 

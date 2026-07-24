@@ -49,7 +49,8 @@ curl https://api.stripe.com/v1/payment_methods \
     "email": "jenny@example.com",
     "name": "Jenny Rosen",
     "phone": "+335555555555"
-  },"custom": {
+  },
+  "custom": {
     "display_name": "SamplePayCard",
     "logo": {
       "content_type": "image/jpeg",

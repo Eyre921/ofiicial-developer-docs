@@ -55510,59 +55510,59 @@ Each voice has a primary accent:
 
 These voices have an English accent and are the recommended pick for English agents.
 
-| Voice      | Accent  | Sample                                                          |
-| ---------- | ------- | --------------------------------------------------------------- |
-| `alba`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/alba.mp3" />     |
-| `anna`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/anna.mp3" />     |
-| `charles`  | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/charles.mp3" />  |
-| `eve`      | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/eve.mp3" />      |
-| `george`   | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/george.mp3" />   |
-| `jane`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/jane.mp3" />     |
-| `jean`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/jean.mp3" />     |
-| `mary`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/mary.mp3" />     |
-| `michael`  | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/michael.mp3" />  |
-| `paul`     | 🇬🇧      | <audio controls src="/docs/assets/audio/voices/paul.mp3" />     |
-| `vera`     | 🇬🇧      | <audio controls src="/docs/assets/audio/voices/vera.mp3" />     |
+| Voice      | Accent  |
+| ---------- | ------- |
+| `alba`     | 🇺🇸      |
+| `anna`     | 🇺🇸      |
+| `charles`  | 🇺🇸      |
+| `eve`      | 🇺🇸      |
+| `george`   | 🇺🇸      |
+| `jane`     | 🇺🇸      |
+| `jean`     | 🇺🇸      |
+| `mary`     | 🇺🇸      |
+| `michael`  | 🇺🇸      |
+| `paul`     | 🇬🇧      |
+| `vera`     | 🇬🇧      |
 
 ## Language-specific voices
 
 These voices have a native accent in a specific non-English language and code-switch naturally between that language and English.
 
-| Voice       | Native accent    | Sample                                                             |
-| ----------- | ---------------- | ------------------------------------------------------------------ |
-| `giovanni`  | 🇮🇹 Italian       | <audio controls src="/docs/assets/audio/voices/giovanni.mp3" />    |
-| `lola`      | 🇪🇸 Spanish       | <audio controls src="/docs/assets/audio/voices/lola.mp3" />        |
-| `juergen`   | 🇩🇪 German        | <audio controls src="/docs/assets/audio/voices/juergen.mp3" />     |
-| `rafael`    | 🇵🇹 Portuguese    | <audio controls src="/docs/assets/audio/voices/rafael.mp3" />      |
-| `estelle`   | 🇫🇷 French        | <audio controls src="/docs/assets/audio/voices/estelle.mp3" />     |
+| Voice       | Native accent    |
+| ----------- | ---------------- |
+| `giovanni`  | 🇮🇹 Italian       |
+| `lola`      | 🇪🇸 Spanish       |
+| `juergen`   | 🇩🇪 German        |
+| `rafael`    | 🇵🇹 Portuguese    |
+| `estelle`   | 🇫🇷 French        |
 
 ## Deprecated voices
 
   The voices below are deprecated and will be removed in a future release. Use one of the [Voices](#voices) or [language-specific voices](#language-specific-voices) above for new agents, and migrate existing agents when convenient.
 
-| Voice     | Accent                        | Description                                  | Sample                                                              |
-| --------- | ----------------------------- | -------------------------------------------- | ------------------------------------------------------------------- |
-| `ivy`     | 🇺🇸                            | Professional, deliberate, smooth             | <audio controls src="/docs/assets/audio/voices/ivy.mp3" />          |
-| `james`   | 🇺🇸                            | Conversational, professional, male           | <audio controls src="/docs/assets/audio/voices/james.mp3" />        |
-| `tyler`   | 🇺🇸                            | Theatrical, energetic, chatty, jagged        | <audio controls src="/docs/assets/audio/voices/tyler.mp3" />        |
-| `winter`  | 🇺🇸                            | Empathetic, aesthetic, conversational        | <audio controls src="/docs/assets/audio/voices/winter.mp3" />       |
-| `bella`   | 🇺🇸                            | High-pitched, chatty                         | <audio controls src="/docs/assets/audio/voices/bella.mp3" />        |
-| `david`   | 🇺🇸                            | Deep, calming, conversational                | <audio controls src="/docs/assets/audio/voices/david.mp3" />        |
-| `kyle`    | 🇺🇸                            | Chatty, nasal, expressive                    | <audio controls src="/docs/assets/audio/voices/kyle.mp3" />         |
-| `helen`   | 🇺🇸                            | Soft, older, calming                         | <audio controls src="/docs/assets/audio/voices/helen.mp3" />        |
-| `martha`  | 🇺🇸                            | Southern, older, warm                        | <audio controls src="/docs/assets/audio/voices/martha.mp3" />       |
-| `river`   | 🇺🇸                            | Slow, calming, ASMR                          | <audio controls src="/docs/assets/audio/voices/river.mp3" />        |
-| `emma`    | 🇺🇸                            | Lively, young, conversational                | <audio controls src="/docs/assets/audio/voices/emma.mp3" />         |
-| `victor`  | 🇺🇸                            | Deep, older                                  | <audio controls src="/docs/assets/audio/voices/victor.mp3" />       |
-| `eleanor` | 🇺🇸                            | Deeper, older, calming                       | <audio controls src="/docs/assets/audio/voices/eleanor.mp3" />      |
-| `arjun`   | 🇮🇳 Hindi/Hinglish             | Conversational                               | <audio controls src="/docs/assets/audio/voices/arjun.mp3" />        |
-| `dmitri`  | 🇷🇺 Russian                    | Conversational                               | <audio controls src="/docs/assets/audio/voices/dmitri.mp3" />       |
-| `pierre`  | 🇫🇷 French                     | Conversational                               | <audio controls src="/docs/assets/audio/voices/pierre.mp3" />       |
-| `giulia`  | 🇮🇹 Italian                    |                                              | <audio controls src="/docs/assets/audio/voices/giulia.mp3" />       |
-| `luca`    | 🇮🇹 Italian                    |                                              | <audio controls src="/docs/assets/audio/voices/luca.mp3" />         |
-| `lucia`   | 🇪🇸 Spanish                    |                                              | <audio controls src="/docs/assets/audio/voices/lucia.mp3" />        |
-| `mateo`   | 🇪🇸 Spanish                    |                                              | <audio controls src="/docs/assets/audio/voices/mateo.mp3" />        |
-| `diego`   | 🇨🇴 Spanish (Latin American)   | Colombian                                    | <audio controls src="/docs/assets/audio/voices/diego.mp3" />        |
+| Voice     | Accent                        | Description                                  |
+| --------- | ----------------------------- | -------------------------------------------- |
+| `ivy`     | 🇺🇸                            | Professional, deliberate, smooth             |
+| `james`   | 🇺🇸                            | Conversational, professional, male           |
+| `tyler`   | 🇺🇸                            | Theatrical, energetic, chatty, jagged        |
+| `winter`  | 🇺🇸                            | Empathetic, aesthetic, conversational        |
+| `bella`   | 🇺🇸                            | High-pitched, chatty                         |
+| `david`   | 🇺🇸                            | Deep, calming, conversational                |
+| `kyle`    | 🇺🇸                            | Chatty, nasal, expressive                    |
+| `helen`   | 🇺🇸                            | Soft, older, calming                         |
+| `martha`  | 🇺🇸                            | Southern, older, warm                        |
+| `river`   | 🇺🇸                            | Slow, calming, ASMR                          |
+| `emma`    | 🇺🇸                            | Lively, young, conversational                |
+| `victor`  | 🇺🇸                            | Deep, older                                  |
+| `eleanor` | 🇺🇸                            | Deeper, older, calming                       |
+| `arjun`   | 🇮🇳 Hindi/Hinglish             | Conversational                               |
+| `dmitri`  | 🇷🇺 Russian                    | Conversational                               |
+| `pierre`  | 🇫🇷 French                     | Conversational                               |
+| `giulia`  | 🇮🇹 Italian                    |                                              |
+| `luca`    | 🇮🇹 Italian                    |                                              |
+| `lucia`   | 🇪🇸 Spanish                    |                                              |
+| `mateo`   | 🇪🇸 Spanish                    |                                              |
+| `diego`   | 🇨🇴 Spanish (Latin American)   | Colombian                                    |
 
 ---
 

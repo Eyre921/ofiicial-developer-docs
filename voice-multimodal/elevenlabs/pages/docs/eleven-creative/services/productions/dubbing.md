@@ -24,7 +24,7 @@ The easiest way to order a dub from Productions is through the [Productions](htt
 * **Source language** (e.g., English)
 * **Target language** (e.g., Spanish, Hindi, Arabic)
 
-<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png" alt="Productions Home" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260724%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260724T233124Z&X-Amz-Expires=604800&X-Amz-Signature=390f63235231d9d426c54059d6426a66d18212cd6738cf89e466e5a4fe8dbf13&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Productions Home" />
 
 #### Processing
 

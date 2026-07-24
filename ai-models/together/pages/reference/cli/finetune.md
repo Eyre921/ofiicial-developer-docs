@@ -109,14 +109,16 @@ To retrieve metadata for a job, including its current status:
 tg fine-tuning retrieve [FT_ID]
 ```
 
-Completed jobs also include Together model registry IDs for the final weights:
+Completed jobs also include Together model registry IDs and human-readable object names for the final weights:
 
-| Field                        | Description                                                               |
-| ---------------------------- | ------------------------------------------------------------------------- |
-| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_...`).   |
-| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_...`). |
-| `adapter_object_id`          | Registry object ID for the final LoRA adapter weights on LoRA jobs.       |
-| `adapter_object_revision_id` | Registry revision ID for the final LoRA adapter weights on LoRA jobs.     |
+| Field                        | Description                                                                                                                                                                                                                |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `model_object_id`            | Registry object ID for the final model weights (for example, `ml_...`).                                                                                                                                                    |
+| `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_...`).                                                                                                                                                  |
+| `model_object_name`          | Qualified registry name in `<project_slug>/<model_name>` form (for example, `acme-corp/my-model-abc123`). Resolved on retrieve; omitted on list. Falls back to `model_object_id` when the project slug cannot be resolved. |
+| `adapter_object_id`          | Registry object ID for the final LoRA adapter weights on LoRA jobs.                                                                                                                                                        |
+| `adapter_object_revision_id` | Registry revision ID for the final LoRA adapter weights on LoRA jobs.                                                                                                                                                      |
+| `adapter_object_name`        | Qualified adapter name in `<project_slug>/<model_name>-adapter` form on LoRA jobs. Falls back to `adapter_object_id` when the project slug cannot be resolved.                                                             |
 
 ## List events
 
@@ -134,6 +136,71 @@ To cancel a running job:
 tg fine-tuning cancel [FT_ID]
 ```
 
+## Preview
+
+To preview how a training file will be tokenized before you start a job:
+
+```bash theme={null}
+tg fine-tuning preview --model [MODEL] --training-file [FILE_ID]
+
+# Shorthand
+tg ft preview -M [MODEL] -t [FILE_ID]
+```
+
+The command samples rows from your uploaded JSONL training file and shows how the base model's tokenizer and chat template tokenize them, including which tokens contribute to training loss.
+
+<CodeGroup>
+  ```bash Basic theme={null}
+  tg fine-tuning preview \
+    --model Qwen/Qwen2-1.5B \
+    --training-file <file-id>
+  ```
+
+  ```bash More rows theme={null}
+  tg fine-tuning preview \
+    --model Qwen/Qwen2-1.5B \
+    --training-file <file-id> \
+    --top-k 10
+  ```
+
+  ```bash Tokenized output if prompt tokens are included in loss theme={null}
+  tg fine-tuning preview \
+    --model Qwen/Qwen2-1.5B \
+    --training-file <file-id> \
+    --train-on-inputs
+  ```
+
+  ```bash JSON output theme={null}
+  tg fine-tuning preview \
+    --model Qwen/Qwen2-1.5B \
+    --training-file <file-id> \
+    --json > preview.json
+  ```
+</CodeGroup>
+
+The default table output prints the detected **Dataset format**, **Max sequence**, and **Train inputs** settings, then a **Preview Rows** table with these columns:
+
+| Column            | Description                                                                         |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| **Row**           | 1-based index of the sampled training file row.                                     |
+| **Tokens**        | Total token count after truncation.                                                 |
+| **Trained**       | Number of tokens that contribute to training loss.                                  |
+| **Truncated**     | `yes` when the row was truncated to the model maximum sequence length.              |
+| **Trained Spans** | Half-open token index ranges that contribute to training loss (for example, `1-3`). |
+| **Token Preview** | First 32 token strings. Masked tokens (excluded from loss) appear dimmed.           |
+
+Pass `--json` to print the full API response instead of the table.
+
+### Parameters
+
+| Flag                                     | Description                                                                                                |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `--training-file/-t [string]`            | **required**<br />Training file ID from the Files API to sample for preview.                               |
+| `--model/-M [string]`                    | **required**<br />Base model whose tokenizer and chat template are used for the preview.                   |
+| `--top-k [integer]`                      | Maximum number of rows from the start of the training file to tokenize. Default: `5`. Min: 1. Max: 50.     |
+| `--train-on-inputs/--no-train-on-inputs` | Whether prompt or user-message tokens contribute to training loss. When omitted, the API default applies.  |
+| `--training-method [sft]`                | Fine-tuning method to preview. Only supervised fine-tuning (`sft`) is currently supported. Default: `sft`. |
+
 ## List checkpoints
 
 To list saved checkpoints of a job:
@@ -142,7 +209,11 @@ To list saved checkpoints of a job:
 tg fine-tuning list-checkpoints [FT_ID]
 ```
 
-Each checkpoint includes `step`, `path`, `created_at`, `checkpoint_type`, and `checkpoint` (the download selector: `model` or `adapter`). When the job uploaded the artifact to the Together model registry, the entry also includes `object_id` and `object_revision_id` (for example, `ml_…` and `rv_…`). See [Model registry object IDs](/docs/fine-tuning/deployment#model-registry-object-ids) for how these relate to the job-level `model_object_id` / `adapter_object_id` fields.
+The default output is a table with **Download ID**, **Timestamp**, **Registry Artifact**, and **Type** columns. Use the Download ID with `tg fine-tuning download`: intermediate checkpoints use `FT_ID:STEP`, and the final checkpoint uses the job ID alone.
+
+When the job uploaded the artifact to the Together model registry, the **Registry Artifact** column shows the qualified ID as `object_id@object_revision_id` (for example, `ml_…@rv_…`). The CLI also prints a copyable **Registry artifacts** block below the table.
+
+Pass `--json` to get the full response body instead. Each checkpoint includes `step`, `path`, `created_at`, `checkpoint_type`, and `checkpoint` (the download selector: `model` or `adapter`). When the job uploaded the artifact to the Together model registry, the entry also includes `object_id`, `object_revision_id` (for example, `ml_…` and `rv_…`), and `object_name` (the qualified `<project_slug>/<model_name>` name for that checkpoint, with `-<step>` or `-adapter` suffixes as appropriate). See [Model registry object IDs](/docs/fine-tuning/deployment#model-registry-object-ids) for how these relate to the job-level `model_object_id` / `adapter_object_id` fields.
 
 ## Download model weights
 

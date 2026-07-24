@@ -59666,7 +59666,7 @@ date: '2025-10-08T10:00:00'
 categories:
   - company
 ---
-We're excited to welcome Matt Linkous, co-founder of [Triplit](https://www.triplit.dev/), to the Supabase team.
+We're excited to welcome Matt Linkous, co-founder of Triplit, to the Supabase team.
 
 With this acquisition, we're bringing Matt's deep expertise in the offline-first domain into our ecosystem. Our focus isn't to directly integrate Triplit into our platform. Instead, Matt will be working to expand third-party integrations at Supabase. Part of this effort will be making Supabase an excellent partner to other syncing systems such as [ElectricSQL](https://electric-sql.com/), [Zero](https://zero.rocicorp.dev/), and [PowerSync](https://www.powersync.com/).
 Creating a great self-serve integration system is a growing priority at Supabase, so we're excited for Matt to bring his experience as Y Combinator founder and open-source maintainer to build an integration experience that's seamless for both developers using Supabase and third-party providers.
@@ -77328,6 +77328,15 @@ Every Supabase project has a unique API URL. Your API is secured behind an API g
 
 To do this, you need to get the Project URL and key from [the project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true).
 
+Deprecation: Supabase has changed the way keys work to improve project security and developer experience. You can [read the full announcement on GitHub](https://github.com/orgs/supabase/discussions/29260).
+
+**They will be deprecated by the end of 2026, and you should now use the publishable (`sb_publishable_xxx`) and secret (`sb_secret_xxx`) keys instead**.
+
+In most cases, you can get keys from [the Project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=), but if you want a specific key, you can find them in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
+
+- **For new keys**, open the **API Keys** tab, if you don't have a publishable key already, click **Create new API Keys**, and copy the value from the **Publishable key** section for client-side operations. For server-side operations, copy the value from the **Secret keys** section.
+- **For legacy keys**, copy the `anon` key for client-side operations and the `service_role` key for server-side operations from the **Legacy API Keys** tab.
+
 [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types and their uses.
 
 The REST API is accessible through the URL `https://<project_ref>.supabase.co/rest/v1`
@@ -91839,6 +91848,16 @@ PUBLIC_SUPABASE_URL=your-project-url
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_key
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=astro).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 6. **Create a Supabase client helper**
 
 Create a utility file to initialize the Supabase client with SSR support:
@@ -92358,6 +92377,16 @@ NEXT_PUBLIC_SUPABASE_URL=your-project-url
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_... key
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=nextjs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 4. **Start the app**
 
 Start the development server, go to [http://localhost:3000](http://localhost:3000) in a browser, and you should see the contents of `app/page.tsx`.
@@ -92412,6 +92441,16 @@ Create a helper file `lib/supabase.ts` that exports a Supabase client using your
 
 Rename `.env.example` to `.env` and populate with your Supabase connection variables:
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=exporeactnative).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 5. **Create a login component**
 
 Create a React Native component to manage logins and sign ups. The app later uses the [`getClaims`](https://supabase.com/docs/reference/javascript/auth-getclaims) method in `App.tsx` to validate the local JWT before showing the signed-in user.
@@ -92464,6 +92503,16 @@ cd my-app && npm install @supabase/supabase-js
 4. **Declare Supabase Environment Variables**
 
 Rename `.env.example` to `.env.local` and populate with your Supabase connection variables:
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=react).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 5. **Set up your login component**
 
@@ -92606,6 +92655,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=exporeactnative).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -93425,6 +93484,16 @@ pnpm add @supabase/supabase-js @supabase/ssr
 ## Set environment variables
 
 Create a `.env.local` file in the project root directory. In the file, set the project's Supabase URL and Key:
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=nextjs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 **Next.js**
 
@@ -96337,6 +96406,26 @@ Setting up Bitbucket logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Bitbucket** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a Bitbucket OAuth app
 
 - Click on your profile icon at the bottom left
@@ -96353,6 +96442,13 @@ Setting up Bitbucket logins for your application consists of 3 parts:
 - Copy your `Key` (`client_key`) and `Secret` (`client_secret`) codes
 
 ## Add your Bitbucket credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **BitBucket** from the accordion list to expand and turn **BitBucket Enabled** to ON
+- Enter your **BitBucket Client ID** and **BitBucket Client Secret** saved in the previous step
+- Click `Save`
 
 ## Add login code to your client app
 
@@ -96710,6 +96806,26 @@ Setting up Discord logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Discord** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a Discord application
 
 - Click on `New Application` at the top right.
@@ -96721,6 +96837,13 @@ Setting up Discord logins for your application consists of 3 parts:
 - Copy your `Client ID` and `Client Secret` under `Client information`.
 
 ## Add your Discord credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Discord** from the accordion list to expand and turn **Discord Enabled** to ON
+- Enter your **Discord Client ID** and **Discord Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the Discord auth provider using the Management API:
 
@@ -97102,6 +97225,26 @@ Setting up Facebook logins for your application consists of 4 parts:
 - Fill in your app information, then click `Create App`.
 - This should bring you to the screen: `Add Products to Your App`. (Alternatively you can click on `Add Product` in the left sidebar to get to this screen.)
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Facebook** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Set up Facebook login for your Facebook app
 
 From the `Add Products to your App` screen:
@@ -97136,6 +97279,13 @@ Tip: You can verify the permissions are set correctly by checking that both `pub
 - Make sure all required fields are completed on this screen.
 
 ## Enter your Facebook app ID and secret into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Facebook** from the accordion list to expand and turn **Facebook Enabled** to ON
+- Enter your **Facebook Client ID** and **Facebook Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the Facebook auth provider using the Management API:
 
@@ -97684,6 +97834,26 @@ Setting up Figma logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Figma** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a Figma OAuth app
 
 1. Enter your `App name`, select the owner for the app and click `Create app` button
@@ -97705,6 +97875,13 @@ Setting up Figma logins for your application consists of 3 parts:
 ![Select OAuth scopes](/docs/img/guides/auth-figma/figma_app_scopes.png)
 
 ## Enter your Figma credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Figma** from the accordion list to expand and turn **Figma Enabled** to ON
+- Enter your **Figma Client ID** and **Figma Client Secret** saved in the previous step
+- Click `Save`
 
 ## Add login code to your client app
 
@@ -98051,6 +98228,26 @@ Setting up GitHub logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **GitHub** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Register a new OAuth application on GitHub
 
 - Navigate to the [OAuth apps page](https://github.com/settings/developers)
@@ -98068,6 +98265,13 @@ Copy your new OAuth credentials
 - Copy and save your `Client secret`.
 
 ## Enter your GitHub credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **GitHub** from the accordion list to expand and turn **GitHub Enabled** to ON
+- Enter your **GitHub Client ID** and **GitHub Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the GitHub auth provider using the Management API:
 
@@ -98452,6 +98656,26 @@ Setting up GitLab logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **GitLab** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create your GitLab application
 
 - Click on your `profile logo` (avatar) in the top-right corner.
@@ -98465,6 +98689,13 @@ Setting up GitLab logins for your application consists of 3 parts:
 - Copy and save your `Application ID` (`client_id`) and `Secret` (`client_secret`) which you'll need later.
 
 ## Add your GitLab credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **GitLab** from the accordion list to expand and turn **GitLab Enabled** to ON
+- Enter your **GitLab Client ID** and **GitLab Client Secret** saved in the previous step
+- Click `Save`
 
 ## Add login code to your client app
 
@@ -99827,6 +100058,26 @@ This serves as the `client_id` when you make API calls to authenticate the user.
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Kakao** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 - To add a callback URL on Kakao, go to **App Settings** > **App** > **Platform Key**.
 - Click on the REST API key you want to use.
 - In the edit page, enter your callback URL in the **Kakao Login Redirect URI** field.
@@ -99856,6 +100107,13 @@ If you don't need an email address (or `account_email` isn't available for your 
 Tip: In the Kakao Developers Portal, the "account\_email" consent item is only available for apps that are registered as "Biz App". To convert your app to a "Biz App", go to **App Settings** > **App** > **General**, and complete the required fields in the **Business Information** section.
 
 ## Add your OAuth credentials to Supabase
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Kakao** from the accordion list to expand and turn **Kakao Enabled** to ON
+- Enter your **Kakao Client ID** and **Kakao Client Secret** saved in the previous step
+- Click `Save`
 
 If you did not request `account_email` in Kakao, enable **Allow users without an email** in the Kakao provider settings.
 
@@ -100640,6 +100898,26 @@ Setting up LinkedIn logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **LinkedIn** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a LinkedIn OAuth app
 
 - Go to [LinkedIn Developer Dashboard](https://www.linkedin.com/developers/apps).
@@ -100658,6 +100936,13 @@ Ensure that the appropriate scopes have been added under OAuth 2.0 Scopes at the
 ![Required OAuth 2.0 Scopes](/docs/img/guides/auth-linkedin/oauth-scopes.png)
 
 ## Enter your LinkedIn (OIDC) credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **LinkedIn (OIDC)** from the accordion list to expand and turn **LinkedIn (OIDC) Enabled** to ON
+- Enter your **LinkedIn (OIDC) Client ID** and **LinkedIn (OIDC) Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the LinkedIn (OIDC) auth provider using the Management API:
 
@@ -101058,11 +101343,38 @@ Setting up Notion logins for your application consists of 3 parts:
 
 ![notion.so](/docs/img/guides/auth-notion/notion-redirect-uri.png)
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Notion** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Add your Notion credentials into your Supabase project
 
 - Once you've created your notion integration, you should be able to retrieve the "OAuth client ID" and "OAuth client secret" from the "OAuth Domain and URIs" tab.
 
 ![notion.so](/docs/img/guides/auth-notion/notion-creds.png)
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Notion** from the accordion list to expand and turn **Notion Enabled** to ON
+- Enter your **Notion Client ID** and **Notion Client Secret** saved in the previous step
+- Click `Save`
 
 ## Add login code to your client app
 
@@ -101419,6 +101731,26 @@ Setting up Slack logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Slack** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a Slack OAuth app
 
 - Go to [api.slack.com](https://api.slack.com/apps).
@@ -101447,6 +101779,13 @@ Under `Scopes`:
 - Add the following scopes under the `User Token Scopes`: `profile`, `email`, `openid`. These scopes are the default scopes that Supabase Auth uses to request for user information. Do not add other scopes as [Sign In With Slack only supports `profile`, `email`, `openid`](https://api.slack.com/authentication/sign-in-with-slack#request).
 
 ## Enter your Slack credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Slack** from the accordion list to expand and turn **Slack Enabled** to ON
+- Enter your **Slack Client ID** and **Slack Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the Slack (OIDC) auth provider using the Management API:
 
@@ -101818,6 +102157,26 @@ Setting up Spotify logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Spotify** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a Spotify OAuth app
 
 - Log into [Spotify](https://spotify.com).
@@ -101838,6 +102197,13 @@ Under `Redirect URIs`:
 - Click `Save` at the bottom
 
 ## Enter your Spotify credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Spotify** from the accordion list to expand and turn **Spotify Enabled** to ON
+- Enter your **Spotify Client ID** and **Spotify Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the Spotify auth provider using the Management API:
 
@@ -102222,6 +102588,26 @@ Setting up Twitch logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Twitch** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a Twitch application
 
 ![Twitch Developer Console](/docs/img/guides/auth-twitch/twitch-console.png)
@@ -102248,6 +102634,13 @@ Setting up Twitch logins for your application consists of 3 parts:
 ![Get Client ID and Secret](/docs/img/guides/auth-twitch/twitch-get-keys.png)
 
 ## Add your Twitch credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Twitch** from the accordion list to expand and turn **Twitch Enabled** to ON
+- Enter your **Twitch Client ID** and **Twitch Client Secret** saved in the previous step
+- Click `Save`
 
 ## Add login code to your client app
 
@@ -102603,6 +102996,26 @@ Setting up X / Twitter logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **X / Twitter (OAuth 2.0)** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create an X OAuth app
 
 - Click `+ Create Project`.
@@ -102629,6 +103042,13 @@ Setting up X / Twitter logins for your application consists of 3 parts:
   - Copy and save your **Client Secret**.
 
 ## Enter your X credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **X / Twitter (OAuth 2.0)** from the accordion list to expand and turn **X / Twitter (OAuth 2.0) Enabled** to ON
+- Enter your **X / Twitter (OAuth 2.0) Client ID** and **X / Twitter (OAuth 2.0) Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the X / Twitter (OAuth 2.0) auth provider using the Management API:
 
@@ -103158,6 +103578,26 @@ Setting up Zoom logins for your application consists of 3 parts:
 
 ## Find your callback URL
 
+The next step requires a callback URL, which looks like this: `https://<project-ref>.supabase.co/auth/v1/callback`
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- Click on the `Authentication` icon in the left sidebar
+- Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Zoom** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
+
+Note: #### Local development
+
+When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
+is configured with the local Supabase Auth callback URL:
+
+[http://localhost:54321/auth/v1/callback](http://localhost:54321/auth/v1/callback)
+
+If this callback URL is missing or misconfigured, OAuth sign-in may fail or not redirect correctly during local development.
+
+See the [local development docs](https://supabase.com/docs/guides/local-development) for more details.
+
+For testing OAuth locally with the Supabase CLI see the [local development docs](https://supabase.com/docs/guides/local-development).
+
 ## Create a Zoom OAuth app
 
 - Go to [marketplace.zoom.us](https://marketplace.zoom.us/).
@@ -103187,6 +103627,13 @@ Under `Scopes`
 - Click `Continue`
 
 ## Enter your Zoom credentials into your Supabase project
+
+- Go to your [Supabase Project Dashboard](https://supabase.com/dashboard)
+- In the left sidebar, click the `Authentication` icon (near the top)
+- Click on [`Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
+- Click on **Zoom** from the accordion list to expand and turn **Zoom Enabled** to ON
+- Enter your **Zoom Client ID** and **Zoom Client Secret** saved in the previous step
+- Click `Save`
 
 You can also configure the Zoom auth provider using the Management API:
 
@@ -146961,6 +147408,15 @@ There are 4 types of API keys that you can use with Supabase:
 
 Note: Both key types work simultaneously. Creating publishable and secret keys adds them *alongside* your existing `anon` and `service_role` keys without affecting them — your legacy keys keep working. They remain valid until you explicitly disable them in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard which is a separate step. See [Migrating to new API keys](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys) for the full process.
 
+Deprecation: Supabase has changed the way keys work to improve project security and developer experience. You can [read the full announcement on GitHub](https://github.com/orgs/supabase/discussions/29260).
+
+**They will be deprecated by the end of 2026, and you should now use the publishable (`sb_publishable_xxx`) and secret (`sb_secret_xxx`) keys instead**.
+
+In most cases, you can get keys from [the Project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=), but if you want a specific key, you can find them in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
+
+- **For new keys**, open the **API Keys** tab, if you don't have a publishable key already, click **Create new API Keys**, and copy the value from the **Publishable key** section for client-side operations. For server-side operations, copy the value from the **Secret keys** section.
+- **For legacy keys**, copy the `anon` key for client-side operations and the `service_role` key for server-side operations from the **Legacy API Keys** tab.
+
 ## Publishable keys
 
 Publishable keys identify the public components of your application. Public components run in environments where it is impossible to secure any secrets. These include:
@@ -147484,6 +147940,15 @@ In addition to the Beta requirements, features in GA are covered by the [uptime 
 
 Move from legacy JWT-based anon and service_role keys to publishable and secret keys.
 
+Deprecation: Supabase has changed the way keys work to improve project security and developer experience. You can [read the full announcement on GitHub](https://github.com/orgs/supabase/discussions/29260).
+
+**They will be deprecated by the end of 2026, and you should now use the publishable (`sb_publishable_xxx`) and secret (`sb_secret_xxx`) keys instead**.
+
+In most cases, you can get keys from [the Project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=), but if you want a specific key, you can find them in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
+
+- **For new keys**, open the **API Keys** tab, if you don't have a publishable key already, click **Create new API Keys**, and copy the value from the **Publishable key** section for client-side operations. For server-side operations, copy the value from the **Secret keys** section.
+- **For legacy keys**, copy the `anon` key for client-side operations and the `service_role` key for server-side operations from the **Legacy API Keys** tab.
+
 This guide covers migrating an **existing project.** Both key types work simultaneously, so you can swap clients one at a time and deactivate the legacy keys only after nothing depends on them.
 
 ## Before you start
@@ -147695,6 +148160,8 @@ After migrating your keys, consider moving to the [JWT signing keys](https://sup
 
 Learn how to create a Supabase project, add sample data, and query from an Astro app.
 
+
+
 ## 1. Create a Supabase project
 
 To start, you need a Supabase project.
@@ -147796,6 +148263,16 @@ PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=astro).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 8. Create a Supabase client helper
 
 Create a utility file to initialize the Supabase client:
@@ -147860,6 +148337,8 @@ npm run dev
 # Use Supabase with Expo React Native
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from an Expo app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -147948,6 +148427,16 @@ Expo requires environment variables to be prefixed with `EXPO_PUBLIC_` to be acc
 EXPO_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## 7. Initialize the Supabase client
 
@@ -148046,6 +148535,8 @@ npx expo start
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Python app.
 
+
+
 ## 1. Create a Supabase project
 
 To start, you need a Supabase project.
@@ -148134,6 +148625,16 @@ SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 7. Query data from the app
 
 Install the `python-dotenv` package to load environment variables:
@@ -148195,6 +148696,8 @@ python app.py
 # Use Supabase with Flutter
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Flutter app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -148291,6 +148794,16 @@ Future<void> main() async {
 }
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=flutter).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 7. Query data from the app
 
 Use a `FutureBuilder` to fetch the data when the home page loads and display the query result in a `ListView`.
@@ -148385,6 +148898,8 @@ To do this, add the following line to the `android/app/src/main/AndroidManifest.
 
 Learn how to create a Supabase project, add some sample data to your database, secure it with auth, and query the data from a Hono app.
 
+
+
 ## 1. Create a Supabase project
 
 To start, you need a Supabase project.
@@ -148468,6 +148983,16 @@ Lastly, [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/aut
 cp .env.example .env
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 7. Start the app
 
 Start the app, go to [http://localhost:5173](http://localhost:5173).
@@ -148490,6 +149015,8 @@ npm run dev
 # Use Supabase with iOS and SwiftUI
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from an iOS app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -148575,6 +149102,16 @@ let supabase = SupabaseClient(
 )
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=swift).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 7. Create a data model for instruments
 
 Create a decodable struct to deserialize the data from the database.
@@ -148640,6 +149177,8 @@ If you want to implement authentication features like magic links or OAuth, you 
 # Use Supabase with Android Kotlin
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from an Android Kotlin app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -148756,6 +149295,16 @@ val supabase = createSupabaseClient(
 ...
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=androidkotlin).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 8. Create a data model for instruments
 
 Create a serializable data class to represent the data from the database.
@@ -148829,6 +149378,8 @@ Run the app on an emulator or a physical device by clicking the `Run app` button
 # Use Supabase with Laravel
 
 Learn how to create a PHP Laravel project, connect it to your Supabase Postgres database, and configure user authentication.
+
+
 
 ## 1. Create a Supabase project
 
@@ -148971,6 +149522,8 @@ php artisan serve
 
 Learn how to create a Supabase project, add some sample data, and query from a Next.js app.
 
+
+
 ## 1. Create a Supabase project
 
 To start, you need a Supabase project.
@@ -149047,6 +149600,16 @@ NEXT_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=nextjs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 6. Query Supabase data from Next.js
 
 Create a new file at `app/instruments/page.tsx` and populate with the following.
@@ -149094,6 +149657,8 @@ npm run dev
 # Use Supabase with Nuxt
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Nuxt app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -149192,6 +149757,16 @@ export default defineNuxtConfig({
 })
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=nuxt).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 7. Query data from the app
 
 In `app.vue`, create a Supabase client using your config values and replace the existing content with the following code.
@@ -149237,6 +149812,8 @@ Tip: The community-maintained [@nuxtjs/supabase](https://supabase.nuxtjs.org/) m
 # Use Supabase with React
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a React app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -149324,6 +149901,16 @@ VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=react).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 7. Query data from the app
 
 Replace the contents of `App.jsx` with a `getInstruments` function that fetches the data and displays the query result on the page using a Supabase client.
@@ -149388,6 +149975,8 @@ npm run dev
 # Use Supabase with RedwoodJS
 
 Learn how to create a Supabase project, add some sample data to your database using Prisma migration and seeds, and query the data from a RedwoodJS app.
+
+
 
 ## 1. Setup your new Supabase project
 
@@ -149544,6 +150133,8 @@ You may now edit, delete, and add new instruments using the scaffolded UI.
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Refine app.
 
+
+
 ## 1. Create a Supabase project
 
 To start, you need a Supabase project.
@@ -149634,6 +150225,16 @@ export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
   },
 })
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=refine).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## 6. Add instruments resource and pages
 
@@ -149742,6 +150343,8 @@ The Inferencer auto-generated code gives you a good starting point on which to k
 
 Learn how to create a Rails project and connect it to your Supabase Postgres database.
 
+
+
 ## 1. Create a Rails project
 
 With your Ruby and Rails versions up to date, run `rails new` on your terminal to scaffold a new project.
@@ -149820,6 +150423,8 @@ bin/rails server
 # Use Supabase with SolidJS
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a SolidJS app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -149907,6 +150512,16 @@ VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=solidjs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## 7. Query data from the app
 
 In `App.jsx`, create a Supabase client to fetch the instruments data.
@@ -149954,6 +150569,8 @@ npm run dev
 # Use Supabase with SvelteKit
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a SvelteKit app.
+
+
 
 ## 1. Create a Supabase project
 
@@ -150040,6 +150657,16 @@ Open Connect panel
 PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=sveltekit).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## 7. Create the Supabase client
 
@@ -150135,6 +150762,8 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a TanStack Start app.
 
+
+
 ## 1. Create a Supabase project
 
 To start, you need a Supabase project.
@@ -150218,6 +150847,16 @@ Open Connect panel
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=tanstack).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## 7. Create Supabase client utilities
 
@@ -150317,6 +150956,8 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Vue app.
 
+
+
 ## 1. Create a Supabase project
 
 To start, you need a Supabase project.
@@ -150402,6 +151043,16 @@ Open Connect panel
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=vue).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## 7. Create the Supabase client
 
@@ -150568,6 +151219,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=ionicangular).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -150779,6 +151440,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=exporeactnative).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -151086,6 +151757,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=flutter).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -152005,6 +152686,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=ionicangular).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start building the Angular app from scratch.
@@ -152236,6 +152927,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=ionicreact).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start building the React app from scratch.
@@ -152447,6 +153148,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=vuejs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start by building the Vue app from scratch.
@@ -152618,6 +153329,16 @@ USING (true)
 WITH CHECK (true)
 
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=androidkotlin).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ### Set up Google authentication
 
@@ -154111,6 +154832,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=nextjs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start building the Next.js app from scratch.
@@ -154416,6 +155147,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=nuxt).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -154894,6 +155635,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=react).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start building the React app from scratch.
@@ -155127,6 +155878,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -155780,6 +156541,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=refine).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start building the Refine app from scratch.
@@ -156090,6 +156861,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=solidjs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start building the SolidJS app from scratch.
@@ -156327,6 +157108,16 @@ create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
 
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=sveltekit).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
+
 ## Building the app
 
 Start building the Svelte app from scratch.
@@ -156528,6 +157319,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=sveltekit).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -156798,6 +157599,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=swift).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -157426,6 +158237,16 @@ create policy "Anyone can upload an avatar." on storage.objects
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
 ```
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=vuejs).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 ## Building the app
 
@@ -168708,7 +169529,7 @@ After receiving an initial email warning, the pause can be prevented by taking o
 
 ## Restoring a paused project
 
-You can restore a paused project for up to 90 days after it was paused:
+You can restore a paused project for up to 1 year after it was paused:
 
 1. Open the [Supabase Dashboard](https://supabase.com/dashboard/organizations)
 2. Select the organization, followed by the paused project
@@ -168716,9 +169537,9 @@ You can restore a paused project for up to 90 days after it was paused:
 
 The project will return to its previous state, including data and configurations.
 
-### 90-day window to restore
+### Restore window \[#90-day-window-to-restore]
 
-Once the project is paused, there is a 90-day window to restore the project on the platform from within Supabase Studio. The 90-day window allows Supabase to introduce platform changes that may not be backward compatible with older backups. Unlike active projects, static backups can't be updated to accommodate such changes.
+Once the project is paused, there is a 1-year window to restore the project on the platform from within Supabase Studio. The time limit exists because backups are only retained for a limited period, and platform changes may not be backward compatible with older backups. Unlike active projects, static backups can't be updated to accommodate such changes.
 
 ## Preventing automatic project pausing
 
@@ -177818,22 +178639,22 @@ When upgrading, the Supabase platform will "right-size" your disk based on the c
 
 ### Time limits
 
-Starting from 2024-06-24, when a project is paused, users then have a 90-day window to restore the project on the platform from within Supabase Studio.
+When a project is paused, users have a 1-year window to restore the project on the platform from within Supabase Studio.
 
-The 90-day window allows Supabase to introduce platform changes that may not be backwards compatible with older backups. Unlike active projects, static backups can't be updated to accommodate such changes.
+The restore window exists because backups are only retained for a limited period, and platform changes may not be backwards compatible with older backups. Unlike active projects, static backups can't be updated to accommodate such changes.
 
-During the 90-day restore window a paused project can be restored to the platform with a single button click from [Studio's dashboard page](https://supabase.com/dashboard/projects).
+During the restore window a paused project can be restored to the platform with a single button click from [Studio's dashboard page](https://supabase.com/dashboard/projects).
 
 ![Project Paused: 90 Days Remaining](https://supabase.com/docs/img/guides/platform/paused-90-day.png)
 
-After the 90-day restore window, you can download your project's backup file, and Storage objects from the project dashboard. You can restore the data in the following ways:
+After the restore window, you can download your project's backup file, and Storage objects from the project dashboard. You can restore the data in the following ways:
 
 - [Restore a backup to a new Supabase project](https://supabase.com/docs/guides/platform/migrating-within-supabase/dashboard-restore)
 - [Restore a backup locally](https://supabase.com/docs/guides/local-development/restoring-downloaded-backup)
 
 ![Project Paused: Download Backup](https://supabase.com/docs/img/guides/platform/paused-dl-backup.png)
 
-If you upgrade to a paid plan while your project is paused within the 90-day restore window, any expired one-click restore options are reenabled. Since the backup was taken outside the backwards compatibility window, it may fail to restore. If you have a problem restoring your backup after upgrading, contact [Support](https://supabase.com/support).
+If you upgrade to a paid plan while your project is paused, any expired one-click restore options are reenabled. Since the backup was taken outside the backwards compatibility window, it may fail to restore. If you have a problem restoring your backup after upgrading, contact [Support](https://supabase.com/support).
 
 ![Project Paused: Paid Tier Restore](https://supabase.com/docs/img/guides/platform/paused-paid-tier.png)
 
@@ -179913,6 +180734,15 @@ You can use the Supabase client libraries to receive Broadcast messages.
 
 Get the Project URL and key from [the project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true).
 
+Deprecation: Supabase has changed the way keys work to improve project security and developer experience. You can [read the full announcement on GitHub](https://github.com/orgs/supabase/discussions/29260).
+
+**They will be deprecated by the end of 2026, and you should now use the publishable (`sb_publishable_xxx`) and secret (`sb_secret_xxx`) keys instead**.
+
+In most cases, you can get keys from [the Project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=), but if you want a specific key, you can find them in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
+
+- **For new keys**, open the **API Keys** tab, if you don't have a publishable key already, click **Create new API Keys**, and copy the value from the **Publishable key** section for client-side operations. For server-side operations, copy the value from the **Secret keys** section.
+- **For legacy keys**, copy the `anon` key for client-side operations and the `service_role` key for server-side operations from the **Legacy API Keys** tab.
+
 **JavaScript**
 
 ```js
@@ -181095,6 +181925,16 @@ conda install -c conda-forge supabase
 ### 2. Initialize the client
 
 Get your project URL and key.
+
+### Get API details
+
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=).
+
+
+
+
+
+Tip: [Read the API keys docs](https://supabase.com/docs/guides/getting-started/api-keys) for a full explanation of all key types, their uses, and where to find them.
 
 **TypeScript**
 
@@ -184259,6 +185099,15 @@ The complete presence state returned by `presenceState()` looks like this:
 ### Initialize the client
 
 Get the Project URL and key from [the project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true).
+
+Deprecation: Supabase has changed the way keys work to improve project security and developer experience. You can [read the full announcement on GitHub](https://github.com/orgs/supabase/discussions/29260).
+
+**They will be deprecated by the end of 2026, and you should now use the publishable (`sb_publishable_xxx`) and secret (`sb_secret_xxx`) keys instead**.
+
+In most cases, you can get keys from [the Project's **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=), but if you want a specific key, you can find them in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard.
+
+- **For new keys**, open the **API Keys** tab, if you don't have a publishable key already, click **Create new API Keys**, and copy the value from the **Publishable key** section for client-side operations. For server-side operations, copy the value from the **Secret keys** section.
+- **For legacy keys**, copy the `anon` key for client-side operations and the `service_role` key for server-side operations from the **Legacy API Keys** tab.
 
 **JavaScript**
 
@@ -199586,7 +200435,7 @@ export async function createClient() {
 - [Resolving 500 Status Authentication Errors](https://supabase.com/docs/guides/troubleshooting/resolving-500-status-authentication-errors-7bU5U8)
 - [Resolving 'cannot execute UPDATE in a read-only transaction' on transaction pooler connections](https://supabase.com/docs/guides/troubleshooting/resolving-cannot-execute-update-in-a-read-only-transaction-on-transaction-pooler-connections-ef582c)
 - [Resolving database hostname and managing your IP address](https://supabase.com/docs/guides/troubleshooting/resolving-database-hostname-and-managing-your-ip-address-pVlwE0)
-- [How To Restore Project After 90-Day Pause](https://supabase.com/docs/guides/troubleshooting/restore-project-after-90-days-pause)
+- [How To Restore a Project Paused for More Than 1 Year](https://supabase.com/docs/guides/troubleshooting/restore-project-after-90-days-pause)
 - [RLS Performance and Best Practices](https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices-Z5Jjwv)
 - [RLS Simplified](https://supabase.com/docs/guides/troubleshooting/rls-simplified-BJTcS8)
 - [Rotating Anon, Service, and JWT Secrets](https://supabase.com/docs/guides/troubleshooting/rotating-anon-service-and-jwt-secrets-1Jq6yd)
@@ -208566,13 +209415,13 @@ Opting for the static [IPv4 add-on](https://supabase.com/docs/guides/platform/ip
 
 ---
 
-# How To Restore Project After 90-Day Pause
+# How To Restore a Project Paused for More Than 1 Year
 
-Projects paused for more than 90 days can no longer be restored through Supabase Studio. You can still recover your data by downloading the available backups and migrating them to a new project.
+Projects paused for more than 1 year can no longer be restored through Supabase Studio. You can still recover your data by downloading the available backups and migrating them to a new project.
 
 Both the database backup and Storage objects can be downloaded from the [Project Overview](https://supabase.com/dashboard/project/_) section in Supabase Studio before the project is deleted.
 
-![Restore project after 90-day pause](https://supabase.com/docs/img/restore-after-90-day-dark.png)
+![Restore project after pause](https://supabase.com/docs/img/restore-after-90-day-dark.png)
 
 Check this [short video walk-through](https://youtu.be/ktsgm8HxWqo?si=5_8IVzL1rp8MWv7m) of the full migration process.
 

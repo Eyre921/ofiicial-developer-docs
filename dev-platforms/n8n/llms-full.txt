@@ -1048,6 +1048,8 @@ To install the `next` version:
 npm install -g n8n@next
 ```
 
+### n8n with tunnel&#x20;
+
 {% hint style="danger" %}
 Use this for local development and testing. It isn't safe to use it in production.
 {% endhint %}
@@ -1263,6 +1265,8 @@ docker compose down
 # Start the container <a href="#start-the-container" id="start-the-container"></a>
 docker compose up -d
 ```
+
+### n8n with tunnel&#x20;
 
 {% hint style="danger" %}
 Use this for local development and testing. It isn't safe to use it in production.

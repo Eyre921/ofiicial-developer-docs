@@ -202,6 +202,18 @@ This is useful if you know the amount of time needed to perform actions between 
 
 > With `capture_method=automatic_delayed`, Stripe prioritizes capturing the payment before authorization expiration. If the authorization window is shorter than the specified delay period, we capture the PaymentIntent before expiration, ignoring the delay period.
 
+### Interested in getting early access to automatic delayed captures?
+
+Provide your email address below, and our team will contact you soon.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/payments/place-a-hold-on-a-payment-method" \
+  -d '{"email": "EMAIL", "preview": "automatic_delayed_capture_beta_preview"}'
+```
+
 ## See also
 
 - [Separate authorization and capture with Checkout](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=checkout&ui=stripe-hosted#auth-and-capture)

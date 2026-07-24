@@ -62,7 +62,7 @@ See how Stripe supports different payment scenarios by each integration path.
 
 [One-click checkout options](https://docs.stripe.com/elements/express-checkout-element.md): Show multiple one-click payment buttons with a single component.
 
-[Send email receipts](https://docs.stripe.com/payments/advanced/receipts.md): Send payment or refund receipts automatically.
+[Send email receipts](https://docs.stripe.com/receipts.md): Send payment or refund receipts automatically.
 
 ## Collect different payment details 
 

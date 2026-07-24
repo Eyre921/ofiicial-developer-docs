@@ -60,6 +60,10 @@ Not all models support the Batch API. Before submitting a batch job, verify your
     ```
 
     Save as `batch_input_data.jsonl` locally.
+
+    <Tip>
+      If every row shares the same `system` message, you can omit it from the dataset and set it once at the job level with `--system-prompt` instead — see [Job-level system prompt](#job-level-system-prompt). This shrinks your upload and keeps prompt-caching intact.
+    </Tip>
   </Accordion>
 
   <Accordion title="2. Upload Your Dataset">
@@ -129,6 +133,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
           --model accounts/fireworks/models/llama-v3p1-8b-instruct \
           --input-dataset-id batch-input-dataset \
           --output-dataset-id batch-output-dataset \
+          --system-prompt "You are a helpful assistant." \
           --max-tokens 1024 \
           --temperature 0.7 \
           --top-p 0.9
@@ -144,6 +149,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
             "model": "accounts/fireworks/models/llama-v3p1-8b-instruct",
             "inputDatasetId": "accounts/'${ACCOUNT_ID}'/datasets/batch-input-dataset",
             "outputDatasetId": "accounts/'${ACCOUNT_ID}'/datasets/batch-output-dataset",
+            "systemPrompt": "You are a helpful assistant.",
             "inferenceParameters": {
               "maxTokens": 1024,
               "temperature": 0.7,
@@ -225,6 +231,42 @@ Not all models support the Batch API. Before submitting a batch job, verify your
   </Accordion>
 </AccordionGroup>
 
+## Job-level system prompt
+
+Set one static `system` message for the entire job instead of repeating it on every dataset row. When provided, the batch runner injects it as a leading `system` message into **every input row that does not already begin with a `system` message** — a row's own leading `system` message always takes precedence, so you can override the job-level prompt per-row when needed.
+
+This is useful when all rows share a large, fixed system prompt (e.g. a rubric or output-schema spec). Removing it from every row shrinks the input dataset (less upload, stays under the 1GB limit), and because the injected prefix is byte-identical across rows, [prompt caching](/guides/prompt-caching) still applies.
+
+```bash theme={null}
+firectl batch-inference-job create \
+  --model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --input-dataset-id batch-input-dataset \
+  --system-prompt "You are a helpful assistant that responds in JSON."
+```
+
+For a long or multi-line prompt, pass it from a file to preserve newlines and avoid shell-escaping:
+
+```bash theme={null}
+firectl batch-inference-job create \
+  --model accounts/fireworks/models/llama-v3p1-8b-instruct \
+  --input-dataset-id batch-input-dataset \
+  --system-prompt "$(cat ./system_prompt.txt)"
+```
+
+The equivalent HTTP field is `systemPrompt`:
+
+```json theme={null}
+{
+  "model": "accounts/fireworks/models/llama-v3p1-8b-instruct",
+  "inputDatasetId": "accounts/${ACCOUNT_ID}/datasets/batch-input-dataset",
+  "systemPrompt": "You are a helpful assistant that responds in JSON."
+}
+```
+
+<Note>
+  The injected system message counts toward the model's context window. If your system prompt is very large and your rows also include long content (e.g. media), the combined prompt may exceed the model's context length — the job will run but produce no completions. Keep the system prompt + per-row content within the model's context limit, or trim the prompt.
+</Note>
+
 ## Reference
 
 <AccordionGroup>
@@ -284,6 +326,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
     * **Optimize tokens:** Set reasonable `max_tokens` limits
     * **Monitor progress:** Track long-running jobs regularly
     * **Cache optimization:** Place static content first in prompts
+    * **Shared system prompt:** If every row uses the same system message, set it once with `--system-prompt` instead of repeating it per row — smaller upload and cache-friendly (see [Job-level system prompt](#job-level-system-prompt))
   </Accordion>
 </AccordionGroup>
 

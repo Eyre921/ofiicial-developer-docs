@@ -279,64 +279,42 @@ components:
 
 
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
-  "page": 1,
-  "limit": 25,
+  "page": 0,
+  "limit": 10,
   "requests": [
     {
       "request_id": "a3f1c9d2-4b7e-4f9a-8c3d-2e5f7b9a1c0d",
       "project_uuid": "12345678-90ab-cdef-1234-567890abcdef",
-      "created": "2024-01-15T09:30:00Z",
-      "path": "/v1/listen",
-      "api_key_id": "key_9876543210abcdef",
+      "created": "2024-01-15T09:48:20.000Z",
+      "path": "/v1/listen?",
+      "api_key_id": "b1e2c3d4-5678-90ab-cdef-1234567890ab",
       "response": {
-        "transcript": "Hello, this is a test transcription.",
-        "confidence": 0.98,
-        "words": [
-          {
-            "word": "Hello",
-            "start": 0,
-            "end": 0.5
-          },
-          {
-            "word": "this",
-            "start": 0.5,
-            "end": 0.8
-          },
-          {
-            "word": "is",
-            "start": 0.8,
-            "end": 1
-          },
-          {
-            "word": "a",
-            "start": 1,
-            "end": 1.1
-          },
-          {
-            "word": "test",
-            "start": 1.1,
-            "end": 1.5
-          },
-          {
-            "word": "transcription",
-            "start": 1.5,
-            "end": 2.5
-          }
-        ]
+        "details": {
+          "usd": 0.0075,
+          "duration": 30,
+          "total_audio": 30,
+          "channels": 1,
+          "streams": 1,
+          "tier": "base",
+          "metadata": {},
+          "models": [
+            "1a2b3c4d-5e6f-4a8b-9c0d-1e2f3a4b5c6d"
+          ],
+          "method": "sync",
+          "tags": [],
+          "features": [],
+          "config": {}
+        },
+        "token_details": [],
+        "code": 200,
+        "completed": "2024-01-15T09:48:21.000Z",
+        "deployment": "hosted:us"
       },
-      "code": 200,
-      "deployment": "production",
-      "callback": "https://myapp.example.com/callback"
+      "callback": null
     }
   ]
 }
@@ -347,28 +325,18 @@ components:
 ```python
 import requests
 
-url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests"
+url = "https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests"
 
-querystring = {"accessor":"12345678-1234-1234-1234-123456789012","request_id":"12345678-1234-1234-1234-123456789012","deployment":"hosted","endpoint":"listen","method":"async","status":"succeeded"}
+headers = {"Authorization": "Token <apiKey>"}
 
-payload = {}
-headers = {
-    "Authorization": "Token <apiKey>",
-    "Content-Type": "application/json"
-}
-
-response = requests.get(url, json=payload, headers=headers, params=querystring)
+response = requests.get(url, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests?accessor=12345678-1234-1234-1234-123456789012&request_id=12345678-1234-1234-1234-123456789012&deployment=hosted&endpoint=listen&method=async&status=succeeded';
-const options = {
-  method: 'GET',
-  headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{}'
-};
+const url = 'https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests';
+const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
   const response = await fetch(url, options);
@@ -384,21 +352,17 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
 
 func main() {
 
-	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests?accessor=12345678-1234-1234-1234-123456789012&request_id=12345678-1234-1234-1234-123456789012&deployment=hosted&endpoint=listen&method=async&status=succeeded"
+	url := "https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
+	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("Authorization", "Token <apiKey>")
-	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -415,15 +379,13 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests?accessor=12345678-1234-1234-1234-123456789012&request_id=12345678-1234-1234-1234-123456789012&deployment=hosted&endpoint=listen&method=async&status=succeeded")
+url = URI("https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
 request["Authorization"] = 'Token <apiKey>'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -433,10 +395,8 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests?accessor=12345678-1234-1234-1234-123456789012&request_id=12345678-1234-1234-1234-123456789012&deployment=hosted&endpoint=listen&method=async&status=succeeded")
+HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests")
   .header("Authorization", "Token <apiKey>")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -446,11 +406,9 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests?accessor=12345678-1234-1234-1234-123456789012&request_id=12345678-1234-1234-1234-123456789012&deployment=hosted&endpoint=listen&method=async&status=succeeded', [
-  'body' => '{}',
+$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests', [
   'headers' => [
     'Authorization' => 'Token <apiKey>',
-    'Content-Type' => 'application/json',
   ],
 ]);
 
@@ -460,31 +418,22 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests?accessor=12345678-1234-1234-1234-123456789012&request_id=12345678-1234-1234-1234-123456789012&deployment=hosted&endpoint=listen&method=async&status=succeeded");
+var client = new RestClient("https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "Authorization": "Token <apiKey>",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
+let headers = ["Authorization": "Token <apiKey>"]
 
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/requests?accessor=12345678-1234-1234-1234-123456789012&request_id=12345678-1234-1234-1234-123456789012&deployment=hosted&endpoint=listen&method=async&status=succeeded")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/12345678-90ab-cdef-1234-567890abcdef/requests")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

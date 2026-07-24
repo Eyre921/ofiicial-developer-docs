@@ -16,5 +16,5 @@ Customize the post-payment checkout process.
 
 [Analyze your conversion funnel](https://docs.stripe.com/payments/checkout/analyze-conversion-funnel.md): Analyze your Stripe Checkout conversion funnel with Google Analytics 4.
 
-[Send email receipts and paid invoices](https://docs.stripe.com/payments/checkout/receipts.md): Send payment or refund receipts automatically.
+[Send email receipts and paid invoices](https://docs.stripe.com/receipts.md): Send payment or refund receipts automatically.
 

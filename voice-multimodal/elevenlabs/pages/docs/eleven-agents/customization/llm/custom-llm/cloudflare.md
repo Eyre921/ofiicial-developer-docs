@@ -31,7 +31,7 @@ benchmarks, achieving new state-of-the-art results for dense models.
 
 Navigate to [dash.cloudflare.com](https://dash.cloudflare.com) and create or sign in to your account. In the navigation, select AI > Workers AI, and then click on the "Use REST API" widget.
 
-![Add Secret](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/ba8414d3dc5f806d004f8b4ac0c7dc0d77a0b292a9dbd86dfb8b2d6736a40118/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-api-key.png)
+![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ba8414d3dc5f806d004f8b4ac0c7dc0d77a0b292a9dbd86dfb8b2d6736a40118/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-api-key.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260724%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260724T233205Z&X-Amz-Expires=604800&X-Amz-Signature=8debda5aa5cace1fd2b8eee3beb288689acceb0457eb654493dce40f01238377&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once you have your API key, you can try it out immediately with a curl request. Cloudflare provides an OpenAI-compatible API endpoint making this very convenient. At this point make a note of the model and the full endpoint — including the account ID. For example: `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}c/ai/v1/`.
 
@@ -51,14 +51,14 @@ curl https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/chat/compl
 
 Navigate to your [AI Agent](https://elevenlabs.io/app/agents), scroll down to the "Secrets" section and select "Add Secret". After adding the secret, make sure to hit "Save" to make the secret available to your agent.
 
-![Add Secret](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/59dbfcd46a69b9f28e58e68de7b3dd678ee9f6bfd499fd23699017e92b11931f/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-secret.png)
+![Add Secret](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/59dbfcd46a69b9f28e58e68de7b3dd678ee9f6bfd499fd23699017e92b11931f/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-secret.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260724%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260724T233205Z&X-Amz-Expires=604800&X-Amz-Signature=414154ced6e3b50501983e2e6fff4fe467125d85b5c93d0e4189e9c0fcc2e9fa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Choose "Custom LLM" from the dropdown menu.
 
-![Choose custom llm](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac/assets/images/conversational-ai/byollm-2.png)
+![Choose custom llm](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/45ec75f558a5c8e5070bd3170d96cbc54ef63e15d9f04ac472a45854a22a17ac/assets/images/conversational-ai/byollm-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260724%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260724T233205Z&X-Amz-Expires=604800&X-Amz-Signature=648ff1e0c62ed881669e0ea3334c4b00d3e2cc457c72a5ae0db73ae89af95757&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For the Server URL, specify Cloudflare's OpenAI-compatible API endpoint: `https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/`. For the Model ID, specify `@cf/deepseek-ai/deepseek-r1-distill-qwen-32b` as discussed above, and select your API key from the dropdown menu.
 
-![Enter url](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/da17a1626b64d7b3eadb23ee17eb0e7bd3bb5156f8edf2357816820169d74d94/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-llm.png)
+![Enter url](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/da17a1626b64d7b3eadb23ee17eb0e7bd3bb5156f8edf2357816820169d74d94/assets/images/conversational-ai/cloudflare-workers-ai/cloudflare-workers-ai-llm.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260724%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260724T233205Z&X-Amz-Expires=604800&X-Amz-Signature=90c809d772d3e1909d6e9f4ba3f4bf4b87b2cb83c3bc9c3641ab3c5cd4136747&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Now you can go ahead and click "Test AI Agent" to chat with your custom DeepSeek R1 model.

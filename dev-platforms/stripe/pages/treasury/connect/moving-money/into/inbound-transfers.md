@@ -232,7 +232,8 @@ If successful, the response returns the `InboundTransfer` object with the expand
     "status_transitions": {
         "failed_at": null,
         "succeeded_at": 1648071306
-    },"transaction": {
+    },
+    "transaction": {
         "id": "{{TRANSACTION_ID}}",
         "object": "transaction",
         "amount": 20000,

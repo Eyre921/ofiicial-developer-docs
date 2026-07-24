@@ -76,11 +76,13 @@
 - [Inbound SMS](https://docs.vapi.ai/phone-numbers/inbound-sms.md): Let agents auto-start chats from incoming text messages (US only)
 - [Import number from Twilio](https://docs.vapi.ai/phone-numbers/import-twilio.md): Import a new or existing number from Twilio
 - [Import number from Telnyx](https://docs.vapi.ai/telnyx.md): Import and use your Telnyx numbers with Vapi
+- [Import a number from DIDWW](https://docs.vapi.ai/phone-numbers/didww.md): Import a DIDWW phone number into Vapi as a BYO SIP trunk number. Assign the inbound trunk credential and an assistant, then test inbound and outbound calls.
 - [SIP introduction](https://docs.vapi.ai/advanced/sip.md): Make SIP calls to your Vapi assistant
 - [SIP Trunking](https://docs.vapi.ai/advanced/sip/sip-trunk.md): How to integrate your SIP provider with Vapi
 - [SIP networking and firewall configuration](https://docs.vapi.ai/advanced/sip/sip-networking.md): Learn to configure your network to allow SIP signalling and media traffic with Vapi
 - [Twilio SIP Integration](https://docs.vapi.ai/advanced/sip/twilio.md): How to integrate Twilio SIP with Vapi
 - [Telnyx SIP integration](https://docs.vapi.ai/advanced/sip/telnyx.md): How to integrate SIP Telnyx to Vapi
+- [DIDWW SIP integration](https://docs.vapi.ai/advanced/sip/didww.md): Set up DIDWW SIP trunking with Vapi. Create inbound and outbound trunks, allowlist signaling IPs, and configure authenticated SIP REFER call transfers.
 - [Zadarma SIP Integration](https://docs.vapi.ai/advanced/sip/zadarma.md): How to integrate SIP Zadarma to Vapi
 - [Plivo SIP Integration](https://docs.vapi.ai/advanced/sip/plivo.md): Learn to connect your Plivo SIP trunk to Vapi for inbound and outbound calls
 - [Amazon Chime SDK SIP Integration](https://docs.vapi.ai/advanced/sip/amazon-chime.md): How to integrate Amazon Chime SDK Voice Connector with Vapi

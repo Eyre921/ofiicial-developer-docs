@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 296 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 299 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -54,7 +54,9 @@
 - `docs/api_reference/responses/tool-calling` — [Tool Calling](pages/docs/api_reference/responses/tool-calling.md) · [原文](https://openrouter.ai/docs/api_reference/responses/tool-calling.md)
 - `docs/api_reference/responses/web-search` — [Web Search](pages/docs/api_reference/responses/web-search.md) · [原文](https://openrouter.ai/docs/api_reference/responses/web-search.md)
 - `docs/api_reference/streaming` — [Streaming](pages/docs/api_reference/streaming.md) · [原文](https://openrouter.ai/docs/api_reference/streaming.md)
+- `docs/api_reference/versioning` — [API Versioning](pages/docs/api_reference/versioning.md) · [原文](https://openrouter.ai/docs/api_reference/versioning.md)
 - `docs/app-attribution` — [App Attribution](pages/docs/app-attribution.md) · [原文](https://openrouter.ai/docs/app-attribution.md)
+- `docs/changelog` — [API Changelog](pages/docs/changelog.md) · [原文](https://openrouter.ai/docs/changelog.md)
 - `docs/client-sdks/agent-migration` — [Migrating to @openrouter/agent](pages/docs/client-sdks/agent-migration.md) · [原文](https://openrouter.ai/docs/client-sdks/agent-migration.md)
 - `docs/client-sdks/dev-tools/devtools` — [DevTools](pages/docs/client-sdks/dev-tools/devtools.md) · [原文](https://openrouter.ai/docs/client-sdks/dev-tools/devtools.md)
 - `docs/client-sdks/go/overview` — [OpenRouter Go SDK](pages/docs/client-sdks/go/overview.md) · [原文](https://openrouter.ai/docs/client-sdks/go/overview.md)
@@ -172,6 +174,7 @@
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7` — [Claude 4.7 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4` — [GPT-5.4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6` — [GPT-5.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/opus-5` — [Claude Opus 5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5` — [Claude 5 Sonnet Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md)
 - `docs/cookbook/evaluate-and-optimize/rag` — [RAG with Embeddings & Rerank](pages/docs/cookbook/evaluate-and-optimize/rag.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/rag.md)
 - `docs/cookbook/evaluate-and-optimize/red-teaming` — [Red Teaming](pages/docs/cookbook/evaluate-and-optimize/red-teaming.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/red-teaming.md)

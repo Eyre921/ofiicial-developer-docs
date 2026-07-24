@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1191 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1192 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -266,6 +266,7 @@
 - `docs/api-reference/twilio/register-call` — [Register call](pages/docs/api-reference/twilio/register-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/register-call.md)
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
+- `docs/api-reference/users/list` — [List users](pages/docs/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/api-reference/users/list.md)
 - `docs/api-reference/voices/delete` — [Delete voice](pages/docs/api-reference/voices/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/delete.md)
 - `docs/api-reference/voices/find-similar-voices` — [List similar voices](pages/docs/api-reference/voices/find-similar-voices.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/find-similar-voices.md)
 - `docs/api-reference/voices/get` — [Get voice](pages/docs/api-reference/voices/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/get.md)

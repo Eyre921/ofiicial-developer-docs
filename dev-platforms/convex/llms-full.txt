@@ -289,11 +289,13 @@
 - [Class: SchemaDefinition<Schema, StrictTableTypes>](/api/classes/server.SchemaDefinition.md): server.SchemaDefinition
 - [Class: SearchFilter](/api/classes/server.SearchFilter.md): server.SearchFilter
 - [Class: TableDefinition<DocumentType, Indexes, SearchIndexes, VectorIndexes>](/api/classes/server.TableDefinition.md): server.TableDefinition
+- [Class: CommitTsPlaceholder](/api/classes/values.CommitTsPlaceholder.md): values.CommitTsPlaceholder
 - [Class: ConvexError<TData>](/api/classes/values.ConvexError.md): values.ConvexError
 - [Class: VAny<Type, IsOptional, FieldPaths>](/api/classes/values.VAny.md): values.VAny
 - [Class: VArray<Type, Element, IsOptional>](/api/classes/values.VArray.md): values.VArray
 - [Class: VBoolean<Type, IsOptional>](/api/classes/values.VBoolean.md): values.VBoolean
 - [Class: VBytes<Type, IsOptional>](/api/classes/values.VBytes.md): values.VBytes
+- [Class: VCommitTs<Type, IsOptional>](/api/classes/values.VCommitTs.md): values.VCommitTs
 - [Class: VFloat64<Type, IsOptional>](/api/classes/values.VFloat64.md): values.VFloat64
 - [Class: VId<Type, IsOptional>](/api/classes/values.VId.md): values.VId
 - [Class: VInt64<Type, IsOptional>](/api/classes/values.VInt64.md): values.VInt64
@@ -8002,6 +8004,83 @@ Work around for <https://github.com/microsoft/TypeScript/issues/57035>
 
 ---
 
+# Class: CommitTsPlaceholder
+
+[values](/api/modules/values.md).CommitTsPlaceholder
+
+The placeholder for a transaction's commit timestamp, which is not known until the mutation commits. Write it into a document field via `db.vars.commitTs` and it resolves to an int64 (`bigint`) at commit, ordered by commit order. Reading the field back within the writing mutation yields the placeholder, which cannot be used as a number.
+
+## Constructors[​](#constructors "Direct link to Constructors")
+
+### constructor[​](#constructor "Direct link to constructor")
+
+• **new CommitTsPlaceholder**()
+
+## Methods[​](#methods "Direct link to Methods")
+
+### \[toPrimitive][​](#toprimitive "Direct link to \[toPrimitive]")
+
+▸ **\[toPrimitive]**(`hint`): `string`
+
+#### Parameters[​](#parameters "Direct link to Parameters")
+
+| Name   | Type     |
+| ------ | -------- |
+| `hint` | `string` |
+
+#### Returns[​](#returns "Direct link to Returns")
+
+`string`
+
+#### Defined in[​](#defined-in "Direct link to Defined in")
+
+[values/value.ts:101](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L101)
+
+***
+
+### valueOf[​](#valueof "Direct link to valueOf")
+
+▸ **valueOf**(): `never`
+
+#### Returns[​](#returns-1 "Direct link to Returns")
+
+`never`
+
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+
+[values/value.ts:108](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L108)
+
+***
+
+### toJSON[​](#tojson "Direct link to toJSON")
+
+▸ **toJSON**(): `never`
+
+#### Returns[​](#returns-2 "Direct link to Returns")
+
+`never`
+
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+
+[values/value.ts:111](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L111)
+
+***
+
+### toString[​](#tostring "Direct link to toString")
+
+▸ **toString**(): `string`
+
+#### Returns[​](#returns-3 "Direct link to Returns")
+
+`string`
+
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+
+[values/value.ts:114](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L114)
+
+
+---
+
 # Class: ConvexError\<TData>
 
 [values](/api/modules/values.md).ConvexError
@@ -8046,6 +8125,40 @@ Error.constructor
 
 ## Properties[​](#properties "Direct link to Properties")
 
+### name[​](#name "Direct link to name")
+
+• **name**: `string` = `"ConvexError"`
+
+#### Overrides[​](#overrides-1 "Direct link to Overrides")
+
+Error.name
+
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+
+[values/errors.ts:6](https://github.com/get-convex/convex-js/blob/main/src/values/errors.ts#L6)
+
+***
+
+### data[​](#data "Direct link to data")
+
+• **data**: `TData`
+
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+
+[values/errors.ts:7](https://github.com/get-convex/convex-js/blob/main/src/values/errors.ts#L7)
+
+***
+
+### \[IDENTIFYING\_FIELD][​](#identifying_field "Direct link to \[IDENTIFYING_FIELD]")
+
+• **\[IDENTIFYING\_FIELD]**: `boolean` = `true`
+
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+
+[values/errors.ts:8](https://github.com/get-convex/convex-js/blob/main/src/values/errors.ts#L8)
+
+***
+
 ### stackTraceLimit[​](#stacktracelimit "Direct link to stackTraceLimit")
 
 ▪ `Static` **stackTraceLimit**: `number`
@@ -8060,9 +8173,9 @@ If set to a non-number value, or set to a negative number, stack traces will not
 
 Error.stackTraceLimit
 
-#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-../../common/temp/node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:68
+../../node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:68
 
 ***
 
@@ -8074,9 +8187,9 @@ Error.stackTraceLimit
 
 Error.cause
 
-#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-../../common/temp/node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2022.error.d.ts:24
+../../node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2022.error.d.ts:24
 
 ***
 
@@ -8088,9 +8201,9 @@ Error.cause
 
 Error.message
 
-#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-../../common/temp/node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es5.d.ts:1055
+../../node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es5.d.ts:1055
 
 ***
 
@@ -8102,43 +8215,9 @@ Error.message
 
 Error.stack
 
-#### Defined in[​](#defined-in-4 "Direct link to Defined in")
-
-../../common/temp/node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es5.d.ts:1056
-
-***
-
-### name[​](#name "Direct link to name")
-
-• **name**: `string` = `"ConvexError"`
-
-#### Overrides[​](#overrides-1 "Direct link to Overrides")
-
-Error.name
-
-#### Defined in[​](#defined-in-5 "Direct link to Defined in")
-
-[values/errors.ts:6](https://github.com/get-convex/convex-js/blob/main/src/values/errors.ts#L6)
-
-***
-
-### data[​](#data "Direct link to data")
-
-• **data**: `TData`
-
-#### Defined in[​](#defined-in-6 "Direct link to Defined in")
-
-[values/errors.ts:7](https://github.com/get-convex/convex-js/blob/main/src/values/errors.ts#L7)
-
-***
-
-### \[IDENTIFYING\_FIELD][​](#identifying_field "Direct link to \[IDENTIFYING_FIELD]")
-
-• **\[IDENTIFYING\_FIELD]**: `boolean` = `true`
-
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/errors.ts:8](https://github.com/get-convex/convex-js/blob/main/src/values/errors.ts#L8)
+../../node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es5.d.ts:1056
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -8223,7 +8302,7 @@ Error.captureStackTrace
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-../../common/temp/node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:52
+../../node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:52
 
 ***
 
@@ -8252,7 +8331,7 @@ Error.prepareStackTrace
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-../../common/temp/node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:56
+../../node\_modules/.pnpm/@types+node\@18.19.130/node\_modules/@types/node/globals.d.ts:56
 
 
 ---
@@ -8380,7 +8459,7 @@ The kind of validator, `"any"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:261](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L261)
+[values/validators.ts:285](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L285)
 
 
 ---
@@ -8435,7 +8514,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:490](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L490)
+[values/validators.ts:514](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L514)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -8511,7 +8590,7 @@ The validator for the elements of the array.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:480](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L480)
+[values/validators.ts:504](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L504)
 
 ***
 
@@ -8523,7 +8602,7 @@ The kind of validator, `"array"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:485](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L485)
+[values/validators.ts:509](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L509)
 
 
 ---
@@ -8649,7 +8728,7 @@ The kind of validator, `"boolean"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:168](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L168)
+[values/validators.ts:192](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L192)
 
 
 ---
@@ -8775,7 +8854,133 @@ The kind of validator, `"bytes"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:192](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L192)
+[values/validators.ts:216](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L216)
+
+
+---
+
+# Class: VCommitTs\<Type, IsOptional>
+
+[values](/api/modules/values.md).VCommitTs
+
+The type of the `v.commitTs()` validator.
+
+## Type parameters[​](#type-parameters "Direct link to Type parameters")
+
+| Name         | Type                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `Type`       | `bigint` \| [`CommitTsPlaceholder`](/api/classes/values.CommitTsPlaceholder.md)      |
+| `IsOptional` | extends [`OptionalProperty`](/api/modules/values.md#optionalproperty) = `"required"` |
+
+## Hierarchy[​](#hierarchy "Direct link to Hierarchy")
+
+* `BaseValidator`<`Type`, `IsOptional`>
+
+  ↳ **`VCommitTs`**
+
+## Constructors[​](#constructors "Direct link to Constructors")
+
+### constructor[​](#constructor "Direct link to constructor")
+
+• **new VCommitTs**<`Type`, `IsOptional`>(`«destructured»`)
+
+#### Type parameters[​](#type-parameters-1 "Direct link to Type parameters")
+
+| Name         | Type                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `Type`       | `bigint` \| [`CommitTsPlaceholder`](/api/classes/values.CommitTsPlaceholder.md)      |
+| `IsOptional` | extends [`OptionalProperty`](/api/modules/values.md#optionalproperty) = `"required"` |
+
+#### Parameters[​](#parameters "Direct link to Parameters")
+
+| Name             | Type         |
+| ---------------- | ------------ |
+| `«destructured»` | `Object`     |
+| › `isOptional`   | `IsOptional` |
+
+#### Inherited from[​](#inherited-from "Direct link to Inherited from")
+
+BaseValidator\<Type, IsOptional>.constructor
+
+#### Defined in[​](#defined-in "Direct link to Defined in")
+
+[values/validators.ts:54](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L54)
+
+## Properties[​](#properties "Direct link to Properties")
+
+### type[​](#type "Direct link to type")
+
+• `Readonly` **type**: `Type`
+
+Only for TypeScript, the TS type of the JS values validated by this validator.
+
+#### Inherited from[​](#inherited-from-1 "Direct link to Inherited from")
+
+BaseValidator.type
+
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+
+[values/validators.ts:37](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L37)
+
+***
+
+### fieldPaths[​](#fieldpaths "Direct link to fieldPaths")
+
+• `Readonly` **fieldPaths**: `never`
+
+Only for TypeScript, if this an Object validator, then this is the TS type of its property names.
+
+#### Inherited from[​](#inherited-from-2 "Direct link to Inherited from")
+
+BaseValidator.fieldPaths
+
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+
+[values/validators.ts:42](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L42)
+
+***
+
+### isOptional[​](#isoptional "Direct link to isOptional")
+
+• `Readonly` **isOptional**: `IsOptional`
+
+Whether this is an optional Object property value validator.
+
+#### Inherited from[​](#inherited-from-3 "Direct link to Inherited from")
+
+BaseValidator.isOptional
+
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+
+[values/validators.ts:47](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L47)
+
+***
+
+### isConvexValidator[​](#isconvexvalidator "Direct link to isConvexValidator")
+
+• `Readonly` **isConvexValidator**: `true`
+
+Always `"true"`.
+
+#### Inherited from[​](#inherited-from-4 "Direct link to Inherited from")
+
+BaseValidator.isConvexValidator
+
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
+
+[values/validators.ts:52](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L52)
+
+***
+
+### kind[​](#kind "Direct link to kind")
+
+• `Readonly` **kind**: `"commitTs"`
+
+The kind of validator, `"commitTs"`.
+
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+
+[values/validators.ts:168](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L168)
 
 
 ---
@@ -9221,7 +9426,7 @@ BaseValidator\&lt;Type, IsOptional\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:441](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L441)
+[values/validators.ts:465](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L465)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -9297,7 +9502,7 @@ The value that the validated values must be equal to.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:431](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L431)
+[values/validators.ts:455](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L455)
 
 ***
 
@@ -9309,7 +9514,7 @@ The kind of validator, `"literal"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:436](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L436)
+[values/validators.ts:460](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L460)
 
 
 ---
@@ -9435,7 +9640,7 @@ The kind of validator, `"null"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:238](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L238)
+[values/validators.ts:262](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L262)
 
 
 ---
@@ -9492,7 +9697,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:304](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L304)
+[values/validators.ts:328](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L328)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -9568,7 +9773,7 @@ An object with the validator for each property.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:294](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L294)
+[values/validators.ts:318](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L318)
 
 ***
 
@@ -9580,7 +9785,7 @@ The kind of validator, `"object"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:299](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L299)
+[values/validators.ts:323](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L323)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -9608,7 +9813,7 @@ Create a new VObject with the specified fields omitted.
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:349](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L349)
+[values/validators.ts:373](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L373)
 
 ***
 
@@ -9636,7 +9841,7 @@ Create a new VObject with only the specified fields.
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[values/validators.ts:366](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L366)
+[values/validators.ts:390](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L390)
 
 ***
 
@@ -9652,7 +9857,7 @@ Create a new VObject with all fields marked as optional.
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[values/validators.ts:386](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L386)
+[values/validators.ts:410](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L410)
 
 ***
 
@@ -9680,7 +9885,7 @@ Create a new VObject with additional fields merged in.
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[values/validators.ts:407](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L407)
+[values/validators.ts:431](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L431)
 
 
 ---
@@ -9740,7 +9945,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:547](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L547)
+[values/validators.ts:571](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L571)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -9816,7 +10021,7 @@ The validator for the keys of the record.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:532](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L532)
+[values/validators.ts:556](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L556)
 
 ***
 
@@ -9828,7 +10033,7 @@ The validator for the values of the record.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:537](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L537)
+[values/validators.ts:561](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L561)
 
 ***
 
@@ -9840,7 +10045,7 @@ The kind of validator, `"record"`.
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:542](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L542)
+[values/validators.ts:566](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L566)
 
 
 ---
@@ -9966,7 +10171,7 @@ The kind of validator, `"string"`.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:214](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L214)
+[values/validators.ts:238](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L238)
 
 
 ---
@@ -10023,7 +10228,7 @@ BaseValidator\&lt;Type, IsOptional, FieldPaths\&gt;.constructor
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validators.ts:619](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L619)
+[values/validators.ts:643](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L643)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -10099,7 +10304,7 @@ The array of validators, one of which must match the value.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:609](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L609)
+[values/validators.ts:633](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L633)
 
 ***
 
@@ -10111,7 +10316,7 @@ The kind of validator, `"union"`.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:614](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L614)
+[values/validators.ts:638](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L638)
 
 
 ---
@@ -13734,24 +13939,6 @@ A [Query](/api/interfaces/server.Query.md) with an order that has already been d
 
 ## Methods[​](#methods "Direct link to Methods")
 
-### \[asyncIterator][​](#asynciterator "Direct link to \[asyncIterator]")
-
-▸ **\[asyncIterator]**(): `AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
-
-#### Returns[​](#returns "Direct link to Returns")
-
-`AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
-
-#### Inherited from[​](#inherited-from "Direct link to Inherited from")
-
-AsyncIterable.\[asyncIterator]
-
-#### Defined in[​](#defined-in "Direct link to Defined in")
-
-../../common/temp/node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
-
-***
-
 ### filter[​](#filter "Direct link to filter")
 
 ▸ **filter**(`predicate`): [`OrderedQuery`](/api/interfaces/server.OrderedQuery.md)<`TableInfo`>
@@ -13766,13 +13953,13 @@ Filter the query output, returning only the values for which `predicate` evaluat
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `predicate` | (`q`: [`FilterBuilder`](/api/interfaces/server.FilterBuilder.md)<`TableInfo`>) => [`ExpressionOrValue`](/api/modules/server.md#expressionorvalue)<`boolean`> | An [Expression](/api/classes/server.Expression.md) constructed with the supplied [FilterBuilder](/api/interfaces/server.FilterBuilder.md) that specifies which documents to keep. |
 
-#### Returns[​](#returns-1 "Direct link to Returns")
+#### Returns[​](#returns "Direct link to Returns")
 
 [`OrderedQuery`](/api/interfaces/server.OrderedQuery.md)<`TableInfo`>
 
 * A new [OrderedQuery](/api/interfaces/server.OrderedQuery.md) with the given filter predicate applied.
 
-#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+#### Defined in[​](#defined-in "Direct link to Defined in")
 
 [server/query.ts:198](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L198)
 
@@ -13794,13 +13981,13 @@ Note: If this is called from a reactive query function the number of results may
 | ---------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `paginationOpts` | [`PaginationOptions`](/api/interfaces/server.PaginationOptions.md) | A [PaginationOptions](/api/interfaces/server.PaginationOptions.md) object containing the number of items to load and the cursor to start at. |
 
-#### Returns[​](#returns-2 "Direct link to Returns")
+#### Returns[​](#returns-1 "Direct link to Returns")
 
 `Promise`<[`PaginationResult`](/api/interfaces/server.PaginationResult.md)<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>>
 
 A [PaginationResult](/api/interfaces/server.PaginationResult.md) containing the page of results and a cursor to continue paginating.
 
-#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
 [server/query.ts:227](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L227)
 
@@ -13816,13 +14003,13 @@ Execute the query and return all of the results as an array.
 
 Prefer `.first()`, `.unique()`, `.take(n)`, or `.paginate()` when the result set may be large or unbounded. For processing many results without loading all into memory, use the `Query` as an `AsyncIterable` with `for await...of`.
 
-#### Returns[​](#returns-3 "Direct link to Returns")
+#### Returns[​](#returns-2 "Direct link to Returns")
 
 `Promise`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>\[]>
 
 * An array of all of the query's results.
 
-#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
 [server/query.ts:246](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L246)
 
@@ -13840,13 +14027,13 @@ Execute the query and return the first `n` results.
 | ---- | -------- | ---------------------------- |
 | `n`  | `number` | The number of items to take. |
 
-#### Returns[​](#returns-4 "Direct link to Returns")
+#### Returns[​](#returns-3 "Direct link to Returns")
 
 `Promise`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>\[]>
 
 * An array of the first `n` results of the query (or less if the query doesn't have `n` results).
 
-#### Defined in[​](#defined-in-4 "Direct link to Defined in")
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
 [server/query.ts:255](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L255)
 
@@ -13858,13 +14045,13 @@ Execute the query and return the first `n` results.
 
 Execute the query and return the first result if there is one.
 
-#### Returns[​](#returns-5 "Direct link to Returns")
+#### Returns[​](#returns-4 "Direct link to Returns")
 
 `Promise`<`null` | [`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>
 
 * The first value of the query or `null` if the query returned no results.
 
-#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
 [server/query.ts:262](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L262)
 
@@ -13894,15 +14081,33 @@ const user = await ctx.db
 
 Will throw an error if the query returns more than one result.
 
-#### Returns[​](#returns-6 "Direct link to Returns")
+#### Returns[​](#returns-5 "Direct link to Returns")
 
 `Promise`<`null` | [`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>
 
 * The single result returned from the query or null if none exists.
 
-#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
 [server/query.ts:282](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L282)
+
+***
+
+### \[asyncIterator][​](#asynciterator "Direct link to \[asyncIterator]")
+
+▸ **\[asyncIterator]**(): `AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
+
+#### Returns[​](#returns-6 "Direct link to Returns")
+
+`AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
+
+#### Inherited from[​](#inherited-from "Direct link to Inherited from")
+
+AsyncIterable.\[asyncIterator]
+
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+
+../../node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
 
 
 ---
@@ -14158,24 +14363,6 @@ To learn more about how to write queries, see [Querying the Database](https://do
 
 ## Methods[​](#methods "Direct link to Methods")
 
-### \[asyncIterator][​](#asynciterator "Direct link to \[asyncIterator]")
-
-▸ **\[asyncIterator]**(): `AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
-
-#### Returns[​](#returns "Direct link to Returns")
-
-`AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
-
-#### Inherited from[​](#inherited-from "Direct link to Inherited from")
-
-[OrderedQuery](/api/interfaces/server.OrderedQuery.md).[\[asyncIterator\]](/api/interfaces/server.OrderedQuery.md#%5Basynciterator%5D)
-
-#### Defined in[​](#defined-in "Direct link to Defined in")
-
-../../common/temp/node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
-
-***
-
 ### order[​](#order "Direct link to order")
 
 ▸ **order**(`order`): [`OrderedQuery`](/api/interfaces/server.OrderedQuery.md)<`TableInfo`>
@@ -14190,11 +14377,11 @@ Use `"asc"` for an ascending order and `"desc"` for a descending order. If not s
 | ------- | ------------------- | ------------------------------- |
 | `order` | `"asc"` \| `"desc"` | The order to return results in. |
 
-#### Returns[​](#returns-1 "Direct link to Returns")
+#### Returns[​](#returns "Direct link to Returns")
 
 [`OrderedQuery`](/api/interfaces/server.OrderedQuery.md)<`TableInfo`>
 
-#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+#### Defined in[​](#defined-in "Direct link to Defined in")
 
 [server/query.ts:176](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L176)
 
@@ -14214,17 +14401,17 @@ Filter the query output, returning only the values for which `predicate` evaluat
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `predicate` | (`q`: [`FilterBuilder`](/api/interfaces/server.FilterBuilder.md)<`TableInfo`>) => [`ExpressionOrValue`](/api/modules/server.md#expressionorvalue)<`boolean`> | An [Expression](/api/classes/server.Expression.md) constructed with the supplied [FilterBuilder](/api/interfaces/server.FilterBuilder.md) that specifies which documents to keep. |
 
-#### Returns[​](#returns-2 "Direct link to Returns")
+#### Returns[​](#returns-1 "Direct link to Returns")
 
 [`Query`](/api/interfaces/server.Query.md)<`TableInfo`>
 
 * A new [OrderedQuery](/api/interfaces/server.OrderedQuery.md) with the given filter predicate applied.
 
-#### Inherited from[​](#inherited-from-1 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from "Direct link to Inherited from")
 
 [OrderedQuery](/api/interfaces/server.OrderedQuery.md).[filter](/api/interfaces/server.OrderedQuery.md#filter)
 
-#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
 [server/query.ts:198](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L198)
 
@@ -14246,17 +14433,17 @@ Note: If this is called from a reactive query function the number of results may
 | ---------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `paginationOpts` | [`PaginationOptions`](/api/interfaces/server.PaginationOptions.md) | A [PaginationOptions](/api/interfaces/server.PaginationOptions.md) object containing the number of items to load and the cursor to start at. |
 
-#### Returns[​](#returns-3 "Direct link to Returns")
+#### Returns[​](#returns-2 "Direct link to Returns")
 
 `Promise`<[`PaginationResult`](/api/interfaces/server.PaginationResult.md)<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>>
 
 A [PaginationResult](/api/interfaces/server.PaginationResult.md) containing the page of results and a cursor to continue paginating.
 
-#### Inherited from[​](#inherited-from-2 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-1 "Direct link to Inherited from")
 
 [OrderedQuery](/api/interfaces/server.OrderedQuery.md).[paginate](/api/interfaces/server.OrderedQuery.md#paginate)
 
-#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
 [server/query.ts:227](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L227)
 
@@ -14272,17 +14459,17 @@ Execute the query and return all of the results as an array.
 
 Prefer `.first()`, `.unique()`, `.take(n)`, or `.paginate()` when the result set may be large or unbounded. For processing many results without loading all into memory, use the `Query` as an `AsyncIterable` with `for await...of`.
 
-#### Returns[​](#returns-4 "Direct link to Returns")
+#### Returns[​](#returns-3 "Direct link to Returns")
 
 `Promise`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>\[]>
 
 * An array of all of the query's results.
 
-#### Inherited from[​](#inherited-from-3 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-2 "Direct link to Inherited from")
 
 [OrderedQuery](/api/interfaces/server.OrderedQuery.md).[collect](/api/interfaces/server.OrderedQuery.md#collect)
 
-#### Defined in[​](#defined-in-4 "Direct link to Defined in")
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
 [server/query.ts:246](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L246)
 
@@ -14300,17 +14487,17 @@ Execute the query and return the first `n` results.
 | ---- | -------- | ---------------------------- |
 | `n`  | `number` | The number of items to take. |
 
-#### Returns[​](#returns-5 "Direct link to Returns")
+#### Returns[​](#returns-4 "Direct link to Returns")
 
 `Promise`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>\[]>
 
 * An array of the first `n` results of the query (or less if the query doesn't have `n` results).
 
-#### Inherited from[​](#inherited-from-4 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-3 "Direct link to Inherited from")
 
 [OrderedQuery](/api/interfaces/server.OrderedQuery.md).[take](/api/interfaces/server.OrderedQuery.md#take)
 
-#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
 [server/query.ts:255](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L255)
 
@@ -14322,17 +14509,17 @@ Execute the query and return the first `n` results.
 
 Execute the query and return the first result if there is one.
 
-#### Returns[​](#returns-6 "Direct link to Returns")
+#### Returns[​](#returns-5 "Direct link to Returns")
 
 `Promise`<`null` | [`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>
 
 * The first value of the query or `null` if the query returned no results.
 
-#### Inherited from[​](#inherited-from-5 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-4 "Direct link to Inherited from")
 
 [OrderedQuery](/api/interfaces/server.OrderedQuery.md).[first](/api/interfaces/server.OrderedQuery.md#first)
 
-#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
 [server/query.ts:262](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L262)
 
@@ -14362,19 +14549,37 @@ const user = await ctx.db
 
 Will throw an error if the query returns more than one result.
 
-#### Returns[​](#returns-7 "Direct link to Returns")
+#### Returns[​](#returns-6 "Direct link to Returns")
 
 `Promise`<`null` | [`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>
 
 * The single result returned from the query or null if none exists.
 
-#### Inherited from[​](#inherited-from-6 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-5 "Direct link to Inherited from")
 
 [OrderedQuery](/api/interfaces/server.OrderedQuery.md).[unique](/api/interfaces/server.OrderedQuery.md#unique)
 
-#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
 [server/query.ts:282](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L282)
+
+***
+
+### \[asyncIterator][​](#asynciterator "Direct link to \[asyncIterator]")
+
+▸ **\[asyncIterator]**(): `AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
+
+#### Returns[​](#returns-7 "Direct link to Returns")
+
+`AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
+
+#### Inherited from[​](#inherited-from-6 "Direct link to Inherited from")
+
+[OrderedQuery](/api/interfaces/server.OrderedQuery.md).[\[asyncIterator\]](/api/interfaces/server.OrderedQuery.md#%5Basynciterator%5D)
+
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+
+../../node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
 
 
 ---
@@ -14406,24 +14611,6 @@ For convenience, [QueryInitializer](/api/interfaces/server.QueryInitializer.md) 
 
 ## Methods[​](#methods "Direct link to Methods")
 
-### \[asyncIterator][​](#asynciterator "Direct link to \[asyncIterator]")
-
-▸ **\[asyncIterator]**(): `AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
-
-#### Returns[​](#returns "Direct link to Returns")
-
-`AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
-
-#### Inherited from[​](#inherited-from "Direct link to Inherited from")
-
-[Query](/api/interfaces/server.Query.md).[\[asyncIterator\]](/api/interfaces/server.Query.md#%5Basynciterator%5D)
-
-#### Defined in[​](#defined-in "Direct link to Defined in")
-
-../../common/temp/node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
-
-***
-
 ### fullTableScan[​](#fulltablescan "Direct link to fullTableScan")
 
 ▸ **fullTableScan**(): [`Query`](/api/interfaces/server.Query.md)<`TableInfo`>
@@ -14432,13 +14619,13 @@ Query by reading all of the values out of this table.
 
 This query's cost is relative to the size of the entire table, so this should only be used on tables that will stay very small (say between a few hundred and a few thousand documents) and are updated infrequently.
 
-#### Returns[​](#returns-1 "Direct link to Returns")
+#### Returns[​](#returns "Direct link to Returns")
 
 [`Query`](/api/interfaces/server.Query.md)<`TableInfo`>
 
 * The [Query](/api/interfaces/server.Query.md) that iterates over every document of the table.
 
-#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+#### Defined in[​](#defined-in "Direct link to Defined in")
 
 [server/query.ts:41](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L41)
 
@@ -14469,13 +14656,13 @@ To learn about indexes, see [Indexes](https://docs.convex.dev/using/indexes).
 | `indexName`   | `IndexName`                                                                                                                                                                                                                                                                              | The name of the index to query.                                                                                                                                                                                                                                                                             |
 | `indexRange?` | (`q`: [`IndexRangeBuilder`](/api/interfaces/server.IndexRangeBuilder.md)<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, [`NamedIndex`](/api/modules/server.md#namedindex)<`TableInfo`, `IndexName`>, `0`>) => [`IndexRange`](/api/classes/server.IndexRange.md) | An optional index range constructed with the supplied [IndexRangeBuilder](/api/interfaces/server.IndexRangeBuilder.md). An index range is a description of which documents Convex should consider when running the query. If no index range is present, the query will consider all documents in the index. |
 
-#### Returns[​](#returns-2 "Direct link to Returns")
+#### Returns[​](#returns-1 "Direct link to Returns")
 
 [`Query`](/api/interfaces/server.Query.md)<`TableInfo`>
 
 * The query that yields documents in the index.
 
-#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
 [server/query.ts:60](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L60)
 
@@ -14506,13 +14693,13 @@ To learn about full text search, see [Indexes](https://docs.convex.dev/text-sear
 | `indexName`    | `IndexName`                                                                                                                                                                                                                                                                                             | The name of the search index to query.                                                                                                                                                                                                |
 | `searchFilter` | (`q`: [`SearchFilterBuilder`](/api/interfaces/server.SearchFilterBuilder.md)<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, [`NamedSearchIndex`](/api/modules/server.md#namedsearchindex)<`TableInfo`, `IndexName`>>) => [`SearchFilter`](/api/classes/server.SearchFilter.md) | A search filter expression constructed with the supplied [SearchFilterBuilder](/api/interfaces/server.SearchFilterBuilder.md). This defines the full text search to run along with equality filtering to run within the search index. |
 
-#### Returns[​](#returns-3 "Direct link to Returns")
+#### Returns[​](#returns-2 "Direct link to Returns")
 
 [`OrderedQuery`](/api/interfaces/server.OrderedQuery.md)<`TableInfo`>
 
 * A query that searches for matching documents, returning them in relevancy order.
 
-#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
 [server/query.ts:89](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L89)
 
@@ -14532,15 +14719,15 @@ Use `"asc"` for an ascending order and `"desc"` for a descending order. If not s
 | ------- | ------------------- | ------------------------------- |
 | `order` | `"asc"` \| `"desc"` | The order to return results in. |
 
-#### Returns[​](#returns-4 "Direct link to Returns")
+#### Returns[​](#returns-3 "Direct link to Returns")
 
 [`OrderedQuery`](/api/interfaces/server.OrderedQuery.md)<`TableInfo`>
 
-#### Inherited from[​](#inherited-from-1 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from "Direct link to Inherited from")
 
 [Query](/api/interfaces/server.Query.md).[order](/api/interfaces/server.Query.md#order)
 
-#### Defined in[​](#defined-in-4 "Direct link to Defined in")
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
 [server/query.ts:176](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L176)
 
@@ -14560,17 +14747,17 @@ Filter the query output, returning only the values for which `predicate` evaluat
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `predicate` | (`q`: [`FilterBuilder`](/api/interfaces/server.FilterBuilder.md)<`TableInfo`>) => [`ExpressionOrValue`](/api/modules/server.md#expressionorvalue)<`boolean`> | An [Expression](/api/classes/server.Expression.md) constructed with the supplied [FilterBuilder](/api/interfaces/server.FilterBuilder.md) that specifies which documents to keep. |
 
-#### Returns[​](#returns-5 "Direct link to Returns")
+#### Returns[​](#returns-4 "Direct link to Returns")
 
 [`QueryInitializer`](/api/interfaces/server.QueryInitializer.md)<`TableInfo`>
 
 * A new [OrderedQuery](/api/interfaces/server.OrderedQuery.md) with the given filter predicate applied.
 
-#### Inherited from[​](#inherited-from-2 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-1 "Direct link to Inherited from")
 
 [Query](/api/interfaces/server.Query.md).[filter](/api/interfaces/server.Query.md#filter)
 
-#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
 [server/query.ts:198](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L198)
 
@@ -14592,17 +14779,17 @@ Note: If this is called from a reactive query function the number of results may
 | ---------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `paginationOpts` | [`PaginationOptions`](/api/interfaces/server.PaginationOptions.md) | A [PaginationOptions](/api/interfaces/server.PaginationOptions.md) object containing the number of items to load and the cursor to start at. |
 
-#### Returns[​](#returns-6 "Direct link to Returns")
+#### Returns[​](#returns-5 "Direct link to Returns")
 
 `Promise`<[`PaginationResult`](/api/interfaces/server.PaginationResult.md)<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>>
 
 A [PaginationResult](/api/interfaces/server.PaginationResult.md) containing the page of results and a cursor to continue paginating.
 
-#### Inherited from[​](#inherited-from-3 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-2 "Direct link to Inherited from")
 
 [Query](/api/interfaces/server.Query.md).[paginate](/api/interfaces/server.Query.md#paginate)
 
-#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
 [server/query.ts:227](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L227)
 
@@ -14618,17 +14805,17 @@ Execute the query and return all of the results as an array.
 
 Prefer `.first()`, `.unique()`, `.take(n)`, or `.paginate()` when the result set may be large or unbounded. For processing many results without loading all into memory, use the `Query` as an `AsyncIterable` with `for await...of`.
 
-#### Returns[​](#returns-7 "Direct link to Returns")
+#### Returns[​](#returns-6 "Direct link to Returns")
 
 `Promise`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>\[]>
 
 * An array of all of the query's results.
 
-#### Inherited from[​](#inherited-from-4 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-3 "Direct link to Inherited from")
 
 [Query](/api/interfaces/server.Query.md).[collect](/api/interfaces/server.Query.md#collect)
 
-#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
 [server/query.ts:246](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L246)
 
@@ -14646,17 +14833,17 @@ Execute the query and return the first `n` results.
 | ---- | -------- | ---------------------------- |
 | `n`  | `number` | The number of items to take. |
 
-#### Returns[​](#returns-8 "Direct link to Returns")
+#### Returns[​](#returns-7 "Direct link to Returns")
 
 `Promise`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>\[]>
 
 * An array of the first `n` results of the query (or less if the query doesn't have `n` results).
 
-#### Inherited from[​](#inherited-from-5 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-4 "Direct link to Inherited from")
 
 [Query](/api/interfaces/server.Query.md).[take](/api/interfaces/server.Query.md#take)
 
-#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
 [server/query.ts:255](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L255)
 
@@ -14668,17 +14855,17 @@ Execute the query and return the first `n` results.
 
 Execute the query and return the first result if there is one.
 
-#### Returns[​](#returns-9 "Direct link to Returns")
+#### Returns[​](#returns-8 "Direct link to Returns")
 
 `Promise`<`null` | [`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>
 
 * The first value of the query or `null` if the query returned no results.
 
-#### Inherited from[​](#inherited-from-6 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-5 "Direct link to Inherited from")
 
 [Query](/api/interfaces/server.Query.md).[first](/api/interfaces/server.Query.md#first)
 
-#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
 [server/query.ts:262](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L262)
 
@@ -14708,19 +14895,37 @@ const user = await ctx.db
 
 Will throw an error if the query returns more than one result.
 
-#### Returns[​](#returns-10 "Direct link to Returns")
+#### Returns[​](#returns-9 "Direct link to Returns")
 
 `Promise`<`null` | [`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>>
 
 * The single result returned from the query or null if none exists.
 
-#### Inherited from[​](#inherited-from-7 "Direct link to Inherited from")
+#### Inherited from[​](#inherited-from-6 "Direct link to Inherited from")
 
 [Query](/api/interfaces/server.Query.md).[unique](/api/interfaces/server.Query.md#unique)
 
-#### Defined in[​](#defined-in-10 "Direct link to Defined in")
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
 [server/query.ts:282](https://github.com/get-convex/convex-js/blob/main/src/server/query.ts#L282)
+
+***
+
+### \[asyncIterator][​](#asynciterator "Direct link to \[asyncIterator]")
+
+▸ **\[asyncIterator]**(): `AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
+
+#### Returns[​](#returns-10 "Direct link to Returns")
+
+`AsyncIterator`<[`DocumentByInfo`](/api/modules/server.md#documentbyinfo)<`TableInfo`>, `any`, `undefined`>
+
+#### Inherited from[​](#inherited-from-7 "Direct link to Inherited from")
+
+[Query](/api/interfaces/server.Query.md).[\[asyncIterator\]](/api/interfaces/server.Query.md#%5Basynciterator%5D)
+
+#### Defined in[​](#defined-in-10 "Direct link to Defined in")
+
+../../node\_modules/.pnpm/typescript\@5.0.4/node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
 
 
 ---
@@ -17815,7 +18020,7 @@ Wrap your app in this component to use Convex hooks `useQuery`, `useMutation`, a
 
 #### Defined in[​](#defined-in-20 "Direct link to Defined in")
 
-../../common/temp/node\_modules/.pnpm/@types+react\@18.3.26/node\_modules/@types/react/ts5.0/index.d.ts:1129
+../../node\_modules/.pnpm/@types+react\@18.3.26/node\_modules/@types/react/ts5.0/index.d.ts:1129
 
 ***
 
@@ -22200,6 +22405,7 @@ You can see the full set of supported types at [Types](https://docs.convex.dev/u
 * [VId](/api/classes/values.VId.md)
 * [VFloat64](/api/classes/values.VFloat64.md)
 * [VInt64](/api/classes/values.VInt64.md)
+* [VCommitTs](/api/classes/values.VCommitTs.md)
 * [VBoolean](/api/classes/values.VBoolean.md)
 * [VBytes](/api/classes/values.VBytes.md)
 * [VString](/api/classes/values.VString.md)
@@ -22210,6 +22416,7 @@ You can see the full set of supported types at [Types](https://docs.convex.dev/u
 * [VArray](/api/classes/values.VArray.md)
 * [VRecord](/api/classes/values.VRecord.md)
 * [VUnion](/api/classes/values.VUnion.md)
+* [CommitTsPlaceholder](/api/classes/values.CommitTsPlaceholder.md)
 
 ## Type Aliases[​](#type-aliases "Direct link to Type Aliases")
 
@@ -22221,7 +22428,7 @@ The type that all validators must extend.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/validator.ts:27](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L27)
+[values/validator.ts:28](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L28)
 
 ***
 
@@ -22239,7 +22446,7 @@ Coerce an object with validators as properties to a validator. If a validator is
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/validator.ts:61](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L61)
+[values/validator.ts:62](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L62)
 
 ***
 
@@ -22253,7 +22460,7 @@ This is represented as an object mapping the property name to its [Validator](/a
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/validator.ts:424](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L424)
+[values/validator.ts:437](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L437)
 
 ***
 
@@ -22271,7 +22478,7 @@ Compute the type of an object from [PropertyValidators](/api/modules/values.md#p
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/validator.ts:434](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L434)
+[values/validator.ts:447](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L447)
 
 ***
 
@@ -22305,13 +22512,13 @@ The type of a [Validator](/api/modules/values.md#validator) constructed with [v]
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[values/validator.ts:476](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L476)
+[values/validator.ts:489](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L489)
 
 ***
 
 ### VOptional[​](#voptional "Direct link to VOptional")
 
-Ƭ **VOptional**<`T`>: `T` extends [`VId`](/api/classes/values.VId.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VId`](/api/classes/values.VId.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VString`](/api/classes/values.VString.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VString`](/api/classes/values.VString.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VFloat64`](/api/classes/values.VFloat64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VFloat64`](/api/classes/values.VFloat64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VInt64`](/api/classes/values.VInt64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VInt64`](/api/classes/values.VInt64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBoolean`](/api/classes/values.VBoolean.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBoolean`](/api/classes/values.VBoolean.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VNull`](/api/classes/values.VNull.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VNull`](/api/classes/values.VNull.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VAny`](/api/classes/values.VAny.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VAny`](/api/classes/values.VAny.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VLiteral`](/api/classes/values.VLiteral.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VLiteral`](/api/classes/values.VLiteral.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBytes`](/api/classes/values.VBytes.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBytes`](/api/classes/values.VBytes.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VObject`](/api/classes/values.VObject.md)\<infer Type, infer Fields, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VObject`](/api/classes/values.VObject.md)<`Type` | `undefined`, `Fields`, `"optional"`, `FieldPaths`> : `T` extends [`VArray`](/api/classes/values.VArray.md)\<infer Type, infer Element, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VArray`](/api/classes/values.VArray.md)<`Type` | `undefined`, `Element`, `"optional"`> : `T` extends [`VRecord`](/api/classes/values.VRecord.md)\<infer Type, infer Key, infer Value, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VRecord`](/api/classes/values.VRecord.md)<`Type` | `undefined`, `Key`, `Value`, `"optional"`, `FieldPaths`> : `T` extends [`VUnion`](/api/classes/values.VUnion.md)\<infer Type, infer Members, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VUnion`](/api/classes/values.VUnion.md)<`Type` | `undefined`, `Members`, `"optional"`, `FieldPaths`> : `never`
+Ƭ **VOptional**<`T`>: `T` extends [`VId`](/api/classes/values.VId.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VId`](/api/classes/values.VId.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VString`](/api/classes/values.VString.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VString`](/api/classes/values.VString.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VFloat64`](/api/classes/values.VFloat64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VFloat64`](/api/classes/values.VFloat64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VInt64`](/api/classes/values.VInt64.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VInt64`](/api/classes/values.VInt64.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VCommitTs`](/api/classes/values.VCommitTs.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VCommitTs`](/api/classes/values.VCommitTs.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBoolean`](/api/classes/values.VBoolean.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBoolean`](/api/classes/values.VBoolean.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VNull`](/api/classes/values.VNull.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VNull`](/api/classes/values.VNull.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VAny`](/api/classes/values.VAny.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VAny`](/api/classes/values.VAny.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VLiteral`](/api/classes/values.VLiteral.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VLiteral`](/api/classes/values.VLiteral.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VBytes`](/api/classes/values.VBytes.md)\<infer Type, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VBytes`](/api/classes/values.VBytes.md)<`Type` | `undefined`, `"optional"`> : `T` extends [`VObject`](/api/classes/values.VObject.md)\<infer Type, infer Fields, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VObject`](/api/classes/values.VObject.md)<`Type` | `undefined`, `Fields`, `"optional"`, `FieldPaths`> : `T` extends [`VArray`](/api/classes/values.VArray.md)\<infer Type, infer Element, [`OptionalProperty`](/api/modules/values.md#optionalproperty)> ? [`VArray`](/api/classes/values.VArray.md)<`Type` | `undefined`, `Element`, `"optional"`> : `T` extends [`VRecord`](/api/classes/values.VRecord.md)\<infer Type, infer Key, infer Value, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VRecord`](/api/classes/values.VRecord.md)<`Type` | `undefined`, `Key`, `Value`, `"optional"`, `FieldPaths`> : `T` extends [`VUnion`](/api/classes/values.VUnion.md)\<infer Type, infer Members, [`OptionalProperty`](/api/modules/values.md#optionalproperty), infer FieldPaths> ? [`VUnion`](/api/classes/values.VUnion.md)<`Type` | `undefined`, `Members`, `"optional"`, `FieldPaths`> : `never`
 
 #### Type parameters[​](#type-parameters-3 "Direct link to Type parameters")
 
@@ -22321,7 +22528,7 @@ The type of a [Validator](/api/modules/values.md#validator) constructed with [v]
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[values/validators.ts:648](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L648)
+[values/validators.ts:672](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L672)
 
 ***
 
@@ -22333,13 +22540,13 @@ Type representing whether a property in an object is optional or required.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[values/validators.ts:681](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L681)
+[values/validators.ts:707](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L707)
 
 ***
 
 ### Validator[​](#validator "Direct link to Validator")
 
-Ƭ **Validator**<`Type`, `IsOptional`, `FieldPaths`>: [`VId`](/api/classes/values.VId.md)<`Type`, `IsOptional`> | [`VString`](/api/classes/values.VString.md)<`Type`, `IsOptional`> | [`VFloat64`](/api/classes/values.VFloat64.md)<`Type`, `IsOptional`> | [`VInt64`](/api/classes/values.VInt64.md)<`Type`, `IsOptional`> | [`VBoolean`](/api/classes/values.VBoolean.md)<`Type`, `IsOptional`> | [`VNull`](/api/classes/values.VNull.md)<`Type`, `IsOptional`> | [`VAny`](/api/classes/values.VAny.md)<`Type`, `IsOptional`> | [`VLiteral`](/api/classes/values.VLiteral.md)<`Type`, `IsOptional`> | [`VBytes`](/api/classes/values.VBytes.md)<`Type`, `IsOptional`> | [`VObject`](/api/classes/values.VObject.md)<`Type`, `Record`<`string`, [`Validator`](/api/modules/values.md#validator)<`any`, [`OptionalProperty`](/api/modules/values.md#optionalproperty), `any`>>, `IsOptional`, `FieldPaths`> | [`VArray`](/api/classes/values.VArray.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`> | [`VRecord`](/api/classes/values.VRecord.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`string`, `"required"`, `any`>, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`, `FieldPaths`> | [`VUnion`](/api/classes/values.VUnion.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>\[], `IsOptional`, `FieldPaths`>
+Ƭ **Validator**<`Type`, `IsOptional`, `FieldPaths`>: [`VId`](/api/classes/values.VId.md)<`Type`, `IsOptional`> | [`VString`](/api/classes/values.VString.md)<`Type`, `IsOptional`> | [`VFloat64`](/api/classes/values.VFloat64.md)<`Type`, `IsOptional`> | [`VInt64`](/api/classes/values.VInt64.md)<`Type`, `IsOptional`> | [`VCommitTs`](/api/classes/values.VCommitTs.md)<`Type`, `IsOptional`> | [`VBoolean`](/api/classes/values.VBoolean.md)<`Type`, `IsOptional`> | [`VNull`](/api/classes/values.VNull.md)<`Type`, `IsOptional`> | [`VAny`](/api/classes/values.VAny.md)<`Type`, `IsOptional`> | [`VLiteral`](/api/classes/values.VLiteral.md)<`Type`, `IsOptional`> | [`VBytes`](/api/classes/values.VBytes.md)<`Type`, `IsOptional`> | [`VObject`](/api/classes/values.VObject.md)<`Type`, `Record`<`string`, [`Validator`](/api/modules/values.md#validator)<`any`, [`OptionalProperty`](/api/modules/values.md#optionalproperty), `any`>>, `IsOptional`, `FieldPaths`> | [`VArray`](/api/classes/values.VArray.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`> | [`VRecord`](/api/classes/values.VRecord.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`string`, `"required"`, `any`>, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>, `IsOptional`, `FieldPaths`> | [`VUnion`](/api/classes/values.VUnion.md)<`Type`, [`Validator`](/api/modules/values.md#validator)<`any`, `"required"`, `any`>\[], `IsOptional`, `FieldPaths`>
 
 A validator for a Convex value.
 
@@ -22366,7 +22573,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[values/validators.ts:706](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L706)
+[values/validators.ts:732](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L732)
 
 ***
 
@@ -22383,17 +22590,17 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[values/validators.ts:747](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L747)
+[values/validators.ts:774](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L774)
 
 ***
 
 ### ValidatorJSON[​](#validatorjson "Direct link to ValidatorJSON")
 
-Ƭ **ValidatorJSON**: { `type`: `"null"` } | { `type`: `"number"` } | { `type`: `"bigint"` } | { `type`: `"boolean"` } | { `type`: `"string"` } | { `type`: `"bytes"` } | { `type`: `"any"` } | { `type`: `"literal"` ; `value`: [`JSONValue`](/api/modules/values.md#jsonvalue) } | { `type`: `"id"` ; `tableName`: `string` } | { `type`: `"array"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson) } | { `type`: `"record"` ; `keys`: [`RecordKeyValidatorJSON`](/api/modules/values.md#recordkeyvalidatorjson) ; `values`: [`RecordValueValidatorJSON`](/api/modules/values.md#recordvaluevalidatorjson) } | { `type`: `"object"` ; `value`: `Record`<`string`, [`ObjectFieldType`](/api/modules/values.md#objectfieldtype)> } | { `type`: `"union"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson)\[] }
+Ƭ **ValidatorJSON**: { `type`: `"null"` } | { `type`: `"number"` } | { `type`: `"bigint"` } | { `type`: `"commitTs"` } | { `type`: `"boolean"` } | { `type`: `"string"` } | { `type`: `"bytes"` } | { `type`: `"any"` } | { `type`: `"literal"` ; `value`: [`JSONValue`](/api/modules/values.md#jsonvalue) } | { `type`: `"id"` ; `tableName`: `string` } | { `type`: `"array"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson) } | { `type`: `"record"` ; `keys`: [`RecordKeyValidatorJSON`](/api/modules/values.md#recordkeyvalidatorjson) ; `values`: [`RecordValueValidatorJSON`](/api/modules/values.md#recordvaluevalidatorjson) } | { `type`: `"object"` ; `value`: `Record`<`string`, [`ObjectFieldType`](/api/modules/values.md#objectfieldtype)> } | { `type`: `"union"` ; `value`: [`ValidatorJSON`](/api/modules/values.md#validatorjson)\[] }
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[values/validators.ts:749](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L749)
+[values/validators.ts:776](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L776)
 
 ***
 
@@ -22403,7 +22610,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[values/validators.ts:768](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L768)
+[values/validators.ts:796](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L796)
 
 ***
 
@@ -22413,7 +22620,7 @@ More validators can be added in future releases so an exhaustive switch statemen
 
 #### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[values/validators.ts:773](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L773)
+[values/validators.ts:801](https://github.com/get-convex/convex-js/blob/main/src/values/validators.ts#L801)
 
 ***
 
@@ -22575,6 +22782,7 @@ export const createUser = mutation({
 | `float64`  | () => [`VFloat64`](/api/classes/values.VFloat64.md)<`number`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                  |
 | `bigint`   | () => [`VInt64`](/api/classes/values.VInt64.md)<`bigint`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                      |
 | `int64`    | () => [`VInt64`](/api/classes/values.VInt64.md)<`bigint`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                      |
+| `commitTs` | () => [`VCommitTs`](/api/classes/values.VCommitTs.md)<`bigint` \| [`CommitTsPlaceholder`](/api/classes/values.CommitTsPlaceholder.md), `"required"`>                                                                                                                                                                                                                                                                                         |
 | `boolean`  | () => [`VBoolean`](/api/classes/values.VBoolean.md)<`boolean`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                 |
 | `string`   | () => [`VString`](/api/classes/values.VString.md)<`string`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                    |
 | `bytes`    | () => [`VBytes`](/api/classes/values.VBytes.md)<`ArrayBuffer`, `"required"`>                                                                                                                                                                                                                                                                                                                                                                 |
@@ -22589,7 +22797,7 @@ export const createUser = mutation({
 
 #### Defined in[​](#defined-in-16 "Direct link to Defined in")
 
-[values/validator.ts:134](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L134)
+[values/validator.ts:135](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L135)
 
 ## Functions[​](#functions "Direct link to Functions")
 
@@ -22691,7 +22899,7 @@ Coerce an object with validators as properties to a validator. If a validator is
 
 #### Defined in[​](#defined-in-20 "Direct link to Defined in")
 
-[values/validator.ts:39](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L39)
+[values/validator.ts:40](https://github.com/get-convex/convex-js/blob/main/src/values/validator.ts#L40)
 
 ***
 
@@ -28997,6 +29205,8 @@ npx convex deployment [options] [command]
 * [`npx convex deployment select`](#select) — Select the deployment to use when running commands
 * [`npx convex deployment create`](#create) — Create a new deployment for a project
 * [`npx convex deployment token`](#token) — Manage access tokens
+* [`npx convex deployment usage`](#usage) — Show current usage for each metric
+* [`npx convex deployment usage-limits`](#usage-limits) — List and configure deployment usage limits
 
 ## `npx convex deployment select`[​](#select "Direct link to select")
 
@@ -29151,6 +29361,163 @@ npx convex deployment token delete [options] <nameOrToken>
   * `dev` (for your personal dev deployment)
   * `prod` (for your project’s default production deployment)
   * `local` (for your local dev deployment). You can also select deployments in other projects with `project-slug:reference` or `team-slug:project-slug:reference`.
+
+## `npx convex deployment usage`[​](#usage "Direct link to usage")
+
+Show usage so far in the current day and calendar month for every metric.
+
+* Show current usage: `npx convex deployment usage`
+* Print as JSON: `npx convex deployment usage --json`
+
+### Syntax[​](#syntax-6 "Direct link to Syntax")
+
+```
+npx convex deployment usage [options]
+```
+
+### Options[​](#options-3 "Direct link to Options")
+
+* `--json`
+
+  Output the usage as JSON.
+
+* `--prod`
+
+  Show current usage for this project's default production deployment.
+
+* `--deployment <deployment>`
+
+  Show current usage for a specific deployment. Accepts:
+
+  * a deployment name (e.g. joyful-capybara-123)
+  * a deployment reference (e.g. dev/james, staging)
+  * `dev` (for your personal dev deployment)
+  * `prod` (for your project’s default production deployment)
+  * `local` (for your local dev deployment). You can also select deployments in other projects with `project-slug:reference` or `team-slug:project-slug:reference`.
+
+## `npx convex deployment usage-limits`[​](#usage-limits "Direct link to usage-limits")
+
+List and configure usage limits on your deployment.
+
+A usage limit either warns or pauses your deployment when a metric (function calls, database bandwidth, …) crosses a threshold within a daily or monthly window. Each limit is identified by its (metric, window, type).
+
+* List usage limits: `npx convex deployment usage-limits list`
+* Create or update one: `npx convex deployment usage-limits set --metric functionCalls --window day --type disable --limit 1000000`
+* Delete one: `npx convex deployment usage-limits remove --metric functionCalls --window day --type disable`
+
+### Syntax[​](#syntax-7 "Direct link to Syntax")
+
+```
+npx convex deployment usage-limits [options] [command]
+```
+
+### Options[​](#options-4 "Direct link to Options")
+
+* `--prod`
+
+  List and configure usage limits on this project's default production deployment.
+
+* `--deployment <deployment>`
+
+  List and configure usage limits on a specific deployment. Accepts:
+
+  * a deployment name (e.g. joyful-capybara-123)
+  * a deployment reference (e.g. dev/james, staging)
+  * `dev` (for your personal dev deployment)
+  * `prod` (for your project’s default production deployment)
+  * `local` (for your local dev deployment). You can also select deployments in other projects with `project-slug:reference` or `team-slug:project-slug:reference`.
+
+### `npx convex deployment usage-limits list`[​](#usage-limits-list "Direct link to usage-limits-list")
+
+List the usage limits configured on your deployment.
+
+* List all usage limits: `npx convex deployment usage-limits list`
+* Print as JSON: `npx convex deployment usage-limits list --json`
+
+#### Syntax[​](#syntax-8 "Direct link to Syntax")
+
+```
+npx convex deployment usage-limits list [options]
+```
+
+#### Options[​](#options-5 "Direct link to Options")
+
+* `--json`
+
+  Output the usage limits as JSON.
+
+### `npx convex deployment usage-limits set`[​](#usage-limits-set "Direct link to usage-limits-set")
+
+Create a usage limit, or update the existing one for the same (metric, window, type). At most one limit exists per combination.
+
+* Set the amount (creates or replaces it):
+  <!-- -->
+  * `npx convex deployment usage-limits set --metric functionCalls --window day --type disable --limit 1000000`
+* Deactivate without deleting: add `--inactive` (use `--active` to re-enable).
+* Toggle active state without changing the amount: omit `--limit`.
+
+#### Syntax[​](#syntax-9 "Direct link to Syntax")
+
+```
+npx convex deployment usage-limits set [options]
+```
+
+#### Options[​](#options-6 "Direct link to Options")
+
+* `--metric <metric>`
+
+  The metric to limit.
+
+* `--window <window>`
+
+  The window the limit is measured over.
+
+* `--type <type>`
+
+  `warning` only notifies; `disable` pauses the deployment when exceeded.
+
+* `--limit <limit>`
+
+  The limit amount, in the metric's native units. Required when creating; kept as-is when omitted while updating.
+
+* `--active`
+
+  Enforce the limit (the default for a new limit).
+
+* `--inactive`
+
+  Create or leave the limit unenforced.
+
+### `npx convex deployment usage-limits remove`[​](#usage-limits-remove "Direct link to usage-limits-remove")
+
+Delete a usage limit, identified by its (metric, window, type).
+
+* `npx convex deployment usage-limits remove --metric functionCalls --window day --type warning`
+
+#### Syntax[​](#syntax-10 "Direct link to Syntax")
+
+```
+npx convex deployment usage-limits remove [options]
+```
+
+#### Aliases[​](#aliases "Direct link to Aliases")
+
+* `rm`
+* `delete`
+
+#### Options[​](#options-7 "Direct link to Options")
+
+* `--metric <metric>`
+
+  The metric to limit.
+
+* `--window <window>`
+
+  The window the limit is measured over.
+
+* `--type <type>`
+
+  `warning` only notifies; `disable` pauses the deployment when exceeded.
 
 
 ---
@@ -37618,13 +37985,19 @@ Data Import & Export<!-- --> <!-- -->is<!-- --> currently a [beta feature](/prod
 
 # Data Export
 
-You can export your data from Convex by [taking a backup](/database/backup-restore.md) and downloading it as a zip file.
+## Zip Export[​](#zip-export "Direct link to Zip Export")
+
+You can export your data to a zip file from Convex by [taking a backup](/database/backup-restore.md) and downloading it.
 
 Alternatively, you can export the same data with the [command line](/cli/reference/export.md):
 
 ```
 npx convex export --path ~/Downloads
 ```
+
+## Streaming Export[​](#streaming-export "Direct link to Streaming Export")
+
+You can programmatically do a paginated streaming export by using the [Data Sync API](https://docs.convex.dev/deployment-api/data-sync) or with an [integration with a third party provider](https://docs.convex.dev/production/integrations/streaming-import-export).
 
 
 ---
@@ -49003,7 +49376,9 @@ Schema
 
 # Streaming Data in and out of Convex
 
-[Fivetran](https://www.fivetran.com) and [Airbyte](https://airbyte.com) are data integration platforms that allow you to sync your Convex data with other databases.
+Convex provides a [Data Sync API](https://docs.convex.dev/deployment-api/data-sync) for streaming data out of Convex, and a [Data Import CLI](https://docs.convex.dev/database/import-export/import).
+
+You can use the APIs directly or opt to use data integration platforms like [Fivetran](https://www.fivetran.com) and [Airbyte](https://airbyte.com) to automate and smooth the process of syncing your Convex data with other databases.
 
 Fivetran enables streaming export from Convex to any of their [supported destinations](https://fivetran.com/docs/destinations). The Convex team maintains a Convex source connector for streaming export. Streaming import into Convex via Fivetran is not supported.
 
@@ -49986,7 +50361,7 @@ Free and Starter are limited to S16 with a team deployment limit of 40.
 
 Professional plans get S256 with a team deployment limit of 300.
 
-Business and Enterprise can choose their class on a per-deployment basis. There is a per-deployment fee which varies by deployment class. The deployment fee is waived for paused deployments.
+Business and Enterprise can choose their class on a per-deployment basis. There is a per-deployment fee which varies by deployment class. The deployment fee is waived for paused and idle deployments. Idle deployments are defined as those that have not had any function calls for 24 hours.
 
 ### Capabilities[​](#capabilities "Direct link to Capabilities")
 
