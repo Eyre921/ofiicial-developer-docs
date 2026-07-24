@@ -82,6 +82,8 @@ Low latency (\~150ms†)
 
 Precise word-level timestamps
 
+Entity detection, 65 entity types
+
 ### Music
 
 #### [Eleven Music v2](/docs/overview/models#eleven-music)
@@ -315,6 +317,7 @@ Key features:
 * Multiple audio formats: Support for PCM (8kHz to 48kHz) and μ-law encoding
 * Voice Activity Detection (VAD): Automatic speech segmentation based on silence detection
 * Manual commit control: Full control over when to finalize transcript segments
+* Entity detection
 
 Read more about Scribe v2 Realtime [here](/docs/overview/capabilities/speech-to-text).
 

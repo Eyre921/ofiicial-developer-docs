@@ -38,12 +38,12 @@ url: https://docs.sentry.io/changelog/
 
 **Added:**
 
-* [AI Agents Dashboards](https://docs.sentry.io/ai/observability/agents/dashboards.md)
+* [AI Agents Dashboards](https://docs.sentry.io/product/agents/dashboards.md)
 
 **Modified:**
 
-* [Model Costs](https://docs.sentry.io/ai/observability/agents/costs.md)
-* [AI Agents](https://docs.sentry.io/ai/observability/agents.md)
+* [Model Costs](https://docs.sentry.io/product/agents/costs.md)
+* [AI Agents](https://docs.sentry.io/product/agents.md)
 * [Instrument AI Agents](https://docs.sentry.io/platforms/dotnet/tracing/instrumentation/ai-agents-module.md)
 * [Browser AI Tracing](https://docs.sentry.io/platforms/javascript/agent-tracing-browser.md)
 * [Set Up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing.md)
@@ -53,7 +53,7 @@ url: https://docs.sentry.io/changelog/
 
 **Removed:**
 
-* [/ai/observability/agents/dashboard/](https://docs.sentry.io/ai/observability/agents/dashboards.md)
+* [/product/agents/dashboards/](https://docs.sentry.io/product/agents/dashboards.md)
 
 ***
 
@@ -101,12 +101,12 @@ url: https://docs.sentry.io/changelog/
 
 **Added:**
 
-* [Naming Your Agents](https://docs.sentry.io/ai/observability/agents/naming.md)
+* [Naming Your Agents](https://docs.sentry.io/product/agents/naming.md)
 
 **Modified:**
 
-* [Set Up](https://docs.sentry.io/ai/observability/agents/getting-started.md)
-* [AI Agents](https://docs.sentry.io/ai/observability/agents.md)
+* [Set Up](https://docs.sentry.io/product/agents/getting-started.md)
+* [AI Agents](https://docs.sentry.io/product/agents.md)
 * [Set Up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/node/agent-tracing.md)
 * [Instrument AI Agents](https://docs.sentry.io/platforms/python/tracing/instrumentation/custom-instrumentation/ai-agents-module.md)
 

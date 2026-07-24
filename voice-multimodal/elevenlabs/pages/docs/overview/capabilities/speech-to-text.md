@@ -65,6 +65,8 @@ Low latency (\~150ms†)
 
 Precise word-level timestamps
 
+Entity detection, 65 entity types
+
 [Explore all](/docs/overview/models)
 
 ## Example API response
@@ -487,7 +489,9 @@ When `no_verbatim` is enabled, the model removes filler words, false starts and 
 
 ### Entity detection
 
-Scribe v2 can detect several categories of entities in the transcript, providing their exact timestamps. This is useful to highlight credit card numbers, names, medical conditions or SSNs.
+Entity detection is available with all batch models and Scribe v2 Realtime.
+
+Batch models and Scribe v2 Realtime can detect several categories of entities in the transcript, providing their exact timestamps. This is useful to highlight credit card numbers, names, medical conditions or SSNs.
 
 For a full list of supported entities, see the [entity detection documentation](/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection).
 

@@ -6176,6 +6176,64 @@ Example high-level implementation:
 </div>
 
 
+# Agent Server
+Source: https://docs.langchain.com/langsmith/agent-server-overview
+
+Configure and operate the LangSmith Agent Server runtime, including capabilities, application structure, auth, and customization.
+
+Configure and build applications on the [Agent Server](/langsmith/agent-server) runtime. Once deployed, agents work with three primitives: [**assistants**](/langsmith/assistants) for configuration, [**threads**](/langsmith/use-threads) for state, and [**runs**](/langsmith/runs) for workloads. The pages in this tab cover the capabilities Agent Server provides, how to [structure your application](/langsmith/application-structure), and how to [secure](/langsmith/auth) and [customize](/langsmith/custom-routes) the server.
+
+## Capabilities
+
+<CardGroup>
+  <Card title="Develop your application" href="/langsmith/application-structure" icon="code">
+    Structure your app, configure dependencies for Python, JavaScript, and monorepos, and connect agents with RemoteGraph, semantic search, TTLs, and CI/CD.
+  </Card>
+
+  <Card title="Agent Server runtime" href="/langsmith/agent-server" icon="bolt">
+    Work with assistants, threads, runs, and cron jobs. Stream to users, pause for human review, handle concurrent input, and connect via MCP and A2A.
+  </Card>
+
+  <Card title="Auth & access control" href="/langsmith/auth" icon="lock">
+    Authenticate users, enforce resource-level access, and connect external OAuth2 identity providers.
+  </Card>
+
+  <Card title="Server customization" href="/langsmith/caching" icon="settings">
+    Add caching, custom stores and checkpointers, lifespan hooks, middleware, custom routes, encryption, and configurable headers and logs.
+  </Card>
+</CardGroup>
+
+## Tutorials
+
+* [Collect user feedback for Agent Server runs](/langsmith/agent-server-feedback): Attach end-user feedback to runs and traces
+* [Deploy other frameworks (e.g., Strands, CrewAI)](/langsmith/deploy-other-frameworks): Wrap existing agents with Functional API and deploy
+* [Implement generative user interfaces with LangGraph](/langsmith/generative-ui-react): Stream UI elements to a React client
+* [Implement a CI/CD pipeline](/langsmith/cicd-pipeline-example): Automate tests, evaluations, and deployments with GitHub Actions
+
+## Securing and customizing your server
+
+* [Custom auth](/langsmith/auth): Authentication and multi-tenant access control
+* [Server customization](/langsmith/custom-routes): Custom routes, [middleware](/langsmith/custom-middleware), [lifespan hooks](/langsmith/custom-lifespan), [encryption](/langsmith/encryption)
+
+## Operations
+
+* [CI/CD pipelines](/langsmith/cicd-pipeline-example)
+* [TTL configuration](/langsmith/configure-ttl) for state and thread management
+* [Semantic search](/langsmith/semantic-search)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Configure Agent Server for scale
 Source: https://docs.langchain.com/langsmith/agent-server-scale
 
@@ -23226,6 +23284,27 @@ To ensure system stability, exports are subject to the following limits:
 
 If you have multiple exports running, new run jobs will queue until capacity becomes available.
 
+#### Self-hosted: tuning bulk export concurrency and payload size
+
+On [LangSmith Self-hosted](/langsmith/self-hosted), the concurrency limits are the defaults. To tune pod memory usage during bulk exports, configure the following environment variables on the `langsmith-backend` service:
+
+| Environment variable                    | Default           | Description                                                                                                                                                           |
+| --------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BULK_EXPORT_MAX_CONCURRENT_RUNS`       | `5`               | Maximum number of partition runs enqueued in parallel within a single export, per scheduling pass. Reduce to limit peak memory when processing large date partitions. |
+| `DATA_EXPORT_RUN_LIMIT`                 | `500`             | Page size (max rows) fetched from the runs store per query when paging through an export window.                                                                      |
+| `DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB` | `100000` (100 MB) | Maximum accumulated payload size (KB) before a batch is flushed during an export run. Reduce to lower the memory footprint of each batch.                             |
+
+**Example: conservative settings for memory-constrained deployments**
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# In your Helm values
+BULK_EXPORT_MAX_CONCURRENT_RUNS: "10"
+DATA_EXPORT_RUN_LIMIT: "5"
+DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB: "512"
+```
+
+Lowering these values reduces parallelism and may increase total export time, but lowers peak memory usage per pod. If you encounter out-of-memory (OOM) errors on memory-constrained nodes, these settings can help.
+
 ### Progress tracking and resumability
 
 The export system maintains detailed progress metadata for each run:
@@ -27926,14 +28005,12 @@ Deploy LangSmith agents to LangChain-managed Cloud infrastructure on AWS and GCP
     Reference for Cloud-only platform behavior: data regions, static IPs, payload limits, deployment types, and managed database provisioning.
   </Card>
 
-  <Card title="Managed Deep Agents" icon="robot" href="/langsmith/managed-deep-agents-overview">
-    CLI-first private beta for deploying code-first Deep Agents to managed LangSmith infrastructure.
-  </Card>
-
   <Card title="Quickstart" icon="bolt" href="/langsmith/deployment-quickstart">
     Deploy your first LangGraph application to Cloud in a few minutes.
   </Card>
 </CardGroup>
+
+To deploy a code-first Deep Agent without standing up your own Agent Server, [Managed Deep Agents](/langsmith/managed-deep-agents-overview) offers a CLI-first managed runtime in private beta.
 
 ## Next steps
 
@@ -28548,11 +28625,9 @@ LangSmith Deployment is framework-agnostic which means you can deploy agents bui
   <Card title="Other frameworks" href="/langsmith/deploy-other-frameworks" icon="packages">
     Deploy Claude Agent SDK, Strands, CrewAI, AutoGen, and other agent frameworks with the Functional API or `deployments-wrap-sdk`.
   </Card>
-
-  <Card title="Managed Deep Agents" href="/langsmith/managed-deep-agents-overview" icon="robot">
-    Deploy code-first Deep Agents with the Managed Deep Agents CLI private beta.
-  </Card>
 </CardGroup>
+
+A managed runtime for deploying code-first Deep Agents is available in private beta; see [Managed Deep Agents](/langsmith/managed-deep-agents-overview).
 
 ## LangSmith Deployment environments
 
@@ -28587,7 +28662,7 @@ For where the LangSmith platform runs, see [Platform setup](/langsmith/platform-
 
 ## After deployment
 
-Once deployed, agents work with [Agent Server](/langsmith/assistants)'s execution model: **assistants** for configuration, **threads** for state, and **runs** for workloads. For capabilities, tutorials, server customization, and operations, see [Develop agents](/langsmith/develop-agents-overview).
+Once deployed, agents work with [Agent Server](/langsmith/assistants)'s execution model: **assistants** for configuration, **threads** for state, and **runs** for workloads. For capabilities, tutorials, server customization, and operations, see [Agent Server](/langsmith/develop-agents-overview).
 
 <CardGroup>
   <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/oHF6ZolKSFmH17u5/images/brand/engine-icon-dark.png?fit=max&auto=format&n=oHF6ZolKSFmH17u5&q=85&s=739a487161804691a14c36c2768d278d" href="/langsmith/engine-overview">
@@ -28900,82 +28975,6 @@ Copy the **API URL** from the deployment details view, then use it to call your 
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
-
-
-# Deploy Managed Deep Agents
-Source: https://docs.langchain.com/langsmith/deployment-quickstart-da
-
-
-
-***
-
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-quickstart-da.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
-
-
-# Develop agents
-Source: https://docs.langchain.com/langsmith/develop-agents-overview
-
-Develop agents on the LangSmith Agent Server runtime—capabilities, configuration, composition, and operations.
-
-Develop your agents on the [Agent Server](/langsmith/agent-server) runtime. Once deployed, agents work with three primitives: [**assistants**](/langsmith/assistants) for configuration, [**threads**](/langsmith/use-threads) for state, and [**runs**](/langsmith/runs) for workloads. The pages in this tab cover the capabilities Agent Server provides, how to develop and [structure your application](/langsmith/application-structure), and how to [secure](/langsmith/auth) and [customize](/langsmith/custom-routes) the server.
-
-## Capabilities
-
-<CardGroup>
-  <Card title="Develop your application" href="/langsmith/application-structure" icon="code">
-    Structure your app, configure dependencies for Python, JavaScript, and monorepos, and connect agents with RemoteGraph, semantic search, TTLs, and CI/CD.
-  </Card>
-
-  <Card title="Agent Server runtime" href="/langsmith/agent-server" icon="bolt">
-    Work with assistants, threads, runs, and cron jobs. Stream to users, pause for human review, handle concurrent input, and connect via MCP and A2A.
-  </Card>
-
-  <Card title="Auth & access control" href="/langsmith/auth" icon="lock">
-    Authenticate users, enforce resource-level access, and connect external OAuth2 identity providers.
-  </Card>
-
-  <Card title="Server customization" href="/langsmith/caching" icon="settings">
-    Add caching, custom stores and checkpointers, lifespan hooks, middleware, custom routes, encryption, and configurable headers and logs.
-  </Card>
-</CardGroup>
-
-## Tutorials
-
-* [Collect user feedback for Agent Server runs](/langsmith/agent-server-feedback): Attach end-user feedback to runs and traces
-* [Deploy other frameworks (e.g., Strands, CrewAI)](/langsmith/deploy-other-frameworks): Wrap existing agents with Functional API and deploy
-* [Implement generative user interfaces with LangGraph](/langsmith/generative-ui-react): Stream UI elements to a React client
-* [Implement a CI/CD pipeline](/langsmith/cicd-pipeline-example): Automate tests, evaluations, and deployments with GitHub Actions
-
-## Securing and customizing your server
-
-* [Custom auth](/langsmith/auth): Authentication and multi-tenant access control
-* [Server customization](/langsmith/custom-routes): Custom routes, [middleware](/langsmith/custom-middleware), [lifespan hooks](/langsmith/custom-lifespan), [encryption](/langsmith/encryption)
-
-## Operations
-
-* [CI/CD pipelines](/langsmith/cicd-pipeline-example)
-* [TTL configuration](/langsmith/configure-ttl) for state and thread management
-* [Semantic search](/langsmith/semantic-search)
-
-***
-
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/develop-agents-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -52109,6 +52108,7 @@ Every gateway-proxied call appears as a [trace](/langsmith/observability-concept
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spend limits**                 | Hard-block enforcement at the [organization](/langsmith/administration-overview#organizations), [workspace](/langsmith/administration-overview#workspaces), [API key](/langsmith/administration-overview#api-keys), or user level. When a cap is hit, the caller receives a 402 response with an actionable error message. |
 | **Spend visibility**             | Real-time cost rollups by workspace, user, API key. Per-model visibility can be had via Custom Charts.                                                                                                                                                                                                                     |
+| **Model fallbacks**              | When the primary model returns a status code you've flagged as retryable, such as a rate limit or provider outage, the request is retried against backup model configurations in priority order.                                                                                                                           |
 | **PII redaction**                | Detects and redacts names, places, nationality, religion, political affiliation, and ages from requests before they reach the model.                                                                                                                                                                                       |
 | **Secrets redaction**            | Detects and redacts US phone numbers, US SSNs, API keys, tokens, and credentials from requests. Covers AWS, GitHub, GitLab, OpenAI, Anthropic, GCP, Azure, Slack, Datadog, PyPI, npm, private keys, and LangSmith tokens.                                                                                                  |
 | **LangSmith Engine integration** | Policy violations surface as issues in LangSmith Engine. Click through from a violation to the trace that produced it.                                                                                                                                                                                                     |
@@ -52143,6 +52143,10 @@ Every gateway-proxied call appears as a [trace](/langsmith/observability-concept
 
   <Card title="PII and secrets redaction" icon="shield-lock" href="/langsmith/llm-gateway-redaction">
     Prevent sensitive data from reaching LLM providers or trace storage.
+  </Card>
+
+  <Card title="Model fallbacks" icon="shuffle" href="/langsmith/llm-gateway-fallbacks">
+    Automatically retry against backup models when the primary model fails.
   </Card>
 </CardGroup>
 
@@ -52631,6 +52635,105 @@ Both `/providers/{configName}` and `/models/{configName}` use the same allowlist
 </div>
 
 
+# Model fallbacks
+Source: https://docs.langchain.com/langsmith/llm-gateway-fallbacks
+
+Automatically retry a request against backup model configurations when the primary model rate-limits, errors, or returns another configured status code.
+
+<Note>
+  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). Sign up for [the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+</Note>
+
+Model fallbacks retry a request against one or more backup [model configurations](/langsmith/model-configurations) when the primary model returns an error you've flagged as retryable, such as a rate limit or a provider outage. Instead of building retry logic into every agent, define the fallback order once in LangSmith and call it through a single gateway route.
+
+## How it works
+
+A fallback configuration has:
+
+* **A name**, exposed at the route `https://gateway.smith.langchain.com/routes/{name}`. Clients call this URL instead of a provider-specific path.
+* **One or more fallback chains**, each an ordered list of [model configurations](/langsmith/model-configurations) to try in priority order.
+* **Triggers**: the upstream HTTP status codes that should cause the gateway to move on to the next model in the chain—for example `429` for rate limits, or `500`, `502`, `503`, `504` for other provider errors.
+
+For each request, the gateway:
+
+1. Picks a chain (see [Selecting a chain by model](#selecting-a-chain-by-model)).
+2. Calls the chain's first model configuration.
+3. If the response status matches a configured trigger, discards that response and calls the next model configuration in the chain.
+4. Repeats until a candidate returns a non-trigger response, or the chain is exhausted—in which case the last candidate's response is returned to the caller.
+
+Each candidate is called with its own configured model, and each model configuration can point to a different provider and model identifier. The request's `model` is used only to select a chain; if it doesn't match any chain, the first (default) chain is used. If a fallback is triggered the original request's `model` is overridden with the `model` tag in the Model Configuration. So you can fallback from `model-x` to `model-y`, for example.
+
+<Note>
+  Only **OpenAI Compatible Endpoint** [model configurations](/langsmith/model-configurations)—the same type used for [custom providers](/langsmith/llm-gateway-custom-providers)—can be added to a fallback chain.
+</Note>
+
+## Create a fallback configuration
+
+<Warning>
+  Creating and managing fallback configurations requires `organization:manage` permission. For the full permissions breakdown, refer to [access control](/langsmith/llm-gateway-access).
+</Warning>
+
+1. Go to **Settings → Gateway → LLM Gateway** and select the **Model Fallbacks** tab.
+2. Click **Create configuration**.
+3. Enter a **Configuration name**. This becomes `{name}` in the gateway URL `https://gateway.smith.langchain.com/routes/{name}`.
+4. Select the **Workspace** the configuration belongs to. [Model configurations](/langsmith/model-configurations) are workspace-scoped, so only that workspace's configurations are available to add to a chain. The workspace can't be changed later—delete and recreate the configuration to move it.
+5. Under **Fallback triggers**, add the HTTP status codes that should trigger a fallback (for example `429`, `500`, `502`, `503`, `504`).
+6. Under **Model fallback chains**, click **Add chain**, then add model configurations to it in the order they should be tried. The first chain is the **default** chain, used whenever a request's model doesn't select a different one.
+7. Click **Create configuration**.
+
+## Make a call
+
+Call the route the same way you'd call a [custom provider](/langsmith/llm-gateway-custom-providers):
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/routes/my-route/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"messages":[{"role":"user","content":"ping"}]}'
+```
+
+The gateway tries each model configuration in the selected chain, in order, until one responds without a trigger status. The trace for the call records how many candidates were attempted.
+
+## Selecting a chain by model
+
+A configuration can hold more than one fallback chain—useful when different model families need different fallback behavior. The gateway selects a chain by matching the request body's `model` field against each chain's **primary** (first) model configuration's underlying model name:
+
+* If `model` matches a chain's primary model, that chain is used.
+* If `model` is omitted, or doesn't match any chain's primary model, the first (default) chain is used.
+
+Every model configuration in a chain is an OpenAI Compatible Endpoint, but each one can point to a different host. So a chain can fail over across separate deployments of the same model (for example, a primary endpoint to a backup endpoint) without a single host being a point of failure.
+
+For example, a configuration with two chains:
+
+| Chain       | Models (in priority order)                                          |
+| ----------- | ------------------------------------------------------------------- |
+| 1 (default) | `gpt-5.5` on OpenAI → `gpt-5.4` on Azure → `gpt-4o-mini` on Bedrock |
+| 2           | `gpt-4o-mini` on OpenAI → `kimi` on Fireworks                       |
+
+* A request with `"model": "gpt-5.5"` uses chain 1, which fails over from OpenAI to Azure to Bedrock.
+* A request with `"model": "gpt-4o-mini"` uses chain 2, which fails over from OpenAI to Fireworks.
+* A request with an unrecognized or omitted model uses chain 1, the default.
+
+You may also specify an alias for each chain. Your client can set their requested to model in their request like `"model": "heavy"` to route to the first chain.
+
+## Next steps
+
+* [Custom model providers](/langsmith/llm-gateway-custom-providers): the model configuration type used in fallback chains.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): apply cost limits alongside fallback routing.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Quickstart
 Source: https://docs.langchain.com/langsmith/llm-gateway-quickstart
 
@@ -52676,6 +52779,51 @@ This points all provider SDKs at the LangSmith Gateway and uses your LangSmith A
 
   These gateways are deployed in LangChain's regional production environments. There is no automatic region routing.
 </Note>
+
+### Using LangChain and Deep Agents
+
+[LangChain](/oss/python/langchain/overview) chat models and [Deep Agents](/oss/python/deepagents/overview) support the gateway through two convenience environment variables:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_GATEWAY="true"
+export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
+```
+
+This routes all supported chat models through the gateway at `https://gateway.smith.langchain.com`. To use a different gateway (e.g. the EU instance), set its URL instead of `true`:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
+export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
+```
+
+See [more details](#more-details) below for provider support and interactions with provider-specific environment variables.
+
+<Accordion title="More details">
+  * Supported in Python only.
+  * Supported chat models: [Anthropic](/oss/python/integrations/chat/anthropic) (`langchain-anthropic >= 1.5.1`), [Fireworks](/oss/python/integrations/chat/fireworks) (`langchain-fireworks >= 1.5.1`), and [OpenAI](/oss/python/integrations/chat/openai) (`langchain-openai >= 1.4.1`).
+  * Provider-specific base URLs take precedence over the gateway, so you can still route an individual provider elsewhere. For example, with the gateway enabled, `OPENAI_API_BASE` sends OpenAI to that URL while every other provider continues to use the gateway:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export OPENAI_API_BASE="https://my.custom.gateway/openai/v2"
+    ```
+
+  The table below shows how the base URL and key are resolved, using OpenAI as the example (other providers use their own `*_API_BASE` / `*_API_KEY` variables). `GW default` is `https://gateway.smith.langchain.com/openai/v1`.
+
+  | `LANGSMITH_GATEWAY` | `LANGSMITH_GATEWAY_API_KEY` | `OPENAI_API_BASE`   | `OPENAI_API_KEY` | `base_url=` kwarg | Resolved base URL   | Resolved key |
+  | ------------------- | --------------------------- | ------------------- | ---------------- | ----------------- | ------------------- | ------------ |
+  | unset / `false`     | —                           | —                   | —                | —                 | `api.openai.com`    | none         |
+  | unset / `false`     | ✓                           | —                   | provider-key     | —                 | `api.openai.com`    | provider-key |
+  | `true`              | ✓                           | —                   | —                | —                 | GW default          | gateway-key  |
+  | `true`              | —                           | —                   | —                | —                 | GW default          | none         |
+  | `true`              | ✓                           | —                   | provider-key     | —                 | GW default          | gateway-key  |
+  | `true`              | —                           | —                   | provider-key     | —                 | GW default          | provider-key |
+  | `true`              | ✓                           | `api.openai.com/v1` | provider-key     | —                 | `api.openai.com/v1` | provider-key |
+  | `true`              | ✓                           | `api.openai.com/v1` | —                | —                 | `api.openai.com/v1` | gateway-key  |
+  | `true`              | ✓                           | `my.dev.gateway`    | —                | —                 | `my.dev.gateway`    | gateway-key  |
+  | `https://eu…`       | ✓                           | —                   | —                | —                 | `eu…/openai/v1`     | gateway-key  |
+  | `https://eu…`       | ✓                           | —                   | —                | `https://apac…`   | `apac…`             | gateway-key  |
+  | `https://eu…`       | ✓                           | —                   | provider-key     | `https://apac…`   | `apac…`             | provider-key |
+</Accordion>
 
 ## 2. Make a call
 
@@ -54558,6 +54706,7 @@ This page covers how to control where LangSmith sends your traces:
 * [Set the destination project dynamically](#set-the-destination-project-dynamically)
 * [Set the destination workspace dynamically](#set-the-destination-workspace-dynamically)
 * [Write traces to multiple destinations with replicas](#write-traces-to-multiple-destinations-with-replicas)
+* [Leave feedback on all replica instances](#leave-feedback-on-all-replica-instances)
 
 ## Set the destination project statically
 
@@ -55230,6 +55379,125 @@ If all your replicas use the same LangSmith server, you can omit `api_url` and `
   await myPipeline("What is LangSmith?");
   ```
 </CodeGroup>
+
+### Leave feedback on all replica instances
+
+When you use replicas, each replica receives a copy of every run. To submit feedback for a run on a specific replica, you need that replica's run ID. Starting in **Python SDK 0.10.8** and **JS SDK 0.8.5**, you can designate one replica as the **primary** and use `compute_run_id_for_secondary_replica` to deterministically calculate the run IDs for all other replicas.
+
+The **primary** replica keeps the original run ID unchanged. Each **secondary** replica receives a deterministic run ID derived from the original run ID and the secondary replica's project name. Use `compute_run_id_for_secondary_replica(original_run_id, project_name)` to compute the secondary run ID and pass it when calling `create_feedback`.
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import (
+      Client,
+      compute_run_id_for_secondary_replica,
+      trace,
+      tracing_context,
+  )
+
+  primary_client = Client(api_key="primary-key")
+  secondary_client = Client(api_key="secondary-key")
+
+  secondary_project = "backup-project"
+
+  with tracing_context(
+      replicas=[
+          {
+              "project_name": "production",
+              "primary": True,
+              "client": primary_client,
+          },
+          {
+              "project_name": secondary_project,
+              "primary": False,
+              "client": secondary_client,
+          },
+      ]
+  ):
+      with trace("answer-question", inputs={"question": "Capital of France?"}) as run:
+          run.outputs = {"answer": "Paris"}
+
+  # Compute the secondary replica's run ID from the original run ID and project name
+  secondary_run_id = compute_run_id_for_secondary_replica(
+      run.id,
+      secondary_project,
+  )
+
+  # Submit feedback to the primary replica using the original run ID
+  primary_client.create_feedback(
+      trace_id=run.id,
+      key="user-rating",
+      score=1,
+  )
+
+  # Submit feedback to the secondary replica using the computed run ID
+  secondary_client.create_feedback(
+      trace_id=secondary_run_id,
+      key="user-rating",
+      score=1,
+  )
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { Client } from "langsmith";
+  import { traceable, getCurrentRunTree } from "langsmith/traceable";
+  import { computeRunIdForSecondaryReplica } from "langsmith";
+
+  const primaryClient = new Client({ apiKey: "primary-key" });
+  const secondaryClient = new Client({ apiKey: "secondary-key" });
+
+  const secondaryProject = "backup-project";
+
+  let primaryRunId: string | undefined;
+
+  const answerQuestion = traceable(
+    async (question: string) => {
+      primaryRunId = getCurrentRunTree()?.id;
+      return { answer: "Paris" };
+    },
+    {
+      name: "answer-question",
+      client: primaryClient,
+      replicas: [
+        {
+          projectName: "production",
+          primary: true,
+          client: primaryClient,
+        },
+        {
+          projectName: secondaryProject,
+          primary: false,
+          client: secondaryClient,
+        },
+      ],
+    }
+  );
+
+  await answerQuestion("Capital of France?");
+
+  if (primaryRunId) {
+    // Compute the secondary replica's run ID
+    const secondaryRunId = computeRunIdForSecondaryReplica(
+      primaryRunId,
+      secondaryProject
+    );
+
+    // Submit feedback to the primary replica using the original run ID
+    await primaryClient.createFeedback(primaryRunId, "user-rating", {
+      score: 1,
+    });
+
+    // Submit feedback to the secondary replica using the computed run ID
+    await secondaryClient.createFeedback(secondaryRunId, "user-rating", {
+      score: 1,
+    });
+  }
+  ```
+</CodeGroup>
+
+<Note>
+  The `compute_run_id_for_secondary_replica` / `computeRunIdForSecondaryReplica` helper is available in Python SDK >= 0.10.8 and JS SDK >= 0.8.5. If you are using an earlier SDK version, upgrade to use this feature.
+</Note>
 
 ### Route between LangSmith and OpenTelemetry destinations
 
@@ -86527,7 +86795,7 @@ If the claim contains UUIDs instead of names, revisit the `groupMembershipClaims
 We recommend running with a [`Client Secret`](#provider-setup). However, if your IdP does not support this, you can use the `Authorization Code with PKCE` flow.
 
 <Warning>
-  The PKCE workflow is **deprecated** and will be removed in a future release of LangSmith Self-hosted.
+  The PKCE workflow is **deprecated as of v16** and will be **fully removed in v17**. A migration path from PKCE to OAuth with client secret will be provided. We recommend migrating to the [client secret flow](#provider-setup) as soon as possible.
 </Warning>
 
 ### Requirements
@@ -128323,6 +128591,7 @@ Run OAuth login for MCP servers marked `auth: "oauth"` with `dcode mcp login <se
 | `--rubric-model MODEL`          | Model the rubric grader uses. Defaults to the main agent model. Requires `-n` or piped stdin                                                                                                                                                                                                                                                                                                   |
 | `--rubric-max-iterations N`     | Grader iterations per rubric attempt before stopping. Requires `-n` or piped stdin                                                                                                                                                                                                                                                                                                             |
 | `-n`, `--non-interactive TEXT`  | Run a single task non-interactively and exit. Shell is disabled unless `--shell-allow-list` is set                                                                                                                                                                                                                                                                                             |
+| `--recursion-limit N`           | LangGraph graph step budget (max node invocations per turn). Valid range: `25`–`100000`. Out-of-range or non-integer values log a warning and fall back to the default (`2000`). Overrides `DEEPAGENTS_CODE_RECURSION_LIMIT` and `[runtime].recursion_limit` in `config.toml`                                                                                                                  |
 | `--max-turns N`                 | Cap agentic turns in non-interactive mode. Exits with code 124 when exceeded. Requires `-n` or piped stdin. See [Non-interactive mode and piping](#non-interactive-mode-and-piping)                                                                                                                                                                                                            |
 | `--timeout SECONDS`             | Hard wall-clock timeout for non-interactive mode. Exits with code 124 when exceeded. Requires `-n` or piped stdin. See [Non-interactive mode and piping](#non-interactive-mode-and-piping)                                                                                                                                                                                                     |
 | `-q`, `--quiet`                 | Clean output for piping—only the agent's response goes to stdout. Requires `-n` or piped stdin                                                                                                                                                                                                                                                                                                 |
@@ -128882,6 +129151,51 @@ On a machine provisioned with a model gateway (for example, the LangSmith gatewa
 
 To use your own key instead, store it with `/auth` (leave the base URL blank for the provider default, or set it explicitly), or set the `DEEPAGENTS_CODE_` prefixed key and endpoint. Both override the gateway pair without leaving a mismatched endpoint behind.
 
+## Agent runtime limits
+
+The LangGraph graph step budget is the maximum number of node invocations the `dcode` agent graph may execute in a single turn. Configure this recursion limit with the `[runtime]` section:
+
+```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[runtime]
+recursion_limit = 2000
+```
+
+The default is `2000`. Valid values are integers from `25` to `100000` (inclusive). Values outside this range or non-integer values log a warning and fall back to the default.
+
+Precedence (highest to lowest):
+
+1. `--recursion-limit` CLI flag
+2. `DEEPAGENTS_CODE_RECURSION_LIMIT` environment variable
+3. `[runtime].recursion_limit` in `config.toml`
+4. Built-in default (`2000`)
+
+Use `dcode config get runtime.recursion_limit` to see the effective value and its source.
+
+<Tabs>
+  <Tab title="CLI flag">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    dcode --recursion-limit 5000
+    ```
+  </Tab>
+
+  <Tab title="Environment variable">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export DEEPAGENTS_CODE_RECURSION_LIMIT=5000
+    ```
+  </Tab>
+
+  <Tab title="Config file">
+    ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    [runtime]
+    recursion_limit = 5000
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  `goal_rubric` recursion limits are separate and unaffected by this setting.
+</Note>
+
 ## See also
 
 * [Configuration](/oss/javascript/deepagents/code/configuration)
@@ -129265,6 +129579,10 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 
 <ResponseField name="DEEPAGENTS_CODE_NO_UPDATE_CHECK" type="string">
   Disable automatic update checking when set. This also prevents automatic update installs at startup.
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_RECURSION_LIMIT" type="integer">
+  LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Valid range: `25`–`100000`. Out-of-range or non-integer values log a warning and fall back to the default (`2000`). Overridden by `--recursion-limit` at the CLI. See [Agent runtime limits](/oss/javascript/deepagents/code/config-file#agent-runtime-limits).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHELL_ALLOW_LIST" type="string">
@@ -224955,6 +225273,7 @@ Run OAuth login for MCP servers marked `auth: "oauth"` with `dcode mcp login <se
 | `--rubric-model MODEL`          | Model the rubric grader uses. Defaults to the main agent model. Requires `-n` or piped stdin                                                                                                                                                                                                                                                                                                   |
 | `--rubric-max-iterations N`     | Grader iterations per rubric attempt before stopping. Requires `-n` or piped stdin                                                                                                                                                                                                                                                                                                             |
 | `-n`, `--non-interactive TEXT`  | Run a single task non-interactively and exit. Shell is disabled unless `--shell-allow-list` is set                                                                                                                                                                                                                                                                                             |
+| `--recursion-limit N`           | LangGraph graph step budget (max node invocations per turn). Valid range: `25`–`100000`. Out-of-range or non-integer values log a warning and fall back to the default (`2000`). Overrides `DEEPAGENTS_CODE_RECURSION_LIMIT` and `[runtime].recursion_limit` in `config.toml`                                                                                                                  |
 | `--max-turns N`                 | Cap agentic turns in non-interactive mode. Exits with code 124 when exceeded. Requires `-n` or piped stdin. See [Non-interactive mode and piping](#non-interactive-mode-and-piping)                                                                                                                                                                                                            |
 | `--timeout SECONDS`             | Hard wall-clock timeout for non-interactive mode. Exits with code 124 when exceeded. Requires `-n` or piped stdin. See [Non-interactive mode and piping](#non-interactive-mode-and-piping)                                                                                                                                                                                                     |
 | `-q`, `--quiet`                 | Clean output for piping—only the agent's response goes to stdout. Requires `-n` or piped stdin                                                                                                                                                                                                                                                                                                 |
@@ -225514,6 +225833,51 @@ On a machine provisioned with a model gateway (for example, the LangSmith gatewa
 
 To use your own key instead, store it with `/auth` (leave the base URL blank for the provider default, or set it explicitly), or set the `DEEPAGENTS_CODE_` prefixed key and endpoint. Both override the gateway pair without leaving a mismatched endpoint behind.
 
+## Agent runtime limits
+
+The LangGraph graph step budget is the maximum number of node invocations the `dcode` agent graph may execute in a single turn. Configure this recursion limit with the `[runtime]` section:
+
+```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[runtime]
+recursion_limit = 2000
+```
+
+The default is `2000`. Valid values are integers from `25` to `100000` (inclusive). Values outside this range or non-integer values log a warning and fall back to the default.
+
+Precedence (highest to lowest):
+
+1. `--recursion-limit` CLI flag
+2. `DEEPAGENTS_CODE_RECURSION_LIMIT` environment variable
+3. `[runtime].recursion_limit` in `config.toml`
+4. Built-in default (`2000`)
+
+Use `dcode config get runtime.recursion_limit` to see the effective value and its source.
+
+<Tabs>
+  <Tab title="CLI flag">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    dcode --recursion-limit 5000
+    ```
+  </Tab>
+
+  <Tab title="Environment variable">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export DEEPAGENTS_CODE_RECURSION_LIMIT=5000
+    ```
+  </Tab>
+
+  <Tab title="Config file">
+    ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    [runtime]
+    recursion_limit = 5000
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  `goal_rubric` recursion limits are separate and unaffected by this setting.
+</Note>
+
 ## See also
 
 * [Configuration](/oss/python/deepagents/code/configuration)
@@ -225897,6 +226261,10 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
 
 <ResponseField name="DEEPAGENTS_CODE_NO_UPDATE_CHECK" type="string">
   Disable automatic update checking when set. This also prevents automatic update installs at startup.
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_RECURSION_LIMIT" type="integer">
+  LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Valid range: `25`–`100000`. Out-of-range or non-integer values log a warning and fall back to the default (`2000`). Overridden by `--recursion-limit` at the CLI. See [Agent runtime limits](/oss/python/deepagents/code/config-file#agent-runtime-limits).
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_SHELL_ALLOW_LIST" type="string">
@@ -260097,12 +260465,15 @@ Integrate with Microsoft using LangChain Python.
 This page covers all LangChain integrations with [Microsoft Azure](https://portal.azure.com) and other [Microsoft](https://www.microsoft.com) products.
 
 <Tip>
-  **Recommended: Azure OpenAI**
+  **Recommended: Azure OpenAI and Microsoft Foundry**
 
   We recommend using [Azure OpenAI](https://reference.langchain.com/python/langchain-openai/llms/azure/AzureOpenAI) across [chat models](#chat-models), [LLMs](#llms), and [embedding models](#embedding-models). With the [v1 API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/api-version-lifecycle?tabs=python) (Generally Available as of August 2025), you can use your Azure endpoint and API keys directly with the [`langchain-openai`](https://reference.langchain.com/python/langchain-openai/) package to call any model deployed in [Microsoft Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/) (including OpenAI, Llama, DeepSeek, Mistral, and Phi) through a single interface. You also get native support for Microsoft Entra ID authentication and access to the latest features including the [Responses API](#responses-api) and [reasoning models](/oss/python/integrations/chat/azure_chat_openai). [Get started here](#azure-openai).
 
+  For agent hosting, use [Microsoft Foundry hosted agents](#microsoft-foundry-hosted-agents) to deploy custom LangGraph code on a managed agent platform with built-in runtime, sessions, scaling, identity, and protocol endpoints.
+
   **Samples and tutorials:**
 
+  * [microsoft-foundry/foundry-samples LangGraph hosted agent samples](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph): Run LangGraph agents locally or deploy them to Microsoft Foundry with Responses, Invocations, and A2A samples.
   * [Azure-Samples/langchain-azure-openai-starter](https://github.com/Azure-Samples/langchain-azure-openai-starter): Start with a production-ready LangChain and Azure OpenAI app template that lets you deploy directly to Azure with a single `azd` command.
   * [microsoft/langchain-for-beginners](https://github.com/microsoft/langchain-for-beginners): A hands-on course introducing LangChain with Azure OpenAI.
   * [Azure-Samples/langchain-agent-python](https://github.com/Azure-Samples/langchain-agent-python): Build and deploy LangChain agents on Azure.
@@ -260827,6 +261198,33 @@ The `AzureAIServicesToolkit` toolkit includes the following tools:
 * Speech to Text: [AzureAISpeechToTextTool](/oss/python/integrations/tools/azure_ai_services#azureaispeechtotexttool)
 * Text to Speech: [AzureAITextToSpeechTool](/oss/python/integrations/tools/azure_ai_services#azureaitexttospeechtool)
 * Text Analytics for Health: [AzureAITextAnalyticsHealthTool](/oss/python/integrations/tools/azure_ai_services#azureaitextanalyticshealthtool)
+
+## Runtime
+
+### Microsoft Foundry hosted agents
+
+[Microsoft Foundry hosted agents](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/langchain-hosted-agents) run custom LangGraph code in a managed runtime. Use the `langchain_azure_ai.agents.hosting` package to expose a compiled LangGraph graph while Foundry manages the runtime, sessions, scaling, identity, and protocol endpoints.
+
+<Note>
+  LangGraph hosting support requires `langchain-azure-ai[hosting]>=1.2.8`.
+</Note>
+
+Before you begin, you need an Azure subscription, a Foundry project, a deployed chat model, Python 3.10 or later, and Azure CLI authentication. Deploying the agent also requires the Foundry Project Manager role on the project.
+
+Choose a hosting protocol based on how clients interact with the agent:
+
+| Protocol    | Host class              | Endpoint       | Use when                                                                                                                            |
+| ----------- | ----------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Responses   | `ResponsesHostServer`   | `/responses`   | You need OpenAI-compatible chat, streaming, response history, or conversation threading. Start here for most conversational agents. |
+| Invocations | `InvocationsHostServer` | `/invocations` | You need a custom JSON shape, a webhook-style endpoint, or non-conversational processing.                                           |
+
+To host and deploy a graph:
+
+1. Pass the compiled graph to the host server for your chosen protocol.
+2. Set `FOUNDRY_PROJECT_ENDPOINT` and `FOUNDRY_MODEL_NAME`, then run and test the host locally.
+3. Use `azd ai agent init` to initialize a hosted-agent project, `azd ai agent run` to test its container, and `azd provision` and `azd deploy` to deploy it. You can also deploy with the Foundry Toolkit Visual Studio Code extension.
+
+The Microsoft Learn guide includes complete examples for both protocols, conversation state, human-in-the-loop flows, testing, deployment, and troubleshooting.
 
 ***
 

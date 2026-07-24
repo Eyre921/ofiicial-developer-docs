@@ -17,7 +17,6 @@
 
 - `ai/agent-plugin` — [Agent Plugin](pages/ai/agent-plugin.md) · [原文](https://docs.sentry.io/ai/agent-plugin.md)
 - `ai/dotagents` — [dotagents](pages/ai/dotagents.md) · [原文](https://docs.sentry.io/ai/dotagents.md)
-- `ai/observability` — [AI Observability](pages/ai/observability.md) · [原文](https://docs.sentry.io/ai/observability.md)
 
 ## api
 
@@ -134,6 +133,7 @@
 
 ## product
 
+- `product/agents` — [Agents](pages/product/agents.md) · [原文](https://docs.sentry.io/product/agents.md)
 - `product/ai-in-sentry` — [AI in Sentry](pages/product/ai-in-sentry.md) · [原文](https://docs.sentry.io/product/ai-in-sentry.md)
 - `product/build-distribution` — [Build Distribution](pages/product/build-distribution.md) · [原文](https://docs.sentry.io/product/build-distribution.md)
 - `product/dashboards` — [Dashboards](pages/product/dashboards.md) · [原文](https://docs.sentry.io/product/dashboards.md)

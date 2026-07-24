@@ -7,24 +7,6 @@ path: docs/api-reference/suppressions/add-suppressions
 POST /suppressions/batch/add
 Add up to 100 email addresses to the suppression list at once.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Body Parameters
 
 <ParamField type="array">
@@ -41,6 +23,30 @@ Add up to 100 email addresses to the suppression list at once.
   const { data, error } = await resend.suppressions.batch.add({
     emails: ['steve.wozniak@example.com', 'susan.kare@example.com'],
   });
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::BatchAddSuppressionOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts =
+      BatchAddSuppressionOptions::from(vec!["steve.wozniak@example.com", "susan.kare@example.com"]);
+    let _data = resend.suppressions.batch_add(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->batch->add([
+    'emails' => ['steve.wozniak@example.com', 'susan.kare@example.com'],
+  ]);
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

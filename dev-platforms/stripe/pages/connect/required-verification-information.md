@@ -730,7 +730,7 @@ If Stripe can’t determine these individuals, a company must submit a [proof of
 
 > Connected accounts can submit a single [ultimate beneficial owner attestation](https://docs.stripe.com/acceptable-verification-documents.md?country=SG&document-type=relationship) as an alternative to one document for the business and another for each holding company with significant ownership.
 > 
-> If the company has no owners with 25% or more ownership, all directors listed on government records (and available for preview on Stripe-hosted or embedded onboarding) are considered to be the UBOs and you must add them to the account.
+> If the company has no owners with 25% or more ownership, all directors listed on government records (and available for preview on Stripe-hosted or embedded onboarding) are considered to be the UBOs and you must add them to the account. For API-based onboarding, create a `Person` for each director with `relationship.director=true` and set `identity.attestations.persons_provided.directors=true` on the account. Stripe prefills directors from government records on hosted and embedded onboarding.
 
 ##### Partnerships
 
@@ -765,6 +765,7 @@ Accounts with missing persons have one or more of the following error codes in t
 
 - Accounts with missing beneficial owners: `verification_missing_owners`
 - Accounts with missing directors: `verification_missing_directors`
+- Accounts whose director information doesn’t match government records: `verification_directors_mismatch`. Add or update directors so the account matches government records, then set `identity.attestations.persons_provided.directors` to confirm.
 - Accounts where Stripe requires additional information regarding their ownership: `verification_requires_additional_proof_of_registration`
 
 #### Ultimate beneficial ownership verification 
@@ -1528,7 +1529,7 @@ If Stripe can’t determine these individuals, a company must submit a [proof of
 
 > Connected accounts can submit a single [ultimate beneficial owner attestation](https://docs.stripe.com/acceptable-verification-documents.md?country=SG&document-type=relationship) as an alternative to one document for the business and another for each holding company with significant ownership.
 > 
-> If the company has no owners with 25% or more ownership, all directors listed on government records (and available for preview on Stripe-hosted or embedded onboarding) are considered to be the UBOs and you must add them to the account.
+> If the company has no owners with 25% or more ownership, all directors listed on government records (and available for preview on Stripe-hosted or embedded onboarding) are considered to be the UBOs and you must add them to the account. For API-based onboarding, create a `Person` for each director with `relationship.director=true` and set `company.directors_provided=true` on the account. Stripe prefills directors from government records on hosted and embedded onboarding.
 
 ##### Partnerships
 
@@ -1589,7 +1590,7 @@ If a discrepancy in your list of directors is detected, Stripe might request a n
 
 Both Stripe-hosted and embedded onboarding display a list of missing [owners](https://docs.stripe.com/api/persons/object.md#person_object-relationship-owner) and [directors](https://docs.stripe.com/api/persons/object.md#person_object-relationship-director), and the account user can add them to their account by clicking on them. Adding the suggested individuals fulfills the UBO requirement for companies without any holding companies in their ownership structure. For companies with holding companies, Stripe attempts to verify their owners. If we can’t, we prompt the account user to upload either an [ultimate beneficial owner attestation document or relevant ownership documents](https://docs.stripe.com/acceptable-verification-documents.md?country=SG&document-type=relationship) to determine the account’s ultimate beneficial owners. (This also applies to other business types, such as non-profits.)
 
-Accounts with missing beneficial owners have a `verification_missing_owners` error code in the errors hash of [requirements](https://docs.stripe.com/api/accounts/object.md#account_object-requirements-errors). Similarly, accounts with missing directors have a `verification_document_directors_mismatch` error code. Lastly, accounts where Stripe requires additional information regarding their ownership have a `verification_requires_additional_proof_of_registration` error code.
+Accounts with missing beneficial owners have a `verification_missing_owners` error code in the errors hash of [requirements](https://docs.stripe.com/api/accounts/object.md#account_object-requirements-errors). Similarly, accounts with missing directors have a `verification_document_directors_mismatch` error code. Accounts get a&nbsp;`verification_directors_mismatch`&nbsp;error when their director information doesn’t match government records. Add or update directors so the account matches government records, then set `company.directors_provided=true`. Accounts where Stripe requires additional information regarding their ownership have a `verification_requires_additional_proof_of_registration` error code.
 
 ```
 {

@@ -43,6 +43,33 @@ Trigger DNS verification for a domain claim.
   );
   ```
 
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Domains.Claims.verify(domain_id="d91cd9bd-1176-453e-8fc1-35364d380206")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend.api_key = ENV["RESEND_API_KEY"]
+
+  claim = Resend::Domains::Claims.verify("d91cd9bd-1176-453e-8fc1-35364d380206")
+  puts claim
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.DomainClaims.Verify("d91cd9bd-1176-453e-8fc1-35364d380206")
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result};
 
@@ -56,6 +83,19 @@ Trigger DNS verification for a domain claim.
       .await?;
 
     Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          DomainClaimResponseSuccess claim = resend.domains().claims()
+                  .verify("d91cd9bd-1176-453e-8fc1-35364d380206");
+      }
   }
   ```
 

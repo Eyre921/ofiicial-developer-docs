@@ -7,24 +7,6 @@ path: docs/api-reference/suppressions/get-suppression
 GET /suppressions/:suppression
 Retrieve a single suppression by ID or email.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 A suppression can be retrieved either by its ID or by the suppressed email
 address.
 
@@ -51,6 +33,36 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   // Retrieve by email
   const { data, error } = await resend.suppressions.get(
     'steve.wozniak@example.com',
+  );
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .suppressions
+      .get("e169aa45-1ecf-4183-9955-b1499d5701d3")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Retrieve by suppression id
+  $resend->suppressions->get(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Retrieve by email
+  $resend->suppressions->get(
+    'steve.wozniak@example.com'
   );
   ```
 

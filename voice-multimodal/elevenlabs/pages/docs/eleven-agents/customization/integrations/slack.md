@@ -234,6 +234,26 @@ When an agent runs from Slack, the following dynamic variables are available in 
 
 See [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) for how to reference these in prompts and tool calls.
 
+## Troubleshooting
+
+### File attachments not working
+
+When a user attaches an image or PDF in Slack but the agent does not process it (or behaves as if no file was sent), work through the checks below.
+
+#### Confirm the Slack app has files:read
+
+The bot needs the `files:read` bot scope to download attachments from Slack.
+
+* **Bring your own app** — open your app at [Slack API: Your Apps](https://api.slack.com/apps), go to **OAuth & Permissions**, and verify `files:read` is listed under **Bot Token Scopes**. If you added it recently, reinstall the app to your workspace so the token picks up the new scope.
+
+#### Confirm the agent model supports file input
+
+File attachments are only forwarded when the agent's LLM supports multimodal input — image input and/or document (PDF) input, depending on the file type. In the agent configuration, open the **Agent** tab and check the selected model. If the model does not support the attachment type, switch to a model that does.
+
+#### Enable Allow file attachments in agent settings
+
+On the agent's configuration page, open **Settings** > **Advanced**. Under **Multimodal input**, turn on **Allow file attachments**. Save the agent. Without this setting, Slack attachments are ignored even when the Slack app and model support files.
+
 ## Useful links
 
 * [Slack API documentation](https://api.slack.com/docs)

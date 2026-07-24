@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1184 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1191 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -90,8 +90,10 @@
 - `docs/api-reference/history/list` — [Get generated items](pages/docs/api-reference/history/list.md) · [原文](https://elevenlabs.io/docs/api-reference/history/list.md)
 - `docs/api-reference/introduction` — [Introduction](pages/docs/api-reference/introduction.md) · [原文](https://elevenlabs.io/docs/api-reference/introduction.md)
 - `docs/api-reference/knowledge-base/bulk-move` — [Bulk move documents](pages/docs/api-reference/knowledge-base/bulk-move.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/bulk-move.md)
+- `docs/api-reference/knowledge-base/cancel-crawl-job` — [Cancel crawl job](pages/docs/api-reference/knowledge-base/cancel-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/cancel-crawl-job.md)
 - `docs/api-reference/knowledge-base/compute-rag-index` — [Compute RAG index](pages/docs/api-reference/knowledge-base/compute-rag-index.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index.md)
 - `docs/api-reference/knowledge-base/compute-rag-index-batch` — [Compute RAG index in batch](pages/docs/api-reference/knowledge-base/compute-rag-index-batch.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index-batch.md)
+- `docs/api-reference/knowledge-base/create-crawl-job` — [Create crawl job](pages/docs/api-reference/knowledge-base/create-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-crawl-job.md)
 - `docs/api-reference/knowledge-base/create-folder` — [Create folder](pages/docs/api-reference/knowledge-base/create-folder.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-folder.md)
 - `docs/api-reference/knowledge-base/create-from-file` — [Create knowledge base document from file](pages/docs/api-reference/knowledge-base/create-from-file.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-file.md)
 - `docs/api-reference/knowledge-base/create-from-text` — [Create knowledge base document from text](pages/docs/api-reference/knowledge-base/create-from-text.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-text.md)
@@ -102,11 +104,13 @@
 - `docs/api-reference/knowledge-base/get-chunk` — [Get document chunk](pages/docs/api-reference/knowledge-base/get-chunk.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-chunk.md)
 - `docs/api-reference/knowledge-base/get-chunks` — [Get RAG chunks for a document](pages/docs/api-reference/knowledge-base/get-chunks.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-chunks.md)
 - `docs/api-reference/knowledge-base/get-content` — [Get document content](pages/docs/api-reference/knowledge-base/get-content.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-content.md)
+- `docs/api-reference/knowledge-base/get-crawl-job` — [Get crawl job](pages/docs/api-reference/knowledge-base/get-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-crawl-job.md)
 - `docs/api-reference/knowledge-base/get-document` — [Get knowledge base document](pages/docs/api-reference/knowledge-base/get-document.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-document.md)
 - `docs/api-reference/knowledge-base/get-rag-index` — [Get RAG index](pages/docs/api-reference/knowledge-base/get-rag-index.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-rag-index.md)
 - `docs/api-reference/knowledge-base/get-source-file-url` — [Get source file URL](pages/docs/api-reference/knowledge-base/get-source-file-url.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-source-file-url.md)
 - `docs/api-reference/knowledge-base/get-summaries` — [Get knowledge base summaries](pages/docs/api-reference/knowledge-base/get-summaries.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-summaries.md)
 - `docs/api-reference/knowledge-base/list` — [List knowledge base documents](pages/docs/api-reference/knowledge-base/list.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/list.md)
+- `docs/api-reference/knowledge-base/list-crawl-jobs` — [List crawl jobs](pages/docs/api-reference/knowledge-base/list-crawl-jobs.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/list-crawl-jobs.md)
 - `docs/api-reference/knowledge-base/move-document` — [Move document](pages/docs/api-reference/knowledge-base/move-document.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/move-document.md)
 - `docs/api-reference/knowledge-base/rag-index-overview` — [Get RAG index overview](pages/docs/api-reference/knowledge-base/rag-index-overview.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/rag-index-overview.md)
 - `docs/api-reference/knowledge-base/refresh` — [Refresh knowledge base document](pages/docs/api-reference/knowledge-base/refresh.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/refresh.md)
@@ -262,7 +266,6 @@
 - `docs/api-reference/twilio/register-call` — [Register call](pages/docs/api-reference/twilio/register-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/register-call.md)
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
-- `docs/api-reference/users/list` — [List users](pages/docs/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/api-reference/users/list.md)
 - `docs/api-reference/voices/delete` — [Delete voice](pages/docs/api-reference/voices/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/delete.md)
 - `docs/api-reference/voices/find-similar-voices` — [List similar voices](pages/docs/api-reference/voices/find-similar-voices.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/find-similar-voices.md)
 - `docs/api-reference/voices/get` — [Get voice](pages/docs/api-reference/voices/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/get.md)
@@ -389,8 +392,10 @@
 - `docs/eleven-agents/api-reference/environment-variables/update` — [Update environment variable](pages/docs/eleven-agents/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md)
 - `docs/eleven-agents/api-reference/exotel/outbound-call` — [Outbound call via Exotel](pages/docs/eleven-agents/api-reference/exotel/outbound-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/exotel/outbound-call.md)
 - `docs/eleven-agents/api-reference/knowledge-base/bulk-move` — [Bulk move documents](pages/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md)
+- `docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job` — [Cancel crawl job](pages/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md)
 - `docs/eleven-agents/api-reference/knowledge-base/compute-rag-index` — [Compute RAG index](pages/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md)
 - `docs/eleven-agents/api-reference/knowledge-base/compute-rag-index-batch` — [Compute RAG index in batch](pages/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index-batch.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index-batch.md)
+- `docs/eleven-agents/api-reference/knowledge-base/create-crawl-job` — [Create crawl job](pages/docs/eleven-agents/api-reference/knowledge-base/create-crawl-job.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-crawl-job.md)
 - `docs/eleven-agents/api-reference/knowledge-base/create-folder` — [Create folder](pages/docs/eleven-agents/api-reference/knowledge-base/create-folder.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-folder.md)
 - `docs/eleven-agents/api-reference/knowledge-base/create-from-file` — [Create knowledge base document from file](pages/docs/eleven-agents/api-reference/knowledge-base/create-from-file.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file.md)
 - `docs/eleven-agents/api-reference/knowledge-base/create-from-text` — [Create knowledge base document from text](pages/docs/eleven-agents/api-reference/knowledge-base/create-from-text.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-text.md)
@@ -401,11 +406,13 @@
 - `docs/eleven-agents/api-reference/knowledge-base/get-chunk` — [Get document chunk](pages/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-chunks` — [Get RAG chunks for a document](pages/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-content` — [Get document content](pages/docs/eleven-agents/api-reference/knowledge-base/get-content.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-content.md)
+- `docs/eleven-agents/api-reference/knowledge-base/get-crawl-job` — [Get crawl job](pages/docs/eleven-agents/api-reference/knowledge-base/get-crawl-job.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-crawl-job.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-document` — [Get knowledge base document](pages/docs/eleven-agents/api-reference/knowledge-base/get-document.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-document.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-rag-index` — [Get RAG index](pages/docs/eleven-agents/api-reference/knowledge-base/get-rag-index.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-rag-index.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-source-file-url` — [Get source file URL](pages/docs/eleven-agents/api-reference/knowledge-base/get-source-file-url.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-source-file-url.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-summaries` — [Get knowledge base summaries](pages/docs/eleven-agents/api-reference/knowledge-base/get-summaries.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-summaries.md)
 - `docs/eleven-agents/api-reference/knowledge-base/list` — [List knowledge base documents](pages/docs/eleven-agents/api-reference/knowledge-base/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list.md)
+- `docs/eleven-agents/api-reference/knowledge-base/list-crawl-jobs` — [List crawl jobs](pages/docs/eleven-agents/api-reference/knowledge-base/list-crawl-jobs.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list-crawl-jobs.md)
 - `docs/eleven-agents/api-reference/knowledge-base/move-document` — [Move document](pages/docs/eleven-agents/api-reference/knowledge-base/move-document.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/move-document.md)
 - `docs/eleven-agents/api-reference/knowledge-base/rag-index-overview` — [Get RAG index overview](pages/docs/eleven-agents/api-reference/knowledge-base/rag-index-overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/rag-index-overview.md)
 - `docs/eleven-agents/api-reference/knowledge-base/refresh` — [Refresh knowledge base document](pages/docs/eleven-agents/api-reference/knowledge-base/refresh.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/refresh.md)

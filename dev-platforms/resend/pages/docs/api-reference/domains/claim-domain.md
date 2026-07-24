@@ -67,6 +67,44 @@ Claim a domain that is already verified by another team.
   });
   ```
 
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Domains.Claims.CreateParams = {
+    "name": "example.com",
+  }
+
+  resend.Domains.Claims.create(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend.api_key = ENV["RESEND_API_KEY"]
+
+  params = {
+    name: "example.com",
+  }
+  claim = Resend::Domains::Claims.create(params)
+  puts claim
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.CreateDomainClaimRequest{
+  		Name: "example.com",
+  	}
+
+  	client.DomainClaims.Create(params)
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result, types::CreateDomainClaimOptions};
 
@@ -78,6 +116,22 @@ Claim a domain that is already verified by another team.
     let _data = resend.domains.claim(domain_claim).await?;
 
     Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ClaimDomainOptions params = ClaimDomainOptions
+                  .builder()
+                  .name("example.com").build();
+
+          DomainClaimResponseSuccess claim = resend.domains().claims().create(params);
+      }
   }
   ```
 

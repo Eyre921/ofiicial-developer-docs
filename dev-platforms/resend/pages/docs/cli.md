@@ -388,14 +388,7 @@ resend topics list | get | update | delete
 
 ## Suppressions
 
-<Warning>
-  Suppressions is a private beta feature, gated per account. The commands show
-  up in `--help`, but calls return an API error unless the suppression list is
-  enabled for your account. [Get in touch](https://resend.com/contact) to join
-  the beta.
-</Warning>
-
-Manage the suppression list — addresses that won't receive your emails. Each entry has an `origin`: `bounce` and `complaint` are added automatically, while `manual` entries are the ones you add. `get` and `delete` accept either a suppression ID or the email address.
+Manage the suppression list.
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 resend suppressions list                              # List suppressed addresses (alias: ls)

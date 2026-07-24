@@ -7,24 +7,6 @@ path: docs/api-reference/suppressions/list-suppressions
 GET /suppressions
 Show all suppressions.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 <QueryParams type="suppressions" />
 
 <ParamField type="bounce | complaint | manual">
@@ -46,6 +28,25 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   const resend = new Resend('re_xxxxxxxxx');
 
   const { data, error } = await resend.suppressions.list();
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend.suppressions.list(ListOptions::default()).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->list();
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

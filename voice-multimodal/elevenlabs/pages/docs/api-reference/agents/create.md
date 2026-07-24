@@ -3915,6 +3915,20 @@ components:
           format: double
           description: The radius of the dropdown sheet.
       title: WidgetStyles
+    WidgetTextContentsTranslation:
+      type: object
+      properties:
+        source:
+          type: object
+          additionalProperties:
+            type: string
+          description: The source text each translated field was derived from
+        text:
+          type: object
+          additionalProperties:
+            type: string
+          description: The last auto-translated output for each translated field
+      title: WidgetTextContentsTranslation
     WidgetTermsTranslation:
       type: object
       properties:
@@ -3934,6 +3948,11 @@ components:
             - $ref: '#/components/schemas/WidgetTextContents'
             - type: 'null'
           description: The text contents for the selected language
+        text_contents_translation:
+          oneOf:
+            - $ref: '#/components/schemas/WidgetTextContentsTranslation'
+            - type: 'null'
+          description: The translation cache for the text contents
         terms_text:
           type:
             - string

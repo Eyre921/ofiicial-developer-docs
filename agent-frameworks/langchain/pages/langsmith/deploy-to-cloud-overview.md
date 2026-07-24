@@ -21,14 +21,12 @@ Deploy LangSmith agents to LangChain-managed Cloud infrastructure on AWS and GCP
     Reference for Cloud-only platform behavior: data regions, static IPs, payload limits, deployment types, and managed database provisioning.
   </Card>
 
-  <Card title="Managed Deep Agents" icon="robot" href="/langsmith/managed-deep-agents-overview">
-    CLI-first private beta for deploying code-first Deep Agents to managed LangSmith infrastructure.
-  </Card>
-
   <Card title="Quickstart" icon="bolt" href="/langsmith/deployment-quickstart">
     Deploy your first LangGraph application to Cloud in a few minutes.
   </Card>
 </CardGroup>
+
+To deploy a code-first Deep Agent without standing up your own Agent Server, [Managed Deep Agents](/langsmith/managed-deep-agents-overview) offers a CLI-first managed runtime in private beta.
 
 ## Next steps
 

@@ -28,6 +28,7 @@ Every gateway-proxied call appears as a [trace](/langsmith/observability-concept
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spend limits**                 | Hard-block enforcement at the [organization](/langsmith/administration-overview#organizations), [workspace](/langsmith/administration-overview#workspaces), [API key](/langsmith/administration-overview#api-keys), or user level. When a cap is hit, the caller receives a 402 response with an actionable error message. |
 | **Spend visibility**             | Real-time cost rollups by workspace, user, API key. Per-model visibility can be had via Custom Charts.                                                                                                                                                                                                                     |
+| **Model fallbacks**              | When the primary model returns a status code you've flagged as retryable, such as a rate limit or provider outage, the request is retried against backup model configurations in priority order.                                                                                                                           |
 | **PII redaction**                | Detects and redacts names, places, nationality, religion, political affiliation, and ages from requests before they reach the model.                                                                                                                                                                                       |
 | **Secrets redaction**            | Detects and redacts US phone numbers, US SSNs, API keys, tokens, and credentials from requests. Covers AWS, GitHub, GitLab, OpenAI, Anthropic, GCP, Azure, Slack, Datadog, PyPI, npm, private keys, and LangSmith tokens.                                                                                                  |
 | **LangSmith Engine integration** | Policy violations surface as issues in LangSmith Engine. Click through from a violation to the trace that produced it.                                                                                                                                                                                                     |
@@ -62,6 +63,10 @@ Every gateway-proxied call appears as a [trace](/langsmith/observability-concept
 
   <Card title="PII and secrets redaction" icon="shield-lock" href="/langsmith/llm-gateway-redaction">
     Prevent sensitive data from reaching LLM providers or trace storage.
+  </Card>
+
+  <Card title="Model fallbacks" icon="shuffle" href="/langsmith/llm-gateway-fallbacks">
+    Automatically retry against backup models when the primary model fails.
   </Card>
 </CardGroup>
 

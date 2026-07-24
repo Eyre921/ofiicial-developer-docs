@@ -6241,6 +6241,16 @@ components:
             in agentic loops. Defaults to 50 when not specified.
           example: 50
           type: integer
+        max_uses:
+          description: >-
+            Maximum number of web searches the model may perform in a single
+            request. Once reached, further search calls return an error result
+            instead of executing. Applies to the Exa, Firecrawl, Parallel, and
+            Perplexity engines. With native provider search, forwarded only to
+            Anthropic (as `max_uses`); other native search providers have no
+            equivalent parameter and ignore it.
+          example: 3
+          type: integer
         parameters:
           $ref: '#/components/schemas/WebSearchConfig'
         search_context_size:
@@ -7177,6 +7187,13 @@ components:
           type:
             - array
             - 'null'
+        include_byok_in_budgets:
+          description: >-
+            Whether BYOK (bring-your-own-key) inference spend counts toward this
+            guardrail's limit_usd, in addition to OpenRouter credit spend.
+            Defaults to false.
+          example: false
+          type: boolean
         limit_usd:
           description: Spending limit in USD
           example: 50
@@ -7226,6 +7243,7 @@ components:
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
+          include_byok_in_budgets: false
           limit_usd: 50
           name: My New Guardrail
           reset_interval: monthly
@@ -9709,6 +9727,7 @@ components:
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
+          include_byok_in_budgets: false
           limit_usd: 100
           name: Production Guardrail
           reset_interval: monthly
@@ -9896,6 +9915,7 @@ components:
         id: 550e8400-e29b-41d4-a716-446655440000
         ignored_models: null
         ignored_providers: null
+        include_byok_in_budgets: false
         limit_usd: 100
         name: Production Guardrail
         reset_interval: monthly
@@ -10033,6 +10053,12 @@ components:
           type:
             - array
             - 'null'
+        include_byok_in_budgets:
+          description: >-
+            Whether BYOK (bring-your-own-key) inference spend counts toward this
+            guardrail's limit_usd, in addition to OpenRouter credit spend.
+          example: false
+          type: boolean
         limit_usd:
           description: Spending limit in USD
           example: 100
@@ -10059,6 +10085,7 @@ components:
       required:
         - id
         - name
+        - include_byok_in_budgets
         - created_at
         - workspace_id
       type: object
@@ -11642,6 +11669,16 @@ components:
             of 20; values above 20 are clamped.
           example: 5
           type: integer
+        max_uses:
+          description: >-
+            Maximum number of web searches the model may perform in a single
+            request. Once reached, further search calls return an error result
+            instead of executing. Applies to the Exa, Firecrawl, Parallel, and
+            Perplexity engines. With native provider search, forwarded only to
+            Anthropic (as `max_uses`); other native search providers have no
+            equivalent parameter and ignore it.
+          example: 3
+          type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -11824,6 +11861,7 @@ components:
             id: 550e8400-e29b-41d4-a716-446655440000
             ignored_models: null
             ignored_providers: null
+            include_byok_in_budgets: false
             limit_usd: 100
             name: Production Guardrail
             reset_interval: monthly
@@ -19553,6 +19591,16 @@ components:
             of 20; values above 20 are clamped.
           example: 5
           type: integer
+        max_uses:
+          description: >-
+            Maximum number of web searches the model may perform in a single
+            request. Once reached, further search calls return an error result
+            instead of executing. Applies to the Exa, Firecrawl, Parallel, and
+            Perplexity engines. With native provider search, forwarded only to
+            Anthropic (as `max_uses`); other native search providers have no
+            equivalent parameter and ignore it.
+          example: 3
+          type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -19580,6 +19628,16 @@ components:
             ignored with native provider search. Perplexity supports a maximum
             of 20; values above 20 are clamped.
           example: 5
+          type: integer
+        max_uses:
+          description: >-
+            Maximum number of web searches the model may perform in a single
+            request. Once reached, further search calls return an error result
+            instead of executing. Applies to the Exa, Firecrawl, Parallel, and
+            Perplexity engines. With native provider search, forwarded only to
+            Anthropic (as `max_uses`); other native search providers have no
+            equivalent parameter and ignore it.
+          example: 3
           type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
@@ -22893,6 +22951,7 @@ components:
         id: 0
         no_speech_prob: 0.01
         seek: 0
+        speaker: 0
         start: 0
         temperature: 0
         text: Hello there.
@@ -22924,6 +22983,12 @@ components:
           type: number
         seek:
           description: Seek offset of the segment
+          example: 0
+          type: integer
+        speaker:
+          description: >-
+            Speaker index for the segment, present when the provider returns
+            diarization data
           example: 0
           type: integer
         start:
@@ -22995,6 +23060,7 @@ components:
         timestamps
       example:
         end: 0.4
+        speaker: 0
         start: 0
         word: Hello
       properties:
@@ -23003,6 +23069,12 @@ components:
           example: 0.4
           format: double
           type: number
+        speaker:
+          description: >-
+            Speaker index for the word, present when the provider returns
+            diarization data
+          example: 0
+          type: integer
         start:
           description: Word start time in seconds
           example: 0
@@ -24218,6 +24290,13 @@ components:
           type:
             - array
             - 'null'
+        include_byok_in_budgets:
+          description: >-
+            Whether BYOK (bring-your-own-key) inference spend counts toward this
+            guardrail's limit_usd, in addition to OpenRouter credit spend. Omit
+            to leave unchanged.
+          example: true
+          type: boolean
         limit_usd:
           description: New spending limit in USD
           example: 75
@@ -24256,6 +24335,7 @@ components:
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
+          include_byok_in_budgets: true
           limit_usd: 75
           name: Updated Guardrail Name
           reset_interval: weekly
@@ -25122,6 +25202,16 @@ components:
             in agentic loops. Defaults to 50 when not specified.
           example: 50
           type: integer
+        max_uses:
+          description: >-
+            Maximum number of web searches the model may perform in a single
+            request. Once reached, further search calls return an error result
+            instead of executing. Applies to the Exa, Firecrawl, Parallel, and
+            Perplexity engines. With native provider search, forwarded only to
+            Anthropic (as `max_uses`); other native search providers have no
+            equivalent parameter and ignore it.
+          example: 3
+          type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
         user_location:
@@ -25265,6 +25355,16 @@ components:
             of 20; values above 20 are clamped.
           example: 5
           type: integer
+        max_uses:
+          description: >-
+            Maximum number of web searches the model may perform in a single
+            request. Once reached, further search calls return an error result
+            instead of executing. Applies to the Exa, Firecrawl, Parallel, and
+            Perplexity engines. With native provider search, forwarded only to
+            Anthropic (as `max_uses`); other native search providers have no
+            equivalent parameter and ignore it.
+          example: 3
+          type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchContextSizeEnum'
         type:
@@ -25347,6 +25447,16 @@ components:
             returning new results. Useful for controlling cost and context size
             in agentic loops. Defaults to 50 when not specified.
           example: 50
+          type: integer
+        max_uses:
+          description: >-
+            Maximum number of web searches the model may perform in a single
+            request. Once reached, further search calls return an error result
+            instead of executing. Applies to the Exa, Firecrawl, Parallel, and
+            Perplexity engines. With native provider search, forwarded only to
+            Anthropic (as `max_uses`); other native search providers have no
+            equivalent parameter and ignore it.
+          example: 3
           type: integer
         search_context_size:
           $ref: '#/components/schemas/SearchQualityLevel'
@@ -30170,6 +30280,7 @@ paths:
                     id: 550e8400-e29b-41d4-a716-446655440000
                     ignored_models: null
                     ignored_providers: null
+                    include_byok_in_budgets: false
                     limit_usd: 100
                     name: Production Guardrail
                     reset_interval: monthly
@@ -30274,6 +30385,7 @@ paths:
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
+                  include_byok_in_budgets: false
                   limit_usd: 50
                   name: My New Guardrail
                   reset_interval: monthly
@@ -30417,6 +30529,7 @@ paths:
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
+                  include_byok_in_budgets: false
                   limit_usd: 100
                   name: Production Guardrail
                   reset_interval: monthly
@@ -30506,6 +30619,7 @@ paths:
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
+                  include_byok_in_budgets: true
                   limit_usd: 75
                   name: Updated Guardrail Name
                   reset_interval: weekly

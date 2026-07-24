@@ -201,6 +201,10 @@ Integrate Resend with the tools you already use.
     Analyze your email data in real time
   </Card>
 
+  <Card title="PostHog" href="https://posthog.com/docs/cdp/sources/resend" icon={<PostHogIcon />}>
+    Sync Resend data to the PostHog data warehouse
+  </Card>
+
   <Card title="Coolify" href="https://coolify.io/docs/knowledge-base/notifications#resend-configuration" icon={<CoolifyIcon />}>
     Send email notifications using Coolify
   </Card>

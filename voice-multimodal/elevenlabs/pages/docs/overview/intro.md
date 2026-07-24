@@ -134,6 +134,8 @@ Low latency (\~150ms†)
 
 Precise word-level timestamps
 
+Entity detection, 65 entity types
+
 <a href="/docs/overview/models">
   Explore all
 </a>

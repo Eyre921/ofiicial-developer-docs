@@ -30,11 +30,9 @@ LangSmith Deployment is framework-agnostic which means you can deploy agents bui
   <Card title="Other frameworks" href="/langsmith/deploy-other-frameworks" icon="packages">
     Deploy Claude Agent SDK, Strands, CrewAI, AutoGen, and other agent frameworks with the Functional API or `deployments-wrap-sdk`.
   </Card>
-
-  <Card title="Managed Deep Agents" href="/langsmith/managed-deep-agents-overview" icon="robot">
-    Deploy code-first Deep Agents with the Managed Deep Agents CLI private beta.
-  </Card>
 </CardGroup>
+
+A managed runtime for deploying code-first Deep Agents is available in private beta; see [Managed Deep Agents](/langsmith/managed-deep-agents-overview).
 
 ## LangSmith Deployment environments
 
@@ -69,7 +67,7 @@ For where the LangSmith platform runs, see [Platform setup](/langsmith/platform-
 
 ## After deployment
 
-Once deployed, agents work with [Agent Server](/langsmith/assistants)'s execution model: **assistants** for configuration, **threads** for state, and **runs** for workloads. For capabilities, tutorials, server customization, and operations, see [Develop agents](/langsmith/develop-agents-overview).
+Once deployed, agents work with [Agent Server](/langsmith/assistants)'s execution model: **assistants** for configuration, **threads** for state, and **runs** for workloads. For capabilities, tutorials, server customization, and operations, see [Agent Server](/langsmith/develop-agents-overview).
 
 <CardGroup>
   <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/oHF6ZolKSFmH17u5/images/brand/engine-icon-dark.png?fit=max&auto=format&n=oHF6ZolKSFmH17u5&q=85&s=739a487161804691a14c36c2768d278d" href="/langsmith/engine-overview">

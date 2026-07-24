@@ -11,7 +11,7 @@ path: docs/api-reference/tests/summaries
 POST https://api.elevenlabs.io/v1/convai/agent-testing/summaries
 Content-Type: application/json
 
-Gets multiple agent response tests by their IDs. Returns a dictionary mapping test IDs to test summaries.
+Gets agent response test summaries for the requested test IDs.
 
 Reference: https://elevenlabs.io/docs/api-reference/tests/summaries
 
@@ -27,9 +27,7 @@ paths:
     post:
       operationId: summaries
       summary: Get Agent Response Test Summaries By Ids
-      description: >-
-        Gets multiple agent response tests by their IDs. Returns a dictionary
-        mapping test IDs to test summaries.
+      description: Gets agent response test summaries for the requested test IDs.
       tags:
         - tests
       parameters:
@@ -76,7 +74,9 @@ components:
           type: array
           items:
             type: string
-          description: List of test IDs to fetch. No duplicates allowed.
+          description: >-
+            List of test IDs to fetch. No duplicates allowed. Prefer at most
+            1000 IDs per request.
       required:
         - test_ids
       title: ListTestsByIdsRequestModel

@@ -151,7 +151,7 @@ async function processEmailDigest(job) {
 
 ### [5. AI/LLM Operations](https://docs.sentry.io/guides/custom-spans.md#5-aillm-operations)
 
-For AI workloads, use [Sentry Agent Tracing](https://docs.sentry.io/ai/observability/agents.md) instead of manual instrumentation when possible. It automatically captures agent workflows, tool calls, and token usage.
+For AI workloads, use [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md) instead of manual instrumentation when possible. It automatically captures agent workflows, tool calls, and token usage.
 
 If you're not using a supported framework or need custom attributes:
 

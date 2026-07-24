@@ -12,7 +12,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Start your journey](/en/get-started/start-your-journey)
 
-  <p>Brand new to GitHub? Learn the basics here.</p>
+  Brand new to GitHub? Learn the basics here.
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
@@ -24,7 +24,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
-  <p>At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.</p>
+  At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.
 
 * [Hello World](/en/get-started/start-your-journey/hello-world)
 
@@ -36,7 +36,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  <p>An overview of GitHub's pricing plans.</p>
+  An overview of GitHub's pricing plans.
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
@@ -44,7 +44,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 
-  <p>You can find ways to contribute to open source projects on GitHub that are relevant to you.</p>
+  You can find ways to contribute to open source projects on GitHub that are relevant to you.
 
 ## Links
 
@@ -90,7 +90,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Git and GitHub learning resources](/en/get-started/start-your-journey/git-and-github-learning-resources)
 
-  There are a lot of helpful Git and GitHub resources available.
+  Discover essential Git and GitHub resources, including tutorials, online courses, and community support to enhance your skills.
 
 * [Creating a repository for your project on GitHub](/en/get-started/start-your-journey/creating-a-repository-for-your-project-on-github)
 

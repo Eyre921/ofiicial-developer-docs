@@ -48,6 +48,30 @@ paths:
             type:
               - string
               - 'null'
+        - name: visited_agent_ids
+          in: query
+          description: >-
+            Filter conversations where any of these agents participated. Can not
+            exceed 50 values.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
+        - name: visited_agent_branch_ids
+          in: query
+          description: >-
+            Filter conversations where any of these agent branches participated.
+            Can not exceed 50 values.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
         - name: call_successful
           in: query
           description: The result of the success evaluation

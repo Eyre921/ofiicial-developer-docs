@@ -5054,6 +5054,44 @@ Claim a domain that is already verified by another team.
   });
   ```
 
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Domains.Claims.CreateParams = {
+    "name": "example.com",
+  }
+
+  resend.Domains.Claims.create(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend.api_key = ENV["RESEND_API_KEY"]
+
+  params = {
+    name: "example.com",
+  }
+  claim = Resend::Domains::Claims.create(params)
+  puts claim
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.CreateDomainClaimRequest{
+  		Name: "example.com",
+  	}
+
+  	client.DomainClaims.Create(params)
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result, types::CreateDomainClaimOptions};
 
@@ -5065,6 +5103,22 @@ Claim a domain that is already verified by another team.
     let _data = resend.domains.claim(domain_claim).await?;
 
     Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          ClaimDomainOptions params = ClaimDomainOptions
+                  .builder()
+                  .name("example.com").build();
+
+          DomainClaimResponseSuccess claim = resend.domains().claims().create(params);
+      }
   }
   ```
 
@@ -5685,6 +5739,33 @@ Retrieve the latest claim for a domain.
   );
   ```
 
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Domains.Claims.get(domain_id="d91cd9bd-1176-453e-8fc1-35364d380206")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend.api_key = ENV["RESEND_API_KEY"]
+
+  claim = Resend::Domains::Claims.get("d91cd9bd-1176-453e-8fc1-35364d380206")
+  puts claim
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.DomainClaims.Get("d91cd9bd-1176-453e-8fc1-35364d380206")
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result};
 
@@ -5698,6 +5779,19 @@ Retrieve the latest claim for a domain.
       .await?;
 
     Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          DomainClaimResponseSuccess claim = resend.domains().claims()
+                  .get("d91cd9bd-1176-453e-8fc1-35364d380206");
+      }
   }
   ```
 
@@ -6260,6 +6354,33 @@ Trigger DNS verification for a domain claim.
   );
   ```
 
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Domains.Claims.verify(domain_id="d91cd9bd-1176-453e-8fc1-35364d380206")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  Resend.api_key = ENV["RESEND_API_KEY"]
+
+  claim = Resend::Domains::Claims.verify("d91cd9bd-1176-453e-8fc1-35364d380206")
+  puts claim
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.DomainClaims.Verify("d91cd9bd-1176-453e-8fc1-35364d380206")
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result};
 
@@ -6273,6 +6394,19 @@ Trigger DNS verification for a domain claim.
       .await?;
 
     Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          DomainClaimResponseSuccess claim = resend.domains().claims()
+                  .verify("d91cd9bd-1176-453e-8fc1-35364d380206");
+      }
   }
   ```
 
@@ -10876,24 +11010,6 @@ Source: https://resend.com/docs/api-reference/suppressions/add-suppression
 POST /suppressions
 Add an email address to the suppression list.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Body Parameters
 
 <ParamField type="string">
@@ -10909,6 +11025,29 @@ Add an email address to the suppression list.
   const { data, error } = await resend.suppressions.add({
     email: 'steve.wozniak@example.com',
   });
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::AddSuppressionOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = AddSuppressionOptions::new().with_email("steve.wozniak@example.com");
+    let _data = resend.suppressions.add(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->add([
+    'email' => 'steve.wozniak@example.com',
+  ]);
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -10941,24 +11080,6 @@ Source: https://resend.com/docs/api-reference/suppressions/add-suppressions
 POST /suppressions/batch/add
 Add up to 100 email addresses to the suppression list at once.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Body Parameters
 
 <ParamField type="array">
@@ -10975,6 +11096,30 @@ Add up to 100 email addresses to the suppression list at once.
   const { data, error } = await resend.suppressions.batch.add({
     emails: ['steve.wozniak@example.com', 'susan.kare@example.com'],
   });
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::BatchAddSuppressionOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts =
+      BatchAddSuppressionOptions::from(vec!["steve.wozniak@example.com", "susan.kare@example.com"]);
+    let _data = resend.suppressions.batch_add(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->batch->add([
+    'emails' => ['steve.wozniak@example.com', 'susan.kare@example.com'],
+  ]);
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11015,24 +11160,6 @@ Source: https://resend.com/docs/api-reference/suppressions/get-suppression
 GET /suppressions/:suppression
 Retrieve a single suppression by ID or email.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 A suppression can be retrieved either by its ID or by the suppressed email
 address.
 
@@ -11059,6 +11186,36 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   // Retrieve by email
   const { data, error } = await resend.suppressions.get(
     'steve.wozniak@example.com',
+  );
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .suppressions
+      .get("e169aa45-1ecf-4183-9955-b1499d5701d3")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Retrieve by suppression id
+  $resend->suppressions->get(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Retrieve by email
+  $resend->suppressions->get(
+    'steve.wozniak@example.com'
   );
   ```
 
@@ -11101,24 +11258,6 @@ Source: https://resend.com/docs/api-reference/suppressions/list-suppressions
 GET /suppressions
 Show all suppressions.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 <QueryParams type="suppressions" />
 
 <ParamField type="bounce | complaint | manual">
@@ -11140,6 +11279,25 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   const resend = new Resend('re_xxxxxxxxx');
 
   const { data, error } = await resend.suppressions.list();
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend.suppressions.list(ListOptions::default()).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->list();
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11186,24 +11344,6 @@ Source: https://resend.com/docs/api-reference/suppressions/remove-suppression
 DELETE /suppressions/:suppression
 Remove a single suppression by ID or email.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Path Parameters
 
 <ParamField type="email | id">
@@ -11224,6 +11364,43 @@ Remove a single suppression by ID or email.
   // Remove by email
   const { data, error } = await resend.suppressions.remove(
     'steve.wozniak@example.com',
+  );
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    // Remove by suppression id
+    let _data = resend
+      .suppressions
+      .remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+      .await?;
+
+    // Remove by email
+    let _data = resend
+      .suppressions
+      .remove("steve.wozniak@example.com")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Remove by suppression id
+  $resend->suppressions->remove(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Remove by email
+  $resend->suppressions->remove(
+    'steve.wozniak@example.com'
   );
   ```
 
@@ -11263,24 +11440,6 @@ Source: https://resend.com/docs/api-reference/suppressions/remove-suppressions
 POST /suppressions/batch/remove
 Remove up to 100 suppressions from the suppression list at once.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Body Parameters
 
 Provide either `emails` or `ids`, but not both.
@@ -11301,32 +11460,68 @@ Provide either `emails` or `ids`, but not both.
 
   const resend = new Resend('re_xxxxxxxxx');
 
-  // Remove by email
-  const { data, error } = await resend.suppressions.batch.remove({
-    emails: ['steve.wozniak@example.com', 'susan.kare@example.com'],
-  });
-
-  // Remove by id
+  // Remove by suppression ids
   const { data, error } = await resend.suppressions.batch.remove({
     ids: ['e169aa45-1ecf-4183-9955-b1499d5701d3'],
   });
+
+  // Remove by emails
+  const { data, error } = await resend.suppressions.batch.remove({
+    emails: ['steve.wozniak@example.com', 'susan.kare@example.com'],
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Remove by suppression ids
+  $resend->suppressions->batch->remove([
+    'ids' => ['e169aa45-1ecf-4183-9955-b1499d5701d3'],
+  ]);
+
+  // Remove by emails
+  $resend->suppressions->batch->remove([
+    'emails' => ['steve.wozniak@example.com', 'susan.kare@example.com'],
+  ]);
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, types::BatchRemoveSuppressionOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    // Remove by email
+    let opt_emails = BatchRemoveSuppressionOptions::new()
+      .add_emails(vec!["steve.wozniak@example.com", "susan.kare@example.com"]);
+    let _data = resend.suppressions.batch_remove(opt_emails).await?;
+
+    // Remove by id
+    let opt_ids =
+      BatchRemoveSuppressionOptions::new().add_ids(vec!["e169aa45-1ecf-4183-9955-b1499d5701d3"]);
+
+    let _data = resend.suppressions.batch_remove(opt_ids).await?;
+
+    Ok(())
+  }
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  # Remove by email
-  curl -X POST 'https://api.resend.com/suppressions/batch/remove' \
-       -H 'Authorization: Bearer re_xxxxxxxxx' \
-       -H 'Content-Type: application/json' \
-       -d $'{
-    "emails": ["steve.wozniak@example.com", "susan.kare@example.com"]
-  }'
-
-  # Remove by id
+  # Remove by suppression ids
   curl -X POST 'https://api.resend.com/suppressions/batch/remove' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json' \
        -d $'{
     "ids": ["e169aa45-1ecf-4183-9955-b1499d5701d3"]
+  }'
+
+  # Remove by emails
+  curl -X POST 'https://api.resend.com/suppressions/batch/remove' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "emails": ["steve.wozniak@example.com", "susan.kare@example.com"]
   }'
   ```
 
@@ -15063,14 +15258,7 @@ resend topics list | get | update | delete
 
 ## Suppressions
 
-<Warning>
-  Suppressions is a private beta feature, gated per account. The commands show
-  up in `--help`, but calls return an API error unless the suppression list is
-  enabled for your account. [Get in touch](https://resend.com/contact) to join
-  the beta.
-</Warning>
-
-Manage the suppression list — addresses that won't receive your emails. Each entry has an `origin`: `bounce` and `complaint` are added automatically, while `manual` entries are the ones you add. `get` and `delete` accept either a suppression ID or the email address.
+Manage the suppression list.
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
 resend suppressions list                              # List suppressed addresses (alias: ls)
@@ -34099,6 +34287,10 @@ Integrate Resend with the tools you already use.
 
   <Card title="Tinybird" href="https://www.tinybird.co/docs/get-data-in/guides/ingest-from-resend" icon={<TinybirdIcon />}>
     Analyze your email data in real time
+  </Card>
+
+  <Card title="PostHog" href="https://posthog.com/docs/cdp/sources/resend" icon={<PostHogIcon />}>
+    Sync Resend data to the PostHog data warehouse
   </Card>
 
   <Card title="Coolify" href="https://coolify.io/docs/knowledge-base/notifications#resend-configuration" icon={<CoolifyIcon />}>

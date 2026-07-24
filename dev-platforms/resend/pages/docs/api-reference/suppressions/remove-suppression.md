@@ -7,24 +7,6 @@ path: docs/api-reference/suppressions/remove-suppression
 DELETE /suppressions/:suppression
 Remove a single suppression by ID or email.
 
-<Warning>
-  The Suppressions API is currently in private beta and only available to a
-  limited number of users. APIs might change before GA.
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
-
-  <span />
-
-  Once you have access, upgrade your Resend SDK to use the methods on this
-  page:
-
-  <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.18.0-canary.0
-    ```
-  </CodeGroup>
-</Warning>
-
 ## Path Parameters
 
 <ParamField type="email | id">
@@ -45,6 +27,43 @@ Remove a single suppression by ID or email.
   // Remove by email
   const { data, error } = await resend.suppressions.remove(
     'steve.wozniak@example.com',
+  );
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    // Remove by suppression id
+    let _data = resend
+      .suppressions
+      .remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+      .await?;
+
+    // Remove by email
+    let _data = resend
+      .suppressions
+      .remove("steve.wozniak@example.com")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Remove by suppression id
+  $resend->suppressions->remove(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Remove by email
+  $resend->suppressions->remove(
+    'steve.wozniak@example.com'
   );
   ```
 

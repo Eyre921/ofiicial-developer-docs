@@ -50,6 +50,30 @@ paths:
             type:
               - string
               - 'null'
+        - name: visited_agent_ids
+          in: query
+          description: >-
+            Filter conversations where any of these agents participated. Can not
+            exceed 50 values.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
+        - name: visited_agent_branch_ids
+          in: query
+          description: >-
+            Filter conversations where any of these agent branches participated.
+            Can not exceed 50 values.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
         - name: call_successful
           in: query
           description: The result of the success evaluation
@@ -144,6 +168,31 @@ paths:
             Data collection filters. Repeat param. Format: id:op:value where op
             is one of eq|neq|gt|gte|lt|lte|in|exists|missing. For in,
             pipe-delimit values.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
+        - name: data_collection_ids
+          in: query
+          description: >-
+            Data collection field IDs to include in each conversation summary.
+            Repeat param. When omitted, data_collection_results is not returned.
+          required: false
+          schema:
+            type:
+              - array
+              - 'null'
+            items:
+              type: string
+        - name: evaluation_criteria_ids
+          in: query
+          description: >-
+            Evaluation criteria IDs to include in each conversation summary.
+            Repeat param. When omitted, evaluation_criteria_results is not
+            returned.
           required: false
           schema:
             type:
@@ -443,6 +492,22 @@ components:
         - max_user_frustration_score
         - num_scored_user_turns
       title: ConversationSentimentAnalysis
+    EvaluationCriteriaSummaryResult:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/EvaluationSuccessResult'
+        score:
+          type:
+            - integer
+            - 'null'
+        max_score:
+          type:
+            - integer
+            - 'null'
+      required:
+        - result
+      title: EvaluationCriteriaSummaryResult
     ConversationSummaryResponseModel:
       type: object
       properties:
@@ -515,6 +580,23 @@ components:
           oneOf:
             - $ref: '#/components/schemas/ConversationSentimentAnalysis'
             - type: 'null'
+        data_collection_results:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            description: Any type
+        evaluation_criteria_results:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            $ref: '#/components/schemas/EvaluationCriteriaSummaryResult'
+        tag_ids:
+          type: array
+          items:
+            type: string
+          description: Conversation tag ids assigned to this conversation.
       required:
         - agent_id
         - conversation_id
@@ -611,7 +693,12 @@ components:
         "min_user_sentiment_score": 0,
         "max_user_frustration_score": 0.5,
         "num_scored_user_turns": 1
-      }
+      },
+      "data_collection_results": {},
+      "evaluation_criteria_results": {},
+      "tag_ids": [
+        "string"
+      ]
     }
   ],
   "has_more": true,
