@@ -49,8 +49,8 @@ Support for platform pricing tools also depends on your [funds flow](https://doc
 
 - Standard, Custom, or Express type configuration:
   - Configured pricing applies to destination charges.
-  - Configured pricing doesn’t apply to direct charges unless the platform is on *IC+ pricing* (A pricing plan where businesses pay the variable network cost for each transaction plus the Stripe fee rather than a flat rate for all transactions. This pricing model provides more visibility into payments costs).
-  - Custom configurations that use direct charges on IC+ pricing are only eligible for pricing tools for card charges. Other payment methods aren’t supported.
+  - Configured pricing doesn’t apply to direct charges on Standard accounts.
+  - If the platform is on *IC+ pricing* (A pricing plan where businesses pay the variable network cost for each transaction plus the Stripe fee rather than a flat rate for all transactions. This pricing model provides more visibility into payments costs), configured pricing applies to direct card charges on Custom and Express accounts. It doesn’t apply to other payment methods, and it doesn’t apply if the platform isn’t on IC+ pricing.
 
 ## Eligibility for Instant Payouts
 

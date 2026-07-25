@@ -32,7 +32,7 @@ During sign up, you'll be asked to verify your email address. Without a verified
 
 Some enterprises create managed user accounts for their users. You can't sign up for a personal account with an email address that's already verified for a managed user account.
 
-If you're having problems verifying your email address, there are some troubleshooting steps you can take. For more information, see [Verifying your email address](/en/account-and-profile/how-tos/email-preferences/verifying-your-email-address#troubleshooting-email-verification).
+If you're having problems verifying your email address, there are some troubleshooting steps you can take. For more information, see [Verifying your email address](/en/account-and-profile/how-tos/email-preferences/verifying-your-email-address).
 
 ## Next steps
 

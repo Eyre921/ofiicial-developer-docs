@@ -1,5 +1,5 @@
 ---
-title: "Beta.Responses"
+title: "Responses"
 source: https://openrouter.ai/docs/client-sdks/typescript/sdks/responses/README.md
 path: docs/client-sdks/typescript/sdks/responses/readme
 ---
@@ -8,13 +8,13 @@ path: docs/client-sdks/typescript/sdks/responses/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Beta.Responses
+# Responses
 
-> beta.responses endpoints
+> responses endpoints
 
 ## Overview
 
-beta.responses endpoints
+responses endpoints
 
 ### Available Operations
 
@@ -37,7 +37,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({
+  const result = await openRouter.responses.send({
     responsesRequest: {},
   });
 
@@ -53,7 +53,7 @@ The standalone function version of this method:
 
 ```typescript theme={null}
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { betaResponsesSend } from "@openrouter/sdk/funcs/betaResponsesSend.js";
+import { responsesSend } from "@openrouter/sdk/funcs/responsesSend.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -65,14 +65,14 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await betaResponsesSend(openRouter, {
+  const res = await responsesSend(openRouter, {
     responsesRequest: {},
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("betaResponsesSend failed:", res.error);
+    console.log("responsesSend failed:", res.error);
   }
 }
 
@@ -92,7 +92,7 @@ const openRouter = new OpenRouter({
 });
 
 async function run() {
-  const result = await openRouter.beta.responses.send({
+  const result = await openRouter.responses.send({
     responsesRequest: {},
   });
 
@@ -108,7 +108,7 @@ The standalone function version of this method:
 
 ```typescript theme={null}
 import { OpenRouterCore } from "@openrouter/sdk/core.js";
-import { betaResponsesSend } from "@openrouter/sdk/funcs/betaResponsesSend.js";
+import { responsesSend } from "@openrouter/sdk/funcs/responsesSend.js";
 
 // Use `OpenRouterCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -120,14 +120,14 @@ const openRouter = new OpenRouterCore({
 });
 
 async function run() {
-  const res = await betaResponsesSend(openRouter, {
+  const res = await responsesSend(openRouter, {
     responsesRequest: {},
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("betaResponsesSend failed:", res.error);
+    console.log("responsesSend failed:", res.error);
   }
 }
 

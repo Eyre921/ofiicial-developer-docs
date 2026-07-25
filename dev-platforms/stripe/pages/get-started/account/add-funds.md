@@ -96,7 +96,8 @@ You also receive a [balance.available](https://docs.stripe.com/api/events/types.
       ],
       "pending": [
         //...
-      ],"refund_and_dispute_prefunding": {
+      ],
+      "refund_and_dispute_prefunding": {
         "available": [
           {
             "amount": 1000,

@@ -662,6 +662,7 @@ Availability depends on your charge type and Radar tier:
 | --- | --- |
 | Transaction rules | Available for [destination charges](https://docs.stripe.com/connect/destination-charges.md) and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md). Available for [direct charges](https://docs.stripe.com/connect/direct-charges.md) only if you have access to [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md). |
 | Account rules | Available only with [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md). |
+| Treasury transaction rules | This private preview is only available for certain Radar plans. Contact your Stripe account team for more information. |
 
 #### Transaction rules
 
@@ -812,6 +813,54 @@ These attributes allow you to take actions (such as submitting accounts for revi
 | **usd\_amount\_charged\_for\_account\_monthly** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past month on a connected account. |
 | **usd\_amount\_charged\_for\_account\_weekly** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past week on a connected account. |
 | **usd\_amount\_charged\_for\_account\_daily** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past day on a connected account. |
+
+#### Treasury transaction rules [Private preview]
+
+These attributes apply to connected accounts and can be used to review or block Treasury transactions.
+
+#### Account attributes
+
+| Attribute | Type | Example value | **Description** |
+| --- | --- | --- | --- |
+| `account_risk_level` | Case-insensitive string | normal | The risk level of the account, as determined by Stripe. Possible values are `normal`, `elevated`, and `highest`. An `elevated` risk level means the account causes financial loss 50% of the time. A `highest` risk level means the account causes financial loss 90% of the time. |
+| `days_since_account_was_created` | Numeric | 30 | The number of days since a connected account was created. |
+
+#### Treasury transaction risk level
+
+| Attribute | Type | Example value | **Description** |
+| --- | --- | --- | --- |
+| `treasury_transaction_risk_level` | Case-insensitive string | elevated | Stripe’s risk assessment for a Treasury transaction. The supported values are `normal`, `elevated`, and `highest`. |
+
+#### Treasury transaction attributes
+
+| Attribute | Type | Example value | **Description** |
+| --- | --- | --- | --- |
+| `transaction_type` | Case-insensitive string | INBOUND_TRANSFER | The Treasury transaction type. Currently, the only supported value is `INBOUND_TRANSFER`. |
+| `amount_in_usd` | Numeric | 10.50 | The amount of the Treasury transaction, converted to USD. |
+| `currency` | Case-insensitive string | usd | The currency used to create the Treasury transaction. |
+| `source_bank_name` | Case-insensitive string | Wells Fargo | The name of the source bank. |
+| `source_payment_rail` | Case-insensitive string | ach | The payment rail of the transaction source. |
+| `source_jurisdiction_country` | Case-insensitive string | US | The jurisdiction country of the transaction source. |
+
+#### Treasury transaction aggregates
+
+| Attribute | Type | Example value | **Description** |
+| --- | --- | --- | --- |
+| `inbound_transaction_count_for_account_daily` | Numeric | 10 | The number of inbound transactions for the evaluated transaction type for this account over the last day. |
+| `inbound_transaction_count_for_account_weekly` | Numeric | 10 | The number of inbound transactions for the evaluated transaction type for this account over the last 7 days. |
+| `inbound_transaction_count_for_account_monthly` | Numeric | 10 | The number of inbound transactions for the evaluated transaction type for this account over the last 30 days. |
+| `unauthorized_return_count_for_account_daily` | Numeric | 2 | The number of unauthorized returns for this account over the last day. |
+| `unauthorized_return_count_for_account_weekly` | Numeric | 2 | The number of unauthorized returns for this account over the last 7 days. |
+| `unauthorized_return_count_for_account_monthly` | Numeric | 2 | The number of unauthorized returns for this account over the last 30 days. |
+| `admin_return_count_for_account_daily` | Numeric | 2 | The number of administrative returns for this account over the last day. |
+| `admin_return_count_for_account_weekly` | Numeric | 2 | The number of administrative returns for this account over the last 7 days. |
+| `admin_return_count_for_account_monthly` | Numeric | 2 | The number of administrative returns for this account over the last 30 days. |
+| `unauthorized_return_rate_for_account_daily` | Percentage | 0.05 | The unauthorized return rate for this account over the last day, expressed as a decimal between `0` and `1`, inclusive. |
+| `unauthorized_return_rate_for_account_weekly` | Percentage | 0.05 | The unauthorized return rate for this account over the last 7 days, expressed as a decimal between `0` and `1`, inclusive. |
+| `unauthorized_return_rate_for_account_monthly` | Percentage | 0.05 | The unauthorized return rate for this account over the last 30 days, expressed as a decimal between `0` and `1`, inclusive. |
+| `admin_return_rate_for_account_daily` | Percentage | 0.05 | The administrative return rate for this account over the last day, expressed as a decimal between `0` and `1`, inclusive. |
+| `admin_return_rate_for_account_weekly` | Percentage | 0.05 | The administrative return rate for this account over the last 7 days, expressed as a decimal between `0` and `1`, inclusive. |
+| `admin_return_rate_for_account_monthly` | Percentage | 0.05 | The administrative return rate for this account over the last 30 days, expressed as a decimal between `0` and `1`, inclusive. |
 
 ## See also
 

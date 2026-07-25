@@ -42,6 +42,7 @@ const res = await fetch("/create-confirm-intent", {
 ### After
 
 ```javascript
+
 // Create the ConfirmationToken using the details collected by the Payment Element and additional shipping information. Provide shipping and return_url if you don't want to provide it when confirming the intent on the server
 const {error, confirmationToken} = await stripe.createConfirmationToken({
   elements,
@@ -65,6 +66,7 @@ const {error, confirmationToken} = await stripe.createConfirmationToken({
     return_url: 'https://example.com/order/123/complete',
   }
 });
+
 if (error) {
   // This point is only reached if there's an immediate error when creating the ConfirmationToken.
   // Show the error to your customer (for example, payment details incomplete)
@@ -76,7 +78,8 @@ if (error) {
 const res = await fetch("/create-confirm-intent", {
   method: "POST",
   headers: {"Content-Type": "application/json"},
-  body: JSON.stringify({confirmationTokenId: confirmationToken.id,
+  body: JSON.stringify({
+    confirmationTokenId: confirmationToken.id,
   }),
 });
 
@@ -125,7 +128,8 @@ app.post('/create-confirm-intent', async (req, res) => {
       currency: 'usd',
       // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
       automatic_payment_methods: {enabled: true},
-      use_stripe_sdk: true,// the ConfirmationToken ID sent by your client that already has the shipping, mandate_data, and return_url data
+      use_stripe_sdk: true,
+      // the ConfirmationToken ID sent by your client that already has the shipping, mandate_data, and return_url data
       confirmation_token: req.body.confirmationTokenId,
     });
     res.json({

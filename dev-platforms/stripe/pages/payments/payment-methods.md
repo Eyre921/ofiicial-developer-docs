@@ -78,7 +78,8 @@ A PaymentMethod contains reusable payment method details for creating payments (
     "email": "jenny@example.com",
     "name": "Jenny Rosen",
     "phone": "+335555555555"
-  },"sepa_debit": {
+  },
+  "sepa_debit": {
     "bank_code": "37040044",
     "branch_code": "94832",
     "country": "FR",

@@ -107,7 +107,8 @@ This way, the user always receives a fresh, valid Account Link regardless of whe
 
 ```bash
 curl https://api.stripe.com/v1/account_links \
-  -u <<YOUR_SECRET_KEY>>: \-d account=acct_123 \
+  -u <<YOUR_SECRET_KEY>>: \
+  -d account=acct_123 \
   # The URL the user will be redirected to if the account link is expired, has been previously-visited, or is otherwise invalid.
   -d refresh_url="https://example.com/reauth" \
   # The URL the user will be redirected to after completing the linked flow.
@@ -184,7 +185,8 @@ Generate an [Account Link](https://docs.stripe.com/api/account_links.md) of type
 
 ```bash
 curl https://api.stripe.com/v1/account_links \
-  -u <<YOUR_SECRET_KEY>>: \-d account=acct_123 \
+  -u <<YOUR_SECRET_KEY>>: \
+  -d account=acct_123 \
   # When the user refreshes the page, where should we redirect them
   -d refresh_url="https://example.com/reauth" \
   # When the user completes the application, where should they return

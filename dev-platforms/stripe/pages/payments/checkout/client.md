@@ -305,7 +305,8 @@ const {error} = await stripe.redirectToCheckout({
     {price: '{PRICE_ID}', quantity: 1},
   ],
   mode: 'payment',
-  successUrl: 'https://example.com/success',billingAddressCollection: 'required',
+  successUrl: 'https://example.com/success',
+  billingAddressCollection: 'required',
 });
 // If `redirectToCheckout` fails due to a browser or network
 // error, display the localized error message to your customer
@@ -327,7 +328,8 @@ const {error} = await stripe.redirectToCheckout({
     {price: '{PRICE_ID}', quantity: 1},
   ],
   mode: 'payment',
-  successUrl: 'https://example.com/success',shippingAddressCollection: {
+  successUrl: 'https://example.com/success',
+  shippingAddressCollection: {
     allowedCountries: ['US', 'CA'],
   }
 });
@@ -347,7 +349,8 @@ const {error} = await stripe.redirectToCheckout({
     {price: '{PRICE_ID}', quantity: 1}
   ],
   mode: 'payment',
-  successUrl: 'https://example.com/success',submitType: 'donate',
+  successUrl: 'https://example.com/success',
+  submitType: 'donate',
 })
 // If `redirectToCheckout` fails due to a browser or network
 // error, display the localized error message to your customer
@@ -367,7 +370,8 @@ const {error} = await stripe.redirectToCheckout({
     {price: '{PRICE_ID}', quantity: 1}
   ],
   mode: 'payment',
-  successUrl: 'https://example.com/success',customerEmail: 'customer@example.com',
+  successUrl: 'https://example.com/success',
+  customerEmail: 'customer@example.com',
 })
 // If `redirectToCheckout` fails due to a browser or network
 // error, display the localized error message to your customer

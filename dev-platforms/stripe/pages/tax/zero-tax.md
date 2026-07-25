@@ -16,7 +16,8 @@ Stripe Tax returns a tax calculation result on every request. However, tax isnâ€
 {
   "id": "in_1HF0KNFsnTpWVWVzFDgSizOj",
   "object": "invoice",
-  ..."total_details": {
+  ...
+  "total_details": {
     "amount_tax": 0,
     "breakdown": {
       "taxes": [

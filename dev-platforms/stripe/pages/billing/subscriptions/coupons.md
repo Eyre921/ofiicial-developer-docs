@@ -176,7 +176,8 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -u <<YOUR_SECRET_KEY>>: \
   -d "line_items[][price]"="{{PRICE_ID}}" \
   -d "line_items[][quantity]"=1 \
-  -d mode=subscription \-d "discounts[][coupon]"="{{COUPON_ID}}" \
+  -d mode=subscription \
+  -d "discounts[][coupon]"="{{COUPON_ID}}" \
   -d success_url="https://example.com/success"
 ```
 

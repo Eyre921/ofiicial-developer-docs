@@ -32,13 +32,15 @@ The returns the set of subscriptions for the specified customer, from which you 
   "url": "/v1/subscriptions",
   "has_more": false,
   "data": [
-    {"id": "su_1NXPiE2eZvKYlo2COk9fohqA",
+    {
+      "id": "su_1NXPiE2eZvKYlo2COk9fohqA",
       "object": "subscription",
       "application": null,
       "application_fee_percent": null,
       "automatic_tax": {
         "enabled": false
-      },"items": {
+      },
+      "items": {
         "object": "list",
         "data": [
           {
@@ -46,7 +48,8 @@ The returns the set of subscriptions for the specified customer, from which you 
             "object": "subscription_item",
             "billing_thresholds": null,
             "created": 1690208774,
-            "metadata": {},"price": {
+            "metadata": {},
+            "price": {
               "id": "price_1NOhvg2eZvKYlo2CqkpQDVRT",
               "object": "price"
             }

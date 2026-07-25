@@ -86,6 +86,8 @@ Anthropic models include a cache write cost in addition to cached input.
 |                                       |                |           |        |              |             |        |
 | Claude Opus 4.8                       | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
 |                                       |                |           |        |              |             |        |
+| Claude Opus 5                         | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
+|                                       |                |           |        |              |             |        |
 | Claude Sonnet 5[^sonnet-5-promo]      | GA             | Versatile |  $2.00 |        $0.20 |       $2.50 | $10.00 |
 |                                       |                |           |        |              |             |        |
 | Claude Opus 4.8 (fast mode) (preview) | GA             | Powerful  | $10.00 |        $1.00 |      $12.50 | $50.00 |

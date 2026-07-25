@@ -164,7 +164,8 @@ This returns the Financial Connections account with the ownership field expanded
     "created": 1651784999,
     "owners": {
       "object": "list",
-      "data": [{
+      "data": [
+        {
           "name": "Jenny Rosen",
           "email": "jenny.rosen@example.com",
           "phone": "+1 555-555-5555",

@@ -105,11 +105,13 @@ As shown in the preceding example, Homebox has defined the external bank account
   "next_action": {
     "type": "verify_with_microdeposits",
     "verify_with_microdeposits": {
-      "arrival_date": 1642579200,"hosted_verification_url": "https://payments.stripe.com/microdeposit/sacs_test_xxx",
+      "arrival_date": 1642579200,
+      "hosted_verification_url": "https://payments.stripe.com/microdeposit/sacs_test_xxx",
       "microdeposit_type": "amounts"
     }
   },
-  "on_behalf_of": null,"payment_method": "{{PAYMENT_METHOD_ID}}",
+  "on_behalf_of": null,
+  "payment_method": "{{PAYMENT_METHOD_ID}}",
   "payment_method_options": {
     "us_bank_account": {
       "verification_method": "automatic"
@@ -240,7 +242,8 @@ The `SetupIntent` object that Homebox created in the previous section includes a
 {
   "id": "{{SETUP_INTENT_ID}}",
   …
-  "on_behalf_of": null,"payment_method": "{{PAYMENT_METHOD_ID}}",
+  "on_behalf_of": null,
+  "payment_method": "{{PAYMENT_METHOD_ID}}",
   "payment_method_options": {
 …
  }
@@ -257,7 +260,8 @@ The `SetupIntent` also includes a `next_action` object with a URL defined in the
    "next_action": {
     "type": "verify_with_microdeposits",
     "verify_with_microdeposits": {
-      "arrival_date": 1642579200,"hosted_verification_url": "https://payments.stripe.com/microdeposit/sacs_test_xxx",
+      "arrival_date": 1642579200,
+      "hosted_verification_url": "https://payments.stripe.com/microdeposit/sacs_test_xxx",
       "microdeposit_type": "amounts"
     }
 …
@@ -326,7 +330,8 @@ curl https://api.stripe.com/v1/customers \
 The response provides the customers for the associated connected account. Homebox identifies the correct customer and records their ID.
 
 ```json
-{"id": "{{CUSTOMER_ID}}",
+{
+  "id": "{{CUSTOMER_ID}}",
   "object": "customer",
   "address": null,
   "balance": 0,

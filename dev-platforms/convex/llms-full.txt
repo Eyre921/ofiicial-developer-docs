@@ -256,7 +256,7 @@
 - [Schedules](/dashboard/deployments/schedules.md): Monitor and manage scheduled functions and cron jobs in your deployment
 - [Schema](/dashboard/deployments/schema.md): Visualize your deployment's schema and the relationships between tables in the dashboard
 - [Dashboard](/dashboard/overview.md): Learn how to use the Convex dashboard
-- [Profile](/dashboard/profile.md): Manage your Convex account name, email addresses, and account deletion
+- [Profile](/dashboard/profile.md): Manage your Convex account name, email addresses, security settings, and account deletion
 - [Projects](/dashboard/projects.md): Create and manage Convex projects, settings, and deployments
 - [Teams](/dashboard/teams/teams.md): Manage team settings, members, billing, and access control in Convex
 
@@ -7015,7 +7015,7 @@ To learn more see the documentation at <https://docs.convex.dev/scheduling/cron-
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/cron.ts:246](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L246)
+[server/cron.ts:274](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L274)
 
 ## Properties[​](#properties "Direct link to Properties")
 
@@ -7025,7 +7025,7 @@ To learn more see the documentation at <https://docs.convex.dev/scheduling/cron-
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/cron.ts:244](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L244)
+[server/cron.ts:272](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L272)
 
 ***
 
@@ -7035,7 +7035,7 @@ To learn more see the documentation at <https://docs.convex.dev/scheduling/cron-
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/cron.ts:245](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L245)
+[server/cron.ts:273](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L273)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -7070,13 +7070,13 @@ crons.interval("Clear presence data", {seconds: 30}, api.presence.clear);
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/cron.ts:283](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L283)
+[server/cron.ts:311](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L311)
 
 ***
 
 ### hourly[​](#hourly "Direct link to hourly")
 
-▸ **hourly**<`FuncRef`>(`cronIdentifier`, `schedule`, `functionReference`, `...args`): `void`
+▸ **hourly**<`FuncRef`>(`cronIdentifier`, `functionReference`, `...args`): `void`
 
 Schedule a mutation or action to run on an hourly basis.
 
@@ -7107,7 +7107,6 @@ crons.hourly(
 | Name                | Type                                                                     | Description                                                                                   |
 | ------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | `cronIdentifier`    | `string`                                                                 | A unique name for this scheduled job.                                                         |
-| `schedule`          | `Hourly`                                                                 | What time (UTC) each day to run this function.                                                |
 | `functionReference` | `FuncRef`                                                                | A [FunctionReference](/api/modules/server.md#functionreference) for the function to schedule. |
 | `...args`           | [`OptionalRestArgs`](/api/modules/server.md#optionalrestargs)<`FuncRef`> | The arguments to the function.                                                                |
 
@@ -7117,7 +7116,32 @@ crons.hourly(
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/cron.ts:331](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L331)
+[server/cron.ts:360](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L360)
+
+▸ **hourly**<`FuncRef`>(`cronIdentifier`, `schedule`, `functionReference`, `...args`): `void`
+
+#### Type parameters[​](#type-parameters-2 "Direct link to Type parameters")
+
+| Name      | Type                                                                                          |
+| --------- | --------------------------------------------------------------------------------------------- |
+| `FuncRef` | extends [`SchedulableFunctionReference`](/api/modules/server.md#schedulablefunctionreference) |
+
+#### Parameters[​](#parameters-2 "Direct link to Parameters")
+
+| Name                | Type                                                                     |
+| ------------------- | ------------------------------------------------------------------------ |
+| `cronIdentifier`    | `string`                                                                 |
+| `schedule`          | `Hourly`                                                                 |
+| `functionReference` | `FuncRef`                                                                |
+| `...args`           | [`OptionalRestArgs`](/api/modules/server.md#optionalrestargs)<`FuncRef`> |
+
+#### Returns[​](#returns-2 "Direct link to Returns")
+
+`void`
+
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+
+[server/cron.ts:365](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L365)
 
 ***
 
@@ -7145,13 +7169,13 @@ crons.daily(
 )
 ```
 
-#### Type parameters[​](#type-parameters-2 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-3 "Direct link to Type parameters")
 
 | Name      | Type                                                                                          |
 | --------- | --------------------------------------------------------------------------------------------- |
 | `FuncRef` | extends [`SchedulableFunctionReference`](/api/modules/server.md#schedulablefunctionreference) |
 
-#### Parameters[​](#parameters-2 "Direct link to Parameters")
+#### Parameters[​](#parameters-3 "Direct link to Parameters")
 
 | Name                | Type                                                                     | Description                                                                                   |
 | ------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
@@ -7160,13 +7184,13 @@ crons.daily(
 | `functionReference` | `FuncRef`                                                                | A [FunctionReference](/api/modules/server.md#functionreference) for the function to schedule. |
 | `...args`           | [`OptionalRestArgs`](/api/modules/server.md#optionalrestargs)<`FuncRef`> | The arguments to the function.                                                                |
 
-#### Returns[​](#returns-2 "Direct link to Returns")
+#### Returns[​](#returns-3 "Direct link to Returns")
 
 `void`
 
-#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[server/cron.ts:366](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L366)
+[server/cron.ts:421](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L421)
 
 ***
 
@@ -7196,13 +7220,13 @@ crons.weekly(
 )
 ```
 
-#### Type parameters[​](#type-parameters-3 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-4 "Direct link to Type parameters")
 
 | Name      | Type                                                                                          |
 | --------- | --------------------------------------------------------------------------------------------- |
 | `FuncRef` | extends [`SchedulableFunctionReference`](/api/modules/server.md#schedulablefunctionreference) |
 
-#### Parameters[​](#parameters-3 "Direct link to Parameters")
+#### Parameters[​](#parameters-4 "Direct link to Parameters")
 
 | Name                | Type                                                                     | Description                                                                                   |
 | ------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
@@ -7211,13 +7235,13 @@ crons.weekly(
 | `functionReference` | `FuncRef`                                                                | A [FunctionReference](/api/modules/server.md#functionreference) for the function to schedule. |
 | `...args`           | [`OptionalRestArgs`](/api/modules/server.md#optionalrestargs)<`FuncRef`> | -                                                                                             |
 
-#### Returns[​](#returns-3 "Direct link to Returns")
+#### Returns[​](#returns-4 "Direct link to Returns")
 
 `void`
 
-#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[server/cron.ts:402](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L402)
+[server/cron.ts:459](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L459)
 
 ***
 
@@ -7249,13 +7273,13 @@ crons.monthly(
 )
 ```
 
-#### Type parameters[​](#type-parameters-4 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-5 "Direct link to Type parameters")
 
 | Name      | Type                                                                                          |
 | --------- | --------------------------------------------------------------------------------------------- |
 | `FuncRef` | extends [`SchedulableFunctionReference`](/api/modules/server.md#schedulablefunctionreference) |
 
-#### Parameters[​](#parameters-4 "Direct link to Parameters")
+#### Parameters[​](#parameters-5 "Direct link to Parameters")
 
 | Name                | Type                                                                     | Description                                                                                   |
 | ------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
@@ -7264,13 +7288,13 @@ crons.monthly(
 | `functionReference` | `FuncRef`                                                                | A [FunctionReference](/api/modules/server.md#functionreference) for the function to schedule. |
 | `...args`           | [`OptionalRestArgs`](/api/modules/server.md#optionalrestargs)<`FuncRef`> | The arguments to the function.                                                                |
 
-#### Returns[​](#returns-4 "Direct link to Returns")
+#### Returns[​](#returns-5 "Direct link to Returns")
 
 `void`
 
-#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[server/cron.ts:443](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L443)
+[server/cron.ts:502](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L502)
 
 ***
 
@@ -7296,13 +7320,13 @@ Like the unix command `cron`, Sunday is 0, Monday is 1, etc.
 "* * * * *"
 ```
 
-#### Type parameters[​](#type-parameters-5 "Direct link to Type parameters")
+#### Type parameters[​](#type-parameters-6 "Direct link to Type parameters")
 
 | Name      | Type                                                                                          |
 | --------- | --------------------------------------------------------------------------------------------- |
 | `FuncRef` | extends [`SchedulableFunctionReference`](/api/modules/server.md#schedulablefunctionreference) |
 
-#### Parameters[​](#parameters-5 "Direct link to Parameters")
+#### Parameters[​](#parameters-6 "Direct link to Parameters")
 
 | Name                | Type                                                                     | Description                                                                                   |
 | ------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
@@ -7311,13 +7335,13 @@ Like the unix command `cron`, Sunday is 0, Monday is 1, etc.
 | `functionReference` | `FuncRef`                                                                | A [FunctionReference](/api/modules/server.md#functionreference) for the function to schedule. |
 | `...args`           | [`OptionalRestArgs`](/api/modules/server.md#optionalrestargs)<`FuncRef`> | The arguments to the function.                                                                |
 
-#### Returns[​](#returns-5 "Direct link to Returns")
+#### Returns[​](#returns-6 "Direct link to Returns")
 
 `void`
 
-#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[server/cron.ts:480](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L480)
+[server/cron.ts:541](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L541)
 
 
 ---
@@ -8034,7 +8058,7 @@ The placeholder for a transaction's commit timestamp, which is not known until t
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[values/value.ts:101](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L101)
+[values/value.ts:102](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L102)
 
 ***
 
@@ -8048,7 +8072,7 @@ The placeholder for a transaction's commit timestamp, which is not known until t
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[values/value.ts:108](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L108)
+[values/value.ts:109](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L109)
 
 ***
 
@@ -8062,7 +8086,7 @@ The placeholder for a transaction's commit timestamp, which is not known until t
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[values/value.ts:111](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L111)
+[values/value.ts:112](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L112)
 
 ***
 
@@ -8076,7 +8100,7 @@ The placeholder for a transaction's commit timestamp, which is not known until t
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[values/value.ts:114](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L114)
+[values/value.ts:115](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L115)
 
 
 ---
@@ -11557,7 +11581,7 @@ A schedule to run a Convex mutation or action on. You can schedule Convex functi
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/cron.ts:153](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L153)
+[server/cron.ts:161](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L161)
 
 ***
 
@@ -11567,7 +11591,7 @@ A schedule to run a Convex mutation or action on. You can schedule Convex functi
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/cron.ts:154](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L154)
+[server/cron.ts:162](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L162)
 
 ***
 
@@ -11577,7 +11601,7 @@ A schedule to run a Convex mutation or action on. You can schedule Convex functi
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/cron.ts:155](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L155)
+[server/cron.ts:163](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L163)
 
 
 ---
@@ -21521,7 +21545,7 @@ export default crons;
 
 #### Defined in[​](#defined-in-109 "Direct link to Defined in")
 
-[server/cron.ts:180](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L180)
+[server/cron.ts:188](https://github.com/get-convex/convex-js/blob/main/src/server/cron.ts#L188)
 
 ***
 
@@ -22666,7 +22690,7 @@ If you're using code generation, use the `Id` type generated for your data model
 
 ### Value[​](#value "Direct link to Value")
 
-Ƭ **Value**: `null` | `bigint` | `number` | `boolean` | `string` | `ArrayBuffer` | [`Value`](/api/modules/values.md#value)\[] | { `[key: string]`: `undefined` | [`Value`](/api/modules/values.md#value); }
+Ƭ **Value**: `null` | `bigint` | `number` | `boolean` | `string` | `ArrayBuffer` | [`CommitTsPlaceholder`](/api/classes/values.CommitTsPlaceholder.md) | [`Value`](/api/modules/values.md#value)\[] | { `[key: string]`: `undefined` | [`Value`](/api/modules/values.md#value); }
 
 A value supported by Convex.
 
@@ -22691,7 +22715,7 @@ The types of [Value](/api/modules/values.md#value) that can be used to represent
 
 #### Defined in[​](#defined-in-15 "Direct link to Defined in")
 
-[values/value.ts:81](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L81)
+[values/value.ts:82](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L82)
 
 ## Variables[​](#variables "Direct link to Variables")
 
@@ -22927,7 +22951,7 @@ The JavaScript representation of the Convex value.
 
 #### Defined in[​](#defined-in-21 "Direct link to Defined in")
 
-[values/value.ts:232](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L232)
+[values/value.ts:233](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L233)
 
 ***
 
@@ -22955,7 +22979,7 @@ The JSON representation of `value`.
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[values/value.ts:483](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L483)
+[values/value.ts:484](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L484)
 
 
 ---
@@ -37353,7 +37377,7 @@ If you haven't defined a schema yet, Convex can generate one from the documents 
 
 # Profile
 
-The [Profile page](https://dashboard.convex.dev/profile) is where you manage your personal Convex account, including your display name, the email addresses associated with your account, and account deletion.
+The [Profile page](https://dashboard.convex.dev/profile) is where you manage your personal Convex account, including your display name, the email addresses associated with your account, your sign-in security settings, and account deletion.
 
 ![Dashboard Profile page](/screenshots/storybook/pages_profile_light.webp)
 
@@ -37364,6 +37388,27 @@ Your account name is shown to other members of teams you belong to. Update it in
 ## Manage email addresses[​](#manage-email-addresses "Direct link to Manage email addresses")
 
 The **Emails** section lists every email address connected to your account. Account-related communications (such as invoices and security notifications) are sent to your primary email, and any verified email may be used to accept team invitations.
+
+## Security[​](#security "Direct link to Security")
+
+The **Security** section is where you manage how you sign in to your Convex account. It provides two things:
+
+* **Password and multi-factor authentication (MFA)**: Set or change your password and enroll additional authentication factors, such as an authenticator app. Enabling MFA requires a valid factor each time you sign in.
+* **Active sessions**: Review every session currently signed in to your account and sign out of any of them, which is useful if you no longer have access to a device or suspect unauthorized access.
+
+You can only manage security settings while signed in with your [primary email](#manage-email-addresses). If you're signed in with a secondary email, sign out and sign back in with your primary email, or change which email is primary, to reach these settings.
+
+Once you enable multi-factor authentication, you can no longer sign in with secondary email addresses.
+
+## Personal access tokens[​](#personal-access-tokens "Direct link to Personal access tokens")
+
+The **Personal Access Tokens** section manages the tokens used to authenticate with the [Convex CLI](/cli/overview.md) and APIs. Each token has the same access as your account, so keep it secure and do not share it publicly.
+
+To create a token, click **Create Token**, give it a name, and optionally choose an expiration.
+
+Each token in the list shows when it was created, when it was last used, and (if set) when it expires. Tokens created through an SSO-based login are marked with an **SSO Access** badge and are scoped to the associated team.
+
+Click **Delete** next to a token to revoke it.
 
 ## Deleting your Convex account[​](#deleting-your-convex-account "Direct link to Deleting your Convex account")
 
@@ -50361,7 +50406,7 @@ Free and Starter are limited to S16 with a team deployment limit of 40.
 
 Professional plans get S256 with a team deployment limit of 300.
 
-Business and Enterprise can choose their class on a per-deployment basis. There is a per-deployment fee which varies by deployment class. The deployment fee is waived for paused and idle deployments. Idle deployments are defined as those that have not had any function calls for 24 hours.
+Business and Enterprise can choose their class on a per-deployment basis. There is a per-deployment fee which varies by deployment class. The deployment fee is waived for paused and idle deployments. Idle deployments are defined as those that have not had any function calls for 30 days.
 
 ### Capabilities[​](#capabilities "Direct link to Capabilities")
 

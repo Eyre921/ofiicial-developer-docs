@@ -33424,8 +33424,6 @@ Dynamic registration is for clients that can't predict their own deployment deta
 
 Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
 
-If you're registering beforehand, ask us to mark the client `manual_verified`. That gets it a verified badge on the consent screen. It's the only effect it has today. It doesn't change scopes, rate limits, or anything else.
-
 ## Scopes
 
 Use the smallest scope that works for your integration:
@@ -37582,6 +37580,32 @@ Learn how to improve inbox placement in Outlook.
 * **Include an unsubscribe option**. For bulk emails, include a clearly visible unsubscribe link. Consider implementing [one-click unsubscribe](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails) for the best user experience.
 
 * **Limit use of HTML**. Keep emails as close to plain text as possible.
+
+
+# How to cancel a Broadcast
+Source: https://resend.com/docs/knowledge-base/how-do-i-cancel-a-broadcast
+
+Stop a Broadcast that is still sending and cancel all queued deliveries.
+
+You can cancel a Broadcast while it is still sending. Canceling stops the send and cancels all queued deliveries, so no further emails go out.
+
+## Cancel a Broadcast
+
+1. Go to [Broadcasts](https://resend.com/broadcasts) and open the Broadcast that is sending.
+2. Click **Cancel** on the Broadcast page.
+
+Resend then halts delivery to the remaining recipients.
+
+<Note>
+  Canceling is only available while a Broadcast is still sending (`queued`). It
+  stops delivery to recipients who haven't received the email yet. Emails that
+  have already been sent cannot be recalled.
+</Note>
+
+## Related pages
+
+* [Managing Broadcasts](/docs/dashboard/broadcasts/introduction)
+* [Broadcast statuses](/docs/dashboard/broadcasts/introduction#understand-broadcast-statuses)
 
 
 # How to ensure sensitive data isn't stored on Resend
@@ -53565,6 +53589,37 @@ List of supported event types and their payload.
   </div>
 </div>
 
+## Suppression Events
+
+<div>
+  <div>
+    <div>
+      <span />
+
+      [`suppression.added`](/docs/webhooks/suppressions/added)
+    </div>
+
+    <div>
+      Occurs whenever an **email address is added to your suppression list**,
+      automatically after a hard bounce or spam complaint, or manually through
+      the dashboard or API.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`suppression.removed`](/docs/webhooks/suppressions/removed)
+    </div>
+
+    <div>
+      Occurs whenever an **email address is removed from your suppression
+      list**.
+    </div>
+  </div>
+</div>
+
 
 # Webhook Ingester
 Source: https://resend.com/docs/webhooks/ingester
@@ -54172,6 +54227,103 @@ Here's how to replay a webhook message:
 2. Navigate to the Webhook Endpoint you are using
 3. Go to the Webhook Message you want to replay
 4. Click on the "Replay" button
+
+
+# suppression.added
+Source: https://resend.com/docs/webhooks/suppressions/added
+
+Received when an email address is added to your suppression list.
+
+Event triggered whenever an **email address is added to your suppression
+list**. Addresses are added automatically after a hard bounce or spam
+complaint, or manually through the dashboard or API.
+
+<ResponseBodyParameters type="suppression.added">
+  <ParamField type="string">
+    Unique identifier for the suppression
+  </ParamField>
+
+  <ParamField type="string">
+    The suppressed email address
+  </ParamField>
+
+  <ParamField type="string">
+    How the address was suppressed: `bounce`, `complaint`, or `manual`
+  </ParamField>
+
+  <ParamField type="string | null">
+    ID of the email that triggered the suppression. For suppressions with a
+    `manual` origin, `source_id` is `null`
+  </ParamField>
+
+  <ParamField type="string">
+    ISO 8601 timestamp when the suppression was created
+  </ParamField>
+</ResponseBodyParameters>
+
+<ResponseExample>
+  ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "type": "suppression.added",
+    "created_at": "2026-11-17T19:32:22.980Z",
+    "data": {
+      "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+      "email": "steve.wozniak@gmail.com",
+      "origin": "bounce",
+      "source_id": "4ef9a417-02e9-4d39-ad75-9611e0fcc33c",
+      "created_at": "2026-11-17T19:32:22.980Z"
+    }
+  }
+  ```
+</ResponseExample>
+
+
+# suppression.removed
+Source: https://resend.com/docs/webhooks/suppressions/removed
+
+Received when an email address is removed from your suppression list.
+
+Event triggered whenever an **email address is removed from your suppression
+list**.
+
+<ResponseBodyParameters type="suppression.removed">
+  <ParamField type="string">
+    Unique identifier for the suppression
+  </ParamField>
+
+  <ParamField type="string">
+    The suppressed email address
+  </ParamField>
+
+  <ParamField type="string">
+    How the address was suppressed: `bounce`, `complaint`, or `manual`
+  </ParamField>
+
+  <ParamField type="string | null">
+    ID of the email that triggered the suppression. For suppressions with a
+    `manual` origin, `source_id` is `null`
+  </ParamField>
+
+  <ParamField type="string">
+    ISO 8601 timestamp when the suppression was created
+  </ParamField>
+</ResponseBodyParameters>
+
+<ResponseExample>
+  ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "type": "suppression.removed",
+    "created_at": "2026-11-17T19:32:22.980Z",
+    "data": {
+      "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+      "email": "steve.wozniak@gmail.com",
+      "origin": "manual",
+      "source_id": null,
+      "created_at": "2026-11-15T08:12:45.120Z"
+    }
+  }
+  ```
+</ResponseExample>
 
 
 # Verify Webhooks Requests

@@ -55,7 +55,8 @@ The response includes a URL the connected account uses to access the application
 {
   "object": "account_link",
   "created": 1612927106,
-  "expires_at": 1612927406,"url": "https://connect.stripe.com/setup/s/iCtLfmYb2tEU"
+  "expires_at": 1612927406,
+  "url": "https://connect.stripe.com/setup/s/iCtLfmYb2tEU"
 }
 ```
 

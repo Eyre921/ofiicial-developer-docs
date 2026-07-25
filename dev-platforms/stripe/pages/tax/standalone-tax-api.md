@@ -123,7 +123,8 @@ The response returns the tax included:
   ...
   "amount_total": 10000,
   ...
-  "tax_amount_exclusive": 0,"tax_amount_inclusive": 1870,
+  "tax_amount_exclusive": 0,
+  "tax_amount_inclusive": 1870,
   "tax_breakdown": [
     {
       "amount": 1870,
@@ -251,7 +252,8 @@ The response returns the calculated tax based on the shipping origin of the orde
   "tax_breakdown": [
     {
       "amount": 78,
-      "inclusive": true,"tax_rate_details": {
+      "inclusive": true,
+      "tax_rate_details": {
         "country": "US",
         "percentage_decimal": "7.75",
         "state": "IL",
@@ -317,7 +319,8 @@ The response returns the calculated tax with the retail delivery fee for Colorad
   "amount_total": 1068,
   ...
   "shipping_cost": {
-    "amount": 0,"amount_tax": 28,
+    "amount": 0,
+    "amount_tax": 28,
     "tax_behavior": "exclusive",
     "tax_code": "txcd_92010001"
   },
@@ -339,8 +342,10 @@ The response returns the calculated tax with the retail delivery fee for Colorad
       "taxable_amount": 1000
     },
     ...
-    {"amount": 28,
-      "inclusive": false,"tax_rate_details": {
+    {
+      "amount": 28,
+      "inclusive": false,
+      "tax_rate_details": {
         "country": "US",
         "flat_amount": {
           "amount": 28,
@@ -396,7 +401,8 @@ curl https://api.stripe.com/v1/tax/calculations \
         "percentage_decimal": "10.25",
         "state": "WA",
         "tax_type": "sales_tax"
-      },"taxability_reason": "standard_rated",
+      },
+      "taxability_reason": "standard_rated",
       "taxable_amount": 1000
     }
   ],
@@ -426,7 +432,8 @@ curl https://api.stripe.com/v1/tax/calculations \
               "display_name": "Retail Sales and Use Tax",
               "percentage_decimal": "6.5",
               "tax_type": "sales_tax"
-            },"taxability_reason": "standard_rated",
+            },
+            "taxability_reason": "standard_rated",
             "taxable_amount": 1000
           },
           {
@@ -438,7 +445,8 @@ curl https://api.stripe.com/v1/tax/calculations \
               "state": "WA"
             },
             "sourcing": "destination",
-            "tax_rate_details": null,"taxability_reason": "not_subject_to_tax",
+            "tax_rate_details": null,
+            "taxability_reason": "not_subject_to_tax",
             "taxable_amount": 0
           },
           {
@@ -454,7 +462,8 @@ curl https://api.stripe.com/v1/tax/calculations \
               "display_name": "Local Sales and Use Tax",
               "percentage_decimal": "2.2",
               "tax_type": "sales_tax"
-            },"taxability_reason": "standard_rated",
+            },
+            "taxability_reason": "standard_rated",
             "taxable_amount": 1000
           },
           {
@@ -470,7 +479,8 @@ curl https://api.stripe.com/v1/tax/calculations \
               "display_name": "Local Sales and Use Tax",
               "percentage_decimal": "1.4",
               "tax_type": "sales_tax"
-            },"taxability_reason": "standard_rated",
+            },
+            "taxability_reason": "standard_rated",
             "taxable_amount": 1000
           },
           {
@@ -486,7 +496,8 @@ curl https://api.stripe.com/v1/tax/calculations \
               "display_name": "Local Sales and Use Tax",
               "percentage_decimal": "0.15",
               "tax_type": "sales_tax"
-            },"taxability_reason": "standard_rated",
+            },
+            "taxability_reason": "standard_rated",
             "taxable_amount": 1000
           }
         ],

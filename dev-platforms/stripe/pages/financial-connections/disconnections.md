@@ -33,7 +33,8 @@ This request returns the account with an updated `status` to reflect the success
     "customer": "cus_NfjonN9919dELB",
     "type": "customer"
   },
-  "institution_name": "PNC Bank","status": "disconnected",
+  "institution_name": "PNC Bank",
+  "status": "disconnected",
   // ...
 }
 ```

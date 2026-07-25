@@ -101,7 +101,8 @@ Once all of the verification checks have passed, the status changes to `verified
   "type": "document",
   "redaction": null,
   "url": null,
-  "verified_outputs": {"first_name": "Jenny",
+  "verified_outputs": {
+    "first_name": "Jenny",
     "last_name": "Rosen",
     "address": {
       "line1": "1234 Main St.",
@@ -122,7 +123,8 @@ If any of the verification checks fail, the session will have a `requires_input`
   "id": "vs_orWziM4j7CiRL8J4vQmXgW2w",
   "object": "identity.verification_session",
   "created": 1610744321,
-  "last_error": {"code": "document_expired",
+  "last_error": {
+    "code": "document_expired",
     "reason": "The document is expired.",
   },
   "last_verification_report": "vr_orWziM4j7CiRL8J4vQmXgW2w",
@@ -175,7 +177,8 @@ If a VerificationSession that has been redacted is retrieved with PII fields exp
   "status": "verified",
   "type": "document",
   "url": null,
-  "client_secret": null,"redaction": {
+  "client_secret": null,
+  "redaction": {
     "status": "redacted"
   },
   "verified_outputs": {

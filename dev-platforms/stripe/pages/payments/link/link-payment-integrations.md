@@ -57,7 +57,8 @@ The following example shows a [Payment Method](https://docs.stripe.com/api/payme
   "id": "pm_12HA3WGPaV5rx8y34duNXgUp",
   "object": "payment_method",
   "type": "card",
-  "card": {"brand": "link",
+  "card": {
+    "brand": "link",
     "display_brand": "other",
     "exp_month": 12,
     "exp_year": 2040,
@@ -69,7 +70,8 @@ The following example shows a [Payment Method](https://docs.stripe.com/api/payme
       "cvc_check": null
     },
     "country": "US",
-    "networks": {"available": ["link"],
+    "networks": {
+      "available": ["link"],
       "preferred": null
     },
     "generated_from": null,

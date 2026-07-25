@@ -12,7 +12,7 @@ Rulesets help you to control how people can interact with branches and tags in a
 
 A ruleset is a named list of rules that applies to a repository or to multiple repositories in an organization for customers on GitHub Team and GitHub Enterprise plans. You can have up to 75 rulesets per repository, and 75 organization-wide rulesets.
 
-When you create a ruleset, you can allow certain users to bypass the rules in the ruleset. This can be users with a certain role, such as repository administrator, or it can be specific teams or GitHub Apps. For more information about granting bypass permissions, see [Creating rulesets for a repository](/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository#granting-bypass-permissions-for-your-ruleset).
+When you create a ruleset, you can allow certain users to bypass the rules in the ruleset. This can be users with a certain role, such as repository administrator, or it can be specific teams or GitHub Apps. For more information about granting bypass permissions, see [Creating rulesets for a repository](/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository).
 
 For organizations on the GitHub Enterprise plan, you can set up rulesets at the organization level to target multiple repositories in your organization. See [Managing rulesets for repositories in your organization](/en/enterprise-cloud@latest/organizations/managing-organization-settings/managing-rulesets-for-repositories-in-your-organization) in the GitHub Enterprise Cloud documentation.
 
@@ -54,7 +54,7 @@ Rulesets have the following advantages over branch protection rules.
 * Unlike protection rules, multiple rulesets can apply at the same time, so you can be confident that every rule targeting a branch in your repository will be evaluated when someone interacts with that branch. See [About rule layering](#about-rule-layering).
 * Rulesets have statuses, so you can easily manage which rulesets are active in a repository without needing to delete rulesets.
 * Anyone with read access to a repository can view the active rulesets for the repository. This means a developer can understand why they have hit a rule, or an auditor can check the security constraints for the repository, without requiring admin access to the repository.
-* You can create additional rules to control the metadata of commits entering a repository, such as the commit message and the author's email address. See [Available rules for rulesets](/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#metadata-restrictions) in the GitHub Enterprise Cloud documentation.
+* You can create additional rules to control the metadata of commits entering a repository, such as the commit message and the author's email address. See [Available rules for rulesets](/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) in the GitHub Enterprise Cloud documentation.
 
 ## Using ruleset enforcement statuses
 

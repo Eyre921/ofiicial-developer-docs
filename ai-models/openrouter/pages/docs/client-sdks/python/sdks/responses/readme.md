@@ -1,5 +1,5 @@
 ---
-title: "Beta.Responses"
+title: "Responses"
 source: https://openrouter.ai/docs/client-sdks/python/sdks/responses/README.md
 path: docs/client-sdks/python/sdks/responses/readme
 ---
@@ -8,13 +8,13 @@ path: docs/client-sdks/python/sdks/responses/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Beta.Responses
+# Responses
 
-> beta.responses endpoints
+> responses endpoints
 
 ## Overview
 
-beta.responses endpoints
+responses endpoints
 
 ### Available Operations
 
@@ -38,7 +38,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.beta.responses.send(service_tier="auto", stream=False)
+    res = open_router.responses.send(service_tier="auto", stream=False)
 
     with res as event_stream:
         for event in event_stream:
@@ -61,7 +61,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.beta.responses.send(service_tier="auto", stream=False)
+    res = open_router.responses.send(service_tier="auto", stream=False)
 
     with res as event_stream:
         for event in event_stream:

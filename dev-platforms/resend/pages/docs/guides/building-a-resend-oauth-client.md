@@ -25,8 +25,6 @@ Dynamic registration is for clients that can't predict their own deployment deta
 
 Also decide whether the client is public or confidential. A client running entirely on the user's machine, such as a native app, CLI, or single-page app, can't hide a secret, so register it as public (`none`). A client with a server-side backend should register as confidential (`client_secret_basic`) and keep the issued `client_secret` out of any user-facing code. The [pre-registered remote client](#pre-registered-remote-client) section below covers the confidential path, and the [local client](#local-client) section covers the public one.
 
-If you're registering beforehand, ask us to mark the client `manual_verified`. That gets it a verified badge on the consent screen. It's the only effect it has today. It doesn't change scopes, rate limits, or anything else.
-
 ## Scopes
 
 Use the smallest scope that works for your integration:

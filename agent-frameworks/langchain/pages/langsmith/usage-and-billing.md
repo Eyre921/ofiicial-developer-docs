@@ -74,13 +74,13 @@ If you have questions or concerns about our pricing model, please feel free to c
 
 **How does data retention affect downstream features?**
 
-**Retention impact:**
+The following features interact with retention differently:
 
-* **Extended by default**: Experiment runs are created at extended retention by default.
-* **Can change retention**: Automation rules and evaluators can upgrade matching traces when their retention setting is enabled.
-* **Does not change retention by default**: Feedback submitted in the LangSmith UI, notes, and manually adding runs to annotation queues keep traces at their current retention tier.
+* **Experiments**: Runs are created at extended retention by default.
+* **Automation rules and evaluators**: Upgrade matching traces to extended retention when their retention setting is enabled.
+* **UI feedback, notes, and annotation queues**: Leave a trace's retention tier unchanged.
 
-**Other features:**
+Other features behave independently of a trace's retention tier:
 
 * **Monitoring**: The monitoring tab will continue to work even after a base tier trace's data retention period ends. It is powered by trace metadata that exists for >30 days, meaning that your monitoring graphs will continue to stay accurate even on `base` tier traces.
 * **Datasets**: Datasets have an indefinite data retention period. Restated differently, if you add a trace's inputs and outputs to a dataset, they will never be deleted. We suggest that if you are using LangSmith for data collection, you take advantage of the datasets feature.

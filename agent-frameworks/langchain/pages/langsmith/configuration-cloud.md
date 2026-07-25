@@ -57,7 +57,7 @@ For more information on configuration in [LangGraph](/oss/python/langgraph/overv
   <Tab title="SDK">
     ## Create an assistant
 
-    Use the [AssistantsClient.create](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create) method to create a new assistant. This method requires:
+    Use the [`assistants.create`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.create) method to create a new assistant. This method requires:
 
     * **Graph ID**: The name of the deployed graph this assistant will use (e.g., `"agent"`).
     * **Context**: Configuration values matching your graph's context schema.
@@ -269,7 +269,7 @@ For more information on configuration in [LangGraph](/oss/python/langgraph/overv
 
     ## Create a new version for your assistant
 
-    Use the [AssistantsClient.update](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.update) method to create a new version of an assistant.
+    Use the [`assistants.update`](https://reference.langchain.com/python/langsmith/deployment/sdk/#langgraph_sdk.client.AssistantsClient.update) method to create a new version of an assistant.
 
     <Warning>
       **Updates require full configuration**

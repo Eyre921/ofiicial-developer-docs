@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 309 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 312 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -197,6 +197,7 @@
 - `docs/knowledge-base/how-do-i-avoid-gmails-spam-folder` — [How to avoid Gmail's spam folder](pages/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder)
 - `docs/knowledge-base/how-do-i-avoid-icloud-spam-folder` — [How to avoid iCloud's spam folder](pages/docs/knowledge-base/how-do-i-avoid-icloud-spam-folder.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-icloud-spam-folder)
 - `docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder` — [How to avoid Outlook's spam folder](pages/docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder)
+- `docs/knowledge-base/how-do-i-cancel-a-broadcast` — [How to cancel a Broadcast](pages/docs/knowledge-base/how-do-i-cancel-a-broadcast.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-cancel-a-broadcast)
 - `docs/knowledge-base/how-do-i-create-an-email-address-or-sender-in-resend` — [Sender email addresses in Resend](pages/docs/knowledge-base/how-do-i-create-an-email-address-or-sender-in-resend.md) · [原文](https://resend.com/docs/knowledge-base/how-do-I-create-an-email-address-or-sender-in-resend)
 - `docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend` — [How to ensure sensitive data isn't stored on Resend](pages/docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend)
 - `docs/knowledge-base/how-do-i-fix-cors-issues` — [How to fix CORS issues](pages/docs/knowledge-base/how-do-i-fix-cors-issues.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-fix-cors-issues)
@@ -313,4 +314,6 @@
 - `docs/webhooks/ingester` — [Webhook Ingester](pages/docs/webhooks/ingester.md) · [原文](https://resend.com/docs/webhooks/ingester)
 - `docs/webhooks/introduction` — [Managing Webhooks](pages/docs/webhooks/introduction.md) · [原文](https://resend.com/docs/webhooks/introduction)
 - `docs/webhooks/retries-and-replays` — [Retries and Replays](pages/docs/webhooks/retries-and-replays.md) · [原文](https://resend.com/docs/webhooks/retries-and-replays)
+- `docs/webhooks/suppressions/added` — [suppression.added](pages/docs/webhooks/suppressions/added.md) · [原文](https://resend.com/docs/webhooks/suppressions/added)
+- `docs/webhooks/suppressions/removed` — [suppression.removed](pages/docs/webhooks/suppressions/removed.md) · [原文](https://resend.com/docs/webhooks/suppressions/removed)
 - `docs/webhooks/verify-webhooks-requests` — [Verify Webhooks Requests](pages/docs/webhooks/verify-webhooks-requests.md) · [原文](https://resend.com/docs/webhooks/verify-webhooks-requests)

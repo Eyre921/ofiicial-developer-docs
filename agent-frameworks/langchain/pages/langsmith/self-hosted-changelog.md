@@ -10,6 +10,31 @@ path: langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
+<Update label="2026-07-24">
+  ## langsmith-0.15.16
+
+  * Internal improvements and maintenance updates
+
+  **Download the Helm chart:** [`langsmith-0.15.16.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.16/langsmith-0.15.16.tgz)
+</Update>
+
+<Update label="2026-07-24">
+  ## langsmith-0.16.0-rc.15
+
+  * None (internal engine triage behavior, behind the `ISSUES_AGENT_MAIN_AGENT_SEMANTIC` flag).
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.15.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.15/langsmith-0.16.0-rc.15.tgz)
+</Update>
+
+<Update label="2026-07-21">
+  ## langsmith-0.16.0-rc.14
+
+  * Fixed incorrect dashboard tooltip time ranges when the first aggregation bucket was partial.
+  * Fixed engine issue-detection evaluators that failed on large agent traces by trimming the run payload sent to the evaluator sandbox to only what the evaluators actually read.
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.14.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.14/langsmith-0.16.0-rc.14.tgz)
+</Update>
+
 <Update label="2026-07-16">
   ## langsmith-0.16.0-rc.13
 

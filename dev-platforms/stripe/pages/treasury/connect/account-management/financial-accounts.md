@@ -93,7 +93,8 @@ Typically, you also request [financial account features](https://docs.stripe.com
   "capabilities": {
     "card_issuing": "active",
     "card_payments": "active",
-    "transfers": "active","treasury": "active",
+    "transfers": "active",
+    "treasury": "active",
     "us_bank_account_ach_payments": "active"
   },
 …

@@ -86,7 +86,8 @@ In your [app manifest](https://developer.android.com/guide/topics/manifest/manif
 > To ensure your `Application` supports devices running Android 15, set the `targetSdkVersion` to `24` or later.
 
 ```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"><application android:name=".MyApp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:name=".MyApp">
     <!-- App manifest contents -->
     </application>
 </manifest>
@@ -119,7 +120,8 @@ class MyApplication : Application() {
 In your [app manifest](https://developer.android.com/guide/topics/manifest/manifest-intro), specify the name of your `Application` subclass with the `android:name` attribute.
 
 ```xml
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"><application android:name=".MainApplication">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:name=".MainApplication">
     <!-- App manifest contents -->
     </application>
 </manifest>
@@ -170,7 +172,8 @@ The following example shows how to discover and connect to a Stripe reader using
 
 ```kotlin
 private fun discoverReaders() {
-    Terminal.getInstance().discoverReaders(config = AppsOnDevicesDiscoveryConfiguration(),
+    Terminal.getInstance().discoverReaders(
+        config = AppsOnDevicesDiscoveryConfiguration(),
         discoveryListener = object : DiscoveryListener {
             override fun onUpdateDiscoveredReaders(readers: List<Reader>) {
                 // In Apps on Devices discovery, the list will
@@ -195,7 +198,8 @@ private fun discoverReaders() {
 
 private fun connectReader(reader: Reader) {
     Terminal.getInstance().connectReader(
-        reader,AppsOnDevicesConnectionConfiguration(
+        reader,
+        AppsOnDevicesConnectionConfiguration(
             object : AppsOnDevicesReaderListener {
                 override fun onDisconnect(reason: DisconnectReason) {
                     // Optionally get notified about reader disconnects (for example, reader was rebooted)
@@ -303,7 +307,8 @@ private fun connectReader(reader: Reader) {
         appsOnDevicesListener = object : AppsOnDevicesReaderListener {
             override fun onDisconnect(reason: DisconnectReason) {}
             override fun onReportReaderEvent(event: ReaderEvent) {}
-        },appTransitionAnimation = AppTransitionAnimation.Preset(AppTransitionPreset.SLIDE_FROM_BOTTOM)
+        },
+        appTransitionAnimation = AppTransitionAnimation.Preset(AppTransitionPreset.SLIDE_FROM_BOTTOM)
     )
 
     Terminal.getInstance().connectReader(
@@ -335,7 +340,8 @@ val config = AppsOnDevicesConnectionConfiguration(
     appsOnDevicesListener = object : AppsOnDevicesReaderListener {
         override fun onDisconnect(reason: DisconnectReason) {}
         override fun onReportReaderEvent(event: ReaderEvent) {}
-    },appTransitionAnimation = AppTransitionAnimation.Custom(
+    },
+    appTransitionAnimation = AppTransitionAnimation.Custom(
         enterAnim = R.anim.slide_in_up,
         exitAnim = R.anim.slide_out_down
     )
@@ -350,7 +356,8 @@ You can disable the transition animation by passing `AppTransitionAnimation.Cust
 
 ```kotlin
 val config = AppsOnDevicesConnectionConfiguration(
-    appsOnDevicesListener = listener,appTransitionAnimation = AppTransitionAnimation.Custom(
+    appsOnDevicesListener = listener,
+    appTransitionAnimation = AppTransitionAnimation.Custom(
         enterAnim = AppTransitionAnimation.Custom.NO_ANIMATION,
         exitAnim = AppTransitionAnimation.Custom.NO_ANIMATION
     )
@@ -377,7 +384,8 @@ const { connectReader } = useStripeTerminal();
 
 const { reader, error } = await connectReader({
   discoveryMethod: 'appsOnDevices',
-  reader: selectedReader,appTransitionAnimation: { type: 'preset', preset: AppTransitionPreset.SlideFromBottom },
+  reader: selectedReader,
+  appTransitionAnimation: { type: 'preset', preset: AppTransitionPreset.SlideFromBottom },
 });
 ```
 
@@ -394,7 +402,8 @@ const exitAnim: number = /* your exit animation resource ID */;
 
 const { reader, error } = await connectReader({
   discoveryMethod: 'appsOnDevices',
-  reader: selectedReader,appTransitionAnimation: { type: 'custom', enterAnim, exitAnim },
+  reader: selectedReader,
+  appTransitionAnimation: { type: 'custom', enterAnim, exitAnim },
 });
 ```
 
@@ -405,7 +414,8 @@ You can disable the transition animation by passing `0` for both `enterAnim` and
 ```typescript
 const { reader, error } = await connectReader({
   discoveryMethod: 'appsOnDevices',
-  reader: selectedReader,appTransitionAnimation: { type: 'custom', enterAnim: 0, exitAnim: 0 },
+  reader: selectedReader,
+  appTransitionAnimation: { type: 'custom', enterAnim: 0, exitAnim: 0 },
 });
 ```
 
@@ -530,7 +540,8 @@ This can be achieved by setting the [screenOrientation](https://developer.androi
 
 ```xml
 <activity
-    android:name=".MainActivity"android:screenOrientation="portrait">
+    android:name=".MainActivity"
+    android:screenOrientation="portrait">
 </activity>
 ```
 
@@ -542,7 +553,8 @@ Alternatively, this can be set programmatically using [Activity::setRequestedOri
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-// Lock to portrait orientation
+
+        // Lock to portrait orientation
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         // Or, lock to landscape orientation
@@ -570,7 +582,8 @@ To disable automatic activity recreation when connecting to or disconnecting fro
 
 ```xml
 <activity
-    android:name=".MyActivity"android:configChanges="uiMode" />
+    android:name=".MyActivity"
+    android:configChanges="uiMode" />
 ```
 
 Your activity can be notified of configuration changes by implementing [Activity::onConfigurationChanged](https://developer.android.com/reference/android/app/Activity#onConfigurationChanged\(android.content.res.Configuration\)). This method is only called if you’ve specified configurations you want to handle with the `android:configChanges` attribute in your manifest.

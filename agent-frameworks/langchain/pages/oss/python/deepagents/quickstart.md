@@ -27,18 +27,22 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
 
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install deepagents tavily-python
+  pip install deepagents
   ```
 
   ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   uv init
-  uv add deepagents tavily-python
+  uv add deepagents
   uv sync
   ```
 </CodeGroup>
 
 <Note>
-  This guide uses [Tavily](https://tavily.com/) as an example search provider, but you can substitute any search API (e.g., DuckDuckGo, SerpAPI, Brave Search).
+  Google, OpenAI, and Anthropic all provide built-in web search tools: no extra package or API key required. If you use a different provider or prefer [Tavily](https://tavily.com/) for search, install the Tavily package as well:
+
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install tavily-python
+  ```
 </Note>
 
 ## Step 2: Set up your API keys
@@ -47,21 +51,18 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
   <Tab title="Google">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export GOOGLE_API_KEY="your-api-key"
-    export TAVILY_API_KEY="your-tavily-api-key"
     ```
   </Tab>
 
   <Tab title="OpenAI">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export OPENAI_API_KEY="your-api-key"
-    export TAVILY_API_KEY="your-tavily-api-key"
     ```
   </Tab>
 
   <Tab title="Anthropic">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export ANTHROPIC_API_KEY="your-api-key"
-    export TAVILY_API_KEY="your-tavily-api-key"
     ```
   </Tab>
 
@@ -108,34 +109,59 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
 
 ## Step 3: Create a search tool
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import os
-from typing import Literal
+Google, OpenAI, and Anthropic offer built-in web search tools that run server-side: no extra package or API key needed. Pass a provider tool dict directly to `create_deep_agent`.
 
-from tavily import TavilyClient
-from deepagents import create_deep_agent
+<Tabs>
+  <Tab title="Provider search (recommended)">
+    <CodeGroup>
+      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      # Google's built-in search — no extra install or API key needed
+      internet_search = {"google_search": {}}
+      ```
 
-tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      # OpenAI's built-in web search — no extra install or API key needed
+      internet_search = {"type": "web_search"}
+      ```
+
+      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      # Anthropic's built-in web search — no extra install or API key needed
+      internet_search = {"type": "web_search_20260209", "name": "web_search"}
+      ```
+    </CodeGroup>
+  </Tab>
+
+  <Tab title="Tavily (any provider)">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import os
+    from typing import Literal
+
+    from tavily import TavilyClient
+    from deepagents import create_deep_agent
+
+    tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-def internet_search(
-    query: str,
-    max_results: int = 5,
-    topic: Literal["general", "news", "finance"] = "general",
-    include_raw_content: bool = False,
-):
-    """Run a web search"""
-    return tavily_client.search(
-        query,
-        max_results=max_results,
-        include_raw_content=include_raw_content,
-        topic=topic,
-    )
-```
+    def internet_search(
+        query: str,
+        max_results: int = 5,
+        topic: Literal["general", "news", "finance"] = "general",
+        include_raw_content: bool = False,
+    ):
+        """Run a web search"""
+        return tavily_client.search(
+            query,
+            max_results=max_results,
+            include_raw_content=include_raw_content,
+            topic=topic,
+        )
+    ```
+  </Tab>
+</Tabs>
 
 ## Step 4: Create a deep agent
 
-Pass a `model` string in `provider:model` format, or an [initialized model instance](/oss/python/deepagents/models#configure-model-parameters). See [supported models](/oss/python/deepagents/models#supported-models) for all providers and [suggested models](/oss/python/deepagents/models#suggested-models) for tested recommendations.
+Pass your search tool and model to `create_deep_agent`. Pass a `model` string in `provider:model` format, or an [initialized model instance](/oss/python/deepagents/models#configure-model-parameters). See [supported models](/oss/python/deepagents/models#supported-models) for all providers and [suggested models](/oss/python/deepagents/models#suggested-models) for tested recommendations.
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

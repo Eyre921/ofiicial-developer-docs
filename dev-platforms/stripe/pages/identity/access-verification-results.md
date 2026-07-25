@@ -106,6 +106,7 @@ Here’s an example of accessing the extracted date of birth, ID number, and doc
 #### Node.js
 
 ```javascript
+
 // Set your restricted key. Remember to switch to a live restricted key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
 const stripe = require('stripe')('rk_test_...');
@@ -143,6 +144,7 @@ To access the contents of the file, you need to authenticate using the previousl
 #### Node.js
 
 ```javascript
+
 // Set your restricted key. Remember to switch to a live restricted key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
 const stripe = require('stripe')('rk_test_...');

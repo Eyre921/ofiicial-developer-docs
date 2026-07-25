@@ -237,3 +237,34 @@ List of supported event types and their payload.
     </div>
   </div>
 </div>
+
+## Suppression Events
+
+<div>
+  <div>
+    <div>
+      <span />
+
+      [`suppression.added`](/docs/webhooks/suppressions/added)
+    </div>
+
+    <div>
+      Occurs whenever an **email address is added to your suppression list**,
+      automatically after a hard bounce or spam complaint, or manually through
+      the dashboard or API.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`suppression.removed`](/docs/webhooks/suppressions/removed)
+    </div>
+
+    <div>
+      Occurs whenever an **email address is removed from your suppression
+      list**.
+    </div>
+  </div>
+</div>

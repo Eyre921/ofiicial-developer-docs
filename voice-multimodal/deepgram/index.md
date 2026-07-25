@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -125,6 +125,7 @@
 - `docs/genesys-deepgram` — [Genesys and Deepgram](pages/docs/genesys-deepgram.md) · [原文](https://developers.deepgram.com/docs/genesys-deepgram.md)
 - `docs/getting-started-with-the-streaming-test-suite` — [Live Streaming Starter Kit](pages/docs/getting-started-with-the-streaming-test-suite.md) · [原文](https://developers.deepgram.com/docs/getting-started-with-the-streaming-test-suite.md)
 - `docs/handling-audio-issues-in-text-to-speech` — [Handling Audio Issues in Text To Speech](pages/docs/handling-audio-issues-in-text-to-speech.md) · [原文](https://developers.deepgram.com/docs/handling-audio-issues-in-text-to-speech.md)
+- `docs/health-checks-sagemaker` — [Health Checks & Automatic Recovery](pages/docs/health-checks-sagemaker.md) · [原文](https://developers.deepgram.com/docs/health-checks-sagemaker.md)
 - `docs/improving-aura-2-formatting` — [Formatting Text for Aura-2](pages/docs/improving-aura-2-formatting.md) · [原文](https://developers.deepgram.com/docs/improving-aura-2-formatting.md)
 - `docs/inbound-telephony-agent` — [Build an Inbound Telephony Agent](pages/docs/inbound-telephony-agent.md) · [原文](https://developers.deepgram.com/docs/inbound-telephony-agent.md)
 - `docs/integrate-deepgram-stt-with-audiocodes` — [AudioCodes (LiveHub) and Deepgram STT](pages/docs/integrate-deepgram-stt-with-audiocodes.md) · [原文](https://developers.deepgram.com/docs/integrate-deepgram-stt-with-audiocodes.md)

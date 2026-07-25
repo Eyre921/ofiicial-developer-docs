@@ -6,41 +6,39 @@ path: langsmith/govern-overview
 
 Administer users, access control, organizational structure, and compliance policies for your LangSmith organization.
 
-<div>
-  <div>
-    <h1>Govern</h1>
+Administer your LangSmith organization: manage users and access control, organize workspaces and applications, and configure policies and compliance.
 
-    Administer your LangSmith organization: manage users and access control, organize workspaces and applications, and configure policies and compliance.
+## Explore
 
-    <h2>Explore</h2>
+<CardGroup>
+  <Card title="Organization administration" href="/langsmith/administration-overview" icon="users-group">
+    Organizations, workspaces, applications, billing, and usage.
+  </Card>
 
-    <CardGroup>
-      <Card title="Organization administration" href="/langsmith/administration-overview" icon="users-group">
-        Organizations, workspaces, applications, billing, and usage.
-      </Card>
+  <Card title="Users & access control" href="/langsmith/user-management" icon="lock">
+    Manage users, roles (RBAC), attribute-based access (ABAC), and authentication.
+  </Card>
 
-      <Card title="Users & access control" href="/langsmith/user-management" icon="lock">
-        Manage users, roles (RBAC), attribute-based access (ABAC), and authentication.
-      </Card>
+  <Card title="Tools" href="/langsmith/chat" icon="tool">
+    Administrative tools and the LangSmith CLI.
+  </Card>
 
-      <Card title="Tools" href="/langsmith/chat" icon="tool">
-        Administrative tools and the LangSmith CLI.
-      </Card>
+  <Card title="Auditing & compliance" href="/langsmith/audit-logs" icon="shield-check">
+    Audit logs, data storage and privacy, and compliance controls.
+  </Card>
+</CardGroup>
 
-      <Card title="Govern & compliance" href="/langsmith/govern" icon="shield-check">
-        LLM Gateway controls, audit logs, and data compliance.
-      </Card>
-    </CardGroup>
+## Related
 
-    <h2>Related</h2>
+<CardGroup>
+  <Card title="Account setup" href="/langsmith/admin" icon="user-cog">
+    Create an account, manage API keys, configure profiles, and review pricing tiers.
+  </Card>
 
-    <CardGroup>
-      <Card title="Account setup" href="/langsmith/admin" icon="user-cog">
-        Create an account, manage API keys, configure profiles, and review pricing tiers.
-      </Card>
-    </CardGroup>
-  </div>
-</div>
+  <Card title="LLM Gateway" href="/langsmith/llm-gateway" icon="route">
+    Proxy LLM calls to enforce spend limits, redact sensitive data, and centrally manage provider credentials.
+  </Card>
+</CardGroup>
 
 ***
 

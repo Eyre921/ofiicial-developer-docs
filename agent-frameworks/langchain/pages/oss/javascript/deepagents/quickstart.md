@@ -27,20 +27,24 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
 
 <CodeGroup>
   ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install deepagents langchain @langchain/core @langchain/tavily
+  npm install deepagents langchain @langchain/core
   ```
 
   ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add deepagents langchain @langchain/core @langchain/tavily
+  yarn add deepagents langchain @langchain/core
   ```
 
   ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add deepagents langchain @langchain/core @langchain/tavily
+  pnpm add deepagents langchain @langchain/core
   ```
 </CodeGroup>
 
 <Note>
-  This guide uses [Tavily](https://tavily.com/) as an example search provider, but you can substitute any search API (e.g., DuckDuckGo, SerpAPI, Brave Search).
+  Google, OpenAI, and Anthropic all provide built-in web search tools: no extra package or API key required. If you use a different provider or prefer [Tavily](https://tavily.com/) for search, install the Tavily package as well:
+
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install @langchain/tavily
+  ```
 </Note>
 
 ## Step 2: Set up your API keys
@@ -49,21 +53,18 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
   <Tab title="Google">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export GOOGLE_API_KEY="your-api-key"
-    export TAVILY_API_KEY="your-tavily-api-key"
     ```
   </Tab>
 
   <Tab title="OpenAI">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export OPENAI_API_KEY="your-api-key"
-    export TAVILY_API_KEY="your-tavily-api-key"
     ```
   </Tab>
 
   <Tab title="Anthropic">
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     export ANTHROPIC_API_KEY="your-api-key"
-    export TAVILY_API_KEY="your-tavily-api-key"
     ```
   </Tab>
 
@@ -110,59 +111,84 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
 
 ## Step 3: Create a search tool
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { tool } from "langchain";
-import { TavilySearch } from "@langchain/tavily";
-import { z } from "zod";
+Google, OpenAI, and Anthropic offer built-in web search tools that run server-side: no extra package or API key needed. Pass a provider tool dict directly to `create_deep_agent`.
 
-const internetSearch = tool(
-  async ({
-    query,
-    maxResults = 5,
-    topic = "general",
-    includeRawContent = false,
-  }: {
-    query: string;
-    maxResults?: number;
-    topic?: "general" | "news" | "finance";
-    includeRawContent?: boolean;
-  }) => {
-    const tavilySearch = new TavilySearch({
-      maxResults,
-      tavilyApiKey: process.env.TAVILY_API_KEY,
-      includeRawContent,
-      topic,
-    });
-    return await tavilySearch._call({ query });
-  },
-  {
-    name: "internet_search",
-    description: "Run a web search",
-    schema: z.object({
-      query: z.string().describe("The search query"),
-      maxResults: z
-        .number()
-        .optional()
-        .default(5)
-        .describe("Maximum number of results to return"),
-      topic: z
-        .enum(["general", "news", "finance"])
-        .optional()
-        .default("general")
-        .describe("Search topic category"),
-      includeRawContent: z
-        .boolean()
-        .optional()
-        .default(false)
-        .describe("Whether to include raw content"),
-    }),
-  },
-);
-```
+<Tabs>
+  <Tab title="Provider search (recommended)">
+    <CodeGroup>
+      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      // Google's built-in search — no extra install or API key needed
+      const internetSearch = { google_search: {} };
+      ```
+
+      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      // OpenAI's built-in web search — no extra install or API key needed
+      const internetSearch = { type: "web_search_preview" };
+      ```
+
+      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      // Anthropic's built-in web search — no extra install or API key needed
+      const internetSearch = { type: "web_search_20250305", name: "web_search" };
+      ```
+    </CodeGroup>
+  </Tab>
+
+  <Tab title="Tavily (any provider)">
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { tool } from "langchain";
+    import { TavilySearch } from "@langchain/tavily";
+    import { z } from "zod";
+
+    const internetSearch = tool(
+      async ({
+        query,
+        maxResults = 5,
+        topic = "general",
+        includeRawContent = false,
+      }: {
+        query: string;
+        maxResults?: number;
+        topic?: "general" | "news" | "finance";
+        includeRawContent?: boolean;
+      }) => {
+        const tavilySearch = new TavilySearch({
+          maxResults,
+          tavilyApiKey: process.env.TAVILY_API_KEY,
+          includeRawContent,
+          topic,
+        });
+        return await tavilySearch._call({ query });
+      },
+      {
+        name: "internet_search",
+        description: "Run a web search",
+        schema: z.object({
+          query: z.string().describe("The search query"),
+          maxResults: z
+            .number()
+            .optional()
+            .default(5)
+            .describe("Maximum number of results to return"),
+          topic: z
+            .enum(["general", "news", "finance"])
+            .optional()
+            .default("general")
+            .describe("Search topic category"),
+          includeRawContent: z
+            .boolean()
+            .optional()
+            .default(false)
+            .describe("Whether to include raw content"),
+        }),
+      },
+    );
+    ```
+  </Tab>
+</Tabs>
 
 ## Step 4: Create a deep agent
 
-Pass a `model` string in `provider:model` format, or an [initialized model instance](/oss/javascript/deepagents/models#configure-model-parameters). See [supported models](/oss/javascript/deepagents/models#supported-models) for all providers and [suggested models](/oss/javascript/deepagents/models#suggested-models) for tested recommendations.
+Pass your search tool and model to `create_deep_agent`. Pass a `model` string in `provider:model` format, or an [initialized model instance](/oss/javascript/deepagents/models#configure-model-parameters). See [supported models](/oss/javascript/deepagents/models#supported-models) for all providers and [suggested models](/oss/javascript/deepagents/models#suggested-models) for tested recommendations.
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

@@ -88,7 +88,8 @@ curl -G https://api.stripe.com/v1/customers/{{CUSTOMER_ID}} \
 The response includes expanded tax fields that indicate the computed tax location, and whether you can use automatic tax calculation with the given customer.
 
 ```json
-{"tax": {
+{
+  "tax": {
     "automatic_tax": "supported",
     "ip_address": null,
     "location": {"country": "US", "state": "CA", "source": "billing_address"}

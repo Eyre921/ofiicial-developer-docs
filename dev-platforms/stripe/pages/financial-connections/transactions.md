@@ -129,7 +129,8 @@ In addition to activating a subscription to future transaction data, this API ca
   "display_name": "Savings",
   "institution_name": "Test Bank",
   "status": "active",
-  "permissions": ["transactions"],"subscriptions": ["transactions"],
+  "permissions": ["transactions"],
+  "subscriptions": ["transactions"],
   "transaction_refresh": {
     "id": "fctxnref_1aaaxqEitUZY8Svm4QdcWZKt",
     "last_attempted_at": 1706742786,

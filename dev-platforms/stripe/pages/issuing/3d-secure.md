@@ -100,7 +100,8 @@ When an issuer-claimed exemption is applied, the [Authorization object](https://
 ```json
 {
   "object": "issuing.authorization",
-  ..."verification_data" : {
+  ...
+  "verification_data" : {
     ...
     "authentication_exemption": {
       "type": "low_value_transaction",
@@ -117,7 +118,8 @@ Conversely, when an acquirer-claimed exemption is applied, the [Authorization ob
 ```json
 {
   "object": "issuing.authorization",
-  ..."verification_data" : {
+  ...
+  "verification_data" : {
     ...
     "authentication_exemption": {
       "type": "low_value_transaction",
@@ -182,7 +184,8 @@ This creates a Checkout Session and returns a response containing a URL to a Str
       "request_three_d_secure": "challenge"
     }
   },
-  ..."url": "https://checkout.stripe.com/c/pay/cs_live_...",
+  ...
+  "url": "https://checkout.stripe.com/c/pay/cs_live_...",
   ...
 }
 ```

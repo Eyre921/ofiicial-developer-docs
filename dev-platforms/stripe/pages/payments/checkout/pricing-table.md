@@ -128,7 +128,8 @@ In the `stripe-pricing-table`, set the [customer_email](https://docs.stripe.com/
   </script>
   <stripe-pricing-table
     pricing-table-id="{{PRICING_TABLE_ID}}"
-    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"customer-email="test+location_FR@email.com"
+    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"
+    customer-email="test+location_FR@email.com"
   >
   </stripe-pricing-table>
 </body>
@@ -168,7 +169,8 @@ The `<stripe-pricing-table>` web component supports setting the `customer-email`
   </script>
   <stripe-pricing-table
     pricing-table-id="{{PRICING_TABLE_ID}}"
-    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"customer-email="{{CUSTOMER_EMAIL}}"
+    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"
+    customer-email="{{CUSTOMER_EMAIL}}"
   >
   </stripe-pricing-table>
 </body>
@@ -217,7 +219,8 @@ Set the `customer-session-client-secret` attribute on the `<stripe-pricing-table
   </script>
   <stripe-pricing-table
     pricing-table-id="{{PRICING_TABLE_ID}}"
-    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"customer-session-client-secret="{{CLIENT_SECRET}}"
+    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"
+    customer-session-client-secret="{{CLIENT_SECRET}}"
   >
   </stripe-pricing-table>
 </body>
@@ -259,7 +262,8 @@ The `<stripe-pricing-table>` web component supports setting the `client-referenc
   </script>
   <stripe-pricing-table
     pricing-table-id="{{PRICING_TABLE_ID}}"
-    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"client-reference-id="{{CLIENT_REFERENCE_ID}}"
+    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"
+    client-reference-id="{{CLIENT_REFERENCE_ID}}"
   >
   </stripe-pricing-table>
 </body>

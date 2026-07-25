@@ -132,7 +132,8 @@ The expanded `tax` property indicates the computed tax location and whether the 
       "state": "CA",
       "source": "billing_address"
     },
-    "ip_address": null,"automatic_tax": "supported"
+    "ip_address": null,
+    "automatic_tax": "supported"
   }
 }
 ```

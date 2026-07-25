@@ -20,7 +20,7 @@ You can access your resources in GitHub in a variety of ways: in the browser, vi
 
 ## Authenticating in your browser
 
-If you're a member of an enterprise with managed users, you will authenticate to GitHub in your browser using your IdP. For more information, see [About Enterprise Managed Users](/en/enterprise-cloud@latest/admin/concepts/identity-and-access-management/enterprise-managed-users#authenticating-as-a-managed-user) in the GitHub Enterprise Cloud documentation.
+If you're a member of an enterprise with managed users, you will authenticate to GitHub in your browser using your IdP. For more information, see [About Enterprise Managed Users](/en/enterprise-cloud@latest/admin/concepts/identity-and-access-management/enterprise-managed-users#how-do-managed-user-accounts-authenticate-to-github) in the GitHub Enterprise Cloud documentation.
 
 If you're not a member of an enterprise with managed users, you will authenticate using your GitHub username and password, or a passkey. You may also use two-factor authentication and SAML single sign-on, which can be required by organization and enterprise owners.
 
@@ -45,7 +45,7 @@ If you need to use multiple accounts on GitHub.com, such as a personal account a
 
   * After you configure 2FA, your account enters a check up period for 28 days. You can leave the check up period by successfully performing 2FA within those 28 days. If you don't perform 2FA in that timespan, you'll then be asked to perform 2FA inside one of your existing GitHub sessions.
 
-  * If you cannot perform 2FA to pass the 28th day checkup, you will be provided a shortcut that lets you reconfigure your 2FA settings. You must reconfigure your settings before you can access the rest of GitHub. For more information, see [Accessing GitHub using two-factor authentication](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/accessing-github-using-two-factor-authentication#providing-a-2fa-code-when-signing-in-to-the-website) and [Configuring two-factor authentication](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication).
+  * If you cannot perform 2FA to pass the 28th day checkup, you will be provided a shortcut that lets you reconfigure your 2FA settings. You must reconfigure your settings before you can access the rest of GitHub. For more information, see [Accessing GitHub using two-factor authentication](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/accessing-github-using-two-factor-authentication#performing-2fa-when-signing-in-to-the-website) and [Configuring two-factor authentication](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication).
 
   * In addition to authentication with a TOTP application or a text message, you can optionally add an alternative method of authentication with GitHub Mobile or a security key using WebAuthn. See [Configuring two-factor authentication using GitHub Mobile](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication#configuring-two-factor-authentication-using-github-mobile) or [Configuring two-factor authentication using a security key](/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication#configuring-two-factor-authentication-using-a-security-key).
 

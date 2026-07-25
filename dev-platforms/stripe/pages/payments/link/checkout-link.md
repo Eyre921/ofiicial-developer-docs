@@ -62,7 +62,8 @@ When creating a new [Checkout Session](https://docs.stripe.com/api/checkout/sess
 
 ```ruby
 client.v1.checkout.sessions.create({
-  mode: 'payment',payment_method_types: ['card', 'link'],
+  mode: 'payment',
+  payment_method_types: ['card', 'link'],
   line_items: [{
     price_data: {
       currency: 'usd',

@@ -87,7 +87,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(
@@ -145,7 +146,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(
@@ -201,7 +203,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(
@@ -259,7 +262,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(
@@ -317,7 +321,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(
@@ -373,7 +378,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(
@@ -429,7 +435,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(
@@ -487,7 +494,8 @@ post '/webhook' do
   sig_header = request.env['HTTP_STRIPE_SIGNATURE']
 
   event = nil
-# Verify webhook signature and extract the event.
+
+  # Verify webhook signature and extract the event.
   # See https://stripe.com/docs/webhooks#verify-events for more information.
   begin
     event = Stripe::Webhook.construct_event(

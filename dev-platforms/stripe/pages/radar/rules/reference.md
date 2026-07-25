@@ -78,18 +78,35 @@ When a particular rule is triggered, Radar takes the prescribed action and disco
 
 ### Account Actions
 
-Radar for Platforms includes rules that perform one of two actions when an account meets its criteria:
+Radar for Platforms includes rules that perform one of the following actions when an account meets its criteria:
 
 - Raise for review
 - Raise for review and pause payouts while under review
+- Raise for review and pause outbound money movement while under review (Private preview)
 
 #### Review 
 
 Your platform can raise reviews on accounts, which appear in the Radar review queue section of your Connected accounts list. Review rules help you identify when the account itself might be causing your platform financial harm.
 
-#### Payout Pause *(and Review)*
+#### Payout pause (and review)
 
 You can act quickly to prevent losses by setting a rule to automatically pause payouts while you review the account. These reviews also appear in the Radar reviews queue. We recommend that you start by raising accounts for review, and using automatic payout pauses only when you’re confident the rule impacts accounts as intended.
+
+#### Outbound money movement pause (and review) (Private preview)
+
+To help prevent losses, you can set a rule to automatically pause outbound money movement while you review the account. These reviews also appear in the Radar review queue. We recommend raising accounts for review first, and only using automatic money movement pauses when you’re confident the rule targets the intended accounts.
+
+### Treasury transaction actions (Private preview)
+
+Treasury transaction rules apply to Treasury transactions on your connected accounts. Currently, only inbound transfers are supported.
+
+#### Block 
+
+A block rule instructs Stripe to reject any matching Treasury transaction. Rejected transactions aren’t evaluated against further rules.
+
+#### Review 
+
+Use review rules when you want to allow certain types of Treasury transactions but examine them more closely. Stripe still processes the transaction, but you can review it and check for signs of fraud.
 
 ### Conditions
 

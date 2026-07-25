@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1511 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1512 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -236,6 +236,7 @@
 - `langsmith/double-texting` — [Double texting](pages/langsmith/double-texting.md) · [原文](https://docs.langchain.com/langsmith/double-texting)
 - `langsmith/encryption` — [Add encryption at rest](pages/langsmith/encryption.md) · [原文](https://docs.langchain.com/langsmith/encryption)
 - `langsmith/engine` — [Find and fix your agent's issues with LangSmith Engine](pages/langsmith/engine.md) · [原文](https://docs.langchain.com/langsmith/engine)
+- `langsmith/engine-issue-categories` — [LangSmith Engine issue categories](pages/langsmith/engine-issue-categories.md) · [原文](https://docs.langchain.com/langsmith/engine-issue-categories)
 - `langsmith/engine-link` — [LangSmith Engine](pages/langsmith/engine-link.md) · [原文](https://docs.langchain.com/langsmith/engine-link)
 - `langsmith/engine-overview` — [LangSmith Engine](pages/langsmith/engine-overview.md) · [原文](https://docs.langchain.com/langsmith/engine-overview)
 - `langsmith/engine-security` — [LangSmith Engine security](pages/langsmith/engine-security.md) · [原文](https://docs.langchain.com/langsmith/engine-security)
@@ -300,7 +301,6 @@
 - `langsmith/fleet/workspace-admin` — [Manage workspace administration](pages/langsmith/fleet/workspace-admin.md) · [原文](https://docs.langchain.com/langsmith/fleet/workspace-admin)
 - `langsmith/gcp-self-hosted` — [Self-hosted LangSmith on GCP](pages/langsmith/gcp-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/gcp-self-hosted)
 - `langsmith/generative-ui-react` — [How to implement generative user interfaces with LangGraph](pages/langsmith/generative-ui-react.md) · [原文](https://docs.langchain.com/langsmith/generative-ui-react)
-- `langsmith/govern` — [Governance](pages/langsmith/govern.md) · [原文](https://docs.langchain.com/langsmith/govern)
 - `langsmith/govern-overview` — [Govern](pages/langsmith/govern-overview.md) · [原文](https://docs.langchain.com/langsmith/govern-overview)
 - `langsmith/granular-usage` — [Granular billable usage](pages/langsmith/granular-usage.md) · [原文](https://docs.langchain.com/langsmith/granular-usage)
 - `langsmith/graph-rebuild` — [Rebuild graph at runtime](pages/langsmith/graph-rebuild.md) · [原文](https://docs.langchain.com/langsmith/graph-rebuild)
@@ -332,6 +332,7 @@
 - `langsmith/llm-gateway-coding-agents` — [Set up coding agents](pages/langsmith/llm-gateway-coding-agents.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-coding-agents)
 - `langsmith/llm-gateway-custom-providers` — [Custom model providers](pages/langsmith/llm-gateway-custom-providers.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-custom-providers)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
+- `langsmith/llm-gateway-langchain-provider` — [LangChain managed models](pages/langsmith/llm-gateway-langchain-provider.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-langchain-provider)
 - `langsmith/llm-gateway-quickstart` — [Quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
 - `langsmith/llm-gateway-redaction` — [PII and secrets redaction](pages/langsmith/llm-gateway-redaction.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-redaction)
@@ -432,7 +433,7 @@
 - `langsmith/run-evals-api-only` — [How to use the REST API](pages/langsmith/run-evals-api-only.md) · [原文](https://docs.langchain.com/langsmith/run-evals-api-only)
 - `langsmith/run-evaluation-from-playground` — [Run an evaluation from the Playground](pages/langsmith/run-evaluation-from-playground.md) · [原文](https://docs.langchain.com/langsmith/run-evaluation-from-playground)
 - `langsmith/runs` — [Runs](pages/langsmith/runs.md) · [原文](https://docs.langchain.com/langsmith/runs)
-- `langsmith/same-thread` — [How to run multiple agents on the same thread](pages/langsmith/same-thread.md) · [原文](https://docs.langchain.com/langsmith/same-thread)
+- `langsmith/same-thread` — [How to run multiple assistants on the same thread](pages/langsmith/same-thread.md) · [原文](https://docs.langchain.com/langsmith/same-thread)
 - `langsmith/sample-traces` — [Set a sampling rate for traces](pages/langsmith/sample-traces.md) · [原文](https://docs.langchain.com/langsmith/sample-traces)
 - `langsmith/sandbox-auth-proxy` — [Sandbox auth proxy](pages/langsmith/sandbox-auth-proxy.md) · [原文](https://docs.langchain.com/langsmith/sandbox-auth-proxy)
 - `langsmith/sandbox-cli` — [Sandbox CLI](pages/langsmith/sandbox-cli.md) · [原文](https://docs.langchain.com/langsmith/sandbox-cli)

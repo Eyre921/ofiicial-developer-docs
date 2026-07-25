@@ -124,7 +124,8 @@ The Financial Connections account ID is on the expanded payment method’s [`us_
   "id": "pi_3OK3g4FitzZY8Nvm11121Lhb",
   "object": "payment_intent",
   "payment_method": {
-    "us_bank_account": {"financial_connections_account": "fca_1OK123bitUAA8SvmruWkck76"
+    "us_bank_account": {
+      "financial_connections_account": "fca_1OK123bitUAA8SvmruWkck76"
     }
     // ... other fields on the Payment Method
   }

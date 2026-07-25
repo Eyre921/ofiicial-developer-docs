@@ -135,7 +135,8 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[][price]"="{{PRICE_ID}}" \
   -d "line_items[][quantity]"=1 \
   -d "mode"="subscription" \
-  -d "success_url"="https://example.com/success?session_id={CHECKOUT_SESSION_ID}" \-d "subscription_data[billing_cycle_anchor]"=1611008505
+  -d "success_url"="https://example.com/success?session_id={CHECKOUT_SESSION_ID}" \
+  -d "subscription_data[billing_cycle_anchor]"=1611008505
 ```
 
 Checkout must be in `subscription` mode to configure a billing cycle anchor.

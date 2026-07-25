@@ -104,7 +104,8 @@ Don’t cache the client secret. Instead, generate a new one every time you rend
   </script>
   <stripe-buy-button
     buy-button-id="{{BUY_BUTTON_ID}}"
-    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"customer-session-client-secret="{{CLIENT_SECRET}}"
+    publishable-key="<<YOUR_PUBLISHABLE_KEY>>"
+    customer-session-client-secret="{{CLIENT_SECRET}}"
   >
   </stripe-buy-button>
 </body>

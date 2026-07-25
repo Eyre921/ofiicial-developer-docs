@@ -363,7 +363,8 @@ Import both the StripeJS and the OnrampJS bundles:
     <meta charset="utf-8" />
     <title>Crypto Onramp</title>
     <meta name="description" content="A demo of the hosted onramp" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" /><script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
     <script src="https://crypto-js.stripe.com/crypto-onramp-outer.js"></script>
     <script src="onramp.js" defer></script>
   </head>

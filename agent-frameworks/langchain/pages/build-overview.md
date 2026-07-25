@@ -139,7 +139,7 @@ Source: https://docs.langchain.com/index
     <h1>The platform for agent engineering</h1>
 
     One platform to improve every step of the agent development lifecycle, so you can ship reliable agents faster.
-    <h2>Get started</h2>
+    <h2>Agent development lifecycle</h2>
 
     <CardGroup>
       <Card title="Build" icon="hammer" href="/build-overview">
@@ -157,18 +157,24 @@ Source: https://docs.langchain.com/index
       <Card title="Monitor" icon="chart-line" href="/langsmith/observability">
         Trace, debug, and observe agents in production.
       </Card>
+    </CardGroup>
 
-      <Card title="Govern" icon="shield-check" href="/langsmith/govern-overview">
-        Administer access, settings, and LLM Gateway.
+    <h2>Platform</h2>
+
+    <CardGroup>
+      <Card title="Platform setup" icon="server" href="/langsmith/platform-setup">
+        Set up Cloud or Self-hosted LangSmith, and govern users and compliance.
+      </Card>
+
+      <Card title="LLM Gateway" icon="route" href="/langsmith/llm-gateway">
+        Route, control, and observe LLM traffic across providers.
       </Card>
 
       <Card title="No-code agents" icon="wand" href="/langsmith/fleet">
         Build and run agents without code using LangSmith Fleet.
       </Card>
-    </CardGroup>
 
-    <CardGroup>
-      <Card title="Find and fix issues with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
+      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
         Find and fix recurring agent issues automatically with LangSmith Engine.
       </Card>
 

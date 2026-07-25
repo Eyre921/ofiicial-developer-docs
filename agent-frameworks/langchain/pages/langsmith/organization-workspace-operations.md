@@ -191,6 +191,7 @@ Projects organize traces and runs from your LLM applications.
 | Operation                                          | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission              |
 | -------------------------------------------------- | :-------------: | :--------------: | :--------------: | -------------------------------- |
 | Create a new project                               |        ✓        |         ✗        |         ✗        | `projects:create`                |
+| Apply resource tags on project creation            |        ✓        |         ✗        |         ✗        | `projects:tag_on_create`         |
 | View project list                                  |        ✓        |         ✓        |         ✓        | `projects:read`                  |
 | View project details                               |        ✓        |         ✓        |         ✓        | `projects:read`                  |
 | View prebuilt dashboard                            |        ✓        |         ✓        |         ✓        | `projects:read`                  |
@@ -278,6 +279,7 @@ Test datasets with examples for evaluation.
 | Operation                                    | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission                                  |
 | -------------------------------------------- | :-------------: | :--------------: | :--------------: | ---------------------------------------------------- |
 | Create a dataset                             |        ✓        |         ✓        |         ✗        | `datasets:create`                                    |
+| Apply resource tags on dataset creation      |        ✓        |         ✓        |         ✗        | `datasets:tag_on_create`                             |
 | List datasets                                |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | View dataset details                         |        ✓        |         ✓        |         ✓        | `datasets:read`                                      |
 | Update dataset metadata                      |        ✓        |         ✓        |         ✗        | `datasets:update`                                    |
@@ -413,37 +415,38 @@ Human review queues for LLM outputs.
 
 Prompt templates and chains in the LangChain Hub.
 
-| Operation               | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
-| ----------------------- | :-------------: | :--------------: | :--------------: | ------------------- |
-| List prompt repos       |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| View prompt repo        |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Create prompt repo      |        ✓        |         ✓        |         ✗        | `prompts:create`    |
-| Fork prompt repo        |        ✓        |         ✓        |         ✗        | `prompts:create`    |
-| Update prompt repo      |        ✓        |         ✓        |         ✗        | `prompts:update`    |
-| Delete prompt repo      |        ✓        |         ✓        |         ✗        | `prompts:delete`    |
-| List commits            |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| View commit             |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Push commit             |        ✓        |         ✓        |         ✗        | `prompts:update`    |
-| List repo tags          |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Get all tags            |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Create tag              |        ✓        |         ✓        |         ✗        | `prompts:tag`       |
-| Update tag              |        ✓        |         ✓        |         ✗        | `prompts:tag`       |
-| Delete tag              |        ✓        |         ✓        |         ✗        | `prompts:tag`       |
-| View events             |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| List comments           |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Create comment          |        ✓        |         ✓        |         ✗        | `prompts:read`      |
-| Delete comment          |        ✓        |         ✓        |         ✗        | `prompts:read`      |
-| Toggle like             |        ✓        |         ✓        |         ✗        | `prompts:read`      |
-| Optimize prompt         |        ✓        |         ✓        |         ✗        | `prompts:update`    |
-| List optimization jobs  |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Create optimization job |        ✓        |         ✓        |         ✗        | `prompts:create`    |
-| Update optimization job |        ✓        |         ✓        |         ✗        | `prompts:update`    |
-| Delete optimization job |        ✓        |         ✓        |         ✗        | `prompts:delete`    |
-| Invoke prompt canvas    |        ✓        |         ✓        |         ✗        | `prompts:update`    |
-| List quick actions      |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Create quick action     |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Delete quick action     |        ✓        |         ✓        |         ✓        | `prompts:read`      |
-| Update quick action     |        ✓        |         ✓        |         ✓        | `prompts:read`      |
+| Operation                              | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission     |
+| -------------------------------------- | :-------------: | :--------------: | :--------------: | ----------------------- |
+| List prompt repos                      |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| View prompt repo                       |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Create prompt repo                     |        ✓        |         ✓        |         ✗        | `prompts:create`        |
+| Apply resource tags on prompt creation |        ✓        |         ✓        |         ✗        | `prompts:tag_on_create` |
+| Fork prompt repo                       |        ✓        |         ✓        |         ✗        | `prompts:create`        |
+| Update prompt repo                     |        ✓        |         ✓        |         ✗        | `prompts:update`        |
+| Delete prompt repo                     |        ✓        |         ✓        |         ✗        | `prompts:delete`        |
+| List commits                           |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| View commit                            |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Push commit                            |        ✓        |         ✓        |         ✗        | `prompts:update`        |
+| List repo tags                         |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Get all tags                           |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Create tag                             |        ✓        |         ✓        |         ✗        | `prompts:tag`           |
+| Update tag                             |        ✓        |         ✓        |         ✗        | `prompts:tag`           |
+| Delete tag                             |        ✓        |         ✓        |         ✗        | `prompts:tag`           |
+| View events                            |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| List comments                          |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Create comment                         |        ✓        |         ✓        |         ✗        | `prompts:read`          |
+| Delete comment                         |        ✓        |         ✓        |         ✗        | `prompts:read`          |
+| Toggle like                            |        ✓        |         ✓        |         ✗        | `prompts:read`          |
+| Optimize prompt                        |        ✓        |         ✓        |         ✗        | `prompts:update`        |
+| List optimization jobs                 |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Create optimization job                |        ✓        |         ✓        |         ✗        | `prompts:create`        |
+| Update optimization job                |        ✓        |         ✓        |         ✗        | `prompts:update`        |
+| Delete optimization job                |        ✓        |         ✓        |         ✗        | `prompts:delete`        |
+| Invoke prompt canvas                   |        ✓        |         ✓        |         ✗        | `prompts:update`        |
+| List quick actions                     |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Create quick action                    |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Delete quick action                    |        ✓        |         ✓        |         ✓        | `prompts:read`          |
+| Update quick action                    |        ✓        |         ✓        |         ✓        | `prompts:read`          |
 
 <Note>
   Some prompt operations support public access for shared prompts.

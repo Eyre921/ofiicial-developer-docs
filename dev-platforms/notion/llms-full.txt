@@ -17020,7 +17020,7 @@ The organization bot token must have the following scopes:
 # Enqueue a workspace export
 Source: https://developers.notion.com/reference/admin/enqueue-space-export
 
-openapi-adminApi.json POST /v1/exports
+openapi-adminApi.json POST /v1/spaces/{space_id}/exports
 Enqueue a workspace export.
 
 The organization bot token must have the following scopes:
@@ -17053,7 +17053,7 @@ The organization bot token must have the following scopes:
 # Get workspace export status
 Source: https://developers.notion.com/reference/admin/get-space-export-status
 
-openapi-adminApi.json GET /v1/exports/{export_job_id}
+openapi-adminApi.json GET /v1/spaces/{space_id}/exports/{export_job_id}
 Get workspace export status.
 
 The organization bot token must have the following scopes:

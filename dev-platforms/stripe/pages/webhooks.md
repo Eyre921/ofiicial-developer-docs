@@ -622,16 +622,19 @@ require 'sinatra'
 # If you are testing your webhook locally with the Stripe CLI you
 # can find the endpoint's secret by running `stripe listen`
 # Otherwise, find your endpoint's secret in your webhook settings in
-# the Developer Dashboardendpoint_secret = 'whsec_...'
+# the Developer Dashboard
+endpoint_secret = 'whsec_...'
 
 # Using the Sinatra framework
 set :port, 4242
 
 post '/my/webhook/url' do
-  payload = request.body.readsig_header = request.env['HTTP_STRIPE_SIGNATURE']
+  payload = request.body.read
+  sig_header = request.env['HTTP_STRIPE_SIGNATURE']
   event = nil
 
-  beginevent = Stripe::Webhook.construct_event(
+  begin
+    event = Stripe::Webhook.construct_event(
       payload, sig_header, endpoint_secret
     )
   rescue JSON::ParserError => e
@@ -639,7 +642,8 @@ post '/my/webhook/url' do
     puts "Error parsing payload: #{e.message}"
     status 400
     return
-  rescue Stripe::SignatureVerificationError => e# Invalid signature
+  rescue Stripe::SignatureVerificationError => e
+    # Invalid signature
     puts "Error verifying webhook signature: #{e.message}"
     status 400
     return

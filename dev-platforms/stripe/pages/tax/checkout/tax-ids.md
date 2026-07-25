@@ -121,14 +121,16 @@ Checkout includes provided tax IDs on the resulting [Session](https://docs.strip
     ...
     "customer": {{CUSTOMER_ID}},
     "customer_details": {
-      ..."tax_ids": [
+      ...
+      "tax_ids": [
         {
           "type": "eu_vat",
           "value": "FRAB123456789"
         }
       ]
     },
-    ..."tax_id_collection": {
+    ...
+    "tax_id_collection": {
       "enabled": true
     }
     ...

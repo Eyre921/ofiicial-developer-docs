@@ -33,7 +33,8 @@ Before migrating to Clover, first [update your integration](https://docs.stripe.
 
 ```html
 <head>
-  <title>Checkout</title><script src="https://js.stripe.com/clover/stripe.js"></script>
+  <title>Checkout</title>
+  <script src="https://js.stripe.com/clover/stripe.js"></script>
 </head>
 ```
 
@@ -55,11 +56,13 @@ const clientSecret = fetch("/create-checkout-session", {
 })
   .then((r) => r.json())
   .then((r) => r.clientSecret);
+
 const checkout = stripe.initCheckout({
   clientSecret
 });
 const paymentElement = checkout.createPaymentElement();
 paymentElement.mount("#payment-element");
+
 const loadActionsResult = await checkout.loadActions();
 if (loadActionsResult.type === 'success') {
   const session = loadActionsResult.actions.getSession();
@@ -75,6 +78,7 @@ Upgrade your `@stripe/react-stripe-js` dependency to at least version `5.0.0`. I
 Update your imports to use the new checkout-specific entrypoint:
 
 ```jsx
+
 import {useCheckout, PaymentElement} from '@stripe/react-stripe-js/checkout';
 ```
 
@@ -96,7 +100,8 @@ const App = () => {
   return (
     <CheckoutProvider
       stripe={stripePromise}
-      options={{clientSecret: promise
+      options={{
+        clientSecret: promise
       }}
     >
       <CheckoutPage />
@@ -108,7 +113,8 @@ const CheckoutPage = () => {
   const {type, ...rest} = useCheckout();
 
   return (
-    <div><PaymentElement />
+    <div>
+      <PaymentElement />
     </div>
   );
 }
@@ -139,7 +145,8 @@ Before migrating to Basil, first [update your integration](https://docs.stripe.c
 
 ```html
 <head>
-  <title>Checkout</title><script src="https://js.stripe.com/basil/stripe.js"></script>
+  <title>Checkout</title>
+  <script src="https://js.stripe.com/basil/stripe.js"></script>
 </head>
 ```
 

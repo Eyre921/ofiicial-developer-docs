@@ -39,15 +39,14 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 290,
+    "pages": 291,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "pages": 167,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Operation timed out after 90002 milliseconds with 21474940 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 17866909 bytes received\ncurl: (28) Operation timed out"
   },
   "agent-frameworks/langchain": {
-    "pages": 1511,
+    "pages": 1512,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -99,7 +98,7 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 309,
+    "pages": 312,
     "status": "ok"
   },
   "ai-models/google-gemini": {
@@ -188,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 101,
+    "pages": 88,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -196,16 +195,16 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 299,
+    "pages": 302,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 374,
+    "pages": 375,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
     "pages": 1192,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-24T23:30:45Z"
+  "_last_crawl": "2026-07-25T11:30:59Z"
 }

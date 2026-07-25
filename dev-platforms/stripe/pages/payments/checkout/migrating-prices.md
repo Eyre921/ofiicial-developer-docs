@@ -58,7 +58,8 @@ When you create the Checkout Session with `price_data`, reference an existing pr
 ```bash
 curl https://api.stripe.com/v1/checkout/sessions \
   -u <<YOUR_SECRET_KEY>>: \
-  -d "line_items[0][quantity]"=1 \-d "line_items[0][price_data][unit_amount]"=2000 \
+  -d "line_items[0][quantity]"=1 \
+  -d "line_items[0][price_data][unit_amount]"=2000 \
   -d "line_items[0][price_data][product_data][name]"=T-shirt \
   -d "line_items[0][price_data][product_data][description]"="Comfortable cotton t-shirt" \
   -d "line_items[0][price_data][product_data][images][]"="https://example.com/t-shirt.png" \
@@ -76,6 +77,7 @@ You can either create a product and price with the [Prices API](https://docs.str
 #### curl
 
 ```bash
+
 curl https://api.stripe.com/v1/products \
   -u<<YOUR_SECRET_KEY>>: \
   -d name=T-shirt \
@@ -90,7 +92,8 @@ curl https://api.stripe.com/v1/prices \
 
 curl https://api.stripe.com/v1/checkout/sessions \
   -u <<YOUR_SECRET_KEY>>: \
-  -d "line_items[0][quantity]"=1 \-d "line_items[0][price]"="{{PRICE_ID}}" \
+  -d "line_items[0][quantity]"=1 \
+  -d "line_items[0][price]"="{{PRICE_ID}}" \
   -d mode=payment \
   -d success_url="https://example.com/success" \
 ```
@@ -112,7 +115,8 @@ Here is a before and after example of creating a Checkout Session with a trial a
 
 ```bash
 curl https://api.stripe.com/v1/checkout/sessions \
-  -u <<YOUR_SECRET_KEY>>: \-d "line_items[0][price]"="{{PRICE_OR_PLAN_ID}}" \
+  -u <<YOUR_SECRET_KEY>>: \
+  -d "line_items[0][price]"="{{PRICE_OR_PLAN_ID}}" \
   -d "line_items[0][quantity]"=1 \
   -d mode=subscription \
   -d success_url="https://example.com/success" \
@@ -126,7 +130,8 @@ If you have recurring plans with a one-time setup fee, create the product and pr
 
 ```bash
 curl https://api.stripe.com/v1/checkout/sessions \
-  -u <<YOUR_SECRET_KEY>>: \-d "line_items[0][price]"="{{PRICE_OR_PLAN_ID}}" \
+  -u <<YOUR_SECRET_KEY>>: \
+  -d "line_items[0][price]"="{{PRICE_OR_PLAN_ID}}" \
   -d "line_items[0][quantity]"=1 \
   -d "line_items[1][price]"="{{ONE_TIME_PRICE_ID}}" \
   -d "line_items[1][quantity]"=1 \
