@@ -85820,18 +85820,6 @@ If you encounter this error message, it means that your computer is not properly
 If you encounter the `Handshake read failed` error when trying to connect to Pinecone server, there are several steps you can take to resolve the issue. First, double-check that you have set up the Pinecone client and API key correctly. Then, check for any misconfigurations in your code. If the error persists, [contact Pinecone Support](/troubleshooting/contact-support) for assistance.
 
 
-# Export indexes
-Source: https://docs.pinecone.io/troubleshooting/export-indexes
-
-Troubleshoot “Export indexes” in Pinecone: Pinecone does not support an export function. It is on our roadmap for the future, however.
-
-Pinecone does not support an export function. It is on our roadmap for the future, however.
-
-In the meantime, we recommend keeping a copy of your source data in case you need to move from one project to another, in which case you'll need to reindex the data.
-
-For backup purposes, we recommend that you take periodic backups. Please see [Back up indexes](/guides/manage-data/back-up-an-index) in our documentation for more details on doing so.
-
-
 # How to work with Support
 Source: https://docs.pinecone.io/troubleshooting/how-to-work-with-support
 

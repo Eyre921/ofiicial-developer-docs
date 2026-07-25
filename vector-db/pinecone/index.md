@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 502 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 501 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## assistant-release-notes
@@ -513,7 +513,6 @@
 - `troubleshooting/embedding-values-changed-when-upserted` — [Embedding values changed when upserted](pages/troubleshooting/embedding-values-changed-when-upserted.md) · [原文](https://docs.pinecone.io/troubleshooting/embedding-values-changed-when-upserted)
 - `troubleshooting/error-cannot-import-name-pinecone` — [Error: Cannot import name 'Pinecone' from 'pinecone'](pages/troubleshooting/error-cannot-import-name-pinecone.md) · [原文](https://docs.pinecone.io/troubleshooting/error-cannot-import-name-pinecone)
 - `troubleshooting/error-handshake-read-failed` — [Error: Handshake read failed when connecting](pages/troubleshooting/error-handshake-read-failed.md) · [原文](https://docs.pinecone.io/troubleshooting/error-handshake-read-failed)
-- `troubleshooting/export-indexes` — [Export indexes](pages/troubleshooting/export-indexes.md) · [原文](https://docs.pinecone.io/troubleshooting/export-indexes)
 - `troubleshooting/how-to-work-with-support` — [How to work with Support](pages/troubleshooting/how-to-work-with-support.md) · [原文](https://docs.pinecone.io/troubleshooting/how-to-work-with-support)
 - `troubleshooting/index-creation-error-max-serverless` — [Serverless index creation error - max serverless indexes](pages/troubleshooting/index-creation-error-max-serverless.md) · [原文](https://docs.pinecone.io/troubleshooting/index-creation-error-max-serverless)
 - `troubleshooting/index-creation-error-missing-spec` — [Index creation error - missing spec parameter](pages/troubleshooting/index-creation-error-missing-spec.md) · [原文](https://docs.pinecone.io/troubleshooting/index-creation-error-missing-spec)

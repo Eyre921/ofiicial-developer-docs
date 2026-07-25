@@ -177,4 +177,4 @@ To stay within context window limits, use the [token counting API](/docs/en/buil
 
 ---
 
-# Mid-conversation system messages
+# Mid-conversation system messages and tool changes

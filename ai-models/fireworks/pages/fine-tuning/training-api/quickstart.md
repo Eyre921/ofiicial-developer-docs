@@ -13,7 +13,7 @@ This quickstart uses [Dedicated Training](/fine-tuning/training-api/dedicated). 
 Install the Fireworks Python package with training extensions:
 
 ```bash theme={null}
-pip install --pre "fireworks-ai[training]"
+pip install "fireworks-ai[training]"
 pip install "tinker-cookbook==0.4.1"
 ```
 

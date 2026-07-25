@@ -88,7 +88,7 @@
 - `build-with-claude/files` — [Files API](pages/build-with-claude/files.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/files)
 - `build-with-claude/handling-stop-reasons` — [Stop reasons and fallback](pages/build-with-claude/handling-stop-reasons.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons)
 - `build-with-claude/mid-conversation-effort-example` — [Build an orchestration mode](pages/build-with-claude/mid-conversation-effort-example.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-effort-example)
-- `build-with-claude/mid-conversation-system-messages` — [Mid-conversation system messages](pages/build-with-claude/mid-conversation-system-messages.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages)
+- `build-with-claude/mid-conversation-system-messages` — [Mid-conversation system messages and tool changes](pages/build-with-claude/mid-conversation-system-messages.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages)
 - `build-with-claude/multilingual-support` — [Multilingual support](pages/build-with-claude/multilingual-support.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/multilingual-support)
 - `build-with-claude/overview` — [Features overview](pages/build-with-claude/overview.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/overview)
 - `build-with-claude/pdf-support` — [PDF support](pages/build-with-claude/pdf-support.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/pdf-support)

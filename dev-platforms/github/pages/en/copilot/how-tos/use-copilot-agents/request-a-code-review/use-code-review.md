@@ -18,7 +18,7 @@ Copilot code review uses GitHub Actions to run agentic capabilities. For more in
 
 <div class="ghd-tool webui">
 
-Copilot code review is also available for organization members without a Copilot license, when enabled by an enterprise administrator or organization owner. See [Copilot code review for organization members without a Copilot license](/en/copilot/concepts/agents/code-review#copilot-code-review-for-organization-members-without-a-copilot-license).
+Copilot code review is also available for organization members without a Copilot license, when enabled by an enterprise administrator or organization owner. See [Copilot code review for organization members without a Copilot license](/en/copilot/concepts/agents/code-review#copilot-code-review-without-a-copilot-license).
 
 ## Using Copilot code review
 
@@ -296,7 +296,7 @@ These instructions explain how to use Copilot code review in Xcode. To see instr
 
 ## Prerequisites
 
-* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 
 * **Compatible JetBrains IDE**. To use GitHub Copilot in JetBrains, you must have a compatible JetBrains IDE installed. GitHub Copilot is compatible with the following IDEs:
 
@@ -342,7 +342,7 @@ These instructions explain how to use Copilot code review in JetBrains IDEs. To 
 
 ## Prerequisites
 
-* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
+* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#get-access).
 * **GitHub CLI**. You must have the GitHub CLI installed and authenticated. See [GitHub CLI quickstart](/en/github-cli/github-cli/quickstart).
 
 ## Using Copilot code review

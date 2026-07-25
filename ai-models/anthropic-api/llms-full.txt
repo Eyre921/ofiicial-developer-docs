@@ -438,7 +438,7 @@ Make your first API call to Claude and build a simple web search assistant.
             }
 
             dependencies {
-                implementation("com.anthropic:anthropic-java:2.50.0")
+                implementation("com.anthropic:anthropic-java:2.52.0")
             }
 
             application {
@@ -464,7 +464,7 @@ Make your first API call to Claude and build a simple web search assistant.
                 <dependency>
                   <groupId>com.anthropic</groupId>
                   <artifactId>anthropic-java</artifactId>
-                  <version>2.50.0</version>
+                  <version>2.52.0</version>
                 </dependency>
               </dependencies>
             </project>
@@ -843,20 +843,20 @@ Ways to steer Claude and Claude's direct outputs, including response format, rea
 
 The ZDR column indicates whether a feature is available under a Zero Data Retention arrangement. For most features this depends only on what the feature mechanism retains; for features tied to specific models, model-level ZDR availability also applies. See [Model-specific data retention requirements](/docs/en/manage-claude/api-and-data-retention#model-specific-data-retention-requirements).
 
-| Feature                                                                  | Description                                                                                                                                                                                                                                                                                                | Zero Data Retention (ZDR)                                                                  | Availability                                                                                      |
-| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| [Context windows](/docs/en/build-with-claude/context-windows)            | Up to 1M tokens for processing large documents, extensive code bases, and long conversations.                                                                                                                                                                                                              | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
-| [Adaptive thinking](/docs/en/build-with-claude/thinking)                 | Let Claude dynamically decide when and how much to think. The only thinking mode on Claude 4.7 and later models. Use the effort parameter to control thinking depth.                                                                                                                                       | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
-| [Batch processing](/docs/en/build-with-claude/batch-processing)          | Process large volumes of requests asynchronously for cost savings. Send batches with a large number of queries per batch. Batch API calls cost 50% less than standard API calls.                                                                                                                           | Not ZDR eligible                                                                           | <PlatformAvailability claudeApi claudePlatformAws />                                              |
-| [Citations](/docs/en/build-with-claude/citations)                        | Ground Claude's responses in source documents. With Citations, Claude can provide detailed references to the exact sentences and passages it uses to generate responses, leading to more verifiable, trustworthy outputs.                                                                                  | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
-| [Data residency](/docs/en/manage-claude/data-residency)                  | Control where model inference runs using geographic controls. Specify `"global"` or `"us"` routing per request through the `inference_geo` parameter.                                                                                                                                                      | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws />                                              |
-| [Effort](/docs/en/build-with-claude/effort)                              | Control how many tokens Claude uses when responding with the effort parameter, trading off between response thoroughness and token efficiency.                                                                                                                                                             | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
-| [Fallback credit](/docs/en/build-with-claude/fallback-credit)            | Avoid paying the prompt-cache cost twice when you retry a refused request on another model. The refusal carries a credit token, and echoing it on the retry bills the retry as though the conversation had been on the new model all along. Message Batches results do not include fallback credit tokens. | Not ZDR eligible\*                                                                         | <PlatformAvailability claudeApiBeta claudePlatformAwsBeta bedrockBeta vertexAiBeta azureAiBeta /> |
-| [PDF support](/docs/en/build-with-claude/pdf-support)                    | Process and analyze text and visual content from PDF documents.                                                                                                                                                                                                                                            | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
-| [Search results](/docs/en/build-with-claude/search-results)              | Enable natural citations for RAG applications by providing search results with proper source attribution. Achieve web search-quality citations for custom knowledge bases and tools.                                                                                                                       | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
-| [Server-side fallback](/docs/en/build-with-claude/refusals-and-fallback) | Retry a refused request inside a single API call. Name up to three fallback models, and when the requested model declines, the API runs the next model in the chain on the same request. The `fallbacks` parameter is not available in the Message Batches API.                                            | Not ZDR eligible\*                                                                         | <PlatformAvailability claudeApiBeta />                                                            |
-| [Structured outputs](/docs/en/build-with-claude/structured-outputs)      | Guarantee schema conformance with two approaches: JSON outputs for structured data responses, and strict tool use for validated tool inputs.                                                                                                                                                               | [ZDR eligible (qualified)](/docs/en/build-with-claude/structured-outputs#data-retention)\* | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />†                    |
-| [Thinking](/docs/en/build-with-claude/thinking)                          | Enhanced reasoning capabilities for complex tasks, providing transparency into Claude's step-by-step thought process before delivering its final answer.                                                                                                                                                   | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
+| Feature                                                                  | Description                                                                                                                                                                                                                                                                                                                                  | Zero Data Retention (ZDR)                                                                  | Availability                                                                                      |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| [Context windows](/docs/en/build-with-claude/context-windows)            | Up to 1M tokens for processing large documents, extensive code bases, and long conversations.                                                                                                                                                                                                                                                | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
+| [Adaptive thinking](/docs/en/build-with-claude/thinking)                 | Let Claude dynamically decide when and how much to think. The only thinking mode on Claude 4.7 and later models. Use the effort parameter to control thinking depth.                                                                                                                                                                         | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
+| [Batch processing](/docs/en/build-with-claude/batch-processing)          | Process large volumes of requests asynchronously for cost savings. Send batches with a large number of queries per batch. Batch API calls cost 50% less than standard API calls.                                                                                                                                                             | Not ZDR eligible                                                                           | <PlatformAvailability claudeApi claudePlatformAws />                                              |
+| [Citations](/docs/en/build-with-claude/citations)                        | Ground Claude's responses in source documents. With Citations, Claude can provide detailed references to the exact sentences and passages it uses to generate responses, leading to more verifiable, trustworthy outputs.                                                                                                                    | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
+| [Data residency](/docs/en/manage-claude/data-residency)                  | Control where model inference runs using geographic controls. Specify `"global"` or `"us"` routing per request through the `inference_geo` parameter.                                                                                                                                                                                        | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws />                                              |
+| [Effort](/docs/en/build-with-claude/effort)                              | Control how many tokens Claude uses when responding with the effort parameter, trading off between response thoroughness and token efficiency.                                                                                                                                                                                               | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
+| [Fallback credit](/docs/en/build-with-claude/fallback-credit)            | Avoid paying the prompt-cache cost twice when you retry a refused request on another model. The refusal carries a credit token, and echoing it on the retry bills the retry as though the conversation had been on the new model all along. Message Batches results do not include fallback credit tokens.                                   | Not ZDR eligible\*                                                                         | <PlatformAvailability claudeApiBeta claudePlatformAwsBeta bedrockBeta vertexAiBeta azureAiBeta /> |
+| [PDF support](/docs/en/build-with-claude/pdf-support)                    | Process and analyze text and visual content from PDF documents.                                                                                                                                                                                                                                                                              | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
+| [Search results](/docs/en/build-with-claude/search-results)              | Enable natural citations for RAG applications by providing search results with proper source attribution. Achieve web search-quality citations for custom knowledge bases and tools.                                                                                                                                                         | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
+| [Server-side fallback](/docs/en/build-with-claude/refusals-and-fallback) | Retry a refused request inside a single API call. Use the `"default"` mode to apply Anthropic's recommended fallback models, or name up to three models of your own; when the requested model declines, the API runs the next model in the chain on the same request. The `fallbacks` parameter is not available in the Message Batches API. | Not ZDR eligible\*                                                                         | <PlatformAvailability claudeApiBeta />                                                            |
+| [Structured outputs](/docs/en/build-with-claude/structured-outputs)      | Guarantee schema conformance with two approaches: JSON outputs for structured data responses, and strict tool use for validated tool inputs.                                                                                                                                                                                                 | [ZDR eligible (qualified)](/docs/en/build-with-claude/structured-outputs#data-retention)\* | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />†                    |
+| [Thinking](/docs/en/build-with-claude/thinking)                          | Enhanced reasoning capabilities for complex tasks, providing transparency into Claude's step-by-step thought process before delivering its final answer.                                                                                                                                                                                     | ZDR eligible                                                                               | <PlatformAvailability claudeApi claudePlatformAws bedrock vertexAi azureAi />                     |
 
 ## Tools
 
@@ -940,7 +940,7 @@ You need this page only when you build the retry yourself: over raw HTTP or with
 
 <Steps>
   <Step title="Opt in with the beta header">
-    Send the request that may be refused with the `anthropic-beta: fallback-credit-2026-06-01` header. The `server-side-fallback-2026-06-01` header also grants the same fields.
+    Send the request that may be refused with the `anthropic-beta: fallback-credit-2026-07-01` header. The `server-side-fallback-2026-07-01` header also grants the same fields, and the earlier `fallback-credit-2026-06-01` header remains accepted and grants the same fields.
   </Step>
 
   <Step title="Read two fields from the refusal">
@@ -957,7 +957,7 @@ You need this page only when you build the retry yourself: over raw HTTP or with
   </Step>
 
   <Step title="Send the retry with the same header">
-    Send the retry with the same `fallback-credit-2026-06-01` beta header. The retry needs the header to redeem the token.
+    Send the retry with the same `fallback-credit-2026-07-01` beta header. The retry needs the header to redeem the token.
   </Step>
 </Steps>
 
@@ -978,7 +978,7 @@ The following example makes a request that may be refused and redeems the credit
   response=$(curl --fail-with-body -sS https://api.anthropic.com/v1/messages \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: fallback-credit-2026-06-01" \
+    -H "anthropic-beta: fallback-credit-2026-07-01" \
     -H "content-type: application/json" \
     -d '{
       "model": "claude-fable-5",
@@ -994,7 +994,7 @@ The following example makes a request that may be refused and redeems the credit
     response=$(curl --fail-with-body -sS https://api.anthropic.com/v1/messages \
       -H "x-api-key: $ANTHROPIC_API_KEY" \
       -H "anthropic-version: 2023-06-01" \
-      -H "anthropic-beta: fallback-credit-2026-06-01" \
+      -H "anthropic-beta: fallback-credit-2026-07-01" \
       -H "content-type: application/json" \
       -d "$(jq -n --arg token "${token}" '{
         model: "claude-opus-4-8",
@@ -1014,7 +1014,7 @@ The following example makes a request that may be refused and redeems the credit
     --model claude-fable-5 \
     --max-tokens 1024 \
     --message '{"role":"user","content":"Hello, Claude"}' \
-    --beta fallback-credit-2026-06-01 \
+    --beta fallback-credit-2026-07-01 \
     --format json)
 
   # A refusal carries a one-time credit token in stop_details
@@ -1027,7 +1027,7 @@ The following example makes a request that may be refused and redeems the credit
       --max-tokens 1024 \
       --message '{"role":"user","content":"Hello, Claude"}' \
       --fallback-credit-token "${token}" \
-      --beta fallback-credit-2026-06-01 \
+      --beta fallback-credit-2026-07-01 \
       --format json)
   fi
 
@@ -1046,7 +1046,7 @@ The following example makes a request that may be refused and redeems the credit
 
   def send(model: str, body: dict[str, object]) -> BetaMessage:
       return client.beta.messages.create(
-          model=model, betas=["fallback-credit-2026-06-01"], **body
+          model=model, betas=["fallback-credit-2026-07-01"], **body
       )
 
 
@@ -1097,7 +1097,7 @@ The following example makes a request that may be refused and redeems the credit
     model: "claude-fable-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }],
-    betas: ["fallback-credit-2026-06-01"]
+    betas: ["fallback-credit-2026-07-01"]
   };
 
   let response = await client.beta.messages.create(request);
@@ -1167,7 +1167,7 @@ The following example makes a request that may be refused and redeems the credit
 
   ```csharp C#
   var client = new AnthropicClient();
-  const string beta = "fallback-credit-2026-06-01";
+  const string beta = "fallback-credit-2026-07-01";
 
   List<BetaMessageParam> requestMessages =
   [
@@ -1252,7 +1252,7 @@ The following example makes a request that may be refused and redeems the credit
 
   request := anthropic.BetaMessageNewParams{
   	MaxTokens: 1024,
-  	Betas:     []anthropic.AnthropicBeta{anthropic.AnthropicBetaFallbackCredit2026_06_01},
+  	Betas:     []anthropic.AnthropicBeta{anthropic.AnthropicBetaFallbackCredit2026_07_01},
   	Messages: []anthropic.BetaMessageParam{
   		anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Hello, Claude")),
   	},
@@ -1281,7 +1281,9 @@ The following example makes a request that may be refused and redeems the credit
   	details := response.StopDetails
   	if token := details.FallbackCreditToken; token != "" {
   		exactBody := request
-  		exactBody.FallbackCreditToken = anthropic.String(token)
+  		exactBody.FallbackCreditToken = anthropic.BetaMessageNewParamsFallbackCreditTokenUnion{
+  			OfString: anthropic.String(token),
+  		}
   		attempt := exactBody
   		// Prefer the continuation shape unless the claim is false
   		if details.FallbackHasPrefillClaim || !details.JSON.FallbackHasPrefillClaim.Valid() {
@@ -1325,7 +1327,7 @@ The following example makes a request that may be refused and redeems the credit
       return MessageCreateParams.builder()
           .maxTokens(1024L)
           .addUserMessage("Hello, Claude")
-          .addBeta(AnthropicBeta.FALLBACK_CREDIT_2026_06_01);
+          .addBeta(AnthropicBeta.FALLBACK_CREDIT_2026_07_01);
   }
 
   BetaMessage send(Model model, MessageCreateParams.Builder body) {
@@ -1378,7 +1380,7 @@ The following example makes a request that may be refused and redeems the credit
 
   ```php PHP
   $client = new Client();
-  $beta = 'fallback-credit-2026-06-01';
+  $beta = 'fallback-credit-2026-07-01';
   $messages = [['role' => 'user', 'content' => 'Hello, Claude']];
 
   $send = fn (string $model, array $messages, ?string $token = null) => $client->beta->messages->create(
@@ -1441,7 +1443,7 @@ The following example makes a request that may be refused and redeems the credit
   }
 
   send_message = ->(model, body) do
-    client.beta.messages.create(model:, betas: ["fallback-credit-2026-06-01"], **body)
+    client.beta.messages.create(model:, betas: ["fallback-credit-2026-07-01"], **body)
   end
 
   response = send_message.call("claude-fable-5", request)
@@ -1491,7 +1493,7 @@ Fallback credit is in beta on the Claude API, Amazon Bedrock, Claude Platform on
 The retry model must be one of the refused model's permitted fallback targets. Claude Fable 5's permitted targets are Claude Opus 4.8 (`claude-opus-4-8`) and Claude Opus 5 (`claude-opus-5`).
 
 <Accordion title="Looking up permitted fallback targets programmatically">
-  On the Claude API and Claude Platform on AWS, the target list is published as `allowed_fallback_models` on each model's entry in the [Models API](/docs/en/api/models/list) when the `server-side-fallback-2026-06-01` beta header is set. The list is not yet visible under the `fallback-credit-*` header alone. It is not exposed on Amazon Bedrock, Google Cloud, or Microsoft Foundry.
+  On the Claude API and Claude Platform on AWS, the target list is published as `allowed_fallback_models` on each model's entry in the [Models API](/docs/en/api/models/list) when the `server-side-fallback-2026-07-01` beta header is set. The list is not yet visible under the `fallback-credit-*` header alone. It is not exposed on Amazon Bedrock, Google Cloud, or Microsoft Foundry.
 </Accordion>
 
 ## Checking that the credit applied
@@ -1626,19 +1628,19 @@ Related pages:
 * [SDK middleware](/docs/en/cli-sdks-libraries/middleware): the SDK helper that wraps all of this.
 * [Fallback and billing cookbook](https://platform.claude.com/cookbook/fable-5-fallback-billing-guide): a worked end-to-end example.
 
-The simplest setup: name a fallback model on the request, and the API handles the retry.
+The simplest setup, in beta on the Claude API: set `fallbacks` to `"default"`, and the API retries a declined request on the fallback model Anthropic recommends for its refusal category. For categories with no recommended fallback, the refusal stands.
 
 <CodeGroup>
   ```bash cURL
   curl --fail-with-body -sS https://api.anthropic.com/v1/messages \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: server-side-fallback-2026-06-01" \
+    -H "anthropic-beta: server-side-fallback-2026-07-01" \
     -H "content-type: application/json" \
     -d '{
       "model": "claude-fable-5",
       "max_tokens": 1024,
-      "fallbacks": [{"model": "claude-opus-4-8"}],
+      "fallbacks": "default",
       "messages": [{"role": "user", "content": "Hello, Claude"}]
     }' | jq -r '.model'
   ```
@@ -1648,8 +1650,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
     --model claude-fable-5 \
     --max-tokens 1024 \
     --message '{"role":"user","content":"Hello, Claude"}' \
-    --fallbacks '[{"model":"claude-opus-4-8"}]' \
-    --beta server-side-fallback-2026-06-01 \
+    --fallbacks default \
+    --beta server-side-fallback-2026-07-01 \
     --transform model --raw-output
   ```
 
@@ -1660,8 +1662,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
       model="claude-fable-5",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello, Claude"}],
-      fallbacks=[{"model": "claude-opus-4-8"}],
-      betas=["server-side-fallback-2026-06-01"],
+      fallbacks="default",
+      betas=["server-side-fallback-2026-07-01"],
   )
   print(response.model)
   ```
@@ -1673,8 +1675,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
     model: "claude-fable-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }],
-    fallbacks: [{ model: "claude-opus-4-8" }],
-    betas: ["server-side-fallback-2026-06-01"]
+    fallbacks: "default",
+    betas: ["server-side-fallback-2026-07-01"]
   });
   console.log(response.model);
   ```
@@ -1688,8 +1690,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
           Model = Messages::Model.ClaudeFable5,
           MaxTokens = 1024,
           Messages = [new() { Content = "Hello, Claude", Role = Role.User }],
-          Fallbacks = [new(Messages::Model.ClaudeOpus4_8)],
-          Betas = [AnthropicBeta.ServerSideFallback2026_06_01],
+          Fallbacks = new Default(),
+          Betas = [AnthropicBeta.ServerSideFallback2026_07_01],
       }
   );
 
@@ -1705,8 +1707,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
   	Messages: []anthropic.BetaMessageParam{
   		anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Hello, Claude")),
   	},
-  	Fallbacks: []anthropic.BetaFallbackParam{{Model: anthropic.ModelClaudeOpus4_8}},
-  	Betas:     []anthropic.AnthropicBeta{anthropic.AnthropicBetaServerSideFallback2026_06_01},
+  	Fallbacks: anthropic.BetaFallbacksParamOfDefault(),
+  	Betas:     []anthropic.AnthropicBeta{anthropic.AnthropicBetaServerSideFallback2026_07_01},
   })
   if err != nil {
   	panic(err)
@@ -1722,8 +1724,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
       .model(Model.CLAUDE_FABLE_5)
       .maxTokens(1024L)
       .addUserMessage("Hello, Claude")
-      .addFallback(BetaFallbackParam.builder().model(Model.CLAUDE_OPUS_4_8).build())
-      .addBeta(AnthropicBeta.SERVER_SIDE_FALLBACK_2026_06_01)
+      .fallbacksDefault()
+      .addBeta(AnthropicBeta.SERVER_SIDE_FALLBACK_2026_07_01)
       .build());
 
   IO.println(response.model().asString());
@@ -1736,8 +1738,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
       model: 'claude-fable-5',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello, Claude']],
-      fallbacks: [['model' => 'claude-opus-4-8']],
-      betas: ['server-side-fallback-2026-06-01'],
+      fallbacks: 'default',
+      betas: ['server-side-fallback-2026-07-01'],
   );
 
   echo $response->model, PHP_EOL;
@@ -1750,8 +1752,8 @@ The simplest setup: name a fallback model on the request, and the API handles th
     model: "claude-fable-5",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello, Claude"}],
-    fallbacks: [{model: "claude-opus-4-8"}],
-    betas: ["server-side-fallback-2026-06-01"]
+    fallbacks: :default,
+    betas: ["server-side-fallback-2026-07-01"]
   )
 
   puts response.model
@@ -1819,7 +1821,7 @@ Server-side fallback and the SDK middleware apply fallback credit for you. You o
 
 ## Server-side fallback
 
-Server-side fallback retries a refused request inside a single API call. You name up to three fallback models, and when the primary model declines, the API runs the next model in the chain on the same request. You get back one response that names the model that answered, so your user gets an answer in one round trip.
+Server-side fallback retries a refused request inside a single API call. In the default mode, when the primary model declines and the refusal category has a recommended fallback, the API runs the same request on the model Anthropic recommends for that category. You can instead name up to three fallback models of your own (below). Either way, you get back one response that names the model that answered, so your user gets an answer in one round trip.
 
 <Note>
   Server-side fallback is in beta on the Claude API. The `fallbacks` parameter is not supported on the [Message Batches API](/docs/en/build-with-claude/batch-processing) (a batch item that includes it comes back as an errored result) and is not available on Amazon Bedrock, Google Cloud, or Microsoft Foundry. On those platforms, use [client-side fallback with the SDK middleware](#client-side-fallback) instead.
@@ -1827,19 +1829,19 @@ Server-side fallback retries a refused request inside a single API call. You nam
 
 ### Making the request
 
-Name the fallback models in the `fallbacks` parameter and send the `server-side-fallback-2026-06-01` beta header.
+Set the `fallbacks` parameter to the string `"default"` and send the `server-side-fallback-2026-07-01` beta header. The API then applies the requested model's server-defined default routing, which selects a recommended fallback model based on the refusal category the classifier reports, so refused requests are served without you maintaining a model list as recommendations change.
 
 <CodeGroup>
   ```bash cURL
   curl --fail-with-body -sS https://api.anthropic.com/v1/messages \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: server-side-fallback-2026-06-01" \
+    -H "anthropic-beta: server-side-fallback-2026-07-01" \
     -H "content-type: application/json" \
     -d '{
       "model": "claude-fable-5",
       "max_tokens": 1024,
-      "fallbacks": [{"model": "claude-opus-4-8"}],
+      "fallbacks": "default",
       "messages": [{"role": "user", "content": "Hello, Claude"}]
     }' |
     jq -c '{
@@ -1859,8 +1861,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
     --model claude-fable-5 \
     --max-tokens 1024 \
     --message '{"role":"user","content":"Hello, Claude"}' \
-    --fallbacks '[{"model":"claude-opus-4-8"}]' \
-    --beta server-side-fallback-2026-06-01 \
+    --fallbacks default \
+    --beta server-side-fallback-2026-07-01 \
     --format json |
     jq -c '{
       stop_reason,
@@ -1881,8 +1883,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
       model="claude-fable-5",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello, Claude"}],
-      fallbacks=[{"model": "claude-opus-4-8"}],
-      betas=["server-side-fallback-2026-06-01"],
+      fallbacks="default",
+      betas=["server-side-fallback-2026-07-01"],
   )
 
   # A fallback_message entry in usage.iterations means a fallback model ran;
@@ -1911,8 +1913,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
     model: "claude-fable-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }],
-    fallbacks: [{ model: "claude-opus-4-8" }],
-    betas: ["server-side-fallback-2026-06-01"]
+    fallbacks: "default",
+    betas: ["server-side-fallback-2026-07-01"]
   });
 
   // A fallback_message entry in usage.iterations means a fallback model ran;
@@ -1943,8 +1945,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
           [
               new() { Content = "Hello, Claude", Role = Role.User },
           ],
-          Fallbacks = [new(Messages::Model.ClaudeOpus4_8)],
-          Betas = [AnthropicBeta.ServerSideFallback2026_06_01],
+          Fallbacks = new Default(),
+          Betas = [AnthropicBeta.ServerSideFallback2026_07_01],
       }
   );
 
@@ -1977,10 +1979,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
   	Messages: []anthropic.BetaMessageParam{
   		anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Hello, Claude")),
   	},
-  	Fallbacks: []anthropic.BetaFallbackParam{
-  		{Model: anthropic.ModelClaudeOpus4_8},
-  	},
-  	Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaServerSideFallback2026_06_01},
+  	Fallbacks: anthropic.BetaFallbacksParamOfDefault(),
+  	Betas:     []anthropic.AnthropicBeta{anthropic.AnthropicBetaServerSideFallback2026_07_01},
   })
   if err != nil {
   	panic(err)
@@ -2016,10 +2016,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
           .model(Model.CLAUDE_FABLE_5)
           .maxTokens(1024L)
           .addUserMessage("Hello, Claude")
-          .addFallback(BetaFallbackParam.builder()
-              .model(Model.CLAUDE_OPUS_4_8)
-              .build())
-          .addBeta(AnthropicBeta.SERVER_SIDE_FALLBACK_2026_06_01)
+          .fallbacksDefault()
+          .addBeta(AnthropicBeta.SERVER_SIDE_FALLBACK_2026_07_01)
           .build()
   );
 
@@ -2046,8 +2044,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello, Claude']],
       model: 'claude-fable-5',
-      fallbacks: [['model' => 'claude-opus-4-8']],
-      betas: ['server-side-fallback-2026-06-01'],
+      fallbacks: 'default',
+      betas: ['server-side-fallback-2026-07-01'],
   );
 
   // A fallback_message entry in usage.iterations means a fallback model ran;
@@ -2070,8 +2068,8 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
     model: "claude-fable-5",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello, Claude"}],
-    fallbacks: [{model: "claude-opus-4-8"}],
-    betas: ["server-side-fallback-2026-06-01"]
+    fallbacks: :default,
+    betas: ["server-side-fallback-2026-07-01"]
   )
 
   # A fallback_message entry in usage.iterations means a fallback model ran;
@@ -2086,25 +2084,19 @@ Name the fallback models in the `fallbacks` parameter and send the `server-side-
   ```
 </CodeGroup>
 
-A few rules apply to the `fallbacks` list:
-
-* Entries are tried in order. Each must be distinct from the other entries and from the requested model.
-* Each entry must be one of the requested model's permitted targets. With the beta header set, that list is published as `allowed_fallback_models` on the model's entry in the [Models API](/docs/en/api/models/list).
-* Each entry names a `model` and can override `max_tokens` and `thinking` for that attempt only.
-* The request must be valid as a direct request to every model named. If a fallback model does not support a feature the request uses, the API rejects the request up front.
-* Only a safety classifier decline triggers the fallback. A rate limit, overload, or server error on the requested model is returned to you as-is.
-
-<Note>
-  The beta header must carry exactly the date `2026-06-01`, or `2026-07-01` when using default fallback routing (below). Under any other `server-side-fallback-*` value, the `fallbacks` parameter is rejected with a 400 error. If you built against an earlier preview of this feature, update the beta header and the request and response shapes together to the ones on this page.
-</Note>
-
-### Default fallback routing
-
-Instead of naming models yourself, you can set `fallbacks` to the string `"default"`. The API then applies the requested model's server-defined default routing, which selects a recommended fallback model based on the refusal category the classifier reports. Use it when you want refused requests served without maintaining a model list as recommendations change. Default routing requires the `server-side-fallback-2026-07-01` beta header, a superset of `server-side-fallback-2026-06-01` that also accepts the explicit-list form.
-
 Anthropic sets safeguards for each model individually and for each policy category, in line with the model's capability: depending on the category, a flagged request may fall back to a less capable model or be declined. The `"default"` mode encodes these per-model, per-category recommendations for you, so a refused request is retried on the model Anthropic recommends for that category. Fallbacks are visible either way: the response names the model that served it, and the `fallback` content block marks the handoff.
 
 The routing is applied server-side and is not published per model on the [Models API](/docs/en/api/models/list). To see which model served a refused request, check the response's top-level `model` field and look for a `fallback_message` entry in `usage.iterations`, as this page's samples do.
+
+Only a safety classifier decline triggers the fallback. A rate limit, overload, or server error on the requested model is returned to you as-is.
+
+<Note>
+  The beta header must carry exactly the date `2026-07-01`, which supports both `"default"` and the explicit-list form below, or `2026-06-01`, which accepts only the explicit-list form. Under any other `server-side-fallback-*` value, the `fallbacks` parameter is rejected with a 400 error. If you built against an earlier preview of this feature, update the beta header and the request and response shapes together to the ones on this page.
+</Note>
+
+### Naming your own fallback models
+
+Instead of default routing, you can set `fallbacks` to a list of up to three models. When the requested model declines, the API runs the next model in the chain on the same request. Use this form when you want to control exactly which models serve refused requests, such as pinning a model your application has qualified.
 
 <CodeGroup>
   ```bash cURL
@@ -2116,7 +2108,7 @@ The routing is applied server-side and is not published per model on the [Models
     -d '{
       "model": "claude-fable-5",
       "max_tokens": 1024,
-      "fallbacks": "default",
+      "fallbacks": [{"model": "claude-opus-4-8"}],
       "messages": [{"role": "user", "content": "Hello, Claude"}]
     }' | jq -r '.model'
   ```
@@ -2126,7 +2118,7 @@ The routing is applied server-side and is not published per model on the [Models
     --model claude-fable-5 \
     --max-tokens 1024 \
     --message '{"role":"user","content":"Hello, Claude"}' \
-    --fallbacks default \
+    --fallbacks '[{"model":"claude-opus-4-8"}]' \
     --beta server-side-fallback-2026-07-01 \
     --transform model --raw-output
   ```
@@ -2138,7 +2130,7 @@ The routing is applied server-side and is not published per model on the [Models
       model="claude-fable-5",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello, Claude"}],
-      fallbacks="default",
+      fallbacks=[{"model": "claude-opus-4-8"}],
       betas=["server-side-fallback-2026-07-01"],
   )
   print(response.model)
@@ -2151,14 +2143,106 @@ The routing is applied server-side and is not published per model on the [Models
     model: "claude-fable-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }],
-    fallbacks: "default",
+    fallbacks: [{ model: "claude-opus-4-8" }],
     betas: ["server-side-fallback-2026-07-01"]
   });
   console.log(response.model);
   ```
+
+  ```csharp C#
+  AnthropicClient client = new();
+
+  BetaMessage response = await client.Beta.Messages.Create(
+      new()
+      {
+          Model = Messages::Model.ClaudeFable5,
+          MaxTokens = 1024,
+          Messages = [new() { Content = "Hello, Claude", Role = Role.User }],
+          Fallbacks = new([new(Messages::Model.ClaudeOpus4_8)]),
+          Betas = [AnthropicBeta.ServerSideFallback2026_07_01],
+      }
+  );
+
+  Console.WriteLine(response.Model.Raw());
+  ```
+
+  ```go Go
+  client := anthropic.NewClient()
+
+  response, err := client.Beta.Messages.New(context.Background(), anthropic.BetaMessageNewParams{
+  	Model:     anthropic.ModelClaudeFable5,
+  	MaxTokens: 1024,
+  	Messages: []anthropic.BetaMessageParam{
+  		anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Hello, Claude")),
+  	},
+  	Fallbacks: anthropic.BetaFallbacksParamUnion{
+  		OfBetaFallbackArray: []anthropic.BetaFallbackParam{{Model: anthropic.ModelClaudeOpus4_8}},
+  	},
+  	Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaServerSideFallback2026_07_01},
+  })
+  if err != nil {
+  	panic(err)
+  }
+
+  fmt.Println(response.Model)
+  ```
+
+  ```java Java
+  AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+
+  BetaMessage response = client.beta().messages().create(MessageCreateParams.builder()
+      .model(Model.CLAUDE_FABLE_5)
+      .maxTokens(1024L)
+      .addUserMessage("Hello, Claude")
+      .fallbacksOfFallbackParams(List.of(BetaFallbackParam.builder()
+          .model(Model.CLAUDE_OPUS_4_8)
+          .build()))
+      .addBeta(AnthropicBeta.SERVER_SIDE_FALLBACK_2026_07_01)
+      .build());
+
+  IO.println(response.model().asString());
+  ```
+
+  ```php PHP
+  $client = new Client();
+
+  $response = $client->beta->messages->create(
+      model: 'claude-fable-5',
+      maxTokens: 1024,
+      messages: [['role' => 'user', 'content' => 'Hello, Claude']],
+      fallbacks: [['model' => 'claude-opus-4-8']],
+      betas: ['server-side-fallback-2026-07-01'],
+  );
+
+  echo $response->model, PHP_EOL;
+  ```
+
+  ```ruby Ruby
+  client = Anthropic::Client.new
+
+  response = client.beta.messages.create(
+    model: "claude-fable-5",
+    max_tokens: 1024,
+    messages: [{role: "user", content: "Hello, Claude"}],
+    fallbacks: [{model: "claude-opus-4-8"}],
+    betas: ["server-side-fallback-2026-07-01"]
+  )
+
+  puts response.model
+  ```
 </CodeGroup>
 
-The response has the same shape as an explicit-list request: the model that served the turn appears in the top-level `model` field, a `fallback` content block marks the handoff, and `usage.iterations` records each attempt.
+A few rules apply to the `fallbacks` list:
+
+* Entries are tried in order. Each must be distinct from the other entries and from the requested model.
+* Each entry must be one of the requested model's permitted targets. With the beta header set, that list is published as `allowed_fallback_models` on the model's entry in the [Models API](/docs/en/api/models/list).
+* Each entry names a `model` and can override `max_tokens`, `thinking`, `output_config`, and `speed` for that attempt only.
+* The request must be valid as a direct request to every model named. If a fallback model does not support a feature the request uses, the API rejects the request up front.
+* As with the default mode, only a safety classifier decline triggers the fallback. A rate limit, overload, or server error on the requested model is returned to you as-is.
+
+The explicit-list form also works under the `server-side-fallback-2026-06-01` beta header; the `"default"` mode does not.
+
+The response has the same shape in both modes: the model that served the turn appears in the top-level `model` field, a `fallback` content block marks the handoff, and `usage.iterations` records each attempt.
 
 ### What the response contains
 
@@ -2171,7 +2255,7 @@ The response looks like any other message, with two additions:
   * `from.model` echoes the model string you sent when the declining hop is the requested model.
   * `to.model` is always the resolved ID of the model that continues.
 
-On a refusal before any output, the `fallback` block is the first content block:
+On a refusal before any output, the `fallback` block is the first content block. For example, when default routing selects Claude Opus 4.8 for the refusal's category:
 
 ```json
 {
@@ -2255,7 +2339,7 @@ On a streaming request, the retry happens on the same stream, and nothing you ha
 On a non-streaming request, a mid-output decline behaves differently: the response omits the declined model's partial output, and the fallback model answers from scratch. The result looks like a decline before any output, with the `fallback` block first. The declined attempt and its output tokens still appear in `usage.iterations`.
 
 <Note>
-  **Declines during tool use:** completed tool work does not block fallback. When a decline fires after server tools (for example, web search or code execution) have finished executing within a request, the fallback attempt proceeds: the completed tool results carry over, and the fallback model can keep invoking server tools. The one case that does not retry is a streaming decline that fires while a tool-use block of any type (a client tool, a server tool, or an MCP tool call) is still open on the stream: that refusal is returned directly, and if the `fallback-credit-2026-06-01` header is set it still carries a credit token redeemable by continuing the partial response. Non-streaming requests are unaffected; the API clears the partial work and retries before responding.
+  **Declines during tool use:** completed tool work does not block fallback. When a decline fires after server tools (for example, web search or code execution) have finished executing within a request, the fallback attempt proceeds: the completed tool results carry over, and the fallback model can keep invoking server tools. The one case that does not retry is a streaming decline that fires while a tool-use block of any type (a client tool, a server tool, or an MCP tool call) is still open on the stream: that refusal is returned directly, and if the `fallback-credit-2026-07-01` header is set it still carries a credit token redeemable by continuing the partial response. Non-streaming requests are unaffected; the API clears the partial work and retries before responding.
 </Note>
 
 <Accordion title="Sticky routing">
@@ -2284,7 +2368,7 @@ On a non-streaming request, a mid-output decline behaves differently: the respon
 
 ## Client-side fallback with the SDK middleware
 
-Every Anthropic SDK includes a refusal-fallback middleware. You configure it once on the client with your list of fallback models. Calls through `client.beta.messages` then retry refused requests automatically, on any platform. The middleware also sends the `fallback-credit-2026-06-01` beta header on every request it handles, so retries are repriced without per-request setup.
+Every Anthropic SDK includes a refusal-fallback middleware. You configure it once on the client with your list of fallback models. Calls through `client.beta.messages` then retry refused requests automatically, on any platform. The middleware also sends the `fallback-credit-2026-07-01` beta header on every request it handles, so retries are repriced without per-request setup.
 
 ### Setting it up
 
@@ -11756,7 +11840,7 @@ When running Claude Opus 4.8 at `xhigh` or `max` effort, set a large `max_tokens
 
 ### Recommended effort levels for Claude Opus 5
 
-Claude Opus 5 supports all five effort levels. **Start with `xhigh` for coding and agentic work**, and use `high` for most other intelligence-sensitive workloads. `low` and `medium` effort are stronger on Claude Opus 5 than on earlier Opus models: use them liberally as your primary control for token cost and response time wherever your evals show quality holds, and step up to `max` when a task justifies unconstrained token spending. If you carried effort settings over from an earlier model, run a fresh effort sweep on your evals rather than reusing them.
+Claude Opus 5 supports all five effort levels. **Start with `high`, the default**, and adjust based on your evals: step up to `xhigh` for demanding coding and agentic work, or to `max` when a task justifies unconstrained token spending, and use `low` and `medium` liberally as your primary control for token cost and response time wherever your evals show quality holds. If you carried effort settings over from an earlier model, run a fresh effort sweep on your evals rather than reusing them.
 
 Effort controls thinking volume, not visible response length: on Claude Opus 5, changing effort does not reliably shorten responses, so [prompt for length](/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5#response-length-and-verbosity) instead.
 
@@ -11906,7 +11990,7 @@ Reduce effort if a task completes but takes longer than necessary, or if you wan
   Message response = client.messages().create(params);
   response.content().stream()
       .flatMap(block -> block.text().stream())
-      .forEach(textBlock -> System.out.println(textBlock.text()));
+      .forEach(textBlock -> IO.println(textBlock.text()));
   ```
 
   ```php PHP
@@ -11955,10 +12039,6 @@ Reduce effort if a task completes but takes longer than necessary, or if you wan
 * Use **high effort** (the default) for complex reasoning, nuanced analysis, difficult coding problems, or any task where quality matters more than speed or cost.
 * Use **medium effort** as a balanced option when you want solid performance without the full token expenditure of high effort.
 * Use **low effort** when you're optimizing for speed (because Claude answers with fewer tokens) or cost. For example, simple classification tasks, quick lookups, or high-volume use cases where marginal quality improvements don't justify additional latency or spend.
-
-<Note>
-  **Claude Code's ultracode mode:** ultracode appears in Claude Code's effort menu, but it is not an additional API effort level. The values documented on this page are the complete set the API accepts. Ultracode pairs the `xhigh` effort level with standing permission for Claude Code to launch multiagent workflows, granted through [Mid-conversation system messages](/docs/en/build-with-claude/mid-conversation-system-messages). To build similar behavior with the API, see [Build an orchestration mode](/docs/en/build-with-claude/mid-conversation-effort-example).
-</Note>
 
 ## Effort with tool use
 
@@ -20835,6 +20915,9 @@ If your agentic loop compacts or rewrites context between requests (for example,
 
 <CodeGroup exclude="shell">
   ```python Python
+  # Tokens spent before compaction, tracked client-side
+  tokens_spent_so_far = 45000
+
   output_config = {
       "effort": "high",
       "task_budget": {
@@ -20846,6 +20929,9 @@ If your agentic loop compacts or rewrites context between requests (for example,
   ```
 
   ```typescript TypeScript
+  // Tokens spent before compaction, tracked client-side
+  const tokensSpentSoFar = 45000;
+
   const outputConfig = {
     effort: "high",
     task_budget: {
@@ -20857,6 +20943,9 @@ If your agentic loop compacts or rewrites context between requests (for example,
   ```
 
   ```csharp C#
+  // Tokens spent before compaction, tracked client-side
+  var tokensSpentSoFar = 45000;
+
   var outputConfig = new BetaOutputConfig
   {
       Effort = Effort.High,
@@ -20869,6 +20958,9 @@ If your agentic loop compacts or rewrites context between requests (for example,
   ```
 
   ```go Go
+  // Tokens spent before compaction, tracked client-side
+  tokensSpentSoFar := int64(45000)
+
   outputConfig := anthropic.BetaOutputConfigParam{
   	Effort: anthropic.BetaOutputConfigEffortHigh,
   	TaskBudget: anthropic.BetaTokenTaskBudgetParam{
@@ -20879,6 +20971,9 @@ If your agentic loop compacts or rewrites context between requests (for example,
   ```
 
   ```java Java
+  // Tokens spent before compaction, tracked client-side
+  long tokensSpentSoFar = 45000;
+
   BetaOutputConfig outputConfig = BetaOutputConfig.builder()
       .effort(BetaOutputConfig.Effort.HIGH)
       .taskBudget(BetaTokenTaskBudget.builder()
@@ -20889,6 +20984,9 @@ If your agentic loop compacts or rewrites context between requests (for example,
   ```
 
   ```php PHP
+  // Tokens spent before compaction, tracked client-side
+  $tokensSpentSoFar = 45000;
+
   $outputConfig = [
       'effort' => 'high',
       'taskBudget' => [
@@ -20900,6 +20998,9 @@ If your agentic loop compacts or rewrites context between requests (for example,
   ```
 
   ```ruby Ruby
+  # Tokens spent before compaction, tracked client-side
+  tokens_spent_so_far = 45_000
+
   output_config = {
     effort: :high,
     task_budget: {
@@ -64816,13 +64917,13 @@ To stay within context window limits, use the [token counting API](/docs/en/buil
 
 ---
 
-# Mid-conversation system messages
+# Mid-conversation system messages and tool changes
 
-# Mid-conversation system messages
+# Mid-conversation system messages and tool changes
 
 **URL:** https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages
 
-Add or update system instructions partway through a conversation without invalidating the cached prefix that came before them.
+Change system instructions or tool availability partway through a conversation without invalidating the cached prefix that came before them.
 
 ---
 
@@ -64834,11 +64935,441 @@ System instructions normally live in the top-level `system` field, ahead of ever
 
 Mid-conversation system messages close that gap. You append a `{"role": "system"}` message at the point in the conversation where the new instruction becomes relevant, instead of editing the top-level `system` field. The cached prefix stays the same, so the next request still reads it from cache, and the new instruction is still applied as a system instruction rather than as ordinary user text.
 
+This page covers two features: mid-conversation system messages, which are generally available, and [mid-conversation tool changes](#mid-conversation-tool-changes), a beta introduced with Claude Opus 5 that applies the same approach to the `tools` array.
+
 <Note>
   Mid-conversation system messages are available on the Claude API, [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), and [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai).
 
-  This feature is available on Claude Fable 5, [Claude Mythos 5](https://anthropic.com/glasswing), Claude Opus 4.8, and Claude Opus 5. No beta header is required. This feature is not available on Claude Sonnet 5; use the top-level `system` field instead.
+  This feature is available on Claude Fable 5, [Claude Mythos 5](https://anthropic.com/glasswing), Claude Opus 4.8, and Claude Opus 5. No beta header is required for mid-conversation system messages. This feature is not available on Claude Sonnet 5; use the top-level `system` field instead.
+
+  Mid-conversation tool changes are in beta and require the `mid-conversation-tool-changes-2026-07-01` beta header. They are available on Claude Fable 5, Claude Mythos 5, Claude Opus 4.8, and Claude Opus 5, on the Claude API, Amazon Bedrock, and Google Cloud.
 </Note>
+
+## Mid-conversation tool changes
+
+The `tools` array sits even earlier in the hashed request prefix than the top-level `system` field, so editing it invalidates the [prompt cache](/docs/en/build-with-claude/prompt-caching) for the entire conversation. Mid-conversation tool changes, a beta introduced with Claude Opus 5, are the tools counterpart to mid-conversation system messages. Instead of fixing the tool list for the lifetime of the conversation, you change which tools are offered to the model between turns: declare the full tool set in `tools` up front, then use `tool_addition` and `tool_removal` blocks to offer a tool to the model, or withdraw it, from a specific point in the conversation onward. The `tools` array itself never changes, so the cached prefix stays intact.
+
+`tool_addition` and `tool_removal` are content blocks in the `content` array of a `role: "system"` message, and they can be mixed with `text` blocks in the same message. The message follows the same placement rules as any mid-conversation system message (see [Limitations](#limitations)), and the change applies from that point in the conversation onward. Each block's `tool` field references a tool rather than defining one: `{"type": "tool_reference", "name": "..."}` names a tool declared in the request's `tools` array, and [MCP connector](/docs/en/agents-and-tools/mcp-connector) tools can be referenced individually with `mcp_tool_reference` (`server_name` and `name`) or as a whole toolset with `mcp_toolset_reference` (`server_name`). Referencing a name that is not declared in `tools` returns a 400 error.
+
+Every tool declared in `tools` is offered to the model from the start of the conversation unless it is declared with `defer_loading: true`, which keeps it withheld until a `tool_addition` block surfaces it. `tool_addition` also re-offers a tool that an earlier `tool_removal` withdrew.
+
+<CodeGroup>
+  ```bash cURL
+  curl https://api.anthropic.com/v1/messages \
+    -H "content-type: application/json" \
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "anthropic-beta: mid-conversation-tool-changes-2026-07-01" \
+    -d '{
+      "model": "claude-opus-5",
+      "max_tokens": 1024,
+      "tools": [
+        {
+          "name": "get_weather",
+          "description": "Get the current weather for a location.",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "location": {"type": "string", "description": "City name"}
+            },
+            "required": ["location"]
+          }
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Say OK."
+        },
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "tool_removal",
+              "tool": {"type": "tool_reference", "name": "get_weather"}
+            }
+          ]
+        }
+      ]
+    }'
+  ```
+
+  ```bash CLI
+  ant beta:messages create --beta mid-conversation-tool-changes-2026-07-01 \
+    --transform 'content.#(type=="text").text' --raw-output <<'YAML'
+  model: claude-opus-5
+  max_tokens: 1024
+  tools:
+    - name: get_weather
+      description: Get the current weather for a location.
+      input_schema:
+        type: object
+        properties:
+          location:
+            type: string
+            description: City name
+        required:
+          - location
+  messages:
+    - role: user
+      content: Say OK.
+    - role: system
+      content:
+        - type: tool_removal
+          tool:
+            type: tool_reference
+            name: get_weather
+  YAML
+  ```
+
+  ```python Python
+  client = anthropic.Anthropic()
+
+  response = client.beta.messages.create(
+      model="claude-opus-5",
+      max_tokens=1024,
+      betas=["mid-conversation-tool-changes-2026-07-01"],
+      # The full tool set is declared up front and never changes, so the
+      # cached prefix stays intact.
+      tools=[
+          {
+              "name": "get_weather",
+              "description": "Get the current weather for a location.",
+              "input_schema": {
+                  "type": "object",
+                  "properties": {
+                      "location": {"type": "string", "description": "City name"},
+                  },
+                  "required": ["location"],
+              },
+          },
+      ],
+      messages=[
+          {
+              "role": "user",
+              "content": "Say OK.",
+          },
+          # Withdraw get_weather from this point onward. The block references
+          # the tool by name instead of editing `tools`, so earlier turns stay
+          # byte-identical and the cache still hits.
+          {
+              "role": "system",
+              "content": [
+                  {
+                      "type": "tool_removal",
+                      "tool": {"type": "tool_reference", "name": "get_weather"},
+                  },
+              ],
+          },
+      ],
+  )
+
+  for block in response.content:
+      if block.type == "text":
+          print(block.text)
+  ```
+
+  ```typescript TypeScript
+  const client = new Anthropic();
+
+  const response = await client.beta.messages.create({
+    model: "claude-opus-5",
+    max_tokens: 1024,
+    betas: ["mid-conversation-tool-changes-2026-07-01"],
+    // The full tool set is declared up front and never changes, so the
+    // cached prefix stays intact.
+    tools: [
+      {
+        name: "get_weather",
+        description: "Get the current weather for a location.",
+        input_schema: {
+          type: "object",
+          properties: {
+            location: {
+              type: "string",
+              description: "City name"
+            }
+          },
+          required: ["location"]
+        }
+      }
+    ],
+    messages: [
+      { role: "user", content: "Say OK." },
+      // Withdraw get_weather from this point onward. The block references the
+      // tool by name instead of editing `tools`, so earlier turns stay
+      // byte-identical and the cache still hits.
+      {
+        role: "system",
+        content: [
+          {
+            type: "tool_removal",
+            tool: { type: "tool_reference", name: "get_weather" }
+          }
+        ]
+      }
+    ]
+  });
+
+  for (const block of response.content) {
+    if (block.type === "text") {
+      console.log(block.text);
+    }
+  }
+  ```
+
+  ```csharp C#
+  using Anthropic.Models.Beta.Messages;
+  using Messages = Anthropic.Models.Messages;
+
+  AnthropicClient client = new();
+
+  var response = await client.Beta.Messages.Create(new MessageCreateParams
+  {
+      Model = Messages::Model.ClaudeOpus5,
+      MaxTokens = 1024,
+      Betas = ["mid-conversation-tool-changes-2026-07-01"],
+      // The full tool set is declared up front and never changes, so the
+      // cached prefix stays intact.
+      Tools =
+      [
+          new BetaTool
+          {
+              Name = "get_weather",
+              Description = "Get the current weather for a location.",
+              InputSchema = new InputSchema
+              {
+                  Properties = new Dictionary<string, JsonElement>
+                  {
+                      ["location"] = JsonSerializer.SerializeToElement(new { type = "string", description = "City name" }),
+                  },
+                  Required = ["location"],
+              },
+          },
+      ],
+      Messages =
+      [
+          new() { Role = Role.User, Content = "Say OK." },
+          // Withdraw get_weather from this point onward. The block references
+          // the tool by name instead of editing `Tools`, so earlier turns stay
+          // byte-identical and the cache still hits.
+          new()
+          {
+              Role = Role.System,
+              Content = new(
+              [
+                  new BetaRequestToolRemovalBlock
+                  {
+                      Tool = new BetaToolChangeToolReference { Name = "get_weather" },
+                  },
+              ]),
+          },
+      ],
+  });
+
+  foreach (var block in response.Content)
+  {
+      if (block.TryPickText(out var text))
+      {
+          Console.WriteLine(text.Text);
+      }
+  }
+  ```
+
+  ```go Go
+  client := anthropic.NewClient()
+
+  response, err := client.Beta.Messages.New(context.TODO(), anthropic.BetaMessageNewParams{
+  	Model:     anthropic.ModelClaudeOpus5,
+  	MaxTokens: 1024,
+  	Betas:     []anthropic.AnthropicBeta{"mid-conversation-tool-changes-2026-07-01"},
+  	// The full tool set is declared up front and never changes, so the
+  	// cached prefix stays intact.
+  	Tools: []anthropic.BetaToolUnionParam{
+  		{OfTool: &anthropic.BetaToolParam{
+  			Name:        "get_weather",
+  			Description: anthropic.String("Get the current weather for a location."),
+  			InputSchema: anthropic.BetaToolInputSchemaParam{
+  				Properties: map[string]any{
+  					"location": map[string]any{
+  						"type":        "string",
+  						"description": "City name",
+  					},
+  				},
+  				Required: []string{"location"},
+  			},
+  		}},
+  	},
+  	Messages: []anthropic.BetaMessageParam{
+  		anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Say OK.")),
+  		// Withdraw get_weather from this point onward. The block references
+  		// the tool by name instead of editing Tools, so earlier turns stay
+  		// byte-identical and the cache still hits.
+  		{
+  			Role: anthropic.BetaMessageParamRoleSystem,
+  			Content: []anthropic.BetaContentBlockParamUnion{
+  				anthropic.NewBetaToolRemovalBlock(anthropic.BetaToolChangeToolReferenceParam{
+  					Name: "get_weather",
+  				}),
+  			},
+  		},
+  	},
+  })
+  if err != nil {
+  	log.Fatal(err)
+  }
+
+  for _, block := range response.Content {
+  	if textBlock, ok := block.AsAny().(anthropic.BetaTextBlock); ok {
+  		fmt.Println(textBlock.Text)
+  	}
+  }
+  ```
+
+  ```java Java
+  import com.anthropic.models.beta.messages.BetaContentBlockParam;
+  import com.anthropic.models.beta.messages.BetaMessage;
+  import com.anthropic.models.beta.messages.BetaMessageParam;
+  import com.anthropic.models.beta.messages.BetaRequestToolRemovalBlock;
+  import com.anthropic.models.beta.messages.BetaTool;
+  import com.anthropic.models.beta.messages.MessageCreateParams;
+  // ...
+      AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+
+      // The full tool set is declared up front and never changes, so the
+      // cached prefix stays intact.
+      BetaTool weatherTool = BetaTool.builder()
+          .name("get_weather")
+          .description("Get the current weather for a location.")
+          .inputSchema(BetaTool.InputSchema.builder()
+              .properties(BetaTool.InputSchema.Properties.builder()
+                  .putAdditionalProperty("location", JsonValue.from(Map.of(
+                      "type", "string",
+                      "description", "City name")))
+                  .build())
+              .addRequired("location")
+              .build())
+          .build();
+
+      MessageCreateParams params = MessageCreateParams.builder()
+          .model(Model.CLAUDE_OPUS_5)
+          .maxTokens(1024)
+          .addBeta("mid-conversation-tool-changes-2026-07-01")
+          .addTool(weatherTool)
+          .addUserMessage("Say OK.")
+          // Withdraw get_weather from this point onward. The block references
+          // the tool by name instead of editing `tools`, so earlier turns stay
+          // byte-identical and the cache still hits.
+          .addMessage(BetaMessageParam.builder()
+              .role(BetaMessageParam.Role.SYSTEM)
+              .contentOfBetaContentBlockParams(List.of(
+                  BetaContentBlockParam.ofToolRemoval(BetaRequestToolRemovalBlock.builder()
+                      .referenceTool("get_weather")
+                      .build())))
+              .build())
+          .build();
+
+      BetaMessage response = client.beta().messages().create(params);
+      response.content().stream()
+          .flatMap(block -> block.text().stream())
+          .forEach(textBlock -> IO.println(textBlock.text()));
+  ```
+
+  ```php PHP
+  $client = new Client();
+
+  $response = $client->beta->messages->create(
+      model: 'claude-opus-5',
+      maxTokens: 1024,
+      betas: ['mid-conversation-tool-changes-2026-07-01'],
+      // The full tool set is declared up front and never changes, so the
+      // cached prefix stays intact.
+      tools: [
+          [
+              'name' => 'get_weather',
+              'description' => 'Get the current weather for a location.',
+              'input_schema' => [
+                  'type' => 'object',
+                  'properties' => [
+                      'location' => [
+                          'type' => 'string',
+                          'description' => 'City name',
+                      ],
+                  ],
+                  'required' => ['location'],
+              ],
+          ],
+      ],
+      messages: [
+          ['role' => 'user', 'content' => 'Say OK.'],
+          // Withdraw get_weather from this point onward. The block references
+          // the tool by name instead of editing `tools`, so earlier turns stay
+          // byte-identical and the cache still hits.
+          [
+              'role' => 'system',
+              'content' => [
+                  [
+                      'type' => 'tool_removal',
+                      'tool' => ['type' => 'tool_reference', 'name' => 'get_weather'],
+                  ],
+              ],
+          ],
+      ],
+  );
+
+  foreach ($response->content as $block) {
+      if ($block->type === 'text') {
+          echo $block->text, PHP_EOL;
+      }
+  }
+  ```
+
+  ```ruby Ruby
+  client = Anthropic::Client.new
+
+  response = client.beta.messages.create(
+    model: "claude-opus-5",
+    max_tokens: 1024,
+    betas: ["mid-conversation-tool-changes-2026-07-01"],
+    # The full tool set is declared up front and never changes, so the
+    # cached prefix stays intact.
+    tools: [
+      {
+        name: "get_weather",
+        description: "Get the current weather for a location.",
+        input_schema: {
+          type: "object",
+          properties: {
+            location: { type: "string", description: "City name" }
+          },
+          required: ["location"]
+        }
+      }
+    ],
+    messages: [
+      { role: "user", content: "Say OK." },
+      # Withdraw get_weather from this point onward. The block references
+      # the tool by name instead of editing `tools`, so earlier turns stay
+      # byte-identical and the cache still hits.
+      {
+        role: "system",
+        content: [
+          {
+            type: "tool_removal",
+            tool: { type: "tool_reference", name: "get_weather" }
+          }
+        ]
+      }
+    ]
+  )
+
+  response.content.each do |block|
+    puts block.text if block.type == :text
+  end
+  ```
+</CodeGroup>
+
+Mid-conversation tool changes are in beta. To use them, include the beta header `mid-conversation-tool-changes-2026-07-01` in your requests. They are available on Claude Fable 5, Claude Mythos 5, Claude Opus 4.8, and Claude Opus 5, on the Claude API, Amazon Bedrock, and Google Cloud.
 
 ## When to use a mid-conversation system message
 
@@ -65109,7 +65640,7 @@ You can still set the top-level `system` field for instructions that should appl
       Message response = client.messages().create(params);
       response.content().stream()
           .flatMap(block -> block.text().stream())
-          .forEach(textBlock -> System.out.println(textBlock.text()));
+          .forEach(textBlock -> IO.println(textBlock.text()));
   ```
 
   ```php PHP
@@ -65213,12 +65744,6 @@ Mid-conversation system messages and [prompt caching](/docs/en/build-with-claude
 * **A mid-conversation system message is itself cacheable.** Once it is in the conversation, it becomes part of the stable history. On the next turn you can move your cache breakpoint past it (or rely on [automatic caching](/docs/en/build-with-claude/prompt-caching#automatic-caching) to do so) and the system message is read from cache like any other turn.
 
 Avoid editing or removing a mid-conversation system message that has already been sent. Like any other change to earlier messages, that invalidates the cache from that point forward. If the instruction needs to evolve, append a new system message rather than rewriting the old one. Consecutive system messages are accepted and treated as a single system section, which follows the same placement rule as a whole.
-
-## Mid-conversation tool changes
-
-The same cache math applies to the `tools` array, which sits even earlier in the hashed prefix than the top-level `system` field: editing it invalidates the cache for the entire conversation. Mid-conversation tool changes are the tools counterpart to mid-conversation system messages. You declare the full tool set in `tools` up front, then use `tool_addition` and `tool_removal` blocks to offer a tool to the model, or withdraw it, from a specific point in the conversation onward. The blocks reference a tool by name from the request's `tools` (individual MCP tools and whole MCP toolsets can also be referenced), so the `tools` array itself never changes and the cached prefix stays intact.
-
-Mid-conversation tool changes are in beta. To use them, include the beta header `mid-conversation-tool-changes-2026-07-01` in your requests. On Amazon Bedrock, tool changes are supported for Claude Opus 5 only.
 
 ## Limitations
 
@@ -83648,7 +84173,7 @@ Install both the Anthropic SDK and the MCP SDK:
     <Tabs>
       <Tab title="Gradle">
         ```kotlin
-        implementation("com.anthropic:anthropic-java-mcp:2.50.0")
+        implementation("com.anthropic:anthropic-java-mcp:2.52.0")
         ```
       </Tab>
 
@@ -83657,7 +84182,7 @@ Install both the Anthropic SDK and the MCP SDK:
         <dependency>
             <groupId>com.anthropic</groupId>
             <artifactId>anthropic-java-mcp</artifactId>
-            <version>2.50.0</version>
+            <version>2.52.0</version>
         </dependency>
         ```
       </Tab>
@@ -85111,7 +85636,7 @@ A two-container [tunnel stack](/docs/en/agents-and-tools/mcp-tunnels/concepts#co
         cat > docker-compose.yaml <<'EOF'
         services:
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:efb27b299d627e4134815663cb8896641eeaee025d734c0f695582b4df38f013
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -85151,7 +85676,7 @@ A two-container [tunnel stack](/docs/en/agents-and-tools/mcp-tunnels/concepts#co
         @'
         services:
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:efb27b299d627e4134815663cb8896641eeaee025d734c0f695582b4df38f013
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -85394,7 +85919,7 @@ This guide provides one reference approach using Docker Compose. You are respons
         cat > docker-compose.yaml <<'EOF'
         services:
           setup:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:efb27b299d627e4134815663cb8896641eeaee025d734c0f695582b4df38f013
             entrypoint: ["/setup"]
             command:
               - init
@@ -85438,7 +85963,7 @@ This guide provides one reference approach using Docker Compose. You are respons
                 max-file: "3"
 
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:efb27b299d627e4134815663cb8896641eeaee025d734c0f695582b4df38f013
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -85653,7 +86178,7 @@ This guide provides one reference approach using Docker Compose. You are respons
                 max-file: "3"
 
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:efb27b299d627e4134815663cb8896641eeaee025d734c0f695582b4df38f013
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -85920,7 +86445,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm show values \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.1 > values.yaml
+          --version 2.0.2 > values.yaml
         ```
       </Step>
 
@@ -85964,7 +86489,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm template mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.1 \
+          --version 2.0.2 \
           -n mcp-tunnel \
           -f values.yaml > rendered.yaml
         ```
@@ -85974,7 +86499,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm install mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.1 \
+          --version 2.0.2 \
           --namespace mcp-tunnel --create-namespace \
           -f values.yaml
         ```
@@ -86065,7 +86590,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm show values \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.1 > values.yaml
+          --version 2.0.2 > values.yaml
         ```
       </Step>
 
@@ -86103,7 +86628,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm template mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.1 \
+          --version 2.0.2 \
           -n mcp-tunnel \
           -f values.yaml > rendered.yaml
         ```
@@ -86113,7 +86638,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm install mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.1 \
+          --version 2.0.2 \
           --namespace mcp-tunnel --create-namespace \
           -f values.yaml
         ```
@@ -86157,7 +86682,7 @@ For routine changes such as routes, replica count, or NetworkPolicy:
 ```bash
 helm upgrade mcp-tunnel \
   oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-  --version 2.0.1 \
+  --version 2.0.2 \
   -n mcp-tunnel \
   -f values.yaml
 ```
@@ -86173,7 +86698,7 @@ With programmatic access, increment `tunnel.tokenVersion` in `values.yaml` and u
 ```bash
 helm upgrade mcp-tunnel \
   oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-  --version 2.0.1 \
+  --version 2.0.2 \
   -n mcp-tunnel \
   -f values.yaml \
   --set setup.force=true
@@ -86890,7 +87415,7 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Claude i
     <Tabs>
       <Tab title="Gradle">
         ```kotlin
-        implementation("com.anthropic:anthropic-java-bedrock:2.50.0")
+        implementation("com.anthropic:anthropic-java-bedrock:2.52.0")
         ```
       </Tab>
 
@@ -86899,7 +87424,7 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Claude i
         <dependency>
             <groupId>com.anthropic</groupId>
             <artifactId>anthropic-java-bedrock</artifactId>
-            <version>2.50.0</version>
+            <version>2.52.0</version>
         </dependency>
         ```
       </Tab>
@@ -87295,7 +87820,7 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry 
     <Tabs>
       <Tab title="Gradle">
         ```kotlin
-        implementation("com.anthropic:anthropic-java-foundry:2.50.0")
+        implementation("com.anthropic:anthropic-java-foundry:2.52.0")
 
         // For Entra ID authentication, also add the Azure Identity library
         implementation("com.azure:azure-identity:1.18.3")
@@ -87307,7 +87832,7 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry 
         <dependency>
             <groupId>com.anthropic</groupId>
             <artifactId>anthropic-java-foundry</artifactId>
-            <version>2.50.0</version>
+            <version>2.52.0</version>
         </dependency>
         <!-- For Entra ID authentication, also add the Azure Identity library -->
         <dependency>
@@ -88075,14 +88600,14 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Bedrock.
   <Tab title="Java">
     <CodeGroup>
       ```groovy Gradle
-      implementation("com.anthropic:anthropic-java-bedrock:2.50.0")
+      implementation("com.anthropic:anthropic-java-bedrock:2.52.0")
       ```
 
       ```xml Maven
       <dependency>
           <groupId>com.anthropic</groupId>
           <artifactId>anthropic-java-bedrock</artifactId>
-          <version>2.50.0</version>
+          <version>2.52.0</version>
       </dependency>
       ```
 
@@ -89174,20 +89699,20 @@ First, install Anthropic's [client SDK](/docs/en/cli-sdks-libraries/overview) fo
   <Tab title="Java">
     <CodeGroup exclude="shell, python, typescript, csharp, go, php, ruby">
       ```groovy Gradle
-      implementation("com.anthropic:anthropic-java:2.50.0")
-      implementation("com.anthropic:anthropic-java-vertex:2.50.0")
+      implementation("com.anthropic:anthropic-java:2.52.0")
+      implementation("com.anthropic:anthropic-java-vertex:2.52.0")
       ```
 
       ```xml Maven
       <dependency>
           <groupId>com.anthropic</groupId>
           <artifactId>anthropic-java</artifactId>
-          <version>2.50.0</version>
+          <version>2.52.0</version>
       </dependency>
       <dependency>
           <groupId>com.anthropic</groupId>
           <artifactId>anthropic-java-vertex</artifactId>
-          <version>2.50.0</version>
+          <version>2.52.0</version>
       </dependency>
       ```
 
@@ -90437,14 +90962,14 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Claude P
 
   <Tab title="Java">
     ```kotlin Gradle
-    implementation("com.anthropic:anthropic-java-aws:2.50.0")
+    implementation("com.anthropic:anthropic-java-aws:2.52.0")
     ```
 
     ```xml Maven
     <dependency>
       <groupId>com.anthropic</groupId>
       <artifactId>anthropic-java-aws</artifactId>
-      <version>2.50.0</version>
+      <version>2.52.0</version>
     </dependency>
     ```
   </Tab>
@@ -91459,7 +91984,7 @@ This guide walks you through creating an agent, setting up an environment, start
     For Linux environments, download the release binary directly.
 
     ```bash
-    VERSION=1.19.0
+    VERSION=1.21.0
     OS=$(uname -s | tr '[:upper:]' '[:lower:]')
     case $(uname -m) in
       x86_64) ARCH=amd64 ;;
@@ -91510,7 +92035,7 @@ ant --version
 
   <Tab title="Java">
     ```groovy Gradle
-    implementation("com.anthropic:anthropic-java:2.50.0")
+    implementation("com.anthropic:anthropic-java:2.52.0")
     ```
   </Tab>
 
@@ -97063,7 +97588,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
             For Linux environments, download the release binary directly.
 
             ```bash
-            VERSION=1.19.0
+            VERSION=1.21.0
             OS=$(uname -s | tr '[:upper:]' '[:lower:]')
             case $(uname -m) in
               x86_64) ARCH=amd64 ;;
@@ -97102,7 +97627,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
 
         ```text
         FROM your-base-image
-        ARG ANT_VERSION=1.19.0
+        ARG ANT_VERSION=1.21.0
         ARG TARGETARCH
         RUN ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
             curl -fsSL "https://github.com/anthropics/anthropic-cli/releases/download/v${ANT_VERSION}/ant_${ANT_VERSION}_linux_${ARCH}.tar.gz" \
@@ -124238,7 +124763,7 @@ Compared with Claude Opus 4.8, the improvements most relevant to prompting are:
 
 * **Agentic coding:** Claude Opus 5 is strongest on difficult coding tasks: multi-file features, larger refactors, and end-to-end feature work. It completes full tasks rather than leaving stubs or placeholders, and it performs best when given the complete task specification up front and left to run. It also performs well on easier tasks like single-turn edits, where the difference from prior models is smaller.
 * **Code review and bug-finding:** Claude Opus 5 reviews code with high precision and recall: it finds real bugs at a high rate per pass, and its additional findings are mostly real issues rather than false positives. Accuracy holds at lower effort settings, which supports a fast pass at review time and a more thorough pass later. If your review prompt says "only report high-severity issues" or "be conservative," the model may follow that instruction literally and report less; ask it to report everything and filter in a separate pass instead.
-* **Efficiency at lower effort:** `low` and `medium` [effort](/docs/en/build-with-claude/effort) produce strong quality at a fraction of the tokens and latency of higher settings, and they perform above the same settings on prior Opus models. Use them liberally as your primary control for token cost and response time wherever your evals show quality holds; for coding and agentic work, `xhigh` remains the recommended starting point. If you carried effort defaults over from a prior model, re-run an effort sweep on your own evals. See [Effort](/docs/en/build-with-claude/effort#recommended-effort-levels-for-claude-opus-5) for the full recommendations.
+* **Efficiency at lower effort:** `low` and `medium` [effort](/docs/en/build-with-claude/effort) produce strong quality at a fraction of the tokens and latency of higher settings. Start with the default (`high`) and adjust based on your evals: use `low` and `medium` liberally as your primary control for token cost and response time wherever quality holds, and step up to `xhigh` for demanding coding and agentic work. If you carried effort defaults over from a prior model, re-run an effort sweep on your own evals. See [Effort](/docs/en/build-with-claude/effort#recommended-effort-levels-for-claude-opus-5) for the full recommendations.
 * **Vision:** Claude Opus 5 is strong on chart, document, and diagram understanding, and on UI and frontend visual replication. Re-validate any prompt-side vision workarounds you tuned for prior models; they may no longer be needed. Vision performance is strongest when the model has tools to iteratively analyze, crop, and visually verify its work, and tool use is a more cost-effective lever than thinking alone.
 * **Long-context work:** Claude Opus 5 has a [1M token context window](/docs/en/build-with-claude/context-windows) as both the default and the maximum, and its instruction following, tool calling, and reasoning stay consistent throughout the window.
 * **Office and document tasks:** Claude Opus 5 generates and works with complex, multi-sheet spreadsheets with non-trivial formulas, and it produces well-structured slide decks. Prompt it with any specific styles or templates it needs to follow.
@@ -124310,18 +124835,16 @@ Only correct an earlier statement when the error would change the user's code, c
 
 ## Running with thinking disabled
 
-Claude Opus 5 runs with [thinking](/docs/en/build-with-claude/thinking) on by default, and thinking can be disabled only at [effort](/docs/en/build-with-claude/effort) `high` or below; see the [migration guide](/docs/en/about-claude/models/migration-guide#migrating-from-claude-opus-4-8-to-claude-opus-5). With thinking disabled, two artifacts can occasionally appear in the model's visible output. The primary mitigation for both is to keep thinking enabled and control token cost with lower effort levels instead of disabling thinking.
+Claude Opus 5 runs with [thinking](/docs/en/build-with-claude/thinking) on by default, and thinking can be disabled only at [effort](/docs/en/build-with-claude/effort) `high` or below; see the [migration guide](/docs/en/about-claude/models/migration-guide#migrating-from-claude-opus-4-8-to-claude-opus-5). With thinking disabled, two artifacts can occasionally appear in the model's visible output. The primary mitigation for both is to keep thinking enabled and control token cost with lower effort levels instead of disabling thinking: for most tasks, thinking enabled at `low` effort performs better than thinking disabled at similar cost.
 
-**Tool calls as text.** With thinking disabled, the model occasionally writes a tool call into its user-facing text instead of emitting a structured `tool_use` block. The turn completes normally and the call never runs, and in agentic loops the leaked text stays in the conversation history, so later turns are affected as well. This is most common on tool-heavy workloads such as search. For integrations that must keep thinking disabled, give the model explicit permission to speak before a tool call:
+**Tool calls as text.** With thinking disabled, the model occasionally writes a tool call into its user-facing text instead of emitting a structured `tool_use` block. The turn completes normally and the call never runs, and in agentic loops the leaked text stays in the conversation history, so later turns are affected as well. This is most common on tool-heavy workloads such as search.
 
-```text wrap
-You may say a brief sentence before using a tool.
-```
+**Internal XML tags in output.** With thinking disabled, the model can emit `<thinking>` tags or other internal XML tags into its visible response. If your system prompt contains a rule instructing the model not to think or not to reason, remove it; that kind of instruction increases tag leakage.
 
-**Internal XML tags in output.** With thinking disabled, the model can emit `<thinking>` tags or other internal XML tags into its visible response. If your system prompt contains a rule instructing the model not to think or not to reason, remove it; that kind of instruction increases tag leakage. Where you want an explicit instruction, use a general one:
+For integrations that must keep thinking disabled, a single combined instruction mitigates both artifacts: it gives the model explicit permission to speak before a tool call, an alternative to forcing a call when no tool fits, and a general rule against internal tags:
 
 ```text wrap
-Do not include internal or system XML tags in your response.
+When you use a tool, you may say a brief sentence first. If no tool can express what the user asked for, say so instead of guessing. Do not include internal or system XML tags in your response.
 ```
 
 Instructions that call out thinking tags by name are less effective than the general form, so avoid naming them specifically.
@@ -128568,10 +129091,10 @@ The skill handles:
 * **Breaking parameter changes**, such as removing `temperature`, `top_p`, and `top_k` for Claude Opus 4.8 and Claude Opus 4.7, and converting `thinking: {type: "enabled", budget_tokens: N}` to `thinking: {type: "adaptive"}`
 * **Prefill replacement**, converting assistant-message prefill patterns to [structured outputs](/docs/en/build-with-claude/structured-outputs) where applicable
 * **Beta header cleanup**, removing headers that are GA on the target model (for example, `effort-2025-11-24`, `fine-grained-tool-streaming-2025-05-14`, `interleaved-thinking-2025-05-14`) and switching back from `client.beta.messages.create` to `client.messages.create`
-* **Effort calibration**, recommending an `output_config.effort` starting point for the target model (for example, `xhigh` for coding and agentic use cases on Claude Opus 5, Claude Opus 4.8, and Claude Opus 4.7)
+* **Effort calibration**, recommending an `output_config.effort` starting point for the target model (for example, the default `high` on Claude Opus 5, and `xhigh` for coding and agentic use cases on Claude Opus 4.8 and Claude Opus 4.7)
 * **Prompt-behavior tuning**, flagging length-control, tool-triggering, subagent, and instruction-following prompts that may behave differently on the target model
 * **Silent default handling**, opting back into thinking summarization (`thinking.display: "summarized"`) when reasoning is surfaced to users on Claude Opus 4.8 and Claude Opus 4.7
-* **Refusal fallback configuration**, adding `stop_reason: "refusal"` handling before reading response content and setting up a [fallback retry path](/docs/en/build-with-claude/refusals-and-fallback) when the target is Claude Fable 5 (the server-side `fallbacks` parameter, the SDK refusal-fallback middleware, or a fallback-credit retry), and updating fallback code written against earlier preview shapes
+* **Refusal fallback configuration**, adding `stop_reason: "refusal"` handling before reading response content and setting up a [fallback retry path](/docs/en/build-with-claude/refusals-and-fallback) when the target is Claude Fable 5 or Claude Opus 5 (the server-side `fallbacks` parameter, typically in its `"default"` mode, the SDK refusal-fallback middleware, or a fallback-credit retry), and updating fallback code written against earlier preview shapes
 
 As it edits, the skill explains each change and its motivation inline. On completion, it produces a checklist of items that require manual verification (typically integration tests, length-control prompt tuning, and cost/rate-limit re-baselining).
 

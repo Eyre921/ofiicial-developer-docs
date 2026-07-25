@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1192 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1193 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -258,6 +258,7 @@
 - `docs/api-reference/tools/create` — [Create tool](pages/docs/api-reference/tools/create.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/create.md)
 - `docs/api-reference/tools/delete` — [Delete tool](pages/docs/api-reference/tools/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/delete.md)
 - `docs/api-reference/tools/get` — [Get tool](pages/docs/api-reference/tools/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get.md)
+- `docs/api-reference/tools/get-dependent-agents` — [Get dependent agents](pages/docs/api-reference/tools/get-dependent-agents.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-dependent-agents.md)
 - `docs/api-reference/tools/get-executions` — [Get tool executions](pages/docs/api-reference/tools/get-executions.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-executions.md)
 - `docs/api-reference/tools/list` — [List tools](pages/docs/api-reference/tools/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/list.md)
 - `docs/api-reference/tools/update` — [Update tool](pages/docs/api-reference/tools/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/update.md)

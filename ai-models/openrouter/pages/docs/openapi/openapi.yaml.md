@@ -13767,6 +13767,7 @@ components:
                 - Cerebras
                 - Chutes
                 - Cirrascale
+                - Claude Platform on AWS
                 - Clarifai
                 - Cloudflare
                 - Cohere
@@ -19952,6 +19953,7 @@ components:
         - Cerebras
         - Chutes
         - Cirrascale
+        - Claude Platform on AWS
         - Clarifai
         - Cloudflare
         - Cohere
@@ -20114,6 +20116,9 @@ components:
           additionalProperties: {}
           type: object
         clarifai:
+          additionalProperties: {}
+          type: object
+        claude-on-aws:
           additionalProperties: {}
           type: object
         cloudflare:
@@ -20711,6 +20716,7 @@ components:
             - Cerebras
             - Chutes
             - Cirrascale
+            - Claude Platform on AWS
             - Clarifai
             - Cloudflare
             - Cohere

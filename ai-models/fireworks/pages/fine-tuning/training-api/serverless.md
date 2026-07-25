@@ -17,7 +17,7 @@ Not sure whether the shared pool fits your workload? [Compare serverless and ded
 <Info>
   **What you need**
 
-  * **Install the SDK** (same one as the dedicated path, no separate console flow): `pip install --pre "fireworks-ai[training]"`
+  * **Install the SDK** (same one as the dedicated path, no separate console flow): `pip install "fireworks-ai[training]"`
   * **For the runnable example, clone the cookbook:** `git clone https://github.com/fw-ai/cookbook && pip install -e ./cookbook/training`
   * **Point at the serverless endpoint:** `base_url="https://api.fireworks.ai/training/v1/serverless"`
   * **Pick a base model enabled for serverless training on your account.** Availability changes during private preview; verify it before launch.
