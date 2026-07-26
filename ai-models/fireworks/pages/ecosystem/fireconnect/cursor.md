@@ -12,11 +12,15 @@ Use Fireworks AI models in Cursor IDE with the FireConnect CLI
 
 * [Cursor](https://cursor.com) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Cursor.** `fireconnect cursor on` always configures direct Fireworks (`https://api.fireworks.ai/inference/v1`), even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
 </Note>
+
+<Warning>
+  **FireRouter is not supported in Cursor.** Use Claude Code, OpenCode, Codex, Pi, or VS Code for FireRouter.
+</Warning>
 
 ## Enable Fireworks routing
 
@@ -35,7 +39,7 @@ Or pass the key once:
 fireconnect cursor on --api-key fw_...
 ```
 
-`cursor on` sets **every mode that already exists** in `modelConfig` to the default Fireworks model (non-destructive — it won't create mode entries that aren't already there). Use `cursor model select --mode <mode>` to point an individual mode at a different model.
+`cursor on` sets **every mode that already exists** in `modelConfig` to the default Fireworks model (non-destructive — it won't create mode entries that aren't already there) and registers the preferred serverless catalog in the picker.
 
 Quit and reopen Cursor for the change to take effect, then open the model picker and choose a Fireworks model.
 
@@ -45,23 +49,25 @@ fireconnect cursor status   # read-only — works while Cursor is running
 
 ## Browse and pick models
 
-`model list` and `status` are read-only and work while Cursor is running. Commands that write to `state.vscdb` require Cursor to be quit first.
+Browse the global catalog, then switch models with `on`:
 
 ```bash theme={null}
-fireconnect cursor model list              # browse serverless endpoints
-fireconnect cursor model list --search glm
-fireconnect cursor model select            # pick a model for a Cursor mode
-fireconnect cursor model select --mode composer
-fireconnect cursor model add glm-fast-latest
-fireconnect cursor model add deepseek-v4-flash
+fireconnect model list --search glm
+fireconnect cursor on --model glm-fast-latest
 ```
+
+`fireconnect model list` and `status` are read-only and work while Cursor is running. Commands that write to `state.vscdb` (`on`, `off`) require Cursor to be quit first.
 
 Short model IDs are expanded to full Fireworks paths automatically.
 
-Cursor modes you can pass to `--mode` include `composer` (default), `cmd-k`, `background-composer`, `composer-ensemble`, `plan-execution`, `spec`, `deep-search`, and `quick-agent`. Run `fireconnect cursor status` to see the current model for each mode.
+Cursor modes include `composer` (default), `cmd-k`, `background-composer`, `composer-ensemble`, `plan-execution`, `spec`, `deep-search`, and `quick-agent`. Run `fireconnect cursor status` to see the current model for each mode.
 
 <Warning>
   Cursor enforces an allowlist on the server side. Not every Fireworks model appears in the picker even after you add it. Models such as GLM 5.2 and Kimi K2.6 are known to work; if a model is blocked, Cursor shows an error when you select it.
+</Warning>
+
+<Warning>
+  **While FireConnect is on, only Fireworks models in your picker work** — Cursor subscription models, Opus modes, and other built-in models won't respond. Run `fireconnect cursor off` to restore built-in Cursor models.
 </Warning>
 
 ## What gets written
@@ -97,7 +103,6 @@ Use your `fpk_...` key during `login` or with `--api-key`:
 
 ```bash theme={null}
 fireconnect cursor on --api-key fpk_...
-fireconnect cursor model add glm-fast-latest
 ```
 
 Fire Pass keys default to `glm-fast-latest`.
@@ -108,10 +113,6 @@ Fire Pass keys default to `glm-fast-latest`.
 fireconnect cursor on                    # Enable Fireworks routing (quit Cursor first)
 fireconnect cursor off                   # Restore your previous Cursor auth state
 fireconnect cursor status                # Show provider, auth, modes, and per-mode models
-fireconnect cursor model list            # Browse serverless endpoints
-fireconnect cursor model add <id>        # Add a model to Cursor's picker
-fireconnect cursor model select          # Pick a model for a mode (--mode)
-fireconnect cursor model reset           # Reset fireconnect-managed model selections
 fireconnect cursor help                  # Show harness-specific help
 ```
 
@@ -135,7 +136,7 @@ You can also configure Cursor without FireConnect:
 2. Set **Override OpenAI Base URL** to `https://api.fireworks.ai/inference/v1`.
 3. Paste your Fireworks or Fire Pass API key.
 
-FireConnect automates these steps and makes it easy to add or swap models from the terminal.
+FireConnect automates these steps and makes it easy to swap models from the terminal.
 
 ## Source
 

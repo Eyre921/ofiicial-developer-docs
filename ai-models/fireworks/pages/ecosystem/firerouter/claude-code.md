@@ -1,21 +1,22 @@
 ---
-title: "Claude Code"
+title: "Claude Code (manual setup)"
 source: https://docs.fireworks.ai/ecosystem/firerouter/claude-code
 path: ecosystem/firerouter/claude-code
 ---
 
-Use FireRouter in Claude Code with settings.json
+Configure FireRouter in Claude Code by editing settings.json
+
+For one-command setup, use [FireConnect](/ecosystem/fireconnect/claude-code#firerouter) (`fireconnect claude on --model firerouter`, v0.9.0+). This page covers manual configuration by editing `settings.json` directly.
 
 ## Prerequisites
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
+* An Anthropic API key if you need pass-through to Claude Opus 4.8 — see [Authentication](/ecosystem/firerouter/authentication)
 
-## `settings.json`
+Add one of the configs below to `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`), then restart Claude Code.
 
-Add one of these to `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`).
-
-### With a Claude subscription
+## With a Claude subscription
 
 You do not need to pass any access or API token. Use `ANTHROPIC_CUSTOM_HEADERS` to pass your Fireworks API key.
 
@@ -34,7 +35,7 @@ You do not need to pass any access or API token. Use `ANTHROPIC_CUSTOM_HEADERS` 
 }
 ```
 
-### With an Anthropic API key
+## With an Anthropic API key
 
 Add `ANTHROPIC_API_KEY` for pass-through. You still need `ANTHROPIC_CUSTOM_HEADERS` for your Fireworks API key.
 

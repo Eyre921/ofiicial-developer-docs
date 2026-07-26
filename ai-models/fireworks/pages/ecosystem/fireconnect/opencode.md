@@ -12,7 +12,7 @@ Use Fireworks AI models in OpenCode with the FireConnect CLI
 
 * [OpenCode](https://opencode.ai) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -49,25 +49,27 @@ FireConnect merges a `fireworks-ai` provider block into `~/.config/opencode/open
 
 * An OpenAI-compatible adapter pointed at `https://api.fireworks.ai/inference/v1`
 * A default `model` set to `fireworks-ai/<model-id>` (for example, `fireworks-ai/glm-fast-latest`)
-* Your other providers are left untouched
+* `options.apiKey` as a **baked plaintext literal** (file mode `0600`)
+* The **preferred serverless catalog** registered in the provider's `models` for OpenCode's `/model` picker
 
-FireConnect snapshots your original `opencode.json` before the first change. The snapshot lives in `~/.fireconnect/opencode/`. Running `fireconnect opencode off` restores the file byte-for-byte.
-
-### API key handling
-
-* The API key is stored as `{env:FIREWORKS_API_KEY}` — never a literal in the config file
-* Keychain mode installs a shell profile hook that exports `FIREWORKS_API_KEY="$(fireconnect key export)"` when you launch OpenCode
-* OpenCode's `auth.json` is never touched
+FireConnect snapshots your original `opencode.json` before the first change. The snapshot lives in `~/.fireconnect/opencode/`. Running `fireconnect opencode off` restores the file byte-for-byte. OpenCode's `auth.json` is never touched.
 
 ## Browsing and picking models
 
 ```bash theme={null}
-fireconnect opencode model list              # browse serverless endpoints
-fireconnect opencode model select            # pick OpenCode's default model
-fireconnect opencode model select --search glm
+fireconnect model list --search glm
+fireconnect opencode on --model glm-5p1
 ```
 
-`fireconnect opencode model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+`fireconnect model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only. Standard keys include `firerouter`.
+
+## FireRouter
+
+```bash theme={null}
+fireconnect opencode on --model firerouter
+```
+
+Pass `--anthropic-api-key sk-ant-...` when your workspace does not have Anthropic BYOK provisioned server-side.
 
 ## CLI reference
 
@@ -75,9 +77,6 @@ fireconnect opencode model select --search glm
 fireconnect opencode on              # Enable Fireworks routing
 fireconnect opencode off             # Restore original config
 fireconnect opencode status          # Check current provider and model
-fireconnect opencode model list      # Browse serverless endpoints
-fireconnect opencode model select    # Pick a model interactively
-fireconnect opencode model reset     # Reset model to default
 fireconnect opencode help            # Show harness-specific help
 ```
 
@@ -86,7 +85,7 @@ Run `fireconnect opencode help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect opencode on --main glm-5p1
+fireconnect opencode on --model glm-5p1
 ```
 
 ### Turn off Fireworks routing
@@ -135,7 +134,7 @@ Pass your Foundry **deployment name** with `--main` — not a Fireworks serverle
 
 FireConnect adds a `fireworks-azure` provider labeled **Fireworks on Microsoft Foundry** to `opencode.json`, pointed at your Foundry OpenAI-compatible endpoint (`.../openai/v1`). The default model reference becomes `fireworks-azure/<deployment-name>`.
 
-`fireconnect opencode model list` and `model select` browse the Fireworks serverless catalog only. With Foundry, switch deployments with `on --main <deployment-name>`.
+Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path. With Foundry, switch deployments with `on --main <deployment-name>`.
 
 ### Turn off Foundry routing
 

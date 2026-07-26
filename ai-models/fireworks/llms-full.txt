@@ -2706,7 +2706,7 @@ Use Fireworks AI models in Claude Code with the FireConnect CLI
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* The FireConnect CLI v0.9.0+ (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -2731,7 +2731,7 @@ Restart Claude Code after enabling, then test with:
 hi
 ```
 
-After `fireconnect claude on`, `model select`, or `model reset`, settings are updated immediately. To use a new model in the same session, run `/model` in Claude Code, start a new session, or `/exit` and resume with `claude --resume <id>`.
+After `fireconnect claude on`, start a new Claude Code session or run `/model` to pick up model changes. To use a new model in the same session, start a new session or `/exit` and resume with `claude --resume <id>`.
 
 ## Using Fire Pass
 
@@ -2750,7 +2750,7 @@ FireConnect detects Fire Pass keys and routes all model aliases to `glm-fast-lat
 | main     | `glm-fast-latest`       | `glm-fast-latest`         |
 | opus     | `glm-fast-latest`       | `glm-fast-latest`         |
 | fable    | `glm-fast-latest`       | `glm-fast-latest`         |
-| sonnet   | `glm-5p1`               | `glm-fast-latest`         |
+| sonnet   | `kimi-fast-latest`      | `glm-fast-latest`         |
 | haiku    | `deepseek-v4-flash`     | `glm-fast-latest`         |
 | subagent | `deepseek-v4-flash`     | `glm-fast-latest`         |
 
@@ -2758,67 +2758,70 @@ Short model IDs like `glm-fast-latest` are expanded to full Fireworks paths (for
 
 ## What gets written
 
-FireConnect writes these settings to `~/.claude/settings.json` (no literal API key in the file — the key lives in the OS keychain and is fetched at runtime via `apiKeyHelper`):
+FireConnect writes these settings to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`:
 
 ```json theme={null}
 {
-  "apiKeyHelper": "/path/to/fireconnect key export",
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
     "ANTHROPIC_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "accounts/fireworks/models/glm-5p1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "accounts/fireworks/routers/kimi-fast-latest",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "accounts/fireworks/models/deepseek-v4-flash",
     "ANTHROPIC_DEFAULT_FABLE_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "accounts/fireworks/models/deepseek-v4-flash"
+    "CLAUDE_CODE_SUBAGENT_MODEL": "accounts/fireworks/models/deepseek-v4-flash",
+    "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
   }
 }
 ```
 
-Claude Code calls `apiKeyHelper` at runtime to fetch the key from the OS keychain. FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them.
+FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them.
 
 ## Browsing and picking models
 
-```bash theme={null}
-fireconnect claude model list              # browse callable serverless endpoints
-fireconnect claude model select            # pick a model for Claude Code
-fireconnect claude model select --slot sonnet   # update one alias
-```
-
-### `fireconnect claude model list`
-
-Lists serverless models from the Fireworks API (`supports_serverless=true`) and merges known public platform routers (`glm-latest`, `glm-fast-latest`, `glm-5p2-fast`, `kimi-fast-latest`, `kimi-latest`, `kimi-k2p6-turbo`, and `kimi-k2p7-code-fast`). Every row is tagged `serverless`.
+Browse the global catalog, then configure Claude Code through `on`:
 
 ```bash theme={null}
-fireconnect claude model list
-fireconnect claude model list --search glm
-fireconnect claude model list --json
+fireconnect model list --search glm
+fireconnect claude on --sonnet kimi-latest
+fireconnect claude on --main glm-fast-latest --sonnet kimi-fast-latest
 ```
 
-Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+### `fireconnect model list`
 
-### `fireconnect claude model select`
-
-Interactive picker. Requires a terminal and Fireworks to be enabled.
+Lists the shared Fireworks serverless catalog (coding-tagged models plus known platform routers). Every row is tagged `serverless`.
 
 ```bash theme={null}
-fireconnect claude model select
-fireconnect claude model select --slot sonnet
-fireconnect claude model select --slot sonnet --search glm
+fireconnect model list
+fireconnect model list --search glm
+fireconnect model list --json
 ```
 
-### `fireconnect claude status` vs `fireconnect claude model list`
+Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only. Standard keys include `firerouter`.
 
-| Command                         | Shows                                                                                          |
-| ------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `fireconnect claude status`     | Your current provider, auth, configured alias mapping, and Fireworks serverless rates per slot |
-| `fireconnect claude model list` | Available serverless endpoints from the Fireworks API, with IN / OUT pricing where known       |
+### `fireconnect claude status` vs `fireconnect model list`
+
+| Command                     | Shows                                                                                          |
+| --------------------------- | ---------------------------------------------------------------------------------------------- |
+| `fireconnect claude status` | Your current provider, auth, configured alias mapping, and Fireworks serverless rates per slot |
+| `fireconnect model list`    | Available serverless endpoints from the Fireworks API, with IN / OUT pricing where known       |
+
+## FireRouter
+
+Route requests through [FireRouter](/ecosystem/firerouter/overview) — a managed service that sends simple work to cheaper open models and passes hard requests to Claude Opus 4.8:
+
+```bash theme={null}
+fireconnect claude on --model firerouter
+fireconnect claude on --opus firerouter --anthropic-api-key sk-ant-...
+```
+
+Use `--model firerouter` for the primary model or alias flags like `--opus firerouter` for specific slots.
 
 ## Claude Code pricing estimates
 
 Claude Code's `/model` picker and session cost estimates use **Anthropic list prices**, not Fireworks serverless rates. For example, the default `glm-fast-latest` mapping may show Opus-tier estimates around **$5 / $25 per Mtok** while Fireworks bills at model-specific serverless rates (often much lower).
 
-FireConnect cannot override Claude Code's price column. Use `fireconnect claude status` and `fireconnect claude model list` for Fireworks rates, and check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
+FireConnect cannot override Claude Code's price column. Use `fireconnect claude status` and `fireconnect model list` for Fireworks rates, and check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
 
 FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Fireworks rates for your **main** model — that text appears as the subtitle on the custom picker entry at the bottom of `/model`, not in the price column.
 
@@ -2828,10 +2831,7 @@ FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Firewor
 fireconnect claude on         # Route Claude Code through Fireworks
 fireconnect claude off        # Restore your previous provider
 fireconnect claude status     # Show the current provider and model mapping
-fireconnect claude usage      # Estimate usage cost from a session log
-fireconnect claude model list # Browse serverless models
-fireconnect claude model select   # Pick a model interactively
-fireconnect claude model reset    # Reset model aliases to defaults
+fireconnect claude usage      # Session token usage and estimated Fireworks cost
 fireconnect claude help       # Show harness-specific help
 ```
 
@@ -2840,13 +2840,8 @@ Run `fireconnect claude help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect claude on --main glm-fast-latest --sonnet glm-5p1 --haiku deepseek-v4-flash --subagent deepseek-v4-flash
-```
-
-Or pick interactively:
-
-```bash theme={null}
-fireconnect claude model select --slot opus
+fireconnect claude on --main glm-fast-latest --sonnet kimi-fast-latest --haiku deepseek-v4-flash --subagent deepseek-v4-flash
+fireconnect claude on --model firerouter   # route through FireRouter
 ```
 
 ### Turn off Fireworks routing
@@ -2881,7 +2876,7 @@ Use Fireworks AI models in OpenAI Codex CLI with the FireConnect CLI
 
 * [OpenAI Codex CLI](https://developers.openai.com/codex) installed (0.134+)
 * A standard [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Warning>
   Fire Pass keys (`fpk_...`) are not supported for Codex yet. The `/responses` endpoint requires a standard Fireworks API key.
@@ -2892,7 +2887,6 @@ Use Fireworks AI models in OpenAI Codex CLI with the FireConnect CLI
 ```bash theme={null}
 fireconnect login
 fireconnect codex on
-source ~/.zshrc   # keychain mode: load FIREWORKS_API_KEY for Codex
 ```
 
 Or pass the key once:
@@ -2901,7 +2895,7 @@ Or pass the key once:
 fireconnect codex on --api-key fw_...
 ```
 
-After `fireconnect codex on`, `off`, `model select`, or `model reset`, `config.toml` is updated immediately. To use the updated routing in Codex, run `/model` in the same session, start a new session, or `/exit` and resume with `codex resume <id>`.
+After `fireconnect codex on` or `off`, `config.toml` is updated immediately. To use updated routing, exit Codex and resume with `codex resume <id>`, or start a new session.
 
 ## Default model
 
@@ -2915,13 +2909,10 @@ fireconnect codex status
 
 FireConnect edits `~/.codex/config.toml`:
 
-* Sets root `model_provider` / `model` for Codex 0.134+
-* Adds a `[model_providers.fireworks-ai]` block with `wire_api = "responses"` and `env_key = "FIREWORKS_API_KEY"`
-* Harness configs never contain literal keys
+* Sets root `model_provider` / `model` for Codex 0.134+ (stored as a short slug)
+* Adds a `[model_providers.fireworks-ai]` block with `wire_api = "responses"` and a **baked** `experimental_bearer_token` literal (file mode `0600`) — Codex reads the key from config; no shell hook is required
 
-In keychain mode, FireConnect installs a marked block in `~/.zshrc` (or bash profile) that exports `FIREWORKS_API_KEY="$(fireconnect key export)"`. Open a new terminal or `source` your profile after enabling.
-
-FireConnect snapshots your original `~/.codex/config.toml` before the first change. The snapshot lives in `~/.fireconnect/codex/`. Running `fireconnect codex off` restores it byte-for-byte and removes the shell hook when no env-based harnesses remain. Unrelated Codex settings (for example `[[mcp_servers]]`) are preserved via surgical TOML edits.
+FireConnect snapshots your original `~/.codex/config.toml` before the first change. The snapshot lives in `~/.fireconnect/codex/`. Running `fireconnect codex off` restores it byte-for-byte. Unrelated Codex settings (for example `[[mcp_servers]]`) are preserved via surgical TOML edits.
 
 ## Codex model catalog
 
@@ -2933,16 +2924,28 @@ fireconnect codex status   # shows whether the catalog is linked and on disk
 
 The catalog includes serverless models that support tool calling with a non-zero context window, plus curated aliases such as `glm-fast-latest`. Deprecated models are excluded. If catalog generation fails (for example, due to an invalid API key), routing still works but Codex may show limited model metadata until you re-run `fireconnect codex on`.
 
-`fireconnect codex model list` and `model select` filter the picker to models present in the catalog. JSON output from `model list` includes Fireworks IN / OUT pricing where known.
-
-## Browsing and picking models
+Browse available models globally:
 
 ```bash theme={null}
-fireconnect codex model list              # browse Codex-compatible serverless endpoints
-fireconnect codex model select            # pick Codex's default model
-fireconnect codex model select --search glm
-fireconnect codex model list --json       # includes pricing metadata where known
+fireconnect model list --search glm
+fireconnect model list --json   # includes IN / OUT pricing where known
 ```
+
+## FireRouter
+
+Route requests through [FireRouter](/ecosystem/firerouter/overview):
+
+```bash theme={null}
+fireconnect codex on --model firerouter
+export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 4.8
+fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
+```
+
+FireRouter is available to standard Fireworks keys (not Fire Pass).
+
+<Warning>
+  **MiniMax models are not supported in Codex.** Codex uses the Fireworks Responses API and may insert assistant messages between `tool_calls` and `tool_results`. MiniMax chat templates require `tool_results` to follow `tool_calls` directly. Use Chat Completions harnesses (for example Claude Code or OpenCode) for MiniMax.
+</Warning>
 
 ## CLI reference
 
@@ -2950,9 +2953,6 @@ fireconnect codex model list --json       # includes pricing metadata where know
 fireconnect codex on              # Enable Fireworks routing
 fireconnect codex off             # Restore original config
 fireconnect codex status          # Check current provider and model
-fireconnect codex model list      # Browse serverless endpoints
-fireconnect codex model select    # Pick a model interactively
-fireconnect codex model reset     # Reset model to default
 fireconnect codex help            # Show harness-specific help
 ```
 
@@ -2961,8 +2961,8 @@ Run `fireconnect codex help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect codex on --main glm-5p2
-fireconnect codex on --main deepseek-v4-flash
+fireconnect codex on --model glm-5p2
+fireconnect codex on --model deepseek-v4-flash
 ```
 
 Some models expose multiple reasoning levels in the Codex catalog (for example, `glm-5p2` supports `high` and `max`). Pick the model in Codex with `/model` after switching.
@@ -3010,9 +3010,9 @@ fireconnect codex on --azure --base-url https://<resource>.services.ai.azure.com
 
 ### What gets written
 
-FireConnect sets `model_provider = "fireworks-azure"` in `config.toml` with a **Fireworks on Microsoft Foundry** provider block pointed at your Foundry endpoint. The Azure API key is stored as `env_key = "AZURE_API_KEY"` when resolved from the environment, or written literally when passed with `--api-key`.
+FireConnect sets `model_provider = "fireworks-azure"` in `config.toml` with a **Fireworks on Microsoft Foundry** provider block pointed at your Foundry endpoint. The Azure API key is baked as a literal when passed with `--api-key`, or referenced via `env_key = "AZURE_API_KEY"` when resolved from the environment.
 
-Pass your Foundry **deployment name** with `--main`. `model list` and `model select` browse the Fireworks serverless catalog only.
+Pass your Foundry **deployment name** with `--main` (or `--model`). Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path.
 
 ### Turn off Foundry routing
 
@@ -3021,7 +3021,6 @@ To switch back to the Fireworks gateway:
 ```bash theme={null}
 fireconnect configure --provider fireworks
 fireconnect codex on
-source ~/.zshrc   # reload FIREWORKS_API_KEY if using keychain mode
 ```
 
 To remove FireConnect entirely and restore your original `config.toml`:
@@ -3048,11 +3047,15 @@ Use Fireworks AI models in Cursor IDE with the FireConnect CLI
 
 * [Cursor](https://cursor.com) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Cursor.** `fireconnect cursor on` always configures direct Fireworks (`https://api.fireworks.ai/inference/v1`), even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
 </Note>
+
+<Warning>
+  **FireRouter is not supported in Cursor.** Use Claude Code, OpenCode, Codex, Pi, or VS Code for FireRouter.
+</Warning>
 
 ## Enable Fireworks routing
 
@@ -3071,7 +3074,7 @@ Or pass the key once:
 fireconnect cursor on --api-key fw_...
 ```
 
-`cursor on` sets **every mode that already exists** in `modelConfig` to the default Fireworks model (non-destructive — it won't create mode entries that aren't already there). Use `cursor model select --mode <mode>` to point an individual mode at a different model.
+`cursor on` sets **every mode that already exists** in `modelConfig` to the default Fireworks model (non-destructive — it won't create mode entries that aren't already there) and registers the preferred serverless catalog in the picker.
 
 Quit and reopen Cursor for the change to take effect, then open the model picker and choose a Fireworks model.
 
@@ -3081,23 +3084,25 @@ fireconnect cursor status   # read-only — works while Cursor is running
 
 ## Browse and pick models
 
-`model list` and `status` are read-only and work while Cursor is running. Commands that write to `state.vscdb` require Cursor to be quit first.
+Browse the global catalog, then switch models with `on`:
 
 ```bash theme={null}
-fireconnect cursor model list              # browse serverless endpoints
-fireconnect cursor model list --search glm
-fireconnect cursor model select            # pick a model for a Cursor mode
-fireconnect cursor model select --mode composer
-fireconnect cursor model add glm-fast-latest
-fireconnect cursor model add deepseek-v4-flash
+fireconnect model list --search glm
+fireconnect cursor on --model glm-fast-latest
 ```
+
+`fireconnect model list` and `status` are read-only and work while Cursor is running. Commands that write to `state.vscdb` (`on`, `off`) require Cursor to be quit first.
 
 Short model IDs are expanded to full Fireworks paths automatically.
 
-Cursor modes you can pass to `--mode` include `composer` (default), `cmd-k`, `background-composer`, `composer-ensemble`, `plan-execution`, `spec`, `deep-search`, and `quick-agent`. Run `fireconnect cursor status` to see the current model for each mode.
+Cursor modes include `composer` (default), `cmd-k`, `background-composer`, `composer-ensemble`, `plan-execution`, `spec`, `deep-search`, and `quick-agent`. Run `fireconnect cursor status` to see the current model for each mode.
 
 <Warning>
   Cursor enforces an allowlist on the server side. Not every Fireworks model appears in the picker even after you add it. Models such as GLM 5.2 and Kimi K2.6 are known to work; if a model is blocked, Cursor shows an error when you select it.
+</Warning>
+
+<Warning>
+  **While FireConnect is on, only Fireworks models in your picker work** — Cursor subscription models, Opus modes, and other built-in models won't respond. Run `fireconnect cursor off` to restore built-in Cursor models.
 </Warning>
 
 ## What gets written
@@ -3133,7 +3138,6 @@ Use your `fpk_...` key during `login` or with `--api-key`:
 
 ```bash theme={null}
 fireconnect cursor on --api-key fpk_...
-fireconnect cursor model add glm-fast-latest
 ```
 
 Fire Pass keys default to `glm-fast-latest`.
@@ -3144,10 +3148,6 @@ Fire Pass keys default to `glm-fast-latest`.
 fireconnect cursor on                    # Enable Fireworks routing (quit Cursor first)
 fireconnect cursor off                   # Restore your previous Cursor auth state
 fireconnect cursor status                # Show provider, auth, modes, and per-mode models
-fireconnect cursor model list            # Browse serverless endpoints
-fireconnect cursor model add <id>        # Add a model to Cursor's picker
-fireconnect cursor model select          # Pick a model for a mode (--mode)
-fireconnect cursor model reset           # Reset fireconnect-managed model selections
 fireconnect cursor help                  # Show harness-specific help
 ```
 
@@ -3171,7 +3171,7 @@ You can also configure Cursor without FireConnect:
 2. Set **Override OpenAI Base URL** to `https://api.fireworks.ai/inference/v1`.
 3. Paste your Fireworks or Fire Pass API key.
 
-FireConnect automates these steps and makes it easy to add or swap models from the terminal.
+FireConnect automates these steps and makes it easy to swap models from the terminal.
 
 ## Source
 
@@ -3189,7 +3189,7 @@ Use Fireworks AI models in LangChain Deep Agents Code with the FireConnect CLI
 
 * [Deep Agents Code](https://docs.langchain.com/oss/python/deepagents/cli) (`dcode`) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Deep Agents.** `fireconnect deepagents on` always configures direct Fireworks, even when global config has `--provider azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -3200,7 +3200,6 @@ Use Fireworks AI models in LangChain Deep Agents Code with the FireConnect CLI
 ```bash theme={null}
 fireconnect login
 fireconnect deepagents on
-source ~/.zshrc   # keychain mode: load FIREWORKS_API_KEY for dcode
 ```
 
 Or pass the key once:
@@ -3209,7 +3208,7 @@ Or pass the key once:
 fireconnect deepagents on --api-key fw_...
 ```
 
-Restart `dcode` after `on`, `model select`, `model reset`, or `off` if it is already running.
+Restart `dcode` after `on` or `off` if it is already running.
 
 ```bash theme={null}
 fireconnect deepagents status
@@ -3223,8 +3222,8 @@ Deep Agents routes a single default model. The default is `glm-fast-latest`, wri
 
 FireConnect edits `~/.deepagents/config.toml`:
 
-* Sets `[models].default` to `fireworks:<model>` and configures `[models.providers.fireworks]` with the Fireworks OpenAI-compatible base URL (`https://api.fireworks.ai/inference`) and `api_key_env = "FIREWORKS_API_KEY"`
-* Stores your Fireworks API key in the FireConnect keychain (via `login` or `deepagents on --api-key`) and installs a shell hook that exports `FIREWORKS_API_KEY` for `dcode`
+* Sets `[models].default` to `fireworks:<model>` and configures `[models.providers.fireworks]` with the Fireworks OpenAI-compatible base URL (`https://api.fireworks.ai/inference`) and a **baked** `api_key` literal (file mode `0600`)
+* Stores your Fireworks API key in the FireConnect keychain via `login` or `deepagents on --api-key`, then bakes it into `config.toml`
 * FireConnect does **not** write `~/.deepagents/.state/auth.json` — use dcode's `/auth` for credentials stored in that file
 
 FireConnect snapshots `config.toml` under `~/.fireconnect/deepagents/` before the first change. Running `fireconnect deepagents off` restores it byte-for-byte.
@@ -3232,9 +3231,8 @@ FireConnect snapshots `config.toml` under `~/.fireconnect/deepagents/` before th
 ## Browsing and picking models
 
 ```bash theme={null}
-fireconnect deepagents model list              # browse serverless endpoints
-fireconnect deepagents model select            # pick Deep Agents' default model
-fireconnect deepagents model select --search glm
+fireconnect model list --search glm
+fireconnect deepagents on --model glm-5p1
 ```
 
 Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
@@ -3245,9 +3243,6 @@ Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
 fireconnect deepagents on              # Enable Fireworks routing
 fireconnect deepagents off             # Restore original config
 fireconnect deepagents status          # Check current provider and model
-fireconnect deepagents model list      # Browse serverless endpoints
-fireconnect deepagents model select    # Pick a model interactively
-fireconnect deepagents model reset     # Reset model to default
 fireconnect deepagents help            # Show harness-specific help
 ```
 
@@ -3256,7 +3251,7 @@ Run `fireconnect deepagents help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect deepagents on --main glm-5p1
+fireconnect deepagents on --model glm-5p1
 ```
 
 ### Turn off Fireworks routing
@@ -3388,7 +3383,7 @@ Each harness writes a dedicated `fireworks-azure` provider distinct from the Fir
 `fireconnect <harness> status` reports `azure` as the provider along with the endpoint and deployment name.
 
 <Warning>
-  `fireconnect <harness> model list` and `model select` browse the **Fireworks serverless catalog** only. They do not list Foundry deployments. With `--provider azure`, set your deployment with `--main` on `on`.
+  `fireconnect model list` browses the **Fireworks serverless catalog** only. It does not list Foundry deployments. With `--provider azure`, set your deployment with `--main` (or `--model`) on `on`.
 </Warning>
 
 ## Turn off Foundry routing
@@ -3474,7 +3469,7 @@ Use Fireworks AI models in OpenCode with the FireConnect CLI
 
 * [OpenCode](https://opencode.ai) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -3511,25 +3506,27 @@ FireConnect merges a `fireworks-ai` provider block into `~/.config/opencode/open
 
 * An OpenAI-compatible adapter pointed at `https://api.fireworks.ai/inference/v1`
 * A default `model` set to `fireworks-ai/<model-id>` (for example, `fireworks-ai/glm-fast-latest`)
-* Your other providers are left untouched
+* `options.apiKey` as a **baked plaintext literal** (file mode `0600`)
+* The **preferred serverless catalog** registered in the provider's `models` for OpenCode's `/model` picker
 
-FireConnect snapshots your original `opencode.json` before the first change. The snapshot lives in `~/.fireconnect/opencode/`. Running `fireconnect opencode off` restores the file byte-for-byte.
-
-### API key handling
-
-* The API key is stored as `{env:FIREWORKS_API_KEY}` — never a literal in the config file
-* Keychain mode installs a shell profile hook that exports `FIREWORKS_API_KEY="$(fireconnect key export)"` when you launch OpenCode
-* OpenCode's `auth.json` is never touched
+FireConnect snapshots your original `opencode.json` before the first change. The snapshot lives in `~/.fireconnect/opencode/`. Running `fireconnect opencode off` restores the file byte-for-byte. OpenCode's `auth.json` is never touched.
 
 ## Browsing and picking models
 
 ```bash theme={null}
-fireconnect opencode model list              # browse serverless endpoints
-fireconnect opencode model select            # pick OpenCode's default model
-fireconnect opencode model select --search glm
+fireconnect model list --search glm
+fireconnect opencode on --model glm-5p1
 ```
 
-`fireconnect opencode model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+`fireconnect model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only. Standard keys include `firerouter`.
+
+## FireRouter
+
+```bash theme={null}
+fireconnect opencode on --model firerouter
+```
+
+Pass `--anthropic-api-key sk-ant-...` when your workspace does not have Anthropic BYOK provisioned server-side.
 
 ## CLI reference
 
@@ -3537,9 +3534,6 @@ fireconnect opencode model select --search glm
 fireconnect opencode on              # Enable Fireworks routing
 fireconnect opencode off             # Restore original config
 fireconnect opencode status          # Check current provider and model
-fireconnect opencode model list      # Browse serverless endpoints
-fireconnect opencode model select    # Pick a model interactively
-fireconnect opencode model reset     # Reset model to default
 fireconnect opencode help            # Show harness-specific help
 ```
 
@@ -3548,7 +3542,7 @@ Run `fireconnect opencode help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect opencode on --main glm-5p1
+fireconnect opencode on --model glm-5p1
 ```
 
 ### Turn off Fireworks routing
@@ -3597,7 +3591,7 @@ Pass your Foundry **deployment name** with `--main` — not a Fireworks serverle
 
 FireConnect adds a `fireworks-azure` provider labeled **Fireworks on Microsoft Foundry** to `opencode.json`, pointed at your Foundry OpenAI-compatible endpoint (`.../openai/v1`). The default model reference becomes `fireworks-azure/<deployment-name>`.
 
-`fireconnect opencode model list` and `model select` browse the Fireworks serverless catalog only. With Foundry, switch deployments with `on --main <deployment-name>`.
+Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path. With Foundry, switch deployments with `on --main <deployment-name>`.
 
 ### Turn off Foundry routing
 
@@ -3640,6 +3634,18 @@ Route Claude Code, OpenCode, Codex, Pi, Cursor, VS Code, and Deep Agents through
 * **Fireworks on Microsoft Foundry** — the same models, deployed in your Azure subscription and billed through Azure; use `--provider azure` and an Azure API key (see [Fireworks on Microsoft Foundry](#fireworks-on-microsoft-foundry))
 
 Install once, sign in, then enable or disable routing per harness without editing config files by hand.
+
+## What's new in v0.9.0
+
+FireConnect **0.9.0** adds a global model catalog, first-class FireRouter support, and safer upgrades:
+
+* **Global model catalog** — browse coding models with `fireconnect model list` (standard and fast options across model families)
+* **FireRouter as a model** — use `on --model firerouter` on supported harnesses
+* **VS Code Responses API** — VS Code uses the Fireworks Responses API; Kimi models support vision, GLM models remain text-only
+* **Claude usage reports** — `fireconnect claude usage` shows session token usage and estimated Fireworks cost
+* **Web search groundwork** — FireConnect can configure the Fireworks-hosted WebSearch MCP for eligible accounts
+
+See [Upgrade to v0.9.0](#upgrade-to-v090) for the recommended update path. Your existing harness settings are not changed during upgrade (except Claude Code — see below).
 
 <CardGroup>
   <Card title="Claude Code" icon="terminal" href="/ecosystem/fireconnect/claude-code">
@@ -3704,17 +3710,31 @@ fireconnect deepagents on  # LangChain Deep Agents Code
 
 You do not have to run `login` first — any key-needing command like `fireconnect claude on` runs the same sign-in flow inline, then finishes the job.
 
-### Upgrade
+### Upgrade to v0.9.0
 
-If you installed via the curl installer, pull the latest release in place:
+Re-run the installer to upgrade FireConnect. **`fireconnect upgrade`** runs the same install script — use either path.
 
 ```bash theme={null}
+curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
+# or
 fireconnect upgrade
 ```
 
-Re-run the install script if FireConnect was not installed with git (for example, a manual checkout).
+The installer:
 
-When a newer version is available, FireConnect prints a one-line update banner on startup with upgrade instructions. The check runs in the background and does not block your command.
+1. Pulls the latest CLI into `~/.fireconnect/cli` and updates the `fireconnect` launcher in `~/.local/bin`
+2. Preserves your stored API key and non-Claude harness settings
+3. If Claude Code is connected through FireConnect, temporarily restores your original Claude settings, upgrades the CLI, then prompts you to reconnect
+
+After upgrade, reconnect Claude Code if it was active:
+
+```bash theme={null}
+fireconnect claude on
+```
+
+For non-interactive installs (CI or scripts), set `FIRECONNECT_AUTO_OFF_CLAUDE=1` so the installer restores Claude settings without prompting.
+
+When a newer version is available, FireConnect prints a one-line update banner on startup with the same re-run-installer instructions. The check runs in the background and does not block your command.
 
 Check your installed version:
 
@@ -3724,7 +3744,7 @@ fireconnect --version
 
 ## Sign in and API keys
 
-FireConnect stores API keys in the OS keychain when available (via `cross-keychain`), not as plaintext in harness config files.
+FireConnect stores your Fireworks API key in the OS keychain when available (via `cross-keychain`). Harness configs hold **baked key literals** (mode `0600`) for direct routing — Claude via the `X-Fireworks-Api-Key` custom header, and Codex, OpenCode, Pi, and Deep Agents in their config files. Cursor and VS Code store keys in IDE secret storage.
 
 ```bash theme={null}
 fireconnect login     # browser sign-in (creates a machine key) or paste an existing key
@@ -3732,7 +3752,7 @@ fireconnect logout    # clear the stored key (keychain entry + config ref)
 fireconnect status    # show sign-in state and where the key is stored
 ```
 
-`~/.fireconnect/config.json` stores a reference such as `{keychain:fireworks-api-key}` or `{env:FIREWORKS_API_KEY}` — never a literal key. Claude Code uses `apiKeyHelper` to fetch the key at runtime; Codex, OpenCode, Pi, and Deep Agents use environment references plus a shell profile hook that exports `FIREWORKS_API_KEY="$(fireconnect key export)"`.
+`~/.fireconnect/config.json` stores a reference such as `{keychain:fireworks-api-key}` or `{env:FIREWORKS_API_KEY}` — never a literal key in global config. Re-running the [install script](#upgrade-to-v090) rebakes enabled harness configs to literals, including any legacy env-reference auth left on disk.
 
 Fire Pass users can paste a `fpk_...` key during `login` or `on`. FireConnect detects the key type and applies the correct defaults.
 
@@ -3780,8 +3800,8 @@ fireconnect login        # Sign in — browser (creates a key) or paste a key yo
 fireconnect logout       # Clear the stored key (keychain entry + config ref)
 fireconnect status       # Show sign-in state and where the key is stored
 fireconnect configure    # Set the provider (Azure/Foundry) and Anthropic key for router mode
+fireconnect model list   # Browse the global Fireworks coding model catalog
 fireconnect demo         # Race your provider vs Fireworks GLM 5.2 Fast on the same prompt
-fireconnect upgrade      # Pull the latest FireConnect from GitHub (curl install)
 fireconnect uninstall    # Disable all harnesses, restore configs, remove CLI
 fireconnect help         # Show help
 fireconnect --version    # Print the installed CLI version (-V also works)
@@ -3800,32 +3820,35 @@ Set the default with `fireconnect configure --provider fireworks` or `--provider
 
 ### Per-harness commands
 
+Browse models globally with `fireconnect model list`, then configure a harness through `on`:
+
+```bash theme={null}
+fireconnect model list --search glm
+fireconnect claude on --sonnet kimi-latest
+fireconnect opencode on --model glm-fast-latest
+```
+
 Each CLI harness (`claude`, `opencode`, `codex`, `pi`, `deepagents`) supports:
 
-* `fireconnect <harness> on` — Route through the configured provider
+* `fireconnect <harness> on` — Route through the configured provider (pass `--model <id>` or slot flags like `--sonnet`)
 * `fireconnect <harness> off` — Restore your previous config
 * `fireconnect <harness> status` — Show provider, auth, and models
-* `fireconnect <harness> model list` — Browse Fireworks serverless models (direct Fireworks routing only)
-* `fireconnect <harness> model select` — Pick a serverless model interactively (direct Fireworks routing only)
-* `fireconnect <harness> model reset` — Reset models to defaults
 * `fireconnect <harness> help` — Harness-specific help
 
-Claude Code also has `fireconnect claude usage` (estimate usage cost from a session log).
+Claude Code also has `fireconnect claude usage` (session token usage and estimated Fireworks cost).
 
 Each IDE harness (`cursor`, `vscode`) supports:
 
-* `fireconnect <harness> on` — Configure direct Fireworks routing (Azure not implemented for IDE harnesses yet; quit the IDE first)
+* `fireconnect <harness> on` — Configure direct Fireworks routing (pass `--model <id>`; Azure not implemented for IDE harnesses yet; quit the IDE first)
 * `fireconnect <harness> off` — Restore your previous config (quit the IDE first)
 * `fireconnect <harness> status` — Show provider, auth, and registered models (read-only; IDE can stay open)
-* `fireconnect <harness> model list` — Browse Fireworks serverless models (read-only)
-* `fireconnect <harness> model add <id>` — Add a Fireworks model to the IDE picker
-* `fireconnect <harness> model select` — Pick a model interactively (Cursor: pass `--mode`)
-* `fireconnect <harness> model reset` — Reset fireconnect-managed models to defaults
 * `fireconnect <harness> help` — Harness-specific help
 
-Cursor stores settings in SQLite (`state.vscdb`). Commands that write to that database (`on`, `off`, `model add`, `model select`, `model reset`) require Cursor to be fully quit first. VS Code stores the API key in `state.vscdb` as well, so `on` and `off` require quitting VS Code; `model add`, `model select`, and `model reset` only edit `chatLanguageModels.json`, which VS Code hot-reloads.
+Browse models with the global `fireconnect model list`, then apply a choice with `on --model <id>`. In v0.9.0, `on` registers the preferred serverless catalog in the IDE picker automatically.
 
-With **Fireworks on Microsoft Foundry** (`--provider azure`), pass your Foundry **deployment name** to `on` with `--main` instead of using `model list` or `model select`.
+Cursor stores settings in SQLite (`state.vscdb`). Commands that write to that database (`on`, `off`) require Cursor to be fully quit first. VS Code stores the API key in `state.vscdb` as well, so `on` and `off` require quitting VS Code.
+
+With **Fireworks on Microsoft Foundry** (`--provider azure`), pass your Foundry **deployment name** to `on` with `--main` instead of browsing the Fireworks serverless catalog.
 
 Run `fireconnect help` for the overview, or `fireconnect claude help` (and similarly for other harnesses) for harness-level options.
 
@@ -3857,7 +3880,8 @@ These **serverless model short IDs** apply to **direct Fireworks routing** and e
 | `glm-latest`        | All-around use, agentic tasks | Version-tracking router; strong reasoning, 1M context.                                                                                                                           |
 | `glm-fast-latest`   | Latency-sensitive agentic use | Default for `main`, `opus`, and `fable` slots in Claude Code. Version-tracking router on the high-speed Fast serving path (100+ tok/s), at a higher per-token price. 1M context. |
 | `glm-5p2-fast`      | Latency-sensitive agentic use | Same as `glm-fast-latest` but pinned to GLM 5.2 rather than version-tracking. 1M context.                                                                                        |
-| `glm-5p1`           | General use (lighter)         | Default `sonnet` slot in Claude Code. Good balance of speed and quality.                                                                                                         |
+| `kimi-fast-latest`  | General use (lighter)         | Default `sonnet` slot in Claude Code. Fast Kimi variant with vision support.                                                                                                     |
+| `glm-5p1`           | General use (lighter)         | Pinned GLM 5.1; use with `--sonnet glm-5p1` if you prefer it over the default.                                                                                                   |
 | `deepseek-v4-flash` | Background / fast tasks       | Default `haiku` and `subagent` slots in Claude Code. Lowest latency.                                                                                                             |
 
 ### Fire Pass keys
@@ -3870,20 +3894,48 @@ Fire Pass keys work with direct Fireworks routing only. Use an Azure API key wit
   Codex does not support Fire Pass keys yet. Use a standard Fireworks API key (`fw_...`) with Codex.
 </Warning>
 
+## FireRouter
+
+[FireRouter](/ecosystem/firerouter/overview) is a managed routing service that sends simple requests to cheaper Fireworks open models and passes hard work through to closed-source models. In FireConnect v0.9.0, FireRouter is a first-class model — select it like any other:
+
+```bash theme={null}
+fireconnect claude on --model firerouter
+fireconnect claude on --opus firerouter
+fireconnect opencode on --model firerouter
+fireconnect codex on --model firerouter
+fireconnect pi on --model firerouter
+fireconnect vscode on --model firerouter
+```
+
+Use `--model firerouter` for the primary model or a Claude alias flag such as `--opus firerouter`. Cursor does not support FireRouter.
+
+Pass `--anthropic-api-key sk-ant-...` when your workspace does not have Anthropic BYOK provisioned server-side. See the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect) for authentication details.
+
 ## Migration from earlier syntax
 
-FireConnect uses harness-first commands. If you have older docs or scripts from pre-0.5.0 releases, update them:
+FireConnect uses harness-first commands. If you have older docs or scripts, update them:
 
-| Before                              | After                               |
-| ----------------------------------- | ----------------------------------- |
-| `fireconnect on`                    | `fireconnect claude on`             |
-| `fireconnect off`                   | `fireconnect claude off`            |
-| `fireconnect status`                | `fireconnect claude status`         |
-| `fireconnect list`                  | `fireconnect claude status`         |
-| `fireconnect set --main <id>`       | `fireconnect claude on --main <id>` |
-| `fireconnect reset`                 | `fireconnect claude model reset`    |
-| `fireconnect on --harness opencode` | `fireconnect opencode on`           |
-| `fireconnect model list`            | `fireconnect <harness> model list`  |
+### Pre-0.5.0 syntax
+
+| Before                              | After                                         |
+| ----------------------------------- | --------------------------------------------- |
+| `fireconnect on`                    | `fireconnect claude on`                       |
+| `fireconnect off`                   | `fireconnect claude off`                      |
+| `fireconnect status`                | `fireconnect claude status`                   |
+| `fireconnect list`                  | `fireconnect claude status`                   |
+| `fireconnect set --main <id>`       | `fireconnect claude on --main <id>`           |
+| `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
+| `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+
+### v0.9.0 changes
+
+| Before                               | After                                                     |
+| ------------------------------------ | --------------------------------------------------------- |
+| `fireconnect upgrade`                | Same as re-running the [install script](#upgrade-to-v090) |
+| `fireconnect <harness> model list`   | `fireconnect model list`                                  |
+| `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags     |
+| `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)          |
+| Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json`    |
 
 ## Source
 
@@ -3901,7 +3953,7 @@ Use Fireworks AI models in Pi with the FireConnect CLI
 
 * [Pi](https://pi.dev) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -3935,26 +3987,26 @@ Pi routes a single default model. The default is `glm-fast-latest`.
 FireConnect:
 
 * Sets `defaultProvider` / `defaultModel` in `~/.pi/agent/settings.json`
-* Stores the API key in `~/.pi/agent/auth.json` (`$FIREWORKS_API_KEY` when from env, literal with `--api-key`; never a literal in keychain mode)
-* Writes `auth.json` at mode `0600`
+* Stores a **baked plaintext literal** in `fireworks.key` in `~/.pi/agent/auth.json` (mode `0600`)
+* Registers the **preferred serverless catalog** in `~/.pi/agent/models.json` for Pi's `/model` picker
 
 FireConnect snapshots both files under `~/.fireconnect/pi/` before the first change. Running `fireconnect pi off` restores them byte-for-byte.
-
-### API key handling
-
-* If the key comes from the OS keychain, it is written as `$FIREWORKS_API_KEY` so the secret stays out of settings
-* Keychain mode installs a shell profile hook so Pi can read `FIREWORKS_API_KEY` at launch
-* Passing `--api-key` writes the literal key to `auth.json` instead
 
 ## Browsing and picking models
 
 ```bash theme={null}
-fireconnect pi model list              # browse serverless endpoints
-fireconnect pi model select            # pick Pi's default model
-fireconnect pi model select --search glm
+fireconnect model list --search glm
+fireconnect pi on --model glm-5p1
 ```
 
 Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+
+## FireRouter
+
+```bash theme={null}
+fireconnect pi on --model firerouter
+fireconnect pi on --model firerouter --anthropic-api-key sk-ant-...
+```
 
 ## CLI reference
 
@@ -3962,9 +4014,6 @@ Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
 fireconnect pi on              # Enable Fireworks routing
 fireconnect pi off             # Restore original settings and auth
 fireconnect pi status          # Check current provider and model
-fireconnect pi model list      # Browse serverless endpoints
-fireconnect pi model select    # Pick a model interactively
-fireconnect pi model reset     # Reset model to default
 fireconnect pi help            # Show harness-specific help
 ```
 
@@ -3973,7 +4022,7 @@ Run `fireconnect pi help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect pi on --main glm-5p1
+fireconnect pi on --model glm-5p1
 ```
 
 ### Turn off Fireworks routing
@@ -4015,9 +4064,9 @@ fireconnect pi on --azure --base-url https://<resource>.services.ai.azure.com --
 
 ### What gets written
 
-FireConnect registers a `fireworks-azure` **openai-completions** provider in Pi's `models.json` (labeled **Fireworks on Microsoft Foundry**) and sets `defaultProvider` / `defaultModel` in `settings.json`. The Azure API key is stored in `auth.json` as `$AZURE_API_KEY` when from the environment, or literally with `--api-key`.
+FireConnect registers a `fireworks-azure` **openai-completions** provider in Pi's `models.json` (labeled **Fireworks on Microsoft Foundry**) and sets `defaultProvider` / `defaultModel` in `settings.json`. The Azure API key is stored in `auth.json` as a literal when passed with `--api-key`, or as `$AZURE_API_KEY` when resolved from the environment.
 
-Pass your Foundry **deployment name** with `--main`. `model list` and `model select` browse the Fireworks serverless catalog only.
+Pass your Foundry **deployment name** with `--main`. Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path.
 
 ### Turn off Foundry routing
 
@@ -4057,7 +4106,7 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 * [Visual Studio Code](https://code.visualstudio.com) with the [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) extension
 * GitHub Copilot **Pro** or **Enterprise** (the free tier only supports the Auto model)
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for VS Code.** `fireconnect vscode on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -4084,21 +4133,25 @@ Start or restart VS Code, then open Copilot Chat and pick a Fireworks model from
 fireconnect vscode status   # read-only — works while VS Code is running
 ```
 
-## Browse and add models
+## Browse and switch models
 
-`model list`, `model add`, `model select`, and `model reset` only edit `chatLanguageModels.json`. VS Code hot-reloads that file — **no restart needed** for model changes.
+In v0.9.0, VS Code uses the Fireworks **Responses API** (`apiType: responses`). Kimi models support vision/image inputs; GLM models remain text-only.
 
 ```bash theme={null}
-fireconnect vscode model list              # browse serverless endpoints
-fireconnect vscode model list --search glm
-fireconnect vscode model add glm-fast-latest
-fireconnect vscode model add deepseek-v4-pro
-fireconnect vscode model select            # pick a model to add interactively
+fireconnect model list --search glm
+fireconnect vscode on --model deepseek-v4-flash
+fireconnect vscode on --model firerouter
 ```
 
-Short model IDs are expanded to full Fireworks paths. FireConnect writes model metadata (display name, token limits, tool calling, and vision flags) into your Copilot language-model config.
+`on` registers the preferred serverless catalog in the VS Code Chat model picker. Pick models under **Other Models → Fireworks** in Copilot Chat.
 
-In Copilot Chat, open the model picker (**Auto**), expand **Other Models**, and choose your model under **Fireworks**.
+## FireRouter
+
+```bash theme={null}
+fireconnect vscode on --model firerouter --anthropic-api-key sk-ant-...
+```
+
+The Fireworks key stays encrypted in `state.vscdb`. An Anthropic BYOK key is optional for pass-through to Claude Opus 4.8.
 
 ## What gets written
 
@@ -4117,7 +4170,7 @@ Platform paths:
 | macOS    | `~/Library/Application Support/Code/User/chatLanguageModels.json` | `~/Library/Application Support/Code/User/globalStorage/state.vscdb` |
 | Windows  | `%APPDATA%\Code\User\chatLanguageModels.json`                     | `%APPDATA%\Code\User\globalStorage\state.vscdb`                     |
 
-The endpoint uses model URL `https://api.fireworks.ai/inference` (VS Code appends `/v1/chat/completions`). The API key is **not** stored in the JSON — VS Code resolves the `${input:chat.lm.secret.<id>}` reference through its secret storage.
+The endpoint uses model URL `https://api.fireworks.ai/inference` (VS Code appends `/v1/responses` for the Responses API). The API key is **not** stored in the JSON — VS Code resolves the `${input:chat.lm.secret.<id>}` reference through its secret storage.
 
 On macOS, `safeStorage` encrypts with a master key VS Code stores in the login Keychain. On Linux, `safeStorage` needs `libsecret` (`secret-tool`) for real encryption — without it, Chromium falls back to a hardcoded password (obfuscated, not encrypted), which FireConnect still writes but warns about.
 
@@ -4129,10 +4182,6 @@ FireConnect snapshots the original `chatLanguageModels.json` under `~/.fireconne
 fireconnect vscode on              # Add the Fireworks provider (quit VS Code first)
 fireconnect vscode off             # Restore config and remove the stored key
 fireconnect vscode status          # Show provider, auth, and registered models
-fireconnect vscode model list      # Browse serverless endpoints
-fireconnect vscode model add <id>  # Add a model (hot-reloads)
-fireconnect vscode model select    # Pick a model to add interactively
-fireconnect vscode model reset     # Reset fireconnect-managed models to default
 fireconnect vscode help            # Show harness-specific help
 ```
 
@@ -4152,6 +4201,7 @@ This restores your previous `chatLanguageModels.json` from the backup in `~/.fir
 
 * [GitHub Copilot integration guide](/ecosystem/integrations/github-copilot) — manual custom-endpoint setup with screenshots
 * [Cursor](/ecosystem/fireconnect/cursor) — use Fireworks models in Cursor IDE
+* [FireRouter](/ecosystem/firerouter/overview) — automatic cost routing via `--model firerouter`
 
 ## Source
 
@@ -4217,25 +4267,26 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 ## Related
 
 * [Quickstart](/ecosystem/firerouter/quickstart): API call examples
-* [Claude Code](/ecosystem/firerouter/claude-code): `settings.json` setup
+* [Claude Code (manual setup)](/ecosystem/firerouter/claude-code): `settings.json` setup
 * [Overview](/ecosystem/firerouter/overview): routing model and model ID
 
 
-# Claude Code
+# Claude Code (manual setup)
 Source: https://docs.fireworks.ai/ecosystem/firerouter/claude-code
 
-Use FireRouter in Claude Code with settings.json
+Configure FireRouter in Claude Code by editing settings.json
+
+For one-command setup, use [FireConnect](/ecosystem/fireconnect/claude-code#firerouter) (`fireconnect claude on --model firerouter`, v0.9.0+). This page covers manual configuration by editing `settings.json` directly.
 
 ## Prerequisites
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
+* An Anthropic API key if you need pass-through to Claude Opus 4.8 — see [Authentication](/ecosystem/firerouter/authentication)
 
-## `settings.json`
+Add one of the configs below to `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`), then restart Claude Code.
 
-Add one of these to `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`).
-
-### With a Claude subscription
+## With a Claude subscription
 
 You do not need to pass any access or API token. Use `ANTHROPIC_CUSTOM_HEADERS` to pass your Fireworks API key.
 
@@ -4254,7 +4305,7 @@ You do not need to pass any access or API token. Use `ANTHROPIC_CUSTOM_HEADERS` 
 }
 ```
 
-### With an Anthropic API key
+## With an Anthropic API key
 
 Add `ANTHROPIC_API_KEY` for pass-through. You still need `ANTHROPIC_CUSTOM_HEADERS` for your Fireworks API key.
 
@@ -4410,6 +4461,43 @@ FireRouter uses a bring-your-own-key (BYOK) model:
 
 FireRouter never stores your provider keys server-side. You send them on each request.
 
+## FireConnect
+
+The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, FireRouter is a first-class model — select it with `--model firerouter`.
+
+### Upgrade to v0.9.0
+
+If you use FireConnect with an older release, upgrade before enabling FireRouter:
+
+```bash theme={null}
+curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
+```
+
+Re-run the installer (recommended over `fireconnect upgrade`). Your stored API key and non-Claude harness settings are preserved. If Claude Code is connected, the installer temporarily restores your original settings — reconnect after upgrade:
+
+```bash theme={null}
+fireconnect claude on --model firerouter
+```
+
+See [Upgrade to v0.9.0](/ecosystem/fireconnect/overview#upgrade-to-v090) for full details.
+
+### Enable FireRouter
+
+```bash theme={null}
+fireconnect login
+fireconnect claude on --model firerouter
+fireconnect opencode on --model firerouter
+fireconnect codex on --model firerouter
+fireconnect pi on --model firerouter
+fireconnect vscode on --model firerouter
+```
+
+For Claude Code, use alias flags to route specific slots — for example, `fireconnect claude on --opus firerouter` sets only the Opus slot to FireRouter while leaving the primary on the default open model.
+
+Pass `--anthropic-api-key sk-ant-...` when your Fireworks workspace does not have Anthropic BYOK provisioned server-side. Without an Anthropic key, FireRouter still routes among Fireworks open models but cannot pass through to Claude Opus 4.8.
+
+Cursor does not support FireRouter through FireConnect.
+
 ## Endpoint
 
 FireRouter is available through the Fireworks inference API:
@@ -4459,11 +4547,12 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 
 ## Client integrations
 
-| Integration                                      | When to use                                                        |
-| ------------------------------------------------ | ------------------------------------------------------------------ |
-| [Quickstart](/ecosystem/firerouter/quickstart)   | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client) |
-| [Claude Code](/ecosystem/firerouter/claude-code) | Coding harness setup with `settings.json`                          |
-| [LiteLLM](/ecosystem/firerouter/litellm)         | Add FireRouter to a LiteLLM Proxy deployment                       |
+| Integration                                                     | When to use                                                                       |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for Claude Code, OpenCode, Codex, Pi, and VS Code (recommended) |
+| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                |
+| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup                                                      |
+| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                      |
 
 ## What FireRouter is not
 
@@ -4473,12 +4562,16 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 ## Next steps
 
 <CardGroup>
+  <Card title="FireConnect" icon="plug" href="/ecosystem/fireconnect/overview">
+    Enable FireRouter with one command
+  </Card>
+
   <Card title="Quickstart" icon="rocket" href="/ecosystem/firerouter/quickstart">
     Make your first API call
   </Card>
 
-  <Card title="Claude Code" icon="terminal" href="/ecosystem/firerouter/claude-code">
-    Configure FireRouter in Claude Code
+  <Card title="Claude Code (manual)" icon="terminal" href="/ecosystem/firerouter/claude-code">
+    Edit settings.json for FireRouter in Claude Code
   </Card>
 
   <Card title="Authentication" icon="key" href="/ecosystem/firerouter/authentication">
@@ -4502,7 +4595,7 @@ Make your first FireRouter API call
 
 This guide shows how to call FireRouter directly through the Fireworks inference API. See the [overview](/ecosystem/firerouter/overview) for how routing works and the [authentication](/ecosystem/firerouter/authentication) page for header details.
 
-To use FireRouter in [Claude Code](https://claude.ai/code), see [Claude Code](/ecosystem/firerouter/claude-code).
+For coding harnesses, use [FireConnect](/ecosystem/fireconnect/overview) — `fireconnect <harness> on --model firerouter` (v0.9.0+). For manual Claude Code setup, see [Claude Code (manual setup)](/ecosystem/firerouter/claude-code).
 
 ## Prerequisites
 
@@ -4557,7 +4650,7 @@ You can also send the Fireworks key as `X-Fireworks-Api-Key` instead of `Authori
 * [Authentication](/ecosystem/firerouter/authentication): header reference
 * [Routing preferences](/ecosystem/firerouter/routing-preferences): tune cost vs. quality
 * [LiteLLM](/ecosystem/firerouter/litellm): add FireRouter to LiteLLM Proxy
-* [Claude Code](/ecosystem/firerouter/claude-code): harness setup with `settings.json`
+* [Claude Code (manual setup)](/ecosystem/firerouter/claude-code): edit `settings.json` directly
 
 
 # Routing preferences

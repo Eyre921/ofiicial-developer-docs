@@ -148,7 +148,7 @@
 - `ecosystem/fireconnect/pi` — [Pi](pages/ecosystem/fireconnect/pi.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/pi)
 - `ecosystem/fireconnect/vscode` — [VS Code](pages/ecosystem/fireconnect/vscode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/vscode)
 - `ecosystem/firerouter/authentication` — [Authentication](pages/ecosystem/firerouter/authentication.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/authentication)
-- `ecosystem/firerouter/claude-code` — [Claude Code](pages/ecosystem/firerouter/claude-code.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/claude-code)
+- `ecosystem/firerouter/claude-code` — [Claude Code (manual setup)](pages/ecosystem/firerouter/claude-code.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/claude-code)
 - `ecosystem/firerouter/litellm` — [LiteLLM](pages/ecosystem/firerouter/litellm.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/litellm)
 - `ecosystem/firerouter/overview` — [Overview](pages/ecosystem/firerouter/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/overview)
 - `ecosystem/firerouter/quickstart` — [Quickstart](pages/ecosystem/firerouter/quickstart.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/quickstart)

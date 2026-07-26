@@ -12,7 +12,7 @@ Use Fireworks AI models in Pi with the FireConnect CLI
 
 * [Pi](https://pi.dev) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -46,26 +46,26 @@ Pi routes a single default model. The default is `glm-fast-latest`.
 FireConnect:
 
 * Sets `defaultProvider` / `defaultModel` in `~/.pi/agent/settings.json`
-* Stores the API key in `~/.pi/agent/auth.json` (`$FIREWORKS_API_KEY` when from env, literal with `--api-key`; never a literal in keychain mode)
-* Writes `auth.json` at mode `0600`
+* Stores a **baked plaintext literal** in `fireworks.key` in `~/.pi/agent/auth.json` (mode `0600`)
+* Registers the **preferred serverless catalog** in `~/.pi/agent/models.json` for Pi's `/model` picker
 
 FireConnect snapshots both files under `~/.fireconnect/pi/` before the first change. Running `fireconnect pi off` restores them byte-for-byte.
-
-### API key handling
-
-* If the key comes from the OS keychain, it is written as `$FIREWORKS_API_KEY` so the secret stays out of settings
-* Keychain mode installs a shell profile hook so Pi can read `FIREWORKS_API_KEY` at launch
-* Passing `--api-key` writes the literal key to `auth.json` instead
 
 ## Browsing and picking models
 
 ```bash theme={null}
-fireconnect pi model list              # browse serverless endpoints
-fireconnect pi model select            # pick Pi's default model
-fireconnect pi model select --search glm
+fireconnect model list --search glm
+fireconnect pi on --model glm-5p1
 ```
 
 Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+
+## FireRouter
+
+```bash theme={null}
+fireconnect pi on --model firerouter
+fireconnect pi on --model firerouter --anthropic-api-key sk-ant-...
+```
 
 ## CLI reference
 
@@ -73,9 +73,6 @@ Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
 fireconnect pi on              # Enable Fireworks routing
 fireconnect pi off             # Restore original settings and auth
 fireconnect pi status          # Check current provider and model
-fireconnect pi model list      # Browse serverless endpoints
-fireconnect pi model select    # Pick a model interactively
-fireconnect pi model reset     # Reset model to default
 fireconnect pi help            # Show harness-specific help
 ```
 
@@ -84,7 +81,7 @@ Run `fireconnect pi help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect pi on --main glm-5p1
+fireconnect pi on --model glm-5p1
 ```
 
 ### Turn off Fireworks routing
@@ -126,9 +123,9 @@ fireconnect pi on --azure --base-url https://<resource>.services.ai.azure.com --
 
 ### What gets written
 
-FireConnect registers a `fireworks-azure` **openai-completions** provider in Pi's `models.json` (labeled **Fireworks on Microsoft Foundry**) and sets `defaultProvider` / `defaultModel` in `settings.json`. The Azure API key is stored in `auth.json` as `$AZURE_API_KEY` when from the environment, or literally with `--api-key`.
+FireConnect registers a `fireworks-azure` **openai-completions** provider in Pi's `models.json` (labeled **Fireworks on Microsoft Foundry**) and sets `defaultProvider` / `defaultModel` in `settings.json`. The Azure API key is stored in `auth.json` as a literal when passed with `--api-key`, or as `$AZURE_API_KEY` when resolved from the environment.
 
-Pass your Foundry **deployment name** with `--main`. `model list` and `model select` browse the Fireworks serverless catalog only.
+Pass your Foundry **deployment name** with `--main`. Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path.
 
 ### Turn off Foundry routing
 

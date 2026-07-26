@@ -111,7 +111,7 @@ Each harness writes a dedicated `fireworks-azure` provider distinct from the Fir
 `fireconnect <harness> status` reports `azure` as the provider along with the endpoint and deployment name.
 
 <Warning>
-  `fireconnect <harness> model list` and `model select` browse the **Fireworks serverless catalog** only. They do not list Foundry deployments. With `--provider azure`, set your deployment with `--main` on `on`.
+  `fireconnect model list` browses the **Fireworks serverless catalog** only. It does not list Foundry deployments. With `--provider azure`, set your deployment with `--main` (or `--model`) on `on`.
 </Warning>
 
 ## Turn off Foundry routing

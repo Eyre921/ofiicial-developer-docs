@@ -38,6 +38,43 @@ FireRouter uses a bring-your-own-key (BYOK) model:
 
 FireRouter never stores your provider keys server-side. You send them on each request.
 
+## FireConnect
+
+The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, FireRouter is a first-class model — select it with `--model firerouter`.
+
+### Upgrade to v0.9.0
+
+If you use FireConnect with an older release, upgrade before enabling FireRouter:
+
+```bash theme={null}
+curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
+```
+
+Re-run the installer (recommended over `fireconnect upgrade`). Your stored API key and non-Claude harness settings are preserved. If Claude Code is connected, the installer temporarily restores your original settings — reconnect after upgrade:
+
+```bash theme={null}
+fireconnect claude on --model firerouter
+```
+
+See [Upgrade to v0.9.0](/ecosystem/fireconnect/overview#upgrade-to-v090) for full details.
+
+### Enable FireRouter
+
+```bash theme={null}
+fireconnect login
+fireconnect claude on --model firerouter
+fireconnect opencode on --model firerouter
+fireconnect codex on --model firerouter
+fireconnect pi on --model firerouter
+fireconnect vscode on --model firerouter
+```
+
+For Claude Code, use alias flags to route specific slots — for example, `fireconnect claude on --opus firerouter` sets only the Opus slot to FireRouter while leaving the primary on the default open model.
+
+Pass `--anthropic-api-key sk-ant-...` when your Fireworks workspace does not have Anthropic BYOK provisioned server-side. Without an Anthropic key, FireRouter still routes among Fireworks open models but cannot pass through to Claude Opus 4.8.
+
+Cursor does not support FireRouter through FireConnect.
+
 ## Endpoint
 
 FireRouter is available through the Fireworks inference API:
@@ -87,11 +124,12 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 
 ## Client integrations
 
-| Integration                                      | When to use                                                        |
-| ------------------------------------------------ | ------------------------------------------------------------------ |
-| [Quickstart](/ecosystem/firerouter/quickstart)   | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client) |
-| [Claude Code](/ecosystem/firerouter/claude-code) | Coding harness setup with `settings.json`                          |
-| [LiteLLM](/ecosystem/firerouter/litellm)         | Add FireRouter to a LiteLLM Proxy deployment                       |
+| Integration                                                     | When to use                                                                       |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for Claude Code, OpenCode, Codex, Pi, and VS Code (recommended) |
+| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                |
+| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup                                                      |
+| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                      |
 
 ## What FireRouter is not
 
@@ -101,12 +139,16 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 ## Next steps
 
 <CardGroup>
+  <Card title="FireConnect" icon="plug" href="/ecosystem/fireconnect/overview">
+    Enable FireRouter with one command
+  </Card>
+
   <Card title="Quickstart" icon="rocket" href="/ecosystem/firerouter/quickstart">
     Make your first API call
   </Card>
 
-  <Card title="Claude Code" icon="terminal" href="/ecosystem/firerouter/claude-code">
-    Configure FireRouter in Claude Code
+  <Card title="Claude Code (manual)" icon="terminal" href="/ecosystem/firerouter/claude-code">
+    Edit settings.json for FireRouter in Claude Code
   </Card>
 
   <Card title="Authentication" icon="key" href="/ecosystem/firerouter/authentication">

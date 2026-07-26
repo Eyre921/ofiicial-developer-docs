@@ -1,6 +1,6 @@
 # dev-platforms/github 文档索引
 
-> 共 89 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 95 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api
@@ -21,6 +21,7 @@
 - `en/actions` — [GitHub Actions](pages/en/actions.md) · [原文](https://docs.github.com/en/actions.md)
 - `en/actions/get-started/quickstart` — [Quickstart](pages/en/actions/get-started/quickstart.md) · [原文](https://docs.github.com/en/actions/get-started/quickstart.md)
 - `en/actions/get-started/understand-github-actions` — [Understand GitHub Actions](pages/en/actions/get-started/understand-github-actions.md) · [原文](https://docs.github.com/en/actions/get-started/understand-github-actions.md)
+- `en/actions/reference/workflows-and-actions/events-that-trigger-workflows` — [Events that trigger workflows](pages/en/actions/reference/workflows-and-actions/events-that-trigger-workflows.md) · [原文](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows.md)
 - `en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps` — [About creating apps](pages/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps.md) · [原文](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps.md)
 - `en/apps/using-github-apps/authorizing-github-apps` — [Authorize](pages/en/apps/using-github-apps/authorizing-github-apps.md) · [原文](https://docs.github.com/en/apps/using-github-apps/authorizing-github-apps.md)
 - `en/authentication/connecting-to-github-with-ssh` — [Connect with SSH](pages/en/authentication/connecting-to-github-with-ssh.md) · [原文](https://docs.github.com/en/authentication/connecting-to-github-with-ssh.md)
@@ -40,25 +41,29 @@
 - `en/billing/concepts/product-billing/github-models` — [GitHub Models](pages/en/billing/concepts/product-billing/github-models.md) · [原文](https://docs.github.com/en/billing/concepts/product-billing/github-models.md)
 - `en/codespaces` — [Codespaces](pages/en/codespaces.md) · [原文](https://docs.github.com/en/codespaces.md)
 - `en/copilot/concepts/agents/about-agent-skills` — [Agent skills](pages/en/copilot/concepts/agents/about-agent-skills.md) · [原文](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills.md)
-- `en/copilot/concepts/agents/copilot-cli/about-copilot-cli` — [About Copilot CLI](pages/en/copilot/concepts/agents/copilot-cli/about-copilot-cli.md) · [原文](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli.md)
+- `en/copilot/concepts/agents/cloud-agent/about-cloud-agent` — [About cloud agent](pages/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md) · [原文](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md)
 - `en/copilot/concepts/billing/individual-plans` — [Individual plans](pages/en/copilot/concepts/billing/individual-plans.md) · [原文](https://docs.github.com/en/copilot/concepts/billing/individual-plans.md)
 - `en/copilot/concepts/billing/usage-based-billing-for-individuals` — [Usage-based billing for individuals](pages/en/copilot/concepts/billing/usage-based-billing-for-individuals.md) · [原文](https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-individuals.md)
 - `en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises` — [Usage-based billing for organizations and enterprises](pages/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises.md) · [原文](https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises.md)
 - `en/copilot/concepts/usage-limits` — [Usage limits](pages/en/copilot/concepts/usage-limits.md) · [原文](https://docs.github.com/en/copilot/concepts/usage-limits.md)
 - `en/copilot/get-started/features` — [Features](pages/en/copilot/get-started/features.md) · [原文](https://docs.github.com/en/copilot/get-started/features.md)
 - `en/copilot/get-started/plans` — [Plans](pages/en/copilot/get-started/plans.md) · [原文](https://docs.github.com/en/copilot/get-started/plans.md)
-- `en/copilot/get-started/quickstart` — [Quickstart](pages/en/copilot/get-started/quickstart.md) · [原文](https://docs.github.com/en/copilot/get-started/quickstart.md)
 - `en/copilot/get-started/what-is-github-copilot` — [What is GitHub Copilot?](pages/en/copilot/get-started/what-is-github-copilot.md) · [原文](https://docs.github.com/en/copilot/get-started/what-is-github-copilot.md)
+- `en/copilot/how-tos/copilot-cli/cli-best-practices` — [Copilot CLI best practices](pages/en/copilot/how-tos/copilot-cli/cli-best-practices.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/cli-best-practices.md)
 - `en/copilot/how-tos/copilot-cli/cli-getting-started` — [Copilot CLI quickstart](pages/en/copilot/how-tos/copilot-cli/cli-getting-started.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/cli-getting-started.md)
 - `en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli` — [Install Copilot CLI](pages/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md)
 - `en/copilot/how-tos/copilot-cli/use-copilot-cli/overview` — [Overview](pages/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md)
+- `en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions` — [Add repository instructions](pages/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions.md)
+- `en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills` — [Add agent skills](pages/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills.md)
+- `en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions` — [Get IDE code suggestions](pages/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md) · [原文](https://docs.github.com/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md)
 - `en/copilot/how-tos/manage-your-account/manage-policies` — [Manage policies](pages/en/copilot/how-tos/manage-your-account/manage-policies.md) · [原文](https://docs.github.com/en/copilot/how-tos/manage-your-account/manage-policies.md)
-- `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp` — [Extend Copilot Chat with MCP](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md)
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server` — [Set up the GitHub MCP Server](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server.md)
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server` — [Use the GitHub MCP Server](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server.md)
 - `en/copilot/how-tos/set-up/install-copilot-extension` — [Install Copilot extension](pages/en/copilot/how-tos/set-up/install-copilot-extension.md) · [原文](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-extension.md)
 - `en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues` — [Troubleshoot common issues](pages/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues.md) · [原文](https://docs.github.com/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues.md)
+- `en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review` — [Use code review](pages/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review.md) · [原文](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review.md)
 - `en/copilot/reference/ai-models/model-comparison` — [Model comparison](pages/en/copilot/reference/ai-models/model-comparison.md) · [原文](https://docs.github.com/en/copilot/reference/ai-models/model-comparison.md)
+- `en/copilot/reference/ai-models/model-hosting` — [Model hosting](pages/en/copilot/reference/ai-models/model-hosting.md) · [原文](https://docs.github.com/en/copilot/reference/ai-models/model-hosting.md)
 - `en/copilot/reference/copilot-billing/models-and-pricing` — [Models and pricing](pages/en/copilot/reference/copilot-billing/models-and-pricing.md) · [原文](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing.md)
 - `en/get-started` — [Get started](pages/en/get-started.md) · [原文](https://docs.github.com/en/get-started.md)
 - `en/get-started/git-basics/about-remote-repositories` — [About remote repositories](pages/en/get-started/git-basics/about-remote-repositories.md) · [原文](https://docs.github.com/en/get-started/git-basics/about-remote-repositories.md)
@@ -95,5 +100,6 @@
 - `en/repositories/releasing-projects-on-github/about-releases` — [About releases](pages/en/repositories/releasing-projects-on-github/about-releases.md) · [原文](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases.md)
 - `en/rest` — [REST API](pages/en/rest.md) · [原文](https://docs.github.com/en/rest.md)
 - `en/rest/authentication/authenticating-to-the-rest-api` — [Authenticating](pages/en/rest/authentication/authenticating-to-the-rest-api.md) · [原文](https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api.md)
+- `en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens` — [Permissions for fine-grained PATs](pages/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens.md) · [原文](https://docs.github.com/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens.md)
 - `en/search-github/github-code-search/understanding-github-code-search-syntax` — [Code search syntax](pages/en/search-github/github-code-search/understanding-github-code-search-syntax.md) · [原文](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax.md)
 - `en/search-github/searching-on-github/searching-issues-and-pull-requests` — [Search issues & PRs](pages/en/search-github/searching-on-github/searching-issues-and-pull-requests.md) · [原文](https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests.md)

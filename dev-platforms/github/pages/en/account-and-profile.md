@@ -24,7 +24,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 
-  <p>You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.</p>
+  You can share information about yourself with other users by setting a profile picture and adding a bio to your profile.
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
@@ -40,7 +40,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 
-  If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.
+  <p>If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.</p>
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 

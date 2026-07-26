@@ -60,5 +60,5 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 ## Related
 
 * [Quickstart](/ecosystem/firerouter/quickstart): API call examples
-* [Claude Code](/ecosystem/firerouter/claude-code): `settings.json` setup
+* [Claude Code (manual setup)](/ecosystem/firerouter/claude-code): `settings.json` setup
 * [Overview](/ecosystem/firerouter/overview): routing model and model ID

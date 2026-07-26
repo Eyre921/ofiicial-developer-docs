@@ -34,7 +34,7 @@ Within a listing, individual languages are delivered as **versions** of the mode
 
 When using Deepgram services in Amazon SageMaker, please be aware of the following limitations.
 
-* Deepgram cannot call Large Langage Model (LLM) services
+* The SageMaker network isolation model prevents the container from making outbound calls to external LLM providers. As a result, the [Deepgram Voice Agent](/docs/voice-agent) cannot run inside SageMaker.
 * Deepgram cannot invoke user-defined [callback URLs](/docs/callback)
 * Passing a JSON payload for transcription (e.g., referencing a file stored in cloud storage via URL) is unsupported, as the SageMaker isolation model prevents the container from reaching out to external cloud storage
 * Deepgram [custom metrics](/docs/metrics-guide) are not currently available through Amazon SageMaker Endpoints

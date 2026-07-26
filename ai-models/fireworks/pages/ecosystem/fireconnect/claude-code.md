@@ -12,7 +12,7 @@ Use Fireworks AI models in Claude Code with the FireConnect CLI
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
+* The FireConnect CLI v0.9.0+ (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -37,7 +37,7 @@ Restart Claude Code after enabling, then test with:
 hi
 ```
 
-After `fireconnect claude on`, `model select`, or `model reset`, settings are updated immediately. To use a new model in the same session, run `/model` in Claude Code, start a new session, or `/exit` and resume with `claude --resume <id>`.
+After `fireconnect claude on`, start a new Claude Code session or run `/model` to pick up model changes. To use a new model in the same session, start a new session or `/exit` and resume with `claude --resume <id>`.
 
 ## Using Fire Pass
 
@@ -56,7 +56,7 @@ FireConnect detects Fire Pass keys and routes all model aliases to `glm-fast-lat
 | main     | `glm-fast-latest`       | `glm-fast-latest`         |
 | opus     | `glm-fast-latest`       | `glm-fast-latest`         |
 | fable    | `glm-fast-latest`       | `glm-fast-latest`         |
-| sonnet   | `glm-5p1`               | `glm-fast-latest`         |
+| sonnet   | `kimi-fast-latest`      | `glm-fast-latest`         |
 | haiku    | `deepseek-v4-flash`     | `glm-fast-latest`         |
 | subagent | `deepseek-v4-flash`     | `glm-fast-latest`         |
 
@@ -64,67 +64,70 @@ Short model IDs like `glm-fast-latest` are expanded to full Fireworks paths (for
 
 ## What gets written
 
-FireConnect writes these settings to `~/.claude/settings.json` (no literal API key in the file — the key lives in the OS keychain and is fetched at runtime via `apiKeyHelper`):
+FireConnect writes these settings to `~/.claude/settings.json`. Claude Code authenticates via the `X-Fireworks-Api-Key` custom header (not `apiKeyHelper`). The Fireworks key is written to the file with mode `0600`:
 
 ```json theme={null}
 {
-  "apiKeyHelper": "/path/to/fireconnect key export",
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
     "ANTHROPIC_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "accounts/fireworks/models/glm-5p1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "accounts/fireworks/routers/kimi-fast-latest",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "accounts/fireworks/models/deepseek-v4-flash",
     "ANTHROPIC_DEFAULT_FABLE_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "accounts/fireworks/models/deepseek-v4-flash"
+    "CLAUDE_CODE_SUBAGENT_MODEL": "accounts/fireworks/models/deepseek-v4-flash",
+    "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
   }
 }
 ```
 
-Claude Code calls `apiKeyHelper` at runtime to fetch the key from the OS keychain. FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them.
+FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them.
 
 ## Browsing and picking models
 
-```bash theme={null}
-fireconnect claude model list              # browse callable serverless endpoints
-fireconnect claude model select            # pick a model for Claude Code
-fireconnect claude model select --slot sonnet   # update one alias
-```
-
-### `fireconnect claude model list`
-
-Lists serverless models from the Fireworks API (`supports_serverless=true`) and merges known public platform routers (`glm-latest`, `glm-fast-latest`, `glm-5p2-fast`, `kimi-fast-latest`, `kimi-latest`, `kimi-k2p6-turbo`, and `kimi-k2p7-code-fast`). Every row is tagged `serverless`.
+Browse the global catalog, then configure Claude Code through `on`:
 
 ```bash theme={null}
-fireconnect claude model list
-fireconnect claude model list --search glm
-fireconnect claude model list --json
+fireconnect model list --search glm
+fireconnect claude on --sonnet kimi-latest
+fireconnect claude on --main glm-fast-latest --sonnet kimi-fast-latest
 ```
 
-Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+### `fireconnect model list`
 
-### `fireconnect claude model select`
-
-Interactive picker. Requires a terminal and Fireworks to be enabled.
+Lists the shared Fireworks serverless catalog (coding-tagged models plus known platform routers). Every row is tagged `serverless`.
 
 ```bash theme={null}
-fireconnect claude model select
-fireconnect claude model select --slot sonnet
-fireconnect claude model select --slot sonnet --search glm
+fireconnect model list
+fireconnect model list --search glm
+fireconnect model list --json
 ```
 
-### `fireconnect claude status` vs `fireconnect claude model list`
+Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only. Standard keys include `firerouter`.
 
-| Command                         | Shows                                                                                          |
-| ------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `fireconnect claude status`     | Your current provider, auth, configured alias mapping, and Fireworks serverless rates per slot |
-| `fireconnect claude model list` | Available serverless endpoints from the Fireworks API, with IN / OUT pricing where known       |
+### `fireconnect claude status` vs `fireconnect model list`
+
+| Command                     | Shows                                                                                          |
+| --------------------------- | ---------------------------------------------------------------------------------------------- |
+| `fireconnect claude status` | Your current provider, auth, configured alias mapping, and Fireworks serverless rates per slot |
+| `fireconnect model list`    | Available serverless endpoints from the Fireworks API, with IN / OUT pricing where known       |
+
+## FireRouter
+
+Route requests through [FireRouter](/ecosystem/firerouter/overview) — a managed service that sends simple work to cheaper open models and passes hard requests to Claude Opus 4.8:
+
+```bash theme={null}
+fireconnect claude on --model firerouter
+fireconnect claude on --opus firerouter --anthropic-api-key sk-ant-...
+```
+
+Use `--model firerouter` for the primary model or alias flags like `--opus firerouter` for specific slots.
 
 ## Claude Code pricing estimates
 
 Claude Code's `/model` picker and session cost estimates use **Anthropic list prices**, not Fireworks serverless rates. For example, the default `glm-fast-latest` mapping may show Opus-tier estimates around **$5 / $25 per Mtok** while Fireworks bills at model-specific serverless rates (often much lower).
 
-FireConnect cannot override Claude Code's price column. Use `fireconnect claude status` and `fireconnect claude model list` for Fireworks rates, and check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
+FireConnect cannot override Claude Code's price column. Use `fireconnect claude status` and `fireconnect model list` for Fireworks rates, and check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
 
 FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Fireworks rates for your **main** model — that text appears as the subtitle on the custom picker entry at the bottom of `/model`, not in the price column.
 
@@ -134,10 +137,7 @@ FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Firewor
 fireconnect claude on         # Route Claude Code through Fireworks
 fireconnect claude off        # Restore your previous provider
 fireconnect claude status     # Show the current provider and model mapping
-fireconnect claude usage      # Estimate usage cost from a session log
-fireconnect claude model list # Browse serverless models
-fireconnect claude model select   # Pick a model interactively
-fireconnect claude model reset    # Reset model aliases to defaults
+fireconnect claude usage      # Session token usage and estimated Fireworks cost
 fireconnect claude help       # Show harness-specific help
 ```
 
@@ -146,13 +146,8 @@ Run `fireconnect claude help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect claude on --main glm-fast-latest --sonnet glm-5p1 --haiku deepseek-v4-flash --subagent deepseek-v4-flash
-```
-
-Or pick interactively:
-
-```bash theme={null}
-fireconnect claude model select --slot opus
+fireconnect claude on --main glm-fast-latest --sonnet kimi-fast-latest --haiku deepseek-v4-flash --subagent deepseek-v4-flash
+fireconnect claude on --model firerouter   # route through FireRouter
 ```
 
 ### Turn off Fireworks routing
