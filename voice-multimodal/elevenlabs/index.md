@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1193 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1191 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -259,7 +259,6 @@
 - `docs/api-reference/tools/delete` — [Delete tool](pages/docs/api-reference/tools/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/delete.md)
 - `docs/api-reference/tools/get` — [Get tool](pages/docs/api-reference/tools/get.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get.md)
 - `docs/api-reference/tools/get-dependent-agents` — [Get dependent agents](pages/docs/api-reference/tools/get-dependent-agents.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-dependent-agents.md)
-- `docs/api-reference/tools/get-executions` — [Get tool executions](pages/docs/api-reference/tools/get-executions.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/get-executions.md)
 - `docs/api-reference/tools/list` — [List tools](pages/docs/api-reference/tools/list.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/list.md)
 - `docs/api-reference/tools/update` — [Update tool](pages/docs/api-reference/tools/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/update.md)
 - `docs/api-reference/twilio/outbound-call` — [Outbound call via twilio](pages/docs/api-reference/twilio/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/outbound-call.md)
@@ -451,7 +450,6 @@
 - `docs/eleven-agents/api-reference/tests/run-tests` — [Run tests on agent](pages/docs/eleven-agents/api-reference/tests/run-tests.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests.md)
 - `docs/eleven-agents/api-reference/tests/summaries` — [Get test summaries](pages/docs/eleven-agents/api-reference/tests/summaries.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/summaries.md)
 - `docs/eleven-agents/api-reference/tests/test-folders/create` — [Create folder](pages/docs/eleven-agents/api-reference/tests/test-folders/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/create.md)
-- `docs/eleven-agents/api-reference/tests/test-folders/delete` — [Delete folder](pages/docs/eleven-agents/api-reference/tests/test-folders/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/delete.md)
 - `docs/eleven-agents/api-reference/tests/test-folders/get` — [Get folder](pages/docs/eleven-agents/api-reference/tests/test-folders/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/get.md)
 - `docs/eleven-agents/api-reference/tests/test-folders/move` — [Bulk move tests to folder](pages/docs/eleven-agents/api-reference/tests/test-folders/move.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/move.md)
 - `docs/eleven-agents/api-reference/tests/test-folders/update` — [Update folder](pages/docs/eleven-agents/api-reference/tests/test-folders/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/update.md)

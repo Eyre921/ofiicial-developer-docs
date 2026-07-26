@@ -16,7 +16,7 @@ To get started generating your first audio using Text to Speech, it's very simpl
 
 ## Guide
 
-![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233135Z&X-Amz-Expires=604800&X-Amz-Signature=11a4dacc1507a56bead71d9719d7409bea17d8fb25a5596fab2e993c744501a0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113131Z&X-Amz-Expires=604800&X-Amz-Signature=d667d1bbf8741cf9192bf65a75ce1b745feed98c2efb41bbfce84db75c9d80bf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust settings (optional)
 
@@ -49,7 +49,7 @@ The order of importance goes as follows: **Voice** selection is most important, 
 ### Voices
 
 ![Text to Speech voice
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233135Z&X-Amz-Expires=604800&X-Amz-Signature=9dcca06eb6a753ebf7e00c12d7fe6b3e0510a85506e559f70736af27b7c707eb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113131Z&X-Amz-Expires=604800&X-Amz-Signature=2f811290432b446e3442d162911e9be36bfb5a1eb2c6f372b04d82ee5ae3bdaf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer many types of voices, including the curated **Default Voices**, our vast **Voices Library&#x20;**&#x77;ith almost any voices you can imagine, completely synthetic voices created using our **Voice Design** tool, and you can create your own collection of cloned voices using our two technologies: **Instant Voice Cloning** and **Professional Voice Cloning**.
 
@@ -72,7 +72,7 @@ Keep in mind, voice remixing only works for specific voices. For example, you ca
 ### Models
 
 ![Text to Speech model
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233135Z&X-Amz-Expires=604800&X-Amz-Signature=ae920380e4cc188530b4734f5c102909311f91df1737adfa3744fe8ea303e46e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113131Z&X-Amz-Expires=604800&X-Amz-Signature=a6b3a741413dd62faaea4c488d7efa6175494675c0a308bbb440391d58fd1d15&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer two families of models: **Standard (high-quality)** models and **Flash** models, which are optimized for extremely low latency. Most families include both English-only and multilingual versions.
 
@@ -125,7 +125,7 @@ Faster model, 50% lower price per character for API generations
 ### Voice settings
 
 ![Text to Speech voice
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233135Z&X-Amz-Expires=604800&X-Amz-Signature=875cee3c5ef03a7c7b3e789312f50f9c0feed2a9392a2bc00d50ad30af50b48e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113131Z&X-Amz-Expires=604800&X-Amz-Signature=f45480f1702c298cd471bfbf03a304dcb6228b433b583c3d315e7b1c009e547b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The most common setting is stability around 50, similarity around 75, and keeping style at 0, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 

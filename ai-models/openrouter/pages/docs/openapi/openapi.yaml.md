@@ -4519,6 +4519,7 @@ components:
         - meta
         - minimax
         - mistral
+        - modal
         - modelrun
         - modular
         - moonshotai
@@ -19934,6 +19935,7 @@ components:
       type: string
     ProviderName:
       enum:
+        - Modal
         - AkashML
         - AI21
         - AionLabs
@@ -27480,6 +27482,7 @@ paths:
               - meta
               - minimax
               - mistral
+              - modal
               - modelrun
               - modular
               - moonshotai

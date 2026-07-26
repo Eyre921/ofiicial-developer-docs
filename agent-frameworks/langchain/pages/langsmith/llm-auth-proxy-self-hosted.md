@@ -795,7 +795,7 @@ The JWT is passed to your `ext_authz` or transformer service in the `x-langsmith
 </Accordion>
 
 <Accordion title="When should I use the LLM auth proxy versus OAuth client credentials on a model configuration?">
-  Use the LLM auth proxy when authentication needs custom logic beyond OAuth2 `client_credentials`. For example, exchanging the LangSmith JWT for a provider-specific token, injecting GCP or AWS identity, or rewriting request and response bodies. Use [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials) when each workspace or team needs needs self-service control over its own OAuth2 `client_credentials` against a custom gateway. Both can coexist within the same organization; routing is per-configuration.
+  Use the LLM auth proxy when authentication needs custom logic beyond OAuth2 `client_credentials`. For example, exchanging the LangSmith JWT for a provider-specific token, injecting GCP or AWS identity, or rewriting request and response bodies. Use [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials) when each workspace or team needs self-service control over its own OAuth2 `client_credentials` against a custom gateway. Both can coexist within the same organization; routing is per-configuration.
 </Accordion>
 
 ## Helm chart reference

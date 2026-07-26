@@ -55,7 +55,7 @@ Consolidated billing is an Enterprise feature that requires configuration by our
 
 The billing workspace will be able to see the usage of all linked workspaces.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4a2896939345df00263961ea080724f268655a4b258c6988b7344cb3c6ebb0/assets/images/product-guides/administration/consolidated-billing-reporting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233129Z&X-Amz-Expires=604800&X-Amz-Signature=b3f5ae40f0e32383053ea8f8d78aa8596487651ee9d175ad8e661a2869b94364&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Consolidated billing reporting view" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4a2896939345df00263961ea080724f268655a4b258c6988b7344cb3c6ebb0/assets/images/product-guides/administration/consolidated-billing-reporting.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T081113Z&X-Amz-Expires=604800&X-Amz-Signature=c1d0b78b5fd0708a736953a3e9139b9cb1041cea51e3ba5ccd47d73adfa5114a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Consolidated billing reporting view" />
 
 The reporting workspace will only be able to see analytics for its own usage. However, the total credits left shown in the sidebar will be the sum of all linked workspaces.
 

@@ -17,7 +17,7 @@ Avatars are available on all paid plans.
 Some Avatar models and reference image upload capabilities are restricted in the United States due
 to regulatory or provider requirements.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/680e5acbe14121b643cd4f9cb59213707fff145ee66551a2950d3b3523c1b3fa/assets/images/product-guides/images-videos/avatars-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233124Z&X-Amz-Expires=604800&X-Amz-Signature=b4592f21c970ee56a688638e4170450b4936d1585eef19c44c8c4989febd59fc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Avatar overview" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/680e5acbe14121b643cd4f9cb59213707fff145ee66551a2950d3b3523c1b3fa/assets/images/product-guides/images-videos/avatars-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T081054Z&X-Amz-Expires=604800&X-Amz-Signature=b18fcb0eb1a0cb78c9a5749e213123edae65e6511baefdaea3c91ce47d92dd00&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Avatar overview" />
 
 ## Key capabilities
 
@@ -40,7 +40,7 @@ Go to [Image & Video](https://elevenlabs.io/app/image-video), and in the Avatar 
 
 Upload multiple reference images of the same person or character from different angles. Higher quality reference images with varied perspectives produce better results.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/37d9adbc0f8666e91408180793f2692f51955cfd1b54773cf7c2d38cbec4cb86/assets/images/product-guides/images-videos/avatars-create.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233124Z&X-Amz-Expires=604800&X-Amz-Signature=5d739b8aaf7b5e31d62f140e8649bdc35ca4fbc86c6997fda50ee19e2cc15086&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Avatar creation interface" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/37d9adbc0f8666e91408180793f2692f51955cfd1b54773cf7c2d38cbec4cb86/assets/images/product-guides/images-videos/avatars-create.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T081054Z&X-Amz-Expires=604800&X-Amz-Signature=b8092845cdab3af75982f01d74e3162c981fd63e330433700ae640c62e6484b2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Avatar creation interface" />
 
 Upload 3-5 images from different angles for optimal avatar quality.
 
@@ -65,7 +65,7 @@ Styles are variations of an existing avatar that represent different visual cont
 
 To create a style for an existing avatar, click **View Avatar**, then click "New Style".
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/98a871e4e3cd60f5bf77ead03246953edfd6a33db778a2e9ef1b36ea8a16923a/assets/images/product-guides/images-videos/avatars-option.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233124Z&X-Amz-Expires=604800&X-Amz-Signature=14d6390c3814fa2d5f5ea9b7b75be289dfcf9fb0a7fb164b05b1f29917e153c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Style creation options in Avatar interface" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/98a871e4e3cd60f5bf77ead03246953edfd6a33db778a2e9ef1b36ea8a16923a/assets/images/product-guides/images-videos/avatars-option.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T081054Z&X-Amz-Expires=604800&X-Amz-Signature=22303e012901e546714cbb321837b5a5dd915dbedf6fd5ff85a406bc65bc1227&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Style creation options in Avatar interface" />
 
 You can create styles in two ways:
 
@@ -87,7 +87,7 @@ Choose an avatar from your library, and select **Create Lip Sync**. Choose the s
 
 If you set a default voice for your avatar, this will be pre-selected. You can also use any voice from your library, including community voices, cloned voices, or designed voices.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d220cca9e55e10964a8611d41f45a0d52e0a54d5071a36a44fcbc5368dfdfc9d/assets/images/product-guides/images-videos/avatars-speech.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233124Z&X-Amz-Expires=604800&X-Amz-Signature=eb6186daf7c3aab6f009a2fdf0744b4e739a151b5de066f9f74e57d5d49e561d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice selection and text to speech interface" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d220cca9e55e10964a8611d41f45a0d52e0a54d5071a36a44fcbc5368dfdfc9d/assets/images/product-guides/images-videos/avatars-speech.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T081054Z&X-Amz-Expires=604800&X-Amz-Signature=65cf35a80e59368101c69a5e6cb76f5dc50d6bcf8569df9e77253056e6393c74&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice selection and text to speech interface" />
 
 ### Add your script
 
@@ -111,7 +111,7 @@ Use cases include:
 * Batch video generation with consistent branding
 * Automated content pipelines with voice and visual swapping
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e4cbf4ea8930fdf33e8ae67baab57a2f2e172a300b9d3c1441632ec53ac20407/assets/images/product-guides/images-videos/avatars-flows.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233124Z&X-Amz-Expires=604800&X-Amz-Signature=2a77b518d13019c4be8bad0d49fb76ef47021883d27655d1090cd785b9db3d5d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Avatar node in the Flows interface" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e4cbf4ea8930fdf33e8ae67baab57a2f2e172a300b9d3c1441632ec53ac20407/assets/images/product-guides/images-videos/avatars-flows.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T081054Z&X-Amz-Expires=604800&X-Amz-Signature=107b2bf646ebba3caa5e830dcb82e0438c6038334ee534fa05ff146133d645a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Avatar node in the Flows interface" />
 
 Learn more about [Flows](/docs/eleven-creative/products/flows).
 

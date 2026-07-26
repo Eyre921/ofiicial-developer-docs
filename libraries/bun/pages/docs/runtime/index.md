@@ -285,6 +285,13 @@ bun run <file or script>
 </ParamField>
 
 <ParamField type="boolean">
+  Open the Node.js-compatible REPL (<code>node:repl</code>). When combined with <code>-e</code>, starts the REPL and
+  then evaluates the script. Under <code>--interactive</code>, <code>-e</code> is raw JavaScript (matching
+  <code>node -i -e</code>); use <code>bun repl</code> for TypeScript. Distinct from <code>bun repl</code>, which is
+  Bun's native REPL.
+</ParamField>
+
+<ParamField type="boolean">
   Use less memory, but run garbage collection more often
 </ParamField>
 

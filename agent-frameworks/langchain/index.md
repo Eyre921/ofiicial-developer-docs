@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1512 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1522 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -744,13 +744,23 @@
 - `langsmith/smith-api/model-price-map/update-model-price` — [Update model price](pages/langsmith/smith-api/model-price-map/update-model-price.md) · [原文](https://docs.langchain.com/langsmith/smith-api/model-price-map/update-model-price)
 - `langsmith/smith-api/oauth/approve-oauth2-authorization-request` — [Approve OAuth2 authorization request](pages/langsmith/smith-api/oauth/approve-oauth2-authorization-request.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/approve-oauth2-authorization-request)
 - `langsmith/smith-api/oauth/authorize-a-device-code` — [Authorize a device code](pages/langsmith/smith-api/oauth/authorize-a-device-code.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/authorize-a-device-code)
+- `langsmith/smith-api/oauth/create-an-oauth-client` — [Create an oauth client](pages/langsmith/smith-api/oauth/create-an-oauth-client.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/create-an-oauth-client)
+- `langsmith/smith-api/oauth/delete-an-oauth-client` — [Delete an oauth client](pages/langsmith/smith-api/oauth/delete-an-oauth-client.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/delete-an-oauth-client)
 - `langsmith/smith-api/oauth/exchange-grant-for-oauth2-tokens` — [Exchange grant for OAuth2 tokens](pages/langsmith/smith-api/oauth/exchange-grant-for-oauth2-tokens.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/exchange-grant-for-oauth2-tokens)
+- `langsmith/smith-api/oauth/get-an-oauth-client` — [Get an oauth client](pages/langsmith/smith-api/oauth/get-an-oauth-client.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/get-an-oauth-client)
 - `langsmith/smith-api/oauth/get-oauth2-authorization-server-metadata` — [Get OAuth2 authorization server metadata](pages/langsmith/smith-api/oauth/get-oauth2-authorization-server-metadata.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/get-oauth2-authorization-server-metadata)
+- `langsmith/smith-api/oauth/get-openid-connect-provider-configuration` — [Get openid connect provider configuration](pages/langsmith/smith-api/oauth/get-openid-connect-provider-configuration.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/get-openid-connect-provider-configuration)
+- `langsmith/smith-api/oauth/get-openid-connect-userinfo` — [Get openid connect userinfo](pages/langsmith/smith-api/oauth/get-openid-connect-userinfo.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/get-openid-connect-userinfo)
 - `langsmith/smith-api/oauth/get-public-oauth2-client-metadata` — [Get public OAuth2 client metadata](pages/langsmith/smith-api/oauth/get-public-oauth2-client-metadata.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/get-public-oauth2-client-metadata)
 - `langsmith/smith-api/oauth/initiate-oauth2-authorization` — [Initiate OAuth2 authorization](pages/langsmith/smith-api/oauth/initiate-oauth2-authorization.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/initiate-oauth2-authorization)
+- `langsmith/smith-api/oauth/list-authorized-applications` — [List authorized applications](pages/langsmith/smith-api/oauth/list-authorized-applications.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/list-authorized-applications)
+- `langsmith/smith-api/oauth/list-oauth-clients` — [List oauth clients](pages/langsmith/smith-api/oauth/list-oauth-clients.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/list-oauth-clients)
 - `langsmith/smith-api/oauth/register-an-oauth2-dynamic-client` — [Register an OAuth2 dynamic client](pages/langsmith/smith-api/oauth/register-an-oauth2-dynamic-client.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/register-an-oauth2-dynamic-client)
 - `langsmith/smith-api/oauth/request-oauth2-device-authorization` — [Request OAuth2 device authorization](pages/langsmith/smith-api/oauth/request-oauth2-device-authorization.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/request-oauth2-device-authorization)
+- `langsmith/smith-api/oauth/revoke-an-authorized-application` — [Revoke an authorized application](pages/langsmith/smith-api/oauth/revoke-an-authorized-application.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/revoke-an-authorized-application)
 - `langsmith/smith-api/oauth/revoke-an-oauth2-token` — [Revoke an OAuth2 token](pages/langsmith/smith-api/oauth/revoke-an-oauth2-token.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/revoke-an-oauth2-token)
+- `langsmith/smith-api/oauth/rotate-an-oauth-client-secret` — [Rotate an oauth client secret](pages/langsmith/smith-api/oauth/rotate-an-oauth-client-secret.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/rotate-an-oauth-client-secret)
+- `langsmith/smith-api/oauth/update-an-oauth-client` — [Update an oauth client](pages/langsmith/smith-api/oauth/update-an-oauth-client.md) · [原文](https://docs.langchain.com/langsmith/smith-api/oauth/update-an-oauth-client)
 - `langsmith/smith-api/optimization-jobs/create-job` — [Create job](pages/langsmith/smith-api/optimization-jobs/create-job.md) · [原文](https://docs.langchain.com/langsmith/smith-api/optimization-jobs/create-job)
 - `langsmith/smith-api/optimization-jobs/create-log` — [Create log](pages/langsmith/smith-api/optimization-jobs/create-log.md) · [原文](https://docs.langchain.com/langsmith/smith-api/optimization-jobs/create-log)
 - `langsmith/smith-api/optimization-jobs/delete-job` — [Delete job](pages/langsmith/smith-api/optimization-jobs/delete-job.md) · [原文](https://docs.langchain.com/langsmith/smith-api/optimization-jobs/delete-job)

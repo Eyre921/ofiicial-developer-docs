@@ -16,7 +16,7 @@ Automatic dubbing or video translation is a process for translating and replacin
 
 The Dubbing v2 API is not yet live but is expected to launch in the coming weeks.
 
-![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T223508Z&X-Amz-Expires=604800&X-Amz-Signature=3f73fe953c8ccd6ba2a751ddd679966424f81df46beade9641f9bfdb76f1b163&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing new project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8c0235c62183be7eabf87a0346600e94e3c5717ecb58f0207715894eb39c9f5e/assets/images/product-guides/dubbing/dubbing-new-project.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113135Z&X-Amz-Expires=604800&X-Amz-Signature=8501adb9a5804699d5d1f58159c4c06e56c670a013218a6b3fd64ae89a9e7ee5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Guide
 
@@ -36,7 +36,7 @@ your request.
 Once your dub is ready, you'll be able to download it from your list of dubs.
 
 ![Dubbing new project advanced
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T223508Z&X-Amz-Expires=604800&X-Amz-Signature=f0c3ebc66da456d2d7988be45b33b915f0ec99bde54f8abb400e6e31beef9709&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9515592460d4e2e6393e657c2743710b201c846ed0894c82343f55bde176b8fd/assets/images/product-guides/dubbing/dubbing-new-advanced.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113135Z&X-Amz-Expires=604800&X-Amz-Signature=10a72bdc3ce436f485ddf29a8e159f1c0a225c672d407a4f35732dc974d176ca&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Cloning strength
 

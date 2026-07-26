@@ -117,6 +117,119 @@ main();
 ```
 
 ```python
+from elevenlabs i> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Delete test
+
+DELETE https://api.elevenlabs.io/v1/convai/agent-testing/{test_id}
+
+Deletes an agent response test by ID.
+
+Reference: https://elevenlabs.io/docs/api-reference/tests/delete
+
+## OpenAPI Specification
+
+```yaml
+openapi: 3.1.0
+info:
+  title: api
+  version: 1.0.0
+paths:
+  /v1/convai/agent-testing/{test_id}:
+    delete:
+      operationId: delete
+      summary: Delete Agent Response Test
+      description: Deletes an agent response test by ID.
+      tags:
+        - tests
+      parameters:
+        - name: test_id
+          in: path
+          description: The id of a chat response test. This is returned on test creation.
+          required: true
+          schema:
+            type: string
+        - name: xi-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                description: Any type
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+servers:
+  - url: https://api.elevenlabs.io
+    description: Production
+  - url: https://api.us.elevenlabs.io
+    description: Production US
+  - url: https://api.eu.residency.elevenlabs.io
+    description: Production EU
+  - url: https://api.in.residency.elevenlabs.io
+    description: Production India
+  - url: https://api.sg.residency.elevenlabs.io
+    description: Production Singapore
+components:
+  schemas:
+    ValidationErrorLocItems:
+      oneOf:
+        - type: string
+        - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+
+```
+
+## Examples
+
+
+
+**SDK Code**
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+async function main() {
+    const client = new ElevenLabsClient();
+    await client.conversationalAi.tests.delete("test_id");
+}
+main();
+
+```
+
+```python
 from elevenlabs import ElevenLabs
 
 client = ElevenLabs()

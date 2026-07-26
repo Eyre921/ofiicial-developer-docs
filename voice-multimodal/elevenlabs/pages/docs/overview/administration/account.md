@@ -16,7 +16,7 @@ To begin using ElevenLabs, you'll need to create an account. Follow these steps:
 
 **Exercise**: Try out an example to get started or type something, select a voice and click generate!
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233126Z&X-Amz-Expires=604800&X-Amz-Signature=26d300bb9f75ef8154706e793526b11f049372d6a347be7ba80e6e530cddff3b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T100016Z&X-Amz-Expires=604800&X-Amz-Signature=259a2af0852931690b1f836eb13576bcb6cd01a07173a096f183c82eb407eb34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
 
 You can sign up with traditional email and password or using popular OAuth providers like Google, Facebook, and GitHub.
 

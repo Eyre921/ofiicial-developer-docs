@@ -63,7 +63,7 @@ For security reasons, overrides are disabled by default. Enable the fields you w
 
 Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, and any other overrides you need, such as `LLM`.
 
-![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233200Z&X-Amz-Expires=604800&X-Amz-Signature=719abbf51356ac8d31de6a1bcc3e2d378cc1101c59512896c33a28f7500e4c49&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T105940Z&X-Amz-Expires=604800&X-Amz-Signature=9ea14fd2761df85b66c65de77efe5ec4a51d8bfc0bd2014fcf8b6a42e4d9d910&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 

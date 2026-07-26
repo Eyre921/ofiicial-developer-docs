@@ -27,7 +27,7 @@ grass").
 #### Adjust settings
 
 ![Sound effects
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233134Z&X-Amz-Expires=604800&X-Amz-Signature=030db6adc098ae5a20d26e36656aec21c466fe1f5150bd7be79bd0ab5375f900&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3b14346a7ee375acc01d11b4ebb0ec0127a4a65bfab8e708d77ae5e639e64f38/assets/images/product-guides/sound-effects/sound-effects-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T092959Z&X-Amz-Expires=604800&X-Amz-Signature=e0ba7f1811fbd0f8a3642eee46d6c112d571a0d30064fe25bc71cafc0b9e2d1b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 <ul>
   <li>
@@ -62,7 +62,7 @@ a vinyl sample, stem, 88 bpm in F# minor.
 
 ## Explore the library
 
-![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233134Z&X-Amz-Expires=604800&X-Amz-Signature=23e9d54aba2997ad222f6bba2f985ed510d131bfe5dcd60868fc121b42ebefea&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Sound effects explore](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d8d7c3cca84e6acb0dfc419aed291be764794f299b2c7c478a9efc3f8f6e25ef/assets/images/product-guides/sound-effects/sound-effects-explore.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T092959Z&X-Amz-Expires=604800&X-Amz-Signature=9ddc3e13abc1652834923089b9cacdc0c99f2f4909b9520e7608e8227577483f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Browse community-made sound effects in the **Explore** tab.
 

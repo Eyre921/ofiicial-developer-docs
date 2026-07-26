@@ -13,7 +13,7 @@ agents created via API or SDK, if you would like to enable the End Call tool, yo
 manually as a system tool in your agent configuration. [See API Implementation
 below](#api-implementation) for details.
 
-![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T214558Z&X-Amz-Expires=604800&X-Amz-Signature=e0094d121ad5061ab23f2628e82124bc9ce8273201341259b998a1e44e19b42b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T100016Z&X-Amz-Expires=604800&X-Amz-Signature=a9f5c2145549ca0a5f4b9b04f739310e0bf825ce934c8e894ac729212af54b40&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 

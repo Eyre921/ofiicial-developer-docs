@@ -98,17 +98,17 @@ When working with Zero Retention Mode agents:
 #### LLMs (except the available LLMs as described above) are disabled in the UI
 
 ![Redacted conversation analysis showing Zero Retention Mode in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab/assets/images/conversational-ai/hipaa-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233238Z&X-Amz-Expires=604800&X-Amz-Signature=546a5f2b32134d45cab9c8afe51618c7f54d360e8f5fe641e284475364dd4c95&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01ba5fbc3d5d4a06a127f488d818428304c3f0d9500fd7931a7e4c05f8f15dab/assets/images/conversational-ai/hipaa-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113238Z&X-Amz-Expires=604800&X-Amz-Signature=ebbb708f11002529987b6eebbd6398072661a81340b775f485771ec5fded8f30&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Content is redacted from content history
 
 ![Redacted conversation history showing Zero Retention Mode in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f/assets/images/conversational-ai/redacted.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233238Z&X-Amz-Expires=604800&X-Amz-Signature=c37462980733b62094b7b92ff5fb3c785bcfddb5d27486f4ca5a625552502e9a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/af6abcc7d19b503a11e2daa6f9ca41eaab25be1b06417f448338ca3c4ef0b63f/assets/images/conversational-ai/redacted.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113238Z&X-Amz-Expires=604800&X-Amz-Signature=6353021c54a15a613cae707d6d51d53913287c4fdd184617eb95ccafa6b0c17b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Conversation analysis is limited
 
 ![Redacted conversation analysis showing HIPAA compliance in
-action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb/assets/images/conversational-ai/redacted-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233238Z&X-Amz-Expires=604800&X-Amz-Signature=ce65a7fa9f7285e52be5025ad8e05479a34ab58660afc9e4430f86fd6778ec3a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+action](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7dd246148456ae24c454a9f55d70f730fc1183b1a0b3270c9191d259af5081bb/assets/images/conversational-ai/redacted-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113238Z&X-Amz-Expires=604800&X-Amz-Signature=574cac9cffabbeb55fef841899718730328313747929ff94f2e351f1be5e015d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### API restrictions are enforced
 

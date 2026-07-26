@@ -8,7 +8,7 @@ path: docs/eleven-creative/audio-tools/audio-native
 
 # Audio Native
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/46d22deceeb0c48519f5c98400269b282f6919dc7d8e97baec7e2ca4a215dc8c/assets/images/product-guides/audio-native/audio-native-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233141Z&X-Amz-Expires=604800&X-Amz-Signature=bbea396096ad4b09418ebdb2f9d6d2179dabd0dc4089908c4c7d763c0694de6f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/46d22deceeb0c48519f5c98400269b282f6919dc7d8e97baec7e2ca4a215dc8c/assets/images/product-guides/audio-native/audio-native-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T113139Z&X-Amz-Expires=604800&X-Amz-Signature=4581aff0ba65085f4cb04b5d890a07a4528afcc9bd4db2cb56c40f2041609bfa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio Native" />
 
 ## Overview
 

@@ -52218,7 +52218,7 @@ The JWT is passed to your `ext_authz` or transformer service in the `x-langsmith
 </Accordion>
 
 <Accordion title="When should I use the LLM auth proxy versus OAuth client credentials on a model configuration?">
-  Use the LLM auth proxy when authentication needs custom logic beyond OAuth2 `client_credentials`. For example, exchanging the LangSmith JWT for a provider-specific token, injecting GCP or AWS identity, or rewriting request and response bodies. Use [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials) when each workspace or team needs needs self-service control over its own OAuth2 `client_credentials` against a custom gateway. Both can coexist within the same organization; routing is per-configuration.
+  Use the LLM auth proxy when authentication needs custom logic beyond OAuth2 `client_credentials`. For example, exchanging the LangSmith JWT for a provider-specific token, injecting GCP or AWS identity, or rewriting request and response bodies. Use [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials) when each workspace or team needs self-service control over its own OAuth2 `client_credentials` against a custom gateway. Both can coexist within the same organization; routing is per-configuration.
 </Accordion>
 
 ## Helm chart reference
@@ -101369,7 +101369,9 @@ Get health information about the current deployment of LangSmith.
 Source: https://docs.langchain.com/langsmith/smith-api/info/get-server-info
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/info
-Get information about the current deployment of LangSmith.
+Returns information about the current LangSmith deployment: version,
+instance feature flags, batch-ingest limits, and max SDK versions.
+Unauthenticated by default; set FF_INFO_ENDPOINT_AUTH_REQUIRED=true to require auth.
 
 
 
@@ -101748,6 +101750,21 @@ Marks a device code as authorized for the authenticated user. Called by the /act
 
 
 
+# Create an oauth client
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/create-an-oauth-client
+
+/langsmith/langsmith-platform-openapi.json post /v1/platform/oauth/clients
+Registers a new OAuth 2.0 / OIDC client owned by the caller's organization. For confidential clients the response includes a client_secret that is shown only once.
+
+
+
+# Delete an oauth client
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/delete-an-oauth-client
+
+/langsmith/langsmith-platform-openapi.json delete /v1/platform/oauth/clients/{id}
+
+
+
 # Exchange grant for OAuth2 tokens
 Source: https://docs.langchain.com/langsmith/smith-api/oauth/exchange-grant-for-oauth2-tokens
 
@@ -101756,11 +101773,34 @@ Token endpoint that dispatches by grant_type: authorization_code, urn:ietf:param
 
 
 
+# Get an oauth client
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/get-an-oauth-client
+
+/langsmith/langsmith-platform-openapi.json get /v1/platform/oauth/clients/{id}
+
+
+
 # Get OAuth2 authorization server metadata
 Source: https://docs.langchain.com/langsmith/smith-api/oauth/get-oauth2-authorization-server-metadata
 
 /langsmith/langsmith-platform-openapi.json get /.well-known/oauth-authorization-server
 Returns OAuth2 authorization server metadata per RFC 8414, including supported endpoints, grant types, and response types.
+
+
+
+# Get openid connect provider configuration
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/get-openid-connect-provider-configuration
+
+/langsmith/langsmith-platform-openapi.json get /.well-known/openid-configuration
+Returns the OpenID Connect discovery document (OpenID Connect Discovery 1.0), advertising the authorization, token, userinfo, and JWKS endpoints plus supported scopes, response types, and signing algorithms.
+
+
+
+# Get openid connect userinfo
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/get-openid-connect-userinfo
+
+/langsmith/langsmith-platform-openapi.json get /userinfo
+Returns identity claims for the user represented by a LangSmith access token whose audience is the identity resource or the API resource. The token is passed as a Bearer credential in the Authorization header (OpenID Connect Core 1.0 §5.3).
 
 
 
@@ -101780,6 +101820,22 @@ Validates authorization request parameters and redirects to the frontend consent
 
 
 
+# List authorized applications
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/list-authorized-applications
+
+/langsmith/langsmith-platform-openapi.json get /v1/platform/oauth/authorized-apps
+Lists the third-party applications the authenticated user has authorized to sign in with LangSmith.
+
+
+
+# List oauth clients
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/list-oauth-clients
+
+/langsmith/langsmith-platform-openapi.json get /v1/platform/oauth/clients
+Lists the OAuth clients owned by the caller's organization.
+
+
+
 # Register an OAuth2 dynamic client
 Source: https://docs.langchain.com/langsmith/smith-api/oauth/register-an-oauth2-dynamic-client
 
@@ -101796,11 +101852,34 @@ Issues a device code and user code for the device authorization flow per RFC 862
 
 
 
+# Revoke an authorized application
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/revoke-an-authorized-application
+
+/langsmith/langsmith-platform-openapi.json delete /v1/platform/oauth/authorized-apps/{clientID}
+Revokes the authenticated user's authorization for an application and invalidates that application's active tokens for the user.
+
+
+
 # Revoke an OAuth2 token
 Source: https://docs.langchain.com/langsmith/smith-api/oauth/revoke-an-oauth2-token
 
 /langsmith/langsmith-platform-openapi.json post /oauth/revoke
 Revokes an access token or refresh token per RFC 7009. Always returns 200 regardless of whether the token was found.
+
+
+
+# Rotate an oauth client secret
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/rotate-an-oauth-client-secret
+
+/langsmith/langsmith-platform-openapi.json post /v1/platform/oauth/clients/{id}/rotate-secret
+Generates a new client secret for a confidential client, invalidating the previous one. The new secret is shown only once.
+
+
+
+# Update an oauth client
+Source: https://docs.langchain.com/langsmith/smith-api/oauth/update-an-oauth-client
+
+/langsmith/langsmith-platform-openapi.json patch /v1/platform/oauth/clients/{id}
 
 
 
@@ -113629,7 +113708,7 @@ agent = ChatAgent(
     chat_client=OpenAIChatClient(model_id="gpt-4o"),
 )
 
-result = await agent.run("What's the the capital of Bavaria?")
+result = await agent.run("What's the capital of Bavaria?")
 print(result.text)
 ```
 
@@ -126073,7 +126152,7 @@ There are 2 namespaces in the `langchain-tests` package:
 
 Depending on your integration type, you will need to implement either or both unit and integration tests.
 
-By subclassing the standard test suite for your integration type, you get the full collection of standard tests for that type. For a test run to be successful, the a given test should pass only if the model supports the capability being tested. Otherwise, the test should be skipped.
+By subclassing the standard test suite for your integration type, you get the full collection of standard tests for that type. For a test run to be successful, a given test should pass only if the model supports the capability being tested. Otherwise, the test should be skipped.
 
 Because different integrations offer unique sets of features, most standard tests provided by LangChain are **opt-in by default** to prevent false positives. Consequently, you will need to override properties to indicate which features your integration supports - see the below example for an illustration.
 
@@ -133467,7 +133546,7 @@ The example keeps behavior in three kinds of files: memory, skills, and subagent
 
     They instruct the agent to call the `researcher` subagent first, write markdown under `blogs/`, `linkedin/`, or `tweets/`, and call `generate_cover` or `generate_social_image` for images.
 
-    When you later create the agent and specify the skills folder(s), then the frontmatter of the `SKILLS.md` files from those skill folders get loaded this into the system prompt so the agent can use the skill when a task task matches a skill description.
+    When you later create the agent and specify the skills folder(s), then the frontmatter of the `SKILLS.md` files from those skill folders get loaded this into the system prompt so the agent can use the skill when a task matches a skill description.
   </Step>
 </Steps>
 
@@ -146344,7 +146423,7 @@ This tutorial uses one question throughout:
 Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with no custom tools and no access to the documentation corpus, to see what the model comes up with:
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { createDeepAgent } from "deepagents";
@@ -146367,7 +146446,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   console.log(result.messages.at(-1)?.text);
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { createDeepAgent } from "deepagents";
@@ -146390,7 +146469,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   console.log(result.messages.at(-1)?.text);
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { createDeepAgent } from "deepagents";
@@ -146413,7 +146492,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   console.log(result.messages.at(-1)?.text);
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { createDeepAgent } from "deepagents";
@@ -146436,7 +146515,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   console.log(result.messages.at(-1)?.text);
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { createDeepAgent } from "deepagents";
@@ -146459,7 +146538,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   console.log(result.messages.at(-1)?.text);
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { createDeepAgent } from "deepagents";
@@ -146482,7 +146561,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   console.log(result.messages.at(-1)?.text);
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { createDeepAgent } from "deepagents";
@@ -146603,7 +146682,7 @@ LangChain publishes markdown at `https://docs.langchain.com/{path}.md`. This tut
 
 Create `agent.ts`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 
 import { Document } from "@langchain/core/documents";
@@ -146641,7 +146720,7 @@ Start by loading LangChain documentation pages into a list of [Document](https:/
 
 Use `fetch` to retrieve markdown from `https://docs.langchain.com/{path}.md` for each path in `DOC_PATHS`.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async function loadLangchainDocs(
   docPaths: string[] = DOC_PATHS,
 ): Promise<Document[]> {
@@ -146677,7 +146756,7 @@ Loaded 14 documentation pages.
 
 You can also review the page content itself:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const totalChars = docs.reduce((sum, doc) => sum + doc.pageContent.length, 0);
 console.log(`Total characters: ${totalChars}`);
 console.log(docs[0].pageContent.slice(0, 500));
@@ -146698,14 +146777,14 @@ This might be private data, recent data, or data that is not part of the trainin
 ### Split documents
 
 The loaded documentation is long with over 100k tokens total, which makes it too large to fit into the context window of many models.
-Even for those models that could fit the full corpus in their context window, models can struggle to find information in very long inputs. Using the context window for large amounts of content is also nottoken efficient.
+Even for those models that could fit the full corpus in their context window, models can struggle to find information in very long inputs. Using the context window for large amounts of content is also not token efficient.
 
 For ease of use, split the [`Document`](https://reference.langchain.com/javascript/langchain-core/documents/Document) objects into chunks. These chunks will be used for embedding and vector storage in the next steps.
 
 Use the `RecursiveCharacterTextSplitter` to recursively split the documents using common separators like new lines, until each chunk is the appropriate size.
 `RecursiveCharacterTextSplitter` is the recommended `TextSplitter` for generic text use cases.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const textSplitter = new RecursiveCharacterTextSplitter({
   chunkSize: 1000,
   chunkOverlap: 200,
@@ -146727,20 +146806,20 @@ You can choose from many different [embedding integrations](/oss/javascript/inte
 <Tabs>
   <Tab title="OpenAI">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/openai
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/openai
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/openai
       ```
     </CodeGroup>
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { OpenAIEmbeddings } from "@langchain/openai";
 
     const embeddings = new OpenAIEmbeddings({
@@ -146751,26 +146830,26 @@ You can choose from many different [embedding integrations](/oss/javascript/inte
 
   <Tab title="Azure">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/openai
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/openai
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/openai
       ```
     </CodeGroup>
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     AZURE_OPENAI_API_INSTANCE_NAME=<YOUR_INSTANCE_NAME>
     AZURE_OPENAI_API_KEY=<YOUR_KEY>
     AZURE_OPENAI_API_VERSION="2024-02-01"
     ```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { AzureOpenAIEmbeddings } from "@langchain/openai";
 
     const embeddings = new AzureOpenAIEmbeddings({
@@ -146781,24 +146860,24 @@ You can choose from many different [embedding integrations](/oss/javascript/inte
 
   <Tab title="AWS">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/aws
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/aws
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/aws
       ```
     </CodeGroup>
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     BEDROCK_AWS_REGION=your-region
     ```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { BedrockEmbeddings } from "@langchain/aws";
 
     const embeddings = new BedrockEmbeddings({
@@ -146809,24 +146888,24 @@ You can choose from many different [embedding integrations](/oss/javascript/inte
 
   <Tab title="VertexAI">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/google-vertexai
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/google-vertexai
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/google-vertexai
       ```
     </CodeGroup>
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     GOOGLE_APPLICATION_CREDENTIALS=credentials.json
     ```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { VertexAIEmbeddings } from "@langchain/google-vertexai";
 
     const embeddings = new VertexAIEmbeddings({
@@ -146837,24 +146916,24 @@ You can choose from many different [embedding integrations](/oss/javascript/inte
 
   <Tab title="MistralAI">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/mistralai
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/mistralai
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/mistralai
       ```
     </CodeGroup>
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     MISTRAL_API_KEY=your-api-key
     ```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { MistralAIEmbeddings } from "@langchain/mistralai";
 
     const embeddings = new MistralAIEmbeddings({
@@ -146865,24 +146944,24 @@ You can choose from many different [embedding integrations](/oss/javascript/inte
 
   <Tab title="Cohere">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/cohere
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/cohere
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/cohere
       ```
     </CodeGroup>
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     COHERE_API_KEY=your-api-key
     ```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { CohereEmbeddings } from "@langchain/cohere";
 
     const embeddings = new CohereEmbeddings({
@@ -146901,20 +146980,20 @@ Use the embeddings model that you selected in the previous step to configure you
 <Tabs>
   <Tab title="Memory">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/classic
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/classic
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/classic
       ```
     </CodeGroup>
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 
     const vectorStore = new MemoryVectorStore(embeddings);
@@ -146923,20 +147002,20 @@ Use the embeddings model that you selected in the previous step to configure you
 
   <Tab title="MongoDB">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/mongodb
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/mongodb
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/mongodb
       ```
     </CodeGroup>
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
     import { MongoClient } from "mongodb";
 
@@ -146956,20 +147035,20 @@ Use the embeddings model that you selected in the previous step to configure you
 
   <Tab title="Pinecone">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/pinecone
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/pinecone
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/pinecone
       ```
     </CodeGroup>
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { PineconeStore } from "@langchain/pinecone";
     import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
 
@@ -146987,20 +147066,20 @@ Use the embeddings model that you selected in the previous step to configure you
 
   <Tab title="Qdrant">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/qdrant
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/qdrant
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/qdrant
       ```
     </CodeGroup>
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { QdrantVectorStore } from "@langchain/qdrant";
 
     const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
@@ -147012,20 +147091,20 @@ Use the embeddings model that you selected in the previous step to configure you
 
   <Tab title="Redis">
     <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       npm i @langchain/redis
       ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       yarn add @langchain/redis
       ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pnpm add @langchain/redis
       ```
     </CodeGroup>
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { RedisVectorStore } from "@langchain/redis";
 
     const vectorStore = new RedisVectorStore(embeddings, {
@@ -147038,7 +147117,7 @@ Use the embeddings model that you selected in the previous step to configure you
 
 Then, embed and store all document splits using the `vector_store` you initialized above:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 await vectorStore.addDocuments(allSplits);
 console.log(`Indexed ${allSplits.length} chunks.`);
 ```
@@ -147072,7 +147151,7 @@ Add this code to `agent.ts`:
 
     The tool writes retrieved chunks to the agent backend with `backend.uploadFiles()`. Pass the same backend instance to `createDeepAgent` so built-in filesystem tools such as `read_file` and `grep` can read the saved paths.
 
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { StateBackend } from "deepagents";
     import { tool } from "langchain";
     import * as z from "zod";
@@ -147165,7 +147244,7 @@ Add this code to `agent.ts`:
     Add model initialization and agent creation to `agent.ts`:
 
     <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       const maxConcurrentAnalysts = 3;
@@ -147196,7 +147275,7 @@ Add this code to `agent.ts`:
       });
       ```
 
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       const maxConcurrentAnalysts = 3;
@@ -147227,7 +147306,7 @@ Add this code to `agent.ts`:
       });
       ```
 
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       const maxConcurrentAnalysts = 3;
@@ -147258,7 +147337,7 @@ Add this code to `agent.ts`:
       });
       ```
 
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       const maxConcurrentAnalysts = 3;
@@ -147289,7 +147368,7 @@ Add this code to `agent.ts`:
       });
       ```
 
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       const maxConcurrentAnalysts = 3;
@@ -147320,7 +147399,7 @@ Add this code to `agent.ts`:
       });
       ```
 
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       const maxConcurrentAnalysts = 3;
@@ -147351,7 +147430,7 @@ Add this code to `agent.ts`:
       });
       ```
 
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       import { createDeepAgent } from "deepagents";
 
       const maxConcurrentAnalysts = 3;
@@ -147395,7 +147474,7 @@ Run the RAG agent with the example query:
 npx tsx agent.ts
 ```
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage } from "@langchain/core/messages";
 
 const EXAMPLE_QUERY =
@@ -147442,7 +147521,7 @@ The following is the complete script for the agent:
 Save as `agent.ts` and run with `npx tsx agent.ts`:
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -147626,7 +147705,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -147810,7 +147889,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -147994,7 +148073,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -148178,7 +148257,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -148362,7 +148441,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -148546,7 +148625,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -223162,7 +223241,7 @@ Both types of tests are implemented as [`pytest`](https://docs.pytest.org/en/sta
 
 Depending on your integration type, you will need to implement either or both unit and integration tests.
 
-By subclassing the standard test suite for your integration type, you get the full collection of standard tests for that type. For a test run to be successful, the a given test should pass only if the model supports the capability being tested. Otherwise, the test should be skipped.
+By subclassing the standard test suite for your integration type, you get the full collection of standard tests for that type. For a test run to be successful, a given test should pass only if the model supports the capability being tested. Otherwise, the test should be skipped.
 
 Because different integrations offer unique sets of features, most standard tests provided by LangChain are **opt-in by default** to prevent false positives. Consequently, you will need to override properties to indicate which features your integration supports - see the below example for an illustration.
 
@@ -230275,7 +230354,7 @@ The example keeps behavior in three kinds of files: memory, skills, and subagent
 
     They instruct the agent to call the `researcher` subagent first, write markdown under `blogs/`, `linkedin/`, or `tweets/`, and call `generate_cover` or `generate_social_image` for images.
 
-    When you later create the agent and specify the skills folder(s), then the frontmatter of the `SKILLS.md` files from those skill folders get loaded this into the system prompt so the agent can use the skill when a task task matches a skill description.
+    When you later create the agent and specify the skills folder(s), then the frontmatter of the `SKILLS.md` files from those skill folders get loaded this into the system prompt so the agent can use the skill when a task matches a skill description.
   </Step>
 </Steps>
 
@@ -245721,7 +245800,7 @@ This tutorial uses one question throughout:
 Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no custom tools and no access to the documentation corpus, to see what the model comes up with:
 
 <CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
   from langchain.messages import HumanMessage
 
@@ -245743,7 +245822,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   print(result["messages"][-1].text)
   ```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
   from langchain.messages import HumanMessage
 
@@ -245765,7 +245844,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   print(result["messages"][-1].text)
   ```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
   from langchain.messages import HumanMessage
 
@@ -245787,7 +245866,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   print(result["messages"][-1].text)
   ```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
   from langchain.messages import HumanMessage
 
@@ -245809,7 +245888,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   print(result["messages"][-1].text)
   ```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
   from langchain.messages import HumanMessage
 
@@ -245831,7 +245910,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   print(result["messages"][-1].text)
   ```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
   from langchain.messages import HumanMessage
 
@@ -245853,7 +245932,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   print(result["messages"][-1].text)
   ```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
   from langchain.messages import HumanMessage
 
@@ -245972,7 +246051,7 @@ LangChain publishes markdown at `https://docs.langchain.com/{path}.md`. This tut
 
 Create `agent.py`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import requests
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
@@ -246011,7 +246090,7 @@ Start by loading LangChain documentation pages into a list of [Document](https:/
 
 Use `requests` to fetch each page as markdown from `https://docs.langchain.com/{path}.md`. The curated `DOC_PATHS` list selects which pages to index.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 def load_langchain_docs(doc_paths: list[str] | None = None) -> list[Document]:
     """Fetch LangChain documentation pages as Documents."""
     paths = doc_paths or DOC_PATHS
@@ -246042,7 +246121,7 @@ Loaded 14 documentation pages.
 
 You can also review the page content itself:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 total_chars = sum(len(doc.page_content) for doc in docs)
 print(f"Total characters: {total_chars}")
 print(docs[0].page_content[:500])
@@ -246060,14 +246139,14 @@ Total characters: 589579
 ### Split documents
 
 The loaded documentation is long with over 100k tokens total, which makes it too large to fit into the context window of many models.
-Even for those models that could fit the full corpus in their context window, models can struggle to find information in very long inputs. Using the context window for large amounts of content is also nottoken efficient.
+Even for those models that could fit the full corpus in their context window, models can struggle to find information in very long inputs. Using the context window for large amounts of content is also not token efficient.
 
 For ease of use, split the [`Document`](https://reference.langchain.com/python/langchain-core/documents/base/Document) objects into chunks. These chunks will be used for embedding and vector storage in the next steps.
 
 Use the `RecursiveCharacterTextSplitter` to recursively split the documents using common separators like new lines, until each chunk is the appropriate size.
 `RecursiveCharacterTextSplitter` is the recommended `TextSplitter` for generic text use cases.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 all_splits = text_splitter.split_documents(docs)
 print(f"Split documentation into {len(all_splits)} chunks.")
@@ -246087,11 +246166,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
 
 <Tabs>
   <Tab title="OpenAI">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -U "langchain-openai"
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246105,11 +246184,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Azure">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -U "langchain-openai"
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246127,11 +246206,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Google Gemini">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-google-genai
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246145,11 +246224,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Google Vertex">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-google-vertexai
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_google_vertexai import VertexAIEmbeddings
 
     embeddings = VertexAIEmbeddings(model="text-embedding-005")
@@ -246157,11 +246236,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="AWS">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-aws
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_aws import BedrockEmbeddings
 
     embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
@@ -246169,11 +246248,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="HuggingFace">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-huggingface
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_huggingface import HuggingFaceEmbeddings
 
     embeddings = HuggingFaceEmbeddings(
@@ -246184,11 +246263,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Ollama">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-ollama
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_ollama import OllamaEmbeddings
 
     embeddings = OllamaEmbeddings(model="llama3")
@@ -246196,11 +246275,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Cohere">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-cohere
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246214,11 +246293,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="MistralAI">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-mistralai
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246232,11 +246311,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Nomic">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-nomic
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246250,11 +246329,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="NVIDIA">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-nvidia-ai-endpoints
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246268,11 +246347,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Voyage AI">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-voyageai
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246286,11 +246365,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="IBM watsonx">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-ibm
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246308,11 +246387,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Fake">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-core
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_core.embeddings import DeterministicFakeEmbedding
 
     embeddings = DeterministicFakeEmbedding(size=4096)
@@ -246320,11 +246399,11 @@ You can choose from many different [embedding integrations](/oss/python/integrat
   </Tab>
 
   <Tab title="Isaacus">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-isaacus
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import getpass
     import os
 
@@ -246346,11 +246425,11 @@ Use the embeddings model that you selected in the previous step to configure you
 
 <Tabs>
   <Tab title="In-memory">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -U "langchain-core"
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_core.vectorstores import InMemoryVectorStore
 
     vector_store = InMemoryVectorStore(embeddings)
@@ -246358,11 +246437,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="Amazon OpenSearch">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU  boto3
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from opensearchpy import RequestsHttpConnection
 
     service = "es"  # must set the service as 'es'
@@ -246387,11 +246466,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="AstraDB">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -U "langchain-astradb"
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_astradb import AstraDBVectorStore
 
     vector_store = AstraDBVectorStore(
@@ -246405,11 +246484,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="Chroma">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-chroma
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_chroma import Chroma
 
     vector_store = Chroma(
@@ -246421,11 +246500,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="Milvus">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-milvus
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_milvus import Milvus
 
     URI = "./milvus_example.db"
@@ -246439,11 +246518,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="MongoDB">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-mongodb
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_mongodb import MongoDBAtlasVectorSearch
 
     vector_store = MongoDBAtlasVectorSearch(
@@ -246456,11 +246535,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="PGVector">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-postgres
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_postgres import PGVector
 
     vector_store = PGVector(
@@ -246472,11 +246551,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="PGVectorStore">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-postgres
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_postgres import PGEngine, PGVectorStore
 
     pg_engine = PGEngine.from_connection_string(
@@ -246492,11 +246571,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="Pinecone">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-pinecone
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_pinecone import PineconeVectorStore
     from pinecone import Pinecone
 
@@ -246508,11 +246587,11 @@ Use the embeddings model that you selected in the previous step to configure you
   </Tab>
 
   <Tab title="Qdrant">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     pip install -qU langchain-qdrant
     ```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from qdrant_client.models import Distance, VectorParams
     from langchain_qdrant import QdrantVectorStore
     from qdrant_client import QdrantClient
@@ -246537,7 +246616,7 @@ Use the embeddings model that you selected in the previous step to configure you
 
 Then, embed and store all document splits using the `vector_store` you initialized above:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 vector_store.add_documents(documents=all_splits)
 print(f"Indexed {len(all_splits)} chunks.")
 ```
@@ -246571,7 +246650,7 @@ Add this code to `agent.py`:
 
     The tool writes retrieved chunks to the agent backend with `backend.upload_files()`. Pass the same backend instance to `create_deep_agent` so built-in filesystem tools such as `read_file` and `grep` can read the saved paths.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import uuid
 
     from deepagents.backends import StateBackend
@@ -246668,7 +246747,7 @@ Add this code to `agent.py`:
     Add model initialization and agent creation to `agent.py`:
 
     <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
       from langchain.chat_models import init_chat_model
 
@@ -246704,7 +246783,7 @@ Add this code to `agent.py`:
       )
       ```
 
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
       from langchain.chat_models import init_chat_model
 
@@ -246740,7 +246819,7 @@ Add this code to `agent.py`:
       )
       ```
 
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
       from langchain.chat_models import init_chat_model
 
@@ -246776,7 +246855,7 @@ Add this code to `agent.py`:
       )
       ```
 
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
       from langchain.chat_models import init_chat_model
 
@@ -246812,7 +246891,7 @@ Add this code to `agent.py`:
       )
       ```
 
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
       from langchain.chat_models import init_chat_model
 
@@ -246848,7 +246927,7 @@ Add this code to `agent.py`:
       )
       ```
 
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
       from langchain.chat_models import init_chat_model
 
@@ -246884,7 +246963,7 @@ Add this code to `agent.py`:
       )
       ```
 
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from deepagents import create_deep_agent
       from langchain.chat_models import init_chat_model
 
@@ -246929,7 +247008,7 @@ Add this code to `agent.py`:
 
 Run the RAG agent with the example query:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
 
 EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
@@ -246972,7 +247051,7 @@ The following is the complete script for the agent:
 Save as `agent.py` and run with `python agent.py`:
 
 <CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import uuid
 
   import requests
@@ -247155,7 +247234,7 @@ Save as `agent.py` and run with `python agent.py`:
               print(msg.text)
   ```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import uuid
 
   import requests
@@ -247338,7 +247417,7 @@ Save as `agent.py` and run with `python agent.py`:
               print(msg.text)
   ```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import uuid
 
   import requests
@@ -247521,7 +247600,7 @@ Save as `agent.py` and run with `python agent.py`:
               print(msg.text)
   ```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import uuid
 
   import requests
@@ -247704,7 +247783,7 @@ Save as `agent.py` and run with `python agent.py`:
               print(msg.text)
   ```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import uuid
 
   import requests
@@ -247887,7 +247966,7 @@ Save as `agent.py` and run with `python agent.py`:
               print(msg.text)
   ```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import uuid
 
   import requests
@@ -248070,7 +248149,7 @@ Save as `agent.py` and run with `python agent.py`:
               print(msg.text)
   ```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import uuid
 
   import requests

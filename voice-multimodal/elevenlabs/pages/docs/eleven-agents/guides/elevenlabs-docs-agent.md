@@ -12,7 +12,7 @@ path: docs/eleven-agents/guides/elevenlabs-docs-agent
 
 Our documentation agent Alexis serves as an interactive assistant on the ElevenLabs documentation website, helping users navigate our product offerings and technical documentation. This guide outlines how we engineered Alexis to provide natural, helpful guidance using ElevenLabs Agents.
 
-![ElevenLabs documentation agent Alexis](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/92cc100cadfb587d66024e50d969ff4fd16b04c1fb517e4ccd3e6f48f2a5e709/assets/images/conversational-ai/docs-agent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233232Z&X-Amz-Expires=604800&X-Amz-Signature=3d6390ec46e6a4b2ba10f89f825796edc9ba0ea4cb8c7fc263a16d0013b9e492&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs documentation agent Alexis](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/92cc100cadfb587d66024e50d969ff4fd16b04c1fb517e4ccd3e6f48f2a5e709/assets/images/conversational-ai/docs-agent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T100017Z&X-Amz-Expires=604800&X-Amz-Signature=c8ae1a20f3bddd27efb457afc2b79178ebb1d2e043ba4551ae9e1712f16be04a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Agent design
 
@@ -58,7 +58,7 @@ We fine-tuned the voice parameters to match Alexis's personality:
 The widget automatically adapts to different screen sizes, displaying in a compact format on mobile devices to conserve screen space while maintaining full functionality. This responsive design ensures users can access AI assistance regardless of their device.
 
 ![ElevenLabs documentation agent Alexis on
-mobile](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32aec29072aa5ed45fd6518b4649b62e17a12c766031bb6a0755fdba464b12e2/assets/images/conversational-ai/docs-agent-mobile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260725%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260725T233232Z&X-Amz-Expires=604800&X-Amz-Signature=56fe6171378447f0da91d875e044f1ba2cb6eb9646dcb53b627844118c204c3c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+mobile](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32aec29072aa5ed45fd6518b4649b62e17a12c766031bb6a0755fdba464b12e2/assets/images/conversational-ai/docs-agent-mobile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T100017Z&X-Amz-Expires=604800&X-Amz-Signature=0577c435bfd8227da32247076448f2986a80d2421230f63d2ece86007e12d1c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Prompt engineering structure
 

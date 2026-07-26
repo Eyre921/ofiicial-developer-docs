@@ -13,13 +13,11 @@ Show all suppressions.
   Filter suppressions by origin.
 
   Possible values:
-  `bounce`: emails suppressed automatically after a bounce
-  `complaint`: emails suppressed due to a user complaint
-  `manual`: emails suppressed by your team manually
-</ParamField>
 
-The `source_id` in the response references the email that triggered the
-suppression. For suppressions with a `manual` origin, `source_id` is `null`.
+  * `bounce`: emails suppressed automatically after a bounce
+  * `complaint`: emails suppressed due to a user complaint
+  * `manual`: emails suppressed by your team manually
+</ParamField>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -83,5 +81,7 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
       }
     ]
   }
+
+  // The `source_id` in the response references the email that triggered the suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   ```
 </ResponseExample>
