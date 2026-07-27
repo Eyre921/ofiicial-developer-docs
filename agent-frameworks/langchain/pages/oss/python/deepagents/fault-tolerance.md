@@ -81,7 +81,10 @@ The sections below cover each strategy with code examples.
     agent = create_deep_agent(
         model="google_genai:gemini-3.5-flash",
         tools=[send_email_tool, delete_record_tool],
-        interrupt_on=["send_email", "delete_record"],
+        interrupt_on={
+            "send_email": True,
+            "delete_record": True,
+        },
     )
     ```
 

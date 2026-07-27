@@ -257,7 +257,7 @@ This is useful when:
 * You need LLM output for internal processing (for example structured output) but do not want to stream it to the client
 * You stream the same content through a different channel (for example custom UI messages) and want to avoid duplicate output in the `messages` stream
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
 import { StateGraph, StateSchema, START } from "@langchain/langgraph";
 import * as z from "zod";
@@ -774,6 +774,34 @@ for await (const chunk of await graph.stream(
   console.log(chunk);
 }
 ```
+
+<Note>
+  This applies to every `streamMode`, including `"messages"`. [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent) returns a `ReactAgent` wrapper; pass `agent.graph` when adding it as a node so the parent treats it as a subgraph. With `subgraphs: true`, message chunks are `[namespace, [token, metadata]]`, so you can tell which subgraph emitted them.
+
+  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createAgent } from "langchain";
+  import { END, START, StateGraph } from "@langchain/langgraph";
+
+  const agent = createAgent({ model, tools, stateSchema: State });
+
+  const graph = new StateGraph(State)
+      .addNode("agent", agent.graph)
+      .addEdge(START, "agent")
+      .addEdge("agent", END)
+      .compile();
+
+  for await (const [ns, data] of await graph.stream(
+      { messages: [{ role: "user", content: "..." }] },
+      {
+          streamMode: "messages",
+          subgraphs: true, // [!code highlight]
+      }
+  )) {
+      const [token, metadata] = data;
+      console.log(ns, token, metadata);
+  }
+  ```
+</Note>
 
 <Accordion title="Extended example: streaming from subgraphs">
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

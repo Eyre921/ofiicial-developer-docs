@@ -149,6 +149,10 @@ Checkpoint-to-sampler behavior depends on the infrastructure:
 
 For dedicated RL rollouts that continue across weight sync, see [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts).
 
+### Dedicated RL rollout transition mode
+
+When a dedicated RL recipe provisions a hot-load rollout deployment, you can set `hot_load_transition_type` to `ASYNC` or `SYNC` in the SDK provisioning config or the cookbook rollout deployment config. Leave it unset to keep the recommended `ASYNC` default; set `SYNC` when a rollout must not span a weight transition. For the tradeoffs and KV-cache behavior, see [Async transition (recommended, default for RL)](/fine-tuning/rl-rollout-debugging#async-transition-recommended-default-for-rl).
+
 ## Key APIs
 
 | API                                                                             | Purpose                                                                                                                                       |

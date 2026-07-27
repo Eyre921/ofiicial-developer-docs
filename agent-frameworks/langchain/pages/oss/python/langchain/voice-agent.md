@@ -350,7 +350,7 @@ async def tts_stream(
         await tts.close()
 ```
 
-The application implements an Cartesia client to manage the WebSocket connection and audio streaming. See below for implementations; similar adapters can be constructed for other TTS providers.
+The application implements a Cartesia client to manage the WebSocket connection and audio streaming. See below for implementations; similar adapters can be constructed for other TTS providers.
 
 <Accordion title="Cartesia Client">
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

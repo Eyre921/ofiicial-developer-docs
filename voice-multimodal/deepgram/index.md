@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 370 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -143,7 +143,6 @@
 - `docs/license-proxy` — [License Proxy](pages/docs/license-proxy.md) · [原文](https://developers.deepgram.com/docs/license-proxy.md)
 - `docs/live-streaming-audio` — [Getting Started](pages/docs/live-streaming-audio.md) · [原文](https://developers.deepgram.com/docs/live-streaming-audio.md)
 - `docs/livekit-integration` — [LiveKit and Deepgram](pages/docs/livekit-integration.md) · [原文](https://developers.deepgram.com/docs/livekit-integration.md)
-- `docs/log-formats` — [Log Formats](pages/docs/log-formats.md) · [原文](https://developers.deepgram.com/docs/log-formats.md)
 - `docs/lower-level-websockets` — [Using Lower-Level Websockets with the Streaming API](pages/docs/lower-level-websockets.md) · [原文](https://developers.deepgram.com/docs/lower-level-websockets.md)
 - `docs/maintaining` — [System Maintenance](pages/docs/maintaining.md) · [原文](https://developers.deepgram.com/docs/maintaining.md)
 - `docs/makecom-deepgram-integration` — [Make.com and Deepgram](pages/docs/makecom-deepgram-integration.md) · [原文](https://developers.deepgram.com/docs/makecom-deepgram-integration.md)
@@ -335,7 +334,6 @@
 - `reference/manage/billing/breakdown/get` — [Get Project Billing Breakdown](pages/reference/manage/billing/breakdown/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/breakdown/get.md)
 - `reference/manage/billing/fields/get` — [List Project Billing Fields](pages/reference/manage/billing/fields/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/fields/get.md)
 - `reference/manage/billing/get` — [Get a Project Balance](pages/reference/manage/billing/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/get.md)
-- `reference/manage/billing/list` — [Get Project Balances](pages/reference/manage/billing/list.md) · [原文](https://developers.deepgram.com/reference/manage/billing/list.md)
 - `reference/manage/billing/purchases/get` — [List Project Purchases](pages/reference/manage/billing/purchases/get.md) · [原文](https://developers.deepgram.com/reference/manage/billing/purchases/get.md)
 - `reference/manage/invites/create` — [Create a Project Invite](pages/reference/manage/invites/create.md) · [原文](https://developers.deepgram.com/reference/manage/invites/create.md)
 - `reference/manage/invites/delete` — [Delete a Project Invite](pages/reference/manage/invites/delete.md) · [原文](https://developers.deepgram.com/reference/manage/invites/delete.md)
@@ -359,7 +357,6 @@
 - `reference/manage/projects/update` — [Update a Project](pages/reference/manage/projects/update.md) · [原文](https://developers.deepgram.com/reference/manage/projects/update.md)
 - `reference/manage/requests/get` — [Get a Project Request](pages/reference/manage/requests/get.md) · [原文](https://developers.deepgram.com/reference/manage/requests/get.md)
 - `reference/manage/requests/list` — [List Project Requests](pages/reference/manage/requests/list.md) · [原文](https://developers.deepgram.com/reference/manage/requests/list.md)
-- `reference/manage/usage/breakdown/get` — [Get Project Usage Breakdown](pages/reference/manage/usage/breakdown/get.md) · [原文](https://developers.deepgram.com/reference/manage/usage/breakdown/get.md)
 - `reference/manage/usage/get` — [Get Project Usage](pages/reference/manage/usage/get.md) · [原文](https://developers.deepgram.com/reference/manage/usage/get.md)
 - `reference/manage/usage/list` — [List Project Usage Fields](pages/reference/manage/usage/list.md) · [原文](https://developers.deepgram.com/reference/manage/usage/list.md)
 - `reference/regional-endpoints` — [Regional Endpoints](pages/reference/regional-endpoints.md) · [原文](https://developers.deepgram.com/reference/regional-endpoints.md)
@@ -376,9 +373,7 @@
 - `reference/text-to-speech/speak-request` — [Single Text Request](pages/reference/text-to-speech/speak-request.md) · [原文](https://developers.deepgram.com/reference/text-to-speech/speak-request.md)
 - `reference/text-to-speech/speak-streaming` — [Continuous Text Stream](pages/reference/text-to-speech/speak-streaming.md) · [原文](https://developers.deepgram.com/reference/text-to-speech/speak-streaming.md)
 - `reference/voice-agent/agent-configurations/create-agent-configuration` — [Create Agent Configuration](pages/reference/voice-agent/agent-configurations/create-agent-configuration.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/create-agent-configuration.md)
-- `reference/voice-agent/agent-configurations/delete-agent-configuration` — [Delete Agent Configuration](pages/reference/voice-agent/agent-configurations/delete-agent-configuration.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/delete-agent-configuration.md)
 - `reference/voice-agent/agent-configurations/get-agent-configuration` — [Get Agent Configuration](pages/reference/voice-agent/agent-configurations/get-agent-configuration.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/get-agent-configuration.md)
-- `reference/voice-agent/agent-configurations/list-agent-configurations` — [List Agent Configurations](pages/reference/voice-agent/agent-configurations/list-agent-configurations.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/list-agent-configurations.md)
 - `reference/voice-agent/agent-configurations/update-agent-metadata` — [Update Agent Metadata](pages/reference/voice-agent/agent-configurations/update-agent-metadata.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/update-agent-metadata.md)
 - `reference/voice-agent/agent-variables/create-agent-variable` — [Create Agent Variable](pages/reference/voice-agent/agent-variables/create-agent-variable.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-variables/create-agent-variable.md)
 - `reference/voice-agent/agent-variables/delete-agent-variable` — [Delete Agent Variable](pages/reference/voice-agent/agent-variables/delete-agent-variable.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-variables/delete-agent-variable.md)

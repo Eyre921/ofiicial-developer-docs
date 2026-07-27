@@ -233,10 +233,6 @@ Browse the complete collection of integrations available for Python. LangChain P
     Fast and efficient AI model serving.
   </Card>
 
-  <Card title="Flyte" href="/oss/python/integrations/providers/flyte" icon="link">
-    Workflow orchestration for ML and data processing.
-  </Card>
-
   <Card title="FMP Data" href="/oss/python/integrations/providers/fmp-data" icon="link">
     Financial market data and analytics API.
   </Card>

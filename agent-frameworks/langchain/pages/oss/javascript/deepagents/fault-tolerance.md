@@ -60,7 +60,10 @@ The sections below cover each strategy with code examples.
     const agent = createDeepAgent({
       model: "google_genai:gemini-3.5-flash",
       tools: [sendEmailTool, deleteRecordTool],
-      interruptOn: ["send_email", "delete_record"],
+      interruptOn: {
+        send_email: true,
+        delete_record: true,
+      },
     });
     ```
 

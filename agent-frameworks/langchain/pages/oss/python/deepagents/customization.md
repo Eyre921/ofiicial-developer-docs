@@ -117,7 +117,7 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
       model: str | BaseChatModel | None = None,
       tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
       *,
-      system_prompt: str | SystemMessage | None = None,
+      system_prompt: str | SystemMessage | SystemPromptConfig | None = None,
       middleware: Sequence[AgentMiddleware] = (),
       subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,
       skills: list[str] | None = None,
@@ -1030,6 +1030,10 @@ Deep Agents ship with a built-in base system prompt that teaches the agent how t
   )
   ```
 </CodeGroup>
+
+<Note>
+  Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) with structured [content blocks](/oss/python/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks and append the built-in base prompt ([subagent](/oss/python/deepagents/subagents) dictionary specs remain strings).
+</Note>
 
 When middleware adds special tools, like the filesystem tools, it appends its own guidance to the system prompt at runtime.
 
@@ -2581,7 +2585,7 @@ You configure sandboxes by passing a sandbox backend to `backend` when creating 
     from langchain_vercel_sandbox import VercelSandbox
     from vercel.sandbox import Sandbox
 
-    sandbox = Sandbox.create()
+    sandbox = Sandbox.create(runtime="python3.13")
     backend = VercelSandbox(sandbox=sandbox)
 
     agent = create_deep_agent(

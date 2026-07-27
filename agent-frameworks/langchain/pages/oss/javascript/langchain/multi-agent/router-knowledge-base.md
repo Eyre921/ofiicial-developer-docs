@@ -83,12 +83,12 @@ For more details, see our [Installation guide](/oss/javascript/langchain/install
 Set up [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base) to inspect what is happening inside your agent. Then set the following environment variables:
 
 <CodeGroup>
-  ```bash bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   export LANGSMITH_TRACING="true"
   export LANGSMITH_API_KEY="..."
   ```
 
-  ```typescript typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   process.env.LANGSMITH_TRACING = "true";
   process.env.LANGSMITH_API_KEY = "...";
   ```

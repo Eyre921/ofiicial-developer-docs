@@ -295,7 +295,7 @@ For more information, see [Human-in-the-loop](/oss/javascript/deepagents/human-i
     Learn about customization options
   </Card>
 
-  <Card title="Code" icon="terminal" href="/oss/javascript/deepagents/code/overview">
+  <Card title="Code" icon="terminal" href="/oss/deepagents/code/overview">
     Use Deep Agents Code
   </Card>
 

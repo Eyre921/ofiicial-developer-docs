@@ -52,23 +52,11 @@ Build agents with LangChain, LangGraph, and Deep Agents.
 
     <h2>Use a ready-made agent</h2>
 
-    <Tabs>
-      <Tab title="Python">
-        <CardGroup>
-          <Card title="Deep Agents Code" href="/oss/python/deepagents/code/overview" icon="code">
-            Open source terminal coding agent (`dcode`) built on the Deep Agents SDK. Switch models mid-session, customize skills and memory, and approve shell execution from the CLI.
-          </Card>
-        </CardGroup>
-      </Tab>
-
-      <Tab title="TypeScript">
-        <CardGroup>
-          <Card title="Deep Agents Code" href="/oss/javascript/deepagents/code/overview" icon="code">
-            Open source terminal coding agent (`dcode`) built on the Deep Agents SDK. Switch models mid-session, customize skills and memory, and approve shell execution from the CLI.
-          </Card>
-        </CardGroup>
-      </Tab>
-    </Tabs>
+    <CardGroup>
+      <Card title="Deep Agents Code" href="/oss/deepagents/code/overview" icon="code">
+        Open source terminal coding agent (`dcode`) built on the Deep Agents SDK. Switch models mid-session, customize skills and memory, and approve shell execution from the CLI.
+      </Card>
+    </CardGroup>
 
     <h2>Explore</h2>
 
@@ -178,7 +166,7 @@ Source: https://docs.langchain.com/index
         Find and fix recurring agent issues automatically with LangSmith Engine.
       </Card>
 
-      <Card title="Deep Agents Code" icon="code" href="/oss/python/deepagents/code/overview">
+      <Card title="Deep Agents Code" icon="code" href="/oss/deepagents/code/overview">
         Code with an AI agent in your terminal using the open source `dcode` CLI.
       </Card>
     </CardGroup>

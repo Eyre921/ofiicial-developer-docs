@@ -51,6 +51,7 @@ Sentry supports Apple platforms via the [`sentry-cocoa`](https://github.com/gets
 - [Snapshots](https://docs.sentry.io/platforms/apple/snapshots.md)
 - [Profiling](https://docs.sentry.io/platforms/apple/profiling.md)
 - [Session Replay](https://docs.sentry.io/platforms/apple/session-replay.md)
+- [Feature Flags](https://docs.sentry.io/platforms/apple/feature-flags.md)
 - [Logs](https://docs.sentry.io/platforms/apple/logs.md)
 - [User Feedback](https://docs.sentry.io/platforms/apple/user-feedback.md)
 - [Mobile SDK Releases](https://docs.sentry.io/platforms/apple/releases.md)

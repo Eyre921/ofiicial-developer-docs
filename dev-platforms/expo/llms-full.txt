@@ -39952,7 +39952,7 @@ EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK=1 bun expo start
 ---
 
 ---
-modificationDate: July 22, 2026
+modificationDate: July 27, 2026
 title: 'Expo Modules API: Overview'
 description: An overview of the APIs and utilities provided by Expo to develop native modules.
 ---
@@ -40042,7 +40042,7 @@ Learn more about this in the [Integrate an existing library](/modules/existing-l
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 27, 2026
 title: 'Expo Modules API: Get started'
 description: Learn about getting started with Expo modules API.
 ---
@@ -40288,7 +40288,7 @@ Now that you have learned how to initialize a module and make simple changes to 
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 27, 2026
 title: 'Tutorial: Create a native module'
 description: A tutorial on creating a native module that persists settings with Expo Modules API.
 ---
@@ -40844,7 +40844,7 @@ Congratulations! You have created your first Expo Module for Android and iOS.
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 27, 2026
 title: 'Tutorial: Create a native view'
 description: A tutorial on creating a native view that renders a WebView with Expo Modules API.
 ---
@@ -41424,7 +41424,7 @@ Congratulations! You've created your first Expo module with a native view for An
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 27, 2026
 title: 'Tutorial: Create an inline module'
 description: A tutorial on creating a native module and view directly in your Expo project using inline modules.
 ---
@@ -42171,7 +42171,7 @@ The index file differs from the example even more. Opposed to wrapping each modu
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 27, 2026
 title: 'Tutorial: Create a module with a config plugin'
 description: A tutorial on creating a native module with a config plugin using Expo Modules API.
 ---
@@ -42603,7 +42603,7 @@ If you want to challenge yourself and make the plugin more versatile, this exerc
 ---
 
 ---
-modificationDate: June 30, 2026
+modificationDate: July 27, 2026
 title: How to use a standalone Expo module
 description: Learn how to use a standalone module created with create-expo-module in your project by using a monorepo or publishing the package to npm.
 ---
@@ -42902,7 +42902,7 @@ After this configuration, you see the text "Hello world! 👋" displayed in the 
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 27, 2026
 title: Wrap third-party native libraries
 description: Learn how to create a simple wrapper around two separate native libraries using Expo Modules API.
 ---
@@ -47511,7 +47511,7 @@ Expo modules are configured in **expo-module.config.json**. This file currently 
 ---
 
 ---
-modificationDate: June 22, 2026
+modificationDate: July 27, 2026
 title: 'Mocking native calls in Expo modules'
 description: Learn about mocking native calls in Expo modules.
 ---

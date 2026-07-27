@@ -76,7 +76,7 @@ class ProviderStrategy(Generic[SchemaT]):
   * **Pydantic models**: `BaseModel` subclasses with field validation. Returns validated Pydantic instance.
   * **Dataclasses**: Python dataclasses with type annotations. Returns dict.
   * **TypedDict**: Typed dictionary classes. Returns dict.
-  * **JSON Schema**: Dictionary with JSON schema specification. Returns dict.
+  * **JSON Schema**: Dictionary with JSON schema specification. Must include top-level `title` and `description` keys. Returns dict.
 </ParamField>
 
 <ParamField>
@@ -166,6 +166,7 @@ LangChain automatically uses `ProviderStrategy` when you pass a schema type dire
 
 
   contact_info_schema = {
+      "title": "ContactInfo",
       "type": "object",
       "description": "Contact information for a person.",
       "properties": {
@@ -224,7 +225,7 @@ class ToolStrategy(Generic[SchemaT]):
   * **Pydantic models**: `BaseModel` subclasses with field validation. Returns validated Pydantic instance.
   * **Dataclasses**: Python dataclasses with type annotations. Returns dict.
   * **TypedDict**: Typed dictionary classes. Returns dict.
-  * **JSON Schema**: Dictionary with JSON schema specification. Returns dict.
+  * **JSON Schema**: Dictionary with JSON schema specification. Must include top-level `title` and `description` keys. Returns dict.
   * **Union types**: Multiple schema options. The model will choose the most appropriate schema based on the context.
 </ParamField>
 
@@ -330,6 +331,7 @@ class ToolStrategy(Generic[SchemaT]):
 
 
   product_review_schema = {
+      "title": "ProductReview",
       "type": "object",
       "description": "Analysis of a product review.",
       "properties": {

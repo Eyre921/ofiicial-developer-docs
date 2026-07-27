@@ -42,6 +42,10 @@ Connect LangGraph agents to front ends.
   <Card title="CopilotKit" href="/oss/javascript/langchain/frontend/integrations/copilotkit" icon="react">
     React stack and Python middleware for Deep Agents, LangGraph agents, FastAPI, and generative UI.
   </Card>
+
+  <Card title="OpenUI" href="/oss/javascript/langchain/frontend/integrations/openui" icon="react">
+    Render adaptive, agent-generated interfaces from LangGraph and Deep Agents using OpenUI.
+  </Card>
 </Columns>
 
 ## Chat models

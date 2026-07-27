@@ -6,28 +6,57 @@ path: ecosystem/fireconnect/overview
 
 Route Claude Code, OpenCode, Codex, Pi, Cursor, VS Code, and Deep Agents through Fireworks AI or Microsoft Foundry models
 
-[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Choose where inference runs:
+[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off without hand-editing config files.
 
-* **Direct Fireworks routing** (default) — requests go to the [Fireworks gateway](https://fireworks.ai); sign in with `fireconnect login` or use a Fireworks API key (`fw_...`) or [Fire Pass](/firepass) key (`fpk_...`)
-* **Fireworks on Microsoft Foundry** — the same models, deployed in your Azure subscription and billed through Azure; use `--provider azure` and an Azure API key (see [Fireworks on Microsoft Foundry](#fireworks-on-microsoft-foundry))
+Choose where inference runs:
 
-Install once, sign in, then enable or disable routing per harness without editing config files by hand.
+* **Direct Fireworks routing** (default): the [Fireworks gateway](https://fireworks.ai). Sign in with `fireconnect login` or use a Fireworks API key (`fw_...`) or [Fire Pass](/firepass) key (`fpk_...`).
+* **Fireworks on Microsoft Foundry**: models in your Azure subscription, billed through Azure. See [Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry).
+
+<Tip>
+  New here? Run `fireconnect login`, then `fireconnect claude on`, restart Claude Code, and send `hi`. Try the [side-by-side demo](/ecosystem/fireconnect/demo) if you want to compare before switching.
+</Tip>
 
 ## What's new in v0.9.0
 
 FireConnect **0.9.0** adds a global model catalog, first-class FireRouter support, and safer upgrades:
 
-* **Global model catalog** — browse coding models with `fireconnect model list` (standard and fast options across model families)
-* **FireRouter as a model** — use `on --model firerouter` on supported harnesses
-* **VS Code Responses API** — VS Code uses the Fireworks Responses API; Kimi models support vision, GLM models remain text-only
-* **Claude usage reports** — `fireconnect claude usage` shows session token usage and estimated Fireworks cost
-* **Web search groundwork** — FireConnect can configure the Fireworks-hosted WebSearch MCP for eligible accounts
+* **Global model catalog**: `fireconnect model list`
+* **FireRouter as a model**: `on --model firerouter` on supported harnesses
+* **Claude usage reports**: `fireconnect claude usage`
+* **Web search MCP**: HTTP MCP for live search with a Fireworks API key ([details](/ecosystem/fireconnect/websearch-mcp)). FireConnect auto-install on Claude Code; other harnesses coming soon.
 
-See [Upgrade to v0.9.0](#upgrade-to-v090) for the recommended update path. Your existing harness settings are not changed during upgrade (except Claude Code — see below).
+See [Upgrade to v0.9.0](#upgrade-to-v090) before enabling FireRouter or web search on an older install.
+
+## Guides
+
+<CardGroup>
+  <Card title="Side-by-side demo" icon="bolt" href="/ecosystem/fireconnect/demo">
+    Race Anthropic vs Fireworks on the same prompt
+  </Card>
+
+  <Card title="Recommended models" icon="list" href="/ecosystem/fireconnect/recommended-models">
+    Serverless short IDs and Fire Pass defaults
+  </Card>
+
+  <Card title="CLI reference" icon="terminal" href="/ecosystem/fireconnect/cli-reference">
+    Commands, providers, auth, and migration
+  </Card>
+
+  <Card title="Microsoft Foundry" icon="microsoft" href="/ecosystem/fireconnect/microsoft-foundry">
+    Route harnesses through Azure deployments
+  </Card>
+
+  <Card title="WebSearch MCP" icon="globe" href="/ecosystem/fireconnect/websearch-mcp">
+    Live web search from any harness; FireConnect on Claude Code today
+  </Card>
+</CardGroup>
+
+## Harness guides
 
 <CardGroup>
   <Card title="Claude Code" icon="terminal" href="/ecosystem/fireconnect/claude-code">
-    Anthropic-compatible routing with multi-slot model aliases
+    Multi-slot model aliases
   </Card>
 
   <Card title="OpenCode" icon="terminal" href="/ecosystem/fireconnect/opencode">
@@ -51,269 +80,85 @@ See [Upgrade to v0.9.0](#upgrade-to-v090) for the recommended update path. Your 
   </Card>
 
   <Card title="Deep Agents" icon="robot" href="/ecosystem/fireconnect/deepagents">
-    LangChain Deep Agents Code (`dcode`) via OpenAI-compatible config
+    LangChain Deep Agents Code (`dcode`)
   </Card>
 </CardGroup>
 
+## Harness support
+
+| Harness     | Fireworks gateway | Fire Pass | Microsoft Foundry | [FireRouter](/ecosystem/firerouter/overview) | Guide                                             |
+| ----------- | :---------------: | :-------: | :---------------: | :------------------------------------------: | ------------------------------------------------- |
+| Claude Code |        Yes        |    Yes    |         No        |                      Yes                     | [Claude Code](/ecosystem/fireconnect/claude-code) |
+| OpenCode    |        Yes        |    Yes    |        Yes        |                      Yes                     | [OpenCode](/ecosystem/fireconnect/opencode)       |
+| Codex       |        Yes        |     No    |        Yes        |                      Yes                     | [Codex](/ecosystem/fireconnect/codex)             |
+| Pi          |        Yes        |    Yes    |        Yes        |                      Yes                     | [Pi](/ecosystem/fireconnect/pi)                   |
+| Cursor      |        Yes        |    Yes    |        Yes        |                      No                      | [Cursor](/ecosystem/fireconnect/cursor)           |
+| VS Code     |        Yes        |    Yes    |        Yes        |                      Yes                     | [VS Code](/ecosystem/fireconnect/vscode)          |
+| Deep Agents |        Yes        |    Yes    |        Yes        |                      No                      | [Deep Agents](/ecosystem/fireconnect/deepagents)  |
+
+**Notes**
+
+* **Microsoft Foundry**: Claude Code does not read `--provider azure` yet. Every other harness in the matrix supports Foundry routing in FireConnect v0.9.0+.
+* **Fire Pass**: not supported on Codex or Foundry. FireConnect also rejects `--model firerouter` with Fire Pass keys (`fpk_...`) on every harness. Use a standard Fireworks API key (`fw_...`) for FireRouter.
+* **Web search MCP**: works from any harness via HTTP MCP with a Fireworks API key (request access from Fireworks). FireConnect auto-install is Claude Code only for now; other harnesses coming soon. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
+* **Cursor / VS Code**: quit the IDE before `on` or `off` (SQLite writes). `status` is read-only.
+
 ## Prerequisites
 
-* A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`) for direct Fireworks routing
-* For **Fireworks on Microsoft Foundry**: a Microsoft Foundry resource, an Azure API key, and at least one model deployment (see [Fireworks on Microsoft Foundry](#fireworks-on-microsoft-foundry) and the [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry))
-* Node.js 18+ (the installer can install it via Homebrew on macOS or prints upgrade instructions elsewhere)
+* A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or [Fire Pass](/firepass) key (`fpk_...`) for direct routing
+* For Foundry: Azure resource, API key, and deployment. See [portal setup](/ecosystem/integrations/azure-foundry).
+* Node.js 18+
 * At least one supported harness installed locally
 
 ## Install
 
 ```bash theme={null}
 curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
+fireconnect login
+fireconnect claude on
 ```
 
-The installer:
+The installer clones the CLI to `~/.fireconnect/cli`, installs dependencies, and adds `~/.local/bin/fireconnect`. It does **not** sign you in or write harness settings.
 
-* Clones the CLI to `~/.fireconnect/cli`, runs `npm install --omit=dev` for its runtime dependency (`cross-keychain`, used for secure API-key storage), and adds a `fireconnect` launcher to `~/.local/bin`
-* Does **not** sign you in or write harness settings — run `fireconnect login` then `fireconnect <harness> on` after it finishes
-
-After install, sign in and enable a harness:
-
-```bash theme={null}
-fireconnect login        # guided sign-in (browser or paste a key)
-fireconnect claude on    # Claude Code (default starting point)
-fireconnect opencode on  # OpenCode
-fireconnect codex on       # Codex
-fireconnect pi on          # Pi
-fireconnect cursor on      # Cursor IDE (quit Cursor first)
-fireconnect vscode on      # VS Code + GitHub Copilot Chat
-fireconnect deepagents on  # LangChain Deep Agents Code
-```
-
-You do not have to run `login` first — any key-needing command like `fireconnect claude on` runs the same sign-in flow inline, then finishes the job.
+You do not have to run `login` first. `fireconnect claude on` runs sign-in inline if needed.
 
 ### Upgrade to v0.9.0
 
-Re-run the installer to upgrade FireConnect. **`fireconnect upgrade`** runs the same install script — use either path.
+Re-run the install script to upgrade FireConnect.
 
 ```bash theme={null}
 curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
-# or
-fireconnect upgrade
 ```
 
-The installer:
-
-1. Pulls the latest CLI into `~/.fireconnect/cli` and updates the `fireconnect` launcher in `~/.local/bin`
-2. Preserves your stored API key and non-Claude harness settings
-3. If Claude Code is connected through FireConnect, temporarily restores your original Claude settings, upgrades the CLI, then prompts you to reconnect
-
-After upgrade, reconnect Claude Code if it was active:
+If Claude Code was connected, the installer temporarily restores your original settings. Reconnect after upgrade:
 
 ```bash theme={null}
 fireconnect claude on
 ```
 
-For non-interactive installs (CI or scripts), set `FIRECONNECT_AUTO_OFF_CLAUDE=1` so the installer restores Claude settings without prompting.
+For CI, set `FIRECONNECT_AUTO_OFF_CLAUDE=1` to skip prompts. Check version with `fireconnect --version`.
 
-When a newer version is available, FireConnect prints a one-line update banner on startup with the same re-run-installer instructions. The check runs in the background and does not block your command.
-
-Check your installed version:
+## Sign in
 
 ```bash theme={null}
-fireconnect --version
+fireconnect login     # browser sign-in or paste a key
+fireconnect logout    # clear stored credentials
+fireconnect status    # sign-in state and key storage
 ```
 
-## Sign in and API keys
+Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and applies the correct defaults.
 
-FireConnect stores your Fireworks API key in the OS keychain when available (via `cross-keychain`). Harness configs hold **baked key literals** (mode `0600`) for direct routing — Claude via the `X-Fireworks-Api-Key` custom header, and Codex, OpenCode, Pi, and Deep Agents in their config files. Cursor and VS Code store keys in IDE secret storage.
-
-```bash theme={null}
-fireconnect login     # browser sign-in (creates a machine key) or paste an existing key
-fireconnect logout    # clear the stored key (keychain entry + config ref)
-fireconnect status    # show sign-in state and where the key is stored
-```
-
-`~/.fireconnect/config.json` stores a reference such as `{keychain:fireworks-api-key}` or `{env:FIREWORKS_API_KEY}` — never a literal key in global config. Re-running the [install script](#upgrade-to-v090) rebakes enabled harness configs to literals, including any legacy env-reference auth left on disk.
-
-Fire Pass users can paste a `fpk_...` key during `login` or `on`. FireConnect detects the key type and applies the correct defaults.
-
-## Fireworks on Microsoft Foundry
-
-Route **OpenCode**, **Codex**, and **Pi** through a [Microsoft Foundry](/ecosystem/integrations/azure-foundry) deployment instead of the Fireworks gateway. Usage is billed through Azure and counts toward MACC where applicable.
-
-<CardGroup>
-  <Card title="FireConnect + Microsoft Foundry" icon="terminal" href="/ecosystem/fireconnect/microsoft-foundry">
-    Configure `--provider azure`, deployment names, per-harness config, and switching back to direct Fireworks
-  </Card>
-
-  <Card title="Microsoft Foundry portal setup" icon="microsoft" href="/ecosystem/integrations/azure-foundry">
-    Enable Fireworks on Foundry, PayGo / PTU modes, billing, and troubleshooting
-  </Card>
-</CardGroup>
-
-Quick start:
-
-```bash theme={null}
-export AZURE_API_KEY=<your-azure-api-key>
-
-fireconnect configure \
-  --provider azure \
-  --base-url https://<resource>.services.ai.azure.com \
-  --api-key $AZURE_API_KEY
-
-fireconnect opencode on --main FW-GLM-5.1
-```
-
-Claude Code, Cursor, VS Code, and Deep Agents do **not** have Azure routing in FireConnect yet — they always use direct Fireworks when you run `on`, even if global config has `--provider azure`. See the [full Microsoft Foundry guide](/ecosystem/fireconnect/microsoft-foundry) for which harnesses are implemented, endpoint normalization, one-off `--azure` routing, turning Foundry off, and what each harness writes.
-
-## CLI design
-
-FireConnect uses **harness-first** syntax:
-
-`fireconnect <harness> <command>`
-
-Bare harness names run `on` (for example, `fireconnect claude` is the same as `fireconnect claude on`).
-
-### Global commands
-
-```bash theme={null}
-fireconnect login        # Sign in — browser (creates a key) or paste a key you have
-fireconnect logout       # Clear the stored key (keychain entry + config ref)
-fireconnect status       # Show sign-in state and where the key is stored
-fireconnect configure    # Set the provider (Azure/Foundry) and Anthropic key for router mode
-fireconnect model list   # Browse the global Fireworks coding model catalog
-fireconnect demo         # Race your provider vs Fireworks GLM 5.2 Fast on the same prompt
-fireconnect uninstall    # Disable all harnesses, restore configs, remove CLI
-fireconnect help         # Show help
-fireconnect --version    # Print the installed CLI version (-V also works)
-```
-
-### Providers
-
-FireConnect supports two inference backends. The CLI provider flag is shown in parentheses.
-
-| Provider flag         | Where inference runs           | API key               | Supported harnesses                                            |
-| --------------------- | ------------------------------ | --------------------- | -------------------------------------------------------------- |
-| `fireworks` (default) | Fireworks gateway              | `fw_...` or `fpk_...` | Claude Code, OpenCode, Codex, Pi, Cursor, VS Code, Deep Agents |
-| `azure`               | Fireworks on Microsoft Foundry | Azure API key         | OpenCode, Codex, Pi                                            |
-
-Set the default with `fireconnect configure --provider fireworks` or `--provider azure`. For Foundry, also pass `--base-url` with your resource endpoint. Harness `on` commands use the configured provider unless you pass `--azure` or per-command `--base-url` / `--api-key` overrides.
-
-### Per-harness commands
-
-Browse models globally with `fireconnect model list`, then configure a harness through `on`:
-
-```bash theme={null}
-fireconnect model list --search glm
-fireconnect claude on --sonnet kimi-latest
-fireconnect opencode on --model glm-fast-latest
-```
-
-Each CLI harness (`claude`, `opencode`, `codex`, `pi`, `deepagents`) supports:
-
-* `fireconnect <harness> on` — Route through the configured provider (pass `--model <id>` or slot flags like `--sonnet`)
-* `fireconnect <harness> off` — Restore your previous config
-* `fireconnect <harness> status` — Show provider, auth, and models
-* `fireconnect <harness> help` — Harness-specific help
-
-Claude Code also has `fireconnect claude usage` (session token usage and estimated Fireworks cost).
-
-Each IDE harness (`cursor`, `vscode`) supports:
-
-* `fireconnect <harness> on` — Configure direct Fireworks routing (pass `--model <id>`; Azure not implemented for IDE harnesses yet; quit the IDE first)
-* `fireconnect <harness> off` — Restore your previous config (quit the IDE first)
-* `fireconnect <harness> status` — Show provider, auth, and registered models (read-only; IDE can stay open)
-* `fireconnect <harness> help` — Harness-specific help
-
-Browse models with the global `fireconnect model list`, then apply a choice with `on --model <id>`. In v0.9.0, `on` registers the preferred serverless catalog in the IDE picker automatically.
-
-Cursor stores settings in SQLite (`state.vscdb`). Commands that write to that database (`on`, `off`) require Cursor to be fully quit first. VS Code stores the API key in `state.vscdb` as well, so `on` and `off` require quitting VS Code.
-
-With **Fireworks on Microsoft Foundry** (`--provider azure`), pass your Foundry **deployment name** to `on` with `--main` instead of browsing the Fireworks serverless catalog.
-
-Run `fireconnect help` for the overview, or `fireconnect claude help` (and similarly for other harnesses) for harness-level options.
-
-### API key resolution
-
-When a command needs credentials, FireConnect resolves them based on the active provider.
-
-**Direct Fireworks routing** (`--provider fireworks`)
-
-1. Explicit `--api-key`
-2. OS keychain (via `fireconnect login`)
-3. Global `~/.fireconnect/config.json` reference
-4. `FIREWORKS_API_KEY` environment variable
-
-Claude Code additionally reads harness-local keys from `~/.claude/settings.json` when FireConnect is already enabled there.
-
-**Fireworks on Microsoft Foundry** (`--provider azure`)
-
-1. Explicit `--api-key`
-2. Global `~/.fireconnect/config.json`
-3. `AZURE_API_KEY` environment variable
-
-## Recommended models
-
-These **serverless model short IDs** apply to **direct Fireworks routing** and expand to full Fireworks paths automatically. With **Fireworks on Microsoft Foundry**, pass your **deployment name** instead (for example, `FW-GLM-5.1` or `FW-MiniMax-M2.5`) via `--main`.
-
-| Short ID            | Best for                      | Notes                                                                                                                                                                            |
-| ------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `glm-latest`        | All-around use, agentic tasks | Version-tracking router; strong reasoning, 1M context.                                                                                                                           |
-| `glm-fast-latest`   | Latency-sensitive agentic use | Default for `main`, `opus`, and `fable` slots in Claude Code. Version-tracking router on the high-speed Fast serving path (100+ tok/s), at a higher per-token price. 1M context. |
-| `glm-5p2-fast`      | Latency-sensitive agentic use | Same as `glm-fast-latest` but pinned to GLM 5.2 rather than version-tracking. 1M context.                                                                                        |
-| `kimi-fast-latest`  | General use (lighter)         | Default `sonnet` slot in Claude Code. Fast Kimi variant with vision support.                                                                                                     |
-| `glm-5p1`           | General use (lighter)         | Pinned GLM 5.1; use with `--sonnet glm-5p1` if you prefer it over the default.                                                                                                   |
-| `deepseek-v4-flash` | Background / fast tasks       | Default `haiku` and `subagent` slots in Claude Code. Lowest latency.                                                                                                             |
-
-### Fire Pass keys
-
-Fire Pass keys (`fpk_...`) default all slots to `glm-fast-latest`. The model browser shows Fire Pass-supported routers: `glm-latest`, `glm-fast-latest`, `glm-5p2-fast`, `kimi-fast-latest`, and `kimi-k2p7-code-fast`.
-
-Fire Pass keys work with direct Fireworks routing only. Use an Azure API key with `--provider azure`.
-
-<Warning>
-  Codex does not support Fire Pass keys yet. Use a standard Fireworks API key (`fw_...`) with Codex.
-</Warning>
+See [CLI reference: Sign in options](/ecosystem/fireconnect/cli-reference#sign-in-options) for `--with-token`, `--account`, `logout --revoke`, and `configure`.
 
 ## FireRouter
 
-[FireRouter](/ecosystem/firerouter/overview) is a managed routing service that sends simple requests to cheaper Fireworks open models and passes hard work through to closed-source models. In FireConnect v0.9.0, FireRouter is a first-class model — select it like any other:
+[FireRouter](/ecosystem/firerouter/overview) automatically routes simple requests to cheaper open models and hard requests to Claude Opus 4.8. In FireConnect, select it like any other model:
 
 ```bash theme={null}
 fireconnect claude on --model firerouter
-fireconnect claude on --opus firerouter
-fireconnect opencode on --model firerouter
-fireconnect codex on --model firerouter
-fireconnect pi on --model firerouter
-fireconnect vscode on --model firerouter
 ```
 
-Use `--model firerouter` for the primary model or a Claude alias flag such as `--opus firerouter`. Cursor does not support FireRouter.
-
-Pass `--anthropic-api-key sk-ant-...` when your workspace does not have Anthropic BYOK provisioned server-side. See the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect) for authentication details.
-
-## Migration from earlier syntax
-
-FireConnect uses harness-first commands. If you have older docs or scripts, update them:
-
-### Pre-0.5.0 syntax
-
-| Before                              | After                                         |
-| ----------------------------------- | --------------------------------------------- |
-| `fireconnect on`                    | `fireconnect claude on`                       |
-| `fireconnect off`                   | `fireconnect claude off`                      |
-| `fireconnect status`                | `fireconnect claude status`                   |
-| `fireconnect list`                  | `fireconnect claude status`                   |
-| `fireconnect set --main <id>`       | `fireconnect claude on --main <id>`           |
-| `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
-| `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
-
-### v0.9.0 changes
-
-| Before                               | After                                                     |
-| ------------------------------------ | --------------------------------------------------------- |
-| `fireconnect upgrade`                | Same as re-running the [install script](#upgrade-to-v090) |
-| `fireconnect <harness> model list`   | `fireconnect model list`                                  |
-| `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags     |
-| `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)          |
-| Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json`    |
+Cursor does not support FireRouter. See the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect) for auth, routing preferences, and supported harnesses.
 
 ## Source
 

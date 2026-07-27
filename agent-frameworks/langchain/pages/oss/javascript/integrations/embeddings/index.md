@@ -432,7 +432,7 @@ In production, you would typically use a more robust persistent store, such as a
 
   <Card title="TogetherAI" icon="link" href="/oss/javascript/integrations/embeddings/togetherai" />
 
-  <Card title="Voyage AI" icon="link" href="/oss/javascript/integrations/embeddings/voyageai" />
+  <Card title="Voyage AI by MongoDB" icon="link" href="/oss/javascript/integrations/embeddings/voyageai" />
 </Columns>
 
 ***

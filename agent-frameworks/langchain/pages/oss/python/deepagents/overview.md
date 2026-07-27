@@ -455,7 +455,7 @@ For more information, see [Human-in-the-loop](/oss/python/deepagents/human-in-th
     Learn about customization options
   </Card>
 
-  <Card title="Code" icon="terminal" href="/oss/python/deepagents/code/overview">
+  <Card title="Code" icon="terminal" href="/oss/deepagents/code/overview">
     Use Deep Agents Code
   </Card>
 

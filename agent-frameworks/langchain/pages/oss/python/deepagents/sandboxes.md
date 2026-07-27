@@ -50,7 +50,7 @@ Sandboxes are especially useful for:
 * Data analysis agents—Load files, install data analysis libraries (pandas, numpy, etc.), run statistical calculations, and create outputs like PowerPoint presentations in a safe, isolated environment
 
 <Tip>
-  **Using Deep Agents Code?** Deep Agents Code has built-in sandbox support via the `--sandbox` flag. See [Use remote sandboxes](/oss/python/deepagents/code/remote-sandboxes) for Deep Agents Code-specific setup, flags (`--sandbox-id`, `--sandbox-setup`), and examples.
+  **Using Deep Agents Code?** Deep Agents Code has built-in sandbox support via the `--sandbox` flag. See [Use remote sandboxes](/oss/deepagents/code/remote-sandboxes) for Deep Agents Code-specific setup, flags (`--sandbox-id`, `--sandbox-setup`), and examples.
 </Tip>
 
 <Note>
@@ -657,7 +657,7 @@ These examples assume you have already created a sandbox/devbox using the provid
     from langchain_vercel_sandbox import VercelSandbox
     from vercel.sandbox import Sandbox
 
-    sandbox = Sandbox.create()
+    sandbox = Sandbox.create(runtime="python3.13")
     backend = VercelSandbox(sandbox=sandbox)
 
     agent = create_deep_agent(
@@ -1618,7 +1618,7 @@ You can also call the backend `execute()` method directly in your application co
 
     from langchain_vercel_sandbox import VercelSandbox
 
-    sandbox = Sandbox.create()
+    sandbox = Sandbox.create(runtime="python3.13")
     backend = VercelSandbox(sandbox=sandbox)
 
     try:
@@ -1864,7 +1864,7 @@ Use `upload_files()` to populate the sandbox before the agent runs. Paths must b
 
     from langchain_vercel_sandbox import VercelSandbox
 
-    sandbox = Sandbox.create()
+    sandbox = Sandbox.create(runtime="python3.13")
     backend = VercelSandbox(sandbox=sandbox)
 
     backend.upload_files(
@@ -2057,7 +2057,7 @@ Use `download_files()` to retrieve files from the sandbox after the agent finish
 
     from langchain_vercel_sandbox import VercelSandbox
 
-    sandbox = Sandbox.create()
+    sandbox = Sandbox.create(runtime="python3.13")
     backend = VercelSandbox(sandbox=sandbox)
 
     results = backend.download_files(["/src/index.py", "/output.txt"])

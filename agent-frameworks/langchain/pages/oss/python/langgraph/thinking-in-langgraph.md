@@ -351,6 +351,8 @@ Different errors need different handling strategies:
         error_handler=payment_error_handler,
     )
     ```
+
+    To apply the same `retry_policy`, `timeout`, or `error_handler` to every node in a graph without repeating them on each `add_node`, use `StateGraph.set_node_defaults(...)`. Per-node values still take precedence. See [Fault tolerance](/oss/python/langgraph/fault-tolerance#graph-defaults).
   </Tab>
 </Tabs>
 
@@ -587,7 +589,7 @@ The graph structure is minimal because routing happens inside nodes through [`Co
 Let's run our agent with an urgent billing issue that needs human review:
 
 <Accordion title="Testing the agent" icon="flask">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from typing import TypedDict
 
   from langgraph.checkpoint.memory import InMemorySaver

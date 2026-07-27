@@ -219,7 +219,7 @@ vector_store.similarity_search(
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langchain_ollama import OllamaEmbeddings
 
-    embeddings = OllamaEmbeddings(model="llama3")
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")
     ```
   </Accordion>
 

@@ -68,7 +68,7 @@ To install `boto3`, run `pip install boto3`.
 
 Once you have an audio file uploaded to one of your S3 buckets, you can generate a presigned URL very easily from the AWS S3 website: Click on your audio file, then going to “Object actions” in the top-right corner, and click “Share with a presigned URL”.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152/images/855c249-create-presigned-url-ui.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T233114Z&X-Amz-Expires=604800&X-Amz-Signature=46651503721887a78b51c753f738b957ec9cd5409e80ee526b00f12526d1d20c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/6632c1f9c4d2fbc48535b1b87dfe5ee661212c8096dee9205ad4b51f7b605152/images/855c249-create-presigned-url-ui.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260727T113127Z&X-Amz-Expires=604800&X-Amz-Signature=9be25902e4ee164804b06a5e0f1ef54f6ddfd1e2d8cb9c1f39455d292f0d49c7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The presigned URL will be copied to your clipboard, and if you paste it into your browser’s URL bar the file will be downloaded to your computer. If you carefully inspect the URL, you will notice query parameters such as `Amz-Security-Token` and `X-Amz-Expires`. These query parameters contain the credentials for secure access to your files.
 
@@ -470,7 +470,7 @@ If you are receiving `AccessDenied` messages such as the one below, it's likely 
 </Error>
 ```
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96/images/9f93eca-presigned-url-error-message-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260726%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260726T233114Z&X-Amz-Expires=604800&X-Amz-Signature=147fcd251473fd4316694d42e5ca7500c01dcd2e3a49d0e8f45488d254f0177a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/be123ff2fc9316134ec567bfc0b49112842613f844dd6c21d04f43ce6774da96/images/9f93eca-presigned-url-error-message-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260727T113127Z&X-Amz-Expires=604800&X-Amz-Signature=e1ecf4f7bf5c6a9882c91d5f622d533401034c01e2487646ab561427881a64a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ***
 
