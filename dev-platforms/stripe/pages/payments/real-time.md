@@ -29,11 +29,11 @@ When a customer uses a real-time payment method, their statement lists the appli
 | [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | - Unsupported |
 | [PayNow](https://docs.stripe.com/payments/paynow.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | ✓ Supported |
 | [PayTo](https://docs.stripe.com/payments/payto.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported |
-| [PromptPay](https://docs.stripe.com/payments/promptpay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | - Unsupported |
+| [PromptPay](https://docs.stripe.com/payments/promptpay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported 4 | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | - Unsupported |
 | [UPI](https://docs.stripe.com/payments/upi.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported |
 | [Swish](https://docs.stripe.com/payments/swish.md) | ✓ Supported | ✓ Supported 1,2 | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 3 | - Unsupported | - Unsupported | - Unsupported |
 
-1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
+1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.4 Mobile Payment Element only supports PromptPay on iOS.
 
 ## API support
 

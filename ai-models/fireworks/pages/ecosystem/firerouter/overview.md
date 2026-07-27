@@ -40,38 +40,18 @@ FireRouter never stores your provider keys server-side. You send them on each re
 
 ## FireConnect
 
-The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, FireRouter is a first-class model — select it with `--model firerouter`.
-
-### Upgrade to v0.9.0
-
-If you use FireConnect with an older release, upgrade before enabling FireRouter:
-
-```bash theme={null}
-curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
-```
-
-Re-run the installer (recommended over `fireconnect upgrade`). Your stored API key and non-Claude harness settings are preserved. If Claude Code is connected, the installer temporarily restores your original settings — reconnect after upgrade:
-
-```bash theme={null}
-fireconnect claude on --model firerouter
-```
-
-See [Upgrade to v0.9.0](/ecosystem/fireconnect/overview#upgrade-to-v090) for full details.
-
-### Enable FireRouter
+The easiest way to use FireRouter in coding harnesses is [FireConnect](/ecosystem/fireconnect/overview). As of FireConnect **v0.9.0**, select FireRouter like any other model:
 
 ```bash theme={null}
 fireconnect login
 fireconnect claude on --model firerouter
-fireconnect opencode on --model firerouter
-fireconnect codex on --model firerouter
-fireconnect pi on --model firerouter
-fireconnect vscode on --model firerouter
 ```
 
-For Claude Code, use alias flags to route specific slots — for example, `fireconnect claude on --opus firerouter` sets only the Opus slot to FireRouter while leaving the primary on the default open model.
+See the [FireConnect overview: Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter, and [FireConnect + FireRouter](/ecosystem/fireconnect/overview#firerouter) for quick enable steps. Per-harness guides (Claude Code slot flags, Codex Anthropic env, routing preference) live on each harness page.
 
-Pass `--anthropic-api-key sk-ant-...` when your Fireworks workspace does not have Anthropic BYOK provisioned server-side. Without an Anthropic key, FireRouter still routes among Fireworks open models but cannot pass through to Claude Opus 4.8.
+Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade to v0.9.0](/ecosystem/fireconnect/overview#upgrade-to-v090).
+
+Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. Without an Anthropic key, FireRouter still redirects to open models but cannot pass through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication).
 
 Cursor does not support FireRouter through FireConnect.
 

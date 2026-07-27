@@ -6894,6 +6894,17 @@ Poll job status, retrieve per-step loss and evaluation metrics, and stream train
 
 The Together AI platform records metrics at every training and evaluation step. You can pull them during a job to watch loss curves live, or after the job completes to compare runs.
 
+## View metrics in the dashboard
+
+Open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning) and use the **Metrics** tab to chart training progress. Metrics stream in while a job runs and stay available after it completes.
+
+Use the filter control (funnel icon) in the metrics toolbar to adjust how points are sampled:
+
+* **Sampling rate:** Cap how many training points are plotted (maps to the `resolution` query parameter; default 100).
+* **Step range:** Limit the chart to a contiguous step window (maps to `global_step_from` and `global_step_to`).
+
+The same **Metrics filtering** controls are available when you [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side, so you can align sampling and step windows across selected jobs. Click **Apply** to re-fetch, or **Restore defaults** to clear custom filters.
+
 ## Poll until the job is done
 
 A fine-tuning job moves through the states: `pending → queued → running → uploading → completed`. Queue wait is typically under an hour but varies with platform load. Once a job is running, multiply the duration of the first epoch by `n_epochs` to estimate remaining training time.
@@ -21885,11 +21896,17 @@ Make your first request to Together AI in a few minutes.
 
 3. Select **Create key**, give it a name, and copy the value. New keys are only shown once, so make sure to save it somewhere safe.
 
-4. Export the key as an environment variable in your terminal:
+4. Set the key as an environment variable in your terminal:
 
-```bash theme={null}
-export TOGETHER_API_KEY="your_api_key"
-```
+<CodeGroup>
+  ```bash macOS / Linux theme={null}
+  export TOGETHER_API_KEY="your_api_key"
+  ```
+
+  ```powershell Windows (PowerShell) theme={null}
+  $env:TOGETHER_API_KEY="your_api_key"
+  ```
+</CodeGroup>
 
 The SDK reads `TOGETHER_API_KEY` automatically when you call `Together()`. Pass `api_key=` to the constructor to override it.
 
@@ -22403,6 +22420,7 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 | Qwen              | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$1.25                        | -                                    | \$3.75                         | -            | -                | -                  |
 | Qwen              | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
 | Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
+| Moonshot          | Kimi K3                      | moonshotai/Kimi-K3                      | 1000000        | \$3.00                        | \$0.30                               | \$15.00                        | -            | Yes              | Yes                |
 | Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
 | Moonshot          | Kimi K2.6                    | moonshotai/Kimi-K2.6                    | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
 | Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 262144         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
@@ -22513,6 +22531,7 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 | Qwen         | Qwen3.5 9B     | Qwen/Qwen3.5-9B           | 262144         | \$0.17                        | \$0.25                         |
 | Google       | Gemma 4 31B IT | google/gemma-4-31B-it     | 262144         | \$0.39                        | \$0.97                         |
 | Minimax      | Minimax M3     | MiniMaxAI/MiniMax-M3      | 524288         | \$0.30                        | \$1.20                         |
+| Moonshot     | Kimi K3        | moonshotai/Kimi-K3        | 1000000        | \$3.00                        | \$15.00                        |
 | Moonshot     | Kimi K2.7 Code | moonshotai/Kimi-K2.7-Code | 262144         | \$0.95                        | \$4.00                         |
 | Moonshot     | Kimi K2.6      | moonshotai/Kimi-K2.6      | 262144         | \$1.20                        | \$4.50                         |
 
@@ -25713,9 +25732,15 @@ Create independent API keys for separate use cases, systems, or workloads. For e
 
 To use the Together Python or TypeScript SDKs, set your key as an environment variable in your shell:
 
-```bash theme={null}
-export TOGETHER_API_KEY="your_api_key"
-```
+<CodeGroup>
+  ```bash macOS / Linux theme={null}
+  export TOGETHER_API_KEY="your_api_key"
+  ```
+
+  ```powershell Windows (PowerShell) theme={null}
+  $env:TOGETHER_API_KEY="your_api_key"
+  ```
+</CodeGroup>
 
 Or add it to a `.env` file in your project directory:
 
@@ -45203,15 +45228,37 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="July 27, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `Qwen/Qwen3.6-27B`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
 <Update label="July 24, 2026">
   ## Python SDK realtime transcription
 
   The Together Python SDK now includes `client.beta.realtime.transcription()` for streaming speech-to-text over WebSocket. Install with `pip install "together[realtime]"`. The session reconnects with audio replay on transient drops, exposes normalized events such as `TranscriptDelta` and `TranscriptCompleted`, and supports application-level failover across endpoints with `RealtimeConnectionError` (`code="no_healthy_workers"`) and `session.pending_audio()`.
 
   See [Streaming transcription](/docs/inference/transcription/streaming#python-sdk).
+
+  ## Fine-tuning comparison metrics filtering
+
+  The [fine-tuning comparison view](https://api.together.ai/fine-tuning?view=comparison) now includes the same **Metrics filtering** control as the single-job Metrics tab. Adjust **Sampling rate** and **Step range**, then click **Apply** to re-fetch metrics for every selected job with matching filters.
+
+  See [View metrics in the dashboard](/docs/fine-tuning/monitoring#view-metrics-in-the-dashboard).
 </Update>
 
 <Update label="July 23, 2026">
+  ## Dedicated containers OpenAI-compatible endpoints
+
+  [Dedicated container inference](/docs/dedicated-container-inference) now supports HTTP server mode for synchronous, OpenAI-compatible endpoints. Run your worker without the `--queue` flag, wire an OpenAI route with Sprocket, and call it with the OpenAI SDK or plain HTTP, with no Together-specific request shapes.
+
+  See [Serve an OpenAI-compatible endpoint](/docs/dedicated_containers_openai).
+
   ## Fine-tuning output object names
 
   Fine-tune retrieve and list-checkpoints responses now include qualified Together model registry names alongside object IDs. On [`GET /fine-tunes/{id}`](/reference/get-fine-tunes-id), use `model_object_name` and `adapter_object_name` (LoRA jobs) for the final artifacts in `<project_slug>/<model_name>` form. On [`GET /fine-tunes/{id}/checkpoints`](/reference/get-fine-tunes-id-checkpoint), each entry adds `object_name` with the same naming pattern (including `-<step>` or `-adapter` suffixes). Names are resolved on retrieve only, not on list jobs. If the project slug cannot be resolved, the name field falls back to the object ID.
@@ -45231,6 +45278,20 @@ Source: https://docs.together.ai/docs/changelog
   `tg fine-tuning preview` samples rows from an uploaded JSONL training file and shows how a base model tokenizes them before you start a job. The table output highlights masked tokens, trained spans, and truncation; pass `--json` for the full response.
 
   See [Preview](/reference/cli/finetune#preview).
+
+  ## Worker engine cache metrics
+
+  Dedicated endpoint Prometheus metrics now expose `worker_engine_kv_cache_utilization` and `worker_engine_cache_hit_rate` gauges. Use them to track KV-cache pressure and prefix-reuse efficiency on deployment workers.
+
+  See [Monitor endpoints and deployments](/docs/dedicated-endpoints/monitoring).
+</Update>
+
+<Update label="July 22, 2026">
+  ## Cluster remediation mode override
+
+  `tg beta clusters remediations approve` now accepts a `--mode` flag to override the recommended repair action when you approve a node remediation. Choose reboot, quick reprovision, migrate to new host, or remove without changing the recommendation in the console first.
+
+  See [Node repair](/docs/node-repair#override-the-recommended-action) and the [clusters CLI reference](/reference/cli/clusters).
 </Update>
 
 <Update label="July 21, 2026">
@@ -45242,6 +45303,27 @@ Source: https://docs.together.ai/docs/changelog
   * **Update:** Pass `--headlamp` / `--no-headlamp` or `--slurm-web` / `--no-slurm-web` to toggle add-ons on an existing cluster.
 
   See the [clusters CLI reference](/reference/cli/clusters).
+
+  ## MoE expert-LoRA target modules
+
+  Fine-tuning jobs on supported mixture-of-experts models can now target expert feed-forward layers instead of attention projections. Set `lora_trainable_modules` to `w_up,w_gate,w_down` to train a compact shared-factor adapter across experts, useful when adapting domain knowledge rather than attention patterns.
+
+  See [Target MoE expert layers](/docs/fine-tuning/lora-vs-full#target-moe-expert-layers).
+
+  ## Jig environment variable collision validation
+
+  `jig deploy` now rejects configs where the same name appears in both `[tool.jig.deploy.environment_variables]` and secrets. The error lists each colliding name so you can remove the duplicate or unset the secret before redeploying.
+
+  See [Secrets](/docs/deployments-jig#secrets).
+
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `zai-org/GLM-5.1`.
+  * `zai-org/GLM-5`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 </Update>
 
 <Update label="July 20, 2026">
@@ -45255,6 +45337,18 @@ Source: https://docs.together.ai/docs/changelog
   * **Preference-tuning metrics:** DPO and other preference jobs add reward accuracy, reward margin, chosen and rejected rewards and log-probabilities, and approximate KL.
   * **Interactive charts:** Zoom and pan across all charts on a shared step axis, switch the x-axis between step and time, toggle linear or logarithmic scales, and sync a hover crosshair across every metric.
   * **Compare runs:** Overlay metrics from multiple jobs to [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side.
+
+  ## New dedicated endpoint models
+
+  The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
+
+  * `deepseek-ai/DeepSeek-V4-Flash`.
+
+  ## Model revision validation status
+
+  Model and adapter revision APIs now return `validationStatus`, `lastValidatedAt`, and `validationErrors` on each revision. Poll validation before you pin a revision in a deployment — a revision must reach `REVISION_VALIDATION_STATUS_SUCCESS` before it can deploy when referenced explicitly.
+
+  See [Check revision validation](/docs/dedicated-endpoints/custom-models#check-revision-validation).
 </Update>
 
 <Update label="July 17, 2026">
@@ -47961,7 +48055,7 @@ tg fine-tuning list-checkpoints [FT_ID]
 
 The default output is a table with **Download ID**, **Timestamp**, **Registry Artifact**, and **Type** columns. Use the Download ID with `tg fine-tuning download`: intermediate checkpoints use `FT_ID:STEP`, and the final checkpoint uses the job ID alone.
 
-When the job uploaded the artifact to the Together model registry, the **Registry Artifact** column shows the qualified ID as `object_id@object_revision_id` (for example, `ml_…@rv_…`). The CLI also prints a copyable **Registry artifacts** block below the table.
+When the job uploaded the artifact to the Together model registry, the **Registry Artifact** column shows `object_name` when available (for example, `acme-corp/my-model-abc123-100`). It falls back to `object_id@object_revision_id` (for example, `ml_…@rv_…`) when the name is unavailable. The CLI also prints a copyable **Registry artifacts** block below the table.
 
 Pass `--json` to get the full response body instead. Each checkpoint includes `step`, `path`, `created_at`, `checkpoint_type`, and `checkpoint` (the download selector: `model` or `adapter`). When the job uploaded the artifact to the Together model registry, the entry also includes `object_id`, `object_revision_id` (for example, `ml_…` and `rv_…`), and `object_name` (the qualified `<project_slug>/<model_name>` name for that checkpoint, with `-<step>` or `-adapter` suffixes as appropriate). See [Model registry object IDs](/docs/fine-tuning/deployment#model-registry-object-ids) for how these relate to the job-level `model_object_id` / `adapter_object_id` fields.
 

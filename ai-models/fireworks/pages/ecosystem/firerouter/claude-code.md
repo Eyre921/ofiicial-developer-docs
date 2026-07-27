@@ -12,7 +12,7 @@ For one-command setup, use [FireConnect](/ecosystem/fireconnect/claude-code#fire
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* An Anthropic API key if you need pass-through to Claude Opus 4.8 — see [Authentication](/ecosystem/firerouter/authentication)
+* An Anthropic API key if you need pass-through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication).
 
 Add one of the configs below to `~/.claude/settings.json` (on Windows: `%USERPROFILE%\.claude\settings.json`), then restart Claude Code.
 

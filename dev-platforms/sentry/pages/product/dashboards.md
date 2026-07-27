@@ -38,9 +38,9 @@ You can also use these dashboards as templates by duplicating them to create you
 
 You can make [custom dashboards](https://docs.sentry.io/product/dashboards/custom-dashboards.md) by duplicating an existing dashboard, using [AI to generate a dashboard](https://docs.sentry.io/product/dashboards/custom-dashboards.md#ai-generated-dashboards) with natural language, or starting from scratch by pressing the **Create Dashboard** button. Custom dashboards enable you to create views tailored to your organization's needs. For example, you may want to track performance of a specific feature, or track errors by a specific team's ownership. Once in edit mode, use the same filters you use to drill into a dashboard to customize your dashboard.
 
-## [Open Dashboard Widgets in Discover and Issues](https://docs.sentry.io/product/dashboards.md#open-dashboard-widgets-in-discover-and-issues)
+## [Open Dashboard Widgets in Explore and Issues](https://docs.sentry.io/product/dashboards.md#open-dashboard-widgets-in-explore-and-issues)
 
-Each dashboard [widget](https://docs.sentry.io/product/dashboards/widget-builder.md) has an ellipsis that opens a context menu. From here, depending on the type of data the widget shows, you can open the widget in [Discover](https://docs.sentry.io/product/discover-queries.md) or [Issues](https://docs.sentry.io/product/issues.md) to get more information.
+Each dashboard [widget](https://docs.sentry.io/product/dashboards/widget-builder.md) has an ellipsis that opens a context menu. From here, depending on the type of data the widget shows, you can open the widget in different explorers: [Errors](https://docs.sentry.io/product/errors.md), [Traces](https://docs.sentry.io/product/trace-explorer.md), [Logs](https://docs.sentry.io/product/logs.md), [Session Replays](https://docs.sentry.io/product/session-replay/web.md), and [Metrics](https://docs.sentry.io/product/metrics.md) to get more information.
 
 ## [Widget Viewer](https://docs.sentry.io/product/dashboards.md#widget-viewer)
 

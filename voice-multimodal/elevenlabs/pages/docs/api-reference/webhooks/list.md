@@ -86,6 +86,7 @@ components:
         - Speech to Text
         - Agent QA Evaluations
         - ConvAI Alerting
+        - Flows
       title: WebhookUsageType
     WorkspaceWebhookUsageResponseModel:
       type: object

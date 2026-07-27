@@ -58,6 +58,7 @@ Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 ## Related
 
 * [Serverless overview](/serverless/overview)
+* [US-only Serverless](/serverless/us-only-serverless)
 * [Serverless quickstart](/getting-started/quickstart)
 * [Text models](/guides/querying-text-models)
 * [Anthropic compatibility](/tools-sdks/anthropic-compatibility) — `service_tier` is supported on both OpenAI-compatible chat completions and the Anthropic `messages` API.

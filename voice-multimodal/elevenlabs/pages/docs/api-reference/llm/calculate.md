@@ -249,9 +249,9 @@ components:
 
 ```json
 {
-  "prompt_length": 1,
-  "number_of_pages": 1,
-  "rag_enabled": true
+  "prompt_length": 1500,
+  "number_of_pages": 10,
+  "rag_enabled": false
 }
 ```
 
@@ -260,6 +260,14 @@ components:
 ```json
 {
   "llm_prices": [
+    {
+      "llm": "gpt-4o",
+      "price_per_minute": 2.75
+    },
+    {
+      "llm": "gpt-3.5-turbo",
+      "price_per_minute": 0.85
+    },
     {
       "llm": "gemini-2.5-flash",
       "price_per_minute": 1.1
@@ -276,9 +284,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.conversationalAi.llmUsage.calculate({
-        promptLength: 1,
-        numberOfPages: 1,
-        ragEnabled: true,
+        promptLength: 1500,
+        numberOfPages: 10,
+        ragEnabled: false,
     });
 }
 main();
@@ -291,9 +299,9 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.llm_usage.calculate(
-    prompt_length=1,
-    number_of_pages=1,
-    rag_enabled=True,
+    prompt_length=1500,
+    number_of_pages=10,
+    rag_enabled=False,
 )
 
 ```
@@ -312,7 +320,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/llm-usage/calculate"
 
-	payload := strings.NewReader("{\n  \"prompt_length\": 1,\n  \"number_of_pages\": 1,\n  \"rag_enabled\": true\n}")
+	payload := strings.NewReader("{\n  \"prompt_length\": 1500,\n  \"number_of_pages\": 10,\n  \"rag_enabled\": false\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -340,7 +348,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"prompt_length\": 1,\n  \"number_of_pages\": 1,\n  \"rag_enabled\": true\n}"
+request.body = "{\n  \"prompt_length\": 1500,\n  \"number_of_pages\": 10,\n  \"rag_enabled\": false\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -352,7 +360,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/llm-usage/calculate")
   .header("Content-Type", "application/json")
-  .body("{\n  \"prompt_length\": 1,\n  \"number_of_pages\": 1,\n  \"rag_enabled\": true\n}")
+  .body("{\n  \"prompt_length\": 1500,\n  \"number_of_pages\": 10,\n  \"rag_enabled\": false\n}")
   .asString();
 ```
 
@@ -364,9 +372,9 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/llm-usage/calculate', [
   'body' => '{
-  "prompt_length": 1,
-  "number_of_pages": 1,
-  "rag_enabled": true
+  "prompt_length": 1500,
+  "number_of_pages": 10,
+  "rag_enabled": false
 }',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -382,7 +390,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/llm-usage/calculate");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"prompt_length\": 1,\n  \"number_of_pages\": 1,\n  \"rag_enabled\": true\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"prompt_length\": 1500,\n  \"number_of_pages\": 10,\n  \"rag_enabled\": false\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -391,9 +399,9 @@ import Foundation
 
 let headers = ["Content-Type": "application/json"]
 let parameters = [
-  "prompt_length": 1,
-  "number_of_pages": 1,
-  "rag_enabled": true
+  "prompt_length": 1500,
+  "number_of_pages": 10,
+  "rag_enabled": false
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

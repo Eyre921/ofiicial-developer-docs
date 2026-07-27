@@ -1,7 +1,7 @@
 ---
 title: "Per-User Usage Limits"
-source: https://docs.fireworks.ai/fireworks-for-work/usage-limits
-path: fireworks-for-work/usage-limits
+source: https://docs.fireworks.ai/fireworks-nexus/usage-limits
+path: fireworks-nexus/usage-limits
 ---
 
 Set per-user spending limits on serverless inference — account defaults and per-user overrides

@@ -670,72 +670,72 @@ These attributes correspond to connected accounts and allow you to take actions,
 
 #### Account attributes
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **account** | *Case-sensitive string* | example_value | The ID of a connected account. This attribute evaluates the connected account you’re facilitating a transaction for, which is the same as the connected account you set as the Stripe-Account header. |
-| **days\_since\_account\_was\_created** | *Numeric* | 10 | The number of days since a connected account was created |
-| **account:[metadata attribute name]** | *Case-sensitive string* | example_value | The platform-specified [metadata](https://docs.stripe.com/api/metadata.md) on the [Account](https://docs.stripe.com/api/accounts.md) object. Read more about using [metadata attributes](https://docs.stripe.com/radar/rules/reference.md#metadata-attributes). |
+| `account` | Case-sensitive string | example_value | The ID of a connected account. This attribute evaluates the connected account you’re facilitating a transaction for, which is the same as the connected account you set as the Stripe-Account header. |
+| `days_since_account_was_created` | Numeric | 10 | The number of days since a connected account was created |
+| `account:[metadata attribute name]` | Case-sensitive string | example_value | The platform-specified [metadata](https://docs.stripe.com/api/metadata.md) on the [Account](https://docs.stripe.com/api/accounts.md) object. Read more about using [metadata attributes](https://docs.stripe.com/radar/rules/reference.md#metadata-attributes). |
 
 #### Disputes 
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **dispute\_count\_for\_account\_monthly** | *Numeric* | 10 | The number of disputes that occurred within the past month on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
-| **dispute\_count\_for\_account\_weekly** | *Numeric* | 10 | The number of disputes that occurred within the past week on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
-| **dispute\_count\_for\_account\_daily** | *Numeric* | 10 | The number of disputes that occurred within the past day on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
-| **usd\_amount\_disputed\_for\_account\_monthly** | *Numeric* | 50 | The charge volume (in USD) of disputes that occurred within the past month on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
-| **usd\_amount\_disputed\_for\_account\_weekly** | *Numeric* | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
-| **usd\_amount\_disputed\_for\_account\_daily** | *Numeric* | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
+| `dispute_count_for_account_monthly` | Numeric | 10 | The number of disputes that occurred within the past month on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
+| `dispute_count_for_account_weekly` | Numeric | 10 | The number of disputes that occurred within the past week on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
+| `dispute_count_for_account_daily` | Numeric | 10 | The number of disputes that occurred within the past day on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
+| `usd_amount_disputed_for_account_monthly` | Numeric | 50 | The charge volume (in USD) of disputes that occurred within the past month on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
+| `usd_amount_disputed_for_account_weekly` | Numeric | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
+| `usd_amount_disputed_for_account_daily` | Numeric | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. It includes all dispute types (both legitimate and fraudulent) and statuses (won, lost, and so on). We determine the number of disputes using the date the dispute occurred, not the date of the underlying transaction. You can sometimes have more than one dispute on a single charge. |
 
 #### Failures
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **failure\_count\_for\_account\_monthly** | *Numeric* | 10 | The number of failures that occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
-| **failure\_count\_for\_account\_weekly** | *Numeric* | 10 | The number of failures that occurred within the past week on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
-| **failure\_count\_for\_account\_daily** | *Numeric* | 10 | The number of failures that occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
-| **usd\_amount\_failed\_for\_account\_monthly** | *Numeric* | 50 | The charge volume (in USD) of failures that occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
-| **usd\_amount\_failed\_for\_account\_weekly** | *Numeric* | 50 | The charge volume (in USD) of failures that occurred within the past week on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
-| **usd\_amount\_failed\_for\_account\_daily** | *Numeric* | 50 | The charge volume (in USD) of failures that occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
+| `failure_count_for_account_monthly` | Numeric | 10 | The number of failures that occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
+| `failure_count_for_account_weekly` | Numeric | 10 | The number of failures that occurred within the past week on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
+| `failure_count_for_account_daily` | Numeric | 10 | The number of failures that occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
+| `usd_amount_failed_for_account_monthly` | Numeric | 50 | The charge volume (in USD) of failures that occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
+| `usd_amount_failed_for_account_weekly` | Numeric | 50 | The charge volume (in USD) of failures that occurred within the past week on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
+| `usd_amount_failed_for_account_daily` | Numeric | 50 | The charge volume (in USD) of failures that occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. We include failed API calls under the **Failed** category in the Transactions section of the Dashboard, but they aren’t an indicator of fraud risk. |
 
 #### Refunds 
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **refund\_count\_for\_account\_monthly** | *Numeric* | 10 | The number of refunds that occurred within the past month on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **refund\_count\_for\_account\_weekly** | *Numeric* | 10 | The number of refunds that occurred within the past week on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **refund\_count\_for\_account\_daily** | *Numeric* | 10 | The number of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **usd\_amount\_refunded\_for\_account\_monthly** | *Numeric* | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **usd\_amount\_refunded\_for\_account\_weekly** | *Numeric* | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **usd\_amount\_refunded\_for\_account\_daily** | *Numeric* | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `refund_count_for_account_monthly` | Numeric | 10 | The number of refunds that occurred within the past month on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `refund_count_for_account_weekly` | Numeric | 10 | The number of refunds that occurred within the past week on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `refund_count_for_account_daily` | Numeric | 10 | The number of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `usd_amount_refunded_for_account_monthly` | Numeric | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `usd_amount_refunded_for_account_weekly` | Numeric | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `usd_amount_refunded_for_account_daily` | Numeric | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. We calculate refunds based on the date the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
 
 #### Charges
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **total\_transaction\_count\_for\_account\_monthly** | *Numeric* | 10 | The count of attempted transactions that occurred within the past month on a connected account. |
-| **total\_transaction\_count\_for\_account\_weekly** | *Numeric* | 10 | The count of attempted transactions that occurred within the past week on a connected account. |
-| **total\_transaction\_count\_for\_account\_daily** | *Numeric* | 10 | The count of attempted transactions that occurred within the past day on a connected account. |
-| **transaction\_count\_for\_account\_monthly** | *Numeric* | 10 | The count of successful charges that occurred within the past month on a connected account. |
-| **transaction\_count\_for\_account\_weekly** | *Numeric* | 10 | The count of successful charges that occurred within the past week on a connected account. |
-| **transaction\_count\_for\_account\_daily** | *Numeric* | 10 | The count of successful charges that occurred within the past day on a connected account. |
-| **total\_usd\_amount\_charged\_for\_account\_monthly** | *Numeric* | 50 | The total amount of attempted charge volume (in USD) that occurred within the past month on a connected account. |
-| **total\_usd\_amount\_charged\_for\_account\_weekly** | *Numeric* | 50 | The total amount of attempted charge volume (in USD) that occurred within the past week on a connected account. |
-| **total\_usd\_amount\_charged\_for\_account\_daily** | *Numeric* | 50 | The total amount of attempted charge volume (in USD) that occurred within the past day on a connected account. |
-| **usd\_amount\_charged\_for\_account\_monthly** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past month on a connected account. |
-| **usd\_amount\_charged\_for\_account\_weekly** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past week on a connected account. |
-| **usd\_amount\_charged\_for\_account\_daily** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past day on a connected account. |
+| `total_transaction_count_for_account_monthly` | Numeric | 10 | The count of attempted transactions that occurred within the past month on a connected account. |
+| `total_transaction_count_for_account_weekly` | Numeric | 10 | The count of attempted transactions that occurred within the past week on a connected account. |
+| `total_transaction_count_for_account_daily` | Numeric | 10 | The count of attempted transactions that occurred within the past day on a connected account. |
+| `transaction_count_for_account_monthly` | Numeric | 10 | The count of successful charges that occurred within the past month on a connected account. |
+| `transaction_count_for_account_weekly` | Numeric | 10 | The count of successful charges that occurred within the past week on a connected account. |
+| `transaction_count_for_account_daily` | Numeric | 10 | The count of successful charges that occurred within the past day on a connected account. |
+| `total_usd_amount_charged_for_account_monthly` | Numeric | 50 | The total amount of attempted charge volume (in USD) that occurred within the past month on a connected account. |
+| `total_usd_amount_charged_for_account_weekly` | Numeric | 50 | The total amount of attempted charge volume (in USD) that occurred within the past week on a connected account. |
+| `total_usd_amount_charged_for_account_daily` | Numeric | 50 | The total amount of attempted charge volume (in USD) that occurred within the past day on a connected account. |
+| `usd_amount_charged_for_account_monthly` | Numeric | 50 | The successfully processed charge volume (in USD) that occurred within the past month on a connected account. |
+| `usd_amount_charged_for_account_weekly` | Numeric | 50 | The successfully processed charge volume (in USD) that occurred within the past week on a connected account. |
+| `usd_amount_charged_for_account_daily` | Numeric | 50 | The successfully processed charge volume (in USD) that occurred within the past day on a connected account. |
 
 #### Early fraud warnings (EFWs)
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **efw\_count\_for\_account\_monthly** | *Numeric* | 10 | The number of EFWs associated with charges on a connected account within the past month. |
-| **efw\_count\_for\_account\_weekly** | *Numeric* | 10 | The number of EFWs associated with charges on a connected account within the past week. |
-| **efw\_count\_for\_account\_daily** | *Numeric* | 10 | The number of EFWs associated with charges on a connected account within the past day. |
-| **efw\_usd\_amount\_for\_account\_monthly** | *Numeric* | 10 | The successfully processed charge volume (in USD) with EFWs associated on a connected account within the past month. |
-| **efw\_usd\_amount\_for\_account\_weekly** | *Numeric* | 10 | The successfully processed charge volume (in USD) with EFWs associated on a connected account within the past week. |
-| **efw\_usd\_amount\_for\_account\_daily** | *Numeric* | 10 | The successfully processed charge volume (in USD) with EFWs associated on a connected account within the past day. |
+| `efw_count_for_account_monthly` | Numeric | 10 | The number of EFWs associated with charges on a connected account within the past month. |
+| `efw_count_for_account_weekly` | Numeric | 10 | The number of EFWs associated with charges on a connected account within the past week. |
+| `efw_count_for_account_daily` | Numeric | 10 | The number of EFWs associated with charges on a connected account within the past day. |
+| `efw_usd_amount_for_account_monthly` | Numeric | 10 | The successfully processed charge volume (in USD) with EFWs associated on a connected account within the past month. |
+| `efw_usd_amount_for_account_weekly` | Numeric | 10 | The successfully processed charge volume (in USD) with EFWs associated on a connected account within the past week. |
+| `efw_usd_amount_for_account_daily` | Numeric | 10 | The successfully processed charge volume (in USD) with EFWs associated on a connected account within the past day. |
 
 #### Account rules
 
@@ -743,76 +743,76 @@ These attributes allow you to take actions (such as submitting accounts for revi
 
 #### Account risk levels
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **account\_risk\_level** | *Case-insensitive string* | normal | The risk level of a given account, as determined by Stripe. The supported values are: `normal`, `elevated`, and `highest`. An elevated account risk score means the account causes financial loss 50% of the time. A highest account risk score means the account causes financial loss 90% of the time. |
-| **account\_fraud\_risk\_score** | *Numeric* | 75 | The fraud risk score (0–100) for a connected account, as determined by Stripe. This score represents the probability that an account is fraudulent, with higher values indicating greater fraud risk. |
+| `account_risk_level` | Case-insensitive string | normal | The risk level of a given account, as determined by Stripe. The supported values are: `normal`, `elevated`, and `highest`. An elevated account risk score means the account causes financial loss 50% of the time. A highest account risk score means the account causes financial loss 90% of the time. |
+| `account_fraud_risk_score` | Numeric | 75 | The fraud risk score (0–100) for a connected account, as determined by Stripe. This score represents the probability that an account is fraudulent, with higher values indicating greater fraud risk. |
 
 #### Account attributes
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **account** | *Case-sensitive string* | example_value | The ID of a connected account. This attribute evaluates the connected account you’re facilitating a transaction for, which is the same as the connected account you set as the Stripe-Account header. |
-| **account\_country** | *Case-insensitive string* | US | The two-letter country code of the corresponding connected account in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format. |
-| **bank\_account\_change\_count\_daily** | *Numeric* | 10 | The number of bank account changes on a connected account in the past day. |
-| **bank\_account\_change\_count\_weekly** | *Numeric* | 10 | The number of bank account changes on a connected account in the past week. |
-| **bank\_account\_change\_count\_monthly** | *Numeric* | 10 | The number of bank account changes on a connected account in the past month. |
-| **business\_type** | *Case-insensitive string* | company | The [business type](https://docs.stripe.com/api/accounts/object.md#account_object-business_type) of the connected account. |
-| **days\_since\_account\_was\_created** | *Numeric* | 10 | The number of days since a connected account was created |
-| **account:[metadata attribute name]** | *Case-sensitive string* | example_value | The platform-specified [metadata](https://docs.stripe.com/api/metadata.md) on the [Account](https://docs.stripe.com/api/accounts.md) object. Read more about using [metadata attributes](https://docs.stripe.com/radar/rules/reference.md#metadata-attributes). |
+| `account` | Case-sensitive string | example_value | The ID of a connected account. This attribute evaluates the connected account you’re facilitating a transaction for, which is the same as the connected account you set as the Stripe-Account header. |
+| `account_country` | Case-insensitive string | US | The two-letter country code of the corresponding connected account in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format. |
+| `bank_account_change_count_daily` | Numeric | 10 | The number of bank account changes on a connected account in the past day. |
+| `bank_account_change_count_weekly` | Numeric | 10 | The number of bank account changes on a connected account in the past week. |
+| `bank_account_change_count_monthly` | Numeric | 10 | The number of bank account changes on a connected account in the past month. |
+| `business_type` | Case-insensitive string | company | The [business type](https://docs.stripe.com/api/accounts/object.md#account_object-business_type) of the connected account. |
+| `days_since_account_was_created` | Numeric | 10 | The number of days since a connected account was created |
+| `account:[metadata attribute name]` | Case-sensitive string | example_value | The platform-specified [metadata](https://docs.stripe.com/api/metadata.md) on the [Account](https://docs.stripe.com/api/accounts.md) object. Read more about using [metadata attributes](https://docs.stripe.com/radar/rules/reference.md#metadata-attributes). |
 
 #### Disputes 
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **dispute\_count\_for\_account\_monthly** | *Numeric* | 10 | The number of disputes that occurred within the past month on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
-| **dispute\_count\_for\_account\_weekly** | *Numeric* | 10 | The number of disputes that occurred within the past week on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
-| **dispute\_count\_for\_account\_daily** | *Numeric* | 10 | The number of disputes that occurred within the past day on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
-| **usd\_amount\_disputed\_for\_account\_monthly** | *Numeric* | 50 | The charge volume (in USD) of disputes that occurred within the past month on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
-| **usd\_amount\_disputed\_for\_account\_weekly** | *Numeric* | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
-| **usd\_amount\_disputed\_for\_account\_daily** | *Numeric* | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
-| **dispute\_rate\_for\_account\_monthly** | *Percentage* | 0.10 | The percent of charges in the past month that resulted in a dispute. In this case, Stripe calculates the dispute on the date of the charge, not the date the dispute arrived. |
-| **dispute\_rate\_for\_account\_weekly** | *Percentage* | 0.10 | The percent of charges in the past week that resulted in a dispute. In this case, Stripe calculates the dispute on the date of the charge, not the date the dispute arrived. |
-| **dispute\_rate\_for\_account\_daily** | *Percentage* | 0.10 | The percent of charges in the past day that resulted in a dispute. In this case, Stripe calculates the dispute on the date of the charge, not the date the dispute arrived. |
+| `dispute_count_for_account_monthly` | Numeric | 10 | The number of disputes that occurred within the past month on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
+| `dispute_count_for_account_weekly` | Numeric | 10 | The number of disputes that occurred within the past week on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
+| `dispute_count_for_account_daily` | Numeric | 10 | The number of disputes that occurred within the past day on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
+| `usd_amount_disputed_for_account_monthly` | Numeric | 50 | The charge volume (in USD) of disputes that occurred within the past month on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
+| `usd_amount_disputed_for_account_weekly` | Numeric | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
+| `usd_amount_disputed_for_account_daily` | Numeric | 50 | The charge volume (in USD) of disputes that occurred within the past week on a connected account. Includes all dispute types (not just fraudulent) and statuses (won, lost, and so on). Disputes are determined by the date the dispute occurred, not the date of the underlying transaction. There can sometimes be more than one dispute on a single charge. |
+| `dispute_rate_for_account_monthly` | Percentage | 0.10 | The percent of charges in the past month that resulted in a dispute. In this case, Stripe calculates the dispute on the date of the charge, not the date the dispute arrived. |
+| `dispute_rate_for_account_weekly` | Percentage | 0.10 | The percent of charges in the past week that resulted in a dispute. In this case, Stripe calculates the dispute on the date of the charge, not the date the dispute arrived. |
+| `dispute_rate_for_account_daily` | Percentage | 0.10 | The percent of charges in the past day that resulted in a dispute. In this case, Stripe calculates the dispute on the date of the charge, not the date the dispute arrived. |
 
 #### Failures
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **failure\_count\_for\_account\_monthly** | *Numeric* | 10 | The number of failures which occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
-| **failure\_count\_for\_account\_weekly** | *Numeric* | 10 | The number of failures which occurred within the past week on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
-| **failure\_count\_for\_account\_daily** | *Numeric* | 10 | The number of failures which occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
-| **usd\_amount\_failed\_for\_account\_monthly** | *Numeric* | 50 | The charge volume (in USD) of failures which occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
-| **usd\_amount\_failed\_for\_account\_weekly** | *Numeric* | 50 | The charge volume (in USD) of failures which occurred within the past week on a connected account, including issuer  blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard, but aren’t considered indicative of fraud risk. |
-| **usd\_amount\_failed\_for\_account\_daily** | *Numeric* | 50 | The charge volume (in USD) of failures which occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
-| **failure\_rate\_for\_account\_monthly** | *Percentage* | 0.10 | The percent of charges in the past month that resulted in a failure, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
-| **failure\_rate\_for\_account\_weekly** | *Percentage* | 0.10 | The percent of charges in the past week that resulted in a failure, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
-| **failure\_rate\_for\_account\_daily** | *Percentage* | 0.10 | The percent of charges in the past day that resulted in a failure, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `failure_count_for_account_monthly` | Numeric | 10 | The number of failures which occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `failure_count_for_account_weekly` | Numeric | 10 | The number of failures which occurred within the past week on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `failure_count_for_account_daily` | Numeric | 10 | The number of failures which occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `usd_amount_failed_for_account_monthly` | Numeric | 50 | The charge volume (in USD) of failures which occurred within the past month on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `usd_amount_failed_for_account_weekly` | Numeric | 50 | The charge volume (in USD) of failures which occurred within the past week on a connected account, including issuer  blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard, but aren’t considered indicative of fraud risk. |
+| `usd_amount_failed_for_account_daily` | Numeric | 50 | The charge volume (in USD) of failures which occurred within the past day on a connected account, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `failure_rate_for_account_monthly` | Percentage | 0.10 | The percent of charges in the past month that resulted in a failure, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `failure_rate_for_account_weekly` | Percentage | 0.10 | The percent of charges in the past week that resulted in a failure, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
+| `failure_rate_for_account_daily` | Percentage | 0.10 | The percent of charges in the past day that resulted in a failure, including issuer blocked charges and Radar blocked charges, but excluding failed API calls. Failed API calls are included under the **Failed** category in the Transactions section of the Dashboard but aren’t considered indicative of fraud risk. |
 
 #### Refunds 
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **refund\_count\_for\_account\_monthly** | *Numeric* | 10 | The number of refunds that occurred within the past month on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **refund\_count\_for\_account\_weekly** | *Numeric* | 10 | The number of refunds that occurred within the past week on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **refund\_count\_for\_account\_daily** | *Numeric* | 10 | The number of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **usd\_amount\_refunded\_for\_account\_monthly** | *Numeric* | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **usd\_amount\_refunded\_for\_account\_weekly** | *Numeric* | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **usd\_amount\_refunded\_for\_account\_daily** | *Numeric* | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
-| **refund\_rate\_for\_account\_monthly** | *Percentage* | 0.10 | The percent of charges in the past month that resulted in a refund. In this case, the refund is calculated on the date of the charge, not the date the refund arrived. |
-| **refund\_rate\_for\_account\_weekly** | *Percentage* | 0.10 | The percent of charges in the past week that resulted in a refund. In this case, the refund is calculated on the date of the charge, not the date the refund arrived. |
-| **refund\_rate\_for\_account\_daily** | *Percentage* | 0.10 | The percent of charges in the past day that resulted in a refund. In this case, the refund is calculated on the date of the charge, not the date the refund arrived. |
+| `refund_count_for_account_monthly` | Numeric | 10 | The number of refunds that occurred within the past month on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `refund_count_for_account_weekly` | Numeric | 10 | The number of refunds that occurred within the past week on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `refund_count_for_account_daily` | Numeric | 10 | The number of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `usd_amount_refunded_for_account_monthly` | Numeric | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `usd_amount_refunded_for_account_weekly` | Numeric | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `usd_amount_refunded_for_account_daily` | Numeric | 50 | The charge volume (in USD) of refunds that occurred within the past day on a connected account. Refunds are calculated based on the date on which the refund occurred, not the date of the underlying transaction. A single charge can sometimes have more than one refund. |
+| `refund_rate_for_account_monthly` | Percentage | 0.10 | The percent of charges in the past month that resulted in a refund. In this case, the refund is calculated on the date of the charge, not the date the refund arrived. |
+| `refund_rate_for_account_weekly` | Percentage | 0.10 | The percent of charges in the past week that resulted in a refund. In this case, the refund is calculated on the date of the charge, not the date the refund arrived. |
+| `refund_rate_for_account_daily` | Percentage | 0.10 | The percent of charges in the past day that resulted in a refund. In this case, the refund is calculated on the date of the charge, not the date the refund arrived. |
 
 #### Charges
 
-| **Attribute** | **Type** | **Example value** | **Description** |
+| Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| **charge\_count\_for\_account\_monthly** | *Numeric* | 10 | The count of successful charges that occurred within the past month on a connected account. |
-| **charge\_count\_for\_account\_weekly** | *Numeric* | 10 | The count of successful charges that occurred within the past week on a connected account. |
-| **charge\_count\_for\_account\_daily** | *Numeric* | 10 | The count of successful charges that occurred within the past day on a connected account. |
-| **usd\_amount\_charged\_for\_account\_monthly** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past month on a connected account. |
-| **usd\_amount\_charged\_for\_account\_weekly** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past week on a connected account. |
-| **usd\_amount\_charged\_for\_account\_daily** | *Numeric* | 50 | The successfully processed charge volume (in USD) that occurred within the past day on a connected account. |
+| `charge_count_for_account_monthly` | Numeric | 10 | The count of successful charges that occurred within the past month on a connected account. |
+| `charge_count_for_account_weekly` | Numeric | 10 | The count of successful charges that occurred within the past week on a connected account. |
+| `charge_count_for_account_daily` | Numeric | 10 | The count of successful charges that occurred within the past day on a connected account. |
+| `usd_amount_charged_for_account_monthly` | Numeric | 50 | The successfully processed charge volume (in USD) that occurred within the past month on a connected account. |
+| `usd_amount_charged_for_account_weekly` | Numeric | 50 | The successfully processed charge volume (in USD) that occurred within the past week on a connected account. |
+| `usd_amount_charged_for_account_daily` | Numeric | 50 | The successfully processed charge volume (in USD) that occurred within the past day on a connected account. |
 
 #### Treasury transaction rules [Private preview]
 

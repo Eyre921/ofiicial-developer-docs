@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 393 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -104,6 +104,7 @@
 - `api-reference/post-completions` — [Create Completion](pages/api-reference/post-completions.md) · [原文](https://docs.fireworks.ai/api-reference/post-completions)
 - `api-reference/post-responses` — [Create Response](pages/api-reference/post-responses.md) · [原文](https://docs.fireworks.ai/api-reference/post-responses)
 - `api-reference/prepare-model` — [Prepare Model for different precisions](pages/api-reference/prepare-model.md) · [原文](https://docs.fireworks.ai/api-reference/prepare-model)
+- `api-reference/query-usage-costs` — [Query grouped usage cost subtotals for an account.](pages/api-reference/query-usage-costs.md) · [原文](https://docs.fireworks.ai/api-reference/query-usage-costs)
 - `api-reference/rerank-documents` — [Rerank documents](pages/api-reference/rerank-documents.md) · [原文](https://docs.fireworks.ai/api-reference/rerank-documents)
 - `api-reference/resume-dpo-job` — [Resume Dpo Job](pages/api-reference/resume-dpo-job.md) · [原文](https://docs.fireworks.ai/api-reference/resume-dpo-job)
 - `api-reference/resume-reinforcement-fine-tuning-job` — [Resume Reinforcement Fine-tuning Job](pages/api-reference/resume-reinforcement-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/resume-reinforcement-fine-tuning-job)
@@ -139,14 +140,18 @@
 ## ecosystem
 
 - `ecosystem/fireconnect/claude-code` — [Claude Code](pages/ecosystem/fireconnect/claude-code.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/claude-code)
+- `ecosystem/fireconnect/cli-reference` — [CLI reference](pages/ecosystem/fireconnect/cli-reference.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/cli-reference)
 - `ecosystem/fireconnect/codex` — [Codex](pages/ecosystem/fireconnect/codex.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/codex)
 - `ecosystem/fireconnect/cursor` — [Cursor](pages/ecosystem/fireconnect/cursor.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/cursor)
 - `ecosystem/fireconnect/deepagents` — [Deep Agents](pages/ecosystem/fireconnect/deepagents.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/deepagents)
+- `ecosystem/fireconnect/demo` — [Side-by-side demo](pages/ecosystem/fireconnect/demo.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/demo)
 - `ecosystem/fireconnect/microsoft-foundry` — [Microsoft Foundry](pages/ecosystem/fireconnect/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/microsoft-foundry)
 - `ecosystem/fireconnect/opencode` — [OpenCode](pages/ecosystem/fireconnect/opencode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/opencode)
 - `ecosystem/fireconnect/overview` — [Overview](pages/ecosystem/fireconnect/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/overview)
 - `ecosystem/fireconnect/pi` — [Pi](pages/ecosystem/fireconnect/pi.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/pi)
+- `ecosystem/fireconnect/recommended-models` — [Recommended models](pages/ecosystem/fireconnect/recommended-models.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/recommended-models)
 - `ecosystem/fireconnect/vscode` — [VS Code](pages/ecosystem/fireconnect/vscode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/vscode)
+- `ecosystem/fireconnect/websearch-mcp` — [WebSearch MCP](pages/ecosystem/fireconnect/websearch-mcp.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/websearch-mcp)
 - `ecosystem/firerouter/authentication` — [Authentication](pages/ecosystem/firerouter/authentication.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/authentication)
 - `ecosystem/firerouter/claude-code` — [Claude Code (manual setup)](pages/ecosystem/firerouter/claude-code.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/claude-code)
 - `ecosystem/firerouter/litellm` — [LiteLLM](pages/ecosystem/firerouter/litellm.md) · [原文](https://docs.fireworks.ai/ecosystem/firerouter/litellm)
@@ -261,9 +266,9 @@
 - `fine-tuning/web-ui-guide` — [Training Guide: UI](pages/fine-tuning/web-ui-guide.md) · [原文](https://docs.fireworks.ai/fine-tuning/web-ui-guide)
 - `fine-tuning/weighted-training` — [Weighted Training](pages/fine-tuning/weighted-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/weighted-training)
 
-## fireworks-for-work
+## fireworks-nexus
 
-- `fireworks-for-work/usage-limits` — [Per-User Usage Limits](pages/fireworks-for-work/usage-limits.md) · [原文](https://docs.fireworks.ai/fireworks-for-work/usage-limits)
+- `fireworks-nexus/usage-limits` — [Per-User Usage Limits](pages/fireworks-nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/fireworks-nexus/usage-limits)
 
 ## getting-started
 
@@ -310,6 +315,7 @@
 - `serverless/pricing` — [Serverless Pricing](pages/serverless/pricing.md) · [原文](https://docs.fireworks.ai/serverless/pricing)
 - `serverless/rate-limits` — [Serverless Rate Limits](pages/serverless/rate-limits.md) · [原文](https://docs.fireworks.ai/serverless/rate-limits)
 - `serverless/serving-paths` — [Serverless Serving Paths](pages/serverless/serving-paths.md) · [原文](https://docs.fireworks.ai/serverless/serving-paths)
+- `serverless/us-only-serverless` — [US-only Serverless](pages/serverless/us-only-serverless.md) · [原文](https://docs.fireworks.ai/serverless/us-only-serverless)
 
 ## structured-responses
 

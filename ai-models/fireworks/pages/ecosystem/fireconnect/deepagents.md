@@ -14,10 +14,6 @@ Use Fireworks AI models in LangChain Deep Agents Code with the FireConnect CLI
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
 * FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
 
-<Note>
-  **Azure routing not implemented yet for Deep Agents.** `fireconnect deepagents on` always configures direct Fireworks, even when global config has `--provider azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
-</Note>
-
 ## Enable Fireworks routing
 
 ```bash theme={null}
@@ -47,7 +43,7 @@ FireConnect edits `~/.deepagents/config.toml`:
 
 * Sets `[models].default` to `fireworks:<model>` and configures `[models.providers.fireworks]` with the Fireworks OpenAI-compatible base URL (`https://api.fireworks.ai/inference`) and a **baked** `api_key` literal (file mode `0600`)
 * Stores your Fireworks API key in the FireConnect keychain via `login` or `deepagents on --api-key`, then bakes it into `config.toml`
-* FireConnect does **not** write `~/.deepagents/.state/auth.json` — use dcode's `/auth` for credentials stored in that file
+* FireConnect does **not** write `~/.deepagents/.state/auth.json`. Use dcode's `/auth` for credentials stored in that file
 
 FireConnect snapshots `config.toml` under `~/.fireconnect/deepagents/` before the first change. Running `fireconnect deepagents off` restores it byte-for-byte.
 
@@ -58,7 +54,7 @@ fireconnect model list --search glm
 fireconnect deepagents on --model glm-5p1
 ```
 
-Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`.
 
 ## CLI reference
 
@@ -90,6 +86,38 @@ This restores your previous `config.toml` from the backup in `~/.fireconnect/dee
 ```bash theme={null}
 fireconnect deepagents on --config-path /path/to/config.toml
 ```
+
+## Fireworks on Microsoft Foundry
+
+Deep Agents supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry) and the [portal setup guide](/ecosystem/integrations/azure-foundry).
+
+<Warning>
+  Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported.
+</Warning>
+
+```bash theme={null}
+export AZURE_API_KEY=<your-azure-api-key>
+
+fireconnect configure \
+  --provider azure \
+  --base-url https://<resource>.services.ai.azure.com \
+  --api-key $AZURE_API_KEY
+
+fireconnect deepagents on --model FW-GLM-5.2
+```
+
+Pass your Foundry model with `--model` (for example, `FW-GLM-5.2`), not a Fireworks serverless short ID.
+
+FireConnect writes a `fireworks-azure` provider in `config.toml` with the Foundry base URL and deployment name. `fireconnect model list` only browses the Fireworks serverless catalog on the direct gateway path.
+
+To switch back to the Fireworks gateway:
+
+```bash theme={null}
+fireconnect configure --provider fireworks
+fireconnect deepagents on
+```
+
+See [Turn off Foundry routing](/ecosystem/fireconnect/microsoft-foundry#turn-off-foundry-routing) for `off` and global config behavior.
 
 ## Source
 

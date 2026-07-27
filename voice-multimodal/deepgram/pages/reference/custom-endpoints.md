@@ -85,7 +85,7 @@ For streaming features, update WebSocket connection URLs accordingly:
 
 ### Voice Agent (`/v1/agent/converse`)
 
-* **Standard**: `wss://api.deepgram.com/v1/agent/converse`
+* **Standard**: `wss://agent.deepgram.com/v1/agent/converse`
 * **Dedicated**: `wss://{YOUR_DEDICATED_ENDPOINT}/v1/agent/converse`
 * **Self-hosted (HTTPS)**: `wss://your-deepgram-instance.com/v1/agent/converse`
 * **Self-hosted (HTTP with custom port)**: `ws://your-deepgram-instance.com:8080/v1/agent/converse`

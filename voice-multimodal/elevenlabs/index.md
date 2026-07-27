@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1193 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1199 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -45,6 +45,7 @@
 - `docs/api-reference/batch-calling/cancel` — [Cancel batch calling job](pages/docs/api-reference/batch-calling/cancel.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/cancel.md)
 - `docs/api-reference/batch-calling/create` — [Submit batch calling job](pages/docs/api-reference/batch-calling/create.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/create.md)
 - `docs/api-reference/batch-calling/delete` — [Delete batch calling job](pages/docs/api-reference/batch-calling/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/delete.md)
+- `docs/api-reference/batch-calling/export` — [Export batch call results](pages/docs/api-reference/batch-calling/export.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/export.md)
 - `docs/api-reference/batch-calling/get` — [Get batch call information](pages/docs/api-reference/batch-calling/get.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/get.md)
 - `docs/api-reference/batch-calling/list` — [List workspace batch calling jobs](pages/docs/api-reference/batch-calling/list.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/list.md)
 - `docs/api-reference/batch-calling/retry` — [Retry batch calling job](pages/docs/api-reference/batch-calling/retry.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/retry.md)
@@ -89,6 +90,7 @@
 - `docs/api-reference/history/get-audio` — [Get audio from history item](pages/docs/api-reference/history/get-audio.md) · [原文](https://elevenlabs.io/docs/api-reference/history/get-audio.md)
 - `docs/api-reference/history/list` — [Get generated items](pages/docs/api-reference/history/list.md) · [原文](https://elevenlabs.io/docs/api-reference/history/list.md)
 - `docs/api-reference/introduction` — [Introduction](pages/docs/api-reference/introduction.md) · [原文](https://elevenlabs.io/docs/api-reference/introduction.md)
+- `docs/api-reference/knowledge-base/bulk-delete` — [Bulk delete knowledge base documents](pages/docs/api-reference/knowledge-base/bulk-delete.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/bulk-delete.md)
 - `docs/api-reference/knowledge-base/bulk-move` — [Bulk move documents](pages/docs/api-reference/knowledge-base/bulk-move.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/bulk-move.md)
 - `docs/api-reference/knowledge-base/cancel-crawl-job` — [Cancel crawl job](pages/docs/api-reference/knowledge-base/cancel-crawl-job.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/cancel-crawl-job.md)
 - `docs/api-reference/knowledge-base/compute-rag-index` — [Compute RAG index](pages/docs/api-reference/knowledge-base/compute-rag-index.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/compute-rag-index.md)
@@ -100,6 +102,7 @@
 - `docs/api-reference/knowledge-base/create-from-url` — [Create knowledge base document from URL](pages/docs/api-reference/knowledge-base/create-from-url.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/create-from-url.md)
 - `docs/api-reference/knowledge-base/delete` — [Delete knowledge base document](pages/docs/api-reference/knowledge-base/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/delete.md)
 - `docs/api-reference/knowledge-base/delete-rag-index` — [Delete RAG index](pages/docs/api-reference/knowledge-base/delete-rag-index.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/delete-rag-index.md)
+- `docs/api-reference/knowledge-base/dependent-agents-multiple` — [Get dependent agents for multiple documents](pages/docs/api-reference/knowledge-base/dependent-agents-multiple.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/dependent-agents-multiple.md)
 - `docs/api-reference/knowledge-base/get-agents` — [Get dependent agents](pages/docs/api-reference/knowledge-base/get-agents.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-agents.md)
 - `docs/api-reference/knowledge-base/get-chunk` — [Get document chunk](pages/docs/api-reference/knowledge-base/get-chunk.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-chunk.md)
 - `docs/api-reference/knowledge-base/get-chunks` — [Get RAG chunks for a document](pages/docs/api-reference/knowledge-base/get-chunks.md) · [原文](https://elevenlabs.io/docs/api-reference/knowledge-base/get-chunks.md)
@@ -360,6 +363,7 @@
 - `docs/eleven-agents/api-reference/batch-calling/cancel` — [Cancel batch calling job](pages/docs/eleven-agents/api-reference/batch-calling/cancel.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/cancel.md)
 - `docs/eleven-agents/api-reference/batch-calling/create` — [Submit batch calling job](pages/docs/eleven-agents/api-reference/batch-calling/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/create.md)
 - `docs/eleven-agents/api-reference/batch-calling/delete` — [Delete batch calling job](pages/docs/eleven-agents/api-reference/batch-calling/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/delete.md)
+- `docs/eleven-agents/api-reference/batch-calling/export` — [Export batch call results](pages/docs/eleven-agents/api-reference/batch-calling/export.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/export.md)
 - `docs/eleven-agents/api-reference/batch-calling/get` — [Get batch call information](pages/docs/eleven-agents/api-reference/batch-calling/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/get.md)
 - `docs/eleven-agents/api-reference/batch-calling/list` — [List workspace batch calling jobs](pages/docs/eleven-agents/api-reference/batch-calling/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/list.md)
 - `docs/eleven-agents/api-reference/batch-calling/retry` — [Retry batch calling job](pages/docs/eleven-agents/api-reference/batch-calling/retry.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/retry.md)
@@ -392,6 +396,7 @@
 - `docs/eleven-agents/api-reference/environment-variables/list` — [List environment variables](pages/docs/eleven-agents/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/list.md)
 - `docs/eleven-agents/api-reference/environment-variables/update` — [Update environment variable](pages/docs/eleven-agents/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md)
 - `docs/eleven-agents/api-reference/exotel/outbound-call` — [Outbound call via Exotel](pages/docs/eleven-agents/api-reference/exotel/outbound-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/exotel/outbound-call.md)
+- `docs/eleven-agents/api-reference/knowledge-base/bulk-delete` — [Bulk delete knowledge base documents](pages/docs/eleven-agents/api-reference/knowledge-base/bulk-delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-delete.md)
 - `docs/eleven-agents/api-reference/knowledge-base/bulk-move` — [Bulk move documents](pages/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md)
 - `docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job` — [Cancel crawl job](pages/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md)
 - `docs/eleven-agents/api-reference/knowledge-base/compute-rag-index` — [Compute RAG index](pages/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md)
@@ -403,6 +408,7 @@
 - `docs/eleven-agents/api-reference/knowledge-base/create-from-url` — [Create knowledge base document from URL](pages/docs/eleven-agents/api-reference/knowledge-base/create-from-url.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-url.md)
 - `docs/eleven-agents/api-reference/knowledge-base/delete` — [Delete knowledge base document](pages/docs/eleven-agents/api-reference/knowledge-base/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete.md)
 - `docs/eleven-agents/api-reference/knowledge-base/delete-rag-index` — [Delete RAG index](pages/docs/eleven-agents/api-reference/knowledge-base/delete-rag-index.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete-rag-index.md)
+- `docs/eleven-agents/api-reference/knowledge-base/dependent-agents-multiple` — [Get dependent agents for multiple documents](pages/docs/eleven-agents/api-reference/knowledge-base/dependent-agents-multiple.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/dependent-agents-multiple.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-agents` — [Get dependent agents](pages/docs/eleven-agents/api-reference/knowledge-base/get-agents.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-agents.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-chunk` — [Get document chunk](pages/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md)
 - `docs/eleven-agents/api-reference/knowledge-base/get-chunks` — [Get RAG chunks for a document](pages/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md)

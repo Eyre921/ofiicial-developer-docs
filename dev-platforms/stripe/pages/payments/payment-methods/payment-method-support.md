@@ -159,11 +159,11 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | - Unsupported |
 | [PayNow](https://docs.stripe.com/payments/paynow.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | ✓ Supported |
 | [PayTo](https://docs.stripe.com/payments/payto.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported |
-| [PromptPay](https://docs.stripe.com/payments/promptpay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | - Unsupported |
+| [PromptPay](https://docs.stripe.com/payments/promptpay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported 4 | ✓ Supported 3 | ✓ Supported 3 | - Unsupported | - Unsupported |
 | [UPI](https://docs.stripe.com/payments/upi.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported |
 | [Swish](https://docs.stripe.com/payments/swish.md) | ✓ Supported | ✓ Supported 1,2 | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 3 | - Unsupported | - Unsupported | - Unsupported |
 
-1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
+1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.4 Mobile Payment Element only supports PromptPay on iOS.
 
 ### Stablecoin payments product support 
 
@@ -188,7 +188,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 
 | Payment method | [Connect](https://docs.stripe.com/connect.md) | [Checkout](https://docs.stripe.com/payments/checkout.md) | [Payment Links](https://docs.stripe.com/payment-links.md) | [Payment Element](https://docs.stripe.com/payments/payment-element.md) | [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md) | [Mobile Payment Element](https://docs.stripe.com/payments/mobile.md) | [Subscriptions](https://docs.stripe.com/subscriptions.md) | [Invoicing](https://docs.stripe.com/invoicing.md) | [Customer Portal](https://docs.stripe.com/customer-management.md) | [Terminal](https://docs.stripe.com/terminal.md) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [Alipay](https://docs.stripe.com/payments/alipay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Invite only | Invite only | - Unsupported | N/A (online payments only) |
+| [Alipay](https://docs.stripe.com/payments/alipay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Invite only | ✓ Supported | - Unsupported | N/A (online payments only) |
 | [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported 3 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | N/A (online payments only) |
 | [Apple Pay](https://docs.stripe.com/apple-pay.md)7 | ✓ Supported | ✓ Supported 5 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
 | [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | N/A (online payments only) |
@@ -322,7 +322,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 | Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
-| [Alipay](https://docs.stripe.com/payments/alipay.md) | `alipay` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | No |
+| [Alipay](https://docs.stripe.com/payments/alipay.md) | `alipay` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) | `amazon_pay` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | Yes |
 | [Apple Pay](https://docs.stripe.com/apple-pay.md) | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | No |
 | [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay.md) | `cashapp` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | Yes |

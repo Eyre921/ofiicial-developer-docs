@@ -16,7 +16,7 @@ Deepgram's Voice Agent API uses a single WebSocket connection to handle the enti
 
 Building a voice agent involves four main steps over a WebSocket:
 
-1. **Open a connection**: Connect to the Deepgram Agent endpoint using a supported SDK or a WebSocket client.
+1. **Open a connection**: Connect to the Deepgram Agent endpoint, `wss://agent.deepgram.com/v1/agent/converse`, using a supported SDK or a WebSocket client.
 2. **Configure the agent**: Send a `Settings` message to define the models, voices, and behavior.
 3. **Stream audio**: Send raw audio data to the agent.
 4. **Handle events**: Listen for transcripts, agent responses, and audio output.

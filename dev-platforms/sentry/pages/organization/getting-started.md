@@ -102,7 +102,7 @@ A *project* is a logical entity that connects the errors in your application (or
 * Which errors should be automatically assigned to which member or team using [Ownership Rules](https://docs.sentry.io/product/issues/ownership-rules.md)
 * Custom rules to fine-tune [Event Grouping](https://docs.sentry.io/concepts/data-management/event-grouping.md) into issues
 
-Also, when you go to the **Issues** and **Discover** pages in [sentry.io](https://sentry.io), the filter at the top of the screen prioritizes the projects you're a member of by default. This way, developers are looking at information that is relevant to their work, and they see the errors that they might need to work on.
+Also, when you go to the **Issues** and **Errors** pages in [sentry.io](https://sentry.io), the filter at the top of the screen prioritizes the projects you're a member of by default. This way, developers are looking at information that is relevant to their work, and they see the errors that they might need to work on.
 
 ### [How Many Projects Should I Create?](https://docs.sentry.io/organization/getting-started.md#how-many-projects-should-i-create)
 
@@ -123,5 +123,5 @@ Having the environment defined in your SDK will allow you to:
 
 * Create environment-specific alerts.
 * Filter the **Issues** page based on the environment.
-* Gain comparative insights, based on the environment, through queries in **Discover**.
+* Gain comparative insights, based on the environment, through queries in **Errors**.
 

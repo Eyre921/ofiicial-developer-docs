@@ -83,6 +83,16 @@ FireConnect writes these settings to `~/.claude/settings.json`. Claude Code auth
 
 FireConnect saves a backup of your previous provider settings to `~/.fireconnect/claude/` so `fireconnect claude off` can restore them.
 
+## Web search MCP
+
+When you run `fireconnect claude on`, FireConnect can install the Fireworks [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp) for eligible accounts. FireConnect WebSearch integration is **Claude Code only today**; other harnesses are coming soon.
+
+The MCP itself works from any harness that supports HTTP MCP. See the [WebSearch MCP guide](/ecosystem/fireconnect/websearch-mcp) for the endpoint URL, bearer token auth, and manual setup on Claude Code or other tools.
+
+When installation succeeds, `fireconnect claude on` prints a confirmation such as `Web search → fireworks-websearch (installed)`. Restart Claude Code, then run `/mcp` and connect to `fireworks-websearch`.
+
+`fireconnect claude off` removes the managed MCP entry and restores your previous `~/.claude/settings.json` (including any `permissions` rules).
+
 ## Browsing and picking models
 
 Browse the global catalog, then configure Claude Code through `on`:
@@ -90,7 +100,7 @@ Browse the global catalog, then configure Claude Code through `on`:
 ```bash theme={null}
 fireconnect model list --search glm
 fireconnect claude on --sonnet kimi-latest
-fireconnect claude on --main glm-fast-latest --sonnet kimi-fast-latest
+fireconnect claude on --model glm-fast-latest --sonnet kimi-fast-latest
 ```
 
 ### `fireconnect model list`
@@ -103,7 +113,7 @@ fireconnect model list --search glm
 fireconnect model list --json
 ```
 
-Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only. Standard keys include `firerouter`.
+Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`. Standard keys include `firerouter`.
 
 ### `fireconnect claude status` vs `fireconnect model list`
 
@@ -114,7 +124,7 @@ Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`
 
 ## FireRouter
 
-Route requests through [FireRouter](/ecosystem/firerouter/overview) — a managed service that sends simple work to cheaper open models and passes hard requests to Claude Opus 4.8:
+Route requests through [FireRouter](/ecosystem/firerouter/overview), a managed service that sends simple work to cheaper open models and passes hard requests to Claude Opus 4.8. Requires a standard Fireworks API key (`fw_...`); Fire Pass keys cannot select `firerouter`.
 
 ```bash theme={null}
 fireconnect claude on --model firerouter
@@ -123,13 +133,38 @@ fireconnect claude on --opus firerouter --anthropic-api-key sk-ant-...
 
 Use `--model firerouter` for the primary model or alias flags like `--opus firerouter` for specific slots.
 
+Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`.
+
+Bias routing toward savings or quality with `--routing-preference` (`1`–`5`; default `3`):
+
+```bash theme={null}
+fireconnect claude on --model firerouter --routing-preference 4
+```
+
+See [Routing preferences](/ecosystem/firerouter/routing-preferences) for level names.
+
+## Session usage
+
+Claude Code's `/model` picker shows **Anthropic list prices**, not Fireworks serverless rates. For actual spend, use `fireconnect claude usage`. It reads Claude Code session logs and estimates Fireworks cost from your configured models.
+
+```bash theme={null}
+fireconnect claude usage                    # latest session
+fireconnect claude usage --last-n 5         # five most recent parent sessions
+fireconnect claude usage --session <id>     # session id prefix or path to a .jsonl log
+fireconnect claude usage --plain            # plain-text summary (scripts)
+fireconnect claude usage --verbose          # per-request token rows
+fireconnect claude usage --json             # machine-readable output
+```
+
+Pair with `fireconnect claude status` for per-slot Fireworks rates and `fireconnect model list` to browse serverless pricing.
+
 ## Claude Code pricing estimates
 
-Claude Code's `/model` picker and session cost estimates use **Anthropic list prices**, not Fireworks serverless rates. For example, the default `glm-fast-latest` mapping may show Opus-tier estimates around **$5 / $25 per Mtok** while Fireworks bills at model-specific serverless rates (often much lower).
+Claude Code's cost column in the `/model` picker still uses Anthropic list prices. The [session usage](#session-usage) section above is the better place to estimate real Fireworks spend.
 
-FireConnect cannot override Claude Code's price column. Use `fireconnect claude status` and `fireconnect model list` for Fireworks rates, and check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
+FireConnect cannot override Claude Code's price column. For example, the default `glm-fast-latest` mapping may show Opus-tier estimates around **$5 / $25 per Mtok** while Fireworks bills at model-specific serverless rates (often much lower). Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
 
-FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Fireworks rates for your **main** model — that text appears as the subtitle on the custom picker entry at the bottom of `/model`, not in the price column.
+FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Fireworks rates for your **main** model. That text appears as the subtitle on the custom picker entry at the bottom of `/model`, not in the price column.
 
 ## CLI reference
 
@@ -141,12 +176,12 @@ fireconnect claude usage      # Session token usage and estimated Fireworks cost
 fireconnect claude help       # Show harness-specific help
 ```
 
-Run `fireconnect claude help` for all options.
+Run `fireconnect claude help` for all options, including `--settings-path` (custom `settings.json` location) and `--routing-preference` when using FireRouter.
 
 ### Switch models
 
 ```bash theme={null}
-fireconnect claude on --main glm-fast-latest --sonnet kimi-fast-latest --haiku deepseek-v4-flash --subagent deepseek-v4-flash
+fireconnect claude on --model glm-fast-latest --sonnet kimi-fast-latest --haiku deepseek-v4-flash --subagent deepseek-v4-flash
 fireconnect claude on --model firerouter   # route through FireRouter
 ```
 

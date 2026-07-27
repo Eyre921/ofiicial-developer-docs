@@ -68,7 +68,7 @@ A common pattern is one Fireworks service-account API key on the LiteLLM server,
 
 ## FireRouter
 
-To add automatic routing between closed-source and open models, register [FireRouter](/ecosystem/firerouter/overview) in the same `model_list`. FireRouter requires an Anthropic API key for pass-through — see [FireRouter with LiteLLM](/ecosystem/firerouter/litellm).
+To add automatic routing between closed-source and open models, register [FireRouter](/ecosystem/firerouter/overview) in the same `model_list`. FireRouter requires an Anthropic API key for pass-through. See [FireRouter with LiteLLM](/ecosystem/firerouter/litellm).
 
 ## Related
 

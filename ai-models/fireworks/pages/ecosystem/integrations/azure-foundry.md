@@ -11,7 +11,7 @@ Fireworks AI is a first-party inference provider inside Microsoft Foundry. You c
 This page covers the Fireworks side of the integration. For Azure portal setup steps, see the [Microsoft Learn guide](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models).
 
 <Info>
-  **New to Fireworks?** Foundry users get the same OpenAI-compatible API and model catalog as direct Fireworks customers. Start with the [PayGo quickstart](#paygo-quickstart) below — you can be making requests in about 10 minutes.
+  **New to Fireworks?** Foundry users get the same OpenAI-compatible API and model catalog as direct Fireworks customers. Start with the [PayGo quickstart](#paygo-quickstart) below. You can be making requests in about 10 minutes.
 </Info>
 
 ## Prerequisites
@@ -61,7 +61,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="fireworks-ai/FW-GLM-5.1",
+    model="fireworks-ai/FW-GLM-5.2",
     messages=[{"role": "user", "content": "Hello"}],
 )
 
@@ -117,10 +117,10 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 Use FireConnect to route local coding harnesses through your Foundry deployments without hand-editing config files.
 
 <Card title="FireConnect + Microsoft Foundry" icon="terminal" href="/ecosystem/fireconnect/microsoft-foundry">
-  Configure `--provider azure`, then run `fireconnect opencode on`, `fireconnect codex on`, or `fireconnect pi on --main <deployment-name>`
+  Configure `--provider azure`, then run `fireconnect opencode on`, `fireconnect codex on`, `fireconnect cursor on`, `fireconnect vscode on`, `fireconnect pi on`, or `fireconnect deepagents on --model FW-GLM-5.2`
 </Card>
 
-FireConnect implements Azure routing for **OpenCode**, **Codex**, and **Pi** today. Claude Code, Cursor, VS Code, and Deep Agents do not — running `on` on those harnesses always wires direct Fireworks for now, regardless of global `--provider azure`.
+FireConnect implements Azure routing for **OpenCode**, **Codex**, **Pi**, **Cursor**, **VS Code**, and **Deep Agents** in v0.9.0+. **Claude Code** does not yet. Running `fireconnect claude on` always wires direct Fireworks for now, regardless of global `--provider azure`.
 
 ```bash theme={null}
 export AZURE_API_KEY=<your-azure-api-key>
@@ -130,10 +130,10 @@ fireconnect configure \
   --base-url https://<resource>.services.ai.azure.com \
   --api-key $AZURE_API_KEY
 
-fireconnect opencode on --main FW-GLM-5.1
+fireconnect opencode on --model FW-GLM-5.2
 ```
 
-See [FireConnect + Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry) for deployment names, per-harness config details, one-off `--azure` routing, [turning Foundry off](/ecosystem/fireconnect/microsoft-foundry#turn-off-foundry-routing), and switching back to direct Fireworks.
+See [FireConnect + Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry) for Foundry models, per-harness config details, one-off `--azure` routing, [turning Foundry off](/ecosystem/fireconnect/microsoft-foundry#turn-off-foundry-routing), and switching back to direct Fireworks.
 
 ## Additional resources
 

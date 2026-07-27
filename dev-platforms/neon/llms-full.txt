@@ -25,7 +25,7 @@ A credential must include the `ai_gateway:invoke` scope.
 
 In the Neon Console, select your branch and click **Credentials** under **APP BACKEND** in the sidebar. Click **Create credential**, give it a name, and check **ai_gateway:invoke**.
 
-After creation, the credential is shown once. Copy the snippet or click **Download .env** before closing. The snippet includes the gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below).
+After creation, the credential is shown once. Copy the snippet or click **Download .env** before closing. The snippet includes both gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below).
 
 To view or revoke credentials later, return to the **Credentials** page and use the action menu (⋮) next to the credential.
 
@@ -1087,7 +1087,7 @@ During the beta, the following limit applies per account:
 | ----------------------- | ------- |
 | Tokens per minute (TPM) | 200,000 |
 
-If you hit the limit, you'll receive a `429 Too Many Requests` response with a message like `ai gateway TPM limit exceeded for model "<model-id>"`. Requests resume when the rate limit window resets.
+If you hit the limit, you'll receive a `429 Too Many Requests` response with a message like `ai gateway per-minute token limit exceeded for model "<model-id>"`. Requests resume when the rate limit window resets.
 
 The TPM limit is counted against total tokens (input and output combined), not input alone. Upstream output token limits (20,000 OTPM for most models) apply independently, so you can hit a `429` on output tokens without reaching the gateway's TPM limit. See [Databricks Foundation Model API limits](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/limits) for details.
 
@@ -1542,7 +1542,7 @@ Your account's AI Gateway quota is blocked. This can happen if you exceed the to
 }
 ```
 
-If the block is due to the per-minute token limit specifically rather than the daily cap, the message reads `ai gateway TPM limit exceeded for model "<model-id>"` instead.
+If the block is due to the per-minute token limit specifically rather than the daily cap, the message reads `ai gateway per-minute token limit exceeded for model "<model-id>"` instead.
 
 **Fix:** Check the `Retry-After` header. If present, the block is temporary and will lift at that time. If absent, the block is permanent until resolved. Contact support for a quota increase or to resolve a permanent block. See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits) for current per-minute quota values.
 
@@ -14739,7 +14739,7 @@ neon inspect db subscriptions
 
 --- [Document source](https://neon.com/docs/cli/install.md) ---
 
-> Summary: Install the Neon CLI (neon) on macOS, Windows, or Linux via Homebrew, npm, bun, or standalone binary, with no-install options via npx or bunx. After installing, connect by running `neon auth` for browser-based authentication, or set the NEON_API_KEY environment variable or pass --api-key per command. Vercel-Managed Integration users must use an API key because web auth requires a Neon-registered account.
+> Summary: Install the Neon CLI (neon) with npm i -g neon@latest, or on macOS, Windows, or Linux via Homebrew, bun, or a standalone binary, with no-install options via npx or bunx. After installing, connect by running `neon auth` for browser-based authentication, or set the NEON_API_KEY environment variable or pass --api-key per command. Vercel-Managed Integration users must use an API key because web auth requires a Neon-registered account.
 
 # Neon CLI: Install and connect
 
@@ -14747,7 +14747,19 @@ Install the Neon CLI and connect with web auth or API key
 
 ## Install
 
-The CLI is invoked as `neon`, and `neonctl` is an alias for `neon`. The Homebrew formula is named `neonctl`, so install commands use that name even though you run the CLI as `neon`.
+Install the Neon CLI globally with [npm](https://www.npmjs.com/package/neon):
+
+```shell
+npm i -g neon@latest
+```
+
+Requires [Node.js 20.19.0](https://nodejs.org/en/download/) or higher. The CLI is invoked as `neon`, and `neonctl` is an alias for `neon`.
+
+<details>
+
+<summary>Other install options</summary>
+
+Homebrew, bun, and standalone binaries are also available. The Homebrew formula is named `neonctl`, so install commands use that name even though you run the CLI as `neon`.
 
 **macOS**
 
@@ -14756,14 +14768,6 @@ The CLI is invoked as `neon`, and `neonctl` is an alias for `neon`. The Homebrew
 ```bash
 brew install neonctl
 ```
-
-**Install via [npm](https://www.npmjs.com/package/neon)**
-
-```shell
-npm i -g neon
-```
-
-Requires [Node.js 20.19.0](https://nodejs.org/en/download/) or higher.
 
 **Install with bun**
 
@@ -14776,7 +14780,7 @@ bun install -g neon
 Download the binary. No installation required.
 
 ```bash
-curl -sL https://github.com/neondatabase/neon-pkgs/releases/latest/download/neonctl-macos-x64 -o neon
+curl -sL https://github.com/neondatabase/neon-pkgs/releases/latest/download/neon-macos-x64 -o neon
 ```
 
 Run the CLI from the download directory:
@@ -14786,14 +14790,6 @@ neon <command> [options]
 ```
 
 **Windows**
-
-**Install via [npm](https://www.npmjs.com/package/neon)**
-
-```shell
-npm i -g neon
-```
-
-Requires [Node.js 20.19.0](https://nodejs.org/en/download/) or higher.
 
 **Install with bun**
 
@@ -14806,24 +14802,16 @@ bun install -g neon
 Download the binary. No installation required.
 
 ```bash
-curl -sL -O https://github.com/neondatabase/neon-pkgs/releases/latest/download/neonctl-win-x64.exe
+curl -sL -O https://github.com/neondatabase/neon-pkgs/releases/latest/download/neon-win-x64.exe
 ```
 
 Run the CLI from the download directory:
 
 ```bash
-neonctl-win-x64.exe <command> [options]
+neon-win-x64.exe <command> [options]
 ```
 
 **Linux**
-
-**Install via [npm](https://www.npmjs.com/package/neon)**
-
-```shell
-npm i -g neon
-```
-
-Requires [Node.js 20.19.0](https://nodejs.org/en/download/) or higher.
 
 **Install with bun**
 
@@ -14838,13 +14826,13 @@ Download the x64 or ARM64 binary, depending on your processor type. No installat
 x64:
 
 ```bash
-curl -sL https://github.com/neondatabase/neon-pkgs/releases/latest/download/neonctl-linux-x64 -o neon
+curl -sL https://github.com/neondatabase/neon-pkgs/releases/latest/download/neon-linux-x64 -o neon
 ```
 
 ARM64:
 
 ```bash
-curl -sL https://github.com/neondatabase/neon-pkgs/releases/latest/download/neonctl-linux-arm64 -o neon
+curl -sL https://github.com/neondatabase/neon-pkgs/releases/latest/download/neon-linux-arm64 -o neon
 ```
 
 Run the CLI from the download directory:
@@ -14853,9 +14841,7 @@ Run the CLI from the download directory:
 neon <command> [options]
 ```
 
-**Note: Use the Neon CLI without installing**
-
-You can run the Neon CLI without installing it using **npx** or the `bun` equivalent, **bunx**:
+You can also run the Neon CLI without installing it using **npx** or the `bun` equivalent, **bunx**:
 
 ```shell
 # npx
@@ -14864,6 +14850,8 @@ npx neon <command>
 # bunx
 bunx neon <command>
 ```
+
+</details>
 
 ### Upgrade
 
@@ -14895,22 +14883,13 @@ To upgrade a [binary](https://github.com/neondatabase/neon-pkgs/releases) versio
 
 In CI/CD tools like GitHub Actions, you can safely pin the Neon CLI to `latest`, as we prioritize stability for CI/CD processes.
 
-**npm**
+**npm (recommended)**
 
 In your GitHub Actions workflow, use the `latest` tag with `npm`:
 
 ```yaml
 - name: Install Neon CLI
   run: npm install -g neon@latest
-```
-
-**Homebrew**
-
-Homebrew automatically fetches the latest version when running the `install` or `upgrade` command. You can include the following in your workflow:
-
-```yaml
-- name: Install Neon CLI
-  run: brew install neonctl || brew upgrade neonctl
 ```
 
 **Binary**
@@ -14920,7 +14899,7 @@ If you're downloading a binary, reference the latest release from the [Releases 
 ```yaml
 - name: Install Neon CLI
   run: |
-    curl -L https://github.com/neondatabase/neon-pkgs/releases/latest/download/neonctl-linux-x64 -o /usr/local/bin/neon
+    curl -L https://github.com/neondatabase/neon-pkgs/releases/latest/download/neon-linux-x64 -o /usr/local/bin/neon
     chmod +x /usr/local/bin/neon
 ```
 

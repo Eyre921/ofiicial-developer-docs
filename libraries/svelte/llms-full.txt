@@ -36962,13 +36962,11 @@ CLI tools for Svelte 5 documentation lookup and code analysis. MUST be used when
 
 <!-- prettier-ignore-start -->
 ````markdown
-# Svelte 5 Code Writer
-
-## CLI Tools
+## CLI tools
 
 You have access to `@sveltejs/mcp` CLI for Svelte-specific assistance. Use these commands via `npx`:
 
-### List Documentation Sections
+### List documentation sections
 
 ```bash
 npx @sveltejs/mcp list-sections
@@ -36976,7 +36974,7 @@ npx @sveltejs/mcp list-sections
 
 Lists all available Svelte 5 and SvelteKit documentation sections with titles and paths.
 
-### Get Documentation
+### Get documentation
 
 ```bash
 npx @sveltejs/mcp get-documentation "<section1>,<section2>,..."
@@ -36990,7 +36988,7 @@ Retrieves full documentation for specified sections. Use after `list-sections` t
 npx @sveltejs/mcp get-documentation "$state,$derived,$effect"
 ```
 
-### Svelte Autofixer
+### Svelte autofixer
 
 ```bash
 npx @sveltejs/mcp svelte-autofixer "<code_or_path>" [options]
@@ -37071,9 +37069,9 @@ If the derived expression is an object or array, it will be returned as-is — i
 
 Effects are an escape hatch and should mostly be avoided. In particular, avoid updating state inside effects.
 
-- If you need to sync state to an external library such as D3, it is often neater to use [`{@attach ...}`](references/@attach.md)
+- If you need to sync state to an external library such as D3, it is often neater to use [`{@attach ...}`](references/attach.md)
 - If you need to run some code in response to user interaction, put the code directly in an event handler or use a [function binding](references/bind.md) as appropriate
-- If you need to log values for debugging purposes, use [`$inspect`](references/$inspect.md)
+- If you need to log values for debugging purposes, use [`$inspect`](references/inspect.md)
 - If you need to observe something external to Svelte, use [`createSubscriber`](references/svelte-reactivity.md)
 
 Never wrap the contents of an effect in `if (browser) {...}` or similar — effects do not run on the server.
@@ -37122,7 +37120,7 @@ Avoid using `onMount` or `$effect` for this.
 
 ## Snippets
 
-[Snippets](references/snippet.md) are a way to define reusable chunks of markup that can be instantiated with the [`{@render ...}`](references/@render.md) tag, or passed to components as props. They must be declared within the template.
+[Snippets](references/snippet.md) are a way to define reusable chunks of markup that can be instantiated with the [`{@render ...}`](references/render.md) tag, or passed to components as props. They must be declared within the template.
 
 ```svelte
 {#snippet greeting(name)}
@@ -37233,13 +37231,13 @@ name: svelte-file-editor
 description: Specialized Svelte 5 code editor. MUST BE USED PROACTIVELY when creating, editing, or reviewing any .svelte file or .svelte.ts/.svelte.js module and MUST use the tools from the MCP server or the `svelte-file-editor` skill if they are available. Fetches relevant documentation and validates code using the Svelte MCP server tools.
 ---
 
-You are a Svelte 5 expert responsible for writing, editing, and validating Svelte components and modules. You have access to the Svelte MCP server which provides documentation and code analysis tools. Always use the tools from the svelte MCP server to fetch documentation with `get_documentation` and validating the code with `svelte_autofixer`. If the autofixer returns any issue or suggestions try to solve them.
+You are a Svelte 5 expert responsible for writing, editing, and validating Svelte components and modules. You have access to the Svelte MCP server which provides documentation and code analysis tools. Always use the tools from the Svelte MCP server to fetch documentation with `get_documentation` and validate the code with `svelte_autofixer`. If the autofixer returns any issue or suggestions try to solve them.
 
 If the MCP tools are not available you can use the `svelte-code-writer` skill to learn how to use the `@sveltejs/mcp` cli to access the same tools.
 
 If the skill is not available you can run `npx @sveltejs/mcp@latest -y --help` to learn how to use it.
 
-## Available MCP Tools
+## Available MCP tools
 
 ### 1. list-sections
 
@@ -37265,30 +37263,30 @@ Analyzes Svelte code and returns suggestions to fix issues. Pass the component c
 
 When invoked to work on a Svelte file:
 
-### 1. Gather Context (if needed)
+### 1. Gather context (if needed)
 
 If you're uncertain about Svelte 5 syntax or patterns, use the MCP tools:
 
 1. Call `list-sections` to see available documentation
 2. Call `get-documentation` with relevant section names
 
-### 2. Read the Target File
+### 2. Read the target file
 
 Read the file to understand the current implementation.
 
-### 3. Make Changes
+### 3. Make changes
 
 Apply edits following Svelte 5 best practices:
 
-### 4. Validate Changes
+### 4. Validate changes
 
 After editing, ALWAYS call `svelte-autofixer` with the updated code to check for issues.
 
-### 5. Fix Any Issues
+### 5. Fix any issues
 
 If the autofixer reports problems, fix them and re-validate until no issues remain.
 
-## Output Format
+## Output format
 
 After completing your work, provide:
 
@@ -37361,7 +37359,7 @@ Restart OpenCode, then run `/svelte-plugin` or select 'Configure Svelte plugin' 
 
 ## Configuration
 
-By default, everything is enabled. The TUI plugin writes the same configuration files that you can create or edit manually:
+By default, the MCP server, subagent, skills, instructions, and automatic updates are enabled. The TUI plugin writes the same configuration files that you can create or edit manually:
 
 - locally, in `.opencode/svelte.json`
 - globally, in `~/.config/opencode/svelte.json` (or, if you have specified the environment variable, in `$OPENCODE_CONFIG_DIR/svelte.json`)
@@ -37391,9 +37389,16 @@ By default, everything is enabled. The TUI plugin writes the same configuration 
 	},
 	"instructions": {
 		"enabled": true
-	}
+	},
+	"autoupdate": true
 }
 ```
+
+### Automatic updates
+
+The plugin checks npm for newer versions and warns you when one is available. OpenCode caches plugins, so it continues using the cached version until that cache is removed.
+
+Automatic updates are enabled by default. After detecting a newer version, the plugin removes itself from the cache when OpenCode shuts down. OpenCode installs the latest version the next time it starts. Automatic updates only apply when the plugin is unpinned or explicitly uses the `latest` tag. Exact versions, ranges, and other dist-tags are left untouched because reinstalling them may resolve to the same version again. Set `"autoupdate": false` to only receive the warning.
 
 # Cursor
 

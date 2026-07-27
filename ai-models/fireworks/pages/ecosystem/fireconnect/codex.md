@@ -46,7 +46,7 @@ fireconnect codex status
 FireConnect edits `~/.codex/config.toml`:
 
 * Sets root `model_provider` / `model` for Codex 0.134+ (stored as a short slug)
-* Adds a `[model_providers.fireworks-ai]` block with `wire_api = "responses"` and a **baked** `experimental_bearer_token` literal (file mode `0600`) — Codex reads the key from config; no shell hook is required
+* Adds a `[model_providers.fireworks-ai]` block with `wire_api = "responses"` and a **baked** `experimental_bearer_token` literal (file mode `0600`). Codex reads the key from config; no shell hook is required.
 
 FireConnect snapshots your original `~/.codex/config.toml` before the first change. The snapshot lives in `~/.fireconnect/codex/`. Running `fireconnect codex off` restores it byte-for-byte. Unrelated Codex settings (for example `[[mcp_servers]]`) are preserved via surgical TOML edits.
 
@@ -75,9 +75,10 @@ Route requests through [FireRouter](/ecosystem/firerouter/overview):
 fireconnect codex on --model firerouter
 export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 4.8
 fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
+fireconnect codex on --model firerouter --routing-preference 4
 ```
 
-FireRouter is available to standard Fireworks keys (not Fire Pass).
+FireRouter requires a standard Fireworks API key (`fw_...`). FireConnect rejects `--model firerouter` with Fire Pass keys on every harness. For Codex, FireRouter BYOK reads `ANTHROPIC_API_KEY` from your shell at runtime. Pass `--anthropic-api-key` on `on`, run `fireconnect configure --anthropic-api-key sk-ant-...`, or export the key before starting Codex.
 
 <Warning>
   **MiniMax models are not supported in Codex.** Codex uses the Fireworks Responses API and may insert assistant messages between `tool_calls` and `tool_results`. MiniMax chat templates require `tool_results` to follow `tool_calls` directly. Use Chat Completions harnesses (for example Claude Code or OpenCode) for MiniMax.
@@ -122,7 +123,7 @@ fireconnect codex on --config-path /path/to/config.toml
 Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 <Warning>
-  Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. FireConnect does not write a Fireworks model catalog on the Foundry path — set your deployment with `--main`.
+  Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. FireConnect does not write a Fireworks model catalog on the Foundry path. Set your deployment with `--model`.
 </Warning>
 
 ### Configure and enable
@@ -135,20 +136,20 @@ fireconnect configure \
   --base-url https://<resource>.services.ai.azure.com \
   --api-key $AZURE_API_KEY
 
-fireconnect codex on --main FW-GLM-5.1
+fireconnect codex on --model FW-GLM-5.2
 ```
 
 One-off routing:
 
 ```bash theme={null}
-fireconnect codex on --azure --base-url https://<resource>.services.ai.azure.com --main FW-MiniMax-M2.5
+fireconnect codex on --azure --base-url https://<resource>.services.ai.azure.com --model FW-MiniMax-M2.5
 ```
 
 ### What gets written
 
 FireConnect sets `model_provider = "fireworks-azure"` in `config.toml` with a **Fireworks on Microsoft Foundry** provider block pointed at your Foundry endpoint. The Azure API key is baked as a literal when passed with `--api-key`, or referenced via `env_key = "AZURE_API_KEY"` when resolved from the environment.
 
-Pass your Foundry **deployment name** with `--main` (or `--model`). Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path.
+Pass your Foundry model with `--model` (for example, `FW-GLM-5.2`). Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path.
 
 ### Turn off Foundry routing
 

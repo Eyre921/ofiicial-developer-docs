@@ -17,7 +17,7 @@ Fire Pass is a pass that gives you access to **Open weight models** for use in a
 
 With an active Fire Pass you get:
 
-* Zero per-token costs on included open weight models (a powerful reasoning model with a 256k context window, optimized for complex coding tasks)
+* Zero per-token costs on included open weight models (a powerful reasoning model with a 1M context window, optimized for complex coding tasks)
 * A NEW dedicated Fire Pass key that only works for open weight models. Use your normal Fireworks key for all other models
 * Full compatibility with OpenAI- and Anthropic-compatible agentic coding tools
 
@@ -47,7 +47,7 @@ Fire Pass is designed for use with personal agentic coding harnesses. For Claude
 
 If your tool supports custom API endpoints, you can configure it manually using these details:
 
-* **Model ID**: `accounts/fireworks/routers/glm-5p2-fast`
+* **Model ID**: `accounts/fireworks/routers/kimi-k3-fast`
 * **API Key**: Generate a new Fire Pass API key (generated at [app.fireworks.ai/api-keys](https://app.fireworks.ai/api-keys))
 * **Base URL (OpenAI-compatible)**: `https://api.fireworks.ai/inference/v1`
 * **Base URL (Anthropic-compatible)**: `https://api.fireworks.ai/inference` (some tools may expect `/v1/messages` appended)
@@ -124,7 +124,7 @@ If your tool supports custom API endpoints, you can configure it manually using 
     * **API Provider**: OpenAI Compatible
     * **Base URL**: `https://api.fireworks.ai/inference/v1`
     * **OpenAI Compatible API Key**: Your Fireworks API key (from [app.fireworks.ai/api-keys](https://app.fireworks.ai/api-keys))
-    * **Model ID**: `accounts/fireworks/routers/glm-5p2-fast`
+    * **Model ID**: `accounts/fireworks/routers/kimi-k3-fast`
 
     **Model Configuration:**
 
@@ -159,7 +159,7 @@ If your tool supports custom API endpoints, you can configure it manually using 
     * **API Provider**: OpenAI Compatible
     * **Base URL**: `https://api.fireworks.ai/inference/v1`
     * **API Key**: Your Fireworks API key (from [app.fireworks.ai/api-keys](https://app.fireworks.ai/api-keys))
-    * **Model**: `accounts/fireworks/routers/glm-5p2-fast`
+    * **Model**: `accounts/fireworks/routers/kimi-k3-fast`
       * Type or paste the router ID and select "Use custom" when it appears
 
     **Model Configuration:**
@@ -173,7 +173,7 @@ If your tool supports custom API endpoints, you can configure it manually using 
   </Accordion>
 
   <Accordion title="LangChain Deep Agent">
-    Set `FIREWORKS_API_KEY` to your API key from [app.fireworks.ai/api-keys](https://app.fireworks.ai/api-keys). Install [LangChain Deep Agents](https://docs.langchain.com/oss/python/deepagents/models) with the Fireworks integration, then pass the turbo router as `fireworks:accounts/fireworks/routers/glm-5p2-fast`:
+    Set `FIREWORKS_API_KEY` to your API key from [app.fireworks.ai/api-keys](https://app.fireworks.ai/api-keys). Install [LangChain Deep Agents](https://docs.langchain.com/oss/python/deepagents/models) with the Fireworks integration, then pass the turbo router as `fireworks:accounts/fireworks/routers/kimi-k3-fast`:
 
     ```bash theme={null}
     pip install deepagents langchain-fireworks
@@ -183,7 +183,7 @@ If your tool supports custom API endpoints, you can configure it manually using 
     from deepagents import create_deep_agent
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/routers/glm-5p2-fast",
+        model="fireworks:accounts/fireworks/routers/kimi-k3-fast",
         system_prompt="You are a helpful coding assistant.",
     )
     result = agent.invoke(
@@ -220,7 +220,7 @@ Fire Pass is intended for **non production coding use only**. By activating Fire
 
   <Accordion title="Do I need to use a special model ID?">
     Yes. You must use the specific router ID for the turbo model:
-    `accounts/fireworks/routers/glm-5p2-fast`. The Fireworks billing system
+    `accounts/fireworks/routers/kimi-k3-fast`. The Fireworks billing system
     will automatically detect your active Fire Pass and zero out the cost
     for requests to this endpoint.
   </Accordion>

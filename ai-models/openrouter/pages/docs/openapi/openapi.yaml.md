@@ -21141,8 +21141,11 @@ components:
         - int4
         - int8
         - fp4
+        - mxfp4
+        - nvfp4
         - fp6
         - fp8
+        - mxfp8
         - fp16
         - bf16
         - fp32
@@ -21490,6 +21493,7 @@ components:
         - unknown
         - openai-responses-v1
         - azure-openai-responses-v1
+        - bedrock-openai-responses-v1
         - xai-responses-v1
         - meta-responses-v1
         - anthropic-claude-v1
@@ -29007,8 +29011,10 @@ paths:
                   type: string
                 input:
                   anyOf:
-                    - type: string
+                    - minLength: 1
+                      type: string
                     - items:
+                        minLength: 1
                         type: string
                       type: array
                     - items:
@@ -29026,6 +29032,7 @@ paths:
                               oneOf:
                                 - properties:
                                     text:
+                                      minLength: 1
                                       type: string
                                     type:
                                       enum:
@@ -29054,6 +29061,7 @@ paths:
                                 - $ref: '#/components/schemas/ContentPartInputAudio'
                                 - $ref: '#/components/schemas/ContentPartInputVideo'
                                 - $ref: '#/components/schemas/ContentPartInputFile'
+                            minItems: 1
                             type: array
                         required:
                           - content

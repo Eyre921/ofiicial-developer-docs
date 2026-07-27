@@ -12,7 +12,7 @@ url: https://docs.sentry.io/concepts/search/
 
 # Search
 
-Search is available on several features throughout [sentry.io](https://sentry.io), such as **Issues**, **Discover** and **Dashboards**.
+Search is available on several features throughout [sentry.io](https://sentry.io), such as **Issues**, **Errors**, **Traces**, and **Dashboards**.
 
 ## [Query Syntax](https://docs.sentry.io/concepts/search.md#query-syntax)
 
@@ -58,7 +58,7 @@ Here are some examples of valid comparison operator searches:
 
 ### [Using `OR` and `AND`](https://docs.sentry.io/concepts/search.md#using-or-and-and)
 
-`OR` and `AND` search conditions are only available for [Discover](https://docs.sentry.io/product/discover-queries.md), [Sentry Dashboards](https://docs.sentry.io/product/dashboards/sentry-dashboards.md), and [Monitors](https://docs.sentry.io/product/monitors-and-alerts/monitors.md).
+`OR` and `AND` search conditions are only available for [Explore](https://docs.sentry.io/concepts/key-terms/enrich-data.md#explore), [Sentry Dashboards](https://docs.sentry.io/product/dashboards/sentry-dashboards.md), and [Monitors](https://docs.sentry.io/product/monitors-and-alerts/monitors.md).
 
 Use `OR` and `AND` between tokens, and use parentheses `()` to group conditions. `AND` can also be used between non-aggregates and aggregates. However, `OR` cannot.
 

@@ -31,6 +31,8 @@ Not everything in your application generates an error or requires full tracing. 
 
 Learn how to [send structured logs](https://docs.sentry.io/product/logs/getting-started.md) with custom attributes that you can search and filter in Sentry.
 
+Your plan type determines your query window: Developer: 7 days | Team: 14 days | Business: 30 days.
+
 ## [Set up Logs](https://docs.sentry.io/product/logs.md#set-up-logs)
 
 To get started with Logs, navigate to the [Getting Started](https://docs.sentry.io/product/logs/getting-started.md) page and select your SDK from the list.

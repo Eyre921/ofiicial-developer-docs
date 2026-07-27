@@ -6,12 +6,6 @@ path: api/payment_intents
 
 # Payment Intents
 
-A PaymentIntent guides you through the process of collecting a payment from your customer. We recommend that you create exactly one PaymentIntent for each order or customer session in your system. You can reference the PaymentIntent later to see the history of payment attempts for a particular session.
-
-A PaymentIntent transitions through [multiple statuses](https://docs.stripe.com/payments/paymentintents/lifecycle.md) throughout its lifetime as it interfaces with Stripe.js to perform authentication flows and ultimately creates at most one successful charge.
-
-Related guide: [Payment Intents API](https://docs.stripe.com/docs/payments/payment-intents.md)
-
 ## Endpoints
 
 ### Create a PaymentIntent
@@ -87,4 +81,10 @@ Occurs when a PaymentIntent transitions to requires_action state
 
 - `payment_intent.succeeded`
 Occurs when a PaymentIntent has successfully completed payment.
+
+A PaymentIntent guides you through the process of collecting a payment from your customer. We recommend that you create exactly one PaymentIntent for each order or customer session in your system. You can reference the PaymentIntent later to see the history of payment attempts for a particular session.
+
+A PaymentIntent transitions through [multiple statuses](https://docs.stripe.com/payments/paymentintents/lifecycle.md) throughout its lifetime as it interfaces with Stripe.js to perform authentication flows and ultimately creates at most one successful charge.
+
+Related guide: [Payment Intents API](https://docs.stripe.com/docs/payments/payment-intents.md)
 

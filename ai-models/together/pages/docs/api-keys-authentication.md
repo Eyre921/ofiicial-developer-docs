@@ -49,9 +49,15 @@ Create independent API keys for separate use cases, systems, or workloads. For e
 
 To use the Together Python or TypeScript SDKs, set your key as an environment variable in your shell:
 
-```bash theme={null}
-export TOGETHER_API_KEY="your_api_key"
-```
+<CodeGroup>
+  ```bash macOS / Linux theme={null}
+  export TOGETHER_API_KEY="your_api_key"
+  ```
+
+  ```powershell Windows (PowerShell) theme={null}
+  $env:TOGETHER_API_KEY="your_api_key"
+  ```
+</CodeGroup>
 
 Or add it to a `.env` file in your project directory:
 

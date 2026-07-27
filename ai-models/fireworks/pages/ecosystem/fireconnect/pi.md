@@ -58,7 +58,7 @@ fireconnect model list --search glm
 fireconnect pi on --model glm-5p1
 ```
 
-Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`.
 
 ## FireRouter
 
@@ -112,20 +112,20 @@ fireconnect configure \
   --base-url https://<resource>.services.ai.azure.com \
   --api-key $AZURE_API_KEY
 
-fireconnect pi on --main FW-GLM-5.1
+fireconnect pi on --model FW-GLM-5.2
 ```
 
 One-off routing:
 
 ```bash theme={null}
-fireconnect pi on --azure --base-url https://<resource>.services.ai.azure.com --main FW-MiniMax-M2.5
+fireconnect pi on --azure --base-url https://<resource>.services.ai.azure.com --model FW-MiniMax-M2.5
 ```
 
 ### What gets written
 
 FireConnect registers a `fireworks-azure` **openai-completions** provider in Pi's `models.json` (labeled **Fireworks on Microsoft Foundry**) and sets `defaultProvider` / `defaultModel` in `settings.json`. The Azure API key is stored in `auth.json` as a literal when passed with `--api-key`, or as `$AZURE_API_KEY` when resolved from the environment.
 
-Pass your Foundry **deployment name** with `--main`. Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path.
+Pass your Foundry model with `--model` (for example, `FW-GLM-5.2`). Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path.
 
 ### Turn off Foundry routing
 

@@ -14,11 +14,17 @@ Make your first request to Together AI in a few minutes.
 
 3. Select **Create key**, give it a name, and copy the value. New keys are only shown once, so make sure to save it somewhere safe.
 
-4. Export the key as an environment variable in your terminal:
+4. Set the key as an environment variable in your terminal:
 
-```bash theme={null}
-export TOGETHER_API_KEY="your_api_key"
-```
+<CodeGroup>
+  ```bash macOS / Linux theme={null}
+  export TOGETHER_API_KEY="your_api_key"
+  ```
+
+  ```powershell Windows (PowerShell) theme={null}
+  $env:TOGETHER_API_KEY="your_api_key"
+  ```
+</CodeGroup>
 
 The SDK reads `TOGETHER_API_KEY` automatically when you call `Together()`. Pass `api_key=` to the constructor to override it.
 

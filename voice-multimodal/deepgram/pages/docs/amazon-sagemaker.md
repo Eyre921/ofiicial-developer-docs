@@ -12,7 +12,7 @@ path: docs/amazon-sagemaker
 
 > Overview of running Deepgram on Amazon SageMaker AI. Compare benefits and tradeoffs versus self-hosted Docker or Kubernetes, review deployment options, and understand SageMaker pricing for Deepgram models.
 
-Amazon SageMaker is a managed cloud platform from Amazon Web Services (AWS) that enables deployment of Deepgram as a managed, container-based service. Once you deploy Deepgram as a SageMaker Model Endpoint, you can run inference against the service using the Amazon SageMaker AI Software Development Kit (SDK).
+Amazon SageMaker is a managed cloud platform from Amazon Web Services (AWS) that enables deployment of Deepgram as a managed, container-based service. The endpoint is air-gapped and runs on compute inside your own AWS VPC. Once you deploy Deepgram as a SageMaker Model Endpoint, you can run inference against the service using the Amazon SageMaker AI Software Development Kit (SDK).
 
 The [Deepgram SDKs](/home) can also target a SageMaker Endpoint through the SageMaker transport, so you can keep the same client-side request and response patterns whether you call the Deepgram-hosted API or your own SageMaker deployment.
 
@@ -33,7 +33,7 @@ While SageMaker covers most production scenarios, AWS imposes a small number of 
 ### When Docker or Kubernetes may be a better fit
 
 * You need to run Deepgram outside AWS or on bare metal.
-* You require features that the SageMaker isolation model does not currently support, such as user-defined [callback URLs](/docs/callback), JSON payloads that reference audio in cloud storage, or Deepgram [custom metrics](/docs/metrics-guide).
+* You require features that the SageMaker isolation model does not currently support, such as user-defined [callback URLs](/docs/callback) or JSON payloads that reference audio in cloud storage.
 * You want to run the [Deepgram Voice Agent](/docs/voice-agent). SageMaker Endpoints cannot invoke Large Language Model (LLM) services, which the Voice Agent requires, so the Voice Agent cannot run inside SageMaker.
 * You need streaming connections that stay open for longer than 30 minutes. SageMaker Real-Time Inference supports [up to 30 minutes of connection time](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html#realtime-endpoints-test-endpoints-sdk:~:text=The%20connection%20remains%20open%20until%20you%20explicitly%20close%20the%20input%20stream%20or%20the%20endpoint%20closes%20the%20connection%2C%20supporting%20up%20to%2030%20minutes%20of%20connection%20time) per bidirectional streaming connection.
 * You need to send more than 25 MB of input data per non-streaming invocation on a real-time endpoint, or more than 1 GB on an asynchronous endpoint. SageMaker enforces a [25 MB maximum payload size](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. For larger files, [asynchronous endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html) support payloads up to 1 GB with near real-time latency and can scale to zero when there are no requests to be processed.
@@ -48,7 +48,7 @@ Most customers can stand up a ready-to-use endpoint in minutes through one of tw
 
 ## Pricing
 
-Deepgram on SageMaker is billed hourly per instance type. Current rates are listed on the [AWS Marketplace product pages for each Deepgram model](https://aws.amazon.com/marketplace/search/results?searchTerms=deepgram\&CREATOR=6efa21f9-9a33-4cae-ba44-756436fa71dd\&FULFILLMENT_OPTION_TYPE=SAGEMAKER_MODEL\&filters=CREATOR%2CFULFILLMENT_OPTION_TYPE).
+Deepgram on SageMaker is billed per request, at the same rates shown on [deepgram.com/pricing](https://deepgram.com/pricing). The AWS pricing page may list the dimension `inference.count.m.i.c Inference Pricing` at a cost of `$0.001/request`. When the cost of a request exceeds \$0.001, Deepgram automatically emits a charge for multiple units for that single request.
 
 ### Private offers
 
@@ -60,4 +60,4 @@ A 14-day free trial is available with unlimited product usage and zero Deepgram 
 
 ### Infrastructure charges
 
-Infrastructure charges are set by AWS and billed separately from Deepgram license charges. Public pricing for SageMaker Real-Time Inference is available at [aws.amazon.com/sagemaker/ai/pricing](https://aws.amazon.com/sagemaker/ai/pricing/). For volume discounts or committed-use pricing on the underlying compute, [contact your AWS Sales Representative](https://aws.amazon.com/contact-us/sales-support/).
+Infrastructure charges are set by AWS and billed separately from Deepgram license charges. Public pricing for SageMaker Real-Time Inference is available at [aws.amazon.com/sagemaker/ai/pricing](https://aws.amazon.com/sagemaker/ai/pricing/). Self-service savings may be available on 1-year or 3-year committed usage by purchasing a [Machine Learning Savings Plan from AWS](https://aws.amazon.com/savingsplans/ml-pricing/). For more information or to discuss additional discounts, [contact your AWS sales representative](https://aws.amazon.com/contact-us/sales-support/).

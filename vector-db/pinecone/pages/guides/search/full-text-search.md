@@ -169,11 +169,11 @@ The schema is required at index creation and declares the fields that drive rank
 
 **Schema field types:**
 
-| Type            | Purpose                                                                                                              | Key options                                                                   |
-| --------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `dense_vector`  | ANN similarity search                                                                                                | `dimension` (required), `metric` (`cosine`, `dotproduct`, `euclidean`)        |
-| `sparse_vector` | Sparse-vector similarity search with values from a custom sparse encoder                                             | —                                                                             |
-| `string` (text) | Full-text search. Set `full_text_search` to enable BM25 — for example, `{ "language": "en" }`, or `{}` for defaults. | `language`, `stemming`, `stop_words` (all optional, under `full_text_search`) |
+| Type            | Purpose                                                                                                              | Key options                                                                            |
+| --------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `dense_vector`  | ANN similarity search                                                                                                | `dimension` (required), `metric` (`cosine`, `dotproduct`, `euclidean`)                 |
+| `sparse_vector` | Sparse-vector similarity search with values from a custom sparse encoder                                             | —                                                                                      |
+| `string` (text) | Full-text search. Set `full_text_search` to enable BM25 — for example, `{ "language": "en" }`, or `{}` for defaults. | `language`, `stemming`, `stop_words`, `ngram` (all optional, under `full_text_search`) |
 
 <Note>
   Schemas can only declare ranking fields. Declaring a metadata-only field (a `string` field without `full_text_search`, or a `string_list`, `float`, or `boolean` field) is rejected at index creation with a 400 error. Metadata fields are auto-indexed at upsert time. See [Metadata fields](#metadata-fields).
@@ -357,7 +357,7 @@ Control plane operations manage indexes and their configuration.
 
       * `dense_vector`: `dimension` (required), `metric` (required, one of `cosine`, `dotproduct`, `euclidean`).
       * `sparse_vector`: no additional options.
-      * `string` (text): `full_text_search: { ... }` (object); optional sub-fields `language`, `stemming`, `stop_words`.
+      * `string` (text): `full_text_search: { ... }` (object); optional sub-fields `language`, `stemming`, `stop_words`, and `ngram` (`{ min_gram, max_gram, prefix_only }`, for [substring search](#substring-search-with-n-grams)).
       * Any field may also include an optional `description` (string) — free-text documentation of what the field contains. It's stored on the schema and returned by describe-index, and is especially useful for agentic workflows where an LLM inspects the schema to decide how to query the index.
 
       Metadata-only fields (`string` without `full_text_search`, `string_list`, `float`, `boolean`) are not allowed in the schema and are rejected at index creation. Metadata fields are auto-indexed for filtering at upsert time — see [Metadata fields](#metadata-fields).
@@ -636,7 +636,7 @@ Control plane operations manage indexes and their configuration.
       * **`type: "text"`** — BM25 token matching on a single text field. Multi-word queries use OR-style matching (case-insensitive). Phrase constraints are not supported here; use `query_string` with quoted terms for exact-phrase ranking.
         * `field` (string, required) — Name of a text-searchable field.
         * `query` (string, required) — One or more words to search for.
-      * **`type: "query_string"`** — Lucene query syntax. Supports boolean operators, phrase prefix matching, boosting, and cross-field queries.
+      * **`type: "query_string"`** — Lucene query syntax. Supports boolean operators, phrase prefix matching, boosting, fuzzy matching (`term~`, `term~N`), and cross-field queries.
 
         * `query` (string, required) — A Lucene query string (see [query syntax reference](#query-syntax-reference)). Target a specific field with Lucene field qualifiers directly in the query string: `notes:friendship`, or combine fields with boolean operators: `title:(alpha) OR body:(beta)`. The query runs against all text-searchable fields in the index when no field qualifier is specified.
 
@@ -1432,6 +1432,8 @@ The pipeline (in order):
 
 For example, with the `english` analyzer, `stemming: true`, and `stop_words: false`, the input `"State-of-the-Art Models"` becomes the tokens `state`, `of`, `the`, `art`, `model`. Those are the tokens BM25 scores against, and the tokens a `$match_phrase: "art models"` filter will look for.
 
+Fields configured for [substring search](#substring-search-with-n-grams) replace this whole-token pipeline with character n-gram tokenization, so a token is further split into overlapping character sequences.
+
 ### Dense-vector tokens (`type: "dense_vector"`)
 
 Dense embedding models have their own internal tokenizer — usually a subword scheme like BPE, WordPiece, or SentencePiece — that breaks text into pieces the model was trained on. Those tokens are **private to the model**. You never query them directly: a dense search compares the full embedding of a query against the full embedding of a document. The same string can therefore behave very differently in `type: "text"` (which sees the FTS analyzer tokens above) and `type: "dense_vector"` (which sees a single high-dimensional vector). The `$match_*` filter operators do not apply to dense-vector fields.
@@ -1459,6 +1461,7 @@ Full-text search supports two text-based query types with different capabilities
 | **Phrase slop**         | Not supported                                                              | `"phrase"~N`                                           |
 | **Boosting**            | Not supported                                                              | `term^N`                                               |
 | **Regex**               | Not supported                                                              | `field:/pattern.*/`                                    |
+| **Fuzzy matching**      | Not supported                                                              | `term~`, `term~N` (typo tolerance)                     |
 | **Stemming**            | Supported ([when enabled](#stemming))                                      | Supported ([when enabled](#stemming))                  |
 | **Case sensitivity**    | Case-insensitive                                                           | Case-insensitive                                       |
 
@@ -1482,22 +1485,23 @@ With `type: "text"`, the query string is run through the field's analyzer pipeli
 
 With `type: "query_string"`, you write Lucene query syntax, with operator support. Field names are embedded in the query itself (e.g., `content:(term)`) and can combine multiple fields with boolean operators.
 
-| Operator       | Syntax                     | Example                             | Description                                      |
-| -------------- | -------------------------- | ----------------------------------- | ------------------------------------------------ |
-| Term           | `field:(word)`             | `body:(computers)`                  | Match documents containing term                  |
-| Multiple terms | `field:(a b)`              | `body:(machine learning)`           | OR by default — matches either term              |
-| Phrase         | `field:("words")`          | `body:("machine learning")`         | Exact phrase match (adjacent, in order)          |
-| AND            | `AND`                      | `body:(a AND b)`                    | Both terms required                              |
-| OR             | `OR`                       | `body:(a OR b)`                     | Either term matches (same as default)            |
-| NOT            | `NOT`                      | `body:(a NOT b)`                    | Exclude second term                              |
-| Required       | `+term`                    | `body:(+database search)`           | Term must be present                             |
-| Excluded       | `-term`                    | `body:(database -deprecated)`       | Term must not be present                         |
-| Grouping       | `(expr)`                   | `body:((a OR b) AND c)`             | Control precedence                               |
-| Phrase slop    | `"phrase"~N`               | `body:("fast search"~2)`            | Allow up to N words between phrase terms         |
-| Boost          | `term^N`                   | `body:(machine^3 learning)`         | Multiply term's relevance score by N             |
-| Phrase prefix  | `"phrase pre"*`            | `body:("james w"*)`                 | Last term in phrase matched as prefix            |
-| Regex          | `field:/pattern.*/`        | `body:/comput.*/`                   | Match documents by regular expression on a field |
-| Cross-field    | `fieldA:(…) OR fieldB:(…)` | `title:(quantum) OR body:(machine)` | Combine clauses across text-searchable fields    |
+| Operator       | Syntax                     | Example                             | Description                                                 |
+| -------------- | -------------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| Term           | `field:(word)`             | `body:(computers)`                  | Match documents containing term                             |
+| Multiple terms | `field:(a b)`              | `body:(machine learning)`           | OR by default — matches either term                         |
+| Phrase         | `field:("words")`          | `body:("machine learning")`         | Exact phrase match (adjacent, in order)                     |
+| AND            | `AND`                      | `body:(a AND b)`                    | Both terms required                                         |
+| OR             | `OR`                       | `body:(a OR b)`                     | Either term matches (same as default)                       |
+| NOT            | `NOT`                      | `body:(a NOT b)`                    | Exclude second term                                         |
+| Required       | `+term`                    | `body:(+database search)`           | Term must be present                                        |
+| Excluded       | `-term`                    | `body:(database -deprecated)`       | Term must not be present                                    |
+| Grouping       | `(expr)`                   | `body:((a OR b) AND c)`             | Control precedence                                          |
+| Phrase slop    | `"phrase"~N`               | `body:("fast search"~2)`            | Allow up to N words between phrase terms                    |
+| Boost          | `term^N`                   | `body:(machine^3 learning)`         | Multiply term's relevance score by N                        |
+| Phrase prefix  | `"phrase pre"*`            | `body:("james w"*)`                 | Last term in phrase matched as prefix                       |
+| Regex          | `field:/pattern.*/`        | `body:/comput.*/`                   | Match documents by regular expression on a field            |
+| Fuzzy          | `term~` or `term~N`        | `body:(compxter~1)`                 | Match terms within edit distance N (0–2) for typo tolerance |
+| Cross-field    | `fieldA:(…) OR fieldB:(…)` | `title:(quantum) OR body:(machine)` | Combine clauses across text-searchable fields               |
 
 <AccordionGroup>
   <Accordion title="Terms and default OR behavior">
@@ -1602,6 +1606,31 @@ With `type: "query_string"`, you write Lucene query syntax, with operator suppor
     Regex is only available with `type: "query_string"`. It is not supported with `type: "text"`.
   </Accordion>
 
+  <Accordion title="Fuzzy matching (typo tolerance)">
+    Append `~` to a bare term to match indexed terms within a small edit distance, so a misspelled query term still matches the intended word.
+
+    ```
+    body:(compxter~1)                  # Matches "computer" (1 edit away)
+    body:(machine~ learning~)          # Auto distance per term, based on term length
+    title:(pinecone~2)                 # Explicit distance 2
+    ```
+
+    * **`term~`** — automatic distance based on the term's length: terms shorter than 4 characters must match exactly, terms of 4–7 characters allow 1 edit, and terms of 8 or more characters allow 2 edits.
+    * **`term~N`** — fixed edit distance `N`, where `N` is `0`, `1`, or `2`. `~0` is an exact match. A distance greater than 2 is a query error (`400`).
+
+    An "edit" is an inserted, deleted, or substituted character (plain Levenshtein distance). Swapping two adjacent characters counts as 2 edits. Matching is case-insensitive, as with all text queries.
+
+    Fuzzy matches are scored as a constant; exact matches still contribute their full BM25 score, so an exact hit ranks above a fuzzy hit for the same term. Fuzzy composes with the rest of the query syntax — boolean operators, required/excluded terms, boosts, field qualifiers, and metadata filters.
+
+    <Note>
+      The `~` operator is fuzzy only when it follows a **bare term**. After a quoted phrase, `~N` keeps its [phrase slop](#query-syntax-reference) meaning — for example, `body:("machine learning"~2)` is slop, while `body:(learning~2)` is fuzzy. There is no fuzzy phrase matching.
+    </Note>
+
+    <Note>
+      On [stemmed](#stemming) fields, fuzzy matching runs against the stemmed terms and is best-effort: a typo that changes how a word stems may not match. Fuzzy matching is most effective on fields without stemming (the default). Fuzzy is available only with `type: "query_string"`; with `type: "text"`, `~` is treated as a literal character.
+    </Note>
+  </Accordion>
+
   <Accordion title="Cross-field queries">
     `query_string` can target multiple fields in the same expression. Use Lucene field qualifiers (`field:(clause)`) directly in the query string; omit them to run against all text-searchable fields:
 
@@ -1674,6 +1703,68 @@ The default language is `"en"` (English). You can specify a language using eithe
 
 <Note>
   Language is set at index creation and cannot be changed afterward.
+</Note>
+
+## Substring search with n-grams
+
+By default, full-text search matches whole tokens: a query for `comp` does not match a document containing `computer`. To match substrings (for example, to find `computer` from `comp`, `mput`, or `uter`), configure a text field for **character n-gram** tokenization.
+
+With n-gram tokenization, each token is broken into overlapping character sequences (n-grams) at index time, and query text is broken the same way at search time, so a substring of an indexed word matches. This is useful for partial-word matching, autocomplete, and searching identifiers or codes where users type only a fragment.
+
+To enable it, set an `ngram` object on a text field's `full_text_search` config at index creation:
+
+```json theme={null}
+{
+  "schema": {
+    "fields": {
+      "product_name": {
+        "type": "string",
+        "full_text_search": {
+          "ngram": {
+            "min_gram": 3,
+            "max_gram": 4,
+            "prefix_only": false
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+`ngram` parameters:
+
+| Parameter     | Type    | Required             | Description                                                                                                                                                                                                         |
+| ------------- | ------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `min_gram`    | integer | Yes                  | Shortest n-gram to generate. Must be at least `1`.                                                                                                                                                                  |
+| `max_gram`    | integer | Yes                  | Longest n-gram to generate. Must be at least `min_gram` and at most `10`.                                                                                                                                           |
+| `prefix_only` | boolean | No (default `false`) | When `true`, generate only n-grams anchored to the start of each token (edge n-grams). Use this for prefix and autocomplete matching. When `false`, generate n-grams at every position for full substring matching. |
+
+For example, with `min_gram: 3`, `max_gram: 4`, and `prefix_only: false`, the token `search` is indexed as `sea`, `ear`, `arc`, `rch`, `sear`, `earc`, `arch`. A shorter or longer window changes the tradeoff: smaller n-grams match more loosely and grow the index more; larger n-grams are more precise but require longer matching substrings.
+
+**Querying an n-gram field.** No special query syntax is needed. Once a field is configured for n-grams, ordinary `type: "text"` and `query_string` queries against it match on substrings automatically, because the query text is tokenized into the same n-grams as the indexed text:
+
+```python Python theme={null}
+response = index.documents.search(
+    namespace="example-namespace",
+    top_k=10,
+    score_by=[
+        {
+            "type": "text",
+            "field": "product_name",
+            "query": "sear",
+        }
+    ],
+    include_fields=["product_name"],
+)
+```
+
+<Note>
+  N-gram tokenization cannot be combined with [`stemming`](#stemming) or `stop_words` on the same field — an index-creation request that sets `ngram` alongside either is rejected with a `400` error. Tokens are always lowercased. Because every position emits a token for each gram length, an n-gram field is larger on disk than a plain text field; keep `min_gram`/`max_gram` as narrow as your matching needs allow.
+</Note>
+
+<Note>
+  N-gram configuration is set at index creation and cannot be changed afterward.
 </Note>
 
 ## Troubleshooting
@@ -1768,8 +1859,8 @@ Full-text search is in public preview under API version `2026-01.alpha`. The fea
 * Indexes cannot be created in CMEK-enabled projects.
 * Backup and restore are not yet supported.
 * **`describe_index_stats`** is not yet supported on indexes with document schemas.
-* Fuzzy matching is not yet supported.
-* Single-term prefix wildcards (`auto*`) are not supported; use phrase prefix (`"word auto"*`) instead.
+* [Fuzzy matching](#query-syntax-reference) (`term~`, `term~N`) is available only in `query_string` scoring, not in `type: "text"` or in `$match_*` filters.
+* Single-term prefix wildcards (`auto*`) are not supported; use phrase prefix (`"word auto"*`) instead, or configure a field for [substring search](#substring-search-with-n-grams).
 
 ## Pricing
 

@@ -320,7 +320,7 @@ You can also migrate subscriptions with ad-hoc pricing, in cases where you donâ€
 
 |  |
 | **ATTRIBUTE** | customer (required) | start_date (required) | adhoc_items.0.amount (required) | adhoc_items.0.product | adhoc_items.0.interval | adhoc_items.0.currency | adhoc_items.0.quantity | metadata.third_party_sub_id | automatic_tax | billing_cycle_anchor | coupon | trial_end | proration_behavior | collection_method | default_tax_rate | backdate_start_date | days_until_due | cancel_at_period_end | add_invoice_items.0.amount | add_invoice_items.0.product | add_invoice_items.0.currency |
-| **FIELD** | cus_xxxx1 | 1704067200 | price_xxx1 | prod_xxx1 | 1 | subscription_1 |  |  |  |  |  | none | charge_automatically |  |  |  |  |  |  |  |  |
+| **FIELD** | cus_xxxx1 | 1704067200 | 153.00 | prod_xxx1 | month | usd | 1 | subscription_abc123 |  |  |  | none | charge_automatically |  |  |  |  |  |  |  |  |
 
 ### Migrate subscriptions with different types of payment collection methods
 

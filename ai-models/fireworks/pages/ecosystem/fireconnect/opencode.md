@@ -61,7 +61,7 @@ fireconnect model list --search glm
 fireconnect opencode on --model glm-5p1
 ```
 
-`fireconnect model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only. Standard keys include `firerouter`.
+`fireconnect model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`. Standard keys include `firerouter`.
 
 ## FireRouter
 
@@ -116,7 +116,7 @@ fireconnect configure \
   --base-url https://<resource>.services.ai.azure.com \
   --api-key $AZURE_API_KEY
 
-fireconnect opencode on --main FW-GLM-5.1
+fireconnect opencode on --model FW-GLM-5.2
 ```
 
 One-off routing without changing global config:
@@ -125,16 +125,16 @@ One-off routing without changing global config:
 fireconnect opencode on \
   --azure \
   --base-url https://<resource>.services.ai.azure.com \
-  --main FW-MiniMax-M2.5
+  --model FW-MiniMax-M2.5
 ```
 
-Pass your Foundry **deployment name** with `--main` — not a Fireworks serverless short ID like `glm-latest`.
+Pass your Foundry model with `--model` (for example, `FW-GLM-5.2`), not a Fireworks serverless short ID like `glm-latest`.
 
 ### What gets written
 
-FireConnect adds a `fireworks-azure` provider labeled **Fireworks on Microsoft Foundry** to `opencode.json`, pointed at your Foundry OpenAI-compatible endpoint (`.../openai/v1`). The default model reference becomes `fireworks-azure/<deployment-name>`.
+FireConnect adds a `fireworks-azure` provider labeled **Fireworks on Microsoft Foundry** to `opencode.json`, pointed at your Foundry OpenAI-compatible endpoint (`.../openai/v1`). The default model reference becomes `fireworks-azure/FW-GLM-5.2`.
 
-Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path. With Foundry, switch deployments with `on --main <deployment-name>`.
+Use `fireconnect model list` only for browsing Fireworks serverless models on the direct gateway path. With Foundry, switch models with `on --model FW-GLM-5.2`.
 
 ### Turn off Foundry routing
 

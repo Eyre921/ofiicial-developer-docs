@@ -6,8 +6,6 @@ path: api/customers
 
 # Customers
 
-This object represents a customer of your business. Use it to [create recurring charges](https://docs.stripe.com/docs/invoicing/customer.md), [save payment](https://docs.stripe.com/docs/payments/save-during-payment.md) and contact information, and track payments that belong to the same customer.
-
 ## Endpoints
 
 ### Create a customer
@@ -44,4 +42,6 @@ Occurs whenever a customer is deleted.
 
 - `customer.updated`
 Occurs whenever any property of a customer changes.
+
+This object represents a customer of your business. Use it to [create recurring charges](https://docs.stripe.com/docs/invoicing/customer.md), [save payment](https://docs.stripe.com/docs/payments/save-during-payment.md) and contact information, and track payments that belong to the same customer.
 

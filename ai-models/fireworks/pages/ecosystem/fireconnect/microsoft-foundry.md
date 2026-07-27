@@ -4,46 +4,46 @@ source: https://docs.fireworks.ai/ecosystem/fireconnect/microsoft-foundry
 path: ecosystem/fireconnect/microsoft-foundry
 ---
 
-Route OpenCode, Codex, and Pi through Fireworks models deployed in your Azure subscription with FireConnect
+Route FireConnect harnesses through Fireworks models deployed in your Azure subscription
 
-FireConnect can route **OpenCode**, **Codex**, and **Pi** through [Fireworks on Microsoft Foundry](/ecosystem/integrations/azure-foundry) instead of the Fireworks gateway. Usage is billed through Azure and counts toward your Microsoft Azure Consumption Commitment (MACC) where applicable.
+FireConnect can route supported harnesses through [Fireworks on Microsoft Foundry](/ecosystem/integrations/azure-foundry) instead of the Fireworks gateway. Usage is billed through Azure and counts toward your Microsoft Azure Consumption Commitment (MACC) where applicable.
 
 <Card title="Microsoft Foundry portal setup" icon="microsoft" href="/ecosystem/integrations/azure-foundry">
-  Enable Fireworks on Foundry, create a deployment, and find your project endpoint — start here if you have not set up a Foundry resource yet
+  Enable Fireworks on Foundry, create a deployment, and find your project endpoint. Start here if you have not set up a Foundry resource yet.
 </Card>
 
 <Note>
-  **CLI terminology:** The Foundry provider is `--provider azure` (or `on --azure`). Harness configs display the label **Fireworks on Microsoft Foundry**. Model IDs are your **deployment names** (for example, `FW-GLM-5.1`) — not Fireworks serverless short IDs like `glm-fast-latest`.
+  **CLI terminology:** The Foundry provider is `--provider azure` (or `on --azure`). Harness configs display the label **Fireworks on Microsoft Foundry**. With Foundry, `--model` is the model you deployed in Azure (for example, `FW-GLM-5.2`), not a Fireworks serverless short ID like `glm-fast-latest`.
 </Note>
 
 ## Supported harnesses
 
-| Harness     | Azure in FireConnect | Notes                                                                           |
-| ----------- | -------------------- | ------------------------------------------------------------------------------- |
-| OpenCode    | Yes                  | `fireworks-azure` provider in `opencode.json`                                   |
-| Codex       | Yes                  | `fireworks-azure` block in `config.toml`                                        |
-| Pi          | Yes                  | `fireworks-azure` provider in `models.json`                                     |
-| Claude Code | Not yet              | `claude on` always wires direct Fireworks today                                 |
-| Cursor      | Not yet              | `cursor on` always wires direct Fireworks; global `--provider azure` is ignored |
-| VS Code     | Not yet              | `vscode on` always wires direct Fireworks today                                 |
-| Deep Agents | Not yet              | `deepagents on` always wires direct Fireworks today                             |
+| Harness     | Azure in FireConnect | Notes                                                         |
+| ----------- | -------------------- | ------------------------------------------------------------- |
+| OpenCode    | Yes                  | `fireworks-azure` provider in `opencode.json`                 |
+| Codex       | Yes                  | `fireworks-azure` block in `config.toml`                      |
+| Pi          | Yes                  | `fireworks-azure` provider in `models.json`                   |
+| Cursor      | Yes                  | OpenAI BYOK override pointed at Foundry                       |
+| VS Code     | Yes                  | Custom chat-completions endpoint in `chatLanguageModels.json` |
+| Deep Agents | Yes                  | `fireworks-azure` provider in `config.toml`                   |
+| Claude Code | Not yet              | `claude on` always wires direct Fireworks today               |
 
-FireConnect implements Azure routing for **OpenCode**, **Codex**, and **Pi** today. The other harnesses still route through the Fireworks gateway only — that is a **FireConnect implementation gap**, not a Foundry platform limitation. If you run `fireconnect configure --provider azure` and then `fireconnect cursor on` (or `claude on`, etc.), the harness enables **direct Fireworks** and does not read the global Azure settings.
+Claude Code is the remaining gap. Every other harness in the matrix supports Foundry routing in FireConnect v0.9.0+.
 
 ## Prerequisites
 
-* A Microsoft Foundry resource with at least one Fireworks model deployment (for example, `FW-GLM-5.1` or `FW-MiniMax-M2.5`)
+* A Microsoft Foundry resource with at least one Fireworks model deployment (for example, `FW-GLM-5.2` or `FW-MiniMax-M2.5`)
 * Your Foundry resource endpoint and Azure API key from the [Microsoft Foundry portal](https://ai.azure.com/)
-* OpenCode, Codex, or Pi installed locally
-* FireConnect installed (see [Overview — Install](/ecosystem/fireconnect/overview#install))
+* A supported harness installed locally
+* FireConnect v0.9.0+ (see [Overview: Install](/ecosystem/fireconnect/overview#install))
 
 <Warning>
-  Use an **Azure API key** from Foundry — not a Fireworks key (`fw_...`) or Fire Pass key (`fpk_...`). Fire Pass is not supported on the Foundry path.
+  Use an **Azure API key** from Foundry, not a Fireworks key (`fw_...`) or Fire Pass key (`fpk_...`). Fire Pass is not supported on the Foundry path.
 </Warning>
 
 ## Configure once, then enable harnesses
 
-`fireconnect configure` sets the **Foundry provider and endpoint**. It does **not** set your Fireworks API key — use `fireconnect login` for that when routing through the Fireworks gateway.
+`fireconnect configure` sets the **Foundry provider and endpoint**. It does **not** set your Fireworks API key. Use `fireconnect login` for that when routing through the Fireworks gateway.
 
 ```bash theme={null}
 export AZURE_API_KEY=<your-azure-api-key>
@@ -57,12 +57,19 @@ fireconnect configure \
 FireConnect stores a top-level `provider` and `azure` block in `~/.fireconnect/config.json`. After configuring, enable harnesses normally:
 
 ```bash theme={null}
-fireconnect opencode on --main FW-GLM-5.1
-fireconnect codex on --main FW-GLM-5.1
-fireconnect pi on --main FW-GLM-5.1
+fireconnect opencode on --model FW-GLM-5.2
+fireconnect codex on --model FW-GLM-5.2
+fireconnect pi on --model FW-GLM-5.2
+fireconnect cursor on --model FW-GLM-5.2
+fireconnect vscode on --model FW-GLM-5.2
+fireconnect deepagents on --model FW-GLM-5.2
 ```
 
-If you omit `--main`, FireConnect defaults to `FW-GLM-5.1`.
+If you omit `--model`, FireConnect defaults to `FW-GLM-5.2`.
+
+<Warning>
+  **Cursor and VS Code:** fully quit the IDE before `on` or `off`. FireConnect writes SQLite state and hard-errors if the app is still running unless you pass `--force`.
+</Warning>
 
 ### Endpoint normalization
 
@@ -78,7 +85,7 @@ Find the endpoint in the Microsoft Foundry portal under **Project settings**.
 ### API key storage
 
 * Pass `--api-key` to write the Azure key into `~/.fireconnect/config.json`
-* Or export `AZURE_API_KEY` before `configure` — FireConnect stores an environment reference instead
+* Or export `AZURE_API_KEY` before `configure`. FireConnect stores an environment reference instead.
 
 ## One-off Foundry routing
 
@@ -89,29 +96,32 @@ fireconnect opencode on \
   --azure \
   --base-url https://<resource>.services.ai.azure.com \
   --api-key $AZURE_API_KEY \
-  --main FW-MiniMax-M2.5
+  --model FW-MiniMax-M2.5
 ```
 
 If global config already has a Foundry endpoint, `--azure` alone reuses it:
 
 ```bash theme={null}
-fireconnect opencode on --azure --main FW-GLM-5.1
+fireconnect cursor on --azure --model FW-GLM-5.2
 ```
 
 ## What each harness writes
 
-Each harness writes a dedicated `fireworks-azure` provider distinct from the Fireworks gateway. `off` restores your original config byte-for-byte.
+Each harness writes a dedicated Foundry config distinct from the Fireworks gateway. `off` restores your original config byte-for-byte.
 
-| Harness  | Config file                                 | Provider ID                    | Notes                                                                            |
-| -------- | ------------------------------------------- | ------------------------------ | -------------------------------------------------------------------------------- |
-| OpenCode | `~/.config/opencode/opencode.json`          | `fireworks-azure/<deployment>` | `@ai-sdk/openai-compatible` adapter; `options.baseURL` + `options.apiKey`        |
-| Codex    | `~/.codex/config.toml`                      | `fireworks-azure`              | `wire_api = "chat"`; bearer or `env_key = "AZURE_API_KEY"`                       |
-| Pi       | `~/.pi/agent/models.json` + `settings.json` | `fireworks-azure`              | `openai-completions` provider; key as literal or `$AZURE_API_KEY` in `auth.json` |
+| Harness     | Config file                                 | Provider ID                  | Notes                                                                            |
+| ----------- | ------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------- |
+| OpenCode    | `~/.config/opencode/opencode.json`          | `fireworks-azure/FW-GLM-5.2` | `@ai-sdk/openai-compatible` adapter; `options.baseURL` + `options.apiKey`        |
+| Codex       | `~/.codex/config.toml`                      | `fireworks-azure`            | `wire_api = "chat"`; bearer or `env_key = "AZURE_API_KEY"`                       |
+| Pi          | `~/.pi/agent/models.json` + `settings.json` | `fireworks-azure`            | `openai-completions` provider; key as literal or `$AZURE_API_KEY` in `auth.json` |
+| Cursor      | `state.vscdb`                               | Foundry deployment name      | OpenAI BYOK base URL + Azure key; one deployment in the picker                   |
+| VS Code     | `chatLanguageModels.json` + `state.vscdb`   | Foundry deployment name      | Chat-completions endpoint; Azure key in secret storage                           |
+| Deep Agents | `~/.deepagents/config.toml`                 | `fireworks-azure:FW-GLM-5.2` | `openai-completions` provider with Foundry base URL                              |
 
-`fireconnect <harness> status` reports `azure` as the provider along with the endpoint and deployment name.
+`fireconnect <harness> status` reports `azure` as the provider along with the endpoint and model.
 
 <Warning>
-  `fireconnect model list` browses the **Fireworks serverless catalog** only. It does not list Foundry deployments. With `--provider azure`, set your deployment with `--main` (or `--model`) on `on`.
+  `fireconnect model list` browses the **Fireworks serverless catalog** only. It does not list Foundry deployments. With `--provider azure`, set your model with `--model` on `on`.
 </Warning>
 
 ## Turn off Foundry routing
@@ -133,25 +143,31 @@ fireconnect login                    # if you have not signed in yet
 fireconnect opencode on
 fireconnect codex on
 fireconnect pi on
+fireconnect cursor on
+fireconnect vscode on
+fireconnect deepagents on
 ```
 
-Re-running `on` replaces the `fireworks-azure` provider with the normal Fireworks gateway config. You do **not** need to run `off` first.
+Re-running `on` replaces the Foundry config with the normal Fireworks gateway config. You do **not** need to run `off` first.
 
 The Azure endpoint and key remain stored in `~/.fireconnect/config.json` but are unused while `provider` is `fireworks`. They are used again if you run `configure --provider azure` later.
 
 ### Remove FireConnect from a harness entirely
 
-Use `off` to restore the config snapshot from **before FireConnect was first enabled** for that harness — your original provider settings, byte-for-byte:
+Use `off` to restore the config snapshot from **before FireConnect was first enabled** for that harness. Your original provider settings are restored byte-for-byte:
 
 ```bash theme={null}
 fireconnect pi off
 fireconnect opencode off
 fireconnect codex off
+fireconnect cursor off
+fireconnect vscode off
+fireconnect deepagents off
 ```
 
-`off` removes the `fireworks-azure` provider from harness config files. It does **not** change the global `provider` field in `~/.fireconnect/config.json`. If `provider` is still `azure`, the next `on` will route through Foundry again unless you run `configure --provider fireworks` first.
+`off` removes Foundry wiring from harness config files. It does **not** change the global `provider` field in `~/.fireconnect/config.json`. If `provider` is still `azure`, the next `on` will route through Foundry again unless you run `configure --provider fireworks` first.
 
-Restart the harness after `off` if it is already running.
+Restart the harness after `off` if it is already running. For Cursor and VS Code, quit the IDE before `off`.
 
 ### Remove FireConnect everywhere
 
@@ -170,9 +186,12 @@ Disables all harnesses, restores every backup, and removes the CLI.
 ## Verify routing
 
 ```bash theme={null}
-fireconnect opencode status   # provider=azure, base URL, deployment name
+fireconnect opencode status   # provider=azure, base URL, model
 fireconnect codex status
 fireconnect pi status
+fireconnect cursor status
+fireconnect vscode status
+fireconnect deepagents status
 ```
 
 ## Per-harness guides
@@ -180,6 +199,9 @@ fireconnect pi status
 * [OpenCode](/ecosystem/fireconnect/opencode#fireworks-on-microsoft-foundry)
 * [Codex](/ecosystem/fireconnect/codex#fireworks-on-microsoft-foundry)
 * [Pi](/ecosystem/fireconnect/pi#fireworks-on-microsoft-foundry)
+* [Cursor](/ecosystem/fireconnect/cursor#fireworks-on-microsoft-foundry)
+* [VS Code](/ecosystem/fireconnect/vscode#fireworks-on-microsoft-foundry)
+* [Deep Agents](/ecosystem/fireconnect/deepagents#fireworks-on-microsoft-foundry)
 
 ## Source
 

@@ -44,6 +44,24 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 If the header is missing, invalid, or out of range, FireRouter uses the balanced default (`3`).
 
+## FireConnect
+
+When you enable FireRouter through FireConnect, pass `--routing-preference` on `on` instead of setting a header yourself:
+
+```bash theme={null}
+fireconnect claude on --model firerouter --routing-preference 4
+fireconnect opencode on --model firerouter --routing-preference 2
+fireconnect codex on --model firerouter --routing-preference 5
+```
+
+Supported on Claude Code, OpenCode, Codex, Pi, and VS Code. Values are `1`–`5` or the level names (`max-intelligence`, `balanced`, `max-savings`, etc.). The flag applies when at least one configured slot uses `firerouter`.
+
+You can also store a global Anthropic BYOK key once:
+
+```bash theme={null}
+fireconnect configure --anthropic-api-key sk-ant-...
+```
+
 ## When to adjust
 
 * **High-volume workloads with many simple requests**: try `4` or `5` to redirect summaries, formatting, and straightforward Q\&A.
@@ -55,5 +73,6 @@ FireRouter caches routing decision within a conversation, so preference changes 
 ## Related
 
 * [Overview](/ecosystem/firerouter/overview): how redirect vs. pass-through works
+* [FireConnect overview](/ecosystem/fireconnect/overview#firerouter): enable FireRouter in coding harnesses
 * [Quickstart](/ecosystem/firerouter/quickstart): API call examples
 * [LiteLLM](/ecosystem/firerouter/litellm): add FireRouter to LiteLLM Proxy

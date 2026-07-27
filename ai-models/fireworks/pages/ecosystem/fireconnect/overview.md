@@ -138,6 +138,8 @@ fireconnect claude on
 
 For CI, set `FIRECONNECT_AUTO_OFF_CLAUDE=1` to skip prompts. Check version with `fireconnect --version`.
 
+After upgrading, see the v0.9.0 guides: [CLI reference](/ecosystem/fireconnect/cli-reference), [recommended models](/ecosystem/fireconnect/recommended-models), [side-by-side demo](/ecosystem/fireconnect/demo), and [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
+
 ## Sign in
 
 ```bash theme={null}

@@ -94,6 +94,10 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
     Higher-reliability and higher-speed serving paths.
   </Card>
 
+  <Card title="US-only Serverless" icon="flag-usa" href="/serverless/us-only-serverless">
+    Dedicated US routers for inference residency.
+  </Card>
+
   <Card title="Pricing" icon="circle-dollar" href="/serverless/pricing">
     Per-token rates for text, vision, embeddings, and Priority.
   </Card>

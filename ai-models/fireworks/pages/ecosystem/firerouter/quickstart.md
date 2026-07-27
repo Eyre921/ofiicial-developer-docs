@@ -8,7 +8,7 @@ Make your first FireRouter API call
 
 This guide shows how to call FireRouter directly through the Fireworks inference API. See the [overview](/ecosystem/firerouter/overview) for how routing works and the [authentication](/ecosystem/firerouter/authentication) page for header details.
 
-For coding harnesses, use [FireConnect](/ecosystem/fireconnect/overview) — `fireconnect <harness> on --model firerouter` (v0.9.0+). For manual Claude Code setup, see [Claude Code (manual setup)](/ecosystem/firerouter/claude-code).
+For coding harnesses, use [FireConnect](/ecosystem/fireconnect/overview): `fireconnect <harness> on --model firerouter` (v0.9.0+). For manual Claude Code setup, see [Claude Code (manual setup)](/ecosystem/firerouter/claude-code).
 
 ## Prerequisites
 

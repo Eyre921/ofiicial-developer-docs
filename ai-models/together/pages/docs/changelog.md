@@ -4,15 +4,37 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 27, 2026">
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `Qwen/Qwen3.6-27B`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
 <Update label="July 24, 2026">
   ## Python SDK realtime transcription
 
   The Together Python SDK now includes `client.beta.realtime.transcription()` for streaming speech-to-text over WebSocket. Install with `pip install "together[realtime]"`. The session reconnects with audio replay on transient drops, exposes normalized events such as `TranscriptDelta` and `TranscriptCompleted`, and supports application-level failover across endpoints with `RealtimeConnectionError` (`code="no_healthy_workers"`) and `session.pending_audio()`.
 
   See [Streaming transcription](/docs/inference/transcription/streaming#python-sdk).
+
+  ## Fine-tuning comparison metrics filtering
+
+  The [fine-tuning comparison view](https://api.together.ai/fine-tuning?view=comparison) now includes the same **Metrics filtering** control as the single-job Metrics tab. Adjust **Sampling rate** and **Step range**, then click **Apply** to re-fetch metrics for every selected job with matching filters.
+
+  See [View metrics in the dashboard](/docs/fine-tuning/monitoring#view-metrics-in-the-dashboard).
 </Update>
 
 <Update label="July 23, 2026">
+  ## Dedicated containers OpenAI-compatible endpoints
+
+  [Dedicated container inference](/docs/dedicated-container-inference) now supports HTTP server mode for synchronous, OpenAI-compatible endpoints. Run your worker without the `--queue` flag, wire an OpenAI route with Sprocket, and call it with the OpenAI SDK or plain HTTP, with no Together-specific request shapes.
+
+  See [Serve an OpenAI-compatible endpoint](/docs/dedicated_containers_openai).
+
   ## Fine-tuning output object names
 
   Fine-tune retrieve and list-checkpoints responses now include qualified Together model registry names alongside object IDs. On [`GET /fine-tunes/{id}`](/reference/get-fine-tunes-id), use `model_object_name` and `adapter_object_name` (LoRA jobs) for the final artifacts in `<project_slug>/<model_name>` form. On [`GET /fine-tunes/{id}/checkpoints`](/reference/get-fine-tunes-id-checkpoint), each entry adds `object_name` with the same naming pattern (including `-<step>` or `-adapter` suffixes). Names are resolved on retrieve only, not on list jobs. If the project slug cannot be resolved, the name field falls back to the object ID.
@@ -32,6 +54,20 @@ path: docs/changelog
   `tg fine-tuning preview` samples rows from an uploaded JSONL training file and shows how a base model tokenizes them before you start a job. The table output highlights masked tokens, trained spans, and truncation; pass `--json` for the full response.
 
   See [Preview](/reference/cli/finetune#preview).
+
+  ## Worker engine cache metrics
+
+  Dedicated endpoint Prometheus metrics now expose `worker_engine_kv_cache_utilization` and `worker_engine_cache_hit_rate` gauges. Use them to track KV-cache pressure and prefix-reuse efficiency on deployment workers.
+
+  See [Monitor endpoints and deployments](/docs/dedicated-endpoints/monitoring).
+</Update>
+
+<Update label="July 22, 2026">
+  ## Cluster remediation mode override
+
+  `tg beta clusters remediations approve` now accepts a `--mode` flag to override the recommended repair action when you approve a node remediation. Choose reboot, quick reprovision, migrate to new host, or remove without changing the recommendation in the console first.
+
+  See [Node repair](/docs/node-repair#override-the-recommended-action) and the [clusters CLI reference](/reference/cli/clusters).
 </Update>
 
 <Update label="July 21, 2026">
@@ -43,6 +79,27 @@ path: docs/changelog
   * **Update:** Pass `--headlamp` / `--no-headlamp` or `--slurm-web` / `--no-slurm-web` to toggle add-ons on an existing cluster.
 
   See the [clusters CLI reference](/reference/cli/clusters).
+
+  ## MoE expert-LoRA target modules
+
+  Fine-tuning jobs on supported mixture-of-experts models can now target expert feed-forward layers instead of attention projections. Set `lora_trainable_modules` to `w_up,w_gate,w_down` to train a compact shared-factor adapter across experts, useful when adapting domain knowledge rather than attention patterns.
+
+  See [Target MoE expert layers](/docs/fine-tuning/lora-vs-full#target-moe-expert-layers).
+
+  ## Jig environment variable collision validation
+
+  `jig deploy` now rejects configs where the same name appears in both `[tool.jig.deploy.environment_variables]` and secrets. The error lists each colliding name so you can remove the duplicate or unset the secret before redeploying.
+
+  See [Secrets](/docs/deployments-jig#secrets).
+
+  ## New models available for fine-tuning
+
+  You can now fine-tune the following models:
+
+  * `zai-org/GLM-5.1`.
+  * `zai-org/GLM-5`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
 </Update>
 
 <Update label="July 20, 2026">
@@ -56,6 +113,18 @@ path: docs/changelog
   * **Preference-tuning metrics:** DPO and other preference jobs add reward accuracy, reward margin, chosen and rejected rewards and log-probabilities, and approximate KL.
   * **Interactive charts:** Zoom and pan across all charts on a shared step axis, switch the x-axis between step and time, toggle linear or logarithmic scales, and sync a hover crosshair across every metric.
   * **Compare runs:** Overlay metrics from multiple jobs to [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side.
+
+  ## New dedicated endpoint models
+
+  The following models are now available for deployment on [dedicated endpoints](/docs/dedicated-endpoints/models):
+
+  * `deepseek-ai/DeepSeek-V4-Flash`.
+
+  ## Model revision validation status
+
+  Model and adapter revision APIs now return `validationStatus`, `lastValidatedAt`, and `validationErrors` on each revision. Poll validation before you pin a revision in a deployment — a revision must reach `REVISION_VALIDATION_STATUS_SUCCESS` before it can deploy when referenced explicitly.
+
+  See [Check revision validation](/docs/dedicated-endpoints/custom-models#check-revision-validation).
 </Update>
 
 <Update label="July 17, 2026">

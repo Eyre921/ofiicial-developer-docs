@@ -794,6 +794,59 @@ Both Stripe-hosted and embedded onboarding display a list of missing owners and 
 
 Non-profits with missing beneficial owners have a `verification_missing_directors` error code in the `errors` hash of the requirement.
 
+#### KYB: Business details and legal entity verification 
+
+To comply with revised Monetary Authority of Singapore (MAS) PSN01 requirements, Stripe requires the following additional fields for non-individual Singapore accounts:
+
+- `company.registration_date`: The date the business was incorporated (day, month, year).
+- `company.principal_place_of_business`: The primary location where the business conducts operations.
+- `company.administrative_address`: The location where the business is administered.
+
+If any of these addresses are the same, submit the same address values for each. Don’t skip any of them.
+
+Stripe also verifies the registered business address (`company.address`). If Stripe can’t verify the registered address, you must collect a company document. Acceptable documents include:
+
+- A [BizFile](https://www.bizfile.gov.sg/) profile from the [Accounting and Corporate Regulatory Authority (ACRA)](https://www.acra.gov.sg/) for locally incorporated businesses.
+- A certificate of registration or annual return filed with the [Registry of Societies (ROS)](https://www.mha.gov.sg/what-we-do/registry-of-societies) for societies.
+- A letter from [Majlis Ugama Islam Singapura (MUIS)](https://www.muis.gov.sg/) containing the registered address for MUIS-related entities.
+
+To learn more, see [compliance requirements for Singapore](https://docs.stripe.com/connect/upcoming-requirements-updates.md?program=sg-2026).
+
+#### Constitution document verification 
+
+Companies (private and public), partnerships, and non-profit organizations must satisfy a constitution document requirement.
+
+If ACRA confirms that the entity has adopted a [Model Constitution](https://sso.agc.gov.sg/SL/CoA1967-S833-2015?DocDate=20151231), the requirement is automatically fulfilled with no document upload needed.
+
+Otherwise, you must collect a constitution document from the connected account and submit it using `documents.company_memorandum_of_association.files`. Stripe reviews the document to identify individuals with significant control, authority, or powers over the entity. You must add any such individuals to the account as beneficial owners.
+
+To learn more, see [compliance requirements for Singapore](https://docs.stripe.com/connect/upcoming-requirements-updates.md?program=sg-2026).
+
+#### Updated beneficial ownership and relationship verification 
+
+Stripe requires the following additional fields when verifying beneficial owners and directors:
+
+- `person.nationality`: Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+- `person.dob`: Date of birth.
+- `person.address`: Residential address.
+
+These fields don’t trigger separate verification. Stripe collects them as part of the UBO and relationship verification process.
+
+For private companies, Stripe verifies owners who hold 25% or more of the company. If no such owners exist, Stripe treats the directors listed on government records as beneficial owners. Provide the new required fields for each owner or director returned in the account’s requirements.
+
+The following error codes can appear in `requirements.errors` for UBO verification:
+
+| Code | Trigger | Remediation |
+| --- | --- | --- |
+| `verification_missing_owners` | Stripe identified missing beneficial owners. | Add the required owners, or provide a [proof of ultimate beneficial ownership document](https://docs.stripe.com/acceptable-verification-documents.md?country=SG&document-type=relationship) when requested. |
+| `verification_missing_directors` | Stripe identified missing directors. | Add the required directors and set `company.directors_provided=true`. |
+| `verification_directors_mismatch` | Director information doesn’t match government records. | Add or update the required directors so the account matches government records, then set `company.directors_provided=true`. |
+| `verification_requires_additional_proof_of_registration` | Stripe needs more information about the account’s ownership structure. | Provide a [proof of ultimate beneficial ownership document](https://docs.stripe.com/acceptable-verification-documents.md?country=SG&document-type=relationship). |
+
+For non-profits, Stripe verifies all directors and key executives. For charities registered in Singapore, Stripe attempts to identify these individuals from government records. For other non-profits, you must add each director or key executive as a Person on the account with the director relationship.
+
+Provide the new required fields for each director or key executive returned in the account’s requirements.
+
 #### Closure of unverified accounts
 
 As required under [Singapore’s Payment Services Act](https://stripe.com/guides/sg-payment-services-act-2019), we’re permanently closing Singapore accounts that remain unverified for over 120 business days. These are accounts whose charges or payouts have already been suspended, so this closure affects only inactive accounts.
@@ -1659,6 +1712,59 @@ Non-profits with missing beneficial owners have a `verification_document_directo
   ...
 }
 ```
+
+#### KYB: Business details and legal entity verification 
+
+To comply with revised Monetary Authority of Singapore (MAS) PSN01 requirements, Stripe requires the following additional fields for non-individual Singapore accounts:
+
+- `company.registration_date`: The date the business was incorporated (day, month, year).
+- `company.principal_place_of_business`: The primary location where the business conducts operations.
+- `company.administrative_address`: The location where the business is administered.
+
+If any of these addresses are the same, submit the same address values for each. Don’t skip any of them.
+
+Stripe also verifies the registered business address (`company.address`). If Stripe can’t verify the registered address, you must collect a company document. Acceptable documents include:
+
+- A [BizFile](https://www.bizfile.gov.sg/) profile from the [Accounting and Corporate Regulatory Authority (ACRA)](https://www.acra.gov.sg/) for locally incorporated businesses.
+- A certificate of registration or annual return filed with the [Registry of Societies (ROS)](https://www.mha.gov.sg/what-we-do/registry-of-societies) for societies.
+- A letter from [Majlis Ugama Islam Singapura (MUIS)](https://www.muis.gov.sg/) containing the registered address for MUIS-related entities.
+
+To learn more, see [compliance requirements for Singapore](https://docs.stripe.com/connect/upcoming-requirements-updates.md?program=sg-2026).
+
+#### Constitution document verification 
+
+Companies (private and public), partnerships, and non-profit organizations must satisfy a constitution document requirement.
+
+If ACRA confirms that the entity has adopted a [Model Constitution](https://sso.agc.gov.sg/SL/CoA1967-S833-2015?DocDate=20151231), the requirement is automatically fulfilled with no document upload needed.
+
+Otherwise, you must collect a constitution document from the connected account and submit it using `documents.company_memorandum_of_association.files`. Stripe reviews the document to identify individuals with significant control, authority, or powers over the entity. You must add any such individuals to the account as beneficial owners.
+
+To learn more, see [compliance requirements for Singapore](https://docs.stripe.com/connect/upcoming-requirements-updates.md?program=sg-2026).
+
+#### Updated beneficial ownership and relationship verification 
+
+Stripe requires the following additional fields when verifying beneficial owners and directors:
+
+- `person.nationality`: Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+- `person.dob`: Date of birth.
+- `person.address`: Residential address.
+
+These fields don’t trigger separate verification. Stripe collects them as part of the UBO and relationship verification process.
+
+For private companies, Stripe verifies owners who hold 25% or more of the company. If no such owners exist, Stripe treats the directors listed on government records as beneficial owners. Provide the new required fields for each owner or director returned in the account’s requirements.
+
+The following error codes can appear in `requirements.errors` for UBO verification:
+
+| Code | Trigger | Remediation |
+| --- | --- | --- |
+| `verification_missing_owners` | Stripe identified missing beneficial owners. | Add the required owners, or provide a [proof of ultimate beneficial ownership document](https://docs.stripe.com/acceptable-verification-documents.md?country=SG&document-type=relationship) when requested. |
+| `verification_missing_directors` | Stripe identified missing directors. | Add the required directors and set `company.directors_provided=true`. |
+| `verification_directors_mismatch` | Director information doesn’t match government records. | Add or update the required directors so the account matches government records, then set `company.directors_provided=true`. |
+| `verification_requires_additional_proof_of_registration` | Stripe needs more information about the account’s ownership structure. | Provide a [proof of ultimate beneficial ownership document](https://docs.stripe.com/acceptable-verification-documents.md?country=SG&document-type=relationship). |
+
+For non-profits, Stripe verifies all directors and key executives. For charities registered in Singapore, Stripe attempts to identify these individuals from government records. For other non-profits, you must add each director or key executive as a Person on the account with the director relationship.
+
+Provide the new required fields for each director or key executive returned in the account’s requirements.
 
 #### Closure of unverified accounts
 

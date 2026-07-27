@@ -211,7 +211,7 @@ tg fine-tuning list-checkpoints [FT_ID]
 
 The default output is a table with **Download ID**, **Timestamp**, **Registry Artifact**, and **Type** columns. Use the Download ID with `tg fine-tuning download`: intermediate checkpoints use `FT_ID:STEP`, and the final checkpoint uses the job ID alone.
 
-When the job uploaded the artifact to the Together model registry, the **Registry Artifact** column shows the qualified ID as `object_id@object_revision_id` (for example, `ml_…@rv_…`). The CLI also prints a copyable **Registry artifacts** block below the table.
+When the job uploaded the artifact to the Together model registry, the **Registry Artifact** column shows `object_name` when available (for example, `acme-corp/my-model-abc123-100`). It falls back to `object_id@object_revision_id` (for example, `ml_…@rv_…`) when the name is unavailable. The CLI also prints a copyable **Registry artifacts** block below the table.
 
 Pass `--json` to get the full response body instead. Each checkpoint includes `step`, `path`, `created_at`, `checkpoint_type`, and `checkpoint` (the download selector: `model` or `adapter`). When the job uploaded the artifact to the Together model registry, the entry also includes `object_id`, `object_revision_id` (for example, `ml_…` and `rv_…`), and `object_name` (the qualified `<project_slug>/<model_name>` name for that checkpoint, with `-<step>` or `-adapter` suffixes as appropriate). See [Model registry object IDs](/docs/fine-tuning/deployment#model-registry-object-ids) for how these relate to the job-level `model_object_id` / `adapter_object_id` fields.
 

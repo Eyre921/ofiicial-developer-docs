@@ -14,6 +14,8 @@ This page provides an overview of our key security measures. For documentation a
 
 Fireworks does not log or store prompt or generation data for open models, without explicit user opt-in. See our [Zero Data Retention Policy](https://docs.fireworks.ai/guides/security_compliance/data_handling).
 
+For US-only inference residency, see [US-only Serverless](/serverless/us-only-serverless).
+
 ## Secure Data Handling
 
 **Data Ownership & Control:** Customers maintain ownership of their data. Customer data stored as part of an active workflow can be permanently deleted with auditable confirmation, and secure wipe processes ensure deleted assets cannot be reconstructed.

@@ -6,10 +6,6 @@ path: api/subscriptions
 
 # Subscriptions
 
-Subscriptions allow you to charge a customer on a recurring basis.
-
-Related guide: [Creating subscriptions](https://docs.stripe.com/docs/billing/subscriptions/creating.md)
-
 ## Endpoints
 
 ### Create a subscription
@@ -69,4 +65,8 @@ Occurs three days before a subscription’s trial period is scheduled to end, or
 
 - `customer.subscription.updated`
 Occurs whenever a subscription changes (e.g., switching from one plan to another, or changing the status from trial to active).
+
+Subscriptions allow you to charge a customer on a recurring basis.
+
+Related guide: [Creating subscriptions](https://docs.stripe.com/docs/billing/subscriptions/creating.md)
 

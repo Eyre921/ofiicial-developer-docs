@@ -1564,6 +1564,20 @@ components:
         - no_results
       default: success
       title: KnowledgeBaseRagToolStatus
+    type_:KnowledgeBaseRagChunkModel:
+      type: object
+      properties:
+        chunk_id:
+          type: string
+        document_id:
+          type: string
+        content:
+          type: string
+      required:
+        - chunk_id
+        - document_id
+        - content
+      title: KnowledgeBaseRagChunkModel
     type_:TransferToAgentToolResultSuccessModelOutputBranchInfo:
       oneOf:
         - type: object
@@ -1633,6 +1647,13 @@ components:
               type: string
               default: Referenced knowledge base.
               description: Human-readable status for the LLM about the search results
+            chunks:
+              type: array
+              items:
+                $ref: '#/components/schemas/type_:KnowledgeBaseRagChunkModel'
+              description: >-
+                Retrieved chunks; populated only in the
+                rag-result-in-tool-result mode
           required:
             - result_type
         - type: object

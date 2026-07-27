@@ -8,6 +8,17 @@ Poll job status, retrieve per-step loss and evaluation metrics, and stream train
 
 The Together AI platform records metrics at every training and evaluation step. You can pull them during a job to watch loss curves live, or after the job completes to compare runs.
 
+## View metrics in the dashboard
+
+Open a job on the [fine-tuning jobs dashboard](https://api.together.ai/fine-tuning) and use the **Metrics** tab to chart training progress. Metrics stream in while a job runs and stay available after it completes.
+
+Use the filter control (funnel icon) in the metrics toolbar to adjust how points are sampled:
+
+* **Sampling rate:** Cap how many training points are plotted (maps to the `resolution` query parameter; default 100).
+* **Step range:** Limit the chart to a contiguous step window (maps to `global_step_from` and `global_step_to`).
+
+The same **Metrics filtering** controls are available when you [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side, so you can align sampling and step windows across selected jobs. Click **Apply** to re-fetch, or **Restore defaults** to clear custom filters.
+
 ## Poll until the job is done
 
 A fine-tuning job moves through the states: `pending → queued → running → uploading → completed`. Queue wait is typically under an hour but varies with platform load. Once a job is running, multiply the duration of the first epoch by `n_epochs` to estimate remaining training time.

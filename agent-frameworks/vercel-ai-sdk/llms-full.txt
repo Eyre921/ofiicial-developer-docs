@@ -121429,7 +121429,8 @@ The `audio` stream must contain raw audio chunks. `Uint8Array` chunks are raw by
 <Note>
   String model IDs resolve through the global provider (AI Gateway by
   default). AI Gateway supports streaming transcription for supported models
-  (e.g. `openai/gpt-realtime-whisper`, `xai/grok-stt`), so string IDs work:
+  (e.g. `openai/gpt-realtime-whisper`, `elevenlabs/eleven-scribe-2-realtime`,
+  `xai/grok-stt`), so string IDs work:
   `experimental_streamTranscribe({ model: 'openai/gpt-realtime-whisper', ...
   })`. You can also pass a provider model instance (e.g.
   `openai.transcription('gpt-realtime-whisper')`) to stream directly against
@@ -121438,9 +121439,11 @@ The `audio` stream must contain raw audio chunks. `Uint8Array` chunks are raw by
 
 OpenAI streaming transcription uses `openai.transcription('gpt-realtime-whisper')`.
 Cartesia uses `cartesia.transcription('ink-2')` for streaming-only Ink 2
-transcription. xAI uses the same `xai.transcription()` model for request/response
-and streaming transcription; `experimental_streamTranscribe` selects the
-provider's WebSocket STT transport.
+transcription. ElevenLabs uses
+`elevenLabs.transcription('scribe_v2_realtime')` for Scribe v2 Realtime. xAI
+uses the same `xai.transcription()` model for request/response and streaming
+transcription; `experimental_streamTranscribe` selects the provider's
+WebSocket STT transport.
 
 ```ts
 import { xai } from '@ai-sdk/xai';
@@ -121628,39 +121631,238 @@ try {
 
 ## Transcription Models
 
-| Provider                                                                        | Model                    |
-| ------------------------------------------------------------------------------- | ------------------------ |
-| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)               | `whisper-1`              |
-| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)               | `gpt-4o-transcribe`      |
-| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)               | `gpt-4o-mini-transcribe` |
-| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)       | `scribe_v1`              |
-| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)       | `scribe_v1_experimental` |
-| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                   | `whisper-large-v3-turbo` |
-| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                   | `whisper-large-v3`       |
-| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)          | `whisper-1`              |
-| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)          | `gpt-4o-transcribe`      |
-| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)          | `gpt-4o-mini-transcribe` |
-| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                | `machine`                |
-| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                | `low_cost`               |
-| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                | `fusion`                 |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)           | `base` (+ variants)      |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)           | `enhanced` (+ variants)  |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)           | `nova` (+ variants)      |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)           | `nova-2` (+ variants)    |
-| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)           | `nova-3` (+ variants)    |
-| [Gladia](/providers/ai-sdk-providers/gladia#transcription-models)               | `default`                |
-| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)       | `universal-3-5-pro`      |
-| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)       | `universal-3-pro`        |
-| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                     | `whisper`                |
-| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                     | `wizper`                 |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models) | `chirp_2`                |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models) | `chirp_3`                |
-| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models) | `telephony`              |
-| [xAI](/providers/ai-sdk-providers/xai#transcription-models)                     | `default`                |
-| [Cartesia](/providers/ai-sdk-providers/cartesia#transcription-models)           | `ink-whisper`            |
-| [Cartesia](/providers/ai-sdk-providers/cartesia#streaming-transcription-models) | `ink-2`                  |
+| Provider                                                                            | Model                    |
+| ----------------------------------------------------------------------------------- | ------------------------ |
+| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `whisper-1`              |
+| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `gpt-4o-transcribe`      |
+| [OpenAI](/providers/ai-sdk-providers/openai#transcription-models)                   | `gpt-4o-mini-transcribe` |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v1`              |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v1_experimental` |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#transcription-models)           | `scribe_v2`              |
+| [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#streaming-transcription-models) | `scribe_v2_realtime`     |
+| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3-turbo` |
+| [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3`       |
+| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `whisper-1`              |
+| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-transcribe`      |
+| [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-mini-transcribe` |
+| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `machine`                |
+| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `low_cost`               |
+| [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `fusion`                 |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `base` (+ variants)      |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `enhanced` (+ variants)  |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova` (+ variants)      |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova-2` (+ variants)    |
+| [Deepgram](/providers/ai-sdk-providers/deepgram#transcription-models)               | `nova-3` (+ variants)    |
+| [Gladia](/providers/ai-sdk-providers/gladia#transcription-models)                   | `default`                |
+| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)           | `universal-3-5-pro`      |
+| [AssemblyAI](/providers/ai-sdk-providers/assemblyai#transcription-models)           | `universal-3-pro`        |
+| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                         | `whisper`                |
+| [Fal](/providers/ai-sdk-providers/fal#transcription-models)                         | `wizper`                 |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `chirp_2`                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `chirp_3`                |
+| [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models)     | `telephony`              |
+| [xAI](/providers/ai-sdk-providers/xai#transcription-models)                         | `default`                |
+| [Cartesia](/providers/ai-sdk-providers/cartesia#transcription-models)               | `ink-whisper`            |
+| [Cartesia](/providers/ai-sdk-providers/cartesia#streaming-transcription-models)     | `ink-2`                  |
 
 Above are a small subset of the transcription models supported by the AI SDK providers. For more, see the respective provider documentation.
+
+---
+title: Translation
+description: Learn how to translate speech with the AI SDK.
+---
+
+# Translation
+
+<Note type="warning">Speech translation is an experimental feature.</Note>
+
+The AI SDK provides the
+[`experimental_streamTranslate`](/docs/reference/ai-sdk-core/stream-translate)
+function to translate live speech into another language. Translation is a
+streaming-only modality: models translate live source audio into
+target-language audio and text.
+
+`experimental_streamTranslate` is built on the speech translation model
+specification (`Experimental_SpeechTranslationModelV4`).
+
+<Note>
+  Provider implementations of the speech translation model specification ship
+  separately. Pass any model instance that implements
+  `Experimental_SpeechTranslationModelV4` — see your provider's documentation
+  for available translation models.
+</Note>
+
+```ts
+import { experimental_streamTranslate as streamTranslate } from 'ai';
+
+const result = streamTranslate({
+  // any provider model instance that implements the experimental
+  // speech translation model specification (Experimental_SpeechTranslationModelV4):
+  model: translationModel,
+  audio: audioStream, // ReadableStream<Uint8Array | string>
+  inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  targetLanguage: 'es',
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'output-text-delta') {
+    process.stdout.write(part.delta);
+  }
+
+  if (part.type === 'audio') {
+    // translated audio chunk (Uint8Array or base64 string)
+  }
+
+  if (part.type === 'source-transcript-final') {
+    console.log('source:', part.text);
+  }
+}
+
+console.log(await result.translationText);
+```
+
+The `audio` stream must contain raw audio chunks. `Uint8Array` chunks are raw
+bytes; `string` chunks are base64-encoded raw bytes. Always set
+`inputAudioFormat` to match the chunks you send.
+
+`targetLanguage` (and the optional `sourceLanguage`) are BCP-47-style language
+tags (e.g. `en`, `es`, `fr-CA`). Supported values are provider-specific and
+validated by the provider.
+
+When `sourceLanguage` is absent, providers auto-detect the source language.
+
+`fullStream` is a single-consumer live stream and can only be accessed once.
+When you need both stream parts and final results, access `fullStream` first and
+await the result promises while or after consuming it. Accessing a result
+promise first consumes the stream internally, so `fullStream` is no longer
+available. This avoids retaining an unbounded replay buffer for live audio.
+
+To access the final translation metadata:
+
+```ts
+const sourceText = await result.sourceText; // final source-language transcript
+const translationText = await result.translationText; // final translated text
+const durationInSeconds = await result.durationInSeconds; // duration of the source audio in seconds, if available
+const usage = await result.usage; // audio/text token usage, if reported
+```
+
+A translation stream is considered successful when at least one `audio` part
+was emitted or the final output text is non-empty. For providers that produce
+only audio output, `translationText` may resolve to an empty string.
+
+## Stream parts
+
+The `fullStream` yields the following part types:
+
+- `audio`: a translated audio chunk in the target language.
+- `output-text-delta`: an append-only translated text delta.
+- `output-text-final`: final translated text for a provider-defined segment or
+  utterance.
+- `source-transcript-delta`: an append-only source transcript delta.
+- `source-transcript-partial`: non-final source transcript text that may be
+  revised by later parts.
+- `source-transcript-final`: final source transcript text for a
+  provider-defined segment or utterance.
+- `raw`: raw provider chunks when `includeRawChunks` is enabled.
+- `error`: stream errors.
+
+Output text is append-only: providers stream `output-text-delta` parts and
+finalize per-utterance with `output-text-final`. There is no partial/revision
+part for output text by design for now.
+
+## Settings
+
+### Output audio format
+
+Use `outputAudioFormat` to request a specific audio format for translated
+audio chunks. When absent, the provider default output format is used.
+
+```ts highlight="6"
+import { experimental_streamTranslate as streamTranslate } from 'ai';
+
+const result = streamTranslate({
+  model: translationModel,
+  audio: audioStream,
+  inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  outputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  targetLanguage: 'es',
+});
+```
+
+### Provider-Specific settings
+
+Translation models often have provider or model-specific settings which you can
+set using the `providerOptions` parameter.
+
+```ts highlight="8-12"
+import { experimental_streamTranslate as streamTranslate } from 'ai';
+
+const result = streamTranslate({
+  model: translationModel,
+  audio: audioStream,
+  inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  targetLanguage: 'es',
+  providerOptions: {
+    'provider-name': {
+      // provider-specific options
+    },
+  },
+});
+```
+
+### Abort Signals
+
+Pass an `abortSignal` to cancel the translation:
+
+```ts highlight="8"
+import { experimental_streamTranslate as streamTranslate } from 'ai';
+
+const result = streamTranslate({
+  model: translationModel,
+  audio: audioStream,
+  inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  targetLanguage: 'es',
+  abortSignal: AbortSignal.timeout(60_000), // abort after 1 minute
+});
+```
+
+### Error Handling
+
+When `experimental_streamTranslate` cannot produce a translation — no `audio`
+part was emitted and the final output text is empty, or the stream ends
+without a finish event — it errors with a
+[`AI_NoTranslationGeneratedError`](/docs/reference/ai-sdk-errors/ai-no-translation-generated-error).
+
+The error preserves the following information to help you log the issue:
+
+- `response`: Metadata about the speech translation model response, including
+  timestamp, model, and headers.
+- `cause`: The cause of the error. You can use this for more detailed error
+  handling.
+
+```ts
+import {
+  experimental_streamTranslate as streamTranslate,
+  NoTranslationGeneratedError,
+} from 'ai';
+
+try {
+  const result = streamTranslate({
+    model: translationModel,
+    audio: audioStream,
+    inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+    targetLanguage: 'es',
+  });
+
+  console.log(await result.translationText);
+} catch (error) {
+  if (NoTranslationGeneratedError.isInstance(error)) {
+    console.log('NoTranslationGeneratedError');
+    console.log('Cause:', error.cause);
+    console.log('Response:', error.response);
+  }
+}
+```
 
 ---
 title: Speech
@@ -126988,29 +127190,35 @@ description: Run HarnessAgent turns as durable Workflow DevKit workflows.
 `@ai-sdk/workflow-harness` provides helpers for running `HarnessAgent` turns
 inside a [workflow](https://vercel.com/docs/workflow).
 
-The package provides a serializable state machine and a slice runner that you
-call from your own `'use workflow'` and `'use step'` functions.
+The package provides a serializable state machine and runners for time-sliced
+and semantic agent step turns. You call the appropriate runner from your own
+`'use workflow'` and `'use step'` functions.
 
-The core harness and workflow files are framework-independent. The HTTP handler
-and Next.js configuration shown below are examples of how to expose the workflow
-from one app framework; adapt those parts to your runtime and Workflow SDK
-integration.
+The core harness and workflow files are framework-independent. The HTTP handlers
+shown below use Next.js as one example; adapt them to your runtime and Workflow
+SDK integration. If you use Next.js, ensure you have
+[configured your project for Workflow](https://workflow-sdk.dev/docs/getting-started/next)
+before following the examples.
 
 ## Installation
 
 <InstallPackages packages="@ai-sdk/workflow-harness workflow" />
 
-Install the core harness package, a harness adapter, and a sandbox provider as
-shown in [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent).
+In addition to the workflow specific packages, install the core harness package,
+a harness adapter, and a sandbox provider as shown in
+[HarnessAgent](/docs/ai-sdk-harnesses/harness-agent).
 
-## Using a Durable Harness Agent
+## Configuring the Harness Agent
 
-The agent can be configured in the usual way.
+The agent can be configured in the usual way, for the most part. When using
+semantic agent steps, set `stopWhen` to `isStepCount(1)` so one call to
+`stream()` completes one agent step. Omit it when using time slices.
 
-```ts filename='harness-workflow/agent.ts'
+```ts filename='harness-workflow/agent.ts' highlight="13-17"
 import { HarnessAgent } from '@ai-sdk/harness/agent';
 import { claudeCode } from '@ai-sdk/harness-claude-code';
 import { createVercelSandbox } from '@ai-sdk/sandbox-vercel';
+import { isStepCount } from 'ai';
 
 export const agent = new HarnessAgent({
   harness: claudeCode,
@@ -127019,92 +127227,94 @@ export const agent = new HarnessAgent({
     ports: [4000],
   }),
   instructions: 'You are a helpful coding assistant.',
+  /*
+   * Only needed for semantic agent-step workflows.
+   * Omit this for time-sliced workflows.
+   */
+  stopWhen: isStepCount(1),
 });
 ```
 
-With the agent definition file in place, start with the two workflow-specific
-pieces: a slice step that runs one time-boxed part of the harness turn, and a
-workflow that calls that step until the turn finishes.
+## Using Semantic Agent Steps
 
-```ts filename='harness-workflow/run-slice-step.ts'
+Semantic agent steps persist the harness turn after each agent step. Configure
+the shared agent with the highlighted `stopWhen` option shown above, then call
+`runHarnessAgentStep()` from a Workflow step.
+
+### Defining the Agent Step
+
+Keep the Workflow step in its own module and import the agent dynamically inside
+the step body. This keeps the agent, sandbox provider, and other Node.js
+dependencies out of the workflow bundle.
+
+```ts filename='harness-workflow/agent-step.ts'
 import {
-  runHarnessAgentSlice,
+  runHarnessAgentStep,
   type HarnessWorkflowState,
 } from '@ai-sdk/workflow-harness';
 
-export async function runSlice(
+export async function agentStep(
   state: HarnessWorkflowState,
 ): Promise<HarnessWorkflowState> {
   'use step';
 
   const { agent } = await import('./agent');
 
-  return runHarnessAgentSlice({
+  return runHarnessAgentStep({
     agent,
     state,
   });
 }
 ```
 
+### Defining the Semantic Agent Step Workflow
+
+Create the workflow state and keep scheduling `agentStep()` while the agent has
+more work.
+
 ```ts filename='harness-workflow/workflow.ts'
-import { runSlice } from './run-slice-step';
+import { agentStep } from './agent-step';
 import {
   createHarnessWorkflowState,
   finalizeHarnessWorkflow,
   type HarnessWorkflowInput,
 } from '@ai-sdk/workflow-harness';
 
-export async function codingWorkflow(
-  input: Pick<HarnessWorkflowInput, 'prompt' | 'sessionId'>,
-) {
+export async function agentWorkflow(input: {
+  messages: NonNullable<HarnessWorkflowInput['messages']>;
+  sessionId: string;
+}) {
   'use workflow';
 
   let state = createHarnessWorkflowState(input);
 
-  while (state.status === 'running' || state.status === 'timed_out') {
-    state = await runSlice(state);
-  }
+  do {
+    state = await agentStep(state);
+  } while (state.status === 'ready_for_next_step');
 
   return finalizeHarnessWorkflow(state);
 }
 ```
 
-### Starting the Workflow
+<Note>
+  This example covers the workflow execution foundation only. For multi-turn
+  conversations, you must persist the harness session's `resumeFrom` state
+  between workflow runs. See [Resume Persistence](#resume-persistence).
+</Note>
 
-Start the workflow from server-side code. You can return `run.readable` from an
-HTTP endpoint, consume it directly, or expose it through your framework's
-streaming response primitive.
+Each `ready_for_next_step` result carries `continueFrom`, which lets the next
+Workflow step continue the same unfinished turn. When the turn finishes,
+`finalizeHarnessWorkflow()` returns its result or throws if the workflow failed.
 
-```ts filename='server/start-coding-workflow.ts'
-import { codingWorkflow } from '../harness-workflow/workflow';
-import { start } from 'workflow/api';
+### Starting the Semantic Agent Step Workflow
 
-export async function startCodingWorkflow({
-  prompt,
-  sessionId,
-}: {
-  prompt: string;
-  sessionId: string;
-}) {
-  const run = await start(codingWorkflow, [{ prompt, sessionId }]);
-
-  return run.readable;
-}
-```
-
-This is the core workflow/harness integration. Add resume persistence when you
-need a multi-turn chat to reattach to the same native harness session across
-workflow runs.
-
-### HTTP Route Example
-
-This example uses a Next.js `Request`/`Response` handler and AI SDK UI message
-streams. For other frameworks, the workflow related code is similar: derive the
-newest user message, call `start(codingWorkflow, [...])`, and return the run's
-readable stream.
+Start the workflow from server-side code. This Next.js route converts the AI SDK
+UI messages, starts `agentWorkflow()`, and returns the workflow's AI SDK UI
+message stream. Passing the converted messages lets `HarnessAgent` distinguish a
+new user turn from tool approval and tool result continuations.
 
 ```ts filename='app/api/harness-workflow/route.ts'
-import { codingWorkflow } from '../../../harness-workflow/workflow';
+import { agentWorkflow } from '../../../harness-workflow/workflow';
 import {
   convertToModelMessages,
   createUIMessageStreamResponse,
@@ -127112,15 +127322,6 @@ import {
   type UIMessageChunk,
 } from 'ai';
 import { start } from 'workflow/api';
-
-function latestUserMessage(
-  messages: Awaited<ReturnType<typeof convertToModelMessages>>,
-) {
-  for (let index = messages.length - 1; index >= 0; index--) {
-    const message = messages[index];
-    if (message.role === 'user') return message;
-  }
-}
 
 export async function POST(request: Request) {
   const body: {
@@ -127132,14 +127333,10 @@ export async function POST(request: Request) {
     return new Response('Missing chat ID', { status: 400 });
   }
 
-  const prompt = latestUserMessage(await convertToModelMessages(body.messages));
-  if (!prompt) {
-    return new Response('No user message to run', { status: 400 });
-  }
-
-  const run = await start(codingWorkflow, [
+  const messages = await convertToModelMessages(body.messages);
+  const run = await start(agentWorkflow, [
     {
-      prompt,
+      messages,
       sessionId: body.id,
     },
   ]);
@@ -127150,23 +127347,137 @@ export async function POST(request: Request) {
 }
 ```
 
-If you use Next.js, wrap your config with `withWorkflow()` so Workflow SDK
-transforms `'use workflow'` and `'use step'` modules. Other frameworks have
-their own Workflow SDK setup.
+The `sessionId` gives the sandbox a stable identity across workflow runs. Keep
+`agent.ts`, `agent-step.ts`, `workflow.ts`, and the route in separate modules so
+the workflow bundle does not include Node-heavy agent, sandbox, or framework
+dependencies.
 
-```js filename='next.config.js'
-const { withWorkflow } = require('workflow/next');
+## Using Time Slices
 
-const nextConfig = {};
+Time slices persist a long-running harness turn at wall-clock boundaries. Omit
+the highlighted `stopWhen` option from the shared agent, then call
+`runHarnessAgentTimeSlice()` from a Workflow step. It uses a 750-second budget
+by default; pass `timeSliceSeconds` to choose a different budget.
 
-module.exports = withWorkflow(nextConfig, {});
+### Defining the Time Slice Step
+
+As with semantic agent steps, keep the Workflow step in its own module and
+import the agent dynamically inside the step body.
+
+```ts filename='harness-workflow/time-slice-step.ts'
+import {
+  runHarnessAgentTimeSlice,
+  type HarnessWorkflowState,
+} from '@ai-sdk/workflow-harness';
+
+export async function timeSliceStep(
+  state: HarnessWorkflowState,
+): Promise<HarnessWorkflowState> {
+  'use step';
+
+  const { agent } = await import('./agent');
+
+  return runHarnessAgentTimeSlice({
+    agent,
+    state,
+  });
+}
 ```
+
+### Defining the Time-Sliced Workflow
+
+Create the workflow state and keep scheduling `timeSliceStep()` while the agent
+has more work.
+
+```ts filename='harness-workflow/workflow.ts'
+import { timeSliceStep } from './time-slice-step';
+import {
+  createHarnessWorkflowState,
+  finalizeHarnessWorkflow,
+  type HarnessWorkflowInput,
+} from '@ai-sdk/workflow-harness';
+
+export async function timeSliceWorkflow(input: {
+  messages: NonNullable<HarnessWorkflowInput['messages']>;
+  sessionId: string;
+}) {
+  'use workflow';
+
+  let state = createHarnessWorkflowState(input);
+
+  do {
+    state = await timeSliceStep(state);
+  } while (state.status === 'ready_for_next_step');
+
+  return finalizeHarnessWorkflow(state);
+}
+```
+
+<Note>
+  This example covers the workflow execution foundation only. For multi-turn
+  conversations, you must persist the harness session's `resumeFrom` state
+  between workflow runs. See [Resume Persistence](#resume-persistence).
+</Note>
+
+Each `ready_for_next_step` result carries `continueFrom`, which lets the next
+Workflow step continue the same unfinished turn. When the turn finishes,
+`finalizeHarnessWorkflow()` returns its result or throws if the workflow failed.
+
+### Starting the Time-Sliced Workflow
+
+Start the workflow from server-side code. As with semantic agent steps, pass the
+converted messages so `HarnessAgent` can distinguish a new user turn from tool
+approval and tool result continuations.
+
+```ts filename='app/api/harness-workflow/route.ts'
+import { timeSliceWorkflow } from '../../../harness-workflow/workflow';
+import {
+  convertToModelMessages,
+  createUIMessageStreamResponse,
+  type UIMessage,
+  type UIMessageChunk,
+} from 'ai';
+import { start } from 'workflow/api';
+
+export async function POST(request: Request) {
+  const body: {
+    id?: string;
+    messages: UIMessage[];
+  } = await request.json();
+
+  if (!body.id) {
+    return new Response('Missing chat ID', { status: 400 });
+  }
+
+  const messages = await convertToModelMessages(body.messages);
+  const run = await start(timeSliceWorkflow, [
+    {
+      messages,
+      sessionId: body.id,
+    },
+  ]);
+
+  return createUIMessageStreamResponse({
+    stream: run.readable as ReadableStream<UIMessageChunk>,
+  });
+}
+```
+
+The `sessionId` gives the sandbox a stable identity across workflow runs. Keep
+`agent.ts`, `time-slice-step.ts`, `workflow.ts`, and the route in separate
+modules so the workflow bundle does not include Node-heavy agent, sandbox, or
+framework dependencies.
 
 ## Resume Persistence
 
-Persist only the opaque `resumeFrom` state returned after a finished turn. The
-example below uses Workflow steps because filesystem access must stay out of the
-workflow function itself. Use durable storage instead of local files in
+Workflow automatically persists the `HarnessWorkflowState` returned by each
+step, including `continueFrom`, for the duration of the current workflow run.
+To continue the native harness session across separate user-turn workflow runs,
+persist the opaque `resumeFrom` state by `sessionId`.
+
+The storage implementation is the same for semantic agent steps and time
+slices. This example uses Workflow steps because filesystem access must stay out
+of the workflow function itself. Use durable storage instead of local files in
 production.
 
 ```ts filename='harness-workflow/resume-store.ts'
@@ -127224,29 +127535,33 @@ export async function persistResumeStep({
 }
 ```
 
-Load the resume state before the first slice and persist the new one after the
-turn finishes:
+Load the previous `resumeFrom` state before creating the workflow state, then
+persist the updated value after the execution loop. The integration points are
+the same for both workflow approaches.
+
+### Semantic Agent Step Workflow
 
 ```ts filename='harness-workflow/workflow.ts'
+import { agentStep } from './agent-step';
 import { loadResumeStep, persistResumeStep } from './resume-store';
-import { runSlice } from './run-slice-step';
 import {
   createHarnessWorkflowState,
   finalizeHarnessWorkflow,
   type HarnessWorkflowInput,
 } from '@ai-sdk/workflow-harness';
 
-export async function codingWorkflow(
-  input: Pick<HarnessWorkflowInput, 'prompt' | 'sessionId'>,
-) {
+export async function agentWorkflow(input: {
+  messages: NonNullable<HarnessWorkflowInput['messages']>;
+  sessionId: string;
+}) {
   'use workflow';
 
   const resumeFrom = await loadResumeStep(input.sessionId);
   let state = createHarnessWorkflowState({ ...input, resumeFrom });
 
-  while (state.status === 'running' || state.status === 'timed_out') {
-    state = await runSlice(state);
-  }
+  do {
+    state = await agentStep(state);
+  } while (state.status === 'ready_for_next_step');
 
   await persistResumeStep({
     sessionId: state.sessionId,
@@ -127257,48 +127572,38 @@ export async function codingWorkflow(
 }
 ```
 
-The harness `sessionId` gives the sandbox a stable identity across workflow runs
-and lets the workflow load the previous turn's resume state before sending the
-next user message.
+### Time-Sliced Workflow
 
-A harness session owns its native conversation history, so the route sends only
-the newest user message. Do not replay the full UI message history into the
-harness.
+```ts filename='harness-workflow/workflow.ts'
+import { loadResumeStep, persistResumeStep } from './resume-store';
+import { timeSliceStep } from './time-slice-step';
+import {
+  createHarnessWorkflowState,
+  finalizeHarnessWorkflow,
+  type HarnessWorkflowInput,
+} from '@ai-sdk/workflow-harness';
 
-## How It Works
+export async function timeSliceWorkflow(input: {
+  messages: NonNullable<HarnessWorkflowInput['messages']>;
+  sessionId: string;
+}) {
+  'use workflow';
 
-Each user turn is represented by a `HarnessWorkflowState`:
+  const resumeFrom = await loadResumeStep(input.sessionId);
+  let state = createHarnessWorkflowState({ ...input, resumeFrom });
 
-- `createHarnessWorkflowState()` creates the initial state for the turn.
-- `runHarnessAgentSlice()` streams one time-boxed slice of the turn.
-- If the slice times out, the harness turn is suspended non-destructively and
-  the returned state contains `continueFrom` for the next slice.
-- If the turn finishes, the helper closes the workflow output stream and returns
-  `resumeFrom` for the next user turn.
-- `finalizeHarnessWorkflow()` returns the final result or throws when the
-  workflow failed.
+  do {
+    state = await timeSliceStep(state);
+  } while (state.status === 'ready_for_next_step');
 
-The workflow output stream receives AI SDK UI message chunks, so a route can
-return `run.readable` through `createUIMessageStreamResponse()`.
+  await persistResumeStep({
+    sessionId: state.sessionId,
+    resumeState: state.resumeFrom,
+  });
 
-## File Boundaries
-
-Keep the `workflow` entrypoints separate from the agent definition:
-
-- `agent.ts` defines the `HarnessAgent`.
-- `run-slice-step.ts` is a `'use step'` module and imports the agent
-  dynamically inside the step body.
-- `workflow.ts` contains the `'use workflow'` function and imports only
-  workflow-safe helpers and step modules.
-- your route or server entrypoint starts the workflow. It can import `ai`
-  helpers such as `convertToModelMessages()` and
-  `createUIMessageStreamResponse()`.
-
-Do not define the workflow function in the same module as the route handler,
-server entrypoint, or agent. The Workflow DevKit compiles the module graph
-reachable from a `'use workflow'` directive. Keeping the graph small prevents
-Node-heavy agent, sandbox, and framework dependencies from being pulled into the
-workflow bundle.
+  return finalizeHarnessWorkflow(state);
+}
+```
 
 ## Related
 
@@ -134959,6 +135264,33 @@ You can check if an error is an instance of `AI_NoTranscriptGeneratedError` usin
 import { NoTranscriptGeneratedError } from 'ai';
 
 if (NoTranscriptGeneratedError.isInstance(error)) {
+  // Handle the error
+}
+```
+
+---
+title: AI_NoTranslationGeneratedError
+description: Learn how to fix AI_NoTranslationGeneratedError
+---
+
+# AI_NoTranslationGeneratedError
+
+This error occurs when no translation could be generated from the input audio:
+no `audio` part was emitted and the final output text is empty, or the stream
+ended without a finish event.
+
+## Properties
+
+- `response`: Speech translation model response metadata (required in constructor)
+
+## Checking for this Error
+
+You can check if an error is an instance of `AI_NoTranslationGeneratedError` using:
+
+```typescript
+import { NoTranslationGeneratedError } from 'ai';
+
+if (NoTranslationGeneratedError.isInstance(error)) {
   // Handle the error
 }
 ```
@@ -158760,7 +159092,7 @@ You can use the following optional settings to customize the ElevenLabs provider
 
 - **apiKey** _string_
 
-  API key that is being sent using the `Authorization` header.
+  API key that is being sent using the `xi-api-key` header.
   It defaults to the `ELEVENLABS_API_KEY` environment variable.
 
 - **headers** _Record&lt;string,string&gt;_
@@ -158773,6 +159105,12 @@ You can use the following optional settings to customize the ElevenLabs provider
   Defaults to the global `fetch` function.
   You can use it as a middleware to intercept requests,
   or to provide a custom fetch implementation for e.g. testing.
+
+- **webSocket** _WebSocketConstructor_
+
+  Custom WebSocket implementation for realtime transcription. A
+  header-capable implementation is required in runtimes whose native WebSocket
+  constructor cannot send the `xi-api-key` authentication header.
 
 ## Speech Models
 
@@ -158892,10 +159230,10 @@ const result = await generateSpeech({
 You can create models that call the [ElevenLabs transcription API](https://elevenlabs.io/speech-to-text)
 using the `.transcription()` factory method.
 
-The first argument is the model id e.g. `scribe_v1`.
+The first argument is the model id e.g. `scribe_v2`.
 
 ```ts
-const model = elevenLabs.transcription('scribe_v1');
+const model = elevenLabs.transcription('scribe_v2');
 ```
 
 You can also pass additional provider-specific options using the `providerOptions` argument. For example, supplying the input language in ISO-639-1 (e.g. `en`) format can sometimes improve transcription performance if known beforehand.
@@ -158908,7 +159246,7 @@ import {
 } from '@ai-sdk/elevenlabs';
 
 const result = await transcribe({
-  model: elevenLabs.transcription('scribe_v1'),
+  model: elevenLabs.transcription('scribe_v2'),
   audio: new Uint8Array([1, 2, 3, 4]),
   providerOptions: {
     elevenlabs: {
@@ -158963,6 +159301,77 @@ The following provider options are available:
 | ------------------------ | ------------- | --------- | --------- | --------- |
 | `scribe_v1`              | <Check />     | <Check /> | <Check /> | <Check /> |
 | `scribe_v1_experimental` | <Check />     | <Check /> | <Check /> | <Check /> |
+| `scribe_v2`              | <Check />     | <Check /> | <Check /> | <Check /> |
+
+## Streaming Transcription Models
+
+<Note type="warning">Streaming transcription is an experimental feature.</Note>
+
+Scribe v2 Realtime supports live transcription through
+`experimental_streamTranscribe`. It accepts raw PCM audio at 8, 16, 22.05, 24,
+44.1, or 48 kHz, or 8 kHz mu-law audio.
+
+```ts
+import {
+  createElevenLabs,
+  type ElevenLabsProviderSettings,
+} from '@ai-sdk/elevenlabs';
+import { experimental_streamTranscribe as streamTranscribe } from 'ai';
+import { WebSocket } from 'ws';
+
+const elevenLabs = createElevenLabs({
+  webSocket: WebSocket as unknown as ElevenLabsProviderSettings['webSocket'],
+});
+
+const result = streamTranscribe({
+  model: elevenLabs.transcription('scribe_v2_realtime'),
+  audio,
+  inputAudioFormat: { type: 'audio/pcm', rate: 16000 },
+  providerOptions: {
+    elevenlabs: {
+      languageCode: 'en',
+      streaming: {
+        includeLanguageDetection: true,
+        includeTimestamps: true,
+      },
+    },
+  },
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'transcript-partial') {
+    console.log('partial:', part.text);
+  }
+
+  if (part.type === 'transcript-final') {
+    console.log('final:', part.text);
+  }
+}
+```
+
+The ElevenLabs realtime endpoint authenticates with a WebSocket header. Use a
+header-capable WebSocket implementation, such as `ws`, in runtimes whose native
+WebSocket constructor cannot send headers.
+
+The `streaming` provider options mirror ElevenLabs' realtime transcription
+settings: `commitStrategy`, `enableLogging`, `filterBackgroundAudio`,
+`includeLanguageDetection`, `includeTimestamps`, `keyterms`,
+`minSilenceDurationMs`, `minSpeechDurationMs`, `noVerbatim`, `previousText`,
+`secondaryLanguages`, `vadSilenceThresholdSecs`, and `vadThreshold`.
+
+ElevenLabs delivers detected language on its timestamp-bearing committed event.
+When `includeLanguageDetection` is enabled, the provider requests that event
+internally, but only returns timestamp segments when `includeTimestamps` is also
+enabled. `filterBackgroundAudio` cannot be combined with either option.
+
+See [Transcription](/docs/ai-sdk-core/transcription) for more information about
+streaming transcription.
+
+### Model Capabilities
+
+| Model                | Streaming Transcription | Timestamps          | Language Detection  |
+| -------------------- | ----------------------- | ------------------- | ------------------- |
+| `scribe_v2_realtime` | <Check size={18} />     | <Check size={18} /> | <Check size={18} /> |
 
 ---
 title: Cartesia
