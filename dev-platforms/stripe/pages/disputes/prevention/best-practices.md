@@ -62,7 +62,7 @@ If none of the above apply, you might want to be more conservative with how freq
 
 If you ship physical goods, consider delaying the shipment by 24-48 hours. This time gives cardholders a chance to spot and report any fraud on their accounts. You would still receive a fraud dispute in this scenario, but at least you wouldn’t also lose the merchandise. Not all cardholders check their statements on a daily basis, however, and their card issuer might not proactively notify them about the transaction.
 
-*Customers* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) that request overnight or expedited shipping should be considered higher risk, as the increased cost of such services is of no consequence to fraudsters. One tactic you can use to identify these types of payments is to offer same day or overnight shipping at a very high cost–many times more expensive than any other shipping option you provide.
+*Customers* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) that request overnight or expedited shipping should be considered higher risk, as the increased cost of such services is of no consequence to fraudsters. One tactic you can use to identify these types of payments is to offer same day or overnight shipping at a very high cost, many times more expensive than any other shipping option you provide.
 
 It’s far less likely that any legitimate customer would pay such a high cost, but a fraudster would want the goods to be shipped as soon as possible and have no regard for the additional cost. You can then manually screen any customers that opt for the anomalously expensive shipping option and scrutinize the order to determine if it looks genuine. Using a [separate auth and capture process](https://docs.stripe.com/disputes/prevention/best-practices.md#use-auth-and-capture-when-creating-payments) together with [Radar reviews](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments) is a good way to do so.
 
@@ -84,15 +84,15 @@ Reviewing the order and the shipping address information can help you determine 
 
 Your account’s [dispute rate](https://docs.stripe.com/disputes/measuring.md#dispute-rate-usage) is an important metric to use when reviewing the efficacy of your disputes and fraud prevention methods. You can regularly review these metrics in your Stripe Dashboard to see the impact your dispute prevention strategies are having.
 
-## Tools for users of Radar for Fraud Teams
+## Tools for users of Radar
 
-[Radar](https://stripe.com/radar) is a suite of features and tools for fighting fraud that is built into Stripe and requires no additional integration work.
+[Radar](https://stripe.com/radar) is a suite of features and tools for fighting fraud that’s built into Stripe and requires no additional integration work.
 
 ### Manually review payments
 
-[Radar for Fraud Teams](https://stripe.com/radar/fraud-teams) includes a [review](https://docs.stripe.com/radar/reviews.md) feature that allows you to place certain payments into review—though keep in mind that these payments are still processed and the credit card charged, unless you’re using a separate auth and capture process. These payments are placed into the [review queue](https://dashboard.stripe.com/radar) for you to take a closer look at. If you suspect the payment is fraudulent, you can refund it.
+If [your plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can place certain payments into [review](https://docs.stripe.com/radar/transaction-reviews.md). These payments are still processed and the credit card charged, unless you’re using a separate auth and capture process. These payments are placed into the [review queue](https://dashboard.stripe.com/radar) for you to take a closer look at. If you suspect the payment is fraudulent, you can refund it.
 
-You should review payments that Stripe has placed into your [review queue](https://dashboard.stripe.com/radar) as soon as possible. Payments with an [elevated risk](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk) of fraud are automatically marked for review. You can also create additional rules to customize the types of payments that should be placed in your review queue.
+You should review payments that Stripe has placed into your [review queue](https://dashboard.stripe.com/radar) as soon as possible. Payments with an [elevated risk](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk) of fraud are automatically marked for review. You can also create additional rules to customize the types of payments that should be placed in your review queue.
 
 Here are some considerations when reviewing a payment:
 
@@ -107,7 +107,7 @@ If you’re unsure about a payment when you’re reviewing it, you should always
 
 ### Use Radar rules to automatically block payments or place them in review
 
-[Radar for Fraud Teams](https://stripe.com/radar/fraud-teams), is built directly into the payment flow and combines a customizable rules engine with AI algorithms. It can detect patterns across payments from every business processing payments with Stripe, assessing the risk of each one.
+Radar is built directly into the payment flow and combines a customizable rules engine with AI algorithms. It can detect patterns across payments from every business processing payments with Stripe, assessing the risk of each one.
 
 Using [rules](https://docs.stripe.com/radar/rules.md), you can automatically evaluate payments based on your specific detection criteria and take the appropriate action on them. You can also create rules that use multiple criteria, allowing you to allow or block payments that meet multiple conditions. Each business has different risks.
 
@@ -159,7 +159,7 @@ Credit card charge attempts are processed in two parts. The charge is first *aut
 
 A [capture later](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) payment flow (sometimes called “auth and capture”) is the process of performing these two steps at separate times. The authorization can be made first, which holds the amount on the card and appears on a customer’s statement as a pending transaction, but doesn’t actually move money out of their account. The charge can then be captured any time up to 7 days after the authorization. Capturing a charge completes the payment and the funds are deducted from the customer’s card. If a charge isn’t captured within the time limit, the authorization is automatically released.
 
-Similar to delayed shipping, this method can allow enough time for potential fraud to come to light, giving you the option to carefully review—and potentially refund—the transaction. Cardholders can’t dispute uncaptured authorizations, only fully captured payments. With Radar for Fraud Teams you can manually capture these payments in the [review process](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments).
+Similar to delayed shipping, this method can allow enough time for potential fraud to come to light, giving you the option to carefully review—and potentially refund—the transaction. Cardholders can’t dispute uncaptured authorizations, only fully captured payments. If [your plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can manually capture these payments in the [review process](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments).
 
 ### Set a custom statement descriptor for each payment
 

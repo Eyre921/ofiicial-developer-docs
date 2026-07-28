@@ -144,6 +144,8 @@ When you run `netlify create`, the CLI will:
 
 You can also connect the project to a GitHub repository during creation, allowing the CLI to create the repository and set up continuous deployment without manual configuration.
 
+Projects created with `netlify create` follow your team's [project visibility](/manage/security/secure-access-to-sites/project-visibility) default. If your team has private by default enabled, the new project starts private until you make it public.
+
 ## Continuous deployment
 
 With [continuous deployment](/deploy/create-deploys#deploy-with-git), Netlify will automatically deploy new versions of your site when you push commits to your connected Git repository. This also facilitates features like [Deploy Previews](/deploy/deploy-types/deploy-previews), branch deploys, and [split testing](/manage/monitoring/split-testing/). (Some of these features must be enabled in the Netlify UI.)
@@ -259,6 +261,10 @@ netlify deploy
 
 The first time you run the command, Netlify CLI will prompt you to select an existing site or create a new one, linking the site for all future deploys.
 
+### Note - New projects can be private by default
+
+If you create a new project with a manual deploy and your team has private by default enabled, the project starts private until you make it public. Learn more about [project visibility](/manage/security/secure-access-to-sites/project-visibility).
+
 The following sections describe the requirements and options for manual deploys.
 
 ### Deploy directories
@@ -312,7 +318,7 @@ You can deploy without logging in or creating a Netlify account by using the `--
 netlify deploy --allow-anonymous
 ```
 
-This creates a project, deploys it, and generates a live URL. You have one hour to claim ownership of the deployed project by logging in or creating a Netlify account. After one hour, unclaimed projects are removed.
+This creates a project, deploys it, and generates a live URL. You have one hour to claim ownership of the deployed project by logging in or creating a Netlify account. After one hour, unclaimed projects are removed. When you claim the project, it follows your team's default [project visibility](/manage/security/secure-access-to-sites/project-visibility).
 
 This is particularly useful for AI agents and automated workflows that need to create temporary projects without requiring credentials.
 

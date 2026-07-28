@@ -1428,7 +1428,7 @@ components:
       type: object
     AnthropicFileDocumentSource:
       example:
-        file_id: file_011CNha8iCJcU1wXNR6q4V8w
+        file_id: or_file_011CNha8iCJcU1wXNR6q4V8w
         type: file
       properties:
         file_id:
@@ -2944,7 +2944,7 @@ components:
         allowed_models:
           - anthropic/*
           - openai/gpt-4o
-        cost_quality_tradeoff: 9
+        cost_tier: low
         enabled: true
         id: auto-beta-router
       properties:
@@ -2962,17 +2962,35 @@ components:
             type: string
           type: array
         cost_quality_tradeoff:
+          deprecated: true
           description: >-
-            Balances routing between cost and quality on a 0-10 scale. The
-            auto-beta-router ranks models for the classified task type by
-            community spend share, then filters candidates by their average cost
-            per generation for that task. Higher values favor cheaper models: 10
-            keeps only models around the cheapest 10th percentile, while 0
-            permits models up to the 90th percentile for cost. Defaults to 9.
+            Deprecated: Use cost_tier instead. Balances routing between cost and
+            quality on a 0-10 scale. The auto-beta-router ranks models for the
+            classified task type by community spend share, then filters
+            candidates by their average cost per generation for that task.
+            Higher values favor cheaper models: 10 keeps only models around the
+            cheapest 10th percentile, while 0 permits models up to the 90th
+            percentile for cost. Defaults to 9. Numeric cost_quality_tradeoff
+            remains supported, retains ceiling behavior, and takes precedence
+            over cost_tier when both are provided.
           example: 9
           maximum: 10
           minimum: 0
           type: integer
+        cost_tier:
+          description: >-
+            Named cost/quality setting. For auto-beta-router, tiers select
+            cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40,
+            60), xhigh = [60, 80), and max = [80, 100]. Numeric
+            cost_quality_tradeoff takes precedence and retains ceiling behavior.
+          enum:
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+          example: low
+          type: string
         enabled:
           description: >-
             Set to false to disable the auto-beta-router plugin for this
@@ -2990,7 +3008,7 @@ components:
         allowed_models:
           - anthropic/*
           - openai/gpt-4o
-        cost_quality_tradeoff: 7
+        cost_tier: medium
         enabled: true
         id: auto-router
         pin_model: false
@@ -3009,15 +3027,32 @@ components:
             type: string
           type: array
         cost_quality_tradeoff:
+          deprecated: true
           description: >-
-            Controls cost vs. quality routing tradeoff (0–10). 0 = pure quality
-            (best model regardless of cost), 10 = maximize for cost (cheapest
-            model wins). Intermediate values blend quality and cost signals
-            continuously. Defaults to 7.
+            Deprecated: Use cost_tier instead. Controls cost vs. quality routing
+            tradeoff (0–10). 0 = pure quality (best model regardless of cost),
+            10 = maximize for cost (cheapest model wins). Intermediate values
+            blend quality and cost signals continuously. Defaults to 7. Numeric
+            cost_quality_tradeoff remains supported and takes precedence over
+            cost_tier when both are provided.
           example: 7
           maximum: 10
           minimum: 0
           type: integer
+        cost_tier:
+          description: >-
+            Shorthand for cost_quality_tradeoff. Higher tiers spend more on
+            better models: low = 9, medium = 7, high = 5, xhigh = 3, and max =
+            1. Numeric cost_quality_tradeoff takes precedence when both are
+            provided.
+          enum:
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+          example: medium
+          type: string
         enabled:
           description: >-
             Set to false to disable the auto-router plugin for this request.
@@ -7118,6 +7153,28 @@ components:
           type:
             - string
             - 'null'
+        enable_free_model_publication:
+          description: Whether this guardrail allows free endpoints that publish prompts.
+          example: false
+          type:
+            - boolean
+            - 'null'
+        enable_free_model_training:
+          description: >-
+            Whether this guardrail allows free endpoints that train on request
+            data.
+          example: true
+          type:
+            - boolean
+            - 'null'
+        enable_paid_model_training:
+          description: >-
+            Whether this guardrail allows paid endpoints that train on request
+            data.
+          example: true
+          type:
+            - boolean
+            - 'null'
         enforce_zdr:
           deprecated: true
           description: >-
@@ -8138,7 +8195,7 @@ components:
     FileDeleteResponse:
       description: Confirmation that a file was deleted.
       example:
-        id: file_011CNha8iCJcU1wXNR6q4V8w
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
         type: file_deleted
       properties:
         id:
@@ -8159,13 +8216,13 @@ components:
           - created_at: '2025-01-01T00:00:00Z'
             downloadable: false
             filename: document.pdf
-            id: file_011CNha8iCJcU1wXNR6q4V8w
+            id: or_file_011CNha8iCJcU1wXNR6q4V8w
             mime_type: application/pdf
             size_bytes: 1024000
             type: file
-        first_id: file_011CNha8iCJcU1wXNR6q4V8w
+        first_id: or_file_011CNha8iCJcU1wXNR6q4V8w
         has_more: false
-        last_id: file_011CNha8iCJcU1wXNR6q4V8w
+        last_id: or_file_011CNha8iCJcU1wXNR6q4V8w
       properties:
         cursor:
           description: >-
@@ -8201,7 +8258,7 @@ components:
         created_at: '2025-01-01T00:00:00Z'
         downloadable: false
         filename: document.pdf
-        id: file_011CNha8iCJcU1wXNR6q4V8w
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
         mime_type: application/pdf
         size_bytes: 1024000
         type: file
@@ -9413,11 +9470,12 @@ components:
               type: string
             data_region:
               description: >-
-                The data region this generation was routed through. 'europe' for
-                EU-routed requests, 'global' otherwise.
+                The data region this generation was routed through: 'global',
+                'europe', or 'us'.
               enum:
                 - global
                 - europe
+                - us
               example: global
               type: string
             external_user:
@@ -9925,6 +9983,9 @@ components:
         content_filters: null
         created_at: '2025-08-24T10:30:00Z'
         description: Guardrail for production environment
+        enable_free_model_publication: false
+        enable_free_model_training: true
+        enable_paid_model_training: true
         enforce_zdr: null
         enforce_zdr_anthropic: true
         enforce_zdr_google: false
@@ -9996,6 +10057,28 @@ components:
           example: Guardrail for production environment
           type:
             - string
+            - 'null'
+        enable_free_model_publication:
+          description: Whether this guardrail allows free endpoints that publish prompts.
+          example: false
+          type:
+            - boolean
+            - 'null'
+        enable_free_model_training:
+          description: >-
+            Whether this guardrail allows free endpoints that train on request
+            data.
+          example: true
+          type:
+            - boolean
+            - 'null'
+        enable_paid_model_training:
+          description: >-
+            Whether this guardrail allows paid endpoints that train on request
+            data.
+          example: true
+          type:
+            - boolean
             - 'null'
         enforce_zdr:
           deprecated: true
@@ -24389,6 +24472,28 @@ components:
           type:
             - string
             - 'null'
+        enable_free_model_publication:
+          description: Whether this guardrail allows free endpoints that publish prompts.
+          example: false
+          type:
+            - boolean
+            - 'null'
+        enable_free_model_training:
+          description: >-
+            Whether this guardrail allows free endpoints that train on request
+            data.
+          example: true
+          type:
+            - boolean
+            - 'null'
+        enable_paid_model_training:
+          description: >-
+            Whether this guardrail allows paid endpoints that train on request
+            data.
+          example: true
+          type:
+            - boolean
+            - 'null'
         enforce_zdr:
           deprecated: true
           description: >-
@@ -29606,7 +29711,7 @@ paths:
           required: false
           schema:
             description: Opaque pagination cursor from a previous response.
-            example: eyJjdXJzb3IiOiJmaWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9
+            example: eyJjdXJzb3IiOiJvcl9maWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9
             type: string
         - description: >-
             Workspace to scope the request to. Defaults to the caller’s default
@@ -29631,13 +29736,13 @@ paths:
                   - created_at: '2025-01-01T00:00:00Z'
                     downloadable: false
                     filename: document.pdf
-                    id: file_011CNha8iCJcU1wXNR6q4V8w
+                    id: or_file_011CNha8iCJcU1wXNR6q4V8w
                     mime_type: application/pdf
                     size_bytes: 1024000
                     type: file
-                first_id: file_011CNha8iCJcU1wXNR6q4V8w
+                first_id: or_file_011CNha8iCJcU1wXNR6q4V8w
                 has_more: false
-                last_id: file_011CNha8iCJcU1wXNR6q4V8w
+                last_id: or_file_011CNha8iCJcU1wXNR6q4V8w
               schema:
                 $ref: '#/components/schemas/FileListResponse'
           description: A page of files.
@@ -29737,7 +29842,7 @@ paths:
                 created_at: '2025-01-01T00:00:00Z'
                 downloadable: false
                 filename: document.pdf
-                id: file_011CNha8iCJcU1wXNR6q4V8w
+                id: or_file_011CNha8iCJcU1wXNR6q4V8w
                 mime_type: application/pdf
                 size_bytes: 1024000
                 type: file
@@ -29820,7 +29925,7 @@ paths:
           name: file_id
           required: true
           schema:
-            example: file_011CNha8iCJcU1wXNR6q4V8w
+            example: or_file_011CNha8iCJcU1wXNR6q4V8w
             type: string
         - description: >-
             Workspace to scope the request to. Defaults to the caller’s default
@@ -29840,7 +29945,7 @@ paths:
           content:
             application/json:
               example:
-                id: file_011CNha8iCJcU1wXNR6q4V8w
+                id: or_file_011CNha8iCJcU1wXNR6q4V8w
                 type: file_deleted
               schema:
                 $ref: '#/components/schemas/FileDeleteResponse'
@@ -29898,7 +30003,7 @@ paths:
           name: file_id
           required: true
           schema:
-            example: file_011CNha8iCJcU1wXNR6q4V8w
+            example: or_file_011CNha8iCJcU1wXNR6q4V8w
             type: string
         - description: >-
             Workspace to scope the request to. Defaults to the caller’s default
@@ -29921,7 +30026,7 @@ paths:
                 created_at: '2025-01-01T00:00:00Z'
                 downloadable: false
                 filename: document.pdf
-                id: file_011CNha8iCJcU1wXNR6q4V8w
+                id: or_file_011CNha8iCJcU1wXNR6q4V8w
                 mime_type: application/pdf
                 size_bytes: 1024000
                 type: file
@@ -29984,7 +30089,7 @@ paths:
           name: file_id
           required: true
           schema:
-            example: file_011CNha8iCJcU1wXNR6q4V8w
+            example: or_file_011CNha8iCJcU1wXNR6q4V8w
             type: string
         - description: >-
             Workspace to scope the request to. Defaults to the caller’s default
@@ -37217,7 +37322,7 @@ paths:
           description: Provider Overloaded - Provider is temporarily overloaded
       summary: Create a response
       tags:
-        - responses
+        - Responses
       x-speakeasy-name-override: send
       x-speakeasy-stream-request-field: stream
   /videos:
@@ -38536,6 +38641,8 @@ tags:
     name: Providers
   - description: Rerank endpoints
     name: Rerank
+  - description: OpenAI-compatible Responses API endpoints
+    name: Responses
   - description: Speech-to-text endpoints
     name: STT
     x-displayName: Transcriptions
@@ -38548,8 +38655,6 @@ tags:
     name: Workspaces
   - description: beta.Analytics endpoints
     name: beta.Analytics
-  - description: responses endpoints
-    name: responses
 x-retry-strategy:
   initialDelay: 500
   maxAttempts: 3

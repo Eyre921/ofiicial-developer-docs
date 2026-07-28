@@ -75,6 +75,6 @@ GitHub Enterprise Cloud and GitHub Enterprise Server include enterprise accounts
 
 ## Further reading
 
-* [Creating an account on GitHub](/en/get-started/start-your-journey/creating-an-account-on-github)
+* [Creating an account on GitHub](/en/account-and-profile/how-tos/account-management/creating-an-account-on-github)
 * [Creating a new organization from scratch](/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch)
 * [Organizing people for successful collaboration](https://vimeo.com/333786093) video in GitHub Resources

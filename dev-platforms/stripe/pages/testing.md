@@ -486,24 +486,24 @@ To trigger a failed CVC check, include a CVC (any three-digit number). To trigge
 
 | Description | Number | Details |
 | --- | --- | --- |
-| Always blocked | 4100000000000019 | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/risk-evaluation.md#high-risk)
+| Always blocked | 4100000000000019 | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/transaction-risk-prevention.md#high-risk)
 
 Radar always blocks it. |
-| Highest risk | 4000000000004954 | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/risk-evaluation.md#high-risk)
+| Highest risk | 4000000000004954 | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/transaction-risk-prevention.md#high-risk)
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/risk-settings.md). |
-| Elevated risk | 4000000000009235 | The charge has a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| Elevated risk | 4000000000009235 | The charge has a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
-If you use Radar for Fraud Teams, Radar might [queue it for review](https://docs.stripe.com/radar/reviews.md). |
+Radar might [queue it for review](https://docs.stripe.com/radar/transaction-reviews.md). |
 | High fraud dispute score | 4000008400000407 | This charge has a high fraud dispute score.
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/risk-settings.md). |
 | High early fraud warning score | 4000008400000159 | This charge has a high early fraud warning score.
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/risk-settings.md). |
-| Dynamic risk threshold | 4000008400001017 | This charge triggers the Radar Dynamic risk threshold control, when enabled.
+| Dynamic risk thresholds | 4000008400001017 | This charge triggers the Radar Dynamic risk thresholds control, when enabled.
 
-Radar blocks the transaction if you enable the [Dynamic risk threshold](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-threshold). |
+Radar blocks the transaction if you enable the [Dynamic risk thresholds](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-thresholds). |
 | Adaptive 3DS | 4000008405600003 | This charge triggers the Radar Adaptive 3DS risk control, when enabled.
 
 If you enable Adaptive 3DS, Radar requests 3DS authentication when using this test card. |
@@ -513,10 +513,10 @@ Radar might block it [depending on your settings.](https://docs.stripe.com/radar
 | Postal code check fails | 4000000000000036 | If you provide a postal code, the postal code check fails.
 
 Radar might block it [depending on your settings.](https://docs.stripe.com/radar/rules.md#traditional-bank-checks) |
-| CVC check fails with elevated risk | 4000058400307872 | If you provide a CVC number, the CVC check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| CVC check fails with elevated risk | 4000058400307872 | If you provide a CVC number, the CVC check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
 Radar might block it [depending on your settings.](https://docs.stripe.com/radar/rules.md#traditional-bank-checks) |
-| Postal code check fails with elevated risk | 4000058400306072 | If you provide a postal code, the postal code check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| Postal code check fails with elevated risk | 4000058400306072 | If you provide a postal code, the postal code check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/rules.md#traditional-bank-checks). |
 | Line1 check fails | 4000000000000028 | The address line 1 check fails.
@@ -533,24 +533,24 @@ The payment succeeds unless you [block it with a custom Radar rule](https://docs
 
 | Description | PaymentMethod | Details |
 | --- | --- | --- |
-| Always blocked | `pm_card_radarBlock` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/risk-evaluation.md#high-risk)
+| Always blocked | `pm_card_radarBlock` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/transaction-risk-prevention.md#high-risk)
 
 Radar always blocks it. |
-| Highest risk | `pm_card_riskLevelHighest` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/risk-evaluation.md#high-risk)
+| Highest risk | `pm_card_riskLevelHighest` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/transaction-risk-prevention.md#high-risk)
 
 Radar might block it depending on your settings. |
-| Elevated risk | `pm_card_riskLevelElevated` | The charge has a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| Elevated risk | `pm_card_riskLevelElevated` | The charge has a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
-If you use Radar for Fraud Teams, Radar might [queue it for review](https://docs.stripe.com/radar/reviews.md). |
+Radar might [queue it for review](https://docs.stripe.com/radar/transaction-reviews.md). |
 | High fraud dispute score | `pm_card_highFraudDisputeScore` | This charge has a high fraud dispute score.
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/risk-settings.md). |
 | High early fraud warning score | `pm_card_highEfwScore` | This charge has a high early fraud warning score.
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/risk-settings.md). |
-| Dynamic risk threshold | `pm_card_radarDynamicRiskThreshold` | This charge triggers the Radar Dynamic risk threshold control, when enabled.
+| Dynamic risk thresholds | `pm_card_radarDynamicRiskThreshold` | This charge triggers the Radar Dynamic risk thresholds control, when enabled.
 
-Radar blocks the transaction if you enable the [Dynamic risk threshold](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-threshold). |
+Radar blocks the transaction if you enable the [Dynamic risk thresholds](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-thresholds). |
 | Adaptive 3DS | `pm_card_adaptive3dsChallenge` | This charge triggers the Radar Adaptive 3DS risk control, when enabled.
 
 If you enable Adaptive 3DS, Radar requests 3DS authentication when using this test card. |
@@ -560,10 +560,10 @@ Radar might block it [depending on your settings.](https://docs.stripe.com/radar
 | Postal code check fails | `pm_card_avsZipFail` | If you provide a postal code, the postal code check fails.
 
 Radar might block it [depending on your settings.](https://docs.stripe.com/radar/rules.md#traditional-bank-checks) |
-| CVC check fails with elevated risk | `pm_card_cvcCheckFailElevatedRisk` | If you provide a CVC number, the CVC check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| CVC check fails with elevated risk | `pm_card_cvcCheckFailElevatedRisk` | If you provide a CVC number, the CVC check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/rules.md#traditional-bank-checks). |
-| Postal code check fails with elevated risk | `pm_card_avsZipFailElevatedRisk` | If you provide a postal code, the postal code check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| Postal code check fails with elevated risk | `pm_card_avsZipFailElevatedRisk` | If you provide a postal code, the postal code check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/rules.md#traditional-bank-checks). |
 | Line1 check fails | `pm_card_avsLine1Fail` | The address line 1 check fails.
@@ -582,24 +582,24 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 
 | Description | Token | Details |
 | --- | --- | --- |
-| Always blocked | `tok_radarBlock` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/risk-evaluation.md#high-risk)
+| Always blocked | `tok_radarBlock` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/transaction-risk-prevention.md#high-risk)
 
 Radar always blocks it. |
-| Highest risk | `tok_riskLevelHighest` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/risk-evaluation.md#high-risk)
+| Highest risk | `tok_riskLevelHighest` | The charge has a [risk level of “highest”](https://docs.stripe.com/radar/transaction-risk-prevention.md#high-risk)
 
 Radar might block it depending on your settings. |
-| Elevated risk | `tok_riskLevelElevated` | The charge has a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| Elevated risk | `tok_riskLevelElevated` | The charge has a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
-If you use Radar for Fraud Teams, Radar might [queue it for review](https://docs.stripe.com/radar/reviews.md). |
+Radar might [queue it for review](https://docs.stripe.com/radar/transaction-reviews.md). |
 | High fraud dispute score | `tok_highFraudDisputeScore` | This charge has a high fraud dispute score.
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/risk-settings.md). |
 | High early fraud warning score | `tok_highEfwScore` | This charge has a high early fraud warning score.
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/risk-settings.md). |
-| Dynamic risk threshold | `tok_radarDynamicRiskThreshold` | This charge triggers the Radar Dynamic risk threshold control, when enabled.
+| Dynamic risk thresholds | `tok_radarDynamicRiskThreshold` | This charge triggers the Radar Dynamic risk thresholds control, when enabled.
 
-Radar blocks the transaction if you enable the [Dynamic risk threshold](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-threshold). |
+Radar blocks the transaction if you enable the [Dynamic risk thresholds](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-thresholds). |
 | Adaptive 3DS | `tok_adaptive3dsChallenge` | This charge triggers the Radar Adaptive 3DS risk control, when enabled.
 
 If you enable Adaptive 3DS, Radar requests 3DS authentication when using this test card. |
@@ -609,10 +609,10 @@ Radar might block it [depending on your settings.](https://docs.stripe.com/radar
 | Postal code check fails | `tok_avsZipFail` | If you provide a postal code, the postal code check fails.
 
 Radar might block it [depending on your settings.](https://docs.stripe.com/radar/rules.md#traditional-bank-checks) |
-| CVC check fails with elevated risk | `tok_cvcCheckFailElevatedRisk` | If you provide a CVC number, the CVC check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| CVC check fails with elevated risk | `tok_cvcCheckFailElevatedRisk` | If you provide a CVC number, the CVC check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/rules.md#traditional-bank-checks). |
-| Postal code check fails with elevated risk | `tok_avsZipFailElevatedRisk` | If you provide a postal code, the postal code check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk)
+| Postal code check fails with elevated risk | `tok_avsZipFailElevatedRisk` | If you provide a postal code, the postal code check fails with a [risk level of “elevated”](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk)
 
 Radar might block it [depending on your settings](https://docs.stripe.com/radar/rules.md#traditional-bank-checks). |
 | Line1 check fails | `tok_avsLine1Fail` | The address line 1 check fails.
@@ -942,7 +942,7 @@ Stripe provides several test account numbers and corresponding tokens you can us
 | --- | --- | --- | --- |
 | `000123456789` | `pm_usBankAccount_success` | `110000000` | The payment succeeds. |
 | `000111111113` | `pm_usBankAccount_accountClosed` | `110000000` | The payment fails because the account is closed. |
-| `000000004954` | `pm_usBankAccount_riskLevelHighest` | `110000000` | The payment is blocked by Radar due to a [high risk of fraud](https://docs.stripe.com/radar/risk-evaluation.md#high-risk). |
+| `000000004954` | `pm_usBankAccount_riskLevelHighest` | `110000000` | The payment is blocked by Radar due to a [high risk of fraud](https://docs.stripe.com/radar/transaction-risk-prevention.md#high-risk). |
 | `000111111116` | `pm_usBankAccount_noAccount` | `110000000` | The payment fails because no account is found. |
 | `000222222227` | `pm_usBankAccount_insufficientFunds` | `110000000` | The payment fails due to insufficient funds. |
 | `000333333335` | `pm_usBankAccount_debitNotAuthorized` | `110000000` | The payment fails because debits aren’t authorized. |

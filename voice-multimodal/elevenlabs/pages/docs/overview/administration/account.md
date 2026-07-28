@@ -16,7 +16,7 @@ To begin using ElevenLabs, you'll need to create an account. Follow these steps:
 
 **Exercise**: Try out an example to get started or type something, select a voice and click generate!
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260727%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260727T233107Z&X-Amz-Expires=604800&X-Amz-Signature=63f9c8144304b350b264c11f512ed80dd23ab0d4d2d034c4c25b4a35d52f6f8d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7098296148ad1263133ad9506a9e7de7e8a2d40c657222080963cb914a8780cb/assets/images/product-guides/administration/account-creation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260728T233109Z&X-Amz-Expires=604800&X-Amz-Signature=f46598825f9cd92fcd8b7f972e6120b118e6e8762f308a2b9e20b4bc4f9d88c1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Account creation exercise" />
 
 You can sign up with traditional email and password or using popular OAuth providers like Google, Facebook, and GitHub.
 
@@ -354,36 +354,24 @@ You can read more about out the subscription plans we offer [here](https://eleve
 
 When you downgrade your subscription, this won't take effect until the end of your current billing cycle. At this point, your account will be downgraded to the selected plan, and you will lose any unused credits on your account.
 
-If you want to downgrade your account to our free plan, please see [How do I cancel my subscription?](/docs/help-center/account/general/how-do-i-cancel-my-subscription)
+If you want to downgrade your account to our free plan, please see [How do I cancel my subscription?](/docs/help-center/account/cancellation-refunds/how-do-i-cancel-my-subscription)
 
-Here's how to downgrade your subscription:
+Here's how to downgrade your subscription to another paid plan:
 
 Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
 
-Click your profile icon in the top right corner of the website to open your account menu.
+Click your profile icon in the top right corner of the website to open your account menu, then
+select [*Subscription*](https://elevenlabs.io/app/subscription).
 
-Click{" "}
+Click <strong>Billing</strong>.
 
-<a href="https://elevenlabs.io/app/subscription">
-  <strong>
-    Subscription
-  </strong>
-</a>
-
-Click <strong>Manage subscription.</strong> This will appear on the left of the window.
-
-<img src="https://help.elevenlabs.io/hc/article_attachments/42400699409297" alt="" />
-
-Click <strong>Downgrade</strong> and select the plan that you would like to downgrade to.
-
-<img src="https://help.elevenlabs.io/hc/article_attachments/34629896934033" alt="" />
+In the <strong>Modify Plan</strong> section, select the plan you would like to downgrade to from
+the <strong>Downgrade</strong> drop down selector.
 
 Once you confirm the downgrade, it will be scheduled for the end of your current billing cycle.
 
 You will see confirmation of the scheduled downgrade. At any time before the end of your billing
 cycle, you can click <strong>Cancel downgrade</strong> to remain on your current subscription.
-
-<img src="https://help.elevenlabs.io/hc/article_attachments/34629896934929" alt="" />
 
 Your browser can sometimes block popups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
 
@@ -392,42 +380,30 @@ If you still have issues, please contact Support by emailing [team@elevenlabs.io
 #### How do I cancel my subscription?
 
 When you cancel your subscription, this won't take effect until the end of your current billing cycle. At this point, your account will be transferred onto our free plan, and you will lose any unused credits on your account.
-
 Here's how to cancel your subscription:
 
 Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
 
 Click your profile icon in the top right corner of the website to open your account menu, then
-select{" "}
+select **Subscription**.
 
-<a href="https://elevenlabs.io/app/subscription">
-  <strong>
-    Subscription
-  </strong>
-</a>
+Click **Billing**.
 
-.
+In the **Modify Plan** section, select **Cancel Plan**, then **Proceed**.
 
-Click <strong>Manage subscription.</strong> This will appear on the left of the window.
+In the next step, select **Cancel Subscription** to confirm.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/42401041174417" alt="" />
+You'll see confirmation that your cancellation is scheduled for the end of your current billing
+cycle.
 
-Click <strong>Cancel subscription</strong> and proceed through through the cancelation process.
+At any time before the end of your billing cycle, you can click **Resume subscription** to
+cancel the cancellation request.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/34599326647697" alt="" />
-
-Once you click <strong>Cancel Subscription</strong>, your cancelation will be scheduled for the
-end of your current billing cycle.
-
-You will see confirmation of the scheduled cancelation. At any time before the end of your
-billing cycle, you can click <strong>Resume subscription</strong> to cancel the cancelation
-request.
-
-<img src="https://help.elevenlabs.io/hc/article_attachments/34599326648209" alt="" />
-
-Your browser can sometimes block popups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
-
-If you still have issues, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io). Make sure to contact us from the email you currently use for your ElevenLabs account.
+Your browser can sometimes block popups from appearing or a button from working. If this happens,
+try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
+If you still have issues, please contact Support by emailing
+[team@elevenlabs.io](mailto:team@elevenlabs.io). Make sure to contact us from the email you
+currently use for your ElevenLabs account.
 
 #### What happens to my content after my subscription ends?
 

@@ -20,6 +20,14 @@ As a platform, you must make sure that a connected account has their [tax settin
 
 This option is only available to connected accounts with access to the Stripe Dashboard (for example, [Standard](https://docs.stripe.com/connect/standard-accounts.md) accounts). Ask your connected accounts to use the [Stripe Dashboard to add their head office location, preset tax code, and tax registrations](https://docs.stripe.com/tax/set-up.md).
 
+If your platform account has the [View Dashboard As](https://docs.stripe.com/connect/dashboard/managing-individual-accounts.md#view-the-dashboard-as-a-connected-account) feature available:
+
+1. Navigate to the [connected account’s details page](https://dashboard.stripe.com/connect/accounts).
+2. Click the overflow menu (⋯).
+3. Select **View Dashboard As**, and configure the tax settings on the [Tax settings page](https://dashboard.stripe.com/settings/tax).
+
+You can also configure these values programmatically with the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#updating-settings) and [Tax Registrations API](https://docs.stripe.com/tax/registrations-api.md#adding-registration) by sending requests with the `Stripe-Account` header set to the connected account ID.
+
 For new connected accounts, you can also collect the head office location and the preset tax code during Connect onboarding. To enable this, go to the [Connect onboarding options](https://dashboard.stripe.com/settings/connect/onboarding-options/tax) in the Dashboard. This only applies to accounts that haven’t completed onboarding yet. Existing connected accounts must configure their tax settings separately through the Dashboard or API.
 
 ### Creating a tax interface within your platform

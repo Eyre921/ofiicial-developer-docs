@@ -89,7 +89,7 @@ container.appendChild(capitalFinancing);
 | `setDefaultFinancingOffer` | `string` | [Financing Offer](https://docs.stripe.com/api/capital/financing_offers.md) ID to render on initial load of the component. If omitted, the component displays the active or most recent financing. |  |
 | `setShowFinancingSelector` | `boolean` | If true, render the financing dropdown selector to allow the connected account to change the displayed financing. | `true` |
 | `setOnFinancingsLoaded` | `({total: number}) => void` | The component loaded the connected account’s financing history. |  |
-| `setSupportUrl` | `string` | Absolute URL of your support site. | `https://support.stripe.com/` |
+| `setSupportUrl` | `string` | URL for the support link shown to connected accounts. Defaults to the Stripe Capital support email. | `mailto:capital-support@stripe.com` |
 | `setHowCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works` |
 
 #### React
@@ -99,7 +99,7 @@ container.appendChild(capitalFinancing);
 | `defaultFinancingOffer` | `string` | [Financing Offer](https://docs.stripe.com/api/capital/financing_offers.md) ID to render on initial load of the component. If omitted, the component displays the active or most recent financing. | `null` | optional |
 | `showFinancingSelector` | `boolean` | If true, render the financing dropdown selector to allow the connected account to change the displayed financing. | `true` | optional |
 | `onFinancingsLoaded` | `({total: number}) => void` | The component loaded the connected account’s financing history. |  | optional |
-| `supportUrl` | `string` | Absolute URL of your support site. | `https://support.stripe.com/` | optional |
+| `supportUrl` | `string` | URL for the support link shown to connected accounts. Defaults to the Stripe Capital support email. | `mailto:capital-support@stripe.com` | optional |
 | `howCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works` | optional |
 
 ## Style and customize the component

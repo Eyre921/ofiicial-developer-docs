@@ -36035,28 +36035,28 @@ show "statement_timeout";
 
 Some settings can only be modified by a superuser. Supabase pre-enables the [`supautils` extension](https://supabase.com/blog/roles-postgres-hooks#setting-up-the-supautils-extension), which allows the `postgres` role to retain certain superuser privileges. It enables modification of the below reserved configurations at the `role` level:
 
-| Setting                      | Description                                                                                                                                                                                                      |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `auto_explain.*`             | Configures the [auto\_explain module](https://www.postgresql.org/docs/current/auto-explain.html). Can be configured to log execution plans for queries expected to exceed x seconds, including function queries. |
-| `deadlock_timeout`           | Sets the time to wait on a lock before checking for deadlock.                                                                                                                                                    |
-| `log_lock_waits`             | Controls whether a log message is produced when a session waits longer than [deadlock\_timeout](https://www.postgresql.org/docs/current/runtime-config-locks.html#GUC-DEADLOCK-TIMEOUT) to acquire a lock.       |
-| `log_min_duration_statement` | Causes the duration of each completed statement to be logged if the statement ran for at least the specified amount of time.                                                                                     |
-| `log_min_messages`           | Minimum severity level of messages to log.                                                                                                                                                                       |
-| `log_parameter_max_length`   | Sets the maximum length in bytes of data logged for bind parameter values when logging statements.                                                                                                               |
-| `log_replication_commands`   | Logs all replication commands                                                                                                                                                                                    |
-| `log_statement`              | Controls which SQL statements are logged. Valid values are `none` (off), `ddl`, `mod`, and `all` (all statements).                                                                                               |
-| `log_temp_files`             | Controls logging of temporary file names and sizes.                                                                                                                                                              |
-| `pg_net.batch_size`          | Sets how many requests the [pg\_net extension](https://supabase.com/docs/guides/database/extensions/pg_net) can make per second                                                                                  |
-| `pg_net.ttl`                 | Sets how long the [pg\_net extension](https://supabase.com/docs/guides/database/extensions/pg_net) saves responses                                                                                               |
-| `pg_stat_statements.*`       | Configures the [pg\_stat\_statements extension](https://www.postgresql.org/docs/current/pgstatstatements.html).                                                                                                  |
-| `pgaudit.*`                  | Configures the [PGAudit extension](https://supabase.com/docs/guides/database/extensions/pgaudit). The `log_parameter` is still restricted to protect secrets                                                     |
-| `pgrst.*`                    | [`PostgREST` settings](https://docs.postgrest.org/en/stable/references/configuration.html#db-aggregates-enabled)                                                                                                 |
-| `plan_filter.*`              | Configures the [pg\_plan\_filter extension](https://supabase.com/docs/guides/database/extensions/pg_plan_filter)                                                                                                 |
-| `safeupdate.enabled`         | Enables the [safeupdate extension](https://github.com/eradman/pg-safeupdate), which requires a `WHERE` clause on `UPDATE` and `DELETE` statements.                                                               |
-| `session_replication_role`   | Sets the session's behavior for triggers and rewrite rules.                                                                                                                                                      |
-| `track_functions`            | Controls whether function call counts and timing are tracked. Valid values are `none`, `pl` (only procedural-language functions), and `all`.                                                                     |
-| `track_io_timing`            | Collects timing statistics for database I/O activity.                                                                                                                                                            |
-| `wal_compression`            | This parameter enables compression of WAL using the specified compression method.                                                                                                                                |
+| Setting                      | Description                                                                                                                                                                                                           |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `auto_explain.*`             | Configures the [auto\_explain module](https://www.postgresql.org/docs/current/auto-explain.html). Can be configured to log execution plans for queries expected to exceed x seconds, including function queries.      |
+| `deadlock_timeout`           | Sets the time to wait on a lock before checking for deadlock.                                                                                                                                                         |
+| `log_duration`               | Logs how long a query ran for, but not the entire query itself.                                                                                                                                                       |
+| `log_lock_waits`             | Controls whether a log message is produced when a session waits longer than [deadlock\_timeout](https://www.postgresql.org/docs/current/runtime-config-locks.html#GUC-DEADLOCK-TIMEOUT) to acquire a lock.            |
+| `log_min_duration_statement` | Logs the duration and text of completed statements whose execution time meets or exceeds the specified threshold                                                                                                      |
+| `log_min_error_statement`    | Determines if the query that induced a log should be recorded as a subfield based on the event's [severity level](https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS) |
+| `log_min_messages`           | Minimum severity level of messages to log.                                                                                                                                                                            |
+| `log_parameter_max_length`   | Sets the maximum length in bytes of data logged for bind parameter values when logging statements.                                                                                                                    |
+| `log_replication_commands`   | Logs all replication commands                                                                                                                                                                                         |
+| `log_statement`              | Controls which SQL statements are logged. Valid values are `none` (off), `ddl`, `mod`, and `all` (all statements).                                                                                                    |
+| `log_temp_files`             | Controls logging of temporary file names and sizes.                                                                                                                                                                   |
+| `pg_stat_statements.*`       | Configures the [pg\_stat\_statements extension](https://www.postgresql.org/docs/current/pgstatstatements.html).                                                                                                       |
+| `pgaudit.*`                  | Configures the [PGAudit extension](https://supabase.com/docs/guides/database/extensions/pgaudit). The `log_parameter` is still restricted to protect secrets                                                          |
+| `pgrst.*`                    | [`PostgREST` settings](https://docs.postgrest.org/en/stable/references/configuration.html#db-aggregates-enabled)                                                                                                      |
+| `plan_filter.*`              | Configures the [pg\_plan\_filter extension](https://supabase.com/docs/guides/database/extensions/pg_plan_filter)                                                                                                      |
+| `safeupdate.enabled`         | Enables the [safeupdate extension](https://github.com/eradman/pg-safeupdate), which requires a `WHERE` clause on `UPDATE` and `DELETE` statements.                                                                    |
+| `session_replication_role`   | Sets the session's behavior for triggers and rewrite rules.                                                                                                                                                           |
+| `track_functions`            | Controls whether function call counts and timing are tracked. Valid values are `none`, `pl` (only procedural-language functions), and `all`.                                                                          |
+| `track_io_timing`            | Collects timing statistics for database I/O activity.                                                                                                                                                                 |
+| `wal_compression`            | This parameter enables compression of WAL using the specified compression method.                                                                                                                                     |
 
 For example, to enable `log_nested_statements` for the `postgres` role, execute:
 
@@ -36094,10 +36094,20 @@ Use the examples below with `supabase postgres-config update --project-ref <proj
 
 | Parameter                                                                                                                                                                                                                                           | Type      | Restart | Example                                         |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- | ----------------------------------------------- |
+| [cron.log\_statement](https://github.com/citusdata/pg_cron#extension-settings)                                                                                                                                                                      | CLI only  | Yes     | `--config cron.log_statement=false`             |
 | [checkpoint\_timeout](https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT)                                                                                                                                       | CLI only  | No      | `--config checkpoint_timeout=15min`             |
 | [effective\_cache\_size](https://www.postgresql.org/docs/current/runtime-config-query.html#GUC-EFFECTIVE-CACHE-SIZE)                                                                                                                                | CLI + SQL | No      | `--config effective_cache_size=8GB`             |
 | [hot\_standby\_feedback](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK)                                                                                                                          | CLI only  | No      | `--config hot_standby_feedback=true`            |
 | [logical\_decoding\_work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM)                                                                                                                  | CLI + SQL | No      | `--config logical_decoding_work_mem=128MB`      |
+| [log\_autovacuum\_min\_duration](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-AUTOVACUUM-MIN-DURATION)                                                                                                               | CLI only  | No      | `--config log_autovacuum_min_duration=10s`      |
+| [log\_checkpoints](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-CHECKPOINTS)                                                                                                                                         | CLI only  | No      | `--config log_checkpoints=true`                 |
+| [log\_connections](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-CONNECTIONS)                                                                                                                                         | CLI only  | No      | `--config log_connections=true`                 |
+| [log\_disconnections](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-DISCONNECTIONS)                                                                                                                                   | CLI only  | No      | `--config log_disconnections=true`              |
+| [log\_lock\_waits](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-LOCK-WAITS)                                                                                                                                          | CLI + SQL | No      | `--config log_lock_waits=true`                  |
+| [log\_recovery\_conflict\_waits](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-RECOVERY-CONFLICT-WAITS)                                                                                                               | CLI only  | No      | `--config log_recovery_conflict_waits=true`     |
+| [log\_replication\_commands](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-REPLICATION-COMMANDS)                                                                                                                      | CLI + SQL | No      | `--config log_replication_commands=true`        |
+| [log\_startup\_progress\_interval](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-STARTUP-PROGRESS-INTERVAL)                                                                                                           | CLI only  | No      | `--config log_startup_progress_interval=10s`    |
+| [log\_temp\_files](https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-TEMP-FILES)                                                                                                                                          | CLI + SQL | No      | `--config log_temp_files=10MB`                  |
 | [maintenance\_work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM)                                                                                                                             | CLI + SQL | No      | `--config maintenance_work_mem=512MB`           |
 | [max\_connections](https://www.postgresql.org/docs/current/runtime-config-connection.html#GUC-MAX-CONNECTIONS) (Be aware of [these considerations](https://supabase.com/docs/guides/troubleshooting/how-to-change-max-database-connections-_BQ8P5)) | CLI only  | Yes     | `--config max_connections=200`                  |
 | [max\_locks\_per\_transaction](https://www.postgresql.org/docs/current/runtime-config-locks.html#GUC-MAX-LOCKS-PER-TRANSACTION)                                                                                                                     | CLI only  | Yes     | `--config max_locks_per_transaction=128`        |
@@ -36121,12 +36131,6 @@ Use the examples below with `supabase postgres-config update --project-ref <proj
 | [wal\_keep\_size](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-KEEP-SIZE)                                                                                                                                        | CLI only  | No      | `--config wal_keep_size=1GB`                    |
 | [wal\_sender\_timeout](https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-WAL-SENDER-TIMEOUT)                                                                                                                              | CLI only  | No      | `--config wal_sender_timeout=60s`               |
 | [work\_mem](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-WORK-MEM)                                                                                                                                                      | CLI + SQL | No      | `--config work_mem=64MB`                        |
-
-#### Management API only parameters
-
-Some Postgres settings are configurable through the [Management API](https://supabase.com/docs/reference/api/v1-update-postgres-config) but not the CLI. These include logging settings such as `log_connections`. See [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging) for details.
-
-`cron.log_statement` (which logs each [pg\_cron](https://supabase.com/docs/guides/database/extensions/pg_cron) job statement before it runs) is also Management API only. It is a `postmaster`-context parameter, so updating it **requires a database restart** to take effect.
 
 #### Managing Postgres configuration with the CLI
 
@@ -130501,6 +130505,7 @@ export async function createClient() {
 - [Realtime "Concurrent Peak Connections" quota](https://supabase.com/docs/guides/troubleshooting/realtime-concurrent-peak-connections-quota-jdDqcp)
 - [Realtime connections giving `TIMED_OUT` errors](https://supabase.com/docs/guides/troubleshooting/realtime-connections-timed_out-status)
 - [Debug Realtime with Logger and Log Levels](https://supabase.com/docs/guides/troubleshooting/realtime-debugging-with-logger)
+- [Realtime Egress FAQ](https://supabase.com/docs/guides/troubleshooting/realtime-egress-faq)
 - [Realtime: Handling Silent Disconnections in Background Applications](https://supabase.com/docs/guides/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications-592794)
 - [Understanding and Monitoring Realtime Heartbeats](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages)
 - [Realtime: Project suspended for exceeding quotas](https://supabase.com/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas)
@@ -138420,6 +138425,69 @@ channel.subscribe((status, err) => {
 
 ---
 
+# Realtime Egress FAQ
+
+Realtime Egress is billed as part of your project's [unified egress](https://supabase.com/docs/guides/platform/manage-your-usage/egress#realtime-egress) usage. This FAQ walks through what's counted, what isn't, and how to investigate a gap between the two.
+
+## What exactly is included in the Realtime Egress metric?
+
+Realtime Egress measures **data sent from the Realtime server to a connected client** over an open WebSocket connection, plus any request made to the [HTTP Broadcast endpoint](https://supabase.com/docs/guides/realtime/broadcast#broadcasting-from-the-server). This includes Broadcast messages, Postgres Changes payloads, Presence events, and Phoenix protocol frames sent over the same socket (see below).
+
+It does **not** include internal traffic between the Realtime server and your Postgres database (logical replication, `pgoutput` reads for Broadcast from Database, or replication slot management). That traffic never reaches a client and isn't part of this metric.
+
+## Does it include only bytes delivered to connected clients, or also internal DB → Realtime replication traffic?
+
+Only data the server sends to the WebSocket, and any HTTP Broadcast request. DB → Realtime logical replication traffic (the connection Realtime uses internally to read changes for Broadcast from Database or Postgres Changes) is not counted — it never leaves the Realtime service to reach a client, so it isn't part of Egress.
+
+## Does it include replication slot initialization/recreation or Broadcast from database cold-start traffic?
+
+No. Replication slot creation, checks, and reconnection attempts to your database are internal to the Realtime service and Postgres. Even if your tenant is frequently idling out and starting back up (for example, logs showing `Stop tenant ... because of no connected users` followed by slot recreation), that activity is not what's reflected in your billed Realtime Egress.
+
+## Does it include Phoenix/WebSocket protocol overhead (handshake, heartbeat, phx\_join, phx\_leave, rejoin frames)?
+
+Yes — any message the server sends over an open socket counts, including heartbeats and Phoenix control frames (`phx_reply`, `phx_close`, rejoin payloads). In practice this overhead is minimal compared to actual application data, **unless** a client is stuck in a join/leave loop (for example, a broken reconnect handler that repeatedly subscribes and unsubscribes from the same channel). Realtime tracks join rate internally, so a runaway rejoin loop is something worth ruling out if your numbers look unusually high relative to your connection count.
+
+## Can repeated tenant stop/start or cold-start cycles cause large billed egress even when payload is small?
+
+No. Tenant idling out (`no connected users`) and starting back up on the next connection is a normal part of the multi-tenant architecture and is not a mechanism that inflates Realtime Egress. If you're seeing a large gap between your application-measured payload and your billed egress, look at message volume and fan-out first (see below) rather than tenant lifecycle events.
+
+## Is the dashboard graph batched or attributed in a way that could make one day look much higher than actual usage?
+
+No known issue causes this. The daily Realtime Egress figure reflects real usage attributed to that day, not an artifact of how the graph is rendered or rolled up.
+
+## Is a breakdown of Realtime Egress available by source or type (Broadcast / Postgres Changes / Presence / protocol overhead)?
+
+Not currently. Realtime Egress is reported as a single aggregate number — there's no per-source or per-event-type breakdown available in the dashboard or usage APIs today.
+
+## Measured message payload is tiny — why is billed Realtime Egress so much higher?
+
+This is the most common source of confusion, and almost always comes down to **counting writes instead of counting delivered events**. A few things to check before assuming a billing issue:
+
+1. **Delivered events ≠ database writes.** If you're using Postgres Changes or Broadcast from Database, the number of rows you insert/update is not the number of events sent over the wire. Every insert/update/delete can generate a delivery to **every subscribed client**, not one event total.
+2. **Multiply by concurrent subscribers.** If 20 clients are subscribed to the same channel, a single database change can result in 20 separate deliveries. Always multiply your per-change payload size by your peak concurrent connection count to estimate real egress, not your raw write rate.
+3. **Multiple subscriptions per channel compound this further.** If a channel subscribes to the same table with more than one filter (for example, separate `INSERT`, `UPDATE`, and `DELETE` subscriptions, or multiple overlapping `postgres_changes` filters), the same underlying row change can be delivered multiple times to the same client.
+4. **Postgres Changes payloads are often bigger than you expect.** Unlike a hand-crafted Broadcast payload, a Postgres Changes event includes the full row (or full old + new row under `REPLICA IDENTITY FULL`), which can be several kilobytes even for a small logical change — especially with wide tables or TOASTed columns. You can reduce this by [filtering which changes are sent](https://supabase.com/docs/guides/realtime/postgres-changes?queryGroups=language\&language=js\&queryGroups=realtime-js-filter\&realtime-js-filter=string#available-filters) so irrelevant rows are never delivered, and by [selecting specific columns](https://supabase.com/docs/guides/realtime/postgres-changes?queryGroups=language\&language=js\&queryGroups=realtime-js-filter\&realtime-js-filter=string#selecting-specific-columns) to shrink the payload of the rows that are.
+
+Before escalating a gap between measured payload and billed egress, re-derive your estimate using **delivered events**, not writes: `(events per day) × (average delivered payload size) × (average concurrent subscribers)`. This calculation frequently accounts for a gap that initially looks inexplicable. The [Realtime observability report](https://supabase.com/dashboard/project/_/observability/realtime) can help here — it shows number of connected clients, payload size, and rate of joins for your project.
+
+## What should be checked before contacting Supabase support about a Realtime Egress discrepancy?
+
+- Re-calculate your expected egress using delivered events and fan-out (see above), not raw database write counts.
+- Check whether any channel has multiple overlapping `postgres_changes` subscriptions that could cause duplicate delivery.
+- Check your peak concurrent connections over the period in question — a small increase in concurrency can multiply Broadcast/Postgres Changes egress significantly.
+- Rule out a client-side reconnect loop (rapid `phx_join`/`phx_leave` cycles) as a source of excess protocol overhead.
+- If your recalculated estimate still doesn't come close to your billed number, [reach out to Support](https://supabase.com/dashboard/support/new) with your project ref, the time period in question, and your delivered-event calculation so the team can investigate further.
+
+## Related guides
+
+- [Understanding your usage](https://supabase.com/docs/guides/platform/manage-your-usage)
+- [Egress FAQ](https://supabase.com/docs/guides/platform/manage-your-usage/egress)
+- [Realtime Broadcast](https://supabase.com/docs/guides/realtime/broadcast)
+- [Realtime Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes)
+
+
+---
+
 # Realtime: Handling Silent Disconnections in Background Applications
 
 If your Supabase Realtime subscriptions stop receiving events after some time without any explicit error messages, you might be experiencing a silent disconnection. This guide explains why this occurs and provides robust solutions to maintain connection stability.
@@ -144620,6 +144688,17 @@ useEffect(() => {
 Log in an existing user by exchanging an Auth Code issued during the PKCE flow.
 
 - Used when `flowType` is set to `pkce` in client options.
+- When several PKCE flows are in flight at once, pass `options.flowId` so
+  the code is exchanged with the verifier created by that specific flow.
+  The flow id is returned by `signInWithOAuth`, and with
+  `experimental.appendPkceFlowIdToRedirects` enabled it also arrives on
+  your callback URL as the reserved `sb_flow_id` query parameter (read
+  automatically in a browser).
+- When a flow id is present but its stored verifier is gone (evicted,
+  already used, or from another device), the call fails with a verifier
+  missing error instead of trying another flow's verifier — a mismatched
+  verifier would consume the single-use code. Without any flow id the
+  most recently stored verifier is used, as before.
 
 ### Examples
 
@@ -144627,6 +144706,13 @@ Log in an existing user by exchanging an Auth Code issued during the PKCE flow.
 
 ```js
 supabase.auth.exchangeCodeForSession('34e770dd-9ff9-416c-87fa-43b31d7ef225')
+```
+
+#### Exchange Auth Code for a specific flow (e.g. in a server-side callback handler)
+
+```js
+const flowId = requestUrl.searchParams.get('sb_flow_id')
+supabase.auth.exchangeCodeForSession(code, flowId ? { flowId } : undefined)
 ```
 
 ## getClaims

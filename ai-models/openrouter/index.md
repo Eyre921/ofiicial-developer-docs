@@ -1,17 +1,18 @@
 # ai-models/openrouter 文档索引
 
-> 共 302 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 304 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
 
 - `docs/agent-sdk/agent-migration` — [Migrating to @openrouter/agent](pages/docs/agent-sdk/agent-migration.md) · [原文](https://openrouter.ai/docs/agent-sdk/agent-migration.md)
-- `docs/agent-sdk/call-model/api-reference` — [API Reference](pages/docs/agent-sdk/call-model/api-reference.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)
+- `docs/agent-sdk/call-model/api-reference` — [Agent SDK API Reference](pages/docs/agent-sdk/call-model/api-reference.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)
 - `docs/agent-sdk/call-model/dynamic-parameters` — [Dynamic Parameters](pages/docs/agent-sdk/call-model/dynamic-parameters.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/dynamic-parameters.md)
 - `docs/agent-sdk/call-model/examples/skills-loader` — [Skills Loader](pages/docs/agent-sdk/call-model/examples/skills-loader.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/examples/skills-loader.md)
 - `docs/agent-sdk/call-model/examples/weather-tool` — [Weather Tool](pages/docs/agent-sdk/call-model/examples/weather-tool.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/examples/weather-tool.md)
 - `docs/agent-sdk/call-model/items` — [Working with Items](pages/docs/agent-sdk/call-model/items.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/items.md)
 - `docs/agent-sdk/call-model/lifecycle-hooks` — [Lifecycle Hooks](pages/docs/agent-sdk/call-model/lifecycle-hooks.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/lifecycle-hooks.md)
+- `docs/agent-sdk/call-model/mcp-tools` — [MCP tools](pages/docs/agent-sdk/call-model/mcp-tools.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/mcp-tools.md)
 - `docs/agent-sdk/call-model/message-formats` — [Message Formats](pages/docs/agent-sdk/call-model/message-formats.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/message-formats.md)
 - `docs/agent-sdk/call-model/next-turn-params` — [Next Turn Params](pages/docs/agent-sdk/call-model/next-turn-params.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/next-turn-params.md)
 - `docs/agent-sdk/call-model/overview` — [Call Model (Typescript)](pages/docs/agent-sdk/call-model/overview.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/overview.md)
@@ -56,6 +57,7 @@
 - `docs/api_reference/streaming` — [Streaming](pages/docs/api_reference/streaming.md) · [原文](https://openrouter.ai/docs/api_reference/streaming.md)
 - `docs/api_reference/versioning` — [API Versioning](pages/docs/api_reference/versioning.md) · [原文](https://openrouter.ai/docs/api_reference/versioning.md)
 - `docs/app-attribution` — [App Attribution](pages/docs/app-attribution.md) · [原文](https://openrouter.ai/docs/app-attribution.md)
+- `docs/batch-quickstart` — [Batch API Quickstart](pages/docs/batch-quickstart.md) · [原文](https://openrouter.ai/docs/batch-quickstart.md)
 - `docs/changelog` — [API Changelog](pages/docs/changelog.md) · [原文](https://openrouter.ai/docs/changelog.md)
 - `docs/client-sdks/agent-migration` — [Migrating to @openrouter/agent](pages/docs/client-sdks/agent-migration.md) · [原文](https://openrouter.ai/docs/client-sdks/agent-migration.md)
 - `docs/client-sdks/dev-tools/devtools` — [DevTools](pages/docs/client-sdks/dev-tools/devtools.md) · [原文](https://openrouter.ai/docs/client-sdks/dev-tools/devtools.md)

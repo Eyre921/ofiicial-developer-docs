@@ -22,6 +22,8 @@ This section provides tools and best practices for running production agents, fr
 | Track metrics & analytics    | [Analytics](/docs/eleven-agents/dashboard)                                               | Monitor performance metrics and conversation history |
 | Configure data retention     | [Privacy](/docs/eleven-agents/customization/privacy)                                     | Set retention policies for conversations and audio   |
 | Reduce LLM costs             | [Cost optimization](/docs/eleven-agents/customization/llm/optimizing-costs)              | Monitor and optimize language model expenses         |
+| Manage agents as code        | [CLI](/docs/eleven-agents/operate/cli)                                                   | Version control and deploy agents from your terminal |
+| Manage agents from Claude    | [Hosted MCP](/docs/eleven-agents/operate/hosted-mcp)                                     | Create and update agents from any MCP client         |
 
 ## Next steps
 

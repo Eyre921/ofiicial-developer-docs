@@ -69,7 +69,7 @@ The `Settings` message is a JSON object that contains the following fields:
 | `agent.listen.provider.model`               | String  | The [Deepgram speech-to-text model](/docs/models-languages-overview) to be used                                                                                                                             |
 | `agent.listen.provider.version`             | String  | The Deepgram speech-to-text API version. Flux models use `v2` and all other models use `v1`.                                                                                                                |
 | `agent.listen.provider.language`            | String  | Optional [Deepgram speech-to-text language](docs/language) to be used for transcription. Flux models automatically leverage the language within the model's name, and Nova models default to `en`.          |
-| `agent.listen.provider.keyterms`            | Array   | The [Keyterms](/docs/keyterm) you want increased recognition for                                                                                                                                            |
+| `agent.listen.provider.keyterms`            | Array   | The [Keyterms](/docs/keyterm) you want increased recognition for. Each entry is a plain string with no weights or intensifiers; pass a multi-word phrase as a single array element.                         |
 | `agent.listen.provider.eot_threshold`       | Number  | Confidence threshold for [end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.5` - `0.9`. Defaults to `0.7`. Flux models only.                                              |
 | `agent.listen.provider.eager_eot_threshold` | Number  | Confidence threshold for [eager end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.3` - `0.9`. Flux models only.                                                           |
 | `agent.listen.provider.eot_timeout_ms`      | Integer | Time in milliseconds after speech to finish a turn regardless of EOT confidence. Defaults to `5000`. Flux models only.                                                                                      |
@@ -91,6 +91,12 @@ The `Settings` message is a JSON object that contains the following fields:
 * Refer to our [supported languages](/docs/models-languages-overview) to ensure you're using the correct model (Flux, Nova-3, or Nova-2) for your selected language.
 
 * For detailed multilingual setup, see [Multilingual Voice Agents](/docs/multilingual-voice-agent).
+
+#### `agent.listen.provider.keyterms`
+
+* Each entry in the `keyterms` array is a plain term or phrase—for example, `"keyterms": ["hello", "customer service"]`.
+* [Keyterm Prompting](/docs/keyterm) does **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; it is not rejected, but the weight is silently ignored and the whole string is treated as a literal keyterm.
+* Pass a multi-word phrase as a single array element (for example, `["customer service"]`), not as separate words.
 
 #### `agent.listen.provider.eot_threshold`, `agent.listen.provider.eager_eot_threshold`, and `agent.listen.provider.eot_timeout_ms`
 

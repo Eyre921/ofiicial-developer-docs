@@ -1420,6 +1420,35 @@ Use [elements.fetchUpdates()](https://docs.stripe.com/js/elements_object/fetch_u
 
 - `options`
   Options for updating the Payment Element.
+    - `layout`
+      Specify the layout for the Payment Element. If you only pass a layout type (`'accordion'` or `‘tabs’`) without any additional parameters, the Payment Element renders using that layout and the default values associated with it.
+
+An object can also be passed to specify the layout with additional configuration.
+      - `type`
+        Defines the layout to render the Payment Element.
+      - `defaultCollapsed`
+        Controls if the Payment Element renders in a collapsed state (where no payment method is selected by default). When you leave this `undefined`, Stripe renders the experience that it determines will have the best conversion.
+      - `radios`
+        Controls when to render each Payment Method with a radio input next to its logo. The radios visually indicate the current selection of the Payment Element. Defaults to `'auto'`.
+
+- `'always'` — Always show radio inputs.
+- `'never'` — Never show radio inputs.
+- `'if_multiple'` — Show radio inputs only when there are multiple payment methods available. When there is only one payment method, no radio input is displayed.
+- `'auto'` — Stripe determines the best experience to optimize conversion.
+
+_This property is only applicable to the `accordion` layout._
+      - `spacedAccordionItems`
+        When `true`, the Payment Methods render as standalone buttons with space in between them.
+
+_This property is only applicable to the `accordion` layout._
+      - `visibleAccordionItemsCount`
+        Sets the max number of Payment Methods visible before using the "More" button to hide additional Payment Methods. Set this value to `0` to disable the "More" button and render all available Payment Methods. Default is `5`.
+
+_This property is only applicable to the `accordion` layout._
+      - `paymentMethodLogoPosition`
+        Sets the position of the payment method logo in each accordion item. Default is `start`.
+
+_This property is only applicable to the `accordion` layout._
     - `defaultValues`
       Provide initial customer information that will be displayed in the Payment Element.
 The form will render with empty fields if not provided.
@@ -2075,7 +2104,7 @@ to provide a hint to the customer on why their payment failed.
         A short, concise, localized error message to display on the payment sheet.
 If none is provided, the payment sheet will display a generic error message for the given reason.
 
-**Note:** Custom error messages may not be supported or may be truncated by certain wallets.
+**Wallet compatibility:** Apple Pay displays custom error messages for `'invalid_shipping_address'`, `'invalid_billing_address'`, and `'invalid_payment_data'`, but not for `'fail'` or `'address_unserviceable'`. Other wallets may not support custom messages or may truncate them.
     - `billingDetails`
       Object containing information about the customer's billing details.
       - `name`

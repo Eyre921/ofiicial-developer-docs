@@ -8,7 +8,7 @@ path: radar/risk-settings
 
 Automatically adjust which payments you block based on dynamic detection.
 
-Stripe Radar lets you choose a risk setting that automatically adjusts your protection thresholds based on your business needs and tolerance. Based on the risk setting you choose, we recommend the risk controls that help protect against fraud.
+If [your Radar plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can choose a risk setting that automatically adjusts your protection thresholds based on your business needs and tolerance. Based on the risk setting you choose, we recommend the risk controls that help protect against fraud.
 
 ## Risk settings (Recommended)
 
@@ -29,18 +29,18 @@ When you change your risk setting, the modal displays the impact to payments wit
 
 ### Adjust your blocking preference using risk settings 
 
-Beginning March 1, 2026, existing Radar for Fraud Teams users can change blocking preferences using risk settings, instead of the default risk thresholds. If you previously set a risk score block threshold, the `Block if :risk_level: = 'highest'` default rule is likely still enabled. If this is the case, you won’t see the option to change your risk score threshold on the risk controls page.
+Use risk settings instead of default risk thresholds to change your blocking preferences. If you previously set a risk score block threshold, the `Block if :risk_level: = 'highest'` default rule is likely still enabled. If so, you won’t see the option to change your risk score threshold on the risk controls page.
 
 If you want to change your default block threshold, you can do either of the following:
 
 - *(Recommended)* **Modify your risk setting**. Changing your risk setting alters the enabled risk controls and the thresholds set for each control. Each risk control uses individualized machine learning to improve cost and fraud protection on your behalf. When you first enable a risk setting, Stripe disables the corresponding [high risk block rule](https://docs.stripe.com/radar/rules.md#machine-learning-risk-checks) that uses risk score.
-- **Customize the threshold for the Fraudulent dispute risk control**. If you use [Radar for Fraud Teams](https://stripe.com/radar/fraud-teams), you can set a custom blocking threshold for the [Fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute) risk control. On the control’s overview page, click **Edit configuration** to set a specific threshold and backtest the impact on your payments before applying it. When you set a custom threshold that doesn’t match a preset risk setting, your account displays in **Manual mode**.
+- **Customize the threshold for the Fraudulent dispute risk control**. You can set a custom blocking threshold for the [Fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute) risk control. On the control’s overview page, click **Edit configuration** to set a specific threshold and backtest the impact on your payments before applying it. When you set a custom threshold that doesn’t match a preset risk setting, your account displays in **Manual mode**.
 
 ## Risk controls
 
 Risk controls use AI to protect your account. You enable them on your account to block payments that might result in fraudulent disputes or early fraud warnings. Risk settings determine which risk controls are enabled and recommend additional risk controls, such as adaptive 3DS.
 
-Risk settings automatically manage the blocking thresholds for risk controls. To block more or less traffic from a risk control, you can change your risk setting, which automatically adjusts the blocking threshold. If you use [Radar for Fraud Teams](https://stripe.com/radar/fraud-teams), you can also adjust the threshold for the [Fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute) risk control directly.
+Risk settings automatically manage the blocking thresholds for risk controls. To block more or less traffic from a risk control, you can change your risk setting, which automatically adjusts the blocking threshold. You can also adjust the threshold for the [Fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute) risk control directly.
 
 Risk controls and risk settings won’t override the custom rules you created. You can continue to update your controls, settings, and rules at any time.
 
@@ -60,13 +60,13 @@ This risk control uses the [fraudulent dispute score](https://docs.stripe.com/ra
 
 To change how much this control blocks, change your risk setting.
 
-If you use [Radar for Fraud Teams](https://stripe.com/radar/fraud-teams), you can also click **Edit configuration** on the control’s overview page to set a custom blocking threshold. You can backtest the impact of the threshold on your payments before applying it.
+You can also click **Edit configuration** on the control’s overview page to set a custom blocking threshold. You can backtest the impact of the threshold on your payments before applying it.
 
 ### Early fraud warning 
 
 This risk control uses the [early fraud warning score](https://docs.stripe.com/radar/risk-settings.md#early-fraud-warning-score) and determines which payments are likely to result in an [early fraud warning](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings). Radar determines the threshold based on your risk preferences, and maximizes conversion while preventing the risk of entering [monitoring programs](https://docs.stripe.com/disputes/monitoring-programs.md).
 
-This control is only available if you choose the **Maximize protection** risk setting. We recommend turning on this setting if you’re in a card brand monitoring program, which counts early fraud warnings toward the [VAMP monitoring program](https://docs.stripe.com/disputes/monitoring-programs.md#VAMP).
+This control is available on the **Balanced** and **Maximize protection** risk settings. We recommend turning on this setting if you’re in a card brand monitoring program, which counts early fraud warnings toward the [VAMP monitoring program](https://docs.stripe.com/disputes/monitoring-programs.md#VAMP).
 
 ### Adaptive 3DS
 
@@ -104,7 +104,7 @@ Stripe Radar assigns each payment a numerical fraudulent dispute score between 0
 
 > Fraudulent dispute scores apply to card, ACH Direct Debit, and SEPA Direct Debit payments.
 
-If you use [Radar for Fraud Teams](https://stripe.com/radar/fraud-teams) and want to block payments based on the fraudulent dispute score, you can write custom rules on `:fraudulent_dispute_score:`.
+If you want to block payments based on the fraudulent dispute score, you can write custom rules on `:fraudulent_dispute_score:`.
 
 ### Early fraud warning score 
 
@@ -112,7 +112,7 @@ Stripe Radar assigns each payment a numerical early fraud warning score between 
 
 > Early fraud warning scores apply to card payments only.
 
-If you use [Radar for Fraud Teams](https://stripe.com/radar/fraud-teams) and want to block payments based on the early fraud warning score, you can write custom rules on `:early_fraud_warning_score:`.
+If you want to block payments based on the early fraud warning score, you can write custom rules on `:early_fraud_warning_score:`.
 
 ### Bot score (Private preview)
 
@@ -122,7 +122,7 @@ You can write custom rules on `:bot_score:` to block payments that exceed a thre
 
 ### Risk score (Classic risk) 
 
-Stripe Radar gives each payment a numerical [risk score](https://docs.stripe.com/radar/risk-evaluation.md#risk-outcomes) between 0 and 99, where 0 is the lowest risk and 99 is the highest. This risk score is the probability that a payment results in a fraudulent dispute or early fraud warning.
+Stripe Radar gives each payment a numerical [risk score](https://docs.stripe.com/radar/transaction-risk-prevention.md#risk-outcomes) between 0 and 99, where 0 is the lowest risk and 99 is the highest. This risk score is the probability that a payment results in a fraudulent dispute or early fraud warning.
 
 > Adjusting the risk score applies to card, ACH, and SEPA Direct Debit payments. You can select a specific payment method to test different thresholds and view affected payments.
 
@@ -135,11 +135,47 @@ The risk score appears on a payment when:
 
 The risk score factors into the [overall risk level](https://docs.stripe.com/radar/risk-settings.md#overall-risk-level) when visible.
 
-If you use [Radar for Fraud Teams](https://stripe.com/radar/fraud-teams) and want to block payments based on the risk score (even after selecting a risk setting) you can continue writing custom rules on `:risk_score:`.
+If you want to block payments based on the risk score (even after selecting a risk setting) you can continue writing custom rules on `:risk_score:`.
+
+## Apply Radar rules to direct charges
+
+Radar runs your Radar rules on payments made to your platform, including transactions where your platform is the [merchant of record](https://docs.stripe.com/connect/merchant-of-record.md).
+
+To apply your Radar rules on transactions where your connected account is the merchant of record, such as [direct charges](https://docs.stripe.com/connect/charges.md#direct), do the following:
+
+1. In the Dashboard, go to **Settings** > [Radar](https://dashboard.stripe.com/settings/radar).
+2. Under **Platform controls for direct charges**, click **Update configuration** for **Platform payments controls**.
+3. Choose how you want to manage fraud prevention:
+   - **Only connected accounts**
+     - Connected accounts manage Radar rules, settings, and tiers.
+     - The Radar rules and settings for your connected accounts apply to all payments, including direct charges on connected accounts.
+     - If your platform pays the fees for your connected accounts, you can choose whether your connected accounts use Radar Lite instead of their own Radar tiers. Enabling Radar Lite prevents connected accounts from incurring fees on platform transactions.
+     - You can also choose whether your connected accounts can see Radar in their Dashboard. For more information, see [Hide Radar from connected accounts](https://docs.stripe.com/radar/risk-settings.md#hide-radar-from-connected-accounts).
+   - **Only my platform**
+     - Your platform manages Radar rules, settings, and tiers.
+     - Your Radar rules and settings apply to all payments, including direct charges on connected accounts.
+     - Your connected accounts can’t manage Radar, write their own rules, or change Radar settings.
+     - Connected accounts can’t see your rules, but they can see when a platform rule blocked their payments.
+     - This setting overrides a connected account’s Radar rules, if they exist.
+     - You can choose whether your connected accounts can see Radar in their Dashboard. For more information, see [Hide Radar from connected accounts](https://docs.stripe.com/radar/risk-settings.md#hide-radar-from-connected-accounts).
+   - **Both my platform and connected accounts**
+     - Your platform and the connected accounts manage Radar rules, settings, and tiers.
+     - Your Radar rules and settings apply to all payments, including direct charges on connected accounts.
+     - Connected accounts can configure Radar rules.
+     - Radar evaluates platform and connected account rules as a single rule set, with platform rules evaluated first. Rules follow [transaction rule processing and ordering](https://docs.stripe.com/radar/rules/reference.md#transaction-rule-processing-and-ordering), so a platform allow rule overrides a connected account block rule, and a connected account allow rule overrides a platform block rule.
+4. Click **Update configuration**.
+
+> These settings apply only to connected accounts controlled solely by your platform.
+
+### Hide Radar from connected accounts 
+
+If you update your connected account’s plan to Radar Lite, or choose **Only my platform** for managing fraud prevention rules and settings, you can also choose whether connected accounts can see Radar in their Dashboard.
+
+Under **Dashboard access**, enable **Make Radar visible for connected accounts** to grant connected accounts view-only access to outcomes. Connected accounts can’t change Radar rules or settings.
 
 ## See also
 
-- [Access risk evaluations](https://docs.stripe.com/radar/risk-evaluation.md)
-- [Review card payments](https://docs.stripe.com/radar/reviews.md)
+- [Access risk evaluations](https://docs.stripe.com/radar/transaction-risk-prevention.md)
+- [Review card payments](https://docs.stripe.com/radar/transaction-reviews.md)
 - [Optimize risk factors](https://docs.stripe.com/radar/optimize-risk-factors.md)
 

@@ -24,7 +24,7 @@ Card testers use both card setup and payments to determine whether the stolen or
 Card testing has many negative outcomes, some of which get worse over time as card testing continues:
 
 - **Disputes**— Many types of card testing involve payments, some of which succeed. Customers notice successful payments and report them as fraud, which result in [Early Fraud Warnings](https://docs.stripe.com/disputes/measuring.md#early-fraud-warnings) or even [fraudulent disputes](https://docs.stripe.com/disputes.md) that cost you time and money.
-- **Higher decline rates**—Card testing associates a large number of declines with your business. A high decline rate might damages the reputation of your business with card issuers and card networks, which makes all of your transactions appear riskier. This can result in an increased decline rate for legitimate payments, even after card testing ceases.
+- **Higher decline rates**—Card testing associates a large number of declines with your business. A high decline rate might damage the reputation of your business with card issuers and card networks, which makes all of your transactions appear riskier. This can result in an increased decline rate for legitimate payments, even after card testing ceases.
 - **Additional fees**—Card testing activity can result in additional fees, such as authorization fees for custom pricing plans, and dispute fees.
 - **Infrastructure strain**—Card testing usually results in numerous network requests and operations. This additional traffic can overburden your infrastructure and disrupt legitimate activity.
 - **Damages ecosystem health**—Card testing has negative impacts on the financial system as a whole, so both Stripe and our financial partners want to help you stop it. A large amount of card testing resulting in Early Fraud Warnings or Disputes might, for example, enlist you into [Card Monitoring Programs](https://docs.stripe.com/disputes/monitoring-programs.md).
@@ -53,8 +53,8 @@ Card testers employ a wide variety of techniques to make their fraudulent activi
 
 Card testers can use your publishable key and use it to retry a large number of payments on your website. You have two main mitigation strategies for such attacks:
 
-- **Use a recommended Stripe integration–** Choose a Stripe-recommended integration to take advantage of card testing protection that we know works.
-- **Control implementation–** Invest in a suite of controls that stops card testers from attacking vulnerable endpoints.
+- **Use a recommended Stripe integration**: Choose a Stripe-recommended integration to take advantage of card testing protection that we know works.
+- **Control implementation**: Invest in a suite of controls that stops card testers from attacking vulnerable endpoints.
 
 In addition to implementing mitigation strategies, you want to make sure that you’re keeping your keys safe and don’t publish your secret key publicly. When your credentials are leaked or stolen, card testers can create payments and set up cards using your secret key.
 
@@ -110,7 +110,9 @@ In addition to network rate limits, you can add rate limits to your payments and
 
 ### Detect and prevent unusual behavior 
 
-Use the Dashboard, [webhooks](https://docs.stripe.com/webhooks.md), or continuous monitoring with [Stripe Sigma or Data Pipelines](https://stripe.com/guides/improve-fraud-management-with-radar-for-fraud-teams-and-stripe-data) to track anomalies in your traffic. You can compare card testing activity to typical legitimate traffic, and then build filters that limit or prevent only the card testing activity. For example, you might make changes to your system that:
+Use the Dashboard, [webhooks](https://docs.stripe.com/webhooks.md), or continuous monitoring with [Stripe Sigma or Data Pipelines](https://stripe.com/guides/improve-fraud-management-with-radar-for-fraud-teams-and-stripe-data) to track anomalies in your traffic. You can compare card testing activity to typical legitimate traffic, and then build filters that limit or prevent only the card testing activity.
+
+For example, you might make changes to your system that:
 
 - Limit the number of cards that can be added to an account
 - Limit the number of customers that can be created with a single IP address
@@ -118,7 +120,7 @@ Use the Dashboard, [webhooks](https://docs.stripe.com/webhooks.md), or continuou
 - Limit the number of customers of the same type that can be created
 - Filter out requests with certain user agents or other parameters
 
-To do so, you can use [custom rules](https://docs.stripe.com/radar/rules/reference.md#velocity-rules) in Radar for Fraud Teams. We cover that in the next section.
+To do so, you can use [custom rules](https://docs.stripe.com/radar/rules/reference.md#velocity-rules) in Radar, if [your plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature.
 
 ### Use a combination of mitigations 
 
@@ -132,7 +134,7 @@ Excessive retries (dunning) of payments can look like card testing if they come 
 
 Beyond the implementing mitigations, you might want to further fine tune your protection using Radar. It comes with built-in rules to block based on [bank checks](https://docs.stripe.com/radar/rules.md#traditional-bank-checks), such as *CVC* (The card verification code (CVC) or card verification value (CVV) is a three- or four-digit number printed directly on a card used to verify the entered card number) checks.
 
-If you understand your customer behavior and want to customize the velocity of payments in detail, you can build [custom rules](https://docs.stripe.com/radar/rules/reference.md#velocity-rules) in Radar for Fraud Teams.
+If you understand your customer behavior and want to customize the velocity of payments in detail, you can build [custom rules](https://docs.stripe.com/radar/rules/reference.md#velocity-rules) in Radar, if [your plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature.
 
 You can find examples in the [Radar 101 guide](https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-card-testing-or-card-cashing).
 

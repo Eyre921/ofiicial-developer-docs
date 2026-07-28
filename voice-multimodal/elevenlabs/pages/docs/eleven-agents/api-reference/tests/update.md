@@ -1428,6 +1428,26 @@ components:
         Simulation/preview-side config: tools are identified by IDs, resolved to
         names at runtime.
       title: SimulationToolMockBehaviorConfig
+    type_:ToolResponseMockConfigInput:
+      type: object
+      properties:
+        parameter_conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:UnitTestToolCallParameter'
+          description: If the list is empty, the mock will always activate.
+        mock_result:
+          type: string
+          description: The return value the LLM sees when this mock is active.
+        is_error:
+          type: boolean
+          default: false
+          description: >-
+            If true, the mock result is surfaced to the LLM as a tool error
+            rather than a successful result.
+      required:
+        - mock_result
+      title: ToolResponseMockConfigInput
     type_:Llm:
       type: string
       enum:
@@ -1694,6 +1714,16 @@ components:
             tool_mock_config:
               $ref: '#/components/schemas/type_:SimulationToolMockBehaviorConfig'
               description: Configuration for which tools to mock and fallback behavior.
+            tool_mock_overrides:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/type_:ToolResponseMockConfigInput'
+              description: >-
+                Test-specific response mocks, keyed by tool ID. Applied ahead of
+                the tool's shared mocks and only within this test. Only take
+                effect for tools that are mocked (see tool_mock_config).
             evaluation_model:
               $ref: '#/components/schemas/type_:Llm'
               description: >-
@@ -2578,6 +2608,26 @@ components:
             test will verify the agent transitions to the specified workflow
             node.
       title: UnitTestToolCallEvaluationModelOutput
+    type_:ToolResponseMockConfigOutput:
+      type: object
+      properties:
+        parameter_conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:UnitTestToolCallParameter'
+          description: If the list is empty, the mock will always activate.
+        mock_result:
+          type: string
+          description: The return value the LLM sees when this mock is active.
+        is_error:
+          type: boolean
+          default: false
+          description: >-
+            If true, the mock result is surfaced to the LLM as a tool error
+            rather than a successful result.
+      required:
+        - mock_result
+      title: ToolResponseMockConfigOutput
     type_conversationalAi/tests:TestsUpdateResponse:
       oneOf:
         - type: object
@@ -2741,6 +2791,16 @@ components:
             tool_mock_config:
               $ref: '#/components/schemas/type_:SimulationToolMockBehaviorConfig'
               description: Configuration for which tools to mock and fallback behavior.
+            tool_mock_overrides:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/type_:ToolResponseMockConfigOutput'
+              description: >-
+                Test-specific response mocks, keyed by tool ID. Applied ahead of
+                the tool's shared mocks and only within this test. Only take
+                effect for tools that are mocked (see tool_mock_config).
             evaluation_model:
               $ref: '#/components/schemas/type_:Llm'
               description: >-

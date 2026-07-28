@@ -73,6 +73,7 @@ This overview summarizes the permissions for each role. For a description of eac
 | Create projects                          | **&check;** | **&check;**  |   **&check;**\*          |                 |             |
 | Trigger builds  (Trigger from Git/deploy from Git)                      | **&check;** | **&check;**  |  **&check;**              | **&check;**     |             |
 | Access and edit project configuration    | **&check;** | **&check;**  | Limited              |                 |             |
+| Change project visibility (make a project public or private) | **&check;** | **&check;**  |               |                 |             |
 | Delete database | **&check;** | | | | |
 | Restore backup database | **&check;** | | | | |
 | Collaborate using the  Netlify Drawer to share feedback on Deploy Previews and branch deploys | **&check;** | **&check;**  | **&check;**   |                 | **&check;** |

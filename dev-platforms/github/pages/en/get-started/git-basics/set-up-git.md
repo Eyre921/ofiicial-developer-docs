@@ -59,6 +59,6 @@ You now have Git and GitHub all set up. You can now choose to create a repositor
 
 * Forking a repository will allow you to make changes to another repository without affecting the original. For more information, see [Fork a repository](/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
 
-* Each repository on GitHub is owned by a person or an organization. You can interact with the people, repositories, and organizations by connecting and following them on GitHub. For more information, see [Finding inspiration on GitHub](/en/get-started/start-your-journey/finding-inspiration-on-github).
+* Each repository on GitHub is owned by a person or an organization. You can interact with the people, repositories, and organizations by connecting and following them on GitHub. For more information, see [Discovering projects on GitHub](/en/get-started/exploring-projects-on-github/discovering-projects-on-github).
 
 * GitHub has a great support community where you can ask for help and talk to people from around the world. Join the conversation on [GitHub Community](https://github.com/orgs/community/discussions).

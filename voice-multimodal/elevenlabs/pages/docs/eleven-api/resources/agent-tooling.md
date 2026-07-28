@@ -124,8 +124,8 @@ How do I get my ElevenLabs API key?
 
 ## ElevenLabs MCP server
 
-The ElevenLabs MCP server is a local Model Context Protocol server for the ElevenLabs platform. It runs on your machine so tools like Claude and Cursor can call ElevenLabs APIs through simple prompts.
+The hosted MCP server is a remote Model Context Protocol server so tools like Claude and Cursor can call ElevenLabs APIs through simple prompts. It uses OAuth sign-in with your ElevenLabs account and requires no local installation. Connect from the Claude Desktop directory, or from any MCP client at `https://api.elevenlabs.io/v1/mcp`.
 
-#### [ElevenLabs MCP](https://github.com/elevenlabs/elevenlabs-mcp)
+#### [Hosted MCP server](/docs/eleven-agents/operate/hosted-mcp)
 
-Install and run the MCP server locally.
+Connect from Claude or any MCP client. No installation required.

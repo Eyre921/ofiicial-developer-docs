@@ -78,7 +78,7 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
   </Accordion>
 </AccordionGroup>
 
-## Pricing and Fees
+## Pricing and fees
 
 <AccordionGroup>
   <Accordion title="What are the fees for using OpenRouter?">
@@ -103,7 +103,7 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
   </Accordion>
 </AccordionGroup>
 
-## Models and Providers
+## Models and providers
 
 <AccordionGroup>
   <Accordion title="What LLM models does OpenRouter support?">
@@ -156,7 +156,7 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
   </Accordion>
 </AccordionGroup>
 
-## API Technical Specifications
+## API technical specifications
 
 <AccordionGroup>
   <Accordion title="What authentication methods are supported?">
@@ -207,7 +207,7 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
   </Accordion>
 </AccordionGroup>
 
-## Privacy and Data Logging
+## Privacy and data logging
 
 Please see our [Terms of Service](https://openrouter.ai/terms) and [Privacy Policy](https://openrouter.ai/privacy).
 
@@ -243,7 +243,7 @@ Please see our [Terms of Service](https://openrouter.ai/terms) and [Privacy Poli
   </Accordion>
 </AccordionGroup>
 
-## Credit and Billing Systems
+## Credit and billing systems
 
 <AccordionGroup>
   <Accordion title="What purchase options exist?">
@@ -312,7 +312,7 @@ Please see our [Terms of Service](https://openrouter.ai/terms) and [Privacy Poli
   </Accordion>
 </AccordionGroup>
 
-## Account Management
+## Account management
 
 <AccordionGroup>
   <Accordion title="How can I delete my account?">

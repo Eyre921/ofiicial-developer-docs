@@ -104,39 +104,60 @@ Please refer to our [pricing page](https://elevenlabs.io/pricing) for a detailed
 
 #### Subscription Management
 
-#### How do I downgrade or cancel my subscription?
+#### How do I cancel my subscription?
 
-When you cancel or downgrade your subscription, this won't take effect until the end of your current billing cycle. When this happens, you will lose any unused credits on your account.
+When you cancel your subscription, this won't take effect until the end of your current billing cycle. At this point, your account will be transferred onto our free plan, and you will lose any unused credits on your account.
+Here's how to cancel your subscription:
 
-Here's how to cancel or downgrade your subscription:
+Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
 
-Log in to your account at [https://elevenlabs.io](https://elevenlabs.io/)
+Click your profile icon in the top right corner of the website to open your account menu, then
+select **Subscription**.
 
-Click your profile icon in the top right corner of the website to open your account menu.
+Click **Billing**.
 
-Select <strong>Subscription</strong>.
+In the **Modify Plan** section, select **Cancel Plan**, then **Proceed**.
 
-Click <strong>Manage subscription</strong>. This will appear on the left of the window.
+In the next step, select **Cancel Subscription** to confirm.
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/42400545558417" alt="" />
+You'll see confirmation that your cancellation is scheduled for the end of your current billing
+cycle.
 
-To cancel your subscription, click <strong>Cancel subscription</strong> and proceed through
-through the cancellation process. Once you click <strong>Cancel Subscription</strong>, your
-cancelation will be scheduled for the end of your current billing cycle.
+At any time before the end of your billing cycle, you can click **Resume subscription** to
+cancel the cancellation request.
 
-To downgrade your subscription, click <strong>Downgrade</strong> and select the plan you want to
-downgrade to. Confirm the downgrade, and it will be scheduled for the end of your current
-billing cycle.
+Your browser can sometimes block popups from appearing or a button from working. If this happens,
+try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
+If you still have issues, please contact Support by emailing
+[team@elevenlabs.io](mailto:team@elevenlabs.io). Make sure to contact us from the email you
+currently use for your ElevenLabs account.
 
-You will see confirmation of the scheduled downgrade or cancellation. At any time before the end
-of your billing cycle, you can click <strong>Resume subscription</strong> to remain on your
-current subscription plan.
+#### How can I downgrade my subscription?
 
-<img src="https://help.elevenlabs.io/hc/article_attachments/34630854652305" alt="" />
+When you downgrade your subscription, this won't take effect until the end of your current billing cycle. At this point, your account will be downgraded to the selected plan, and you will lose any unused credits on your account.
 
-Your browser can sometimes block pop-ups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
+If you want to downgrade your account to our free plan, please see [How do I cancel my subscription?](/docs/help-center/account/cancellation-refunds/how-do-i-cancel-my-subscription)
 
-If you still have issues, please email [team@elevenlabs.io](mailto:team@elevenlabs.io) from the email you currently use for your ElevenLabs account.
+Here's how to downgrade your subscription to another paid plan:
+
+Log in to your account at [https://elevenlabs.io](https://elevenlabs.io).
+
+Click your profile icon in the top right corner of the website to open your account menu, then
+select [*Subscription*](https://elevenlabs.io/app/subscription).
+
+Click <strong>Billing</strong>.
+
+In the <strong>Modify Plan</strong> section, select the plan you would like to downgrade to from
+the <strong>Downgrade</strong> drop down selector.
+
+Once you confirm the downgrade, it will be scheduled for the end of your current billing cycle.
+
+You will see confirmation of the scheduled downgrade. At any time before the end of your billing
+cycle, you can click <strong>Cancel downgrade</strong> to remain on your current subscription.
+
+Your browser can sometimes block popups from appearing or a button from working. If this happens, try using a different browser. The browsers that generally work best are Chrome, Edge, and Firefox.
+
+If you still have issues, please contact Support by emailing [team@elevenlabs.io](mailto:team@elevenlabs.io). Make sure to contact us from the email you currently use for your ElevenLabs account.
 
 #### Can I pause my subscription?
 
@@ -148,17 +169,17 @@ You can resubscribe at any time any time from your [Subscription](https://eleven
 
 #### Do you offer annual or quarterly plans?
 
-Yes, we offer annual plans for all of our subscription tiers. At the moment, we do not offer quarterly plans. [ElevenReader](/docs/help-center/product/distribution-publishing/eleven-reader/what-is-eleven-reader) is currently free to use for all subscribers.
+Yes, we offer annual plans for all of our subscription tiers. At the moment, we do not offer quarterly plans.
 
 On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
 
 <img src="https://help.elevenlabs.io/hc/article_attachments/27833171668113" alt="" />
 
-Annual plans are billed on an annual cycle and will renew automatically unless canceled.
+Annual plans are billed on an annual cycle and will renew automatically unless cancelled.
 
-On the <strong>self-serve plans</strong>, your credits will reset each month. If, by the end of the month, you have unused credits, you can carry over up to two months' worth of unspent credits into your next.
+On the **self-serve plans**, your credits will reset each month. If, by the end of the month, you have unused credits, you can carry over up to two months' worth of unspent credits into your next.
 
-On the <strong>enterprise plans</strong>, you can decide if you want to receive your credits to reset each month or if you want them in a lump sum and then have them reset annually. If, by the end of the month or year, you have unused credits, you can carry over up to two months' worth of unspent credits into your next cycle.
+On the **Enterprise plans**, you can decide if you want to receive your credits to reset each month or if you want them in a lump sum and then have them reset annually. If, by the end of the month or year, you have unused credits, you can carry over up to two months' worth of unspent credits into your next cycle.
 
 If you upgrade to an annual plan while you have an active monthly subscription, this will start a new annual billing cycle. Any unused credits from your previous character quota will be added to the first month's quota of your new annual plan.
 
@@ -173,7 +194,7 @@ When upgrading your annual subscription, here's what happens:
 * If you have enabled usage based billing (legacy subscriptions only), and incurred a charge, this will be billed when you upgrade.
 * You will receive a prorated discount on your new plan. This discount is based on the unused months of your current plan, minus the two free months included in the annual subscription price.
 * You will be charged the full cost of your new annual plan, which also includes two free months, minus the prorated discount from your previous plan.
-* Your new annual subscription will begin immediately, resetting your billing cycle. It will automatically renew a year later unless canceled.  If you do cancel, the cancelation will take effect at the end of your current billing cycle.
+* Your new annual subscription will begin immediately, resetting your billing cycle. It will automatically renew a year later unless cancelled. If you do cancel, the cancellation will take effect at the end of your current billing cycle.
 
 #### Payment Methods
 
@@ -412,11 +433,9 @@ We email copies of your invoices and receipts to your account email address. You
 Log into your account, and go to the [Subscription](https://elevenlabs.io/app/subscription)
 page.
 
-Click <strong>Manage subscription</strong>
+Click <strong>Billing</strong>.
 
-Click <strong>Manage billing information</strong> at the bottom of the pop-up.
-
-Scroll down to see your <strong>Invoice History</strong>.
+Click <strong>View invoices</strong>.
 
 Click any invoice to view and download a PDF of the invoice and receipt.
 
@@ -426,12 +445,9 @@ Click any invoice to view and download a PDF of the invoice and receipt.
 
 Payment failures may happen for a variety of reasons:
 
-The payment was not verified on the card holders side. Upon checking out from the payment page
-users should be asked to verify their payment with their bank
-
-The user's bank may decline the payment
-
-The user had insufficient funds in their account
+* The payment was not verified on the card holder's side. Upon checking out from the payment page, users should be asked to verify their payment with their bank.
+* The user's bank may decline the payment.
+* The user had insufficient funds in their account.
 
 #### What is the extra verification step upon checking out from the payment page?
 
@@ -451,7 +467,7 @@ However, if you cancel the subscription after the current cycle ends, even if th
 
 You are eligible for a refund if a request is filed within 14 days of payment and no credit quota was used in the period for which you are seeking the refund.
 
-You can find our full refund policies in the [Terms of Service](https://elevenlabs.io/terms#:~:text=Refund%20policy).
+For details on how to request a refund, see [How can I request a refund?](/docs/help-center/account/cancellation-refunds/how-can-i-request-a-refund)
 
 #### How can I request a refund?
 
@@ -469,9 +485,9 @@ You cannot remove a card that’s set as the default payment method during an ac
 
 Here’s how to update your payment method and remove your old card:
 
-Go to your [Subscription ](https://elevenlabs.io/app/subscription)page.
+Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Manage subscription</strong>.
+Click <strong>Billing</strong>.
 
 In the pop-up, click <strong>Manage billing information</strong>.
 
@@ -499,15 +515,7 @@ The coupon link will activate and be automatically applied. You will see a notif
 confirming this.
 
 Click your profile icon in the top right corner of the website to open your account menu, then
-select{" "}
-
-<a href="https://elevenlabs.io/app/subscription">
-  <strong>
-    Subscription
-  </strong>
-</a>
-
-.
+click *Subscription*.
 
 Make sure you have monthly billing selected, then select <strong>Subscribe</strong> underneath
 the plan that your coupon is valid for.
@@ -517,4 +525,4 @@ successfully before you complete checkout.
 
 #### Why did I not get the first-month off coupon?
 
-We sometimes offer discounts on the first month of your subscription.  Since the coupon is only valid for your first purchase of a subscription tier, unfortunately, if the payment fails the first time and the invoice has to be voided, the coupon will also be voided and spent. You will have to reach out to support directly so they can look into it and issue a new coupon for you.
+We sometimes offer discounts on the first month of your subscription. This is only valid for the first month, and if you've already received the discount in the past, you won't receive it again.

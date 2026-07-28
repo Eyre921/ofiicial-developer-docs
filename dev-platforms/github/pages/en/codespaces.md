@@ -16,7 +16,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
-  Learn about what GitHub Codespaces are.
+  <p>Learn about what GitHub Codespaces are.</p>
 
 * [Understanding the codespace lifecycle](/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
 
@@ -24,7 +24,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Creating a codespace for a repository](/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository)
 
-  <p>You can create a codespace for a branch in a repository to develop online.</p>
+  You can create a codespace for a branch in a repository to develop online.
 
 * [Creating a codespace from a template](/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template)
 
@@ -32,7 +32,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Introduction to dev containers](/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers)
 
-  <p>When you work in a codespace, the environment you are working in is created using a development container, or dev container, hosted on a virtual machine.</p>
+  When you work in a codespace, the environment you are working in is created using a development container, or dev container, hosted on a virtual machine.
 
 * [Using source control in your codespace](/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace)
 

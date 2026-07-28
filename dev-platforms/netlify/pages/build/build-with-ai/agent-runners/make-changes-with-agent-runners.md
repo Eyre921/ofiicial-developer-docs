@@ -20,6 +20,37 @@ Before you begin, you must have the following:
 - a Team Owner, Developer, [Internal Builder](/manage/accounts-and-billing/team-management/roles-and-permissions#internal-builder), or Publisher role on your Netlify team
 - [Netlify AI features enabled](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features)
 
+## Agent run modes
+
+When you start an agent run, you select a mode that determines what the agent does with your prompt. Both modes are available for all supported AI agents.
+
+### Build mode
+
+Build mode is the default. The agent makes changes to your project's files and code based on your prompt and creates a [Deploy Preview](/deploy/compare-preview-options) so you can review the results before you ship them. Use Build mode when you want the agent to fix, update, or add code, such as fixing a bug, updating content, or creating a new landing page.
+
+### Ask mode
+
+In Ask mode, the agent answers questions about your project without making any changes to your code or creating a Deploy Preview. Use Ask mode to explore or understand a project before you make changes, such as learning how a feature works or planning an approach before you switch to Build mode.
+
+Ask mode is read-only: the agent can read your whole project but can't edit files, run commands, deploy, or configure settings for you. Get the most out of Ask mode with prompts that investigate, explain, diagnose, or produce a plan:
+
+- **Scope the question**: choose a specific feature, file, or symptom instead of the whole project.
+- **Name the output you want**:  a list of files, a root cause, or a step-by-step plan.
+- **Ask for understanding or a plan**: To change code, switch to Build mode.
+
+#### Example prompts
+
+- **Understand how authentication works:**
+  > Walk me through how authentication is implemented in this project. Which files handle it, and where is the token stored?
+- **Inventory work before a migration:**
+  > Plan out how we can migrate to the latest version of Astro.
+- **Generate a spec to hand to a Build mode run:**
+  > Describe in detail how our main site handles builds that require a build step, so I can instruct another agent run to implement the same flow on our marketing site.
+- **Think through an architecture or design decision:**
+  > How would you architect a system for configuring MCP servers that works across multiple AI agents?
+- **Ask questions about your database:**
+  > Which data fields are required to add a new entry to the users list?
+
 ## Overview
 
 This guide will help you make changes to an existing project through Agent Runners in your Netlify project dashboard.
@@ -33,8 +64,13 @@ To start an agent run to make changes to your project, follow these steps:
 1. Go to your Netlify project dashboard. Under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Gemini, or OpenAI Codex.
   ![Empty prompt field on Project overview page](/images/build-with-an-ai-agent-from-project-overview.png)
 2. Add your prompt. For examples of prompts, check out our [prompt examples](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners). You can optionally add more context as a file or image. Or you can add project context that applies to all agent runs, such as project-specific prompt guidelines or a link to a publicly available design system or style guide. 
-3. Choose **Run task**. 
-4. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks.
+3. Select a mode from the mode dropdown. To make changes, use the default **Build** mode so your agent can make code or file changes. To get answers or make plans without changing your project, use  **Ask** mode. For details, see [Agent run modes](#agent-run-modes).
+4. Choose **Run task**. 
+5. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks.
+
+### Note
+
+Because Ask mode doesn't change your code, the steps below for previewing and shipping updates apply only to Build mode runs.
 
 ### 2. Check the status of your agent run
 

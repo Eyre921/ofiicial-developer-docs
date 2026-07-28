@@ -12,6 +12,12 @@ path: docs/eleven-agents/customization/voice
 
 You can customize various aspects of your AI agent's voice to create a more natural and engaging conversation experience. This includes controlling pronunciation, speaking speed, and language-specific voice settings.
 
+#### Manage agents from your AI assistant
+
+You can also make these changes conversationally. The [hosted MCP
+server](/docs/eleven-agents/operate/hosted-mcp) lets Claude and other MCP clients create,
+configure, and manage your agents through natural language.
+
 ## Available customizations
 
 #### [Multi-voice support](/docs/eleven-agents/customization/voice/multi-voice-support)

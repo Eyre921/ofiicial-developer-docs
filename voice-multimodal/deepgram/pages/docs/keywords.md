@@ -32,7 +32,7 @@ Training a custom model is always the most effective and accurate way to recogni
 
 #### Moving to Keyterm Prompting?
 
-The `keywords=KEYWORD:INTENSIFIER` syntax on this page is specific to the `keywords` feature. When you migrate to [Keyterm Prompting](/docs/keyterm) for Nova-3, drop the `:INTENSIFIER` weight—`keyterm` does not support weights or intensifiers, so `keyterm=term:0.15` is invalid. Pass plain terms instead, repeating the `keyterm` parameter for multiple terms (`keyterm=term1&keyterm=term2`).
+The `keywords=KEYWORD:INTENSIFIER` syntax on this page is specific to the `keywords` feature. When you migrate to [Keyterm Prompting](/docs/keyterm) for Nova-3, drop the `:INTENSIFIER` weight—`keyterm` does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected; the weight is silently ignored and the entire value is treated as a literal keyterm. Pass plain terms instead, repeating the `keyterm` parameter for multiple terms (`keyterm=term1&keyterm=term2`).
 
 ## Enable Feature
 

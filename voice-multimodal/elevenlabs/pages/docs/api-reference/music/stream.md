@@ -463,7 +463,7 @@ components:
 
 ```json
 [
-  "UklGRiQAAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQAAAAA="
+  "string"
 ]
 ```
 

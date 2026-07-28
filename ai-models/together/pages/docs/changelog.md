@@ -4,6 +4,16 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 28, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `MiniMaxAI/MiniMax-M2.7`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="July 27, 2026">
   ## New models available for fine-tuning
 

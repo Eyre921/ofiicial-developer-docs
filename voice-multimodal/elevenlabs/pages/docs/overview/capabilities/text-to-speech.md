@@ -36,6 +36,10 @@ Learn how to integrate text to speech into your application.
 
 Full API reference for the Text to Speech endpoint.
 
+#### [MCP](/docs/eleven-agents/operate/hosted-mcp)
+
+Generate speech from Claude or any MCP client with the hosted MCP server.
+
 ### Voice quality
 
 For real-time applications, Flash v2.5 provides ultra-low 75ms latency, while Multilingual v2 delivers the highest quality audio with more nuanced expression.

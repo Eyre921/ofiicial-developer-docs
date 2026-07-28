@@ -660,8 +660,8 @@ Availability depends on your charge type and Radar tier:
 
 | Rule type | Availability |
 | --- | --- |
-| Transaction rules | Available for [destination charges](https://docs.stripe.com/connect/destination-charges.md) and [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md). Available for [direct charges](https://docs.stripe.com/connect/direct-charges.md) only if you have access to [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md). |
-| Account rules | Available only with [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md). |
+| Transaction rules | Available for [destination charges](https://docs.stripe.com/connect/destination-charges.md), [direct charges](https://docs.stripe.com/connect/direct-charges.md), or [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md). |
+| Account rules | Availability depends on your Radar tier. |
 | Treasury transaction rules | This private preview is only available for certain Radar plans. Contact your Stripe account team for more information. |
 
 #### Transaction rules

@@ -67,7 +67,7 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 | `anthropic` | `claude-sonnet-5`          | `Advanced`              |
 | `anthropic` | `claude-sonnet-4-6`        | `Advanced`              |
 | `anthropic` | `claude-sonnet-4-5`        | `Advanced`              |
-| `anthropic` | `claude-4-5-haiku`         | `Standard`              |
+| `anthropic` | `claude-haiku-4-5`         | `Standard`              |
 | `anthropic` | `claude-3-5-haiku-latest`  | `Standard`              |
 | `anthropic` | `claude-sonnet-4-20250514` | `Advanced` (Deprecated) |
 
@@ -293,7 +293,7 @@ Fallback providers do not need to use the same `provider.type`. You can mix prov
       {
         "provider": {
           "type": "anthropic",
-          "model": "claude-4-5-haiku",
+          "model": "claude-haiku-4-5",
           "temperature": 0.7
         }
       }

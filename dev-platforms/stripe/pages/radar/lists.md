@@ -8,11 +8,11 @@ path: radar/lists
 
 Create your own lists of information to block, allow, or review matching payments.
 
-Stripe Radar for Fraud Teams lets you create lists of specific types of information and use them in [rules](https://docs.stripe.com/radar/rules.md). For example, you might want to create rules using a list of:
+If [your Radar plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can create lists of specific types of information and use them in [rules](https://docs.stripe.com/radar/rules.md). For example, you might want to create rules using a list of:
 
-- **Customer IDs for trusted customers**. Use this list to automatically allow payments by these customers.
-- **Email addresses you tied to fraud**. Automatically block any payment with an email address on this list.
-- **Suspicious IP addresses**. Place payments into review that have a matching IP address.
+- **Customer IDs for trusted customers**: Use this list to automatically allow payments by these customers.
+- **Email addresses you tied to fraud**: Automatically block any payment with an email address on this list.
+- **Suspicious IP addresses**: Place payments into review that have a matching IP address.
 
 Lists make rules more manageable. Instead of creating individual rules for one item at a time, you can add similar types of information to a list (for example, email addresses) for a rule to use automatically.
 
@@ -26,10 +26,10 @@ Stripe Radar includes a set of default lists to help you get started. Your [defa
 
 |  |
 | **Card BIN** | The Bank Identification Number (BIN) of the card used to make the payment. This is the first six digits of the card number (for example, `424242`). |
-| **Card country** | The two-letter code corresponding to the country where the card was issued (for example, `US`). |
+| **Card country** | The two-letter code that corresponds to the country where the card was issued (for example, `US`). |
 | **Card fingerprint** | The [fingerprint](https://docs.stripe.com/api.md#card_object-fingerprint) of the card used to make the payment. The card fingerprint is a unique Stripe identifier of a particular card number (for example, orWziM4j7CiRL8). It’s a property of the [Card](https://docs.stripe.com/api.md#card_object) object and you can see it in the Dashboard when viewing a payment. |
 | **Charge description** | The [description](https://docs.stripe.com/api.md#charge_object-description) supplied with the payment. |
-| **Client IP country** | The two-letter code corresponding to the country-level geolocation of the IP address where the payment originates (for example, `GB`). |
+| **Client IP country** | The two-letter code that corresponds to the country-level geolocation of the IP address where the payment originates (for example, `GB`). |
 | **Client IP address** | The IP address where the payment originates (for example, `13.112.224.240`). |
 | **Customer ID** | The [customer ID](https://docs.stripe.com/api.md#charge_object-customer) supplied with the payment (for example, `cus_AeFLnRaI51AbRi`). |
 | **Email** | The first email derived from the `Charge`, `Card`, or `Customer` objects, in that order (for example, `jenny.rosen@example.com`). |
@@ -40,7 +40,7 @@ Stripe Radar includes a set of default lists to help you get started. Your [defa
 |  |
 | **ACH fingerprint** | The [fingerprint](https://docs.stripe.com/api/customer_bank_accounts/object.md#customer_bank_account_object-fingerprint) of the bank account used to make the payment. The ACH fingerprint is a unique Stripe identifier of a particular ACH bank account (for example, orWziM4j7CiRL8). It’s a property of the [Bank Account](https://docs.stripe.com/api/customer_bank_accounts/object.md) object and you can see it in the Dashboard when viewing a payment. |
 | **Charge description** | The [description](https://docs.stripe.com/api.md#charge_object-description) supplied with the payment. |
-| **Client IP country** | The two-letter code corresponding to the country-level geolocation of the IP address where the payment originates (for example, `GB`). |
+| **Client IP country** | The two-letter code that corresponds to the country-level geolocation of the IP address where the payment originates (for example, `GB`). |
 | **Client IP address** | The IP address where the payment originates (for example, `13.112.224.240`). |
 | **Customer ID** | The [customer ID](https://docs.stripe.com/api.md#charge_object-customer) supplied with the payment (for example, `cus_AeFLnRaI51AbRi`). |
 | **Email** | The first email derived from the `Charge`, `Bank Account`, or `Customer` objects, in that order (for example, `jenny.rosen@example.com`). |
@@ -51,7 +51,7 @@ Stripe Radar includes a set of default lists to help you get started. Your [defa
 |  |
 | **SEPA Direct Debit fingerprint** | The [fingerprint](https://docs.stripe.com/api/customer_bank_accounts/object.md#customer_bank_account_object-fingerprint) of the bank account used to make the payment. The SEPA fingerprint is a unique Stripe identifier of a particular SEPA bank account (for example, orWziM4j7CiRL8). It’s a property of the [Bank Account](https://docs.stripe.com/api/customer_bank_accounts/object.md) object and you can see it in the Dashboard when viewing a payment. |
 | **Charge description** | The [description](https://docs.stripe.com/api.md#charge_object-description) supplied with the payment. |
-| **Client IP country** | The two-letter code corresponding to the country-level geolocation of the IP address where the payment originates (for example, `GB`). |
+| **Client IP country** | The two-letter code that corresponds to the country-level geolocation of the IP address where the payment originates (for example, `GB`). |
 | **Client IP address** | The IP address where the payment originates (for example, `13.112.224.240`). |
 | **Customer ID** | The [customer ID](https://docs.stripe.com/api.md#charge_object-customer) supplied with the payment (for example, `cus_AeFLnRaI51AbRi`). |
 | **Email** | The first email derived from the `Charge`, `Bank Account`, or `Customer` objects, in that order (for example, `jenny.rosen@example.com`). |
@@ -85,11 +85,9 @@ You can edit or remove lists you’ve created by clicking the overflow menu (**�
 
 ## Managing list items
 
-Users of Stripe Radar for Fraud Teams can also add items directly to lists from the Dashboard.
+You can view, add, or remove items when viewing a list in the [Dashboard](https://dashboard.stripe.com/test/radar/lists). Each item includes information about when it was added and by whom. You can filter items by value, author, and date added. Each list can contain up to 50,000 items.
 
-You can view and remove items when viewing a list in the [Dashboard](https://dashboard.stripe.com/test/radar/lists). Each item includes information about when it was added and by whom. You can filter items by value, author, and date added. Each list can contain up to 50,000 items.
-
-For card payments, you can [refund and report a payment as fraudulent](https://docs.stripe.com/radar/risk-evaluation.md#feedback-on-risk-evaluations) to trigger the following actions:
+For card payments, you can [refund and report a payment as fraudulent](https://docs.stripe.com/radar/transaction-risk-prevention.md#feedback-on-risk-evaluations) to trigger the following actions:
 
 - Adds the card fingerprint to your default card fingerprint block list. If the payment is made using a [Customer](https://docs.stripe.com/api.md#customer_object) object, it adds the card fingerprints of any other cards also added to the list.
 - Adds any email address associated with the payment to your default email block list. It takes the email address from:
@@ -105,7 +103,7 @@ When adding string list items in the Dashboard, you can select the length of tim
 
 Allowlists can allow fraudsters to operate without restrictions and bypass controls, particularly if unnecessary entries aren’t regularly removed. For this reason, entries on default fingerprint allowlists have a maximum lifespan of 30 days.
 
-You can create custom payment method fingerprint lists with longer or indefinite expiration windows for your custom rules using Stripe Radar for Fraud Teams.
+You can create custom payment method fingerprint lists with longer or indefinite expiration windows for your custom rules.
 
 ## See also
 

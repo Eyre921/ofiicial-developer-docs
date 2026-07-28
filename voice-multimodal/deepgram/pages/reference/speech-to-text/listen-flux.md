@@ -202,9 +202,11 @@ components:
         `keyterm` accepts plain terms only. Unlike the legacy `keywords`
         feature,
 
-        it does not support weights or intensifiers, so a value such as
+        it does not support weights or intensifiers. Appending one
 
-        `keyterm=term:0.15` is invalid.
+        (for example, `keyterm=term:0.15`) is not rejected—the weight is
+
+        silently ignored and the entire value is treated as a literal keyterm.
 
 
         To boost multiple separate keyterms, repeat the `keyterm` parameter

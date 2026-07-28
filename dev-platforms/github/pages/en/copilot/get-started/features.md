@@ -38,6 +38,10 @@ These features can work autonomously without direct human supervision. However, 
 
 A command line interface that lets you use Copilot in your terminal. Use the CLI to add features or fix bugs, then create a pull request. Start Copilot working on a task in your terminal, then continue working in the same session on GitHub.com, or on your mobile. See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
 
+### GitHub Copilot app
+
+A desktop application for agent-driven development. From the app, you can run multiple agent sessions in parallel across your repositories, manage issues and pull requests, and set up automations to run tasks on a schedule. See [About the GitHub Copilot app](/en/copilot/concepts/agents/github-copilot-app).
+
 ### Copilot cloud agent
 
 An autonomous AI agent that can research a repository, create an implementation plan, and make code changes on a branch. You can review the diff, iterate, and create a pull request when you're ready. You can also assign a GitHub issue to Copilot or ask it to open a pull request directly to complete a task. See [GitHub Copilot cloud agent](/en/copilot/how-tos/use-copilot-agents/cloud-agent).

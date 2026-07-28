@@ -10,7 +10,7 @@ Accept, settle, and pay out funds in multiple currencies.
 
 If you’re a Connect platform looking to offer multi-currency settlement capabilities to your connected accounts, see our [Connect docs](https://docs.stripe.com/connect/multicurrency-settlement.md).
 
-Stripe automatically converts all incoming funds into your default currency. With multi-currency settlement, you can configure your account to accrue balances and get paid out in additional currencies without incurring foreign exchange fees. Where supported, you can use [instant currency conversion](https://docs.stripe.com/instant-currency-conversion.md) to convert between currencies.
+Stripe automatically converts all incoming funds into your default currency. With multi-currency settlement, you can configure your account to accrue balances and get paid out in additional currencies without automatically converting those funds. Where supported, you can use [instant currency conversion](https://docs.stripe.com/instant-currency-conversion.md) to convert between currencies.
 
 ## Availability
 
@@ -39,7 +39,9 @@ You must provide a separate supported bank account for each settlement currency 
 
 After you meet a currency’s [minimum payout amount](https://docs.stripe.com/payouts/multicurrency-settlement.md#multicurrency-settlement-fees), payouts follow your configured [payout schedule](https://docs.stripe.com/connect/manage-payout-schedule.md), whether manual or automatic. You can’t pay out until your balance for the currency meets the minimum payout amount.
 
-## Fees and minimum payout amounts for multi-currency settlement 
+## Settlement pricing and minimum payout amounts 
+
+Stripe charges the applicable fee when funds settle into a non-primary settlement currency, not when you initiate a payout. The following table shows the pricing, supported bank-account countries, and minimum payout amounts for each settlement currency.
 [See table on original page](https://docs.stripe.com/payouts/multicurrency-settlement)
 ## See also
 

@@ -215,9 +215,9 @@ components:
 {
   "rules": [
     {
-      "alias": "color",
-      "string_to_replace": "colour",
-      "type": "alias"
+      "alias": "string",
+      "string_to_replace": "string",
+      "type": "string"
     }
   ]
 }
@@ -229,7 +229,7 @@ components:
 {
   "id": "5xM3yVvZQKV0EfqQpLrJ",
   "version_id": "5xM3yVvZQKV0EfqQpLr2",
-  "version_rules_num": 6
+  "version_rules_num": 5
 }
 ```
 
@@ -241,13 +241,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 async function main() {
     const client = new ElevenLabsClient();
     await client.pronunciationDictionaries.rules.add("pronunciation_dictionary_id", {
-        rules: [
-            {
-                type: "alias",
-                alias: "color",
-                stringToReplace: "colour",
-            },
-        ],
+        rules: [],
     });
 }
 main();
@@ -256,18 +250,12 @@ main();
 
 ```python
 from elevenlabs import ElevenLabs
-from elevenlabs.pronunciation_dictionaries.rules import PronunciationDictionaryRule_Alias
 
 client = ElevenLabs()
 
 client.pronunciation_dictionaries.rules.add(
     pronunciation_dictionary_id="pronunciation_dictionary_id",
-    rules=[
-        PronunciationDictionaryRule_Alias(
-            alias="color",
-            string_to_replace="colour",
-        )
-    ],
+    rules=[],
 )
 
 ```
@@ -286,7 +274,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules"
 
-	payload := strings.NewReader("{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    }\n  ]\n}")
+	payload := strings.NewReader("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -314,7 +302,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    }\n  ]\n}"
+request.body = "{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -326,7 +314,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules")
   .header("Content-Type", "application/json")
-  .body("{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    }\n  ]\n}")
+  .body("{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}")
   .asString();
 ```
 
@@ -340,9 +328,9 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/pronunciation
   'body' => '{
   "rules": [
     {
-      "alias": "color",
-      "string_to_replace": "colour",
-      "type": "alias"
+      "alias": "string",
+      "string_to_replace": "string",
+      "type": "string"
     }
   ]
 }',
@@ -360,7 +348,7 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/pronunciation-dictionaries/pronunciation_dictionary_id/add-rules");
 var request = new RestRequest(Method.POST);
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"rules\": [\n    {\n      \"alias\": \"color\",\n      \"string_to_replace\": \"colour\",\n      \"type\": \"alias\"\n    }\n  ]\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"rules\": [\n    {\n      \"alias\": \"string\",\n      \"string_to_replace\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -370,9 +358,9 @@ import Foundation
 let headers = ["Content-Type": "application/json"]
 let parameters = ["rules": [
     [
-      "alias": "color",
-      "string_to_replace": "colour",
-      "type": "alias"
+      "alias": "string",
+      "string_to_replace": "string",
+      "type": "string"
     ]
   ]] as [String : Any]
 

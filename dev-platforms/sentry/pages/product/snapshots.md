@@ -38,6 +38,7 @@ Snapshots works for any platform with a frontend and most platforms have a numbe
 
 * [iOS](https://docs.sentry.io/platforms/apple/guides/ios/snapshots.md)
 * [Android](https://docs.sentry.io/platforms/android/snapshots.md)
+* [Flutter](https://docs.sentry.io/platforms/flutter/snapshots.md)
 
 - #### [Uploading Snapshots](https://docs.sentry.io/product/snapshots/uploading-snapshots.md)
 

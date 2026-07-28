@@ -17,6 +17,10 @@ This page covers features and tools you can use to create deploys with or withou
 
 When you create a deploy manually without continuous deployment, Netlify does not run a build command.
 
+### Note - New projects can be private by default
+
+On Credit-based plans, if your team has private by default enabled, new projects start private no matter how you create them. Only your team can view a project until you make it public. Learn more about [project visibility](/manage/security/secure-access-to-sites/project-visibility).
+
 ## Deploy with AI agents
 
 You can build with an AI agent directly from the Netlify dashboard using Agent Runners with Claude Code, OpenAI Codex, and Google Gemini as your agent. Every agent run that makes a file change automatically generates a [Deploy Preview](/deploy/deploy-types/deploy-previews), so you can review changes before they go live.
@@ -46,7 +50,7 @@ You can also use the CLI to [set up continuous deployment](/api-and-cli-guides/c
 
 You can also use the CLI to [create manual deploys](/api-and-cli-guides/cli-guides/get-started-with-cli#manual-deploys) without continuous deployment. For example, you can deploy directly to your production site from the command line with `netlify deploy --prod`.
 
-To deploy without logging in or creating a Netlify account, use `netlify deploy --allow-anonymous`. This creates a temporary project with a live URL that you can [claim within one hour](/api-and-cli-guides/cli-guides/get-started-with-cli#anonymous-deploys).
+To deploy without logging in or creating a Netlify account, use `netlify deploy --allow-anonymous`. This creates a temporary project with a live URL that you can [claim within one hour](/api-and-cli-guides/cli-guides/get-started-with-cli#anonymous-deploys). When you claim it, the project adopts the default project visibility set by the Team Owner.
 
 ![site deploys cli create manual deploy](/images/site-deploys-cli-create-manual-deploy.png)
 

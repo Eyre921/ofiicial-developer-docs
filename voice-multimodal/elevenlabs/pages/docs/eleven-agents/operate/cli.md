@@ -20,6 +20,13 @@ The ElevenLabs CLI allows you to access your ElevenLabs agents from your termina
 
 Find the [complete source code and contribute on GitHub](https://github.com/elevenlabs/cli).
 
+#### No install required
+
+If you work from Claude or another MCP client, the [hosted MCP
+server](/docs/eleven-agents/operate/hosted-mcp) offers agent management tools with no local
+installation. Use the CLI when you want agents in version control; use the hosted MCP server for
+conversational management.
+
 ## Installation
 
 The CLI requires Node.js version 16.0.0 or higher.

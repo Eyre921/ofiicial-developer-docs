@@ -10,11 +10,11 @@ path: docs/client-sdks/typescript/sdks/responses/readme
 
 # Responses
 
-> responses endpoints
+> OpenAI-compatible Responses API endpoints
 
 ## Overview
 
-responses endpoints
+OpenAI-compatible Responses API endpoints
 
 ### Available Operations
 

@@ -50,7 +50,7 @@ Use filters to limit your search terms so that they only apply to specific field
 | `number:` | The unique number identifying an invoice. | **number:06b2b1a642-0023** |
 | `postal:` | The ZIP or postal code associated with an object. | **postal:12345** |
 | `receipt:` | The receipt number used in a payment or refund email receipt. | **receipt:3330-2392** |
-| `risk_level:` | The [risk level](https://docs.stripe.com/radar/risk-evaluation.md) of a payment determined by [Radar](https://docs.stripe.com/radar.md). | **risk\_level:elevated** |
+| `risk_level:` | The [risk level](https://docs.stripe.com/radar/transaction-risk-prevention.md) of a payment determined by [Radar](https://docs.stripe.com/radar.md). | **risk\_level:elevated** |
 | `status:` | The status of an object. | **status:canceled** |
 | `type:` | The type of [PaymentMethod](https://docs.stripe.com/payments/payment-methods.md) or [Source](https://docs.stripe.com/sources.md) used to create a payment. | **type:ideal** |
 | `usage:` | The [usage](https://docs.stripe.com/sources.md#single-use-or-reusable) availability of a [Sources](https://docs.stripe.com/sources.md) payment method. | **usage:single\_use** |

@@ -12,9 +12,9 @@ You cannot remove a card that’s set as the default payment method during an ac
 
 Here’s how to update your payment method and remove your old card:
 
-Go to your [Subscription ](https://elevenlabs.io/app/subscription)page.
+Go to your [Subscription](https://elevenlabs.io/app/subscription) page.
 
-Click <strong>Manage subscription</strong>.
+Click <strong>Billing</strong>.
 
 In the pop-up, click <strong>Manage billing information</strong>.
 

@@ -1,10 +1,10 @@
 ---
-title: "Collect customer tax IDs"
+title: "Collect customer tax IDs with Checkout"
 source: https://docs.stripe.com/tax/checkout/tax-ids.md
 path: tax/checkout/tax-ids
 ---
 
-# Collect customer tax IDs
+# Collect customer tax IDs with Checkout
 
 Learn how to collect VAT and other customer tax IDs during checkout.
 

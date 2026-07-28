@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 319 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 320 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -145,6 +145,7 @@
 - `docs/kimi-k2-quickstart` — [Kimi K2 quickstart](pages/docs/kimi-k2-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2-quickstart)
 - `docs/kimi-k2-thinking-quickstart` — [Kimi K2 Thinking quickstart](pages/docs/kimi-k2-thinking-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2-thinking-quickstart)
 - `docs/kimi-k2.6-quickstart` — [Kimi K2.6 quickstart](pages/docs/kimi-k2.6-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2.6-quickstart)
+- `docs/kimi-k3-quickstart` — [Kimi K3 quickstart](pages/docs/kimi-k3-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k3-quickstart)
 - `docs/kueue-on-gpu-clusters` — [Queue GPU jobs with Kueue](pages/docs/kueue-on-gpu-clusters.md) · [原文](https://docs.together.ai/docs/kueue-on-gpu-clusters)
 - `docs/langgraph` — [LangGraph](pages/docs/langgraph.md) · [原文](https://docs.together.ai/docs/langgraph)
 - `docs/mixture-of-agents` — [Together mixture of agents (MoA)](pages/docs/mixture-of-agents.md) · [原文](https://docs.together.ai/docs/mixture-of-agents)

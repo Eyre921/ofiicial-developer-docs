@@ -10,19 +10,19 @@ Use fraud prevention rules to help protect your business.
 
 Stripe Radar provides built-in rules to help detect and guard against fraud risk across all [supported payment methods](https://docs.stripe.com/radar/supported-payment-methods.md). All transactions are screened using Radar’s default rules.
 
-Radar for Fraud Teams and [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md) let you use the [Dashboard](https://dashboard.stripe.com/test/radar/rules) to create [custom rules](https://docs.stripe.com/radar/supported-payment-methods.md#custom-risk-settings) based on your business logic. For example, you can:
+If [your Radar plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can also create [custom rules](https://docs.stripe.com/radar/supported-payment-methods.md#custom-risk-settings) in the [Dashboard](https://dashboard.stripe.com/test/radar/rules). For example, you can:
 
 - **Request 3D Secure** (3DS) for all payments that support it and are made by a new customer
 - **Allow** all payments from your call center’s IP address
 - **Block** payments made from a location or card issued outside your country
 - **Review** all payments greater than 1,000 USD that were made with a prepaid card
-- **Review and automatically pause payouts** on accounts that have a high dispute rate (with Radar for Platforms)
+- **Review and automatically pause payouts** on accounts that have a high dispute rate
 
 > EU businesses might be affected by the [Geo-blocking Regulation](https://support.stripe.com/questions/eu-geo-blocking-regulation-changes) and its prohibitions on blocking payments from customers based in EU member states.
 
 ## Built-in rules
 
-The following rules are available by default, unless flagged as custom rules, which are only available if you use Radar for Fraud Teams or Radar for Platforms.
+The following rules are available by default, unless flagged as custom rules.
 
 > #### Block fraud automatically
 > 
@@ -30,14 +30,14 @@ The following rules are available by default, unless flagged as custom rules, wh
 
 ### AI risk checks 
 
-All Radar offerings provide a set of default rules based on the judgments of our AI models.
+Radar provides a set of default rules based on our AI models.
 
 | Radar rule | Description |
 | --- | --- |
-| `if :risk_level: = 'highest'` (Deprecated) | The rule blocks and won’t process payments with a high risk of fraud. This rule is enabled by default for all Radar users. |
-| `if :risk_level: = 'elevated'` | The default behavior for Radar for Fraud Teams and Radar for Platforms is to place payments into review that we suspect have an elevated risk of fraud. |
+| `if :risk_level: = 'highest'` (Deprecated) | The rule blocks and won’t process payments with a high risk of fraud. This rule is enabled by default. |
+| `if :risk_level: = 'elevated'` | By default, Stripe requires review of payments that we suspect have an elevated risk of fraud. |
 
-Radar for Platforms has additional account-level AI models that are incorporated through two default rules:
+The following default rules incorporate additional account-level AI models:
 
 `if :account_risk_level: = 'highest'`
 
@@ -67,7 +67,7 @@ Effective December 17, 2024, the Dashboard shows these rules to existing custome
 | Radar rule | Description |
 | --- | --- |
 | `if CVC verification fails` | Enable this rule to block payments that fail a card issuer’s CVC verification check. This rule doesn’t block payments where the customer doesn’t provide the CVC number because they, for example, use a *wallet* (A digital wallet is a contactless payment method that stores payment options, such as credit and debit cards, allowing customers to use a smart device to make a purchase), or their card issuer doesn’t support its verification. |
-| `if postal code verification fails` | Enable this rule to block payments payments when they fail a card issuer’s postal code verification check. This rule doesn’t block payments where the customer doesn’t provide the postal code, or their card issuer doesn’t support its verification. |
+| `if postal code verification fails` | Enable this rule to block payments when they fail a card issuer’s postal code verification check. This rule doesn’t block payments where the customer doesn’t provide the postal code, or their card issuer doesn’t support its verification. |
 
 ### Built-in rules to request 3D Secure 
 
@@ -81,7 +81,7 @@ Stripe supports three legacy built-in rules to request 3DS when using Radar with
 | --- | --- |
 | `if 3D Secure is recommended for card` (Deprecated) | Enable this rule to prompt the customer for 3DS authentication based on risk. |
 | `if 3D Secure is supported for card` (Deprecated) | Enable this rule to prompt the customer for 3DS authentication, as long as their card supports it. |
-| `if 3D Secure is required for card` (Deprecated) | Enable this rule to prompt the customer for 3DS authentication, if the card historically [required 3DS](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#three-ds-cards). Regardless of this rules, Stripe automatically triggers 3DS:
+| `if 3D Secure is required for card` (Deprecated) | Enable this rule to prompt the customer for 3DS authentication, if the card historically [required 3DS](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#three-ds-cards). Regardless of this rule, Stripe automatically triggers 3DS:
 - If a soft decline code indicates the issuer requires 3DS.
 - In adherence to regulations, such as the PSD2 [Strong Customer Authentication](https://stripe.com/guides/strong-customer-authentication) mandate. |
 
@@ -91,7 +91,7 @@ Requesting 3DS doesn’t necessarily mean the issuer actually performs 3DS. Lear
 
 ### Custom rules to request 3D Secure  and act on specific outcomes
 
-After attempting 3DS authentication, if you have [Radar for Fraud Teams](https://stripe.com/radar/fraud-teams) or [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md), you can evaluate the result in allow, block, or review rules.
+After attempting 3DS authentication, you can evaluate the result in allow, block, or review rules.
 
 See below for the most important attributes for custom Radar rules.
 
@@ -99,7 +99,7 @@ See below for the most important attributes for custom Radar rules.
 | --- | --- |
 | `is_3d_secure` | This is true if the card is supported, 3DS was attempted by the issuer, and the customer didn’t fail authentication. We generally recommend using this in block rules. |
 | `is_3d_secure_authenticated` | This is true if 3DS was attempted by the issuer and the customer successfully completed a full authentication. Using this attribute in a block rule excludes legitimate transactions that might have an SCA exemption or don’t fall into a clear failure or successful authentication, such as processing errors. |
-| `has_liability_shift` | This is true if Stripe expects *liability shift* (With some 3D Secure transactions, the liability for fraudulent chargebacks (stolen or counterfeit cards) shifts from you to the card issuer) to cover the payment. This might not always be the same as [3DS](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments), for example Apple Pay in certain regions. |
+| `has_liability_shift` | This is true if Stripe expects a *liability shift* (With some 3D Secure transactions, the liability for fraudulent chargebacks (stolen or counterfeit cards) shifts from you to the card issuer) to cover the payment. This might not always be the same as [3DS](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments), for example Apple Pay in certain regions. |
 
 For custom rules, we recommend keeping `Request 3DS` and `Block` rules aligned depending on your [risk appetite](https://stripe.com/guides/improve-fraud-management-with-radar-for-fraud-teams-and-stripe-data). However, don’t block payments where 3DS isn’t supported, such as from some wallets.
 
@@ -159,7 +159,7 @@ You want to use Radar to request 3DS on all new cards and manually review paymen
 | --- | --- |
 | `Request 3D Secure if is_missing(:seconds_since_card_first_seen:)` | This rule requests 3DS on all cards that haven’t been used on your account. To reduce user friction, you can add a condition to only request 3DS if `:risk_level: != 'normal'`. |
 | `Request 3D Secure if :is_new_card_on_customer:` | As an alternative to the rule above, this rule requests 3DS on all cards that are newly used on a customer-configured [Account](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer) or [Customer](https://docs.stripe.com/api/customers.md). To reduce user friction, you can add a condition to only request 3DS if `:risk_level: != 'normal'`. |
-| `Review if not :is_3d_secure and not:is_off_session: and :digital_wallet: != 'apple_pay' and not(:digital_wallet: = 'android_pay' and :has_cryptogram:)` | This rule marks payments where 3DS is expected, but isn’t supported for manual review. It ignores off-session payments, such as recurring subscription charges, and wallets, such as Apple Pay or Google Pay. Payments marked for review continue to authorization and can give additional risk factors, such as issuer CVC checks. |
+| `Review if not :is_3d_secure and not:is_off_session: and :digital_wallet: != 'apple_pay' and not(:digital_wallet: = 'android_pay' and :has_cryptogram:)` | This rule marks payments where 3DS is expected, but isn’t supported for manual review. It ignores off-session payments, such as recurring subscription charges, and wallets, such as Apple Pay or Google Pay. Payments marked for review continue to the authorization process and can give additional risk factors, such as issuer CVC checks. |
 
 In this case, without a block rule, we don’t block cards or wallets that don’t support 3DS. 3DS attempts that failed authentication don’t continue to charge authorization.
 
@@ -186,7 +186,7 @@ You want to use Radar to request 3DS on all payments based on the risk level, an
 
 Only the account owner, administrators, and developers can create rules. If you need [team members](https://support.stripe.com/questions/can-i-invite-other-team-members-or-my-developer-to-use-my-stripe-account) to create rules, check your [team settings](https://dashboard.stripe.com/settings/team) to make sure they have administrative access.
 
-The Stripe default rules can block a substantial number of fraudulent payments. Businesses that need more control over which payments they want to review, allow, or block can write custom rules through Radar for Fraud Teams. Platforms can write custom rules through Radar for Platforms to calibrate payments risk for their platform and connected accounts and apply account-specific rules.
+The Stripe default rules can block a substantial number of fraudulent payments. If you need more control over which payments you want to review, allow, or block, you can write custom rules. You can also write custom rules to calibrate payments risk for your platform and connected accounts, and apply account-specific rules.
 
 Consider the following when deciding whether to enable custom rules:
 
@@ -278,7 +278,7 @@ Block rules only impact fraudulent and successful payments, because already-bloc
 - **Keep false positives as low as possible**. During testing, Stripe identifies the number of successful and disputed payments that would’ve been matched by the rule. A good block rule results in significantly more fraudulent payments blocked than legitimate payments.
 - **Minimize unnecessary rules**. If your rule appears to perform well but is already covered by an existing rule, your newer rule might not be necessary. Similarly, if the results during testing appear to be mixed, consider setting up a review rule instead so you can gather more information about those types of payments.
 
-The following is an example of how to improve a block rule created by a business that has a high level fraud from payments outside the US.
+The following is an example of how to improve a block rule created by a business that has a high level of fraud from payments outside the US.
 
 | Original rule | Improved rule |
 | --- | --- |
@@ -293,7 +293,7 @@ Allow rules override all of your other rules, so use them with caution. Many bus
 
 Allow rules apply to all new payments as soon as you create the rule. This includes any payments that are similar to previously blocked payments. While testing a rule, make sure that you:
 
-- **Examine the number of previously blocked payments that would have been allowed**. Allow rules override all other rules and Stripe’s risk assessment. When testing a new allow rule, all payments shown would have been allowed if this rule were active. This can include payments that had been blocked or disputed, impacting your future dispute rates.
+- **Examine the number of previously blocked payments that would have been allowed**. Allow rules override all other rules and Stripe’s risk assessment. When testing a new allow rule, all payments shown would have been allowed if this rule were active. This can include payments that were blocked or disputed, impacting your future dispute rates.
 - **Continue to block any high-risk payments**. Block high-risk payments by adding the following to any allow rule: `and :risk_level: != 'highest'`
 - **Evaluate a history of legitimate transactions at your business**. You can analyze connections between your own customers to allow a higher volume of transactions based on a history of legitimate purchases. This helps you block fewer payments from customers that have a proven history at your business. To do this, review the [attributes list](https://docs.stripe.com/radar/rules/reference.md#supported-attributes) and look for attributes that include the word “customer.”
 
@@ -313,7 +313,6 @@ As your business continues to grow, make sure your rules continue to reflect the
 #### Rule metrics
 
 Fraud patterns constantly change, so we provide [metrics](https://dashboard.stripe.com/settings/radar/rules) to show how these rules are performing. These metrics vary depending on the type of rule, because the rule types perform different actions.
-![](https://b.stripecdn.com/docs-statics-srv/assets/rule-performance.8d495f28c352641ff7b710df3c3df2ed.png)
 
 You might notice a difference in the number of payments that matched review rules and the number of payments sent to your review queue in the same time period. Because only *successful* payments are placed in review, payments that match a review rule’s criteria but get declined by the issuer, for example, aren’t sent to your review queue.
 
@@ -349,22 +348,20 @@ Review the sample questions in the following table to help you decide if you nee
 #### Request 3DS rules
 
 For request 3DS rules, we display **3DS Requested**, which is the number of times a rule triggered a 3DS request. You can click a 3DS rule to see the following metrics.
-![](https://b.stripecdn.com/docs-statics-srv/assets/request-credentials-rule-details.c22b65bc432aafec9e5bcb6079c53528.png)
 
 **Allow rules**
 
-If you use Radar for Fraud Teams, you can view the following allow rules:
+You can view the following allow rules:
 
 - **Allowed payments**: The total number of payments allowed by your rules.
 - **Volume, allowed payments**: The total amount, in your local currency, associated with payments allowed by your rules.
-- **Risk score**: The corresponding [risk outcomes](https://docs.stripe.com/radar/risk-evaluation.md#risk-outcomes) assigned by our AI models to the set of payments allowed by your rules.
+- **Risk score**: The corresponding [risk outcomes](https://docs.stripe.com/radar/transaction-risk-prevention.md#risk-outcomes) assigned by our AI models to the set of payments allowed by your rules.
 - **Disputes from overrides**: The total number of allowed payments that were disputed.
 - **Volume, disputes from overrides**: The total amount, in your local currency, associated with disputes from allowed payments.
 
 > If the disputed metrics are high, you might consider writing more narrowly targeted allow rules, to prevent allowing payments through that are eventually disputed.
 
 Select an allow rule to see the following metrics:
-![](https://b.stripecdn.com/docs-statics-srv/assets/allow-rule-details.e8da078613fdbca5592d2f9330c0f6d4.png)
 
 **Block rules**
 
@@ -373,29 +370,23 @@ You can view the following block rules:
 - **Blocked payments**: The total number of payments blocked by your rules.
 - **Volume, blocked payments**: The total amount, in your local currency, associated with payments blocked by your rules.
 
-If you use Radar for Fraud Teams, you can also view the following:
+You can also view the following:
 
-- **Risk score**: The corresponding [risk outcomes](https://docs.stripe.com/radar/risk-evaluation.md#risk-outcomes) assigned by our AI models to the set of payments allowed by your rules.
+- **Risk score**: The corresponding [risk outcomes](https://docs.stripe.com/radar/transaction-risk-prevention.md#risk-outcomes) assigned by our AI models to the set of payments allowed by your rules.
 - **Est. false positive rate**: The estimated percentage of non-fraudulent payments that were blocked for both your block rules as a set and by individual rules. These estimates are made using the estimated false positive rates of the corresponding AI risk scores, which we calculate with experiments across the Stripe network.
 - **Est. fraudulent payments prevented**: The estimated number of fraudulent payments that your block rules prevented. Stripe uses AI risk scores, calculated by analyzing millions of transactions across the Stripe network, to predict payments with a high probability of being disputed or declined because of fraud, and estimate which of those payments were successfully blocked by your rules.
 
 > If the estimated false positive rate metrics are high, you might consider writing more narrowly targeted block rules or reviewing which payments are covered by the rule, to avoid blocking as many non-fraudulent payments.
 
-Select a block rule to see the following metrics:
-![](https://b.stripecdn.com/docs-statics-srv/assets/block-rule-details.5df9a2e8652f228cf61b525a32ef56da.png)
-
 **Review rules**
 
-If you use Radar for Fraud Teams, you can view the following review rules:
+You can view the following review rules:
 
 - **Payments sent to review**: The total number of payments sent to manual review by your rules.
 - **Volume, approved reviews**: The total amount, in your local currency, associated with approved payment reviews.
 - **Refund rate**: The percentage of reviews that were refunded.
 - **Disputes from approved reviews**: The total number of payments approved in your review, but were ultimately disputed.
 - **Volume, disputes from approved reviews**: The total amount, in your local currency, associated with disputes from approved payment reviews.
-
-Select a review rule to see the following metrics:
-![](https://b.stripecdn.com/docs-statics-srv/assets/review-rule-details.10851302ef65dee05ffce64f7989528f.png)
 
 #### View rule history
 
@@ -425,11 +416,11 @@ If you’re planning any major product releases or changes to your service (for 
 
 ## Rules support multiple payment methods
 
-By default, Radar rules screen payments for cards, ACH, and SEPA Direct Debits for most users. We support the high risk block rule for all of these payment methods. If you use Radar for Fraud Teams or Radar for Platforms, we also support custom rules using the `:payment_method_type:` attribute to write rules that apply only to specific payment methods, for example: `if :payment_method_type: = 'us_bank_account'`. Learn more about [supported attributes](https://docs.stripe.com/radar/rules/supported-attributes.md).
+By default, Radar rules screen payments for cards, ACH, and SEPA Direct Debits for most users. We support the high risk block rule for all of these payment methods. You can also use the `:payment_method_type:` attribute to write custom rules that apply only to specific payment methods, for example: `if :payment_method_type: = 'us_bank_account'`. Learn more about [supported attributes](https://docs.stripe.com/radar/rules/supported-attributes.md).
 
 ## Construct account rules
 
-With Radar for Platforms, you can also add and manage account rules from the **Rules** tab on the Radar page in the Dashboard.
+You can add and manage account rules from the **Rules** tab on the Radar page in the Dashboard.
 
 #### To add an account rule
 

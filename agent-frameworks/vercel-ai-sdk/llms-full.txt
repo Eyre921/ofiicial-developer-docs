@@ -43048,6 +43048,10 @@ const result = await generateText({
         city: 'San Francisco',
         region: 'California',
       },
+      filters: {
+        allowedDomains: ['sfchronicle.com', 'sfgate.com'],
+        blockedDomains: ['example.com'],
+      },
     }),
   },
   // Force web search tool (optional):
@@ -43057,6 +43061,17 @@ const result = await generateText({
 // URL sources
 const sources = result.sources;
 ```
+
+The web search tool supports the following configuration options:
+
+- **externalWebAccess** _boolean_ - Whether to use external web access for fetching live content. Defaults to `true`.
+- **searchContextSize** _'low' | 'medium' | 'high'_ - Controls the amount of context used for the search. Higher values provide more comprehensive results but may have higher latency and cost.
+- **userLocation** - Optional location information to provide geographically relevant results. Includes `type` (always `'approximate'`), `country`, `city`, `region`, and `timezone`.
+- **filters** - Optional filter configuration to restrict search results.
+  - **allowedDomains** _string[]_ - Up to 100 allowed domains for the search.
+  - **blockedDomains** _string[]_ - Up to 100 blocked domains for the search.
+
+Omit the HTTP or HTTPS prefix from domain filters. Subdomains of configured domains are automatically included or excluded.
 
 For detailed information on configuration options see the [OpenAI Web Search Tool documentation](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses).
 
@@ -44695,25 +44710,30 @@ The following OpenAI-specific metadata is returned:
 
 #### Web Search Tool
 
-The Azure OpenAI responses API supports web search(preview) through the `azure.tools.webSearchPreview` tool.
+The Azure OpenAI responses API supports web search through the `azure.tools.webSearch` tool.
 
 ```ts
 const result = await generateText({
-  model: azure('gpt-4.1-mini'),
+  model: azure('gpt-5'),
   prompt: 'What happened in San Francisco last week?',
   tools: {
-    web_search_preview: azure.tools.webSearchPreview({
+    web_search: azure.tools.webSearch({
       // optional configuration:
-      searchContextSize: 'low',
+      externalWebAccess: true,
+      searchContextSize: 'high',
       userLocation: {
         type: 'approximate',
         city: 'San Francisco',
         region: 'California',
       },
+      filters: {
+        allowedDomains: ['sfchronicle.com', 'sfgate.com'],
+        blockedDomains: ['example.com'],
+      },
     }),
   },
   // Force web search tool (optional):
-  toolChoice: { type: 'tool', toolName: 'web_search_preview' },
+  toolChoice: { type: 'tool', toolName: 'web_search' },
 });
 
 console.log(result.text);
@@ -44725,14 +44745,21 @@ for (const source of sources) {
 }
 ```
 
-<Note>
-  The tool must be named `web_search_preview` when using Azure OpenAI's web
-  search(preview) functionality. This name is required by Azure OpenAI's API
-  specification and cannot be customized.
-</Note>
+The web search tool supports the following configuration options:
+
+- **externalWebAccess** _boolean_ - Whether to use external web access for fetching live content. Defaults to `true`.
+- **searchContextSize** _'low' | 'medium' | 'high'_ - Controls the amount of context used for the search. Higher values provide more comprehensive results but may have higher latency and cost.
+- **userLocation** - Optional location information to provide geographically relevant results. Includes `type` (always `'approximate'`), `country`, `city`, `region`, and `timezone`.
+- **filters** - Optional filter configuration to restrict search results.
+  - **allowedDomains** _string[]_ - Up to 100 allowed domains for the search.
+  - **blockedDomains** _string[]_ - Up to 100 blocked domains for the search.
+
+Omit the HTTP or HTTPS prefix from domain filters. Subdomains of configured domains are automatically included or excluded.
+
+For detailed information on configuration options see the [Azure OpenAI Web Search Tool documentation](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/web-search).
 
 <Note>
-  The 'web_search_preview' tool is only supported with the default responses
+  The 'web_search' tool is only supported with the default responses
   API, and is not supported when using 'azure.chat' or 'azure.completion'
 </Note>
 
@@ -82865,6 +82892,7 @@ const result = await generateText({
       },
       filters: {
         allowedDomains: ['sfchronicle.com', 'sfgate.com'],
+        blockedDomains: ['example.com'],
       },
     }),
   },
@@ -82891,7 +82919,10 @@ The web search tool supports the following configuration options:
 - **searchContextSize** _'low' | 'medium' | 'high'_ - Controls the amount of context used for the search. Higher values provide more comprehensive results but may have higher latency and cost.
 - **userLocation** - Optional location information to provide geographically relevant results. Includes `type` (always `'approximate'`), `country`, `city`, `region`, and `timezone`.
 - **filters** - Optional filter configuration to restrict search results.
-  - **allowedDomains** _string[]_ - Array of allowed domains for the search. Subdomains of the provided domains are automatically included.
+  - **allowedDomains** _string[]_ - Up to 100 allowed domains for the search.
+  - **blockedDomains** _string[]_ - Up to 100 blocked domains for the search.
+
+Omit the HTTP or HTTPS prefix from domain filters. Subdomains of configured domains are automatically included or excluded.
 
 For detailed information on configuration options see the [OpenAI Web Search Tool documentation](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses).
 
@@ -85491,6 +85522,7 @@ const result = await generateText({
       },
       filters: {
         allowedDomains: ['sfchronicle.com', 'sfgate.com'],
+        blockedDomains: ['example.com'],
       },
     }),
   },
@@ -85517,7 +85549,10 @@ The web search tool supports the following configuration options:
 - **searchContextSize** _'low' | 'medium' | 'high'_ - Controls the amount of context used for the search. Higher values provide more comprehensive results but may have higher latency and cost.
 - **userLocation** - Optional location information to provide geographically relevant results. Includes `type` (always `'approximate'`), `country`, `city`, `region`, and `timezone`.
 - **filters** - Optional filter configuration to restrict search results.
-  - **allowedDomains** _string[]_ - Array of allowed domains for the search. Subdomains of the provided domains are automatically included.
+  - **allowedDomains** _string[]_ - Up to 100 allowed domains for the search.
+  - **blockedDomains** _string[]_ - Up to 100 blocked domains for the search.
+
+Omit the HTTP or HTTPS prefix from domain filters. Subdomains of configured domains are automatically included or excluded.
 
 For detailed information on configuration options see the [Azure OpenAI Web Search Tool documentation](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/web-search).
 
@@ -102349,20 +102384,26 @@ If you need a customized setup, you can import `createKlingAI` from `@ai-sdk/kli
 import { createKlingAI } from '@ai-sdk/klingai';
 
 const klingai = createKlingAI({
-  accessKey: 'your-access-key',
-  secretKey: 'your-secret-key',
+  apiKey: 'your-api-key',
 });
 ```
 
 You can use the following optional settings to customize the Kling AI provider instance:
 
+- **apiKey** _string_
+
+  Kling AI API key. Defaults to the `KLINGAI_API_KEY` environment variable.
+  Create one in the [Kling AI developer console](https://kling.ai/dev/api-key).
+
 - **accessKey** _string_
 
   Kling AI access key. Defaults to the `KLINGAI_ACCESS_KEY` environment variable.
+  Legacy authentication — prefer `apiKey`.
 
 - **secretKey** _string_
 
   Kling AI secret key. Defaults to the `KLINGAI_SECRET_KEY` environment variable.
+  Legacy authentication — prefer `apiKey`.
 
 - **baseURL** _string_
 
@@ -102378,6 +102419,25 @@ You can use the following optional settings to customize the Kling AI provider i
   Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation.
   You can use it as a middleware to intercept requests,
   or to provide a custom fetch implementation for e.g. testing.
+
+## Authentication
+
+Kling AI supports two authentication schemes:
+
+- **API key** (recommended). A single key that is sent as a bearer token. Create
+  one in the [Kling AI developer console](https://kling.ai/dev/api-key) and set
+  it as `KLINGAI_API_KEY`, or pass it via the `apiKey` setting.
+- **Access key / secret key** (legacy). A key pair that the provider uses to
+  sign a short-lived JWT for each request. Set `KLINGAI_ACCESS_KEY` and
+  `KLINGAI_SECRET_KEY`, or pass the `accessKey` and `secretKey` settings.
+
+Credentials are resolved in this order, with explicit settings taking
+precedence over environment variables:
+
+1. The `apiKey` setting
+2. The `accessKey` and `secretKey` settings
+3. The `KLINGAI_API_KEY` environment variable
+4. The `KLINGAI_ACCESS_KEY` and `KLINGAI_SECRET_KEY` environment variables
 
 ## Video Models
 
@@ -115180,8 +115240,9 @@ This differs from `ToolLoopAgent`, which runs in memory and can carry richer Jav
 ### experimental_sandbox
 
 Pass a sandbox session when tools need an execution environment. The sandbox is
-available to tool `execute` functions as `experimental_sandbox` and to
-`prepareStep`, where you can override it for the current step:
+available to tool descriptions and `execute` functions as
+`experimental_sandbox`, and to `prepareStep`, where you can override it for the
+current step:
 
 ```ts
 const agent = new WorkflowAgent({
@@ -121693,12 +121754,11 @@ specification (`Experimental_SpeechTranslationModelV4`).
 </Note>
 
 ```ts
+import { openai } from '@ai-sdk/openai';
 import { experimental_streamTranslate as streamTranslate } from 'ai';
 
 const result = streamTranslate({
-  // any provider model instance that implements the experimental
-  // speech translation model specification (Experimental_SpeechTranslationModelV4):
-  model: translationModel,
+  model: openai.translation('gpt-realtime-translate'),
   audio: audioStream, // ReadableStream<Uint8Array | string>
   inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
   targetLanguage: 'es',
@@ -121777,11 +121837,12 @@ part for output text by design for now.
 Use `outputAudioFormat` to request a specific audio format for translated
 audio chunks. When absent, the provider default output format is used.
 
-```ts highlight="6"
+```ts highlight="8"
+import { openai } from '@ai-sdk/openai';
 import { experimental_streamTranslate as streamTranslate } from 'ai';
 
 const result = streamTranslate({
-  model: translationModel,
+  model: openai.translation('gpt-realtime-translate'),
   audio: audioStream,
   inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
   outputAudioFormat: { type: 'audio/pcm', rate: 24000 },
@@ -121794,16 +121855,17 @@ const result = streamTranslate({
 Translation models often have provider or model-specific settings which you can
 set using the `providerOptions` parameter.
 
-```ts highlight="8-12"
+```ts highlight="9-13"
+import { openai } from '@ai-sdk/openai';
 import { experimental_streamTranslate as streamTranslate } from 'ai';
 
 const result = streamTranslate({
-  model: translationModel,
+  model: openai.translation('gpt-realtime-translate'),
   audio: audioStream,
   inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
   targetLanguage: 'es',
   providerOptions: {
-    'provider-name': {
+    openai: {
       // provider-specific options
     },
   },
@@ -121814,11 +121876,12 @@ const result = streamTranslate({
 
 Pass an `abortSignal` to cancel the translation:
 
-```ts highlight="8"
+```ts highlight="9"
+import { openai } from '@ai-sdk/openai';
 import { experimental_streamTranslate as streamTranslate } from 'ai';
 
 const result = streamTranslate({
-  model: translationModel,
+  model: openai.translation('gpt-realtime-translate'),
   audio: audioStream,
   inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
   targetLanguage: 'es',
@@ -121841,6 +121904,7 @@ The error preserves the following information to help you log the issue:
   handling.
 
 ```ts
+import { openai } from '@ai-sdk/openai';
 import {
   experimental_streamTranslate as streamTranslate,
   NoTranslationGeneratedError,
@@ -121848,7 +121912,7 @@ import {
 
 try {
   const result = streamTranslate({
-    model: translationModel,
+    model: openai.translation('gpt-realtime-translate'),
     audio: audioStream,
     inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
     targetLanguage: 'es',
@@ -121863,6 +121927,16 @@ try {
   }
 }
 ```
+
+## Translation Models
+
+| Provider                                                        | Model                               |
+| --------------------------------------------------------------- | ----------------------------------- |
+| [OpenAI](/providers/ai-sdk-providers/openai#translation-models) | `gpt-realtime-translate`            |
+| [Google](/providers/ai-sdk-providers/google#translation-models) | `gemini-3.5-live-translate-preview` |
+
+Above are a small subset of the translation models supported by the AI SDK
+providers. For more, see the respective provider documentation.
 
 ---
 title: Speech
@@ -133368,7 +133442,7 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
       type: 'Experimental_SandboxSession',
       isOptional: true,
       description:
-        'Default sandbox session passed to tool execution as `experimental_sandbox` and exposed to `prepareStep`. Per-stream values override this default.',
+        'Default sandbox session passed to tool descriptions and execution as `experimental_sandbox`, and exposed to `prepareStep`. Per-stream values override this default.',
     },
     {
       name: 'prepareStep',
@@ -133706,10 +133780,16 @@ const result = await agent.stream({
         'A writable stream that receives raw model stream parts in real-time. Convert to UI message chunks at the response boundary using `createModelCallToUIChunkTransform()`.',
     },
     {
+      name: 'instructions',
+      type: 'Instructions',
+      isOptional: true,
+      description: 'Override the agent instructions for this call.',
+    },
+    {
       name: 'system',
       type: 'string',
       isOptional: true,
-      description: 'Override the system prompt for this call.',
+      description: 'Deprecated. Use `instructions` instead.',
     },
     {
       name: 'stopWhen',
@@ -133784,7 +133864,7 @@ const result = await agent.stream({
       type: 'Experimental_SandboxSession',
       isOptional: true,
       description:
-        'Sandbox session passed to tool execution as `experimental_sandbox` and exposed to `prepareStep`. Overrides the constructor default.',
+        'Sandbox session passed to tool descriptions and execution as `experimental_sandbox`, and exposed to `prepareStep`. Overrides the constructor default.',
     },
     {
       name: 'telemetry',
@@ -133810,7 +133890,8 @@ const result = await agent.stream({
       name: 'prepareStep',
       type: 'PrepareStepCallback',
       isOptional: true,
-      description: 'Per-call prepareStep override.',
+      description:
+        'Per-call prepareStep override. Receives the initial instructions and messages alongside the current step state.',
     },
     {
       name: 'experimental_onStart',
@@ -138985,6 +139066,7 @@ const result = await generateText({
       },
       filters: {
         allowedDomains: ['sfchronicle.com', 'sfgate.com'],
+        blockedDomains: ['example.com'],
       },
     }),
   },
@@ -139011,7 +139093,10 @@ The web search tool supports the following configuration options:
 - **searchContextSize** _'low' | 'medium' | 'high'_ - Controls the amount of context used for the search. Higher values provide more comprehensive results but may have higher latency and cost.
 - **userLocation** - Optional location information to provide geographically relevant results. Includes `type` (always `'approximate'`), `country`, `city`, `region`, and `timezone`.
 - **filters** - Optional filter configuration to restrict search results.
-  - **allowedDomains** _string[]_ - Array of allowed domains for the search. Subdomains of the provided domains are automatically included.
+  - **allowedDomains** _string[]_ - Up to 100 allowed domains for the search.
+  - **blockedDomains** _string[]_ - Up to 100 blocked domains for the search.
+
+Omit the HTTP or HTTPS prefix from domain filters. Subdomains of configured domains are automatically included or excluded.
 
 For detailed information on configuration options see the [OpenAI Web Search Tool documentation](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses).
 
@@ -141349,6 +141434,50 @@ The following provider options are available:
 | `gpt-4o-transcribe`      | <Check />     | <Cross /> | <Cross /> | <Cross /> | <Cross /> |
 | `gpt-realtime-whisper`   | <Cross />     | <Check /> | <Cross /> | <Cross /> | <Cross /> |
 
+## Translation Models
+
+<Note type="warning">Speech translation is an experimental feature.</Note>
+
+You can create models that translate live speech over the OpenAI Realtime
+translations WebSocket using the `.translation()` factory method. Translation
+models are streaming-only and are used with
+[`experimental_streamTranslate`](/docs/reference/ai-sdk-core/stream-translate).
+
+The first argument is the model id e.g. `gpt-realtime-translate`.
+
+```ts
+const model = openai.translation('gpt-realtime-translate');
+```
+
+```ts
+import { experimental_streamTranslate as streamTranslate } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+const result = streamTranslate({
+  model: openai.translation('gpt-realtime-translate'),
+  audio: audioStream, // ReadableStream<Uint8Array | string>
+  inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  targetLanguage: 'es',
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'output-text-delta') {
+    process.stdout.write(part.delta);
+  }
+}
+```
+
+The OpenAI Realtime translation API auto-detects the source language
+(`sourceLanguage` is not supported), accepts 24kHz 16-bit PCM input, and always
+outputs 24kHz 16-bit PCM audio (`outputAudioFormat` is not supported).
+Unsupported source and output settings surface as call warnings.
+
+### Model Capabilities
+
+| Model                    | Translated Audio | Translated Text | Source Transcript |
+| ------------------------ | ---------------- | --------------- | ----------------- |
+| `gpt-realtime-translate` | <Check />        | <Check />       | <Check />         |
+
 ## Speech Models
 
 You can create models that call the [OpenAI speech API](https://platform.openai.com/docs/api-reference/audio/speech)
@@ -141828,6 +141957,7 @@ const result = await generateText({
       },
       filters: {
         allowedDomains: ['sfchronicle.com', 'sfgate.com'],
+        blockedDomains: ['example.com'],
       },
     }),
   },
@@ -141854,7 +141984,10 @@ The web search tool supports the following configuration options:
 - **searchContextSize** _'low' | 'medium' | 'high'_ - Controls the amount of context used for the search. Higher values provide more comprehensive results but may have higher latency and cost.
 - **userLocation** - Optional location information to provide geographically relevant results. Includes `type` (always `'approximate'`), `country`, `city`, `region`, and `timezone`.
 - **filters** - Optional filter configuration to restrict search results.
-  - **allowedDomains** _string[]_ - Array of allowed domains for the search. Subdomains of the provided domains are automatically included.
+  - **allowedDomains** _string[]_ - Up to 100 allowed domains for the search.
+  - **blockedDomains** _string[]_ - Up to 100 blocked domains for the search.
+
+Omit the HTTP or HTTPS prefix from domain filters. Subdomains of configured domains are automatically included or excluded.
 
 For detailed information on configuration options see the [Azure OpenAI Web Search Tool documentation](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/web-search).
 
@@ -150008,6 +150141,57 @@ Gemini Live Translation accepts audio input and produces translated audio
 output. Text input, tools, and custom instructions are not supported by this
 model.
 
+## Translation Models
+
+<Note type="warning">Speech translation is an experimental feature.</Note>
+
+For server-side streaming translation, you can create models that call the
+[Gemini Live API](https://ai.google.dev/gemini-api/docs/live) using the
+`.translation()` factory method. Translation models are streaming-only and are
+used with
+[`experimental_streamTranslate`](/docs/reference/ai-sdk-core/stream-translate).
+
+The first argument is the model id e.g. `gemini-3.5-live-translate-preview`.
+
+```ts
+const model = google.translation('gemini-3.5-live-translate-preview');
+```
+
+```ts
+import { experimental_streamTranslate as streamTranslate } from 'ai';
+import { google } from '@ai-sdk/google';
+
+const result = streamTranslate({
+  model: google.translation('gemini-3.5-live-translate-preview'),
+  audio: audioStream, // ReadableStream<Uint8Array | string>
+  inputAudioFormat: { type: 'audio/pcm', rate: 16000 },
+  targetLanguage: 'es',
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'output-text-delta') {
+    process.stdout.write(part.delta);
+  }
+}
+```
+
+The Gemini Live API auto-detects the source language (`sourceLanguage` is not
+supported) and always outputs 24kHz 16-bit PCM audio (`outputAudioFormat` is
+not supported). Unsupported settings surface as call warnings.
+
+The following provider options are available:
+
+- **echoTargetLanguage** _boolean_
+  Whether input audio already in the target language should be echoed instead
+  of producing silence.
+  Optional.
+
+### Model Capabilities
+
+| Model                               | Translated Audio | Translated Text | Source Transcript |
+| ----------------------------------- | ---------------- | --------------- | ----------------- |
+| `gemini-3.5-live-translate-preview` | <Check />        | <Check />       | <Check />         |
+
 ## Interactions API
 
 The [Gemini Interactions API](https://ai.google.dev/gemini-api/docs/interactions)
@@ -157962,6 +158146,79 @@ respond to questions about it.
   completion docs](https://docs.perplexity.ai/api-reference/chat-completions).
 </Note>
 
+## Embedding Models
+
+You can create models that call the [Perplexity embeddings API](https://docs.perplexity.ai/docs/embeddings/quickstart)
+using the `.embedding()` factory method.
+
+```ts
+import { perplexity } from '@ai-sdk/perplexity';
+import { embed } from 'ai';
+
+const { embedding } = await embed({
+  model: perplexity.embedding('pplx-embed-v1-4b'),
+  value: 'sunny day at the beach',
+});
+```
+
+<Note>
+  Perplexity returns **quantized** embeddings (not floating point). Values are
+  decoded to numbers — signed `int8` values (default) or packed bits per byte.
+  Compare `base64_int8` embeddings with cosine similarity and `base64_binary`
+  embeddings with Hamming distance.
+</Note>
+
+When the API returns a cost breakdown, it is exposed via
+`providerMetadata.perplexity.cost` (`inputCost`, `totalCost`, `currency`):
+
+```ts
+const { embedding, providerMetadata } = await embed({
+  model: perplexity.embedding('pplx-embed-v1-4b'),
+  value: 'sunny day at the beach',
+});
+
+console.log(providerMetadata?.perplexity?.cost);
+// { inputCost: 0.0001, totalCost: 0.0001, currency: 'USD' }
+```
+
+### Provider Options
+
+You can pass provider-specific options via the `providerOptions.perplexity` field:
+
+```ts
+const { embedding } = await embed({
+  model: perplexity.embedding('pplx-embed-v1-4b'),
+  value: 'sunny day at the beach',
+  providerOptions: {
+    perplexity: {
+      // Matryoshka truncation of the output vector (128 up to the model size).
+      dimensions: 512,
+      // Quantized encoding format. Defaults to 'base64_int8'.
+      encodingFormat: 'base64_int8',
+    },
+  },
+});
+```
+
+The following optional provider options are available for embedding models:
+
+- **dimensions** _number_
+
+  The number of dimensions the resulting output embeddings should have.
+  Ranges from 128 up to the model's full size (1024 for `0.6b` models, 2560 for
+  `4b` models).
+
+- **encodingFormat** _'base64_int8' | 'base64_binary'_
+
+  The quantized encoding format returned by the API. Defaults to `base64_int8`.
+
+### Embedding Model Capabilities
+
+| Model                | Dimensions | Max Values Per Call |
+| -------------------- | ---------- | ------------------- |
+| `pplx-embed-v1-0.6b` | 1024       | 512                 |
+| `pplx-embed-v1-4b`   | 2560       | 512                 |
+
 ## Model Capabilities
 
 | Model                 | Image Input | Object Generation | Tool Usage | Tool Streaming |
@@ -158730,20 +158987,26 @@ If you need a customized setup, you can import `createKlingAI` from `@ai-sdk/kli
 import { createKlingAI } from '@ai-sdk/klingai';
 
 const klingai = createKlingAI({
-  accessKey: 'your-access-key',
-  secretKey: 'your-secret-key',
+  apiKey: 'your-api-key',
 });
 ```
 
 You can use the following optional settings to customize the Kling AI provider instance:
 
+- **apiKey** _string_
+
+  Kling AI API key. Defaults to the `KLINGAI_API_KEY` environment variable.
+  Create one in the [Kling AI developer console](https://kling.ai/dev/api-key).
+
 - **accessKey** _string_
 
   Kling AI access key. Defaults to the `KLINGAI_ACCESS_KEY` environment variable.
+  Legacy authentication — prefer `apiKey`.
 
 - **secretKey** _string_
 
   Kling AI secret key. Defaults to the `KLINGAI_SECRET_KEY` environment variable.
+  Legacy authentication — prefer `apiKey`.
 
 - **baseURL** _string_
 
@@ -158759,6 +159022,25 @@ You can use the following optional settings to customize the Kling AI provider i
   Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation.
   You can use it as a middleware to intercept requests,
   or to provide a custom fetch implementation for e.g. testing.
+
+## Authentication
+
+Kling AI supports two authentication schemes:
+
+- **API key** (recommended). A single key that is sent as a bearer token. Create
+  one in the [Kling AI developer console](https://kling.ai/dev/api-key) and set
+  it as `KLINGAI_API_KEY`, or pass it via the `apiKey` setting.
+- **Access key / secret key** (legacy). A key pair that the provider uses to
+  sign a short-lived JWT for each request. Set `KLINGAI_ACCESS_KEY` and
+  `KLINGAI_SECRET_KEY`, or pass the `accessKey` and `secretKey` settings.
+
+Credentials are resolved in this order, with explicit settings taking
+precedence over environment variables:
+
+1. The `apiKey` setting
+2. The `accessKey` and `secretKey` settings
+3. The `KLINGAI_API_KEY` environment variable
+4. The `KLINGAI_ACCESS_KEY` and `KLINGAI_SECRET_KEY` environment variables
 
 ## Video Models
 

@@ -100,6 +100,14 @@ path: docs/help-center/technical
 
     <tr>
       <td>
+        <a href="/docs/help-center/technical/how-can-i-see-information-about-api-requests-for-my-account">
+          How can I see information about API requests for my account?
+        </a>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
         <a href="/docs/help-center/technical/how-many-text-to-speech-requests-can-i-make-and-can-i-increase-it">
           How many Text to Speech requests can I make and can I increase it?
         </a>

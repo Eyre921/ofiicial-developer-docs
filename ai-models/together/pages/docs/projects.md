@@ -108,20 +108,20 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 
 ### Support by resource
 
-| Resource                   | API key support | UI support |
-| -------------------------- | --------------- | ---------- |
-| GPU Clusters               | ✅               | ✅          |
-| API Keys                   | ✅               | ✅          |
-| Serverless inference       | ✅               | ✅          |
-| Dedicated model inference  | ✅               | ✅          |
-| Fine-tuning                | ✅               | ❌          |
-| Files                      | ✅               | ❌          |
-| Evaluations                | ✅               | ❌          |
-| Batch                      | ✅               | ❌          |
-| Code Interpreter           | ✅               | N/A        |
-| Container Inference        | ❌               | ❌          |
-| Storage                    | ❌               | ❌          |
-| Uploaded Models & Adapters | ❌               | ❌          |
+| Resource                      | API key support | UI support |
+| ----------------------------- | --------------- | ---------- |
+| GPU Clusters                  | ✅               | ✅          |
+| API Keys                      | ✅               | ✅          |
+| Serverless inference          | ✅               | ✅          |
+| Dedicated model inference     | ✅               | ✅          |
+| Dedicated container inference | ✅               | ✅          |
+| Uploaded models and adapters  | ✅               | ✅          |
+| Fine-tuning                   | ✅               | ❌          |
+| Files                         | ✅               | ❌          |
+| Evaluations                   | ✅               | ❌          |
+| Batch                         | ✅               | ❌          |
+| Code Interpreter              | ✅               | N/A        |
+| Storage                       | ❌               | ❌          |
 
 Here's what to expect when using a resource that isn't yet supported:
 

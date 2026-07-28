@@ -33,7 +33,7 @@ You can configure email notifications under **Communication preferences** in you
 - A successful payment is received.
 - An [application fee](https://docs.stripe.com/connect/direct-charges.md#collect-fees) is collected from a connected account.
 - A payment is [disputed](https://docs.stripe.com/disputes.md) by a customer.
-- A payment is marked as [elevated risk](https://docs.stripe.com/radar/risk-evaluation.md#elevated-risk) by Stripe or a custom [Stripe Radar](https://docs.stripe.com/radar.md) rule.
+- A payment is marked as [elevated risk](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk) by Stripe or a custom [Stripe Radar](https://docs.stripe.com/radar.md) rule.
 - You’re mentioned in a note.
 - A customer sends an incorrect amount to pay their [invoice](https://docs.stripe.com/invoicing.md).
 - A [webhook](https://docs.stripe.com/webhooks.md) delivery fails.

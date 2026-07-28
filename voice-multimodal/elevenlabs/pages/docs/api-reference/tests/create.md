@@ -1702,6 +1702,26 @@ components:
         Simulation/preview-side config: tools are identified by IDs, resolved to
         names at runtime.
       title: SimulationToolMockBehaviorConfig
+    ToolResponseMockConfig-Input:
+      type: object
+      properties:
+        parameter_conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnitTestToolCallParameter'
+          description: If the list is empty, the mock will always activate.
+        mock_result:
+          type: string
+          description: The return value the LLM sees when this mock is active.
+        is_error:
+          type: boolean
+          default: false
+          description: >-
+            If true, the mock result is surfaced to the LLM as a tool error
+            rather than a successful result.
+      required:
+        - mock_result
+      title: ToolResponseMockConfig-Input
     LLM:
       type: string
       enum:
@@ -1869,6 +1889,16 @@ components:
         tool_mock_config:
           $ref: '#/components/schemas/SimulationToolMockBehaviorConfig'
           description: Configuration for which tools to mock and fallback behavior.
+        tool_mock_overrides:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolResponseMockConfig-Input'
+          description: >-
+            Test-specific response mocks, keyed by tool ID. Applied ahead of the
+            tool's shared mocks and only within this test. Only take effect for
+            tools that are mocked (see tool_mock_config).
         evaluation_model:
           oneOf:
             - $ref: '#/components/schemas/LLM'

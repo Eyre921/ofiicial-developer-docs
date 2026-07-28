@@ -30,6 +30,7 @@ The following models support function-calling fine-tuning. See [supported models
   | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                       |
   | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                     |
   | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                                  |
+  | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                      |
   | Qwen         | Qwen3 Next 80B A3B Instruct                        | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      |
   | Qwen         | Qwen3 Next 80B A3B Thinking                        | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      |
   | Qwen         | Qwen3 0.6B                                         | `Qwen/Qwen3-0.6B`                                       |

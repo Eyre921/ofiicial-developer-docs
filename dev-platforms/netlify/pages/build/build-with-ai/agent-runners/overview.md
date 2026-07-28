@@ -11,7 +11,7 @@ description: "Learn about Agent Runners and how to use them to optimize your AI 
 
 > For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt).
 
-Prompt AI agents to [create a new project](/start/quickstarts/create-new-project-with-ai-agent/), fix, update, and ship code using your unique project context directly from your Netlify dashboard.
+Prompt AI agents to [create a new project](/start/quickstarts/create-new-project-with-ai-agent/), fix, update, ship code and ask questions about your project using your unique project context directly from your Netlify dashboard.
 
 Without any extra setup or additional accounts, Agent Runners offer advantages over running AI agents in other environments by giving secure access to your Netlify project context, deployment pipeline, build settings, and more. This enables you and your team to optimize AI workflows for your Netlify projects.
 
@@ -54,6 +54,17 @@ Agent Runners support the following AI agents:
    - Claude Code
    - OpenAI Codex 
    - Google Gemini
+
+## Agent run modes
+
+When you start an agent run, you can select a mode from the dropdown:
+
+   - **Build** (default): The agent makes changes to your code and creates a Deploy Preview so you can review and ship the results.
+   - **Ask**: The agent answers questions about your project without making any changes to your code or creating a Deploy Preview. Use Ask mode to explore or understand a project before you make changes.
+
+Both modes are available for all supported AI agents.
+
+Learn more about starting a run in each mode in [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#1-start-an-agent-run).
 
 ## Requirements
 

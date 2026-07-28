@@ -54,13 +54,13 @@ export const API_KEY_REF = '<OPENROUTER_API_KEY>';
 
 Embeddings are numerical representations of text that capture semantic meaning. They convert text into vectors (arrays of numbers) that can be used for various machine learning tasks. OpenRouter provides a unified API to access embedding models from multiple providers.
 
-## What are Embeddings?
+## What are embeddings?
 
 Embeddings transform text into high-dimensional vectors where semantically similar texts are positioned closer together in vector space. For example, "cat" and "kitten" would have similar embeddings, while "cat" and "airplane" would be far apart.
 
 These vector representations enable machines to understand relationships between pieces of text, making them essential for many AI applications.
 
-## Common Use Cases
+## Common use cases
 
 Embeddings are used in a wide variety of applications:
 
@@ -76,9 +76,9 @@ Embeddings are used in a wide variety of applications:
 
 **Anomaly Detection**: Detect unusual or outlier content by identifying embeddings that are far from typical patterns in your dataset.
 
-## How to Use Embeddings
+## How to use embeddings
 
-### Basic Request
+### Basic request
 
 To generate embeddings, send a POST request to `/embeddings` with your text input and chosen model:
 
@@ -154,7 +154,7 @@ MODEL: 'openai/text-embedding-3-small'
   </CodeGroup>
 </Template>
 
-### Batch Processing
+### Batch processing
 
 You can generate embeddings for multiple texts in a single request by passing an array of strings:
 
@@ -250,7 +250,7 @@ MODEL: 'openai/text-embedding-3-small'
   </CodeGroup>
 </Template>
 
-### Image Input
+### Image input
 
 Some embedding models support image inputs, enabling multimodal embeddings that capture visual content alongside text. This is useful for image search, visual similarity, and cross-modal retrieval tasks.
 
@@ -417,11 +417,11 @@ MODEL: 'nvidia/llama-nemotron-embed-vl-1b-v2'
   </CodeGroup>
 </Template>
 
-## API Reference
+## API reference
 
 For detailed information about request parameters, response format, and all available options, see the [Embeddings API Reference](/docs/api/api-reference/embeddings/submit-an-embedding-request).
 
-## Available Models
+## Available models
 
 OpenRouter provides access to various embedding models from different providers. You can view all available embedding models at:
 
@@ -479,7 +479,7 @@ API_KEY_REF
   </CodeGroup>
 </Template>
 
-## Practical Example: Semantic Search
+## Practical example: semantic search
 
 Here's a complete example of building a semantic search system using embeddings:
 
@@ -619,21 +619,21 @@ Search results:
 5. Python is a programming language (similarity: 0.2654)
 ```
 
-## Best Practices
+## Best practices
 
-**Choose the Right Model**: Different embedding models have different strengths. Smaller models (like qwen/qwen3-embedding-0.6b or openai/text-embedding-3-small) are faster and cheaper, while larger models (like openai/text-embedding-3-large) provide better quality. Test multiple models to find the best fit for your use case.
+**Choose the right model**: Different embedding models have different strengths. Smaller models (like qwen/qwen3-embedding-0.6b or openai/text-embedding-3-small) are faster and cheaper, while larger models (like openai/text-embedding-3-large) provide better quality. Test multiple models to find the best fit for your use case.
 
-**Batch Your Requests**: When processing multiple texts, send them in a single request rather than making individual API calls. This reduces latency and costs.
+**Batch your requests**: When processing multiple texts, send them in a single request rather than making individual API calls. This reduces latency and costs.
 
-**Cache Embeddings**: Embeddings for the same text are deterministic (they don't change). Store embeddings in a database or vector store to avoid regenerating them repeatedly.
+**Cache embeddings**: Embeddings for the same text are deterministic (they don't change). Store embeddings in a database or vector store to avoid regenerating them repeatedly.
 
-**Normalize for Comparison**: When comparing embeddings, use cosine similarity rather than Euclidean distance. Cosine similarity is scale-invariant and works better for high-dimensional vectors.
+**Normalize for comparison**: When comparing embeddings, use cosine similarity rather than Euclidean distance. Cosine similarity is scale-invariant and works better for high-dimensional vectors.
 
 **Consider Context Length**: Each model has a maximum input length (context window). Longer texts may need to be chunked or truncated. Check the model's specifications before processing long documents.
 
 **Use Appropriate Chunking**: For long documents, split them into meaningful chunks (paragraphs, sections) rather than arbitrary character limits. This preserves semantic coherence.
 
-## Provider Routing
+## Provider routing
 
 You can control which providers serve your embedding requests using the `provider` parameter. This is useful for:
 
@@ -657,7 +657,7 @@ Example with provider preferences:
 
 For more information, see [Provider Routing](/docs/guides/routing/provider-selection).
 
-## Error Handling
+## Error handling
 
 Common errors you may encounter:
 
@@ -680,7 +680,7 @@ Common errors you may encounter:
 * **Deterministic Output**: Embeddings for the same input text will always be identical (no temperature or randomness).
 * **Language Support**: Some models are optimized for specific languages. Check model documentation for language capabilities.
 
-## Related Resources
+## Related resources
 
 * [Models Page](https://openrouter.ai/models?fmt=cards\&output_modalities=embeddings) - Browse all available embedding models
 * [Provider Routing](/docs/guides/routing/provider-selection) - Control which providers serve your requests

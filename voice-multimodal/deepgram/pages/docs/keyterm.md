@@ -35,7 +35,7 @@ Keyterm Prompting is available for both monolingual and multilingual transcripti
 | **Don't** — separate terms with a comma          | `?keyterm=term1,term2`         |
 | **Don't** — separate terms with a semicolon      | `?keyterm=term1;term2`         |
 
-To pass multiple separate keyterms, repeat the `keyterm` parameter. To boost one multi-word phrase, join the words with `%20` or `+`. Do not separate keyterms with commas, semicolons, or line breaks.
+To pass multiple separate keyterms, repeat the `keyterm` parameter. To boost one multi-word phrase, join the words with `%20` or `+`. Do not separate keyterms with commas, semicolons, or line breaks. None of the **Don't** forms return an error—the API accepts the value and treats it as a single literal keyterm, so it silently boosts nothing instead of failing.
 
 ## Enable Feature
 
@@ -114,7 +114,7 @@ Note that while the model was trained with formatted keyterms, the final transcr
 
 A space must be properly URL-encoded to ensure compatibility. Both `%20` and `+` are valid encodings, but their usage depends on context. In URL paths, spaces must be encoded as `%20`, while in query parameters, either `%20` or `+` can be used.
 
-You can pass in multiple keyterms in your query string in several ways. Do not separate keyterms with commas, semicolons, or line breaks, and do not append a weight or intensifier (for example, `keyterm=term:0.15` is invalid)—`keyterm` does not support weights.
+You can pass in multiple keyterms in your query string in several ways. Do not separate keyterms with commas, semicolons, or line breaks, and do not append a weight or intensifier—`keyterm` does not support weights. None of these forms return an error: the API accepts the value and treats it as a single literal keyterm, so a value such as `keyterm=term:0.15` silently boosts nothing rather than failing.
 
 To boost multiple separate keyterms, repeat the `keyterm` parameter so each keyterm is processed individually.
 

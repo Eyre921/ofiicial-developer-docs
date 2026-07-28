@@ -1019,9 +1019,9 @@ For eligible businesses in the US, payment proceeds settle in your [financial ac
 
 ### Supported accounts and settlement currencies 
 
-In most cases, bank accounts must be located in the country where the *settlement currency* (The settlement currency is the currency your bank account uses) is the official currency. For example, SEK bank accounts must be based in Sweden. Stripe also allows you to settle and pay out to banks in select additional currencies, or pay out to non-domestic bank accounts in the local currency, for a fee. Learn more about [presenting and settling in multiple currencies](https://docs.stripe.com/payouts/multicurrency-settlement.md).
+In most cases, bank accounts must be located in the country where the *settlement currency* (The settlement currency is the currency your bank account uses) is the official currency. For example, SEK bank accounts must be based in Sweden. Stripe also allows you to settle and pay out to banks in select additional currencies, or pay out to non-domestic bank accounts in the local currency. Some additional settlement currencies incur a fee when funds settle. Learn more about [presenting and settling in multiple currencies](https://docs.stripe.com/payouts/multicurrency-settlement.md).
 
-At times, Stripe supports non-primary currencies that don’t incur a fee. See the following table for the list of supported free currencies per country:
+At times, Stripe supports non-primary currencies that don’t incur a settlement fee. See the following table for the list of supported free currencies per country:
 
 Acquiring fees, where applicable, are based on the settlement currency. You can find these acquiring fees listed by currency on your country’s pricing page.
 
@@ -2982,7 +2982,7 @@ Any fees or losses that you incur because of incorrect information fall under yo
 
 ## Payout fees 
 
-Stripe doesn’t charge you a fee to initiate normal payouts. However, most [non-primary currency payouts](https://docs.stripe.com/payouts/multicurrency-settlement.md), where you pay out money in a currency other than your Stripe account’s local currency, do incur Stripe fees.
+Stripe doesn’t charge you a fee to initiate normal payouts. When you use [multi-currency settlement](https://docs.stripe.com/payouts/multicurrency-settlement.md) in a non-primary currency, Stripe charges the applicable fee when the funds settle, rather than when you pay them out.
 
 ## See also
 

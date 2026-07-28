@@ -14,9 +14,9 @@ Common account questions about credits, subscriptions, authentication, and accou
 
 {" "}
 
-#### [Cancelation & Refunds](account/cancelation-refunds)
+#### [Cancellation & Refunds](account/cancellation-refunds)
 
-Questions about canceling subscriptions, requesting refunds, and refund policies
+Questions about cancelling subscriptions, requesting refunds, and refund policies
 
 #### [Payment & Billing](account/payment-billing)
 

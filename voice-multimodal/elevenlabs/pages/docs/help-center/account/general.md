@@ -100,22 +100,6 @@ path: docs/help-center/account/general
 
     <tr>
       <td>
-        <a href="/docs/help-center/account/general/how-can-i-downgrade-my-subscription">
-          How can I downgrade my subscription?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/account/general/how-can-i-see-information-about-api-requests-for-my-account">
-          How can I see information about API requests for my account?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
         <a href="/docs/help-center/account/general/how-can-i-see-information-about-credit-usage-for-my-account">
           How can I see information about credit usage for my account?
         </a>
@@ -134,14 +118,6 @@ path: docs/help-center/account/general
       <td>
         <a href="/docs/help-center/account/general/how-do-i-add-two-factor-authentication-2-fa-to-my-account">
           How do I add two-factor authentication (2FA) to my account?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/account/general/how-do-i-cancel-my-subscription">
-          How do I cancel my subscription?
         </a>
       </td>
     </tr>

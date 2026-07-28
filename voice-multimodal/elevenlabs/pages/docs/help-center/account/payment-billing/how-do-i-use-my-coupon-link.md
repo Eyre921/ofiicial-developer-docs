@@ -18,15 +18,7 @@ The coupon link will activate and be automatically applied. You will see a notif
 confirming this.
 
 Click your profile icon in the top right corner of the website to open your account menu, then
-select{" "}
-
-<a href="https://elevenlabs.io/app/subscription">
-  <strong>
-    Subscription
-  </strong>
-</a>
-
-.
+click *Subscription*.
 
 Make sure you have monthly billing selected, then select <strong>Subscribe</strong> underneath
 the plan that your coupon is valid for.

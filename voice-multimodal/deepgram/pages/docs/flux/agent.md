@@ -81,7 +81,7 @@ Once comfortable with End of Turn, you can decide if you need to optimize latenc
 
 **Tuning Turn Detection**: You can fine-tune the behavior of these events using the `eot_threshold`, `eager_eot_threshold`, and `eot_timeout_ms` parameters. See the [End-of-Turn Configuration](/docs/flux/configuration) for detailed tuning guidance and use-case specific recommendations.
 
-**Dynamic Tuning**: In production voice agents powered by Flux, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, or keyterms, mid-stream as desired behavior changes throughout a conversation.
+**Dynamic Tuning**: In production voice agents powered by Flux, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, or keyterms, mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element—see [Keyterm Prompting](/docs/keyterm) for the full syntax rules.
 
 ### Voice Agent vs Flux Agent Pipeline
 

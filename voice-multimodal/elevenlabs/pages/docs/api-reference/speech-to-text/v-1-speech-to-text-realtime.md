@@ -104,6 +104,8 @@ channels:
               description: Any type
             no_verbatim:
               description: Any type
+            entity_detection:
+              description: Any type
             filter_background_audio:
               description: Any type
             enable_logging:

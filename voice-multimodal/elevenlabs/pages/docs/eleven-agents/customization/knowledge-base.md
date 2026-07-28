@@ -59,6 +59,8 @@ Documents can be created from files, URLs, or text. Uploaded **files** can be in
 
 A document can be used in full context only if its extracted text fits in the prompt, up to roughly 300,000 characters. Larger documents must be used through RAG instead. The total size of documents you can index for RAG depends on your subscription tier; see the [RAG usage limits](/docs/eleven-agents/customization/knowledge-base/rag#usage-limits).
 
+You can check an agent's current knowledge base size from Claude or another MCP client through the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp).
+
 ## Best practices
 
 <h4>

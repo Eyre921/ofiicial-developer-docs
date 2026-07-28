@@ -138,7 +138,7 @@ Scheduled functions only run on their schedule for published deploys and, simila
 
 You can invoke them manually by going to the Functions page of the Netlify UI, selecting a scheduled function and clicking on the `Run now` button. This is especially useful to test scheduled functions with Deploy Previews or branch deploys.
 
-Alternatively, you can use Netlify Dev to [serve your scheduled function locally](/api-and-cli-guides/cli-guides/manage-functions#invoke-functions-while-running-netlify-dev) and then use the [`netlify functions:invoke`](https://cli.netlify.com/commands/functions#functionsinvoke) command to invoke it. Note that Netlify Dev will not execute the scheduled function on any kind of schedule - the invoke command only allows you to debug the function code invocation.
+Alternatively, you can use Netlify Dev to [serve your scheduled function locally](/api-and-cli-guides/cli-guides/manage-functions#invoke-functions-while-running-netlify-dev) and then use the [`netlify functions:invoke`](https://cli.netlify.com/commands/functions#functionsinvoke) command to invoke it. Note that Netlify Dev will not execute the scheduled function on any kind of schedule - the invoke command only allows you to debug the function code invocation. For a quick end-to-end check without waiting for the schedule, run `netlify functions:invoke <function-name>` to call your handler once, immediately, and confirm its logic before you deploy.
 
 You can also invoke functions locally on the URL path but these invocations are purely for interactive debugging. Netlify Dev wraps the function response with a note that this URL invocation isn't possible in production.
 

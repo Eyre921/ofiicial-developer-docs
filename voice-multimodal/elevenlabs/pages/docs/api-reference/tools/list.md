@@ -1887,6 +1887,12 @@ components:
         mock_result:
           type: string
           description: The return value the LLM sees when this mock is active.
+        is_error:
+          type: boolean
+          default: false
+          description: >-
+            If true, the mock result is surfaced to the LLM as a tool error
+            rather than a successful result.
       required:
         - mock_result
       title: ToolResponseMockConfig-Output
@@ -2007,7 +2013,8 @@ components:
               },
               "path": "string"
             }
-          ]
+          ],
+          "is_error": false
         }
       ]
     }

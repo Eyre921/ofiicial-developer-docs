@@ -20,7 +20,7 @@ export const MAX_CATEGORIES_PER_APP = 10;
 
 App attribution allows developers to associate their API usage with their application, enabling visibility in OpenRouter's public rankings and detailed analytics. By including simple headers in your requests, your app can appear in our leaderboards and gain insights into your model usage patterns.
 
-## Benefits of App Attribution
+## Benefits of app attribution
 
 When you properly attribute your app usage, you gain access to:
 
@@ -29,7 +29,7 @@ When you properly attribute your app usage, you gain access to:
 * **Detailed Analytics**: Access comprehensive analytics showing your app's model usage over time, token consumption, and usage patterns
 * **Professional Visibility**: Showcase your app to the OpenRouter developer community
 
-## Attribution Headers
+## Attribution headers
 
 OpenRouter tracks app attribution through the following HTTP headers:
 
@@ -46,7 +46,7 @@ in rankings and analytics. `X-Title` is still supported for backwards compatibil
 
 The `X-OpenRouter-Categories` header assigns your app to one or more marketplace categories. Pass a comma-separated list of up to {MAX_CATEGORIES_PER_REQUEST} categories per request. Categories must be lowercase, hyphen-separated, and each category is limited to 30 characters. Only recognized categories from the list below are accepted; unrecognized ones are silently ignored. Categories are merged with any existing ones (up to {MAX_CATEGORIES_PER_APP} total).
 
-#### Category Groups
+#### Category groups
 
 Categories are organized into groups for the [marketplace](https://openrouter.ai/apps):
 
@@ -77,7 +77,7 @@ Categories are organized into groups for the [marketplace](https://openrouter.ai
 * `roleplay` — Roleplay apps and other character-based chat apps
 * `game` — Gaming and interactive entertainment apps
 
-#### Custom Categories
+#### Custom categories
 
 Only recognized categories from the list above are accepted.
 Unrecognized values are silently dropped. If you have a use case
@@ -88,7 +88,7 @@ we may add new categories in the future.
   `HTTP-Referer` is **required** to create an app page and appear in rankings. Setting only `X-OpenRouter-Title` without a URL will not create an app entry. Apps using `localhost` URLs must also include `X-OpenRouter-Title` to be tracked.
 </Warning>
 
-## Implementation Examples
+## Implementation examples
 
 <CodeGroup>
   ```typescript title="TypeScript SDK" expandable lines theme={null}
@@ -243,9 +243,9 @@ we may add new categories in the future.
   ```
 </CodeGroup>
 
-## Where Your App Appears
+## Where your app appears
 
-### App Rankings
+### App rankings
 
 Your attributed app will appear in OpenRouter's main rankings page at [openrouter.ai/rankings](https://openrouter.ai/rankings). The rankings show:
 
@@ -253,7 +253,7 @@ Your attributed app will appear in OpenRouter's main rankings page at [openroute
 * **Time Periods**: Daily, weekly, and monthly views
 * **Usage Metrics**: Total token consumption across all models
 
-### Model Apps Tabs
+### Model apps tabs
 
 On individual model pages (e.g., [GPT-4o](https://openrouter.ai/models/openai/gpt-4o)), your app will be featured in the "Apps" tab showing:
 
@@ -261,7 +261,7 @@ On individual model pages (e.g., [GPT-4o](https://openrouter.ai/models/openai/gp
 * **Weekly Rankings**: Updated weekly based on usage
 * **Usage Context**: How your app compares to others using the same model
 
-### Individual App Analytics
+### Individual app analytics
 
 Once your app is tracked, you can access detailed analytics at `openrouter.ai/apps?url=<your-app-url>` including:
 
@@ -269,9 +269,9 @@ Once your app is tracked, you can access detailed analytics at `openrouter.ai/ap
 * **Token Consumption**: Detailed breakdown of prompt and completion tokens
 * **Usage Patterns**: Historical data to understand your app's AI usage trends
 
-## Best Practices
+## Best practices
 
-### URL Requirements
+### URL requirements
 
 * **Always include `HTTP-Referer`** — this is the minimum requirement for app attribution
 * Use your app's primary domain (e.g., `https://myapp.com`)
@@ -279,18 +279,18 @@ Once your app is tracked, you can access detailed analytics at `openrouter.ai/ap
 * For localhost development, always include `X-OpenRouter-Title` as well
 * You can view your app's page at `openrouter.ai/apps?url=<your-referer-url>`
 
-### Title Guidelines
+### Title guidelines
 
 * Keep titles concise and descriptive
 * Use your app's actual name as users know it
 * Avoid generic names like "AI App" or "Chatbot"
 
-### Privacy Considerations
+### Privacy considerations
 
 * Only public apps, meaning those that send headers, are included in rankings
 * Attribution headers don't expose sensitive information about your requests
 
-## Related Documentation
+## Related documentation
 
 * [Quickstart Guide](/docs/quickstart) - Basic setup with attribution headers
 * [API Reference](/docs/api_reference/overview) - Complete header documentation

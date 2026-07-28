@@ -131,6 +131,18 @@ Anthropic models include a cache write cost in addition to cached input.
 | MAI-Code-1-Flash | GA             | Lightweight | $0.75 |       $0.075 |  $4.50 |
 |                  |                |             |       |              |        |
 
+### xAI
+
+> \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
+
+| Model    | Release status | Category  | Tier         | Threshold (input tokens) | Input | Cached input | Output |
+| -------- | -------------- | --------- | ------------ | ------------------------ | ----: | -----------: | -----: |
+|          |                |           |              |                          |       |              |        |
+| Grok 4.5 | GA             | Versatile | Default      | ≤ 200K                   | $2.00 |        $0.50 |  $6.00 |
+|          |                |           |              |                          |       |              |        |
+| Grok 4.5 | GA             | Versatile | Long context | > 200K                   | $4.00 |        $1.00 | $12.00 |
+|          |                |           |              |                          |       |              |        |
+
 ### Moonshot AI
 
 | Model          | Release status | Category  | Input | Cached input | Output |

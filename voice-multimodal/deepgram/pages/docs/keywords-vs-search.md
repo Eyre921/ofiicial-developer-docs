@@ -14,6 +14,8 @@ When using Deepgram's API, you have access to our Keywords and Search features, 
 
 If you are using one of our [Nova-3 Models](/docs/model#nova-3), you should use [keyterm prompting](/docs/keyterm) instead of keywords.
 
+The syntax differs: `keyterm` takes plain terms with no intensifier or weight syntax, unlike `keywords`, which uses the `KEYWORD:INTENSIFIER` pattern. When migrating, drop the `:INTENSIFIER` weight. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm.
+
 ## Comparing Keywords and Search
 
 Keywords are words that you would like Deepgram to pay more attention to, so it can transcribe those words more accurately. If you send a list of keywords with your request to the Deepgram API, Deepgram can better understand the context of what it is transcribing because it can train itself to better identify those words.

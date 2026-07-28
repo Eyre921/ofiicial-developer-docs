@@ -484,7 +484,7 @@
 
 - `tax/calculating` — [Calculate tax](pages/tax/calculating.md) · [原文](https://docs.stripe.com/tax/calculating.md)
 - `tax/checkout` — [Collect tax with Checkout](pages/tax/checkout.md) · [原文](https://docs.stripe.com/tax/checkout.md)
-- `tax/checkout/tax-ids` — [Collect customer tax IDs](pages/tax/checkout/tax-ids.md) · [原文](https://docs.stripe.com/tax/checkout/tax-ids.md)
+- `tax/checkout/tax-ids` — [Collect customer tax IDs with Checkout](pages/tax/checkout/tax-ids.md) · [原文](https://docs.stripe.com/tax/checkout/tax-ids.md)
 - `tax/connect` — [Use Stripe Tax with Connect](pages/tax/connect.md) · [原文](https://docs.stripe.com/tax/connect.md)
 - `tax/how-tax-works` — [How Stripe Tax works](pages/tax/how-tax-works.md) · [原文](https://docs.stripe.com/tax/how-tax-works.md)
 - `tax/invoicing` — [Automatically collect tax on invoices](pages/tax/invoicing.md) · [原文](https://docs.stripe.com/tax/invoicing.md)

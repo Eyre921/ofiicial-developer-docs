@@ -1,19 +1,19 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (7) for https://docs.x.ai/llms.txt: curl: (7) Failed to connect to docs.x.ai port 443 after 40 ms: Could not connect to server\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15004 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
-    "status": "error: curl failed (28) for https://code.claude.com/docs/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (35) for https://code.claude.com/docs/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
   },
   "ai-models/groq": {
     "status": "error: curl failed (22) for https://console.groq.com/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
@@ -22,7 +22,7 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 319,
+    "pages": 320,
     "status": "ok"
   },
   "ai-models/fireworks": {
@@ -30,7 +30,8 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "status": "error: curl failed (28) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 2194579 out of 5574768 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_"
+    "pages": 0,
+    "status": "ok"
   },
   "agent-frameworks/mcp": {
     "pages": 127,
@@ -41,14 +42,15 @@
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (35) for https://platform.claude.com/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
   },
   "agent-frameworks/langchain": {
     "pages": 1514,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
-    "status": "error: curl failed (28) for https://www.assemblyai.com/docs/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1476813 bytes received\ncurl: (28) Operation timed out after 90002 milliseconds with 0 bytes received\ncurl: (28) Recv failure: Connection re"
+    "pages": 0,
+    "status": "ok"
   },
   "voice-multimodal/vapi": {
     "pages": 0,
@@ -87,7 +89,8 @@
     "status": "ok"
   },
   "dev-platforms/cloudflare": {
-    "status": "error: curl failed (28) for https://developers.cloudflare.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 7627211 out of 56347649 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 6251054 out of 56347649 bytes received\n"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/drizzle": {
     "pages": 0,
@@ -183,7 +186,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 85,
+    "pages": 97,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -191,15 +194,16 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 302,
+    "pages": 304,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 374,
+    "pages": 375,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "status": "error: curl failed (35) for https://elevenlabs.io/docs/llms.txt: curl: (35) Recv failure: Connection reset by peer\n"
+    "pages": 1199,
+    "status": "ok"
   },
-  "_last_crawl": "2026-07-28T11:31:04Z"
+  "_last_crawl": "2026-07-28T23:30:50Z"
 }

@@ -22,6 +22,7 @@ The following models support vision-language fine-tuning. See [supported models]
   | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |
   | Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   |
   | Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 |
+  | Qwen         | Qwen3.6 27B                            | `Qwen/Qwen3.6-27B`                                  |
   | Qwen         | Qwen3 VL 8B Instruct                   | `Qwen/Qwen3-VL-8B-Instruct`                         |
   | Qwen         | Qwen3 VL 32B Instruct                  | `Qwen/Qwen3-VL-32B-Instruct`                        |
   | Qwen         | Qwen3 VL 30B A3B Instruct              | `Qwen/Qwen3-VL-30B-A3B-Instruct`                    |

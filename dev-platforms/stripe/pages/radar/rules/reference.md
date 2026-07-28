@@ -39,7 +39,7 @@ Using the rules above:
 
 ## Account rule processing
 
-[Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md) lets your platform create rules for both transaction and account-level actions. You can raise an account for review with or without pausing payouts on the account.
+If [your Radar plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature for platforms, you can create rules for both transaction and account-level actions. You can raise an account for review with or without pausing payouts on the account.
 
 ## Rule structure
 
@@ -54,7 +54,7 @@ Together they represent the *predicate*. In practice, a rule to block all paymen
 - The *action* is `Block`
 - The *condition* is `:amount_in_usd: > 1000.00`
 
-### Transaction Actions
+### Transaction actions
 
 A rule performs one of the four actions described in this section when a payment meets its criteria. The order of the following action types represents the priority Radar follows when evaluating each rule.
 
@@ -72,13 +72,13 @@ Block rules advise Stripe to always block a payment. If a payment matches the cr
 
 #### Review
 
-You might want to allow certain types of payments but also have the option to examine them more closely. With review rules, you can [place payments in review](https://docs.stripe.com/radar/reviews.md). This is especially useful for payments that don’t fit common patterns, such as larger payments or payments from a country that you don’t often ship to. Stripe still processes these payments and charges the customer, but you have an additional opportunity to review the order and check for signs of fraud.
+You might want to allow certain types of payments but also have the option to examine them more closely. With review rules, you can [place payments in review](https://docs.stripe.com/radar/transaction-reviews.md). This is especially useful for payments that don’t fit common patterns, such as larger payments or payments from a country that you don’t often ship to. Stripe still processes these payments and charges the customer, but you have an additional opportunity to review the order and check for signs of fraud.
 
 When a particular rule is triggered, Radar takes the prescribed action and discontinues any further rule evaluation.
 
-### Account Actions
+### Account actions
 
-Radar for Platforms includes rules that perform one of the following actions when an account meets its criteria:
+Platforms can use rules that perform one of the following actions when an account meets its criteria:
 
 - Raise for review
 - Raise for review and pause payouts while under review

@@ -8,7 +8,9 @@ path: radar/reviews/risk-insights
 
 Understand risk factors and details about a particular payment.
 
-Stripe Radar’s [AI model](https://stripe.com/radar/guide) determines the risk score and risk level for a payment and uses them to decide when to block or mark payments for review. The system evaluates hundreds of risk factors about each payment, using data from Stripe’s network across millions of businesses. The risk insights feature, available with Stripe Radar for Fraud Teams, provides a sneak peek into some of the risk factors that power Radar’s AI model.
+Using its AI models, Stripe Radar determines the risk score and risk level for a payment and uses them to decide when to block or mark payments for review. The system evaluates hundreds of risk factors about each payment, using data from Stripe’s network across millions of businesses. Risk insights shows you the risk factors that power Stripe Radar.
+
+If you want to see more of Radar’s risk factors, click **Show all insights** from the risk insights section.
 ![](https://b.stripecdn.com/docs-statics-srv/assets/risk-insights-card.ef788006b7b5d6acbb4d237386a3c4ed.png)
 
 Risk insights for payments
@@ -21,34 +23,7 @@ If your integration doesn’t provide important details like the cardholder’s 
 
 Risk insights also includes information about the customer, such as matching the cardholder’s name with the provided email, and the success rate of transactions on the Stripe network associated with the email address. A low authorization rate might indicate suspicious behavior, because previous declines sometimes suggest past attempts at fraudulent transactions.
 
-We also highlight geography-based information, including the billing, shipping, and, IP address locations associated with this payment.
-
-## Risk insights 
-
-If you want to see more Radar’s risk factors, click the **Show all insights** button from the risk insights section. This opens a dialog with a list of risk factors to Radar’s AI engine.
-![](https://b.stripecdn.com/docs-statics-srv/assets/risk-insights-dialog.90d9ff8cc321c3e9bab7423b07ec97c6.png)
-
-Radar’s risk insights dialog
-
-### Understand fraud factors 
-
-The data used to populate fraud factor numbers and top fraud factors is only populated for charges made within the last 6 months. This feature isn’t supported for payments in *sandboxes* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes).
-
-#### Fraud factor numbers
-
-Some of the risk factors in the risk insights dialog have badges with numbers next to them. These badges show the fraud factor for a risk factor on this payment. A fraud factor represents the likelihood of fraud for charges with a value similar to this risk factor when compared to the average transaction on Stripe. A fraud factor of 3.5x means that charges with a similar value for this risk factor are 3.5 times more likely to be fraudulent than average. In a higher risk payment, we expect to see some fraud factors greater than 1, and in a lower risk payment we expect to see some fraud factors less than 1.
-![](https://b.stripecdn.com/docs-statics-srv/assets/risk-insights-fraud-factor.3bd00f6b09999ef71f6d258c2cc20be6.png)
-
-Fraud factors
-
-Hover over a fraud factor to see more information about the possible values for it. These factors will change over time as the data in our network changes. This data provides context for the distribution of fraud factors for a risk factor. This dialog also provides the network distribution of values for a risk factor, letting you know whether the current payment has a value that’s common or if it’s rare or unique in the Stripe network.
-
-#### Top fraud factors
-![](https://b.stripecdn.com/docs-statics-srv/assets/risk-insights-top-fraud-factors.ef27de20a842cb7d411261e9e7757fc6.png)
-
-Top fraud factors
-
-The **Top Fraud Factors** section outside the risk insights dialog notifies you with risk factors when the payment has values that commonly indicate fraud. Because Radar’s AI model detects complex patterns across hundreds of risk factors, it’s still possible for a charge to be correctly identified as fraud, even if none of the risk factors appear suspicious on an individual level.
+We also highlight geography-based information, including the billing, shipping, and IP address locations associated with this payment.
 
 ## Related payments 
 
@@ -59,6 +34,6 @@ Related payments
 
 ## See also
 
-- [Review](https://docs.stripe.com/radar/reviews.md)
+- [Review](https://docs.stripe.com/radar/transaction-reviews.md)
 - [Integration checklist](https://docs.stripe.com/radar/optimize-risk-factors.md)
 

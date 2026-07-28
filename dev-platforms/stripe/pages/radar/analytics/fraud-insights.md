@@ -8,12 +8,13 @@ path: radar/analytics/fraud-insights
 
 Review fraud trends specific to your business so you can tailor your strategy.
 
-Building an effective fraud fighting strategy requires understanding the specific drivers of fraud for your business. If you use *Radar for Fraud Teams* (Radar for Fraud Teams helps you fine-tune how Radar operates, get fraud insights on suspicious charges, and assess your fraud management performance from a unified dashboard), you can access the [Insights](https://dashboard.stripe.com/radar/insights) tab of the Radar page in your Dashboard to:
+Building an effective fraud fighting strategy requires understanding the specific drivers of fraud for your business. If you use Radar Plus, you can access the [Insights](https://dashboard.stripe.com/radar/insights) tab of the Radar page in your Dashboard to:
 
 - **Visualize trends** in transaction volume and fraud rates over time.
-- **Identify combinations of Radar attributes** that have material impact on your fraud rates.
+- **Identify combinations of Radar attributes** that impact your fraud rates.
 - **Inspect high-level patterns** to verify your findings in individual transactions.
 - **Adjust your [Radar rules](https://docs.stripe.com/radar/rules.md) or [Risk controls](https://docs.stripe.com/radar/risk-settings.md#risk-controls)** based on the patterns you discover.
+- View agentic insights and fraud patterns from your payment data.
 
 ## Configure your view
 
@@ -88,4 +89,23 @@ Consider refunding payments that are at high risk of being fraud. Click the over
 
 - **Enable Risk controls**: If you spot patterns such as high fraud rates on non-3D Secure authenticated payments or an increase in payments that are triggering early fraud warnings, consider enabling relevant [Risk Controls](https://docs.stripe.com/radar/risk-settings.md#risk-controls).
 - **Write custom rules**: For more specific patterns, you can write [custom rules](https://docs.stripe.com/radar/rules.md) targeting the attributes you identified in your investigation.
+
+## View agentic insights 
+
+When Radar issues a [fraud alert](https://docs.stripe.com/radar/analytics/transaction-fraud-alerts.md), it also analyzes your transactions to identify fraud patterns in the payments that triggered the alert. You can view insights for these transactions on the [Insights](https://dashboard.stripe.com/radar/insights) tab of the Radar page in your Dashboard.
+
+### How insights work
+
+Each fraud alert can produce one or more insights. An insight describes a specific pattern our agent detected in the payments that triggered the alert, for example, a cluster of payments from a particular email domain, a set of transactions without 3D Secure authentication, or an unusual concentration of a specific card attribute. The types of patterns that Radar identifies can vary depending on your transaction data, so insights are tailored to each alert.
+
+### Review an insight
+
+View an insight to learn more and review payment information, including the fraud volume, number of disputed payments, and a list of the transactions. You can also adjust the pivot chart to display payments by parameters (for example, card brand or risk score) and by time range (for example, daily or weekly).
+
+### Take action 
+
+You can use agentic insights as a starting point to decide how to respond. Based on the patterns that Radar identifies, you can:
+
+- Create or adjust [custom rules](https://docs.stripe.com/radar/rules.md#create-rules)
+- Adjust your [risk settings](https://docs.stripe.com/radar/risk-settings.md) to change how aggressively Radar screens payments
 

@@ -14,7 +14,7 @@ path: docs/api_reference/overview
 
 OpenRouter's request and response schemas are very similar to the OpenAI Chat API, with a few small differences. At a high level, **OpenRouter normalizes the schema across models and providers** so you only need to learn one.
 
-## OpenAPI Specification
+## OpenAPI specification
 
 The complete OpenRouter API is documented using the OpenAPI specification. You can access the specification in either YAML or JSON format:
 
@@ -25,7 +25,7 @@ These specifications can be used with tools like [Swagger UI](https://swagger.io
 
 ## Requests
 
-### Completions Request Format
+### Completions request format
 
 Here is the request schema as a TypeScript type. This will be the body of your `POST` request to the `/api/v1/chat/completions` endpoint (see the [quick start](/docs/quickstart) above for an example).
 
@@ -171,7 +171,7 @@ For a complete list of parameters, see the [Parameters](/docs/api_reference/para
   ```
 </CodeGroup>
 
-### Structured Outputs
+### Structured outputs
 
 The `response_format` parameter allows you to enforce structured JSON responses from the model. OpenRouter supports two modes:
 
@@ -255,7 +255,7 @@ OpenRouter allows you to specify some optional headers to identify your app and 
   The rest are forwarded to the underlying model API.
 </Info>
 
-### Assistant Prefill
+### Assistant prefill
 
 OpenRouter supports asking models to complete a partial response. This can be useful for guiding models to respond in a certain way.
 
@@ -282,7 +282,7 @@ To use this features, simply include a message with `role: "assistant"` at the e
 
 ## Responses
 
-### CompletionsResponse Format
+### CompletionsResponse format
 
 OpenRouter normalizes the schema across models and providers to comply with the [OpenAI Chat API](https://platform.openai.com/docs/api-reference/chat).
 
@@ -431,13 +431,13 @@ Here's an example:
 }
 ```
 
-### Finish Reason
+### Finish reason
 
 OpenRouter normalizes each model's `finish_reason` to one of the following values: `tool_calls`, `stop`, `length`, `content_filter`, `error`.
 
 Some models and providers may have additional finish reasons. The raw finish\_reason string returned by the model is available via the `native_finish_reason` property.
 
-### Querying Cost and Stats
+### Querying cost and stats
 
 The token counts returned in the completions API response are calculated using the model's native tokenizer. Credit usage and model pricing are based on these native token counts.
 
