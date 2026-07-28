@@ -37,7 +37,7 @@ These tools work seamlessly together through prompts, and their real power comes
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
-    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `limited_free_trial` (calls succeed via a free or metered trial allowance), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
 
     **Example prompts:**
 
@@ -154,7 +154,7 @@ These tools work seamlessly together through prompts, and their real power comes
     Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
 
     <Note>
-      Single-data-source SQL queries have an hourly rate limit on Free and Plus plans. Queries across multiple data sources require an Enterprise plan with Notion AI.
+      Single-data-source SQL queries have a usage limit on select plans. Queries across multiple data sources require the latest Enterprise plan.
     </Note>
 
     **Example prompts:**

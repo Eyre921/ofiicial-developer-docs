@@ -8,13 +8,13 @@ An agent is a model calling tools in a loop until a given task is complete.
 
 <img alt="Core agent loop diagram" />
 
+A harness is everything around that loop: the prompt, the tools, and any middleware that shapes the model's behavior.
+
 <Note>
   **Agent = Model + Harness**
 
   The job of a harness: get the model the right context at the right time for the given task.
 </Note>
-
-A harness is everything around that loop: the model, its prompt, its tools, and any middleware that shapes its behavior.
 
 [`create_agent`](https://reference.langchain.com/javascript/langchain/index/createAgent) is a highly configurable harness. At its simplest, you can create one with:
 

@@ -1,5 +1,5 @@
 ---
-title: "RAG with Deep Agents"
+title: "Retrieval Augmented Generation (RAG) with Deep Agents"
 source: https://docs.langchain.com/oss/python/deepagents/rag
 path: oss/python/deepagents/rag
 ---
@@ -8,7 +8,7 @@ RAG patterns for Deep Agents, including skills-guided retrieval, rubric grading,
 
 One of the most powerful LLM-based applications are sophisticated question-answering (Q\&A) chatbots which augment LLMs by providing it with inference-time access to a set of data.
 This might be private data, recent data, or data that is not part of the training data the LLM is trained on.
-These applications use a technique known as Retrieval Augmented Generation, or [RAG](/oss/python/langchain/retrieval/).
+These applications use a technique known as Retrieval Augmented Generation, or [RAG](/oss/python/deepagents/retrieval/).
 
 [Deep Agents](/oss/python/deepagents/overview) gives you primitives for RAG: custom retrieval tools, a [filesystem backend](/oss/python/deepagents/backends), [subagents](/oss/python/deepagents/subagents), [skills](/oss/python/deepagents/skills), and [grading rubrics](/oss/python/deepagents/rubric). You can combine them in different ways depending on your corpus size, latency requirements, and how strictly answers must be grounded in source data.
 
@@ -309,7 +309,7 @@ DOC_PATHS = [
     "oss/python/deepagents/rag",
     "oss/python/langchain/tools",
     "oss/python/langchain/models",
-    "oss/python/langchain/retrieval",
+    "oss/python/deepagents/retrieval",
     "oss/python/langchain/knowledge-base",
     "oss/python/langchain/middleware",
     "oss/python/deepagents/overview",
@@ -323,7 +323,7 @@ DOC_PATHS = [
 ```
 
 <Note>
-  For a more detailed tutorial on indexing, see [Semantic search](/oss/python/langchain/knowledge-base).
+  For a more detailed tutorial on indexing, vector stores, and retrieval, see [Semantic search](/oss/python/langchain/knowledge-base).
 </Note>
 
 ### Load documents
@@ -1314,7 +1314,7 @@ Save as `agent.py` and run with `python agent.py`:
       "oss/python/deepagents/rag",
       "oss/python/langchain/tools",
       "oss/python/langchain/models",
-      "oss/python/langchain/retrieval",
+      "oss/python/deepagents/retrieval",
       "oss/python/langchain/knowledge-base",
       "oss/python/langchain/middleware",
       "oss/python/deepagents/overview",
@@ -1497,7 +1497,7 @@ Save as `agent.py` and run with `python agent.py`:
       "oss/python/deepagents/rag",
       "oss/python/langchain/tools",
       "oss/python/langchain/models",
-      "oss/python/langchain/retrieval",
+      "oss/python/deepagents/retrieval",
       "oss/python/langchain/knowledge-base",
       "oss/python/langchain/middleware",
       "oss/python/deepagents/overview",
@@ -1680,7 +1680,7 @@ Save as `agent.py` and run with `python agent.py`:
       "oss/python/deepagents/rag",
       "oss/python/langchain/tools",
       "oss/python/langchain/models",
-      "oss/python/langchain/retrieval",
+      "oss/python/deepagents/retrieval",
       "oss/python/langchain/knowledge-base",
       "oss/python/langchain/middleware",
       "oss/python/deepagents/overview",
@@ -1863,7 +1863,7 @@ Save as `agent.py` and run with `python agent.py`:
       "oss/python/deepagents/rag",
       "oss/python/langchain/tools",
       "oss/python/langchain/models",
-      "oss/python/langchain/retrieval",
+      "oss/python/deepagents/retrieval",
       "oss/python/langchain/knowledge-base",
       "oss/python/langchain/middleware",
       "oss/python/deepagents/overview",
@@ -2046,7 +2046,7 @@ Save as `agent.py` and run with `python agent.py`:
       "oss/python/deepagents/rag",
       "oss/python/langchain/tools",
       "oss/python/langchain/models",
-      "oss/python/langchain/retrieval",
+      "oss/python/deepagents/retrieval",
       "oss/python/langchain/knowledge-base",
       "oss/python/langchain/middleware",
       "oss/python/deepagents/overview",
@@ -2229,7 +2229,7 @@ Save as `agent.py` and run with `python agent.py`:
       "oss/python/deepagents/rag",
       "oss/python/langchain/tools",
       "oss/python/langchain/models",
-      "oss/python/langchain/retrieval",
+      "oss/python/deepagents/retrieval",
       "oss/python/langchain/knowledge-base",
       "oss/python/langchain/middleware",
       "oss/python/deepagents/overview",
@@ -2412,7 +2412,7 @@ Save as `agent.py` and run with `python agent.py`:
       "oss/python/deepagents/rag",
       "oss/python/langchain/tools",
       "oss/python/langchain/models",
-      "oss/python/langchain/retrieval",
+      "oss/python/deepagents/retrieval",
       "oss/python/langchain/knowledge-base",
       "oss/python/langchain/middleware",
       "oss/python/deepagents/overview",

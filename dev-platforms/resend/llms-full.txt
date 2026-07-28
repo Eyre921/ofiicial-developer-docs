@@ -11004,78 +11004,8 @@ Retrieve a list of segments.
 </ResponseExample>
 
 
-# Add Suppression
-Source: https://resend.com/docs/api-reference/suppressions/add-suppression
-
-POST /suppressions
-Add an email address to the suppression list.
-
-## Body Parameters
-
-<ParamField type="string">
-  The email address to suppress.
-</ParamField>
-
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
-
-  const resend = new Resend('re_xxxxxxxxx');
-
-  const { data, error } = await resend.suppressions.add({
-    email: 'steve.wozniak@example.com',
-  });
-  ```
-
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::types::AddSuppressionOptions;
-  use resend_rs::{Resend, Result};
-
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
-
-    let opts = AddSuppressionOptions::new().with_email("steve.wozniak@example.com");
-    let _data = resend.suppressions.add(opts).await?;
-
-    Ok(())
-  }
-  ```
-
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
-
-  $resend->suppressions->add([
-    'email' => 'steve.wozniak@example.com',
-  ]);
-  ```
-
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  curl -X POST 'https://api.resend.com/suppressions' \
-       -H 'Authorization: Bearer re_xxxxxxxxx' \
-       -H 'Content-Type: application/json' \
-       -d $'{
-    "email": "steve.wozniak@example.com"
-  }'
-  ```
-
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  resend suppressions add steve.wozniak@example.com
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "suppression",
-    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3"
-  }
-  ```
-</ResponseExample>
-
-
-# Add Suppressions
-Source: https://resend.com/docs/api-reference/suppressions/add-suppressions
+# Add Batch Suppressions
+Source: https://resend.com/docs/api-reference/suppressions/add-batch-suppressions
 
 POST /suppressions/batch/add
 Add up to 100 email addresses to the suppression list at once.
@@ -11149,6 +11079,76 @@ Add up to 100 email addresses to the suppression list at once.
         "id": "520784e2-887d-4c25-b53c-4ad46ad38100"
       }
     ]
+  }
+  ```
+</ResponseExample>
+
+
+# Add Suppression
+Source: https://resend.com/docs/api-reference/suppressions/add-suppression
+
+POST /suppressions
+Add an email address to the suppression list.
+
+## Body Parameters
+
+<ParamField type="string">
+  The email address to suppress.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.suppressions.add({
+    email: 'steve.wozniak@example.com',
+  });
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::AddSuppressionOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let opts = AddSuppressionOptions::new().with_email("steve.wozniak@example.com");
+    let _data = resend.suppressions.add(opts).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->add([
+    'email' => 'steve.wozniak@example.com',
+  ]);
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/suppressions' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "email": "steve.wozniak@example.com"
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend suppressions add steve.wozniak@example.com
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "suppression",
+    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3"
   }
   ```
 </ResponseExample>
@@ -11338,104 +11338,8 @@ Show all suppressions.
 </ResponseExample>
 
 
-# Remove Suppression
-Source: https://resend.com/docs/api-reference/suppressions/remove-suppression
-
-DELETE /suppressions/:suppression
-Remove a single suppression by ID or email.
-
-## Path Parameters
-
-<ParamField type="email | id">
-  The Suppression ID or email address.
-</ParamField>
-
-<RequestExample>
-  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
-
-  const resend = new Resend('re_xxxxxxxxx');
-
-  // Remove by suppression id
-  const { data, error } = await resend.suppressions.remove(
-    'e169aa45-1ecf-4183-9955-b1499d5701d3',
-  );
-
-  // Remove by email
-  const { data, error } = await resend.suppressions.remove(
-    'steve.wozniak@example.com',
-  );
-  ```
-
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  use resend_rs::{Resend, Result};
-
-  #[tokio::main]
-  async fn main() -> Result<()> {
-    let resend = Resend::new("re_xxxxxxxxx");
-
-    // Remove by suppression id
-    let _data = resend
-      .suppressions
-      .remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
-      .await?;
-
-    // Remove by email
-    let _data = resend
-      .suppressions
-      .remove("steve.wozniak@example.com")
-      .await?;
-
-    Ok(())
-  }
-  ```
-
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
-
-  // Remove by suppression id
-  $resend->suppressions->remove(
-    'e169aa45-1ecf-4183-9955-b1499d5701d3'
-  );
-
-  // Remove by email
-  $resend->suppressions->remove(
-    'steve.wozniak@example.com'
-  );
-  ```
-
-  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
-  # Remove by suppression id
-  curl -X DELETE 'https://api.resend.com/suppressions/e169aa45-1ecf-4183-9955-b1499d5701d3' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-
-  # Remove by email
-  curl -X DELETE 'https://api.resend.com/suppressions/steve.wozniak@example.com' \
-       -H 'Authorization: Bearer re_xxxxxxxxx'
-  ```
-
-  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  # Remove by suppression id
-  resend suppressions delete e169aa45-1ecf-4183-9955-b1499d5701d3
-
-  # Remove by email
-  resend suppressions delete steve.wozniak@example.com
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
-  {
-    "object": "suppression",
-    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
-    "deleted": true
-  }
-  ```
-</ResponseExample>
-
-
-# Remove Suppressions
-Source: https://resend.com/docs/api-reference/suppressions/remove-suppressions
+# Remove Batch Suppressions
+Source: https://resend.com/docs/api-reference/suppressions/remove-batch-suppressions
 
 POST /suppressions/batch/remove
 Remove up to 100 suppressions from the suppression list at once.
@@ -11544,6 +11448,102 @@ Provide either `emails` or `ids`, but not both.
         "deleted": true
       }
     ]
+  }
+  ```
+</ResponseExample>
+
+
+# Remove Suppression
+Source: https://resend.com/docs/api-reference/suppressions/remove-suppression
+
+DELETE /suppressions/:suppression
+Remove a single suppression by ID or email.
+
+## Path Parameters
+
+<ParamField type="email | id">
+  The Suppression ID or email address.
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  // Remove by suppression id
+  const { data, error } = await resend.suppressions.remove(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3',
+  );
+
+  // Remove by email
+  const { data, error } = await resend.suppressions.remove(
+    'steve.wozniak@example.com',
+  );
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    // Remove by suppression id
+    let _data = resend
+      .suppressions
+      .remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+      .await?;
+
+    // Remove by email
+    let _data = resend
+      .suppressions
+      .remove("steve.wozniak@example.com")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Remove by suppression id
+  $resend->suppressions->remove(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Remove by email
+  $resend->suppressions->remove(
+    'steve.wozniak@example.com'
+  );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by suppression id
+  curl -X DELETE 'https://api.resend.com/suppressions/e169aa45-1ecf-4183-9955-b1499d5701d3' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+
+  # Remove by email
+  curl -X DELETE 'https://api.resend.com/suppressions/steve.wozniak@example.com' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by suppression id
+  resend suppressions delete e169aa45-1ecf-4183-9955-b1499d5701d3
+
+  # Remove by email
+  resend suppressions delete steve.wozniak@example.com
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "suppression",
+    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+    "deleted": true
   }
   ```
 </ResponseExample>
@@ -25454,7 +25454,7 @@ In the Dashboard, go to the [Suppressions page](https://resend.com/emails/suppre
 * **Add manually**: enter the email address you want to suppress.
 * **Import CSV**: upload a file with a list of email addresses to suppress.
 
-You can also [suppress individual emails](/docs/api-reference/suppressions/add-suppression) or [bulk suppress up to 100 at a time](/docs/api-reference/suppressions/add-suppressions) using the API.
+You can also [suppress individual emails](/docs/api-reference/suppressions/add-suppression) or [bulk suppress up to 100 at a time](/docs/api-reference/suppressions/add-batch-suppressions) using the API.
 
 <Info>
   Remember that adding a Suppression will skip all sending to that recipient
@@ -25470,7 +25470,7 @@ You can remove an email address from the suppression list in the Dashboard from 
 1. Search or filter for a suppression.
 2. Click the **more options button** <Icon icon="ellipsis" /> and select **Remove email address**.
 
-You can also [remove individual emails](/docs/api-reference/suppressions/remove-suppression) or [bulk remove up to 100 at a time](/docs/api-reference/suppressions/remove-suppressions) using the API.
+You can also [remove individual emails](/docs/api-reference/suppressions/remove-suppression) or [bulk remove up to 100 at a time](/docs/api-reference/suppressions/remove-batch-suppressions) using the API.
 
 <Warning>
   Removing an address from the suppression list does not guarantee delivery. If

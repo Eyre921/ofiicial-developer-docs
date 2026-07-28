@@ -347,7 +347,7 @@ export LANGSMITH_API_KEY="your-langsmith-api-key"
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const result = await agent.invoke({
-  messages: [{ role: "user", content: "What is Deep Agents and how does it work?" }],
+  messages: [{ role: "user", content: "What is langgraph?" }],
 });
 
 // Print the agent's response

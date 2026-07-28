@@ -76,7 +76,7 @@ Finally, using a collection of memories can make it challenging to provide compr
 
 <img alt="Update list" />
 
-Regardless of memory management approach, the central point is that the agent will use the semantic memories to [ground its responses](/oss/python/langchain/retrieval), which often leads to more personalized and relevant interactions.
+Regardless of memory management approach, the central point is that the agent will use the semantic memories to [ground its responses](/oss/python/deepagents/retrieval), which often leads to more personalized and relevant interactions.
 
 ### Episodic memory
 

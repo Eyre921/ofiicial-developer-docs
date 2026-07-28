@@ -193,7 +193,7 @@ Learn more about the features that Chat helps you explore:
     Understand how threads work in LangSmith
   </Card>
 
-  <Card title="Prompt Engineering" icon="wand" href="/langsmith/prompt-engineering">
+  <Card title="Prompt Engineering" icon="wand" href="/langsmith/prompt-context-hub#prompts">
     Create and iterate on prompts in the Playground
   </Card>
 

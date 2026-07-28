@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -381,7 +381,6 @@
 - `reference/voice-agent/agent-configurations/list-agent-configurations` — [List Agent Configurations](pages/reference/voice-agent/agent-configurations/list-agent-configurations.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/list-agent-configurations.md)
 - `reference/voice-agent/agent-configurations/update-agent-metadata` — [Update Agent Metadata](pages/reference/voice-agent/agent-configurations/update-agent-metadata.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/update-agent-metadata.md)
 - `reference/voice-agent/agent-variables/create-agent-variable` — [Create Agent Variable](pages/reference/voice-agent/agent-variables/create-agent-variable.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-variables/create-agent-variable.md)
-- `reference/voice-agent/agent-variables/delete-agent-variable` — [Delete Agent Variable](pages/reference/voice-agent/agent-variables/delete-agent-variable.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-variables/delete-agent-variable.md)
 - `reference/voice-agent/agent-variables/get-agent-variable` — [Get Agent Variable](pages/reference/voice-agent/agent-variables/get-agent-variable.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-variables/get-agent-variable.md)
 - `reference/voice-agent/agent-variables/list-agent-variables` — [List Agent Variables](pages/reference/voice-agent/agent-variables/list-agent-variables.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-variables/list-agent-variables.md)
 - `reference/voice-agent/agent-variables/update-agent-variable` — [Update Agent Variable](pages/reference/voice-agent/agent-variables/update-agent-variable.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-variables/update-agent-variable.md)

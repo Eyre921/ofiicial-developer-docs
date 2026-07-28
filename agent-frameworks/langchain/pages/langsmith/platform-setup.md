@@ -10,7 +10,7 @@ Host and manage LangSmith infrastructure for observability, evaluation, and prom
   <div>
     <h1>Set up LangSmith</h1>
 
-    Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-engineering). LangSmith offers two hosting models: fully managed Cloud, or Self-hosted (Enterprise) for full control.
+    Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts). LangSmith offers two hosting models: fully managed Cloud, or Self-hosted (Enterprise) for full control.
 
     If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with either hosting model.
 

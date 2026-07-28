@@ -134,7 +134,7 @@ Source: https://docs.langchain.com/index
         Build agents with code using LangChain, LangGraph, and Deep Agents.
       </Card>
 
-      <Card title="Test" icon="flask" href="/langsmith/test-overview">
+      <Card title="Test" icon="flask" href="/langsmith/evaluation">
         Evaluate agents with datasets, evaluations, and prompt engineering.
       </Card>
 

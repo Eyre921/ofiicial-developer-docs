@@ -73,7 +73,7 @@ workflow = (
 
 ## Example: RAG pipeline
 
-A common use case is combining [retrieval](/oss/python/langchain/retrieval) with an agent. This example builds a WNBA stats assistant that retrieves from a knowledge base and can fetch live news.
+A common use case is combining [retrieval](/oss/python/deepagents/retrieval) with an agent. This example builds a WNBA stats assistant that retrieves from a knowledge base and can fetch live news.
 
 <Accordion title="Custom RAG workflow">
   The workflow demonstrates three types of nodes:

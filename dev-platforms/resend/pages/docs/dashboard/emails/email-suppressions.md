@@ -53,7 +53,7 @@ In the Dashboard, go to the [Suppressions page](https://resend.com/emails/suppre
 * **Add manually**: enter the email address you want to suppress.
 * **Import CSV**: upload a file with a list of email addresses to suppress.
 
-You can also [suppress individual emails](/docs/api-reference/suppressions/add-suppression) or [bulk suppress up to 100 at a time](/docs/api-reference/suppressions/add-suppressions) using the API.
+You can also [suppress individual emails](/docs/api-reference/suppressions/add-suppression) or [bulk suppress up to 100 at a time](/docs/api-reference/suppressions/add-batch-suppressions) using the API.
 
 <Info>
   Remember that adding a Suppression will skip all sending to that recipient
@@ -69,7 +69,7 @@ You can remove an email address from the suppression list in the Dashboard from 
 1. Search or filter for a suppression.
 2. Click the **more options button** <Icon icon="ellipsis" /> and select **Remove email address**.
 
-You can also [remove individual emails](/docs/api-reference/suppressions/remove-suppression) or [bulk remove up to 100 at a time](/docs/api-reference/suppressions/remove-suppressions) using the API.
+You can also [remove individual emails](/docs/api-reference/suppressions/remove-suppression) or [bulk remove up to 100 at a time](/docs/api-reference/suppressions/remove-batch-suppressions) using the API.
 
 <Warning>
   Removing an address from the suppression list does not guarantee delivery. If

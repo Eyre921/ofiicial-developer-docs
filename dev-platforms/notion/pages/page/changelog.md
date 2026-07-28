@@ -4,6 +4,16 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 27, 2026">
+  ### Clearer per-tool access status
+
+  The `current_tool_access` status previously called `limited_free_trial` is now `available_with_limit`. The new name makes clear that a tool is available until the usage limit included with the workspace's plan is reached. This is a naming and description update only; it does not change tool availability or usage limits.
+
+  ### Fetch documentation resources with the fetch tool
+
+  The Notion MCP `fetch` tool now accepts `notion://docs/*` URIs (for example, `notion://docs/enhanced-markdown-spec`) and returns the same content as the MCP resource of the same URI. This gives MCP clients that cannot read MCP resources a way to load the specs referenced in tool descriptions.
+</Update>
+
 <Update label="July 17, 2026">
   ### Per-tool access map in `notion-fetch` `self`
 

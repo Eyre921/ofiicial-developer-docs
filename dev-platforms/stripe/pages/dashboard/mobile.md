@@ -165,7 +165,7 @@ You can manage payments from your app:
 ## Create and manage payouts
 
 1. Verify you have a [debit card or external account linked to your Stripe account](https://docs.stripe.com/get-started/account/linked-external-accounts.md#link-financial-account).
-   - Currently, you can only link these accounts through the [web version](https://dashboard.stripe.com/settings/payouts) of the Stripe Dashboard.
+   - You can only link these accounts through the [web version](https://dashboard.stripe.com/settings/payouts) of the Stripe Dashboard.
    - If you want to use instant payouts, use a debit card or bank account that [supports instant payouts](https://docs.stripe.com/payouts/instant-payouts-banks.md).
 2. Open the Stripe Dashboard mobile app on your device and log in.
 3. Go to the **Balances** tab at the bottom of the screen. Alternatively, you can tap the plus symbol  (+) at the top right of any tab and select **Pay out funds**.

@@ -1557,278 +1557,6 @@ crewai replay -t <task_id>
 These commands let you replay from your latest kickoff tasks, still retaining context from previously executed tasks.
 
 
-# Files
-Source: https://docs.crewai.com/v1.15.7/en/concepts/files
-
-Pass images, PDFs, audio, video, and text files to your agents for multimodal processing.
-
-## Overview
-
-CrewAI supports native multimodal file inputs, allowing you to pass images, PDFs, audio, video, and text files directly to your agents. Files are automatically formatted for each LLM provider's API requirements.
-
-<Note type="info" title="Optional Dependency">
-  File support requires the optional `crewai-files` package. Install it with:
-
-  ```bash theme={null}
-  uv add 'crewai[file-processing]'
-  ```
-</Note>
-
-<Note type="warning" title="Early Access">
-  The file processing API is currently in early access.
-</Note>
-
-## File Types
-
-CrewAI supports five specific file types plus a generic `File` class that auto-detects the type:
-
-| Type        | Class       | Use Cases                             |
-| :---------- | :---------- | :------------------------------------ |
-| **Image**   | `ImageFile` | Photos, screenshots, diagrams, charts |
-| **PDF**     | `PDFFile`   | Documents, reports, papers            |
-| **Audio**   | `AudioFile` | Voice recordings, podcasts, meetings  |
-| **Video**   | `VideoFile` | Screen recordings, presentations      |
-| **Text**    | `TextFile`  | Code files, logs, data files          |
-| **Generic** | `File`      | Auto-detect type from content         |
-
-```python theme={null}
-from crewai_files import File, ImageFile, PDFFile, AudioFile, VideoFile, TextFile
-
-image = ImageFile(source="screenshot.png")
-pdf = PDFFile(source="report.pdf")
-audio = AudioFile(source="meeting.mp3")
-video = VideoFile(source="demo.mp4")
-text = TextFile(source="data.csv")
-
-file = File(source="document.pdf")
-```
-
-## File Sources
-
-The `source` parameter accepts multiple input types and auto-detects the appropriate handler:
-
-### From Path
-
-```python theme={null}
-from crewai_files import ImageFile
-
-image = ImageFile(source="./images/chart.png")
-```
-
-### From URL
-
-```python theme={null}
-from crewai_files import ImageFile
-
-image = ImageFile(source="https://example.com/image.png")
-```
-
-### From Bytes
-
-```python theme={null}
-from crewai_files import ImageFile, FileBytes
-
-image_bytes = download_image_from_api()
-image = ImageFile(source=FileBytes(data=image_bytes, filename="downloaded.png"))
-image = ImageFile(source=image_bytes)
-```
-
-## Using Files
-
-Files can be passed at multiple levels, with more specific levels taking precedence.
-
-### With Crews
-
-Pass files when kicking off a crew:
-
-```python theme={null}
-from crewai import Crew
-from crewai_files import ImageFile
-
-crew = Crew(agents=[analyst], tasks=[analysis_task])
-
-result = crew.kickoff(
-    inputs={"topic": "Q4 Sales"},
-    input_files={
-        "chart": ImageFile(source="sales_chart.png"),
-        "report": PDFFile(source="quarterly_report.pdf"),
-    }
-)
-```
-
-### With Tasks
-
-Attach files to specific tasks:
-
-```python theme={null}
-from crewai import Task
-from crewai_files import ImageFile
-
-task = Task(
-    description="Analyze the sales chart and identify trends in {chart}",
-    expected_output="A summary of key trends",
-    input_files={
-        "chart": ImageFile(source="sales_chart.png"),
-    }
-)
-```
-
-### With Flows
-
-Pass files to flows, which automatically inherit to crews:
-
-```python theme={null}
-from crewai.flow.flow import Flow, start
-from crewai_files import ImageFile
-
-class AnalysisFlow(Flow):
-    @start()
-    def analyze(self):
-        return self.analysis_crew.kickoff()
-
-flow = AnalysisFlow()
-result = flow.kickoff(
-    input_files={"image": ImageFile(source="data.png")}
-)
-```
-
-### With Standalone Agents
-
-Pass files directly to agent kickoff:
-
-```python theme={null}
-from crewai import Agent
-from crewai_files import ImageFile
-
-agent = Agent(
-    role="Image Analyst",
-    goal="Analyze images",
-    backstory="Expert at visual analysis",
-    llm="gpt-4o",
-)
-
-result = agent.kickoff(
-    messages="What's in this image?",
-    input_files={"photo": ImageFile(source="photo.jpg")},
-)
-```
-
-## File Precedence
-
-When files are passed at multiple levels, more specific levels override broader ones:
-
-```
-Flow input_files < Crew input_files < Task input_files
-```
-
-For example, if both Flow and Task define a file named `"chart"`, the Task's version is used.
-
-## Provider Support
-
-Different providers support different file types. CrewAI automatically formats files for each provider's API.
-
-| Provider                                 | Image | PDF | Audio | Video | Text |
-| :--------------------------------------- | :---: | :-: | :---: | :---: | :--: |
-| **OpenAI** (completions API)             |   ✓   |     |       |       |      |
-| **OpenAI** (responses API)               |   ✓   |  ✓  |   ✓   |       |      |
-| **Anthropic** (claude-3.x)               |   ✓   |  ✓  |       |       |      |
-| **Google Gemini** (gemini-1.5, 2.0, 2.5) |   ✓   |  ✓  |   ✓   |   ✓   |   ✓  |
-| **AWS Bedrock** (claude-3)               |   ✓   |  ✓  |       |       |      |
-| **Azure OpenAI** (gpt-4o)                |   ✓   |     |   ✓   |       |      |
-
-<Note type="info" title="Gemini for Maximum File Support">
-  Google Gemini models support all file types including video (up to 1 hour, 2GB). Use Gemini when you need to process video content.
-</Note>
-
-<Note type="warning" title="Unsupported File Types">
-  If you pass a file type that the provider doesn't support (e.g., video to OpenAI), you'll receive an `UnsupportedFileTypeError`. Choose your provider based on the file types you need to process.
-</Note>
-
-## How Files Are Sent
-
-CrewAI automatically chooses the optimal method to send files to each provider:
-
-| Method              | Description                                | Used When                         |
-| :------------------ | :----------------------------------------- | :-------------------------------- |
-| **Inline Base64**   | File embedded directly in the request      | Small files (\< 5MB typically)    |
-| **File Upload API** | File uploaded separately, referenced by ID | Large files that exceed threshold |
-| **URL Reference**   | Direct URL passed to the model             | File source is already a URL      |
-
-### Provider Transmission Methods
-
-| Provider          | Inline Base64 | File Upload API | URL References |
-| :---------------- | :-----------: | :-------------: | :------------: |
-| **OpenAI**        |       ✓       |    ✓ (> 5 MB)   |        ✓       |
-| **Anthropic**     |       ✓       |    ✓ (> 5 MB)   |        ✓       |
-| **Google Gemini** |       ✓       |   ✓ (> 20 MB)   |        ✓       |
-| **AWS Bedrock**   |       ✓       |                 |   ✓ (S3 URIs)  |
-| **Azure OpenAI**  |       ✓       |                 |        ✓       |
-
-<Note type="info" title="Automatic Optimization">
-  You don't need to manage this yourself. CrewAI automatically uses the most efficient method based on file size and provider capabilities. Providers without file upload APIs use inline base64 for all files.
-</Note>
-
-## File Handling Modes
-
-Control how files are processed when they exceed provider limits:
-
-```python theme={null}
-from crewai_files import ImageFile, PDFFile
-
-image = ImageFile(source="large.png", mode="strict")
-image = ImageFile(source="large.png", mode="auto")
-image = ImageFile(source="large.png", mode="warn")
-pdf = PDFFile(source="large.pdf", mode="chunk")
-```
-
-## Provider Constraints
-
-Each provider has specific limits for file sizes and dimensions:
-
-### OpenAI
-
-* **Images**: Max 20 MB, up to 10 images per request
-* **PDFs**: Max 32 MB, up to 100 pages
-* **Audio**: Max 25 MB, up to 25 minutes
-
-### Anthropic
-
-* **Images**: Max 5 MB, max 8000x8000 pixels, up to 100 images
-* **PDFs**: Max 32 MB, up to 100 pages
-
-### Google Gemini
-
-* **Images**: Max 100 MB
-* **PDFs**: Max 50 MB
-* **Audio**: Max 100 MB, up to 9.5 hours
-* **Video**: Max 2 GB, up to 1 hour
-
-### AWS Bedrock
-
-* **Images**: Max 4.5 MB, max 8000x8000 pixels
-* **PDFs**: Max 3.75 MB, up to 100 pages
-
-## Referencing Files in Prompts
-
-Use the file's key name in your task descriptions to reference files:
-
-```python theme={null}
-task = Task(
-    description="""
-    Analyze the provided materials:
-    1. Review the chart in {sales_chart}
-    2. Cross-reference with data in {quarterly_report}
-    3. Summarize key findings
-    """,
-    expected_output="Analysis summary with key insights",
-    input_files={
-        "sales_chart": ImageFile(source="chart.png"),
-        "quarterly_report": PDFFile(source="report.pdf"),
-    }
-)
-```
-
-
 # Flows
 Source: https://docs.crewai.com/v1.15.7/en/concepts/flows
 
@@ -15074,6 +14802,278 @@ Event listeners can be used for a variety of purposes:
 By leveraging CrewAI's event system, you can extend its functionality and integrate it seamlessly with your existing infrastructure.
 
 
+# Files
+Source: https://docs.crewai.com/v1.15.7/en/concepts/files
+
+Pass images, PDFs, audio, video, and text files to your agents for multimodal processing.
+
+## Overview
+
+CrewAI supports native multimodal file inputs, allowing you to pass images, PDFs, audio, video, and text files directly to your agents. Files are automatically formatted for each LLM provider's API requirements.
+
+<Note type="info" title="Optional Dependency">
+  File support requires the optional `crewai-files` package. Install it with:
+
+  ```bash theme={null}
+  uv add 'crewai[file-processing]'
+  ```
+</Note>
+
+<Note type="warning" title="Early Access">
+  The file processing API is currently in early access.
+</Note>
+
+## File Types
+
+CrewAI supports five specific file types plus a generic `File` class that auto-detects the type:
+
+| Type        | Class       | Use Cases                             |
+| :---------- | :---------- | :------------------------------------ |
+| **Image**   | `ImageFile` | Photos, screenshots, diagrams, charts |
+| **PDF**     | `PDFFile`   | Documents, reports, papers            |
+| **Audio**   | `AudioFile` | Voice recordings, podcasts, meetings  |
+| **Video**   | `VideoFile` | Screen recordings, presentations      |
+| **Text**    | `TextFile`  | Code files, logs, data files          |
+| **Generic** | `File`      | Auto-detect type from content         |
+
+```python theme={null}
+from crewai_files import File, ImageFile, PDFFile, AudioFile, VideoFile, TextFile
+
+image = ImageFile(source="screenshot.png")
+pdf = PDFFile(source="report.pdf")
+audio = AudioFile(source="meeting.mp3")
+video = VideoFile(source="demo.mp4")
+text = TextFile(source="data.csv")
+
+file = File(source="document.pdf")
+```
+
+## File Sources
+
+The `source` parameter accepts multiple input types and auto-detects the appropriate handler:
+
+### From Path
+
+```python theme={null}
+from crewai_files import ImageFile
+
+image = ImageFile(source="./images/chart.png")
+```
+
+### From URL
+
+```python theme={null}
+from crewai_files import ImageFile
+
+image = ImageFile(source="https://example.com/image.png")
+```
+
+### From Bytes
+
+```python theme={null}
+from crewai_files import ImageFile, FileBytes
+
+image_bytes = download_image_from_api()
+image = ImageFile(source=FileBytes(data=image_bytes, filename="downloaded.png"))
+image = ImageFile(source=image_bytes)
+```
+
+## Using Files
+
+Files can be passed at multiple levels, with more specific levels taking precedence.
+
+### With Crews
+
+Pass files when kicking off a crew:
+
+```python theme={null}
+from crewai import Crew
+from crewai_files import ImageFile
+
+crew = Crew(agents=[analyst], tasks=[analysis_task])
+
+result = crew.kickoff(
+    inputs={"topic": "Q4 Sales"},
+    input_files={
+        "chart": ImageFile(source="sales_chart.png"),
+        "report": PDFFile(source="quarterly_report.pdf"),
+    }
+)
+```
+
+### With Tasks
+
+Attach files to specific tasks:
+
+```python theme={null}
+from crewai import Task
+from crewai_files import ImageFile
+
+task = Task(
+    description="Analyze the sales chart and identify trends in {chart}",
+    expected_output="A summary of key trends",
+    input_files={
+        "chart": ImageFile(source="sales_chart.png"),
+    }
+)
+```
+
+### With Flows
+
+Pass files to flows, which automatically inherit to crews:
+
+```python theme={null}
+from crewai.flow.flow import Flow, start
+from crewai_files import ImageFile
+
+class AnalysisFlow(Flow):
+    @start()
+    def analyze(self):
+        return self.analysis_crew.kickoff()
+
+flow = AnalysisFlow()
+result = flow.kickoff(
+    input_files={"image": ImageFile(source="data.png")}
+)
+```
+
+### With Standalone Agents
+
+Pass files directly to agent kickoff:
+
+```python theme={null}
+from crewai import Agent
+from crewai_files import ImageFile
+
+agent = Agent(
+    role="Image Analyst",
+    goal="Analyze images",
+    backstory="Expert at visual analysis",
+    llm="gpt-4o",
+)
+
+result = agent.kickoff(
+    messages="What's in this image?",
+    input_files={"photo": ImageFile(source="photo.jpg")},
+)
+```
+
+## File Precedence
+
+When files are passed at multiple levels, more specific levels override broader ones:
+
+```
+Flow input_files < Crew input_files < Task input_files
+```
+
+For example, if both Flow and Task define a file named `"chart"`, the Task's version is used.
+
+## Provider Support
+
+Different providers support different file types. CrewAI automatically formats files for each provider's API.
+
+| Provider                                 | Image | PDF | Audio | Video | Text |
+| :--------------------------------------- | :---: | :-: | :---: | :---: | :--: |
+| **OpenAI** (completions API)             |   ✓   |     |       |       |      |
+| **OpenAI** (responses API)               |   ✓   |  ✓  |   ✓   |       |      |
+| **Anthropic** (claude-3.x)               |   ✓   |  ✓  |       |       |      |
+| **Google Gemini** (gemini-1.5, 2.0, 2.5) |   ✓   |  ✓  |   ✓   |   ✓   |   ✓  |
+| **AWS Bedrock** (claude-3)               |   ✓   |  ✓  |       |       |      |
+| **Azure OpenAI** (gpt-4o)                |   ✓   |     |   ✓   |       |      |
+
+<Note type="info" title="Gemini for Maximum File Support">
+  Google Gemini models support all file types including video (up to 1 hour, 2GB). Use Gemini when you need to process video content.
+</Note>
+
+<Note type="warning" title="Unsupported File Types">
+  If you pass a file type that the provider doesn't support (e.g., video to OpenAI), you'll receive an `UnsupportedFileTypeError`. Choose your provider based on the file types you need to process.
+</Note>
+
+## How Files Are Sent
+
+CrewAI automatically chooses the optimal method to send files to each provider:
+
+| Method              | Description                                | Used When                         |
+| :------------------ | :----------------------------------------- | :-------------------------------- |
+| **Inline Base64**   | File embedded directly in the request      | Small files (\< 5MB typically)    |
+| **File Upload API** | File uploaded separately, referenced by ID | Large files that exceed threshold |
+| **URL Reference**   | Direct URL passed to the model             | File source is already a URL      |
+
+### Provider Transmission Methods
+
+| Provider          | Inline Base64 | File Upload API | URL References |
+| :---------------- | :-----------: | :-------------: | :------------: |
+| **OpenAI**        |       ✓       |    ✓ (> 5 MB)   |        ✓       |
+| **Anthropic**     |       ✓       |    ✓ (> 5 MB)   |        ✓       |
+| **Google Gemini** |       ✓       |   ✓ (> 20 MB)   |        ✓       |
+| **AWS Bedrock**   |       ✓       |                 |   ✓ (S3 URIs)  |
+| **Azure OpenAI**  |       ✓       |                 |        ✓       |
+
+<Note type="info" title="Automatic Optimization">
+  You don't need to manage this yourself. CrewAI automatically uses the most efficient method based on file size and provider capabilities. Providers without file upload APIs use inline base64 for all files.
+</Note>
+
+## File Handling Modes
+
+Control how files are processed when they exceed provider limits:
+
+```python theme={null}
+from crewai_files import ImageFile, PDFFile
+
+image = ImageFile(source="large.png", mode="strict")
+image = ImageFile(source="large.png", mode="auto")
+image = ImageFile(source="large.png", mode="warn")
+pdf = PDFFile(source="large.pdf", mode="chunk")
+```
+
+## Provider Constraints
+
+Each provider has specific limits for file sizes and dimensions:
+
+### OpenAI
+
+* **Images**: Max 20 MB, up to 10 images per request
+* **PDFs**: Max 32 MB, up to 100 pages
+* **Audio**: Max 25 MB, up to 25 minutes
+
+### Anthropic
+
+* **Images**: Max 5 MB, max 8000x8000 pixels, up to 100 images
+* **PDFs**: Max 32 MB, up to 100 pages
+
+### Google Gemini
+
+* **Images**: Max 100 MB
+* **PDFs**: Max 50 MB
+* **Audio**: Max 100 MB, up to 9.5 hours
+* **Video**: Max 2 GB, up to 1 hour
+
+### AWS Bedrock
+
+* **Images**: Max 4.5 MB, max 8000x8000 pixels
+* **PDFs**: Max 3.75 MB, up to 100 pages
+
+## Referencing Files in Prompts
+
+Use the file's key name in your task descriptions to reference files:
+
+```python theme={null}
+task = Task(
+    description="""
+    Analyze the provided materials:
+    1. Review the chart in {sales_chart}
+    2. Cross-reference with data in {quarterly_report}
+    3. Summarize key findings
+    """,
+    expected_output="Analysis summary with key insights",
+    input_files={
+        "sales_chart": ImageFile(source="chart.png"),
+        "quarterly_report": PDFFile(source="report.pdf"),
+    }
+)
+```
+
+
 # Memory
 Source: https://docs.crewai.com/v1.15.7/en/concepts/memory
 
@@ -18615,131 +18615,6 @@ When using Streamable HTTP transport, general web security best practices are pa
 * **Input Validation**: Ensure your MCP server validates all incoming requests and parameters.
 
 For a comprehensive guide on securing your MCP integrations, please refer to our [Security Considerations](./security.mdx) page and the official [MCP Transport Security documentation](https://modelcontextprotocol.io/docs/concepts/transports#security-considerations).
-
-
-# Overview
-Source: https://docs.crewai.com/v1.15.7/en/observability/overview
-
-Monitor, evaluate, and optimize your CrewAI agents with comprehensive observability tools
-
-## Observability for CrewAI
-
-Observability is crucial for understanding how your CrewAI agents perform, identifying bottlenecks, and ensuring reliable operation in production environments. This section covers various tools and platforms that provide monitoring, evaluation, and optimization capabilities for your agent workflows.
-
-## Why Observability Matters
-
-* **Performance Monitoring**: Track agent execution times, token usage, and resource consumption
-* **Quality Assurance**: Evaluate output quality and consistency across different scenarios
-* **Debugging**: Identify and resolve issues in agent behavior and task execution
-* **Cost Management**: Monitor LLM API usage and associated costs
-* **Continuous Improvement**: Gather insights to optimize agent performance over time
-
-## Available Observability Tools
-
-### Monitoring & Tracing Platforms
-
-<CardGroup>
-  <Card title="LangDB" icon="database" href="/en/observability/langdb">
-    End-to-end tracing for CrewAI workflows with automatic agent interaction capture.
-  </Card>
-
-  <Card title="OpenLIT" icon="magnifying-glass-chart" href="/en/observability/openlit">
-    OpenTelemetry-native monitoring with cost tracking and performance analytics.
-  </Card>
-
-  <Card title="MLflow" icon="bars-staggered" href="/en/observability/mlflow">
-    Machine learning lifecycle management with tracing and evaluation capabilities.
-  </Card>
-
-  <Card title="Langfuse" icon="link" href="/en/observability/langfuse">
-    LLM engineering platform with detailed tracing and analytics.
-  </Card>
-
-  <Card title="Langtrace" icon="chart-line" href="/en/observability/langtrace">
-    Open-source observability for LLMs and agent frameworks.
-  </Card>
-
-  <Card title="Arize Phoenix" icon="meteor" href="/en/observability/arize-phoenix">
-    AI observability platform for monitoring and troubleshooting.
-  </Card>
-
-  <Card title="Portkey" icon="key" href="/en/observability/portkey">
-    AI gateway with comprehensive monitoring and reliability features.
-  </Card>
-
-  <Card title="Opik" icon="meteor" href="/en/observability/opik">
-    Debug, evaluate, and monitor LLM applications with comprehensive tracing.
-  </Card>
-
-  <Card title="Weave" icon="network-wired" href="/en/observability/weave">
-    Weights & Biases platform for tracking and evaluating AI applications.
-  </Card>
-</CardGroup>
-
-### Evaluation & Quality Assurance
-
-<CardGroup>
-  <Card title="Patronus AI" icon="shield-check" href="/en/observability/patronus-evaluation">
-    Comprehensive evaluation platform for LLM outputs and agent behaviors.
-  </Card>
-</CardGroup>
-
-## Key Observability Metrics
-
-### Performance Metrics
-
-* **Execution Time**: How long agents take to complete tasks
-* **Token Usage**: Input/output tokens consumed by LLM calls
-* **API Latency**: Response times from external services
-* **Success Rate**: Percentage of successfully completed tasks
-
-### Quality Metrics
-
-* **Output Accuracy**: Correctness of agent responses
-* **Consistency**: Reliability across similar inputs
-* **Relevance**: How well outputs match expected results
-* **Safety**: Compliance with content policies and guidelines
-
-### Cost Metrics
-
-* **API Costs**: Expenses from LLM provider usage
-* **Resource Utilization**: Compute and memory consumption
-* **Cost per Task**: Economic efficiency of agent operations
-* **Budget Tracking**: Monitoring against spending limits
-
-## Getting Started
-
-1. **Choose Your Tools**: Select observability platforms that match your needs
-2. **Instrument Your Code**: Add monitoring to your CrewAI applications
-3. **Set Up Dashboards**: Configure visualizations for key metrics
-4. **Define Alerts**: Create notifications for important events
-5. **Establish Baselines**: Measure initial performance for comparison
-6. **Iterate and Improve**: Use insights to optimize your agents
-
-## Best Practices
-
-### Development Phase
-
-* Use detailed tracing to understand agent behavior
-* Implement evaluation metrics early in development
-* Monitor resource usage during testing
-* Set up automated quality checks
-
-### Production Phase
-
-* Implement comprehensive monitoring and alerting
-* Track performance trends over time
-* Monitor for anomalies and degradation
-* Maintain cost visibility and control
-
-### Continuous Improvement
-
-* Regular performance reviews and optimization
-* A/B testing of different agent configurations
-* Feedback loops for quality improvement
-* Documentation of lessons learned
-
-Choose the observability tools that best fit your use case, infrastructure, and monitoring requirements to ensure your CrewAI agents perform reliably and efficiently.
 
 
 # CrewAI Tracing
@@ -45328,375 +45203,6 @@ Metadata allows you to store additional information about customers, subscriptio
 This integration enables comprehensive payment and subscription management automation, allowing your AI agents to handle billing operations seamlessly within your Stripe ecosystem.
 
 
-# Zendesk Integration
-Source: https://docs.crewai.com/v1.15.7/en/enterprise/integrations/zendesk
-
-Customer support and helpdesk management with Zendesk integration for CrewAI.
-
-## Overview
-
-Enable your agents to manage customer support operations through Zendesk. Create and update tickets, manage users, track support metrics, and streamline your customer service workflows with AI-powered automation.
-
-## Prerequisites
-
-Before using the Zendesk integration, ensure you have:
-
-* A [CrewAI AMP](https://app.crewai.com) account with an active subscription
-* A Zendesk account with appropriate API permissions
-* Connected your Zendesk account through the [Integrations page](https://app.crewai.com/integrations)
-
-## Setting Up Zendesk Integration
-
-### 1. Connect Your Zendesk Account
-
-1. Navigate to [CrewAI AMP Integrations](https://app.crewai.com/crewai_plus/connectors)
-2. Find **Zendesk** in the Authentication Integrations section
-3. Click **Connect** and complete the OAuth flow
-4. Grant the necessary permissions for ticket and user management
-5. Copy your Enterprise Token from [Integration Settings](https://app.crewai.com/crewai_plus/settings/integrations)
-
-### 2. Install Required Package
-
-```bash theme={null}
-uv add crewai-tools
-```
-
-### 3. Environment Variable Setup
-
-<Note>
-  To use integrations with `Agent(apps=[])`, you must set the
-  `CREWAI_PLATFORM_INTEGRATION_TOKEN` environment variable with your Enterprise
-  Token.
-</Note>
-
-```bash theme={null}
-export CREWAI_PLATFORM_INTEGRATION_TOKEN="your_enterprise_token"
-```
-
-Or add it to your `.env` file:
-
-```
-CREWAI_PLATFORM_INTEGRATION_TOKEN=your_enterprise_token
-```
-
-## Available Tools
-
-### **Ticket Management**
-
-<AccordionGroup>
-  <Accordion title="zendesk/create_ticket">
-    **Description:** Create a new support ticket in Zendesk.
-
-    **Parameters:**
-
-    * `ticketSubject` (string, required): Ticket subject line (e.g., "Help, my printer is on fire!")
-    * `ticketDescription` (string, required): First comment that appears on the ticket (e.g., "The smoke is very colorful.")
-    * `requesterName` (string, required): Name of the user requesting support (e.g., "Jane Customer")
-    * `requesterEmail` (string, required): Email of the user requesting support (e.g., "[jane@example.com](mailto:jane@example.com)")
-    * `assigneeId` (string, optional): Zendesk Agent ID assigned to this ticket - Use Connect Portal Workflow Settings to allow users to select an assignee
-    * `ticketType` (string, optional): Ticket type - Options: problem, incident, question, task
-    * `ticketPriority` (string, optional): Priority level - Options: urgent, high, normal, low
-    * `ticketStatus` (string, optional): Ticket status - Options: new, open, pending, hold, solved, closed
-    * `ticketDueAt` (string, optional): Due date for task-type tickets (ISO 8601 timestamp)
-    * `ticketTags` (string, optional): Array of tags to apply (e.g., `["enterprise", "other_tag"]`)
-    * `ticketExternalId` (string, optional): External ID to link tickets to local records
-    * `ticketCustomFields` (object, optional): Custom field values in JSON format
-  </Accordion>
-
-  <Accordion title="zendesk/update_ticket">
-    **Description:** Update an existing support ticket in Zendesk.
-
-    **Parameters:**
-
-    * `ticketId` (string, required): ID of the ticket to update (e.g., "35436")
-    * `ticketSubject` (string, optional): Updated ticket subject
-    * `requesterName` (string, required): Name of the user who requested this ticket
-    * `requesterEmail` (string, required): Email of the user who requested this ticket
-    * `assigneeId` (string, optional): Updated assignee ID - Use Connect Portal Workflow Settings
-    * `ticketType` (string, optional): Updated ticket type - Options: problem, incident, question, task
-    * `ticketPriority` (string, optional): Updated priority - Options: urgent, high, normal, low
-    * `ticketStatus` (string, optional): Updated status - Options: new, open, pending, hold, solved, closed
-    * `ticketDueAt` (string, optional): Updated due date (ISO 8601 timestamp)
-    * `ticketTags` (string, optional): Updated tags array
-    * `ticketExternalId` (string, optional): Updated external ID
-    * `ticketCustomFields` (object, optional): Updated custom field values
-  </Accordion>
-
-  <Accordion title="zendesk/get_ticket_by_id">
-    **Description:** Retrieve a specific ticket by its ID.
-
-    **Parameters:**
-
-    * `ticketId` (string, required): The ticket ID to retrieve (e.g., "35436")
-  </Accordion>
-
-  <Accordion title="zendesk/add_comment_to_ticket">
-    **Description:** Add a comment or internal note to an existing ticket.
-
-    **Parameters:**
-
-    * `ticketId` (string, required): ID of the ticket to add comment to (e.g., "35436")
-    * `commentBody` (string, required): Comment message (accepts plain text or HTML, e.g., "Thanks for your help!")
-    * `isInternalNote` (boolean, optional): Set to true for internal notes instead of public replies (defaults to false)
-    * `isPublic` (boolean, optional): True for public comments, false for internal notes
-  </Accordion>
-
-  <Accordion title="zendesk/search_tickets">
-    **Description:** Search for tickets using various filters and criteria.
-
-    **Parameters:**
-
-    * `ticketSubject` (string, optional): Filter by text in ticket subject
-    * `ticketDescription` (string, optional): Filter by text in ticket description and comments
-    * `ticketStatus` (string, optional): Filter by status - Options: new, open, pending, hold, solved, closed
-    * `ticketType` (string, optional): Filter by type - Options: problem, incident, question, task, no\_type
-    * `ticketPriority` (string, optional): Filter by priority - Options: urgent, high, normal, low, no\_priority
-    * `requesterId` (string, optional): Filter by requester user ID
-    * `assigneeId` (string, optional): Filter by assigned agent ID
-    * `recipientEmail` (string, optional): Filter by original recipient email address
-    * `ticketTags` (string, optional): Filter by ticket tags
-    * `ticketExternalId` (string, optional): Filter by external ID
-    * `createdDate` (object, optional): Filter by creation date with operator (EQUALS, LESS\_THAN\_EQUALS, GREATER\_THAN\_EQUALS) and value
-    * `updatedDate` (object, optional): Filter by update date with operator and value
-    * `dueDate` (object, optional): Filter by due date with operator and value
-    * `sort_by` (string, optional): Sort field - Options: created\_at, updated\_at, priority, status, ticket\_type
-    * `sort_order` (string, optional): Sort direction - Options: asc, desc
-  </Accordion>
-</AccordionGroup>
-
-### **User Management**
-
-<AccordionGroup>
-  <Accordion title="zendesk/create_user">
-    **Description:** Create a new user in Zendesk.
-
-    **Parameters:**
-
-    * `name` (string, required): User's full name
-    * `email` (string, optional): User's email address (e.g., "[jane@example.com](mailto:jane@example.com)")
-    * `phone` (string, optional): User's phone number
-    * `role` (string, optional): User role - Options: admin, agent, end-user
-    * `externalId` (string, optional): Unique identifier from another system
-    * `details` (string, optional): Additional user details
-    * `notes` (string, optional): Internal notes about the user
-  </Accordion>
-
-  <Accordion title="zendesk/update_user">
-    **Description:** Update an existing user's information.
-
-    **Parameters:**
-
-    * `userId` (string, required): ID of the user to update
-    * `name` (string, optional): Updated user name
-    * `email` (string, optional): Updated email (adds as secondary email on update)
-    * `phone` (string, optional): Updated phone number
-    * `role` (string, optional): Updated role - Options: admin, agent, end-user
-    * `externalId` (string, optional): Updated external ID
-    * `details` (string, optional): Updated user details
-    * `notes` (string, optional): Updated internal notes
-  </Accordion>
-
-  <Accordion title="zendesk/get_user_by_id">
-    **Description:** Retrieve a specific user by their ID.
-
-    **Parameters:**
-
-    * `userId` (string, required): The user ID to retrieve
-  </Accordion>
-
-  <Accordion title="zendesk/search_users">
-    **Description:** Search for users using various criteria.
-
-    **Parameters:**
-
-    * `name` (string, optional): Filter by user name
-    * `email` (string, optional): Filter by user email (e.g., "[jane@example.com](mailto:jane@example.com)")
-    * `role` (string, optional): Filter by role - Options: admin, agent, end-user
-    * `externalId` (string, optional): Filter by external ID
-    * `sort_by` (string, optional): Sort field - Options: created\_at, updated\_at
-    * `sort_order` (string, optional): Sort direction - Options: asc, desc
-  </Accordion>
-</AccordionGroup>
-
-### **Administrative Tools**
-
-<AccordionGroup>
-  <Accordion title="zendesk/get_ticket_fields">
-    **Description:** Retrieve all standard and custom fields available for tickets.
-
-    **Parameters:**
-
-    * `paginationParameters` (object, optional): Pagination settings
-      * `pageCursor` (string, optional): Page cursor for pagination
-  </Accordion>
-
-  <Accordion title="zendesk/get_ticket_audits">
-    **Description:** Get audit records (read-only history) for tickets.
-
-    **Parameters:**
-
-    * `ticketId` (string, optional): Get audits for specific ticket (if empty, retrieves audits for all non-archived tickets, e.g., "1234")
-    * `paginationParameters` (object, optional): Pagination settings
-      * `pageCursor` (string, optional): Page cursor for pagination
-  </Accordion>
-</AccordionGroup>
-
-## Custom Fields
-
-Custom fields allow you to store additional information specific to your organization:
-
-```json theme={null}
-[
-  { "id": 27642, "value": "745" },
-  { "id": 27648, "value": "yes" }
-]
-```
-
-## Ticket Priority Levels
-
-Understanding priority levels:
-
-* **urgent** - Critical issues requiring immediate attention
-* **high** - Important issues that should be addressed quickly
-* **normal** - Standard priority for most tickets
-* **low** - Minor issues that can be addressed when convenient
-
-## Ticket Status Workflow
-
-Standard ticket status progression:
-
-* **new** - Recently created, not yet assigned
-* **open** - Actively being worked on
-* **pending** - Waiting for customer response or external action
-* **hold** - Temporarily paused
-* **solved** - Issue resolved, awaiting customer confirmation
-* **closed** - Ticket completed and closed
-
-## Usage Examples
-
-### Basic Zendesk Agent Setup
-
-```python theme={null}
-from crewai import Agent, Task, Crew
-from crewai import Agent, Task, Crew
-
-# Create an agent with Zendesk capabilities
-zendesk_agent = Agent(
-    role="Support Manager",
-    goal="Manage customer support tickets and provide excellent customer service",
-    backstory="An AI assistant specialized in customer support operations and ticket management.",
-    apps=['zendesk']  # All Zendesk actions will be available
-)
-
-# Task to create a new support ticket
-create_ticket_task = Task(
-    description="Create a high-priority support ticket for John Smith who is unable to access his account after password reset",
-    agent=zendesk_agent,
-    expected_output="Support ticket created successfully with ticket ID"
-)
-
-# Run the task
-crew = Crew(
-    agents=[zendesk_agent],
-    tasks=[create_ticket_task]
-)
-
-crew.kickoff()
-```
-
-### Filtering Specific Zendesk Tools
-
-```python theme={null}
-from crewai import Agent, Task, Crew
-
-# Create agent with specific Zendesk actions only
-support_agent = Agent(
-    role="Customer Support Agent",
-    goal="Handle customer inquiries and resolve support issues efficiently",
-    backstory="An experienced support agent who specializes in ticket resolution and customer communication.",
-    apps=['zendesk/create_ticket']  # Specific Zendesk actions
-)
-
-# Task to manage support workflow
-support_task = Task(
-    description="Create a ticket for login issues, add troubleshooting comments, and update status to resolved",
-    agent=support_agent,
-    expected_output="Support ticket managed through complete resolution workflow"
-)
-
-crew = Crew(
-    agents=[support_agent],
-    tasks=[support_task]
-)
-
-crew.kickoff()
-```
-
-### Advanced Ticket Management
-
-```python theme={null}
-from crewai import Agent, Task, Crew
-
-ticket_manager = Agent(
-    role="Ticket Manager",
-    goal="Manage support ticket workflows and ensure timely resolution",
-    backstory="An AI assistant that specializes in support ticket triage and workflow optimization.",
-    apps=['zendesk']
-)
-
-# Task to manage ticket lifecycle
-ticket_workflow = Task(
-    description="""
-    1. Create a new support ticket for account access issues
-    2. Add internal notes with troubleshooting steps
-    3. Update ticket priority based on customer tier
-    4. Add resolution comments and close the ticket
-    """,
-    agent=ticket_manager,
-    expected_output="Complete ticket lifecycle managed from creation to resolution"
-)
-
-crew = Crew(
-    agents=[ticket_manager],
-    tasks=[ticket_workflow]
-)
-
-crew.kickoff()
-```
-
-### Support Analytics and Reporting
-
-```python theme={null}
-from crewai import Agent, Task, Crew
-
-support_analyst = Agent(
-    role="Support Analyst",
-    goal="Analyze support metrics and generate insights for team performance",
-    backstory="An analytical AI that excels at extracting insights from support data and ticket patterns.",
-    apps=['zendesk']
-)
-
-# Complex task involving analytics and reporting
-analytics_task = Task(
-    description="""
-    1. Search for all open tickets from the last 30 days
-    2. Analyze ticket resolution times and customer satisfaction
-    3. Identify common issues and support patterns
-    4. Generate weekly support performance report
-    """,
-    agent=support_analyst,
-    expected_output="Comprehensive support analytics report with performance insights and recommendations"
-)
-
-crew = Crew(
-    agents=[support_analyst],
-    tasks=[analytics_task]
-)
-
-crew.kickoff()
-```
-
-
 # CrewAI AMP
 Source: https://docs.crewai.com/v1.15.7/en/enterprise/introduction
 
@@ -54190,6 +53696,131 @@ For this guide we will use CrewAI’s quickstart example.
 * [👉 Opik + CrewAI Colab](https://colab.research.google.com/github/comet-ml/opik/blob/main/apps/opik-documentation/documentation/docs/cookbook/crewai.ipynb)
 * [🐦 X](https://x.com/cometml)
 * [💬 Slack](https://slack.comet.com/)
+
+
+# Overview
+Source: https://docs.crewai.com/v1.15.7/en/observability/overview
+
+Monitor, evaluate, and optimize your CrewAI agents with comprehensive observability tools
+
+## Observability for CrewAI
+
+Observability is crucial for understanding how your CrewAI agents perform, identifying bottlenecks, and ensuring reliable operation in production environments. This section covers various tools and platforms that provide monitoring, evaluation, and optimization capabilities for your agent workflows.
+
+## Why Observability Matters
+
+* **Performance Monitoring**: Track agent execution times, token usage, and resource consumption
+* **Quality Assurance**: Evaluate output quality and consistency across different scenarios
+* **Debugging**: Identify and resolve issues in agent behavior and task execution
+* **Cost Management**: Monitor LLM API usage and associated costs
+* **Continuous Improvement**: Gather insights to optimize agent performance over time
+
+## Available Observability Tools
+
+### Monitoring & Tracing Platforms
+
+<CardGroup>
+  <Card title="LangDB" icon="database" href="/en/observability/langdb">
+    End-to-end tracing for CrewAI workflows with automatic agent interaction capture.
+  </Card>
+
+  <Card title="OpenLIT" icon="magnifying-glass-chart" href="/en/observability/openlit">
+    OpenTelemetry-native monitoring with cost tracking and performance analytics.
+  </Card>
+
+  <Card title="MLflow" icon="bars-staggered" href="/en/observability/mlflow">
+    Machine learning lifecycle management with tracing and evaluation capabilities.
+  </Card>
+
+  <Card title="Langfuse" icon="link" href="/en/observability/langfuse">
+    LLM engineering platform with detailed tracing and analytics.
+  </Card>
+
+  <Card title="Langtrace" icon="chart-line" href="/en/observability/langtrace">
+    Open-source observability for LLMs and agent frameworks.
+  </Card>
+
+  <Card title="Arize Phoenix" icon="meteor" href="/en/observability/arize-phoenix">
+    AI observability platform for monitoring and troubleshooting.
+  </Card>
+
+  <Card title="Portkey" icon="key" href="/en/observability/portkey">
+    AI gateway with comprehensive monitoring and reliability features.
+  </Card>
+
+  <Card title="Opik" icon="meteor" href="/en/observability/opik">
+    Debug, evaluate, and monitor LLM applications with comprehensive tracing.
+  </Card>
+
+  <Card title="Weave" icon="network-wired" href="/en/observability/weave">
+    Weights & Biases platform for tracking and evaluating AI applications.
+  </Card>
+</CardGroup>
+
+### Evaluation & Quality Assurance
+
+<CardGroup>
+  <Card title="Patronus AI" icon="shield-check" href="/en/observability/patronus-evaluation">
+    Comprehensive evaluation platform for LLM outputs and agent behaviors.
+  </Card>
+</CardGroup>
+
+## Key Observability Metrics
+
+### Performance Metrics
+
+* **Execution Time**: How long agents take to complete tasks
+* **Token Usage**: Input/output tokens consumed by LLM calls
+* **API Latency**: Response times from external services
+* **Success Rate**: Percentage of successfully completed tasks
+
+### Quality Metrics
+
+* **Output Accuracy**: Correctness of agent responses
+* **Consistency**: Reliability across similar inputs
+* **Relevance**: How well outputs match expected results
+* **Safety**: Compliance with content policies and guidelines
+
+### Cost Metrics
+
+* **API Costs**: Expenses from LLM provider usage
+* **Resource Utilization**: Compute and memory consumption
+* **Cost per Task**: Economic efficiency of agent operations
+* **Budget Tracking**: Monitoring against spending limits
+
+## Getting Started
+
+1. **Choose Your Tools**: Select observability platforms that match your needs
+2. **Instrument Your Code**: Add monitoring to your CrewAI applications
+3. **Set Up Dashboards**: Configure visualizations for key metrics
+4. **Define Alerts**: Create notifications for important events
+5. **Establish Baselines**: Measure initial performance for comparison
+6. **Iterate and Improve**: Use insights to optimize your agents
+
+## Best Practices
+
+### Development Phase
+
+* Use detailed tracing to understand agent behavior
+* Implement evaluation metrics early in development
+* Monitor resource usage during testing
+* Set up automated quality checks
+
+### Production Phase
+
+* Implement comprehensive monitoring and alerting
+* Track performance trends over time
+* Monitor for anomalies and degradation
+* Maintain cost visibility and control
+
+### Continuous Improvement
+
+* Regular performance reviews and optimization
+* A/B testing of different agent configurations
+* Feedback loops for quality improvement
+* Documentation of lessons learned
+
+Choose the observability tools that best fit your use case, infrastructure, and monitoring requirements to ensure your CrewAI agents perform reliably and efficiently.
 
 
 # Patronus AI Evaluation
@@ -65181,6 +64812,375 @@ This guide will walk you through the process of setting up Zapier triggers for C
 * Consider adding error handling steps to manage potential failures in the workflow.
 
 By following these steps, you'll have successfully set up Zapier triggers for CrewAI AMP, allowing for automated workflows triggered by Slack messages and resulting in email notifications with CrewAI AMP output.
+
+
+# Zendesk Integration
+Source: https://docs.crewai.com/v1.15.7/en/enterprise/integrations/zendesk
+
+Customer support and helpdesk management with Zendesk integration for CrewAI.
+
+## Overview
+
+Enable your agents to manage customer support operations through Zendesk. Create and update tickets, manage users, track support metrics, and streamline your customer service workflows with AI-powered automation.
+
+## Prerequisites
+
+Before using the Zendesk integration, ensure you have:
+
+* A [CrewAI AMP](https://app.crewai.com) account with an active subscription
+* A Zendesk account with appropriate API permissions
+* Connected your Zendesk account through the [Integrations page](https://app.crewai.com/integrations)
+
+## Setting Up Zendesk Integration
+
+### 1. Connect Your Zendesk Account
+
+1. Navigate to [CrewAI AMP Integrations](https://app.crewai.com/crewai_plus/connectors)
+2. Find **Zendesk** in the Authentication Integrations section
+3. Click **Connect** and complete the OAuth flow
+4. Grant the necessary permissions for ticket and user management
+5. Copy your Enterprise Token from [Integration Settings](https://app.crewai.com/crewai_plus/settings/integrations)
+
+### 2. Install Required Package
+
+```bash theme={null}
+uv add crewai-tools
+```
+
+### 3. Environment Variable Setup
+
+<Note>
+  To use integrations with `Agent(apps=[])`, you must set the
+  `CREWAI_PLATFORM_INTEGRATION_TOKEN` environment variable with your Enterprise
+  Token.
+</Note>
+
+```bash theme={null}
+export CREWAI_PLATFORM_INTEGRATION_TOKEN="your_enterprise_token"
+```
+
+Or add it to your `.env` file:
+
+```
+CREWAI_PLATFORM_INTEGRATION_TOKEN=your_enterprise_token
+```
+
+## Available Tools
+
+### **Ticket Management**
+
+<AccordionGroup>
+  <Accordion title="zendesk/create_ticket">
+    **Description:** Create a new support ticket in Zendesk.
+
+    **Parameters:**
+
+    * `ticketSubject` (string, required): Ticket subject line (e.g., "Help, my printer is on fire!")
+    * `ticketDescription` (string, required): First comment that appears on the ticket (e.g., "The smoke is very colorful.")
+    * `requesterName` (string, required): Name of the user requesting support (e.g., "Jane Customer")
+    * `requesterEmail` (string, required): Email of the user requesting support (e.g., "[jane@example.com](mailto:jane@example.com)")
+    * `assigneeId` (string, optional): Zendesk Agent ID assigned to this ticket - Use Connect Portal Workflow Settings to allow users to select an assignee
+    * `ticketType` (string, optional): Ticket type - Options: problem, incident, question, task
+    * `ticketPriority` (string, optional): Priority level - Options: urgent, high, normal, low
+    * `ticketStatus` (string, optional): Ticket status - Options: new, open, pending, hold, solved, closed
+    * `ticketDueAt` (string, optional): Due date for task-type tickets (ISO 8601 timestamp)
+    * `ticketTags` (string, optional): Array of tags to apply (e.g., `["enterprise", "other_tag"]`)
+    * `ticketExternalId` (string, optional): External ID to link tickets to local records
+    * `ticketCustomFields` (object, optional): Custom field values in JSON format
+  </Accordion>
+
+  <Accordion title="zendesk/update_ticket">
+    **Description:** Update an existing support ticket in Zendesk.
+
+    **Parameters:**
+
+    * `ticketId` (string, required): ID of the ticket to update (e.g., "35436")
+    * `ticketSubject` (string, optional): Updated ticket subject
+    * `requesterName` (string, required): Name of the user who requested this ticket
+    * `requesterEmail` (string, required): Email of the user who requested this ticket
+    * `assigneeId` (string, optional): Updated assignee ID - Use Connect Portal Workflow Settings
+    * `ticketType` (string, optional): Updated ticket type - Options: problem, incident, question, task
+    * `ticketPriority` (string, optional): Updated priority - Options: urgent, high, normal, low
+    * `ticketStatus` (string, optional): Updated status - Options: new, open, pending, hold, solved, closed
+    * `ticketDueAt` (string, optional): Updated due date (ISO 8601 timestamp)
+    * `ticketTags` (string, optional): Updated tags array
+    * `ticketExternalId` (string, optional): Updated external ID
+    * `ticketCustomFields` (object, optional): Updated custom field values
+  </Accordion>
+
+  <Accordion title="zendesk/get_ticket_by_id">
+    **Description:** Retrieve a specific ticket by its ID.
+
+    **Parameters:**
+
+    * `ticketId` (string, required): The ticket ID to retrieve (e.g., "35436")
+  </Accordion>
+
+  <Accordion title="zendesk/add_comment_to_ticket">
+    **Description:** Add a comment or internal note to an existing ticket.
+
+    **Parameters:**
+
+    * `ticketId` (string, required): ID of the ticket to add comment to (e.g., "35436")
+    * `commentBody` (string, required): Comment message (accepts plain text or HTML, e.g., "Thanks for your help!")
+    * `isInternalNote` (boolean, optional): Set to true for internal notes instead of public replies (defaults to false)
+    * `isPublic` (boolean, optional): True for public comments, false for internal notes
+  </Accordion>
+
+  <Accordion title="zendesk/search_tickets">
+    **Description:** Search for tickets using various filters and criteria.
+
+    **Parameters:**
+
+    * `ticketSubject` (string, optional): Filter by text in ticket subject
+    * `ticketDescription` (string, optional): Filter by text in ticket description and comments
+    * `ticketStatus` (string, optional): Filter by status - Options: new, open, pending, hold, solved, closed
+    * `ticketType` (string, optional): Filter by type - Options: problem, incident, question, task, no\_type
+    * `ticketPriority` (string, optional): Filter by priority - Options: urgent, high, normal, low, no\_priority
+    * `requesterId` (string, optional): Filter by requester user ID
+    * `assigneeId` (string, optional): Filter by assigned agent ID
+    * `recipientEmail` (string, optional): Filter by original recipient email address
+    * `ticketTags` (string, optional): Filter by ticket tags
+    * `ticketExternalId` (string, optional): Filter by external ID
+    * `createdDate` (object, optional): Filter by creation date with operator (EQUALS, LESS\_THAN\_EQUALS, GREATER\_THAN\_EQUALS) and value
+    * `updatedDate` (object, optional): Filter by update date with operator and value
+    * `dueDate` (object, optional): Filter by due date with operator and value
+    * `sort_by` (string, optional): Sort field - Options: created\_at, updated\_at, priority, status, ticket\_type
+    * `sort_order` (string, optional): Sort direction - Options: asc, desc
+  </Accordion>
+</AccordionGroup>
+
+### **User Management**
+
+<AccordionGroup>
+  <Accordion title="zendesk/create_user">
+    **Description:** Create a new user in Zendesk.
+
+    **Parameters:**
+
+    * `name` (string, required): User's full name
+    * `email` (string, optional): User's email address (e.g., "[jane@example.com](mailto:jane@example.com)")
+    * `phone` (string, optional): User's phone number
+    * `role` (string, optional): User role - Options: admin, agent, end-user
+    * `externalId` (string, optional): Unique identifier from another system
+    * `details` (string, optional): Additional user details
+    * `notes` (string, optional): Internal notes about the user
+  </Accordion>
+
+  <Accordion title="zendesk/update_user">
+    **Description:** Update an existing user's information.
+
+    **Parameters:**
+
+    * `userId` (string, required): ID of the user to update
+    * `name` (string, optional): Updated user name
+    * `email` (string, optional): Updated email (adds as secondary email on update)
+    * `phone` (string, optional): Updated phone number
+    * `role` (string, optional): Updated role - Options: admin, agent, end-user
+    * `externalId` (string, optional): Updated external ID
+    * `details` (string, optional): Updated user details
+    * `notes` (string, optional): Updated internal notes
+  </Accordion>
+
+  <Accordion title="zendesk/get_user_by_id">
+    **Description:** Retrieve a specific user by their ID.
+
+    **Parameters:**
+
+    * `userId` (string, required): The user ID to retrieve
+  </Accordion>
+
+  <Accordion title="zendesk/search_users">
+    **Description:** Search for users using various criteria.
+
+    **Parameters:**
+
+    * `name` (string, optional): Filter by user name
+    * `email` (string, optional): Filter by user email (e.g., "[jane@example.com](mailto:jane@example.com)")
+    * `role` (string, optional): Filter by role - Options: admin, agent, end-user
+    * `externalId` (string, optional): Filter by external ID
+    * `sort_by` (string, optional): Sort field - Options: created\_at, updated\_at
+    * `sort_order` (string, optional): Sort direction - Options: asc, desc
+  </Accordion>
+</AccordionGroup>
+
+### **Administrative Tools**
+
+<AccordionGroup>
+  <Accordion title="zendesk/get_ticket_fields">
+    **Description:** Retrieve all standard and custom fields available for tickets.
+
+    **Parameters:**
+
+    * `paginationParameters` (object, optional): Pagination settings
+      * `pageCursor` (string, optional): Page cursor for pagination
+  </Accordion>
+
+  <Accordion title="zendesk/get_ticket_audits">
+    **Description:** Get audit records (read-only history) for tickets.
+
+    **Parameters:**
+
+    * `ticketId` (string, optional): Get audits for specific ticket (if empty, retrieves audits for all non-archived tickets, e.g., "1234")
+    * `paginationParameters` (object, optional): Pagination settings
+      * `pageCursor` (string, optional): Page cursor for pagination
+  </Accordion>
+</AccordionGroup>
+
+## Custom Fields
+
+Custom fields allow you to store additional information specific to your organization:
+
+```json theme={null}
+[
+  { "id": 27642, "value": "745" },
+  { "id": 27648, "value": "yes" }
+]
+```
+
+## Ticket Priority Levels
+
+Understanding priority levels:
+
+* **urgent** - Critical issues requiring immediate attention
+* **high** - Important issues that should be addressed quickly
+* **normal** - Standard priority for most tickets
+* **low** - Minor issues that can be addressed when convenient
+
+## Ticket Status Workflow
+
+Standard ticket status progression:
+
+* **new** - Recently created, not yet assigned
+* **open** - Actively being worked on
+* **pending** - Waiting for customer response or external action
+* **hold** - Temporarily paused
+* **solved** - Issue resolved, awaiting customer confirmation
+* **closed** - Ticket completed and closed
+
+## Usage Examples
+
+### Basic Zendesk Agent Setup
+
+```python theme={null}
+from crewai import Agent, Task, Crew
+from crewai import Agent, Task, Crew
+
+# Create an agent with Zendesk capabilities
+zendesk_agent = Agent(
+    role="Support Manager",
+    goal="Manage customer support tickets and provide excellent customer service",
+    backstory="An AI assistant specialized in customer support operations and ticket management.",
+    apps=['zendesk']  # All Zendesk actions will be available
+)
+
+# Task to create a new support ticket
+create_ticket_task = Task(
+    description="Create a high-priority support ticket for John Smith who is unable to access his account after password reset",
+    agent=zendesk_agent,
+    expected_output="Support ticket created successfully with ticket ID"
+)
+
+# Run the task
+crew = Crew(
+    agents=[zendesk_agent],
+    tasks=[create_ticket_task]
+)
+
+crew.kickoff()
+```
+
+### Filtering Specific Zendesk Tools
+
+```python theme={null}
+from crewai import Agent, Task, Crew
+
+# Create agent with specific Zendesk actions only
+support_agent = Agent(
+    role="Customer Support Agent",
+    goal="Handle customer inquiries and resolve support issues efficiently",
+    backstory="An experienced support agent who specializes in ticket resolution and customer communication.",
+    apps=['zendesk/create_ticket']  # Specific Zendesk actions
+)
+
+# Task to manage support workflow
+support_task = Task(
+    description="Create a ticket for login issues, add troubleshooting comments, and update status to resolved",
+    agent=support_agent,
+    expected_output="Support ticket managed through complete resolution workflow"
+)
+
+crew = Crew(
+    agents=[support_agent],
+    tasks=[support_task]
+)
+
+crew.kickoff()
+```
+
+### Advanced Ticket Management
+
+```python theme={null}
+from crewai import Agent, Task, Crew
+
+ticket_manager = Agent(
+    role="Ticket Manager",
+    goal="Manage support ticket workflows and ensure timely resolution",
+    backstory="An AI assistant that specializes in support ticket triage and workflow optimization.",
+    apps=['zendesk']
+)
+
+# Task to manage ticket lifecycle
+ticket_workflow = Task(
+    description="""
+    1. Create a new support ticket for account access issues
+    2. Add internal notes with troubleshooting steps
+    3. Update ticket priority based on customer tier
+    4. Add resolution comments and close the ticket
+    """,
+    agent=ticket_manager,
+    expected_output="Complete ticket lifecycle managed from creation to resolution"
+)
+
+crew = Crew(
+    agents=[ticket_manager],
+    tasks=[ticket_workflow]
+)
+
+crew.kickoff()
+```
+
+### Support Analytics and Reporting
+
+```python theme={null}
+from crewai import Agent, Task, Crew
+
+support_analyst = Agent(
+    role="Support Analyst",
+    goal="Analyze support metrics and generate insights for team performance",
+    backstory="An analytical AI that excels at extracting insights from support data and ticket patterns.",
+    apps=['zendesk']
+)
+
+# Complex task involving analytics and reporting
+analytics_task = Task(
+    description="""
+    1. Search for all open tickets from the last 30 days
+    2. Analyze ticket resolution times and customer satisfaction
+    3. Identify common issues and support patterns
+    4. Generate weekly support performance report
+    """,
+    agent=support_analyst,
+    expected_output="Comprehensive support analytics report with performance insights and recommendations"
+)
+
+crew = Crew(
+    agents=[support_analyst],
+    tasks=[analytics_task]
+)
+
+crew.kickoff()
+```
 
 
 # FAQs

@@ -305,7 +305,7 @@ export LANGSMITH_API_KEY="your-langsmith-api-key"
 ## Step 6: Run the agent
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-result = agent.invoke({"messages": [{"role": "user", "content": "What is Deep Agents and how does it work?"}]})
+result = agent.invoke({"messages": [{"role": "user", "content": "What is langgraph?"}]})
 
 # Print the agent's response
 print(result["messages"][-1].content)

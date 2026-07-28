@@ -9,12 +9,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/get-started
 /en/get-started/start-your-journey
 /en/get-started/start-your-journey/what-is-github
-/en/get-started/start-your-journey/creating-an-account-on-github
-/en/get-started/start-your-journey/hello-world
-/en/get-started/start-your-journey/setting-up-your-profile
-/en/get-started/start-your-journey/finding-inspiration-on-github
-/en/get-started/start-your-journey/downloading-files-from-github
-/en/get-started/start-your-journey/uploading-a-project-to-github
 /en/get-started/start-your-journey/git-and-github-learning-resources
 /en/get-started/start-your-journey/creating-a-repository-for-your-project-on-github
 /en/get-started/start-your-journey/planning-your-work
@@ -28,6 +22,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/get-started/onboarding/getting-started-with-the-github-enterprise-cloud-trial
 /en/get-started/onboarding/getting-started-with-github-enterprise-cloud
 /en/get-started/using-github
+/en/get-started/using-github/hello-world
 /en/get-started/using-github/github-flow
 /en/get-started/using-github/connecting-to-github
 /en/get-started/using-github/communicating-on-github
@@ -87,10 +82,11 @@ path: api/pagelist/en/free-pro-team-latest
 /en/get-started/writing-on-github/editing-and-sharing-content-with-gists/saving-gists-with-stars
 /en/get-started/writing-on-github/editing-and-sharing-content-with-gists/moderating-gist-comments
 /en/get-started/exploring-projects-on-github
+/en/get-started/exploring-projects-on-github/discovering-projects-on-github
+/en/get-started/exploring-projects-on-github/contributing-to-a-project
 /en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github
 /en/get-started/exploring-projects-on-github/contributing-to-open-source
 /en/get-started/exploring-projects-on-github/using-github-copilot-to-explore-projects
-/en/get-started/exploring-projects-on-github/contributing-to-a-project
 /en/get-started/exploring-projects-on-github/saving-repositories-with-stars
 /en/get-started/exploring-projects-on-github/following-people
 /en/get-started/exploring-projects-on-github/following-organizations
@@ -145,6 +141,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/account-and-profile/how-tos
 /en/account-and-profile/how-tos/account-management
 /en/account-and-profile/how-tos/account-management/managing-multiple-accounts
+/en/account-and-profile/how-tos/account-management/creating-an-account-on-github
 /en/account-and-profile/how-tos/account-management/merging-multiple-personal-accounts
 /en/account-and-profile/how-tos/account-management/changing-your-username
 /en/account-and-profile/how-tos/account-management/moving-your-work-to-an-organization
@@ -389,6 +386,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/repositories/working-with-files/using-files/getting-permanent-links-to-files
 /en/repositories/working-with-files/using-files/downloading-source-code-archives
 /en/repositories/working-with-files/using-files/working-with-non-code-files
+/en/repositories/working-with-files/using-files/downloading-files-from-github
 /en/repositories/working-with-files/managing-large-files
 /en/repositories/working-with-files/managing-large-files/about-large-files-on-github
 /en/repositories/working-with-files/managing-large-files/about-git-large-file-storage

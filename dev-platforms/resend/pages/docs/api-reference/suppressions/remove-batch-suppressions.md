@@ -1,7 +1,7 @@
 ---
-title: "Remove Suppressions"
-source: https://resend.com/docs/api-reference/suppressions/remove-suppressions
-path: docs/api-reference/suppressions/remove-suppressions
+title: "Remove Batch Suppressions"
+source: https://resend.com/docs/api-reference/suppressions/remove-batch-suppressions
+path: docs/api-reference/suppressions/remove-batch-suppressions
 ---
 
 POST /suppressions/batch/remove

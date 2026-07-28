@@ -10940,8 +10940,8 @@ connecting, call the `fetch` tool with the special id `self`:
 The `self` payload also carries a `current_tool_access` map, so an MCP client
 can tell up front which tools will actually run on the connected workspace's
 plan and which would only return an upgrade prompt. Each entry's `status` is
-`available`, `limited_free_trial` (calls succeed via a free or metered trial
-allowance), `upgrade_required` (calls return an upgrade prompt, and the entry
+`available`, `available_with_limit` (calls can be made up to the limit included with
+the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the entry
 includes an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`.
 See [Supported tools](/guides/mcp/mcp-supported-tools) for details.
 
@@ -11879,7 +11879,7 @@ These tools work seamlessly together through prompts, and their real power comes
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
-    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `limited_free_trial` (calls succeed via a free or metered trial allowance), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
 
     **Example prompts:**
 
@@ -11996,7 +11996,7 @@ These tools work seamlessly together through prompts, and their real power comes
     Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
 
     <Note>
-      Single-data-source SQL queries have an hourly rate limit on Free and Plus plans. Queries across multiple data sources require an Enterprise plan with Notion AI.
+      Single-data-source SQL queries have a usage limit on select plans. Queries across multiple data sources require the latest Enterprise plan.
     </Note>
 
     **Example prompts:**
@@ -16388,6 +16388,16 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="July 27, 2026">
+  ### Clearer per-tool access status
+
+  The `current_tool_access` status previously called `limited_free_trial` is now `available_with_limit`. The new name makes clear that a tool is available until the usage limit included with the workspace's plan is reached. This is a naming and description update only; it does not change tool availability or usage limits.
+
+  ### Fetch documentation resources with the fetch tool
+
+  The Notion MCP `fetch` tool now accepts `notion://docs/*` URIs (for example, `notion://docs/enhanced-markdown-spec`) and returns the same content as the MCP resource of the same URI. This gives MCP clients that cannot read MCP resources a way to load the specs referenced in tool descriptions.
+</Update>
 
 <Update label="July 17, 2026">
   ### Per-tool access map in `notion-fetch` `self`

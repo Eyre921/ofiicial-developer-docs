@@ -548,7 +548,6 @@ For additional information, see Okta's [documentation](https://help.okta.com/en-
 12. Fill in `Sign-On Options`:
     * `Application username format`: `Email`
     * `Update application username on`: `Create and update`
-    * `Allow users to securely see their password`: leave **unchecked**.
 
 13. Copy the **Metadata URL** from the **Sign On Options** page to use in the next step.
 

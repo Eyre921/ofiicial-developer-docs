@@ -4,7 +4,11 @@ source: https://docs.langchain.com/langsmith/evaluation
 path: langsmith/evaluation
 ---
 
-LangSmith supports two types of evaluations based on when and where they run:
+Evaluate and test agent quality at scale with datasets, evaluators, prompts, and Studio.
+
+LangSmith's testing tools help you measure agent quality, iterate on prompts, and debug live in an interactive environment. Evaluation is the core of testing: it scores your agent's outputs against datasets and criteria so you can benchmark versions, catch regressions, and track quality over time.
+
+LangSmith supports two types of evaluation based on when and where they run:
 
 <CardGroup>
   <Card title="Offline Evaluation" icon="flask">
@@ -19,6 +23,22 @@ LangSmith supports two types of evaluations based on when and where they run:
     Evaluate real user interactions in real-time to detect issues and measure quality on live traffic.
   </Card>
 </CardGroup>
+
+## Set up your account
+
+<Steps>
+  <Step title="Create an account" icon="user-plus">
+    Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart) (no credit card required).
+    You can log in with **Google**, **GitHub**, or **email**.
+  </Step>
+
+  <Step title="Create an API key" icon="key">
+    Go to your [Settings page](https://smith.langchain.com/settings) → **API Keys** → **Create API Key**.
+    Copy the key and save it securely.
+  </Step>
+</Steps>
+
+Once your account and API key are ready, [run your first evaluation](/langsmith/evaluation-quickstart).
 
 ## Evaluation workflow
 
@@ -98,6 +118,10 @@ LangSmith supports two types of evaluations based on when and where they run:
 
   <Card title="Follow tutorials" icon="book" href="/langsmith/evaluate-chatbot-tutorial">
     Learn by following step-by-step tutorials, from simple chatbots to complex agent evaluations.
+  </Card>
+
+  <Card title="Studio" icon="window" href="/langsmith/studio">
+    Use an interactive environment for developing and debugging agents.
   </Card>
 </Columns>
 

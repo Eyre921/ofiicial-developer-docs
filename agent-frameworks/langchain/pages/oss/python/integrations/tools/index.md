@@ -253,6 +253,8 @@ The following platforms provide access to multiple tools and services through a 
 
   <Card title="MCP Toolbox" icon="link" href="/oss/python/integrations/tools/mcp_toolbox" />
 
+  <Card title="Unstructured Transform" icon="link" href="/oss/python/integrations/tools/unstructured_transform" />
+
   <Card title="Upstage" icon="link" href="/oss/python/integrations/tools/upstage_groundedness_check" />
 
   <Card title="Valthera" icon="link" href="/oss/python/integrations/tools/valthera" />

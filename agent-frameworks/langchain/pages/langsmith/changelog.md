@@ -118,7 +118,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability) and [LangSmith Fle
 
       * Self-hosted Playground and evaluator outbound model calls now honor proxy environment variables while preserving SSRF validation on every request.
       * When you save a prompt to an application from the playground, LangSmith keeps the workspace application filter on All Applications instead of switching the rest of the UI to that application.
-      * Typing a workspace member's name or email in the [Context Hub](/langsmith/context-hub) search box now also returns the prompts and resources they created.
+      * Typing a workspace member's name or email in the [Context Hub](/langsmith/prompt-context-hub#context-hub) search box now also returns the prompts and resources they created.
       * The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Vertex AI model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
       * Playground and evaluator calls to Amazon Bedrock using IAM Trusted Entity now resolve the correct LangSmith AWS credentials before assuming customer roles in AWS-hosted LangSmith. This fixes failures that reported "Failed to assume role" before the customer role was assumed.
       * Playground runs now retain evaluator scores and reasoning while backend feedback updates are polled, preventing completed results from appearing blank.
@@ -469,7 +469,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability) and [LangSmith Fle
 
       * Self-hosted [Playground](/langsmith/playground-model-providers) and evaluator outbound model calls now honor proxy environment variables while preserving SSRF validation on every request.
       * When you save a prompt to an application from the playground, LangSmith keeps the workspace application filter on All Applications instead of switching the rest of the UI to that application.
-      * Typing a workspace member's name or email in the [Context Hub](/langsmith/context-hub) search box now also returns the prompts and resources they created.
+      * Typing a workspace member's name or email in the [Context Hub](/langsmith/prompt-context-hub#context-hub) search box now also returns the prompts and resources they created.
       * The playground now includes Claude Sonnet 5, Claude Fable 5, and Claude Opus 4.8 in the Anthropic, Bedrock, and Vertex AI model selectors. New Anthropic playground sessions default to Claude Sonnet 5.
 
       ### Feedback
@@ -868,7 +868,7 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability) and [LangSmith Fle
 
       ### Prompts and playground
 
-      * [Prompts](/langsmith/prompt-engineering) now support webhook triggers that sync a prompt to external systems such as GitHub, databases, or CI/CD pipelines when it is updated.
+      * [Prompts](/langsmith/prompt-context-hub#prompts) now support webhook triggers that sync a prompt to external systems such as GitHub, databases, or CI/CD pipelines when it is updated.
     </Update>
 
     <Update label="May 19-23, 2025">

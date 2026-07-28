@@ -1,7 +1,7 @@
 ---
-title: "Add Suppressions"
-source: https://resend.com/docs/api-reference/suppressions/add-suppressions
-path: docs/api-reference/suppressions/add-suppressions
+title: "Add Batch Suppressions"
+source: https://resend.com/docs/api-reference/suppressions/add-batch-suppressions
+path: docs/api-reference/suppressions/add-batch-suppressions
 ---
 
 POST /suppressions/batch/add

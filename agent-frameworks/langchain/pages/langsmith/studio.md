@@ -12,7 +12,7 @@ path: langsmith/studio
   * [LangGraph CLI](/langsmith/cli)
 </Info>
 
-Studio is a specialized agent IDE that enables visualization, interaction, and debugging of agentic systems that implement the Agent Server API protocol. Studio also integrates with [tracing](/langsmith/observability-concepts), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-engineering).
+Studio is a specialized agent IDE that enables visualization, interaction, and debugging of agentic systems that implement the Agent Server API protocol. Studio also integrates with [tracing](/langsmith/observability-concepts), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts).
 
 ## Features
 

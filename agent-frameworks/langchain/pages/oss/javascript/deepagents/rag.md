@@ -1,5 +1,5 @@
 ---
-title: "RAG with Deep Agents"
+title: "Retrieval Augmented Generation (RAG) with Deep Agents"
 source: https://docs.langchain.com/oss/javascript/deepagents/rag
 path: oss/javascript/deepagents/rag
 ---
@@ -8,7 +8,7 @@ RAG patterns for Deep Agents, including skills-guided retrieval, rubric grading,
 
 One of the most powerful LLM-based applications are sophisticated question-answering (Q\&A) chatbots which augment LLMs by providing it with inference-time access to a set of data.
 This might be private data, recent data, or data that is not part of the training data the LLM is trained on.
-These applications use a technique known as Retrieval Augmented Generation, or [RAG](/oss/javascript/langchain/retrieval/).
+These applications use a technique known as Retrieval Augmented Generation, or [RAG](/oss/javascript/deepagents/retrieval/).
 
 [Deep Agents](/oss/javascript/deepagents/overview) gives you primitives for RAG: custom retrieval tools, a [filesystem backend](/oss/javascript/deepagents/backends), [subagents](/oss/javascript/deepagents/subagents), [skills](/oss/javascript/deepagents/skills), and [grading rubrics](/oss/javascript/deepagents/rubric). You can combine them in different ways depending on your corpus size, latency requirements, and how strictly answers must be grounded in source data.
 
@@ -312,7 +312,7 @@ const DOC_PATHS = [
   "oss/javascript/deepagents/rag",
   "oss/javascript/langchain/tools",
   "oss/javascript/langchain/models",
-  "oss/javascript/langchain/retrieval",
+  "oss/javascript/deepagents/retrieval",
   "oss/javascript/langchain/knowledge-base",
   "oss/javascript/langchain/middleware",
   "oss/javascript/deepagents/overview",
@@ -326,7 +326,7 @@ const DOC_PATHS = [
 ```
 
 <Note>
-  For a more detailed tutorial on indexing, see [Semantic search](/oss/javascript/langchain/knowledge-base).
+  For a more detailed tutorial on indexing, vector stores, and retrieval, see [Semantic search](/oss/javascript/langchain/knowledge-base).
 </Note>
 
 ### Load documents
@@ -1155,7 +1155,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
     "oss/javascript/deepagents/rag",
     "oss/javascript/langchain/tools",
     "oss/javascript/langchain/models",
-    "oss/javascript/langchain/retrieval",
+    "oss/javascript/deepagents/retrieval",
     "oss/javascript/langchain/knowledge-base",
     "oss/javascript/langchain/middleware",
     "oss/javascript/deepagents/overview",
@@ -1339,7 +1339,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
     "oss/javascript/deepagents/rag",
     "oss/javascript/langchain/tools",
     "oss/javascript/langchain/models",
-    "oss/javascript/langchain/retrieval",
+    "oss/javascript/deepagents/retrieval",
     "oss/javascript/langchain/knowledge-base",
     "oss/javascript/langchain/middleware",
     "oss/javascript/deepagents/overview",
@@ -1523,7 +1523,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
     "oss/javascript/deepagents/rag",
     "oss/javascript/langchain/tools",
     "oss/javascript/langchain/models",
-    "oss/javascript/langchain/retrieval",
+    "oss/javascript/deepagents/retrieval",
     "oss/javascript/langchain/knowledge-base",
     "oss/javascript/langchain/middleware",
     "oss/javascript/deepagents/overview",
@@ -1707,7 +1707,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
     "oss/javascript/deepagents/rag",
     "oss/javascript/langchain/tools",
     "oss/javascript/langchain/models",
-    "oss/javascript/langchain/retrieval",
+    "oss/javascript/deepagents/retrieval",
     "oss/javascript/langchain/knowledge-base",
     "oss/javascript/langchain/middleware",
     "oss/javascript/deepagents/overview",
@@ -1891,7 +1891,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
     "oss/javascript/deepagents/rag",
     "oss/javascript/langchain/tools",
     "oss/javascript/langchain/models",
-    "oss/javascript/langchain/retrieval",
+    "oss/javascript/deepagents/retrieval",
     "oss/javascript/langchain/knowledge-base",
     "oss/javascript/langchain/middleware",
     "oss/javascript/deepagents/overview",
@@ -2075,7 +2075,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
     "oss/javascript/deepagents/rag",
     "oss/javascript/langchain/tools",
     "oss/javascript/langchain/models",
-    "oss/javascript/langchain/retrieval",
+    "oss/javascript/deepagents/retrieval",
     "oss/javascript/langchain/knowledge-base",
     "oss/javascript/langchain/middleware",
     "oss/javascript/deepagents/overview",
@@ -2259,7 +2259,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
     "oss/javascript/deepagents/rag",
     "oss/javascript/langchain/tools",
     "oss/javascript/langchain/models",
-    "oss/javascript/langchain/retrieval",
+    "oss/javascript/deepagents/retrieval",
     "oss/javascript/langchain/knowledge-base",
     "oss/javascript/langchain/middleware",
     "oss/javascript/deepagents/overview",

@@ -109,8 +109,7 @@ You can set a status to display information about your current availability.
 
 ## Next steps
 
+* Use the [Emoji cheat sheet](https://www.webfx.com/tools/emoji-cheat-sheet/) and [Markdown cheat sheet](https://www.markdownguide.org/cheat-sheet/) to experiment with additional formatting.
 * To learn more about GitHub profiles, see [About your profile](/en/account-and-profile/concepts/personal-profile).
-
 * For reference information, see [Profile reference](/en/account-and-profile/reference/profile-reference).
-
 * For more detailed profile customizations, see [How-tos for your GitHub account and profile](/en/account-and-profile/how-tos).
