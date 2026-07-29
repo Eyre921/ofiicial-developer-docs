@@ -53,7 +53,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
   const checkpointer = new MemorySaver(); // [!code highlight]
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [getUserInfo],
     checkpointer,
   });

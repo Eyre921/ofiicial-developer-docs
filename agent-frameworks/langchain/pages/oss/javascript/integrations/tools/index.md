@@ -20,45 +20,41 @@ The following platforms provide access to multiple tools and services through a 
 
 ## All tools and toolkits
 
-<Columns>
-  <Card title="Azure Container Apps Dynamic Sessions" icon="link" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" />
-
-  <Card title="ClickSend" icon="link" href="/oss/javascript/integrations/tools/clicksend" />
-
-  <Card title="Composio" icon="link" href="/oss/javascript/integrations/tools/composio" />
-
-  <Card title="Dall-E Tool" icon="link" href="/oss/javascript/integrations/tools/dalle" />
-
-  <Card title="Decodo Tools" icon="link" href="/oss/javascript/integrations/tools/decodo" />
-
-  <Card title="ExaSearchResults" icon="link" href="/oss/javascript/integrations/tools/exa_search" />
-
-  <Card title="FalkorDB" icon="link" href="/oss/javascript/integrations/tools/falkordb" />
-
-  <Card title="Google (Gemini Native Tools)" icon="link" href="/oss/javascript/integrations/tools/google" />
-
-  <Card title="GOAT" icon="link" href="/oss/javascript/integrations/tools/goat" />
-
-  <Card title="JigsawStack Tool" icon="link" href="/oss/javascript/integrations/tools/jigsawstack" />
-
-  <Card title="Agent with AWS Lambda" icon="link" href="/oss/javascript/integrations/tools/lambda_agent" />
-
-  <Card title="Oracle AI Database" icon="link" href="/oss/javascript/integrations/tools/oracleai" />
-
-  <Card title="Nia Toolkit" icon="link" href="/oss/javascript/integrations/tools/nia" />
-
-  <Card title="Tavily Search" icon="link" href="/oss/javascript/integrations/tools/tavily_search" />
-
-  <Card title="Tavily Extract" icon="link" href="/oss/javascript/integrations/tools/tavily_extract" />
-
-  <Card title="Tavily Crawl" icon="link" href="/oss/javascript/integrations/tools/tavily_crawl" />
-
-  <Card title="Tavily Map" icon="link" href="/oss/javascript/integrations/tools/tavily_map" />
-
-  <Card title="Web Browser Tool" icon="link" href="/oss/javascript/integrations/tools/webbrowser" />
-
-  <Card title="You.com Search" icon="link" href="/oss/javascript/integrations/tools/youdotcom" />
-</Columns>
+<div>
+  | Integration                                                                                          | Downloads                                                                                                                       |
+  | :--------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+  | [`Dall-e`](/oss/javascript/integrations/tools/dalle)                                                 | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span>                  |
+  | [`OpenAI`](/oss/javascript/integrations/tools/openai)                                                | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span>                  |
+  | [`OpenAPI toolkit`](/oss/javascript/integrations/tools/openapi)                                      | <span><a href="https://www.npmjs.com/package/@langchain/langgraph">  <img alt="Downloads per month" /></a></span>               |
+  | [`Anthropic`](/oss/javascript/integrations/tools/anthropic)                                          | <span><a href="https://www.npmjs.com/package/@langchain/anthropic">  <img alt="Downloads per month" /></a></span>               |
+  | [`TavilyCrawl`](/oss/javascript/integrations/tools/tavily_crawl)                                     | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span>                  |
+  | [`TavilyExtract`](/oss/javascript/integrations/tools/tavily_extract)                                 | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span>                  |
+  | [`TavilyMap`](/oss/javascript/integrations/tools/tavily_map)                                         | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span>                  |
+  | [`TavilySearch`](/oss/javascript/integrations/tools/tavily_search)                                   | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Google`](/oss/javascript/integrations/tools/google)                                                | <span><a href="https://www.npmjs.com/package/@langchain/google">  <img alt="Downloads per month" /></a></span>                  |
+  | [`OracleSummary`](/oss/javascript/integrations/tools/oracleai)                                       | <span><a href="https://www.npmjs.com/package/@oracle/langchain-oracledb">  <img alt="Downloads per month" /></a></span>         |
+  | [`ExaSearchResults`](/oss/javascript/integrations/tools/exa_search)                                  | <span><a href="https://www.npmjs.com/package/@langchain/exa">  <img alt="Downloads per month" /></a></span>                     |
+  | [`Composio`](/oss/javascript/integrations/tools/composio)                                            | <span><a href="https://www.npmjs.com/package/@composio/langchain">  <img alt="Downloads per month" /></a></span>                |
+  | [`Mcp toolbox for databases`](/oss/javascript/integrations/tools/mcp_toolbox)                        | <span><a href="https://www.npmjs.com/package/@toolbox-sdk/core">  <img alt="Downloads per month" /></a></span>                  |
+  | [`WatsonxToolkit`](/oss/javascript/integrations/tools/ibm)                                           | <span><a href="https://www.npmjs.com/package/@langchain/ibm">  <img alt="Downloads per month" /></a></span>                     |
+  | [`Bilig WorkPaper`](https://proompteng.github.io/bilig/)                                             | <span><a href="https://www.npmjs.com/package/@bilig/workpaper">  <img alt="Downloads per month" /></a></span>                   |
+  | [`PerplexitySearchResults`](/oss/javascript/integrations/tools/perplexity_search)                    | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span>              |
+  | [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack)                                      | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack">  <img alt="Downloads per month" /></a></span>             |
+  | [`You.com search tools`](/oss/javascript/integrations/tools/youdotcom)                               | <span><a href="https://www.npmjs.com/package/@youdotcom-oss/langchain">  <img alt="Downloads per month" /></a></span>           |
+  | [`Falkordb`](/oss/javascript/integrations/tools/falkordb)                                            | <span><a href="https://www.npmjs.com/package/@falkordb/langchain-ts">  <img alt="Downloads per month" /></a></span>             |
+  | [`Azure container apps dynamic sessions`](/oss/javascript/integrations/tools/azure_dynamic_sessions) | <span><a href="https://www.npmjs.com/package/@langchain/azure-dynamic-sessions">  <img alt="Downloads per month" /></a></span>  |
+  | [`Toolstem`](https://toolstem.com)                                                                   | <span><a href="https://www.npmjs.com/package/langchain-toolstem">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Decodo`](/oss/javascript/integrations/tools/decodo)                                                | <span><a href="https://www.npmjs.com/package/@decodo/langchain-ts">  <img alt="Downloads per month" /></a></span>               |
+  | [`iFlow Search`](https://platform.iflow.cn)                                                          | <span><a href="https://www.npmjs.com/package/@iflow-ai/search-langchain">  <img alt="Downloads per month" /></a></span>         |
+  | [`ClickSend`](/oss/javascript/integrations/tools/clicksend)                                          | <span><a href="https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp">  <img alt="Downloads per month" /></a></span> |
+  | [`NiaToolkit`](/oss/javascript/integrations/tools/nia)                                               | <span><a href="https://www.npmjs.com/package/@nozomioai/langchain-nia">  <img alt="Downloads per month" /></a></span>           |
+  | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent)                           | <span>N/A</span>                                                                                                                |
+  | [`Browserless`](https://browserless.io)                                                              | <span>N/A</span>                                                                                                                |
+  | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json)                                      | <span>N/A</span>                                                                                                                |
+  | [`SQLToolkit`](/oss/javascript/integrations/tools/sql)                                               | <span>N/A</span>                                                                                                                |
+  | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore)                               | <span>N/A</span>                                                                                                                |
+  | [`Web browser`](/oss/javascript/integrations/tools/webbrowser)                                       | <span>N/A</span>                                                                                                                |
+</div>
 
 <Info>
   If you'd like to write your own tool, see [Create tools](/oss/javascript/langchain/tools#create-tools). If you'd like to contribute an integration, see [Build a new integration](/oss/javascript/contributing/integrations-langchain).

@@ -61,7 +61,7 @@ graph LR
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     tools=[get_weather],
     system_prompt="You are a helpful assistant",
     subagents=[

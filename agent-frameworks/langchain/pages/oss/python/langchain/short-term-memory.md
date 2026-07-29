@@ -50,7 +50,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[get_user_info],
       checkpointer=InMemorySaver(),  # [!code highlight]
   )

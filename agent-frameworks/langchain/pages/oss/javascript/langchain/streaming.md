@@ -70,7 +70,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   );
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [getWeather],
     checkpointer: new MemorySaver(),
   });

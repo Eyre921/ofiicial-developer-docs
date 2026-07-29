@@ -39,77 +39,46 @@ The below retrievers will search over an external index (e.g., constructed from 
 
 ## All retrievers
 
-<Columns>
-  <Card title="AgentMail" icon="link" href="/oss/python/integrations/retrievers/agentmail" />
-
-  <Card title="Bedrock (Knowledge Bases)" icon="link" href="/oss/python/integrations/retrievers/bedrock" />
-
-  <Card title="Box" icon="link" href="/oss/python/integrations/retrievers/box" />
-
-  <Card title="Cognee" icon="link" href="/oss/python/integrations/retrievers/cognee" />
-
-  <Card title="Cohere reranker" icon="link" href="/oss/python/integrations/retrievers/cohere-reranker" />
-
-  <Card title="Cohere RAG" icon="link" href="/oss/python/integrations/retrievers/cohere" />
-
-  <Card title="Contextual AI Reranker" icon="link" href="/oss/python/integrations/retrievers/contextual" />
-
-  <Card title="Dappier" icon="link" href="/oss/python/integrations/retrievers/dappier" />
-
-  <Card title="Elasticsearch" icon="link" href="/oss/python/integrations/retrievers/elasticsearch_retriever" />
-
-  <Card title="Egnyte" icon="link" href="/oss/python/integrations/retrievers/egnyte" />
-
-  <Card title="Galaxia" icon="link" href="/oss/python/integrations/retrievers/galaxia-retriever" />
-
-  <Card title="Google Drive" icon="link" href="/oss/python/integrations/retrievers/google_drive" />
-
-  <Card title="Google Vertex AI Search" icon="link" href="/oss/python/integrations/retrievers/google_vertex_ai_search" />
-
-  <Card title="Graph RAG" icon="link" href="/oss/python/integrations/retrievers/graph_rag" />
-
-  <Card title="GreenNode" icon="link" href="/oss/python/integrations/retrievers/greennode_reranker" />
-
-  <Card title="IBM watsonx.ai" icon="link" href="/oss/python/integrations/retrievers/ibm_watsonx_ranker" />
-
-  <Card title="IMAP" icon="link" href="/oss/python/integrations/retrievers/imap" />
-
-  <Card title="Kinetica Vectorstore" icon="link" href="/oss/python/integrations/retrievers/kinetica" />
-
-  <Card title="LinkupSearchRetriever" icon="link" href="/oss/python/integrations/retrievers/linkup_search" />
-
-  <Card title="Nebius" icon="link" href="/oss/python/integrations/retrievers/nebius" />
-
-  <Card title="Nimble Extract" icon="link" href="/oss/python/integrations/retrievers/nimble_extract" />
-
-  <Card title="Nimble Search" icon="link" href="/oss/python/integrations/retrievers/nimble_search" />
-
-  <Card title="NVIDIA RAG Blueprint" icon="link" href="/oss/python/integrations/retrievers/nvidia" />
-
-  <Card title="Parallel Search" icon="link" href="/oss/python/integrations/retrievers/parallel" />
-
-  <Card title="Permit" icon="link" href="/oss/python/integrations/retrievers/permit" />
-
-  <Card title="Perigon" icon="link" href="/oss/python/integrations/retrievers/perigon" />
-
-  <Card title="Perplexity Search" icon="link" href="/oss/python/integrations/retrievers/perplexity_search" />
-
-  <Card title="Pinecone Rerank" icon="link" href="/oss/python/integrations/retrievers/pinecone_rerank" />
-
-  <Card title="RAGatouille" icon="link" href="/oss/python/integrations/retrievers/ragatouille" />
-
-  <Card title="Sourcey" icon="link" href="/oss/python/integrations/retrievers/sourcey" />
-
-  <Card title="SpiceDB" icon="link" href="/oss/python/integrations/retrievers/spicedb" />
-
-  <Card title="ValyuContext" icon="link" href="/oss/python/integrations/retrievers/valyu" />
-
-  <Card title="Vectorize" icon="link" href="/oss/python/integrations/retrievers/vectorize" />
-
-  <Card title="You.com" icon="link" href="/oss/python/integrations/retrievers/you-retriever" />
-
-  <Card title="Zotero" icon="link" href="/oss/python/integrations/retrievers/zotero" />
-</Columns>
+<div>
+  | Retriever                                                                                        | Self-host      | Cloud offering | Package                                                                                                                                    | Downloads                                                                                                              |
+  | :----------------------------------------------------------------------------------------------- | :------------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+  | [`AmazonKnowledgeBasesRetriever`](/oss/python/integrations/retrievers/bedrock)                   | <span>❌</span> | <span>✅</span> | [`langchain-aws`](https://reference.langchain.com/python/langchain-aws/retrievers/bedrock/AmazonKnowledgeBasesRetriever)                   | <span><a href="https://pypi.org/project/langchain-aws/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Google drive`](/oss/python/integrations/retrievers/google_drive)                               | <span />       | <span />       | [`langchain-google-community`](https://pypi.org/project/langchain-google-community/)                                                       | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>    |
+  | [`VertexAISearchRetriever`](/oss/python/integrations/retrievers/google_vertex_ai_search)         | <span>❌</span> | <span>✅</span> | [`langchain-google-community`](https://reference.langchain.com/python/langchain-google-community/vertex_ai_search/VertexAISearchRetriever) | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>    |
+  | [`Pinecone rerank`](/oss/python/integrations/retrievers/pinecone_rerank)                         | <span />       | <span />       | [`langchain-pinecone`](https://pypi.org/project/langchain-pinecone/)                                                                       | <span><a href="https://pypi.org/project/langchain-pinecone/">  <img alt="Downloads per month" /></a></span>            |
+  | [`Cohere RAG`](/oss/python/integrations/retrievers/cohere)                                       | <span />       | <span />       | [`langchain-cohere`](https://pypi.org/project/langchain-cohere/)                                                                           | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Cohere reranker`](/oss/python/integrations/retrievers/cohere-reranker)                         | <span />       | <span />       | [`langchain-cohere`](https://pypi.org/project/langchain-cohere/)                                                                           | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span>              |
+  | [`NVIDIARAGRetriever`](/oss/python/integrations/retrievers/nvidia)                               | <span>✅</span> | <span>❌</span> | [`langchain-nvidia-ai-endpoints`](https://reference.langchain.com/python/langchain-nvidia-ai-endpoints/retrievers/NVIDIARAGRetriever)      | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/">  <img alt="Downloads per month" /></a></span> |
+  | [`WatsonxRerank`](/oss/python/integrations/retrievers/ibm_watsonx_ranker)                        | <span />       | <span />       | [`langchain-ibm`](https://reference.langchain.com/python/integrations/langchain_ibm/)                                                      | <span><a href="https://pypi.org/project/langchain-ibm/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ElasticsearchRetriever`](/oss/python/integrations/retrievers/elasticsearch_retriever)          | <span>✅</span> | <span>✅</span> | [`langchain-elasticsearch`](https://reference.langchain.com/python/langchain-elasticsearch/retrievers/ElasticsearchRetriever)              | <span><a href="https://pypi.org/project/langchain-elasticsearch/">  <img alt="Downloads per month" /></a></span>       |
+  | [`PerplexitySearchRetriever`](/oss/python/integrations/retrievers/perplexity_search)             | <span>❌</span> | <span>✅</span> | [`langchain-perplexity`](https://reference.langchain.com/python/langchain-perplexity/retrievers/PerplexitySearchRetriever)                 | <span><a href="https://pypi.org/project/langchain-perplexity/">  <img alt="Downloads per month" /></a></span>          |
+  | [`Graph RAG`](/oss/python/integrations/retrievers/graph_rag)                                     | <span />       | <span />       | [`langchain-graph-retriever`](https://pypi.org/project/langchain-graph-retriever/)                                                         | <span><a href="https://pypi.org/project/langchain-graph-retriever/">  <img alt="Downloads per month" /></a></span>     |
+  | [`Ragatouille`](/oss/python/integrations/retrievers/ragatouille)                                 | <span />       | <span />       | [`ragatouille`](https://pypi.org/project/ragatouille/)                                                                                     | <span><a href="https://pypi.org/project/ragatouille/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`Self Querying with SAP HANA Cloud Vector Engine`](https://pypi.org/project/langchain-hana/)    | <span />       | <span />       | [`langchain-hana`](https://pypi.org/project/langchain-hana/)                                                                               | <span><a href="https://pypi.org/project/langchain-hana/">  <img alt="Downloads per month" /></a></span>                |
+  | [`LinkupSearchRetriever`](https://github.com/LinkupPlatform/langchain-linkup)                    | <span />       | <span />       | [`langchain-linkup`](https://pypi.org/project/langchain-linkup/)                                                                           | <span><a href="https://pypi.org/project/langchain-linkup/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Nebius`](https://docs.tokenfactory.nebius.com/quickstart)                                      | <span />       | <span />       | [`langchain-nebius`](https://pypi.org/project/langchain-nebius/)                                                                           | <span><a href="https://pypi.org/project/langchain-nebius/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ParallelSearchRetriever`](/oss/python/integrations/retrievers/parallel)                        | <span>❌</span> | <span>✅</span> | [`langchain-parallel`](https://reference.langchain.com/python/langchain-parallel/retrievers/ParallelSearchRetriever)                       | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span>            |
+  | [`Nimble Extract`](https://docs.nimbleway.com/nimble-sdk/web-tools/extract)                      | <span />       | <span />       | [`langchain-nimble`](https://pypi.org/project/langchain-nimble/)                                                                           | <span><a href="https://pypi.org/project/langchain-nimble/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Nimble Search`](https://docs.nimbleway.com/nimble-sdk/web-tools/search)                        | <span />       | <span />       | [`langchain-nimble`](https://pypi.org/project/langchain-nimble/)                                                                           | <span><a href="https://pypi.org/project/langchain-nimble/">  <img alt="Downloads per month" /></a></span>              |
+  | [`YouRetriever`](/oss/python/integrations/retrievers/you-retriever)                              | <span>❌</span> | <span>✅</span> | [`langchain-youdotcom`](https://pypi.org/project/langchain-youdotcom/)                                                                     | <span><a href="https://pypi.org/project/langchain-youdotcom/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Contextual AI reranker`](https://docs.contextual.ai/)                                          | <span />       | <span />       | [`langchain-contextual`](https://pypi.org/project/langchain-contextual/)                                                                   | <span><a href="https://pypi.org/project/langchain-contextual/">  <img alt="Downloads per month" /></a></span>          |
+  | [`Valyucontext`](https://docs.valyu.network/overview)                                            | <span />       | <span />       | [`langchain-valyu`](https://pypi.org/project/langchain-valyu/)                                                                             | <span><a href="https://pypi.org/project/langchain-valyu/">  <img alt="Downloads per month" /></a></span>               |
+  | [`BoxRetriever`](/oss/python/integrations/retrievers/box)                                        | <span />       | <span />       | [`langchain-box`](https://pypi.org/project/langchain-box/)                                                                                 | <span><a href="https://pypi.org/project/langchain-box/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Sourcey`](https://sourcey.com/docs/guides/guide-langchain-retriever)                           | <span />       | <span />       | [`langchain-sourcey`](https://pypi.org/project/langchain-sourcey/)                                                                         | <span><a href="https://pypi.org/project/langchain-sourcey/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Dappier`](https://docs.dappier.com/)                                                           | <span />       | <span />       | [`langchain-dappier`](https://pypi.org/project/langchain-dappier/)                                                                         | <span><a href="https://pypi.org/project/langchain-dappier/">  <img alt="Downloads per month" /></a></span>             |
+  | [`SpiceDB Retriever`](https://github.com/authzed/langchain-spicedb)                              | <span />       | <span />       | [`langchain-spicedb`](https://pypi.org/project/langchain-spicedb/)                                                                         | <span><a href="https://pypi.org/project/langchain-spicedb/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Kinetica vectorstore based retriever`](https://github.com/kineticadb/langchain-kinetica)       | <span />       | <span />       | [`langchain-kinetica`](https://pypi.org/project/langchain-kinetica/)                                                                       | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span>            |
+  | [`Galaxia`](https://smabbler.gitbook.io/smabbler/api-rag/smabblers-api-rag)                      | <span />       | <span />       | [`langchain-galaxia-retriever`](https://pypi.org/project/langchain-galaxia-retriever/)                                                     | <span><a href="https://pypi.org/project/langchain-galaxia-retriever/">  <img alt="Downloads per month" /></a></span>   |
+  | [`EgnyteRetriever`](/oss/python/integrations/retrievers/egnyte)                                  | <span>❌</span> | <span>✅</span> | [`egnyte-langchain-connector`](https://pypi.org/project/egnyte-langchain-connector/)                                                       | <span><a href="https://pypi.org/project/egnyte-langchain-connector/">  <img alt="Downloads per month" /></a></span>    |
+  | [`VectorizeRetriever`](https://docs.vectorize.io/rag-pipelines/retrieval-endpoint#access-tokens) | <span />       | <span />       | [`langchain-vectorize`](https://pypi.org/project/langchain-vectorize/)                                                                     | <span><a href="https://pypi.org/project/langchain-vectorize/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Permit`](https://docs.permit.io/)                                                              | <span />       | <span />       | [`langchain-permit`](https://pypi.org/project/langchain-permit/)                                                                           | <span><a href="https://pypi.org/project/langchain-permit/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Cognee`](https://docs.cognee.ai/)                                                              | <span />       | <span />       | [`langchain-cognee`](https://pypi.org/project/langchain-cognee/)                                                                           | <span><a href="https://pypi.org/project/langchain-cognee/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Zotero`](https://github.com/TimBMK/langchain-zotero-retriever)                                 | <span />       | <span />       | [`langchain-zotero-retriever`](https://pypi.org/project/langchain-zotero-retriever/)                                                       | <span><a href="https://pypi.org/project/langchain-zotero-retriever/">  <img alt="Downloads per month" /></a></span>    |
+  | [`AgentMail`](https://github.com/agentmail-to/langchain-agentmail)                               | <span />       | <span />       | [`langchain-agentmail`](https://pypi.org/project/langchain-agentmail/)                                                                     | <span><a href="https://pypi.org/project/langchain-agentmail/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Greennode`](https://greennode.ai/)                                                             | <span />       | <span />       | [`langchain-greennode`](https://pypi.org/project/langchain-greennode/)                                                                     | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Perigon`](https://dev.perigon.io/docs)                                                         | <span />       | <span />       | [`langchain-perigon`](https://pypi.org/project/langchain-perigon/)                                                                         | <span><a href="https://pypi.org/project/langchain-perigon/">  <img alt="Downloads per month" /></a></span>             |
+  | [`IMAP`](https://github.com/jfouret/langchain-imap)                                              | <span />       | <span />       | [`langchain-imap`](https://pypi.org/project/langchain-imap/)                                                                               | <span><a href="https://pypi.org/project/langchain-imap/">  <img alt="Downloads per month" /></a></span>                |
+</div>
 
 ***
 

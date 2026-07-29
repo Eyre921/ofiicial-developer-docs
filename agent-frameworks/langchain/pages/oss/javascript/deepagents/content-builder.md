@@ -607,7 +607,7 @@ Create `content_writer.ts` in the project root. The following sections belong in
         };
 
         return createDeepAgent({
-          model: "google-genai:gemini-3.5-flash",
+          model: "google-genai:gemini-3.6-flash",
           memory: ["./AGENTS.md"],
           skills: ["./skills/"],
           tools: [generateCover, generateSocialImage],

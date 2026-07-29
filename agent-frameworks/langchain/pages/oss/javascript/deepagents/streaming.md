@@ -28,7 +28,7 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt: "You are a helpful research assistant",
     subagents: [
       {
@@ -327,7 +327,7 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt:
       "You are a project coordinator with no research knowledge. " +
       "For every user request, you must call the task() tool with " +
@@ -864,7 +864,7 @@ Use `config.writer` inside your subagent tools to emit custom progress events:
   );
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt:
       "You are a coordinator. For any analysis request, you MUST delegate " +
       "to the analyst subagent using the task tool. Never try to answer directly. " +

@@ -188,7 +188,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-3.5-flash",
+            "models": "google_genai:gemini-3.6-flash",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -216,7 +216,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-3.5-flash",
+            "models": "google_genai:gemini-3.6-flash",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -247,7 +247,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-baseline",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-3.5-flash",
+            "models": "google_genai:gemini-3.6-flash",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -269,7 +269,7 @@ async def main():
         max_concurrency=4,  # optional
         experiment_prefix="claude-sonnet-4-6-model-node",  # optional
         metadata={  # optional, used to populate model/prompt/tool columns in UI
-            "models": "google_genai:gemini-3.5-flash",
+            "models": "google_genai:gemini-3.6-flash",
             "tools": [{"name": "search", "description": "Call to surf the web."}],
         },
     )
@@ -432,7 +432,7 @@ async def main():
           max_concurrency=4,  # optional
           experiment_prefix="claude-sonnet-4-6-baseline",  # optional
           metadata={  # optional, used to populate model/prompt/tool columns in UI
-              "models": "google_genai:gemini-3.5-flash",
+              "models": "google_genai:gemini-3.6-flash",
               "tools": [{"name": "search", "description": "Call to surf the web."}],
           },
       )

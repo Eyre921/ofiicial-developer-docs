@@ -13,7 +13,7 @@ Spotlight is the agent dashboard tab for conversation insights.
 It helps you monitor live activity, understand user sentiment, and discover recurring topics from completed conversations.
 
 ![Spotlight dashboard showing recommendations, conversation volume, and success
-rate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/21264fd2d522fee483b01b2c5ee71c79aa5bafda417a31034c7a675ddb217839/assets/images/spotlight-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260728T233201Z&X-Amz-Expires=604800&X-Amz-Signature=0f5db6179136c7eb1aa4d9d151da3037bbfb1a30b6592f8808c497243278e2d4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+rate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/21264fd2d522fee483b01b2c5ee71c79aa5bafda417a31034c7a675ddb217839/assets/images/spotlight-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260729T113304Z&X-Amz-Expires=604800&X-Amz-Signature=f6f7bf9569b255ec44a57f2aaafd1fdb3750bb91a0f0aad2011807bb124dbaa0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### [Real-time insights](/docs/eleven-agents/dashboard/spotlight/real-time-insights)
 

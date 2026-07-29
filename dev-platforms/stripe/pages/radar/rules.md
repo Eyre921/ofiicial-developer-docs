@@ -26,7 +26,7 @@ The following rules are available by default, unless flagged as custom rules.
 
 > #### Block fraud automatically
 > 
-> Alternatively, you can use Radar [risk controls](https://docs.stripe.com/radar/risk-settings.md) to block fraud automatically. The risk controls use [early fraud warnings](https://docs.stripe.com/radar/risk-settings.md#early-fraud-warning) to evaluate and block the highest risk payments.
+> Alternatively, you can use Radar [risk controls](https://docs.stripe.com/radar/risk-settings.md) to block fraud automatically. The risk controls use [early fraud warnings](https://docs.stripe.com/radar/risk-settings.md#early-fraud-warning) and [dynamic risk thresholds](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-thresholds) to evaluate and block the highest risk payments.
 
 ### AI risk checks 
 

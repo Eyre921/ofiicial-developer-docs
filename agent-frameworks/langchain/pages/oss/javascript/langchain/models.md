@@ -332,7 +332,7 @@ You can adjust `maxRetries` and `timeout` when creating a model, then pass that 
 import { ChatAnthropic } from "@langchain/anthropic";
 
 const model = new ChatAnthropic({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google_genai:gemini-3.6-flash",
   maxRetries: 10, // Increase for unreliable networks (default: 6)
   timeout: 120_000, // Milliseconds; increase for slow connections
 });
@@ -396,7 +396,7 @@ console.log(response);  // AIMessage("J'adore créer des applications.")
 ```
 
 <Info>
-  If the return type of your invocation is a string, ensure that you are using a chat model as opposed to a LLM. Legacy, text-completion LLMs return strings directly. LangChain chat models are prefixed with "Chat", e.g., [`ChatOpenAI`](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)(/oss/integrations/chat/openai).
+  If the return type of your invocation is a string, ensure that you are using a chat model as opposed to an LLM. Legacy, text-completion LLMs return strings directly. LangChain chat models are prefixed with "Chat", e.g., [`ChatOpenAI`](https://reference.langchain.com/javascript/langchain-openai/ChatOpenAI)(/oss/integrations/chat/openai).
 </Info>
 
 ### Stream

@@ -337,7 +337,7 @@ Access context through `runtime.context`. Pass it alongside a `thread_id` so the
       return "User not found"
 
 
-  model = ChatOpenAI(model="google_genai:gemini-3.5-flash")
+  model = ChatOpenAI(model="google_genai:gemini-3.6-flash")
   agent = create_agent(
       model,
       tools=[get_account_info],
@@ -720,7 +720,7 @@ The [`BaseStore`](https://reference.langchain.com/python/langchain-core/stores/B
 Access the store through `runtime.store`. The store uses a namespace/key pattern to organize data:
 
 <Tip>
-  For production deployments, use a persistent store implementation like [`PostgresStore`](https://reference.langchain.com/python/langgraph/store/#langgraph.store.postgres.PostgresStore) instead of `InMemoryStore`. See the [memory documentation](/oss/python/langgraph/add-memory) for setup details.
+  For production deployments, use a persistent store implementation like [`PostgresStore`](https://reference.langchain.com/python/langgraph/store/#langgraph.store.postgres.PostgresStore), `MongoDBStore`, or `RedisStore` instead of `InMemoryStore`. See the [memory documentation](/oss/python/langgraph/add-memory) for setup details.
 </Tip>
 
 ```python expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1011,7 +1011,7 @@ Set return direct on a tool to short-circuit the agent loop: the agent returns t
 
 
   agent = create_agent(
-      ChatOpenAI(model="google_genai:gemini-3.5-flash"),
+      ChatOpenAI(model="google_genai:gemini-3.6-flash"),
       tools=[fetch_order_status],
   )
 
@@ -1219,7 +1219,7 @@ Handle tool errors using LangChain agent [middleware](/oss/python/langchain/midd
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[],
       middleware=[handle_tool_errors],
   )

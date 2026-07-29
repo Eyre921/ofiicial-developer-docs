@@ -81,7 +81,7 @@ Tools can access an agent's runtime context through the `config` parameter. Pass
   });
 
   const agent = createAgent({
-    model: new ChatOpenAI({ model: "google-genai:gemini-3.5-flash" }),
+    model: new ChatOpenAI({ model: "google-genai:gemini-3.6-flash" }),
     tools: [getUserName],
     contextSchema,
   });
@@ -651,7 +651,7 @@ Set return direct on a tool to short-circuit the agent loop: the agent returns t
   );
 
   const agent = createAgent({
-    model: new ChatOpenAI({ model: "google-genai:gemini-3.5-flash" }),
+    model: new ChatOpenAI({ model: "google-genai:gemini-3.6-flash" }),
     tools: [fetchOrderStatus],
   });
 
@@ -890,7 +890,7 @@ Handle tool errors using LangChain agent [middleware](/oss/javascript/langchain/
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [],
     middleware: [handleToolErrors],
   });

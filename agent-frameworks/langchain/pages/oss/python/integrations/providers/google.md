@@ -258,7 +258,7 @@ Access Vertex AI platform-specific services including Model Garden (Llama, Mistr
     Managed SQL Server database.
   </Card>
 
-  <Card title="Cloud SQL for PostgreSQL" href="/oss/python/integrations/document_loaders/google_cloud_sql_pg">
+  <Card title="Cloud SQL for PostgreSQL" href="https://cloud.google.com/sql/docs/postgres">
     Managed PostgreSQL database.
   </Card>
 
@@ -270,7 +270,7 @@ Access Vertex AI platform-specific services including Model Garden (Llama, Mistr
     Load a single document from GCS.
   </Card>
 
-  <Card title="El Carro for Oracle Workloads" href="/oss/python/integrations/document_loaders/google_el_carro">
+  <Card title="El Carro for Oracle Workloads" href="https://github.com/googleapis/langchain-google-el-carro-python/">
     Oracle databases on Kubernetes via El Carro.
   </Card>
 
@@ -336,7 +336,7 @@ Store and search vectors using Google Cloud databases and Vertex AI Vector Searc
     Vector store on Cloud Spanner.
   </Card>
 
-  <Card title="Bigtable" href="/oss/python/integrations/vectorstores/google_bigtable">
+  <Card title="Bigtable" href="https://cloud.google.com/bigtable">
     Vector store on Cloud Bigtable.
   </Card>
 
@@ -492,7 +492,7 @@ Access Google services via unofficial third-party APIs.
 ### Search
 
 <Columns>
-  <Card title="cloro" icon="search" href="/oss/python/integrations/tools/cloro">
+  <Card title="cloro" icon="search" href="https://docs.cloro.dev">
     Google Search results with AI Overview support.
   </Card>
 </Columns>

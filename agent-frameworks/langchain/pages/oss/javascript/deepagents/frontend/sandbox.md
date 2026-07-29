@@ -169,7 +169,7 @@ Wire the agent as an async [graph factory](/langsmith/graph-rebuild) that reads
     const backend = await getOrCreateSandboxForThread(threadId);
 
     return createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       backend,
       systemPrompt: "You are an expert developer working on a project in /app.",
     });

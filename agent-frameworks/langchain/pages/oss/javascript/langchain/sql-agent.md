@@ -423,7 +423,7 @@ The following tutorial covers the following concepts:
     Rules:
     - Think step-by-step.
     - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-    - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+    - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
     - Limit to 5 rows unless user explicitly asks otherwise.
     - If the tool returns 'Error:', revise the SQL and try again.
     - Limit the number of attempts to 5.
@@ -439,7 +439,7 @@ The following tutorial covers the following concepts:
       import { createAgent } from "langchain";
 
       let agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
       });
@@ -677,7 +677,7 @@ The following tutorial covers the following concepts:
         Rules:
         - Think step-by-step.
         - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
         - Limit to 5 rows unless user explicitly asks otherwise.
         - If the tool returns 'Error:', revise the SQL and try again.
         - Limit the number of attempts to 5.
@@ -686,7 +686,7 @@ The following tutorial covers the following concepts:
         `);
 
         export const agent = createAgent({
-          model: "google-genai:gemini-3.5-flash",
+          model: "google-genai:gemini-3.6-flash",
           tools: [executeSql],
           systemPrompt: await getSystemPrompt(),
         });
@@ -793,7 +793,7 @@ The following tutorial covers the following concepts:
         Rules:
         - Think step-by-step.
         - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
         - Limit to 5 rows unless user explicitly asks otherwise.
         - If the tool returns 'Error:', revise the SQL and try again.
         - Limit the number of attempts to 5.
@@ -909,7 +909,7 @@ The following tutorial covers the following concepts:
         Rules:
         - Think step-by-step.
         - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
         - Limit to 5 rows unless user explicitly asks otherwise.
         - If the tool returns 'Error:', revise the SQL and try again.
         - Limit the number of attempts to 5.
@@ -1025,7 +1025,7 @@ The following tutorial covers the following concepts:
         Rules:
         - Think step-by-step.
         - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
         - Limit to 5 rows unless user explicitly asks otherwise.
         - If the tool returns 'Error:', revise the SQL and try again.
         - Limit the number of attempts to 5.
@@ -1141,7 +1141,7 @@ The following tutorial covers the following concepts:
         Rules:
         - Think step-by-step.
         - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
         - Limit to 5 rows unless user explicitly asks otherwise.
         - If the tool returns 'Error:', revise the SQL and try again.
         - Limit the number of attempts to 5.
@@ -1257,7 +1257,7 @@ The following tutorial covers the following concepts:
         Rules:
         - Think step-by-step.
         - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
         - Limit to 5 rows unless user explicitly asks otherwise.
         - If the tool returns 'Error:', revise the SQL and try again.
         - Limit the number of attempts to 5.
@@ -1373,7 +1373,7 @@ The following tutorial covers the following concepts:
         Rules:
         - Think step-by-step.
         - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
         - Limit to 5 rows unless user explicitly asks otherwise.
         - If the tool returns 'Error:', revise the SQL and try again.
         - Limit the number of attempts to 5.
@@ -1402,7 +1402,7 @@ The following tutorial covers the following concepts:
       import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
       agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
         middleware: [

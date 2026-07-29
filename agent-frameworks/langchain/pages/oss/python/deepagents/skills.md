@@ -322,7 +322,7 @@ Deep Agents supports different backends depending on how you want to store and m
       }
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=backend,
           skills=["/skills/"],
           checkpointer=checkpointer,
@@ -572,7 +572,7 @@ Deep Agents supports different backends depending on how you want to store and m
     )
 
     agent = create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
+        model="google_genai:gemini-3.6-flash",
         backend=backend,
         store=store,
         skills=["/skills/"],
@@ -597,7 +597,7 @@ Deep Agents supports different backends depending on how you want to store and m
     backend = FilesystemBackend(root_dir=root_dir)
 
     agent = create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
+        model="google_genai:gemini-3.6-flash",
         backend=backend,
         skills=[str(Path(root_dir) / "skills")],
         interrupt_on={
@@ -712,7 +712,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     skills=["/skills/main/"],  # Main agent and GP subagent get these
     subagents=[research_subagent],  # Researcher gets only its own skills
 )
@@ -759,7 +759,7 @@ To share skills without letting agents modify them, route `/skills/` to a shared
   store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       backend=CompositeBackend(
           default=StateBackend(),
           routes={
@@ -1151,7 +1151,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
 
       try:
           agent = create_deep_agent(
-              model="google_genai:gemini-3.5-flash",
+              model="google_genai:gemini-3.6-flash",
               backend=backend,
               skills=["/skills/"],
               store=store,

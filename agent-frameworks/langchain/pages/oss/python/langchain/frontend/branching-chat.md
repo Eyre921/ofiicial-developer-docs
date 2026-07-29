@@ -15,7 +15,7 @@ run from the selected message's parent checkpoint.
 <PatternEmbed />
 
 <Note>
-  This feature requires the [LangGraph Agent Server](../langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
+  This feature requires the [LangGraph Agent Server](/oss/python/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
 </Note>
 
 ## What is branching chat?

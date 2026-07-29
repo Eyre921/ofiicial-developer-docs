@@ -663,39 +663,27 @@ LangChain.js integrates with a variety of vector stores. You can check out a ful
 
 ## All vector stores
 
-<Columns>
-  <Card title="Azure DocumentDB" icon="link" href="/oss/javascript/integrations/vectorstores/azure_documentdb" />
-
-  <Card title="Azure Cosmos DB for NoSQL" icon="link" href="/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql" />
-
-  <Card title="Cloudflare Vectorize" icon="link" href="/oss/javascript/integrations/vectorstores/cloudflare_vectorize" />
-
-  <Card title="Google Cloud SQL for PostgreSQL" icon="link" href="/oss/javascript/integrations/vectorstores/google_cloudsql_pg" />
-
-  <Card title="In-memory" icon="link" href="/oss/javascript/integrations/vectorstores/memory" />
-
-  <Card title="Milvus" icon="link" href="/oss/javascript/integrations/vectorstores/milvus" />
-
-  <Card title="MongoDB Atlas" icon="link" href="/oss/javascript/integrations/vectorstores/mongodb_atlas" />
-
-  <Card title="Oracle AI Database" icon="link" href="/oss/javascript/integrations/vectorstores/oracleai" />
-
-  <Card title="Pinecone" icon="link" href="/oss/javascript/integrations/vectorstores/pinecone" />
-
-  <Card title="Qdrant" icon="link" href="/oss/javascript/integrations/vectorstores/qdrant" />
-
-  <Card title="Redis" icon="link" href="/oss/javascript/integrations/vectorstores/redis" />
-
-  <Card title="Weaviate" icon="link" href="/oss/javascript/integrations/vectorstores/weaviate" />
-
-  <Card title="Neo4j Vector Index" icon="link" href="/oss/javascript/integrations/vectorstores/neo4jvector" />
-
-  <Card title="PGVector" icon="link" href="/oss/javascript/integrations/vectorstores/pgvector" />
-
-  <Card title="Turbopuffer" icon="link" href="/oss/javascript/integrations/vectorstores/turbopuffer" />
-
-  <Card title="YDB" icon="link" href="/oss/javascript/integrations/vectorstores/ydb" />
-</Columns>
+<div>
+  | Vectorstore                                                                                                          | Downloads                                                                                                                   |
+  | :------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+  | [`WeaviateStore`](/oss/javascript/integrations/vectorstores/weaviate)                                                | <span><a href="https://www.npmjs.com/package/@langchain/weaviate">  <img alt="Downloads per month" /></a></span>            |
+  | [`PineconeStore`](/oss/javascript/integrations/vectorstores/pinecone)                                                | <span><a href="https://www.npmjs.com/package/@langchain/pinecone">  <img alt="Downloads per month" /></a></span>            |
+  | [`MongoDBAtlasVectorSearch`](/oss/javascript/integrations/vectorstores/mongodb_atlas)                                | <span><a href="https://www.npmjs.com/package/@langchain/mongodb">  <img alt="Downloads per month" /></a></span>             |
+  | [`QdrantVectorStore`](/oss/javascript/integrations/vectorstores/qdrant)                                              | <span><a href="https://www.npmjs.com/package/@langchain/qdrant">  <img alt="Downloads per month" /></a></span>              |
+  | [`RedisVectorStore`](/oss/javascript/integrations/vectorstores/redis)                                                | <span><a href="https://www.npmjs.com/package/@langchain/redis">  <img alt="Downloads per month" /></a></span>               |
+  | [`OracleVS`](/oss/javascript/integrations/vectorstores/oracleai)                                                     | <span><a href="https://www.npmjs.com/package/@oracle/langchain-oracledb">  <img alt="Downloads per month" /></a></span>     |
+  | [`PGVectorStore`](/oss/javascript/integrations/vectorstores/pgvector)                                                | <span><a href="https://www.npmjs.com/package/@langchain/pgvector">  <img alt="Downloads per month" /></a></span>            |
+  | [`Cloudflare vectorize`](/oss/javascript/integrations/vectorstores/cloudflare_vectorize)                             | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare">  <img alt="Downloads per month" /></a></span>          |
+  | [`Azure Cosmos DB for MongoDB vCore (deprecated)`](/oss/javascript/integrations/vectorstores/azure_cosmosdb_mongodb) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb">  <img alt="Downloads per month" /></a></span>      |
+  | [`Azure Cosmos DB for NoSQL`](/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql)                        | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb">  <img alt="Downloads per month" /></a></span>      |
+  | [`Azure DocumentDB`](/oss/javascript/integrations/vectorstores/azure_documentdb)                                     | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb">  <img alt="Downloads per month" /></a></span>      |
+  | [`TurbopufferVectorStore`](/oss/javascript/integrations/vectorstores/turbopuffer)                                    | <span><a href="https://www.npmjs.com/package/@langchain/turbopuffer">  <img alt="Downloads per month" /></a></span>         |
+  | [`Google cloud SQL for postgresql`](/oss/javascript/integrations/vectorstores/google_cloudsql_pg)                    | <span><a href="https://www.npmjs.com/package/@langchain/google-cloud-sql-pg">  <img alt="Downloads per month" /></a></span> |
+  | [`Neo4jVectorStore`](/oss/javascript/integrations/vectorstores/neo4jvector)                                          | <span><a href="https://www.npmjs.com/package/@langchain/neo4j">  <img alt="Downloads per month" /></a></span>               |
+  | [`SAP HANA Cloud Vector Engine`](/oss/javascript/integrations/vectorstores/sap_hanavector)                           | <span><a href="https://www.npmjs.com/package/@sap/hana-langchain">  <img alt="Downloads per month" /></a></span>            |
+  | [`YDB`](/oss/javascript/integrations/vectorstores/ydb)                                                               | <span><a href="https://www.npmjs.com/package/@ydbjs/langchain">  <img alt="Downloads per month" /></a></span>               |
+  | [`langchain`](/oss/javascript/integrations/vectorstores/memory)                                                      | <span>N/A</span>                                                                                                            |
+</div>
 
 ***
 

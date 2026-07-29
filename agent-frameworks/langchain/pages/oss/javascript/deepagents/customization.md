@@ -15,7 +15,7 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
   import { createDeepAgent } from "deepagents";
 
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt: "You are a helpful assistant.",
     tools: [search, fetchUrl],
     memory: ["./AGENTS.md"],
@@ -503,7 +503,7 @@ In addition to [built-in tools](/oss/javascript/deepagents/overview#execution-en
   );
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [internetSearch],
   });
   ```
@@ -819,7 +819,7 @@ npm install @langchain/mcp-adapters
   const tools = await client.getTools();
 
   const agent = await createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       tools,
   });
 
@@ -977,7 +977,7 @@ For detailed configuration options including stdio servers, OAuth authentication
 
 ## System prompt
 
-Deep Agents ship with a built-in base system prompt that teaches the agent how to use the harness scaffolding (planning, filesystem tools, subagents). Pass `system_prompt=` to prepend your own instructions before that base prompt:
+Pass `system_prompt=` to give the agent your own instructions:
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -989,7 +989,7 @@ Deep Agents ship with a built-in base system prompt that teaches the agent how t
     `write a polished report.`;
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt: researchInstructions,
   });
   ```
@@ -1080,10 +1080,8 @@ Deep Agents ship with a built-in base system prompt that teaches the agent how t
 </CodeGroup>
 
 <Note>
-  Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) with structured [content blocks](/oss/javascript/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks and append the built-in base prompt ([subagent](/oss/javascript/deepagents/subagents) dictionary specs remain strings).
+  Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) with structured [content blocks](/oss/javascript/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/javascript/deepagents/subagents) dictionary specs remain strings).
 </Note>
-
-When middleware adds special tools, like the filesystem tools, it appends its own guidance to the system prompt at runtime.
 
 <AccordionGroup>
   <Accordion title="Subagent prompts">
@@ -1178,7 +1176,7 @@ The `deepagents` package also exposes [`createSummarizationMiddleware`](https://
 
 ### Provider-specific middleware
 
-For provider-specific middleware that is optimized for specific LLM providers, see [Official integrations](/oss/javascript/integrations/middleware#official-integrations) and [Community integrations](/oss/javascript/integrations/middleware#community-integrations).
+For provider-specific middleware that is optimized for specific LLM providers, see [Middleware integrations](/oss/javascript/integrations/middleware).
 
 ### Custom middleware
 
@@ -1228,7 +1226,7 @@ You can provide additional middleware to extend functionality, add tools, or imp
   });
 
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [getWeather] as any,
     middleware: [logToolCallsMiddleware] as any,
   });
@@ -1576,7 +1574,7 @@ Use [interpreters](/oss/javascript/deepagents/interpreters) to add an `eval` too
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -1695,12 +1693,12 @@ To isolate detailed work and avoid context bloat, use subagents:
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "google-genai:gemini-3.5-flash", // Optional override, defaults to main agent model
+    model: "google-genai:gemini-3.6-flash", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1756,7 +1754,7 @@ To isolate detailed work and avoid context bloat, use subagents:
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1812,7 +1810,7 @@ To isolate detailed work and avoid context bloat, use subagents:
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1868,7 +1866,7 @@ To isolate detailed work and avoid context bloat, use subagents:
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1924,7 +1922,7 @@ To isolate detailed work and avoid context bloat, use subagents:
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -1980,7 +1978,7 @@ To isolate detailed work and avoid context bloat, use subagents:
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -2036,7 +2034,7 @@ To isolate detailed work and avoid context bloat, use subagents:
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -2083,7 +2081,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       import { createDeepAgent, FilesystemBackend } from "deepagents";
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
@@ -2164,7 +2162,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const backend = new LocalShellBackend({ workingDirectory: "." });
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         backend,
       });
       ```
@@ -2248,7 +2246,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         backend: new StoreBackend({
           namespace: (rt) => [rt.serverInfo.user.identity],
         }),
@@ -2378,7 +2376,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const store = new InMemoryStore();
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         backend: new CompositeBackend(new StateBackend(), {
           "/memories/": new StoreBackend({
             namespace: () => ["memories"],
@@ -2626,7 +2624,7 @@ const notifyEmail = tool(
 const checkpointer = new MemorySaver();
 
 const agent = createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google_genai:gemini-3.6-flash",
   tools: [removeFile, fetchFile, notifyEmail],
   interruptOn: {
     remove_file: true, // Default: approve, edit, reject, respond
@@ -2812,7 +2810,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       }
 
       const agent = await createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         memory: ["/AGENTS.md"],
         checkpointer: checkpointer,
       });
@@ -3164,7 +3162,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         backend: new StoreBackend({
           namespace: () => ["filesystem"],
         }),
@@ -3534,7 +3532,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
         memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
         interruptOn: {

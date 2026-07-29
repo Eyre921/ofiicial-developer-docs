@@ -64,7 +64,7 @@ Define async subagents as a list of [`AsyncSubAgent`](https://reference.langchai
   ];
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     subagents: [...asyncSubagents],
   });
   ```
@@ -395,7 +395,7 @@ When using LangGraph-based deployments, every async subagent run is a standard L
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google_genai:gemini-3.6-flash",
   systemPrompt: `...your instructions...
 
     After launching an async subagent, ALWAYS return control to the user.

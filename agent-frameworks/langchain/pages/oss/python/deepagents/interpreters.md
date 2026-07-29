@@ -76,7 +76,7 @@ Install the QuickJS middleware package, then pass interpreter middleware using t
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[CodeInterpreterMiddleware()],
   )
   ```
@@ -199,7 +199,7 @@ Enable PTC with an explicit allowlist:
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
   )
   ```
@@ -339,7 +339,7 @@ Cross-turn persistence does not require a checkpointer:
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[
           CodeInterpreterMiddleware(
               mode="thread",  # Default
@@ -442,7 +442,7 @@ Because interpreter snapshots are stored in graph state, a [checkpointer](/oss/p
   from langgraph.checkpoint.memory import MemorySaver
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       checkpointer=MemorySaver(),
       middleware=[CodeInterpreterMiddleware(mode="thread")],
   )

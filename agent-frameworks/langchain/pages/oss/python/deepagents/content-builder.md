@@ -663,7 +663,7 @@ Create `content_writer.py` in the project root. The following sections belong in
       def create_content_writer():
           """Create a content writer agent configured by filesystem files."""
           return create_deep_agent(
-              model="google_genai:gemini-3.5-flash",
+              model="google_genai:gemini-3.6-flash",
               memory=["./AGENTS.md"],
               skills=["./skills/"],
               tools=[generate_cover, generate_social_image],

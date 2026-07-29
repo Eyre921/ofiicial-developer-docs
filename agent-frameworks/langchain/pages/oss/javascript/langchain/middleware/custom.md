@@ -610,7 +610,7 @@ Use the `systemMessage` field in `ModelRequest` to read and modify the system pr
   });
 
   const agent = createAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt: "You are a helpful assistant.",
     middleware: [addContextMiddleware],
   });
@@ -924,7 +924,7 @@ const myOtherMiddleware = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google_genai:gemini-3.6-flash",
   systemPrompt: "You are a helpful assistant.",
   middleware: [myMiddleware, myOtherMiddleware],
 });

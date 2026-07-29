@@ -153,12 +153,12 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "google-genai:gemini-3.5-flash", // Optional override, defaults to main agent model
+    model: "google-genai:gemini-3.6-flash", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -214,7 +214,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -270,7 +270,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -326,7 +326,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -382,7 +382,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -438,7 +438,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -494,7 +494,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   const subagents = [researchSubagent];
 
   const agent = createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
+    model: "google_genai:gemini-3.6-flash",
     subagents,
   });
   ```
@@ -524,7 +524,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   );
 
   const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google_genai:gemini-3.5-flash";
+  const yourModel = "google_genai:gemini-3.6-flash";
   const specializedTools: never[] = [];
 
   // Create a custom agent graph
@@ -544,7 +544,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   const subagents = [customSubagent];
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [internetSearch],
     systemPrompt: researchInstructions,
     subagents: subagents,
@@ -567,7 +567,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   );
 
   const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google_genai:gemini-3.5-flash";
+  const yourModel = "google_genai:gemini-3.6-flash";
   const specializedTools: never[] = [];
 
   // Create a custom agent graph
@@ -610,7 +610,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   );
 
   const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google_genai:gemini-3.5-flash";
+  const yourModel = "google_genai:gemini-3.6-flash";
   const specializedTools: never[] = [];
 
   // Create a custom agent graph
@@ -653,7 +653,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   );
 
   const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google_genai:gemini-3.5-flash";
+  const yourModel = "google_genai:gemini-3.6-flash";
   const specializedTools: never[] = [];
 
   // Create a custom agent graph
@@ -696,7 +696,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   );
 
   const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google_genai:gemini-3.5-flash";
+  const yourModel = "google_genai:gemini-3.6-flash";
   const specializedTools: never[] = [];
 
   // Create a custom agent graph
@@ -739,7 +739,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   );
 
   const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google_genai:gemini-3.5-flash";
+  const yourModel = "google_genai:gemini-3.6-flash";
   const specializedTools: never[] = [];
 
   // Create a custom agent graph
@@ -782,7 +782,7 @@ If you're creating a custom LangGraph graph, make sure that the graph has a [sta
   );
 
   const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google_genai:gemini-3.5-flash";
+  const yourModel = "google_genai:gemini-3.6-flash";
   const specializedTools: never[] = [];
 
   // Create a custom agent graph
@@ -844,7 +844,7 @@ Dynamic subagents become available as soon as the agent has both subagents and t
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     subagents: [{
       name: "reviewer",
       description: "Reviews code for security issues, citing lines and severity",
@@ -1008,7 +1008,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt:
       "You are a project coordinator with no research knowledge. " +
       "For every user request, you must call the task() tool with " +
@@ -1505,7 +1505,7 @@ Pass `responseFormat` on the subagent config. When the subagent finishes, its st
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     subagents: [researchSubagent],
   });
 
@@ -1812,7 +1812,7 @@ Include a subagent with `name: "general-purpose"` in your `subagents` list to re
 
   // Main agent uses Gemini; general-purpose subagent uses GPT
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [internetSearch],
     subagents: [
       {
@@ -2042,7 +2042,7 @@ const researchSubagent = {
 };
 
 const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google_genai:gemini-3.6-flash",
   skills: ["/skills/main/"], // Main agent and GP subagent get these
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
@@ -2116,7 +2116,7 @@ Different models excel at different tasks:
       description: "Reviews legal documents and contracts",
       systemPrompt: "You are an expert legal reviewer...",
       tools: [readDocument, analyzeContract],
-      model: "google-genai:gemini-3.5-flash", // Large context for long documents
+      model: "google-genai:gemini-3.6-flash", // Large context for long documents
     },
     {
       name: "financial-analyst",
@@ -2295,7 +2295,7 @@ Create specialized subagents for different domains:
   ];
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     systemPrompt:
       "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
     subagents: subagents,
@@ -2543,7 +2543,7 @@ This means tools running inside any subagent can access the same context values 
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     subagents: [researchSubagent],
     contextSchema,
   });

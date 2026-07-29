@@ -10,7 +10,7 @@ Deep Agents work with any [LangChain chat model](/oss/python/langchain/models) t
 
 ## Supported models
 
-Specify models in `provider:model` format (for example, `google_genai:gemini-3.5-flash`, `openai:gpt-5.4`, or `anthropic:claude-sonnet-4-6`). The provider prefix selects the LangChain integration, and everything after the colon is passed through to that provider as the model identifier. For valid provider strings, see the `model_provider` parameter of [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model). For provider-specific configuration, see [chat model integrations](/oss/python/integrations/chat).
+Specify models in `provider:model` format (for example, `google_genai:gemini-3.6-flash`, `openai:gpt-5.4`, or `anthropic:claude-sonnet-4-6`). The provider prefix selects the LangChain integration, and everything after the colon is passed through to that provider as the model identifier. For valid provider strings, see the `model_provider` parameter of [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model). For provider-specific configuration, see [chat model integrations](/oss/python/integrations/chat).
 
 The model identifier must match the format expected by the provider. Some providers use simple names like `gpt-5.5`; others use namespaced IDs or deployment paths like `zai-org/GLM-5.2`, so the full Deep Agents string would be `baseten:zai-org/GLM-5.2`. Check the provider's model catalog or integration docs for the current identifiers.
 
@@ -20,7 +20,7 @@ These models perform well on the [Deep Agents eval suite](https://github.com/lan
 
 | Provider                                                  | Models                                                  |
 | --------------------------------------------------------- | ------------------------------------------------------- |
-| [Google](/oss/python/integrations/providers/google)       | `gemini-3.1-pro-preview`, `gemini-3.5-flash`            |
+| [Google](/oss/python/integrations/providers/google)       | `gemini-3.1-pro-preview`, `gemini-3.6-flash`            |
 | [OpenAI](/oss/python/integrations/providers/openai)       | `gpt-5.5`, `gpt-5.4`                                    |
 | [Anthropic](/oss/python/integrations/providers/anthropic) | `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6` |
 | Open-weight                                               | `GLM-5.2`, `Kimi-K2.7 Code`, `MiniMax-M3`               |
@@ -34,7 +34,7 @@ The [Deep Agents eval suite](https://github.com/langchain-ai/deepagents/tree/mai
 <div>
   | Model                                            |                                                                        Overall |                                                                        File Ops |                                                                       Retrieval |                                                                       Tool Use |                                                                         Memory |                                                                   Conversation |                                                                   Summarization |
   | :----------------------------------------------- | -----------------------------------------------------------------------------: | ------------------------------------------------------------------------------: | ------------------------------------------------------------------------------: | -----------------------------------------------------------------------------: | -----------------------------------------------------------------------------: | -----------------------------------------------------------------------------: | ------------------------------------------------------------------------------: |
-  | google\_genai:gemini-3.5-flash                   |     [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** |     [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) |     [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |      [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
+  | google\_genai:gemini-3.6-flash                   |     [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** |     [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) |     [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |      [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
   | openai:gpt-5.4                                   |     [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |     [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) |     [51%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) |     [38%](https://github.com/langchain-ai/deepagents/actions/runs/24425363630) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
   | openai:gpt-5.5                                   |     [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |      [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** |     [84%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |     [64%](https://github.com/langchain-ai/deepagents/actions/runs/25345307822) | **[52%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** |      [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
   | anthropic:claude-opus-4-6                        |     [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) |      [92%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |     [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[69%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |     [22%](https://github.com/langchain-ai/deepagents/actions/runs/24363491527) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
@@ -63,7 +63,7 @@ To configure model-specific parameters, use [`init_chat_model`](https://referenc
   from deepagents import create_deep_agent
 
   model = init_chat_model(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       thinking_level="medium",  # [!code highlight]
   )
   agent = create_deep_agent(model=model)
@@ -148,7 +148,7 @@ def configurable_model(
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     middleware=[configurable_model],
     context_schema=Context,
 )

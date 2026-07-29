@@ -5,4 +5,4 @@ path: langsmith/smith-api/charts/update-chart
 ---
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/charts/{chart_id}
-Update a chart.
+Update a chart or text block.

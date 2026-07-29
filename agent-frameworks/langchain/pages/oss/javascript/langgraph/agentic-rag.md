@@ -171,7 +171,7 @@ The first node is the agent decision point. Given the conversation so far, the m
 
       const State = MessagesAnnotation;
       const model = new ChatOpenAI({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         temperature: 0,
       }).bindTools(tools);
 
@@ -373,7 +373,7 @@ A normal edge always sends the graph to the same next node. A [conditional edge]
       });
 
       const gradeModel = new ChatOpenAI({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         temperature: 0,
       }).withStructuredOutput(gradeDocumentsSchema);
       const gradeFallbackModel = new ChatOpenAI({

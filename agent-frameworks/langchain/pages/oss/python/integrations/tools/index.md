@@ -14,19 +14,20 @@ A toolkit is a collection of tools meant to be used together.
 
 The following table shows tools that execute online searches in some shape or form:
 
-| Tool/Toolkit                                                          | Free/Paid                                | Return Data                             |
-| --------------------------------------------------------------------- | ---------------------------------------- | --------------------------------------- |
-| [cloro](/oss/python/integrations/tools/cloro)                         | Paid                                     | URL, Snippet, Title, Answer             |
-| [Exa Search](/oss/python/integrations/tools/exa_search)               | 1000 free searches/month                 | URL, Author, Title, Published Date      |
-| [Google Search](/oss/python/integrations/tools/google_search)         | Paid                                     | URL, Snippet, Title                     |
-| [Linkup Search](/oss/python/integrations/tools/linkup_search)         | 2000 free searches/month                 | URL, Content, Sources                   |
-| [Nia Toolkit](/oss/python/integrations/tools/nia)                     | Free tier available                      | Code, Docs, Metadata, Sources           |
-| [Nimble Search](/oss/python/integrations/tools/nimble_search)         | Free trial available                     | URL, Content, Title                     |
-| [Parallel Search](/oss/python/integrations/tools/parallel_search)     | Paid                                     | URL, Title, Excerpts                    |
-| [Perplexity Search](/oss/python/integrations/tools/perplexity_search) | Paid (with monthly free tier)            | URL, Title, Snippet, Date, Last Updated |
-| [Tavily Search](/oss/python/integrations/tools/tavily_search)         | 1000 free searches/month                 | URL, Content, Title, Images, Answer     |
-| [Apify](/oss/python/integrations/tools/apify_actors)                  | Free tier, pay-per-use (varies by Actor) | Actor output (varies by Actor)          |
-| [You.com Search](/oss/python/integrations/tools/you)                  | \$100 in credits on sign up              | URL, Title, Page Content                |
+| Tool/Toolkit                                                            | Free/Paid                                | Return Data                             |
+| ----------------------------------------------------------------------- | ---------------------------------------- | --------------------------------------- |
+| [cloro](https://docs.cloro.dev)                                         | Paid                                     | URL, Snippet, Title, Answer             |
+| [Exa Search](/oss/python/integrations/tools/exa_search)                 | 1000 free searches/month                 | URL, Author, Title, Published Date      |
+| [Google Search](/oss/python/integrations/tools/google_search)           | Paid                                     | URL, Snippet, Title                     |
+| [iFlow Search](https://platform.iflow.cn/)                              | Paid                                     | URL, Title, Snippet, Date               |
+| [Linkup Search](https://github.com/LinkupPlatform/langchain-linkup)     | 2000 free searches/month                 | URL, Content, Sources                   |
+| [Nia Toolkit](https://github.com/nozomio-labs/nia-langchain)            | Free tier available                      | Code, Docs, Metadata, Sources           |
+| [Nimble Search](https://docs.nimbleway.com/nimble-sdk/web-tools/search) | Free trial available                     | URL, Content, Title                     |
+| [Parallel Search](/oss/python/integrations/tools/parallel_search)       | Paid                                     | URL, Title, Excerpts                    |
+| [Perplexity Search](/oss/python/integrations/tools/perplexity_search)   | Paid (with monthly free tier)            | URL, Title, Snippet, Date, Last Updated |
+| [Tavily Search](/oss/python/integrations/tools/tavily_search)           | 1000 free searches/month                 | URL, Content, Title, Images, Answer     |
+| [Apify](https://docs.apify.com/platform/integrations/langchain)         | Free tier, pay-per-use (varies by Actor) | Actor output (varies by Actor)          |
+| [You.com Search](/oss/python/integrations/tools/you)                    | \$100 in credits on sign up              | URL, Title, Page Content                |
 
 ## Code interpreter
 
@@ -41,44 +42,47 @@ The following table shows tools that can be used as code interpreters:
 
 The following table shows tools that can be used to automate tasks in productivity tools:
 
-| Tool/Toolkit                                                    | Pricing                                                                        |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| [Gmail Toolkit](/oss/python/integrations/tools/google_gmail)    | Free, with limit of 250 quota units per user per second                        |
-| [AgentMail Toolkit](/oss/python/integrations/tools/agentmail)   | Free tier available, with [pay-as-you-go pricing](https://agentmail.to) after  |
-| [AgentPhone Toolkit](/oss/python/integrations/tools/agentphone) | Free tier available, with [pay-as-you-go pricing](https://agentphone.to) after |
+| Tool/Toolkit                                                 | Pricing                                                                        |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| [Gmail Toolkit](/oss/python/integrations/tools/google_gmail) | Free, with limit of 250 quota units per user per second                        |
+| [AgentMail Toolkit](https://docs.agentmail.to/)              | Free tier available, with [pay-as-you-go pricing](https://agentmail.to) after  |
+| [AgentPhone Toolkit](https://docs.agentphone.to)             | Free tier available, with [pay-as-you-go pricing](https://agentphone.to) after |
+| [e2a](https://e2a.dev)                                       | Free tier available, with [flat-rate paid plans](https://e2a.dev) after        |
 
 ## Web browsing
 
 The following table shows tools that can be used to automate tasks in web browsers:
 
-| Tool/Toolkit                                                                                        | Pricing                                                     | Supports Interacting with the Browser |
-| --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------- |
-| [AgentQL Toolkit](/oss/python/integrations/tools/agentql)                                           | Free trial, with pay-as-you-go and flat rate plans after    | ✅                                     |
-| [Amazon Bedrock AgentCore Browser](/oss/python/integrations/tools/bedrock_agentcore_browser)        | Pay-per-use (AWS)                                           | ✅                                     |
-| [Hyperbrowser Browser Agent Tools](/oss/python/integrations/tools/hyperbrowser_browser_agent_tools) | Free trial, with flat rate plans and pre-paid credits after | ✅                                     |
-| [Hyperbrowser Web Scraping Tools](/oss/python/integrations/tools/hyperbrowser_web_scraping_tools)   | Free trial, with flat rate plans and pre-paid credits after | ❌                                     |
-| [Nimble Extract](/oss/python/integrations/tools/nimble_extract)                                     | Free trial available                                        | ❌                                     |
-| [Oxylabs Web Scraper API](/oss/python/integrations/tools/oxylabs)                                   | Free trial, with flat rate plans and pre-paid credits after | ❌                                     |
+| Tool/Toolkit                                                                                 | Pricing                                                     | Supports Interacting with the Browser |
+| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------- |
+| [AgentQL Toolkit](https://docs.agentql.com/)                                                 | Free trial, with pay-as-you-go and flat rate plans after    | ✅                                     |
+| [Amazon Bedrock AgentCore Browser](/oss/python/integrations/tools/bedrock_agentcore_browser) | Pay-per-use (AWS)                                           | ✅                                     |
+| [AproxPay](https://github.com/aproxpay/langchain-aproxpay)                                   | Pay-per-use via x402 (USDC on Base); no signup              | ❌ (fetch + CONNECT session pass)      |
+| [Browserless](https://browserless.io)                                                        | Free tier, with usage-based plans after                     | ✅                                     |
+| [Hyperbrowser Browser Agent Tools](https://docs.hyperbrowser.ai/)                            | Free trial, with flat rate plans and pre-paid credits after | ✅                                     |
+| [Hyperbrowser Web Scraping Tools](https://docs.hyperbrowser.ai/)                             | Free trial, with flat rate plans and pre-paid credits after | ❌                                     |
+| [Manifest](https://omfang.io/manifest-docs)                                                  | Free tier available                                         | ❌                                     |
+| [Nimble Extract](https://docs.nimbleway.com/nimble-sdk/web-tools/extract)                    | Free trial available                                        | ❌                                     |
+| [Oxylabs Web Scraper API](https://github.com/oxylabs/langchain-oxylabs)                      | Free trial, with flat rate plans and pre-paid credits after | ❌                                     |
 
 ## Database
 
 The following table shows tools that can be used to automate tasks in databases:
 
-| Tool/Toolkit                                              | Allowed Operations                     |
-| --------------------------------------------------------- | -------------------------------------- |
-| [MCP Toolbox](/oss/python/integrations/tools/mcp_toolbox) | Any SQL operation                      |
-| [Drasi Toolkit](/oss/python/integrations/tools/drasi)     | Real-time database change detection    |
-| [Stardog](/oss/python/integrations/tools/stardog)         | SPARQL SELECT and schema introspection |
+| Tool/Toolkit                                                      | Allowed Operations                     |
+| ----------------------------------------------------------------- | -------------------------------------- |
+| [MCP Toolbox](/oss/python/integrations/tools/mcp_toolbox)         | Any SQL operation                      |
+| [Drasi Toolkit](https://github.com/drasi-project/langchain-drasi) | Real-time database change detection    |
+| [Stardog](https://github.com/stardog-union/stardog-langchain)     | SPARQL SELECT and schema introspection |
 
 ## Finance
 
 The following table shows tools that can be used to execute financial transactions such as payments, purchases, and more:
 
-| Tool/Toolkit                                          | Pricing | Capabilities                                                                      |
-| ----------------------------------------------------- | ------- | --------------------------------------------------------------------------------- |
-| [Ampersend](/oss/python/integrations/tools/ampersend) | Paid    | Pay for and use remote AI agent services with automatic x402 payment handling.    |
-| [GOAT](/oss/python/integrations/tools/goat)           | Free    | Create and receive payments, purchase physical goods, make investments, and more. |
-| [Privy](/oss/python/integrations/tools/privy)         | Free    | Create wallets with configurable permissions and execute transactions with speed. |
+| Tool/Toolkit                                  | Pricing | Capabilities                                                                      |
+| --------------------------------------------- | ------- | --------------------------------------------------------------------------------- |
+| [Ampersend](https://docs.ampersend.ai)        | Paid    | Pay for and use remote AI agent services with automatic x402 payment handling.    |
+| [Privy](/oss/python/integrations/tools/privy) | Free    | Create wallets with configurable permissions and execute transactions with speed. |
 
 ## Integration platforms
 
@@ -90,183 +94,105 @@ The following platforms provide access to multiple tools and services through a 
 
 ## All tools and toolkits
 
-<Columns>
-  <Card title="ADS4GPTs" icon="link" href="/oss/python/integrations/tools/ads4gpts" />
-
-  <Card title="AgentMail Toolkit" icon="link" href="/oss/python/integrations/tools/agentmail" />
-
-  <Card title="AgentPhone Toolkit" icon="link" href="/oss/python/integrations/tools/agentphone" />
-
-  <Card title="AgentQL" icon="link" href="/oss/python/integrations/tools/agentql" />
-
-  <Card title="Ampersend" icon="link" href="/oss/python/integrations/tools/ampersend" />
-
-  <Card title="Amazon Bedrock AgentCore Browser" icon="link" href="/oss/python/integrations/tools/bedrock_agentcore_browser" />
-
-  <Card title="Amazon Bedrock AgentCore Code Interpreter" icon="link" href="/oss/python/integrations/tools/bedrock_agentcore_code_interpreter" />
-
-  <Card title="Anchor Browser" icon="link" href="/oss/python/integrations/tools/anchor_browser" />
-
-  <Card title="Apify" icon="link" href="/oss/python/integrations/tools/apify_actors" />
-
-  <Card title="AWS Lambda" icon="link" href="/oss/python/integrations/tools/awslambda" />
-
-  <Card title="Microsoft Foundry" icon="link" href="/oss/python/integrations/tools/azure_ai" />
-
-  <Card title="Microsoft Foundry Tools" icon="link" href="/oss/python/integrations/tools/azure_ai_services" />
-
-  <Card title="Azure Logic Apps" icon="link" href="/oss/python/integrations/tools/azure_logic_apps" />
-
-  <Card title="Azure Container Apps Dynamic Sessions" icon="link" href="/oss/python/integrations/tools/azure_dynamic_sessions" />
-
-  <Card title="Bodo DataFrames" icon="link" href="/oss/python/integrations/tools/bodo" />
-
-  <Card title="cloro" icon="link" href="/oss/python/integrations/tools/cloro" />
-
-  <Card title="BrightData Web Scraper API" icon="link" href="/oss/python/integrations/tools/brightdata-webscraperapi" />
-
-  <Card title="BrightData SERP" icon="link" href="/oss/python/integrations/tools/brightdata_serp" />
-
-  <Card title="BrightData Unlocker" icon="link" href="/oss/python/integrations/tools/brightdata_unlocker" />
-
-  <Card title="CAMB AI" icon="link" href="/oss/python/integrations/tools/camb" />
-
-  <Card title="CDP" icon="link" href="/oss/python/integrations/tools/cdp_agentkit" />
-
-  <Card title="Compass DeFi Toolkit" icon="link" href="/oss/python/integrations/tools/compass" />
-
-  <Card title="Composio" icon="link" href="/oss/python/integrations/tools/composio" />
-
-  <Card title="Dappier" icon="link" href="/oss/python/integrations/tools/dappier" />
-
-  <Card title="Databricks Unity Catalog" icon="link" href="/oss/python/integrations/tools/databricks" />
-
-  <Card title="Daytona Data Analysis" icon="link" href="/oss/python/integrations/tools/daytona_data_analysis" />
-
-  <Card title="Discord" icon="link" href="/oss/python/integrations/tools/discord" />
-
-  <Card title="Drasi" icon="link" href="/oss/python/integrations/tools/drasi" />
-
-  <Card title="Exa Search" icon="link" href="/oss/python/integrations/tools/exa_search" />
-
-  <Card title="FMP Data" icon="link" href="/oss/python/integrations/tools/fmp-data" />
-
-  <Card title="Gmail Toolkit" icon="link" href="/oss/python/integrations/tools/google_gmail" />
-
-  <Card title="GOAT" icon="link" href="/oss/python/integrations/tools/goat" />
-
-  <Card title="Gradio" icon="link" href="/oss/python/integrations/tools/gradio_tools" />
-
-  <Card title="Privy" icon="link" href="/oss/python/integrations/tools/privy" />
-
-  <Card title="Google Cloud Text-to-Speech" icon="link" href="/oss/python/integrations/tools/google_cloud_texttospeech" />
-
-  <Card title="Google Drive" icon="link" href="/oss/python/integrations/tools/google_drive" />
-
-  <Card title="Google Imagen" icon="link" href="/oss/python/integrations/tools/google_imagen" />
-
-  <Card title="Google Search" icon="link" href="/oss/python/integrations/tools/google_search" />
-
-  <Card title="Hyperbrowser Browser Agent Tools" icon="link" href="/oss/python/integrations/tools/hyperbrowser_browser_agent_tools" />
-
-  <Card title="Hyperbrowser Web Scraping Tools" icon="link" href="/oss/python/integrations/tools/hyperbrowser_web_scraping_tools" />
-
-  <Card title="IBM watsonx.ai" icon="link" href="/oss/python/integrations/tools/ibm_watsonx" />
-
-  <Card title="IBM watsonx.ai (SQL)" icon="link" href="/oss/python/integrations/tools/ibm_watsonx_sql" />
-
-  <Card title="Ionic Shopping Tool" icon="link" href="/oss/python/integrations/tools/ionic_shopping" />
-
-  <Card title="Jenkins" icon="link" href="/oss/python/integrations/tools/jenkins" />
-
-  <Card title="Lemon Agent" icon="link" href="/oss/python/integrations/tools/lemonai" />
-
-  <Card title="Linkup Search Tool" icon="link" href="/oss/python/integrations/tools/linkup_search" />
-
-  <Card title="Memgraph" icon="link" href="/oss/python/integrations/tools/memgraph" />
-
-  <Card title="Naver Search" icon="link" href="/oss/python/integrations/tools/naver_search" />
-
-  <Card title="Nia Toolkit" icon="link" href="/oss/python/integrations/tools/nia" />
-
-  <Card title="Nimble Extract" icon="link" href="/oss/python/integrations/tools/nimble_extract" />
-
-  <Card title="Nimble Search" icon="link" href="/oss/python/integrations/tools/nimble_search" />
-
-  <Card title="OpenGradient" icon="link" href="/oss/python/integrations/tools/opengradient_toolkit" />
-
-  <Card title="Oracle AI Database" icon="link" href="/oss/python/integrations/tools/oracleai" />
-
-  <Card title="Oxylabs" icon="link" href="/oss/python/integrations/tools/oxylabs" />
-
-  <Card title="Pandas Dataframe" icon="link" href="/oss/python/integrations/tools/pandas" />
-
-  <Card title="Parallel Extract" icon="link" href="/oss/python/integrations/tools/parallel_extract" />
-
-  <Card title="Parallel FindAll" icon="link" href="/oss/python/integrations/tools/parallel_findall" />
-
-  <Card title="Parallel Monitor" icon="link" href="/oss/python/integrations/tools/parallel_monitor" />
-
-  <Card title="Parallel Search" icon="link" href="/oss/python/integrations/tools/parallel_search" />
-
-  <Card title="Parallel Task API" icon="link" href="/oss/python/integrations/tools/parallel_task" />
-
-  <Card title="Permit" icon="link" href="/oss/python/integrations/tools/permit" />
-
-  <Card title="Prolog" icon="link" href="/oss/python/integrations/tools/prolog_tool" />
-
-  <Card title="Python REPL" icon="link" href="/oss/python/integrations/tools/python" />
-
-  <Card title="Robocorp Toolkit" icon="link" href="/oss/python/integrations/tools/robocorp" />
-
-  <Card title="Salesforce" icon="link" href="/oss/python/integrations/tools/salesforce" />
-
-  <Card title="ScraperAPI" icon="link" href="/oss/python/integrations/tools/scraperapi" />
-
-  <Card title="ScrapeGraph" icon="link" href="/oss/python/integrations/tools/scrapegraph" />
-
-  <Card title="Scrapeless Crawl" icon="link" href="/oss/python/integrations/tools/scrapeless_crawl" />
-
-  <Card title="Scrapeless Scraping API" icon="link" href="/oss/python/integrations/tools/scrapeless_scraping_api" />
-
-  <Card title="Scrapeless Universal Scraping" icon="link" href="/oss/python/integrations/tools/scrapeless_universal_scraping" />
-
-  <Card title="SpiceDB" icon="link" href="/oss/python/integrations/tools/spicedb" />
-
-  <Card title="Stardog" icon="link" href="/oss/python/integrations/tools/stardog" />
-
-  <Card title="Stripe" icon="link" href="/oss/python/integrations/tools/stripe" />
-
-  <Card title="Tableau" icon="link" href="/oss/python/integrations/tools/tableau" />
-
-  <Card title="Taiga" icon="link" href="/oss/python/integrations/tools/taiga" />
-
-  <Card title="Tavily Search" icon="link" href="/oss/python/integrations/tools/tavily_search" />
-
-  <Card title="Tavily Extract" icon="link" href="/oss/python/integrations/tools/tavily_extract" />
-
-  <Card title="Tavily Crawl" icon="link" href="/oss/python/integrations/tools/tavily_crawl" />
-
-  <Card title="Tavily Map" icon="link" href="/oss/python/integrations/tools/tavily_map" />
-
-  <Card title="Tilores" icon="link" href="/oss/python/integrations/tools/tilores" />
-
-  <Card title="MCP Toolbox" icon="link" href="/oss/python/integrations/tools/mcp_toolbox" />
-
-  <Card title="Unstructured Transform" icon="link" href="/oss/python/integrations/tools/unstructured_transform" />
-
-  <Card title="Upstage" icon="link" href="/oss/python/integrations/tools/upstage_groundedness_check" />
-
-  <Card title="Valthera" icon="link" href="/oss/python/integrations/tools/valthera" />
-
-  <Card title="ValyuContext" icon="link" href="/oss/python/integrations/tools/valyu_search" />
-
-  <Card title="Vectara" icon="link" href="/oss/python/integrations/tools/vectara" />
-
-  <Card title="WRITER Tools" icon="link" href="/oss/python/integrations/tools/writer" />
-
-  <Card title="You.com Search" icon="link" href="/oss/python/integrations/tools/you" />
-</Columns>
+<div>
+  | Integration                                                                                                      | Downloads                                                                                                                 |
+  | :--------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+  | [`Google imagen`](/oss/python/integrations/tools/google_imagen)                                                  | <span><a href="https://pypi.org/project/langchain-google-vertexai/">  <img alt="Downloads per month" /></a></span>        |
+  | [`BrowserToolkit`](/oss/python/integrations/tools/bedrock_agentcore_browser)                                     | <span><a href="https://pypi.org/project/langchain-aws/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`CodeInterpreterToolkit`](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter)                    | <span><a href="https://pypi.org/project/langchain-aws/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`Gmail toolkit`](/oss/python/integrations/tools/google_gmail)                                                   | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>       |
+  | [`Google calendar toolkit`](/oss/python/integrations/tools/google_calendar)                                      | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>       |
+  | [`Google cloud text-to-speech`](/oss/python/integrations/tools/google_cloud_texttospeech)                        | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>       |
+  | [`Google search`](/oss/python/integrations/tools/google_search)                                                  | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>       |
+  | [`Databricks unity catalog (Uc)`](/oss/python/integrations/tools/databricks)                                     | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Azure Logic Apps`](/oss/python/integrations/tools/azure_logic_apps)                                            | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Microsoft Foundry tools`](/oss/python/integrations/tools/azure_ai)                                             | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Microsoft Foundry Tools (formerly Azure AI Services) tools`](/oss/python/integrations/tools/azure_ai_services) | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Tavily crawl`](/oss/python/integrations/tools/tavily_crawl)                                                    | <span><a href="https://pypi.org/project/langchain-tavily/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Tavily extract`](/oss/python/integrations/tools/tavily_extract)                                                | <span><a href="https://pypi.org/project/langchain-tavily/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Tavily map`](/oss/python/integrations/tools/tavily_map)                                                        | <span><a href="https://pypi.org/project/langchain-tavily/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Tavily search`](/oss/python/integrations/tools/tavily_search)                                                  | <span><a href="https://pypi.org/project/langchain-tavily/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`WatsonxSQLDatabaseToolkit`](/oss/python/integrations/tools/ibm_watsonx_sql)                                    | <span><a href="https://pypi.org/project/langchain-ibm/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`WatsonxToolkit`](/oss/python/integrations/tools/ibm_watsonx)                                                   | <span><a href="https://pypi.org/project/langchain-ibm/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`Composio`](/oss/python/integrations/tools/composio)                                                            | <span><a href="https://pypi.org/project/composio-langchain/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Perplexity search`](/oss/python/integrations/tools/perplexity_search)                                          | <span><a href="https://pypi.org/project/langchain-perplexity/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Exa search`](/oss/python/integrations/tools/exa_search)                                                        | <span><a href="https://pypi.org/project/langchain-exa/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`Oracle AI vector search generate summary`](/oss/python/integrations/tools/oracleai)                            | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Azure container apps dynamic sessions`](/oss/python/integrations/tools/azure_dynamic_sessions)                 | <span><a href="https://pypi.org/project/langchain-azure-dynamic-sessions/">  <img alt="Downloads per month" /></a></span> |
+  | [`Upstage groundedness check`](/oss/python/integrations/tools/upstage_groundedness_check)                        | <span><a href="https://pypi.org/project/langchain-upstage/">  <img alt="Downloads per month" /></a></span>                |
+  | [`MemgraphToolkit`](https://github.com/memgraph/langchain-memgraph)                                              | <span><a href="https://pypi.org/project/langchain-memgraph/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ApifyActorsTool`](https://docs.apify.com/platform/integrations/langchain)                                      | <span><a href="https://pypi.org/project/langchain-apify/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`SmartScraperTool`](https://github.com/ScrapeGraphAI/langchain-scrapegraph)                                     | <span><a href="https://pypi.org/project/langchain-scrapegraph/">  <img alt="Downloads per month" /></a></span>            |
+  | [`Mcp toolbox for databases`](/oss/python/integrations/tools/mcp_toolbox)                                        | <span><a href="https://pypi.org/project/toolbox-langchain/">  <img alt="Downloads per month" /></a></span>                |
+  | [`AdeuToolkit`](https://adeu.ai)                                                                                 | <span><a href="https://pypi.org/project/langchain-adeu/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`Brightdataserp`](https://github.com/luminati-io/langchain-brightdata)                                          | <span><a href="https://pypi.org/project/langchain-brightdata/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Brightdataunlocker`](https://github.com/luminati-io/langchain-brightdata)                                      | <span><a href="https://pypi.org/project/langchain-brightdata/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Brightdatawebscraperapi`](https://github.com/luminati-io/langchain-brightdata)                                 | <span><a href="https://pypi.org/project/langchain-brightdata/">  <img alt="Downloads per month" /></a></span>             |
+  | [`StripeAgentToolkit`](/oss/python/integrations/tools/stripe)                                                    | <span><a href="https://pypi.org/project/stripe-agent-toolkit/">  <img alt="Downloads per month" /></a></span>             |
+  | [`e2a`](https://e2a.dev)                                                                                         | <span><a href="https://pypi.org/project/e2a/">  <img alt="Downloads per month" /></a></span>                              |
+  | [`LinkupSearchTool`](https://github.com/LinkupPlatform/langchain-linkup)                                         | <span><a href="https://pypi.org/project/langchain-linkup/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Cdp agentkit toolkit`](/oss/python/integrations/tools/cdp_agentkit)                                            | <span><a href="https://pypi.org/project/coinbase-agentkit-langchain/">  <img alt="Downloads per month" /></a></span>      |
+  | [`Compass defi toolkit`](https://pypi.org/project/langchain-compass/)                                            | <span><a href="https://pypi.org/project/langchain-compass/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Google drive`](/oss/python/integrations/tools/google_drive)                                                    | <span><a href="https://pypi.org/project/langchain-googledrive/">  <img alt="Downloads per month" /></a></span>            |
+  | [`GraphTool`](https://dev.writer.com/home/introduction)                                                          | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Manifest`](https://omfang.io/manifest-docs)                                                                    | <span><a href="https://pypi.org/project/manifest-api/">  <img alt="Downloads per month" /></a></span>                     |
+  | [`Parallel extract`](/oss/python/integrations/tools/parallel_extract)                                            | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Parallel FindAll`](/oss/python/integrations/tools/parallel_findall)                                            | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Parallel Monitor`](/oss/python/integrations/tools/parallel_monitor)                                            | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Parallel search`](/oss/python/integrations/tools/parallel_search)                                              | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Parallel Task API`](/oss/python/integrations/tools/parallel_task)                                              | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span>               |
+  | [`DaytonaDataAnalysisTool`](https://github.com/daytonaio/daytona)                                                | <span><a href="https://pypi.org/project/langchain-daytona-data-analysis/">  <img alt="Downloads per month" /></a></span>  |
+  | [`Taiga`](https://github.com/Shikenso-Analytics/langchain-taiga)                                                 | <span><a href="https://pypi.org/project/langchain-taiga/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`NimbleExtractTool`](https://docs.nimbleway.com/nimble-sdk/web-tools/extract)                                   | <span><a href="https://pypi.org/project/langchain-nimble/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`NimbleSearchTool`](https://docs.nimbleway.com/nimble-sdk/web-tools/search)                                     | <span><a href="https://pypi.org/project/langchain-nimble/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce)                                            | <span><a href="https://pypi.org/project/langchain-salesforce/">  <img alt="Downloads per month" /></a></span>             |
+  | [`You.com search`](/oss/python/integrations/tools/you)                                                           | <span><a href="https://pypi.org/project/langchain-youdotcom/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Ads4gpts`](https://github.com/ADS4GPTs/ads4gpts)                                                               | <span><a href="https://pypi.org/project/ads4gpts-langchain/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Prolog`](https://langchain-prolog.readthedocs.io)                                                              | <span><a href="https://pypi.org/project/langchain-prolog/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Ampersend`](https://docs.ampersend.ai)                                                                         | <span><a href="https://pypi.org/project/langchain-ampersend/">  <img alt="Downloads per month" /></a></span>              |
+  | [`UnstructuredTransformToolkit`](/oss/python/integrations/tools/unstructured_transform)                          | <span><a href="https://pypi.org/project/langchain-unstructured-transform/">  <img alt="Downloads per month" /></a></span> |
+  | [`Robocorp toolkit`](https://github.com/robocorp/robocorp)                                                       | <span><a href="https://pypi.org/project/langchain-robocorp/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Hyperbrowser browser agent`](https://docs.hyperbrowser.ai/)                                                    | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Hyperbrowser web scraping`](https://docs.hyperbrowser.ai/)                                                     | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Anchor browser`](https://docs.anchorbrowser.io/)                                                               | <span><a href="https://pypi.org/project/langchain-anchorbrowser/">  <img alt="Downloads per month" /></a></span>          |
+  | [`AgentFetch`](https://www.agentfetch.dev)                                                                       | <span><a href="https://pypi.org/project/langchain-agentfetch/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Valyucontext`](https://docs.valyu.ai/)                                                                         | <span><a href="https://pypi.org/project/langchain-valyu/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay)                                         | <span><a href="https://pypi.org/project/langchain-aproxpay/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ScraperAPI`](https://docs.scraperapi.com/)                                                                     | <span><a href="https://pypi.org/project/langchain-scraperapi/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Dappier`](https://docs.dappier.com/)                                                                           | <span><a href="https://pypi.org/project/langchain-dappier/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Tableau`](/oss/python/integrations/tools/tableau)                                                              | <span><a href="https://pypi.org/project/langchain-tableau/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Naver search`](https://github.com/e7217/langchain-naver-community)                                             | <span><a href="https://pypi.org/project/langchain-naver-community/">  <img alt="Downloads per month" /></a></span>        |
+  | [`Fmp data`](https://github.com/MehdiZare/langchain-fmp-data)                                                    | <span><a href="https://pypi.org/project/langchain-fmp-data/">  <img alt="Downloads per month" /></a></span>               |
+  | [`cloro`](https://docs.cloro.dev)                                                                                | <span><a href="https://pypi.org/project/langchain-cloro/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Discord`](/oss/python/integrations/tools/discord)                                                              | <span><a href="https://pypi.org/project/langchain-discord/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Agentql`](https://docs.agentql.com/)                                                                           | <span><a href="https://pypi.org/project/langchain-agentql/">  <img alt="Downloads per month" /></a></span>                |
+  | [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb)                                       | <span><a href="https://pypi.org/project/langchain-spicedb/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Synmerco`](https://synmerco.com/docs)                                                                          | <span><a href="https://pypi.org/project/synmerco-langchain/">  <img alt="Downloads per month" /></a></span>               |
+  | [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs)                                                        | <span><a href="https://pypi.org/project/langchain-oxylabs/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Jenkins`](https://github.com/Amitgb14/langchain_jenkins)                                                       | <span><a href="https://pypi.org/project/langchain-jenkins/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Valthera`](https://github.com/valthera/langchain-valthera)                                                     | <span><a href="https://pypi.org/project/langchain-valthera/">  <img alt="Downloads per month" /></a></span>               |
+  | [`iFlow Search`](https://platform.iflow.cn/)                                                                     | <span><a href="https://pypi.org/project/iflow-search-langchain/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Stardog`](https://github.com/stardog-union/stardog-langchain)                                                  | <span><a href="https://pypi.org/project/langchain-stardog/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Permit`](https://github.com/permitio/langchain-permit)                                                         | <span><a href="https://pypi.org/project/langchain-permit/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Cosmergon`](https://cosmergon.com)                                                                             | <span><a href="https://pypi.org/project/langchain-cosmergon/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Privy`](/oss/python/integrations/tools/privy)                                                                  | <span><a href="https://pypi.org/project/langchain-privy/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`OpenGradientToolkit`](https://docs.opengradient.ai/)                                                           | <span><a href="https://pypi.org/project/langchain-opengradient/">  <img alt="Downloads per month" /></a></span>           |
+  | [`Vectara`](https://github.com/vectara/langchain-vectara)                                                        | <span><a href="https://pypi.org/project/langchain-vectara/">  <img alt="Downloads per month" /></a></span>                |
+  | [`AgentMail Toolkit`](https://docs.agentmail.to/)                                                                | <span><a href="https://pypi.org/project/langchain-agentmail/">  <img alt="Downloads per month" /></a></span>              |
+  | [`AgentPhone Toolkit`](https://docs.agentphone.to)                                                               | <span><a href="https://pypi.org/project/langchain-agentphone/">  <img alt="Downloads per month" /></a></span>             |
+  | [`NiaToolkit`](https://github.com/nozomio-labs/nia-langchain)                                                    | <span><a href="https://pypi.org/project/langchain-nia/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft)                                      | <span><a href="https://pypi.org/project/langchain-synapsoft/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Drasi`](https://github.com/drasi-project/langchain-drasi)                                                      | <span><a href="https://pypi.org/project/langchain-drasi/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Tilores`](https://github.com/tilotech/tilores-langchain)                                                       | <span><a href="https://pypi.org/project/tilores-langchain/">  <img alt="Downloads per month" /></a></span>                |
+  | [`UniRate`](https://unirateapi.com)                                                                              | <span><a href="https://pypi.org/project/langchain-unirate/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Bodo DataFrames`](https://docs.bodo.ai/)                                                                       | <span><a href="https://pypi.org/project/langchain-bodo/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`CambToolkit`](https://docs.camb.ai)                                                                            | <span><a href="https://pypi.org/project/langchain-camb/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                           | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                    | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                       | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Browserless`](https://browserless.io)                                                                          | <span>N/A</span>                                                                                                          |
+  | [`Search1APIToolkit`](https://github.com/superagents-lab/search1api-langchain)                                   | <span>N/A</span>                                                                                                          |
+</div>
 
 <Info>
   If you'd like to contribute an integration, see [Contributing integrations](/oss/python/contributing#add-a-new-integration).

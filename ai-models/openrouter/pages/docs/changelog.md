@@ -14,6 +14,24 @@ path: docs/changelog
 
 Entries on this page are generated automatically from [OpenAPI specification](/docs/api_reference/overview) diffs when releases ship. Breaking changes are reviewed by a human before publication — see [API Versioning](/docs/api_reference/versioning) for what counts as a breaking change and how deprecations are announced. Endpoint paths are shown relative to the API base URL (`https://openrouter.ai/api/v1`).
 
+<Update label="July 29, 2026" tags={["Benchmarks"]} rss="1 modified endpoint, 1 new schema, 2 modified schemas.">
+  ## Modified endpoints
+
+  * [`GET /benchmarks`](/docs/api/api-reference/benchmarks/list-benchmarks) — description updated; parameter `source` updated; response schema updated
+
+  ## New schemas
+
+  * `UnifiedBenchmarksORItem`
+    * Used by [`GET /benchmarks`](/docs/api/api-reference/benchmarks/list-benchmarks)
+
+  ## Modified schemas
+
+  * `UnifiedBenchmarksMeta` — enum property\_added
+    * Used by [`GET /benchmarks`](/docs/api/api-reference/benchmarks/list-benchmarks)
+  * `UnifiedBenchmarksResponse` — example modified; new union variant added
+    * Used by [`GET /benchmarks`](/docs/api/api-reference/benchmarks/list-benchmarks)
+</Update>
+
 <Update label="July 28, 2026" tags={["Breaking","Files","Responses","Schemas"]} rss="2 breaking changes, 5 modified endpoints, 22 modified schemas.">
   ## Breaking changes
 

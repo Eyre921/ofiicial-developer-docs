@@ -52,7 +52,7 @@ Add `RubricMiddleware` to the `middleware` list when you call `create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[
           RubricMiddleware(
               model="anthropic:claude-haiku-4-5",
@@ -261,7 +261,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[
           RubricMiddleware(
               model="anthropic:claude-haiku-4-5",
@@ -569,7 +569,7 @@ Rather than asking the grader to reason abstractly about correctness, the exampl
 
 
       rubric_middleware = RubricMiddleware(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           system_prompt="You are a code reviewer grading generated code against a rubric.",
           tools=[run_test_suite],
           max_iterations=5,
@@ -851,7 +851,7 @@ Rather than asking the grader to reason abstractly about correctness, the exampl
       from langgraph.checkpoint.memory import InMemorySaver
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           system_prompt=(
               "You are a careful Python engineer. Write correct, readable code. "
               "Follow the user's instructions exactly."

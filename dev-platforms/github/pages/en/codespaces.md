@@ -16,7 +16,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
-  <p>Learn about what GitHub Codespaces are.</p>
+  Learn about what GitHub Codespaces are.
 
 * [Understanding the codespace lifecycle](/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
 
@@ -36,7 +36,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Using source control in your codespace](/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace)
 
-  After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.
+  <p>After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.</p>
 
 * [Enabling or disabling GitHub Codespaces for your organization](/en/codespaces/managing-codespaces-for-your-organization/enabling-or-disabling-github-codespaces-for-your-organization)
 

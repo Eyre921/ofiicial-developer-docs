@@ -5476,7 +5476,7 @@ A meeting notes block is a metadata container that lives on the page as a child 
 
 ### Retrieving AI meeting notes content
 
-Meeting notes blocks are read-only. To access the generated content, fetch the page's children to find the meeting notes block, then follow the child block IDs to retrieve each section's content.
+Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media. To access generated content, fetch the page's children to find the meeting notes block, then follow the child block IDs to retrieve each section.
 
 **Step 1 — List the page's children** to find the meeting notes block:
 
@@ -18020,7 +18020,7 @@ Image blocks only support file types in the "image" section of the table.
 Meeting notes block objects represent [AI meeting notes](https://www.notion.com/help/ai-meeting-notes) in the Notion UI. The block surfaces metadata about a meeting — its title, lifecycle status, calendar event details, and recording window — along with pointers to child blocks that hold the generated summary, notes, and transcript content.
 
 <Note>
-  Meeting notes blocks are **read-only**. You cannot create or update them using the API. Use the child block IDs returned in the `children` field to fetch the full content of each section using the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
+  Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media. Use the child block IDs returned in the `children` field to fetch each section with the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
 </Note>
 
 Meeting notes block objects contain the following information within the `meeting_notes` (or `transcription` in older API versions) property:
@@ -19229,6 +19229,52 @@ Use this API to initiate the process of [uploading a file](/guides/data-apis/wor
 For a successful request, the response is a [File Upload](/reference/file-upload) object with a `status` of `"pending"`.
 
 The maximum allowed length of `filename` string is 900 bytes, including any file extension included in the file name or inferred based on the `content_type`. However, we recommend using shorter names for performance and easier file management and lookup using the [List file uploads](/reference/list-file-uploads) API.
+
+
+# Create a meeting note
+Source: https://developers.notion.com/reference/create-meeting-note
+
+post /v1/blocks/meeting_notes
+Creates AI meeting notes from an uploaded audio or video file.
+
+Creates a [meeting notes block](/reference/block#meeting-notes) and begins processing its source media. The response includes the ID of the created block. A full block response also includes its current processing status.
+
+Source types allow you to directly attach a file upload, or create a meeting note block from an existing audio or video file block:
+
+| Source                | Body parameters                                                                                                                                               | Behavior                                                  |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Completed file upload | Set `source.type` to `file_upload`, provide `source.file_upload_id`, set `parent.type` to `page_id`, and provide `parent.page_id`.                            | Creates the meeting notes block in the parent page.       |
+| Existing block        | Set `source.type` to `block` and provide `source.block_id` for an audio, video, or file block backed by a Notion-hosted audio or video upload. Omit `parent`. | Creates the meeting notes block next to the source block. |
+
+For a file upload source, upload the media and wait until the [file upload](/reference/file-upload) has a status of `uploaded` before calling this endpoint. See [Uploading small files](/guides/data-apis/uploading-small-files) for the complete upload flow.
+
+<Note>
+  For a `.m4a` audio file, use the `audio/mp4` content type. WebM audio is not supported.
+</Note>
+
+### Processing status
+
+Processing continues asynchronously after the endpoint returns. Use [Retrieve a block](/reference/retrieve-a-block) with the returned block ID and check `meeting_notes.status`. When summary generation is enabled, wait for `notes_ready` before retrieving the generated summary and notes from the IDs in `meeting_notes.children`.
+
+By default, Notion starts summary generation after transcription. Set `options.kickoff_summary` to `false` to transcribe the media without generating a summary.
+
+If you provide a `title` and enable summary generation, treat the title as provisional. Notion may replace it when processing completes.
+
+<Warning>
+  This endpoint is not idempotent. Retrying a request may create duplicate meeting notes blocks.
+</Warning>
+
+### Requirements
+
+The integration must have the **Insert content** capability. **Read content** is also required to use an existing block as the source or receive the full meeting notes block in the response. Without **Read content**, a request using a file upload source returns only the created block's `object` and `id`.
+
+The user associated with the integration must also have access to AI meeting notes. See the [capabilities guide](/reference/capabilities) and [Notion pricing](https://www.notion.com/pricing).
+
+### Errors
+
+Returns a 400 HTTP response if AI meeting notes are not available to the integration's user or if the request contains an invalid source, parent, or processing option.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) for more information.
 
 
 # Create a view

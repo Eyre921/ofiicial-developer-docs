@@ -158,7 +158,7 @@ Through metadata, you can associate information that’s meaningful to you with 
 
 Any metadata you include is viewable in the Dashboard (for example, when looking at the page for an individual payment), and is also available in common reports. As an example, you can attach the order ID for your store to the PaymentIntent for that order. Doing so allows you to easily reconcile payments in Stripe to orders in your system.
 
-If you’re using *Radar for Fraud Teams* (Radar for Fraud Teams helps you fine-tune how Radar operates, get fraud insights on suspicious charges, and assess your fraud management performance from a unified dashboard), consider passing additional customer information and order information as metadata. Then you can write [Radar rules using metadata attributes](https://docs.stripe.com/radar/rules/reference.md#metadata-attributes) and have more information available within the Dashboard, which can expedite your review process.
+If you’re using *Radar Plus* (Radar Plus helps you fine-tune how Radar operates, get fraud insights on suspicious charges, and assess your fraud management performance from a unified dashboard), consider passing additional customer information and order information as metadata. Then you can write [Radar rules using metadata attributes](https://docs.stripe.com/radar/rules/reference.md#metadata-attributes) and have more information available within the Dashboard, which can expedite your review process.
 
 When a PaymentIntent creates a charge, the PaymentIntent copies its metadata to the charge. Subsequent updates to the PaymentIntent’s metadata won’t modify the metadata of charges previously created by the PaymentIntent.
 

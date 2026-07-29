@@ -15,7 +15,7 @@ Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built
 
 
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [search, fetchUrl, runQuery],
   });
   ```
@@ -129,7 +129,7 @@ Deep Agents infers the tool schema from the function signature and docstring, so
   );
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [internetSearch],
   });
   ```
@@ -449,7 +449,7 @@ npm install @langchain/mcp-adapters
   const tools = await client.getTools();
 
   const agent = await createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools,
   });
 

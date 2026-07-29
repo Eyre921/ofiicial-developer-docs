@@ -13,7 +13,7 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
   from deepagents import create_deep_agent
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       system_prompt="You are a helpful assistant.",
       tools=[search, fetch_url],
       memory=["./AGENTS.md"],
@@ -117,7 +117,7 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
       model: str | BaseChatModel | None = None,
       tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
       *,
-      system_prompt: str | SystemMessage | SystemPromptConfig | None = None,
+      system_prompt: str | SystemMessage | None = None,
       middleware: Sequence[AgentMiddleware] = (),
       subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,
       skills: list[str] | None = None,
@@ -309,7 +309,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      agent = create_deep_agent(model="google_genai:gemini-3.5-flash")
+      agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
       # this calls init_chat_model for the specified model with default parameters
       # to use specific model parameters, use init_chat_model directly
       ```
@@ -321,7 +321,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = init_chat_model(model="google_genai:gemini-3.5-flash")
+      model = init_chat_model(model="google_genai:gemini-3.6-flash")
       agent = create_deep_agent(model=model)
       ```
 
@@ -332,7 +332,7 @@ Pass a `model` string in `provider:model` format, or an initialized model instan
 
       os.environ["GOOGLE_API_KEY"] = "..."
 
-      model = ChatGoogleGenerativeAI(model="gemini-3.5-flash")
+      model = ChatGoogleGenerativeAI(model="gemini-3.6-flash")
       agent = create_deep_agent(model=model)
       ```
     </CodeGroup>
@@ -508,7 +508,7 @@ In addition to [built-in tools](/oss/python/deepagents/overview#execution-enviro
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[internet_search],
   )
   ```
@@ -725,7 +725,7 @@ pip install langchain-mcp-adapters
           tools = await client.get_tools()
 
           agent = create_deep_agent(
-              model="google_genai:gemini-3.5-flash",
+              model="google_genai:gemini-3.6-flash",
               tools=tools,
           )
 
@@ -929,7 +929,7 @@ For detailed configuration options including stdio servers, OAuth authentication
 
 ## System prompt
 
-Deep Agents ship with a built-in base system prompt that teaches the agent how to use the harness scaffolding (planning, filesystem tools, subagents). Pass `system_prompt=` to prepend your own instructions before that base prompt:
+Pass `system_prompt=` to give the agent your own instructions:
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -941,7 +941,7 @@ Deep Agents ship with a built-in base system prompt that teaches the agent how t
   """
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       system_prompt=research_instructions,
   )
   ```
@@ -1032,35 +1032,8 @@ Deep Agents ship with a built-in base system prompt that teaches the agent how t
 </CodeGroup>
 
 <Note>
-  Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) with structured [content blocks](/oss/python/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks and append the built-in base prompt ([subagent](/oss/python/deepagents/subagents) dictionary specs remain strings).
+  Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) with structured [content blocks](/oss/python/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/python/deepagents/subagents) dictionary specs remain strings).
 </Note>
-
-When middleware adds special tools, like the filesystem tools, it appends its own guidance to the system prompt at runtime.
-
-<Note>
-  `SystemPromptConfig` requires `deepagents>=0.7.0a6`.
-</Note>
-
-For full control over prompt assembly, pass a [`SystemPromptConfig`](https://reference.langchain.com/python/deepagents/graph/SystemPromptConfig) dict with `prefix`, `base`, and `suffix` keys:
-
-* **`prefix`**: text placed before the base prompt (same as passing a bare string).
-* **`base`**: replaces the built-in base prompt. Omit the key to keep the built-in base, or set it to `None` to drop the base entirely.
-* **`suffix`**: text placed after the base prompt.
-
-Parts are assembled in order: `prefix` -> `base` -> `suffix` -> any model-specific [profile](/oss/python/deepagents/profiles) suffix. Each part accepts a `str` or a `SystemMessage` (to preserve `cache_control` markers for Anthropic prompt caching).
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Overwrite the default base prompt:
-create_deep_agent(..., system_prompt={"base": "..."})
-
-# No system prompt except from middleware:
-create_deep_agent(..., system_prompt={"base": None})
-
-# Sandwich the default base prompt:
-create_deep_agent(..., system_prompt={"prefix": "...", "suffix": "..."})
-```
-
-For model-specific system prompt customization, such as replacing the base prompt or appending a suffix for a particular provider, use a [harness profile](/oss/python/deepagents/profiles#harness-profiles).
 
 <AccordionGroup>
   <Accordion title="Subagent prompts">
@@ -1155,7 +1128,7 @@ The `deepagents` library also exposes [`create_summarization_tool_middleware`](h
 
 ### Provider-specific middleware
 
-For provider-specific middleware that is optimized for specific LLM providers, see [Official integrations](/oss/python/integrations/middleware#official-integrations) and [Community integrations](/oss/python/integrations/middleware#community-integrations).
+For provider-specific middleware that is optimized for specific LLM providers, see [Middleware integrations](/oss/python/integrations/middleware).
 
 ### Custom middleware
 
@@ -1196,7 +1169,7 @@ You can provide additional middleware to extend functionality, add tools, or imp
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[get_weather],
       middleware=[log_tool_calls],
   )
@@ -1563,8 +1536,12 @@ Declarative subagents defined via `subagents=` do not inherit the main agent's m
     ```
   </Accordion>
 
-  <Accordion title="Customize the filesystem instructions in the system prompt" icon="file-text">
-    Override [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) with a `system_prompt` to replace the filesystem-specific instructions it appends to the system prompt in place of the dynamically generated default.
+  <Accordion title="Restrict the enabled filesystem tools" icon="filter">
+    <Note>
+      The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7.0a4`.
+    </Note>
+
+    Override [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) with a `tools` allowlist to expose only a subset of the filesystem tools to the model, instead of the full default set.
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents import create_deep_agent
@@ -1573,53 +1550,17 @@ Declarative subagents defined via `subagents=` do not inherit the main agent's m
 
     backend = StateBackend()
 
+    # Read-only agent: write_file, edit_file, delete, and execute are never shown
     agent = create_deep_agent(
         model="anthropic:claude-sonnet-4-6",
         backend=backend,
         middleware=[
-            FilesystemMiddleware(
-                backend=backend,
-                system_prompt="Use the virtual filesystem to track long-running work. Write intermediate results to files instead of repeating them in messages.",
-            ),
+            FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
         ],
     )
     ```
 
-    As with any [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) override, pass the same `backend` (and `permissions`, if applicable) used elsewhere, since the override is not merged with the default.
-  </Accordion>
-
-  <Accordion title="Customize the task tool description" icon="message">
-    Override [`SubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware) with a `task_description` to replace the `task` tool's description, for example to steer the model on when to delegate. The override replaces the default stack outright, so redeclare the same `backend` and `subagents` passed to `create_deep_agent`. The auto-added [general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent) is not included unless you add an equivalent entry yourself.
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import StateBackend
-    from deepagents.middleware import SubAgentMiddleware
-
-    backend = StateBackend()
-    model = "anthropic:claude-sonnet-4-6"
-    researcher = {
-        "name": "researcher",
-        "description": "Researches a topic and returns findings.",
-        "system_prompt": "You are a researcher.",
-        "model": model,
-        "tools": [search],
-    }
-
-    agent = create_deep_agent(
-        model=model,
-        subagents=[researcher],
-        middleware=[
-            SubAgentMiddleware(
-                backend=backend,
-                subagents=[researcher],
-                task_description="Delegate research to the `researcher` subagent only for multi-step lookups.",
-            ),
-        ],
-    )
-    ```
-
-    `task_description` also supports an `available_agents` template placeholder that is filled in with the subagent name and description list; see the [`SubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware) reference for details. For a narrower change that only rewords the `task` tool description without replacing the subagent stack, use a [harness profile](/oss/python/deepagents/profiles#harness-profiles)'s `tool_description_overrides` instead; see [Profiles](#profiles).
+    See [Restricting filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) for more details.
   </Accordion>
 </AccordionGroup>
 
@@ -1633,7 +1574,7 @@ Use [interpreters](/oss/python/deepagents/interpreters) to add an `eval` tool th
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[CodeInterpreterMiddleware()],
   )
   ```
@@ -1740,7 +1681,7 @@ research_subagent = {
 subagents = [research_subagent]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     subagents=subagents,
 )
 ```
@@ -1765,7 +1706,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import StateBackend
 
       # By default we provide a StateBackend
-      agent = create_deep_agent(model="google_genai:gemini-3.5-flash")
+      agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
@@ -1875,7 +1816,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import FilesystemBackend
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=FilesystemBackend(root_dir=".", virtual_mode=True),
       )
       ```
@@ -1961,7 +1902,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import LocalShellBackend
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
       )
       ```
@@ -2038,7 +1979,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from langgraph.store.memory import InMemoryStore
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=StoreBackend(
               namespace=lambda rt: (rt.server_info.user.identity,),
           ),
@@ -2149,7 +2090,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import ContextHubBackend
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=ContextHubBackend("my-agent"),
       )
       ```
@@ -2228,7 +2169,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from langgraph.store.memory import InMemoryStore
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=CompositeBackend(
               default=StateBackend(),
               routes={
@@ -2647,7 +2588,7 @@ You can configure the approval for each tool:
   checkpointer = MemorySaver()
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[remove_file, fetch_file, notify_email],
       interrupt_on={
           "remove_file": True,  # Default: approve, edit, reject, respond
@@ -2929,7 +2870,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
       }
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=backend,
           skills=["/skills/"],
           checkpointer=checkpointer,
@@ -3179,7 +3120,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
     )
 
     agent = create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
+        model="google_genai:gemini-3.6-flash",
         backend=backend,
         store=store,
         skills=["/skills/"],
@@ -3204,7 +3145,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
     backend = FilesystemBackend(root_dir=root_dir)
 
     agent = create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
+        model="google_genai:gemini-3.6-flash",
         backend=backend,
         skills=[str(Path(root_dir) / "skills")],
         interrupt_on={
@@ -3246,7 +3187,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       checkpointer = MemorySaver()
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           memory=[
               "/AGENTS.md"
           ],
@@ -3511,7 +3452,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       )
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
           store=store,
           memory=["/AGENTS.md"],
@@ -3802,7 +3743,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       checkpointer = MemorySaver()
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=FilesystemBackend(root_dir="/Users/user/{project}"),
           memory=[
               "./AGENTS.md"

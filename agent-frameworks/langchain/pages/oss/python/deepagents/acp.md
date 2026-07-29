@@ -44,7 +44,7 @@ This starts an ACP server in stdio mode (it reads requests from stdin and writes
 
   async def main() -> None:
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           # You can customize your deep agent here: set a custom prompt,
           # add your own tools, attach middleware, or compose subagents.
           system_prompt="You are a helpful coding assistant",

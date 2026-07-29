@@ -531,7 +531,7 @@ const researchSubagent = {
 };
 
 const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google_genai:gemini-3.6-flash",
   skills: ["/skills/main/"], // Main agent and GP subagent get these
   subagents: [researchSubagent], // Researcher gets only its own skills
 });
@@ -582,7 +582,7 @@ To share skills without letting agents modify them, route `/skills/` to a shared
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     backend: new CompositeBackend(new StateBackend(), {
       "/skills/": new StoreBackend({
         namespace: (rt) => ["curated-skills", rt.context.orgId],
@@ -1016,7 +1016,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
 
     try {
       const agent = await createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         backend,
         skills: ["/skills/"],
         store,

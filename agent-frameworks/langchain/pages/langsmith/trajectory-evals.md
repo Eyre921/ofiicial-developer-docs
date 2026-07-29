@@ -19,7 +19,7 @@ AgentEvals allows you to evaluate the trajectory of your agent (the exact sequen
 </Card>
 
 <Card title="LLM-as-judge" icon="hammer" href="#llm-as-judge-evaluator">
-  Use a LLM to qualitatively validate your agent's execution trajectory. The "judge" LLM reviews the agent's decisions against a prompt rubric (which can include a reference trajectory).
+  Use an LLM to qualitatively validate your agent's execution trajectory. The "judge" LLM reviews the agent's decisions against a prompt rubric (which can include a reference trajectory).
 
   More flexible and can assess nuanced aspects like efficiency and appropriateness, but requires an LLM call and is less deterministic. Use when you want to evaluate the overall quality and reasonableness of the agent's trajectory without strict tool call or ordering requirements.
 </Card>

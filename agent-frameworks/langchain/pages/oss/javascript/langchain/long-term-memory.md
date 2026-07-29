@@ -26,7 +26,7 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       const store = new InMemoryStore();
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [],
         store,
       });
@@ -135,7 +135,7 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       await store.setup();
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [],
         store,
       });
@@ -380,7 +380,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [getUserInfo],
         contextSchema,
         // Pass store to agent - enables agent to access store when running tools
@@ -824,7 +824,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [getUserInfo],
         contextSchema,
         store,
@@ -1155,7 +1155,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -1548,7 +1548,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [saveUserInfo],
         contextSchema,
         store,

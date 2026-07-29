@@ -24,9 +24,12 @@ Middleware enables context engineering, harness customization, and runtime safet
 
 ## Official integrations
 
-| Provider                                                       | Middleware available |
-| -------------------------------------------------------------- | -------------------- |
-| [Anthropic](/oss/javascript/integrations/middleware/anthropic) | Prompt caching       |
+<div>
+  | Provider                                                         | Middleware available | Source                                                                                                                                      | Downloads                                                                                                   |
+  | :--------------------------------------------------------------- | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------- |
+  | [`AWS middleware`](/oss/javascript/integrations/middleware/aws)  | Prompt caching       | [`langchain-ai/langchain-aws`](https://github.com/langchain-ai/langchain-aws)                                                               | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span> |
+  | [`Anthropic`](/oss/javascript/integrations/middleware/anthropic) | Prompt caching       | [`langchain-ai/langchainjs`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain/src/agents/middleware/provider/anthropic) | <span>N/A</span>                                                                                            |
+</div>
 
 ## Community integrations
 

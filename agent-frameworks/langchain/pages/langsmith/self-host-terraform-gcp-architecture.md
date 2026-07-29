@@ -120,7 +120,7 @@ GCS Bucket (Workload Identity, no static keys)
 </Warning>
 
 <Note>
-  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for Self-hosted starting with self-hosted version 0.16.0 (see [deployment support](/langsmith/smithdb-sdk-migration#deployment-support)). These Terraform modules provision ClickHouse, so the guidance in the previous sections applies to current deployments.
+  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for Self-hosted starting with self-hosted version 0.16.0 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). These Terraform modules provision ClickHouse, so the guidance in the previous sections applies to current deployments.
 </Note>
 
 ### One-time jobs

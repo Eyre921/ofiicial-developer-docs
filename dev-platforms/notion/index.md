@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 197 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 198 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -98,6 +98,7 @@
 - `reference/create-a-token` — [Create a token](pages/reference/create-a-token.md) · [原文](https://developers.notion.com/reference/create-a-token)
 - `reference/create-database` — [Create a database](pages/reference/create-database.md) · [原文](https://developers.notion.com/reference/create-database)
 - `reference/create-file` — [Create a file upload](pages/reference/create-file.md) · [原文](https://developers.notion.com/reference/create-file)
+- `reference/create-meeting-note` — [Create a meeting note](pages/reference/create-meeting-note.md) · [原文](https://developers.notion.com/reference/create-meeting-note)
 - `reference/create-view` — [Create a view](pages/reference/create-view.md) · [原文](https://developers.notion.com/reference/create-view)
 - `reference/create-view-query` — [Create a view query](pages/reference/create-view-query.md) · [原文](https://developers.notion.com/reference/create-view-query)
 - `reference/data-source` — [Data source](pages/reference/data-source.md) · [原文](https://developers.notion.com/reference/data-source)

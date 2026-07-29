@@ -25,7 +25,7 @@ LangSmith supports two ways to grade experiments created via the SDK:
 
 ## LLM-as-a-judge evaluators
 
-The process for binding evaluators to a dataset is very similar to the process for configuring a LLM-as-a-judge evaluator in the Playground. View instructions for [configuring an LLM-as-a-judge evaluator in the Playground.](/langsmith/llm-as-judge?mode=ui)
+The process for binding evaluators to a dataset is very similar to the process for configuring an LLM-as-a-judge evaluator in the Playground. View instructions for [configuring an LLM-as-a-judge evaluator in the Playground.](/langsmith/llm-as-judge?mode=ui)
 
 ## Custom code evaluators
 

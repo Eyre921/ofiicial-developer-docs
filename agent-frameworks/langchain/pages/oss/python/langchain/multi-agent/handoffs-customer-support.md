@@ -782,7 +782,7 @@ Here's everything together in a runnable script:
   from langchain.messages import HumanMessage, ToolMessage
   from langchain.tools import tool, ToolRuntime
 
-  model = init_chat_model("google_genai:gemini-3.5-flash")
+  model = init_chat_model("google_genai:gemini-3.6-flash")
 
 
   # Define the possible workflow steps

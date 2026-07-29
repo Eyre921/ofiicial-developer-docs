@@ -182,7 +182,7 @@ Update your agent from step 2 by adding [`SummarizationMiddleware`](https://refe
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents.middleware import FilesystemMiddleware, SummarizationMiddleware
 
-  model="google_genai:gemini-3.5-flash"
+  model="google_genai:gemini-3.6-flash"
 
   agent = create_agent(
       model=model,

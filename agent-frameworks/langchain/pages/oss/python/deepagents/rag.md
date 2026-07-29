@@ -49,7 +49,7 @@ Pass that question to a [Deep Agent](/oss/python/deepagents/overview) with no cu
   EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
 
   baseline_agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[],
       system_prompt=(
           "You are a helpful LangChain documentation assistant. "
@@ -1014,7 +1014,7 @@ Add this code to `agent.py`:
           "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
       }
 
-      model = init_chat_model(model="google_genai:gemini-3.5-flash")
+      model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
       agent = create_deep_agent(
           model=model,
@@ -1352,7 +1352,7 @@ Save as `agent.py` and run with `python agent.py`:
   all_splits = text_splitter.split_documents(docs)
   print(f"Split documentation into {len(all_splits)} chunks.")
 
-  embeddings = OpenAIEmbeddings(model="google_genai:gemini-3.5-flash")
+  embeddings = OpenAIEmbeddings(model="google_genai:gemini-3.6-flash")
   vector_store = InMemoryVectorStore(embedding=embeddings)
   vector_store.add_documents(documents=all_splits)
   print(f"Indexed {len(all_splits)} chunks.")
@@ -1454,7 +1454,7 @@ Save as `agent.py` and run with `python agent.py`:
       "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
   }
 
-  model = init_chat_model(model="google_genai:gemini-3.5-flash")
+  model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
   agent = create_deep_agent(
       model=model,
@@ -1637,7 +1637,7 @@ Save as `agent.py` and run with `python agent.py`:
       "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
   }
 
-  model = init_chat_model(model="google_genai:gemini-3.5-flash")
+  model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
   agent = create_deep_agent(
       model=model,
@@ -1820,7 +1820,7 @@ Save as `agent.py` and run with `python agent.py`:
       "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
   }
 
-  model = init_chat_model(model="google_genai:gemini-3.5-flash")
+  model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
   agent = create_deep_agent(
       model=model,
@@ -2003,7 +2003,7 @@ Save as `agent.py` and run with `python agent.py`:
       "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
   }
 
-  model = init_chat_model(model="google_genai:gemini-3.5-flash")
+  model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
   agent = create_deep_agent(
       model=model,
@@ -2186,7 +2186,7 @@ Save as `agent.py` and run with `python agent.py`:
       "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
   }
 
-  model = init_chat_model(model="google_genai:gemini-3.5-flash")
+  model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
   agent = create_deep_agent(
       model=model,
@@ -2369,7 +2369,7 @@ Save as `agent.py` and run with `python agent.py`:
       "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
   }
 
-  model = init_chat_model(model="google_genai:gemini-3.5-flash")
+  model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
   agent = create_deep_agent(
       model=model,
@@ -2552,7 +2552,7 @@ Save as `agent.py` and run with `python agent.py`:
       "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
   }
 
-  model = init_chat_model(model="google_genai:gemini-3.5-flash")
+  model = init_chat_model(model="google_genai:gemini-3.6-flash")
 
   agent = create_deep_agent(
       model=model,

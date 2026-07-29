@@ -199,9 +199,11 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [HTTP tools](#http-tools-docs-voice-agents-voice-agent-api-tools-http-tools-mdx)
 - [Client-side tools](#client-side-tools-docs-voice-agents-voice-agent-api-tools-client-side-tools-mdx)
 - [Voices](#voices-docs-voice-agents-voice-agent-api-voices-mdx)
-- [Volume](#volume-docs-voice-agents-voice-agent-api-volume-mdx)
+- [Output volume](#output-volume-docs-voice-agents-voice-agent-api-volume-mdx)
 - [Turn detection and interruptions](#turn-detection-and-interruptions-docs-voice-agents-voice-agent-api-turn-detection-and-interruptions-mdx)
-- [Key terms](#key-terms-docs-voice-agents-voice-agent-api-keyterms-mdx)
+- [Add transcription context](#add-transcription-context-docs-voice-agents-voice-agent-api-transcription-prompt-mdx)
+- [Steer toward known languages](#steer-toward-known-languages-docs-voice-agents-voice-agent-api-language-selection-mdx)
+- [Isolate the caller's voice](#isolate-the-caller-s-voice-docs-voice-agents-voice-agent-api-noise-suppression-mdx)
 - [Deploy your agent](#deploy-your-agent-docs-voice-agents-voice-agent-api-deploy-mdx)
 - [Browser integration](#browser-integration-docs-voice-agents-voice-agent-api-browser-integration-mdx)
 - [Connect to Twilio](#connect-to-twilio-docs-voice-agents-voice-agent-api-connect-to-twilio-mdx)
@@ -52683,7 +52685,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
     "name": "Quickstart Assistant",
     "system_prompt": "You are a friendly assistant having a casual voice conversation. Keep replies short and natural.",
     "greeting": "Hey there, what can I help with?",
-    "voice": { "voice_id": "ivy" }
+    "voice": { "voice_id": "alba" }
   }'
 ```
 
@@ -52699,7 +52701,7 @@ resp = requests.post(
         "name": "Quickstart Assistant",
         "system_prompt": "You are a friendly assistant having a casual voice conversation. Keep replies short and natural.",
         "greeting": "Hey there, what can I help with?",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
     },
 )
 resp.raise_for_status()
@@ -52718,7 +52720,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
     name: "Quickstart Assistant",
     system_prompt: "You are a friendly assistant having a casual voice conversation. Keep replies short and natural.",
     greeting: "Hey there, what can I help with?",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
   }),
 });
 const data = await res.json();
@@ -53344,7 +53346,7 @@ The Voice Agent API officially supports the following output languages, each bac
 | Portuguese | 🇵🇹 | `rafael`                                                                                              |
 | French     | 🇫🇷 | `estelle`                                                                                             |
 
-See the [Voices](/voice-agents/voice-agent-api/voices) page for voice descriptions and audio samples. Legacy voices such as `ivy`, `james`, `pierre`, `giulia`, `lucia`, `arjun`, and `dmitri` are [deprecated](/voice-agents/voice-agent-api/voices#deprecated-voices) and will be removed in a future release.
+See the [Voices](/voice-agents/voice-agent-api/voices) page for voice descriptions. Legacy voices such as `ivy`, `james`, `pierre`, `giulia`, `lucia`, `arjun`, and `dmitri` are [deprecated](/voice-agents/voice-agent-api/voices#deprecated-voices) and will be removed in a future release.
 
 ### Coming soon
 
@@ -53392,7 +53394,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep responses under two sentences.",
     "greeting": "Hi, how can I help?",
-    "voice": { "voice_id": "ivy" }
+    "voice": { "voice_id": "alba" }
   }'
 ```
 
@@ -53408,7 +53410,7 @@ resp = requests.post(
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep responses under two sentences.",
         "greeting": "Hi, how can I help?",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
     },
 )
 resp.raise_for_status()
@@ -53427,7 +53429,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep responses under two sentences.",
     greeting: "Hi, how can I help?",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
   }),
 });
 const data = await res.json();
@@ -53454,14 +53456,14 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
     "greeting": "Hi, how can I help?",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "input": {
       "format": { "encoding": "audio/pcm", "sample_rate": 24000 },
       "keyterms": ["AssemblyAI", "Universal-3"],
       "turn_detection": { "vad_threshold": 0.5, "min_silence": 1000, "max_silence": 3000, "interrupt_response": true }
     },
     "output": {
-      "voice": "ivy",
+      "voice": "alba",
       "format": { "encoding": "audio/pcm", "sample_rate": 24000 },
       "volume": 100
     },
@@ -53495,7 +53497,7 @@ resp = requests.post(
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
         "greeting": "Hi, how can I help?",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "input": {
             "format": {"encoding": "audio/pcm", "sample_rate": 24000},
             "keyterms": ["AssemblyAI", "Universal-3"],
@@ -53505,7 +53507,7 @@ resp = requests.post(
             },
         },
         "output": {
-            "voice": "ivy",
+            "voice": "alba",
             "format": {"encoding": "audio/pcm", "sample_rate": 24000},
             "volume": 100,
         },
@@ -53549,7 +53551,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
     greeting: "Hi, how can I help?",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     input: {
       format: { encoding: "audio/pcm", sample_rate: 24000 },
       keyterms: ["AssemblyAI", "Universal-3"],
@@ -53559,7 +53561,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
       },
     },
     output: {
-      voice: "ivy",
+      voice: "alba",
       format: { encoding: "audio/pcm", sample_rate: 24000 },
       volume: 100,
     },
@@ -53595,7 +53597,7 @@ Defaults if omitted: `input`/`output` use PCM at 24 kHz, `tools` and `llm` are e
 - `greeting` — [Greeting](/voice-agents/voice-agent-api/greeting)
 - `input`/`output.format` — [Audio encoding](/voice-agents/voice-agent-api/encoding)
 - `input.turn_detection` — [Turn detection](/voice-agents/voice-agent-api/turn-detection-and-interruptions)
-- `input.keyterms` — [Keyterms](/voice-agents/voice-agent-api/keyterms)
+- `input.keyterms` — [Keyterms](/voice-agents/voice-agent-api/transcription-prompt#key-terms)
 - `tools` — [Tools](/voice-agents/voice-agent-api/tools/overview)
 - `llm` — [Connect your own LLM](/voice-agents/voice-agent-api/connect-your-own-llm)
 
@@ -53672,7 +53674,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent.",
     "greeting": "Hi, how can I help?",
-    "voice": { "voice_id": "ivy" }
+    "voice": { "voice_id": "alba" }
   }'
 ```
 
@@ -53688,7 +53690,7 @@ resp = requests.post(
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent.",
         "greeting": "Hi, how can I help?",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
     },
 )
 resp.raise_for_status()
@@ -53707,7 +53709,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent.",
     greeting: "Hi, how can I help?",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
   }),
 });
 const data = await res.json();
@@ -53916,9 +53918,9 @@ The full record returned by create, get, and update:
       "execution_mode": "interactive"
     }
   ],
-  "voice": { "voice_id": "ivy" },
+  "voice": { "voice_id": "alba" },
   "input":  { "type": "audio", "format": { "encoding": "audio/pcm", "sample_rate": 24000 }, "keyterms": null, "turn_detection": null },
-  "output": { "type": "audio", "voice": "ivy", "format": { "encoding": "audio/pcm", "sample_rate": 24000 }, "volume": null },
+  "output": { "type": "audio", "voice": "alba", "format": { "encoding": "audio/pcm", "sample_rate": 24000 }, "volume": null },
   "created_at": "2026-06-08T12:04:27.607110Z",
   "updated_at": "2026-06-08T12:04:27.607113Z"
 }
@@ -53973,7 +53975,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "llm": [
       {
         "base_url": "https://api.openai.com/v1",
@@ -53995,7 +53997,7 @@ resp = requests.post(
     json={
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "llm": [
             {
                 "base_url": "https://api.openai.com/v1",
@@ -54020,7 +54022,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     llm: [
       {
         base_url: "https://api.openai.com/v1",
@@ -54104,7 +54106,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Gateway Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "llm": [
       {
         "base_url": "https://llm-gateway.assemblyai.com/v1",
@@ -54126,7 +54128,7 @@ resp = requests.post(
     json={
         "name": "Gateway Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "llm": [
             {
                 "base_url": "https://llm-gateway.assemblyai.com/v1",
@@ -54151,7 +54153,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Gateway Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     llm: [
       {
         base_url: "https://llm-gateway.assemblyai.com/v1",
@@ -54359,8 +54361,8 @@ TTS engines read formatting characters literally. Formatting that works in chat 
 Give a concrete example of the failure mode so it understands the constraint.
 
 ```text
-No markdown formatting. If you write **ivy**, the user hears
-"asterisk asterisk ivy asterisk asterisk". No bullets, no bold,
+No markdown formatting. If you write **alba**, the user hears
+"asterisk asterisk alba asterisk asterisk". No bullets, no bold,
 no headers. Plain conversational sentences only.
 ```
 
@@ -54453,7 +54455,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "greeting": "Hey, this is Riley from Acme support. What'\''s going on?"
   }'
 ```
@@ -54469,7 +54471,7 @@ resp = requests.post(
     json={
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "greeting": "Hey, this is Riley from Acme support. What's going on?",
     },
 )
@@ -54488,7 +54490,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     greeting: "Hey, this is Riley from Acme support. What's going on?",
   }),
 });
@@ -54663,7 +54665,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Callback Assistant",
     "system_prompt": "You schedule callbacks. Collect the phone number and preferred time of day, then call schedule_callback.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "tools": [
       {
         "name": "schedule_callback",
@@ -54702,7 +54704,7 @@ resp = requests.post(
     json={
         "name": "Callback Assistant",
         "system_prompt": "You schedule callbacks. Collect the phone number and preferred time of day, then call schedule_callback.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "tools": [
             {
                 "name": "schedule_callback",
@@ -54744,7 +54746,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Callback Assistant",
     system_prompt: "You schedule callbacks. Collect the phone number and preferred time of day, then call schedule_callback.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     tools: [
       {
         name: "schedule_callback",
@@ -55073,7 +55075,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Weather Assistant",
     "system_prompt": "You are a friendly assistant. When asked about weather, call get_weather and read back the result.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "tools": [
       {
         "name": "get_weather",
@@ -55111,7 +55113,7 @@ resp = requests.post(
     json={
         "name": "Weather Assistant",
         "system_prompt": "You are a friendly assistant. When asked about weather, call get_weather and read back the result.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "tools": [
             {
                 "name": "get_weather",
@@ -55152,7 +55154,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Weather Assistant",
     system_prompt: "You are a friendly assistant. When asked about weather, call get_weather and read back the result.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     tools: [
       {
         name: "get_weather",
@@ -55257,7 +55259,7 @@ async def main():
                 "system_prompt": "You are a weather assistant. Call get_weather for weather questions. When in doubt, call the tool.",
                 "greeting": "Hi! Ask me about the weather.",
                 "tools": TOOLS,
-                "output": {"type": "audio", "voice": "ivy"},
+                "output": {"type": "audio", "voice": "alba"},
             },
         }))
 
@@ -55566,9 +55568,9 @@ These voices have a native accent in a specific non-English language and code-sw
 
 ---
 
-<a id="volume-docs-voice-agents-voice-agent-api-volume-mdx"></a>
+<a id="output-volume-docs-voice-agents-voice-agent-api-volume-mdx"></a>
 
-# Volume
+# Output volume
 
 URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/volume
 Source: docs/voice-agents/voice-agent-api/volume.mdx
@@ -55579,13 +55581,13 @@ Control how loud the agent's speech plays with `output.volume`. Set it when you 
 
 Accepts a number from `0` (silent) to `100` (loudest). If omitted, the voice plays at its native level.
 
-```bash cURL
+```bash cURL {3}
 curl -X PUT https://agents.assemblyai.com/v1/agents/$AGENT_ID \
   -H "Authorization: $ASSEMBLYAI_API_KEY" -H "Content-Type: application/json" \
   -d '{ "output": { "volume": 60 } }'
 ```
 
-```python Python
+```python Python {8}
 # pip install requests
 import os
 import requests
@@ -55599,7 +55601,7 @@ resp.raise_for_status()
 print(resp.json())
 ```
 
-```javascript Node.js
+```javascript Node.js {10}
 // Node 18+ has fetch built in
 const res = await fetch(
   `https://agents.assemblyai.com/v1/agents/${process.env.AGENT_ID}`,
@@ -55648,7 +55650,7 @@ A normal user turn emits [`input.speech.started`](/voice-agents/voice-agent-api/
 
 ## Get better turn-taking with tool descriptions
 
-The agent waits for a complete value when it knows one is coming. It learns that from your tool's parameters, so describe the important ones well. No turn-detection config involved — just add the tool when you create the agent:
+The agent waits for a complete value when it knows one is coming. It learns that from your tool's parameters, so describe the important ones well. No turn-detection config involved; just add the tool when you create the agent:
 
 ```bash cURL expandable
 curl -X POST https://agents.assemblyai.com/v1/agents \
@@ -55657,7 +55659,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Account Assistant",
     "system_prompt": "You verify callers. Ask for their phone number, then call verify_account.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "tools": [
       {
         "name": "verify_account",
@@ -55689,7 +55691,7 @@ resp = requests.post(
     json={
         "name": "Account Assistant",
         "system_prompt": "You verify callers. Ask for their phone number, then call verify_account.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "tools": [
             {
                 "name": "verify_account",
@@ -55724,7 +55726,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Account Assistant",
     system_prompt: "You verify callers. Ask for their phone number, then call verify_account.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     tools: [
       {
         name: "verify_account",
@@ -55769,6 +55771,78 @@ ws.onmessage = ({ data }) => {
 
 See [Handling interruptions](/voice-agents/voice-agent-api/audio-format#handling-interruptions) for the full audio-flush pattern.
 
+## Transcription mode
+
+Turn detection sits on top of the transcript, and the transcript comes from a speech-to-text model whose speed-versus-accuracy balance you set with `input.transcription_mode`. The mode also presets how long the model waits in silence before ending a turn, so it is the cleanest single knob for that tradeoff. Reach for it before the raw thresholds below.
+
+| Mode           | Behavior                                                                    |
+| -------------- | --------------------------------------------------------------------------- |
+| `min_latency`  | Ends turns fastest and is least patient in silence.                         |
+| `balanced`     | Default. A middle ground.                                                   |
+| `max_accuracy` | Most accurate transcript; waits longest to confirm the end of a turn.       |
+
+Set it on the stored agent when you create it:
+
+```bash cURL {8}
+curl -X POST https://agents.assemblyai.com/v1/agents \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Support Assistant",
+    "system_prompt": "You are a friendly support agent.",
+    "voice": { "voice_id": "alba" },
+    "input": { "transcription_mode": "max_accuracy" }
+  }'
+```
+
+```python Python {12}
+# pip install requests
+import os
+import requests
+
+resp = requests.post(
+    "https://agents.assemblyai.com/v1/agents",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+    json={
+        "name": "Support Assistant",
+        "system_prompt": "You are a friendly support agent.",
+        "voice": {"voice_id": "alba"},
+        "input": {"transcription_mode": "max_accuracy"},
+    },
+)
+resp.raise_for_status()
+print(resp.json())
+```
+
+```javascript Node.js {12}
+// Node 18+ has fetch built in
+const res = await fetch("https://agents.assemblyai.com/v1/agents", {
+  method: "POST",
+  headers: {
+    Authorization: process.env.ASSEMBLYAI_API_KEY,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: "Support Assistant",
+    system_prompt: "You are a friendly support agent.",
+    voice: { voice_id: "alba" },
+    input: { transcription_mode: "max_accuracy" },
+  }),
+});
+const data = await res.json();
+console.log(data);
+```
+
+`transcription_mode` is updatable mid-session, so switch it by call stage: run `balanced` or `min_latency` for normal back-and-forth, switch to `max_accuracy` while capturing something you can't get wrong (an order ID, account number, or a name being spelled out), then switch back.
+
+```json
+// Entering an entity-capture step
+{ "type": "session.update", "session": { "input": { "transcription_mode": "max_accuracy" } } }
+
+// Value captured
+{ "type": "session.update", "session": { "input": { "transcription_mode": "min_latency" } } }
+```
+
 ## Override the defaults (rarely needed)
 
 If you must tune sensitivity, set the VAD knobs in `input.turn_detection`. All fields are optional; send only what you change. Set them on the stored agent when you create it:
@@ -55780,7 +55854,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "input": {
       "turn_detection": {
         "vad_threshold": 0.5,
@@ -55803,7 +55877,7 @@ resp = requests.post(
     json={
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "input": {
             "turn_detection": {
                 "vad_threshold": 0.5,
@@ -55829,7 +55903,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     input: {
       turn_detection: {
         vad_threshold: 0.5,
@@ -55862,12 +55936,13 @@ Configuring inline over the WebSocket instead? Set the same [`turn_detection`](/
 }
 ```
 
-| Field                | Description |
-| -------------------- | ----------- |
-| `vad_threshold`      | Speech detection sensitivity (0.0–1.0). Lower is more sensitive. |
-| `min_silence`        | Minimum silence for a confident end-of-turn, in ms. |
-| `max_silence`        | Maximum silence before forcing end-of-turn, in ms. |
-| `interrupt_response` | Set `false` to disable barge-in entirely. |
+| Field                | Default   | Description |
+| -------------------- | --------- | ----------- |
+| `vad_threshold`      | `0.5`     | Speech detection sensitivity (`0.0` to `1.0`). Lower is more sensitive. |
+| `min_silence`        | adaptive  | Minimum silence for a confident end-of-turn, in ms. Left unset, the agent paces this adaptively. |
+| `max_silence`        | adaptive  | Maximum silence before forcing end-of-turn, in ms. Left unset, the agent paces this adaptively. |
+| `interrupt_response` | `true`    | Set `false` to disable barge-in entirely. |
+| `interruption_delay` | per mode  | How long after the user starts speaking, in ms (`0` to `1000`), before a barge-in can interrupt the agent. Follows the [transcription mode](#transcription-mode) (`0` for `min_latency`, `500` for `balanced` and `max_accuracy`). Raise it so brief back-channels like "mm-hmm" don't cut the agent off. |
 
 Setting `min_silence` or `max_silence` turns off the adaptive pacing and entity-aware waiting described above for the rest of the session. Prefer leaving them unset.
 
@@ -55875,34 +55950,101 @@ If the agent keeps interrupting itself, the mic is picking up its own TTS. Use h
 
 ---
 
-<a id="key-terms-docs-voice-agents-voice-agent-api-keyterms-mdx"></a>
+<a id="add-transcription-context-docs-voice-agents-voice-agent-api-transcription-prompt-mdx"></a>
 
-# Key terms
+# Add transcription context
 
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/keyterms
-Source: docs/voice-agents/voice-agent-api/keyterms.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/transcription-prompt
+Source: docs/voice-agents/voice-agent-api/transcription-prompt.mdx
 Navigation: Voice Agent API > Conversational experience
-Description: Boost transcription accuracy for rare or domain-specific words by adding them to a voice agent's key terms.
+Description: Improve a voice agent's transcription accuracy for domain terms with a contextual prompt and a key terms list.
 
-If your conversation involves rare or domain-specific words, like a person's name, company name, or product, add them to the agent's key terms to improve transcription accuracy. This works like a word boost, biasing the speech recognition model toward these terms. Key terms live on the agent under `input.keyterms`, set when you [create](/voice-agents/voice-agent-api/create-agent) or [update](/voice-agents/voice-agent-api/manage-agents) it, or inline over the WebSocket via [`session.update`](/voice-agents/voice-agent-api/session-configuration).
+Two levers make the agent's **speech-to-text** transcribe the caller more accurately: a free-form **transcription prompt** that describes the call, and a **key terms** list of exact words to boost. Use them together: the prompt sets the scene, and key terms nail specific names and codes. Both live under `input`, set when you [create](/voice-agents/voice-agent-api/create-agent) or [update](/voice-agents/voice-agent-api/manage-agents) the agent, or inline via [`session.update`](/voice-agents/voice-agent-api/session-configuration). For how both work under the hood, see [Prompting and keyterms](/streaming/prompting-and-keyterms) in the Streaming docs.
 
-## Set key terms
+## Contextual prompt
 
-Pass `keyterms` inside the `input` object:
+`input.transcription_prompt` tells the speech-to-text model what the call is about so it resolves jargon, product names, and homophones in what the caller says. Describe the domain and scenario in plain language.
 
-```bash cURL
+This is **not** the same as `system_prompt`. `system_prompt` shapes what the **agent says**; `transcription_prompt` shapes how the caller's speech is **transcribed**. Give it context ("this is a pharmacy support call"), not instructions ("use formal punctuation"); behavioral commands are ignored.
+
+```bash cURL {9}
+curl -X POST https://agents.assemblyai.com/v1/agents \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Pharmacy Assistant",
+    "system_prompt": "You help patients with prescription refills.",
+    "voice": { "voice_id": "alba" },
+    "input": {
+      "transcription_prompt": "A pharmacy support call. Callers mention medication names, dosages in mg, insurance carriers, and pharmacy locations."
+    }
+  }'
+```
+
+```python Python {13}
+# pip install requests
+import os
+import requests
+
+resp = requests.post(
+    "https://agents.assemblyai.com/v1/agents",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+    json={
+        "name": "Pharmacy Assistant",
+        "system_prompt": "You help patients with prescription refills.",
+        "voice": {"voice_id": "alba"},
+        "input": {
+            "transcription_prompt": "A pharmacy support call. Callers mention medication names, dosages in mg, insurance carriers, and pharmacy locations."
+        },
+    },
+)
+resp.raise_for_status()
+print(resp.json())
+```
+
+```javascript Node.js {13}
+// Node 18+ has fetch built in
+const res = await fetch("https://agents.assemblyai.com/v1/agents", {
+  method: "POST",
+  headers: {
+    Authorization: process.env.ASSEMBLYAI_API_KEY,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: "Pharmacy Assistant",
+    system_prompt: "You help patients with prescription refills.",
+    voice: { voice_id: "alba" },
+    input: {
+      transcription_prompt:
+        "A pharmacy support call. Callers mention medication names, dosages in mg, insurance carriers, and pharmacy locations.",
+    },
+  }),
+});
+const data = await res.json();
+console.log(data);
+```
+
+| Field                        | Type   | Required | Notes                                                             |
+| ---------------------------- | ------ | -------- | ---------------------------------------------------------------- |
+| `input.transcription_prompt` | string | No       | Free-form context about the call, up to 1750 characters. Updatable mid-session. |
+
+## Key terms
+
+`input.keyterms` is an explicit list of rare or domain-specific words to boost, like a person's name, a product, or an acronym. It works as a word boost, biasing the speech recognition model toward each term. Reach for it when you have specific strings to nail, and use the prompt above for the surrounding context.
+
+```bash cURL {8}
 curl -X POST https://agents.assemblyai.com/v1/agents \
   -H "Authorization: $ASSEMBLYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "input": { "keyterms": ["AssemblyAI", "Lemur", "Ozempic"] }
   }'
 ```
 
-```python Python
+```python Python {12}
 # pip install requests
 import os
 import requests
@@ -55913,7 +56055,7 @@ resp = requests.post(
     json={
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "input": {"keyterms": ["AssemblyAI", "Lemur", "Ozempic"]},
     },
 )
@@ -55921,7 +56063,7 @@ resp.raise_for_status()
 print(resp.json())
 ```
 
-```javascript Node.js
+```javascript Node.js {12}
 // Node 18+ has fetch built in
 const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   method: "POST",
@@ -55932,7 +56074,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     input: { keyterms: ["AssemblyAI", "Lemur", "Ozempic"] },
   }),
 });
@@ -55940,69 +56082,191 @@ const data = await res.json();
 console.log(data);
 ```
 
-| Field            | Type              | Required | Notes                                                                       |
-| ---------------- | ----------------- | -------- | --------------------------------------------------------------------------- |
-| `input.keyterms` | string[] \| null  | No       | Up to 100 transcription-bias strings. `null` or `[]` clears the boost.      |
+| Field            | Type              | Required | Notes                                                                  |
+| ---------------- | ----------------- | -------- | ---------------------------------------------------------------------- |
+| `input.keyterms` | string[] \| null  | No       | Up to 100 transcription-bias strings. `null` or `[]` clears the boost. |
 
-## What to add
+**Add:**
 
 - Brand, product, and feature names that aren't in everyday English (`"AssemblyAI"`, `"Lemur"`, `"Ozempic"`).
 - Proper nouns specific to this caller: their full name, their account holder's name, the agent's name if it's unusual.
-- Domain jargon that the model might otherwise transcribe as a common-word homophone (`"hemochromatosis"`, `"polysomnography"`).
+- Domain jargon the model might otherwise transcribe as a common-word homophone (`"hemochromatosis"`, `"polysomnography"`).
 - Acronyms you want spelled in full (`"PCI DSS"`, `"FedRAMP"`).
 
-## What NOT to add
+**Don't add:**
 
 - Common English words. Each entry boosts that string, and adding common words at the same weight as your rare terms dilutes the boost.
 - Whole sentences or phrases. The boost is per-term, not per-phrase.
-- Punctuation, formatting, or instructions. The list is treated as transcription hints, not as prompt context.
+- Punctuation, formatting, or instructions. The list is transcription hints, not prompt context.
 
-## Update the list
+Replace the list any time by sending a new `keyterms` array; it takes effect on the next user utterance. Refresh it when the conversation enters a new domain, for example when a support call moves from billing to technical.
 
-Replace the list by sending a new `keyterms` array. The new list takes effect on the next user utterance:
+---
 
-```bash cURL
-curl -X PUT https://agents.assemblyai.com/v1/agents/$AGENT_ID \
-  -H "Authorization: $ASSEMBLYAI_API_KEY" -H "Content-Type: application/json" \
-  -d '{ "input": { "keyterms": ["AssemblyAI", "Universal", "hemochromatosis"] } }'
+<a id="steer-toward-known-languages-docs-voice-agents-voice-agent-api-language-selection-mdx"></a>
+
+# Steer toward known languages
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/language-selection
+Source: docs/voice-agents/voice-agent-api/language-selection.mdx
+Navigation: Voice Agent API > Conversational experience
+Description: Steer a voice agent's speech-to-text toward the languages you expect with language_codes, or leave it on automatic multilingual detection.
+
+The agent transcribes any [supported language](/voice-agents/voice-agent-api/supported-languages) automatically and code-switches natively, so a caller can move between, say, English and Spanish mid-sentence with no configuration. When you know which language(s) a line serves, set `input.language_codes` to steer transcription toward them for a bit more accuracy. Omit it for automatic detection. Set it when you [create](/voice-agents/voice-agent-api/create-agent) or [update](/voice-agents/voice-agent-api/manage-agents) the agent.
+
+- **Global or mixed-language line**: omit `language_codes`. The agent detects and code-switches on its own.
+- **Region-specific line**: pin the language(s) you expect. A Spanish support line set to `["es"]` won't drift into look-alike transcriptions of another language.
+
+```bash cURL {8}
+curl -X POST https://agents.assemblyai.com/v1/agents \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Soporte",
+    "system_prompt": "Eres un agente de soporte amable. Responde en español.",
+    "voice": { "voice_id": "lola" },
+    "input": { "language_codes": ["es"] }
+  }'
 ```
 
-```python Python
+```python Python {12}
 # pip install requests
 import os
 import requests
 
-resp = requests.put(
-    f"https://agents.assemblyai.com/v1/agents/{os.environ['AGENT_ID']}",
+resp = requests.post(
+    "https://agents.assemblyai.com/v1/agents",
     headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
-    json={"input": {"keyterms": ["AssemblyAI", "Universal", "hemochromatosis"]}},
+    json={
+        "name": "Soporte",
+        "system_prompt": "Eres un agente de soporte amable. Responde en español.",
+        "voice": {"voice_id": "lola"},
+        "input": {"language_codes": ["es"]},
+    },
 )
 resp.raise_for_status()
 print(resp.json())
 ```
 
-```javascript Node.js
+```javascript Node.js {12}
 // Node 18+ has fetch built in
-const res = await fetch(
-  `https://agents.assemblyai.com/v1/agents/${process.env.AGENT_ID}`,
-  {
-    method: "PUT",
-    headers: {
-      Authorization: process.env.ASSEMBLYAI_API_KEY,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      input: { keyterms: ["AssemblyAI", "Universal", "hemochromatosis"] },
-    }),
+const res = await fetch("https://agents.assemblyai.com/v1/agents", {
+  method: "POST",
+  headers: {
+    Authorization: process.env.ASSEMBLYAI_API_KEY,
+    "Content-Type": "application/json",
   },
-);
+  body: JSON.stringify({
+    name: "Soporte",
+    system_prompt: "Eres un agente de soporte amable. Responde en español.",
+    voice: { voice_id: "lola" },
+    input: { language_codes: ["es"] },
+  }),
+});
 const data = await res.json();
 console.log(data);
 ```
 
-**When to refresh the list:** when the conversation enters a new domain. If an inbound support call switches from "billing" to "technical", swap the toolset and the key terms list together.
+| Field                  | Type     | Required | Notes                                                                     |
+| ---------------------- | -------- | -------- | ------------------------------------------------------------------------- |
+| `input.language_codes` | string[] | No       | Languages to steer toward. Omit (or leave empty) for automatic detection. Pass one code to pin a single language, or several to constrain to a set. |
 
-`input.keyterms` accepts up to 100 strings. Passing `null` or `[]` clears the boost. When configured inline via [`session.update`](/voice-agents/voice-agent-api/session-configuration), the list can also be replaced mid-session and takes effect on the next user utterance.
+## Supported language codes
+
+Universal-3.5 Pro Streaming code-switches across all 18 languages below. Pass any of these codes in `language_codes`:
+
+| Language   | Code | Language   | Code |
+| ---------- | ---- | ---------- | ---- |
+| English    | `en` | Danish     | `da` |
+| Spanish    | `es` | Finnish    | `fi` |
+| French     | `fr` | Hindi      | `hi` |
+| German     | `de` | Vietnamese | `vi` |
+| Italian    | `it` | Arabic     | `ar` |
+| Portuguese | `pt` | Hebrew     | `he` |
+| Turkish    | `tr` | Japanese   | `ja` |
+| Dutch      | `nl` | Mandarin   | `zh` |
+| Swedish    | `sv` | Norwegian  | `no` |
+
+Set the input language and a matching [voice](/voice-agents/voice-agent-api/voices) together: transcribing Spanish while replying in an English voice is jarring. The example above pairs `["es"]` with the Spanish voice `lola`.
+
+`language_codes` is applied when the speech-to-text connection opens; a mid-session change takes effect on the next reconnect, not the current turn. For how native code-switching works, see [Multilingual transcription](/streaming/multilingual-transcription).
+
+---
+
+<a id="isolate-the-caller-s-voice-docs-voice-agents-voice-agent-api-noise-suppression-mdx"></a>
+
+# Isolate the caller's voice
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/noise-suppression
+Source: docs/voice-agents/voice-agent-api/noise-suppression.mdx
+Navigation: Voice Agent API > Conversational experience
+Description: Isolate the caller's voice and suppress background noise before it reaches the agent's speech-to-text, with voice_focus.
+
+Real calls are noisy: keyboard clacks, café chatter, a car engine, room echo. That noise makes the agent mishear words and, worse, can trip false turn-taking and interruptions. `input.voice_focus` isolates the primary speaker and suppresses background audio before it reaches transcription, so the agent responds to the caller and not the room. Set it when you [create](/voice-agents/voice-agent-api/create-agent) or [update](/voice-agents/voice-agent-api/manage-agents) the agent.
+
+| Model         | Value        | Use for                                                                    |
+| ------------- | ------------ | -------------------------------------------------------------------------- |
+| Near field    | `near-field` | Headsets, handsets, and other close-talking mics. Default.                 |
+| Far field     | `far-field`  | Phone speakerphone, conference rooms, drive-thru, laptop and car mics.     |
+
+Match the model to how the caller is captured: a browser agent on a headset wants `near-field`; a phone or in-room agent wants `far-field`.
+
+```bash cURL {8}
+curl -X POST https://agents.assemblyai.com/v1/agents \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Drive-thru Assistant",
+    "system_prompt": "You take drive-thru orders.",
+    "voice": { "voice_id": "alba" },
+    "input": { "voice_focus": "far-field", "voice_focus_threshold": 0.8 }
+  }'
+```
+
+```python Python {12}
+# pip install requests
+import os
+import requests
+
+resp = requests.post(
+    "https://agents.assemblyai.com/v1/agents",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+    json={
+        "name": "Drive-thru Assistant",
+        "system_prompt": "You take drive-thru orders.",
+        "voice": {"voice_id": "alba"},
+        "input": {"voice_focus": "far-field", "voice_focus_threshold": 0.8},
+    },
+)
+resp.raise_for_status()
+print(resp.json())
+```
+
+```javascript Node.js {12}
+// Node 18+ has fetch built in
+const res = await fetch("https://agents.assemblyai.com/v1/agents", {
+  method: "POST",
+  headers: {
+    Authorization: process.env.ASSEMBLYAI_API_KEY,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: "Drive-thru Assistant",
+    system_prompt: "You take drive-thru orders.",
+    voice: { voice_id: "alba" },
+    input: { voice_focus: "far-field", voice_focus_threshold: 0.8 },
+  }),
+});
+const data = await res.json();
+console.log(data);
+```
+
+| Field                         | Type   | Required | Notes                                                                       |
+| ----------------------------- | ------ | -------- | --------------------------------------------------------------------------- |
+| `input.voice_focus`           | string | No       | `near-field` (default) or `far-field`.                                      |
+| `input.voice_focus_threshold` | number | No       | `0.0` to `1.0`, default `0.7`. Higher suppresses more aggressively. Requires `voice_focus`. |
+
+Voice Focus is applied when the speech-to-text connection opens, so set it at agent-create or connect time. For how the models and threshold behave under the hood, see [Voice Focus](/streaming/voice-focus) in the Streaming docs.
 
 ---
 
@@ -56829,7 +57093,7 @@ For more on tool calling, see [Add tools to your agent](/voice-agents/voice-agen
 ## Troubleshooting
 
 - **Call connects but no audio**: Check that `HOSTNAME` matches your ngrok domain and that your server is reachable. Watch ngrok's request log for the incoming Media Streams WebSocket.
-- **`session.error` with `invalid_value` on the `voice` field**: Voice names are case-sensitive. Use lowercase (`ivy`, `claire`, `dawn`, etc.). See [Choose a voice](/voice-agents/voice-agent-api/voices) for available voices.
+- **`session.error` with `invalid_value` on the `voice` field**: Voice names are case-sensitive. Use lowercase (`alba`, `claire`, `dawn`, etc.). See [Choose a voice](/voice-agents/voice-agent-api/voices) for available voices.
 - **Greeting plays but later replies don't**: Make sure your tool handler always sends a `tool.result` back. The agent waits for it before continuing.
 - **Audio is choppy or echoey**: Twilio handles echo cancellation on the carrier side. If you hear echo during testing, it's likely your speakerphone. Use a headset.
 
@@ -56865,7 +57129,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Telephony Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "input":  { "format": { "encoding": "audio/pcm" } },
     "output": { "format": { "encoding": "audio/pcmu" } }
   }'
@@ -56882,7 +57146,7 @@ resp = requests.post(
     json={
         "name": "Telephony Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "input": {"format": {"encoding": "audio/pcm"}},
         "output": {"format": {"encoding": "audio/pcmu"}},
     },
@@ -56902,7 +57166,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Telephony Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     input: { format: { encoding: "audio/pcm" } },
     output: { format: { encoding: "audio/pcmu" } },
   }),
@@ -57084,7 +57348,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" },
+    "voice": { "voice_id": "alba" },
     "input":  { "format": { "encoding": "audio/pcmu", "sample_rate": 8000 } },
     "output": { "format": { "encoding": "audio/pcmu", "sample_rate": 8000 } }
   }'
@@ -57101,7 +57365,7 @@ resp = requests.post(
     json={
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "alba"},
         "input": {"format": {"encoding": "audio/pcmu", "sample_rate": 8000}},
         "output": {"format": {"encoding": "audio/pcmu", "sample_rate": 8000}},
     },
@@ -57121,7 +57385,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "alba" },
     input: { format: { encoding: "audio/pcmu", sample_rate: 8000 } },
     output: { format: { encoding: "audio/pcmu", sample_rate: 8000 } },
   }),
@@ -57308,7 +57572,7 @@ console.log(session.status, session.artifacts);
     "system_prompt": "You are a friendly support agent.",
     "greeting": "Hi, how can I help?",
     "input": { "type": "audio", "format": { "encoding": "audio/pcm", "sample_rate": 24000 }, "keyterms": [], "turn_detection": null },
-    "output": { "type": "audio", "voice": "ivy", "format": { "encoding": "audio/pcm", "sample_rate": 24000 } },
+    "output": { "type": "audio", "voice": "alba", "format": { "encoding": "audio/pcm", "sample_rate": 24000 } },
     "tools": [],
     "llm": []
   },
@@ -57631,15 +57895,21 @@ Here's a full configuration showing every available field:
     "input": {
       "format": { "encoding": "audio/pcm" },
       "keyterms": ["AssemblyAI", "Universal"],
+      "transcription_mode": "balanced",
+      "transcription_prompt": "Expect product names and order IDs.",
+      "language_codes": ["en"],
+      "voice_focus": "near-field",
+      "voice_focus_threshold": 0.5,
       "turn_detection": {
         "vad_threshold": 0.5,
         "min_silence": 1000,
         "max_silence": 3000,
-        "interrupt_response": true
+        "interrupt_response": true,
+        "interruption_delay": 100
       }
     },
     "output": {
-      "voice": "ivy",
+      "voice": "alba",
       "format": { "encoding": "audio/pcm" },
       "volume": 100
     }
@@ -57658,6 +57928,10 @@ The first `session.update` you send before `session.ready` initializes the sessi
 | `session.system_prompt`        | Yes. Send a new prompt at any time to change the agent's behavior on the next turn. |
 | `session.input.turn_detection` | Yes. Adjust VAD thresholds, silence windows, and barge-in on the fly.               |
 | `session.input.keyterms`       | Yes. Replace the keyterms list at any time. The new list takes effect on the next user utterance. |
+| `session.input.transcription_mode` | Yes. |
+| `session.input.transcription_prompt` | Yes. |
+| `session.input.language_codes` | Accepted mid-session, but applied on the next speech-to-text reconnect (not the current turn). |
+| `session.input.voice_focus` / `voice_focus_threshold` | Set at connect. A mid-session change is accepted but only takes effect on the next speech-to-text reconnect. |
 | `session.output.volume`        | Yes. Adjust playback volume on the fly. |
 | `session.greeting`             | No. Raises `immutable_field`. The greeting is spoken once at session start.         |
 | `session.output.voice`         | No. Raises `immutable_field`. The voice is bound to the TTS connection at session start. |
@@ -57669,14 +57943,18 @@ Other fields (`session.tools`, `session.input.format`) are also accepted in subs
 
 The `session` object carries the same fields as a stored agent. Each has a dedicated guide with details and examples; the cURL there maps one-to-one onto the `session.update` shape shown above.
 
-- **`system_prompt`** — the agent's personality and behavior. Updatable mid-session. See the [Prompting guide](/voice-agents/voice-agent-api/prompting-guide).
-- **`greeting`** — the exact words spoken on connect, sent straight to TTS. Immutable after `session.ready`. See [Greeting](/voice-agents/voice-agent-api/greeting).
-- **`output.voice`** — the TTS voice, e.g. `"ivy"`. Immutable after `session.ready`. See [Voices](/voice-agents/voice-agent-api/voices).
-- **`input.format` / `output.format`** — audio encoding (default `audio/pcm` at 24 kHz). `output.format` is immutable after `session.ready`. See [Audio encoding](/voice-agents/voice-agent-api/encoding).
-- **`output.volume`** — playback volume, `0`–`100`. Updatable mid-session. See [Volume](/voice-agents/voice-agent-api/volume).
-- **`input.keyterms`** — up to 100 transcription-bias terms. Updatable mid-session. See [Key terms](/voice-agents/voice-agent-api/keyterms).
-- **`input.turn_detection`** — VAD tuning and barge-in. Updatable mid-session. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions).
-- **`tools`** — actions the agent can call. See [Add tools](/voice-agents/voice-agent-api/tools/overview).
+- **`system_prompt`**: the agent's personality and behavior. Updatable mid-session. See the [Prompting guide](/voice-agents/voice-agent-api/prompting-guide).
+- **`greeting`**: the exact words spoken on connect, sent straight to TTS. Immutable after `session.ready`. See [Greeting](/voice-agents/voice-agent-api/greeting).
+- **`output.voice`**: the TTS voice, e.g. `"alba"`. Immutable after `session.ready`. See [Voices](/voice-agents/voice-agent-api/voices).
+- **`input.format` / `output.format`**: audio encoding (default `audio/pcm` at 24 kHz). `output.format` is immutable after `session.ready`. See [Audio encoding](/voice-agents/voice-agent-api/encoding).
+- **`output.volume`**: playback volume, `0` to `100`. Updatable mid-session. See [Volume](/voice-agents/voice-agent-api/volume).
+- **`input.keyterms`**: up to 100 transcription-bias terms. Updatable mid-session. See [Key terms](/voice-agents/voice-agent-api/transcription-prompt#key-terms).
+- **`input.turn_detection`**: VAD threshold, silence windows (`min_silence`/`max_silence`, ms), barge-in (`interrupt_response`), and `interruption_delay` (ms, `0` to `1000`). Updatable mid-session. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions).
+- **`input.transcription_mode`**: speech-to-text speed vs. accuracy: `balanced` (default), `min_latency`, or `max_accuracy`. Updatable mid-session. See [Turn-taking & interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions#transcription-mode).
+- **`input.transcription_prompt`**: a prompt that biases transcription toward expected vocabulary (max 1750 characters). Updatable mid-session.
+- **`input.language_codes`**: declare the spoken language(s); omit for automatic detection. Applied on the next speech-to-text connect.
+- **`input.voice_focus` / `input.voice_focus_threshold`**: noise-suppression model (`near-field`, the default, or `far-field`) and strength (`0.0` to `1.0`, default `0.7`, requires `voice_focus`). Set at connect.
+- **`tools`**: actions the agent can call, each optionally with `response_instructions` (`success`/`error` guidance the agent follows after the call). See [Add tools](/voice-agents/voice-agent-api/tools/overview).
 
 ---
 
@@ -57713,6 +57991,7 @@ Client                              Server
   │                                   │
   │◄─── reply.started ────────────────│
   │◄─── reply.audio ──────────────────│
+  │◄─── transcript.agent.delta ───────│
   │◄─── transcript.agent ─────────────│
   │◄─── reply.done ───────────────────│
   │                                   │
@@ -57766,7 +58045,7 @@ Configure the session. Send immediately on WebSocket connect (before `session.re
       "turn_detection": { "vad_threshold": 0.5 }
     },
     "output": {
-      "voice": "ivy",
+      "voice": "alba",
       "format": { "encoding": "audio/pcm" },
       "volume": 100
     },
@@ -57786,19 +58065,25 @@ Configure the session. Send immediately on WebSocket connect (before `session.re
 }
 ```
 
-All fields are optional. Include only what you want to set or change. After `session.ready`, only a subset of fields can be changed; changing `greeting`, `session.output.voice`, or `session.output.format` raises `immutable_field`. `session.output.volume` is mutable mid-session.
+All fields are optional. Include only what you want to set or change. After `session.ready`, only a subset of fields can be changed; changing `greeting`, `session.output.voice`, or `session.output.format` raises `immutable_field`. `session.output.volume` is mutable mid-session. For the full field reference, defaults, and per-field mutability, see [Inline session configuration](/voice-agents/voice-agent-api/session-configuration).
 
-| Field                              | Type   | Description                                                      |
-| ---------------------------------- | ------ | ---------------------------------------------------------------- |
-| `session.system_prompt`            | string | Sets the agent's personality and context                         |
-| `session.greeting`                 | string | Spoken aloud at the start of the conversation                    |
-| `session.input.format`             | object | Input audio format (`encoding`). See [Audio format](/voice-agents/voice-agent-api/audio-format) |
-| `session.input.keyterms`           | array  | List of strings to boost in transcription. See [Key terms](/voice-agents/voice-agent-api/session-configuration#key-terms) |
-| `session.input.turn_detection`     | object | Turn detection configuration. See [Session configuration](/voice-agents/voice-agent-api/session-configuration#turn-detection) |
-| `session.output.voice`             | string | The voice used for the agent's speech. See [Voices](/voice-agents/voice-agent-api/voices) |
-| `session.output.format`            | object | Output audio format (`encoding`). See [Audio format](/voice-agents/voice-agent-api/audio-format) |
-| `session.output.volume`            | number | Playback volume for the agent's speech, `0` (silent) to `100` (loudest). Mutable mid-session. See [Output volume](/voice-agents/voice-agent-api/session-configuration#output-volume) |
-| `session.tools`                    | array  | Tool definitions. See [Tool calling](/voice-agents/voice-agent-api/tools/overview) |
+| Field                                  | Type    | Description                                                      |
+| -------------------------------------- | ------- | ---------------------------------------------------------------- |
+| `session.agent_id`                     | string  | Bind a [stored agent](/voice-agents/voice-agent-api/deploy) by ID. First `session.update` only, and mutually exclusive with the inline fields below. |
+| `session.system_prompt`                | string  | Sets the agent's personality and context. Mutable mid-session.   |
+| `session.greeting`                     | string  | Spoken aloud at the start of the conversation. Immutable after the first update. |
+| `session.input.format`                 | object  | Input audio format (`encoding`). See [Audio format](/voice-agents/voice-agent-api/audio-format) |
+| `session.input.keyterms`               | array   | Up to 100 strings to boost in transcription. Mutable. See [Key terms](/voice-agents/voice-agent-api/transcription-prompt#key-terms) |
+| `session.input.turn_detection`         | object  | VAD threshold, silence windows, barge-in, and interruption delay. Mutable. See [Turn detection](/voice-agents/voice-agent-api/turn-detection-and-interruptions) |
+| `session.input.transcription_mode`     | string  | Speech-to-text speed vs. accuracy: `min_latency`, `balanced` (default), or `max_accuracy`. Mutable. |
+| `session.input.transcription_prompt`   | string  | Prompt that biases transcription (max 1750 chars). Mutable. |
+| `session.input.language_codes`         | array   | Declare the spoken language(s); omit for automatic detection. Applied on the next STT connect. |
+| `session.input.voice_focus`            | string  | Noise-suppression model: `near-field` (default) or `far-field`. Set at connect. |
+| `session.input.voice_focus_threshold`  | number  | Noise-suppression strength, `0.0` to `1.0` (default `0.7`); requires `voice_focus`. Set at connect. |
+| `session.output.voice`                 | string  | The voice used for the agent's speech. Immutable after the first update. See [Voices](/voice-agents/voice-agent-api/voices) |
+| `session.output.format`                | object  | Output audio format (`encoding`). Immutable after the first update. See [Audio format](/voice-agents/voice-agent-api/audio-format) |
+| `session.output.volume`                | number  | Playback volume, `0` (silent) to `100` (loudest). Mutable mid-session. See [Output volume](/voice-agents/voice-agent-api/volume) |
+| `session.tools`                        | array   | Tool definitions. See [Tool calling](/voice-agents/voice-agent-api/tools/overview) |
 
 ---
 
@@ -57878,14 +58163,16 @@ Send a tool result back to the agent. Send this when `reply.done` is the latest 
 {
   "type": "tool.result",
   "call_id": "call_abc123",
-  "result": "{\"temp_c\": 22, \"description\": \"Sunny\"}"
+  "result": "{\"temp_c\": 22, \"description\": \"Sunny\"}",
+  "is_error": false
 }
 ```
 
-| Field     | Type   | Description                                          |
-| --------- | ------ | ---------------------------------------------------- |
-| `call_id` | string | The `call_id` from the `tool.call` event             |
-| `result`  | string | JSON string containing the tool result               |
+| Field      | Type    | Description                                                              |
+| ---------- | ------- | ------------------------------------------------------------------------ |
+| `call_id`  | string  | The `call_id` from the `tool.call` event                                 |
+| `result`   | string  | JSON string containing the tool result                                   |
+| `is_error` | boolean | Optional, default `false`. Set `true` to signal the tool call failed so the agent can respond accordingly. |
 
 ---
 
@@ -57908,32 +58195,64 @@ The agent generates a normal reply (`reply.started` → `reply.audio` → `trans
 
 ---
 
+### `conversation.message`
+
+Inject a message into the conversation context without the user speaking it. Useful for seeding context or replaying prior history. This does not by itself make the agent reply; send [`reply.create`](#replycreate) if you want an immediate response.
+
+```json
+{
+  "type": "conversation.message",
+  "role": "user",
+  "content": "I'd like to check my order status."
+}
+```
+
+| Field     | Type   | Description                                  |
+| --------- | ------ | -------------------------------------------- |
+| `role`    | string | `"user"` or `"system"`.                      |
+| `content` | string | The message text to add to the conversation. |
+
+---
+
 ## Server → Client
 
 ### `session.ready`
 
-Session is established and ready to receive audio. Save `session_id` for reconnection. Start sending `input.audio` only after this event.
+Session is established and ready to receive audio. Save `session_id` for reconnection. Start sending `input.audio` only after this event. The event echoes the full resolved `config` (defaults filled in, and for a stored agent the expanded configuration).
 
 ```json
 {
   "type": "session.ready",
-  "session_id": "sess_abc123"
+  "session_id": "sess_abc123",
+  "expires_at": 1717180000,
+  "resume_token": "...",
+  "config": { "system_prompt": "...", "output": { "voice": "alba" }, "...": "..." }
 }
 ```
 
-| Field        | Type   | Description                                                  |
-| ------------ | ------ | ------------------------------------------------------------ |
-| `session_id` | string | Always present. Save this value to reconnect with `session.resume`. |
+| Field          | Type    | Description                                                  |
+| -------------- | ------- | ------------------------------------------------------------ |
+| `session_id`   | string  | Always present. Save this value to reconnect with `session.resume`. |
+| `config`       | object  | The full resolved session configuration the server applied. |
+| `expires_at`   | integer | Unix epoch seconds when the session reaches its maximum duration. |
+| `resume_token` | string  | Token used to resume the session after a drop. May be empty. |
 
 ---
 
 ### `session.updated`
 
-Sent after `session.update` is applied successfully.
+Sent after `session.update` is applied successfully. Echoes the full resolved configuration after the update.
 
 ```json
-{ "type": "session.updated" }
+{
+  "type": "session.updated",
+  "config": { "system_prompt": "...", "output": { "voice": "alba" }, "...": "..." }
+}
 ```
+
+| Field    | Type   | Description                                          |
+| -------- | ------ | ---------------------------------------------------- |
+| `config` | object | The full resolved session configuration after the update. |
 
 ---
 
@@ -57997,11 +58316,17 @@ Partial transcript of what the user is saying, updating in real-time.
 ```json
 {
   "type": "transcript.user.delta",
+  "item_id": "item_abc123",
   "text": "What's the weather in"
 }
 ```
 
-Live user transcripts pause while a [`hold`-mode tool](/voice-agents/voice-agent-api/tools/overview#execution-modes) is in flight and resume once the hold ends. Anything the user said during the hold is preserved in the conversation context.
+| Field     | Type   | Description                                                     |
+| --------- | ------ | --------------------------------------------------------------- |
+| `item_id` | string | Conversation item this partial belongs to.                     |
+| `text`    | string | The full transcript so far for this `item_id`.                 |
+
+`text` is the **full transcript so far**, not an incremental chunk. Each delta supersedes the previous one for that `item_id`; render the latest and do not concatenate. Live user transcripts also pause while a [`hold`-mode tool](/voice-agents/voice-agent-api/tools/overview#execution-modes) is in flight and resume once the hold ends; anything said during the hold is preserved in the conversation context.
 
 ---
 
@@ -58026,9 +58351,15 @@ Agent has begun generating a response.
 ```json
 {
   "type": "reply.started",
-  "reply_id": "reply_abc123"
+  "reply_id": "reply_abc123",
+  "item_id": "item_abc123"
 }
 ```
+
+| Field      | Type   | Description                                                        |
+| ---------- | ------ | ----------------------------------------------------------------- |
+| `reply_id` | string | ID of this reply. For a tool-call reply it is `fc-<call_id>`.      |
+| `item_id`  | string | Conversation item ID for this reply.                              |
 
 ---
 
@@ -58044,6 +58375,31 @@ A chunk of the agent's spoken response as base64 PCM16. Decode and play immediat
 ```
 
 See [Audio format](/voice-agents/voice-agent-api/audio-format#playing-output-audio) for playback guidance.
+
+---
+
+### `transcript.agent.delta`
+
+Word-level streaming of the agent's response, aligned to the audio as it plays. Useful for live captioning in sync with playback. The final [`transcript.agent`](#transcriptagent) still follows once the whole reply has been delivered.
+
+```json
+{
+  "type": "transcript.agent.delta",
+  "reply_id": "reply_abc123",
+  "item_id": "item_abc123",
+  "delta": "sunny",
+  "start_ms": 1200,
+  "end_ms": 1560
+}
+```
+
+| Field      | Type            | Description                                                         |
+| ---------- | --------------- | ------------------------------------------------------------------ |
+| `reply_id` | string          | ID of the reply this word belongs to.                              |
+| `item_id`  | string          | Conversation item ID.                                              |
+| `delta`    | string          | The next word (or token) of the agent's speech.                    |
+| `start_ms` | integer \| null | Start time of the word within the reply audio, in ms. `null` if unavailable. |
+| `end_ms`   | integer \| null | End time of the word within the reply audio, in ms. `null` if unavailable. |
 
 ---
 
@@ -58072,19 +58428,20 @@ Full text of the agent's response, sent after all audio for the response has bee
 
 ### `reply.done`
 
-Agent has finished speaking. The optional `status` field indicates why the reply ended.
+Agent has finished the reply. Always carries `reply_id` and a `status`.
 
 ```json
-{ "type": "reply.done" }
+{
+  "type": "reply.done",
+  "reply_id": "reply_abc123",
+  "status": "completed"
+}
 ```
 
-```json
-{ "type": "reply.done", "status": "interrupted" }
-```
-
-| Field    | Type   | Description                                                      |
-| -------- | ------ | ---------------------------------------------------------------- |
-| `status` | string | `"interrupted"` if the user barged in, absent for normal completion |
+| Field      | Type   | Description                                                      |
+| ---------- | ------ | ---------------------------------------------------------------- |
+| `reply_id` | string | ID of the reply that finished. For a tool-call reply it is `fc-<call_id>`. |
+| `status`   | string | `"completed"` for a normal finish, or `"interrupted"` if the user barged in. Always present. |
 
 ---
 
@@ -58166,6 +58523,18 @@ Sent on the open socket when an inbound message is invalid. The session stays al
 | `immutable_field`  | `session.update` tried to change `greeting`, `output.voice`, or `output.format` after the first update was applied. `output.volume` is mutable and does not raise this error. |
 | `invalid_config`   | `session.update` raised a validation error                                                    |
 | `server_error`     | Unexpected exception while applying `session.update`                                          |
+| `agent_id_not_first` | `agent_id` was sent after the first `session.update`, or alongside inline fields in the same message |
+| `agent_not_found`  | `agent_id` does not resolve to an agent on your account                                        |
+| `audio_rate_violation` | `input.audio` streamed faster than real time                                              |
+
+**Capacity errors (retryable)**
+
+Reconnect with backoff; these are transient. The session-level codes `at_capacity`, `concurrency_exceeded`, and `internal_error` are the only retryable ones — every other code is fatal.
+
+| Code                  | Description                                              |
+| --------------------- | ------------------------------------------------------- |
+| `at_capacity`         | Service is temporarily at capacity                      |
+| `concurrency_exceeded`| Your account's concurrent-session limit was reached     |
 
 **Live session errors**
 
@@ -58412,7 +58781,7 @@ The two modes are mutually exclusive. See [Deploy your agent](/voice-agents/voic
     "system_prompt": "You are a concise assistant.",
     "greeting": "Hi! How can I help?",
     "input":  { "format": { "encoding": "audio/pcm" } },
-    "output": { "voice": "ivy", "format": { "encoding": "audio/pcm" }, "volume": 100 }
+    "output": { "voice": "alba", "format": { "encoding": "audio/pcm" }, "volume": 100 }
   }
 }
 ```
@@ -91062,7 +91431,7 @@ components:
         voice_id:
           type: string
           description: A voice from the voice catalog. An invalid id returns 400 with the list of valid voices.
-          example: "ivy"
+          example: "alba"
 
     LlmConfig:
       type: object
@@ -91126,7 +91495,7 @@ components:
           default: "audio"
         voice:
           type: string
-          example: "ivy"
+          example: "alba"
         format:
           $ref: "#/components/schemas/AudioFormat"
         volume:

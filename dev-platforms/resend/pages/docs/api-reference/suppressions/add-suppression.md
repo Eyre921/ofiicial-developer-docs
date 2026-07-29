@@ -24,6 +24,50 @@ Add an email address to the suppression list.
   });
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->add([
+    'email' => 'steve.wozniak@example.com',
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Suppressions.AddParams = {
+    "email": "steve.wozniak@example.com",
+  }
+
+  resend.Suppressions.add(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Suppressions.add(email: "steve.wozniak@example.com")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.AddSuppressionRequest{
+  		Email: "steve.wozniak@example.com",
+  	}
+
+  	client.Suppressions.Add(params)
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::types::AddSuppressionOptions;
   use resend_rs::{Resend, Result};
@@ -39,12 +83,30 @@ Add an email address to the suppression list.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.services.suppressions.model.AddSuppressionOptions;
 
-  $resend->suppressions->add([
-    'email' => 'steve.wozniak@example.com',
-  ]);
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          AddSuppressionOptions options = AddSuppressionOptions.builder()
+                  .email("steve.wozniak@example.com")
+                  .build();
+
+          resend.suppressions().add(options);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.SuppressionAddAsync( "steve.wozniak@example.com" );
+  Console.WriteLine( "Suppression Id={0}", resp.Content );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

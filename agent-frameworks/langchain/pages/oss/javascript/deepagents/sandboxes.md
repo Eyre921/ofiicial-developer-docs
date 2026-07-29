@@ -72,7 +72,7 @@ These examples assume you have already created a sandbox/devbox using the provid
 
   try {
     const agent = createDeepAgent({
-      model: new ChatAnthropic({ model: "google-genai:gemini-3.5-flash" }),
+      model: new ChatAnthropic({ model: "google-genai:gemini-3.6-flash" }),
       systemPrompt: "You are a coding assistant with sandbox access.",
       backend: new LangSmithSandbox({ sandbox: lsSandbox }),
     });
@@ -357,7 +357,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
         idleTtlSeconds: 3600, // TTL: clean up when idle
       }));
     return createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       backend: new LangSmithSandbox({ sandbox: lsSandbox }),
     });
   }
@@ -548,7 +548,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
         name: sandboxName,
       }));
     return createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       backend: new LangSmithSandbox({ sandbox: lsSandbox }),
     });
   }

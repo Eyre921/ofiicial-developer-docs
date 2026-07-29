@@ -48,7 +48,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
     "How do I stream intermediate tool results from a subagent?";
 
   const baselineAgent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [],
     systemPrompt:
       "You are a helpful LangChain documentation assistant. Answer questions about LangChain APIs and patterns.",
@@ -882,7 +882,7 @@ Add this code to `agent.ts`:
       };
 
       const agent = createDeepAgent({
-        model: "google-genai:gemini-3.5-flash",
+        model: "google-genai:gemini-3.6-flash",
         tools: [searchDocumentation],
         backend,
         systemPrompt: instructions,
@@ -1200,7 +1200,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const allSplits = await textSplitter.splitDocuments(docs);
   console.log(`Split documentation into ${allSplits.length} chunks.`);
 
-  const embeddings = new OpenAIEmbeddings({ model: "google-genai:gemini-3.5-flash" });
+  const embeddings = new OpenAIEmbeddings({ model: "google-genai:gemini-3.6-flash" });
   const vectorStore = new MemoryVectorStore(embeddings);
   await vectorStore.addDocuments(allSplits);
   console.log(`Indexed ${allSplits.length} chunks.`);
@@ -1297,7 +1297,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -1481,7 +1481,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -1665,7 +1665,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -1849,7 +1849,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -2033,7 +2033,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -2217,7 +2217,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,
@@ -2401,7 +2401,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   };
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     tools: [searchDocumentation],
     backend,
     systemPrompt: instructions,

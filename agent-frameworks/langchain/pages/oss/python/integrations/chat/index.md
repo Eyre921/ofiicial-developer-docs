@@ -14,26 +14,28 @@ Integrate with chat models using LangChain Python.
   **While these LangChain classes support the indicated advanced feature**, you may need to refer to provider-specific documentation to learn which hosted models or backends support the feature.
 </Info>
 
-| Model                                                                          | [Tool calling](/oss/python/langchain/tools) | [Structured output](/oss/python/langchain/structured-output/) | [Multimodal](/oss/python/langchain/messages#multimodal) |
-| ------------------------------------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------- |
-| [`ChatOpenAI`](/oss/python/integrations/chat/openai)                           | ✅                                           | ✅                                                             | ✅                                                       |
-| [`ChatAnthropic`](/oss/python/integrations/chat/anthropic)                     | ✅                                           | ✅                                                             | ✅                                                       |
-| [`ChatVertexAI`](/oss/python/integrations/chat/google_vertex_ai) (deprecated)  | ✅                                           | ✅                                                             | ✅                                                       |
-| [`ChatGoogleGenerativeAI`](/oss/python/integrations/chat/google_generative_ai) | ✅                                           | ✅                                                             | ✅                                                       |
-| [`AzureChatOpenAI`](/oss/python/integrations/chat/azure_chat_openai)           | ✅                                           | ✅                                                             | ✅                                                       |
-| [`ChatGroq`](/oss/python/integrations/chat/groq)                               | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova)                  | ✅                                           | ❌                                                             | ✅                                                       |
-| [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface)                 | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatOllama`](/oss/python/integrations/chat/ollama)                           | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatXAI`](/oss/python/integrations/chat/xai)                                 | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints)              | ✅                                           | ✅                                                             | ✅                                                       |
-| [`ChatCohere`](/oss/python/integrations/chat/cohere)                           | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatMistralAI`](/oss/python/integrations/chat/mistralai)                     | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatTogether`](/oss/python/integrations/chat/together)                       | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek)                       | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatDatabricks`](/oss/python/integrations/chat/databricks)                   | ✅                                           | ✅                                                             | ❌                                                       |
-| [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter)                   | ✅                                           | ✅                                                             | ✅                                                       |
-| [`ChatLiteLLM`](/oss/python/integrations/chat/litellm)                         | ✅                                           | ✅                                                             | ✅                                                       |
+<div>
+  | Model                                                                          | Stream         | [Tool calling](/oss/python/langchain/tools) | [Structured output](/oss/python/langchain/structured-output/) | [Multimodal](/oss/python/langchain/messages#multimodal) | Downloads                                                                                                              |
+  | :----------------------------------------------------------------------------- | :------------- | :------------------------------------------ | :------------------------------------------------------------ | :------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------- |
+  | [`AzureChatOpenAI`](/oss/python/integrations/chat/azure_chat_openai)           | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-openai/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatOpenAI`](/oss/python/integrations/chat/openai)                           | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-openai/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatVertexAI`](/oss/python/integrations/chat/google_vertex_ai) (deprecated)  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-google-vertexai/">  <img alt="Downloads per month" /></a></span>     |
+  | [`ChatAnthropic`](/oss/python/integrations/chat/anthropic)                     | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-anthropic/">  <img alt="Downloads per month" /></a></span>           |
+  | [`ChatGoogleGenerativeAI`](/oss/python/integrations/chat/google_generative_ai) | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-google-genai/">  <img alt="Downloads per month" /></a></span>        |
+  | [`ChatLiteLLM`](/oss/python/integrations/chat/litellm)                         | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-litellm/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ChatDatabricks`](/oss/python/integrations/chat/databricks)                   | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span>          |
+  | [`ChatOllama`](/oss/python/integrations/chat/ollama)                           | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-ollama/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatGroq`](/oss/python/integrations/chat/groq)                               | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-groq/">  <img alt="Downloads per month" /></a></span>                |
+  | [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface)                 | <span>❌</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-huggingface/">  <img alt="Downloads per month" /></a></span>         |
+  | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai)                     | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-mistralai/">  <img alt="Downloads per month" /></a></span>           |
+  | [`ChatXAI`](/oss/python/integrations/chat/xai)                                 | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-xai/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatCohere`](/oss/python/integrations/chat/cohere)                           | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek)                       | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-deepseek/">  <img alt="Downloads per month" /></a></span>            |
+  | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints)              | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter)                   | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-openrouter/">  <img alt="Downloads per month" /></a></span>          |
+  | [`ChatTogether`](/oss/python/integrations/chat/together)                       | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-together/">  <img alt="Downloads per month" /></a></span>            |
+  | [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova)                  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span />                                                | <span><a href="https://pypi.org/project/langchain-amazon-nova/">  <img alt="Downloads per month" /></a></span>         |
+</div>
 
 See the [full list of chat model integrations](#all-chat-models) below for more options.
 
@@ -58,109 +60,66 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 
 ## All chat models
 
-<Columns>
-  <Card title="Abso" icon="link" href="/oss/python/integrations/chat/abso" />
-
-  <Card title="AI21 Labs" icon="link" href="/oss/python/integrations/chat/ai21" />
-
-  <Card title="AI/ML API" icon="link" href="/oss/python/integrations/chat/aimlapi" />
-
-  <Card title="Amazon Nova" icon="link" href="/oss/python/integrations/chat/amazon_nova" />
-
-  <Card title="Anthropic" icon="link" href="/oss/python/integrations/chat/anthropic" />
-
-  <Card title="AzureAIOpenAIApiChatModel" icon="link" href="/oss/python/integrations/chat/azure_ai" />
-
-  <Card title="Azure OpenAI" icon="link" href="/oss/python/integrations/chat/azure_chat_openai" />
-
-  <Card title="Baseten" icon="link" href="/oss/python/integrations/chat/baseten" />
-
-  <Card title="Cerebras" icon="link" href="/oss/python/integrations/chat/cerebras" />
-
-  <Card title="CloudflareWorkersAI" icon="link" href="/oss/python/integrations/chat/cloudflare_workersai" />
-
-  <Card title="Cohere" icon="link" href="/oss/python/integrations/chat/cohere" />
-
-  <Card title="ContextualAI" icon="link" href="/oss/python/integrations/chat/contextual" />
-
-  <Card title="Crusoe" icon="link" href="/oss/python/integrations/chat/crusoe" />
-
-  <Card title="Databricks" icon="link" href="/oss/python/integrations/chat/databricks" />
-
-  <Card title="DeepSeek" icon="link" href="/oss/python/integrations/chat/deepseek" />
-
-  <Card title="Featherless AI" icon="link" href="/oss/python/integrations/chat/featherless_ai" />
-
-  <Card title="Google Gemini" icon="link" href="/oss/python/integrations/chat/google_generative_ai" />
-
-  <Card title="Google Cloud Vertex AI" icon="link" href="/oss/python/integrations/chat/google_vertex_ai" />
-
-  <Card title="Google Anthropic on Vertex AI" icon="link" href="/oss/python/integrations/chat/google_anthropic_vertex" />
-
-  <Card title="DigitalOcean Gradient" icon="link" href="/oss/python/integrations/chat/gradientai" />
-
-  <Card title="GreenNode" icon="link" href="/oss/python/integrations/chat/greennode" />
-
-  <Card title="Groq" icon="link" href="/oss/python/integrations/chat/groq" />
-
-  <Card title="ChatHuggingFace" icon="link" href="/oss/python/integrations/chat/huggingface" />
-
-  <Card title="IBM watsonx.ai" icon="link" href="/oss/python/integrations/chat/ibm_watsonx" />
-
-  <Card title="Kinetica" icon="link" href="/oss/python/integrations/chat/kinetica" />
-
-  <Card title="LiteLLM" icon="link" href="/oss/python/integrations/chat/litellm" />
-
-  <Card title="MistralAI" icon="link" href="/oss/python/integrations/chat/mistralai" />
-
-  <Card title="ModelScope" icon="link" href="/oss/python/integrations/chat/modelscope_chat_endpoint" />
-
-  <Card title="Naver" icon="link" href="/oss/python/integrations/chat/naver" />
-
-  <Card title="Nebius" icon="link" href="/oss/python/integrations/chat/nebius" />
-
-  <Card title="Netmind" icon="link" href="/oss/python/integrations/chat/netmind" />
-
-  <Card title="NVIDIA AI Endpoints" icon="link" href="/oss/python/integrations/chat/nvidia_ai_endpoints" />
-
-  <Card title="OCIGenAI" icon="link" href="/oss/python/integrations/chat/oci_generative_ai" />
-
-  <Card title="OCI Data Science" icon="link" href="/oss/python/integrations/chat/oci_data_science" />
-
-  <Card title="Ollama" icon="link" href="/oss/python/integrations/chat/ollama" />
-
-  <Card title="OpenAI" icon="link" href="/oss/python/integrations/chat/openai" />
-
-  <Card title="OpenRouter" icon="link" href="/oss/python/integrations/chat/openrouter" />
-
-  <Card title="Parallel" icon="link" href="/oss/python/integrations/chat/parallel" />
-
-  <Card title="Pipeshift" icon="link" href="/oss/python/integrations/chat/pipeshift" />
-
-  <Card title="ChatPredictionGuard" icon="link" href="/oss/python/integrations/chat/predictionguard" />
-
-  <Card title="Qwen QwQ" icon="link" href="/oss/python/integrations/chat/qwq" />
-
-  <Card title="Qwen" icon="link" href="/oss/python/integrations/chat/qwen" />
-
-  <Card title="RunPod Chat Model" icon="link" href="/oss/python/integrations/chat/runpod" />
-
-  <Card title="SambaNova" icon="link" href="/oss/python/integrations/chat/sambanova" />
-
-  <Card title="ChatSeekrFlow" icon="link" href="/oss/python/integrations/chat/seekrflow" />
-
-  <Card title="Together" icon="link" href="/oss/python/integrations/chat/together" />
-
-  <Card title="Upstage" icon="link" href="/oss/python/integrations/chat/upstage" />
-
-  <Card title="vLLM Chat" icon="link" href="/oss/python/integrations/chat/vllm" />
-
-  <Card title="ChatWriter" icon="link" href="/oss/python/integrations/chat/writer" />
-
-  <Card title="xAI" icon="link" href="/oss/python/integrations/chat/xai" />
-
-  <Card title="Xinference" icon="link" href="/oss/python/integrations/chat/xinference" />
-</Columns>
+<div>
+  | Model                                                                                 | Stream         | [Tool calling](/oss/python/langchain/tools) | [Structured output](/oss/python/langchain/structured-output/) | [Multimodal](/oss/python/langchain/messages#multimodal) | Downloads                                                                                                                 |
+  | :------------------------------------------------------------------------------------ | :------------- | :------------------------------------------ | :------------------------------------------------------------ | :------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------ |
+  | [`AzureChatOpenAI`](/oss/python/integrations/chat/azure_chat_openai)                  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-openai/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatOpenAI`](/oss/python/integrations/chat/openai)                                  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-openai/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`vLLM`](/oss/python/integrations/chat/vllm)                                          | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-openai/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatAnthropicVertex`](/oss/python/integrations/chat/google_anthropic_vertex)        | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-google-vertexai/">  <img alt="Downloads per month" /></a></span>        |
+  | [`ChatVertexAI`](/oss/python/integrations/chat/google_vertex_ai) (deprecated)         | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-google-vertexai/">  <img alt="Downloads per month" /></a></span>        |
+  | [`ChatAnthropic`](/oss/python/integrations/chat/anthropic)                            | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-anthropic/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatAnthropicTools`](/oss/python/integrations/chat/anthropic_functions)             | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-anthropic/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatGoogleGenerativeAI`](/oss/python/integrations/chat/google_generative_ai)        | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-google-genai/">  <img alt="Downloads per month" /></a></span>           |
+  | [`ChatBedrock`](/oss/python/integrations/chat/bedrock)                                | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-aws/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`ChatLiteLLM`](/oss/python/integrations/chat/litellm)                                | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-litellm/">  <img alt="Downloads per month" /></a></span>                |
+  | [`ChatDatabricks`](/oss/python/integrations/chat/databricks)                          | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ChatOllama`](/oss/python/integrations/chat/ollama)                                  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-ollama/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatGroq`](/oss/python/integrations/chat/groq)                                      | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-groq/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface)                        | <span>❌</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-huggingface/">  <img alt="Downloads per month" /></a></span>            |
+  | [`ChatFireworks`](/oss/python/integrations/chat/fireworks)                            | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-fireworks/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai)                            | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-mistralai/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatXAI`](/oss/python/integrations/chat/xai)                                        | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-xai/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`AzureAIChatCompletionsModel`](/oss/python/integrations/chat/azure_ai)               | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatCohere`](/oss/python/integrations/chat/cohere)                                  | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek)                              | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-deepseek/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints)                     | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/">  <img alt="Downloads per month" /></a></span>    |
+  | [`ChatWatsonx`](/oss/python/integrations/chat/ibm_watsonx)                            | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-ibm/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter)                          | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-openrouter/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ChatPerplexity`](/oss/python/integrations/chat/perplexity)                          | <span>✅</span> | <span>❌</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-perplexity/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ChatSambaNova`](/oss/python/integrations/chat/sambanova)                            | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-sambanova/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatCerebras`](/oss/python/integrations/chat/cerebras)                              | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-cerebras/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatBaseten`](/oss/python/integrations/chat/baseten)                                | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-baseten/">  <img alt="Downloads per month" /></a></span>                |
+  | [`ChatOCIGenerativeAI`](/oss/python/integrations/chat/oci_generative_ai)              | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-oci/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`ChatOCIModelDeployment`](/oss/python/integrations/chat/oci_data_science)            | <span>✅</span> | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-oci/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`ChatTogether`](/oss/python/integrations/chat/together)                              | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-together/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatUpstage`](/oss/python/integrations/chat/upstage)                                | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-upstage/">  <img alt="Downloads per month" /></a></span>                |
+  | [`ChatQwen`](/oss/python/integrations/chat/qwen)                                      | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-qwq/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`ChatQwQ`](/oss/python/integrations/chat/qwq)                                        | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-qwq/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`ChatAI21`](https://docs.ai21.com/)                                                  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-ai21/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`ChatClovaX`](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain)          | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-naver/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`ChatNebius`](https://github.com/nebius/langchain-nebius)                            | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-nebius/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatCloudflareWorkersAI`](https://github.com/cloudflare/langchain-cloudflare)       | <span>❌</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-cloudflare/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ChatMoonshot`](https://github.com/ArcadiaLin/langchain-moonshot)                    | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-moonshot/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatParallel`](/oss/python/integrations/chat/parallel)                              | <span>✅</span> | <span>❌</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatWriter`](https://dev.writer.com/home/introduction)                              | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova)                         | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span />                                                | <span><a href="https://pypi.org/project/langchain-amazon-nova/">  <img alt="Downloads per month" /></a></span>            |
+  | [`ChatGradient`](https://docs.digitalocean.com/products/gradientai-platform/)         | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-gradient/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatCrusoe`](/oss/python/integrations/chat/crusoe)                                  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-crusoe/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ModelScopeChatEndpoint`](https://github.com/modelscope/langchain-modelscope)        | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-modelscope-integration/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatContextual`](https://docs.contextual.ai/)                                       | <span>❌</span> | <span>❌</span>                              | <span>❌</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-contextual/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ChatAIMLAPI`](https://docs.aimlapi.com/)                                            | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-aimlapi/">  <img alt="Downloads per month" /></a></span>                |
+  | [`ChatPredictionGuard`](https://github.com/predictionguard/langchain-predictionguard) | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-predictionguard/">  <img alt="Downloads per month" /></a></span>        |
+  | [`ChatXinference`](https://github.com/TheSongg/langchain-xinference)                  | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-xinference/">  <img alt="Downloads per month" /></a></span>             |
+  | [`ChatKinetica`](https://github.com/kineticadb/langchain-kinetica)                    | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatRunPod`](https://docs.runpod.io/overview)                                       | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-runpod/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatAbso`](https://github.com/lunary-ai/langchain-abso)                             | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-abso/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`ChatFeatherlessAI`](https://github.com/featherlessai/langchain-featherless-ai)      | <span>✅</span> | <span>❌</span>                              | <span>❌</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-featherless-ai/">  <img alt="Downloads per month" /></a></span>         |
+  | [`ChatPipeshift`](https://github.com/pipeshift-org/langchain-pipeshift)               | <span>✅</span> | <span>❌</span>                              | <span>❌</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-pipeshift/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatGreenNode`](https://github.com/greennode-ai/langchain-greennode)                | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow)                | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-seekrflow/">  <img alt="Downloads per month" /></a></span>              |
+  | [`ChatNetmind`](https://github.com/protagolabs/langchain-netmind)                     | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-netmind/">  <img alt="Downloads per month" /></a></span>                |
+</div>
 
 <Info>
   If you'd like to contribute an integration, see [Contributing integrations](/oss/python/contributing#add-a-new-integration).

@@ -28,6 +28,40 @@ Show all suppressions.
   const { data, error } = await resend.suppressions.list();
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->list();
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Suppressions.list()
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Suppressions.list
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Suppressions.List(&resend.ListSuppressionsOptions{})
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result, list_opts::ListOptions};
 
@@ -41,10 +75,24 @@ Show all suppressions.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
 
-  $resend->suppressions->list();
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          resend.suppressions().list();
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  await resend.SuppressionListAsync();
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

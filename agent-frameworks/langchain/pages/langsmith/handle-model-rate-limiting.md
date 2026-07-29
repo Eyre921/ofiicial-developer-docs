@@ -12,7 +12,7 @@ If you're using `langchain` Python chat models in your application or evaluators
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
-from langchain_core.rate_limiters import InMemoryRateLimiter
+from langchain.rate_limiters import InMemoryRateLimiter
 
 rate_limiter = InMemoryRateLimiter(
     requests_per_second=0.1,  # <-- Super slow! We can only make a request once every 10 seconds!!

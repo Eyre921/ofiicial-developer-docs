@@ -54,7 +54,7 @@ import { createAgent, tool } from "langchain";
 import { z } from "zod";
 
 // Create a subagent
-const subagent = createAgent({ model: "google_genai:gemini-3.5-flash", tools: [...] });
+const subagent = createAgent({ model: "google_genai:gemini-3.6-flash", tools: [...] });
 
 // Wrap it as a tool
 const callResearchAgent = tool(
@@ -72,7 +72,7 @@ const callResearchAgent = tool(
 );
 
 // Main agent with subagent as a tool
-const mainAgent = createAgent({ model: "google_genai:gemini-3.5-flash", tools: [callResearchAgent] });
+const mainAgent = createAgent({ model: "google_genai:gemini-3.6-flash", tools: [callResearchAgent] });
 ```
 
 <Card title="Tutorial: Build a personal assistant with subagents" icon="sitemap" href="/oss/javascript/langchain/multi-agent/subagents-personal-assistant">

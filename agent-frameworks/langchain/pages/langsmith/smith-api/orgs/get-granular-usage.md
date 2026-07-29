@@ -19,4 +19,6 @@ shortlived = standard retention). When `group_by=trace_tier`, results
 are split into one record per retention tier per time bucket.
 
 `workspace_ids` filters results to the specified workspaces. Only
-workspaces the user has read access to are included.
+workspaces the user has read access to are included. When omitted, all
+workspaces the user can read are included (avoids enumerating every
+workspace id in the URL, which can exceed proxy header limits).

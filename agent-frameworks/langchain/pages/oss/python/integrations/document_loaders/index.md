@@ -45,7 +45,7 @@ The below document loaders allow you to load data from commonly used productivit
 
 | Document Loader                                                  | API reference                                                            |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [AgentMail](/oss/python/integrations/document_loaders/agentmail) | [`AgentMailLoader`](https://github.com/agentmail-to/langchain-agentmail) |
+| [AgentMail](https://github.com/agentmail-to/langchain-agentmail) | [`AgentMailLoader`](https://github.com/agentmail-to/langchain-agentmail) |
 
 ### Webpages
 
@@ -54,23 +54,22 @@ The below document loaders allow you to load webpages.
 | Document Loader                                                             | Description                                                                                                          | Package/API |
 | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------- |
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file) | Uses Unstructured to load and parse web pages                                                                        | Package     |
-| [Apify Dataset](/oss/python/integrations/document_loaders/apify_dataset)    | Load documents from Apify datasets                                                                                   | API         |
+| [Apify Dataset](https://docs.apify.com/platform/storage/dataset)            | Load documents from Apify datasets                                                                                   | API         |
 | [Docling](/oss/python/integrations/document_loaders/docling)                | Uses Docling to load and parse web pages                                                                             | Package     |
-| [Hyperbrowser](/oss/python/integrations/document_loaders/hyperbrowser)      | Platform for running and scaling headless browsers, can be used to scrape/crawl any site                             | API         |
-| [AgentQL](/oss/python/integrations/document_loaders/agentql)                | Web interaction and structured data extraction from any web page using an AgentQL query or a Natural Language prompt | API         |
-| [Browserbase](/oss/python/integrations/document_loaders/browserbase)        | Load webpages using managed headless browsers with stealth mode                                                      | API         |
+| [Hyperbrowser](https://docs.hyperbrowser.ai)                                | Platform for running and scaling headless browsers, can be used to scrape/crawl any site                             | API         |
+| [AgentQL](https://docs.agentql.com/)                                        | Web interaction and structured data extraction from any web page using an AgentQL query or a Natural Language prompt | API         |
 
 ### PDFs
 
 The below document loaders allow you to load PDF documents.
 
-| Document Loader                                                                    | Description                                          | Package/API |
-| ---------------------------------------------------------------------------------- | ---------------------------------------------------- | ----------- |
-| [Unstructured](/oss/python/integrations/document_loaders/unstructured_file)        | Uses Unstructured's open source library to load PDFs | Package     |
-| [Upstage Document Parse Loader](/oss/python/integrations/document_loaders/upstage) | Load PDF files using UpstageDocumentParseLoader      | Package     |
-| [Docling](/oss/python/integrations/document_loaders/docling)                       | Load PDF files using Docling                         | Package     |
-| [UnDatasIO](/oss/python/integrations/document_loaders/undatasio)                   | Load PDF files using UnDatasIO                       | Package     |
-| [OpenDataLoader PDF](/oss/python/integrations/document_loaders/opendataloader_pdf) | Load PDF files using OpenDataLoader PDF              | Package     |
+| Document Loader                                                                              | Description                                          | Package/API |
+| -------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ----------- |
+| [Unstructured](/oss/python/integrations/document_loaders/unstructured_file)                  | Uses Unstructured's open source library to load PDFs | Package     |
+| [Upstage Document Parse Loader](/oss/python/integrations/document_loaders/upstage)           | Load PDF files using UpstageDocumentParseLoader      | Package     |
+| [Docling](/oss/python/integrations/document_loaders/docling)                                 | Load PDF files using Docling                         | Package     |
+| [UnDatasIO](https://undatas.io)                                                              | Load PDF files using UnDatasIO                       | Package     |
+| [OpenDataLoader PDF](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | Load PDF files using OpenDataLoader PDF              | Package     |
 
 ### Cloud providers
 
@@ -86,103 +85,60 @@ The below document loaders allow you to load documents from your favorite cloud 
 
 The below document loaders allow you to load data from common data formats.
 
-| Document Loader                                                                                  | Data Type                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`Unstructured`](/oss/python/integrations/document_loaders/unstructured_file)                    | Many file types (see [https://docs.unstructured.io/platform/supported-file-types](https://docs.unstructured.io/platform/supported-file-types))                               |
-| [`DoclingLoader`](/oss/python/integrations/document_loaders/docling)                             | Various file types (see [https://docling-project.github.io/docling/](https://docling-project.github.io/docling/))                                                            |
-| [`PolarisAIDataInsightLoader`](/oss/python/integrations/document_loaders/polaris_ai_datainsight) | Various file types (see [https://datainsight.polarisoffice.com/documentation?docType=doc\_extract](https://datainsight.polarisoffice.com/documentation?docType=doc_extract)) |
+| Document Loader                                                                  | Data Type                                                                                                                                                                    |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`Unstructured`](/oss/python/integrations/document_loaders/unstructured_file)    | Many file types (see [https://docs.unstructured.io/platform/supported-file-types](https://docs.unstructured.io/platform/supported-file-types))                               |
+| [`DoclingLoader`](/oss/python/integrations/document_loaders/docling)             | Various file types (see [https://ds4sd.github.io/docling/](https://ds4sd.github.io/docling/))                                                                                |
+| [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground) | Various file types (see [https://datainsight.polarisoffice.com/documentation?docType=doc\_extract](https://datainsight.polarisoffice.com/documentation?docType=doc_extract)) |
 
 ## All document loaders
 
-<Columns>
-  <Card title="AgentMail" icon="link" href="/oss/python/integrations/document_loaders/agentmail" />
-
-  <Card title="AgentQLLoader" icon="link" href="/oss/python/integrations/document_loaders/agentql" />
-
-  <Card title="AirbyteLoader" icon="link" href="/oss/python/integrations/document_loaders/airbyte" />
-
-  <Card title="Apify Dataset" icon="link" href="/oss/python/integrations/document_loaders/apify_dataset" />
-
-  <Card title="AstraDB" icon="link" href="/oss/python/integrations/document_loaders/astradb" />
-
-  <Card title="Azure Blob Storage" icon="link" href="/oss/python/integrations/document_loaders/azure_blob_storage" />
-
-  <Card title="Box" icon="link" href="/oss/python/integrations/document_loaders/box" />
-
-  <Card title="Browserbase" icon="link" href="/oss/python/integrations/document_loaders/browserbase" />
-
-  <Card title="Copy Paste" icon="link" href="/oss/python/integrations/document_loaders/copypaste" />
-
-  <Card title="Docling" icon="link" href="/oss/python/integrations/document_loaders/docling" />
-
-  <Card title="Docugami" icon="link" href="/oss/python/integrations/document_loaders/docugami" />
-
-  <Card title="Google AlloyDB for PostgreSQL" icon="link" href="/oss/python/integrations/document_loaders/google_alloydb" />
-
-  <Card title="Google BigQuery" icon="link" href="/oss/python/integrations/document_loaders/google_bigquery" />
-
-  <Card title="Google Bigtable" icon="link" href="/oss/python/integrations/document_loaders/google_bigtable" />
-
-  <Card title="Google Cloud SQL for SQL Server" icon="link" href="/oss/python/integrations/document_loaders/google_cloud_sql_mssql" />
-
-  <Card title="Google Cloud SQL for MySQL" icon="link" href="/oss/python/integrations/document_loaders/google_cloud_sql_mysql" />
-
-  <Card title="Google Cloud SQL for PostgreSQL" icon="link" href="/oss/python/integrations/document_loaders/google_cloud_sql_pg" />
-
-  <Card title="Google Cloud Storage Directory" icon="link" href="/oss/python/integrations/document_loaders/google_cloud_storage_directory" />
-
-  <Card title="Google Cloud Storage File" icon="link" href="/oss/python/integrations/document_loaders/google_cloud_storage_file" />
-
-  <Card title="Google Firestore in Datastore Mode" icon="link" href="/oss/python/integrations/document_loaders/google_datastore" />
-
-  <Card title="Google Drive" icon="link" href="/oss/python/integrations/document_loaders/google_drive" />
-
-  <Card title="Google El Carro for Oracle Workloads" icon="link" href="/oss/python/integrations/document_loaders/google_el_carro" />
-
-  <Card title="Google Firestore (Native Mode)" icon="link" href="/oss/python/integrations/document_loaders/google_firestore" />
-
-  <Card title="Google Memorystore for Redis" icon="link" href="/oss/python/integrations/document_loaders/google_memorystore_redis" />
-
-  <Card title="Google Spanner" icon="link" href="/oss/python/integrations/document_loaders/google_spanner" />
-
-  <Card title="Google Speech-to-Text" icon="link" href="/oss/python/integrations/document_loaders/google_speech_to_text" />
-
-  <Card title="HyperbrowserLoader" icon="link" href="/oss/python/integrations/document_loaders/hyperbrowser" />
-
-  <Card title="Kinetica" icon="link" href="/oss/python/integrations/document_loaders/kinetica" />
-
-  <Card title="LangSmith" icon="link" href="/oss/python/integrations/document_loaders/langsmith" />
-
-  <Card title="Near Blockchain" icon="link" href="/oss/python/integrations/document_loaders/mintbase" />
-
-  <Card title="OpenDataLoader PDF" icon="link" href="/oss/python/integrations/document_loaders/opendataloader_pdf" />
-
-  <Card title="Oracle Autonomous Database" icon="link" href="/oss/python/integrations/document_loaders/oracleadb_loader" />
-
-  <Card title="Oracle AI Database" icon="link" href="/oss/python/integrations/document_loaders/oracleai" />
-
-  <Card title="Outline Document Loader" icon="link" href="/oss/python/integrations/document_loaders/outline" />
-
-  <Card title="PaddleOCR-VL" icon="link" href="/oss/python/integrations/document_loaders/paddleocr_vl" />
-
-  <Card title="Polaris AI DataInsight" icon="link" href="/oss/python/integrations/document_loaders/polaris_ai_datainsight" />
-
-  <Card title="Dell PowerScale" icon="link" href="/oss/python/integrations/document_loaders/powerscale" />
-
-  <Card title="PyMuPDF4LLM" icon="link" href="/oss/python/integrations/document_loaders/pymupdf4llm" />
-
-  <Card title="SingleStore" icon="link" href="/oss/python/integrations/document_loaders/singlestore" />
-
-  <Card title="Soniox" icon="link" href="/oss/python/integrations/document_loaders/soniox" />
-
-  <Card title="UnDatasIO" icon="link" href="/oss/python/integrations/document_loaders/undatasio" />
-
-  <Card title="Unstructured" icon="link" href="/oss/python/integrations/document_loaders/unstructured_file" />
-
-  <Card title="Upstage" icon="link" href="/oss/python/integrations/document_loaders/upstage" />
-
-  <Card title="YoutubeLoaderDL" icon="link" href="/oss/python/integrations/document_loaders/yt_dlp" />
-</Columns>
+<div>
+  | Integration                                                                                                  | Downloads                                                                                                                   |
+  | :----------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+  | [`LangSmithLoader`](/oss/python/integrations/document_loaders/langsmith)                                     | <span><a href="https://pypi.org/project/langchain-core/">  <img alt="Downloads per month" /></a></span>                     |
+  | [`Google bigquery`](/oss/python/integrations/document_loaders/google_bigquery)                               | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>         |
+  | [`Google cloud storage directory`](/oss/python/integrations/document_loaders/google_cloud_storage_directory) | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>         |
+  | [`Google cloud storage file`](/oss/python/integrations/document_loaders/google_cloud_storage_file)           | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>         |
+  | [`Google drive`](/oss/python/integrations/document_loaders/google_drive)                                     | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>         |
+  | [`Google speech-to-text audio transcripts`](/oss/python/integrations/document_loaders/google_speech_to_text) | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span>         |
+  | [`UnstructuredLoader`](/oss/python/integrations/document_loaders/unstructured_file)                          | <span><a href="https://pypi.org/project/langchain-unstructured/">  <img alt="Downloads per month" /></a></span>             |
+  | [`AstraDB`](/oss/python/integrations/document_loaders/astradb)                                               | <span><a href="https://pypi.org/project/langchain-astradb/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Docling`](/oss/python/integrations/document_loaders/docling)                                               | <span><a href="https://pypi.org/project/langchain-docling/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Oracle AI vector search document processing`](/oss/python/integrations/document_loaders/oracleai)          | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Oracle autonomous database`](/oss/python/integrations/document_loaders/oracleadb_loader)                   | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Upstage`](/oss/python/integrations/document_loaders/upstage)                                               | <span><a href="https://pypi.org/project/langchain-upstage/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Google alloydb for postgresql`](/oss/python/integrations/document_loaders/google_alloydb)                  | <span><a href="https://pypi.org/project/langchain-google-alloydb-pg/">  <img alt="Downloads per month" /></a></span>        |
+  | [`Google firestore (native mode)`](/oss/python/integrations/document_loaders/google_firestore)               | <span><a href="https://pypi.org/project/langchain-google-firestore/">  <img alt="Downloads per month" /></a></span>         |
+  | [`Google spanner`](/oss/python/integrations/document_loaders/google_spanner)                                 | <span><a href="https://pypi.org/project/langchain-google-spanner/">  <img alt="Downloads per month" /></a></span>           |
+  | [`ApifyDatasetLoader`](https://docs.apify.com/platform/storage/dataset)                                      | <span><a href="https://pypi.org/project/langchain-apify/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`PyMuPDF4LLMLoader`](https://github.com/lakinduboteju/langchain-pymupdf4llm)                                | <span><a href="https://pypi.org/project/langchain-pymupdf4llm/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Google cloud SQL for postgresql`](https://cloud.google.com/sql/docs/postgres)                              | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-pg/">  <img alt="Downloads per month" /></a></span>      |
+  | [`OpenDataLoader PDF`](https://github.com/opendataloader-project/langchain-opendataloader-pdf)               | <span><a href="https://pypi.org/project/langchain-opendataloader-pdf/">  <img alt="Downloads per month" /></a></span>       |
+  | [`PDFParser`](https://dev.writer.com/api-guides/api-reference/tool-api/pdf-parser#parse-pdf)                 | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`YoutubeLoaderDL`](https://github.com/aqib0770/langchain-yt-dlp)                                            | <span><a href="https://pypi.org/project/langchain-yt-dlp/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`Outline`](https://github.com/10Pines/langchain-outline)                                                    | <span><a href="https://pypi.org/project/langchain-outline/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`SingleStoreLoader`](https://github.com/singlestore-labs/langchain-singlestore/)                            | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span>              |
+  | [`Docugami`](/oss/python/integrations/document_loaders/docugami)                                             | <span><a href="https://pypi.org/project/docugami-langchain/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Google memorystore for Redis`](/oss/python/integrations/document_loaders/google_memorystore_redis)         | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/">  <img alt="Downloads per month" /></a></span> |
+  | [`HyperbrowserLoader`](https://docs.hyperbrowser.ai)                                                         | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Azure blob storage loader`](/oss/python/integrations/document_loaders/azure_blob_storage)                  | <span><a href="https://pypi.org/project/langchain-azure-storage/">  <img alt="Downloads per month" /></a></span>            |
+  | [`PaddleOCR-VL`](https://www.paddleocr.com)                                                                  | <span><a href="https://pypi.org/project/langchain-paddleocr/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Google bigtable`](/oss/python/integrations/document_loaders/google_bigtable)                               | <span><a href="https://pypi.org/project/langchain-google-bigtable/">  <img alt="Downloads per month" /></a></span>          |
+  | [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground)                             | <span><a href="https://pypi.org/project/langchain-polaris-ai-datainsight/">  <img alt="Downloads per month" /></a></span>   |
+  | [`langchain_box`](https://developer.box.com/)                                                                | <span><a href="https://pypi.org/project/langchain-box/">  <img alt="Downloads per month" /></a></span>                      |
+  | [`AgentQLLoader`](https://docs.agentql.com/)                                                                 | <span><a href="https://pypi.org/project/langchain-agentql/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Google cloud SQL for mysql`](/oss/python/integrations/document_loaders/google_cloud_sql_mysql)             | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mysql/">  <img alt="Downloads per month" /></a></span>   |
+  | [`Google firestore in datastore mode`](/oss/python/integrations/document_loaders/google_datastore)           | <span><a href="https://pypi.org/project/langchain-google-datastore/">  <img alt="Downloads per month" /></a></span>         |
+  | [`Kinetica document loader`](https://github.com/kineticadb/langchain-kinetica)                               | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`Undatasio`](https://undatas.io)                                                                            | <span><a href="https://pypi.org/project/langchain-undatasio/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Soniox`](https://soniox.com/docs/stt/concepts/supported-languages)                                         | <span><a href="https://pypi.org/project/langchain-soniox/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`AirbyteLoader`](https://docs.airbyte.com/integrations/)                                                    | <span><a href="https://pypi.org/project/langchain-airbyte/">  <img alt="Downloads per month" /></a></span>                  |
+  | [`Google cloud SQL for SQL server`](/oss/python/integrations/document_loaders/google_cloud_sql_mssql)        | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/">  <img alt="Downloads per month" /></a></span>   |
+  | [`AgentMail`](https://github.com/agentmail-to/langchain-agentmail)                                           | <span><a href="https://pypi.org/project/langchain-agentmail/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Google el carro for Oracle workloads`](https://github.com/googleapis/langchain-google-el-carro-python/)    | <span><a href="https://pypi.org/project/langchain-google-el-carro/">  <img alt="Downloads per month" /></a></span>          |
+  | [`PowerScaleDocumentLoader`](/oss/python/integrations/document_loaders/powerscale)                           | <span><a href="https://pypi.org/project/powerscale-rag-connector/">  <img alt="Downloads per month" /></a></span>           |
+</div>
 
 ***
 

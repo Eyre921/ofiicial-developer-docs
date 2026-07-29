@@ -85,7 +85,7 @@ These examples assume you have already created a sandbox/devbox using the provid
       backend = LangSmithSandbox(sandbox=ls_sandbox)
 
       agent = create_deep_agent(
-          model=ChatAnthropic(model="google_genai:gemini-3.5-flash"),
+          model=ChatAnthropic(model="google_genai:gemini-3.6-flash"),
           system_prompt="You are a Python coding assistant with sandbox access.",
           backend=backend,
       )
@@ -308,7 +308,7 @@ These examples assume you have already created a sandbox/devbox using the provid
       backend = DaytonaSandbox(sandbox=sandbox)
 
       agent = create_deep_agent(
-          model=ChatAnthropic(model="google_genai:gemini-3.5-flash"),
+          model=ChatAnthropic(model="google_genai:gemini-3.6-flash"),
           system_prompt="You are a Python coding assistant with sandbox access.",
           backend=backend,
       )
@@ -737,7 +737,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
               idle_ttl_seconds=3600,  # TTL: clean up when idle
           )
       return create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=LangSmithSandbox(sandbox=ls_sandbox),
       )
   ```
@@ -954,7 +954,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
       else:
           ls_sandbox = client.create_sandbox(name=sandbox_name)
       return create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           backend=LangSmithSandbox(sandbox=ls_sandbox),
       )
   ```
@@ -1181,7 +1181,7 @@ Trade-offs:
   backend = LangSmithSandbox(sandbox=ls_sandbox)
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       backend=backend,
       system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
   )

@@ -30,6 +30,60 @@ Remove a single suppression by ID or email.
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Remove by suppression id
+  $resend->suppressions->remove(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Remove by email
+  $resend->suppressions->remove(
+    'steve.wozniak@example.com'
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  # Remove by suppression id
+  resend.Suppressions.remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  # Remove by email
+  resend.Suppressions.remove("steve.wozniak@example.com")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  # Remove by suppression id
+  Resend::Suppressions.remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  # Remove by email
+  Resend::Suppressions.remove("steve.wozniak@example.com")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	// Remove by suppression id
+  	client.Suppressions.Remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  	// Remove by email
+  	client.Suppressions.Remove("steve.wozniak@example.com")
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result};
 
@@ -53,18 +107,32 @@ Remove a single suppression by ID or email.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          // Remove by suppression id
+          resend.suppressions().remove("e169aa45-1ecf-4183-9955-b1499d5701d3");
+
+          // Remove by email
+          resend.suppressions().remove("steve.wozniak@example.com");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
 
   // Remove by suppression id
-  $resend->suppressions->remove(
-    'e169aa45-1ecf-4183-9955-b1499d5701d3'
-  );
+  await resend.SuppressionRemoveAsync( "e169aa45-1ecf-4183-9955-b1499d5701d3" );
 
   // Remove by email
-  $resend->suppressions->remove(
-    'steve.wozniak@example.com'
-  );
+  await resend.SuppressionRemoveAsync( "steve.wozniak@example.com" );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

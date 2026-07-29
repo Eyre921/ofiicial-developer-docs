@@ -33,7 +33,7 @@ See [Core capabilities](#core-capabilities) for a full breakdown of each compone
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[get_weather],
       system_prompt="You are a helpful assistant",
   )
@@ -286,7 +286,7 @@ The backends support the following file system operations:
     The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7.0a4`.
   </Note>
 
-  To expose only a subset of the filesystem tools listed above, instead of hiding them all, pass a `tools` allowlist to [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) and provide the instance through `middleware=`. Any built-in filesystem tool left out of the list is removed from both the model's tool list and the middleware's dynamic system prompt section.
+  To expose only a subset of the filesystem tools listed above, instead of hiding them all, pass a `tools` allowlist to [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) and provide the instance through `middleware=`. Any built-in filesystem tool left out of the list is removed from the model's tool list.
 
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import create_deep_agent
@@ -396,7 +396,7 @@ For Anthropic and Amazon Bedrock models, `create_deep_agent` automatically appli
 
 Prompt caching is enabled by default when using an Anthropic model, or a Bedrock model (Claude or Nova). No configuration is required.
 
-For other providers, see [Middleware integrations](/oss/python/integrations/middleware#official-integrations) for available provider-specific caching middleware.
+For other providers, see [Middleware integrations](/oss/python/integrations/middleware) for available provider-specific caching middleware.
 
 ## Delegation
 

@@ -40,7 +40,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
-  <p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p>
+  Learn how to avoid duplication when creating a workflow by reusing existing workflows.
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 

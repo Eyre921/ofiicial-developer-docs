@@ -478,7 +478,7 @@ A meeting notes block is a metadata container that lives on the page as a child 
 
 ### Retrieving AI meeting notes content
 
-Meeting notes blocks are read-only. To access the generated content, fetch the page's children to find the meeting notes block, then follow the child block IDs to retrieve each section's content.
+Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media. To access generated content, fetch the page's children to find the meeting notes block, then follow the child block IDs to retrieve each section.
 
 **Step 1 — List the page's children** to find the meeting notes block:
 

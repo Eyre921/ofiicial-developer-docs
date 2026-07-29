@@ -342,7 +342,7 @@ You can adjust `max_retries` and `timeout` when creating a model, then pass that
 from langchain.chat_models import init_chat_model
 
 model = init_chat_model(
-    "google_genai:gemini-3.5-flash",
+    "google_genai:gemini-3.6-flash",
     max_retries=10,  # Increase for unreliable networks (default: 6)
     timeout=120,  # Seconds; increase for slow connections
 )
@@ -406,7 +406,7 @@ print(response)  # AIMessage("J'adore créer des applications.")
 ```
 
 <Info>
-  If the return type of your invocation is a string, ensure that you are using a chat model as opposed to a LLM. Legacy, text-completion LLMs return strings directly. LangChain chat models are prefixed with "Chat", e.g., [`ChatOpenAI`](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI)(/oss/integrations/chat/openai).
+  If the return type of your invocation is a string, ensure that you are using a chat model as opposed to an LLM. Legacy, text-completion LLMs return strings directly. LangChain chat models are prefixed with "Chat", e.g., [`ChatOpenAI`](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI)(/oss/integrations/chat/openai).
 </Info>
 
 ### Stream
@@ -1160,7 +1160,7 @@ To help manage rate limits, chat model integrations accept a `rate_limiter` para
   LangChain in comes with (an optional) built-in [`InMemoryRateLimiter`](https://reference.langchain.com/python/langchain-core/rate_limiters/InMemoryRateLimiter). This limiter is thread safe and can be shared by multiple threads in the same process.
 
   ```python Define a rate limiter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain_core.rate_limiters import InMemoryRateLimiter
+  from langchain.rate_limiters import InMemoryRateLimiter
 
   rate_limiter = InMemoryRateLimiter(
       requests_per_second=0.1,  # 1 request every 10s

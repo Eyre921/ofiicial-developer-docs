@@ -61,7 +61,7 @@ Pass a `thread_id` via `config` so the conversation is checkpointed and follow-u
       return f"It's always sunny in {city}!"
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[get_weather],
       checkpointer=InMemorySaver()
   )

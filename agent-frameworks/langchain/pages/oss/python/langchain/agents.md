@@ -22,7 +22,7 @@ A harness is everything around that loop: the prompt, the tools, and any middlew
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
 
-  agent = create_agent(model="google_genai:gemini-3.5-flash", tools=tools)
+  agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools)
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -76,7 +76,7 @@ Pass a model identifier string (`"provider:model"`) or an initialized model inst
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
 
-  agent = create_agent(model="google_genai:gemini-3.5-flash", tools=tools)
+  agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools)
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -132,7 +132,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
       return f"Results for: {query}"
 
 
-  agent = create_agent(model="google_genai:gemini-3.5-flash", tools=[search])
+  agent = create_agent(model="google_genai:gemini-3.6-flash", tools=[search])
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -227,7 +227,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=tools,
       system_prompt="You are a helpful assistant. Be concise and accurate.",
   )
@@ -297,7 +297,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
       confidence: float
 
 
-  agent = create_agent(model="google_genai:gemini-3.5-flash", tools=tools, response_format=Answer)
+  agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools, response_format=Answer)
   result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
   result["structured_response"]  # Answer(summary=..., confidence=...)
   ```
@@ -408,7 +408,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   from langgraph.checkpoint.memory import InMemorySaver
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[],
       checkpointer=InMemorySaver(),
   )
@@ -599,7 +599,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[],
       context_schema=Context,
       checkpointer=InMemorySaver(),
@@ -856,7 +856,7 @@ Agents are especially useful when they can take action rather than just generate
   from deepagents.middleware import FilesystemMiddleware
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[search],
       middleware=[FilesystemMiddleware(backend=StateBackend())],
   )
@@ -947,7 +947,7 @@ Every model call has a fixed context window. As an agent runs, that window fills
   from deepagents.middleware import FilesystemMiddleware, MemoryMiddleware, SkillsMiddleware, SummarizationMiddleware
 
   backend = StateBackend()
-  model="google_genai:gemini-3.5-flash"
+  model="google_genai:gemini-3.6-flash"
 
   agent = create_agent(
       model=model,
@@ -1101,7 +1101,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   backend = StateBackend()
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[search],
       middleware=[
           FilesystemMiddleware(backend=backend),
@@ -1372,7 +1372,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  agent = create_agent(model="google_genai:gemini-3.5-flash", tools=tools, name="research_assistant")
+  agent = create_agent(model="google_genai:gemini-3.6-flash", tools=tools, name="research_assistant")
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1418,7 +1418,7 @@ Agents in production encounter failures that rarely appear in development: rate 
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[search],
       middleware=[
           ModelRetryMiddleware(max_retries=3),
@@ -1580,7 +1580,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[search],
       middleware=[PIIMiddleware("email")],
   )
@@ -1721,7 +1721,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
 
 
   agent = create_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[search],
       middleware=[HumanInTheLoopMiddleware(interrupt_on={"write_file": True})],
   )

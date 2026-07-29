@@ -15,7 +15,7 @@ Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[search, fetch_url, run_query],
   )
   ```
@@ -112,7 +112,7 @@ Deep Agents infers the tool schema from the function signature and docstring, so
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[internet_search],
   )
   ```
@@ -333,7 +333,7 @@ pip install langchain-mcp-adapters
       tools = await client.get_tools()
 
       agent = create_deep_agent(
-          model="google_genai:gemini-3.5-flash",
+          model="google_genai:gemini-3.6-flash",
           tools=tools,
       )
 

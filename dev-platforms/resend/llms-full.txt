@@ -1656,6 +1656,378 @@ You can retrieve broadcasts created via both this API and the Resend dashboard.
 </ResponseExample>
 
 
+# Retrieve Broadcast Metrics
+Source: https://resend.com/docs/api-reference/broadcasts/get-broadcast-metrics
+
+GET /broadcasts/:broadcast_id/metrics
+Retrieve aggregate metrics for a broadcast.
+
+<Warning>
+  Broadcast metrics and recipients are currently in private beta and only
+  available to a limited number of users. APIs might change before it is generally available.
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-broadcast-metrics.0
+    ```
+  </CodeGroup>
+</Warning>
+
+Delivery and engagement counters for a single broadcast. Each counter reports a
+`total` (the number of recipients) and a `percentage`. Opens and clicks are
+reported as unique counts.
+
+<Info>
+  While a broadcast is still sending, percentages divide by the number of emails
+  sent so far (delivered + bounced). Once the broadcast has finished, they
+  divide by the full audience total. Suppressions are decided before sending, so
+  they always divide by the full audience total.
+</Info>
+
+<Info>
+  Responses are cached for up to 15 minutes, so requesting the same broadcast's
+  metrics again may return slightly stale data within that window.
+</Info>
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The broadcast ID.
+</ResendParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `broadcast_metrics`.
+</ParamField>
+
+<ParamField type="string">
+  The broadcast's ID.
+</ParamField>
+
+<ParamField type="string">
+  The broadcast's status. See all available `status` types in [the Broadcasts
+  overview](/docs/dashboard/broadcasts/introduction#understand-broadcast-statuses).
+</ParamField>
+
+<ParamField type="string">
+  When the broadcast was created.
+</ParamField>
+
+<ParamField type="string | null">
+  When the broadcast is or was scheduled to send. `null` if it was never
+  scheduled.
+</ParamField>
+
+<ParamField type="string | null">
+  When the broadcast started sending. `null` if it hasn't started.
+</ParamField>
+
+<ParamField type="number">
+  The total number of recipients in the broadcast's audience.
+</ParamField>
+
+<ParamField type="number">
+  The total number of recipients processed so far. Calculated as `delivered +
+      bounced`.
+</ParamField>
+
+<ParamField type="number">
+  The total number of recipients not yet processed. Calculated as `total` minus
+  `sent` minus `suppressed`, floored at `0`.
+</ParamField>
+
+<ParamField type="object">
+  The total number and percentage of emails accepted by the recipient's mail
+  server. Shaped as `{ total, percentage }`.
+</ParamField>
+
+<ParamField type="object">
+  The total number and percentage of recipients who opened, counted once
+  per recipient. Shaped as `{ total, percentage }`.
+</ParamField>
+
+<ParamField type="object">
+  The total number and percentage of recipients who clicked, counted once
+  per recipient. Shaped as `{ total, percentage }`.
+</ParamField>
+
+<ParamField type="object">
+  The total number and percentage of recipients who unsubscribed. Shaped as
+  `{ total, percentage }`.
+</ParamField>
+
+<ParamField type="object">
+  The total number and percentage of emails that bounced. Shaped as `{ total,
+      percentage }`.
+</ParamField>
+
+<ParamField type="object">
+  The total number and percentage of emails marked as spam by the recipient.
+  Shaped as `{ total, percentage }`.
+</ParamField>
+
+<ParamField type="object">
+  The total number and percentage of emails not sent because the recipient
+  was suppressed. Shaped as `{ total, percentage }`.
+</ParamField>
+
+<ParamField type="array">
+  Every link that was clicked, with per-link counts.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The URL that was clicked.
+    </ParamField>
+
+    <ParamField type="number">
+      The total number of clicks on this link, including repeat clicks by
+      the same recipient.
+    </ParamField>
+
+    <ParamField type="number">
+      The total number of recipients who clicked this link, counted once
+      per recipient.
+    </ParamField>
+
+    <ParamField type="number">
+      The percentage of `unique_clicks` out of the same denominator used for
+      the other counters.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.broadcasts.metrics(
+    '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
+  );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/metrics' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "broadcast_metrics",
+    "broadcast_id": "559ac32e-9ef5-46fb-82a1-b76b840c0f7b",
+    "status": "sent",
+    "created_at": "2026-12-01 19:32:22.980+00",
+    "scheduled_at": "2026-12-02 19:32:22.980+00",
+    "sent_at": "2026-12-02 19:32:22.980+00",
+    "total": 1000,
+    "sent": 995,
+    "remaining": 0,
+    "delivered": { "total": 945, "percentage": 94.5 },
+    "opened": { "total": 500, "percentage": 50 },
+    "clicked": { "total": 100, "percentage": 10 },
+    "unsubscribed": { "total": 20, "percentage": 2 },
+    "bounced": { "total": 50, "percentage": 5 },
+    "complained": { "total": 10, "percentage": 1 },
+    "suppressed": { "total": 5, "percentage": 0.5 },
+    "clicked_links": [
+      {
+        "url": "https://resend.com/pricing",
+        "clicks": 90,
+        "unique_clicks": 65,
+        "percentage": 6.5
+      },
+      {
+        "url": "https://resend.com/docs",
+        "clicks": 45,
+        "unique_clicks": 35,
+        "percentage": 3.5
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# List Broadcast Recipients
+Source: https://resend.com/docs/api-reference/broadcasts/list-broadcast-recipients
+
+GET /broadcasts/:broadcast_id/recipients
+Retrieve the recipients of a broadcast for a given event type.
+
+<Warning>
+  Broadcast metrics and recipients are currently in private beta and only
+  available to a limited number of users. APIs might change before it is generally available.
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+
+  <span />
+
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.19.0-preview-broadcast-metrics.0
+    ```
+  </CodeGroup>
+</Warning>
+
+Retrieve the recipients of a broadcast, filtered by a single event `type` (for
+example everyone who `opened`, `clicked`, or `bounced`). Results are paginated
+with cursors. See [Pagination](/docs/api-reference/pagination) for how `after` and
+`before` work.
+
+<Info>
+  Responses are cached for up to 15 minutes, so requesting the same page again
+  may return slightly stale data within that window.
+</Info>
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The broadcast ID.
+</ResendParamField>
+
+## Query Parameters
+
+<ResendParamField type="string">
+  The event to filter recipients by. One of `sent`, `delivered`, `opened`,
+  `clicked`, `bounced`, `complained`, `unsubscribed`, or `suppressed`.
+</ResendParamField>
+
+<ResendParamField type="number">
+  Number of recipients to return. Between `1` and `100`. Defaults to `20`.
+</ResendParamField>
+
+<ResendParamField type="string">
+  Cursor to fetch the page after this recipient. Cannot be used with `before`.
+</ResendParamField>
+
+<ResendParamField type="string">
+  Cursor to fetch the page before this recipient. Cannot be used with `after`.
+</ResendParamField>
+
+<ResendParamField type="string">
+  Filter recipients whose email contains this value.
+</ResendParamField>
+
+<ResendParamField type="string">
+  Filter by bounce classification. One of `permanent`, `transient`, or
+  `undetermined`. Can only be used with `type=bounced`.
+</ResendParamField>
+
+## Response Fields
+
+<ParamField type="string">
+  Always `list`.
+</ParamField>
+
+<ParamField type="boolean">
+  Whether more recipients exist beyond this page.
+</ParamField>
+
+<ParamField type="array">
+  The recipients matching the requested `type`.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      An opaque cursor for this row, used only for pagination. It does not
+      identify any entity in Resend. Use `contact_id` to reference the contact.
+    </ParamField>
+
+    <ParamField type="string | null">
+      The matching contact's ID. `null` when the recipient's email no longer
+      maps to a contact.
+    </ParamField>
+
+    <ParamField type="string">
+      The recipient's email address.
+    </ParamField>
+
+    <ParamField type="number">
+      How many times the recipient triggered the event. Only returned for
+      `type=opened` and `type=clicked`.
+    </ParamField>
+
+    <ParamField type="string | null">
+      The bounce classification: `permanent`, `transient`, or `undetermined`.
+      Only returned for `type=bounced`.
+    </ParamField>
+
+    <ParamField type="array">
+      The links this recipient clicked. Only returned for `type=clicked`.
+
+      <Expandable title="properties">
+        <ParamField type="string">
+          The URL that was clicked.
+        </ParamField>
+
+        <ParamField type="number">
+          How many times the recipient clicked this link.
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.broadcasts.recipients(
+    '559ac32e-9ef5-46fb-82a1-b76b840c0f7b',
+    { type: 'clicked', limit: 20 },
+  );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/broadcasts/559ac32e-9ef5-46fb-82a1-b76b840c0f7b/recipients?type=clicked&limit=20' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": true,
+    "data": [
+      {
+        "id": "b2Zmc2V0OjA",
+        "contact_id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+        "email": "carter@example.com",
+        "count": 3,
+        "clicked_links": [
+          { "url": "https://resend.com/pricing", "clicks": 2 },
+          { "url": "https://resend.com/docs", "clicks": 1 }
+        ]
+      },
+      {
+        "id": "b2Zmc2V0OjE",
+        "contact_id": null,
+        "email": "dana@example.com",
+        "count": 1,
+        "clicked_links": [{ "url": "https://resend.com/pricing", "clicks": 1 }]
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
 # List Broadcasts
 Source: https://resend.com/docs/api-reference/broadcasts/list-broadcasts
 
@@ -11028,6 +11400,52 @@ Add up to 100 email addresses to the suppression list at once.
   });
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->batch->add([
+    'emails' => ['steve.wozniak@example.com', 'susan.kare@example.com'],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Suppressions.Batch.AddParams = {
+    "emails": ["steve.wozniak@example.com", "susan.kare@example.com"],
+  }
+
+  resend.Suppressions.Batch.add(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Suppressions::Batch.add(
+    emails: ["steve.wozniak@example.com", "susan.kare@example.com"]
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.BatchAddSuppressionsRequest{
+  		Emails: []string{"steve.wozniak@example.com", "susan.kare@example.com"},
+  	}
+
+  	client.Suppressions.Batch.Add(params)
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::types::BatchAddSuppressionOptions;
   use resend_rs::{Resend, Result};
@@ -11044,12 +11462,34 @@ Add up to 100 email addresses to the suppression list at once.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.services.suppressions.model.AddSuppressionsOptions;
+  import java.util.List;
 
-  $resend->suppressions->batch->add([
-    'emails' => ['steve.wozniak@example.com', 'susan.kare@example.com'],
-  ]);
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          AddSuppressionsOptions options = AddSuppressionsOptions.builder()
+                  .emails(List.of("steve.wozniak@example.com", "susan.kare@example.com"))
+                  .build();
+
+          resend.suppressions().batch().add(options);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.SuppressionBatchAddAsync( new[]
+  {
+      "steve.wozniak@example.com",
+      "susan.kare@example.com",
+  } );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11107,6 +11547,50 @@ Add an email address to the suppression list.
   });
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->add([
+    'email' => 'steve.wozniak@example.com',
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Suppressions.AddParams = {
+    "email": "steve.wozniak@example.com",
+  }
+
+  resend.Suppressions.add(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Suppressions.add(email: "steve.wozniak@example.com")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.AddSuppressionRequest{
+  		Email: "steve.wozniak@example.com",
+  	}
+
+  	client.Suppressions.Add(params)
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::types::AddSuppressionOptions;
   use resend_rs::{Resend, Result};
@@ -11122,12 +11606,30 @@ Add an email address to the suppression list.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.services.suppressions.model.AddSuppressionOptions;
 
-  $resend->suppressions->add([
-    'email' => 'steve.wozniak@example.com',
-  ]);
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          AddSuppressionOptions options = AddSuppressionOptions.builder()
+                  .email("steve.wozniak@example.com")
+                  .build();
+
+          resend.suppressions().add(options);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.SuppressionAddAsync( "steve.wozniak@example.com" );
+  Console.WriteLine( "Suppression Id={0}", resp.Content );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11189,6 +11691,60 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Retrieve by suppression id
+  $resend->suppressions->get(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Retrieve by email
+  $resend->suppressions->get(
+    'steve.wozniak@example.com'
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  # Retrieve by suppression id
+  resend.Suppressions.get("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  # Retrieve by email
+  resend.Suppressions.get("steve.wozniak@example.com")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  # Retrieve by suppression id
+  Resend::Suppressions.get("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  # Retrieve by email
+  Resend::Suppressions.get("steve.wozniak@example.com")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	// Retrieve by suppression id
+  	client.Suppressions.Get("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  	// Retrieve by email
+  	client.Suppressions.Get("steve.wozniak@example.com")
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result};
 
@@ -11205,18 +11761,32 @@ suppression. For suppressions with a `manual` origin, `source_id` is `null`.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          // Retrieve by suppression id
+          resend.suppressions().get("e169aa45-1ecf-4183-9955-b1499d5701d3");
+
+          // Retrieve by email
+          resend.suppressions().get("steve.wozniak@example.com");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
 
   // Retrieve by suppression id
-  $resend->suppressions->get(
-    'e169aa45-1ecf-4183-9955-b1499d5701d3'
-  );
+  await resend.SuppressionRetrieveAsync( "e169aa45-1ecf-4183-9955-b1499d5701d3" );
 
   // Retrieve by email
-  $resend->suppressions->get(
-    'steve.wozniak@example.com'
-  );
+  await resend.SuppressionRetrieveAsync( "steve.wozniak@example.com" );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11279,6 +11849,40 @@ Show all suppressions.
   const { data, error } = await resend.suppressions.list();
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->list();
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  resend.Suppressions.list()
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Suppressions.list
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	client.Suppressions.List(&resend.ListSuppressionsOptions{})
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result, list_opts::ListOptions};
 
@@ -11292,10 +11896,24 @@ Show all suppressions.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
 
-  $resend->suppressions->list();
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          resend.suppressions().list();
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  await resend.SuppressionListAsync();
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11389,6 +12007,62 @@ Provide either `emails` or `ids`, but not both.
   ]);
   ```
 
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  # Remove by suppression ids
+  ids_params: resend.Suppressions.Batch.RemoveParams = {
+    "ids": ["e169aa45-1ecf-4183-9955-b1499d5701d3"],
+  }
+
+  resend.Suppressions.Batch.remove(ids_params)
+
+  # Remove by emails
+  emails_params: resend.Suppressions.Batch.RemoveParams = {
+    "emails": ["steve.wozniak@example.com", "susan.kare@example.com"],
+  }
+
+  resend.Suppressions.Batch.remove(emails_params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  # Remove by suppression ids
+  Resend::Suppressions::Batch.remove(
+    ids: ["e169aa45-1ecf-4183-9955-b1499d5701d3"]
+  )
+
+  # Remove by emails
+  Resend::Suppressions::Batch.remove(
+    emails: ["steve.wozniak@example.com", "susan.kare@example.com"]
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	// Remove by suppression ids
+  	client.Suppressions.Batch.Remove(&resend.BatchRemoveSuppressionsRequest{
+  		Ids: []string{"e169aa45-1ecf-4183-9955-b1499d5701d3"},
+  	})
+
+  	// Remove by emails
+  	client.Suppressions.Batch.Remove(&resend.BatchRemoveSuppressionsRequest{
+  		Emails: []string{"steve.wozniak@example.com", "susan.kare@example.com"},
+  	})
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result, types::BatchRemoveSuppressionOptions};
 
@@ -11409,6 +12083,51 @@ Provide either `emails` or `ids`, but not both.
 
     Ok(())
   }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.services.suppressions.model.RemoveSuppressionsOptions;
+  import java.util.List;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          // Remove by suppression ids
+          RemoveSuppressionsOptions byIds = RemoveSuppressionsOptions.builder()
+                  .ids(List.of("e169aa45-1ecf-4183-9955-b1499d5701d3"))
+                  .build();
+
+          resend.suppressions().batch().remove(byIds);
+
+          // Remove by emails
+          RemoveSuppressionsOptions byEmails = RemoveSuppressionsOptions.builder()
+                  .emails(List.of("steve.wozniak@example.com", "susan.kare@example.com"))
+                  .build();
+
+          resend.suppressions().batch().remove(byEmails);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  // Remove by suppression ids
+  await resend.SuppressionBatchRemoveAsync( new[]
+  {
+      new Guid( "e169aa45-1ecf-4183-9955-b1499d5701d3" ),
+  } );
+
+  // Remove by emails
+  await resend.SuppressionBatchRemoveAsync( new[]
+  {
+      "steve.wozniak@example.com",
+      "susan.kare@example.com",
+  } );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -11482,6 +12201,60 @@ Remove a single suppression by ID or email.
   );
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  // Remove by suppression id
+  $resend->suppressions->remove(
+    'e169aa45-1ecf-4183-9955-b1499d5701d3'
+  );
+
+  // Remove by email
+  $resend->suppressions->remove(
+    'steve.wozniak@example.com'
+  );
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  # Remove by suppression id
+  resend.Suppressions.remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  # Remove by email
+  resend.Suppressions.remove("steve.wozniak@example.com")
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  # Remove by suppression id
+  Resend::Suppressions.remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  # Remove by email
+  Resend::Suppressions.remove("steve.wozniak@example.com")
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	// Remove by suppression id
+  	client.Suppressions.Remove("e169aa45-1ecf-4183-9955-b1499d5701d3")
+
+  	// Remove by email
+  	client.Suppressions.Remove("steve.wozniak@example.com")
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::{Resend, Result};
 
@@ -11505,18 +12278,32 @@ Remove a single suppression by ID or email.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          // Remove by suppression id
+          resend.suppressions().remove("e169aa45-1ecf-4183-9955-b1499d5701d3");
+
+          // Remove by email
+          resend.suppressions().remove("steve.wozniak@example.com");
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
 
   // Remove by suppression id
-  $resend->suppressions->remove(
-    'e169aa45-1ecf-4183-9955-b1499d5701d3'
-  );
+  await resend.SuppressionRemoveAsync( "e169aa45-1ecf-4183-9955-b1499d5701d3" );
 
   // Remove by email
-  $resend->suppressions->remove(
-    'steve.wozniak@example.com'
-  );
+  await resend.SuppressionRemoveAsync( "steve.wozniak@example.com" );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

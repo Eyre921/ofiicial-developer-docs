@@ -12,7 +12,7 @@ If [your Radar plan](https://docs.stripe.com/radar/how-radar-works.md#compare-pl
 
 ## Risk settings (Recommended)
 
-Risk settings let you balance authorization and fraud on your account by using risk controls. These risk controls set different thresholds to block payments that might result in fraudulent disputes or early fraud warnings. Certain risk settings also recommend that you enable or disable additional risk controls, such as adaptive 3DS, to help protect your account from fraud while allowing non-fraudulent payments.
+Risk settings let you balance authorization and fraud on your account by using risk controls. These risk controls set different thresholds to block payments that might result in fraudulent disputes or early fraud warnings. Certain risk settings also recommend that you enable or disable additional risk controls, such as adaptive 3DS and dynamic risk thresholds, to help protect your account from fraud while allowing non-fraudulent payments.
 
 On the [risk controls](https://dashboard.stripe.com/settings/radar/risk-controls) page, you can choose or modify your risk setting from the options below. You might need to upgrade your plan to adjust your risk setting.
 
@@ -38,7 +38,7 @@ If you want to change your default block threshold, you can do either of the fol
 
 ## Risk controls
 
-Risk controls use AI to protect your account. You enable them on your account to block payments that might result in fraudulent disputes or early fraud warnings. Risk settings determine which risk controls are enabled and recommend additional risk controls, such as adaptive 3DS.
+Risk controls use AI to protect your account. You enable them on your account to block payments that might result in fraudulent disputes or early fraud warnings. Risk settings determine which risk controls are enabled and recommend additional risk controls, such as adaptive 3DS or dynamic risk thresholds.
 
 Risk settings automatically manage the blocking thresholds for risk controls. To block more or less traffic from a risk control, you can change your risk setting, which automatically adjusts the blocking threshold. You can also adjust the threshold for the [Fraudulent dispute](https://docs.stripe.com/radar/risk-settings.md#fraudulent-dispute) risk control directly.
 
@@ -75,6 +75,18 @@ Radar’s adaptive [3D Secure (3DS)](https://docs.stripe.com/payments/3d-secure.
 In most cases, *3DS* (3D Secure (3DS) provides an additional layer of authentication for credit card transactions that protects businesses from liability for fraudulent card payments) authentication happens with no action required by your customer. If the customer’s bank detects anything unusual, they might ask the customer to confirm their identity through a security challenge. If 3DS authenticates a payment, the [liability](https://docs.stripe.com/payments/3d-secure/authentication-flow.md#disputed-payments) for any fraud-related disputes for that payment typically shifts from your business to the issuer. This means that in most cases, the seller isn’t responsible for fraud costs on 3DS-authenticated payments.
 
 Stripe activates 3DS automatically, if required by a regulatory mandate such as [Strong Customer Authentication (SCA)](https://stripe.com/guides/strong-customer-authentication). Disabling adaptive 3DS doesn’t prevent 3DS from activating when required for compliance. Authentication fraud prevention control isn’t available in testing environments.
+
+### Dynamic risk thresholds 
+
+The dynamic risk thresholds control automatically blocks additional elevated and high-risk payments when your account is under fraud pressure. Stripe continuously monitors for fraud trends using machine learning and temporarily blocks these payments to help protect against fraud during a detected threat. When we no longer detect a threat, the block threshold automatically readjusts to your default setting.
+
+> Dynamic risk thresholds apply to card payments only.
+
+This risk control operates automatically in the background. You don’t need to create custom rules or adjust settings during a detected threat. Dynamic risk thresholds use your manual threshold settings if they’re configured to block more elevated and high-risk payments. You can monitor performance and review affected payments through detailed analytics in your Dashboard. This automated approach reduces your need to:
+
+- Manually detect fraud patterns
+- Create emergency rules
+- Remember to readjust settings after we longer detect a threat
 
 ### Fraudulent non-card payments
 

@@ -28,7 +28,7 @@ Dynamic subagents require [interpreter](/oss/javascript/deepagents/interpreters)
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     subagents: [{
       name: "reviewer",
       description: "Reviews code for security issues, citing lines and severity",
@@ -215,7 +215,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       subagents: [
         {
           name: "bug-fixer",
@@ -448,7 +448,7 @@ Discovering files from interpreter code requires [programmatic tool calling (PTC
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       subagents: [{
         name: "reviewer",
         description: "Reviews code for security issues, citing lines and severity",
@@ -601,7 +601,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       subagents: [
         {
           name: "reviewer",
@@ -803,7 +803,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       subagents: [{
         name: "architect",
         description: "Proposes a database schema design with tradeoff analysis",
@@ -950,7 +950,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       subagents: [
         {
           name: "writer",
@@ -1149,7 +1149,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "google-genai:gemini-3.5-flash",
+      model: "google-genai:gemini-3.6-flash",
       subagents: [{
         name: "analyzer",
         description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -1285,7 +1285,7 @@ Subagent dispatch is on by default whenever the agent has subagents. Disable it 
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
     middleware: [createCodeInterpreterMiddleware({ subagents: false })],
   });

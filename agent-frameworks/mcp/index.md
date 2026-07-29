@@ -1,11 +1,12 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 127 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 137 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
 
 - `examples` — [Example Servers](pages/examples.md) · [原文](https://modelcontextprotocol.io/examples)
+- `examples` — [Example Servers](pages/examples-2.md) · [原文](https://modelcontextprotocol.io/examples)
 
 ## community
 
@@ -42,22 +43,22 @@
 
 ## docs
 
-- `docs/develop/build-client` — [Build an MCP client](pages/docs/develop/build-client.md) · [原文](https://modelcontextprotocol.io/docs/develop/build-client)
-- `docs/develop/build-server` — [Build an MCP server](pages/docs/develop/build-server.md) · [原文](https://modelcontextprotocol.io/docs/develop/build-server)
-- `docs/develop/build-with-agent-skills` — [Build with Agent Skills](pages/docs/develop/build-with-agent-skills.md) · [原文](https://modelcontextprotocol.io/docs/develop/build-with-agent-skills)
-- `docs/develop/clients/client-best-practices` — [Client Best Practices](pages/docs/develop/clients/client-best-practices.md) · [原文](https://modelcontextprotocol.io/docs/develop/clients/client-best-practices)
-- `docs/develop/connect-local-servers` — [Connect to local MCP servers](pages/docs/develop/connect-local-servers.md) · [原文](https://modelcontextprotocol.io/docs/develop/connect-local-servers)
-- `docs/develop/connect-remote-servers` — [Connect to remote MCP Servers](pages/docs/develop/connect-remote-servers.md) · [原文](https://modelcontextprotocol.io/docs/develop/connect-remote-servers)
-- `docs/getting-started/intro` — [What is the Model Context Protocol (MCP)?](pages/docs/getting-started/intro.md) · [原文](https://modelcontextprotocol.io/docs/getting-started/intro)
-- `docs/learn/architecture` — [Architecture overview](pages/docs/learn/architecture.md) · [原文](https://modelcontextprotocol.io/docs/learn/architecture)
-- `docs/learn/client-concepts` — [Understanding MCP clients](pages/docs/learn/client-concepts.md) · [原文](https://modelcontextprotocol.io/docs/learn/client-concepts)
-- `docs/learn/server-concepts` — [Understanding MCP servers](pages/docs/learn/server-concepts.md) · [原文](https://modelcontextprotocol.io/docs/learn/server-concepts)
-- `docs/learn/versioning` — [Versioning](pages/docs/learn/versioning.md) · [原文](https://modelcontextprotocol.io/docs/learn/versioning)
-- `docs/sdk` — [SDKs](pages/docs/sdk.md) · [原文](https://modelcontextprotocol.io/docs/sdk)
-- `docs/tools/debugging` — [Debugging](pages/docs/tools/debugging.md) · [原文](https://modelcontextprotocol.io/docs/tools/debugging)
-- `docs/tools/inspector` — [MCP Inspector](pages/docs/tools/inspector.md) · [原文](https://modelcontextprotocol.io/docs/tools/inspector)
-- `docs/tutorials/security/authorization` — [Understanding Authorization in MCP](pages/docs/tutorials/security/authorization.md) · [原文](https://modelcontextprotocol.io/docs/tutorials/security/authorization)
-- `docs/tutorials/security/security_best_practices` — [Security Best Practices](pages/docs/tutorials/security/security_best_practices.md) · [原文](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
+- `docs/2026-07-28/develop/build-client` — [Build an MCP client](pages/docs/2026-07-28/develop/build-client.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/develop/build-client)
+- `docs/2026-07-28/develop/build-server` — [Build an MCP server](pages/docs/2026-07-28/develop/build-server.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/develop/build-server)
+- `docs/2026-07-28/develop/build-with-agent-skills` — [Build with Agent Skills](pages/docs/2026-07-28/develop/build-with-agent-skills.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/develop/build-with-agent-skills)
+- `docs/2026-07-28/develop/clients/client-best-practices` — [Client Best Practices](pages/docs/2026-07-28/develop/clients/client-best-practices.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/develop/clients/client-best-practices)
+- `docs/2026-07-28/develop/connect-local-servers` — [Connect to local MCP servers](pages/docs/2026-07-28/develop/connect-local-servers.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/develop/connect-local-servers)
+- `docs/2026-07-28/develop/connect-remote-servers` — [Connect to remote MCP Servers](pages/docs/2026-07-28/develop/connect-remote-servers.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/develop/connect-remote-servers)
+- `docs/2026-07-28/getting-started/intro` — [What is the Model Context Protocol (MCP)?](pages/docs/2026-07-28/getting-started/intro.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro)
+- `docs/2026-07-28/learn/architecture` — [Architecture overview](pages/docs/2026-07-28/learn/architecture.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture)
+- `docs/2026-07-28/learn/client-concepts` — [Understanding MCP clients](pages/docs/2026-07-28/learn/client-concepts.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/learn/client-concepts)
+- `docs/2026-07-28/learn/server-concepts` — [Understanding MCP servers](pages/docs/2026-07-28/learn/server-concepts.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/learn/server-concepts)
+- `docs/2026-07-28/learn/versioning` — [Versioning](pages/docs/2026-07-28/learn/versioning.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/learn/versioning)
+- `docs/2026-07-28/sdk` — [SDKs](pages/docs/2026-07-28/sdk.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/sdk)
+- `docs/2026-07-28/tools/debugging` — [Debugging](pages/docs/2026-07-28/tools/debugging.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/debugging)
+- `docs/2026-07-28/tools/inspector` — [MCP Inspector](pages/docs/2026-07-28/tools/inspector.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector)
+- `docs/2026-07-28/tutorials/security/authorization` — [Understanding Authorization in MCP](pages/docs/2026-07-28/tutorials/security/authorization.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/authorization)
+- `docs/2026-07-28/tutorials/security/security_best_practices` — [Security Best Practices](pages/docs/2026-07-28/tutorials/security/security_best_practices.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices)
 
 ## extensions
 
@@ -131,25 +132,34 @@
 
 ## specification
 
-- `specification/2025-11-25/architecture/index` — [Architecture](pages/specification/2025-11-25/architecture/index.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/architecture/index)
-- `specification/2025-11-25/basic/authorization` — [Authorization](pages/specification/2025-11-25/basic/authorization.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)
-- `specification/2025-11-25/basic/index` — [Overview](pages/specification/2025-11-25/basic/index.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/index)
-- `specification/2025-11-25/basic/lifecycle` — [Lifecycle](pages/specification/2025-11-25/basic/lifecycle.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle)
-- `specification/2025-11-25/basic/transports` — [Transports](pages/specification/2025-11-25/basic/transports.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports)
-- `specification/2025-11-25/basic/utilities/cancellation` — [Cancellation](pages/specification/2025-11-25/basic/utilities/cancellation.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation)
-- `specification/2025-11-25/basic/utilities/ping` — [Ping](pages/specification/2025-11-25/basic/utilities/ping.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping)
-- `specification/2025-11-25/basic/utilities/progress` — [Progress](pages/specification/2025-11-25/basic/utilities/progress.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress)
-- `specification/2025-11-25/basic/utilities/tasks` — [Tasks](pages/specification/2025-11-25/basic/utilities/tasks.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks)
-- `specification/2025-11-25/changelog` — [Key Changes](pages/specification/2025-11-25/changelog.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/changelog)
-- `specification/2025-11-25/client/elicitation` — [Elicitation](pages/specification/2025-11-25/client/elicitation.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation)
-- `specification/2025-11-25/client/roots` — [Roots](pages/specification/2025-11-25/client/roots.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/client/roots)
-- `specification/2025-11-25/client/sampling` — [Sampling](pages/specification/2025-11-25/client/sampling.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling)
-- `specification/2025-11-25/index` — [Specification](pages/specification/2025-11-25/index.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/index)
-- `specification/2025-11-25/schema` — [Schema Reference](pages/specification/2025-11-25/schema.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/schema)
-- `specification/2025-11-25/server/index` — [Overview](pages/specification/2025-11-25/server/index.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/server/index)
-- `specification/2025-11-25/server/prompts` — [Prompts](pages/specification/2025-11-25/server/prompts.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/server/prompts)
-- `specification/2025-11-25/server/resources` — [Resources](pages/specification/2025-11-25/server/resources.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/server/resources)
-- `specification/2025-11-25/server/tools` — [Tools](pages/specification/2025-11-25/server/tools.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)
-- `specification/2025-11-25/server/utilities/completion` — [Completion](pages/specification/2025-11-25/server/utilities/completion.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion)
-- `specification/2025-11-25/server/utilities/logging` — [Logging](pages/specification/2025-11-25/server/utilities/logging.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging)
-- `specification/2025-11-25/server/utilities/pagination` — [Pagination](pages/specification/2025-11-25/server/utilities/pagination.md) · [原文](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination)
+- `specification/2026-07-28/architecture/index` — [Architecture](pages/specification/2026-07-28/architecture/index.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/architecture/index)
+- `specification/2026-07-28/basic/authorization/authorization-server-discovery` — [Authorization Server Discovery](pages/specification/2026-07-28/basic/authorization/authorization-server-discovery.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/authorization-server-discovery)
+- `specification/2026-07-28/basic/authorization/client-registration` — [Client Registration](pages/specification/2026-07-28/basic/authorization/client-registration.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/client-registration)
+- `specification/2026-07-28/basic/authorization/index` — [Authorization](pages/specification/2026-07-28/basic/authorization/index.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/index)
+- `specification/2026-07-28/basic/authorization/security-considerations` — [Authorization Security Considerations](pages/specification/2026-07-28/basic/authorization/security-considerations.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations)
+- `specification/2026-07-28/basic/index` — [Overview](pages/specification/2026-07-28/basic/index.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/index)
+- `specification/2026-07-28/basic/patterns/cancellation` — [Cancellation](pages/specification/2026-07-28/basic/patterns/cancellation.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/cancellation)
+- `specification/2026-07-28/basic/patterns/index` — [Overview](pages/specification/2026-07-28/basic/patterns/index.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/index)
+- `specification/2026-07-28/basic/patterns/mrtr` — [Multi Round-Trip Requests](pages/specification/2026-07-28/basic/patterns/mrtr.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/mrtr)
+- `specification/2026-07-28/basic/patterns/progress` — [Progress](pages/specification/2026-07-28/basic/patterns/progress.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/progress)
+- `specification/2026-07-28/basic/patterns/subscriptions` — [Subscriptions](pages/specification/2026-07-28/basic/patterns/subscriptions.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/subscriptions)
+- `specification/2026-07-28/basic/transports/index` — [Overview](pages/specification/2026-07-28/basic/transports/index.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/index)
+- `specification/2026-07-28/basic/transports/stdio` — [stdio](pages/specification/2026-07-28/basic/transports/stdio.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio)
+- `specification/2026-07-28/basic/transports/streamable-http` — [Streamable HTTP](pages/specification/2026-07-28/basic/transports/streamable-http.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http)
+- `specification/2026-07-28/basic/versioning` — [Versioning and Compatibility](pages/specification/2026-07-28/basic/versioning.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning)
+- `specification/2026-07-28/changelog` — [Key Changes](pages/specification/2026-07-28/changelog.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/changelog)
+- `specification/2026-07-28/client/elicitation` — [Elicitation](pages/specification/2026-07-28/client/elicitation.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/client/elicitation)
+- `specification/2026-07-28/client/roots` — [Roots](pages/specification/2026-07-28/client/roots.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/client/roots)
+- `specification/2026-07-28/client/sampling` — [Sampling](pages/specification/2026-07-28/client/sampling.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/client/sampling)
+- `specification/2026-07-28/deprecated` — [Deprecated Features](pages/specification/2026-07-28/deprecated.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/deprecated)
+- `specification/2026-07-28/index` — [Specification](pages/specification/2026-07-28/index.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/index)
+- `specification/2026-07-28/schema` — [Schema Reference](pages/specification/2026-07-28/schema.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/schema)
+- `specification/2026-07-28/server/discover` — [Discovery](pages/specification/2026-07-28/server/discover.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/discover)
+- `specification/2026-07-28/server/index` — [Overview](pages/specification/2026-07-28/server/index.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/index)
+- `specification/2026-07-28/server/prompts` — [Prompts](pages/specification/2026-07-28/server/prompts.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/prompts)
+- `specification/2026-07-28/server/resources` — [Resources](pages/specification/2026-07-28/server/resources.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/resources)
+- `specification/2026-07-28/server/tools` — [Tools](pages/specification/2026-07-28/server/tools.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/tools)
+- `specification/2026-07-28/server/utilities/caching` — [Caching](pages/specification/2026-07-28/server/utilities/caching.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/caching)
+- `specification/2026-07-28/server/utilities/completion` — [Completion](pages/specification/2026-07-28/server/utilities/completion.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/completion)
+- `specification/2026-07-28/server/utilities/logging` — [Logging](pages/specification/2026-07-28/server/utilities/logging.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/logging)
+- `specification/2026-07-28/server/utilities/pagination` — [Pagination](pages/specification/2026-07-28/server/utilities/pagination.md) · [原文](https://modelcontextprotocol.io/specification/2026-07-28/server/utilities/pagination)

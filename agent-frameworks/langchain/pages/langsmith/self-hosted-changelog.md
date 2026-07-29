@@ -72,7 +72,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images included Docker Compose and automatically started the Docker daemon.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 
@@ -212,7 +212,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 
@@ -361,7 +361,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could be configured with a weekly period.
 
@@ -503,7 +503,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 
@@ -645,7 +645,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 
@@ -773,7 +773,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 
@@ -911,7 +911,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 
@@ -1023,7 +1023,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 
@@ -1179,7 +1179,7 @@ path: langsmith/self-hosted-changelog
 
   * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
 
-  * Added cost tracking for `gemini-3.5-flash`.
+  * Added cost tracking for `gemini-3.6-flash`.
 
   * Gateway spend cap policies could now be configured with a weekly period.
 

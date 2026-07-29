@@ -57,7 +57,7 @@ In the **Agent** section of your agent settings, select the tool you want to con
 
 Scroll to the **Tool Call Sound** section at the bottom of the tool configuration.
 
-![tool call sound dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/093fd6c380e2d51f0b8dbe152377a35e1e4e0e422638519910016b9f1551233d/assets/images/agents/tool-call-sounds-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260728T213445Z&X-Amz-Expires=604800&X-Amz-Signature=b9360197e74de2d7b3063860b9e611f5577d364310e2a2bb418983cb57ef90cb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![tool call sound dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/093fd6c380e2d51f0b8dbe152377a35e1e4e0e422638519910016b9f1551233d/assets/images/agents/tool-call-sounds-1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260729T113241Z&X-Amz-Expires=604800&X-Amz-Signature=269abb55546b9fef6958f9161cbd38ea52d007e8e19a9f2a6fac7d3f54724c70&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Select a sound from the dropdown menu:
 
@@ -69,7 +69,7 @@ Select a sound from the dropdown menu:
 
 If you've selected a sound (not "None"), you'll see an additional **Sound Behavior** option:
 
-![sound behavior dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/00c7f6ddfb1b0240a900c8d6814c8706e045500d92f6a6c263d4a7c962e24fbe/assets/images/agents/tool-call-sounds-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260728T213445Z&X-Amz-Expires=604800&X-Amz-Signature=c75f43b64331a6b4ad0eb18500aa33048398f755c9accdaa179f1df71b406bc5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![sound behavior dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/00c7f6ddfb1b0240a900c8d6814c8706e045500d92f6a6c263d4a7c962e24fbe/assets/images/agents/tool-call-sounds-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260729T113241Z&X-Amz-Expires=604800&X-Amz-Signature=ab56668ebc7b83d63ae05651a8063c127cbeee8b3d18cbb7d4b0741efc7c0e7f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Choose when the sound should play:
 
@@ -164,7 +164,7 @@ Go to **Agent Settings > Integrations** and select your integration.
 
 In the integration overview, locate the **Tool Call Sound** settings.
 
-![tool call sound integrations dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9c4c33501c814c3d124d76060853ee6eb8c59c8b4f0cc494d16267e9fe5cf56b/assets/images/agents/tool-call-sounds-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260728T213445Z&X-Amz-Expires=604800&X-Amz-Signature=54881e21a1903b49992e00f51f7c6f98f1316ddbb719db5f6db16b399a3bb175&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![tool call sound integrations dropdown](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9c4c33501c814c3d124d76060853ee6eb8c59c8b4f0cc494d16267e9fe5cf56b/assets/images/agents/tool-call-sounds-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260729T113241Z&X-Amz-Expires=604800&X-Amz-Signature=721a10a93c7d325afd7abd5dc2e57306945f21659eab22268768b8e351a0036b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Select a default sound that will apply to all tools from this integration unless overridden at the tool level.
 

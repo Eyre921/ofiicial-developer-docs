@@ -1078,7 +1078,7 @@ agent = create_agent(
   </ParamField>
 
   <ParamField type="string | BaseChatModel">
-    Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google_genai:gemini-3.5-flash'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified. See [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) for more information.
+    Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google_genai:gemini-3.6-flash'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified. See [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) for more information.
   </ParamField>
 </Accordion>
 
@@ -1668,7 +1668,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   from langgraph.checkpoint.memory import InMemorySaver
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       middleware=[
           RubricMiddleware(
               model="anthropic:claude-haiku-4-5",

@@ -99,10 +99,6 @@ Connect LangGraph agents to front ends.
     Mistral's efficient and powerful language models.
   </Card>
 
-  <Card title="Neural Internet Bittensor" href="/oss/javascript/integrations/chat/ni_bittensor">
-    Decentralized AI network through Bittensor protocol.
-  </Card>
-
   <Card title="Ollama" href="/oss/javascript/integrations/chat/ollama">
     Run local models with Ollama's lightweight inference engine.
   </Card>
@@ -113,10 +109,6 @@ Connect LangGraph agents to front ends.
 
   <Card title="OpenAI" href="/oss/javascript/integrations/chat/openai" icon="brand-openai">
     GPT models and OpenAI's comprehensive chat capabilities.
-  </Card>
-
-  <Card title="PromptLayer OpenAI" href="/oss/javascript/integrations/chat/prompt_layer_openai">
-    OpenAI integration with PromptLayer's observability features.
   </Card>
 
   <Card title="xAI" href="/oss/javascript/integrations/chat/xai">
@@ -155,20 +147,12 @@ Connect LangGraph agents to front ends.
     Mistral's open-source and commercial language models.
   </Card>
 
-  <Card title="Neural Internet Bittensor" href="/oss/javascript/integrations/llms/ni_bittensor">
-    Decentralized AI through Bittensor's peer-to-peer network.
-  </Card>
-
   <Card title="Ollama" href="/oss/javascript/integrations/llms/ollama">
     Local model serving with Ollama's simple interface.
   </Card>
 
   <Card title="OpenAI" href="/oss/javascript/integrations/llms/openai" icon="brand-openai">
     GPT models and OpenAI's language model APIs.
-  </Card>
-
-  <Card title="PromptLayer OpenAI" href="/oss/javascript/integrations/llms/prompt_layer_openai">
-    OpenAI with PromptLayer's logging and observability.
   </Card>
 
   <Card title="Yandex" href="/oss/javascript/integrations/llms/yandex">
@@ -263,10 +247,6 @@ Connect LangGraph agents to front ends.
     In-memory vector storage for development and testing.
   </Card>
 
-  <Card title="Milvus" href="/oss/javascript/integrations/vectorstores/milvus">
-    Open-source vector database for AI applications.
-  </Card>
-
   <Card title="MongoDB Atlas" href="/oss/javascript/integrations/vectorstores/mongodb_atlas">
     Vector search in MongoDB Atlas cloud database.
   </Card>
@@ -285,10 +265,6 @@ Connect LangGraph agents to front ends.
 
   <Card title="Redis" href="/oss/javascript/integrations/vectorstores/redis">
     In-memory database with vector search capabilities.
-  </Card>
-
-  <Card title="Tigris" href="/oss/javascript/integrations/vectorstores/tigris">
-    Developer-focused database with vector search.
   </Card>
 
   <Card title="Weaviate" href="/oss/javascript/integrations/vectorstores/weaviate">
@@ -385,10 +361,6 @@ Connect LangGraph agents to front ends.
     AI-powered search engine for better results.
   </Card>
 
-  <Card title="Goat" href="/oss/javascript/integrations/tools/goat">
-    Simple tool execution framework.
-  </Card>
-
   <Card title="JigsawStack" href="/oss/javascript/integrations/tools/jigsawstack">
     AI infrastructure tools from JigsawStack.
   </Card>
@@ -444,10 +416,6 @@ Connect LangGraph agents to front ends.
   <Card title="Vector Store" href="/oss/javascript/integrations/tools/vectorstore">
     Query vector databases as tools.
   </Card>
-
-  <Card title="Zapier Agent" href="/oss/javascript/integrations/tools/zapier_agent">
-    Automate workflows using Zapier integrations.
-  </Card>
 </Columns>
 
 ## Retrievers
@@ -455,10 +423,6 @@ Connect LangGraph agents to front ends.
 <Columns>
   <Card title="Bedrock Knowledge Bases" href="/oss/javascript/integrations/retrievers/bedrock-knowledge-bases" icon="brand-aws">
     Retrieve from Amazon Bedrock Knowledge Bases.
-  </Card>
-
-  <Card title="ChatGPT Retriever Plugin" href="/oss/javascript/integrations/retrievers/chatgpt-retriever-plugin" icon="brand-openai">
-    Official ChatGPT retriever plugin integration.
   </Card>
 
   <Card title="Exa" href="/oss/javascript/integrations/retrievers/exa">

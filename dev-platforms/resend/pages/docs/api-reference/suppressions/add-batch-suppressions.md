@@ -25,6 +25,52 @@ Add up to 100 email addresses to the suppression list at once.
   });
   ```
 
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->suppressions->batch->add([
+    'emails' => ['steve.wozniak@example.com', 'susan.kare@example.com'],
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Suppressions.Batch.AddParams = {
+    "emails": ["steve.wozniak@example.com", "susan.kare@example.com"],
+  }
+
+  resend.Suppressions.Batch.add(params)
+  ```
+
+  ```ruby Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  Resend::Suppressions::Batch.add(
+    emails: ["steve.wozniak@example.com", "susan.kare@example.com"]
+  )
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import "github.com/resend/resend-go/v3"
+
+  func main() {
+  	client := resend.NewClient("re_xxxxxxxxx")
+
+  	params := &resend.BatchAddSuppressionsRequest{
+  		Emails: []string{"steve.wozniak@example.com", "susan.kare@example.com"},
+  	}
+
+  	client.Suppressions.Batch.Add(params)
+  }
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   use resend_rs::types::BatchAddSuppressionOptions;
   use resend_rs::{Resend, Result};
@@ -41,12 +87,34 @@ Add up to 100 email addresses to the suppression list at once.
   }
   ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  $resend = Resend::client('re_xxxxxxxxx');
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+  import com.resend.services.suppressions.model.AddSuppressionsOptions;
+  import java.util.List;
 
-  $resend->suppressions->batch->add([
-    'emails' => ['steve.wozniak@example.com', 'susan.kare@example.com'],
-  ]);
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          AddSuppressionsOptions options = AddSuppressionsOptions.builder()
+                  .emails(List.of("steve.wozniak@example.com", "susan.kare@example.com"))
+                  .build();
+
+          resend.suppressions().batch().add(options);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" );
+
+  var resp = await resend.SuppressionBatchAddAsync( new[]
+  {
+      "steve.wozniak@example.com",
+      "susan.kare@example.com",
+  } );
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}

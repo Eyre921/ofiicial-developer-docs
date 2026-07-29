@@ -82,25 +82,19 @@ LangChain.js categorizes document loaders in two different ways:
 
 ## All document loaders
 
-<Columns>
-  <Card title="DirectoryLoader" icon="link" href="/oss/javascript/integrations/document_loaders/file_loaders/directory" />
-
-  <Card title="Google Cloud SQL for PostgreSQL" icon="link" href="/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg" />
-
-  <Card title="JSON" icon="link" href="/oss/javascript/integrations/document_loaders/file_loaders/json" />
-
-  <Card title="JSONLines" icon="link" href="/oss/javascript/integrations/document_loaders/file_loaders/jsonlines" />
-
-  <Card title="LangSmith" icon="link" href="/oss/javascript/integrations/document_loaders/web_loaders/langsmith" />
-
-  <Card title="MultiFileLoader" icon="link" href="/oss/javascript/integrations/document_loaders/file_loaders/multi_file" />
-
-  <Card title="OracleDocLoader" icon="link" href="/oss/javascript/integrations/document_loaders/file_loaders/oracleai" />
-
-  <Card title="Soniox" icon="link" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox" />
-
-  <Card title="Text" icon="link" href="/oss/javascript/integrations/document_loaders/file_loaders/text" />
-</Columns>
+<div>
+  | Integration                                                                                                       | Downloads                                                                                                                   |
+  | :---------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+  | [`Google cloud SQL for postgresql`](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg) | <span><a href="https://www.npmjs.com/package/@langchain/google-cloud-sql-pg">  <img alt="Downloads per month" /></a></span> |
+  | [`Soniox`](/oss/javascript/integrations/document_loaders/web_loaders/soniox)                                      | <span><a href="https://www.npmjs.com/package/@soniox/langchain">  <img alt="Downloads per month" /></a></span>              |
+  | [`DirectoryLoader`](/oss/javascript/integrations/document_loaders/file_loaders/directory)                         | <span>N/A</span>                                                                                                            |
+  | [`JSON files`](/oss/javascript/integrations/document_loaders/file_loaders/json)                                   | <span>N/A</span>                                                                                                            |
+  | [`Jsonlines files -`](/oss/javascript/integrations/document_loaders/file_loaders/jsonlines)                       | <span>N/A</span>                                                                                                            |
+  | [`LangSmithLoader`](/oss/javascript/integrations/document_loaders/web_loaders/langsmith)                          | <span>N/A</span>                                                                                                            |
+  | [`Multiple individual files -`](/oss/javascript/integrations/document_loaders/file_loaders/multi_file)            | <span>N/A</span>                                                                                                            |
+  | [`OracleDocLoader`](/oss/javascript/integrations/document_loaders/file_loaders/oracleai)                          | <span>N/A</span>                                                                                                            |
+  | [`TextLoader`](/oss/javascript/integrations/document_loaders/file_loaders/text)                                   | <span>N/A</span>                                                                                                            |
+</div>
 
 ***
 

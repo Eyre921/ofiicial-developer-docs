@@ -10,9 +10,11 @@ Integrate with caches using LangChain JavaScript.
 
 Below are some integrations that allow you to cache results of individual LLM calls using different caches with different strategies.
 
-<Columns>
-  <Card title="Azure Cosmos DB NoSQL Semantic Cache" icon="link" href="/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql" />
-</Columns>
+<div>
+  | Integration                                                                                       | Downloads                                                                                                              |
+  | :------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------- |
+  | [`Azure Cosmos DB NoSQL semantic`](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb">  <img alt="Downloads per month" /></a></span> |
+</div>
 
 ***
 

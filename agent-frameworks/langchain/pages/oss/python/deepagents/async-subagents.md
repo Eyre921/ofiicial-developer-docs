@@ -63,7 +63,7 @@ async_subagents = [
 ]
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     subagents=async_subagents,
 )
 ```
@@ -253,7 +253,7 @@ When using LangGraph-based deployments, every async subagent run is a standard L
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     system_prompt="""...your instructions...
 
     After launching an async subagent, ALWAYS return control to the user.

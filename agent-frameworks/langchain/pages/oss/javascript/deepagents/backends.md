@@ -39,12 +39,12 @@ Here are a few prebuilt filesystem backends that you can quickly use with your d
 
 | Built-in backend                                                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Default](#statebackend)                                         | `agent = create_deep_agent(model="google_genai:gemini-3.5-flash")` <br /> Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads.                                                                                                                                                                                                                                          |
-| [Local filesystem persistence](#filesystembackend-local-disk)    | `agent = create_deep_agent(model="google_genai:gemini-3.5-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.5-flash", backend=StoreBackend())` <br />This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions.                                                                                                                                                                                                     |
-| [Context Hub](#contexthubbackend)                                | `agent = create_deep_agent(model="google_genai:gemini-3.5-flash", backend=ContextHubBackend("my-agent"))` <br />Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store.                                                                                                                                                                                                                                                                                                      |
-| [Sandbox](/oss/javascript/deepagents/sandboxes)                  | `agent = create_deep_agent(model="google_genai:gemini-3.5-flash", backend=sandbox)` <br />Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, Deno, E2B, Modal, Runloop, or local VFS.                                                                                                                                                                                                         |
-| [Local shell](#localshellbackend-local-shell)                    | `agent = create_deep_agent(model="google_genai:gemini-3.5-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below.                                                                                                                                                                            |
+| [Default](#statebackend)                                         | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads.                                                                                                                                                                                                                                          |
+| [Local filesystem persistence](#filesystembackend-local-disk)    | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions.                                                                                                                                                                                                     |
+| [Context Hub](#contexthubbackend)                                | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store.                                                                                                                                                                                                                                                                                                      |
+| [Sandbox](/oss/javascript/deepagents/sandboxes)                  | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, Deno, E2B, Modal, Runloop, or local VFS.                                                                                                                                                                                                         |
+| [Local shell](#localshellbackend-local-shell)                    | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below.                                                                                                                                                                            |
 | [Composite](#compositebackend-router)                            | Thread-scoped by default, `/memories/` persisted across threads. The Composite backend is maximally flexible. You can specify different routes in the filesystem to point towards different backends. See Composite routing below for a ready-to-paste example.                                                                                                                                                                                                                                                     |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -151,7 +151,7 @@ even after that subagent's execution is complete. Those files will continue to b
   import { createDeepAgent, FilesystemBackend } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
   });
   ```
@@ -286,7 +286,7 @@ even after that subagent's execution is complete. Those files will continue to b
   const backend = new LocalShellBackend({ workingDirectory: "." });
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     backend,
   });
   ```
@@ -380,7 +380,7 @@ even after that subagent's execution is complete. Those files will continue to b
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     backend: new StoreBackend({
       namespace: (rt) => [rt.serverInfo.user.identity],
     }),
@@ -601,7 +601,7 @@ Construct it with a repo identifier in `owner/name` or `name` format.
   const store = new InMemoryStore();
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     backend: new CompositeBackend(new StateBackend(), {
       "/memories/": new StoreBackend({
         namespace: () => ["memories"],

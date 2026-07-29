@@ -186,7 +186,7 @@ Amazon CloudWatch automatically creates alarms when you apply a target tracking 
 
 Key metrics to watch in the `AWS/SageMaker` namespace:
 
-![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260728T233221Z&X-Amz-Expires=604800&X-Amz-Signature=4c6c312557747c8fd40fb41a1e01acf8a54613560fa8d6601205349e5bf2a96a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260729%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260729T113256Z&X-Amz-Expires=604800&X-Amz-Signature=f7319935c49c99fa45fdc81c6272df74e8d7bca69dca63587577895642b34fbe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 | Metric                       | Description                                                                                     |
 | ---------------------------- | ----------------------------------------------------------------------------------------------- |

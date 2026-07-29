@@ -71,7 +71,7 @@ The `interrupt_on` parameter accepts a dictionary mapping tool names to interrup
   checkpointer = MemorySaver()
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[remove_file, fetch_file, notify_email],
       interrupt_on={
           "remove_file": True,  # Default: approve, edit, reject, respond
@@ -371,7 +371,7 @@ By default, every tool call listed in `interrupt_on` pauses for review. To pause
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       interrupt_on={
           "write_file": {
               "allowed_decisions": ["approve", "edit", "reject"],
@@ -677,7 +677,7 @@ Each subagent can have its own `interrupt_on` configuration that overrides the m
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     tools=[delete_file, read_file],
     interrupt_on={
         "delete_file": True,
@@ -746,7 +746,7 @@ def main():
     )
 
     parent_agent = create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
+        model="google_genai:gemini-3.6-flash",
         checkpointer=checkpointer,
         subagents=[
             CompiledSubAgent(
@@ -886,7 +886,7 @@ from langgraph.checkpoint.memory import MemorySaver
 
 checkpointer = MemorySaver()
 agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
+    model="google_genai:gemini-3.6-flash",
     tools=[...],
     interrupt_on={...},
     checkpointer=checkpointer  # Required for HITL

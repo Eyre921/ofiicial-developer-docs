@@ -139,7 +139,7 @@ The two are independent and almost always passed together:
   const contextSchema = z.object({ userId: z.string() });
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     contextSchema,
   });
 
@@ -599,7 +599,7 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
           idleTtlSeconds: 3600, // TTL: clean up when idle
         }));
       return createDeepAgent({
-        model: "google_genai:gemini-3.5-flash",
+        model: "google_genai:gemini-3.6-flash",
         backend: new LangSmithSandbox({ sandbox: lsSandbox }),
       });
     }
@@ -628,7 +628,7 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
           name: sandboxName,
         }));
       return createDeepAgent({
-        model: "google_genai:gemini-3.5-flash",
+        model: "google_genai:gemini-3.6-flash",
         backend: new LangSmithSandbox({ sandbox: lsSandbox }),
       });
     }
@@ -873,7 +873,7 @@ If your agent processes user input that might contain emails, credit card number
 import { createAgent, piiMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google_genai:gemini-3.6-flash",
   middleware: [
     piiMiddleware("email", { strategy: "redact", applyToInput: true }),
     piiMiddleware("credit_card", { strategy: "mask", applyToInput: true }),

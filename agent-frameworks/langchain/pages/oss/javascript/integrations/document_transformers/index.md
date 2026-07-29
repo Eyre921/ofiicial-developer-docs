@@ -6,9 +6,15 @@ path: oss/javascript/integrations/document_transformers/index
 
 Integrate with document transformers using LangChain JavaScript.
 
-<Columns>
-  <Card title="OpenAI functions metadata tagger" icon="link" href="/oss/javascript/integrations/document_transformers/openai_metadata_tagger" />
-</Columns>
+Document transformers take a sequence of documents and transform them—for example by adding metadata tags or compressing documents using an LLM.
+
+## All document transformers
+
+<div>
+  | Integration                                                                                                       | Downloads                                                                                                      |
+  | :---------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------- |
+  | [`OpenAI functions metadata tagger -`](/oss/javascript/integrations/document_transformers/openai_metadata_tagger) | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
+</div>
 
 ***
 

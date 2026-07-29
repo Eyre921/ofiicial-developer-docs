@@ -719,7 +719,7 @@ Image blocks only support file types in the "image" section of the table.
 Meeting notes block objects represent [AI meeting notes](https://www.notion.com/help/ai-meeting-notes) in the Notion UI. The block surfaces metadata about a meeting — its title, lifecycle status, calendar event details, and recording window — along with pointers to child blocks that hold the generated summary, notes, and transcript content.
 
 <Note>
-  Meeting notes blocks are **read-only**. You cannot create or update them using the API. Use the child block IDs returned in the `children` field to fetch the full content of each section using the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
+  Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media. Use the child block IDs returned in the `children` field to fetch each section with the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
 </Note>
 
 Meeting notes block objects contain the following information within the `meeting_notes` (or `transcription` in older API versions) property:

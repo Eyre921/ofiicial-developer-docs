@@ -19,21 +19,19 @@ Refer to the vector store [integration docs](/oss/javascript/integrations/vector
 
 ## All retrievers
 
-<Columns>
-  <Card title="Alchemyst AI Retriever" icon="link" href="/oss/javascript/integrations/retrievers/alchemystai-retriever" />
-
-  <Card title="Knowledge Bases for Amazon Bedrock" icon="link" href="/oss/javascript/integrations/retrievers/bedrock-knowledge-bases" />
-
-  <Card title="Exa" icon="link" href="/oss/javascript/integrations/retrievers/exa" />
-
-  <Card title="HyDE Retriever" icon="link" href="/oss/javascript/integrations/retrievers/hyde" />
-
-  <Card title="Amazon Kendra Retriever" icon="link" href="/oss/javascript/integrations/retrievers/kendra-retriever" />
-
-  <Card title="SourceyRetriever" icon="link" href="/oss/javascript/integrations/retrievers/sourcey" />
-
-  <Card title="Time-Weighted Retriever" icon="link" href="/oss/javascript/integrations/retrievers/time-weighted-retriever" />
-</Columns>
+<div>
+  | Retriever                                                                                                                     | Self-host | Cloud offering | Package                                                                                | Downloads                                                                                                              |
+  | :---------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------- | :------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+  | [`AWSKendraRetriever`](/oss/javascript/integrations/retrievers/kendra-retriever)                                              | <span />  | <span />       | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws)                       | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span>            |
+  | [`Knowledge bases for Amazon Bedrock`](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases)                       | <span />  | <span />       | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws)                       | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span>            |
+  | [`ExaRetriever`](/oss/javascript/integrations/retrievers/exa)                                                                 | <span />  | <span />       | [`@langchain/exa`](https://www.npmjs.com/package/@langchain/exa)                       | <span><a href="https://www.npmjs.com/package/@langchain/exa">  <img alt="Downloads per month" /></a></span>            |
+  | [`PerplexitySearchRetriever`](/oss/javascript/integrations/retrievers/perplexity_search)                                      | <span />  | <span />       | [`@langchain/perplexity`](https://www.npmjs.com/package/@langchain/perplexity)         | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span>     |
+  | [`Alchemyst AI`](/oss/javascript/integrations/retrievers/alchemystai-retriever)                                               | <span />  | <span />       | [`@alchemystai/langchain-js`](https://www.npmjs.com/package/@alchemystai/langchain-js) | <span><a href="https://www.npmjs.com/package/@alchemystai/langchain-js">  <img alt="Downloads per month" /></a></span> |
+  | [`SourceyRetriever`](/oss/javascript/integrations/retrievers/sourcey)                                                         | <span />  | <span />       | [`langchain-sourcey`](https://www.npmjs.com/package/langchain-sourcey)                 | <span><a href="https://www.npmjs.com/package/langchain-sourcey">  <img alt="Downloads per month" /></a></span>         |
+  | [`Hyde`](/oss/javascript/integrations/retrievers/hyde)                                                                        | <span />  | <span />       |                                                                                        | <span>N/A</span>                                                                                                       |
+  | [`Self Querying with SAP HANA Cloud Vector Engine`](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | <span />  | <span />       |                                                                                        | <span>N/A</span>                                                                                                       |
+  | [`Time-weighted`](/oss/javascript/integrations/retrievers/time-weighted-retriever)                                            | <span />  | <span />       |                                                                                        | <span>N/A</span>                                                                                                       |
+</div>
 
 <Info>
   If you'd like to contribute an integration, see [Contributing integrations](/oss/javascript/contributing#add-a-new-integration).

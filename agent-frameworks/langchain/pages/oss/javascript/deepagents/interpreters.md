@@ -80,7 +80,7 @@ Install the QuickJS middleware package, then pass interpreter middleware using t
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -201,7 +201,7 @@ Enable PTC with an explicit allowlist:
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "google-genai:gemini-3.5-flash",
+    model: "google-genai:gemini-3.6-flash",
     middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
   });
   ```

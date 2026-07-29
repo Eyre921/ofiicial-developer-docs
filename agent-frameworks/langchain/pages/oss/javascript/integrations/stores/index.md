@@ -37,6 +37,15 @@ The generic nature of the interface allows you to use different types for keys a
 
 You can also implement your own custom store by extending the [`BaseStore`](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) class. See the [store interface documentation](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) for more details.
 
+## All key-value stores
+
+<div>
+  | Integration                                                         | Downloads        |
+  | :------------------------------------------------------------------ | :--------------- |
+  | [`InMemoryStore`](/oss/javascript/integrations/stores/in_memory)    | <span>N/A</span> |
+  | [`LocalFileStore`](/oss/javascript/integrations/stores/file_system) | <span>N/A</span> |
+</div>
+
 ***
 
 <div>

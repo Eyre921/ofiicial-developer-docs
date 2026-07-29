@@ -59,7 +59,7 @@ Your custom system prompt is prepended to the built-in system prompt, which incl
   from deepagents import create_deep_agent
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       system_prompt=(
           "You are a research assistant specializing in scientific literature. "
           "Always cite sources. Use subagents for parallel research on different topics."
@@ -158,7 +158,7 @@ Memory files ([`AGENTS.md`](https://agents.md/)) provide persistent context that
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
   )
   ```
@@ -215,7 +215,7 @@ Skills provide **on-demand** capabilities. The agent reads frontmatter from each
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       skills=["/skills/research/", "/skills/web-search/"],
   )
   ```
@@ -363,7 +363,7 @@ Inside tools, read context from the injected [ToolRuntime](https://reference.lan
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[fetch_user_data],
       context_schema=Context,
   )
@@ -604,7 +604,7 @@ Custom state schemas must subclass [DeepAgentState](https://reference.langchain.
 
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       tools=[cite_page],
       state_schema=ResearchState,
   )
@@ -899,7 +899,7 @@ Enable the tool by passing [`create_summarization_tool_middleware`](https://refe
 
   backend = StateBackend  # if using default backend
 
-  model="google_genai:gemini-3.5-flash"
+  model="google_genai:gemini-3.6-flash"
   agent = create_deep_agent(
       model=model,
       middleware=[  # [!code highlight]
@@ -1060,7 +1060,7 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
   store = InMemoryStore()
 
   agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
+      model="google_genai:gemini-3.6-flash",
       store=store,
       backend=CompositeBackend(
           default=StateBackend(),
