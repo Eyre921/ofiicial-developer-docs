@@ -8,46 +8,10 @@ path: docs/help-center/partnerships
 
 # Partnerships and Affiliates FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/partnerships/can-i-customize-my-affiliate-referral-link">
-          Can I customize my Affiliate referral link?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/partnerships/do-you-have-an-affiliate-partnership-or-educational-program">
-          Do you have an affiliate, partnership or educational program?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/partnerships/do-you-offer-discounted-or-free-plans">
-          Do you offer discounted or free plans?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/partnerships/how-do-i-find-my-affiliate-referral-link">
-          How do I find my Affiliate referral link?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/partnerships/im-an-affiliate-with-lots-of-sign-ups-why-havent-i-been-paid-yet">
-          I'm an Affiliate with lots of sign-ups, why haven't I been paid yet?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                                                         |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Can I customize my Affiliate referral link?](/docs/help-center/partnerships/can-i-customize-my-affiliate-referral-link)                                                |
+| [Do you have an affiliate, partnership or educational program?](/docs/help-center/partnerships/do-you-have-an-affiliate-partnership-or-educational-program)             |
+| [Do you offer discounted or free plans?](/docs/help-center/partnerships/do-you-offer-discounted-or-free-plans)                                                          |
+| [How do I find my Affiliate referral link?](/docs/help-center/partnerships/how-do-i-find-my-affiliate-referral-link)                                                    |
+| [I'm an Affiliate with lots of sign-ups, why haven't I been paid yet?](/docs/help-center/partnerships/im-an-affiliate-with-lots-of-sign-ups-why-havent-i-been-paid-yet) |

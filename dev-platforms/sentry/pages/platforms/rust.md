@@ -33,7 +33,7 @@ To add Sentry to your Rust project, add a new dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-sentry = "0.48.5"
+sentry = "0.49.0"
 ```
 
 ## [Configure](https://docs.sentry.io/platforms/rust.md#configure)
@@ -43,13 +43,14 @@ The most convenient way to use this library is the `sentry::init` function, whic
 The `sentry::init` function returns a guard that when dropped, will flush Events that weren't yet sent to Sentry. It has a two-second deadline, so application shutdown may be slightly delayed as a result. Be sure to keep the guard or you won't be able to send events.
 
 ```rust
-let _guard = sentry::init(("https://<key>@o<orgId>.ingest.sentry.io/<projectId>", sentry::ClientOptions {
-    release: sentry::release_name!(),
-    // Capture user IPs and potentially sensitive headers when using HTTP server integrations
-    // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
-    send_default_pii: true,
-    ..Default::default()
-}));
+let _guard = sentry::init(
+    sentry::ClientOptions::new()
+        .dsn("https://<key>@o<orgId>.ingest.sentry.io/<projectId>")
+        .maybe_release(sentry::release_name!())
+        // Capture user IPs and potentially sensitive headers when using HTTP server integrations
+        // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
+        .send_default_pii(true),
+);
 ```
 
 **Important:** Remember your DSN. The DSN (Data Source Name) tells the SDK where to send events. If you forget it, you can find it by going to: Settings -> Projects -> Client Keys (DSN) in sentry.io.
@@ -62,15 +63,16 @@ In a multithreaded application, spawned threads should inherit the Hub from the 
 // WRONG
 #[tokio::main]
 async fn main() {
-let _guard = sentry::init(("https://<key>@o<orgId>.ingest.sentry.io/<projectId>", sentry::ClientOptions {
-    release: sentry::release_name!(),
-    // Capture user IPs and potentially sensitive headers when using HTTP server integrations
-    // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
-    send_default_pii: true,
-    ..Default::default()
-}));
+    let _guard = sentry::init(
+        sentry::ClientOptions::new()
+            .dsn("https://<key>@o<orgId>.ingest.sentry.io/<projectId>")
+            .maybe_release(sentry::release_name!())
+            // Capture user IPs and potentially sensitive headers when using HTTP server integrations
+            // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
+            .send_default_pii(true),
+    );
 
-// implementation of main
+    // implementation of main
 }
 ```
 
@@ -79,15 +81,16 @@ Do this instead:
 ```rust
 // RIGHT
 fn main() {
-let _guard = sentry::init(("https://<key>@o<orgId>.ingest.sentry.io/<projectId>", sentry::ClientOptions {
-    release: sentry::release_name!(),
-    // Capture user IPs and potentially sensitive headers when using HTTP server integrations
-    // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
-    send_default_pii: true,
-    ..Default::default()
-}));
+    let _guard = sentry::init(
+        sentry::ClientOptions::new()
+            .dsn("https://<key>@o<orgId>.ingest.sentry.io/<projectId>")
+            .maybe_release(sentry::release_name!())
+            // Capture user IPs and potentially sensitive headers when using HTTP server integrations
+            // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
+            .send_default_pii(true),
+    );
 
-tokio::runtime::Builder::new_multi_thread()
+    tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
         .unwrap()
@@ -103,13 +106,14 @@ The quickest way to verify Sentry in your Rust application is to cause a panic:
 
 ```rust
 fn main() {
-    let _guard = sentry::init(("https://<key>@o<orgId>.ingest.sentry.io/<projectId>", sentry::ClientOptions {
-        release: sentry::release_name!(),
-        // Capture user IPs and potentially sensitive headers when using HTTP server integrations
-        // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
-        send_default_pii: true,
-        ..Default::default()
-    }));
+    let _guard = sentry::init(
+        sentry::ClientOptions::new()
+            .dsn("https://<key>@o<orgId>.ingest.sentry.io/<projectId>")
+            .maybe_release(sentry::release_name!())
+            // Capture user IPs and potentially sensitive headers when using HTTP server integrations
+            // see https://docs.sentry.io/platforms/rust/data-management/data-collected for more info
+            .send_default_pii(true),
+    );
 
     // Sentry will capture this
     panic!("Everything is on fire!");

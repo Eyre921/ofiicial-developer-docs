@@ -23,15 +23,8 @@ The following models support vision-language fine-tuning. See [supported models]
   | Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   |
   | Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 |
   | Qwen         | Qwen3.6 27B                            | `Qwen/Qwen3.6-27B`                                  |
-  | Qwen         | Qwen3 VL 8B Instruct                   | `Qwen/Qwen3-VL-8B-Instruct`                         |
-  | Qwen         | Qwen3 VL 32B Instruct                  | `Qwen/Qwen3-VL-32B-Instruct`                        |
-  | Qwen         | Qwen3 VL 30B A3B Instruct              | `Qwen/Qwen3-VL-30B-A3B-Instruct`                    |
-  | Qwen         | Qwen3 VL 235B A22B Instruct            | `Qwen/Qwen3-VL-235B-A22B-Instruct`                  |
   | Meta         | Llama 4 Scout 17B 16E Instruct VLM     | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |
   | Meta         | Llama 4 Maverick 17B 128E Instruct VLM | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |
-  | Google       | Gemma 3 4B IT VLM                      | `google/gemma-3-4b-it-VLM`                          |
-  | Google       | Gemma 3 12B IT VLM                     | `google/gemma-3-12b-it-VLM`                         |
-  | Google       | Gemma 3 27B IT VLM                     | `google/gemma-3-27b-it-VLM`                         |
   | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
 </Accordion>
 
@@ -130,6 +123,11 @@ def url_to_base64(url: str, mime_type: str = "image/jpeg") -> str:
 Upload your data using the Together Python/TypeScript SDK or the [Together CLI](/reference/cli/getting-started):
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg files check "vlm_dataset.jsonl"
+  tg files upload "vlm_dataset.jsonl"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -155,11 +153,6 @@ Upload your data using the Together Python/TypeScript SDK or the [Together CLI](
   });
   console.log(trainFile.id);
   ```
-
-  ```bash CLI theme={null}
-  tg files check "vlm_dataset.jsonl"
-  tg files upload "vlm_dataset.jsonl"
-  ```
 </CodeGroup>
 
 Sample response:
@@ -179,6 +172,14 @@ Sample response:
 By default, fine-tuning only updates language-model parameters. Pass `train_vision=True` to also update the vision encoder. The trade-off here is that training the encoder costs more compute and is rarely necessary unless your domain images are extremely dissimilar from the pretraining data.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "Qwen/Qwen3-VL-8B-Instruct" \
+    --train-vision false \
+    --lora
+  ```
+
   ```python Python theme={null}
   job = client.fine_tuning.create(
       training_file=train_file.id,
@@ -197,14 +198,6 @@ By default, fine-tuning only updates language-model parameters. Pass `train_visi
     train_vision: false,
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "Qwen/Qwen3-VL-8B-Instruct" \
-    --train-vision false \
-    --lora
   ```
 </CodeGroup>
 

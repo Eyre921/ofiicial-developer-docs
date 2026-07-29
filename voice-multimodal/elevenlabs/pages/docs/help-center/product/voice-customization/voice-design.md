@@ -8,30 +8,8 @@ path: docs/help-center/product/voice-customization/voice-design
 
 # Voice Design FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/voice-customization/voice-design/how-much-does-voice-design-cost">
-          How much does Voice Design cost?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/voice-customization/voice-design/what-is-voice-design">
-          What is Voice Design?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/voice-customization/voice-design/what-kind-of-voices-can-i-create-using-voice-design">
-          What kind of voices can I create using Voice Design?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [How much does Voice Design cost?](/docs/help-center/product/voice-customization/voice-design/how-much-does-voice-design-cost)                                         |
+| [What is Voice Design?](/docs/help-center/product/voice-customization/voice-design/what-is-voice-design)                                                               |
+| [What kind of voices can I create using Voice Design?](/docs/help-center/product/voice-customization/voice-design/what-kind-of-voices-can-i-create-using-voice-design) |

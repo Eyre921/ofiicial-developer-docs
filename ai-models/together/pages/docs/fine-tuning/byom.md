@@ -34,6 +34,16 @@ You'll also need a Together base model whose architecture matches your custom ch
 Launch the job by pairing the base model (template) with `from_hf_model` (your checkpoint):
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "togethercomputer/llama-2-7b-chat" \
+    --from-hf-model "HuggingFaceTB/SmolLM2-1.7B-Instruct" \
+    --n-epochs 3 \
+    --learning-rate 1e-5 \
+    --suffix "custom-v1"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -66,16 +76,6 @@ Launch the job by pairing the base model (template) with `from_hf_model` (your c
     suffix: "custom-v1",
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "togethercomputer/llama-2-7b-chat" \
-    --from-hf-model "HuggingFaceTB/SmolLM2-1.7B-Instruct" \
-    --n-epochs 3 \
-    --learning-rate 1e-5 \
-    --suffix "custom-v1"
   ```
 </CodeGroup>
 

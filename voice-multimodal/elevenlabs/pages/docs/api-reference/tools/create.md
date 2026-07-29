@@ -588,6 +588,14 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersion-Input
+    SearchStrategy:
+      type: string
+      enum:
+        - cat
+        - keyword
+        - semantic
+        - ls
+      title: SearchStrategy
     SubAgent-Input:
       type: object
       properties:
@@ -922,6 +930,20 @@ components:
           required:
             - system_tool_type
           description: EndProcedureToolConfig variant
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - knowledge_base
+              description: 'Discriminator value: knowledge_base'
+            enabled_strategies:
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchStrategy'
+          required:
+            - system_tool_type
+          description: KnowledgeBaseToolConfig variant
         - type: object
           properties:
             system_tool_type:
@@ -2001,6 +2023,20 @@ components:
           required:
             - system_tool_type
           description: EndProcedureToolConfig variant
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - knowledge_base
+              description: 'Discriminator value: knowledge_base'
+            enabled_strategies:
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchStrategy'
+          required:
+            - system_tool_type
+          description: KnowledgeBaseToolConfig variant
         - type: object
           properties:
             system_tool_type:

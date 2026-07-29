@@ -263,7 +263,7 @@ Jobs are submitted to the managed queue and processed asynchronously. You'll nee
   deployment = "sprocket-flux2-dev"
 
   # Submit job to queue
-  job = client.beta.queue.submit(
+  job = client.beta.jig.queue.submit(
       model=deployment,
       payload={
           "prompt": "A serene Japanese garden with cherry blossoms",
@@ -275,7 +275,7 @@ Jobs are submitted to the managed queue and processed asynchronously. You'll nee
 
   # Poll for completion
   while True:
-      status = client.beta.queue.retrieve(
+      status = client.beta.jig.queue.retrieve(
           request_id=job.request_id,
           model=deployment,
       )

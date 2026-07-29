@@ -6,7 +6,7 @@ path: docs/how-to-use-opencode
 
 Learn how to power OpenCode (a powerful terminal-based AI coding agent) with Together AI models.
 
-OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. In this guide, we'll show you how to combine OpenCode with powerful open source models on Together AI like DeepSeek V3 and DeepSeek R1 to supercharge your development workflow directly from your terminal.
+OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. In this guide, we'll show you how to combine OpenCode with powerful open source models on Together AI like Kimi K2.7 Code and GLM 5.2 to supercharge your development workflow directly from your terminal.
 
 With OpenCode's agent, you can ask it to build features, fix bugs, explain codebases, and start new projects – all while maintaining full transparency in terms of cost and token usage. Here's how you can start using it with Together AI's models:
 
@@ -46,10 +46,10 @@ When you first run OpenCode, you'll need to configure it to use Together AI as y
 
 * **Add your API key**: Get your [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys) and paste it into the opencode terminal
 * **Select a model**: Choose from powerful models like:
-  * `deepseek-ai/DeepSeek-V3` - Excellent for general coding tasks
-  * `deepseek-ai/DeepSeek-R1` - Advanced reasoning capabilities
-  * `meta-llama/Llama-3.3-70B-Instruct-Turbo` - Fast and efficient
-  * `Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8` - Specialized coding model
+  * `moonshotai/Kimi-K2.7-Code` - Purpose-built for coding agents.
+  * `zai-org/GLM-5.2` - Strong coding and agentic all-rounder.
+  * `deepseek-ai/DeepSeek-V4-Pro` - Advanced reasoning capabilities.
+  * `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
 
 ## 4. Bonus: install the opencode vs-code extension
 
@@ -110,9 +110,11 @@ That looks good, but let's also add input validation and rate limiting
 
 ## Model Recommendations
 
-* **DeepSeek V3** (`deepseek-ai/DeepSeek-V3`): \$1.25 per million tokens, excellent balance of performance and cost
-* **DeepSeek R1** (`deepseek-ai/DeepSeek-R1`): $3.00-$7.00 per million tokens, advanced reasoning for complex problems
-* **Llama 3.3 70B** (`meta-llama/Llama-3.3-70B-Instruct-Turbo`): \$0.88 per million tokens, fast and cost-effective
+* **Kimi K2.7 Code** (`moonshotai/Kimi-K2.7-Code`): Purpose-built for coding agents, with a 256K context window.
+* **GLM 5.2** (`zai-org/GLM-5.2`): Strong all-rounder for coding and agentic tasks.
+* **DeepSeek V4 Pro** (`deepseek-ai/DeepSeek-V4-Pro`): Advanced reasoning for complex problems.
+
+See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 
 ## Getting Started
 

@@ -215,6 +215,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: version_id
+          in: query
+          description: Filter conversations by version ID.
+          required: false
+          schema:
+            type: string
         - name: topic_ids
           in: query
           description: Filter conversations by topic IDs assigned during topic discovery.
@@ -460,13 +466,13 @@ components:
 {
   "results": [
     {
-      "conversation_id": "conv_9f8e7d6c5b4a3210fedcba9876543210",
+      "conversation_id": "conv_9f8d7c6b5a4e3d2c1b0a",
       "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "transcript_index": 12,
+      "transcript_index": 5,
       "chunk_text": "I understand your concern about the refund policy. Let me explain how it works.",
       "score": 0.95,
-      "conversation_start_time_unix_secs": 1698765432,
-      "agent_name": "Support Agent John",
+      "conversation_start_time_unix_secs": 1709452800,
+      "agent_name": "Customer Support Bot",
       "chunk_highlights": [
         {
           "value": "I understand your concern about the ",
@@ -489,7 +495,7 @@ components:
     "page": 1,
     "page_size": 1
   },
-  "next_cursor": "eyJwYWdlIjoyLCJpZCI6IjY3ODkwMTIzIn0="
+  "next_cursor": "eyJwYWdlIjoxLCJpZCI6IjY3ODkwIn0="
 }
 ```
 
@@ -504,18 +510,18 @@ async function main() {
     });
     await client.conversationalAi.conversations.messages.textSearch({
         agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        branchId: "branch_9f8e7d6c5b4a3210fedcba9876543210",
+        branchId: "branch_9f8d7c6b5a4e3d2c1b0a",
         callDurationMaxSecs: 3600,
         callDurationMinSecs: 60,
-        callStartAfterUnix: 1690000000,
-        callStartBeforeUnix: 1700000000,
+        callStartAfterUnix: 1706784000,
+        callStartBeforeUnix: 1711929600,
         callSuccessful: "success",
         conversationInitiationSource: "widget",
         conversationProductType: "agents",
         cursor: "eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9",
         dataCollectionParams: [
-            "region:eq:us-west|us-east",
-            "device:exists:true",
+            "region:eq:us-west",
+            "device:in:mobile|desktop",
         ],
         evaluationParams: [
             "value_framing:success",
@@ -536,33 +542,34 @@ async function main() {
         sortBy: "search_score",
         summaryMode: "include",
         terminationReasons: [
-            "customer_hangup",
+            "user_hangup",
             "agent_disconnect",
         ],
         textOnly: true,
         textQuery: "refund policy",
         toolNames: [
-            "crm_integration",
-            "ticketing_system",
+            "sentiment_analysis",
+            "call_transcription",
         ],
         toolNamesErrored: [
-            "ticketing_system",
+            "sentiment_analysis",
         ],
         toolNamesSuccessful: [
-            "crm_integration",
+            "call_transcription",
         ],
         topicIds: [
-            "topic_1234abcd",
-            "topic_5678efgh",
+            "topic_abc123",
+            "topic_def456",
         ],
-        userId: "user_abc123xyz789",
+        userId: "user_1234567890abcdef",
+        versionId: "v1.2.3",
         visitedAgentBranchIds: [
-            "branch_9f8e7d6c5b4a3210fedcba9876543210",
-            "branch_1234567890abcdef1234567890abcdef",
+            "branch_9f8d7c6b5a4e3d2c1b0a",
+            "branch_1a2b3c4d5e6f7g8h9i0j",
         ],
         visitedAgentIds: [
             "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-            "agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h",
+            "agent_48f9k2lmqv34rty7b8x9z0w1e2",
         ],
     });
 }
@@ -579,18 +586,18 @@ client = ElevenLabs(
 
 client.conversational_ai.conversations.messages.text_search(
     agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="branch_9f8e7d6c5b4a3210fedcba9876543210",
+    branch_id="branch_9f8d7c6b5a4e3d2c1b0a",
     call_duration_max_secs=3600,
     call_duration_min_secs=60,
-    call_start_after_unix=1690000000,
-    call_start_before_unix=1700000000,
+    call_start_after_unix=1706784000,
+    call_start_before_unix=1711929600,
     call_successful="success",
     conversation_initiation_source="widget",
     conversation_product_type="agents",
     cursor="eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9",
     data_collection_params=[
-        "region:eq:us-west|us-east",
-        "device:exists:true"
+        "region:eq:us-west",
+        "device:in:mobile|desktop"
     ],
     evaluation_params=[
         "value_framing:success",
@@ -611,33 +618,34 @@ client.conversational_ai.conversations.messages.text_search(
     sort_by="search_score",
     summary_mode="include",
     termination_reasons=[
-        "customer_hangup",
+        "user_hangup",
         "agent_disconnect"
     ],
     text_only=True,
     text_query="refund policy",
     tool_names=[
-        "crm_integration",
-        "ticketing_system"
+        "sentiment_analysis",
+        "call_transcription"
     ],
     tool_names_errored=[
-        "ticketing_system"
+        "sentiment_analysis"
     ],
     tool_names_successful=[
-        "crm_integration"
+        "call_transcription"
     ],
     topic_ids=[
-        "topic_1234abcd",
-        "topic_5678efgh"
+        "topic_abc123",
+        "topic_def456"
     ],
-    user_id="user_abc123xyz789",
+    user_id="user_1234567890abcdef",
+    version_id="v1.2.3",
     visited_agent_branch_ids=[
-        "branch_9f8e7d6c5b4a3210fedcba9876543210",
-        "branch_1234567890abcdef1234567890abcdef"
+        "branch_9f8d7c6b5a4e3d2c1b0a",
+        "branch_1a2b3c4d5e6f7g8h9i0j"
     ],
     visited_agent_ids=[
         "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        "agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h"
+        "agent_48f9k2lmqv34rty7b8x9z0w1e2"
     ],
 )
 
@@ -655,7 +663,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3210fedcba9876543210&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1690000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%7Cus-east%22%2C%22device%3Aexists%3Atrue%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22customer_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22ticketing_system%22%5D&tool_names_errored=%5B%22ticketing_system%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_1234abcd%22%2C%22topic_5678efgh%22%5D&user_id=user_abc123xyz789&visited_agent_branch_ids=%5B%22branch_9f8e7d6c5b4a3210fedcba9876543210%22%2C%22branch_1234567890abcdef1234567890abcdef%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8d7c6b5a4e3d2c1b0a&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1706784000&call_start_before_unix=1711929600&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22user_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22sentiment_analysis%22%2C%22call_transcription%22%5D&tool_names_errored=%5B%22sentiment_analysis%22%5D&tool_names_successful=%5B%22call_transcription%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890abcdef&version_id=v1.2.3&visited_agent_branch_ids=%5B%22branch_9f8d7c6b5a4e3d2c1b0a%22%2C%22branch_1a2b3c4d5e6f7g8h9i0j%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9k2lmqv34rty7b8x9z0w1e2%22%5D"
 
 	payload := strings.NewReader("{}")
 
@@ -679,7 +687,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3210fedcba9876543210&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1690000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%7Cus-east%22%2C%22device%3Aexists%3Atrue%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22customer_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22ticketing_system%22%5D&tool_names_errored=%5B%22ticketing_system%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_1234abcd%22%2C%22topic_5678efgh%22%5D&user_id=user_abc123xyz789&visited_agent_branch_ids=%5B%22branch_9f8e7d6c5b4a3210fedcba9876543210%22%2C%22branch_1234567890abcdef1234567890abcdef%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8d7c6b5a4e3d2c1b0a&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1706784000&call_start_before_unix=1711929600&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22user_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22sentiment_analysis%22%2C%22call_transcription%22%5D&tool_names_errored=%5B%22sentiment_analysis%22%5D&tool_names_successful=%5B%22call_transcription%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890abcdef&version_id=v1.2.3&visited_agent_branch_ids=%5B%22branch_9f8d7c6b5a4e3d2c1b0a%22%2C%22branch_1a2b3c4d5e6f7g8h9i0j%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9k2lmqv34rty7b8x9z0w1e2%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -697,7 +705,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3210fedcba9876543210&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1690000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%7Cus-east%22%2C%22device%3Aexists%3Atrue%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22customer_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22ticketing_system%22%5D&tool_names_errored=%5B%22ticketing_system%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_1234abcd%22%2C%22topic_5678efgh%22%5D&user_id=user_abc123xyz789&visited_agent_branch_ids=%5B%22branch_9f8e7d6c5b4a3210fedcba9876543210%22%2C%22branch_1234567890abcdef1234567890abcdef%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h%22%5D")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8d7c6b5a4e3d2c1b0a&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1706784000&call_start_before_unix=1711929600&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22user_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22sentiment_analysis%22%2C%22call_transcription%22%5D&tool_names_errored=%5B%22sentiment_analysis%22%5D&tool_names_successful=%5B%22call_transcription%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890abcdef&version_id=v1.2.3&visited_agent_branch_ids=%5B%22branch_9f8d7c6b5a4e3d2c1b0a%22%2C%22branch_1a2b3c4d5e6f7g8h9i0j%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9k2lmqv34rty7b8x9z0w1e2%22%5D")
   .header("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
   .header("Content-Type", "application/json")
   .body("{}")
@@ -710,7 +718,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3210fedcba9876543210&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1690000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%7Cus-east%22%2C%22device%3Aexists%3Atrue%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22customer_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22ticketing_system%22%5D&tool_names_errored=%5B%22ticketing_system%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_1234abcd%22%2C%22topic_5678efgh%22%5D&user_id=user_abc123xyz789&visited_agent_branch_ids=%5B%22branch_9f8e7d6c5b4a3210fedcba9876543210%22%2C%22branch_1234567890abcdef1234567890abcdef%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h%22%5D', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8d7c6b5a4e3d2c1b0a&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1706784000&call_start_before_unix=1711929600&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22user_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22sentiment_analysis%22%2C%22call_transcription%22%5D&tool_names_errored=%5B%22sentiment_analysis%22%5D&tool_names_successful=%5B%22call_transcription%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890abcdef&version_id=v1.2.3&visited_agent_branch_ids=%5B%22branch_9f8d7c6b5a4e3d2c1b0a%22%2C%22branch_1a2b3c4d5e6f7g8h9i0j%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9k2lmqv34rty7b8x9z0w1e2%22%5D', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -724,7 +732,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3210fedcba9876543210&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1690000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%7Cus-east%22%2C%22device%3Aexists%3Atrue%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22customer_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22ticketing_system%22%5D&tool_names_errored=%5B%22ticketing_system%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_1234abcd%22%2C%22topic_5678efgh%22%5D&user_id=user_abc123xyz789&visited_agent_branch_ids=%5B%22branch_9f8e7d6c5b4a3210fedcba9876543210%22%2C%22branch_1234567890abcdef1234567890abcdef%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8d7c6b5a4e3d2c1b0a&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1706784000&call_start_before_unix=1711929600&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22user_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22sentiment_analysis%22%2C%22call_transcription%22%5D&tool_names_errored=%5B%22sentiment_analysis%22%5D&tool_names_successful=%5B%22call_transcription%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890abcdef&version_id=v1.2.3&visited_agent_branch_ids=%5B%22branch_9f8d7c6b5a4e3d2c1b0a%22%2C%22branch_1a2b3c4d5e6f7g8h9i0j%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9k2lmqv34rty7b8x9z0w1e2%22%5D");
 var request = new RestRequest(Method.GET);
 request.AddHeader("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c");
 request.AddHeader("Content-Type", "application/json");
@@ -743,7 +751,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8e7d6c5b4a3210fedcba9876543210&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1690000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%7Cus-east%22%2C%22device%3Aexists%3Atrue%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22customer_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22ticketing_system%22%5D&tool_names_errored=%5B%22ticketing_system%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_1234abcd%22%2C%22topic_5678efgh%22%5D&user_id=user_abc123xyz789&visited_agent_branch_ids=%5B%22branch_9f8e7d6c5b4a3210fedcba9876543210%22%2C%22branch_1234567890abcdef1234567890abcdef%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9d2b7c1a34e5f9b7d6a2c3e4f5g6h%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_9f8d7c6b5a4e3d2c1b0a&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1706784000&call_start_before_unix=1711929600&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxLCJpZCI6IjEyMzQ1NiJ9&data_collection_params=%5B%22region%3Aeq%3Aus-west%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&exclude_statuses=%5B%22in-progress%22%2C%22processing%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&termination_reasons=%5B%22user_hangup%22%2C%22agent_disconnect%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22sentiment_analysis%22%2C%22call_transcription%22%5D&tool_names_errored=%5B%22sentiment_analysis%22%5D&tool_names_successful=%5B%22call_transcription%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890abcdef&version_id=v1.2.3&visited_agent_branch_ids=%5B%22branch_9f8d7c6b5a4e3d2c1b0a%22%2C%22branch_1a2b3c4d5e6f7g8h9i0j%22%5D&visited_agent_ids=%5B%22agent_3701k3ttaq12ewp8b7qv5rfyszkz%22%2C%22agent_48f9k2lmqv34rty7b8x9z0w1e2%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

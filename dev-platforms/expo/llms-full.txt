@@ -1659,7 +1659,7 @@ Try the following prompts after installing Expo Skills. Your AI agent will autom
 ---
 
 ---
-modificationDate: July 21, 2026
+modificationDate: July 29, 2026
 title: Using Model Context Protocol (MCP) with Expo
 description: A guide on integrating Model Context Protocol with Expo projects to enhance AI model capabilities.
 ---
@@ -1830,7 +1830,7 @@ These capabilities enable more sophisticated workflows like automated testing, v
 
 ### Tools
 
-| Tool | Description | Example Prompt | Availability |
+| Tool | Description | Example prompt | Availability |
 | --- | --- | --- | --- |
 | `add_library` | Add an Expo library to the project using expo install and attach usage instructions when available. | "add sqlite and basic CRUD to the app" | Server |
 | `read_documentation` | Fetch a single Expo documentation page and return its content as markdown. Returns up to ~5000 tokens per call. Use offset to paginate through long pages. | "read the Expo Router docs page" | Server |
@@ -6170,7 +6170,7 @@ Some libraries distribute their config plugin as a separate package from their m
 ---
 
 ---
-modificationDate: July 21, 2026
+modificationDate: July 29, 2026
 title: Developing and debugging a plugin
 description: Learn about development best practices and debugging techniques for Expo config plugins.
 ---
@@ -6585,7 +6585,7 @@ For the most _stable_ experience, you should try to have no `UNVERSIONED` plugin
 
 Plugins can transform application code with regular expressions, but these modifications are dangerous if the template changes over time then the regex becomes hard to predict (similarly if the user modifies a file manually or uses a custom template). Here are some examples of files you shouldn't modify manually, and alternatives.
 
-### Android Gradle Files
+### Android Gradle files
 
 Gradle files are written in either Groovy or Kotlin. They are used to manage dependencies, versioning, and other settings in the Android app. Instead of modifying them directly with the `withProjectBuildGradle`, `withAppBuildGradle`, or `withSettingsGradle` mods, utilize the static `gradle.properties` file.
 
@@ -7076,7 +7076,7 @@ The Expo community and the React and React Native communities are great resource
 ---
 
 ---
-modificationDate: July 22, 2026
+modificationDate: July 29, 2026
 title: Debugging and profiling tools
 description: Learn about different tools available to inspect your Expo project at runtime.
 ---
@@ -7174,7 +7174,7 @@ The **Console** tab gives you access to an interactive terminal, connected direc
 
 ### Inspecting network requests (Expo only)
 
-> The Network tab in React Native DevTools is only available when you have `expo` installed in your project.
+> The Network tab in React Native DevTools is only available when you have [`expo-dev-client`](/versions/latest/sdk/dev-client.md) installed, or when you use Expo Go.
 
 The **Network** tab gives you insights into the network requests made by your app. You can inspect each request and response by clicking on them. This includes `fetch` requests, external loaded media, and in some cases, even requests made by native modules.
 
@@ -7782,7 +7782,7 @@ Most apps need to persist data beyond the lifetime of a single session. You can 
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: July 29, 2026
 title: Authentication in Expo and React Native apps
 description: Learn about setting up authentication in your Expo project.
 ---
@@ -7843,7 +7843,7 @@ If you're building this flow yourself, be sure to review the [Authentication Che
 
 Passwordless login removes the need for users to create or remember a password. Instead, they provide their email address or phone number during registration. Your app then sends a [magic link](https://auth0.com/docs/authenticate/passwordless/authentication-methods/email-magic-link#classic-login-flow-with-magic-links) or [one-time passcode (OTP)](https://en.wikipedia.org/wiki/One-time_password) to their inbox or device. This is a smoother experience for most users and reduces friction during onboarding.
 
-#### Magic Links
+#### Magic links
 
 With magic links, the user receives an email containing a link that redirects them back into your app. If everything works correctly, the session is verified and established.
 
@@ -12465,7 +12465,7 @@ AI agents don't produce identical results every time, so your app won't match ou
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 29, 2026
 title: Set up your tools
 description: In this chapter, install an AI coding agent, Node.js, and Expo Go, and teach your agent about Expo.
 ---
@@ -13047,7 +13047,7 @@ We're ready for this journey after setting up an Expo project locally. In the ne
 ---
 
 ---
-modificationDate: July 22, 2026
+modificationDate: July 29, 2026
 title: Configure a development build in cloud
 description: Learn how to configure a development build for a project using EAS Build.
 ---
@@ -13072,7 +13072,7 @@ A [development build](/develop/development-builds/introduction.md) is a debug ve
 
 > **Note:** If you are familiar with [Expo Go](/get-started/set-up-your-environment.md), think of a development build as a customizable version of Expo Go that is unique to the requirements of a project.
 
-| Feature | Development Builds | Expo Go |
+| Feature | Development builds | Expo Go |
 | --- | --- | --- |
 | **Development phase** | Offers web-like iteration speed for mobile app development. | Allows for quick iteration and testing of Expo SDK projects using the client app. |
 | **Collaboration** | Facilitates team testing with shared native runtime. | Easy project sharing via QR codes on a device. |
@@ -17495,7 +17495,7 @@ If you have a specific version of a third-party library installed and want it to
 ---
 
 ---
-modificationDate: June 26, 2026
+modificationDate: July 29, 2026
 title: Privacy manifests
 description: Learn about configuring iOS privacy manifests for your mobile app.
 ---
@@ -17512,7 +17512,7 @@ More details and a list of "required reason" APIs can be found in the [Apple Dev
 
 > The information and steps included in this guide are still in development and may change due to new tools built for this purpose or new requirements from Apple.
 
-## What is a Privacy manifest?
+## What is a privacy manifest?
 
 A privacy manifest is a file named **PrivacyInfo.xcprivacy** that is included in your iOS native project. This file is used to declare why the app includes native code that calls into certain APIs that Apple considers sensitive.
 
@@ -17560,7 +17560,7 @@ You can usually identify the required reasons for the APIs used by other third-p
 
 As an alternative, Apple notifies developers after they submit a build with missing privacy manifest files or specific reasons. You can wait until you receive a notification email from Apple and then include the required reasons listed in the email in your app's **PrivacyInfo.xcprivacy** file (if you don't use [CNG](/workflow/continuous-native-generation.md)) or the configuration in your **app.json** file.
 
-## Testing the Privacy manifest
+## Testing the privacy manifest
 
 You can test the privacy manifest by building your app and submitting it, either through App Store review process or to TestFlight's external review. Apple will email you within a few minutes of submitting if your app is missing any required reasons for the APIs used.
 
@@ -17838,16 +17838,16 @@ Never store sensitive secrets in environment variables that are prefixed with `E
 ---
 
 ---
-modificationDate: July 28, 2026
-title: Overview of Linking, Deep Links, Android App Links, and iOS Universal Links
-description: An overview of available resources to implement Linking and Deep Links in your Expo apps.
+modificationDate: July 29, 2026
+title: Overview of linking, deep links, Android App Links, and iOS Universal Links
+description: An overview of available resources to implement linking and deep links in your Expo apps.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
-# Overview of Linking, Deep Links, Android App Links, and iOS Universal Links
+# Overview of linking, deep links, Android App Links, and iOS Universal Links
 
-An overview of available resources to implement Linking and Deep Links in your Expo apps.
+An overview of available resources to implement linking and deep links in your Expo apps.
 
 ## Linking
 
@@ -17892,7 +17892,7 @@ This link type allows your app to open when a user clicks an HTTP(S) link pointi
 For example, by clicking a product advertisement, your app will open on the user's device and they can view that product's details. This product's link that the user clicked may look like (or alternatively be invoked by JavaScript with setting `window.location.href`):
 
 ```html
-<a href="myapp://web-app.com/product">View Product</a>
+<a href="myapp://web-app.com/product">View product</a>
 ```
 
 This link is constructed by three parts:
@@ -20146,7 +20146,7 @@ For subsequent deployments and updates, run the `deploy` command and the GitHub 
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: July 29, 2026
 title: Using React DOM in Expo native apps
 description: Learn about rendering React DOM components in Expo native apps using the 'use dom' directive.
 ---
@@ -20727,7 +20727,7 @@ While DOM components help with migration and moving quickly, we recommend using 
 
 ## Common questions
 
-#### How to obtain a Secure Context in DOM components?
+#### How to obtain a secure context in DOM components?
 
 Some Web APIs require a [Secure Context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts) function correctly. For example, the [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) is only available in secure contexts. A secure context means that remote resources must be served over HTTPS. [Learn more about features restricted to secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts/features_restricted_to_secure_contexts).
 
@@ -20771,7 +20771,7 @@ bun expo start --tunnel -d -i
 ---
 
 ---
-modificationDate: July 03, 2026
+modificationDate: July 29, 2026
 title: Using React Server Components in Expo Router apps
 description: Learn about rendering React components on the server in Expo.
 ---
@@ -21358,7 +21358,7 @@ You can deploy your native React Server Components by following the server deplo
 -   EAS Update does not work with Server Components yet.
 -   DOM components cannot use React Server Functions in production yet.
 -   Production deployment is limited and not recommended yet.
--   Server Rendering RSC payloads to HTML is not supported yet. This means static and server output doesn't fully work yet.
+-   Server rendering RSC payloads to HTML is not supported yet. This means static and server output doesn't fully work yet.
 -   [`generateStaticParams`](/router/web/static-rendering.md#generatestaticparams) is only partially supported in full React Server Components mode.
 -   HTML `form` integration with Server Functions is not supported yet (this partially works automatically, but data is not encrypted).
 -   `StyleSheet.create` and `Platform.OS` are not supported on native. Use standard objects for styles and `process.env.EXPO_OS` for platform detection.
@@ -22206,7 +22206,7 @@ Open `https://localhost` in your browser to access your app. Your Expo app is no
 ---
 
 ---
-modificationDate: June 26, 2026
+modificationDate: July 29, 2026
 title: Metro bundler
 description: Learn about different Metro bundler configurations that can be customized.
 ---
@@ -22355,7 +22355,7 @@ Expo CLI has support for bundling websites using Metro. This is the same bundler
 
 If you previously wrote your website using the deprecated `@expo/webpack-adapter`, see the [migration guide](/router/migrate/from-expo-webpack.md) and [comparison chart](/router/migrate/from-expo-webpack.md#expo-cli).
 
-### Adding Web support to Metro
+### Adding web support to Metro
 
 Modify your [app config](/workflow/configuration.md) to enable the feature using the `expo.web.bundler` field:
 
@@ -23994,7 +23994,7 @@ Choose your **from SDK version** and **to SDK version** to see the generated dif
 ---
 
 ---
-modificationDate: July 22, 2026
+modificationDate: July 29, 2026
 title: Integrating Expo tools into existing native apps
 description: An overview of how you can integrate Expo tools into existing native apps ("brownfield" apps).
 ---
@@ -24028,7 +24028,7 @@ Expo is primarily built with greenfield apps in mind, but we are increasingly in
 | [EAS Submit](/deploy/submit-to-app-stores.md) - a hosted service that uploads your app to stores | ✓ |
 | [EAS Update](/eas-update/introduction.md) - instant updates of your app JavaScript and assets | ✓ |
 
-## Integrated vs Isolated approaches
+## Integrated vs isolated approaches
 
 When you integrate React Native into an existing native app, you can choose between two main approaches: integrated and isolated. The best approach for you will depend on your project's structure, your team's workflow, and your long-term goals.
 
@@ -24483,7 +24483,7 @@ In release builds, the JavaScript bundle is embedded in the artifact (AAR or XCF
 ---
 
 ---
-modificationDate: July 21, 2026
+modificationDate: July 29, 2026
 title: How to add Expo to a native app using the integrated approach
 description: A guide for adding Expo and React Native to existing native (brownfield) apps using the integrated approach.
 ---
@@ -31653,7 +31653,7 @@ There are different options to present a modal screen using the `presentation` o
 ---
 
 ---
-modificationDate: July 21, 2026
+modificationDate: July 29, 2026
 title: Web modals
 description: Learn how to implement and customize the behavior of a modal in your web app using Expo Router.
 ---
@@ -31732,7 +31732,7 @@ export default function Home() {
     <View style={styles.container}>
       <Text style={styles.title}>Home Screen</Text>
       <Pressable onPress={() => router.push('/modal')} style={styles.button}>
-        <Text style={styles.buttonText}>Open Modal</Text>
+        <Text style={styles.buttonText}>Open modal</Text>
       </Pressable>
     </View>
   );
@@ -32561,7 +32561,7 @@ export default function Layout() {
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: July 29, 2026
 title: Customizing links
 description: Learn how to perform link redirection and utilize third-party deep links with +native-intent when using Expo Router.
 ---
@@ -32717,7 +32717,7 @@ This approach is effective for directing users to external websites or Universal
 
 If you're using a third-party provider that doesn't support Expo Router but does support React Navigation via the `Linking.subscribe` function for existing projects, you can use `legacy_subscribe` as an alternative API.
 
-Using this API is not recommended for new projects or integrations. Its usage is incompatible with Server Side Routing and [Static Rendering](/router/web/static-rendering.md), and can be challenging to manage while offline or in a low network connectivity environment.
+Using this API is not recommended for new projects or integrations. Its usage is incompatible with server-side routing and [static rendering](/router/web/static-rendering.md), and can be challenging to manage while offline or in a low network connectivity environment.
 
 ---
 
@@ -35574,7 +35574,7 @@ The current bundling implementation opts to be more unified than flexible. This 
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: July 29, 2026
 title: Data loaders
 description: Learn how to fetch data on the server using data loaders in Expo Router.
 isAlpha: true
@@ -35882,7 +35882,7 @@ export default function ApiData() {
 
 Data loaders behave differently depending on your [`web.output`](/versions/latest/config/app.md#output) configuration:
 
-| Aspect | Static Rendering | Server Rendering |
+| Aspect | Static rendering | Server rendering |
 | --- | --- | --- |
 | Loader execution | Build time | Request time |
 | `request` parameter | `undefined` | [`ImmutableRequest`](/versions/latest/sdk/server.md#immutablerequest) |
@@ -36539,7 +36539,7 @@ For example, if you configure `Cache-Control: public, max-age=3600` globally, bu
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 29, 2026
 title: Static rendering
 description: Learn how to render routes to static HTML and CSS files with Expo Router.
 ---
@@ -36884,7 +36884,7 @@ There is no prescriptive way to add a custom server. You can use any server you 
 
 In the future, there will be a server API, and a new `web.output` mode which will generate a project that will (among other things) support dynamic routes.
 
-## Server-side Rendering
+## Server-side rendering
 
 Rendering at request-time is not supported with `web.output: 'static'`. To render pages dynamically on each request, use [server rendering](/router/web/server-rendering.md) with `web.output: 'server'` instead.
 
@@ -36906,7 +36906,7 @@ You can deploy your statically rendered website to any static hosting service. H
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: July 29, 2026
 title: Server rendering
 description: Learn how to render Expo Router routes dynamically at request time using server-side rendering (SSR).
 isAlpha: true
@@ -37187,7 +37187,7 @@ bunx eas-cli@latest hosting:deploy dist
 
 ## Comparison with static rendering
 
-| Feature |  | Static Rendering | Server Rendering |
+| Feature |  | Static rendering | Server rendering |
 | --- | --- | --- | --- |
 | HTML generation |  | Build time | Request time |
 | HTML delivery |  | Complete document | Streamed progressively |
@@ -43502,7 +43502,7 @@ Your module is now ready to be used on Out-of-Tree platform.
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: July 29, 2026
 title: Module API Reference
 description: An API reference of Expo modules API.
 ---
@@ -44360,7 +44360,7 @@ Each `.from<T> { }` call registers a converter from type `T` to your custom type
 
 Some common iOS types from the `CoreGraphics` and `UIKit` system frameworks are already made convertible.
 
-| Native iOS Type | TypeScript |
+| Native iOS type | TypeScript |
 | --- | --- |
 | `URL` | `string` with a URL. When a scheme is not provided, it's assumed to be a file URL. |
 | `CGFloat` | `number` |
@@ -44375,7 +44375,7 @@ Similarly, some common Android types from packages like `java.io`, `java.net`, o
 
 > **Note:** On Android, primitive arrays should be used whenever possible.
 
-| Native Android Type | TypeScript |
+| Native Android type | TypeScript |
 | --- | --- |
 | `java.net.URL` | `string` with a URL. Note that the scheme has to be provided (URL should not contain any unencoded `%` character) |
 | `android.net.Uri``java.net.URI` | `string` with a URI. Note that the scheme has to be provided (URI should not contain any unencoded `%` character) |
@@ -45517,7 +45517,7 @@ Type: React.[Element](https://www.typescriptlang.org/docs/handbook/jsx.html#func
 
 ### `AnonymousType`
 
-Literal Type: `union`
+Literal type: `union`
 
 Represents an anonymous type, a one that is not named instead written directly in the code, such as inline generics, arrays, or optionals.
 
@@ -47760,7 +47760,7 @@ Follow the video or links below to learn how to set up push notifications, send 
 ---
 
 ---
-modificationDate: May 23, 2026
+modificationDate: July 29, 2026
 title: What you need to know about notifications
 description: Learn about notification types and their behavior before you get started.
 ---
@@ -47802,7 +47802,7 @@ For any kind of notification, when the app is in the foreground, the app is in c
 
 The table below summarizes what happens when a push notification is delivered to the device:
 
-| Notification Type | App in Foreground | App in Background | App Terminated |
+| Notification type | App in foreground | App in background | App terminated |
 | --- | --- | --- | --- |
 | [Notification Message](/push-notifications/what-you-need-to-know.md#notification-message) and [Notification Message with data payload](/push-notifications/what-you-need-to-know.md#notification-message-with-data-payload) | delivery runs [`NotificationReceivedListener`](/versions/latest/sdk/notifications.md#addnotificationreceivedlistenerlistener) and [JS task](/versions/latest/sdk/notifications.md#registertaskasynctaskname) | OS shows notification | OS shows notification |
 | [Headless Background Notification](/push-notifications/what-you-need-to-know.md#headless-background-notifications) | delivery runs [`NotificationReceivedListener`](/versions/latest/sdk/notifications.md#addnotificationreceivedlistenerlistener) and [JS task](/versions/latest/sdk/notifications.md#registertaskasynctaskname) | delivery runs [JS task](/versions/latest/sdk/notifications.md#registertaskasynctaskname) | delivery runs [JS task](/versions/latest/sdk/notifications.md#registertaskasynctaskname) |
@@ -48791,16 +48791,16 @@ On Android, users can set certain OS-level settings, usually revolving around pe
 ---
 
 ---
-modificationDate: July 26, 2026
+modificationDate: July 29, 2026
 title: Obtain Google Service Account Keys using FCM V1
-description: Learn how to create or use a Google Service Account Key for sending Android Notifications using FCM.
+description: Learn how to create or use a Google Service Account Key for sending Android notifications using FCM.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
 # Obtain Google Service Account Keys using FCM V1
 
-Learn how to create or use a Google Service Account Key for sending Android Notifications using FCM.
+Learn how to create or use a Google Service Account Key for sending Android notifications using FCM.
 
 ## Create a new Google Service Account Key
 
@@ -49312,7 +49312,7 @@ This indicates an issue with the image asset you're providing. The image should 
 ---
 
 ---
-modificationDate: November 25, 2025
+modificationDate: July 29, 2026
 title: React Native analytics SDKs and libraries
 description: An overview of analytics services available in the Expo and React Native ecosystem.
 ---
@@ -51235,7 +51235,7 @@ Here are some popular CMS options to consider for Expo and React Native projects
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 29, 2026
 title: Using Convex
 description: Add a database to your app with Convex.
 ---
@@ -51385,6 +51385,21 @@ eas integrations:convex:team:invite
 ```
 
 If you remove the link with `eas integrations:convex:project:delete` or `eas integrations:convex:team:delete`, EAS removes its integration metadata. These commands do not destroy resources on Convex.
+
+## Troubleshooting
+
+### Accept a team invite sent to a different email
+
+The Convex team invitation goes to the verified email on your Expo account, but Convex only supports signing in with Google or GitHub. If your Google or GitHub email is different, the invitation page says the invited email address has not been added to your Convex account. Navigating away from that page leaves you in a separate Convex account that does not contain your project.
+
+To accept the invite from your existing Convex account:
+
+1.  On the invitation page (or in the Convex dashboard's profile settings), click **Add email** and enter the invited email address.
+2.  Open the verification email that Convex sends to that address and verify it.
+3.  Return to the invitation link and reload the page, or sign out and open the invitation link again.
+4.  Accept the invite. The team and project now appear in your Convex account.
+
+> The flow can look like it failed after verifying the email. The invitation page does not update until you reload or reopen it.
 
 ---
 
@@ -51594,16 +51609,16 @@ After configuring React Native Firebase library, you can use any module it provi
 ---
 
 ---
-modificationDate: July 28, 2026
+modificationDate: July 29, 2026
 title: Using Supabase
-description: Add a Postgres Database and user authentication to your React Native app with Supabase.
+description: Add a Postgres database and user authentication to your React Native app with Supabase.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
 # Using Supabase
 
-Add a Postgres Database and user authentication to your React Native app with Supabase.
+Add a Postgres database and user authentication to your React Native app with Supabase.
 
 [Supabase](https://supabase.com/?utm_source=expo&utm_medium=referral&utm_term=expo-react-native) is a Backend-as-a-Service (BaaS) app development platform that provides hosted backend services such as a Postgres database, user authentication, file storage, edge functions, realtime syncing, and a vector and AI toolkit. It's an open-source alternative to Google's Firebase.
 
@@ -53080,14 +53095,14 @@ Since the EAS tooling on the web and in EAS CLI only creates iOS provisioning pr
 ---
 
 ---
-modificationDate: June 11, 2026
-title: Using Next.js with Expo for Web
+modificationDate: July 29, 2026
+title: Using Next.js with Expo for web
 description: A guide for integrating Next.js with Expo for the web.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
-# Using Next.js with Expo for Web
+# Using Next.js with Expo for web
 
 A guide for integrating Next.js with Expo for the web.
 
@@ -53404,7 +53419,7 @@ module.exports = withExpo({
 ---
 
 ---
-modificationDate: July 22, 2026
+modificationDate: July 29, 2026
 title: Upgrade Expo SDK
 description: Learn how to incrementally upgrade the Expo SDK version in your project.
 ---
@@ -53469,7 +53484,7 @@ npx expo-doctor
 
 Read the [SDK changelogs](/workflow/upgrading-expo-sdk-walkthrough.md#sdk-changelogs) for the SDK version you are upgrading to. They contain important information about breaking changes, deprecations, and other changes that may affect your app. Refer to the "Upgrading your app" section at the bottom of the release notes page for any additional instructions.
 
-## SDK Changelogs
+## SDK changelogs
 
 Each SDK announcement release notes post contains information about deprecations, breaking changes, and anything else that might be unique to that particular SDK version. When upgrading, be sure to check these out to make sure you don't miss anything.
 
@@ -53478,7 +53493,7 @@ Each SDK announcement release notes post contains information about deprecations
 -   **SDK 55**: [Release notes](https://expo.dev/changelog/sdk-55)
 -   **SDK 54**: [Release notes](https://expo.dev/changelog/sdk-54)
 
-### Deprecated SDK Version Changelogs
+### Deprecated SDK version changelogs
 
 The following blog posts may included outdated information, but they are still useful for reference if you happen to fall far behind on SDK upgrades.
 
@@ -54490,7 +54505,7 @@ removeAllContactsChangeListeners();
 ---
 
 ---
-modificationDate: May 18, 2026
+modificationDate: July 29, 2026
 title: Authentication with OAuth or OpenID providers
 description: Learn how to utilize the expo-auth-session library to implement authentication with OAuth or OpenID providers.
 ---
@@ -54526,7 +54541,7 @@ The following examples show how to use the `AuthSession` API to authenticate wit
 
 ### GitHub
 
-| Website | Provider | PKCE | Auto Discovery |
+| Website | Provider | PKCE | Auto discovery |
 | --- | --- | --- | --- |
 | [Get Your Config](https://github.com/settings/developers) | OAuth 2.0 | Supported | Not Available |
 
@@ -54583,7 +54598,7 @@ export default function App() {
 
 ### Okta
 
-| Website | Provider | PKCE | Auto Discovery |
+| Website | Provider | PKCE | Auto discovery |
 | --- | --- | --- | --- |
 | [Sign-up](https://developer.okta.com/signup/) > Applications | OpenID | Supported | Available |
 
@@ -54760,14 +54775,14 @@ function App() {
 ---
 
 ---
-modificationDate: July 28, 2026
-title: Using Hermes Engine
+modificationDate: July 29, 2026
+title: Using Hermes engine
 description: A guide on configuring Hermes for both Android and iOS in an Expo project.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
-# Using Hermes Engine
+# Using Hermes engine
 
 A guide on configuring Hermes for both Android and iOS in an Expo project.
 
@@ -54852,7 +54867,7 @@ Hermes supports [Chrome DevTools Protocol](https://chromedevtools.github.io/devt
 ---
 
 ---
-modificationDate: July 22, 2026
+modificationDate: July 29, 2026
 title: iOS Developer Mode
 description: Learn how to enable iOS Developer Mode setting on iOS 16 and above to run internal distribution builds and local development builds.
 ---
@@ -54923,7 +54938,7 @@ You can turn off Developer Mode at any time. However, you'll need to repeat this
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 29, 2026
 title: Expo Vector Icons
 description: Learn how to use various types of icons in your Expo app, including react native vector icons, custom icon fonts, icon images, and icon buttons.
 ---
@@ -55764,7 +55779,7 @@ For now, you need to carefully choose between a more complex, native editor that
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 29, 2026
 title: Create app store assets
 description: Learn how to create screenshots and previews for your app's store pages.
 ---
@@ -55793,7 +55808,7 @@ The most straightforward option — open up your app on a real device and take s
 
 **Cons**: Need to load the app on different devices for a full range of screenshots.
 
-Screenshots of the Expo Go Apple App Store Listing Page.
+Screenshots of the Expo Go Apple App Store listing page.
 
 ### Option 2: screenshots within a design
 
@@ -55803,7 +55818,7 @@ The majority of apps use this approach. It involves taking screenshots of the ap
 
 **Cons:** The assets need to be created using a design program.
 
-Screenshots of the Brex Apple App Store Listing Page.
+Screenshots of the Brex Apple App Store listing page.
 
 ### Option 3: make it fancy
 
@@ -55813,9 +55828,9 @@ In this option, on the app store pages, you can incorporate elements of your app
 
 **Cons:** Need an experienced designer to create and maintain the assets.
 
-Screenshots of the MS Office Apple Store Listing Page.
+Screenshots of the MS Office Apple Store listing page.
 
-## Google Play Store Asset Requirements
+## Google Play Store asset requirements
 
 Google has specific requirements for the store asset format and dimensions, which are different from Apple's. For the most up-to-date specifications, see [official documentation](https://support.google.com/googleplay/android-developer/answer/9866151) for detailed requirements for your Google Play Store assets.
 
@@ -55837,7 +55852,7 @@ You need to upload at least four screenshots to publish your app.
 
 You can add one preview video to your Store Listing. The video needs to be uploaded to YouTube, and you can add it by entering a YouTube URL in the **preview video** field.
 
-## iOS App Store Asset Requirements
+## iOS App Store asset requirements
 
 For the iOS App Store, you can upload screenshots (images) and previews (videos). For each, Apple requires specific widths and heights. Make sure to reference the [Screenshot specifications from Apple](https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/) for the exact sizing. Even a single pixel-off will mean you cannot submit the images.
 
@@ -58009,14 +58024,14 @@ The bundler that you're running in your terminal (using `npx expo start`) is usi
 ---
 
 ---
-modificationDate: July 20, 2026
-title: Troubleshooting Proxies
+modificationDate: July 29, 2026
+title: Troubleshooting proxies
 description: Learn about troubleshooting proxies with a set of recommended tools.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
-# Troubleshooting Proxies
+# Troubleshooting proxies
 
 Learn about troubleshooting proxies with a set of recommended tools.
 
@@ -58122,14 +58137,14 @@ export https_proxy="http://localhost:8888"
 ---
 
 ---
-modificationDate: May 20, 2025
-title: Data and Privacy protection
+modificationDate: July 29, 2026
+title: Data and privacy protection
 description: An overview of data and privacy protection policies that Expo offers.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
-# Data and Privacy protection
+# Data and privacy protection
 
 An overview of data and privacy protection policies that Expo offers.
 

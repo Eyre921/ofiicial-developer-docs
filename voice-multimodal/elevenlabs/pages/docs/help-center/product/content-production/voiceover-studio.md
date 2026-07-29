@@ -8,22 +8,7 @@ path: docs/help-center/product/content-production/voiceover-studio
 
 # Voiceover Studio FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/voiceover-studio/how-much-does-voiceover-studio-cost">
-          How much does Voiceover Studio cost?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/voiceover-studio/what-is-voiceover-studio">
-          What is Voiceover Studio?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                           |
+| ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [How much does Voiceover Studio cost?](/docs/help-center/product/content-production/voiceover-studio/how-much-does-voiceover-studio-cost) |
+| [What is Voiceover Studio?](/docs/help-center/product/content-production/voiceover-studio/what-is-voiceover-studio)                       |

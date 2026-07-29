@@ -24,8 +24,6 @@ Before you start, consider your use case. Deepgram STT offers three main paths:
     Examples: Contact center agents, customer support bots, real-time assistants.
     <br/>
     [Get started](/docs/flux/quickstart)
-    <br/>
-    Currently available for English. For other languages, please use our general use [Streaming API](/docs/live-streaming-audio).
   </Card>
   <Card class="clickable-card" title="Realtime transcription for meetings and events" icon={<Icon icon="fa-duotone fa-waveform-lines" size="8" />}>
     <br/>

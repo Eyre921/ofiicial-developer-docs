@@ -8,30 +8,8 @@ path: docs/help-center/product/content-production/sound-effects
 
 # Sound Effects FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/sound-effects/how-do-i-prompt-for-sound-effects">
-          How do I prompt for sound effects?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/sound-effects/how-much-does-it-cost-to-generate-sound-effects">
-          How much does it cost to generate sound effects?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/sound-effects/what-is-sound-effects">
-          What is Sound Effects?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                                                |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [How do I prompt for sound effects?](/docs/help-center/product/content-production/sound-effects/how-do-i-prompt-for-sound-effects)                             |
+| [How much does it cost to generate sound effects?](/docs/help-center/product/content-production/sound-effects/how-much-does-it-cost-to-generate-sound-effects) |
+| [What is Sound Effects?](/docs/help-center/product/content-production/sound-effects/what-is-sound-effects)                                                     |

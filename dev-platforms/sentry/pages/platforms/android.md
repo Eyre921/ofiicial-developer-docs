@@ -24,7 +24,7 @@ Select which Sentry features you'd like to install in addition to Error Monitori
 
 Error Monitoring\[ ]Tracing\[ ]Profiling\[ ]Session Replay\[ ]Logs
 
-Profiling uses the Android runtime's `tracer` under the hood to sample threads. There are known issues that this `tracer` can cause crashes in certain circumstances. See this [troubleshooting](https://docs.sentry.io/platforms/android/profiling/troubleshooting.md#i-see-an-elevated-number-of-crashes-in-the-android-runtime-when-profiling-is-activated) entry for more information.
+On Android 15 (API level 35) and higher, profiling uses the Android [ProfilingManager](https://developer.android.com/reference/android/os/ProfilingManager) to capture [Perfetto](https://perfetto.dev/) traces. On older devices, the SDK automatically falls back to the [legacy profiler](https://docs.sentry.io/platforms/android/profiling/legacy.md).
 
 ## [Install](https://docs.sentry.io/platforms/android.md#install)
 
@@ -132,11 +132,6 @@ Configuration is done via the application `AndroidManifest.xml`. Here's an examp
   <meta-data
     android:name="io.sentry.traces.profiling.lifecycle"
     android:value="trace"
-  />
-  <!-- Enable profiling on app start -->
-  <meta-data
-    android:name="io.sentry.traces.profiling.start-on-app-start"
-    android:value="true"
   />
   <!-- ___PRODUCT_OPTION_END___ profiling -->
   <!-- ___PRODUCT_OPTION_START___ logs -->

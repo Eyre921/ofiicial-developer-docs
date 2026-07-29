@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 304 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 305 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -57,6 +57,7 @@
 - `docs/api_reference/streaming` — [Streaming](pages/docs/api_reference/streaming.md) · [原文](https://openrouter.ai/docs/api_reference/streaming.md)
 - `docs/api_reference/versioning` — [API Versioning](pages/docs/api_reference/versioning.md) · [原文](https://openrouter.ai/docs/api_reference/versioning.md)
 - `docs/app-attribution` — [App Attribution](pages/docs/app-attribution.md) · [原文](https://openrouter.ai/docs/app-attribution.md)
+- `docs/assets/provider-monitor-schema-v2.openapi.json` — [provider-monitor-schema-v2.openapi](pages/docs/assets/provider-monitor-schema-v2.openapi.json.md) · [原文](https://openrouter.ai/docs/assets/provider-monitor-schema-v2.openapi.json)
 - `docs/batch-quickstart` — [Batch API Quickstart](pages/docs/batch-quickstart.md) · [原文](https://openrouter.ai/docs/batch-quickstart.md)
 - `docs/changelog` — [API Changelog](pages/docs/changelog.md) · [原文](https://openrouter.ai/docs/changelog.md)
 - `docs/client-sdks/agent-migration` — [Migrating to @openrouter/agent](pages/docs/client-sdks/agent-migration.md) · [原文](https://openrouter.ai/docs/client-sdks/agent-migration.md)

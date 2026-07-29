@@ -8,22 +8,7 @@ path: docs/help-center/product/content-production/eleven-music
 
 # ElevenMusic FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/eleven-music/do-i-need-to-pay-to-use-eleven-music">
-          Do I need to pay to use ElevenMusic?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/eleven-music/what-is-elevenmusic">
-          What is ElevenMusic?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------- |
+| [Do I need to pay to use ElevenMusic?](/docs/help-center/product/content-production/eleven-music/do-i-need-to-pay-to-use-eleven-music) |
+| [What is ElevenMusic?](/docs/help-center/product/content-production/eleven-music/what-is-elevenmusic)                                  |

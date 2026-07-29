@@ -1426,6 +1426,70 @@ components:
         - stderr
         - type
       type: object
+    AnthropicFile:
+      description: A stored file in Anthropic's Files API shape.
+      example:
+        _shape: anthropic
+        created_at: '2025-01-01T00:00:00Z'
+        downloadable: false
+        filename: document.pdf
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        mime_type: application/pdf
+        size_bytes: 1024000
+        type: file
+      properties:
+        _shape:
+          enum:
+            - anthropic
+          type: string
+        created_at:
+          type: string
+        downloadable:
+          type: boolean
+        filename:
+          type: string
+        id:
+          type: string
+        mime_type:
+          type: string
+        size_bytes:
+          type: integer
+        type:
+          enum:
+            - file
+          type: string
+      required:
+        - _shape
+        - id
+        - type
+        - filename
+        - mime_type
+        - size_bytes
+        - created_at
+        - downloadable
+      type: object
+    AnthropicFileDeleted:
+      description: Deletion result in Anthropic's shape.
+      example:
+        _shape: anthropic
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        type: file_deleted
+      properties:
+        _shape:
+          enum:
+            - anthropic
+          type: string
+        id:
+          type: string
+        type:
+          enum:
+            - file_deleted
+          type: string
+      required:
+        - _shape
+        - id
+        - type
+      type: object
     AnthropicFileDocumentSource:
       example:
         file_id: or_file_011CNha8iCJcU1wXNR6q4V8w
@@ -1440,6 +1504,40 @@ components:
       required:
         - type
         - file_id
+      type: object
+    AnthropicFileList:
+      description: A page of files in Anthropic's shape.
+      example:
+        _shape: anthropic
+        data: []
+        first_id: null
+        has_more: false
+        last_id: null
+      properties:
+        _shape:
+          enum:
+            - anthropic
+          type: string
+        data:
+          items:
+            $ref: '#/components/schemas/AnthropicFile'
+          type: array
+        first_id:
+          type:
+            - string
+            - 'null'
+        has_more:
+          type: boolean
+        last_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - _shape
+        - data
+        - has_more
+        - first_id
+        - last_id
       type: object
     AnthropicImageBlockParam:
       example:
@@ -7556,6 +7654,7 @@ components:
           default_text_model: openai/gpt-4o
           description: Production environment workspace
           id: 550e8400-e29b-41d4-a716-446655440000
+          include_byok_in_budgets: false
           io_logging_api_key_ids: null
           io_logging_sampling_rate: 1
           is_data_discount_logging_enabled: true
@@ -8193,101 +8292,40 @@ components:
         - index
       type: object
     FileDeleteResponse:
-      description: Confirmation that a file was deleted.
+      description: Confirmation that a file was deleted, in the negotiated shape.
+      discriminator:
+        mapping:
+          anthropic: '#/components/schemas/AnthropicFileDeleted'
+          openai: '#/components/schemas/OpenAIFileDeleted'
+          openrouter: '#/components/schemas/OpenRouterFileDeleted'
+        propertyName: _shape
       example:
+        _shape: openrouter
         id: or_file_011CNha8iCJcU1wXNR6q4V8w
         type: file_deleted
-      properties:
-        id:
-          type: string
-        type:
-          enum:
-            - file_deleted
-          type: string
-      required:
-        - id
-        - type
-      type: object
+      oneOf:
+        - $ref: '#/components/schemas/OpenRouterFileDeleted'
+        - $ref: '#/components/schemas/OpenAIFileDeleted'
+        - $ref: '#/components/schemas/AnthropicFileDeleted'
     FileListResponse:
-      description: A page of files belonging to the requesting workspace.
+      description: A page of files, in the negotiated shape.
+      discriminator:
+        mapping:
+          anthropic: '#/components/schemas/AnthropicFileList'
+          openai: '#/components/schemas/OpenAIFileList'
+          openrouter: '#/components/schemas/OpenRouterFileList'
+        propertyName: _shape
       example:
+        _shape: openrouter
         cursor: null
-        data:
-          - created_at: '2025-01-01T00:00:00Z'
-            downloadable: false
-            filename: document.pdf
-            id: or_file_011CNha8iCJcU1wXNR6q4V8w
-            mime_type: application/pdf
-            size_bytes: 1024000
-            type: file
-        first_id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        data: []
+        first_id: null
         has_more: false
-        last_id: or_file_011CNha8iCJcU1wXNR6q4V8w
-      properties:
-        cursor:
-          description: >-
-            Opaque cursor for the next page; null when there are no more
-            results.
-          type:
-            - string
-            - 'null'
-        data:
-          items:
-            $ref: '#/components/schemas/FileMetadata'
-          type: array
-        first_id:
-          type:
-            - string
-            - 'null'
-        has_more:
-          type: boolean
-        last_id:
-          type:
-            - string
-            - 'null'
-      required:
-        - data
-        - has_more
-        - first_id
-        - last_id
-        - cursor
-      type: object
-    FileMetadata:
-      description: Metadata describing a stored file.
-      example:
-        created_at: '2025-01-01T00:00:00Z'
-        downloadable: false
-        filename: document.pdf
-        id: or_file_011CNha8iCJcU1wXNR6q4V8w
-        mime_type: application/pdf
-        size_bytes: 1024000
-        type: file
-      properties:
-        created_at:
-          type: string
-        downloadable:
-          type: boolean
-        filename:
-          type: string
-        id:
-          type: string
-        mime_type:
-          type: string
-        size_bytes:
-          type: integer
-        type:
-          enum:
-            - file
-          type: string
-      required:
-        - id
-        - type
-        - filename
-        - mime_type
-        - size_bytes
-        - created_at
-        - downloadable
-      type: object
+        last_id: null
+      oneOf:
+        - $ref: '#/components/schemas/OpenRouterFileList'
+        - $ref: '#/components/schemas/OpenAIFileList'
+        - $ref: '#/components/schemas/AnthropicFileList'
     FileParserPlugin:
       example:
         enabled: true
@@ -8328,6 +8366,38 @@ components:
         - file_id
         - index
       type: object
+    FileProvider:
+      description: >-
+        Store or read this file on the named provider using your own API key for
+        it. Omit to use OpenRouter storage.
+      enum:
+        - openai
+        - anthropic
+      example: openai
+      type: string
+    FileResponse:
+      description: >-
+        A stored file. The shape is negotiated per request — see the endpoint
+        description.
+      discriminator:
+        mapping:
+          anthropic: '#/components/schemas/AnthropicFile'
+          openai: '#/components/schemas/OpenAIFile'
+          openrouter: '#/components/schemas/OpenRouterFile'
+        propertyName: _shape
+      example:
+        _shape: openrouter
+        created_at: '2025-01-01T00:00:00Z'
+        downloadable: false
+        filename: document.pdf
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        mime_type: application/pdf
+        size_bytes: 1024000
+        type: file
+      oneOf:
+        - $ref: '#/components/schemas/OpenRouterFile'
+        - $ref: '#/components/schemas/OpenAIFile'
+        - $ref: '#/components/schemas/AnthropicFile'
     FileSearchServerTool:
       description: File search tool configuration
       example:
@@ -9907,6 +9977,7 @@ components:
           default_text_model: openai/gpt-4o
           description: Production environment workspace
           id: 550e8400-e29b-41d4-a716-446655440000
+          include_byok_in_budgets: false
           io_logging_api_key_ids: null
           io_logging_sampling_rate: 1
           is_data_discount_logging_enabled: true
@@ -12128,12 +12199,21 @@ components:
             reset_interval: monthly
             updated_at: '2025-08-24T15:45:00Z'
             workspace_id: 550e8400-e29b-41d4-a716-446655440000
+        include_byok_in_budgets: false
       properties:
         data:
           description: List of budgets configured for the workspace
           items:
             $ref: '#/components/schemas/WorkspaceBudget'
           type: array
+        include_byok_in_budgets:
+          description: >-
+            Whether BYOK (bring-your-own-key) spend is included when enforcing
+            the workspace's budgets. This is a workspace-wide setting that
+            applies to all budget intervals (daily, weekly, monthly, and
+            lifetime).
+          example: false
+          type: boolean
       required:
         - data
       type: object
@@ -12171,6 +12251,7 @@ components:
             default_text_model: openai/gpt-4o
             description: Production environment workspace
             id: 550e8400-e29b-41d4-a716-446655440000
+            include_byok_in_budgets: false
             io_logging_api_key_ids: null
             io_logging_sampling_rate: 1
             is_data_discount_logging_enabled: true
@@ -14238,6 +14319,8 @@ components:
           is_moderated: true
           max_completion_tokens: 4096
       properties:
+        alias_target:
+          $ref: '#/components/schemas/ModelAliasTarget'
         architecture:
           $ref: '#/components/schemas/ModelArchitecture'
         benchmarks:
@@ -14333,6 +14416,24 @@ components:
         - default_parameters
         - supported_voices
         - links
+      type: object
+    ModelAliasTarget:
+      description: Concrete model targeted by this tilde-latest alias, when applicable
+      example:
+        name: Claude Sonnet 4.5
+        slug: anthropic/claude-sonnet-4.5
+      properties:
+        name:
+          description: Human-readable name of the concrete model targeted by this alias
+          type: string
+        slug:
+          description: >-
+            Routable model ID of the concrete target, matching that model row's
+            id
+          type: string
+      required:
+        - slug
+        - name
       type: object
     ModelArchitecture:
       description: Model architecture information
@@ -16874,6 +16975,127 @@ components:
         - type
         - config
       type: object
+    OpenAIFile:
+      description: A stored file in OpenAI's Files API shape.
+      example:
+        _shape: openai
+        bytes: 1024000
+        created_at: 1735689600
+        filename: document.pdf
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        object: file
+        purpose: user_data
+        status: processed
+      properties:
+        _shape:
+          enum:
+            - openai
+          type: string
+        bytes:
+          type: integer
+        created_at:
+          type: integer
+        filename:
+          type: string
+        id:
+          type: string
+        object:
+          enum:
+            - file
+          type: string
+        purpose:
+          enum:
+            - assistants
+            - batch
+            - fine-tune
+            - vision
+            - user_data
+            - evals
+            - assistants_output
+            - batch_output
+            - fine-tune-results
+          type: string
+        status:
+          enum:
+            - processed
+          type: string
+      required:
+        - _shape
+        - id
+        - object
+        - bytes
+        - created_at
+        - filename
+        - purpose
+        - status
+      type: object
+    OpenAIFileDeleted:
+      description: Deletion result in OpenAI's shape.
+      example:
+        _shape: openai
+        deleted: true
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        object: file
+      properties:
+        _shape:
+          enum:
+            - openai
+          type: string
+        deleted:
+          const: true
+          type: boolean
+        id:
+          type: string
+        object:
+          enum:
+            - file
+          type: string
+      required:
+        - _shape
+        - id
+        - object
+        - deleted
+      type: object
+    OpenAIFileList:
+      description: A page of files in OpenAI's shape.
+      example:
+        _shape: openai
+        data: []
+        first_id: null
+        has_more: false
+        last_id: null
+        object: list
+      properties:
+        _shape:
+          enum:
+            - openai
+          type: string
+        data:
+          items:
+            $ref: '#/components/schemas/OpenAIFile'
+          type: array
+        first_id:
+          type:
+            - string
+            - 'null'
+        has_more:
+          type: boolean
+        last_id:
+          type:
+            - string
+            - 'null'
+        object:
+          enum:
+            - list
+          type: string
+      required:
+        - _shape
+        - object
+        - data
+        - has_more
+        - first_id
+        - last_id
+      type: object
     OpenAIResponseCustomToolCall:
       example:
         call_id: call-abc123
@@ -17528,6 +17750,115 @@ components:
           type: number
         token:
           type: string
+      type: object
+    OpenRouterFile:
+      description: >-
+        A stored file in the OpenRouter superset shape: Anthropic-shaped, plus
+        OpenRouter-only fields.
+      example:
+        _shape: openrouter
+        created_at: '2025-01-01T00:00:00Z'
+        downloadable: false
+        filename: document.pdf
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        mime_type: application/pdf
+        size_bytes: 1024000
+        type: file
+      properties:
+        _shape:
+          enum:
+            - openrouter
+          type: string
+        created_at:
+          type: string
+        downloadable:
+          type: boolean
+        filename:
+          type: string
+        id:
+          type: string
+        mime_type:
+          type: string
+        size_bytes:
+          type: integer
+        type:
+          enum:
+            - file
+          type: string
+      required:
+        - _shape
+        - id
+        - type
+        - filename
+        - mime_type
+        - size_bytes
+        - created_at
+        - downloadable
+      type: object
+    OpenRouterFileDeleted:
+      description: Deletion result in the OpenRouter shape.
+      example:
+        _shape: openrouter
+        id: or_file_011CNha8iCJcU1wXNR6q4V8w
+        type: file_deleted
+      properties:
+        _shape:
+          enum:
+            - openrouter
+          type: string
+        id:
+          type: string
+        type:
+          enum:
+            - file_deleted
+          type: string
+      required:
+        - _shape
+        - id
+        - type
+      type: object
+    OpenRouterFileList:
+      description: A page of files in the OpenRouter shape.
+      example:
+        _shape: openrouter
+        cursor: null
+        data: []
+        first_id: null
+        has_more: false
+        last_id: null
+      properties:
+        _shape:
+          enum:
+            - openrouter
+          type: string
+        cursor:
+          description: >-
+            Opaque cursor for the next page; null when there are no more
+            results.
+          type:
+            - string
+            - 'null'
+        data:
+          items:
+            $ref: '#/components/schemas/OpenRouterFile'
+          type: array
+        first_id:
+          type:
+            - string
+            - 'null'
+        has_more:
+          type: boolean
+        last_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - _shape
+        - data
+        - has_more
+        - first_id
+        - last_id
+        - cursor
       type: object
     OpenRouterMetadata:
       example:
@@ -24872,6 +25203,7 @@ components:
           default_text_model: openai/gpt-4o
           description: Production environment workspace
           id: 550e8400-e29b-41d4-a716-446655440000
+          include_byok_in_budgets: false
           io_logging_api_key_ids: null
           io_logging_sampling_rate: 1
           is_data_discount_logging_enabled: true
@@ -24890,8 +25222,18 @@ components:
       type: object
     UpsertWorkspaceBudgetRequest:
       example:
+        include_byok_in_budgets: true
         limit_usd: 100
       properties:
+        include_byok_in_budgets:
+          description: >-
+            Whether to include BYOK (bring-your-own-key) spend when enforcing
+            the workspace's budgets. This is a workspace-wide setting: it
+            applies to every budget interval (daily, weekly, monthly, and
+            lifetime), not just the interval being upserted in this request.
+            Omit to leave the current setting unchanged.
+          example: true
+          type: boolean
         limit_usd:
           description: Spending limit in USD. Must be greater than 0.
           example: 100
@@ -24909,11 +25251,20 @@ components:
           reset_interval: monthly
           updated_at: '2025-08-24T15:45:00Z'
           workspace_id: 550e8400-e29b-41d4-a716-446655440000
+        include_byok_in_budgets: true
       properties:
         data:
           allOf:
             - $ref: '#/components/schemas/WorkspaceBudget'
             - description: The created or updated budget
+        include_byok_in_budgets:
+          description: >-
+            Whether BYOK (bring-your-own-key) spend is included when enforcing
+            the workspace's budgets. This is a workspace-wide setting that
+            applies to all budget intervals (daily, weekly, monthly, and
+            lifetime).
+          example: true
+          type: boolean
       required:
         - data
       type: object
@@ -25926,6 +26277,7 @@ components:
         default_text_model: openai/gpt-4o
         description: Production environment workspace
         id: 550e8400-e29b-41d4-a716-446655440000
+        include_byok_in_budgets: false
         io_logging_api_key_ids: null
         io_logging_sampling_rate: 1
         is_data_discount_logging_enabled: true
@@ -25983,6 +26335,12 @@ components:
           example: 550e8400-e29b-41d4-a716-446655440000
           format: uuid
           type: string
+        include_byok_in_budgets:
+          description: >-
+            Whether BYOK (bring-your-own-key) spend counts toward this
+            workspace's budgets. Set it via the workspace budget endpoints.
+          example: false
+          type: boolean
         io_logging_api_key_ids:
           description: >-
             Optional array of API key IDs to filter I/O logging. Null means all
@@ -29819,6 +30177,52 @@ paths:
             example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
             format: uuid
             type: string
+        - description: >-
+            Store or read this file on the named provider using your own API key
+            for it. Omit to use OpenRouter storage.
+          example: openai
+          in: query
+          name: provider
+          required: false
+          schema:
+            $ref: '#/components/schemas/FileProvider'
+        - description: 'OpenAI-style forward cursor: the id to list after.'
+          in: query
+          name: after
+          required: false
+          schema:
+            description: 'OpenAI-style forward cursor: the id to list after.'
+            example: or_file_011CNha8iCJcU1wXNR6q4V8w
+            type: string
+        - description: 'Anthropic-style forward cursor: the id to list after.'
+          in: query
+          name: after_id
+          required: false
+          schema:
+            description: 'Anthropic-style forward cursor: the id to list after.'
+            example: or_file_011CNha8iCJcU1wXNR6q4V8w
+            type: string
+        - description: Anthropic-style reverse cursor. Not supported by OpenRouter storage.
+          in: query
+          name: before_id
+          required: false
+          schema:
+            description: >-
+              Anthropic-style reverse cursor. Not supported by OpenRouter
+              storage.
+            example: or_file_011CNha8iCJcU1wXNR6q4V8w
+            type: string
+        - description: Sort direction. Only `asc` is supported by OpenRouter storage.
+          in: query
+          name: order
+          required: false
+          schema:
+            description: Sort direction. Only `asc` is supported by OpenRouter storage.
+            enum:
+              - asc
+              - desc
+            example: asc
+            type: string
       responses:
         '200':
           content:
@@ -29859,6 +30263,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '429':
           content:
             application/json:
@@ -29879,6 +30293,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: Service temporarily unavailable
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: Service Unavailable - Service temporarily unavailable
       summary: List files
       tags:
         - Files
@@ -29913,6 +30347,15 @@ paths:
             example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
             format: uuid
             type: string
+        - description: >-
+            Store or read this file on the named provider using your own API key
+            for it. Omit to use OpenRouter storage.
+          example: openai
+          in: query
+          name: provider
+          required: false
+          schema:
+            $ref: '#/components/schemas/FileProvider'
       requestBody:
         content:
           multipart/form-data:
@@ -29940,7 +30383,7 @@ paths:
                 size_bytes: 1024000
                 type: file
               schema:
-                $ref: '#/components/schemas/FileMetadata'
+                $ref: '#/components/schemas/FileResponse'
           description: The uploaded file metadata.
         '400':
           content:
@@ -30002,6 +30445,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: Service temporarily unavailable
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: Service Unavailable - Service temporarily unavailable
       summary: Upload a file
       tags:
         - Files
@@ -30033,6 +30496,15 @@ paths:
             example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
             format: uuid
             type: string
+        - description: >-
+            Store or read this file on the named provider using your own API key
+            for it. Omit to use OpenRouter storage.
+          example: openai
+          in: query
+          name: provider
+          required: false
+          schema:
+            $ref: '#/components/schemas/FileProvider'
       responses:
         '200':
           content:
@@ -30053,6 +30525,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:
@@ -30083,6 +30565,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: Service temporarily unavailable
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: Service Unavailable - Service temporarily unavailable
       summary: Delete a file
       tags:
         - Files
@@ -30111,6 +30613,15 @@ paths:
             example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
             format: uuid
             type: string
+        - description: >-
+            Store or read this file on the named provider using your own API key
+            for it. Omit to use OpenRouter storage.
+          example: openai
+          in: query
+          name: provider
+          required: false
+          schema:
+            $ref: '#/components/schemas/FileProvider'
       responses:
         '200':
           content:
@@ -30124,7 +30635,7 @@ paths:
                 size_bytes: 1024000
                 type: file
               schema:
-                $ref: '#/components/schemas/FileMetadata'
+                $ref: '#/components/schemas/FileResponse'
           description: The file metadata.
         '401':
           content:
@@ -30136,6 +30647,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:
@@ -30166,6 +30687,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: Service temporarily unavailable
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: Service Unavailable - Service temporarily unavailable
       summary: Get file metadata
       tags:
         - Files
@@ -30197,6 +30738,15 @@ paths:
             example: a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7
             format: uuid
             type: string
+        - description: >-
+            Store or read this file on the named provider using your own API key
+            for it. Omit to use OpenRouter storage.
+          example: openai
+          in: query
+          name: provider
+          required: false
+          schema:
+            $ref: '#/components/schemas/FileProvider'
       responses:
         '200':
           content:
@@ -30226,6 +30776,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
           description: Unauthorized - Authentication required or invalid credentials
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: Only management keys can perform this operation
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: Forbidden - Authentication successful but insufficient permissions
         '404':
           content:
             application/json:
@@ -30256,6 +30816,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: Internal Server Error - Unexpected server error
+        '502':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 502
+                  message: Provider returned error
+              schema:
+                $ref: '#/components/schemas/BadGatewayResponse'
+          description: Bad Gateway - Provider/upstream API failure
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: Service temporarily unavailable
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: Service Unavailable - Service temporarily unavailable
       summary: Download file content
       tags:
         - Files
@@ -37767,6 +38347,7 @@ paths:
                     default_text_model: openai/gpt-4o
                     description: Production environment workspace
                     id: 550e8400-e29b-41d4-a716-446655440000
+                    include_byok_in_budgets: false
                     io_logging_api_key_ids: null
                     io_logging_sampling_rate: 1
                     is_data_discount_logging_enabled: true
@@ -37846,6 +38427,7 @@ paths:
                   default_text_model: openai/gpt-4o
                   description: Production environment workspace
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  include_byok_in_budgets: false
                   io_logging_api_key_ids: null
                   io_logging_sampling_rate: 1
                   is_data_discount_logging_enabled: true
@@ -38011,6 +38593,7 @@ paths:
                   default_text_model: openai/gpt-4o
                   description: Production environment workspace
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  include_byok_in_budgets: false
                   io_logging_api_key_ids: null
                   io_logging_sampling_rate: 1
                   is_data_discount_logging_enabled: true
@@ -38094,6 +38677,7 @@ paths:
                   default_text_model: openai/gpt-4o
                   description: Production environment workspace
                   id: 550e8400-e29b-41d4-a716-446655440000
+                  include_byok_in_budgets: false
                   io_logging_api_key_ids: null
                   io_logging_sampling_rate: 1
                   is_data_discount_logging_enabled: true
@@ -38187,6 +38771,7 @@ paths:
                     reset_interval: monthly
                     updated_at: '2025-08-24T15:45:00Z'
                     workspace_id: 550e8400-e29b-41d4-a716-446655440000
+                include_byok_in_budgets: false
               schema:
                 $ref: '#/components/schemas/ListWorkspaceBudgetsResponse'
           description: Budgets retrieved successfully
@@ -38296,8 +38881,13 @@ paths:
       description: >-
         Create or update the budget for a given interval. Budget limits must
         strictly decrease as the interval narrows (lifetime > monthly > weekly >
-        daily). [Management key](/docs/guides/overview/auth/management-api-keys)
-        required.
+        daily). The optional `include_byok_in_budgets` flag is a workspace-wide
+        setting: when provided it applies to every budget interval for the
+        workspace, not just the interval in this request. Note that a change
+        made here is applied to budget enforcement immediately, but an
+        already-open workspace settings page in the web dashboard may keep
+        showing the previous value until it is reloaded. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: upsertWorkspaceBudget
       parameters:
         - description: The workspace ID (UUID) or slug
@@ -38322,6 +38912,7 @@ paths:
         content:
           application/json:
             example:
+              include_byok_in_budgets: true
               limit_usd: 100
             schema:
               $ref: '#/components/schemas/UpsertWorkspaceBudgetRequest'
@@ -38338,6 +38929,7 @@ paths:
                   reset_interval: monthly
                   updated_at: '2025-08-24T15:45:00Z'
                   workspace_id: 550e8400-e29b-41d4-a716-446655440000
+                include_byok_in_budgets: true
               schema:
                 $ref: '#/components/schemas/UpsertWorkspaceBudgetResponse'
           description: Budget created or updated successfully

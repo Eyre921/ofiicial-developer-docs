@@ -8,22 +8,7 @@ path: docs/help-center/product/content-production/image-video
 
 # Image & Video FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/image-video/how-much-does-image-video-cost">
-          How much does Image & Video cost?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/content-production/image-video/what-is-image-video">
-          What is Image & Video?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                              |
+| ---------------------------------------------------------------------------------------------------------------------------- |
+| [How much does Image & Video cost?](/docs/help-center/product/content-production/image-video/how-much-does-image-video-cost) |
+| [What is Image & Video?](/docs/help-center/product/content-production/image-video/what-is-image-video)                       |

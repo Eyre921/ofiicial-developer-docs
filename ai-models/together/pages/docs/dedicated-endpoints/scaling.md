@@ -42,15 +42,43 @@ tg beta endpoints deploy zai-org/GLM-5.2 \
   --scaling-target 70
 ```
 
-You can also set or change the metric later on a running deployment. Pass the deployment ID (`dep_...`); the CLI resolves its parent endpoint automatically:
+You can also set or change the metric later on a running deployment. Pass the deployment ID (`dep_...`); the CLI resolves its parent endpoint automatically. With the Python SDK, use snake\_case field names and set the metric target `type` explicitly:
 
-```bash CLI theme={null}
-tg beta endpoints update dep_abc123 \
-  --min-replicas 1 \
-  --max-replicas 4 \
-  --scaling-metric gpu_utilization \
-  --scaling-target 70
-```
+<CodeGroup>
+  ```bash CLI theme={null}
+  tg beta endpoints update dep_abc123 \
+    --min-replicas 1 \
+    --max-replicas 4 \
+    --scaling-metric gpu_utilization \
+    --scaling-target 70
+  ```
+
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+  project_id = client.whoami().project_id
+
+  deployment = client.beta.endpoints.deployments.update(
+      "dep_abc123",
+      project_id=project_id,
+      endpoint_id="ep_abc123",
+      autoscaling={
+          "min_replicas": 1,
+          "max_replicas": 4,
+          "scaling_metrics": [
+              {
+                  "name": "gpu_utilization",
+                  "target": 70,
+                  "type": "METRIC_TARGET_TYPE_UTILIZATION",
+              }
+          ],
+      },
+  )
+  ```
+</CodeGroup>
+
+The SDK converts the snake\_case fields above to the API's camelCase fields. You can pass the same `autoscaling` object to `client.beta.endpoints.deployments.create`. For create requests, `model` and `config` must be fully qualified resource names, such as `projects/{project_id}/models/{model_id}` and `projects/{project_id}/configs/{config_id}`. See the [create deployment](/reference/dmi/deployments-create) and [update deployment](/reference/dmi/deployments-update) API references.
 
 ## Scaling metrics
 

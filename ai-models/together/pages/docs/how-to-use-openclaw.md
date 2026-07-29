@@ -6,7 +6,7 @@ path: docs/how-to-use-openclaw
 
 Learn how to power OpenClaw (an autonomous agent) with Together AI models.
 
-OpenClaw is the first Jarvis-like agent that actually gets things done — writing and executing scripts, browsing the web, using apps, and managing tasks from Telegram, WhatsApp, or any chat interface. By pairing it with [Together AI](https://together.ai), you unlock access to leading open-source models like GLM 4.7, Kimi K2.5, and DeepSeek V3 through a single OpenAI-compatible API — at a fraction of the cost of closed-source alternatives.
+OpenClaw is the first Jarvis-like agent that actually gets things done: writing and executing scripts, browsing the web, using apps, and managing tasks from Telegram, WhatsApp, or any chat interface. By pairing it with [Together AI](https://together.ai), you unlock access to leading open-source models like Kimi K2.7 Code, GLM 5.2, and DeepSeek V4 Pro through a single OpenAI-compatible API, at a fraction of the cost of closed-source alternatives.
 
 ## Get started in 2 minutes
 
@@ -31,15 +31,15 @@ This will prompt you for your `TOGETHER_API_KEY` and store it securely for the G
 
 ### Step 2: Set your default model
 
-Using the onboard command and "QuickStart" mode you will get the default model selected by default as Kimi K2.5.
+Using the onboard command and "QuickStart" mode, OpenClaw selects a default model for you.
 
-Otherwise you can also change this within your OpenClaw config, setting your default model. Remember to prefix the model name with "together/":
+We recommend setting Kimi K2.7 Code as your default model in your OpenClaw config. Remember to prefix the model name with "together/":
 
 ```json5 theme={null}
 {
   agents: {
     defaults: {
-      model: { primary: "together/moonshotai/Kimi-K2.5" },
+      model: { primary: "together/moonshotai/Kimi-K2.7-Code" },
     },
   },
 }
@@ -63,9 +63,9 @@ If the Gateway runs as a daemon (launchd / systemd), make sure `TOGETHER_API_KEY
 
 Together AI gives you access to the best open-source models with high throughput and low latency. For token-hungry agentic workflows like OpenClaw, this translates to massive savings without sacrificing quality:
 
-* **Kimi K2.5** — 256K context, state-of-the-art reasoning model
-* **DeepSeek V3.1 / R1** — top-tier coding and reasoning model
-* **GLM 4.7** — strong & fast all-rounder model
+* **Kimi K2.7 Code**: 256K context, purpose-built for coding and agentic workflows.
+* **GLM 5.2**: Top-tier coding and agentic all-rounder.
+* **DeepSeek V4 Pro**: Advanced reasoning for complex tasks.
 
 All models are OpenAI API compatible, so OpenClaw works with them out of the box.
 

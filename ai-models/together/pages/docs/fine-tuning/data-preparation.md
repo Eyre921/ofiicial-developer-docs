@@ -315,6 +315,11 @@ print(padded["train"])
 Run a local data validation check before uploading to avoid unnecessary charges. The client-side check verifies the file is UTF-8, each non-empty line parses as JSON, the line count exceeds the minimum, and the file is under the maximum size. Full schema validation (conversation roles, tool calls, and other dataset requirements) runs on the server during ingestion after upload, and is reported through the file's `processing_status`.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg files check "train.jsonl" --json
+  tg files upload "train.jsonl"
+  ```
+
   ```python Python theme={null}
   import json
   from together import Together
@@ -345,11 +350,6 @@ Run a local data validation check before uploading to avoid unnecessary charges.
     purpose: "fine-tune",
   });
   console.log(trainFile.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg files check "train.jsonl" --json
-  tg files upload "train.jsonl"
   ```
 </CodeGroup>
 
@@ -384,6 +384,11 @@ Successful upload returns a file object with an `id` field. Save the ID—you'll
 Upload returns before ingestion finishes, so poll the Files API until `processing_status` reaches `COMPLETED` before you use the file. If the dataset doesn't meet fine-tuning requirements, `processing_status` becomes `INVALID_FORMAT` and `validation_report.error` carries a user-facing description of the problem.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  # Inspect processing_status and validation_report
+  tg files retrieve <file_id>
+  ```
+
   ```python Python theme={null}
   import time
   from together import Together
@@ -404,11 +409,6 @@ Upload returns before ingestion finishes, so poll the Files API until `processin
               f"file processing did not complete: {meta.processing_status}"
           )
       time.sleep(5)
-  ```
-
-  ```bash CLI theme={null}
-  # Inspect processing_status and validation_report
-  tg files retrieve <file_id>
   ```
 </CodeGroup>
 

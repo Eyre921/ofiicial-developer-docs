@@ -294,6 +294,14 @@ paths:
             type:
               - string
               - 'null'
+        - name: version_id
+          in: query
+          description: Filter conversations by version ID.
+          required: false
+          schema:
+            type:
+              - string
+              - 'null'
         - name: topic_ids
           in: query
           description: Filter conversations by topic IDs assigned during topic discovery.

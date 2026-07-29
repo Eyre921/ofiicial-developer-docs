@@ -35313,7 +35313,7 @@ const result = await generateText({
 
 `generateText` records 3 types of spans:
 
-- `ai.generateText` (span): the full length of the generateText call. It contains 1 or more `ai.generateText.doGenerate` spans.
+- `ai.generateText` (span): the full length of the generateText call. It is the direct parent of 1 or more `ai.generateText.doGenerate` spans and any `ai.toolCall` spans recorded for the call.
   It contains the [basic LLM span information](#basic-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.generateText` and the functionId that was set through `telemetry.functionId`
@@ -35324,7 +35324,7 @@ const result = await generateText({
   - `ai.response.finishReason`: the reason why the generation finished
   - `ai.settings.maxOutputTokens`: the maximum number of output tokens that were set
 
-- `ai.generateText.doGenerate` (span): a provider doGenerate call. It can contain `ai.toolCall` spans.
+- `ai.generateText.doGenerate` (span): a provider doGenerate call.
   It contains the [call LLM span information](#call-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.generateText.doGenerate` and the functionId that was set through `telemetry.functionId`
@@ -35345,7 +35345,7 @@ const result = await generateText({
 
 `streamText` records 3 types of spans and 2 types of events:
 
-- `ai.streamText` (span): the full length of the streamText call. It contains a `ai.streamText.doStream` span.
+- `ai.streamText` (span): the full length of the streamText call. It is the direct parent of 1 or more `ai.streamText.doStream` spans and any `ai.toolCall` spans recorded for the call.
   It contains the [basic LLM span information](#basic-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.streamText` and the functionId that was set through `telemetry.functionId`
@@ -35357,7 +35357,7 @@ const result = await generateText({
   - `ai.settings.maxOutputTokens`: the maximum number of output tokens that were set
 
 - `ai.streamText.doStream` (span): a provider doStream call.
-  This span contains an `ai.stream.firstChunk` event and `ai.toolCall` spans.
+  This span can contain `ai.stream.firstChunk` and `ai.stream.finish` events.
   It contains the [call LLM span information](#call-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.streamText.doStream` and the functionId that was set through `telemetry.functionId`
@@ -64272,6 +64272,10 @@ const agent = new ToolLoopAgent({
 
 Learn more about [loop control and stop conditions](/docs/agents/loop-control).
 
+Model call settings returned from `prepareStep`, such as `temperature`, apply
+only to the current step. Later steps use the agent's top-level setting unless
+they return another override.
+
 ### Tool Choice
 
 Control how the agent uses tools:
@@ -65126,6 +65130,46 @@ const result = await agent.generate({
   prompt: '...',
 });
 ```
+
+### Model Call Settings
+
+Override provider-agnostic model call settings for an individual step. This can
+be useful when tool-calling steps need more deterministic sampling than the
+final response:
+
+```ts
+import { ToolLoopAgent } from 'ai';
+__PROVIDER_IMPORT__;
+
+const agent = new ToolLoopAgent({
+  model: __MODEL__,
+  temperature: 0.7,
+  tools: {
+    // your tools
+  },
+  prepareStep: async ({ stepNumber }) => {
+    if (stepNumber === 0) {
+      return {
+        temperature: 0,
+        maxOutputTokens: 300,
+      };
+    }
+
+    return {};
+  },
+});
+
+const result = await agent.generate({
+  prompt: '...',
+});
+```
+
+`prepareStep` can override `maxOutputTokens`, `temperature`, `topP`, `topK`,
+`presencePenalty`, `frequencyPenalty`, `stopSequences`, and `seed`. These
+overrides apply only to the current step. When a setting is omitted or
+`undefined`, the top-level value is used for that step. Defined falsy values
+such as `temperature: 0`, `seed: 0`, and an empty `stopSequences` array are
+preserved.
 
 ### Context Management
 
@@ -72635,7 +72679,7 @@ The event types for each method are the same as the corresponding [event callbac
 
 `generateText` records 3 types of spans:
 
-- `ai.generateText` (span): the full length of the generateText call. It contains 1 or more `ai.generateText.doGenerate` spans.
+- `ai.generateText` (span): the full length of the generateText call. It is the direct parent of 1 or more `ai.generateText.doGenerate` spans and any `ai.toolCall` spans recorded for the call.
   It contains the [basic LLM span information](#basic-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.generateText` and the functionId that was set through `telemetry.functionId`
@@ -72646,7 +72690,7 @@ The event types for each method are the same as the corresponding [event callbac
   - `ai.response.finishReason`: the reason why the generation finished
   - `ai.settings.maxOutputTokens`: the maximum number of output tokens that were set
 
-- `ai.generateText.doGenerate` (span): a provider doGenerate call. It can contain `ai.toolCall` spans.
+- `ai.generateText.doGenerate` (span): a provider doGenerate call.
   It contains the [call LLM span information](#call-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.generateText.doGenerate` and the functionId that was set through `telemetry.functionId`
@@ -72667,7 +72711,7 @@ The event types for each method are the same as the corresponding [event callbac
 
 `streamText` records 3 types of spans and 2 types of events:
 
-- `ai.streamText` (span): the full length of the streamText call. It contains a `ai.streamText.doStream` span.
+- `ai.streamText` (span): the full length of the streamText call. It is the direct parent of 1 or more `ai.streamText.doStream` spans and any `ai.toolCall` spans recorded for the call.
   It contains the [basic LLM span information](#basic-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.streamText` and the functionId that was set through `telemetry.functionId`
@@ -72679,7 +72723,7 @@ The event types for each method are the same as the corresponding [event callbac
   - `ai.settings.maxOutputTokens`: the maximum number of output tokens that were set
 
 - `ai.streamText.doStream` (span): a provider doStream call.
-  This span contains an `ai.stream.firstChunk` event and `ai.toolCall` spans.
+  This span can contain `ai.stream.firstChunk` and `ai.stream.finish` events.
   It contains the [call LLM span information](#call-llm-span-information) and the following attributes:
 
   - `operation.name`: `ai.streamText.doStream` and the functionId that was set through `telemetry.functionId`
@@ -81036,6 +81080,26 @@ xAI language models can also be used in the `streamText` function
 and support structured data generation with [`Output`](/docs/reference/ai-sdk-core/output)
 (see [AI SDK Core](/docs/ai-sdk-core)).
 
+### Reasoning Effort
+
+For models with configurable reasoning, you can control how much effort the
+model spends thinking before responding with
+`providerOptions.xai.reasoningEffort`. The AI SDK option accepts `'none'`,
+`'low'`, `'medium'`, and `'high'`, but each xAI model supports a subset.
+
+<Note>
+  Support and defaults are model-specific. `grok-4.3` supports `'none'`,
+  `'low'`, `'medium'`, and `'high'`. `grok-4.5` supports `'low'`, `'medium'`,
+  and `'high'`, defaults to `'high'`, and cannot disable reasoning. The
+  `grok-4.20-reasoning` and `grok-4.20-non-reasoning` variants do not accept
+  this option, and neither does `grok-build-0.1`. For
+  `grok-4.20-multi-agent`, `'low'`, `'medium'`, and `'high'` control the number
+  of agents instead of reasoning depth. See xAI's [reasoning
+  docs](https://docs.x.ai/developers/model-capabilities/text/reasoning) and
+  [Grok 4.3 model page](https://docs.x.ai/developers/models/grok-4.3) for
+  current details.
+</Note>
+
 ### Provider Options
 
 xAI chat models support additional provider options that are not part of
@@ -81044,7 +81108,7 @@ the [standard call settings](/docs/ai-sdk-core/settings). You can pass them in t
 ```ts
 import { xai, type XaiLanguageModelChatOptions } from '@ai-sdk/xai';
 
-const model = xai('grok-3-mini');
+const model = xai('grok-4.5');
 
 await generateText({
   model,
@@ -81060,14 +81124,7 @@ The following optional provider options are available for xAI chat models:
 
 - **reasoningEffort** _'none' | 'low' | 'medium' | 'high'_
 
-  Reasoning effort for reasoning models. `'none'` disables reasoning entirely.
-
-<Note>
-  Not every Grok model accepts every reasoning effort, for example
-  `grok-build-0.1` does not support reasoning effort. See xAI's [reasoning
-  docs](https://docs.x.ai/docs/guides/reasoning) for the values each model
-  accepts.
-</Note>
+  Control the reasoning effort for supported models. See [Reasoning Effort](#reasoning-effort) for model-specific values and defaults.
 
 - **logprobs** _boolean_
 
@@ -81422,7 +81479,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.5'),
   providerOptions: {
     xai: {
       reasoningEffort: 'high',
@@ -81436,14 +81493,7 @@ The following provider options are available:
 
 - **reasoningEffort** _'none' | 'low' | 'medium' | 'high'_
 
-  Control the reasoning effort for the model. Higher effort may produce more thorough results at the cost of increased latency and token usage. `'none'` disables reasoning entirely.
-
-<Note>
-  Not every Grok model accepts every reasoning effort, for example
-  `grok-build-0.1` does not support reasoning effort. See xAI's [reasoning
-  docs](https://docs.x.ai/docs/guides/reasoning) for the values each model
-  accepts.
-</Note>
+  Control the reasoning effort for supported models. See [Reasoning Effort](#reasoning-effort) for model-specific values and defaults.
 
 - **logprobs** _boolean_
 
@@ -111816,6 +111866,10 @@ const result = await agent.generate({
 });
 ```
 
+Model call settings returned from `prepareStep`, such as `temperature`, apply
+only to the current step. Later steps use the agent's top-level setting unless
+they return another override.
+
 For the full model, including sensitive context filtering and where each context
 value is available, see [Runtime and Tool
 Context](/docs/ai-sdk-core/runtime-and-tool-context).
@@ -112833,6 +112887,46 @@ const result = await agent.generate({
   prompt: '...',
 });
 ```
+
+### Model Call Settings
+
+Override provider-agnostic model call settings for an individual step. This can
+be useful when tool-calling steps need more deterministic sampling than the
+final response:
+
+```ts
+import { ToolLoopAgent } from 'ai';
+__PROVIDER_IMPORT__;
+
+const agent = new ToolLoopAgent({
+  model: __MODEL__,
+  temperature: 0.7,
+  tools: {
+    // your tools
+  },
+  prepareStep: async ({ stepNumber }) => {
+    if (stepNumber === 0) {
+      return {
+        temperature: 0,
+        maxOutputTokens: 300,
+      };
+    }
+
+    return {};
+  },
+});
+
+const result = await agent.generate({
+  prompt: '...',
+});
+```
+
+`prepareStep` can override `maxOutputTokens`, `temperature`, `topP`, `topK`,
+`presencePenalty`, `frequencyPenalty`, `stopSequences`, `seed`, and
+`reasoning`. These overrides apply only to the current step. When a setting is
+omitted or `undefined`, the top-level value is used for that step. Defined
+falsy values such as `temperature: 0`, `seed: 0`, and an empty
+`stopSequences` array are preserved.
 
 ### Context Management
 
@@ -121703,6 +121797,7 @@ try {
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#streaming-transcription-models) | `scribe_v2_realtime`     |
 | [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3-turbo` |
 | [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3`       |
+| [Mistral](/providers/ai-sdk-providers/mistral#transcription-models)                 | `voxtral-mini-latest`    |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `whisper-1`              |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-transcribe`      |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-mini-transcribe` |
@@ -125183,9 +125278,55 @@ the workspace.
 DevTools captures the following information from your AI SDK calls:
 
 - **Input parameters and prompts**: View the complete input sent to your LLM
-- **Output content and tool calls**: Inspect generated text and tool invocations
+- **Output content and tool calls**: Inspect generated text, tool invocations, and tool results
+- **Media previews**: View images, audio, and video included in prompts, tool inputs, and tool outputs
 - **Token usage and timing**: Monitor resource consumption and performance
 - **Raw provider data**: Access provider request and response payloads when body retention is enabled
+
+### Media previews
+
+DevTools recognizes current `file` content parts as well as the deprecated
+`image-*`, `file-*`, and `media` tool-result aliases. Inline image, audio, and
+video data is previewed directly, while the captured JSON shape and metadata
+remain available for inspection. The viewer displays at most 8 previews per
+value, traverses at most 12 nested levels, and embeds inline previews up to 5
+MiB. Longer JSON strings are truncated in the viewer to avoid duplicating large
+base64 payloads. Binary values in recognized media-bearing fields are persisted
+as base64 so they remain previewable; unrelated binary values retain their
+normal JSON representation.
+
+For example, a tool can return media through `toModelOutput`:
+
+```ts
+import { tool } from 'ai';
+import { z } from 'zod';
+
+const captureScreenshot = tool({
+  inputSchema: z.object({}),
+  execute: async () => ({
+    base64: await captureScreenshotAsBase64(),
+  }),
+  toModelOutput: ({ output }) => ({
+    type: 'content',
+    value: [
+      {
+        type: 'file',
+        filename: 'screenshot.png',
+        mediaType: 'image/png',
+        data: { type: 'data', data: output.base64 },
+      },
+    ],
+  }),
+});
+```
+
+Remote `http` and `https` media is not loaded automatically. Select **Load
+preview** in the viewer to fetch it with anonymous CORS and no referrer.
+Cross-origin browser credentials are omitted, but same-origin browser
+credentials may still be included by the browser. URLs containing embedded
+usernames or passwords are rejected. Unsupported media, provider references,
+malformed values, unsafe URL schemes, and inline values over the preview limit
+retain their JSON and metadata fallback without an embedded preview.
 
 Telemetry is enabled automatically, but AI SDK 7 excludes raw request and response bodies from step results by default. To make them available to DevTools for `generateText`, enable body retention on the call:
 
@@ -137229,10 +137370,10 @@ and support structured data generation with [`Output`](/docs/reference/ai-sdk-co
 
 ### Reasoning Effort
 
-For reasoning-capable models you can control how much effort the model spends
-thinking before responding via `providerOptions.xai.reasoningEffort`. This
-works for both the Responses API (default) and the Chat Completions API
-(`xai.chat()`).
+For models with configurable reasoning, you can control how much effort the
+model spends thinking before responding via
+`providerOptions.xai.reasoningEffort`. This works for both the Responses API
+(default) and the Chat Completions API (`xai.chat()`).
 
 ```ts
 import { xai } from '@ai-sdk/xai';
@@ -137247,13 +137388,12 @@ const { text } = await generateText({
 });
 ```
 
-Supported values:
+The AI SDK option accepts these values, but each xAI model supports a subset:
 
 - `'none'` — Disables reasoning entirely; no thinking tokens are used. Best
-  for simple use cases that need a near-instant response. Supported by
-  `grok-4.3` and newer reasoning models.
-- `'low'` (default) — Uses some reasoning tokens, but still fast. Good for
-  general agentic use and tool calling.
+  for simple use cases that need a near-instant response.
+- `'low'` — Uses some reasoning tokens, but still fast. Good for general
+  agentic use and tool calling.
 - `'medium'` — More thinking for less-latency-sensitive applications such as
   complex data analysis and long-context reasoning.
 - `'high'` — More reasoning tokens for deeper thinking. Suited for very
@@ -137261,9 +137401,15 @@ Supported values:
   tasks.
 
 <Note>
-  Not every Grok model accepts every value. See xAI's [reasoning
-  docs](https://docs.x.ai/docs/guides/reasoning) for the values supported by
-  your selected model. `'none'` requires `grok-4.3` or newer.
+  Support and defaults are model-specific. `grok-4.3` supports `'none'`,
+  `'low'`, `'medium'`, and `'high'`. `grok-4.5` supports `'low'`, `'medium'`,
+  and `'high'`, defaults to `'high'`, and cannot disable reasoning. The
+  `grok-4.20-reasoning` and `grok-4.20-non-reasoning` variants do not accept
+  this option. For `grok-4.20-multi-agent`, `'low'`, `'medium'`, and `'high'`
+  control the number of agents instead of reasoning depth. See xAI's [reasoning
+  docs](https://docs.x.ai/developers/model-capabilities/text/reasoning) and
+  [Grok 4.3 model page](https://docs.x.ai/developers/models/grok-4.3) for
+  current details.
 </Note>
 
 ## Realtime Models
@@ -137636,7 +137782,7 @@ import { xai, type XaiLanguageModelResponsesOptions } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: xai.responses('grok-4.20-non-reasoning'),
+  model: xai.responses('grok-4.5'),
   providerOptions: {
     xai: {
       reasoningEffort: 'high',
@@ -137650,7 +137796,7 @@ The following provider options are available:
 
 - **reasoningEffort** _'none' | 'low' | 'medium' | 'high'_
 
-  Control the reasoning effort for the model. See [Reasoning Effort](#reasoning-effort) for details on each value. `'none'` disables reasoning entirely (requires `grok-4.3` or newer).
+  Control the reasoning effort for supported models. See [Reasoning Effort](#reasoning-effort) for model-specific values and defaults.
 
 - **logprobs** _boolean_
 
@@ -154525,7 +154671,8 @@ description: Learn how to use Mistral.
 # Mistral AI Provider
 
 The [Mistral AI](https://mistral.ai/) provider contains language model,
-embedding model, and speech model support for Mistral APIs.
+embedding model, speech model, and transcription model support for Mistral
+APIs.
 
 ## Setup
 
@@ -154831,6 +154978,98 @@ const result = await generateText({
   full list of available models. The table above lists popular models. You can
   also pass any available provider model ID as a string if needed.
 </Note>
+
+## Transcription Models
+
+You can create models that call the
+[Mistral audio transcription API](https://docs.mistral.ai/api/endpoint/audio/transcriptions)
+using the `.transcription()` factory method:
+
+```ts
+const model = mistral.transcription('voxtral-mini-latest');
+```
+
+Use Mistral transcription models with [`transcribe`](/docs/reference/ai-sdk-core/transcribe):
+
+```ts
+import { mistral } from '@ai-sdk/mistral';
+import { transcribe } from 'ai';
+import { readFile } from 'node:fs/promises';
+
+const result = await transcribe({
+  model: mistral.transcription('voxtral-mini-latest'),
+  audio: await readFile('audio.mp3'),
+});
+```
+
+Mistral transcription models support additional provider options. Pass them
+through `providerOptions.mistral` and use
+`MistralTranscriptionModelOptions` for type checking:
+
+```ts highlight="9-13"
+import {
+  mistral,
+  type MistralTranscriptionModelOptions,
+} from '@ai-sdk/mistral';
+import { transcribe } from 'ai';
+import { readFile } from 'node:fs/promises';
+
+const result = await transcribe({
+  model: mistral.transcription('voxtral-mini-latest'),
+  audio: await readFile('audio.mp3'),
+  providerOptions: {
+    mistral: {
+      timestampGranularities: ['segment'],
+      diarize: true,
+      contextBias: ['Vercel', 'AI_SDK'],
+    } satisfies MistralTranscriptionModelOptions,
+  },
+});
+```
+
+The following optional provider options are available:
+
+- **language** _string_
+
+  The language of the audio, such as `en`. Providing it can improve accuracy.
+
+- **temperature** _number_
+
+  The sampling temperature for the transcription.
+
+- **timestampGranularities** _Array&lt;'segment' | 'word'&gt;_
+
+  Timestamp granularities to include in the response. Mistral does not support
+  combining this option with `language`; the SDK throws an
+  `InvalidArgumentError` when both are provided.
+
+- **diarize** _boolean_
+
+  Whether to identify speakers in the transcription.
+
+- **contextBias** _string[]_
+
+  Up to 100 words or phrases that guide spelling for names, technical terms,
+  or domain-specific vocabulary. Items cannot contain commas or whitespace;
+  use underscores for multi-word phrases.
+
+The normalized result includes transcript text, language, timed segments, and
+duration when returned by Mistral. Mistral token and prompt-audio usage is
+available under `result.providerMetadata.mistral.usage`. Segment scores and
+speaker IDs from diarization are available under
+`result.providerMetadata.mistral.segments`.
+
+<Note>
+  Audio is uploaded to Mistral for processing. This integration supports batch
+  transcription only; Mistral realtime transcription is not exposed by this
+  model.
+</Note>
+
+### Model Capabilities
+
+| Model                 | Timestamps | Diarization | Context Bias |
+| --------------------- | ---------- | ----------- | ------------ |
+| `voxtral-mini-latest` | <Check />  | <Check />   | <Check />    |
 
 ## Speech Models
 

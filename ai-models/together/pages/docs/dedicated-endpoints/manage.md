@@ -85,7 +85,7 @@ Add more deployments to an endpoint to run several models or hardware configs be
 
     Re-run with `--config <cr_...>` to choose one. When a model has a single profile, the CLI selects it automatically. List a model's profiles anytime with `tg beta models configs <model_id>`.
 
-    The CLI defaults `--min-replicas` and `--max-replicas` to `1`, so a bare `deploy` creates a single-replica deployment.
+    The CLI defaults `--min-replicas` and `--max-replicas` to `1`, so a bare `deploy` creates a single-replica deployment. If you pass only `--min-replicas`, the max matches it. `--min-replicas 0` alone creates the deployment stopped.
 
     For the full flag list, including placement, the autoscaling windows, and the scaling percentile, see the [CLI reference](/reference/cli/endpoints-beta#deploy).
   </Tab>

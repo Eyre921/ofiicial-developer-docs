@@ -22,6 +22,7 @@ Provisioned throughput is available for the following models:
 
 | Model                                                   | Model string           |
 | ------------------------------------------------------- | ---------------------- |
+| [Kimi K3](https://www.together.ai/models/kimi-k3)       | `moonshotai/Kimi-K3`   |
 | [MiniMax M3](https://www.together.ai/models/minimax-m3) | `MiniMaxAI/MiniMax-M3` |
 | [GLM-5.2](https://www.together.ai/models/glm-52)        | `zai-org/GLM-5.2`      |
 
@@ -49,9 +50,9 @@ If you need to serve a fine-tuned model, or want direct control over hardware, l
 
 A provisioned throughput unit (PTU) is the unit of capacity you buy. Each PTU is a fixed slice of guaranteed throughput for a model or model family, priced at a flat \$0.05 per PTU per minute. You buy PTUs for the volume you expect to send, and as traffic flows through, it draws down your committed capacity.
 
-Input tokens, output tokens, and cached reads consume PTUs at different rates. Output tokens are more expensive to serve than input tokens, and cached reads are cheaper than fresh inputs. The exact conversion ratios are model-specific and defined in your contract.
+Input tokens, output tokens, and cached reads consume PTUs at different rates. Output tokens are more expensive to serve than input tokens, and cached reads are cheaper than fresh inputs. The exact conversion rates are model-specific and published on the [pricing page](https://www.together.ai/pricing#provisioned-throughput) as tokens per minute (TPM) per PTU for each token type.
 
-You don't need to forecast a precise traffic mix. Whatever shape your traffic takes, it converts into a single normalized rate that draws down your PTU capacity: output-heavy or cache-light traffic consumes PTUs faster, while cache-heavy traffic consumes them more slowly. Traffic shape changes how quickly you consume PTUs, not the SLA.
+You don't need to forecast a precise traffic mix. Whatever shape your traffic takes, it converts into a single rate that draws down your PTU capacity: each token type's TPM is divided by its published TPM per PTU, and the results are added together. Output-heavy or cache-light traffic consumes PTUs faster, while cache-heavy traffic consumes them more slowly. Traffic shape changes how quickly you consume PTUs, not the SLA.
 
 To estimate how many PTUs your workload needs, use the [pricing calculator](https://www.together.ai/pricing#provisioned-throughput).
 
@@ -59,10 +60,10 @@ To estimate how many PTUs your workload needs, use the [pricing calculator](http
 
 Eligible traffic that fits within your purchased PTUs and the published product limits is backed by the following service level agreement (SLA):
 
-| Dimension       | Commitment                                                                                                                                                                  |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Throughput**  | We serve your eligible traffic up to the maximum throughput your purchased PTUs entitle you to for the selected model or model family, measured in tokens per minute (TPM). |
-| **Reliability** | At least 99% of eligible requests complete successfully each month, measured as requests that don't fail due to a Together-caused error.                                    |
+| Dimension       | Commitment                                                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Throughput**  | We serve your eligible traffic up to the maximum throughput your purchased PTUs entitle you to for the selected model or model family, measured in TPM. |
+| **Reliability** | At least 99% of eligible requests complete successfully each month, measured as requests that don't fail due to a Together-caused error.                |
 
 <Note>
   **Eligible requests** include all requests made within your purchased PTU capacity and the published product limits. Customer errors, invalid requests, authentication failures, client cancellations, traffic above your purchased capacity, and requests that violate our published abuse or product protection limits are not covered by the SLA.

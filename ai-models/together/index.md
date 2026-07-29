@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 320 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 321 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -317,6 +317,7 @@
 - `reference/post-fine-tunes-id-cancel` — [Cancel job](pages/reference/post-fine-tunes-id-cancel.md) · [原文](https://docs.together.ai/reference/post-fine-tunes-id-cancel)
 - `reference/post-images-generations` — [Create image](pages/reference/post-images-generations.md) · [原文](https://docs.together.ai/reference/post-images-generations)
 - `reference/queue-cancel` — [Cancel a queued job](pages/reference/queue-cancel.md) · [原文](https://docs.together.ai/reference/queue-cancel)
+- `reference/queue-clear` — [Clear a model's pending jobs](pages/reference/queue-clear.md) · [原文](https://docs.together.ai/reference/queue-clear)
 - `reference/queue-metrics` — [Get queue metrics](pages/reference/queue-metrics.md) · [原文](https://docs.together.ai/reference/queue-metrics)
 - `reference/queue-status` — [Get job status](pages/reference/queue-status.md) · [原文](https://docs.together.ai/reference/queue-status)
 - `reference/queue-submit` — [Submit a queued job](pages/reference/queue-submit.md) · [原文](https://docs.together.ai/reference/queue-submit)

@@ -462,6 +462,10 @@ components:
             so it can carry into the next turn. When off, user speech during a
             non-interruptible turn is ignored and won't trigger a turn.
       title: BaseTurnConfig
+    VADConfig:
+      type: object
+      properties: {}
+      title: VADConfig
     ClientEvent:
       type: string
       enum:
@@ -499,10 +503,19 @@ components:
           description: >-
             When enabled, users may attach images or PDFs in chat when the LLM
             supports multimodal input.
+        max_files_in_memory:
+          type: integer
+          default: 10
+          description: >-
+            Number of most-recent files kept in memory during a conversation.
+            Older files are summarized and their bytes freed.
         max_files_per_conversation:
           type: integer
           default: 10
-          description: Maximum number of files that can be uploaded per conversation.
+          description: >-
+            Total files a user can upload in one conversation. Uploads are
+            billed per file. Use -1 for no limit, or a value >=
+            max_files_in_memory.
       title: FileInputConfig
     BackgroundSoundSourceType:
       type: string
@@ -875,6 +888,9 @@ components:
         turn:
           $ref: '#/components/schemas/BaseTurnConfig'
           description: Turn detection configuration
+        vad:
+          $ref: '#/components/schemas/VADConfig'
+          description: Configuration for voice activity detection
         conversation:
           $ref: '#/components/schemas/ConversationConfig-Output'
           description: >-
@@ -913,6 +929,7 @@ components:
         - asr
         - tts
         - turn
+        - vad
         - conversation
         - privacy
         - call_limits
@@ -987,6 +1004,9 @@ components:
     "silence_end_call_timeout": -1,
     "turn_eagerness": "normal",
     "mode": "turn"
+  },
+  "vad": {
+    "background_voice_detection": false
   },
   "conversation": {
     "max_duration_seconds": 600,

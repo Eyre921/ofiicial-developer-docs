@@ -54,6 +54,15 @@ For tool-calling preference data, see [data preparation](/docs/fine-tuning/data-
 Set `training_method` to `"dpo"`. The full list of DPO parameters lives in the [API reference](/reference/post-fine-tunes).
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "meta-llama/Llama-3.2-3B-Instruct" \
+    --lora \
+    --training-method "dpo" \
+    --dpo-beta 0.2
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -82,15 +91,6 @@ Set `training_method` to `"dpo"`. The full list of DPO parameters lives in the [
     dpo_beta: 0.2,
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "meta-llama/Llama-3.2-3B-Instruct" \
-    --lora \
-    --training-method "dpo" \
-    --dpo-beta 0.2
   ```
 </CodeGroup>
 

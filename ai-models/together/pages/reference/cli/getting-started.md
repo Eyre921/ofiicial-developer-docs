@@ -42,6 +42,16 @@ The CLI is also installed as `together`, an alias of `tg` that's identical in be
   4. Confirm the version: `tg --version`.
 </Warning>
 
+## Upgrade notices
+
+The CLI checks [PyPI](https://pypi.org/project/together/) in the background for a newer release and caches the result for 24 hours. When one is available, it prints an upgrade notice at most once per day. In an interactive terminal it also offers to run the upgrade for you, using the command that matches your install (`uv`, `pipx`, or `pip`). With `--json` or `--non-interactive`, it prints the upgrade command instead.
+
+To disable the check entirely (for example, in CI), set:
+
+```bash Shell theme={null}
+export TOGETHER_DISABLE_VERSION_CHECK=1
+```
+
 ## Authenticate
 
 The CLI relies on the `TOGETHER_API_KEY` environment variable being set to your account's API token to authenticate requests. You can find your API token in your [account settings](https://api.together.ai/settings/projects/~first/api-keys).

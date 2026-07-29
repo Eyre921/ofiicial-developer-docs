@@ -107,6 +107,50 @@ Select any row in the Repairs table to view the full repair details:
 * **Repair ID:** Unique identifier for tracking and support requests.
 * **Alert evidence:** Expandable section showing the underlying alerts that triggered the recommendation, including failure type and affected hardware.
 
+### Linked alerts in API responses
+
+When you retrieve or list remediations through the API, the `linked_alerts` field includes the passive health check alerts tied to that repair, including alerts that have already resolved. Each entry has:
+
+* `passive_health_check_alert_id`: Alert UUID.
+* `alert_name`: Alertmanager alert name.
+* `severity`: `PHC_SEVERITY_INFO`, `PHC_SEVERITY_WARNING`, or `PHC_SEVERITY_CRITICAL`.
+* `started_at` and `resolved_at`: When the alert fired and cleared (`resolved_at` is empty while the alert is still firing).
+* `target_vm`: VM name from the alert labels.
+* `annotations`: Alertmanager annotation key-value pairs.
+* `cluster_id`: Cluster UUID the alert was raised against.
+* `instance_id`: Resolved instance UUID (empty until the alert is joined to an instance).
+* `node_remediation_intent_id`: Remediation intent UUID attached to the alert, if any.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  remediation = client.beta.clusters.remediations.retrieve(
+      "<REMEDIATION_ID>",
+      cluster_id="<CLUSTER_ID>",
+      instance_id="<INSTANCE_ID>",
+  )
+  for alert in remediation.linked_alerts or []:
+      print(alert.alert_name, alert.severity, alert.started_at)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const remediation = await client.beta.clusters.remediations.retrieve(
+    "<REMEDIATION_ID>",
+    { instance_id: "<INSTANCE_ID>", cluster_id: "<CLUSTER_ID>" },
+  );
+  for (const alert of remediation.linked_alerts ?? []) {
+    console.log(alert.alert_name, alert.severity, alert.started_at);
+  }
+  ```
+</CodeGroup>
+
 ## Manual node repair
 
 When you encounter node problems or want to trigger a repair without waiting for an automated recommendation, you can start a repair directly from the Worker Nodes UI.

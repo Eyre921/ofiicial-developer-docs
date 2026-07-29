@@ -309,7 +309,7 @@ Jobs are submitted to the managed queue and processed asynchronously. Video gene
   deployment = "sprocket-wan2.1"
 
   # Submit job to queue
-  job = client.beta.queue.submit(
+  job = client.beta.jig.queue.submit(
       model=deployment,
       payload={
           "prompt": "A serene lake at sunset with mountains in the background",
@@ -320,7 +320,7 @@ Jobs are submitted to the managed queue and processed asynchronously. Video gene
 
   # Poll for completion
   while True:
-      status = client.beta.queue.retrieve(
+      status = client.beta.jig.queue.retrieve(
           request_id=job.request_id,
           model=deployment,
       )

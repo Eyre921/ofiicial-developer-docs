@@ -8,7 +8,7 @@ path: docs/help-center/product/distribution-publishing/eleven-reader-publishing/
 
 # How do I publish a book on the ElevenReader App?
 
-1.  Create your free account on <a href="https://elevenreader.io/publishing">[https://elevenreader.io/publishing](https://elevenreader.io/publishing)</a>
+1.  Create your free account on [https://elevenreader.io/publishing](https://elevenreader.io/publishing)
 
 2.  Upload your manuscript in EPUB, PDF, TXT, DOCX, or HTML format
 

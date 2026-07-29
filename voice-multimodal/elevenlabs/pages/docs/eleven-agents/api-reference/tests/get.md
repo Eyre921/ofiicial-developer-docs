@@ -374,6 +374,14 @@ components:
         - document_id
         - content
       title: KnowledgeBaseRagChunkModel
+    type_:KnowledgeBaseToolStatus:
+      type: string
+      enum:
+        - success
+        - no_matching_documents
+        - no_results
+      default: success
+      title: KnowledgeBaseToolStatus
     type_:TransferToAgentToolResultSuccessModelOutputBranchInfo:
       oneOf:
         - type: object
@@ -450,6 +458,23 @@ components:
               description: >-
                 Retrieved chunks; populated only in the
                 rag-result-in-tool-result mode
+          required:
+            - result_type
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - knowledge_base_success
+              description: 'Discriminator value: knowledge_base_success'
+            status:
+              $ref: '#/components/schemas/type_:KnowledgeBaseToolStatus'
+            chunk_count:
+              type: integer
+              default: 0
+            message:
+              type: string
+              default: Referenced knowledge base.
           required:
             - result_type
         - type: object

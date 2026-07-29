@@ -39,13 +39,13 @@ Jobs are processed in strict order of **priority first, then submission time**. 
 
 ```python theme={null}
 # High priority job (processed first)
-client.beta.queue.submit(model="my-model", payload={...}, priority=10)
+client.beta.jig.queue.submit(model="my-model", payload={...}, priority=10)
 
 # Normal priority job
-client.beta.queue.submit(model="my-model", payload={...}, priority=1)
+client.beta.jig.queue.submit(model="my-model", payload={...}, priority=1)
 
 # Low priority job (processed last)
-client.beta.queue.submit(model="my-model", payload={...}, priority=0)
+client.beta.jig.queue.submit(model="my-model", payload={...}, priority=0)
 ```
 
 <Note>
@@ -64,7 +64,7 @@ This is useful for tracking progress, storing metadata, or passing context betwe
 
 <CodeGroup>
   ```python Submit with initial info theme={null}
-  job = client.beta.queue.submit(
+  job = client.beta.jig.queue.submit(
       model="my-model",
       payload={"prompt": "A cat playing piano"},
       info={"user_id": "user_123", "tier": "premium"},
@@ -83,7 +83,7 @@ This is useful for tracking progress, storing metadata, or passing context betwe
   ```
 </CodeGroup>
 
-For full endpoint documentation — request parameters, response schemas, and error codes — see the [Queue REST API Reference](/reference/queue-submit): [submit](/reference/queue-submit), [status](/reference/queue-status), [cancel](/reference/queue-cancel), [metrics](/reference/queue-metrics).
+For full endpoint documentation (request parameters, response schemas, and error codes), see the [Queue REST API Reference](/reference/queue-submit): [submit](/reference/queue-submit), [status](/reference/queue-status), [cancel](/reference/queue-cancel), [clear](/reference/queue-clear), [metrics](/reference/queue-metrics).
 
 ## Polling for Job Completion
 
@@ -97,7 +97,7 @@ For jobs that take time to complete, poll the status endpoint until the job reac
   client = Together()
 
   # Submit job
-  job = client.beta.queue.submit(
+  job = client.beta.jig.queue.submit(
       model="my-deployment", payload={"prompt": "Generate a video of a sunset"}
   )
 
@@ -105,7 +105,7 @@ For jobs that take time to complete, poll the status endpoint until the job reac
 
   # Poll for completion
   while True:
-      status = client.beta.queue.retrieve(
+      status = client.beta.jig.queue.retrieve(
           request_id=job.request_id, model="my-deployment"
       )
 
@@ -160,6 +160,30 @@ For jobs that take time to complete, poll the status endpoint until the job reac
   ```
 </CodeGroup>
 
+## Clearing pending jobs
+
+To cancel every pending job for a model at once, for example to drain a backed-up queue, call `clear`. Only jobs still in the `pending` state are canceled; running jobs are left untouched. The response reports how many jobs were canceled.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  result = client.beta.jig.queue.clear(model="my-deployment")
+  print(f"Canceled {result.canceled_count} pending jobs")
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const result = await client.beta.jig.queue.clear({ model: "my-deployment" });
+  console.log(`Canceled ${result.canceled_count} pending jobs`);
+  ```
+</CodeGroup>
+
 ***
 
 ## Best Practices
@@ -171,7 +195,7 @@ Implement different service tiers by assigning priority based on customer type:
 ```python theme={null}
 def submit_job(user, payload):
     priority = 10 if user.tier == "premium" else 1
-    return client.beta.queue.submit(
+    return client.beta.jig.queue.submit(
         model="my-deployment",
         payload=payload,
         priority=priority,
@@ -209,7 +233,7 @@ terminal_states = {"done", "failed", "canceled"}
 
 while status.status not in terminal_states:
     time.sleep(2)
-    status = client.beta.queue.retrieve(...)
+    status = client.beta.jig.queue.retrieve(...)
 ```
 
 ### Store Metadata in `info`
@@ -217,7 +241,7 @@ while status.status not in terminal_states:
 Use `info` to store job metadata that you'll need when the job completes:
 
 ```python theme={null}
-job = client.beta.queue.submit(
+job = client.beta.jig.queue.submit(
     model="my-deployment",
     payload={"prompt": "..."},
     info={

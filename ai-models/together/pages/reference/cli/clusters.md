@@ -30,6 +30,7 @@ tg beta clusters create
 | `--gpu-type [string]`                  | GPU type to use for the cluster. One of `H100_SXM`, `H200_SXM`, `RTX_6000_PCI`, `L40_PCIE`, `B200_SXM`, `H100_SXM_INF`. Available types vary by region; see `tg beta clusters list-regions`.                                                                                                               |
 | `--cluster-type [KUBERNETES\|SLURM]`   | Cluster workload manager or orchestrator.                                                                                                                                                                                                                                                                  |
 | `--volume [string]`                    | Storage volume ID to attach to the cluster. List existing volumes with `tg beta clusters storage list`.                                                                                                                                                                                                    |
+| `--num-reserved-gpus [integer]`        | Number of prepaid reserved GPUs. When omitted for `RESERVED` billing, defaults to `num_gpus`.                                                                                                                                                                                                              |
 | `--headlamp-addon`                     | Enable the Headlamp Kubernetes dashboard add-on.                                                                                                                                                                                                                                                           |
 | `--slurm-web-addon`                    | Enable the Slurm Web add-on.                                                                                                                                                                                                                                                                               |
 
@@ -45,12 +46,15 @@ tg beta clusters update [CLUSTER_ID]
 
 ### Parameters
 
-| Flag                                 | Description                                                 |
-| ------------------------------------ | ----------------------------------------------------------- |
-| `--num-gpus [integer]`               | Number of GPUs to allocate in the cluster.                  |
-| `--cluster-type [KUBERNETES\|SLURM]` | Cluster workload manager or orchestrator.                   |
-| `--headlamp/--no-headlamp`           | Enable or disable the Headlamp Kubernetes dashboard add-on. |
-| `--slurm-web/--no-slurm-web`         | Enable or disable the Slurm Web add-on.                     |
+| Flag                                 | Description                                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `--num-gpus [integer]`               | Number of GPUs to allocate in the cluster.                                                  |
+| `--cluster-type [KUBERNETES\|SLURM]` | Cluster workload manager or orchestrator.                                                   |
+| `--num-reserved-gpus [integer]`      | Number of reserved GPUs to update to. Only applicable for clusters with `RESERVED` billing. |
+| `--num-capacity-pool-gpus [integer]` | Desired number of capacity pool GPUs. Must be a multiple of 8 and cannot exceed `num_gpus`. |
+| `--num-preemptible-gpus [integer]`   | Desired number of preemptible GPUs for the cluster.                                         |
+| `--headlamp/--no-headlamp`           | Enable or disable the Headlamp Kubernetes dashboard add-on.                                 |
+| `--slurm-web/--no-slurm-web`         | Enable or disable the Slurm Web add-on.                                                     |
 
 ## Retrieve a cluster
 

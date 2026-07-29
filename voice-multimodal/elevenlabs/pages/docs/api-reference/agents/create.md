@@ -535,10 +535,19 @@ components:
           description: >-
             When enabled, users may attach images or PDFs in chat when the LLM
             supports multimodal input.
+        max_files_in_memory:
+          type: integer
+          default: 10
+          description: >-
+            Number of most-recent files kept in memory during a conversation.
+            Older files are summarized and their bytes freed.
         max_files_per_conversation:
           type: integer
           default: 10
-          description: Maximum number of files that can be uploaded per conversation.
+          description: >-
+            Total files a user can upload in one conversation. Uploads are
+            billed per file. Use -1 for no limit, or a value >=
+            max_files_in_memory.
       title: FileInputConfig
     BackgroundSoundSourceType:
       type: string
@@ -1285,6 +1294,14 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersion-Input
+    SearchStrategy:
+      type: string
+      enum:
+        - cat
+        - keyword
+        - semantic
+        - ls
+      title: SearchStrategy
     ObjectJsonSchemaPropertyInputPropertyKind:
       type: string
       enum:
@@ -1871,6 +1888,20 @@ components:
             system_tool_type:
               type: string
               enum:
+                - knowledge_base
+              description: 'Discriminator value: knowledge_base'
+            enabled_strategies:
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchStrategy'
+          required:
+            - system_tool_type
+          description: KnowledgeBaseToolConfig variant
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
                 - knowledge_base_rag
               description: 'Discriminator value: knowledge_base_rag'
           required:
@@ -2250,6 +2281,7 @@ components:
       enum:
         - chat_completions
         - responses
+        - websocket
       default: chat_completions
       title: CustomLLMAPIType
     CustomLLM:
@@ -2293,7 +2325,7 @@ components:
         api_type:
           $ref: '#/components/schemas/CustomLLMAPIType'
           default: chat_completions
-          description: The API type to use (chat_completions or responses)
+          description: The API type to use (chat_completions, responses or websocket)
       required:
         - url
       title: CustomLLM
@@ -2304,7 +2336,7 @@ components:
         - multilingual_e5_large_instruct
       default: e5_mistral_7b_instruct
       title: EmbeddingModelEnum
-    RagConfig:
+    RagConfig-Input:
       type: object
       properties:
         enabled:
@@ -2345,7 +2377,7 @@ components:
             Custom prompt for rewriting user queries before RAG retrieval. The
             conversation history will be automatically appended at the end. If
             not set, the default prompt will be used.
-      title: RagConfig
+      title: RagConfig-Input
     PromptAgentApiModelInputBackupLlmConfig:
       oneOf:
         - type: object
@@ -3214,7 +3246,7 @@ components:
             Whether to remove the default personality lines from the system
             prompt
         rag:
-          $ref: '#/components/schemas/RagConfig'
+          $ref: '#/components/schemas/RagConfig-Input'
           description: Configuration for RAG
         timezone:
           type:
@@ -5990,11 +6022,21 @@ components:
           description: >-
             When enabled, users may attach images or PDFs in chat when the LLM
             supports multimodal input.
+        max_files_in_memory:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            Number of most-recent files kept in memory during a conversation.
+            Older files are summarized and their bytes freed.
         max_files_per_conversation:
           type:
             - integer
             - 'null'
-          description: Maximum number of files that can be uploaded per conversation.
+          description: >-
+            Total files a user can upload in one conversation. Uploads are
+            billed per file. Use -1 for no limit, or a value >=
+            max_files_in_memory.
       title: FileInputConfigWorkflowOverride
     BackgroundSoundConfigWorkflowOverride:
       type: object
@@ -6131,7 +6173,7 @@ components:
             - type: 'null'
           description: The voicemail detection tool
       title: BuiltInToolsWorkflowOverride-Input
-    RagConfigWorkflowOverride:
+    RagConfigWorkflowOverride-Input:
       type: object
       properties:
         enabled:
@@ -6177,7 +6219,7 @@ components:
             Custom prompt for rewriting user queries before RAG retrieval. The
             conversation history will be automatically appended at the end. If
             not set, the default prompt will be used.
-      title: RagConfigWorkflowOverride
+      title: RagConfigWorkflowOverride-Input
     BackupLLMDefault:
       type: object
       properties: {}
@@ -6749,7 +6791,7 @@ components:
             prompt
         rag:
           oneOf:
-            - $ref: '#/components/schemas/RagConfigWorkflowOverride'
+            - $ref: '#/components/schemas/RagConfigWorkflowOverride-Input'
             - type: 'null'
           description: Configuration for RAG
         timezone:

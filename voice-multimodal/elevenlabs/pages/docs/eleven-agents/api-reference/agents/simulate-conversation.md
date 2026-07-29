@@ -499,6 +499,14 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersionOutput
+    type_:SearchStrategy:
+      type: string
+      enum:
+        - cat
+        - keyword
+        - semantic
+        - ls
+      title: SearchStrategy
     type_:LiteralJsonSchemaPropertyType:
       oneOf:
         - type: string
@@ -1009,6 +1017,19 @@ components:
             system_tool_type:
               type: string
               enum:
+                - knowledge_base
+              description: 'Discriminator value: knowledge_base'
+            enabled_strategies:
+              type: array
+              items:
+                $ref: '#/components/schemas/type_:SearchStrategy'
+          required:
+            - system_tool_type
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
                 - knowledge_base_rag
               description: 'Discriminator value: knowledge_base_rag'
           required:
@@ -1355,6 +1376,7 @@ components:
       enum:
         - chat_completions
         - responses
+        - websocket
       default: chat_completions
       title: CustomLlmapiType
     type_:CustomLlm:
@@ -1389,7 +1411,7 @@ components:
           description: The API version to use for the request
         api_type:
           $ref: '#/components/schemas/type_:CustomLlmapiType'
-          description: The API type to use (chat_completions or responses)
+          description: The API type to use (chat_completions, responses or websocket)
       required:
         - url
       title: CustomLlm
@@ -1400,7 +1422,7 @@ components:
         - multilingual_e5_large_instruct
       default: e5_mistral_7b_instruct
       title: EmbeddingModelEnum
-    type_:RagConfig:
+    type_:RagConfigOutput:
       type: object
       properties:
         enabled:
@@ -1436,7 +1458,7 @@ components:
             Custom prompt for rewriting user queries before RAG retrieval. The
             conversation history will be automatically appended at the end. If
             not set, the default prompt will be used.
-      title: RagConfig
+      title: RagConfigOutput
     type_:PromptAgentApiModelOutputBackupLlmConfig:
       oneOf:
         - type: object
@@ -2234,7 +2256,7 @@ components:
             Whether to remove the default personality lines from the system
             prompt
         rag:
-          $ref: '#/components/schemas/type_:RagConfig'
+          $ref: '#/components/schemas/type_:RagConfigOutput'
           description: Configuration for RAG
         timezone:
           type: string
@@ -2623,6 +2645,14 @@ components:
         - document_id
         - content
       title: KnowledgeBaseRagChunkModel
+    type_:KnowledgeBaseToolStatus:
+      type: string
+      enum:
+        - success
+        - no_matching_documents
+        - no_results
+      default: success
+      title: KnowledgeBaseToolStatus
     type_:TransferToAgentToolResultSuccessModelInputBranchInfo:
       oneOf:
         - type: object
@@ -2699,6 +2729,23 @@ components:
               description: >-
                 Retrieved chunks; populated only in the
                 rag-result-in-tool-result mode
+          required:
+            - result_type
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - knowledge_base_success
+              description: 'Discriminator value: knowledge_base_success'
+            status:
+              $ref: '#/components/schemas/type_:KnowledgeBaseToolStatus'
+            chunk_count:
+              type: integer
+              default: 0
+            message:
+              type: string
+              default: Referenced knowledge base.
           required:
             - result_type
         - type: object
@@ -3725,6 +3772,23 @@ components:
               description: >-
                 Retrieved chunks; populated only in the
                 rag-result-in-tool-result mode
+          required:
+            - result_type
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - knowledge_base_success
+              description: 'Discriminator value: knowledge_base_success'
+            status:
+              $ref: '#/components/schemas/type_:KnowledgeBaseToolStatus'
+            chunk_count:
+              type: integer
+              default: 0
+            message:
+              type: string
+              default: Referenced knowledge base.
           required:
             - result_type
         - type: object

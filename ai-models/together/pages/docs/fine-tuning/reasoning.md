@@ -33,25 +33,7 @@ The following models support reasoning fine-tuning. See [supported models](/docs
   | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
   | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
   | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
-  | Qwen         | Qwen3 Next 80B A3B Thinking                        | `Qwen/Qwen3-Next-80B-A3B-Thinking`                   |
-  | Qwen         | Qwen3 0.6B                                         | `Qwen/Qwen3-0.6B`                                    |
-  | Qwen         | Qwen3 0.6B Base                                    | `Qwen/Qwen3-0.6B-Base`                               |
-  | Qwen         | Qwen3 1.7B                                         | `Qwen/Qwen3-1.7B`                                    |
-  | Qwen         | Qwen3 1.7B Base                                    | `Qwen/Qwen3-1.7B-Base`                               |
-  | Qwen         | Qwen3 4B                                           | `Qwen/Qwen3-4B`                                      |
-  | Qwen         | Qwen3 4B Base                                      | `Qwen/Qwen3-4B-Base`                                 |
-  | Qwen         | Qwen3 8B                                           | `Qwen/Qwen3-8B`                                      |
-  | Qwen         | Qwen3 8B Base                                      | `Qwen/Qwen3-8B-Base`                                 |
-  | Qwen         | Qwen3 14B                                          | `Qwen/Qwen3-14B`                                     |
-  | Qwen         | Qwen3 14B Base                                     | `Qwen/Qwen3-14B-Base`                                |
-  | Qwen         | Qwen3 32B                                          | `Qwen/Qwen3-32B`                                     |
-  | Qwen         | Qwen3 30B A3B Base                                 | `Qwen/Qwen3-30B-A3B-Base`                            |
-  | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                 |
-  | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                               |
   | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
-  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                      |
-  | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                    |
-  | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                    |
   | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
   | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
   | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
@@ -115,6 +97,11 @@ For preference fine-tuning, both outputs carry `reasoning`. See [preference tuni
 Upload your data using the Together Python/TypeScript SDK or the [Together CLI](/reference/cli/getting-started):
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg files check "reasoning_dataset.jsonl"
+  tg files upload "reasoning_dataset.jsonl"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -140,11 +127,6 @@ Upload your data using the Together Python/TypeScript SDK or the [Together CLI](
   });
   console.log(trainFile.id);
   ```
-
-  ```bash CLI theme={null}
-  tg files check "reasoning_dataset.jsonl"
-  tg files upload "reasoning_dataset.jsonl"
-  ```
 </CodeGroup>
 
 ## Launch the job
@@ -152,6 +134,13 @@ Upload your data using the Together Python/TypeScript SDK or the [Together CLI](
 LoRA is the default. Pass `lora=False` for full fine-tuning.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "Qwen/Qwen3-8B" \
+    --lora
+  ```
+
   ```python Python theme={null}
   job = client.fine_tuning.create(
       training_file=train_file.id,
@@ -168,13 +157,6 @@ LoRA is the default. Pass `lora=False` for full fine-tuning.
     lora: true,
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "Qwen/Qwen3-8B" \
-    --lora
   ```
 </CodeGroup>
 

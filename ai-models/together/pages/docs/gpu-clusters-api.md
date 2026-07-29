@@ -101,6 +101,81 @@ tg beta clusters get-credentials [CLUSTER_ID] --set-default-context
   Run `tg beta clusters create` with no flags to launch an interactive prompt that walks through the required fields. See the [clusters CLI reference](/reference/cli/clusters) for the full command and flag list.
 </Note>
 
+## Inspect cluster GPU counts
+
+When you retrieve a cluster, `num_gpus` is the total GPU worker count. It splits into two billed components:
+
+* `num_reserved_gpus`: Prepaid reserved GPUs on the cluster.
+* `num_capacity_pool_gpus`: GPUs drawn from the cluster's capacity pool (on-demand burst above reserved).
+
+For clusters without a capacity pool, `num_capacity_pool_gpus` is `0`. On a fully reserved cluster, `num_reserved_gpus` equals `num_gpus`. On a fully on-demand cluster, `num_reserved_gpus` is `0`.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  cluster = client.beta.clusters.retrieve("<CLUSTER_ID>")
+  print(
+      cluster.num_gpus,
+      cluster.num_reserved_gpus,
+      cluster.num_capacity_pool_gpus,
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const cluster = await client.beta.clusters.retrieve("<CLUSTER_ID>");
+  console.log(
+    cluster.num_gpus,
+    cluster.num_reserved_gpus,
+    cluster.num_capacity_pool_gpus,
+  );
+  ```
+</CodeGroup>
+
+### Update cluster GPU counts
+
+When you update a cluster, you can adjust individual components without changing `num_gpus`:
+
+* `num_reserved_gpus`: Change the prepaid reserved GPU count. Only applicable for clusters with `RESERVED` billing.
+* `num_capacity_pool_gpus`: Change burst capacity drawn from the cluster's capacity pool. Only valid for clusters created with a capacity pool. Must be a multiple of 8 and cannot exceed `num_gpus`.
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  client.beta.clusters.update(
+      "<CLUSTER_ID>",
+      num_reserved_gpus=16,
+  )
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  await client.beta.clusters.update("<CLUSTER_ID>", {
+    num_reserved_gpus: 16,
+  });
+  ```
+</CodeGroup>
+
+With the Together CLI:
+
+```bash theme={null}
+tg beta clusters update <CLUSTER_ID> --num-reserved-gpus 16
+```
+
+See [Billing and pricing](/docs/gpu-clusters-billing) for how reserved and on-demand usage appear on invoices.
+
 ## SkyPilot Integration
 
 Orchestrate AI workloads on GPU Clusters using SkyPilot for simplified cluster management and job scheduling.

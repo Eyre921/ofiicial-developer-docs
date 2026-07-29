@@ -71,6 +71,10 @@ train.to_json("coqa_train.jsonl")
 Next we'll upload the file. `files.upload()` runs a local structural check by default (`check=True`), catching basic formatting errors such as non-UTF-8 encoding or malformed JSON lines before the file is sent. To inspect the check report yourself before uploading, run `check_file()` first (see [Data preparation](/docs/fine-tuning/data-preparation#validate-and-upload) for details):
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg files upload "coqa_train.jsonl"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -95,10 +99,6 @@ Next we'll upload the file. `files.upload()` runs a local structural check by de
     purpose: "fine-tune",
   });
   console.log(trainFile.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg files upload "coqa_train.jsonl"
   ```
 </CodeGroup>
 
@@ -165,6 +165,19 @@ Save the `id` from the upload response. You'll pass it as `training_file` in the
 `client.fine_tuning.create()` starts a LoRA job by default. The example below tunes Qwen3.5 9B for three epochs. See the [API reference](/reference/cli/finetune) for the full list of parameters.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "Qwen/Qwen3.5-9B" \
+    --train-on-inputs auto \
+    --lora \
+    --n-epochs 3 \
+    --n-checkpoints 1 \
+    --warmup-ratio 0 \
+    --learning-rate 1e-5 \
+    --suffix "qwen35_9b_demo"
+  ```
+
   ```python Python theme={null}
   job = client.fine_tuning.create(
       training_file=train_file.id,
@@ -194,19 +207,6 @@ Save the `id` from the upload response. You'll pass it as `training_file` in the
     suffix: "qwen35_9b_demo",
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "Qwen/Qwen3.5-9B" \
-    --train-on-inputs auto \
-    --lora \
-    --n-epochs 3 \
-    --n-checkpoints 1 \
-    --warmup-ratio 0 \
-    --learning-rate 1e-5 \
-    --suffix "qwen35_9b_demo"
   ```
 </CodeGroup>
 
@@ -252,6 +252,13 @@ Jobs move through these states: `pending → queued → running → uploading �
 Poll for completion (or error/cancellation), then read the Model Object ID:
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning retrieve "<JOB_ID>"
+
+  # Sample events
+  tg fine-tuning list-events "<JOB_ID>"
+  ```
+
   ```python Python theme={null}
   import time
 
@@ -296,13 +303,6 @@ Poll for completion (or error/cancellation), then read the Model Object ID:
   // Model Object ID (ml_...); deploy references this, not the output name.
   const modelObjectId = status.model_object_id;
   console.log(modelObjectId);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning retrieve "<JOB_ID>"
-
-  # Sample events
-  tg fine-tuning list-events "<JOB_ID>"
   ```
 </CodeGroup>
 
@@ -504,17 +504,17 @@ Find the endpoint ID by running `tg beta endpoints ls`.
 Resume training from an existing job by passing `from_checkpoint`:
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<NEW_FILE_ID>" \
+    --from-checkpoint "<PREVIOUS_JOB_ID>"
+  ```
+
   ```python Python theme={null}
   job = client.fine_tuning.create(
       training_file="<NEW_FILE_ID>",
       from_checkpoint="<PREVIOUS_JOB_ID>",
   )
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<NEW_FILE_ID>" \
-    --from-checkpoint "<PREVIOUS_JOB_ID>"
   ```
 </CodeGroup>
 

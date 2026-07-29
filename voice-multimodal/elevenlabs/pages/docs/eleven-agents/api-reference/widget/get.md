@@ -454,10 +454,19 @@ components:
           description: >-
             When enabled, users may attach images or PDFs in chat when the LLM
             supports multimodal input.
+        max_files_in_memory:
+          type: integer
+          default: 10
+          description: >-
+            Number of most-recent files kept in memory during a conversation.
+            Older files are summarized and their bytes freed.
         max_files_per_conversation:
           type: integer
           default: 10
-          description: Maximum number of files that can be uploaded per conversation.
+          description: >-
+            Total files a user can upload in one conversation. Uploads are
+            billed per file. Use -1 for no limit, or a value >=
+            max_files_in_memory.
       title: FileInputConfig
     type_:WidgetConfigResponse:
       type: object
@@ -844,6 +853,7 @@ components:
     "use_rtc": false,
     "file_input_config": {
       "enabled": false,
+      "max_files_in_memory": 10,
       "max_files_per_conversation": 10
     }
   }

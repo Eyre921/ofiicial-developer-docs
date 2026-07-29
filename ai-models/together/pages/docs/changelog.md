@@ -5,6 +5,24 @@ path: docs/changelog
 ---
 
 <Update label="July 28, 2026">
+  ## A/B variant percent updates in the CLI
+
+  `tg beta endpoints update` now accepts `--ab-percent` to change a variant's traffic percentage in an existing A/B experiment. The flag takes percentage from or returns it to the control only; other variants stay unchanged. The control must remain at least 1%, and `--percent` on `tg beta endpoints ab` is limited to 1–99.
+
+  See [Ramp the variant](/docs/dedicated-endpoints/ab-tests#ramp-the-variant) and the [endpoints CLI reference](/reference/cli/endpoints-beta#update).
+
+  ## Deploy replica bound inference
+
+  `tg beta endpoints deploy` now infers a missing replica bound: `--min-replicas` alone mirrors into the max (including `0` to create a deployment stopped), and `--max-replicas 0` alone lowers the min to `0`. On `tg beta endpoints update`, stopping a deployment still requires both `--min-replicas 0` and `--max-replicas 0`. Passing a single zero bound is an error.
+
+  See the [endpoints CLI reference](/reference/cli/endpoints-beta#deploy).
+
+  ## CLI upgrade notices
+
+  The Together CLI now detects when a newer release is available and prints an upgrade notice at most once per day. Interactive sessions offer to run the upgrade in place, using the command that matches your install (`uv`, `pipx`, or `pip`). Set `TOGETHER_DISABLE_VERSION_CHECK=1` to turn the check off.
+
+  See [Get started](/reference/cli/getting-started#upgrade-notices).
+
   ## Model deprecations
 
   The following models have been deprecated and are no longer available on serverless:
@@ -29,7 +47,7 @@ path: docs/changelog
 
   The Together Python SDK now includes `client.beta.realtime.transcription()` for streaming speech-to-text over WebSocket. Install with `pip install "together[realtime]"`. The session reconnects with audio replay on transient drops, exposes normalized events such as `TranscriptDelta` and `TranscriptCompleted`, and supports application-level failover across endpoints with `RealtimeConnectionError` (`code="no_healthy_workers"`) and `session.pending_audio()`.
 
-  See [Streaming transcription](/docs/inference/transcription/streaming#python-sdk).
+  See [Streaming transcription](/docs/inference/transcription/streaming).
 
   ## Fine-tuning comparison metrics filtering
 
@@ -135,6 +153,12 @@ path: docs/changelog
   Model and adapter revision APIs now return `validationStatus`, `lastValidatedAt`, and `validationErrors` on each revision. Poll validation before you pin a revision in a deployment — a revision must reach `REVISION_VALIDATION_STATUS_SUCCESS` before it can deploy when referenced explicitly.
 
   See [Check revision validation](/docs/dedicated-endpoints/custom-models#check-revision-validation).
+
+  ## GPU cluster reserved GPU updates
+
+  You can now update `num_reserved_gpus` on reserved clusters through the API and CLI. Pass `num_reserved_gpus` on cluster update to change the prepaid reserved GPU count without changing total `num_gpus`.
+
+  See [API and integrations](/docs/gpu-clusters-api#inspect-cluster-gpu-counts).
 </Update>
 
 <Update label="July 17, 2026">
@@ -178,6 +202,24 @@ path: docs/changelog
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
 
   See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
+
+  ## GPU cluster GPU count breakdown
+
+  Cluster retrieve and list responses now expose `num_reserved_gpus` and `num_capacity_pool_gpus` alongside `num_gpus`, so you can see how total capacity splits between prepaid reserved GPUs and on-demand burst from a capacity pool.
+
+  See [API and integrations](/docs/gpu-clusters-api#inspect-cluster-gpu-counts) for details.
+
+  ## Remediation linked alerts
+
+  Remediation retrieve and list responses now include `linked_alerts`, an array of passive health check alerts tied to the repair (including resolved alerts).
+
+  See [Node repair](/docs/node-repair#linked-alerts-in-api-responses) for details.
+
+  ## Clear a deployment queue
+
+  The Queue API adds `POST /queue/clear` (`client.beta.jig.queue.clear`) to cancel all pending jobs for a model in one call. Running jobs are left untouched, and the response reports how many pending jobs were canceled.
+
+  See [Queue API](/docs/deployments-queue#clearing-pending-jobs) for details.
 
   ## Fine-tuning artifact registry IDs
 

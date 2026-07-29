@@ -22,6 +22,29 @@ You set each deployment's weight individually, and the split preserves the other
     ```
   </Tab>
 
+  <Tab title="Python">
+    The Python SDK replaces the entire traffic split, so include every deployment that should continue receiving traffic:
+
+    ```python Python theme={null}
+    from together import Together
+
+    client = Together()
+    project_id = client.whoami().project_id
+
+    client.beta.endpoints.update(
+        "ep_abc123",
+        project_id=project_id,
+        traffic_split=[
+            {"deployment_id": "dep_abc123", "weight": 70},
+            {"deployment_id": "dep_def456", "weight": 30},
+        ],
+        update_mask="trafficSplit",
+    )
+    ```
+
+    The SDK uses snake case for Python arguments, such as `traffic_split` and `update_mask`, but field-mask values use the API field path. Pass `trafficSplit`, not `traffic_split`, as the update mask.
+  </Tab>
+
   <Tab title="Console">
     Set each deployment's **Traffic weight** in its **Deployment configuration** (open the deployment, select **Edit**, then **Save changes**). When you create an endpoint with more than one deployment, you can set all the weights together in the create form's **Traffic weights** card.
   </Tab>

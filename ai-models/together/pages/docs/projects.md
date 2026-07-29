@@ -121,7 +121,6 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Evaluations                   | ✅               | ❌          |
 | Batch                         | ✅               | ❌          |
 | Code Interpreter              | ✅               | N/A        |
-| Storage                       | ❌               | ❌          |
 
 Here's what to expect when using a resource that isn't yet supported:
 

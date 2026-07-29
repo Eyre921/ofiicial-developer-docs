@@ -17,6 +17,19 @@ Early stopping is driven by validation, so it requires a validation file and one
 To turn on early stopping, supply a validation file, set `n_evals` high enough to detect a plateau, and set `early_stopping_enabled=true` in your job creation call:
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<TRAINING_FILE_ID>" \
+    --validation-file "<VALIDATION_FILE_ID>" \
+    --model "Qwen/Qwen3.5-9B" \
+    --n-epochs 5 \
+    --n-evals 10 \
+    --early-stopping-enabled \
+    --early-stopping-patience 2 \
+    --early-stopping-min-delta 0.0 \
+    --early-stopping-warmup-evals 1
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -53,19 +66,6 @@ To turn on early stopping, supply a validation file, set `n_evals` high enough t
     early_stopping_warmup_evals: 1,
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<TRAINING_FILE_ID>" \
-    --validation-file "<VALIDATION_FILE_ID>" \
-    --model "Qwen/Qwen3.5-9B" \
-    --n-epochs 5 \
-    --n-evals 10 \
-    --early-stopping-enabled \
-    --early-stopping-patience 2 \
-    --early-stopping-min-delta 0.0 \
-    --early-stopping-warmup-evals 1
   ```
 </CodeGroup>
 
@@ -144,6 +144,10 @@ An early-stopped job ships the final checkpoint from `early_stopping_best_step`,
 To confirm this, retrieve the job and compare its `early_stopping_best_step` against the final checkpoint's `step`:
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning list-checkpoints <JOB_ID>
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -174,9 +178,5 @@ To confirm this, retrieve the job and compare its `early_stopping_best_step` aga
   );
   // For an early-stopped job, these two values match.
   console.log(final?.step, job.early_stopping_best_step);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning list-checkpoints <JOB_ID>
   ```
 </CodeGroup>

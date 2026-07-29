@@ -15,82 +15,35 @@ This page covers the function-calling data shape, supported models, and launch p
 The following models support function-calling fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
 
 <Accordion title="Supported models">
-  | Organization | Model                                              | API ID                                                  |
-  | ------------ | -------------------------------------------------- | ------------------------------------------------------- |
-  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16`    |
-  | NVIDIA       | NVIDIA Nemotron Nano 9B v2                         | `nvidia/NVIDIA-Nemotron-Nano-9B-v2`                     |
-  | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`         |
-  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                                |
-  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                                |
-  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                                  |
-  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                             |
-  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                      |
-  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                       |
-  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                       |
-  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                       |
-  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                     |
-  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                                  |
-  | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                      |
-  | Qwen         | Qwen3 Next 80B A3B Instruct                        | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      |
-  | Qwen         | Qwen3 Next 80B A3B Thinking                        | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      |
-  | Qwen         | Qwen3 0.6B                                         | `Qwen/Qwen3-0.6B`                                       |
-  | Qwen         | Qwen3 1.7B                                         | `Qwen/Qwen3-1.7B`                                       |
-  | Qwen         | Qwen3 4B                                           | `Qwen/Qwen3-4B`                                         |
-  | Qwen         | Qwen3 8B                                           | `Qwen/Qwen3-8B`                                         |
-  | Qwen         | Qwen3 14B                                          | `Qwen/Qwen3-14B`                                        |
-  | Qwen         | Qwen3 32B                                          | `Qwen/Qwen3-32B`                                        |
-  | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                    |
-  | Qwen         | Qwen3 30B A3B Instruct 2507                        | `Qwen/Qwen3-30B-A3B-Instruct-2507`                      |
-  | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                                  |
-  | Qwen         | Qwen3 235B A22B Instruct 2507                      | `Qwen/Qwen3-235B-A22B-Instruct-2507`                    |
-  | Qwen         | Qwen3 Coder 30B A3B Instruct                       | `Qwen/Qwen3-Coder-30B-A3B-Instruct`                     |
-  | Qwen         | Qwen3 Coder 480B A35B Instruct                     | `Qwen/Qwen3-Coder-480B-A35B-Instruct`                   |
-  | Qwen         | Qwen3 VL 8B Instruct                               | `Qwen/Qwen3-VL-8B-Instruct`                             |
-  | Qwen         | Qwen3 VL 32B Instruct                              | `Qwen/Qwen3-VL-32B-Instruct`                            |
-  | Qwen         | Qwen3 VL 30B A3B Instruct                          | `Qwen/Qwen3-VL-30B-A3B-Instruct`                        |
-  | Qwen         | Qwen3 VL 235B A22B Instruct                        | `Qwen/Qwen3-VL-235B-A22B-Instruct`                      |
-  | Qwen         | Qwen2.5 72B Instruct                               | `Qwen/Qwen2.5-72B-Instruct`                             |
-  | Qwen         | Qwen2.5 72B                                        | `Qwen/Qwen2.5-72B`                                      |
-  | Qwen         | Qwen2.5 32B Instruct                               | `Qwen/Qwen2.5-32B-Instruct`                             |
-  | Qwen         | Qwen2.5 32B                                        | `Qwen/Qwen2.5-32B`                                      |
-  | Qwen         | Qwen2.5 14B Instruct                               | `Qwen/Qwen2.5-14B-Instruct`                             |
-  | Qwen         | Qwen2.5 14B                                        | `Qwen/Qwen2.5-14B`                                      |
-  | Qwen         | Qwen2.5 7B Instruct                                | `Qwen/Qwen2.5-7B-Instruct`                              |
-  | Qwen         | Qwen2.5 7B                                         | `Qwen/Qwen2.5-7B`                                       |
-  | Qwen         | Qwen2.5 3B Instruct                                | `Qwen/Qwen2.5-3B-Instruct`                              |
-  | Qwen         | Qwen2.5 3B                                         | `Qwen/Qwen2.5-3B`                                       |
-  | Qwen         | Qwen2.5 1.5B Instruct                              | `Qwen/Qwen2.5-1.5B-Instruct`                            |
-  | Qwen         | Qwen2.5 1.5B                                       | `Qwen/Qwen2.5-1.5B`                                     |
-  | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                             |
-  | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                                  |
-  | Moonshot AI  | Kimi K2.5                                          | `moonshotai/Kimi-K2.5`                                  |
-  | Moonshot AI  | Kimi K2 Thinking                                   | `moonshotai/Kimi-K2-Thinking`                           |
-  | Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      |
-  | Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           |
-  | Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               |
-  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       |
-  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         |
-  | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       |
-  | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       |
-  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    |
-  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                   |
-  | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`             |
-  | Meta         | Llama 4 Scout 17B 16E Instruct VLM                 | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`         |
-  | Meta         | Llama 4 Maverick 17B 128E Instruct                 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`         |
-  | Meta         | Llama 4 Maverick 17B 128E Instruct VLM             | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM`     |
-  | Meta         | Llama 3.3 70B Instruct Reference                   | `meta-llama/Llama-3.3-70B-Instruct-Reference`           |
-  | Meta         | Llama 3.3 70B 32k Instruct Reference               | `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`       |
-  | Meta         | Llama 3.3 70B 131k Instruct Reference              | `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`      |
-  | Meta         | Llama 3.2 3B Instruct                              | `meta-llama/Llama-3.2-3B-Instruct`                      |
-  | Meta         | Llama 3.2 1B Instruct                              | `meta-llama/Llama-3.2-1B-Instruct`                      |
-  | Meta         | Meta Llama 3.1 8B Instruct Reference               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`       |
-  | Meta         | Meta Llama 3.1 8B 131k Instruct Reference          | `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`  |
-  | Meta         | Meta Llama 3.1 70B Instruct Reference              | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`      |
-  | Meta         | Meta Llama 3.1 70B 32k Instruct Reference          | `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`  |
-  | Meta         | Meta Llama 3.1 70B 131k Instruct Reference         | `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference` |
-  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                                 |
-  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                             |
-  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                             |
+  | Organization | Model                                              | API ID                                               |
+  | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
+  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
+  | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`      |
+  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
+  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
+  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
+  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                          |
+  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                   |
+  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                    |
+  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                    |
+  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                    |
+  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
+  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
+  | Qwen         | Qwen3.6 27B                                        | `Qwen/Qwen3.6-27B`                                   |
+  | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                          |
+  | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                               |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
+  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
+  | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`          |
+  | Meta         | Llama 4 Scout 17B 16E Instruct VLM                 | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`      |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct                 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`      |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct VLM             | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM`  |
+  | Meta         | Llama 3.3 70B Instruct Reference                   | `meta-llama/Llama-3.3-70B-Instruct-Reference`        |
+  | Meta         | Meta Llama 3.1 8B Instruct Reference               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`    |
+  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
+  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                          |
+  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                          |
 </Accordion>
 
 ## Prepare your data
@@ -178,6 +131,11 @@ For preference fine-tuning, the `tools` array nests inside `input`. See [Prefere
 Upload your data using the Together Python/TypeScript SDK or the [Together CLI](/reference/cli/getting-started):
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg files check "function_calling_dataset.jsonl"
+  tg files upload "function_calling_dataset.jsonl"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -203,11 +161,6 @@ Upload your data using the Together Python/TypeScript SDK or the [Together CLI](
   });
   console.log(trainFile.id);
   ```
-
-  ```bash CLI theme={null}
-  tg files check "function_calling_dataset.jsonl"
-  tg files upload "function_calling_dataset.jsonl"
-  ```
 </CodeGroup>
 
 ## Launch the job
@@ -215,6 +168,13 @@ Upload your data using the Together Python/TypeScript SDK or the [Together CLI](
 LoRA is the default and recommended training mode. Pass `lora=False` for full fine-tuning.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "Qwen/Qwen3-8B" \
+    --lora
+  ```
+
   ```python Python theme={null}
   job = client.fine_tuning.create(
       training_file=train_file.id,
@@ -231,13 +191,6 @@ LoRA is the default and recommended training mode. Pass `lora=False` for full fi
     lora: true,
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "Qwen/Qwen3-8B" \
-    --lora
   ```
 </CodeGroup>
 

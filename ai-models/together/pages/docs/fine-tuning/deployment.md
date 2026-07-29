@@ -26,7 +26,7 @@ Together AI serves fine-tuned models through [dedicated model inference](/docs/d
 </Note>
 
 <Tabs>
-  <Tab title="CLI / SDK">
+  <Tab title="CLI">
     The CLI's `deploy` command creates the endpoint, attaches a deployment, and routes all traffic to it in one step. Pass the fine-tune's Model Object ID (`ml_...`) — not the `x_model_output_name`, which isn't a deployable identifier in dedicated model inference:
 
     ```bash CLI theme={null}
@@ -38,7 +38,39 @@ Together AI serves fine-tuned models through [dedicated model inference](/docs/d
       --endpoint my-finetuned-endpoint
     ```
 
-    The SDK has no single-call equivalent, so it runs the same steps individually: create the endpoint, bind the model and a config to a deployment, then route traffic to it. Reference the fine-tune by its **Model Object ID** (`ml_...`, the job's `model_object_id`):
+    Poll until the deployment reaches `DEPLOYMENT_STATE_READY`:
+
+    ```bash CLI theme={null}
+    tg beta endpoints get "<ENDPOINT_ID>"
+    ```
+
+    Once the deployment is `READY`, the endpoint serves at its **endpoint string** (`your-project-slug/my-finetuned-endpoint`, printed by the deploy output). Pass it as the `model` parameter and point the base URL at `https://api-inference.together.ai/v1`:
+
+    ```bash cURL theme={null}
+    curl -s https://api-inference.together.ai/v1/chat/completions \
+      -H "Authorization: Bearer $TOGETHER_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "model": "your-project-slug/my-finetuned-endpoint",
+        "messages": [{"role": "user", "content": "Hello!"}]
+      }'
+    ```
+
+    When you're done, delete the endpoint and its deployment to stop billing. The CLI's `rm --force` removes both in one step:
+
+    ```bash CLI theme={null}
+    tg beta endpoints rm "<ENDPOINT_ID>" --force
+    ```
+
+    To pause billing without deleting anything (for example, if you plan to use the endpoint again later), scale the deployment to zero instead. See [Delete resources](/docs/dedicated-endpoints/manage#delete-resources) for the full teardown order.
+
+    <Note>
+      If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`. See [Choose a deployment profile](/docs/dedicated-endpoints/configs).
+    </Note>
+  </Tab>
+
+  <Tab title="SDK">
+    The SDK has no single-call equivalent of the CLI's `deploy`, so it runs the same steps individually: create the endpoint, bind the model and a config to a deployment, then route traffic to it. Reference the fine-tune by its **Model Object ID** (`ml_...`, the job's `model_object_id`):
 
     <CodeGroup>
       ```python Python theme={null}
@@ -115,13 +147,7 @@ Together AI serves fine-tuned models through [dedicated model inference](/docs/d
       ```
     </CodeGroup>
 
-    Poll until the deployment reaches `DEPLOYMENT_STATE_READY`:
-
-    ```bash CLI theme={null}
-    tg beta endpoints get "<ENDPOINT_ID>"
-    ```
-
-    From the SDK, retrieve the deployment and read `status.state`:
+    Poll until the deployment reaches `DEPLOYMENT_STATE_READY`. Retrieve the deployment and read `status.state`:
 
     <CodeGroup>
       ```python Python theme={null}
@@ -145,16 +171,6 @@ Together AI serves fine-tuned models through [dedicated model inference](/docs/d
     Once the deployment is `READY`, the endpoint serves at its **endpoint string** (`your-project-slug/my-finetuned-endpoint`, returned as `endpoint.name`). Pass it as the `model` parameter and point the base URL at `https://api-inference.together.ai/v1`:
 
     <CodeGroup>
-      ```bash cURL theme={null}
-      curl -s https://api-inference.together.ai/v1/chat/completions \
-        -H "Authorization: Bearer $TOGETHER_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{
-          "model": "your-project-slug/my-finetuned-endpoint",
-          "messages": [{"role": "user", "content": "Hello!"}]
-        }'
-      ```
-
       ```python Python theme={null}
       from together import Together
 
@@ -186,13 +202,7 @@ Together AI serves fine-tuned models through [dedicated model inference](/docs/d
       ```
     </CodeGroup>
 
-    When you're done, delete the endpoint and its deployment to stop billing. The CLI's `rm --force` removes both in one step:
-
-    ```bash CLI theme={null}
-    tg beta endpoints rm "<ENDPOINT_ID>" --force
-    ```
-
-    The SDK has no smart-delete, so stop billing by scaling the deployment to zero, then delete the resources once it reaches `DEPLOYMENT_STATE_STOPPED`:
+    When you're done, delete the endpoint and its deployment to stop billing. The SDK has no smart-delete equivalent of the CLI's `rm --force`, so stop billing by scaling the deployment to zero, then delete the resources once it reaches `DEPLOYMENT_STATE_STOPPED`:
 
     <CodeGroup>
       ```python Python theme={null}
@@ -240,10 +250,6 @@ Together AI serves fine-tuned models through [dedicated model inference](/docs/d
     </CodeGroup>
 
     To pause billing without deleting anything (for example, if you plan to use the endpoint again later), scale the deployment to zero and stop there. See [Delete resources](/docs/dedicated-endpoints/manage#delete-resources) for the full teardown order.
-
-    <Note>
-      If `deploy` reports that the model has more than one deployment profile, re-run it with `--config <cr_...>`. List a model's profiles with `tg beta models configs "<MODEL_OBJECT_ID>"`. See [Choose a deployment profile](/docs/dedicated-endpoints/configs).
-    </Note>
   </Tab>
 
   <Tab title="UI">
@@ -276,6 +282,10 @@ Together AI serves fine-tuned models through [dedicated model inference](/docs/d
 To run your model outside Together, download the checkpoint by job ID:
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning download "<JOB_ID>"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -298,10 +308,6 @@ To run your model outside Together, download the checkpoint by job ID:
   const response = await client.fineTuning.content({ ft_id: "<JOB_ID>", checkpoint: "merged" });
   const buffer = Buffer.from(await response.arrayBuffer());
   fs.writeFileSync("my-model/model.tar.zst", buffer);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning download "<JOB_ID>"
   ```
 </CodeGroup>
 
@@ -383,6 +389,10 @@ The fields are omitted when the registry upload did not run or did not succeed. 
 | `adapter_object_name`        | Qualified adapter name on LoRA jobs (for example, `acme-corp/my-model-abc123-adapter`).                                                                                                                                        |
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning retrieve "<JOB_ID>"
+  ```
+
   ```python Python theme={null}
   job = client.fine_tuning.retrieve(id="<JOB_ID>")
   if job.model_object_id:
@@ -404,10 +414,6 @@ The fields are omitted when the registry upload did not run or did not succeed. 
     console.log(job.adapter_object_name);
   }
   ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning retrieve "<JOB_ID>"
-  ```
 </CodeGroup>
 
 ### On checkpoints
@@ -423,6 +429,10 @@ The fields are omitted when the registry upload did not run or did not succeed. 
 Intermediate checkpoints carry the IDs from the upload at that step. Final model and adapter checkpoints in the list reuse the job-level IDs from the table above.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning list-checkpoints "<JOB_ID>"
+  ```
+
   ```python Python theme={null}
   checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
   for cp in checkpoints.data:
@@ -437,10 +447,6 @@ Intermediate checkpoints carry the IDs from the upload at that step. Final model
       console.log(cp.step, cp.object_id, cp.object_revision_id, cp.object_name);
     }
   }
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning list-checkpoints "<JOB_ID>"
   ```
 </CodeGroup>
 

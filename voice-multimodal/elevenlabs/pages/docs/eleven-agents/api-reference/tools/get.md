@@ -556,6 +556,14 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersionOutput
+    type_:SearchStrategy:
+      type: string
+      enum:
+        - cat
+        - keyword
+        - semantic
+        - ls
+      title: SearchStrategy
     type_:SubAgentOutput:
       type: object
       properties:
@@ -847,6 +855,19 @@ components:
               type: object
               additionalProperties:
                 $ref: '#/components/schemas/type_:ProcedureAtVersionOutput'
+          required:
+            - system_tool_type
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - knowledge_base
+              description: 'Discriminator value: knowledge_base'
+            enabled_strategies:
+              type: array
+              items:
+                $ref: '#/components/schemas/type_:SearchStrategy'
           required:
             - system_tool_type
         - type: object

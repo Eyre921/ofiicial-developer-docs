@@ -8,14 +8,14 @@ Learn how to power Qwen Code with Together AI models.
 
 Qwen Code is a powerful command-line AI workflow tool specifically optimized for code understanding, automated tasks, and intelligent development assistance. While it comes with built-in Qwen OAuth support, you can also configure it to use Together AI's extensive model selection for even more flexibility and control over your AI coding experience.
 
-In this guide, we'll show you how to set up Qwen Code with Together AI's powerful models like DeepSeek V3, Llama 3.3 70B, and specialized coding models to enhance your development workflow beyond traditional context window limits.
+In this guide, we'll show you how to set up Qwen Code with Together AI's powerful models like Kimi K2.7 Code, GLM 5.2, and specialized coding models to enhance your development workflow beyond traditional context window limits.
 
 ## Why Use Qwen Code with Together AI?
 
 * **Model Choice**: Access to a wide variety of models beyond just Qwen models
 * **Transparent Pricing**: Clear token-based pricing with no surprises
 * **Enterprise Control**: Use your own API keys and have full control over usage
-* **Specialized Models**: Access to coding-specific models like Qwen3-Coder and DeepSeek variants
+* **Specialized Models**: Access to coding-specific models like Kimi K2.7 Code and Qwen3 Coder Next
 
 ## 1. Install Qwen Code
 
@@ -71,20 +71,22 @@ Select from Together AI's powerful model selection:
 
 **For General Development:**
 
-* `deepseek-ai/DeepSeek-V3` - Excellent balance of performance and cost (\$1.25/M tokens)
-* `meta-llama/Llama-3.3-70B-Instruct-Turbo` - Fast and cost-effective (\$0.88/M tokens)
+* `moonshotai/Kimi-K2.7-Code` - Purpose-built for coding agents.
+* `Qwen/Qwen3-Coder-Next-FP8` - Fast, cost-effective coding model.
 
 **For Advanced Coding Tasks:**
 
-* `Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8` - Specialized for complex coding (\$2.00/M tokens)
-* `deepseek-ai/DeepSeek-R1` - Advanced reasoning capabilities ($3.00-$7.00/M tokens)
+* `zai-org/GLM-5.2` - Strong all-rounder with a large context window.
+* `deepseek-ai/DeepSeek-V4-Pro` - Advanced reasoning capabilities.
+
+See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 
 ### Example Configuration
 
 ```bash theme={null}
 export OPENAI_API_KEY="your_together_api_key"
 export OPENAI_BASE_URL="https://api.together.ai/v1"
-export OPENAI_MODEL="deepseek-ai/DeepSeek-V3"
+export OPENAI_MODEL="moonshotai/Kimi-K2.7-Code"
 ```
 
 ## 4. Launch and Use Qwen Code
@@ -108,9 +110,9 @@ You're now ready to use Qwen Code with Together AI models!
 
 ### Model Selection Strategy
 
-* Use **DeepSeek V3** for general coding tasks
-* Switch to **Qwen3-Coder** for complex code generation
-* Use **Llama 3.3 70B** for faster, cost-effective operations
+* Use **Kimi K2.7 Code** for general coding tasks.
+* Switch to **GLM 5.2** or **DeepSeek V4 Pro** for complex reasoning.
+* Use **Qwen3 Coder Next** for faster, cost-effective operations.
 
 ### Context Window Management
 

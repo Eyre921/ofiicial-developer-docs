@@ -8,30 +8,8 @@ path: docs/help-center/product/voice-customization/voice-isolator
 
 # Voice Isolator FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/voice-customization/voice-isolator/how-much-does-voice-isolator-cost">
-          How much does Voice Isolator cost?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/voice-customization/voice-isolator/what-is-the-maximum-size-of-file-i-can-upload-for-voice-isolator">
-          What is the maximum size of file I can upload for Voice Isolator?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/voice-customization/voice-isolator/what-is-voice-isolator">
-          What is Voice Isolator?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [How much does Voice Isolator cost?](/docs/help-center/product/voice-customization/voice-isolator/how-much-does-voice-isolator-cost)                                                               |
+| [What is the maximum size of file I can upload for Voice Isolator?](/docs/help-center/product/voice-customization/voice-isolator/what-is-the-maximum-size-of-file-i-can-upload-for-voice-isolator) |
+| [What is Voice Isolator?](/docs/help-center/product/voice-customization/voice-isolator/what-is-voice-isolator)                                                                                     |

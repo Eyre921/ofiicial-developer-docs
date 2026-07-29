@@ -37,6 +37,8 @@ import(
 	"context"
 	"os"
 	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
+	"github.com/OpenRouterTeam/go-sdk/models/operations"
 	"log"
 )
 
@@ -47,7 +49,9 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Files.List(ctx, nil, nil, nil)
+    res, err := s.Files.List(ctx, &operations.ListFilesRequest{
+        Provider: components.FileProviderOpenai.ToPointer(),
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -71,13 +75,11 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                    | Example                                                      |
-| ------------- | ---------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                            |                                                              |
-| `limit`       | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of files to return (1–1000).                                    | 100                                                          |
-| `cursor`      | `*string`                                                  | :heavy\_minus\_sign: | Opaque pagination cursor from a previous response.                             | eyJjdXJzb3IiOiJvcl9maWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9 |
-| `workspaceID` | `*string`                                                  | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7                         |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                  |                                                              |
+| Parameter | Type                                                                        | Required             | Description                                |
+| --------- | --------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
+| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                       | :heavy\_check\_mark: | The context to use for the request.        |
+| `request` | [operations.ListFilesRequest](../../models/operations/listfilesrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `opts`    | \[][operations.Option](../../models/operations/option.mdx)                  | :heavy\_minus\_sign: | The options for this request.              |
 
 ### Response
 
@@ -85,13 +87,16 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type                                | Status Code | Content Type     |
+| ----------------------------------------- | ----------- | ---------------- |
+| sdkerrors.BadRequestResponseError         | 400         | application/json |
+| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
+| sdkerrors.ForbiddenResponseError          | 403         | application/json |
+| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
+| sdkerrors.InternalServerResponseError     | 500         | application/json |
+| sdkerrors.BadGatewayResponseError         | 502         | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
+| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
 
 ## Upload
 
@@ -107,6 +112,7 @@ import(
 	"os"
 	openrouter "github.com/OpenRouterTeam/go-sdk"
 	"github.com/OpenRouterTeam/go-sdk/models/operations"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
 	"log"
 )
 
@@ -127,40 +133,53 @@ func main() {
             FileName: "example.file",
             Content: example,
         },
-    }, nil)
+    }, nil, components.FileProviderOpenai.ToPointer())
     if err != nil {
         log.Fatal(err)
     }
     if res != nil {
-        // handle response
+        switch res.Type {
+            case components.FileResponseTypeAnthropic:
+                // res.AnthropicFile is populated
+            case components.FileResponseTypeOpenai:
+                // res.OpenAIFile is populated
+            case components.FileResponseTypeOpenrouter:
+                // res.OpenRouterFile is populated
+            default:
+                // Unknown type - use res.GetUnknownRaw() for raw JSON
+        }
+
     }
 }
 ```
 
 ### Parameters
 
-| Parameter     | Type                                                                                  | Required             | Description                                                                    | Example                              |
-| ------------- | ------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------ | ------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)                                 | :heavy\_check\_mark: | The context to use for the request.                                            |                                      |
-| `requestBody` | [operations.UploadFileRequestBody](../../models/operations/uploadfilerequestbody.mdx) | :heavy\_check\_mark: | N/A                                                                            |                                      |
-| `workspaceID` | `*string`                                                                             | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx)                            | :heavy\_minus\_sign: | The options for this request.                                                  |                                      |
+| Parameter     | Type                                                                                  | Required             | Description                                                                                                  | Example                              |
+| ------------- | ------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)                                 | :heavy\_check\_mark: | The context to use for the request.                                                                          |                                      |
+| `requestBody` | [operations.UploadFileRequestBody](../../models/operations/uploadfilerequestbody.mdx) | :heavy\_check\_mark: | N/A                                                                                                          |                                      |
+| `workspaceID` | `*string`                                                                             | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace.                               | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider`    | [\*components.FileProvider](../../models/components/fileprovider.mdx)                 | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai                               |
+| `opts`        | \[][operations.Option](../../models/operations/option.mdx)                            | :heavy\_minus\_sign: | The options for this request.                                                                                |                                      |
 
 ### Response
 
-**[\*components.FileMetadata](../../models/components/filemetadata.mdx), error**
+**[\*components.FileResponse](../../models/components/fileresponse.mdx), error**
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.ForbiddenResponseError       | 403         | application/json |
-| sdkerrors.PayloadTooLargeResponseError | 413         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type                                | Status Code | Content Type     |
+| ----------------------------------------- | ----------- | ---------------- |
+| sdkerrors.BadRequestResponseError         | 400         | application/json |
+| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
+| sdkerrors.ForbiddenResponseError          | 403         | application/json |
+| sdkerrors.PayloadTooLargeResponseError    | 413         | application/json |
+| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
+| sdkerrors.InternalServerResponseError     | 500         | application/json |
+| sdkerrors.BadGatewayResponseError         | 502         | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
+| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
 
 ## Delete
 
@@ -175,6 +194,7 @@ import(
 	"context"
 	"os"
 	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
 	"log"
 )
 
@@ -185,24 +205,35 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Files.Delete(ctx, "file_011CNha8iCJcU1wXNR6q4V8w", nil)
+    res, err := s.Files.Delete(ctx, "file_011CNha8iCJcU1wXNR6q4V8w", nil, components.FileProviderOpenai.ToPointer())
     if err != nil {
         log.Fatal(err)
     }
     if res != nil {
-        // handle response
+        switch res.Type {
+            case components.FileDeleteResponseTypeAnthropic:
+                // res.AnthropicFileDeleted is populated
+            case components.FileDeleteResponseTypeOpenai:
+                // res.OpenAIFileDeleted is populated
+            case components.FileDeleteResponseTypeOpenrouter:
+                // res.OpenRouterFileDeleted is populated
+            default:
+                // Unknown type - use res.GetUnknownRaw() for raw JSON
+        }
+
     }
 }
 ```
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                    | Example                              |
-| ------------- | ---------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------ | ------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                            |                                      |
-| `fileID`      | `string`                                                   | :heavy\_check\_mark: | N/A                                                                            | or\_file\_011CNha8iCJcU1wXNR6q4V8w   |
-| `workspaceID` | `*string`                                                  | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                  |                                      |
+| Parameter     | Type                                                                  | Required             | Description                                                                                                  | Example                              |
+| ------------- | --------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)                 | :heavy\_check\_mark: | The context to use for the request.                                                                          |                                      |
+| `fileID`      | `string`                                                              | :heavy\_check\_mark: | N/A                                                                                                          | or\_file\_011CNha8iCJcU1wXNR6q4V8w   |
+| `workspaceID` | `*string`                                                             | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace.                               | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider`    | [\*components.FileProvider](../../models/components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai                               |
+| `opts`        | \[][operations.Option](../../models/operations/option.mdx)            | :heavy\_minus\_sign: | The options for this request.                                                                                |                                      |
 
 ### Response
 
@@ -210,13 +241,16 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.NotFoundResponseError        | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type                                | Status Code | Content Type     |
+| ----------------------------------------- | ----------- | ---------------- |
+| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
+| sdkerrors.ForbiddenResponseError          | 403         | application/json |
+| sdkerrors.NotFoundResponseError           | 404         | application/json |
+| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
+| sdkerrors.InternalServerResponseError     | 500         | application/json |
+| sdkerrors.BadGatewayResponseError         | 502         | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
+| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
 
 ## Retrieve
 
@@ -231,6 +265,7 @@ import(
 	"context"
 	"os"
 	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
 	"log"
 )
 
@@ -241,38 +276,52 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Files.Retrieve(ctx, "file_011CNha8iCJcU1wXNR6q4V8w", nil)
+    res, err := s.Files.Retrieve(ctx, "file_011CNha8iCJcU1wXNR6q4V8w", nil, components.FileProviderOpenai.ToPointer())
     if err != nil {
         log.Fatal(err)
     }
     if res != nil {
-        // handle response
+        switch res.Type {
+            case components.FileResponseTypeAnthropic:
+                // res.AnthropicFile is populated
+            case components.FileResponseTypeOpenai:
+                // res.OpenAIFile is populated
+            case components.FileResponseTypeOpenrouter:
+                // res.OpenRouterFile is populated
+            default:
+                // Unknown type - use res.GetUnknownRaw() for raw JSON
+        }
+
     }
 }
 ```
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                    | Example                              |
-| ------------- | ---------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------ | ------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                            |                                      |
-| `fileID`      | `string`                                                   | :heavy\_check\_mark: | N/A                                                                            | or\_file\_011CNha8iCJcU1wXNR6q4V8w   |
-| `workspaceID` | `*string`                                                  | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                  |                                      |
+| Parameter     | Type                                                                  | Required             | Description                                                                                                  | Example                              |
+| ------------- | --------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)                 | :heavy\_check\_mark: | The context to use for the request.                                                                          |                                      |
+| `fileID`      | `string`                                                              | :heavy\_check\_mark: | N/A                                                                                                          | or\_file\_011CNha8iCJcU1wXNR6q4V8w   |
+| `workspaceID` | `*string`                                                             | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace.                               | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider`    | [\*components.FileProvider](../../models/components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai                               |
+| `opts`        | \[][operations.Option](../../models/operations/option.mdx)            | :heavy\_minus\_sign: | The options for this request.                                                                                |                                      |
 
 ### Response
 
-**[\*components.FileMetadata](../../models/components/filemetadata.mdx), error**
+**[\*components.FileResponse](../../models/components/fileresponse.mdx), error**
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.NotFoundResponseError        | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type                                | Status Code | Content Type     |
+| ----------------------------------------- | ----------- | ---------------- |
+| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
+| sdkerrors.ForbiddenResponseError          | 403         | application/json |
+| sdkerrors.NotFoundResponseError           | 404         | application/json |
+| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
+| sdkerrors.InternalServerResponseError     | 500         | application/json |
+| sdkerrors.BadGatewayResponseError         | 502         | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
+| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
 
 ## Download
 
@@ -287,6 +336,7 @@ import(
 	"context"
 	"os"
 	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
 	"log"
 )
 
@@ -297,7 +347,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Files.Download(ctx, "file_011CNha8iCJcU1wXNR6q4V8w", nil)
+    res, err := s.Files.Download(ctx, "file_011CNha8iCJcU1wXNR6q4V8w", nil, components.FileProviderOpenai.ToPointer())
     if err != nil {
         log.Fatal(err)
     }
@@ -309,12 +359,13 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                    | Example                              |
-| ------------- | ---------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------ | ------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                            |                                      |
-| `fileID`      | `string`                                                   | :heavy\_check\_mark: | N/A                                                                            | or\_file\_011CNha8iCJcU1wXNR6q4V8w   |
-| `workspaceID` | `*string`                                                  | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                  |                                      |
+| Parameter     | Type                                                                  | Required             | Description                                                                                                  | Example                              |
+| ------------- | --------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)                 | :heavy\_check\_mark: | The context to use for the request.                                                                          |                                      |
+| `fileID`      | `string`                                                              | :heavy\_check\_mark: | N/A                                                                                                          | or\_file\_011CNha8iCJcU1wXNR6q4V8w   |
+| `workspaceID` | `*string`                                                             | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace.                               | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider`    | [\*components.FileProvider](../../models/components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai                               |
+| `opts`        | \[][operations.Option](../../models/operations/option.mdx)            | :heavy\_minus\_sign: | The options for this request.                                                                                |                                      |
 
 ### Response
 
@@ -322,12 +373,15 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.NotFoundResponseError        | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type                                | Status Code | Content Type     |
+| ----------------------------------------- | ----------- | ---------------- |
+| sdkerrors.BadRequestResponseError         | 400         | application/json |
+| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
+| sdkerrors.ForbiddenResponseError          | 403         | application/json |
+| sdkerrors.NotFoundResponseError           | 404         | application/json |
+| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
+| sdkerrors.InternalServerResponseError     | 500         | application/json |
+| sdkerrors.BadGatewayResponseError         | 502         | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
+| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
 

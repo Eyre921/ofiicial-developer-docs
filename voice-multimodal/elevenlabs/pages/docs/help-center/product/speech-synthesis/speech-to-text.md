@@ -8,30 +8,8 @@ path: docs/help-center/product/speech-synthesis/speech-to-text
 
 # Speech to Text FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/speech-synthesis/speech-to-text/how-many-speech-to-text-requests-can-i-make-and-can-i-increase-it">
-          How many Speech to Text requests can I make and can I increase it?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/speech-synthesis/speech-to-text/what-is-speech-to-text">
-          What is Speech to Text?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/speech-synthesis/speech-to-text/which-languages-does-speech-to-text-support">
-          Which languages does Speech to Text support?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [How many Speech to Text requests can I make and can I increase it?](/docs/help-center/product/speech-synthesis/speech-to-text/how-many-speech-to-text-requests-can-i-make-and-can-i-increase-it) |
+| [What is Speech to Text?](/docs/help-center/product/speech-synthesis/speech-to-text/what-is-speech-to-text)                                                                                       |
+| [Which languages does Speech to Text support?](/docs/help-center/product/speech-synthesis/speech-to-text/which-languages-does-speech-to-text-support)                                             |

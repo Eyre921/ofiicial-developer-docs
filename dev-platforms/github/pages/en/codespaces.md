@@ -36,7 +36,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Using source control in your codespace](/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace)
 
-  <p>After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.</p>
+  After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.
 
 * [Enabling or disabling GitHub Codespaces for your organization](/en/codespaces/managing-codespaces-for-your-organization/enabling-or-disabling-github-codespaces-for-your-organization)
 

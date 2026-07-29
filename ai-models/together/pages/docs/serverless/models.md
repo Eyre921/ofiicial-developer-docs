@@ -184,8 +184,6 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 | Kuaishou     | Kling 2.1 Standard     | kwaivgI/kling-2.1-standard    | \$0.18          | 720p / 5s             |
 | Kuaishou     | Kling 2.1 Pro          | kwaivgI/kling-2.1-pro         | \$0.32          | 1080p / 5s            |
 | Kuaishou     | Kling 1.6 Standard     | kwaivgI/kling-1.6-standard    | \$0.19          | 720p / 5s             |
-| Wan-AI       | Wan 2.2 I2V            | Wan-AI/Wan2.2-I2V-A14B        | \$0.31          | -                     |
-| Wan-AI       | Wan 2.2 T2V            | Wan-AI/Wan2.2-T2V-A14B        | \$0.66          | -                     |
 | Vidu         | Vidu 2.0               | vidu/vidu-2.0                 | \$0.80          | 720p / 8s             |
 | Vidu         | Vidu Q1                | vidu/vidu-q1                  | \$0.22          | 1080p / 5s            |
 | OpenAI       | Sora 2                 | openai/sora-2                 | \$0.80          | 720p / 8s             |

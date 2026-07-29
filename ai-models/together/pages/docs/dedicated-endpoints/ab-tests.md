@@ -57,7 +57,7 @@ The examples below use these example IDs, which you should replace with your own
       </Step>
 
       <Step title="Start the test">
-        The CLI's `ab` command creates the variant deployment for the model you pass and starts the experiment, assigning `--percent` to the variant and the remainder to the control. Start the variant small, for example 5% (the CLI assigns the remaining 95% to the control). Percents must be integers in `[1, 100]`.
+        The CLI's `ab` command creates the variant deployment for the model you pass and starts the experiment, assigning `--percent` to the variant and the remainder to the control. Start the variant small, for example 5% (the CLI assigns the remaining 95% to the control). Percents must be integers in `[1, 99]` so the control keeps at least 1%.
 
         ```bash CLI theme={null}
         tg beta endpoints ab ml_CbJNwQC2ZqCU2iFT3mrCh \
@@ -110,24 +110,35 @@ The examples below use these example IDs, which you should replace with your own
 
 ## Ramp the variant
 
-To change an existing member's share, update the experiment's members from the SDK or API. The CLI's `ab` command can start an experiment and add variants to it, but it can't change a member's percentage, so ramping is an SDK or API operation. Updating `members` replaces the whole set and re-validates the shape, so resend every member each time. In the console, open the test's actions menu on the **Traffic Tests** tab and select **Edit A/B test** to change member percentages.
+To change a variant's share, pass `--ab-percent` with the variant's deployment ID to `tg beta endpoints update`. The CLI finds the A/B experiment for that deployment, sets the variant to the new percent, and adjusts only the control so the members still sum to 100. Other variants stay unchanged. The deployment must be a variant in an existing experiment (not the control), and the control must remain at least 1%. Percents are integers in `[1, 99]`.
+
+```bash CLI theme={null}
+tg beta endpoints update dep_variant456 --ab-percent 10
+```
+
+You can also update members from the SDK or API. Set the update mask to `members`. Updating `members` replaces the whole set and re-validates the shape, so resend every member each time. The ETag is optional, but passing the current ETag guards against concurrent changes. In the console, open the test's actions menu on the **Traffic Tests** tab and select **Edit A/B test** to change member percentages.
 
 <Frame>
-  <img alt="Ramping the variant. In week 1 the split is 95 percent control and 5 percent variant. A single update to the member set is atomic and ETag-guarded. In week 2 the split is 80 percent control and 20 percent variant." />
+  <img alt="Ramping the variant. In week 1 the split is 95 percent control and 5 percent variant. A single update to the member set is atomic and, when an ETag is supplied, guarded against concurrent changes. In week 2 the split is 80 percent control and 20 percent variant." />
 </Frame>
 
-To move to a 90% control / 10% variant split:
+To move to a 90% control / 10% variant split with the SDK:
 
 ```python Python theme={null}
 from together import Together
 
 client = Together()
 project_id = client.whoami().project_id
+current = client.beta.endpoints.ab_experiments.retrieve(
+    "abx_abc123", project_id=project_id, endpoint_id="ep_abc123"
+)
 
 client.beta.endpoints.ab_experiments.update(
     "abx_abc123",
     endpoint_id="ep_abc123",
     project_id=project_id,
+    update_mask="members",
+    etag=current.etag,
     members=[
         {
             "deployment_id": "dep_control123",

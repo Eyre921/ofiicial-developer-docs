@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1199 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1214 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -24,6 +24,13 @@
 - `docs/api-reference/agents/get-link` — [Get link](pages/docs/api-reference/agents/get-link.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get-link.md)
 - `docs/api-reference/agents/get-summaries` — [Get agent summaries](pages/docs/api-reference/agents/get-summaries.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get-summaries.md)
 - `docs/api-reference/agents/list` — [List agents](pages/docs/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/list.md)
+- `docs/api-reference/agents/procedures/compile` — [Compile Procedures](pages/docs/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/compile.md)
+- `docs/api-reference/agents/procedures/create` — [Create Procedure](pages/docs/api-reference/agents/procedures/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/create.md)
+- `docs/api-reference/agents/procedures/delete` — [Delete Procedure Draft](pages/docs/api-reference/agents/procedures/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/delete.md)
+- `docs/api-reference/agents/procedures/get` — [Get Procedure](pages/docs/api-reference/agents/procedures/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/get.md)
+- `docs/api-reference/agents/procedures/list` — [List Procedures](pages/docs/api-reference/agents/procedures/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/list.md)
+- `docs/api-reference/agents/procedures/remove` — [Remove Procedure](pages/docs/api-reference/agents/procedures/remove.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/remove.md)
+- `docs/api-reference/agents/procedures/update` — [Update Procedure Draft](pages/docs/api-reference/agents/procedures/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/update.md)
 - `docs/api-reference/agents/simulate-conversation` — [Simulate conversation](pages/docs/api-reference/agents/simulate-conversation.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/simulate-conversation.md)
 - `docs/api-reference/agents/simulate-conversation-stream` — [Stream simulate conversation](pages/docs/api-reference/agents/simulate-conversation-stream.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/simulate-conversation-stream.md)
 - `docs/api-reference/agents/update` — [Update agent](pages/docs/api-reference/agents/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/update.md)
@@ -270,6 +277,7 @@
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
 - `docs/api-reference/users/list` — [List users](pages/docs/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/api-reference/users/list.md)
+- `docs/api-reference/voices/accents/get` — [Get Voice Accents](pages/docs/api-reference/voices/accents/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/accents/get.md)
 - `docs/api-reference/voices/delete` — [Delete voice](pages/docs/api-reference/voices/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/delete.md)
 - `docs/api-reference/voices/find-similar-voices` — [List similar voices](pages/docs/api-reference/voices/find-similar-voices.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/find-similar-voices.md)
 - `docs/api-reference/voices/get` — [Get voice](pages/docs/api-reference/voices/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/get.md)
@@ -355,6 +363,13 @@
 - `docs/eleven-agents/api-reference/agents/get-link` — [Get link](pages/docs/eleven-agents/api-reference/agents/get-link.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link.md)
 - `docs/eleven-agents/api-reference/agents/get-summaries` — [Get agent summaries](pages/docs/eleven-agents/api-reference/agents/get-summaries.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-summaries.md)
 - `docs/eleven-agents/api-reference/agents/list` — [List agents](pages/docs/eleven-agents/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list.md)
+- `docs/eleven-agents/api-reference/agents/procedures/compile` — [Compile Procedures](pages/docs/eleven-agents/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md)
+- `docs/eleven-agents/api-reference/agents/procedures/create` — [Create Procedure](pages/docs/eleven-agents/api-reference/agents/procedures/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/create.md)
+- `docs/eleven-agents/api-reference/agents/procedures/delete` — [Delete Procedure Draft](pages/docs/eleven-agents/api-reference/agents/procedures/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/delete.md)
+- `docs/eleven-agents/api-reference/agents/procedures/get` — [Get Procedure](pages/docs/eleven-agents/api-reference/agents/procedures/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get.md)
+- `docs/eleven-agents/api-reference/agents/procedures/list` — [List Procedures](pages/docs/eleven-agents/api-reference/agents/procedures/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/list.md)
+- `docs/eleven-agents/api-reference/agents/procedures/remove` — [Remove Procedure](pages/docs/eleven-agents/api-reference/agents/procedures/remove.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/remove.md)
+- `docs/eleven-agents/api-reference/agents/procedures/update` — [Update Procedure Draft](pages/docs/eleven-agents/api-reference/agents/procedures/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/update.md)
 - `docs/eleven-agents/api-reference/agents/simulate-conversation` — [Simulate conversation](pages/docs/eleven-agents/api-reference/agents/simulate-conversation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation.md)
 - `docs/eleven-agents/api-reference/agents/simulate-conversation-stream` — [Stream simulate conversation](pages/docs/eleven-agents/api-reference/agents/simulate-conversation-stream.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation-stream.md)
 - `docs/eleven-agents/api-reference/agents/update` — [Update agent](pages/docs/eleven-agents/api-reference/agents/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update.md)

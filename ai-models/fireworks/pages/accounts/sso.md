@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/accounts/sso
 path: accounts/sso
 ---
 
-Set up custom Single Sign-On (SSO) authentication for Fireworks AI
+Set up custom Single Sign-On (SSO) authentication and SCIM user provisioning for Fireworks AI
 
 Fireworks uses single sign-on (SSO) as the primary mechanism to authenticate with the platform.
 By default, Fireworks supports Google SSO.
@@ -93,6 +93,49 @@ If you have an enterprise account, Fireworks supports bringing your own identity
 JIT user provisioning automatically creates user accounts when they sign in through SSO for the first time. When enabled, users who authenticate through your identity provider are automatically added to your Fireworks account without requiring manual user creation.
 
 To enable JIT user provisioning, use the [`--enable-jit-user-provisioning`](/tools-sdks/firectl/commands/identity-provider-create) flag when creating your identity provider with firectl.
+
+## SCIM user provisioning
+
+System for Cross-domain Identity Management (SCIM) provisioning synchronizes the user lifecycle between your identity provider and Fireworks. Users assigned to Fireworks in your directory are added to your Fireworks account, and users are removed when they are deactivated or unassigned in the directory.
+
+SCIM provisioning is available for enterprise accounts and works with supported directory providers, including Okta, Microsoft Entra ID, and Google Workspace. Fireworks uses [WorkOS Directory Sync](https://workos.com/docs/directory-sync) to connect to your directory.
+
+<Note>
+  SCIM manages provisioning only. Users continue to authenticate through your
+  existing OIDC or SAML SSO integration.
+</Note>
+
+### Set up SCIM provisioning
+
+<Steps>
+  <Step title="Configure custom SSO">
+    Complete the OIDC or SAML setup above. Custom SSO must be configured before
+    you can enable SCIM provisioning.
+  </Step>
+
+  <Step title="Request SCIM enablement">
+    Contact your Fireworks AI representative. Fireworks will enable Directory
+    Sync for your account and provide a secure setup link.
+  </Step>
+
+  <Step title="Connect your directory">
+    Open the setup link, select your directory provider, and follow the
+    provider-specific instructions to authorize the connection.
+  </Step>
+
+  <Step title="Assign users">
+    In your identity provider, assign the users who should have access to
+    Fireworks. Confirm that they appear in the [Users
+    page](https://app.fireworks.ai/account/users).
+  </Step>
+</Steps>
+
+<Warning>
+  SCIM group synchronization and group-to-role mappings are not currently
+  supported. Provisioned users receive the `User` role by default.
+</Warning>
+
+We recommend disabling JIT provisioning when SCIM is enabled so that your directory remains the source of truth for account membership. SSO enforcement is also recommended to prevent access outside your configured identity provider.
 
 ## Enforce SSO
 

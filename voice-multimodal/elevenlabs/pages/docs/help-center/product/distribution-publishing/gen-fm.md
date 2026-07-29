@@ -8,30 +8,8 @@ path: docs/help-center/product/distribution-publishing/gen-fm
 
 # GenFM FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm">
-          How do I use GenFM?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost">
-          How much does GenFM cost?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm">
-          What is GenFM?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------- |
+| [How do I use GenFM?](/docs/help-center/product/distribution-publishing/gen-fm/how-do-i-use-gen-fm)             |
+| [How much does GenFM cost?](/docs/help-center/product/distribution-publishing/gen-fm/how-much-does-gen-fm-cost) |
+| [What is GenFM?](/docs/help-center/product/distribution-publishing/gen-fm/what-is-gen-fm)                       |

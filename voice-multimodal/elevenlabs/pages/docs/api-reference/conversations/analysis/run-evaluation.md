@@ -1778,6 +1778,14 @@ components:
         - document_id
         - content
       title: KnowledgeBaseRagChunkModel
+    KnowledgeBaseToolStatus:
+      type: string
+      enum:
+        - success
+        - no_matching_documents
+        - no_results
+      default: success
+      title: KnowledgeBaseToolStatus
     TransferToAgentToolResultSuccessModelOutputBranchInfo:
       oneOf:
         - type: object
@@ -1866,6 +1874,25 @@ components:
           required:
             - result_type
           description: KnowledgeBaseRagToolResultModel variant
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - knowledge_base_success
+              default: knowledge_base_success
+            status:
+              $ref: '#/components/schemas/KnowledgeBaseToolStatus'
+              default: success
+            chunk_count:
+              type: integer
+              default: 0
+            message:
+              type: string
+              default: Referenced knowledge base.
+          required:
+            - result_type
+          description: KnowledgeBaseToolResultModel variant
         - type: object
           properties:
             result_type:

@@ -8,46 +8,10 @@ path: docs/help-center/account/cancellation-refunds
 
 # Cancellation & Refunds FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/account/cancellation-refunds/how-can-i-downgrade-my-subscription">
-          How can I downgrade my subscription?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/account/cancellation-refunds/how-can-i-request-a-refund">
-          How can I request a refund?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/account/cancellation-refunds/how-do-i-cancel-my-subscription">
-          How do I cancel my subscription?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/account/cancellation-refunds/what-is-your-refund-policy">
-          What is your refund policy?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/account/cancellation-refunds/why-am-i-getting-a-payment-attempt-after-cancelling-my-subscription">
-          Why am I getting a payment attempt after cancelling my subscription?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [How can I downgrade my subscription?](/docs/help-center/account/cancellation-refunds/how-can-i-downgrade-my-subscription)                                                                 |
+| [How can I request a refund?](/docs/help-center/account/cancellation-refunds/how-can-i-request-a-refund)                                                                                   |
+| [How do I cancel my subscription?](/docs/help-center/account/cancellation-refunds/how-do-i-cancel-my-subscription)                                                                         |
+| [What is your refund policy?](/docs/help-center/account/cancellation-refunds/what-is-your-refund-policy)                                                                                   |
+| [Why am I getting a payment attempt after cancelling my subscription?](/docs/help-center/account/cancellation-refunds/why-am-i-getting-a-payment-attempt-after-cancelling-my-subscription) |

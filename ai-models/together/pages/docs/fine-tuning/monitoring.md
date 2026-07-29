@@ -28,6 +28,13 @@ Use this loop to poll until the job reaches a terminal state, then fetch the met
 If you launched the job with [early stopping](/docs/fine-tuning/early-stopping), the terminal status is still `completed` even when training ended ahead of `n_epochs`. The response sets `early_stopped=true` and exposes the winning checkpoint via `early_stopping_best_step` and `early_stopping_best_metric`.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning retrieve "<JOB_ID>"
+
+  # When status is "completed", pull metrics:
+  tg fine-tuning list-metrics "<JOB_ID>" --json > metrics.json
+  ```
+
   ```python Python theme={null}
   import os
   import time
@@ -81,13 +88,6 @@ If you launched the job with [early stopping](/docs/fine-tuning/early-stopping),
   const metrics = await client.fineTuning.listMetrics(jobId);
   console.log(metrics);
   ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning retrieve "<JOB_ID>"
-
-  # When status is "completed", pull metrics:
-  tg fine-tuning list-metrics "<JOB_ID>" --json > metrics.json
-  ```
 </CodeGroup>
 
 <Note>
@@ -99,24 +99,24 @@ If you launched the job with [early stopping](/docs/fine-tuning/early-stopping),
 Cancel a running job if you started it by mistake or no longer need it. You're billed only for the steps that completed before cancellation.
 
 <CodeGroup>
-  ```python Python theme={null}
-  client.fine_tuning.cancel(id="<JOB_ID>")
-  ```
-
   ```bash CLI theme={null}
   tg fine-tuning cancel "<JOB_ID>"
+  ```
+
+  ```python Python theme={null}
+  client.fine_tuning.cancel(id="<JOB_ID>")
   ```
 </CodeGroup>
 
 Delete a finished job to remove it along with the files it produced.
 
 <CodeGroup>
-  ```python Python theme={null}
-  client.fine_tuning.delete(id="<JOB_ID>")
-  ```
-
   ```bash CLI theme={null}
   tg fine-tuning delete "<JOB_ID>"
+  ```
+
+  ```python Python theme={null}
+  client.fine_tuning.delete(id="<JOB_ID>")
   ```
 </CodeGroup>
 
@@ -129,19 +129,6 @@ Delete a finished job to remove it along with the files it produced.
 The `list_metrics` call returns every recorded step. The CLI renders ASCII charts by default; pass `--json` to get raw output.
 
 <CodeGroup>
-  ```python Python theme={null}
-  metrics = client.fine_tuning.list_metrics("<JOB_ID>")
-  for step in metrics.metrics:
-      print(step)
-  ```
-
-  ```typescript TypeScript theme={null}
-  const metrics = await client.fineTuning.listMetrics("<JOB_ID>");
-  for (const step of metrics.metrics) {
-    console.log(step);
-  }
-  ```
-
   ```bash CLI theme={null}
   # ASCII charts (default)
   tg fine-tuning list-metrics "<JOB_ID>"
@@ -155,6 +142,19 @@ The `list_metrics` call returns every recorded step. The CLI renders ASCII chart
   # Save the JSON metrics to a file
   tg fine-tuning list-metrics "<JOB_ID>" --json > metrics.json
   ```
+
+  ```python Python theme={null}
+  metrics = client.fine_tuning.list_metrics("<JOB_ID>")
+  for step in metrics.metrics:
+      print(step)
+  ```
+
+  ```typescript TypeScript theme={null}
+  const metrics = await client.fineTuning.listMetrics("<JOB_ID>");
+  for (const step of metrics.metrics) {
+    console.log(step);
+  }
+  ```
 </CodeGroup>
 
 ## Filter by step or time
@@ -162,6 +162,15 @@ The `list_metrics` call returns every recorded step. The CLI renders ASCII chart
 All filter parameters are optional. Omit them to retrieve every recorded step.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning list-metrics "<JOB_ID>" \
+    --global-step-from 100 \
+    --global-step-to 500 \
+    --logged-at-from 2026-01-01T00:00:00 \
+    --logged-at-to 2026-01-02T00:00:00 \
+    --json
+  ```
+
   ```python Python theme={null}
   from datetime import datetime
 
@@ -182,15 +191,6 @@ All filter parameters are optional. Omit them to retrieve every recorded step.
     logged_at_to: "2026-01-02T00:00:00",
   });
   ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning list-metrics "<JOB_ID>" \
-    --global-step-from 100 \
-    --global-step-to 500 \
-    --logged-at-from 2026-01-01T00:00:00 \
-    --logged-at-to 2026-01-02T00:00:00 \
-    --json
-  ```
 </CodeGroup>
 
 ## Downsample with resolution
@@ -198,6 +198,10 @@ All filter parameters are optional. Omit them to retrieve every recorded step.
 For long runs, pass `resolution` to cap the response at a fixed number of uniformly sampled training steps. Eval metrics are always returned in full regardless of this setting.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning list-metrics "<JOB_ID>" --resolution 50 --json
+  ```
+
   ```python Python theme={null}
   metrics = client.fine_tuning.list_metrics("<JOB_ID>", resolution=50)
   ```
@@ -206,10 +210,6 @@ For long runs, pass `resolution` to cap the response at a fixed number of unifor
   const metrics = await client.fineTuning.listMetrics("<JOB_ID>", {
     resolution: 50,
   });
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning list-metrics "<JOB_ID>" --resolution 50 --json
   ```
 </CodeGroup>
 

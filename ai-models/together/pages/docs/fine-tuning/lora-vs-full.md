@@ -33,6 +33,20 @@ Use full fine-tuning when:
 The `lora` parameter defaults to `True`. Pass `lora=False` (or `--no-lora` on the CLI) to run a full fine-tune instead. Everything else about the job stays the same.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  # LoRA (default)
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference" \
+    --lora
+
+  # Full fine-tuning
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference" \
+    --no-lora
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -71,20 +85,6 @@ The `lora` parameter defaults to `True`. Pass `lora=False` (or `--no-lora` on th
     model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
     lora: false,
   });
-  ```
-
-  ```bash CLI theme={null}
-  # LoRA (default)
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference" \
-    --lora
-
-  # Full fine-tuning
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference" \
-    --no-lora
   ```
 </CodeGroup>
 
@@ -229,6 +229,14 @@ On mixture-of-experts (MoE) models, you can apply LoRA to the expert feed-forwar
 Use expert targeting when your task depends on the model's domain knowledge (the feed-forward experts) rather than its attention patterns — for example, adapting an MoE base to a new domain or task family.
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "zai-org/GLM-4.6" \
+    --lora \
+    --lora-trainable-modules "w_up,w_gate,w_down"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -253,14 +261,6 @@ Use expert targeting when your task depends on the model's domain knowledge (the
     lora: true,
     lora_trainable_modules: "w_up,w_gate,w_down",
   });
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "zai-org/GLM-4.6" \
-    --lora \
-    --lora-trainable-modules "w_up,w_gate,w_down"
   ```
 </CodeGroup>
 

@@ -1027,9 +1027,17 @@ components:
           description: >-
             When enabled, users may attach images or PDFs in chat when the LLM
             supports multimodal input.
+        max_files_in_memory:
+          type: integer
+          description: >-
+            Number of most-recent files kept in memory during a conversation.
+            Older files are summarized and their bytes freed.
         max_files_per_conversation:
           type: integer
-          description: Maximum number of files that can be uploaded per conversation.
+          description: >-
+            Total files a user can upload in one conversation. Uploads are
+            billed per file. Use -1 for no limit, or a value >=
+            max_files_in_memory.
       title: FileInputConfigWorkflowOverride
     type_:BackgroundSoundSourceType:
       type: string
@@ -1711,6 +1719,14 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersionInput
+    type_:SearchStrategy:
+      type: string
+      enum:
+        - cat
+        - keyword
+        - semantic
+        - ls
+      title: SearchStrategy
     type_:ObjectJsonSchemaPropertyInputPropertyKind:
       type: string
       enum:
@@ -2241,6 +2257,19 @@ components:
             system_tool_type:
               type: string
               enum:
+                - knowledge_base
+              description: 'Discriminator value: knowledge_base'
+            enabled_strategies:
+              type: array
+              items:
+                $ref: '#/components/schemas/type_:SearchStrategy'
+          required:
+            - system_tool_type
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
                 - knowledge_base_rag
               description: 'Discriminator value: knowledge_base_rag'
           required:
@@ -2552,6 +2581,7 @@ components:
       enum:
         - chat_completions
         - responses
+        - websocket
       default: chat_completions
       title: CustomLlmapiType
     type_:CustomLlm:
@@ -2586,7 +2616,7 @@ components:
           description: The API version to use for the request
         api_type:
           $ref: '#/components/schemas/type_:CustomLlmapiType'
-          description: The API type to use (chat_completions or responses)
+          description: The API type to use (chat_completions, responses or websocket)
       required:
         - url
       title: CustomLlm
@@ -2597,7 +2627,7 @@ components:
         - multilingual_e5_large_instruct
       default: e5_mistral_7b_instruct
       title: EmbeddingModelEnum
-    type_:RagConfigWorkflowOverride:
+    type_:RagConfigWorkflowOverrideInput:
       type: object
       properties:
         enabled:
@@ -2629,7 +2659,7 @@ components:
             Custom prompt for rewriting user queries before RAG retrieval. The
             conversation history will be automatically appended at the end. If
             not set, the default prompt will be used.
-      title: RagConfigWorkflowOverride
+      title: RagConfigWorkflowOverrideInput
     type_:BackupLlmDefault:
       type: object
       properties:
@@ -3415,7 +3445,7 @@ components:
             Whether to remove the default personality lines from the system
             prompt
         rag:
-          $ref: '#/components/schemas/type_:RagConfigWorkflowOverride'
+          $ref: '#/components/schemas/type_:RagConfigWorkflowOverrideInput'
           description: Configuration for RAG
         timezone:
           type: string

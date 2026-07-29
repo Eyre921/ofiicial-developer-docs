@@ -8,10 +8,8 @@ path: docs/help-center/technical/how-do-i-get-started-with-the-api
 
 # How do I get started with the API?
 
-<header id="header" class="relative">
-  We highly recommend our [API documentation](/docs/api-reference/introduction) to get a basic understanding of our API endpoints and how to integrate the ElevenLabs API into your app or service.
+We highly recommend our [API documentation](/docs/api-reference/introduction) to get a basic understanding of our API endpoints and how to integrate the ElevenLabs API into your app or service.
 
-   
+ 
 
-  We have an [Introduction](/docs/api-reference/introduction) to help you get started.
-</header>
+We have an [Introduction](/docs/api-reference/introduction) to help you get started.

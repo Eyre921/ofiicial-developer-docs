@@ -223,6 +223,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: version_id
+          in: query
+          description: Filter conversations by version ID.
+          required: false
+          schema:
+            type: string
         - name: topic_ids
           in: query
           description: Filter conversations by topic IDs assigned during topic discovery.
@@ -644,6 +650,7 @@ async function main() {
             "topic_ids",
         ],
         userId: "user_id",
+        versionId: "version_id",
         visitedAgentBranchIds: [
             "visited_agent_branch_ids",
         ],
@@ -717,6 +724,7 @@ client.conversational_ai.conversations.list(
         "topic_ids"
     ],
     user_id="user_id",
+    version_id="version_id",
     visited_agent_branch_ids=[
         "visited_agent_branch_ids"
     ],
@@ -739,7 +747,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id"
+	url := "https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&version_id=version_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -758,7 +766,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&version_id=version_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -773,7 +781,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&version_id=version_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id")
   .asString();
 ```
 
@@ -783,7 +791,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&version_id=version_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id');
 
 echo $response->getBody();
 ```
@@ -791,7 +799,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&version_id=version_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -799,7 +807,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_ids=%5B%22data_collection_ids%22%5D&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_criteria_ids=%5B%22evaluation_criteria_ids%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&search=search&summary_mode=exclude&tag_ids=%5B%22tag_ids%22%5D&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id&version_id=version_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D&workflow_node_entered_id=workflow_node_entered_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

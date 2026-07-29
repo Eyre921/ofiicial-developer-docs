@@ -8,46 +8,10 @@ path: docs/help-center/product/monetization-business/workspaces
 
 # Workspaces FAQ
 
-<table searchable>
-  <tbody>
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/monetization-business/workspaces/can-i-add-users-to-my-account">
-          Can I add users to my account?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/monetization-business/workspaces/how-do-basic-seat-credit-limits-work">
-          How do Basic Seat credit limits work?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/monetization-business/workspaces/how-do-i-assign-a-basic-seat">
-          How do I assign a Basic Seat?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/monetization-business/workspaces/how-do-i-switch-between-workspaces">
-          How do I switch between workspaces?
-        </a>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <a href="/docs/help-center/product/monetization-business/workspaces/what-are-basic-seats">
-          What are Basic Seats?
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+|                                                                                                                                          |
+| ---------------------------------------------------------------------------------------------------------------------------------------- |
+| [Can I add users to my account?](/docs/help-center/product/monetization-business/workspaces/can-i-add-users-to-my-account)               |
+| [How do Basic Seat credit limits work?](/docs/help-center/product/monetization-business/workspaces/how-do-basic-seat-credit-limits-work) |
+| [How do I assign a Basic Seat?](/docs/help-center/product/monetization-business/workspaces/how-do-i-assign-a-basic-seat)                 |
+| [How do I switch between workspaces?](/docs/help-center/product/monetization-business/workspaces/how-do-i-switch-between-workspaces)     |
+| [What are Basic Seats?](/docs/help-center/product/monetization-business/workspaces/what-are-basic-seats)                                 |

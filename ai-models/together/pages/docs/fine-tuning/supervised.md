@@ -29,6 +29,12 @@ SFT accepts conversational, instruction, and general text formats. Each line car
 Pass a training file and a base model. SFT is the default `training_method`, so you don't need to set it. Here's the minimum code to start a supervised fine-tuning job:
 
 <CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<FILE_ID>" \
+    --model "Qwen/Qwen3.5-9B"
+  ```
+
   ```python Python theme={null}
   from together import Together
 
@@ -51,12 +57,6 @@ Pass a training file and a base model. SFT is the default `training_method`, so 
     model: "Qwen/Qwen3.5-9B",
   });
   console.log(job.id);
-  ```
-
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<FILE_ID>" \
-    --model "Qwen/Qwen3.5-9B"
   ```
 </CodeGroup>
 
