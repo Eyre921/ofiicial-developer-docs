@@ -1405,6 +1405,10 @@ components:
           type:
             - string
             - 'null'
+        id:
+          type:
+            - string
+            - 'null'
       required:
         - role
         - time_in_call_secs
@@ -2312,7 +2316,8 @@ components:
             "used_static_kb_document_ids": [
               "string"
             ],
-            "user_identifier": "string"
+            "user_identifier": "string",
+            "id": "string"
           }
         ],
         "conversation_initiation_source": "unknown",
@@ -2439,7 +2444,8 @@ components:
               "used_static_kb_document_ids": [
                 "string"
               ],
-              "user_identifier": "string"
+              "user_identifier": "string",
+              "id": "string"
             }
           ]
         },
@@ -2558,7 +2564,8 @@ components:
           "used_static_kb_document_ids": [
             "string"
           ],
-          "user_identifier": "string"
+          "user_identifier": "string",
+          "id": "string"
         }
       ],
       "test_name": "Unknown Test",

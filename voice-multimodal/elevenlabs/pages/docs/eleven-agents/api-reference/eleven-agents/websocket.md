@@ -388,9 +388,16 @@ components:
           type: string
         event_id:
           type: integer
+        response_id:
+          type: string
+        in_response_to_ids:
+          type: array
+          items:
+            type: string
       required:
         - agent_response
         - event_id
+        - response_id
       title: AgentResponseAgentResponseEvent
     AgentResponse:
       type: object
@@ -875,6 +882,8 @@ components:
     UserMessage:
       type: object
       properties:
+        id:
+          type: string
         type:
           type: string
           enum:
@@ -895,6 +904,8 @@ components:
     MultimodalMessageText:
       type: object
       properties:
+        id:
+          type: string
         type:
           type: string
           enum:

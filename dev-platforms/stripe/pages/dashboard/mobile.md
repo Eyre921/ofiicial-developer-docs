@@ -48,6 +48,10 @@ The app is available in 14 languages, and automatically defaults to the device l
 | [Create and manage customers](https://docs.stripe.com/dashboard/mobile.md#create-and-manage-customers) | - Create or edit a customer
 - Add a card on file (iOS only)
 - Send an email |
+| [Review financial account](https://docs.stripe.com/dashboard/mobile.md#review-financial-account) | - View your balances
+- View your transaction history
+- View your financial account details
+- View card details for your existing cards |
 
 ### Limitations
 
@@ -190,4 +194,13 @@ To manage existing customers:
    - Add a card on file
    - Send customers an email
    - Edit their details, or open the customer details in the web Dashboard
+
+## Review financial account
+
+You can access your [financial account](https://docs.stripe.com/treasury.md) in the Dashboard mobile app. In the app, you can:
+
+- View your balances
+- View your transaction history
+- View your financial account details
+- View card details for your existing cards
 

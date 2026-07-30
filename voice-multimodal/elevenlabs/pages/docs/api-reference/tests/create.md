@@ -1339,6 +1339,10 @@ components:
           type:
             - string
             - 'null'
+        id:
+          type:
+            - string
+            - 'null'
       required:
         - role
         - time_in_call_secs

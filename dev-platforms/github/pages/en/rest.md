@@ -12,23 +12,23 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Quickstart for GitHub REST API](/en/rest/quickstart)
 
-  Learn how to get started with the GitHub REST API.
+  <p>Learn how to get started with the GitHub REST API.</p>
 
 * [Getting started with the REST API](/en/rest/using-the-rest-api/getting-started-with-the-rest-api)
 
-  Learn how to use the GitHub REST API.
+  <p>Learn how to use the GitHub REST API.</p>
 
 * [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api)
 
-  You can authenticate to the REST API to access more endpoints and have a higher rate limit.
+  <p>You can authenticate to the REST API to access more endpoints and have a higher rate limit.</p>
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  Follow these best practices when using GitHub's API.
+  <p>Follow these best practices when using GitHub's API.</p>
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
-  Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.
+  <p>Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.</p>
 
 * [Keeping your API credentials secure](/en/rest/authentication/keeping-your-api-credentials-secure)
 
@@ -44,7 +44,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
-  Learn how to navigate through paginated responses from the REST API.
+  <p>Learn how to navigate through paginated responses from the REST API.</p>
 
 ## Links
 
@@ -764,13 +764,13 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
   Use the REST API to manage Project views
 
-* [REST API endpoints for pull requests](/en/rest/pulls/pulls)
-
-  Use the REST API to interact with pull requests.
-
 * [REST API endpoints for pull request review comments](/en/rest/pulls/comments)
 
   Use the REST API to interact with pull request review comments.
+
+* [REST API endpoints for pull requests](/en/rest/pulls/pulls)
+
+  Use the REST API to interact with pull requests.
 
 * [REST API endpoints for review requests](/en/rest/pulls/review-requests)
 
@@ -779,6 +779,10 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 * [REST API endpoints for pull request reviews](/en/rest/pulls/reviews)
 
   Use the REST API to interact with pull request reviews.
+
+* [REST API endpoints for stacked pull requests](/en/rest/pulls/stacks)
+
+  Use the REST API to interact with stacked pull requests.
 
 * [REST API endpoints for rate limits](/en/rest/rate-limit/rate-limit)
 

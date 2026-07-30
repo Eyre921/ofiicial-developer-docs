@@ -557,7 +557,7 @@ app.get("/session-status", async (req, res) => {
 # To see your own test secret API key embedded in code samples, sign in to your Stripe account.
 # You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
 \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
-client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-06-24.dahlia')
+client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-07-29.dahlia')
 YOUR_DOMAIN = 'http://localhost:4242'
 YOUR_DOMAIN = 'http://localhost:3000'
   session = client.v1.checkout.sessions.create({
@@ -621,7 +621,7 @@ import stripe
 client = stripe.StripeClient(
     \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
     '<<YOUR_SECRET_KEY>>',
-    stripe_version='2026-06-24.dahlia',
+    stripe_version='2026-07-29.dahlia',
 )
 YOUR_DOMAIN = 'http://localhost:4242'
 YOUR_DOMAIN = 'http://localhost:3000'
@@ -696,7 +696,7 @@ toml==0.10.2
 Werkzeug==3.1.5
 $stripe = new \Stripe\StripeClient([
   "api_key" => $stripeSecretKey,
-  "stripe_version" => "2026-06-24.dahlia"
+  "stripe_version" => "2026-07-29.dahlia"
 ]);
 $YOUR_DOMAIN = 'http://localhost:4242';
 $YOUR_DOMAIN = 'http://localhost:3000';

@@ -32,13 +32,13 @@
 
 ## api
 
-- `api/balance` — [Balance](pages/api/balance.md) · [原文](https://docs.stripe.com/api/balance.md)
+- `api/balance` — [Balances](pages/api/balance.md) · [原文](https://docs.stripe.com/api/balance.md)
 - `api/balance/balance_object` — [The Balance object](pages/api/balance/balance_object.md) · [原文](https://docs.stripe.com/api/balance/balance_object.md)
 - `api/charges/create` — [Charges](pages/api/charges/create.md) · [原文](https://docs.stripe.com/api/charges/create.md)
 - `api/checkout/sessions` — [Checkout Sessions](pages/api/checkout/sessions.md) · [原文](https://docs.stripe.com/api/checkout/sessions.md)
 - `api/checkout/sessions/create` — [Create a Checkout Session](pages/api/checkout/sessions/create.md) · [原文](https://docs.stripe.com/api/checkout/sessions/create.md)
 - `api/checkout/sessions/object` — [The Checkout Session object](pages/api/checkout/sessions/object.md) · [原文](https://docs.stripe.com/api/checkout/sessions/object.md)
-- `api/customer_balance_transactions` — [Customer Balance Transaction](pages/api/customer_balance_transactions.md) · [原文](https://docs.stripe.com/api/customer_balance_transactions.md)
+- `api/customer_balance_transactions` — [Customer Balance Transactions](pages/api/customer_balance_transactions.md) · [原文](https://docs.stripe.com/api/customer_balance_transactions.md)
 - `api/customer_balance_transactions/object` — [The Customer Balance Transaction object](pages/api/customer_balance_transactions/object.md) · [原文](https://docs.stripe.com/api/customer_balance_transactions/object.md)
 - `api/customers` — [Customers](pages/api/customers.md) · [原文](https://docs.stripe.com/api/customers.md)
 - `api/customers/object` — [The Customer object](pages/api/customers/object.md) · [原文](https://docs.stripe.com/api/customers/object.md)
@@ -46,7 +46,7 @@
 - `api/events/types` — [Types of events](pages/api/events/types.md) · [原文](https://docs.stripe.com/api/events/types.md)
 - `api/invoices` — [Invoices](pages/api/invoices.md) · [原文](https://docs.stripe.com/api/invoices.md)
 - `api/invoices/object` — [The Invoice object](pages/api/invoices/object.md) · [原文](https://docs.stripe.com/api/invoices/object.md)
-- `api/payment-link` — [Payment Link](pages/api/payment-link.md) · [原文](https://docs.stripe.com/api/payment-link.md)
+- `api/payment-link` — [Payment Links](pages/api/payment-link.md) · [原文](https://docs.stripe.com/api/payment-link.md)
 - `api/payment-link/object` — [The Payment Link object](pages/api/payment-link/object.md) · [原文](https://docs.stripe.com/api/payment-link/object.md)
 - `api/payment_intents` — [Payment Intents](pages/api/payment_intents.md) · [原文](https://docs.stripe.com/api/payment_intents.md)
 - `api/payment_intents/create` — [Create a PaymentIntent](pages/api/payment_intents/create.md) · [原文](https://docs.stripe.com/api/payment_intents/create.md)

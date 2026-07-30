@@ -94,7 +94,7 @@ Event triggered when a **domain was successfully deleted**.
       "id": "d91cd9bd-1176-453e-8fc1-35364d380206",
       "name": "example.com",
       "status": "not_started",
-      "created_at": "2026-04-26T20:21:26.347412+00:00",
+      "created_at": "2026-04-26T20:21:26.347Z",
       "region": "us-east-1",
       "records": [
         {

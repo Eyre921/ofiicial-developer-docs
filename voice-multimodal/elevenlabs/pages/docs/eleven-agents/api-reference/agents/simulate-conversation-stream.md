@@ -3460,6 +3460,8 @@ components:
             type: string
         user_identifier:
           type: string
+        id:
+          type: string
       required:
         - role
         - time_in_call_secs

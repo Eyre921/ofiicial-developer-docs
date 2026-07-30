@@ -131,7 +131,7 @@ curl https://docs.stripe.com/preview/register \
   -X POST \
   -H "Content-Type: application/json" \
   -H "Referer: https://docs.stripe.com/payments/klarna" \
-  -d '{"email": "EMAIL", "preview": "terminal_lpm_preview"}'
+  -d '{"email": "EMAIL", "preview": "terminal_klarna_preview"}'
 ```
 
 ## Payment options 

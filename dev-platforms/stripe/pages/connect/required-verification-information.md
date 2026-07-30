@@ -326,7 +326,7 @@ You can then use the token’s `id` value to attach the file to a connected acco
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
     "include": [
         "identity"
@@ -366,7 +366,7 @@ In the case where the business isn’t found in the NRB, provide the attestation
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
     "include": [
         "identity"
@@ -400,7 +400,7 @@ In the case where the business isn’t found in the NRB, provide the attestation
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
     "include": [
         "identity"
@@ -541,7 +541,7 @@ In the case where the business isn’t found in the NRB, provide the attestation
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
     "include": [
         "identity"
@@ -607,7 +607,7 @@ You can then use the token’s `id` value to attach the file to a connected acco
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
     "include": [
         "identity"
@@ -639,7 +639,7 @@ In the case where the business isn’t found in the NRB, provide the attestation
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
     "include": [
         "identity"

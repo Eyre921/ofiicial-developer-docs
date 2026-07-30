@@ -1,10 +1,10 @@
 ---
-title: "Balance"
+title: "Balances"
 source: https://docs.stripe.com/api/balance.md
 path: api/balance
 ---
 
-# Balance
+# Balances
 
 ## Endpoints
 

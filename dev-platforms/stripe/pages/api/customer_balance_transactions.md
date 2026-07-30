@@ -1,10 +1,10 @@
 ---
-title: "Customer Balance Transaction"
+title: "Customer Balance Transactions"
 source: https://docs.stripe.com/api/customer_balance_transactions.md
 path: api/customer_balance_transactions
 ---
 
-# Customer Balance Transaction
+# Customer Balance Transactions
 
 ## Endpoints
 

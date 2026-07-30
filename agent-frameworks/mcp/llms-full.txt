@@ -7546,7 +7546,7 @@ Revisions may be marked as:
   receive backwards compatible changes.
 * **Final**: past, complete specifications that will not be changed.
 
-The **current** protocol version is [**2025-11-25**](/specification/2025-11-25/).
+The **current** protocol version is [**2026-07-28**](/specification/2026-07-28/).
 
 ## Feature States
 
@@ -22980,6 +22980,14 @@ MCP Client Security Requirements for Local Server Installation
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 1024                                                                            |
@@ -23106,6 +23114,14 @@ Support default values for all primitive types in elicitation schemas
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -23271,6 +23287,14 @@ URL Mode Elicitation for secure out-of-band interactions
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                                                                     |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -23598,6 +23622,14 @@ Support OAuth client credentials flow in authorization
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 1046                                                                            |
@@ -23659,6 +23691,14 @@ Formalize Working Groups and Interest Groups in MCP Governance
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -23906,6 +23946,14 @@ Input Validation Errors as Tool Execution Errors
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 1303                                                                            |
@@ -24106,6 +24154,14 @@ Decouple Request Payload from RPC Methods Definition
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 1319                                                                            |
@@ -24210,6 +24266,14 @@ Elicitation Enum Schema Improvements and Standards Compliance
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -24651,6 +24715,14 @@ Sampling With Tools
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 1577                                                                            |
@@ -25041,6 +25113,14 @@ Establish JSON Schema 2020-12 as Default Dialect for MCP
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 1613                                                                            |
@@ -25233,6 +25313,14 @@ Tasks
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -26339,6 +26427,14 @@ Support SSE polling via server-side disconnect
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 1699                                                                            |
@@ -26404,6 +26500,14 @@ SDKs Tiering System
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -26674,6 +26778,14 @@ PR-Based SEP Workflow
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                                                              |
 | ------------- | ------------------------------------------------------------------------------------------------------------------ |
 | **SEP**       | 1850                                                                                                               |
@@ -26879,6 +26991,14 @@ MCP Apps - Interactive User Interfaces for MCP
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                                                                                                                             |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SEP**       | 1865                                                                                                                                                                              |
@@ -27045,6 +27165,14 @@ Governance Succession and Amendment Procedures
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 2085                                                                            |
@@ -27152,6 +27280,14 @@ Tools `inputSchema` & `outputSchema` Conform to JSON Schema 2020-12
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                                                                                                                         |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -27582,6 +27718,14 @@ Extensions
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 2133                                                                            |
@@ -27865,6 +28009,14 @@ MCP Contributor Ladder
     Process
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                                                                        |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -28400,6 +28552,14 @@ MCP Group Governance and Charter Template
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                                                                        |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | **SEP**       | 2149                                                                                                                         |
@@ -28836,6 +28996,14 @@ Standardize Resource Not Found Error Code
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 2164                                                                            |
@@ -28939,6 +29107,14 @@ OIDC-Flavored Refresh Token Guidance
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -29152,6 +29328,14 @@ HTTP Header Standardization for Streamable HTTP Transport
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -29959,6 +30143,14 @@ Require Server requests to be associated with a Client request.
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 2260                                                                            |
@@ -30259,6 +30451,14 @@ Multi Round-Trip Requests
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                                                                     |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -31649,6 +31849,14 @@ Recommend Issuer (iss) Parameter in MCP Auth Responses
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 2468                                                                            |
@@ -31753,6 +31961,14 @@ Require Conformance Tests for Standards Track SEPs to Reach Final Status
     Process
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -31951,6 +32167,14 @@ TTL for List Results
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -32177,6 +32401,14 @@ Document OpenTelemetry Trace Context Propagation Conventions
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                         |
 | ------------- | ----------------------------------------------------------------------------- |
 | **SEP**       | 414                                                                           |
@@ -32293,6 +32525,14 @@ Model Context Protocol Governance
     Process
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                         |
 | ------------- | ----------------------------------------------------------------------------- |
@@ -32414,6 +32654,14 @@ Expose additional metadata for Implementations, Resources, Tools and Prompts
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                         |
 | ------------- | ----------------------------------------------------------------------------- |
@@ -32559,6 +32807,14 @@ Align OAuth 2.0 Protected Resource Metadata with RFC 9728
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                         |
 | ------------- | ----------------------------------------------------------------------------- |
 | **SEP**       | 985                                                                           |
@@ -32677,6 +32933,14 @@ Specify Format for Tool Names
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                         |
 | ------------- | ----------------------------------------------------------------------------- |
 | **SEP**       | 986                                                                           |
@@ -32752,6 +33016,14 @@ Enable enterprise IdP policy controls during MCP OAuth flows
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                         |
 | ------------- | ----------------------------------------------------------------------------- |
@@ -32842,6 +33114,14 @@ Enable URL-based Client Registration using OAuth Client ID Metadata Documents
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                                                             |
 | ------------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -33140,6 +33420,14 @@ Shared Communication Practices/Guidelines
     Process
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -36058,7 +36346,9 @@ Rejection is not permanent. You can:
 
 ## Reporting SEP Bugs or Updates
 
-For SEPs not yet reaching `final` state, comment directly on the SEP's pull request. Once a SEP is finalized and merged, submit updates by creating a new pull request that modifies the SEP file.
+For SEPs not yet reaching `final` state, comment directly on the SEP's pull request.
+
+Final SEPs are preserved as historical records of the design as accepted. They are not updated after finalization. If the specification changes after a SEP reaches Final status, the current specification is authoritative. Each Final SEP page displays a notice to this effect.
 
 ## Transferring SEP Ownership
 
@@ -37346,6 +37636,14 @@ Sessionless MCP via Explicit State Handles
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 2567                                                                            |
@@ -37642,6 +37940,14 @@ Make MCP Stateless
     Standards Track
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                                                                           |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -38454,6 +38760,14 @@ Deprecate Roots, Sampling, and Logging
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
 | **SEP**       | 2577                                                                            |
@@ -38776,6 +39090,14 @@ Specification Feature Lifecycle and Deprecation Policy
     Process
   </Badge>
 </div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
 
 | Field         | Value                                                                           |
 | ------------- | ------------------------------------------------------------------------------- |
@@ -39195,6 +39517,14 @@ Tasks Extension
   </Badge>
 </div>
 
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
 | Field         | Value                                                                                                                                                                 |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SEP**       | 2663                                                                                                                                                                  |
@@ -39286,7 +39616,7 @@ A server that has negotiated this extension **MAY** return `CreateTaskResult` in
 
 A server **MUST NOT** return `CreateTaskResult` to a client that did not include the extension capability on its request, regardless of prior declarations. A client that has negotiated this extension **MUST** be prepared to handle either `CallToolResult` or `CreateTaskResult` in response to any supported request it issues. A client that receives `CreateTaskResult` in response to an unsupported request type **MUST** interpret this as an invalid response to the request.
 
-If a server is unable to service a request to a client that does not declare this extension capability without returning `CreateTaskResult`, the server **MUST** return an error with the code `-32003` (Missing Required Client Capability), indicating the required extension in the error response:
+If a server is unable to service a request to a client that does not declare this extension capability without returning `CreateTaskResult`, the server **MUST** return an error with the code `-32021` (Missing Required Client Capability), indicating the required extension in the error response:
 
 ```jsonl theme={null}
 {
@@ -39294,7 +39624,7 @@ If a server is unable to service a request to a client that does not declare thi
   "id": 1,
   "error": {
     // MISSING_REQUIRED_CLIENT_CAPABILITY
-    "code": -32003,
+    "code": -32021,
     // Message provided for example purposes only. The content of this example message is non-normative.
     "message": "Missing required client capability",
     "data": {
@@ -39664,7 +39994,7 @@ If a client requests task status notifications but does not declare the `io.mode
   "id": 12,
   "error": {
     // MISSING_REQUIRED_CLIENT_CAPABILITY
-    "code": -32003,
+    "code": -32021,
     // Message provided for example purposes only. The content of this example message is non-normative.
     "message": "Missing required client capability",
     "data": {
@@ -39994,7 +40324,7 @@ Servers **MUST** return standard JSON-RPC errors for the following protocol erro
   * Servers **MUST** return this error for `tasks/get`.
   * Servers **SHOULD** return this error for `tasks/update` and `tasks/cancel`.
 * Internal errors: `-32603` (Internal error)
-* Missing required client capabilities: `-32003` (Missing Required Client Capability)
+* Missing required client capabilities: `-32021` (Missing Required Client Capability)
   * Servers **MUST** return this error for non-declaring clients requesting task notifications on `subscriptions/listen`.
   * Servers **MUST** return this error for non-declaring clients issuing `tasks/get`, `tasks/update`, and `tasks/cancel` requests.
 

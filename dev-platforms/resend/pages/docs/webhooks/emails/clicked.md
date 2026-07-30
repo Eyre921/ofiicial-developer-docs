@@ -84,7 +84,7 @@ Event triggered whenever the **recipient clicks on an email link**.
     "created_at": "2026-11-22T23:41:12.126Z",
     "data": {
       "broadcast_id": "8b146471-e88e-4322-86af-016cd36fd216",
-      "created_at": "2026-11-22T23:41:11.894719+00:00",
+      "created_at": "2026-11-22T23:41:11.894Z",
       "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
       "message_id": "<111-222-333@email.example.com>",
       "from": "Acme <onboarding@resend.dev>",

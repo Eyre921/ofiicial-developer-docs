@@ -867,6 +867,11 @@ Possible enum values:
 
       Only supported when `collection_method` is `send_invoice`.
 
+    - `alipay`
+      Alipay
+
+      Only supported when `collection_method` is `send_invoice`.
+
     - `amazon_pay`
       Amazon Pay
 

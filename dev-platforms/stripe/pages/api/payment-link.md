@@ -1,10 +1,10 @@
 ---
-title: "Payment Link"
+title: "Payment Links"
 source: https://docs.stripe.com/api/payment-link.md
 path: api/payment-link
 ---
 
-# Payment Link
+# Payment Links
 
 ## Endpoints
 

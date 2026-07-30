@@ -27036,6 +27036,7 @@ Error responses contain more detail about the error in the response body, in the
 | 400              | `"invalid_grant"`                   | The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client. See [OAuth 2.0 documentation](https://datatracker.ietf.org/doc/html/rfc6749#section-5.2) for more information.           | `"Invalid code: this code has been revoked."`                                                                                                                            |
 | 400              | `"validation_error"`                | The request body does not match the schema for the expected parameters. Check the `"message"` property for more details.                                                                                                                                                                                                                                               | `"body failed validation: body.properties should be defined, instead was undefined."`                                                                                    |
 | 400              | `"missing_version"`                 | The request is missing the required `Notion-Version` header. See [Versioning](/reference/versioning).                                                                                                                                                                                                                                                                  | `"Notion-Version header failed validation: Notion-Version header should be defined, instead was undefined."`                                                             |
+| 400              | `"invalid_beta"`                    | The `Notion-Beta` header is malformed, names an unknown beta, uses an unsupported revision, or is missing from an endpoint that requires it. See [Versioning](/reference/versioning#beta-versions).                                                                                                                                                                    | `"Beta \"notion-as-code\" revision 2026-07-01 is no longer supported. Send Notion-Beta: notion-as-code-2026-07-31."`                                                     |
 | 401              | `"unauthorized"`                    | The bearer token is not valid.                                                                                                                                                                                                                                                                                                                                         | `"API token is invalid."`                                                                                                                                                |
 | 403              | `"restricted_resource"`             | Given the bearer token used, the client doesn't have permission to perform this operation.                                                                                                                                                                                                                                                                             | `"API token does not have access to this resource."`                                                                                                                     |
 | 404              | `"object_not_found"`                | Given the bearer token used, the resource does not exist. This error can also indicate that the resource has not been shared with owner of the bearer token. If the connection name is available, it will be included in the error message.                                                                                                                            | `"Could not find database with ID: be907abe-510e-4116-a3d1-7ea71018c06f. Make sure the relevant pages and databases are shared with your connection \"My Connection\"."` |
@@ -28276,6 +28277,22 @@ The following types of changes are made without a new API version. Your integrat
 </Tip>
 
 **Note:** You may notice that Notion API URLs contain a `v1`. This is not related to the versioning described above. We don't intend to change these URLs.
+
+## Beta versions
+
+Some endpoints are available as opt-in betas. To use one, send the required `Notion-Beta` flag alongside `Notion-Version`:
+
+```bash theme={null}
+Notion-Beta: notion-as-code-2026-07-31
+```
+
+Each flag has a kebab-case name and revision date in the form `<beta-name>-<YYYY-MM-DD>`. You can enable multiple betas by separating their flags with commas.
+
+Some existing endpoints use an opt-in beta to introduce a stricter contract without breaking current integrations. Requests without the flag keep the previous behavior. Requests with the current flag use the beta contract and must pass its stricter validation.
+
+Beta revisions can include breaking changes. When that happens, we publish a changelog entry and update the flag's revision date; requests using an older revision then return an error that names the current flag. Unknown names, malformed flags, duplicate names, and unsupported revisions also return an error instead of being ignored.
+
+When a beta becomes generally available, the header is no longer required. We accept and ignore its retired flag for a grace period so clients can remove it without breaking at launch.
 
 ## Frequently asked questions
 

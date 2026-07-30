@@ -1205,6 +1205,8 @@ components:
             type: string
         user_identifier:
           type: string
+        id:
+          type: string
       required:
         - role
         - time_in_call_secs
@@ -1871,7 +1873,8 @@ components:
       "used_static_kb_document_ids": [
         "used_static_kb_document_ids"
       ],
-      "user_identifier": "user_identifier"
+      "user_identifier": "user_identifier",
+      "id": "id"
     }
   ],
   "conversation_initiation_source": "unknown",

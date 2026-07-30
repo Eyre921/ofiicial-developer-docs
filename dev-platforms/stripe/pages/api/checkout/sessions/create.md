@@ -614,9 +614,6 @@ Possible enum values:
     - `line_items.adjustable_quantity.minimum` (integer, optional)
       The minimum quantity the customer must purchase for the Checkout Session. By default this value is 0.
 
-  - `line_items.dynamic_tax_rates` (array of strings, optional)
-    The [tax rates](https://docs.stripe.com/docs/api/tax_rates.md) that will be applied to this line item depending on the customer’s billing/shipping address. We currently support the following countries: US, GB, AU, and all countries in the EU. You can’t set this parameter if `ui_mode` is `custom`.
-
   - `line_items.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
 
@@ -1804,6 +1801,18 @@ Possible enum values:
       - `manual`
         Use `manual` if you intend to place the funds on hold and want to override the top-level `capture_method` value for this payment method.
 
+    - `payment_method_options.payco.setup_future_usage` (enum, optional)
+      Indicates that you intend to make future payments with this PaymentIntent’s payment method.
+
+      If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](https://docs.stripe.com/payments/save-during-payment.md) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don’t provide a Customer, you can still [attach](https://docs.stripe.com/api/payment_methods/attach.md) the payment method to a Customer after the transaction completes.
+
+      If the payment method is `card_present` and isn’t a digital wallet, Stripe creates and attaches a [generated_card](https://docs.stripe.com/api/charges/object.md#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+
+      When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](https://docs.stripe.com/strong-customer-authentication.md).
+Possible enum values:
+      - `none`
+        Use `none` if you do not intend to reuse this payment method and want to override the top-level `setup_future_usage` value for this payment method.
+
   - `payment_method_options.paynow` (object, optional)
     contains details about the PayNow payment method options.
 
@@ -2144,6 +2153,18 @@ Possible enum values:
 Possible enum values:
       - `manual`
         Use `manual` if you intend to place the funds on hold and want to override the top-level `capture_method` value for this payment method.
+
+    - `payment_method_options.samsung_pay.setup_future_usage` (enum, optional)
+      Indicates that you intend to make future payments with this PaymentIntent’s payment method.
+
+      If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](https://docs.stripe.com/payments/save-during-payment.md) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don’t provide a Customer, you can still [attach](https://docs.stripe.com/api/payment_methods/attach.md) the payment method to a Customer after the transaction completes.
+
+      If the payment method is `card_present` and isn’t a digital wallet, Stripe creates and attaches a [generated_card](https://docs.stripe.com/api/charges/object.md#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+
+      When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](https://docs.stripe.com/strong-customer-authentication.md).
+Possible enum values:
+      - `none`
+        Use `none` if you do not intend to reuse this payment method and want to override the top-level `setup_future_usage` value for this payment method.
 
   - `payment_method_options.satispay` (object, optional)
     contains details about the Satispay payment method options.
@@ -2835,7 +2856,7 @@ Possible enum values:
     A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account. To use an application fee percent, the request must be made on behalf of another account, using the `Stripe-Account` header or an OAuth key. For more information, see the application fees [documentation](https://docs.stripe.com/connect/subscriptions.md#collecting-fees-on-subscriptions).
 
   - `subscription_data.billing_cycle_anchor` (timestamp, optional)
-    A future timestamp to anchor the subscription’s billing cycle for new subscriptions. You can’t set this parameter if `ui_mode` is `elements`.
+    A future timestamp to anchor the subscription’s billing cycle for new subscriptions.
 
   - `subscription_data.billing_cycle_anchor_config` (object, optional)
     Configures when the subscription schedule’s billing cycle anchors to a specific day of the week or month.
@@ -2904,6 +2925,9 @@ Possible enum values:
 
       - `subscription_data.invoice_settings.issuer.account` (string, required only if type is account)
         The connected account being referenced when `type` is `account`.
+
+    - `subscription_data.invoice_settings.rendering` (object, optional)
+      Settings that control how invoices will be rendered in customer-facing surfaces such as the PDF and Hosted Invoice Page.
 
   - `subscription_data.metadata` (map, optional)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.

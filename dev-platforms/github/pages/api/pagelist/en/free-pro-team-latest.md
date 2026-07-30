@@ -1701,6 +1701,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/tools/ai-tools
 /en/copilot/concepts/tools/about-copilot-integrations
 /en/copilot/concepts/models
+/en/copilot/concepts/models/default-availability
 /en/copilot/concepts/models/bring-your-own-key
 /en/copilot/concepts/models/utility-models
 /en/copilot/concepts/models/auto-model-selection
@@ -1717,7 +1718,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/policies
 /en/copilot/concepts/mcp-management
 /en/copilot/concepts/network-settings
-/en/copilot/concepts/preparing-for-new-features-and-models
+/en/copilot/concepts/learning-about-new-features-and-models
 /en/copilot/how-tos
 /en/copilot/how-tos/copilot-on-github
 /en/copilot/how-tos/copilot-on-github/set-up-copilot
@@ -1820,6 +1821,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-cli/use-copilot-cli-in-actions
 /en/copilot/how-tos/cloud-and-local-sandboxes
 /en/copilot/how-tos/cloud-and-local-sandboxes/enabling-or-disabling-cloud-sandboxes-for-your-organization
+/en/copilot/how-tos/cloud-and-local-sandboxes/using-local-sandboxing
 /en/copilot/how-tos/cloud-and-local-sandboxes/configuring-local-sandbox-settings
 /en/copilot/how-tos/github-copilot-app
 /en/copilot/how-tos/github-copilot-app/getting-started
@@ -2752,10 +2754,11 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/projects/projects
 /en/rest/projects/views
 /en/rest/pulls
-/en/rest/pulls/pulls
 /en/rest/pulls/comments
+/en/rest/pulls/pulls
 /en/rest/pulls/review-requests
 /en/rest/pulls/reviews
+/en/rest/pulls/stacks
 /en/rest/rate-limit
 /en/rest/rate-limit/rate-limit
 /en/rest/reactions

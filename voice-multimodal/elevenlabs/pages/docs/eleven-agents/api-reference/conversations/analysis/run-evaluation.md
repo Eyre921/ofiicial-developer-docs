@@ -2407,6 +2407,8 @@ components:
             type: string
         user_identifier:
           type: string
+        id:
+          type: string
         file_input:
           $ref: >-
             #/components/schemas/type_:ConversationHistoryTranscriptFileInputResponseModel
@@ -2712,6 +2714,7 @@ components:
         "used_static_kb_document_ids"
       ],
       "user_identifier": "user_identifier",
+      "id": "id",
       "file_input": {
         "file_id": "file_id",
         "original_filename": "original_filename",

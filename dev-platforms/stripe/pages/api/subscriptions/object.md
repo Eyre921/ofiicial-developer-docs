@@ -485,6 +485,12 @@ Possible enum values:
     - `luxury_tax`
       Luxury Tax
 
+    - `mass_transit_parking_tax`
+      Mass Transit Parking Tax
+
+    - `parking_tax`
+      Parking Tax
+
     - `pst`
       Provincial Sales Tax
 
@@ -882,6 +888,12 @@ Possible enum values:
 
         - `luxury_tax`
           Luxury Tax
+
+        - `mass_transit_parking_tax`
+          Mass Transit Parking Tax
+
+        - `parking_tax`
+          Parking Tax
 
         - `pst`
           Provincial Sales Tax
@@ -1281,6 +1293,11 @@ Possible enum values:
 
     - `affirm`
       Affirm
+
+      Only supported when `collection_method` is `send_invoice`.
+
+    - `alipay`
+      Alipay
 
       Only supported when `collection_method` is `send_invoice`.
 
@@ -1846,6 +1863,12 @@ Possible enum values:
 
         - `luxury_tax`
           Luxury Tax
+
+        - `mass_transit_parking_tax`
+          Mass Transit Parking Tax
+
+        - `parking_tax`
+          Parking Tax
 
         - `pst`
           Provincial Sales Tax

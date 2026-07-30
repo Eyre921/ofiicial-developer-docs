@@ -159,7 +159,7 @@ Stripe Capital loan agreements typically include security interests taken as col
 
 Tax reporting often depends on your specific situation, so we encourage you to talk with a tax advisor. In general, funds through Stripe Capital wouldn’t be considered taxable income at the time of receipt, and the amounts withheld to satisfy your obligations aren’t tax deductible.
 
-*Stripe Capital loans are issued by Celtic Bank, powered by Stripe. Stripe Capital merchant cash advances are provided by YouLend.*
+*Stripe Capital loans are issued by Celtic Bank or Lead Bank, powered by Stripe. Stripe Capital merchant cash advances are provided by YouLend.*
 
 #### GB
 

@@ -189,6 +189,12 @@ To preserve that boundary, the SDK reserves consecutive sequence IDs, submits ch
 
 Separate API calls define separate logical batches. Do not split one intended batch across several calls and rely on the trainer to merge them. The fragments may run as smaller trainer batches, paying fixed batch overhead more often and using the accelerators less efficiently. This reduces trainer throughput.
 
+### Large-result timeouts
+
+<Note>
+  If retrieving a large future result times out, manually enable metadata-only future retrieval for the trainer and client. This mode is currently opt-in while backend support is being rolled out.
+</Note>
+
 ### `forward(datums, loss_type)`
 
 Forward-only pass (no gradient computation). Useful for computing reference logprobs in GRPO/DPO:

@@ -2726,6 +2726,10 @@ components:
           type:
             - string
             - 'null'
+        id:
+          type:
+            - string
+            - 'null'
         file_input:
           oneOf:
             - $ref: >-

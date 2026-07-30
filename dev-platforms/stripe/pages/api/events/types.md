@@ -449,6 +449,11 @@ Stripe creates event types marked as **Selection required** only when at least o
 
   Occurs when an Account’s `transaction_refresh` status transitions from `pending` to either `succeeded` or `failed`.
 
+- `financial_connections.account.supported_payment_method_types_updated`
+  `data.object` is one of: [`financial_connections.account`](https://docs.stripe.com/api#financial_connections_account_object)
+
+  Occurs when the supported_payment_method_types array on a Financial Connections account changes.
+
 - `financial_connections.account.upcoming_account_number_expiry`
   `data.object` is one of: [`financial_connections.account`](https://docs.stripe.com/api#financial_connections_account_object)
 

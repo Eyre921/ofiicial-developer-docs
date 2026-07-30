@@ -98,6 +98,22 @@ The following types of changes are made without a new API version. Your integrat
 
 **Note:** You may notice that Notion API URLs contain a `v1`. This is not related to the versioning described above. We don't intend to change these URLs.
 
+## Beta versions
+
+Some endpoints are available as opt-in betas. To use one, send the required `Notion-Beta` flag alongside `Notion-Version`:
+
+```bash theme={null}
+Notion-Beta: notion-as-code-2026-07-31
+```
+
+Each flag has a kebab-case name and revision date in the form `<beta-name>-<YYYY-MM-DD>`. You can enable multiple betas by separating their flags with commas.
+
+Some existing endpoints use an opt-in beta to introduce a stricter contract without breaking current integrations. Requests without the flag keep the previous behavior. Requests with the current flag use the beta contract and must pass its stricter validation.
+
+Beta revisions can include breaking changes. When that happens, we publish a changelog entry and update the flag's revision date; requests using an older revision then return an error that names the current flag. Unknown names, malformed flags, duplicate names, and unsupported revisions also return an error instead of being ignored.
+
+When a beta becomes generally available, the header is no longer required. We accept and ignore its retired flag for a grace period so clients can remove it without breaking at launch.
+
 ## Frequently asked questions
 
 <AccordionGroup>

@@ -3836,6 +3836,10 @@ components:
           type:
             - string
             - 'null'
+        id:
+          type:
+            - string
+            - 'null'
       required:
         - role
         - time_in_call_secs
@@ -4954,6 +4958,10 @@ components:
           type:
             - string
             - 'null'
+        id:
+          type:
+            - string
+            - 'null'
         file_input:
           oneOf:
             - $ref: >-
@@ -5273,6 +5281,7 @@ components:
         "string"
       ],
       "user_identifier": "string",
+      "id": "string",
       "file_input": {
         "file_id": "string",
         "original_filename": "string",

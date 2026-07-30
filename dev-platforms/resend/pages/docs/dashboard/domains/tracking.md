@@ -319,7 +319,7 @@ You can enable it manually or programmatically. Once verified, all tracked links
     {
       "id": "4dd369bc-aa82-4ff3-97de-514ae3000ee0",
       "name": "example.com",
-      "created_at": "2026-03-28T17:12:02.059593+00:00",
+      "created_at": "2026-03-28 17:12:02.059593+00",
       "status": "not_started",
       "open_tracking": true,
       "click_tracking": true,

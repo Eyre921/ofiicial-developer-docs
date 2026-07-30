@@ -4729,18 +4729,21 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 
 n8n can export workflow and node execution traces over OTLP to an OpenTelemetry collector. Refer to [OpenTelemetry tracing](/deploy/host-n8n/keep-n8n-running/trace-executions-with-opentelemetry) for details.
 
-| Variable                                   | Type    | Default                 | Description                                                                                                                                                                                                | Available from |
-| ------------------------------------------ | ------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `N8N_OTEL_ENABLED`                         | Boolean | `false`                 | Whether to enable OpenTelemetry tracing. When set to `false`, n8n doesn't load the OpenTelemetry SDK.                                                                                                      | 2.19.0         |
-| `N8N_OTEL_EXPORTER_OTLP_ENDPOINT`          | String  | `http://localhost:4318` | Base URL of the OTLP HTTP endpoint to export traces to. n8n appends the value of `N8N_OTEL_EXPORTER_OTLP_TRACING_PATH` to this URL.                                                                        | 2.19.0         |
-| `N8N_OTEL_EXPORTER_OTLP_TRACING_PATH`      | String  | `/v1/traces`            | Path appended to `N8N_OTEL_EXPORTER_OTLP_ENDPOINT` for exporting traces.                                                                                                                                   | 2.19.0         |
-| `N8N_OTEL_EXPORTER_OTLP_HEADERS`           | String  | -                       | Comma-separated list of `key=value` pairs to send as HTTP headers with each OTLP request. Use this for authentication tokens or tenant headers. For example: `authorization=Bearer <token>,x-tenant=acme`. | 2.19.0         |
-| `N8N_OTEL_EXPORTER_SERVICE_NAME`           | String  | `n8n`                   | Value of the `service.name` resource attribute on exported spans.                                                                                                                                          | 2.19.0         |
-| `N8N_OTEL_TRACES_SAMPLE_RATE`              | Number  | `1.0`                   | Fraction of traces to export, between `0` and `1`. n8n uses a trace ID ratio sampler, so all spans in a trace are either sampled or dropped together.                                                      | 2.19.0         |
-| `N8N_OTEL_TRACES_INCLUDE_NODE_SPANS`       | Boolean | `true`                  | Whether to emit a `node.execute` span for each node execution. Set to `false` to export workflow-level spans only.                                                                                         | 2.19.0         |
-| `N8N_OTEL_TRACES_PRODUCTION_ONLY`          | Boolean | `true`                  | Whether to export traces for [production executions](/build/understand-workflows/understand-executions/types-of-executions) only. Set to `false` to export traces for all workflow executions.             | 2.25.2         |
-| `N8N_OTEL_TRACES_INJECT_OUTBOUND`          | Boolean | `true`                  | Whether to inject the W3C `traceparent`/`tracesstate` headers into outbound HTTP requests made by nodes that use n8n's HTTP helpers.                                                                       | 2.19.0         |
-| `N8N_OTEL_STARTUP_CONNECTIVITY_TIMEOUT_MS` | Number  | `2000`                  | Timeout (in milliseconds) for the startup connectivity check against the OTLP endpoint. n8n logs a warning if the endpoint isn't reachable within this period.                                             | 2.19.0         |
+| Variable                                   | Type    | Default                 | Description                                                                                                                                                                                                                                                         | Available from |
+| ------------------------------------------ | ------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `N8N_OTEL_ENABLED`                         | Boolean | `false`                 | Whether to enable OpenTelemetry tracing. When set to `false`, n8n doesn't load the OpenTelemetry SDK.                                                                                                                                                               | 2.19.0         |
+| `N8N_OTEL_EXPORTER_OTLP_ENDPOINT`          | String  | `http://localhost:4318` | Base URL of the OTLP HTTP endpoint to export traces to. n8n appends the value of `N8N_OTEL_EXPORTER_OTLP_TRACING_PATH` to this URL.                                                                                                                                 | 2.19.0         |
+| `N8N_OTEL_EXPORTER_OTLP_TRACING_PATH`      | String  | `/v1/traces`            | Path appended to `N8N_OTEL_EXPORTER_OTLP_ENDPOINT` for exporting traces.                                                                                                                                                                                            | 2.19.0         |
+| `N8N_OTEL_EXPORTER_OTLP_HEADERS`           | String  | -                       | Comma-separated list of `key=value` pairs to send as HTTP headers with each OTLP request. Use this for authentication tokens or tenant headers. For example: `authorization=Bearer <token>,x-tenant=acme`.                                                          | 2.19.0         |
+| `N8N_OTEL_EXPORTER_SERVICE_NAME`           | String  | `n8n`                   | Value of the `service.name` resource attribute on exported spans.                                                                                                                                                                                                   | 2.19.0         |
+| `N8N_OTEL_TRACES_SAMPLE_RATE`              | Number  | `1.0`                   | Fraction of traces to export, between `0` and `1`. n8n uses a trace ID ratio sampler, so all spans in a trace are either sampled or dropped together.                                                                                                               | 2.19.0         |
+| `N8N_OTEL_TRACES_INCLUDE_NODE_SPANS`       | Boolean | `true`                  | Whether to emit a `node.execute` span for each node execution. Set to `false` to export workflow-level spans only.                                                                                                                                                  | 2.19.0         |
+| `N8N_OTEL_TRACES_PRODUCTION_ONLY`          | Boolean | `true`                  | Whether to export traces for [production executions](/build/understand-workflows/understand-executions/types-of-executions) only. Set to `false` to export traces for all workflow executions.                                                                      | 2.25.2         |
+| `N8N_OTEL_TRACES_INJECT_OUTBOUND`          | Boolean | `true`                  | Whether to inject the W3C `traceparent`/`tracesstate` headers into outbound HTTP requests made by nodes that use n8n's HTTP helpers.                                                                                                                                | 2.19.0         |
+| `N8N_OTEL_STARTUP_CONNECTIVITY_TIMEOUT_MS` | Number  | `2000`                  | Timeout (in milliseconds) for the startup connectivity check against the OTLP endpoint. n8n logs a warning if the endpoint isn't reachable within this period.                                                                                                      | 2.19.0         |
+| `N8N_AGENTS_TRACING_ENABLED`               | Boolean | `true`                  | Whether agent runs emit OpenTelemetry spans. Inherits the endpoint, headers, sampling, and transport settings from `N8N_OTEL_*`. Spans have nowhere to go until you configure an OTel provider, so set this to `false` to run workflow tracing without agent spans. | 2.33.0         |
+| `N8N_AGENTS_TRACING_RECORD_INPUTS`         | Boolean | `true`                  | Whether agent tracing records inputs, such as prompts and tool arguments. Set to `false` to exclude sensitive input data from traces.                                                                                                                               | 2.33.0         |
+| `N8N_AGENTS_TRACING_RECORD_OUTPUTS`        | Boolean | `true`                  | Whether agent tracing records outputs, such as responses and tool results. Set to `false` to exclude sensitive output data from traces.                                                                                                                             | 2.33.0         |
 
 
 # Queue mode
@@ -6678,27 +6681,28 @@ For the environment variables used to register hooks, refer to [External hooks e
 
 ### Available hooks <a href="#available-hooks" id="available-hooks"></a>
 
-| Hook                      | Arguments                                                                                                                                                            | Description                                                                                                                                                                                                                                |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `credentials.create`      | `[credentialData: ICredentialsDb]`                                                                                                                                   | Called before new credentials get created. Use to restrict the number of credentials.                                                                                                                                                      |
-| `credentials.delete`      | `[id: credentialId]`                                                                                                                                                 | Called before credentials get deleted.                                                                                                                                                                                                     |
-| `credentials.update`      | `[credentialData: ICredentialsDb]`                                                                                                                                   | Called before n8n saves existing credentials.                                                                                                                                                                                              |
-| `frontend.settings`       | `[frontendSettings: IN8nUISettings]`                                                                                                                                 | Gets called on n8n startup. Allows you to, for example, overwrite frontend data like the displayed OAuth URL.                                                                                                                              |
-| `n8n.ready`               | `[app: App]`                                                                                                                                                         | Called once n8n is ready. Use to, for example, register custom API endpoints.                                                                                                                                                              |
-| `n8n.stop`                |                                                                                                                                                                      | Called when an n8n process gets stopped. Allows you to save some process data.                                                                                                                                                             |
-| `oauth1.authenticate`     | `[oAuthOptions: clientOAuth1.Options, oauthRequestData: {oauth_callback: string}]`                                                                                   | Called before an OAuth1 authentication. Use to overwrite an OAuth callback URL.                                                                                                                                                            |
-| `oauth2.callback`         | `[oAuth2Parameters: {clientId: string, clientSecret: string \| undefined, accessTokenUri: string, authorizationUri: string, redirectUri: string, scopes: string[]}]` | Called in an OAuth2 callback. Use to overwrite an OAuth callback URL.                                                                                                                                                                      |
-| `workflow.activate`       | `[workflowData: IWorkflowDb]`                                                                                                                                        | Called before a workflow gets activated. Use to restrict the number of active workflows.                                                                                                                                                   |
-| `workflow.afterCreate`    | `[workflowId: string]`                                                                                                                                               | Called after a workflow gets created.                                                                                                                                                                                                      |
-| `workflow.afterDelete`    | `[workflowId: string]`                                                                                                                                               | Called after a workflow gets deleted.                                                                                                                                                                                                      |
-| `workflow.afterUpdate`    | `[workflowData: IWorkflowBase]`                                                                                                                                      | Called after an existing workflow gets saved.                                                                                                                                                                                              |
-| `workflow.create`         | `[workflowData: IWorkflowBase]`                                                                                                                                      | Called before a workflow gets created. Use to restrict the number of saved workflows.                                                                                                                                                      |
-| `workflow.delete`         | `[workflowId: string]`                                                                                                                                               | Called before a workflow gets deleted.                                                                                                                                                                                                     |
-| `workflow.postExecute`    | `[run: IRun, workflowData: IWorkflowBase]`                                                                                                                           | Called after a workflow gets executed.                                                                                                                                                                                                     |
-| `workflow.preExecute`     | `[workflow: Workflow, mode: WorkflowExecuteMode, workflowContext: WorkflowHookContextService]`                                                                       | Called before a workflow gets executed. Allows you to count or limit the number of workflow executions. Refer to [Hook examples](#hook-examples) for an example using the `workflowContext` argument (only available from version 2.23.0). |
-| `workflow.update`         | `[workflowData: IWorkflowBase]`                                                                                                                                      | Called before an existing workflow gets saved.                                                                                                                                                                                             |
-| `workflow.afterArchive`   | `[workflowId: string]`                                                                                                                                               | Called after you archive a workflow.                                                                                                                                                                                                       |
-| `workflow.afterUnarchive` | `[workflowId: string]`                                                                                                                                               | Called after you restore a workflow from the archive.                                                                                                                                                                                      |
+| Hook                      | Arguments                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `credentials.create`      | `[credentialData: ICredentialsDb]`                                                                                                                                   | Called before new credentials get created. Use to restrict the number of credentials.                                                                                                                                                                                                                                                                                  |
+| `credentials.delete`      | `[id: credentialId]`                                                                                                                                                 | Called before credentials get deleted.                                                                                                                                                                                                                                                                                                                                 |
+| `credentials.update`      | `[credentialData: ICredentialsDb]`                                                                                                                                   | Called before n8n saves existing credentials.                                                                                                                                                                                                                                                                                                                          |
+| `frontend.settings`       | `[frontendSettings: IN8nUISettings]`                                                                                                                                 | Gets called on n8n startup. Allows you to, for example, overwrite frontend data like the displayed OAuth URL.                                                                                                                                                                                                                                                          |
+| `n8n.ready`               | `[app: App]`                                                                                                                                                         | Called once n8n is ready. Use to, for example, register custom API endpoints.                                                                                                                                                                                                                                                                                          |
+| `n8n.stop`                |                                                                                                                                                                      | Called when an n8n process gets stopped. Allows you to save some process data.                                                                                                                                                                                                                                                                                         |
+| `oauth1.authenticate`     | `[oAuthOptions: clientOAuth1.Options, oauthRequestData: {oauth_callback: string}]`                                                                                   | Called before an OAuth1 authentication. Use to overwrite an OAuth callback URL.                                                                                                                                                                                                                                                                                        |
+| `oauth2.callback`         | `[oAuth2Parameters: {clientId: string, clientSecret: string \| undefined, accessTokenUri: string, authorizationUri: string, redirectUri: string, scopes: string[]}]` | Called in an OAuth2 callback. Use to overwrite an OAuth callback URL.                                                                                                                                                                                                                                                                                                  |
+| `workflow.activate`       | `[workflowData: IWorkflowBase, workflowContext: WorkflowHookContextService, actor?: WorkflowLifecycleHookActor]`                                                     | Called before a workflow gets activated. Use to restrict the number of active workflows. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument and [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                     |
+| `workflow.afterCreate`    | `[workflowData: IWorkflowBase, workflowContext: WorkflowHookContextService, actor?: WorkflowLifecycleHookActor]`                                                     | Called after a workflow gets created. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument and [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                                                                        |
+| `workflow.afterDelete`    | `[workflowId: string, actor?: WorkflowLifecycleHookActor]`                                                                                                           | Called after a workflow gets deleted. Refer to [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                                                                                                                                                               |
+| `workflow.afterUpdate`    | `[workflowData: IWorkflowBase, workflowContext: WorkflowHookContextService, actor?: WorkflowLifecycleHookActor]`                                                     | Called after an existing workflow gets saved. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument and [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                                                                |
+| `workflow.create`         | `[workflowData: IWorkflowBase, workflowContext: WorkflowHookContextService, actor?: WorkflowLifecycleHookActor]`                                                     | Called before a workflow gets created. Use to restrict the number of saved workflows. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument and [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                        |
+| `workflow.deactivate`     | `[workflowData: IWorkflowBase, workflowContext: WorkflowHookContextService, actor?: WorkflowLifecycleHookActor]`                                                     | Called before a workflow gets deactivated, while `active` is still `true`. Throw an error to abort the deactivation and keep the workflow active. Available from n8n 2.33.1. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument and [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument. |
+| `workflow.delete`         | `[workflowId: string, actor?: WorkflowLifecycleHookActor]`                                                                                                           | Called before a workflow gets deleted. Refer to [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                                                                                                                                                              |
+| `workflow.postExecute`    | `[fullRunData: IRun \| undefined, workflowData: IWorkflowBase, executionId: string, workflowContext: WorkflowHookContextService]`                                    | Called after a workflow gets executed. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument.                                                                                                                                                                                                                                    |
+| `workflow.preExecute`     | `[workflow: Workflow, mode: WorkflowExecuteMode, workflowContext: WorkflowHookContextService]`                                                                       | Called before a workflow gets executed. Allows you to count or limit the number of workflow executions. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument (available from n8n 2.23.0).                                                                                                                                       |
+| `workflow.update`         | `[workflowData: IWorkflowBase, workflowContext: WorkflowHookContextService, actor?: WorkflowLifecycleHookActor]`                                                     | Called before an existing workflow gets saved. Refer to [Workflow hook context](#workflow-hook-context) for the `workflowContext` argument and [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                                                               |
+| `workflow.afterArchive`   | `[workflowId: string, actor?: WorkflowLifecycleHookActor]`                                                                                                           | Called after you archive a workflow. Refer to [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                                                                                                                                                                |
+| `workflow.afterUnarchive` | `[workflowId: string, actor?: WorkflowLifecycleHookActor]`                                                                                                           | Called after you restore a workflow from the archive. Refer to [Workflow lifecycle hook actor](#workflow-lifecycle-hook-actor) for the `actor` argument.                                                                                                                                                                                                               |
 
 ### Registering hooks <a href="#registering-hooks" id="registering-hooks"></a>
 
@@ -6746,7 +6750,7 @@ module.exports = {
 
 #### Block workflow execution if a required tag is missing <a href="#block-workflow-execution-if-a-required-tag-is-missing" id="block-workflow-execution-if-a-required-tag-is-missing"></a>
 
-Please note: the `workflowContext` argument is only supplied to `workflow.preExecute` hooks from n8n version `2.23.0`.
+Please note: the `workflowContext` argument is supplied to `workflow.preExecute` hooks from n8n 2.23.0. Refer to [Workflow hook context](#workflow-hook-context) for the full list of hooks that receive it and from which version.
 
 Use `workflow.preExecute` to abort execution when a workflow doesn't have a required tag:
 
@@ -6760,6 +6764,82 @@ module.exports = {
 				if (!workflowTags.includes(requiredTag)) {
 					throw new Error(`Workflow is missing required tag "${requiredTag}", aborting`);
 				}
+			},
+		],
+	},
+};
+```
+
+### Workflow hook context
+
+Some workflow hooks receive a `workflowContext` argument, an instance of `WorkflowHookContextService`. It exposes helper methods you can call inside the hook function.
+
+{% hint style="info" %}
+**Available from n8n 2.23.0**
+
+n8n passes `workflowContext` to the `workflow.preExecute` hook.
+{% endhint %}
+
+{% hint style="info" %}
+**Available from n8n 2.33.1**
+
+n8n passes `workflowContext` to the `workflow.create`, `workflow.afterCreate`, `workflow.activate`, `workflow.deactivate`, `workflow.update`, `workflow.afterUpdate`, and `workflow.postExecute` hooks.
+{% endhint %}
+
+The context provides these methods:
+
+| Method                                                         | Returns             | Description                                                                                                                                                                                                                                                                                                        |
+| -------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `getWorkflowTags(workflowId: string)`                          | `Promise<string[]>` | Returns the names of the tags attached to the given workflow.                                                                                                                                                                                                                                                      |
+| `resolveIsTriggerNodeType(type: string, typeVersion?: number)` | `boolean`           | Returns `true` if the given node type is a trigger. `type` is the fully qualified node type name, for example `n8n-nodes-base.manualTrigger`. `typeVersion` defaults to the latest registered version. Returns `false` when n8n can't resolve the node type, for example when it isn't registered on the instance. |
+
+This example uses `resolveIsTriggerNodeType` to block activating a workflow that doesn't contain a trigger node:
+
+```js
+module.exports = {
+	workflow: {
+		activate: [
+			async function (workflowData, workflowContext) {
+				const hasTrigger = workflowData.nodes.some((node) =>
+					workflowContext.resolveIsTriggerNodeType(node.type, node.typeVersion),
+				);
+				if (!hasTrigger) {
+					throw new Error('Workflow must contain a trigger node, aborting activation');
+				}
+			},
+		],
+	},
+};
+```
+
+### Workflow lifecycle hook actor
+
+Some workflow lifecycle hooks receive an `actor` argument, a minimal projection of the user who performed the operation. Use it to attribute the action, for example to allow or reject an operation based on the user's identity or role.
+
+{% hint style="info" %}
+**Available from n8n 2.33.1**
+
+n8n passes `actor` to the `workflow.create`, `workflow.afterCreate`, `workflow.activate`, `workflow.deactivate`, `workflow.update`, `workflow.afterUpdate`, `workflow.delete`, `workflow.afterDelete`, `workflow.afterArchive`, and `workflow.afterUnarchive` hooks. The argument is optional and can be `undefined` when n8n can't determine the acting user.
+{% endhint %}
+
+The `actor` object has these properties:
+
+| Property    | Type             | Description                                                                                 |
+| ----------- | ---------------- | ------------------------------------------------------------------------------------------- |
+| `id`        | `string`         | The user's unique ID.                                                                       |
+| `email`     | `string \| null` | The user's email address. Can be `null`, for example for a user invited but not yet set up. |
+| `firstName` | `string \| null` | The user's first name. Can be `null`, for example for a user invited but not yet set up.    |
+| `lastName`  | `string \| null` | The user's last name. Can be `null`, for example for a user invited but not yet set up.     |
+| `role`      | `string`         | The user's role slug, for example `global:admin`. Optional.                                 |
+
+This example uses `actor` to log who deleted a workflow:
+
+```js
+module.exports = {
+	workflow: {
+		delete: [
+			async function (workflowId, actor) {
+				console.log(`Workflow ${workflowId} deleted by ${actor?.email} (${actor?.role})`);
 			},
 		],
 	},
@@ -8330,6 +8410,43 @@ If you want web search, configure Brave Search. If you also configure SearXNG, B
 Free or unauthenticated providers, including SearXNG, can hit rate limits. Use Brave Search for a more reliable setup.
 
 If an instance admin selects a Brave Search or SearXNG credential in the AI settings UI, n8n uses that credential instead of these environment variables.
+
+### Enable agents
+
+Agents run on the same self-hosted stack as AI Assistant. Once AI Assistant works, add the `agents` module to [build and run agents on your instance](/build/build-and-manage-agents). Agents need n8n `2.32.3` (Beta) or later.
+
+{% hint style="warning" %}
+Agents aren't ready for self-hosted Enterprise yet. Support for self-hosted Enterprise is coming soon.
+{% endhint %}
+
+You build agents manually with just the `agents` module: you pick the model, write the instructions, and attach the tools and skills yourself. AI Assistant (`instance-ai`) is optional and adds AI-assisted building, where you describe an agent and n8n scaffolds it for you.
+
+Add `agents` to `N8N_ENABLED_MODULES`, alongside `instance-ai` if you want AI-assisted building:
+
+```bash
+# Enable the agents module (keep instance-ai for AI-assisted building)
+N8N_ENABLED_MODULES=instance-ai,agents
+
+# Knowledge base, optional: reuses the Daytona sandbox you set up for AI Assistant
+N8N_AGENTS_AI_SANDBOX_ENABLED=true
+N8N_AGENTS_AI_SANDBOX_PROVIDER=daytona
+
+# Channels, optional: public URL so Slack, Telegram, and Linear can reach your instance
+WEBHOOK_URL=https://your-public-url
+```
+
+| Variable                         | Description                                                                                                       |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `N8N_ENABLED_MODULES`            | Include `agents` to enable the module. Keep `instance-ai` for AI-assisted building.                               |
+| `N8N_AGENTS_AI_SANDBOX_ENABLED`  | Set to `true` to enable the knowledge base, so agents can search uploaded files. Requires a Daytona sandbox.      |
+| `N8N_AGENTS_AI_SANDBOX_PROVIDER` | Sandbox provider for the knowledge base. Use `daytona`. Reuses the Daytona keys you set for AI Assistant.         |
+| `WEBHOOK_URL`                    | Public, secure URL for your instance. Required to connect agents to channels such as Slack, Telegram, and Linear. |
+
+{% hint style="info" %}
+The knowledge base is a preview feature on self-hosted and needs the Daytona sandbox. Without it, the rest of the agent still works.
+{% endhint %}
+
+For a full deployment example, see [Installation options](/deploy/host-n8n/install-options). After you enable the module, see [Build and manage agents](/build/build-and-manage-agents).
 
 ### Disable AI Assistant
 

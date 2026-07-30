@@ -68,7 +68,7 @@ This value is persisted under the `AWL_PENDING_UPPER_LIMIT` environment variable
 
 ## Serverless timeout limit
 
-This is the max number of seconds Async Workloads should wait for timeout detection. This only applies to standard serverless functions as background functions use a 15 minute timeout. The [default deployment options](/build/functions/overview#default-deployment-options) for standard serverless functions includes a 30 second timeout. If deployment options are changed to have a higher or lower execution limit, or if timeout detection should be more aggressive for a site, this where that timeout limit can be set.
+This is the max number of seconds Async Workloads should wait for timeout detection. This only applies to standard serverless functions as background functions use a 15 minute timeout. The [default deployment options](/build/functions/overview#default-deployment-options) for standard serverless functions includes a 60 second timeout. If deployment options are changed to have a higher or lower execution limit, or if timeout detection should be more aggressive for a site, this where that timeout limit can be set.
 
 This value is persisted under the `AWL_SERVERLESS_TIMEOUT` environment variable.
 

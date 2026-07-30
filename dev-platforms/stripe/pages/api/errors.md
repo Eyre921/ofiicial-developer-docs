@@ -6,9 +6,13 @@ path: api/errors
 
 # Errors
 
-Stripe uses conventional HTTP response codes to indicate the success or failure of an API request. In general: Codes in the `2xx` range indicate success. Codes in the `4xx` range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.). Codes in the `5xx` range indicate an error with Stripe’s servers (these are rare).
+Stripe uses conventional HTTP response codes to indicate the success or failure of an API request. In general:
 
-Some `4xx` errors that could be handled programmatically (e.g., a card is [declined](https://docs.stripe.com/declines.md)) include an [error code](https://docs.stripe.com/error-codes.md) that briefly explains the error reported.
+- Codes in the `2xx` range indicate success.
+- Codes in the `4xx` range indicate an error that failed given the information provided. For example, an omitted required parameter, a failed charge, or a [declined](https://docs.stripe.com/declines.md) card.
+  - Many of these include an [error code](https://docs.stripe.com/error-codes.md) that briefly explains the error reported.
+  - See [Error handling](https://docs.stripe.com/error-handling.md) for guidance.
+- Codes in the `5xx` range indicate an error with the Stripe servers (these are rare).
 
 ### HTTP Status Code Summary
 

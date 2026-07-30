@@ -1081,7 +1081,7 @@ If you turn off automatic payouts, you must manually send funds to your bank acc
 
 Manual payouts are available in all regions except Brazil and India, where payouts are always automatic and daily. In most regions, manual payouts typically take 1-4 business days to arrive in your bank account after initiating the manual payout.
 
-If your Stripe account that operates in the United Kingdom has a standard [T+3 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) and you initiate a manual payout during business hours, the funds typically arrive in your bank account on the same business day. This same-day payout is limited to 10 same-day manual payouts per day, with a maximum transaction amount of 1 million GBP each. All other manual payouts typically arrive within 2 business days in your bank account.
+If your Stripe account that operates in the United Kingdom has a standard [T+3 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) and you initiate a manual payout during business hours, the funds typically arrive in your bank account on the same business day. This is limited to 10 same-day manual payouts per day, with a maximum transaction amount of 1 million GBP each. All other manual payouts typically arrive within 2 business days in your bank account.
 
 If your Stripe account that operates in the United States has a standard [T+2 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) and you initiate a manual payout during business hours, the funds typically arrive in your bank account on the same business day. This payout is subject to an account limit of 10 manual payouts per day and a maximum transaction amount of 1 million USD. All other manual payouts typically arrive within 1 business day in your bank account.
 
@@ -1094,7 +1094,7 @@ curl https://api.stripe.com/v1/payouts \
 
 ## Settlement timing 
 
-The payout schedule refers to the cadence that your funds are paid out, for example, day of the week. The settlement timing refers to the amount of time it takes for your funds to become available. Settlement timing varies per country and is typically expressed as “T+X” days. Some payment processors might start “T” from their internal settlement time, meaning when the funds land in their bank accounts.
+The payout schedule refers to the cadence at which your funds are paid out, for example, day of the week. The settlement timing refers to the amount of time it takes for your funds to become available. Settlement timing varies per country and is typically expressed as “T+X” days. Some payment processors might start “T” from their internal settlement time, meaning when the funds land in their bank accounts.
 
 Stripe uses “T” to refer to the transaction time, which indicates the time of the original payment confirmation or capture, and the counting starts earlier. If your Stripe account is in a country with a T+3 standard settlement timing and you use a manual payout schedule, your Stripe balance is available for payout within three business days of capturing a payment. However, if you use a daily automatic payout schedule with a T+3 standard settlement timing, Stripe pays out funds daily from transactions captured 3 business days earlier.
 
@@ -2972,13 +2972,13 @@ Use these test debit card numbers to test payouts to a debit card. You can only 
 
 ## Payout failures 
 
-If your bank account can’t receive a payout for any reason, your bank returns the funds to us. You’ll receive an error with the [reason for the failure](https://docs.stripe.com/api/payouts/failures.md). It can take up to 5 additional business days for your bank to return the payout and inform us that it failed. If this happens, you’re notified by email and in the [Dashboard](https://dashboard.stripe.com/test/payouts). If a payout fails, make sure your bank account details are correct by re-entering them. Stripe then reattempts the payout at the next scheduled payout interval.
+If your bank account can’t receive a payout for any reason, your bank returns the funds to us. You’ll receive an error with the [reason for the failure](https://docs.stripe.com/api/payouts/object.md#payout_object-failure_code). It can take up to 5 additional business days for your bank to return the payout and inform us that it failed. If this happens, you’re notified by email and in the [Dashboard](https://dashboard.stripe.com/test/payouts). If a payout fails, make sure your bank account details are correct by re-entering them. Stripe then reattempts the payout at the next scheduled payout interval.
 
 > When a payout fails, the status might initially show as `paid`, but then change to `failed` within 5 business days.
 
 Stripe sends the funds using the bank account information that you enter. If you provide incorrect information, such as a mistyped account number or an incorrect routing number, Stripe might send payouts to the wrong bank account and might not be able to recover the funds.
 
-Any fees or losses that you incur because of incorrect information fall under your responsibility. If your banking details are correct and the payout failure is for other reasons, contact your bank. After you resolve any issues with your bank, you can reactivate the payouts by clicking **Resume Payouts**. If you don’t receive a payout from Stripe after clicking **Resume Payouts**, and you haven’t received a failure notification within a reasonable time frame, please [contact us](https://support.stripe.com/contact).
+Any fees or losses that you incur because of incorrect information fall under your responsibility. If your banking details are correct and the payout failure is for other reasons, contact your bank. After you resolve any issues with your bank, you can reactivate the payouts by clicking **Resume Payouts**. If you don’t receive a payout from Stripe after clicking **Resume Payouts**, and you haven’t received a failure notification within a reasonable time frame, [contact us](https://support.stripe.com/contact).
 
 ## Payout fees 
 

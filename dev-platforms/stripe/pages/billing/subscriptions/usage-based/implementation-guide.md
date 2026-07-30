@@ -156,7 +156,7 @@ Create a new customer or retrieve an existing one to associate with this payment
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-07-29.preview" \
   --json '{
     "contact_email": "jenny.rosen@example.com",
     "display_name": "Jenny Rosen",

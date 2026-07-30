@@ -354,7 +354,7 @@ Skills are installed at project scope by default, placing them in your repositor
 
 Add skills for all detected agents at the same time by passing `--all`. See the [skills package](https://github.com/vercel-labs/skills) for more options.
 
-You can also install the agent skills together with the Supabase MCP server using the [Supabase Plugin for AI Coding Agents](https://supabase.com/docs/guides/getting-started/plugins) for a combined one-step setup.
+You can also install the agent skills together with the Supabase MCP server using the [Supabase Plugin for AI Coding Agents](https://supabase.com/docs/guides/ai-tools/plugins) for a combined one-step setup.
 
 ## Available skills
 
@@ -1106,7 +1106,7 @@ One-click setup for Supabase in your AI coding agent
 
 The Supabase plugin for AI coding agents bundles the MCP server and agent skills into a single install for your AI coding agent.
 
-The Supabase Plugin for AI Coding Agents gives your AI coding agent everything it needs to work with Supabase. It bundles the [Supabase MCP server](https://supabase.com/docs/guides/getting-started/mcp) and [Supabase agent skills](https://supabase.com/docs/guides/getting-started/ai-skills) so your agent can query your database, manage migrations, deploy Edge Functions, and follow Supabase and Postgres best practices — without manual configuration.
+The Supabase Plugin for AI Coding Agents gives your AI coding agent everything it needs to work with Supabase. It bundles the [Supabase MCP server](https://supabase.com/docs/guides/ai-tools/mcp) and [Supabase agent skills](https://supabase.com/docs/guides/ai-tools/ai-skills) so your agent can query your database, manage migrations, deploy Edge Functions, and follow Supabase and Postgres best practices — without manual configuration.
 
 ## Quick installation
 
@@ -1128,13 +1128,13 @@ Plugins for AI coding agents are packages of AI agent extensions. A single plugi
 - **Agents** — specialized sub-agents with specific personas and tool configurations
 - **Slash commands** — custom commands you can invoke directly in chat
 
-Bundling the [MCP server](https://supabase.com/docs/guides/getting-started/mcp) and [agent skills](https://supabase.com/docs/guides/getting-started/ai-skills) into a single plugin means you can set up both in one step. You can also install them separately if you prefer. You can install the plugin globally to use it across all your projects, or per project to keep it isolated.
+Bundling the [MCP server](https://supabase.com/docs/guides/ai-tools/mcp) and [agent skills](https://supabase.com/docs/guides/ai-tools/ai-skills) into a single plugin means you can set up both in one step. You can also install them separately if you prefer. You can install the plugin globally to use it across all your projects, or per project to keep it isolated.
 
 ## What's included
 
 ### Supabase MCP server
 
-The [Supabase MCP server](https://supabase.com/docs/guides/getting-started/mcp) connects your AI coding agent directly to your Supabase projects. Once authenticated, your agent can query your database, manage migrations, deploy Edge Functions, and more — see the [full list of available tools](https://supabase.com/docs/guides/getting-started/mcp#available-tools).
+The [Supabase MCP server](https://supabase.com/docs/guides/ai-tools/mcp) connects your AI coding agent directly to your Supabase projects. Once authenticated, your agent can query your database, manage migrations, deploy Edge Functions, and more — see the [full list of available tools](https://supabase.com/docs/guides/ai-tools/mcp#available-tools).
 
 ### Supabase agent skills
 
@@ -1143,7 +1143,7 @@ Skills provide your agent with Supabase-specific procedural knowledge:
 - **`supabase`** — Core guidance for working with Supabase products (Database, Auth, Edge Functions, Storage, Realtime)
 - **`supabase-postgres-best-practices`** — Postgres query optimization, schema design, connection management, and RLS patterns
 
-For a full list of available skills and supported agents, see [Agent Skills](https://supabase.com/docs/guides/getting-started/ai-skills).
+For a full list of available skills and supported agents, see [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills).
 
 ## Manual installation
 
@@ -2823,7 +2823,7 @@ poetry new image-search
 
 ## Setup Supabase project
 
-If you haven't already, [install the Supabase CLI](https://supabase.com/docs/guides/cli), then initialize Supabase in the root of your newly created poetry project:
+If you haven't already, [install the Supabase CLI](https://supabase.com/docs/guides/local-development), then initialize Supabase in the root of your newly created poetry project:
 
 ```shell
 supabase init
@@ -2993,7 +2993,7 @@ poetry new video-search
 
 ## Setup Supabase project
 
-If you haven't already, [install the Supabase CLI](https://supabase.com/docs/guides/cli), then initialize Supabase in the root of your newly created poetry project:
+If you haven't already, [install the Supabase CLI](https://supabase.com/docs/guides/local-development), then initialize Supabase in the root of your newly created poetry project:
 
 ```shell
 supabase init
@@ -3179,7 +3179,7 @@ Prepare the database schema. We can use the "OpenAI Vector Search" quickstart in
 
 1. **Set up Supabase locally**
 
-Make sure you have the latest version of the [Supabase CLI installed](https://supabase.com/docs/guides/cli/getting-started).
+Make sure you have the latest version of the [Supabase CLI installed](https://supabase.com/docs/guides/local-development/cli/getting-started).
 
 Initialize Supabase in the root directory of your app.
 
@@ -3567,7 +3567,7 @@ OpenAI's API is intended to be used from the server-side. Supabase offers Edge F
 
 ## Setup Supabase project
 
-If you haven't already, [install the Supabase CLI](https://supabase.com/docs/guides/cli) and initialize your project:
+If you haven't already, [install the Supabase CLI](https://supabase.com/docs/guides/local-development) and initialize your project:
 
 ```shell
 supabase init
@@ -3980,7 +3980,7 @@ First, a few generic tips which you can pick and choose from:
 
 ## Useful links
 
-Don't forget to check out the general [Production Checklist](https://supabase.com/docs/guides/platform/going-into-prod) to ensure your project is secure, performant, and will remain available for your users.
+Don't forget to check out the general [Production Checklist](https://supabase.com/docs/guides/deployment/going-into-prod) to ensure your project is secure, performant, and will remain available for your users.
 
 You can look at our [Choosing Compute Add-on](https://supabase.com/docs/guides/ai/choosing-compute-addon) guide to get a basic understanding of how much compute you might need for your workload.
 
@@ -4163,7 +4163,7 @@ To ensure you don't experience any unexpected downtime or errors, we recommend c
 
 Edge Functions are server-side TypeScript functions that run on-demand. Since Edge Functions run on a server, you can safely give them access to your Hugging Face access token.
 
-Note: You will need the `supabase` CLI [installed](https://supabase.com/docs/guides/cli) for the following commands to work.
+Note: You will need the `supabase` CLI [installed](https://supabase.com/docs/guides/local-development) for the following commands to work.
 
 To create a new Edge Function, navigate to your local project and initialize Supabase if you haven't already:
 
@@ -5802,7 +5802,7 @@ Build an Edge Function that accepts an input string and generates an embedding f
 
 1. **Set up Supabase locally**
 
-Make sure you have the latest version of the [Supabase CLI installed](https://supabase.com/docs/guides/cli/getting-started).
+Make sure you have the latest version of the [Supabase CLI installed](https://supabase.com/docs/guides/local-development/cli/getting-started).
 
 Initialize Supabase in the root directory of your app and start your local stack.
 
@@ -6658,7 +6658,7 @@ Supabase provides a Python client called [`vecs`](https://github.com/supabase/ve
 
 ## Quick start
 
-To see how Vecs works, use a local database. Make sure you have the Supabase CLI [installed](https://supabase.com/docs/guides/cli#installation) on your machine.
+To see how Vecs works, use a local database. Make sure you have the Supabase CLI [installed](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) on your machine.
 
 ### Initialize your project
 
@@ -9661,7 +9661,7 @@ See the [Access control section](#access-control) for more details.
 
 Caution: The Supabase team has received reports of user metadata being cached across unique anonymous users as a result of Next.js static page rendering. For the best user experience, use dynamic page rendering.
 
-Note: For self-hosting, you can update your project configuration using the files and environment variables provided. See the [local development docs](https://supabase.com/docs/guides/cli/config) for more details.
+Note: For self-hosting, you can update your project configuration using the files and environment variables provided. See the [local development docs](https://supabase.com/docs/guides/local-development/cli/config) for more details.
 
 ## Sign in anonymously
 
@@ -9913,7 +9913,7 @@ async function resolveDataConflicts(anonymousUserId, existingUserId) {
 
 ## Abuse prevention and rate limits
 
-Since anonymous users are stored in your database, bad actors can abuse the endpoint to increase your database size drastically. It is strongly recommended to [enable invisible CAPTCHA or Cloudflare Turnstile](https://supabase.com/docs/guides/auth/auth-captcha) to prevent abuse for anonymous sign-ins. An IP-based rate limit is enforced at 30 requests per hour which can be modified in your [dashboard](https://supabase.com/dashboard/project/_/auth/rate-limits). You can refer to the full list of rate limits [here](https://supabase.com/docs/guides/platform/going-into-prod#rate-limiting-resource-allocation--abuse-prevention).
+Since anonymous users are stored in your database, bad actors can abuse the endpoint to increase your database size drastically. It is strongly recommended to [enable invisible CAPTCHA or Cloudflare Turnstile](https://supabase.com/docs/guides/auth/auth-captcha) to prevent abuse for anonymous sign-ins. An IP-based rate limit is enforced at 30 requests per hour which can be modified in your [dashboard](https://supabase.com/dashboard/project/_/auth/rate-limits). You can refer to the full list of rate limits [here](https://supabase.com/docs/guides/deployment/going-into-prod#rate-limiting-resource-allocation--abuse-prevention).
 
 ## Automatic cleanup
 
@@ -10576,7 +10576,7 @@ If you are using an external email provider that enables "email tracking", the l
 
 ### Redirecting the user to a server-side endpoint
 
-If you intend to use [Server-side rendering](https://supabase.com/docs/guides/auth/server-side-rendering), you might want the email link to redirect the user to a server-side endpoint to check if they are authenticated before returning the page. However, the default email link will redirect the user after verification to the redirect URL with the session in the query fragments. Since the session is returned in the query fragments by default, you won't be able to access it on the server-side.
+If you intend to use [Server-side rendering](https://supabase.com/docs/guides/auth/server-side/advanced-guide), you might want the email link to redirect the user to a server-side endpoint to check if they are authenticated before returning the page. However, the default email link will redirect the user after verification to the redirect URL with the session in the query fragments. Since the session is returned in the query fragments by default, you won't be able to access it on the server-side.
 
 You can customize the email link in the email template to redirect the user to a server-side endpoint successfully. For example:
 
@@ -11995,7 +11995,7 @@ revoke all
 
 **Restrict access to SSO users**
 
-You can restrict access to internal applications with a hook. For example, you can require that employees log in via [SAML Single Sign On (SSO)](https://supabase.com/docs/guides/auth/sso/auth-sso-saml). You can exempt select employees from the policy via an allowlist.
+You can restrict access to internal applications with a hook. For example, you can require that employees log in via [SAML Single Sign On (SSO)](https://supabase.com/docs/guides/auth/enterprise-sso/auth-sso-saml). You can exempt select employees from the policy via an allowlist.
 
 ```sql
 create or replace function public.restrict_application_access(event jsonb)
@@ -12087,7 +12087,7 @@ Deno.serve(async (req) => {
 
 **Restrict access to SSO users**
 
-You can restrict access to internal applications with a hook. For example, you can require that employees log in via [SAML Single Sign On (SSO)](https://supabase.com/docs/guides/auth/sso/auth-sso-saml). You can exempt select employees from the policy via an allowlist.
+You can restrict access to internal applications with a hook. For example, you can require that employees log in via [SAML Single Sign On (SSO)](https://supabase.com/docs/guides/auth/enterprise-sso/auth-sso-saml). You can exempt select employees from the policy via an allowlist.
 
 ```javascript
 import { Webhook } from 'https://esm.sh/standardwebhooks@1.0.0'
@@ -13928,7 +13928,7 @@ Currently, Supabase Auth supports 2 strategies to link an identity to a user:
 1. [Automatic Linking](#automatic-linking)
 2. [Manual Linking](#manual-linking-beta)
 
-Note: Users that signed up with [SAML SSO](https://supabase.com/docs/guides/auth/sso/auth-sso-saml) will not be considered as targets for identity linking (automatic or manual) for security reasons.
+Note: Users that signed up with [SAML SSO](https://supabase.com/docs/guides/auth/enterprise-sso/auth-sso-saml) will not be considered as targets for identity linking (automatic or manual) for security reasons.
 
 ### Automatic linking
 
@@ -15622,7 +15622,7 @@ In a cookie-based framework you can compose the two — let `@supabase/ssr` own 
 
 - [Server-side rendering](https://supabase.com/guides/auth/server-side) — set up `@supabase/ssr` for your framework.
 - [`@supabase/server` reference](https://supabase.com/docs/reference/server) — API for header-based server auth.
-- [`supabase-js` reference](https://supabase.com/docs/reference/javascript) — the base JavaScript client.
+- [`supabase-js` reference](https://supabase.com/docs/reference/javascript/introduction) — the base JavaScript client.
 
 
 ---
@@ -16069,7 +16069,7 @@ The following table provides a comprehensive list of error codes you may encount
 
 Learn about Single Sign-On support in Supabase Auth for enterprise applications
 
-Supabase Auth supports building enterprise applications that require Single Sign-On (SSO) authentication [with SAML 2.0](https://supabase.com/docs/guides/auth/sso/auth-sso-saml).
+Supabase Auth supports building enterprise applications that require Single Sign-On (SSO) authentication [with SAML 2.0](https://supabase.com/docs/guides/auth/enterprise-sso/auth-sso-saml).
 
 
 ---
@@ -19924,7 +19924,7 @@ USING (
 ## Next steps
 
 - [Learn about JWTs](https://supabase.com/docs/guides/auth/jwts) - Deep dive into Supabase token structure
-- [Row Level Security](https://supabase.com/docs/guides/auth/row-level-security) - Complete RLS guide
+- [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) - Complete RLS guide
 - [Custom Access Token Hooks](https://supabase.com/docs/guides/auth/auth-hooks/custom-access-token-hook) - Inject custom claims
 - [OAuth flows](https://supabase.com/docs/guides/auth/oauth-server/oauth-flows) - Understand token issuance
 
@@ -21630,7 +21630,7 @@ Some countries have special regulations for services that send SMS messages to u
 
 Enable phone authentication on the [Auth Providers page](https://supabase.com/dashboard/project/_/auth/providers) for hosted Supabase projects.
 
-For self-hosted projects or local development, use the [configuration file](https://supabase.com/docs/guides/cli/config#auth.sms.enable_signup). See the configuration variables namespaced under `auth.sms`.
+For self-hosted projects or local development, use the [configuration file](https://supabase.com/docs/guides/local-development/cli/config#auth.sms.enable_signup). See the configuration variables namespaced under `auth.sms`.
 
 You also need to set up an SMS provider. Each provider has its own configuration. Supported providers include MessageBird, Twilio, Vonage, and TextLocal (community-supported).
 
@@ -22598,7 +22598,7 @@ Learn how to implement social authentication in an app with Expo React Native an
 
 This tutorial demonstrates how to build a React Native app with [Expo](https://expo.dev) that implements social authentication. The app showcases a complete authentication flow with protected navigation using:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data with [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) to ensure data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data with [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) to ensure data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - enables users to log in through social authentication providers (Apple and Google).
 
 ![Supabase Social Auth example](/docs/img/supabase-expo-social-auth-login.png)
@@ -22625,7 +22625,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -34773,7 +34773,7 @@ Supabase has first-class support for these third-party authentication providers:
 - [AWS Cognito (with or without AWS Amplify)](https://supabase.com/docs/guides/auth/third-party/aws-cognito)
 - [WorkOS](https://supabase.com/docs/guides/auth/third-party/workos)
 
-You can use these providers alongside Supabase Auth, or on their own, to access the [Data API (REST and GraphQL)](https://supabase.com/docs/guides/database), [Storage](https://supabase.com/docs/guides/storage), [Realtime](https://supabase.com/docs/guides/storage) and [Functions](https://supabase.com/docs/guides/functions) from your existing apps.
+You can use these providers alongside Supabase Auth, or on their own, to access the [Data API (REST and GraphQL)](https://supabase.com/docs/guides/database/overview), [Storage](https://supabase.com/docs/guides/storage), [Realtime](https://supabase.com/docs/guides/storage) and [Functions](https://supabase.com/docs/guides/functions) from your existing apps.
 
 If you already have production apps using one of these authentication providers, and would like to use a Supabase feature, you no longer need to migrate your users to Supabase Auth or use workarounds like translating JWTs into the Supabase Auth format and using your project's signing secret.
 
@@ -35533,12 +35533,12 @@ The Data APIs allow you to interact with your database using REST or GraphQL req
 
 For convenience, you can also use the [Supabase client libraries](https://supabase.com/docs/reference), which wrap the Data APIs with a developer-friendly interface and automatically handle authentication:
 
-- [JavaScript](https://supabase.com/docs/reference/javascript)
-- [Flutter](https://supabase.com/docs/reference/dart)
+- [JavaScript](https://supabase.com/docs/reference/javascript/introduction)
+- [Flutter](https://supabase.com/docs/reference/dart/introduction)
 - [Swift](https://supabase.com/docs/reference/swift)
-- [Python](https://supabase.com/docs/reference/python)
-- [C#](https://supabase.com/docs/reference/csharp)
-- [Kotlin](https://supabase.com/docs/reference/kotlin)
+- [Python](https://supabase.com/docs/reference/python/introduction)
+- [C#](https://supabase.com/docs/reference/csharp/introduction)
+- [Kotlin](https://supabase.com/docs/reference/kotlin/introduction)
 
 ## Direct connection
 
@@ -35785,7 +35785,7 @@ Connecting to your Postgres database in serverless environments.
 
 Supabase provides several options for connecting to your Postgres database from serverless environments.
 
-[supabase-js](https://supabase.com/docs/reference/javascript/introduction) is an isomorphic JavaScript client that uses the [auto-generated REST API](https://supabase.com/docs/guides/api) and therefore works in any environment that supports HTTPS connections. This API has a built-in [connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler) and can serve thousands of simultaneous requests, and therefore is ideal for Serverless workloads.
+[supabase-js](https://supabase.com/docs/reference/javascript/introduction) is an isomorphic JavaScript client that uses the [auto-generated REST API](https://supabase.com/docs/guides/api) and therefore works in any environment that supports HTTPS connections. This API has a built-in [connection pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers) and can serve thousands of simultaneous requests, and therefore is ideal for Serverless workloads.
 
 ## Vercel Edge Functions
 
@@ -35898,7 +35898,7 @@ Managing connections
 
 ## Connections
 
-Every [Compute Add-On](https://supabase.com/docs/guides/platform/compute-add-ons) has a pre-configured direct connection count and Supavisor pool size. This guide discusses ways to observe and manage them resourcefully.
+Every [Compute Add-On](https://supabase.com/docs/guides/platform/compute-and-disk) has a pre-configured direct connection count and Supavisor pool size. This guide discusses ways to observe and manage them resourcefully.
 
 ### Configuring Supavisor's pool size
 
@@ -36136,8 +36136,8 @@ Use the examples below with `supabase postgres-config update --project-ref <proj
 
 To start:
 
-1. [Install](https://supabase.com/docs/guides/resources/supabase-cli) Supabase CLI 1.69.0+.
-2. [Log in](https://supabase.com/docs/guides/cli/local-development#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
+1. [Install](https://supabase.com/docs/guides/local-development) Supabase CLI 1.69.0+.
+2. [Log in](https://supabase.com/docs/guides/local-development/database-migrations#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
 
 To update Postgres configurations, use the [`postgres config`](https://supabase.com/docs/reference/cli/supabase-postgres-config) command:
 
@@ -36223,7 +36223,7 @@ alter role "<role_name>" set "<setting_name>" to default;
 
 1. Changes through the CLI might restart the database causing momentary disruption to existing database connections; in most cases this should not take more than a few seconds. However, you can use the --no-restart flag to bypass the restart and keep the connections intact. Keep in mind that this depends on the specific configuration changes you're making. if the change requires a restart, using the --no-restart flag will prevent the restart but you won't see those changes take effect until a restart is manually triggered. Additionally, some parameters are required to be the same on Primary and Read Replicas; not restarting in these cases can result in read replica failure if the Primary/Read Replicas restart in isolation.
 2. Custom Postgres Config will always override the default optimizations generated by Supabase. When changing compute add-ons, you should also review and update your custom Postgres Config to ensure they remain compatible and effective with the updated compute.
-3. Some parameters (e.g. `wal_keep_size`) can increase disk utilization, triggering disk expansion, which in turn can lead to [increases in your bill](https://supabase.com/docs/guides/platform/compute-add-ons#disk-io).
+3. Some parameters (e.g. `wal_keep_size`) can increase disk utilization, triggering disk expansion, which in turn can lead to [increases in your bill](https://supabase.com/docs/guides/platform/compute-and-disk#disk).
 
 
 ---
@@ -39592,7 +39592,7 @@ select
     ) as request_id;
 ```
 
-### Call an endpoint every minute with [pg\_cron](https://supabase.com/docs/guides/database/extensions/pgcron)
+### Call an endpoint every minute with [pg\_cron](https://supabase.com/docs/guides/database/extensions/pg_cron)
 
 The pg\_cron extension enables Postgres to become its own cron server. With it you can schedule regular calls with up to a minute precision to endpoints.
 
@@ -40048,7 +40048,7 @@ PGAudit can be configured with different levels of precision.
 
 **PGAudit logging precision:**
 
-- **[Session](#session-logging):** Logs activity within a connection, such as a [psql](https://supabase.com/docs/guides/database/connecting-to-postgres#connecting-with-psql) connection.
+- **[Session](#session-logging):** Logs activity within a connection, such as a [psql](https://supabase.com/docs/guides/database/psql) connection.
 - **[User](#user-logging):** Logs activity by a particular database user (for example, `anon` or `postgres`).
 - **[Global](#global-logging):** Logs activity across the entire database.
 - **[Object](#object-logging):** Logs events related to specific database objects (for example, the auth.users table).
@@ -40084,7 +40084,7 @@ Below is a limited example of how to assign PGAudit to monitor specific categori
 
 ### Session logging
 
-When you are connecting in a session environment, such as a [psql](https://supabase.com/docs/guides/database/connecting-to-postgres#connecting-with-psql) connection, you can configure PGAudit to record events initiated within the session.
+When you are connecting in a session environment, such as a [psql](https://supabase.com/docs/guides/database/psql) connection, you can configure PGAudit to record events initiated within the session.
 
 Note: The [Dashboard](https://supabase.com/dashboard/project/_) is a transactional environment and won't sustain a session.
 
@@ -59723,7 +59723,7 @@ The Supabase API allows you to programmatically import data into your tables. Yo
 
 Note: When importing data via the Supabase API, it's advisable to refrain from bulk imports. This helps ensure a smooth data transfer process and prevents any potential disruptions.
 
-Read more about [Rate Limiting, Resource Allocation, & Abuse Prevention.](https://supabase.com/docs/guides/platform/going-into-prod#rate-limiting-resource-allocation--abuse-prevention)
+Read more about [Rate Limiting, Resource Allocation, & Abuse Prevention.](https://supabase.com/docs/guides/deployment/going-into-prod#rate-limiting-resource-allocation--abuse-prevention)
 
 ## Preparing to import data
 
@@ -64466,7 +64466,7 @@ Prisma couldn't establish a connection with Postgres or Supavisor before the tim
 
 #### Solutions: \[#solution-cant-reach-database-server-at]
 
-- **Check database health**: Use the [Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database) to monitor CPU, memory, and I/O usage. If the database is overloaded, consider increasing your [compute size](https://supabase.com/docs/guides/platform/compute-add-ons) or [optimizing your queries](https://supabase.com/docs/guides/database/query-optimization).
+- **Check database health**: Use the [Observability Dashboard](https://supabase.com/dashboard/project/_/observability/database) to monitor CPU, memory, and I/O usage. If the database is overloaded, consider increasing your [compute size](https://supabase.com/docs/guides/platform/compute-and-disk) or [optimizing your queries](https://supabase.com/docs/guides/database/query-optimization).
 - **Verify connection string**: Double-check the connection string in your Prisma configuration to ensure it matches in your [project connect page](https://supabase.com/dashboard/project/_?showConnect=true).
 - **Increase connection timeout**: Try increasing the `connect_timeout` parameter in your Prisma configuration to give it more time to establish a connection.
 
@@ -65309,7 +65309,7 @@ You can follow those steps with the following modifications:
 1. Use the `postgres` user for replication (or create a new user with replication permissions: `ALTER USER <user> WITH REPLICATION;`)
 2. Set `pluginname` to `test-decoding`
 3. Depending on your databases the pre-assessment may fail. It is not required.
-4. Increase `wal_sender_timeout` and other settings (`max_wal_size`) using the [Supabase CLI](https://supabase.com/docs/guides/platform/custom-postgres-config)
+4. Increase `wal_sender_timeout` and other settings (`max_wal_size`) using the [Supabase CLI](https://supabase.com/docs/guides/database/custom-postgres-config)
 
 
 ---
@@ -66085,7 +66085,7 @@ Use Supabase client libraries, REST, or GraphQL with a publishable key. Protect 
 
 ### Edge Functions
 
-Put custom server-side logic between your client and database with [Edge Functions](https://supabase.com/docs/guides/functions). You can use secrets, API keys, or database connection strings inside the function, and you can [disable the Data API](https://supabase.com/docs/guides/database/data-api#disable-the-data-api-completely) if your app only accesses data this way.
+Put custom server-side logic between your client and database with [Edge Functions](https://supabase.com/docs/guides/functions). You can use secrets, API keys, or database connection strings inside the function, and you can [disable the Data API](https://supabase.com/docs/guides/api/securing-your-api#disable-the-data-api) if your app only accesses data this way.
 
 ### Direct database connections
 
@@ -66125,7 +66125,7 @@ Supavisor logs are available under [Pooler Logs](https://supabase.com/dashboard/
 
 | Error Type                                                                | Description                                                                                                                                                                                                                                                                 | Resolution Link                                                                     |
 | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Max client connections reached                                            | This error happens when the number of connections to Supavisor is more than [the allowed limit of your compute add-on](https://supabase.com/docs/guides/platform/compute-add-ons).                                                                                          | Follow this [guide](https://github.com/orgs/supabase/discussions/22305) to resolve. |
+| Max client connections reached                                            | This error happens when the number of connections to Supavisor is more than [the allowed limit of your compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk).                                                                                         | Follow this [guide](https://github.com/orgs/supabase/discussions/22305) to resolve. |
 | Connection failed `{:error, :eaddrnotavail}` to 'db.xxx.supabase.co':5432 | Supavisor cannot connect to the customer database. This is usually caused if the target database is unable to respond.                                                                                                                                                      | N/A                                                                                 |
 | Connection failed `{:error, :nxdomain}` to 'db.xxx.supabase.co':5432      | Supavisor cannot connect to the customer database. This is usually caused if the target database is unable to respond.                                                                                                                                                      | N/A                                                                                 |
 | Connection closed when state was authentication                           | This error happens when either the database doesn’t exist or if the user doesn't have the right credentials.                                                                                                                                                                | N/A                                                                                 |
@@ -66693,7 +66693,7 @@ To ensure that queries return the expected data, RLS policies are correctly appl
 
 You can use the Supabase CLI to test your database. The minimum required version of the CLI is [v1.11.4](https://github.com/supabase/cli/releases). To get started:
 
-- [Install the Supabase CLI](https://supabase.com/docs/guides/cli) on your local machine
+- [Install the Supabase CLI](https://supabase.com/docs/guides/local-development) on your local machine
 
 ### Creating a test
 
@@ -66959,7 +66959,7 @@ You can hook into three table events: `INSERT`, `UPDATE`, and `DELETE`. All even
 
 ## Webhooks vs triggers
 
-Database Webhooks are very similar to triggers, and that's because Database Webhooks are a convenience wrapper around triggers using the [pg\_net](https://supabase.com/docs/guides/database/extensions/pgnet) extension. This extension is asynchronous, and therefore will not block your database changes for long-running network requests.
+Database Webhooks are very similar to triggers, and that's because Database Webhooks are a convenience wrapper around triggers using the [pg\_net](https://supabase.com/docs/guides/database/extensions/pg_net) extension. This extension is asynchronous, and therefore will not block your database changes for long-running network requests.
 
 This video demonstrates how you can create a new customer in Stripe each time a row is inserted into a `profiles` table:
 
@@ -67036,7 +67036,7 @@ If you're experiencing connection issues with webhooks locally, verify you're us
 
 ## Resources
 
-- [pg\_net](https://supabase.com/docs/guides/database/extensions/pgnet): an async networking extension for Postgres
+- [pg\_net](https://supabase.com/docs/guides/database/extensions/pg_net): an async networking extension for Postgres
 
 
 ---
@@ -67520,7 +67520,7 @@ If `supabase/` is nested deeper in your repository, enter its parent directory i
 
 ## Preparing your Git repository
 
-You will be using the [Supabase CLI](https://supabase.com/docs/guides/cli) to initialize your local `./supabase` directory:
+You will be using the [Supabase CLI](https://supabase.com/docs/guides/local-development) to initialize your local `./supabase` directory:
 
 1. **Initialize Supabase locally**
 
@@ -68670,7 +68670,7 @@ Note: Check and review issues in your database using [Performance Advisor](https
 
 Caution: Running databases is a shared responsibility between you and Supabase. There are some things that we can take care of for you, and some things that you are responsible for.
 
-Read more details in our [Shared Responsibility Model guide](https://supabase.com/docs/guides/platform/shared-responsibility-model).
+Read more details in our [Shared Responsibility Model guide](https://supabase.com/docs/guides/deployment/shared-responsibility-model).
 
 - Supabase employs a number of safeguards against bursts of incoming traffic to prevent abuse and help maximize stability across the platform
   - If you're on a Team or Enterprise Plan and expect high load events, such as production launches, heavy load testing, or prolonged high resource usage, open a ticket via the [support form](https://supabase.help) for help. Provide at least 2 weeks notice.
@@ -69097,21 +69097,21 @@ Resources:
 
 ## In production
 
-Once your application is live, you should never change your database using the Dashboard - everything should be done with [Migrations](https://supabase.com/docs/guides/cli/managing-environments#create-a-new-migration). Some other important things to consider at this point include:
+Once your application is live, you should never change your database using the Dashboard - everything should be done with [Migrations](https://supabase.com/docs/guides/deployment/managing-environments#create-a-new-migration). Some other important things to consider at this point include:
 
 - The Dashboard has various [access levels](https://supabase.com/docs/guides/platform/access-control) that can prevent changes being made via the UI.
-- Design a [safe workflow](https://supabase.com/docs/guides/platform/shared-responsibility-model#you-decide-your-own-workflow) for managing your database. We strongly recommend running [multiple environments](https://supabase.com/docs/guides/cli/managing-environments) as part of your development workflow (`local` -> `staging` -> `prod`).
-- Do not share any production passwords with your team, *especially* your `postgres` password. All changes should be made via version-controlled migrations which run via a bastion host or a CI platform (like [GitHub Actions](https://supabase.com/docs/guides/cli/managing-environments#configure-github-actions). If you use GitHub Actions, use [approval workflows](https://docs.github.com/en/actions/managing-workflow-runs/reviewing-deployments) to prevent any migrations being run accidentally.
+- Design a [safe workflow](https://supabase.com/docs/guides/deployment/shared-responsibility-model#you-decide-your-own-workflow) for managing your database. We strongly recommend running [multiple environments](https://supabase.com/docs/guides/deployment/managing-environments) as part of your development workflow (`local` -> `staging` -> `prod`).
+- Do not share any production passwords with your team, *especially* your `postgres` password. All changes should be made via version-controlled migrations which run via a bastion host or a CI platform (like [GitHub Actions](https://supabase.com/docs/guides/deployment/managing-environments#configure-github-actions). If you use GitHub Actions, use [approval workflows](https://docs.github.com/en/actions/managing-workflow-runs/reviewing-deployments) to prevent any migrations being run accidentally.
 - Restrict production access to your database using [Network Restrictions](https://supabase.com/docs/guides/platform/network-restrictions).
 - As your database to grows, we strongly recommend moving to [Point-in-Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery). This is safer and has less impact on your database performance during maintenance windows.
-- Read the [Production Checklist](https://supabase.com/docs/guides/platform/going-into-prod) and familiarize your team with the [Shared Responsibilities](https://supabase.com/docs/guides/platform/shared-responsibility-model) between your organization and Supabase.
+- Read the [Production Checklist](https://supabase.com/docs/guides/deployment/going-into-prod) and familiarize your team with the [Shared Responsibilities](https://supabase.com/docs/guides/deployment/shared-responsibility-model) between your organization and Supabase.
 
 Resources:
 
 - [Database migrations](https://supabase.com/docs/guides/deployment/database-migrations)
 - [Managing access on the Dashboard](https://supabase.com/docs/guides/platform/access-control)
 - [PGAudit for Postgres](https://supabase.com/docs/guides/database/extensions/pgaudit)
-- [Managing environments](https://supabase.com/docs/guides/cli/managing-environments)
+- [Managing environments](https://supabase.com/docs/guides/deployment/managing-environments)
 
 ## Enterprise
 
@@ -69155,7 +69155,7 @@ We will also provide you with security alerts through [Security Advisor](https:/
 
 There are *many* ways to work with Supabase.
 
-You can use our Dashboard, our client libraries, external tools like Prisma and Drizzle, or migration tools like our CLI, Flyway, Sqitch, and anything else that is Postgres-compatible. You can develop directly on your database while you're getting started, run migrations from [local to production](https://supabase.com/docs/guides/getting-started/local-development), or you can use [multiple environments](https://supabase.com/docs/guides/cli/managing-environments).
+You can use our Dashboard, our client libraries, external tools like Prisma and Drizzle, or migration tools like our CLI, Flyway, Sqitch, and anything else that is Postgres-compatible. You can develop directly on your database while you're getting started, run migrations from [local to production](https://supabase.com/docs/guides/local-development/database-migrations), or you can use [multiple environments](https://supabase.com/docs/guides/deployment/managing-environments).
 
 None of these are right or wrong. It depends on the stage of your project. You *definitely* shouldn’t be developing on your database directly when you’re in production - but that’s absolutely fine when you’re prototyping and don’t have users.
 
@@ -69194,7 +69194,7 @@ You are responsible of provisioning enough compute to run the workload that your
 
 ## Before going to production
 
-We recommend reviewing and applying the recommendations offered in our [Production Checklist](https://supabase.com/docs/guides/platform/going-into-prod). This checklist covers the responsibilities discussed here and a few additional general production readiness best practices.
+We recommend reviewing and applying the recommendations offered in our [Production Checklist](https://supabase.com/docs/guides/deployment/going-into-prod). This checklist covers the responsibilities discussed here and a few additional general production readiness best practices.
 
 ## SOC 2 and compliance
 
@@ -69208,7 +69208,7 @@ You can use Supabase to store and process Protected Health Information (PHI). Yo
 - [Marking specific projects as HIPAA projects](https://supabase.com/docs/guides/platform/hipaa-projects) and addressing security issues raised by the advisor.
 - Ensuring [MFA is enabled](https://supabase.com/docs/guides/platform/multi-factor-authentication) on all Supabase accounts.
   - [Enforce MFA](https://supabase.com/docs/guides/platform/mfa/org-mfa-enforcement) as a requirement to access the organization
-- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) which requires at least a [small compute add-on](https://supabase.com/docs/guides/platform/compute-add-ons).
+- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) which requires at least a [small compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk).
 - Turning on [SSL Enforcement](https://supabase.com/docs/guides/platform/ssl-enforcement).
 - Enabling [Network Restrictions](https://supabase.com/docs/guides/platform/network-restrictions).
 - Keeping [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging) enabled. Supabase sets `log_connections` to off by default for new projects. Projects that need HIPAA compliance should keep connection logging on for audit trails, and the Security Advisor warns if it is disabled.
@@ -71111,7 +71111,7 @@ pipelines:
 
 ### Function configuration
 
-Individual function configuration like [JWT verification](https://supabase.com/docs/guides/cli/config#functions.function_name.verify_jwt) and [import map location](https://supabase.com/docs/guides/cli/config#functions.function_name.import_map) can be set via the `config.toml` file.
+Individual function configuration like [JWT verification](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.verify_jwt) and [import map location](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.import_map) can be set via the `config.toml` file.
 
 ```toml
 [functions.hello-world]
@@ -71136,7 +71136,7 @@ Set up your local development environment for Edge Functions.
 
 Get the best Edge Functions experience with the right local developer environment.
 
-Note: Before getting started, make sure you have the Supabase CLI installed. Check out the [CLI installation guide](https://supabase.com/docs/guides/cli) for installation methods and troubleshooting.
+Note: Before getting started, make sure you have the Supabase CLI installed. Check out the [CLI installation guide](https://supabase.com/docs/guides/local-development) for installation methods and troubleshooting.
 
 ***
 
@@ -71284,7 +71284,7 @@ We recommend this folder structure:
 
 ### Using config.toml
 
-Individual function configuration like [JWT verification](https://supabase.com/docs/guides/cli/config#functions.function_name.verify_jwt) and [import map location](https://supabase.com/docs/guides/cli/config#functions.function_name.import_map) can be set via the `config.toml` file.
+Individual function configuration like [JWT verification](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.verify_jwt) and [import map location](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.import_map) can be set via the `config.toml` file.
 
 ```toml supabase/config.toml
 [functions.hello-world]
@@ -72084,7 +72084,7 @@ To get the most out of this guide, you’ll need to:
 - [Create a Resend API key](https://resend.com/api-keys)
 - [Verify your domain](https://resend.com/domains)
 
-Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/cli#installation) installed.
+Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
 ### 1. Create Supabase function
 
@@ -72679,7 +72679,7 @@ ELEVENLABS_API_KEY=your_api_key
 
 The project uses a couple of dependencies:
 
-- The [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) library to interact with the Supabase database.
+- The [@supabase/supabase-js](https://supabase.com/docs/reference/javascript/introduction) library to interact with the Supabase database.
 - The ElevenLabs [JavaScript SDK](https://github.com/elevenlabs/elevenlabs-js) to interact with the text-to-speech API.
 - The open-source [object-hash](https://www.npmjs.com/package/object-hash) to generate a hash from the request parameters.
 
@@ -72930,7 +72930,7 @@ FUNCTION_SECRET=random_secret
 The project uses a couple of dependencies:
 
 - The open-source [grammY Framework](https://grammy.dev/) to handle the Telegram webhook requests.
-- The [@supabase/supabase-js](https://supabase.com/docs/reference/javascript) library to interact with the Supabase database.
+- The [@supabase/supabase-js](https://supabase.com/docs/reference/javascript/introduction) library to interact with the Supabase database.
 - The ElevenLabs [JavaScript SDK](https://github.com/elevenlabs/elevenlabs-js) to interact with the speech-to-text API.
 
 Since Supabase Edge Function uses the [Deno runtime](https://deno.land/), you don't need to install the dependencies, rather you can [import](https://docs.deno.com/examples/npm/) them via the `npm:` prefix.
@@ -73181,7 +73181,7 @@ jobs:
 
 Since Supabase CLI [v1.62.0](https://github.com/supabase/cli/releases/tag/v1.62.0) you can deploy all functions with a single command.
 
-Individual function configuration like [JWT verification](https://supabase.com/docs/guides/cli/config#functions.function_name.verify_jwt) and [import map location](https://supabase.com/docs/guides/cli/config#functions.function_name.import_map) can be set via the `config.toml` file.
+Individual function configuration like [JWT verification](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.verify_jwt) and [import map location](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.import_map) can be set via the `config.toml` file.
 
 ```toml
 [functions.hello-world]
@@ -73204,7 +73204,7 @@ Caution: Edge Functions currently doesn't support image processing libraries suc
 
 ### Prerequisites
 
-Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/cli#installation) installed.
+Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
 ### Create the Edge Function
 
@@ -73290,7 +73290,7 @@ You need:
 
 - [Docker](https://docs.docker.com/get-docker/) (to run Supabase locally)
 - [Deno](https://deno.land/) (Supabase Edge Functions runtime)
-- [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started)
+- [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started)
 
 ## Create a new MCP server
 
@@ -74302,7 +74302,7 @@ To get the most out of this guide, you’ll need to:
 - [Create an API key](https://resend.com/api-keys)
 - [Verify your domain](https://resend.com/domains)
 
-Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/cli#installation) installed.
+Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
 ### 1. Create Supabase function
 
@@ -74386,7 +74386,7 @@ Add the [Sentry Deno SDK](https://docs.sentry.io/platforms/javascript/guides/den
 ### Prerequisites
 
 - [Create a Sentry account](https://sentry.io/signup/).
-- Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/cli#installation) installed.
+- Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
 ### 1. Create Supabase function
 
@@ -74580,7 +74580,7 @@ cp supabase/functions/upstash-redis-counter/.env.example supabase/functions/upst
 
 ## Code
 
-Make sure you have the latest version of the [Supabase CLI installed](https://supabase.com/docs/guides/cli#installation).
+Make sure you have the latest version of the [Supabase CLI installed](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli).
 
 Create a new function in your project:
 
@@ -75408,7 +75408,7 @@ Now that your function is deployed, you can access it from your local developmen
 
 ### CLI
 
-Note: Before getting started, make sure you have the **Supabase CLI installed**. Check out the [CLI installation guide](https://supabase.com/docs/guides/cli) for installation methods and troubleshooting.
+Note: Before getting started, make sure you have the **Supabase CLI installed**. Check out the [CLI installation guide](https://supabase.com/docs/guides/local-development) for installation methods and troubleshooting.
 
 ```bash
 # Link your project to your local environment
@@ -75448,7 +75448,7 @@ Note: Supabase Edge Functions **only** supports creating functions in TypeScript
 
 ## Prerequisites
 
-- Make sure you have the Supabase CLI installed and configured. Read [the CLI installation guide](https://supabase.com/docs/guides/cli) for installation methods and troubleshooting.
+- Make sure you have the Supabase CLI installed and configured. Read [the CLI installation guide](https://supabase.com/docs/guides/local-development) for installation methods and troubleshooting.
 - Running and testing Supabase Edge Functions locally requires [Docker](https://www.docker.com/) or a Docker-compatible runtime.
 
 ## Step 1: Create or configure your project
@@ -76400,9 +76400,9 @@ Schedule Edge Functions with pg_cron.
 
 
 
-The hosted Supabase Platform supports the [`pg_cron` extension](https://supabase.com/docs/guides/database/extensions/pgcron), a recurring job scheduler in Postgres.
+The hosted Supabase Platform supports the [`pg_cron` extension](https://supabase.com/docs/guides/database/extensions/pg_cron), a recurring job scheduler in Postgres.
 
-In combination with the [`pg_net` extension](https://supabase.com/docs/guides/database/extensions/pgnet), this allows us to invoke Edge Functions periodically on a set schedule.
+In combination with the [`pg_net` extension](https://supabase.com/docs/guides/database/extensions/pg_net), this allows us to invoke Edge Functions periodically on a set schedule.
 
 Caution: To access the auth token securely for your Edge Function call, we recommend storing them in [Supabase Vault](https://supabase.com/docs/guides/database/vault).
 
@@ -76440,8 +76440,8 @@ select
 
 ## Resources
 
-- [`pg_net` extension](https://supabase.com/docs/guides/database/extensions/pgnet)
-- [`pg_cron` extension](https://supabase.com/docs/guides/database/extensions/pgcron)
+- [`pg_net` extension](https://supabase.com/docs/guides/database/extensions/pg_net)
+- [`pg_cron` extension](https://supabase.com/docs/guides/database/extensions/pg_cron)
 
 
 ---
@@ -77614,7 +77614,7 @@ An open source Dashboard for managing your database and services.
 
 A JWT-based API for managing users and issuing access tokens. This integrates with Postgres's Row Level Security and the API servers.
 
-- Official Docs: [Supabase Auth reference docs](https://supabase.com/docs/reference/auth)
+- Official Docs: [Supabase Auth reference docs](https://supabase.com/docs/reference/self-hosting-auth/start)
 - Source code: [github.com/supabase/gotrue](https://github.com/supabase/gotrue)
 - License: [MIT](https://github.com/supabase/gotrue/blob/master/LICENSE)
 - Language: Go
@@ -77642,7 +77642,7 @@ A scalable WebSocket engine for managing user Presence, broadcasting messages, a
 
 An S3-compatible object storage service that stores metadata in Postgres.
 
-- Official Docs: [Supabase Storage reference docs](https://supabase.com/docs/reference/storage)
+- Official Docs: [Supabase Storage reference docs](https://supabase.com/docs/reference/self-hosting-storage/start)
 - Source code: [github.com/supabase/storage-api](https://github.com/supabase/storage-api)
 - License: [Apache 2.0](https://github.com/supabase/storage-api/blob/master/LICENSE)
 - Language: Node.js / TypeScript
@@ -77741,7 +77741,7 @@ This is a non-exhaustive list of features that Supabase provides for every proje
 
 ### Postgres database
 
-Every project is a full Postgres database. [Docs](https://supabase.com/docs/guides/database).
+Every project is a full Postgres database. [Docs](https://supabase.com/docs/guides/database/overview).
 
 ### Vector database
 
@@ -77787,11 +77787,11 @@ Enforce Postgres clients to connect via SSL. [Docs](https://supabase.com/docs/gu
 
 ### Branching
 
-Use Supabase Branches to test and preview changes. [Docs](https://supabase.com/docs/guides/platform/branching).
+Use Supabase Branches to test and preview changes. [Docs](https://supabase.com/docs/guides/deployment/branching).
 
 ### Terraform provider
 
-Manage Supabase infrastructure via Terraform, an Infrastructure as Code tool. [Docs](https://supabase.com/docs/guides/platform/terraform).
+Manage Supabase infrastructure via Terraform, an Infrastructure as Code tool. [Docs](https://supabase.com/docs/guides/deployment/terraform).
 
 ### Read replicas
 
@@ -77799,7 +77799,7 @@ Deploy read-only databases across multiple regions, for lower latency and better
 
 ### Log drains
 
-Export Supabase logs to 3rd party providers and external tooling. [Docs](https://supabase.com/docs/guides/platform/log-drains).
+Export Supabase logs to third-party providers and external tooling. [Docs](https://supabase.com/docs/guides/telemetry/log-drains).
 
 ## Studio
 
@@ -77827,7 +77827,7 @@ Synchronize shared state across your users, including online status and typing i
 
 ### Email login
 
-Build email logins for your application or website. [Docs](https://supabase.com/docs/guides/auth/auth-email).
+Build email logins for your application or website. [Docs](https://supabase.com/docs/guides/auth/passwords).
 
 ### Social login
 
@@ -77839,7 +77839,7 @@ Provide phone logins using a third-party SMS provider. [Docs](https://supabase.c
 
 ### Passwordless login
 
-Build passwordless logins via magic links for your application or website. [Docs](https://supabase.com/docs/guides/auth/auth-magic-link).
+Build passwordless logins via magic links for your application or website. [Docs](https://supabase.com/docs/guides/auth/auth-email-passwordless).
 
 ### Authorization via Row Level Security
 
@@ -81169,7 +81169,7 @@ Learn how to use Supabase in your Angular App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -81197,7 +81197,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -81390,7 +81390,7 @@ Learn how to use Supabase in your React Native App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -81418,7 +81418,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -81707,7 +81707,7 @@ Learn how to use Supabase in your Flutter App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -81735,7 +81735,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -82635,7 +82635,7 @@ Learn how to use Supabase in your Ionic Angular App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -82663,7 +82663,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -82876,7 +82876,7 @@ Learn how to use Supabase in your Ionic React App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -82904,7 +82904,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -83097,7 +83097,7 @@ Learn how to use Supabase in your Ionic Vue App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -83125,7 +83125,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -83326,7 +83326,7 @@ Learn how to use Supabase in your Android Kotlin App.
 
 This tutorial demonstrates how to build a basic product management app. The app demonstrates management operations, photo upload, account creation and authentication using:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - users log in through magic links sent to their email (without having to set up a password).
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - users can upload a profile photo.
 
@@ -84781,7 +84781,7 @@ Explore Components
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -84809,7 +84809,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -85097,7 +85097,7 @@ Explore Components
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -85125,7 +85125,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -85584,7 +85584,7 @@ Explore Components
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -85612,7 +85612,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -85806,7 +85806,7 @@ Learn how to use Supabase in your RedwoodJS App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -85856,7 +85856,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -86484,7 +86484,7 @@ Learn how to use Supabase in your Refine App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -86518,7 +86518,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -86810,7 +86810,7 @@ Learn how to use Supabase in your SolidJS App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -86838,7 +86838,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -87057,7 +87057,7 @@ Learn how to use Supabase in your Svelte App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -87085,7 +87085,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -87269,7 +87269,7 @@ Learn how to use Supabase in your SvelteKit App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -87297,7 +87297,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -87549,7 +87549,7 @@ Learn how to use Supabase in your SwiftUI App.
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -87577,7 +87577,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -88187,7 +88187,7 @@ Explore Components
 
 This tutorial demonstrates how to build a basic user management app. The app authenticates and identifies the user, stores their profile information in the database, and allows the user to log in, update their profile details, and upload a profile photo. The app uses:
 
-- [Supabase Database](https://supabase.com/docs/guides/database) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
+- [Supabase Database](https://supabase.com/docs/guides/database/overview) - a Postgres database for storing your user data and [Row Level Security](https://supabase.com/docs/guides/auth#row-level-security) so data is protected and users can only access their own information.
 - [Supabase Auth](https://supabase.com/docs/guides/auth) - allow users to sign up and log in.
 - [Supabase Storage](https://supabase.com/docs/guides/storage) - allow users to upload a profile photo.
 
@@ -88215,7 +88215,7 @@ Now set up the database schema. You can use the "User Management Starter" quicks
 2. Click **User Management Starter** under the **Community > Quickstarts** tab.
 3. Click **Run**.
 
-Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/cli/local-development#link-your-project) for detailed instructions.
+Note: You can pull the database schema down to your local project by running the `db pull` command. Read the [local development docs](https://supabase.com/docs/guides/local-development/database-migrations#link-your-project) for detailed instructions.
 
 ```bash
 supabase link --project-ref <project-id>
@@ -93627,7 +93627,7 @@ Within your app's UI, redirect the user to [`https://api.supabase.com/v1/oauth/a
 - `state`: Information about the state of your app. Note that `redirect_uri` and `state` together cannot exceed 4kB in size.
 - `organization_slug`: The slug of the organization you want to connect to. This is optional, but if provided, it will pre-select the organization for the user.
 - \[Recommended] PKCE: We strongly recommend using the PKCE flow for increased security. Generate a random value before taking the user to the authorize endpoint. This value is called code verifier. Hash it with SHA256 and include it as the `code_challenge` parameter, while setting `code_challenge_method` to `S256`. In the next step, you would need to provide the code verifier to get the first access and refresh token.
-- \[Deprecated] `scope`: Scopes are configured when you create your OAuth app. Read the [docs](https://supabase.com/docs/guides/platform/oauth-apps/oauth-scopes) for more details.
+- \[Deprecated] `scope`: Scopes are configured when you create your OAuth app. Read the [docs](https://supabase.com/docs/guides/integrations/build-a-supabase-oauth-integration/oauth-scopes) for more details.
 
 ```ts
 router.get('/connect-supabase/login', async (ctx) => {
@@ -93764,13 +93764,13 @@ Only some features are available until we roll out fine-grained access control. 
 
 Scopes let you specify the level of access your integration needs
 
-Note: Scopes are only available for OAuth apps. Check out [**our guide**](https://supabase.com/docs/guides/platform/oauth-apps/build-a-supabase-integration) to learn how to build an OAuth app integration.
+Note: Scopes are only available for OAuth apps. Check out [**our guide**](https://supabase.com/docs/guides/integrations/build-a-supabase-oauth-integration) to learn how to build an OAuth app integration.
 
 Scopes restrict access to the specific [Supabase Management API endpoints](https://supabase.com/docs/reference/api/introduction) for OAuth tokens. All scopes can be specified as read and/or write.
 
-Scopes are set when you [create an OAuth app](https://supabase.com/docs/guides/platform/oauth-apps/build-a-supabase-integration#create-an-oauth-app) in the Supabase Dashboard.
+Scopes are set when you [create an OAuth app](https://supabase.com/docs/guides/integrations/build-a-supabase-oauth-integration#create-an-oauth-app) in the Supabase Dashboard.
 
-You can update scopes of your OAuth app at any time, but existing OAuth app users will need to re-authorize your app via the [OAuth flow](https://supabase.com/docs/guides/integrations/build-a-supabase-integration#implementing-the-oauth-20-flow) to apply the new scopes.
+You can update scopes of your OAuth app at any time, but existing OAuth app users will need to re-authorize your app via the [OAuth flow](https://supabase.com/docs/guides/integrations/build-a-supabase-oauth-integration#implementing-the-oauth-20-flow) to apply the new scopes.
 
 ## Available scopes
 
@@ -94122,7 +94122,7 @@ This document will guide you on best practices when using Supabase for your own 
 
 ## Overview
 
-All features of Supabase can be managed through the [Management API](https://supabase.com/docs/reference/api/introduction) or the [remote MCP Server](https://supabase.com/docs/guides/getting-started/mcp).
+All features of Supabase can be managed through the [Management API](https://supabase.com/docs/reference/api/introduction) or the [remote MCP Server](https://supabase.com/docs/guides/ai-tools/mcp).
 
 ## Launching projects
 
@@ -95290,6 +95290,20 @@ Beta builds are attached to [GitHub pre-releases](https://github.com/supabase/cl
 
 When a new [version](https://github.com/supabase/cli/releases) is released, you can update the CLI using the same channels.
 
+**npm**
+
+If you have installed the CLI as dev dependency via [npm](https://www.npmjs.com/package/supabase), you can update it with:
+
+```sh
+npm update supabase --save-dev
+```
+
+Beta channel (`supabase@beta`):
+
+```sh
+npm update supabase@beta --save-dev
+```
+
 **macOS**
 
 ```sh
@@ -95328,27 +95342,13 @@ Beta channel:
 brew upgrade supabase-beta
 ```
 
-#### Linux package manager
+#### Linux packages
 
 1. Download the latest package from the [Supabase CLI releases page](https://github.com/supabase/cli/releases/latest)
 2. Install the package using the same commands as the [initial installation](#linux-packages):
    - `sudo apk add --allow-untrusted <...>.apk`
    - `sudo dpkg -i <...>.deb`
    - `sudo rpm -i <...>.rpm`
-
-**npm**
-
-If you have installed the CLI as dev dependency via [npm](https://www.npmjs.com/package/supabase), you can update it with:
-
-```sh
-npm update supabase --save-dev
-```
-
-Beta channel (`supabase@beta`):
-
-```sh
-npm update supabase@beta --save-dev
-```
 
 If you have any Supabase containers running locally, stop them and delete their data volumes before proceeding with the upgrade. This ensures that Supabase managed services can apply new migrations on a clean state of the local database.
 
@@ -95478,7 +95478,7 @@ Note: `sb_publishable_...` is the publishable key output when you run the comman
 
 Local logs rely on the Supabase Analytics Server which accesses the docker logging driver by either volume mounting `/var/run/docker.sock` domain socket on Linux and macOS, or exposing `tcp://localhost:2375` daemon socket on Windows. These settings must be configured manually after [installing](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) the Supabase CLI.
 
-Note: For advanced logs analysis using the Logs Explorer, it is advised to use the BigQuery backend instead of the default Postgres backend. Read about the steps [here](https://supabase.com/docs/reference/self-hosting-analytics/introduction#bigquery).
+Note: For advanced logs analysis using the Logs Explorer, it is advised to use the BigQuery backend instead of the default Postgres backend. Read about the steps [here](https://supabase.com/docs/reference/self-hosting-analytics/introduction#using-the-bigquery-backend).
 
 All logs are stored in the local database under the `_analytics` schema.
 
@@ -95561,7 +95561,7 @@ By default, Mailpit is available at [localhost:54324](http://localhost:54324) wh
 
 ### Going into production
 
-The "default" email provided by Supabase is only for development purposes. It is [heavily restricted](https://supabase.com/docs/guides/platform/going-into-prod#auth-rate-limits) to ensure that it is not used for spam. Before going into production, configure your own email provider by enabling SMTP credentials in your [project settings](https://supabase.com/dashboard/project/_/auth/smtp).
+The "default" email provided by Supabase is only for development purposes. It is [heavily restricted](https://supabase.com/docs/guides/deployment/going-into-prod#auth-rate-limits) to ensure that it is not used for spam. Before going into production, configure your own email provider by enabling SMTP credentials in your [project settings](https://supabase.com/dashboard/project/_/auth/smtp).
 
 ## Linting your database
 
@@ -96391,7 +96391,7 @@ The Supabase CLI uses a `config.toml` file to manage local configuration. This f
 
 The `config.toml` file is automatically created when you run `supabase init`.
 
-There are a wide variety of options available, which can be found in the [CLI Config Reference](https://supabase.com/docs/guides/cli/config).
+There are a wide variety of options available, which can be found in the [CLI Config Reference](https://supabase.com/docs/guides/local-development/cli/config).
 
 For example, to enable the "Apple" OAuth provider for local development, you can append the following information to `config.toml`:
 
@@ -97709,8 +97709,8 @@ Visit [supabase.com/dashboard](https://supabase.com/dashboard) and sign in to st
 
 Each project on Supabase comes with:
 
-- A dedicated [Postgres database](https://supabase.com/docs/guides/database)
-- [Auto-generated APIs](https://supabase.com/docs/guides/database/api)
+- A dedicated [Postgres database](https://supabase.com/docs/guides/database/overview)
+- [Auto-generated APIs](https://supabase.com/docs/guides/api)
 - [Auth and user management](https://supabase.com/docs/guides/auth)
 - [Edge Functions](https://supabase.com/docs/guides/functions)
 - [Realtime API](https://supabase.com/docs/guides/realtime)
@@ -98352,7 +98352,7 @@ This documentation covers frequently asked questions around subscription plans, 
 #### What are organizations and projects?
 
 The Supabase Platform has "organizations" and "projects". An organization may contain multiple projects. Each project is a dedicated Supabase instance with all of its sub-services including Storage, Auth, Functions and Realtime.
-Each organization only has a single subscription with a single plan (Free, Pro, Team or Enterprise). Project add-ons such as [Compute](https://supabase.com/docs/guides/platform/compute-add-ons), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/platform/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone), [Custom Domains](https://supabase.com/docs/guides/platform/custom-domains) and [PITR](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) are configured per project and are added to your organization subscription.
+Each organization only has a single subscription with a single plan (Free, Pro, Team or Enterprise). Project add-ons such as [Compute](https://supabase.com/docs/guides/platform/compute-and-disk), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/telemetry/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone), [Custom Domains](https://supabase.com/docs/guides/platform/custom-domains) and [PITR](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) are configured per project and are added to your organization subscription.
 
 Read more on [About billing on Supabase](https://supabase.com/docs/guides/platform/billing-on-supabase#organization-based-billing).
 
@@ -98394,7 +98394,7 @@ Refer to our [Compute](https://supabase.com/docs/guides/platform/manage-your-usa
 
 #### How does compute billing work?
 
-Each Supabase project is a dedicated VM and Postgres database. By default, your instance runs on the Micro compute instance. You have the option to upgrade your compute size in your [Project settings](https://supabase.com/dashboard/project/_/settings/addons). See [Compute Add-ons](https://supabase.com/docs/guides/platform/compute-add-ons) for available options.
+Each Supabase project is a dedicated VM and Postgres database. By default, your instance runs on the Micro compute instance. You have the option to upgrade your compute size in your [Project settings](https://supabase.com/dashboard/project/_/settings/addons). See [Compute Add-ons](https://supabase.com/docs/guides/platform/compute-and-disk) for available options.
 
 When you change your compute size, there are no immediate upfront charges. Instead, you will be billed based on the compute hours during your billing cycle reset.
 
@@ -98472,7 +98472,7 @@ The Fair Use Policy is applied through service restrictions. This could mean:
 - Pausing projects
 - Switching databases to read-only mode
 - Disabling new project launches/transfers
-- Responding with a [402 status code](https://supabase.com/docs/guides/platform/http-status-codes#402-service-restriction) for all API requests
+- Responding with a [402 status code](https://supabase.com/docs/guides/troubleshooting/http-status-codes#402-service-restriction) for all API requests
 
 The Fair Use Policy is generally applied to all projects of the restricted organization.
 
@@ -99091,8 +99091,8 @@ This example assumes your Supabase project is `abcdefghijklmnopqrst` with a corr
 
 To get started:
 
-1. [Install](https://supabase.com/docs/guides/resources/supabase-cli) the latest version of the Supabase CLI.
-2. [Log in](https://supabase.com/docs/guides/cli/local-development#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
+1. [Install](https://supabase.com/docs/guides/local-development) the latest version of the Supabase CLI.
+2. [Log in](https://supabase.com/docs/guides/local-development/database-migrations#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
 3. Ensure you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project.
 4. Get a custom domain from a DNS provider. Currently, only subdomains are supported.
    - Use `api.example.com` instead of `example.com`.
@@ -99202,8 +99202,8 @@ Vanity subdomains allow you to present a basic branded experience, compared to c
 
 To get started:
 
-1. [Install](https://supabase.com/docs/guides/resources/supabase-cli) the latest version of the Supabase CLI.
-2. [Log in](https://supabase.com/docs/guides/cli/local-development#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
+1. [Install](https://supabase.com/docs/guides/local-development) the latest version of the Supabase CLI.
+2. [Log in](https://supabase.com/docs/guides/local-development/database-migrations#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
 3. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project you'd like to set up a vanity subdomain for.
 4. Ensure that your organization is on a paid plan (Pro/Team/Enterprise Plan) in the [Billing page of the Dashboard](https://supabase.com/dashboard/org/_/billing).
 
@@ -99654,7 +99654,7 @@ The required project configuration is outlined in the [shared responsibility mod
 
 These include:
 
-- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) which requires at least a [small compute add-on](https://supabase.com/docs/guides/platform/compute-add-ons).
+- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) which requires at least a [small compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk).
 - Turning on [SSL Enforcement](https://supabase.com/docs/guides/platform/ssl-enforcement).
 - Enabling [Network Restrictions](https://supabase.com/docs/guides/platform/network-restrictions).
 - Keeping [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging) enabled.
@@ -102765,8 +102765,8 @@ For more advanced migrations, including the use of a middleware server component
 ## Resources
 
 - [Supabase vs Firebase](https://supabase.com/alternatives/supabase-vs-firebase)
-- [Firestore Data Migration](https://supabase.com/docs/guides/migrations/firestore-data)
-- [Firestore Storage Migration](https://supabase.com/docs/guides/migrations/firebase-storage)
+- [Firestore Data Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firestore-data)
+- [Firestore Storage Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-storage)
 
 ## Migrate to Supabase
 
@@ -102835,8 +102835,8 @@ Note: If the bucket doesn't exist, it's created as a `non-public` bucket. You mu
 ## Resources
 
 - [Supabase vs Firebase](https://supabase.com/alternatives/supabase-vs-firebase)
-- [Firestore Data Migration](https://supabase.com/docs/guides/migrations/firestore-data)
-- [Firebase Auth Migration](https://supabase.com/docs/guides/migrations/firebase-auth)
+- [Firestore Data Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firestore-data)
+- [Firebase Auth Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-auth)
 
 ## Migrate to Supabase
 
@@ -103052,8 +103052,8 @@ The result is two separate JSON files:
 ## Resources
 
 - [Supabase vs Firebase](https://supabase.com/alternatives/supabase-vs-firebase)
-- [Firestore Storage Migration](https://supabase.com/docs/guides/migrations/firebase-storage)
-- [Firebase Auth Migration](https://supabase.com/docs/guides/migrations/firebase-auth)
+- [Firestore Storage Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-storage)
+- [Firebase Auth Migration](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-auth)
 
 ## Migrate to Supabase
 
@@ -105177,9 +105177,9 @@ To configure network restrictions with the dashboard:
 
 To configure network restrictions with the CLI:
 
-1. [Install](https://supabase.com/docs/guides/cli) the Supabase CLI 1.22.0+.
-2. [Log in](https://supabase.com/docs/guides/cli/local-development#log-in-to-the-supabase-cli) to your Supabase account.
-3. If your project was created before December 23, 2022, [upgrade it to the latest Supabase version](https://supabase.com/docs/guides/platform/migrating-and-upgrading-projects) before using network restrictions.
+1. [Install](https://supabase.com/docs/guides/local-development) the Supabase CLI 1.22.0+.
+2. [Log in](https://supabase.com/docs/guides/local-development/database-migrations#log-in-to-the-supabase-cli) to your Supabase account.
+3. If your project was created before December 23, 2022, [upgrade it to the latest Supabase version](https://supabase.com/docs/guides/platform/upgrading) before using network restrictions.
 4. Ensure you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project.
 
 ### Check restrictions
@@ -105251,8 +105251,8 @@ To remove all network restrictions:
 
 ## Limitations
 
-- Network restrictions apply to Postgres and the database pooler. They don't apply to HTTPS APIs such as PostgREST, Storage, and Auth, or to Supabase client libraries like [supabase-js](https://supabase.com/docs/reference/javascript).
-- With network restrictions applied, Edge functions lose direct access to the database. Use [supabase-js](https://supabase.com/docs/reference/javascript) to connect to the database from Edge Functions instead.
+- Network restrictions apply to Postgres and the database pooler. They don't apply to HTTPS APIs such as PostgREST, Storage, and Auth, or to Supabase client libraries like [supabase-js](https://supabase.com/docs/reference/javascript/introduction).
+- With network restrictions applied, Edge functions lose direct access to the database. Use [supabase-js](https://supabase.com/docs/reference/javascript/introduction) to connect to the database from Edge Functions instead.
 
 
 ---
@@ -105288,7 +105288,7 @@ In such a scenario, you can consider:
 
 You can use the [pg\_stat\_activity](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-ACTIVITY-VIEW) view to debug which clients are holding open connections on your DB. `pg_stat_activity` only exposes information on direct connections to the database. Information on the number of connections to Supavisor is available [via the metrics endpoint](../telemetry/metrics).
 
-Depending on the clients involved, you might be able to configure them to work with fewer connections (e.g. by imposing a limit on the maximum number of connections they're allowed to use), or shift specific workloads to connect via [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler) instead. Transient workflows, which can scale up and down rapidly in response to traffic (e.g. serverless functions), can especially benefit from using a connection pooler rather than connecting to the DB directly.
+Depending on the clients involved, you might be able to configure them to work with fewer connections (e.g. by imposing a limit on the maximum number of connections they're allowed to use), or shift specific workloads to connect via [Supavisor](https://supabase.com/docs/guides/database/connecting-to-postgres#poolers) instead. Transient workflows, which can scale up and down rapidly in response to traffic (e.g. serverless functions), can especially benefit from using a connection pooler rather than connecting to the DB directly.
 
 ### Allowing higher number of connections
 
@@ -105589,7 +105589,7 @@ Target organization - the organization you want to move the project to
 
 ## Usage-billing and project add-ons
 
-For usage metrics such as disk size, egress or image transformations and project add-ons such as [Compute Add-On](https://supabase.com/docs/guides/platform/compute-add-ons), [Point-In-Time-Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/platform/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone) or a [Custom Domain](https://supabase.com/docs/guides/platform/custom-domains), the source organization will still be charged for the usage up until the transfer. The charges will be added to the invoice when the billing cycle resets.
+For usage metrics such as disk size, egress or image transformations and project add-ons such as [Compute Add-On](https://supabase.com/docs/guides/platform/compute-and-disk), [Point-In-Time-Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/telemetry/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone) or a [Custom Domain](https://supabase.com/docs/guides/platform/custom-domains), the source organization will still be charged for the usage up until the transfer. The charges will be added to the invoice when the billing cycle resets.
 
 The target organization will be charged at the end of the billing cycle for usage after the project transfer.
 
@@ -105748,11 +105748,11 @@ Projects must meet these requirements to use Read Replicas:
 
 1. Running on AWS.
 
-2. Running on at least a [Small compute add-on](https://supabase.com/docs/guides/platform/compute-add-ons).
+2. Running on at least a [Small compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk).
    - Read Replicas are started on the same compute instance as the Primary to keep up with changes.
 
 3. Running on Postgres 15+.
-   - For projects running on older versions of Postgres, you need to [upgrade to the latest platform version](https://supabase.com/docs/guides/platform/migrating-and-upgrading-projects#pgupgrade).
+   - For projects running on older versions of Postgres, you need to [upgrade to the latest platform version](https://supabase.com/docs/guides/platform/upgrading).
 
 4. Not using [legacy logical backups](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery)
    - Physical backups are automatically enabled if using [Point in time recovery (PITR)](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery)
@@ -105833,7 +105833,7 @@ Once the Primary database has completed restarting (or resizing, in case of a co
 
 The following procedures require all Read Replicas for a project to be brought down before performing them:
 
-1. [Project upgrades](https://supabase.com/docs/guides/platform/migrating-and-upgrading-projects#pgupgrade)
+1. [Project upgrades](https://supabase.com/docs/guides/platform/upgrading)
 2. [Data restorations](https://supabase.com/docs/guides/platform/backups#pitr-restoration-process)
 
 These operations need to complete before you can re-deploy Read Replicas.
@@ -105969,8 +105969,8 @@ curl -X PUT "https://api.supabase.com/v1/projects/$PROJECT_REF/ssl-enforcement" 
 
 To get started:
 
-1. [Install](https://supabase.com/docs/guides/cli) the Supabase CLI 1.37.0+.
-2. [Log in](https://supabase.com/docs/guides/getting-started/local-development#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
+1. [Install](https://supabase.com/docs/guides/local-development) the Supabase CLI 1.37.0+.
+2. [Log in](https://supabase.com/docs/guides/local-development/database-migrations#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
 3. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project that you are enabling SSL enforcement.
 
 ### Check enforcement status
@@ -116653,7 +116653,7 @@ The report displays the total number of connected Realtime clients, showing how 
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Configure connection limit  | Adjust the "Max concurrent connections" setting to increase or decrease the connection limit for your project                                                | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                                                                     |
 | Upgrade plan                | Increase available client connections. Connection limits vary by plan: Free (200), Pro (500), Pro no spend cap (10,000), Team (10,000), Enterprise (10,000+) | [Pricing and Plans](https://supabase.com/pricing)                                                                                                                                 |
-| Review quotas               | Understand connection limits and other Realtime quotas for your plan                                                                                         | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/quotas)                                                                                                     |
+| Review quotas               | Understand connection limits and other Realtime quotas for your plan                                                                                         | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                                                                                     |
 | Understand connection quota | Learn how the concurrent connections quota works and how to configure it for your plan                                                                       | [Concurrent Peak Connections Quota Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-concurrent-peak-connections-quota-jdDqcp)                           |
 | Fix silent disconnections   | Fix connection issues in background applications using heartbeat callbacks and Web Workers                                                                   | [Handling Silent Disconnections in Background Apps](https://supabase.com/docs/guides/troubleshooting/realtime-handling-silent-disconnections-in-backgrounded-applications-592794) |
 | Check logs                  | Investigate connection errors and quota errors in your project dashboard                                                                                     | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                                                                        |
@@ -116672,7 +116672,7 @@ The report displays the total number of broadcast events sent by clients, showin
 | Action                 | Description                                                                                                                                                          | More information                                                                                                  |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | Configure event limits | Adjust "Max events per second" and "Max payload size in KB" settings to optimize broadcast throughput and message size limits                                        | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                     |
-| Review quotas          | Understand message per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and broadcast payload size limits (Free: 256 KB, Pro+: 3,000 KB) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/quotas)                                     |
+| Review quotas          | Understand message per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and broadcast payload size limits (Free: 256 KB, Pro+: 3,000 KB) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                     |
 | Check logs             | Investigate broadcast errors or quota limit issues in your project dashboard                                                                                         | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                        |
 | Debug with logger      | Enable logging to track messages sent and received, and diagnose broadcast delivery issues                                                                           | [Debugging Realtime with Logger](https://supabase.com/docs/guides/troubleshooting/realtime-debugging-with-logger) |
 | Learn broadcast basics | Understand how to implement and optimize broadcast messaging in your application                                                                                     | [Broadcast Guide](https://supabase.com/docs/guides/realtime/broadcast)                                            |
@@ -116691,7 +116691,7 @@ The report displays the total number of presence events sent by clients, showing
 | Action                    | Description                                                                                                                                                         | More information                                                                                                  |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | Configure presence limits | Adjust the "Max presence events per second" setting to optimize presence state update throughput                                                                    | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                     |
-| Review quotas             | Understand presence messages per second limits (Free: 20, Pro: 50, Pro no spend cap/Team/Enterprise: 1,000) and presence keys per object limits (10 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/quotas)                                     |
+| Review quotas             | Understand presence messages per second limits (Free: 20, Pro: 50, Pro no spend cap/Team/Enterprise: 1,000) and presence keys per object limits (10 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                     |
 | Check logs                | Investigate presence errors or quota limit issues in your project dashboard                                                                                         | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                        |
 | Debug with logger         | Enable logging to track presence events and diagnose state synchronization issues                                                                                   | [Debugging Realtime with Logger](https://supabase.com/docs/guides/troubleshooting/realtime-debugging-with-logger) |
 | Learn presence basics     | Understand how to implement and optimize presence state tracking in your application                                                                                | [Presence Guide](https://supabase.com/docs/guides/realtime/presence)                                              |
@@ -116709,7 +116709,7 @@ The report displays the total number of Postgres change events received by clien
 
 | Action                   | Description                                                                                           | More information                                                                                                           |
 | ------------------------ | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Review quotas            | Understand Postgres change payload size limits (1,024 KB for all plans) and message throughput limits | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/quotas)                                              |
+| Review quotas            | Understand Postgres change payload size limits (1,024 KB for all plans) and message throughput limits | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                              |
 | Check logs               | Investigate Postgres Changes errors or performance issues in your project dashboard                   | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                 |
 | Learn Postgres Changes   | Understand limitations and best practices for using Postgres Changes                                  | [Postgres Changes Guide](https://supabase.com/docs/guides/realtime/postgres-changes)                                       |
 | Migrate to Broadcast     | For better scalability, consider using Broadcast with database triggers instead of Postgres Changes   | [Broadcast Guide](https://supabase.com/docs/guides/realtime/broadcast)                                                     |
@@ -116729,7 +116729,7 @@ The report displays the rate of channel joins per second, showing how frequently
 
 | Action               | Description                                                                                                                                                       | More information                                                                                                           |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Review quotas        | Understand channel joins per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and channels per connection limits (100 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/quotas)                                              |
+| Review quotas        | Understand channel joins per second limits (Free: 100, Pro: 500, Pro no spend cap/Team/Enterprise: 2,500) and channels per connection limits (100 for most plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                              |
 | Check logs           | Investigate `too_many_joins` errors or channel join failures in your project dashboard                                                                            | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                 |
 | Fix channel errors   | Learn how to properly manage channel lifecycle and prevent channel leaks in your application                                                                      | [TooManyChannels Error Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-too-many-channels-error) |
 | Learn channel basics | Understand how Realtime channels work and best practices for channel management                                                                                   | [Realtime Channels Concepts](https://supabase.com/docs/guides/realtime/concepts#channels)                                  |
@@ -116748,7 +116748,7 @@ The report displays the median payload size in bytes, showing how message sizes 
 | Action                   | Description                                                                                                            | More information                                                                                                             |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | Configure payload limits | Adjust the "Max payload size in KB" setting to increase or decrease the maximum message size allowed                   | [Realtime Settings Guide](https://supabase.com/docs/guides/realtime/settings)                                                |
-| Review quotas            | Understand payload size limits: Broadcast (Free: 256 KB, Pro+: 3,000 KB) and Postgres Changes (1,024 KB for all plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/quotas)                                                |
+| Review quotas            | Understand payload size limits: Broadcast (Free: 256 KB, Pro+: 3,000 KB) and Postgres Changes (1,024 KB for all plans) | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                                |
 | Check logs               | Investigate payload-related errors or performance issues in your project dashboard                                     | [Realtime Logs Dashboard](https://supabase.com/dashboard/project/_/database/realtime-logs)                                   |
 | Review benchmarks        | Understand how payload size affects latency and throughput (larger payloads increase latency)                          | [Payload Size Performance Benchmarks](https://supabase.com/docs/guides/realtime/benchmarks#broadcast-impact-of-payload-size) |
 | Debug query performance  | Use `explain()` to analyze queries and identify performance bottlenecks that may be causing large payloads             | [Query Performance Debugging Guide](https://supabase.com/docs/guides/database/debugging-performance)                         |
@@ -116858,7 +116858,7 @@ The report displays the total number of response errors from the Realtime API, s
 | Learn HTTP status codes | Learn about HTTP status codes including 4XX client errors and 5XX server errors                                             | [HTTP Status Codes Troubleshooting](https://supabase.com/docs/guides/troubleshooting/http-status-codes)                                |
 | Fix timeout errors      | Resolve WebSocket timeout errors caused by Node.js version incompatibility                                                  | [TIMED\_OUT Connection Errors Troubleshooting](https://supabase.com/docs/guides/troubleshooting/realtime-connections-timed_out-status) |
 | Understand heartbeats   | Monitor heartbeat status to detect connection issues and handle timeouts                                                    | [Realtime Heartbeats Guide](https://supabase.com/docs/guides/troubleshooting/realtime-heartbeat-messages)                              |
-| Review quotas           | Check if errors are related to quota limits (e.g., `too_many_connections`, `too_many_joins`)                                | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/quotas)                                                          |
+| Review quotas           | Check if errors are related to quota limits (e.g., `too_many_connections`, `too_many_joins`)                                | [Realtime Quotas Reference](https://supabase.com/docs/guides/realtime/limits)                                                          |
 | Learn authorization     | Troubleshoot authorization-related errors for private channels                                                              | [Realtime Authorization Guide](https://supabase.com/docs/guides/realtime/authorization)                                                |
 | Contact support         | Get assistance with persistent errors or investigate service-level issues                                                   | [Support Portal](https://supabase.com/dashboard/support/new)                                                                           |
 
@@ -128558,7 +128558,7 @@ Supabase updates these troubleshooting guides continuously, so treat this table 
 | Webhook not firing; `pg_cron` job not running; `pg_net` queue stuck; `42501 ... http_request_queue`                                                                                                              | Database jobs → `postgres_logs`                          | [Webhook debugging](https://supabase.com/docs/guides/troubleshooting/webhook-debugging-guide-M8sk47) · [pg\_cron debugging](https://supabase.com/docs/guides/troubleshooting/pgcron-debugging-guide-n1KTaz) · [42501 http\_request\_queue](https://supabase.com/docs/guides/troubleshooting/42501--permission-denied-for-table-httprequestqueue-KnozmQ)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Reading or querying logs; interpreting Postgres logs; finding API errors in logs; reading metrics                                                                                                                | Diagnostics → any log source                             | [Logging guide](https://supabase.com/docs/guides/telemetry/logs) · [Interpret Postgres logs](https://supabase.com/docs/guides/troubleshooting/how-to-interpret-and-explore-the-postgres-logs-OuCIOj) · [API errors in logs](https://supabase.com/docs/guides/troubleshooting/discovering-and-interpreting-api-errors-in-the-logs-7xREI9) · [Logging levels](https://supabase.com/docs/guides/troubleshooting/understanding-postgresql-logging-levels-and-how-they-impact-your-project-KXiJRm) · [View database metrics](https://supabase.com/docs/guides/troubleshooting/how-to-view-database-metrics-uqf2z_)                                                                                                                                                                                                                                                                                                               |
 
-For query performance and schema-design questions such as indexing, `EXPLAIN`, N+1 queries, or partitioning, see the [Postgres guides](https://supabase.com/docs/guides/database).
+For query performance and schema-design questions such as indexing, `EXPLAIN`, N+1 queries, or partitioning, see the [Postgres guides](https://supabase.com/docs/guides/database/overview).
 
 Debugging is complete only once you've re-run the failing operation, confirmed it succeeds, and checked that the layer's logs show a clean result.
 
@@ -129422,7 +129422,7 @@ order by n desc
 limit 100;
 ```
 
-If you use the [Supabase MCP server](https://supabase.com/docs/guides/getting-started/mcp), the `query_logs` tool runs a custom ClickHouse query like the ones above on hosted projects. The `get_logs` tool returns a service's recent logs without SQL; it is deprecated on hosted projects in favor of `query_logs`, and remains the option for local and self-hosted projects.
+If you use the [Supabase MCP server](https://supabase.com/docs/guides/ai-tools/mcp), the `query_logs` tool runs a custom ClickHouse query like the ones above on hosted projects. The `get_logs` tool returns a service's recent logs without SQL; it is deprecated on hosted projects in favor of `query_logs`, and remains the option for local and self-hosted projects.
 
 ### LIMIT and result row limitations
 
@@ -130882,7 +130882,7 @@ While pointing out the exact cause for egress may not be straightforward, there 
 - Reduce the number of queries/calls by optimising client code or use caches to reduce the number of requests/queries being done: [https://github.com/psteinroe/supabase-cache-helpers/](https://github.com/psteinroe/supabase-cache-helpers/)
 - In case of update/insert queries, if you don't need the entire row to be returned, configure your ORM/queries to not return the entire row
 - In case of running manual backups through Supavisor, remove unneeded tables and/or reduce the frequency
-- For Storage, if you start using the [Smart CDN](https://supabase.com/docs/guides/storage/cdn/smart-cdn) Storage Egress usage can be reduced. You can also use the [Supabase Image Transformations](https://supabase.com/docs/guides/storage/image-transformations) to optimize the images and reduce the egress.
+- For Storage, if you start using the [Smart CDN](https://supabase.com/docs/guides/storage/cdn/smart-cdn) Storage Egress usage can be reduced. You can also use the [Supabase Image Transformations](https://supabase.com/docs/guides/storage/serving/image-transformations) to optimize the images and reduce the egress.
 
 **Cached vs uncached egress**
 
@@ -131117,7 +131117,7 @@ If you want to temporarily upgrade, you can find the add-ons for your project in
 
 You can run this query to check the current settings set for your roles: `SELECT rolname, rolconfig FROM   pg_roles;`
 
-To increase the `statement_timeout` for a specific role, you may follow the instructions [here](https://supabase.com/docs/guides/database/timeouts#changing-the-default-timeout). Note that it may require a quick reboot for the changes to take effect.
+To increase the `statement_timeout` for a specific role, you may follow the instructions [here](https://supabase.com/docs/guides/database/postgres/timeouts#role-level). Note that it may require a quick reboot for the changes to take effect.
 
 Additionally, to check how long a query is taking, you can check the Query Performance report which can give you more information on the query's performance: [https://app.supabase.com/project/\_/advisors/query-performance](https://app.supabase.com/project/_/advisors/query-performance). You can use the [query plan analyzer](https://www.postgresql.org/docs/current/sql-explain.html) on any expensive queries that you have identified: `explain analyze <query-statement-here>;`. For supabase-js/ PostgREST queries you can use `.explain()`.
 
@@ -131584,7 +131584,7 @@ To overcome this, the connections need to be optimized as mentioned here: [https
 Additionally, you can try using the connection pool to help solve this issue:
 [https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler)
 
-If you're already using connection pooling and still hitting the maximum connections, then it is suggested to upgrade your compute add-on that allows more connections: [https://supabase.com/docs/guides/platform/compute-add-ons](https://supabase.com/docs/guides/platform/compute-add-ons)
+If you're already using connection pooling and still hitting the maximum connections, then it is suggested to upgrade your compute add-on that allows more connections: [https://supabase.com/docs/guides/platform/compute-and-disk](https://supabase.com/docs/guides/platform/compute-and-disk)
 
 
 ---
@@ -134852,7 +134852,7 @@ const { data, error } = await supabase.auth.signInWithOAuth({
 
 # Grafana not displaying data
 
-This guide is for identifying configuration mistakes in [self-hosted Supabase Grafana installations](https://supabase.com/docs/guides/monitoring-troubleshooting/metrics#deploying-supabase-grafana)
+This guide is for identifying configuration mistakes in [self-hosted Supabase Grafana installations](https://supabase.com/docs/guides/telemetry/metrics/grafana-self-hosted)
 
 ## Step 1: Ping your Grafana endpoint
 
@@ -135480,7 +135480,7 @@ More on this in our doc here: [**https://supabase.com/docs/guides/platform/datab
 
 ## Changing max database connections
 
-Each compute instance has a default direct connection and pooler connection settings. You can find the most recent settings in the [compute docs](https://supabase.com/docs/guides/platform/compute-add-ons#disk-io):
+Each compute instance has a default direct connection and pooler connection settings. You can find the most recent settings in the [compute docs](https://supabase.com/docs/guides/platform/compute-and-disk#disk):
 
 | Compute Size | Direct Connections | Pooler Connections |
 | ------------ | ------------------ | ------------------ |
@@ -135500,7 +135500,7 @@ Each compute instance has a default direct connection and pooler connection sett
 
 > Note: the Supavisor connection limits are hard-coded and cannot be changed without upgrading the compute size:
 
-You can configure the maximum amount of connections that Postgres will tolerate with the [Supabase CLI.](https://supabase.com/docs/guides/platform/custom-postgres-config)
+You can configure the maximum amount of connections that Postgres will tolerate with the [Supabase CLI.](https://supabase.com/docs/guides/database/custom-postgres-config)
 
 You can run the following commands:
 
@@ -135549,7 +135549,7 @@ To avoid displacing cache or straining system resources, it is advised to not in
 
 Postgres will allow you to overcommit memory. You can run the below query to find out the hypothetical max value you could change it to without risking memory failure:
 
-> NOTE: You can find your server memory in the [compute add-ons docs](https://supabase.com/docs/guides/platform/compute-add-ons)
+> NOTE: You can find your server memory in the [compute add-ons docs](https://supabase.com/docs/guides/platform/compute-and-disk)
 
 ```sql
 select
@@ -136575,7 +136575,7 @@ See the [Fair Use Policy](https://supabase.com/docs/guides/platform/billing-faq#
 
 5XX status codes indicate that the project was unable to process the request successfully, but not because of an issue with the client's request.
 
-5XX status codes can be the result of the project not having enough [compute](https://supabase.com/docs/guides/platform/compute-add-ons) to process a complex request being made by a client or not being able to keep up with the volume of requests made against the project.
+5XX status codes can be the result of the project not having enough [compute](https://supabase.com/docs/guides/platform/compute-and-disk) to process a complex request being made by a client or not being able to keep up with the volume of requests made against the project.
 
 ### 54X project errors
 
@@ -136916,7 +136916,7 @@ grant pg_read_all_stats to postgres;
 
 # Interpreting Supabase Grafana CPU charts
 
-> [Guide](https://supabase.com/docs/guides/monitoring-troubleshooting/metrics#deploying-supabase-grafana) for setting up Supabase Grafana
+> [Guide](https://supabase.com/docs/guides/telemetry/metrics/grafana-self-hosted) for setting up Supabase Grafana
 
 ## CPU
 
@@ -136944,7 +136944,7 @@ As the CPU peaks towards 100%, queries and database tasks will begin to throttle
 
 1. [Optimize your queries](https://supabase.com/docs/guides/database/query-optimization).
 2. [Add indexes](https://github.com/orgs/supabase/discussions/22449) if possible.
-3. [Increasing the compute size](https://supabase.com/docs/guides/platform/compute-add-ons)
+3. [Increasing the compute size](https://supabase.com/docs/guides/platform/compute-and-disk)
 4. [Distribute load by using read-replicas](https://supabase.com/dashboard/project/_/settings/infrastructure)
 
 
@@ -137114,7 +137114,7 @@ If the output from these commands does not help resolve the issue, open a suppor
 
 ## Additional resources
 
-- [Local development guide](https://supabase.com/docs/guides/cli/local-development)
+- [Local development guide](https://supabase.com/docs/guides/local-development/database-migrations)
 - [Edge Functions quickstart](https://supabase.com/docs/guides/functions/quickstart)
 - [Debugging Edge Functions](https://supabase.com/docs/guides/functions/logging)
 
@@ -137210,7 +137210,7 @@ KONG_NGINX_WORKER_PROCESSES=auto supabase start
 
 ## Additional resources
 
-- [Local development guide](https://supabase.com/docs/guides/cli/local-development)
+- [Local development guide](https://supabase.com/docs/guides/local-development/database-migrations)
 - [CLI repository](https://github.com/supabase/cli)
 
 
@@ -137502,7 +137502,7 @@ They're all intertwined to some extent. If IO, CPU, or Memory are constrained, t
 - [Using SQLAlchemy with Supabase](https://github.com/orgs/supabase/discussions/27071)
 - [Supabase and IPv4/IPv6 compatibility ](https://github.com/orgs/supabase/discussions/27034)
 - [Addressing Max Client Errors](https://github.com/orgs/supabase/discussions/22305)
-- [Connecting to your database](https://supabase.com/docs/guides/database/connecting-to-postgres#integrations)
+- [Connecting to your database](https://supabase.com/docs/guides/database/connecting-to-postgres#quickstarts)
 - [How to Change Max Database Connections](https://github.com/orgs/supabase/discussions/27197)
 
 
@@ -137642,7 +137642,7 @@ There are likely other causes that are not known right now as well.
 
 # Not receiving Auth emails from the Supabase project
 
-**We strongly recommend configuring your own custom SMTP provider** in your projects to avoid running into issues with sending emails from your project. The built-in email provider is for demonstration purposes only and offers a very low rate limit. You can read more details about the rate limits [here](https://supabase.com/docs/guides/platform/going-into-prod#auth-rate-limits).
+**We strongly recommend configuring your own custom SMTP provider** in your projects to avoid running into issues with sending emails from your project. The built-in email provider is for demonstration purposes only and offers a very low rate limit. You can read more details about the rate limits [here](https://supabase.com/docs/guides/deployment/going-into-prod#auth-rate-limits).
 
 If you're testing your Supabase projects, consider configuring an email testing tool like [Mailtrap](https://mailtrap.io/) to test your emails. It's an email sandbox tool that helps debug emails without sending an email to an end user.
 
@@ -137792,7 +137792,7 @@ If a project is under 500MB, you can [transfer it to be under a free organizatio
 
 Alternatively, you can download a [daily backup](https://supabase.com/dashboard/project/_/database/backups/scheduled) of only your database for archiving. You can also manually download a .SQL file of your database and storage buckets by following this [guide](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore).
 
-You can also download your storage buckets with the [Supabase CLI:](https://supabase.com/docs/guides/cli/getting-started?queryGroups=platform\&platform=npx)
+You can also download your storage buckets with the [Supabase CLI:](https://supabase.com/docs/guides/local-development/cli/getting-started?queryGroups=platform\&platform=npx)
 
 ```sql
 npx supabase login
@@ -137955,7 +137955,7 @@ You can view your concurrent peak connection usage throughout the day at the bot
 
 Unfortunately, excessive resource strain can slow down or disrupt jobs.
 
-Go to the [reports page](https://supabase.com/dashboard/project/_/observability/database) (or [Supabase Grafana](https://supabase.com/docs/guides/monitoring-troubleshooting/metrics#deploying-supabase-grafana) if you have it setup), and check for signs of resource exhaustion. If it's clear your database is under pressure, consider upgrading your compute add-on or following the advice from one of the optimization guides:
+Go to the [reports page](https://supabase.com/dashboard/project/_/observability/database) (or [Supabase Grafana](https://supabase.com/docs/guides/telemetry/metrics/grafana-self-hosted) if you have it setup), and check for signs of resource exhaustion. If it's clear your database is under pressure, consider upgrading your compute add-on or following the advice from one of the optimization guides:
 
 - [Connections](https://github.com/orgs/supabase/discussions/27141)
 - [Disk/IO](https://github.com/orgs/supabase/discussions/27003)
@@ -137993,7 +137993,7 @@ order by timestamp desc
 limit 100;
 ```
 
-If you're interested in modifying the query, there is an advanced [guide](https://github.com/orgs/supabase/discussions/26224) for navigating the Postgres logs and a general purpose [one](https://supabase.com/docs/guides/platform/advanced-log-filtering) for applying filters.
+If you're interested in modifying the query, there is an advanced [guide](https://github.com/orgs/supabase/discussions/26224) for navigating the Postgres logs and a general purpose [one](https://supabase.com/docs/guides/telemetry/advanced-log-filtering) for applying filters.
 
 
 
@@ -140829,7 +140829,7 @@ where seq_scan + idx_scan > 0
 order by n_live_tup desc;
 ```
 
-A lot of the [queries for inspecting performance](https://supabase.com/docs/reference/cli/supabase-inspect-db) are pre-bundled as part of the [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started). For instance, there is a command for testing which indexes of yours are unnecessary and are needlessly taking up space:
+A lot of the [queries for inspecting performance](https://supabase.com/docs/reference/cli/supabase-inspect-db) are pre-bundled as part of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started). For instance, there is a command for testing which indexes of yours are unnecessary and are needlessly taking up space:
 
 ```bash
 npx supabase login
@@ -141058,7 +141058,7 @@ If the cache hit rate begins to drop below the ideal amount, one should consider
 Optimizing:
 
 1. [Apply indexes](https://github.com/orgs/supabase/discussions/22449): can reduce the amount of data pulled from disk into memory
-2. [Increasing the compute size](https://supabase.com/docs/guides/platform/compute-add-ons)
+2. [Increasing the compute size](https://supabase.com/docs/guides/platform/compute-and-disk)
 3. [Distribute load by using read-replicas](https://supabase.com/dashboard/project/_/settings/infrastructure)
 4. [Partitions](https://supabase.com/docs/guides/database/partitions): Generally should be used on *very* large tables to minimize data pulled from disk into memory
 5. [Remove bloat](https://supabase.com/docs/reference/cli/supabase-inspect-db): Bloat can fragment data across pages, causing redundant data to be pulled from disk.

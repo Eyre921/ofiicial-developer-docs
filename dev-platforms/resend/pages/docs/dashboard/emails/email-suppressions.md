@@ -40,7 +40,7 @@ You can also programmatically retrieve [a single Suppression](/docs/api-referenc
   "email": "steve.wozniak@example.com",
   "origin": "bounce",
   "source_id": "4ef9a417-02e9-4d39-ad75-9611e0fcc33c",
-  "created_at": "2026-10-06T23:47:56.678Z"
+  "created_at": "2026-10-06 23:47:56.678+00"
 }
 ```
 
