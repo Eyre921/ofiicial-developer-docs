@@ -164,3 +164,7 @@ The following restrictions apply:
 
 You also can’t credit a negative amount on a `custom_line_item`. We only support negative amounts on `invoice_line_items`.
 
+## See also
+
+- [Issue credit notes from the Dashboard](https://docs.stripe.com/invoicing/dashboard/credit-notes.md)
+

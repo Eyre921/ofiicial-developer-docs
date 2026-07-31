@@ -8,13 +8,14 @@ Build an agent that analyzes data files, generates visualizations, and shares re
 
 ## Overview
 
-This guide demonstrates how to build a data analysis agent using a [deep agent](/oss/python/deepagents). Data analysis tasks typically require planning, code execution, and working with artifacts such as scripts, reports, and plots—capabilities that deep agents are designed to handle.
+This guide demonstrates how to build a data analysis agent using a [deep agent](/oss/python/deepagents). Data analysis tasks typically require multi-step reasoning, code execution, and working with artifacts such as scripts, reports, and plots—capabilities that deep agents are designed to handle.
 
-The agent we'll build will:
+The agent you build will:
 
 1. Accept a CSV file for analysis
-2. Perform exploratory data analysis and generate visualizations
-3. Share results to a Slack channel
+2. Plan and track analysis steps with an opt-in todo list
+3. Perform exploratory data analysis and generate visualizations
+4. Share results to a Slack channel
 
 <Tip>
   The Slack integration is optional. The agent can be modified to save artifacts locally or share results through other channels.
@@ -26,6 +27,7 @@ This tutorial covers:
 
 * [Backends](/oss/python/deepagents/backends) for sandboxed code execution
 * Custom [tools](/oss/python/langchain/tools) for external integrations
+* Opt-in [task planning](/oss/python/deepagents/overview#task-planning) with [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware)
 
 ## Setup
 
@@ -295,6 +297,16 @@ def slack_send_message(text: str, file_path: str | None = None) -> str:
   It is generally good practice to avoid adding credentials and other secrets to the sandbox. Here we manage the Slack token outside the sandbox in a tool.
 </Note>
 
+## Enable task planning
+
+[Task planning](/oss/python/deepagents/overview#task-planning) is opt-in. Data analysis often involves long, multi-step work, so pass [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) when you create the agent. That gives the agent a `write_todos` tool for tracking exploratory analysis, visualization, and sharing steps.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import TodoListMiddleware
+```
+
+Include this middleware in the `create_deep_agent` call in the next section.
+
 ## Run the agent
 
 Let's instantiate an agent:
@@ -303,6 +315,7 @@ Let's instantiate an agent:
 from langchain_core.utils.uuid import uuid7
 
 from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
 
 checkpointer = InMemorySaver()
@@ -312,6 +325,7 @@ agent = create_deep_agent(
     tools=[slack_send_message],
     backend=backend,
     checkpointer=checkpointer,
+    middleware=[TodoListMiddleware()],
 )
 
 thread_id = str(uuid7())
@@ -324,6 +338,7 @@ We include:
 * Our custom [tool](/oss/python/deepagents/customization#tools)
 * The [backend](/oss/python/deepagents/backends)
 * A [checkpointer](/oss/python/langchain/short-term-memory) to support multi-turn conversations
+* [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) for opt-in [task planning](/oss/python/deepagents/overview#task-planning)
 
 Let's now invoke our agent.
 
@@ -723,7 +738,7 @@ Now that you've built a data analysis agent, explore these resources to extend i
 
 * [Backends](/oss/python/deepagents/backends): Learn about the Deep Agents backend system
 * [Sandboxes](/oss/python/deepagents/sandboxes): Review backends for sandboxed code execution, including security considerations and advanced configurations
-* [Customization](/oss/python/deepagents/customization): Discover how to customize your agent with different models, tools, prompts, and planning strategies
+* [Customization](/oss/python/deepagents/customization): Discover how to customize your agent with different models, tools, prompts, and optional [task planning](/oss/python/deepagents/overview#task-planning)
 * [Code](/oss/deepagents/code/overview): Try Deep Agents Code as a terminal coding agent to assist with data analysis and other agentic tasks locally
 * [Skills](/oss/python/deepagents/skills): Equip your agent with reusable skills for common workflows
 * [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop): Add interactive approval steps for critical operations in your data analysis workflow

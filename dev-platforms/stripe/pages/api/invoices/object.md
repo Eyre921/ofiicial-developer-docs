@@ -492,7 +492,7 @@ Possible enum values:
   - `default_tax_rates.display_name` (string)
     The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
 
-  - `default_tax_rates.effective_percentage` (float, nullable)
+  - `default_tax_rates.effective_percentage` (number, nullable)
     Actual/effective tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage reflects the rate actually used to calculate tax based on the product’s taxability and whether the user is registered to collect taxes in the corresponding jurisdiction.
 
   - `default_tax_rates.flat_amount` (object, nullable)
@@ -526,7 +526,7 @@ Possible enum values:
   - `default_tax_rates.metadata` (map, nullable)
     Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
-  - `default_tax_rates.percentage` (float)
+  - `default_tax_rates.percentage` (number)
     Tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage includes the statutory tax rate of non-taxable jurisdictions.
 
   - `default_tax_rates.rate_type` (enum, nullable)
@@ -1586,7 +1586,7 @@ Possible enum values:
       - `shipping_cost.taxes.rate.display_name` (string)
         The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
 
-      - `shipping_cost.taxes.rate.effective_percentage` (float, nullable)
+      - `shipping_cost.taxes.rate.effective_percentage` (number, nullable)
         Actual/effective tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage reflects the rate actually used to calculate tax based on the product’s taxability and whether the user is registered to collect taxes in the corresponding jurisdiction.
 
       - `shipping_cost.taxes.rate.flat_amount` (object, nullable)
@@ -1620,7 +1620,7 @@ Possible enum values:
       - `shipping_cost.taxes.rate.metadata` (map, nullable)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
-      - `shipping_cost.taxes.rate.percentage` (float)
+      - `shipping_cost.taxes.rate.percentage` (number)
         Tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage includes the statutory tax rate of non-taxable jurisdictions.
 
       - `shipping_cost.taxes.rate.rate_type` (enum, nullable)

@@ -6,7 +6,7 @@ path: oss/javascript/deepagents/quickstart
 
 Build your first deep agent in minutes
 
-This guide walks you through creating your first deep agent with planning, file system tools, and subagent capabilities. You will build a research agent that can conduct research and write reports.
+This guide walks you through creating your first deep agent with file system tools and subagent capabilities. You will build a research agent that can conduct research and write reports.
 
 <Tip>
   **Using an AI coding assistant?**
@@ -112,14 +112,7 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
 <Tip>
   **Using LangSmith Gateway**
 
-  If using the [LangSmith Gateway](/langsmith/llm-gateway-quickstart#using-langchain-and-deep-agents), most major providers are supported via your LangSmith API key:
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_GATEWAY="true"
-  export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
-  ```
-
-  See [details](/langsmith/llm-gateway-quickstart#more-details) for supported providers and configuration.
+  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#using-langchain-and-deep-agents), or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider#make-a-call) to access models without a provider key.
 </Tip>
 
 ## Step 3: Create a search tool
@@ -347,7 +340,7 @@ Pass your search tool and model to `create_deep_agent`. Pass a `model` string in
 
 ## Step 5: Set up LangSmith tracing
 
-[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-quickstart) provides you with visibility into your agent's execution, allowing you to view planning steps, tool calls, subagent delegation, and LLM responses.
+[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-quickstart) provides you with visibility into your agent's execution, allowing you to view tool calls, subagent delegation, and LLM responses.
 
 Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-quickstart), create an API key, and set these environment variables:
 
@@ -371,11 +364,12 @@ console.log(result.messages[result.messages.length - 1].content);
 
 Your deep agent automatically:
 
-1. **Plans its approach** using the built-in [`write_todos`](/oss/javascript/deepagents/overview#task-planning) tool to break down the research task.
-2. **Conducts research** by calling the `internet_search` tool to gather information.
-3. **Manages context** by using file system tools ([`write_file`](/oss/javascript/deepagents/overview#virtual-filesystem-access), [`read_file`](/oss/javascript/deepagents/overview#virtual-filesystem-access)) to offload large search results.
-4. **Spawns subagents** as needed to delegate complex subtasks to specialized subagents.
-5. **Synthesizes a report** to compile findings into a coherent response.
+1. **Conducts research** by calling the `internet_search` tool to gather information.
+2. **Manages context** by using file system tools ([`write_file`](/oss/javascript/deepagents/overview#virtual-filesystem-access), [`read_file`](/oss/javascript/deepagents/overview#virtual-filesystem-access)) to offload large search results.
+3. **Spawns subagents** as needed to delegate complex subtasks to specialized subagents.
+4. **Synthesizes a report** to compile findings into a coherent response.
+
+To add structured task planning with `write_todos`, opt in with [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware). See [Task planning](/oss/javascript/deepagents/overview#task-planning).
 
 ## Examples
 

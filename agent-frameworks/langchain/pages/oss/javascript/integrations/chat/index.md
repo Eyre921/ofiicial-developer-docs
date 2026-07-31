@@ -235,9 +235,10 @@ See the [full list of chat model integrations](#all-chat-models) below for more 
 
 Routers and proxies give you access to models from multiple providers through a single API and credential. They can simplify billing, let you switch between models without changing integrations, and offer features like automatic fallbacks.
 
-| Provider                             | Integration                                                      | Description                                                             |
-| ------------------------------------ | ---------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [OpenRouter](https://openrouter.ai/) | [`ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) | Unified access to models from OpenAI, Anthropic, Google, Meta, and more |
+| Provider                             | Integration                                                      | Description                                                                 |
+| ------------------------------------ | ---------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [OpenRouter](https://openrouter.ai/) | [`ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) | Unified access to models from OpenAI, Anthropic, Google, Meta, and more     |
+| [FuturMix](https://futurmix.ai/)     | [`ChatOpenAI`](https://futurmix.ai/)                             | Unified AI gateway for 22+ models with OpenAI-compatible API and 99.99% SLA |
 
 ## Chat Completions API
 
@@ -270,6 +271,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
   | [`ChatYandexGPT`](/oss/javascript/integrations/chat/yandex)                         | <span />       | <span />                                         | <span />                                                                       | <span />                                                      | <span><a href="https://www.npmjs.com/package/@langchain/yandex">  <img alt="Downloads per month" /></a></span>          |
   | [`ChatTogetherAI`](/oss/javascript/integrations/chat/togetherai)                    | <span>✅</span> | <span>✅</span>                                   | <span>✅</span>                                                                 | <span>✅</span>                                                | <span><a href="https://www.npmjs.com/package/@langchain/together-ai">  <img alt="Downloads per month" /></a></span>     |
   | [`ChatPerplexity`](/oss/javascript/integrations/chat/perplexity)                    | <span>✅</span> | <span>❌</span>                                   | <span>✅</span>                                                                 | <span>❌</span>                                                | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span>      |
+  | [`FuturMix`](https://futurmix.ai/)                                                  | <span>✅</span> | <span>✅</span>                                   | <span>✅</span>                                                                 | <span>✅</span>                                                | <span>N/A</span>                                                                                                        |
   | [`FakeListChatModel`](/oss/javascript/integrations/chat/fake)                       | <span />       | <span />                                         | <span />                                                                       | <span />                                                      | <span>N/A</span>                                                                                                        |
 </div>
 

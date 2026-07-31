@@ -36,15 +36,15 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 
-  Write a script using the Octokit.js SDK to interact with the REST API.
+  <p>Write a script using the Octokit.js SDK to interact with the REST API.</p>
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 
-  Learn how to diagnose and resolve common problems for the REST API.
+  <p>Learn how to diagnose and resolve common problems for the REST API.</p>
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
-  <p>Learn how to navigate through paginated responses from the REST API.</p>
+  Learn how to navigate through paginated responses from the REST API.
 
 ## Links
 
@@ -635,18 +635,6 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 * [REST API endpoints for user migrations](/en/rest/migrations/users)
 
   Use the REST API to review, backup, or migrate your user data stored on GitHub.
-
-* [REST API endpoints for models catalog](/en/rest/models/catalog)
-
-  Use the REST API to get a list of models available for use, including details like ID, supported input/output modalities, and rate limits.
-
-* [REST API endpoints for model embeddings](/en/rest/models/embeddings)
-
-  Use the REST API to work with embedding requests for models.
-
-* [REST API endpoints for models inference](/en/rest/models/inference)
-
-  Use the REST API to submit a chat completion request to a specified model, with or without organizational attribution.
 
 * [REST API endpoints for OAuth app authorizations](/en/oauth-authorizations)
 

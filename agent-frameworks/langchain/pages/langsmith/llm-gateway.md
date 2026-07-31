@@ -74,7 +74,7 @@ If your LangSmith account is on a regional instance, use the corresponding regio
     Set and manage cost limits across your organization.
   </Card>
 
-  <Card title="PII and secrets redaction" icon="shield-lock" href="/langsmith/llm-gateway-redaction">
+  <Card title="Data protection" icon="shield-lock" href="/langsmith/llm-gateway-data-protection">
     Prevent sensitive data from reaching LLM providers or trace storage.
   </Card>
 

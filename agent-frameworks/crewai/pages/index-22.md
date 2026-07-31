@@ -73,15 +73,15 @@ Build collaborative AI agents, crews, and flows — production ready from day on
 ## Enterprise journey
 
 <CardGroup>
-  <Card title="Deploy automations" href="/en/enterprise/features/automations" icon="server">
+  <Card title="Deploy automations" href="https://docs-platform.crewai.com/platform/en/features/automations" icon="server">
     Manage environments, redeploy safely, and monitor live runs directly from the Enterprise console.
   </Card>
 
-  <Card title="Triggers & Flows" href="/en/enterprise/guides/automation-triggers" icon="bolt">
+  <Card title="Triggers & Flows" href="https://docs-platform.crewai.com/platform/en/guides/automation-triggers" icon="bolt">
     Connect Gmail, Slack, Salesforce, and more. Pass trigger payloads into crews and flows automatically.
   </Card>
 
-  <Card title="Team management" href="/en/enterprise/guides/team-management" icon="users-gear">
+  <Card title="Team management" href="https://docs-platform.crewai.com/platform/en/guides/team-management" icon="users-gear">
     Invite teammates, configure RBAC, and control access to production automations.
   </Card>
 </CardGroup>
@@ -89,7 +89,7 @@ Build collaborative AI agents, crews, and flows — production ready from day on
 ## What’s new
 
 <CardGroup>
-  <Card title="Triggers overview" href="/en/enterprise/guides/automation-triggers" icon="sparkles">
+  <Card title="Triggers overview" href="https://docs-platform.crewai.com/platform/en/guides/automation-triggers" icon="sparkles">
     Unified overview for Gmail, Drive, Outlook, Teams, OneDrive, HubSpot, and more — now with sample payloads and crews.
   </Card>
 

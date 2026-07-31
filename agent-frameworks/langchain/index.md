@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1519 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1521 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -331,16 +331,18 @@
 - `langsmith/llm-as-judge-sdk` — [How to define an LLM-as-a-judge evaluator](pages/langsmith/llm-as-judge-sdk.md) · [原文](https://docs.langchain.com/langsmith/llm-as-judge-sdk)
 - `langsmith/llm-auth-proxy-self-hosted` — [Set up the LLM auth proxy](pages/langsmith/llm-auth-proxy-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/llm-auth-proxy-self-hosted)
 - `langsmith/llm-gateway` — [LLM Gateway](pages/langsmith/llm-gateway.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway)
-- `langsmith/llm-gateway-access` — [Traces, Engine, and access control](pages/langsmith/llm-gateway-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-access)
+- `langsmith/llm-gateway-access` — [Traces and access control](pages/langsmith/llm-gateway-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-access)
 - `langsmith/llm-gateway-admin-setup` — [Admin setup](pages/langsmith/llm-gateway-admin-setup.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-admin-setup)
 - `langsmith/llm-gateway-coding-agents` — [Set up coding agents](pages/langsmith/llm-gateway-coding-agents.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-coding-agents)
 - `langsmith/llm-gateway-custom-providers` — [Custom model providers](pages/langsmith/llm-gateway-custom-providers.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-custom-providers)
+- `langsmith/llm-gateway-data-protection` — [Data protection](pages/langsmith/llm-gateway-data-protection.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-data-protection)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
+- `langsmith/llm-gateway-header-policies` — [Per-customer policies](pages/langsmith/llm-gateway-header-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-header-policies)
 - `langsmith/llm-gateway-langchain-provider` — [LangChain managed models](pages/langsmith/llm-gateway-langchain-provider.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-langchain-provider)
 - `langsmith/llm-gateway-quickstart` — [Quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
-- `langsmith/llm-gateway-redaction` — [PII and secrets redaction](pages/langsmith/llm-gateway-redaction.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-redaction)
 - `langsmith/llm-gateway-spend-policies` — [Spend policies](pages/langsmith/llm-gateway-spend-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-spend-policies)
+- `langsmith/llm-gateway-unified-endpoint` — [Unified endpoint](pages/langsmith/llm-gateway-unified-endpoint.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-unified-endpoint)
 - `langsmith/local` — [How to run an evaluation locally (Python only)](pages/langsmith/local.md) · [原文](https://docs.langchain.com/langsmith/local)
 - `langsmith/local-dev-testing` — [Local development & testing](pages/langsmith/local-dev-testing.md) · [原文](https://docs.langchain.com/langsmith/local-dev-testing)
 - `langsmith/log-llm-trace` — [Log LLM calls](pages/langsmith/log-llm-trace.md) · [原文](https://docs.langchain.com/langsmith/log-llm-trace)

@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -35,7 +35,7 @@
 - `docs/audio-intelligence` — [Getting Started](pages/docs/audio-intelligence.md) · [原文](https://developers.deepgram.com/docs/audio-intelligence.md)
 - `docs/audio-keep-alive` — [Audio Keep Alive](pages/docs/audio-keep-alive.md) · [原文](https://developers.deepgram.com/docs/audio-keep-alive.md)
 - `docs/auto-scaling-sagemaker` — [Auto-Scaling SageMaker Endpoints](pages/docs/auto-scaling-sagemaker.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker.md)
-- `docs/auto-scaling-sagemaker-async` — [Auto-Scaling Asynchronous SageMaker Endpoints](pages/docs/auto-scaling-sagemaker-async.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md)
+- `docs/auto-scaling-sagemaker-async` — [Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)](pages/docs/auto-scaling-sagemaker-async.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md)
 - `docs/auto-scaling-sagemaker-streaming` — [Auto-Scaling Real-Time Endpoints](pages/docs/auto-scaling-sagemaker-streaming.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-streaming.md)
 - `docs/automatically-generating-webvtt-and-srt-captions` — [Automatically Generating WebVTT & SRT Captions](pages/docs/automatically-generating-webvtt-and-srt-captions.md) · [原文](https://developers.deepgram.com/docs/automatically-generating-webvtt-and-srt-captions.md)
 - `docs/automatically-transcribing-and-summarizing-phone-calls` — [Automatically Transcribe and Summarize Phone Calls](pages/docs/automatically-transcribing-and-summarizing-phone-calls.md) · [原文](https://developers.deepgram.com/docs/automatically-transcribing-and-summarizing-phone-calls.md)
@@ -92,6 +92,7 @@
 - `docs/filler-words` — [Filler Words](pages/docs/filler-words.md) · [原文](https://developers.deepgram.com/docs/filler-words.md)
 - `docs/finalize` — [Finalize](pages/docs/finalize.md) · [原文](https://developers.deepgram.com/docs/finalize.md)
 - `docs/find-and-replace` — [Find and Replace](pages/docs/find-and-replace.md) · [原文](https://developers.deepgram.com/docs/find-and-replace.md)
+- `docs/fips-compliant-deployment` — [FIPS-Compliant Deployment](pages/docs/fips-compliant-deployment.md) · [原文](https://developers.deepgram.com/docs/fips-compliant-deployment.md)
 - `docs/flux-self-hosted` — [Using the Flux Model](pages/docs/flux-self-hosted.md) · [原文](https://developers.deepgram.com/docs/flux-self-hosted.md)
 - `docs/flux-template-apps` — [Template Apps](pages/docs/flux-template-apps.md) · [原文](https://developers.deepgram.com/docs/flux-template-apps.md)
 - `docs/flux-tts/batch` — [Getting Started with Flux TTS Batch (REST)](pages/docs/flux-tts/batch.md) · [原文](https://developers.deepgram.com/docs/flux-tts/batch.md)

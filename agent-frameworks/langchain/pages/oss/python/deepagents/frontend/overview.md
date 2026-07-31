@@ -115,7 +115,7 @@ workflow monitor than a plain chat transcript.
   </Card>
 
   <Card title="Todo list" icon="list-check" href="/oss/python/deepagents/frontend/todo-list">
-    Track agent progress with a real-time todo list synced from agent state.
+    Track progress with a real-time todo list when the agent opts into task planning.
   </Card>
 
   <Card title="Sandbox" icon="code" href="/oss/python/deepagents/frontend/sandbox">

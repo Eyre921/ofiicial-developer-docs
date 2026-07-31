@@ -12,7 +12,7 @@ Turso Databases can be accessed via HTTP. The API enables developers to perform 
 
 ## Base URL
 
-Simply replace your database URL protocol `libsql://` with `https://`:
+Simply replace your database URL protocol (`turso://` for Turso databases, `libsql://` for libSQL databases) with `https://`:
 
 ```bash theme={null}
 https://[databaseName]-[organizationSlug].turso.io

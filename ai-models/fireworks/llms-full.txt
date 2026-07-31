@@ -5333,7 +5333,7 @@ Chat completions only. Embeddings, image generation, and audio modalities are no
 
 PayGo (Data Zone Standard) is available in: East US, East US 2, Central US, North Central US, West US, West US 3.
 
-The throughput limit for PayGo deployments is **250,000 tokens per minute (TPM)**.
+The throughput limit for PayGo deployments is **500,000 tokens per minute (TPM)**. For higher limits, submit a limit increase request on [aka.ms/fireworks-quota](https://aka.ms/fireworks-quota) and contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
 
 ### Make your first request
 
@@ -13026,15 +13026,29 @@ Use external AWS S3 buckets for fine-tuning while keeping your data private. Fir
 
 #### IAM Role Setup
 
-Create an IAM role with a trust policy that allows Fireworks to assume it via web identity federation. Fireworks provides the OIDC audience value during BYOB onboarding.
+Create an IAM role that Fireworks can assume via web identity federation. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
 
-* **Federated Principal:** `accounts.google.com`
-* **Action:** `sts:AssumeRoleWithWebIdentity`
-* **Condition:** `accounts.google.com:aud` equals `<FIREWORKS_GCP_OIDC_AUDIENCE>`
+Trust policy on the role, locked to the Fireworks identity and scoped to your account:
+
+```json theme={null}
+{
+  "Effect": "Allow",
+  "Principal": { "Federated": "accounts.google.com" },
+  "Action": "sts:AssumeRoleWithWebIdentity",
+  "Condition": {
+    "StringEquals": {
+      "accounts.google.com:sub": "<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>",
+      "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
+    }
+  }
+}
+```
+
+The `sub` condition locks assumption to the Fireworks identity. The `oaud` condition pins the token's audience to your Fireworks account, so a token issued for any other Fireworks account is rejected by your own IAM.
+
+Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for the subject identifier; the audience is your own Fireworks account ID.
 
 Then attach a policy granting `s3:GetObject` and `s3:ListBucket` on your bucket.
-
-Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact audience value.
 
 See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html) for detailed steps on creating roles for OIDC federation.
 

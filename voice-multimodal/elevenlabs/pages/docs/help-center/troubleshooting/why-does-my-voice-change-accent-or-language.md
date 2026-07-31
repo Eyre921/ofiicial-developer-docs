@@ -18,4 +18,4 @@ You can either create your own cloned voice, or you can find voices in the Voice
 
  
 
-Another possible cause of your audio being spoken with an English accent is if you are generating audio in another language, but using a model that only supports English (Flash v2, Turbo v2 or English v1).  This can be resolved by switching to one of our multilingual models (Multilingual v2 or Flash v2.5).
+Another possible cause of your audio being spoken with an English accent is if you are generating audio in another language, but using a model that only supports English (Flash v2 or Turbo v2).  This can be resolved by switching to one of our multilingual models (Multilingual v2 or Flash v2.5).

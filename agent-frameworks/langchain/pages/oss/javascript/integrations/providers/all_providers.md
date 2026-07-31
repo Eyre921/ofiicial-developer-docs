@@ -87,6 +87,10 @@ Connect LangGraph agents to front ends.
     Mock chat model for testing and development purposes.
   </Card>
 
+  <Card title="FuturMix" href="https://futurmix.ai/" icon="link">
+    Unified AI gateway for 22+ models with OpenAI-compatible API.
+  </Card>
+
   <Card title="Google Gemini" href="/oss/javascript/integrations/chat/google" icon="brand-google">
     Google's Gemini models via AI Studio and Vertex AI.
   </Card>
@@ -393,6 +397,10 @@ Connect LangGraph agents to front ends.
     Web search results from the Perplexity Search API.
   </Card>
 
+  <Card title="TalorData" href="https://www.talordata.com/docs" icon="link">
+    Unified SERP API across 33 search engines with geo-targeting.
+  </Card>
+
   <Card title="Tavily Crawl" href="/oss/javascript/integrations/tools/tavily_crawl">
     Web crawling capabilities with Tavily.
   </Card>
@@ -463,6 +471,10 @@ Connect LangGraph agents to front ends.
 <Columns>
   <Card title="Azure Cosmos DB NoSQL" href="/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql" icon="brand-windows">
     Cache LLM responses in Azure Cosmos DB.
+  </Card>
+
+  <Card title="BetterDB Agent Cache" href="https://www.betterdb.com/ai" icon="link">
+    Multi-tier cache for AI agents backed by Valkey or Redis.
   </Card>
 </Columns>
 

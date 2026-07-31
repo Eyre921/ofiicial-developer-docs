@@ -52,7 +52,7 @@ Input context is information provided to your deep agent at startup that becomes
 
 ### System prompt
 
-Your custom system prompt is prepended to the built-in system prompt, which includes guidance for planning, filesystem tools, and subagents. Use it to define the agent's role, behavior, and knowledge:
+Your custom system prompt is prepended to the built-in system prompt, which includes guidance for filesystem tools and subagents. Use it to define the agent's role, behavior, and knowledge:
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -269,9 +269,7 @@ Keep each skill focused on a single workflow or domain; broad or overlapping ski
 
 [Tool](/oss/python/langchain/tools) prompts are instructions that shape how the model uses tools. All tools expose metadata the model sees in its prompt—typically a schema and a description. Tools you pass via the `tools` parameter surface that tool metadata (schema and descriptions) to the model. A deep agent's built-in tools are packaged in the [default middleware stack](/oss/python/deepagents/customization#default-stack-main-agent) and typically also update the system prompt with more guidance for those tools.
 
-**Built-in tools**: Middleware that adds harness capabilities (planning, filesystem, subagents) automatically appends tool-specific instructions to the system prompt, creating tool prompts that explain how to use those tools effectively. See [Customization](/oss/python/deepagents/customization#middleware) for the full list:
-
-* Planning prompt – Instructions for `write_todos` to maintain a structured task list
+**Built-in tools**: Middleware that adds harness capabilities (filesystem, subagents, and optional planning) automatically appends tool-specific instructions to the system prompt, creating tool prompts that explain how to use those tools effectively. See [Customization](/oss/python/deepagents/customization#middleware) for the full list:
 
 * Filesystem prompt – Documentation for `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, `grep` (and `execute` when using a sandbox backend)
 
@@ -312,7 +310,7 @@ def search_orders(
 <Tip>
   To override a built-in or user-supplied tool's description for a specific provider or model, use a [harness profile](/oss/python/deepagents/profiles#harness-profiles)'s `tool_description_overrides` keyed by tool name.
 
-  Unused built-in tools still send their full schemas on every turn. Use `excluded_tools` to remove tools the agent should never call (for example `write_file`, `execute`, or `write_todos` on a read-only agent). That shrinks baseline prompt size for the whole run. It is configuration, not the automatic offloading or summarization in [Context compression](#context-compression).
+  Unused built-in tools still send their full schemas on every turn. Use `excluded_tools` to remove tools the agent should never call (for example `write_file` or `execute` on a read-only agent). That shrinks baseline prompt size for the whole run. It is configuration, not the automatic offloading or summarization in [Context compression](#context-compression).
 
   See [Harness profiles](/oss/python/deepagents/profiles#harness-profiles) and [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access).
 </Tip>
@@ -325,13 +323,12 @@ The deep agent's system message—the assembled system prompt the model receives
 
 1. Custom `system_prompt` (if provided)
 2. [Base agent prompt](https://github.com/langchain-ai/deepagents/blob/e18e9dcd0e6edc72c0a4a5b76ae752c4bc539752/libs/deepagents/deepagents/graph.py#L37)
-3. To-do list prompt: Instructions for how to plan with to do lists
-4. Memory prompt: `AGENTS.md` + memory usage guidelines (only when `memory` provided)
-5. Skills prompt: Skills locations + list of skills with frontmatter information + usage (only when skills provided)
-6. Virtual filesystem prompt (filesystem + execute tool docs if applicable)
-7. Subagent prompt: Task tool usage
-8. User-provided middleware prompts (if custom middleware is provided)
-9. Human-in-the-loop prompt (when `interrupt_on` is set)
+3. Memory prompt: `AGENTS.md` + memory usage guidelines (only when `memory` provided)
+4. Skills prompt: Skills locations + list of skills with frontmatter information + usage (only when skills provided)
+5. Virtual filesystem prompt (filesystem + execute tool docs if applicable)
+6. Subagent prompt: Task tool usage
+7. User-provided middleware prompts (if custom middleware is provided)
+8. Human-in-the-loop prompt (when `interrupt_on` is set)
 
 ## Runtime context
 

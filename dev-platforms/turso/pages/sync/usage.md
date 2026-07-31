@@ -16,7 +16,7 @@ This guide shows how to set up a Turso database and use the sync features from y
   <Step title="1. Setup Turso Cloud database">
     * Follow our [Quickstart](/quickstart) to install the CLI, create a database
 
-    * Get the database URL (`libsql://...`):
+    * Get the database URL (`turso://...`):
 
     ```
     turso db show <db>
@@ -33,7 +33,7 @@ This guide shows how to set up a Turso database and use the sync features from y
     You need three essentials to enable sync:
 
     * Local path: where the local, synced tursodb file is stored
-    * Remote URL: your Turso Cloud URL (`libsql://...`)
+    * Remote URL: your Turso Cloud URL (`turso://...`)
     * Auth token: Turso Cloud token to authenticate requests
 
     <CodeGroup>
@@ -42,7 +42,7 @@ This guide shows how to set up a Turso database and use the sync features from y
 
       const db = await connect({
         path: './app.db',                               // local path
-        url: 'libsql://...',                            // remote URL (generated with turso db show <db-name> --url)
+        url: 'turso://...',                            // remote URL (generated with turso db show <db-name> --url)
         authToken: process.env.TURSO_AUTH_TOKEN,        // authentication token (generated with turso db tokens create <db-name>)
         // longPollTimeoutMs: 10_000,                   // optional: server waits before replying to pull
         // bootstrapIfEmpty: false,                     // set to false to avoid bootstrapping on first run
@@ -55,8 +55,8 @@ This guide shows how to set up a Turso database and use the sync features from y
 
       conn = turso.sync.connect(
           path="./app.db",                                  # local path
-          remote_url="libsql://...",                        # remote URL (generated with turso db show <db-name> --url)
-          remote_auth_token=os.environ["TURSO_AUTH_TOKEN"], # authentication token (generated with turso db tokens create <db-name>)
+          remote_url="turso://...",                        # remote URL (generated with turso db show <db-name> --url)
+          auth_token=os.environ["TURSO_AUTH_TOKEN"],        # authentication token (generated with turso db tokens create <db-name>)
           # long_poll_timeout_ms=10_000,                    # optional: server waits before replying to pull
           # bootstrap_if_empty=False,                       # set to false to avoid bootstrapping on first run
       )
@@ -66,15 +66,15 @@ This guide shows how to set up a Turso database and use the sync features from y
       package main
 
       import (
-      	"turso"
+      	turso "turso.tech/database/tursogo"
       )
 
       db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
         Path:              "./app.db",                    // local path
-        RemoteUrl:         "libsql://...",                // remote URL (generated with turso db show <db-name> --url)
-        RemoteAuthToken:   os.Getenv("TURSO_AUTH_TOKEN"), // authentication token (generated with turso db tokens create <db-name>)
+        RemoteUrl:         "turso://...",                // remote URL (generated with turso db show <db-name> --url)
+        AuthToken:         os.Getenv("TURSO_AUTH_TOKEN"), // authentication token (generated with turso db tokens create <db-name>)
         // LongPollTimeoutMs: 10_000,                     // optional: server waits before replying to pull
-        // BootstrapIfEmpty: false,                       // set to false to avoid bootstrapping on first run
+        // BootstrapIfEmpty: new(bool),                   // *bool; point at false to avoid bootstrapping on first run
       })
       ```
     </CodeGroup>
@@ -276,7 +276,7 @@ If your app needs to accept writes without internet connectivity, write locally 
   conn = turso.sync.connect(
       path="./local.db",
       remote_url=os.environ["TURSO_URL"],
-      remote_auth_token=os.environ["TURSO_AUTH_TOKEN"],
+      auth_token=os.environ["TURSO_AUTH_TOKEN"],
       bootstrap_if_empty=False,
   )
 
@@ -300,13 +300,14 @@ If your app needs to accept writes without internet connectivity, write locally 
   ```
 
   ```go Go theme={null}
-  // BootstrapIfEmpty: false lets the app start offline without
-  // needing to reach the remote on first launch
+  // BootstrapIfEmpty pointing at false lets the app start offline
+  // without needing to reach the remote on first launch
+  noBootstrap := false
   db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
   	Path:             "./local.db",
   	RemoteUrl:        os.Getenv("TURSO_URL"),
-  	RemoteAuthToken:  os.Getenv("TURSO_AUTH_TOKEN"),
-  	BootstrapIfEmpty: false,
+  	AuthToken:        os.Getenv("TURSO_AUTH_TOKEN"),
+  	BootstrapIfEmpty: &noBootstrap,
   })
 
   func syncWhenOnline(ctx context.Context, db *turso.TursoSyncDb) {

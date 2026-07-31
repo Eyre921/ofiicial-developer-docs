@@ -39229,9 +39229,9 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Dedicated model inference     | ✅               | ✅          |
 | Dedicated container inference | ✅               | ✅          |
 | Uploaded models and adapters  | ✅               | ✅          |
-| Fine-tuning                   | ✅               | ❌          |
-| Files                         | ✅               | ❌          |
-| Evaluations                   | ✅               | ❌          |
+| Fine-tuning                   | ✅               | ✅          |
+| Files                         | ✅               | ✅          |
+| Evaluations                   | ✅               | ✅          |
 | Batch                         | ✅               | ❌          |
 | Code Interpreter              | ✅               | N/A        |
 
@@ -46061,6 +46061,114 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="July 29, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available for [fine-tuning](/docs/fine-tuning/supported-models):
+
+  * `nvidia/NVIDIA-Nemotron-Nano-9B-v2`.
+  * `Qwen/Qwen3-Next-80B-A3B-Instruct`.
+  * `Qwen/Qwen3-Next-80B-A3B-Thinking`.
+  * `Qwen/Qwen3-0.6B`.
+  * `Qwen/Qwen3-0.6B-Base`.
+  * `Qwen/Qwen3-1.7B`.
+  * `Qwen/Qwen3-1.7B-Base`.
+  * `Qwen/Qwen3-4B`.
+  * `Qwen/Qwen3-4B-Base`.
+  * `Qwen/Qwen3-8B`.
+  * `Qwen/Qwen3-8B-Base`.
+  * `Qwen/Qwen3-14B`.
+  * `Qwen/Qwen3-14B-Base`.
+  * `Qwen/Qwen3-32B`.
+  * `Qwen/Qwen3-30B-A3B-Base`.
+  * `Qwen/Qwen3-30B-A3B`.
+  * `Qwen/Qwen3-30B-A3B-Instruct-2507`.
+  * `Qwen/Qwen3-235B-A22B`.
+  * `Qwen/Qwen3-235B-A22B-Instruct-2507`.
+  * `Qwen/Qwen3-Coder-30B-A3B-Instruct`.
+  * `Qwen/Qwen3-Coder-480B-A35B-Instruct`.
+  * `Qwen/Qwen3-VL-8B-Instruct`.
+  * `Qwen/Qwen3-VL-32B-Instruct`.
+  * `Qwen/Qwen3-VL-30B-A3B-Instruct`.
+  * `Qwen/Qwen3-VL-235B-A22B-Instruct`.
+  * `Qwen/Qwen2.5-72B-Instruct`.
+  * `Qwen/Qwen2.5-72B`.
+  * `Qwen/Qwen2.5-32B-Instruct`.
+  * `Qwen/Qwen2.5-32B`.
+  * `Qwen/Qwen2.5-14B-Instruct`.
+  * `Qwen/Qwen2.5-14B`.
+  * `Qwen/Qwen2.5-7B-Instruct`.
+  * `Qwen/Qwen2.5-7B`.
+  * `Qwen/Qwen2.5-3B-Instruct`.
+  * `Qwen/Qwen2.5-3B`.
+  * `Qwen/Qwen2.5-1.5B-Instruct`.
+  * `Qwen/Qwen2.5-1.5B`.
+  * `Qwen/Qwen2-72B-Instruct`.
+  * `Qwen/Qwen2-72B`.
+  * `Qwen/Qwen2-7B-Instruct`.
+  * `Qwen/Qwen2-7B`.
+  * `Qwen/Qwen2-1.5B-Instruct`.
+  * `Qwen/Qwen2-1.5B`.
+  * `moonshotai/Kimi-K2.5`.
+  * `moonshotai/Kimi-K2-Thinking`.
+  * `moonshotai/Kimi-K2-Instruct-0905`.
+  * `moonshotai/Kimi-K2-Instruct`.
+  * `moonshotai/Kimi-K2-Base`.
+  * `zai-org/GLM-5`.
+  * `zai-org/GLM-4.7`.
+  * `zai-org/GLM-4.6`.
+  * `deepseek-ai/DeepSeek-R1-0528`.
+  * `deepseek-ai/DeepSeek-R1`.
+  * `deepseek-ai/DeepSeek-V3-0324`.
+  * `deepseek-ai/DeepSeek-V3`.
+  * `deepseek-ai/DeepSeek-V3.1-Base`.
+  * `deepseek-ai/DeepSeek-V3-Base`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-32k`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-131k`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`.
+  * `meta-llama/Llama-4-Scout-17B-16E`.
+  * `meta-llama/Llama-4-Maverick-17B-128E`.
+  * `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`.
+  * `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`.
+  * `meta-llama/Llama-3.2-3B-Instruct`.
+  * `meta-llama/Llama-3.2-3B`.
+  * `meta-llama/Llama-3.2-1B-Instruct`.
+  * `meta-llama/Llama-3.2-1B`.
+  * `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-8B-Reference`.
+  * `meta-llama/Meta-Llama-3.1-8B-131k-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-32k-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-131k-Reference`.
+  * `meta-llama/Meta-Llama-3-8B-Instruct`.
+  * `meta-llama/Meta-Llama-3-8B`.
+  * `meta-llama/Meta-Llama-3-70B-Instruct`.
+  * `google/gemma-3-270m`.
+  * `google/gemma-3-270m-it`.
+  * `google/gemma-3-1b-it`.
+  * `google/gemma-3-1b-pt`.
+  * `google/gemma-3-4b-it`.
+  * `google/gemma-3-4b-it-VLM`.
+  * `google/gemma-3-4b-pt`.
+  * `google/gemma-3-12b-it`.
+  * `google/gemma-3-12b-it-VLM`.
+  * `google/gemma-3-12b-pt`.
+  * `google/gemma-3-27b-it`.
+  * `google/gemma-3-27b-it-VLM`.
+  * `google/gemma-3-27b-pt`.
+  * `mistralai/Mixtral-8x7B-v0.1`.
+  * `mistralai/Mistral-7B-Instruct-v0.2`.
+  * `mistralai/Mistral-7B-v0.1`.
+  * `togethercomputer/llama-2-7b-chat`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="July 28, 2026">
   ## A/B variant percent updates in the CLI
 
@@ -47594,7 +47702,9 @@ When a model is deprecated on the serverless platform, you have three options:
 
 ## Deprecation history
 
-The table below lists all deprecations, most recent first.
+### Inference
+
+The table below lists all models removed from serverless inference, most recent first.
 
 | Removal date | Model                                               | Supported by on-demand dedicated endpoints                                                             |
 | :----------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
@@ -47814,6 +47924,112 @@ The table below lists all deprecations, most recent first.
 
 * Models marked "Yes" in the on-demand dedicated endpoint support column can be spun up as dedicated endpoints with customizable hardware.
 * Models marked "No" are not available as on-demand endpoints and require migration to a different model or a monthly reserved dedicated endpoint.
+
+### Fine-tuning
+
+The table below lists all models removed from the fine-tuning service, most recent first. These models can no longer be used as a base model for a fine-tuning job. Where a close equivalent exists, the suggested replacement is listed. A blank cell means there is no direct equivalent. See [Supported models](/docs/fine-tuning/supported-models) for the full list of models available today.
+
+| Removal date | Model                                                   | Suggested replacement                             |
+| :----------- | :------------------------------------------------------ | :------------------------------------------------ |
+| 2026-07-29   | `nvidia/NVIDIA-Nemotron-Nano-9B-v2`                     | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      | `Qwen/Qwen3.5-122B-A10B`                          |
+| 2026-07-29   | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      | `Qwen/Qwen3.5-122B-A10B`                          |
+| 2026-07-29   | `Qwen/Qwen3-0.6B`                                       | `Qwen/Qwen3.5-0.8B`                               |
+| 2026-07-29   | `Qwen/Qwen3-0.6B-Base`                                  | `Qwen/Qwen3.5-0.8B`                               |
+| 2026-07-29   | `Qwen/Qwen3-1.7B`                                       | `Qwen/Qwen3.5-2B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-1.7B-Base`                                  | `Qwen/Qwen3.5-2B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-4B`                                         | `Qwen/Qwen3.5-4B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-4B-Base`                                    | `Qwen/Qwen3.5-4B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-8B`                                         | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-8B-Base`                                    | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-14B`                                        | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `Qwen/Qwen3-14B-Base`                                   | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `Qwen/Qwen3-32B`                                        | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `Qwen/Qwen3-30B-A3B-Base`                               | `Qwen/Qwen3.6-35B-A3B`                            |
+| 2026-07-29   | `Qwen/Qwen3-30B-A3B`                                    | `Qwen/Qwen3.6-35B-A3B`                            |
+| 2026-07-29   | `Qwen/Qwen3-30B-A3B-Instruct-2507`                      | `Qwen/Qwen3.6-35B-A3B`                            |
+| 2026-07-29   | `Qwen/Qwen3-235B-A22B`                                  | `Qwen/Qwen3.5-397B-A17B`                          |
+| 2026-07-29   | `Qwen/Qwen3-235B-A22B-Instruct-2507`                    | `Qwen/Qwen3.5-397B-A17B`                          |
+| 2026-07-29   | `Qwen/Qwen3-Coder-30B-A3B-Instruct`                     | `Qwen/Qwen3.6-35B-A3B`                            |
+| 2026-07-29   | `Qwen/Qwen3-Coder-480B-A35B-Instruct`                   |                                                   |
+| 2026-07-29   | `Qwen/Qwen3-VL-8B-Instruct`                             | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-VL-32B-Instruct`                            |                                                   |
+| 2026-07-29   | `Qwen/Qwen3-VL-30B-A3B-Instruct`                        | `Qwen/Qwen3.5-4B`                                 |
+| 2026-07-29   | `Qwen/Qwen3-VL-235B-A22B-Instruct`                      |                                                   |
+| 2026-07-29   | `Qwen/Qwen2.5-72B-Instruct`                             | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `Qwen/Qwen2.5-72B`                                      | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `Qwen/Qwen2.5-32B-Instruct`                             | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `Qwen/Qwen2.5-32B`                                      | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `Qwen/Qwen2.5-14B-Instruct`                             | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `Qwen/Qwen2.5-14B`                                      | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `Qwen/Qwen2.5-7B-Instruct`                              | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen2.5-7B`                                       | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen2.5-3B-Instruct`                              | `Qwen/Qwen3.5-4B`                                 |
+| 2026-07-29   | `Qwen/Qwen2.5-3B`                                       | `Qwen/Qwen3.5-4B`                                 |
+| 2026-07-29   | `Qwen/Qwen2.5-1.5B-Instruct`                            | `Qwen/Qwen3.5-2B`                                 |
+| 2026-07-29   | `Qwen/Qwen2.5-1.5B`                                     | `Qwen/Qwen3.5-2B`                                 |
+| 2026-07-29   | `Qwen/Qwen2-72B-Instruct`                               | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `Qwen/Qwen2-72B`                                        | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `Qwen/Qwen2-7B-Instruct`                                | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen2-7B`                                         | `Qwen/Qwen3.5-9B`                                 |
+| 2026-07-29   | `Qwen/Qwen2-1.5B-Instruct`                              | `Qwen/Qwen3.5-2B`                                 |
+| 2026-07-29   | `Qwen/Qwen2-1.5B`                                       | `Qwen/Qwen3.5-2B`                                 |
+| 2026-07-29   | `moonshotai/Kimi-K2.5`                                  | `moonshotai/Kimi-K2.6`                            |
+| 2026-07-29   | `moonshotai/Kimi-K2-Thinking`                           | `moonshotai/Kimi-K2.6`                            |
+| 2026-07-29   | `moonshotai/Kimi-K2-Instruct-0905`                      | `moonshotai/Kimi-K2.6`                            |
+| 2026-07-29   | `moonshotai/Kimi-K2-Instruct`                           | `moonshotai/Kimi-K2.6`                            |
+| 2026-07-29   | `moonshotai/Kimi-K2-Base`                               | `moonshotai/Kimi-K2.6`                            |
+| 2026-07-29   | `zai-org/GLM-5`                                         | `zai-org/GLM-5.1`                                 |
+| 2026-07-29   | `zai-org/GLM-4.7`                                       | `zai-org/GLM-5.1`                                 |
+| 2026-07-29   | `zai-org/GLM-4.6`                                       | `zai-org/GLM-5.1`                                 |
+| 2026-07-29   | `deepseek-ai/DeepSeek-R1-0528`                          | `deepseek-ai/DeepSeek-V3.1`                       |
+| 2026-07-29   | `deepseek-ai/DeepSeek-R1`                               | `deepseek-ai/DeepSeek-V3.1`                       |
+| 2026-07-29   | `deepseek-ai/DeepSeek-V3-0324`                          | `deepseek-ai/DeepSeek-V3.1`                       |
+| 2026-07-29   | `deepseek-ai/DeepSeek-V3`                               | `deepseek-ai/DeepSeek-V3.1`                       |
+| 2026-07-29   | `deepseek-ai/DeepSeek-V3.1-Base`                        | `deepseek-ai/DeepSeek-V3.1`                       |
+| 2026-07-29   | `deepseek-ai/DeepSeek-V3-Base`                          | `deepseek-ai/DeepSeek-V3.1`                       |
+| 2026-07-29   | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`             | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-32k`         | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-131k`        | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`              | `Qwen/Qwen3.5-27B`                                |
+| 2026-07-29   | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`             | `Qwen/Qwen3.5-2B`                                 |
+| 2026-07-29   | `meta-llama/Llama-4-Scout-17B-16E`                      | `meta-llama/Llama-4-Scout-17B-16E-Instruct`       |
+| 2026-07-29   | `meta-llama/Llama-4-Maverick-17B-128E`                  | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`   |
+| 2026-07-29   | `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`       | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`      | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Llama-3.2-3B-Instruct`                      | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Llama-3.2-3B`                               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Llama-3.2-1B-Instruct`                      | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Llama-3.2-1B`                               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`  | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-8B-Reference`                | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-8B-131k-Reference`           | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`      | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`  | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference` | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-Reference`               | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-32k-Reference`           | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Meta-Llama-3.1-70B-131k-Reference`          | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `meta-llama/Meta-Llama-3-8B-Instruct`                   | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Meta-Llama-3-8B`                            | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
+| 2026-07-29   | `meta-llama/Meta-Llama-3-70B-Instruct`                  | `meta-llama/Llama-3.3-70B-Instruct-Reference`     |
+| 2026-07-29   | `google/gemma-3-270m`                                   | `Qwen/Qwen3.5-0.8B`                               |
+| 2026-07-29   | `google/gemma-3-270m-it`                                | `Qwen/Qwen3.5-0.8B`                               |
+| 2026-07-29   | `google/gemma-3-1b-it`                                  | `google/gemma-4-26B-A4B-it`                       |
+| 2026-07-29   | `google/gemma-3-1b-pt`                                  | `google/gemma-4-26B-A4B-it`                       |
+| 2026-07-29   | `google/gemma-3-4b-it`                                  | `google/gemma-4-26B-A4B-it`                       |
+| 2026-07-29   | `google/gemma-3-4b-it-VLM`                              | `google/gemma-4-26B-A4B-it`                       |
+| 2026-07-29   | `google/gemma-3-4b-pt`                                  | `google/gemma-4-26B-A4B-it`                       |
+| 2026-07-29   | `google/gemma-3-12b-it`                                 | `google/gemma-4-26B-A4B-it`                       |
+| 2026-07-29   | `google/gemma-3-12b-it-VLM`                             | `google/gemma-4-31B-it-VLM`                       |
+| 2026-07-29   | `google/gemma-3-12b-pt`                                 | `google/gemma-4-26B-A4B-it`                       |
+| 2026-07-29   | `google/gemma-3-27b-it`                                 | `google/gemma-4-31B-it`                           |
+| 2026-07-29   | `google/gemma-3-27b-it-VLM`                             | `google/gemma-4-31B-it-VLM`                       |
+| 2026-07-29   | `google/gemma-3-27b-pt`                                 | `google/gemma-4-31B-it`                           |
+| 2026-07-29   | `mistralai/Mixtral-8x7B-v0.1`                           | `mistralai/Mixtral-8x7B-Instruct-v0.1`            |
+| 2026-07-29   | `mistralai/Mistral-7B-Instruct-v0.2`                    | `mistralai/Mixtral-8x7B-Instruct-v0.1`            |
+| 2026-07-29   | `mistralai/Mistral-7B-v0.1`                             | `mistralai/Mixtral-8x7B-Instruct-v0.1`            |
+| 2026-07-29   | `togethercomputer/llama-2-7b-chat`                      | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference` |
 
 ## Recommended actions
 

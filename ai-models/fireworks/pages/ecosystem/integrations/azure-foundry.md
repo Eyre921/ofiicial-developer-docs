@@ -46,7 +46,7 @@ Chat completions only. Embeddings, image generation, and audio modalities are no
 
 PayGo (Data Zone Standard) is available in: East US, East US 2, Central US, North Central US, West US, West US 3.
 
-The throughput limit for PayGo deployments is **250,000 tokens per minute (TPM)**.
+The throughput limit for PayGo deployments is **500,000 tokens per minute (TPM)**. For higher limits, submit a limit increase request on [aka.ms/fireworks-quota](https://aka.ms/fireworks-quota) and contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
 
 ### Make your first request
 

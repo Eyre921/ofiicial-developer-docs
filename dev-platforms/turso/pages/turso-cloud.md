@@ -4,15 +4,19 @@ source: https://docs.turso.tech/turso-cloud
 path: turso-cloud
 ---
 
-Your fully managed SQLite-compatible database platform built on libSQL
+Fully managed platform for SQLite-compatible databases. Deploy Turso, a rewrite of SQLite with concurrent writes and multi-user access built in, or libSQL, the battle-tested SQLite fork. No need to switch to Postgres for concurrency.
+
+Turso Cloud is a fully managed database platform, designed to scale from prototype to production. It hosts two database engines, both fully compatible with SQLite:
+
+* **[Turso](/tursodb/quickstart)** — a ground-up rewrite of SQLite. Turso supports **concurrent writes** and **multi-user access by default**: many clients can read and write the same database at the same time, over the network. If SQLite's single-writer limitation is what would push you toward a client-server database like Postgres, Turso removes it — you keep SQLite's simplicity and compatibility and gain the concurrency. Concurrent writes are the headline, but not the whole story: see the [Turso documentation](/tursodb/quickstart) for change data capture, vector search, encryption, sync, and more.
+
+* **[libSQL](/libsql)** — a fork of SQLite, battle-tested in production on Turso Cloud for years.
 
 <Note>
-  Turso Cloud currently runs on **libSQL** (SQLite-compatible). The
-  next-generation Turso Database engine is in alpha development and will be
-  integrated into Turso Cloud in the future.
+  Turso databases on Turso Cloud are in early preview — a reflection of how
+  recently the offering landed on the platform, not of the engine itself.
+  Create one with `turso db create --tursodb`.
 </Note>
-
-Turso Cloud is your fully managed SQLite-compatible database platform, designed to scale from prototype to production. Built on [libSQL](/libsql), Turso Cloud provides the performance and reliability of SQLite with the convenience and scalability of a modern cloud database service.
 
 <CardGroup>
   <Card
@@ -270,8 +274,8 @@ Learn how to manage, distribute and integrate your databases with the CLI, API a
 }
     href="/sdk"
   >
-    Connect and integrate Turso into your application with one of our libSQL
-    drivers.
+    Connect and integrate your application with one of our client SDKs, for
+    Turso and libSQL databases alike.
   </Card>
 
   <Card title="Tutorials" icon="newspaper" href="https://turso.tech/blog">

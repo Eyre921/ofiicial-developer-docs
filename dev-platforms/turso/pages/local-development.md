@@ -4,13 +4,12 @@ source: https://docs.turso.tech/local-development
 path: local-development
 ---
 
-Build locally using SQLite, libSQL Server or Turso.
+Build locally with a local Turso database, or a local libSQL server.
 
 Developers can build locally with Turso using either of the following methods:
 
-* [SQLite](#sqlite) — local SQLite database file
+* [Local Turso database](#local-turso-database) — local database file, no server needed (recommended)
 * [Turso CLI](#turso-cli) — managed libSQL server
-* [Turso Database](#turso-database) — remote Turso database
 
 ## Using a dump locally
 
@@ -29,36 +28,27 @@ You can always dump your production database and use it locally for development:
     ```
   </Step>
 
-  <Step title="Connect to SQLite file">
-    You can use any of the methods below with the `local.db` file, or you can use a new file name if you prefer to create a database from scratch.
+  <Step title="Connect to the file">
+    You can use either of the methods below with the `local.db` file, or you can use a new file name if you prefer to create a database from scratch.
   </Step>
 </Steps>
 
-## SQLite
+## Local Turso database
 
-There are a few things to keep in mind when using SQLite for local development:
-
-* Doesn't have all the features of libSQL
-* Works with non-serverless based Turso SDKs
-
-When working with an [SDK](/sdk), you can pass it a `file:` URL to connect to a SQLite database file instead of a remote Turso database:
+Whenever your application runs against a local database, we recommend the [Turso packages](/sdk). They are fully SQLite-compatible — they open existing SQLite files — and run entirely in your process, no server needed:
 
 <CodeGroup>
   ```ts JavaScript theme={null}
-  import { createClient } from "@libsql/client";
+  import { connect } from "@tursodatabase/database";
 
-  const client = createClient({
-    url: "file:local.db",
-  });
+  const db = await connect("local.db");
   ```
 
   ```rust Rust theme={null}
-  let client = libsql_client::Client::from_config(libsql_client::Config {
-      url: url::Url::parse("file:local.db").unwrap(),
-      auth_token: None,
-  })
-  .await
-  .unwrap();
+  use turso::Builder;
+
+  let db = Builder::new_local("local.db").build().await?;
+  let conn = db.connect()?;
   ```
 
   ```go Go theme={null}
@@ -66,30 +56,20 @@ When working with an [SDK](/sdk), you can pass it a `file:` URL to connect to a 
 
   import (
     "database/sql"
-    "fmt"
-    "os"
 
-    _ "github.com/tursodatabase/go-libsql"
+    _ "turso.tech/database/tursogo"
   )
 
   func main() {
-    dbName := "file:./local.db"
-
-    db, err := sql.Open("libsql", dbName)
-    if err != nil {
-      fmt.Fprintf(os.Stderr, "failed to open db %s", err)
-      os.Exit(1)
-    }
+    db, _ := sql.Open("turso", "local.db")
     defer db.Close()
   }
   ```
 
   ```python Python theme={null}
-  import libsql_client
+  import turso
 
-  client = libsql_client.create_client_sync(
-      url="file:local.db"
-  )
+  db = turso.connect("local.db")
   ```
 </CodeGroup>
 
@@ -105,40 +85,23 @@ When working with an [SDK](/sdk), you can pass it a `file:` URL to connect to a 
 
 ## Turso CLI
 
-If you're using [libSQL](/libsql) specific features like [extensions](/libsql#extensions), you should use the Turso CLI:
+If you're developing against a [libSQL](/libsql) database and use libSQL-specific features like [extensions](/libsql#extensions), you should use the Turso CLI:
 
 ```bash theme={null}
 turso dev
 ```
 
-This will start a local libSQL server and create a database for you. You can then connect to it using the `url` option in your SDK:
+This will start a local libSQL server and create a database for you. You can then connect to it with your libSQL client using the `url` option:
 
-<CodeGroup>
-  ```ts JavaScript theme={null}
-  import { createClient } from "@libsql/client";
+```ts JavaScript theme={null}
+import { createClient } from "@libsql/client";
 
-  const client = createClient({
-    url: "http://127.0.0.1:8080",
-  });
-  ```
+const client = createClient({
+  url: "http://127.0.0.1:8080",
+});
+```
 
-  ```rust Rust theme={null}
-  let client = libsql_client::Client::from_config(libsql_client::Config {
-      url: url::Url::parse("http://127.0.0.1:8080").unwrap(),
-      auth_token: None,
-  })
-  .await
-  .unwrap();
-  ```
-
-  ```python Python theme={null}
-  import libsql_client
-
-  client = libsql_client.create_client_sync(
-      url="http://127.0.0.1:8080"
-  )
-  ```
-</CodeGroup>
+The same URL works with the libSQL clients for [other languages](/sdk).
 
 <br />
 
@@ -152,12 +115,12 @@ If you want to persist changes, or use a production dump, you can pass the `--db
 turso dev --db-file local.db
 ```
 
-## Turso Database
+## Turso Cloud database
 
-If you already have a database created with Turso, you can use that same one in development by passing the `url` option to your SDK.
+If you already have a database created on Turso Cloud, you can use that same one in development by passing the `url` option to your SDK.
 
 <Warning>
-  Keep in mind that using the Turso hosted database will incur platform costs and count towards your quota. Consider using [SQLite](#sqlite) or [Turso CLI](#turso-cli) for local development to avoid platform costs.
+  Keep in mind that using the Turso Cloud hosted database will incur platform costs and count towards your quota. Consider one of the local methods above to avoid platform costs.
 </Warning>
 
 ## Connecting a GUI

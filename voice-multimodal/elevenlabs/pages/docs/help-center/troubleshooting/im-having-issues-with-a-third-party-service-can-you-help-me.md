@@ -8,4 +8,6 @@ path: docs/help-center/troubleshooting/im-having-issues-with-a-third-party-servi
 
 # I'm having issues with a third-party service, can you help me?
 
-Unfortunately, if you are having issues with a third-party service -- HeyGen, GenAI, or any other service -- we cannot offer any form of support for any other service than we directly offer ourselves.
+ElevenLabs support can only assist with issues related to ElevenLabs products and services. If you're experiencing issues with a third-party service, you'll need to contact that service's support team directly.
+
+This includes integrations and external platforms such as HeyGen, GenAI, or any other third-party service that uses or connects to ElevenLabs. While we provide the ElevenLabs API and features, we cannot troubleshoot or resolve issues specific to third-party platforms.

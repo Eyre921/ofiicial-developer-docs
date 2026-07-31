@@ -18,11 +18,14 @@ not just message bubbles.
 
 ## How it works
 
-Deep agents include a built-in **`todos` state** that tracks task progress as
-the agent works through its plan. As the agent executes, it updates each
+Deep agents can expose a **`todos` state** channel when you opt into [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware). That middleware adds the `write_todos` tool and persists task progress as the agent works through its plan. As the agent executes, it updates each
 todo's status from `"pending"` to `"in_progress"` to `"completed"`. The
 [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) hook exposes this state via `stream.values.todos`, and your UI
 renders it reactively.
+
+<Note>
+  Task planning is opt-in. Without [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware), `stream.values.todos` is not present. See [Task planning](/oss/python/deepagents/overview#task-planning).
+</Note>
 
 The flow looks like this:
 
@@ -35,7 +38,81 @@ The flow looks like this:
 
 ## Setting up `useStream`
 
-No special configuration is needed. Point [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) at your agent and
+Enable [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) on the agent.
+
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+</CodeGroup>
+
+Then point [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) at that agent and
 read the `todos` from `stream.values`.
 
 <Info>

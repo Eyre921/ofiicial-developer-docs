@@ -12,7 +12,7 @@ This guide demonstrates how to build a multi-step web research agent from scratc
 
 The agent you build will:
 
-1. Plan research using a todo list
+1. Plan research using the opt-in todo list middleware
 2. Delegate focused research tasks to sub-agents with isolated context
 3. Assess search results and plan next steps as you gather information
 4. Synthesize findings with proper citations into a final report
@@ -25,7 +25,7 @@ This tutorial covers:
 
 * [Subagents](/oss/python/deepagents/subagents) for parallel, context-isolated research
 * Custom [tools](/oss/python/langchain/tools) for web search
-* Multi-step planning with the [built-in planning tool](/oss/python/deepagents/overview#task-planning)
+* Multi-step planning with the opt-in [planning tool](/oss/python/deepagents/overview#task-planning)
 
 ## Prerequisites
 
@@ -325,8 +325,18 @@ Create `agent.py` in your project directory:
     ```
   </Step>
 
+  <Step title="Enable task planning">
+    [Task planning](/oss/python/deepagents/overview#task-planning) is opt-in. The research workflow uses `write_todos` to break questions into focused tasks, so pass [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) when you create the agent.
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from langchain.agents.middleware import TodoListMiddleware
+    ```
+
+    You include this middleware in the next step when you create the agent.
+  </Step>
+
   <Step title="Create the agent">
-    Add the model initialization and agent creation to `agent.py`. Choose your provider:
+    Add the model initialization and agent creation to `agent.py`. Choose your provider. Include [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) so the planning tool is available:
 
     <Tabs>
       <Tab title="Claude">
@@ -334,6 +344,7 @@ Create `agent.py` in your project directory:
         from datetime import datetime
 
         from deepagents import create_deep_agent
+        from langchain.agents.middleware import TodoListMiddleware
         from langchain.chat_models import init_chat_model
 
         max_concurrent_research_units = 3
@@ -366,6 +377,7 @@ Create `agent.py` in your project directory:
             tools=[tavily_search],
             system_prompt=INSTRUCTIONS,
             subagents=[research_sub_agent],
+            middleware=[TodoListMiddleware()],
         )
         ```
       </Tab>
@@ -374,8 +386,9 @@ Create `agent.py` in your project directory:
         ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         from datetime import datetime
 
-        from langchain_google_genai import ChatGoogleGenerativeAI
         from deepagents import create_deep_agent
+        from langchain.agents.middleware import TodoListMiddleware
+        from langchain_google_genai import ChatGoogleGenerativeAI
 
         max_concurrent_research_units = 3
         max_researcher_iterations = 3
@@ -407,6 +420,7 @@ Create `agent.py` in your project directory:
             tools=[tavily_search],
             system_prompt=INSTRUCTIONS,
             subagents=[research_sub_agent],
+            middleware=[TodoListMiddleware()],
         )
         ```
       </Tab>
@@ -482,7 +496,7 @@ You can also tune the delegation limits to allow for more parallel sub-agents or
 For more information on the concepts in this tutorial, check out the following resources:
 
 * [Subagents](/oss/python/deepagents/subagents): Learn how to configure subagents with different tools and prompts
-* [Customization](/oss/python/deepagents/customization): Customize models, tools, system prompts, and planning behavior
+* [Customization](/oss/python/deepagents/customization): Customize models, tools, system prompts, and optional [task planning](/oss/python/deepagents/overview#task-planning)
 * [LangSmith](/langsmith/observability): Trace research runs and debug multi-step behavior
 * [Deep Research Course](https://academy.langchain.com/courses/deep-research-with-langgraph): Full course on deep research with LangGraph
 

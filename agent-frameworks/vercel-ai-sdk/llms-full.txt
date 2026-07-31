@@ -100760,6 +100760,152 @@ list of available models. You can also pass any available provider model ID as
 a string if needed.
 
 ---
+title: MiniMax
+description: Learn how to use MiniMax models with the AI SDK.
+---
+
+# MiniMax Provider
+
+The [MiniMax](https://www.minimax.io) provider offers access to the MiniMax-M
+series of language models through the MiniMax API, including models with
+reasoning capabilities.
+
+API keys can be obtained from the [MiniMax Platform](https://platform.minimax.io).
+
+## Setup
+
+The MiniMax provider is available via the `@ai-sdk/minimax` module. You can install it with:
+
+<InstallPackages packages="@ai-sdk/minimax" />
+
+## Provider Instance
+
+You can import the default provider instance `minimax` from `@ai-sdk/minimax`:
+
+```ts
+import { minimax } from '@ai-sdk/minimax';
+```
+
+For custom configuration, you can import `createMiniMax` and create a provider instance with your settings:
+
+```ts
+import { createMiniMax } from '@ai-sdk/minimax';
+
+const minimax = createMiniMax({
+  apiKey: process.env.MINIMAX_API_KEY ?? '',
+});
+```
+
+You can use the following optional settings to customize the MiniMax provider instance:
+
+- **baseURL** _string_
+
+  Use a different URL prefix for API calls.
+  The default prefix is `https://api.minimax.io/v1`
+
+- **apiKey** _string_
+
+  API key that is being sent using the `Authorization` header. It defaults to
+  the `MINIMAX_API_KEY` environment variable
+
+- **headers** _Record&lt;string,string&gt;_
+
+  Custom headers to include in the requests
+
+- **fetch** _(input: RequestInfo, init?: RequestInit) => Promise&lt;Response&gt;_
+
+  Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation
+
+## Language Models
+
+You can create language models using a provider instance:
+
+```ts
+import { minimax } from '@ai-sdk/minimax';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: minimax('minimax-m3'),
+  prompt: 'Write a vegetarian lasagna recipe for 4 people.',
+});
+```
+
+You can also use the `.chat()` or `.languageModel()` factory methods:
+
+```ts
+const model = minimax.chat('minimax-m3');
+// or
+const model = minimax.languageModel('minimax-m3');
+```
+
+MiniMax language models can be used in the `streamText` function
+(see [AI SDK Core](/docs/ai-sdk-core)).
+
+### Reasoning
+
+MiniMax-M models can produce intermediate reasoning ("thinking") before their
+final response. You control this behavior through provider options. The reasoning
+output is streamed through the standard AI SDK reasoning parts.
+
+```ts
+import { minimax, type MiniMaxLanguageModelOptions } from '@ai-sdk/minimax';
+import { generateText } from 'ai';
+
+const { text, reasoningText } = await generateText({
+  model: minimax('minimax-m3'),
+  providerOptions: {
+    minimax: {
+      thinking: { type: 'adaptive' },
+    } satisfies MiniMaxLanguageModelOptions,
+  },
+  prompt: 'How many "r"s are in the word "strawberry"?',
+});
+
+console.log(reasoningText);
+console.log(text);
+```
+
+See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
+
+### Provider Options
+
+The following optional provider options are available for MiniMax language models:
+
+- **thinking** _object_
+
+  Controls the model's reasoning ("thinking") behavior.
+  - **type** _'adaptive' | 'disabled'_
+    - `'adaptive'`: the model decides when to reason (deep reasoning enabled)
+    - `'disabled'`: the model responds directly without reasoning, for higher
+      throughput and lower latency
+
+  When omitted, the model uses its provider-side default.
+
+  <Note>
+    Thinking control is only supported on `minimax-m3`. The M2.x models always
+    think, so `'disabled'` has no effect on them.
+  </Note>
+
+## Model Capabilities
+
+| Model                    | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ------------------------ | ----------- | ----------------- | ---------- | -------------- |
+| `minimax-m3`             | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.7`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.7-highspeed` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.5`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.5-highspeed` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.1`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.1-highspeed` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2`             | <Cross />   | <Check />         | <Check />  | <Check />      |
+
+<Note>
+  Please see the [MiniMax docs](https://platform.minimax.io/docs) for a full
+  list of available models. You can also pass any available provider model ID as
+  a string if needed.
+</Note>
+
+---
 title: Cerebras
 description: Learn how to use Cerebras's models with the AI SDK.
 ---
@@ -101606,6 +101752,79 @@ respond to questions about it.
   For more details about Perplexity's capabilities, see the [Perplexity chat
   completion docs](https://docs.perplexity.ai/api-reference/chat-completions).
 </Note>
+
+## Embedding Models
+
+You can create models that call the [Perplexity embeddings API](https://docs.perplexity.ai/docs/embeddings/quickstart)
+using the `.embedding()` factory method.
+
+```ts
+import { perplexity } from '@ai-sdk/perplexity';
+import { embed } from 'ai';
+
+const { embedding } = await embed({
+  model: perplexity.embedding('pplx-embed-v1-4b'),
+  value: 'sunny day at the beach',
+});
+```
+
+<Note>
+  Perplexity returns **quantized** embeddings (not floating point). Values are
+  decoded to numbers — signed `int8` values (default) or packed bits per byte.
+  Compare `base64_int8` embeddings with cosine similarity and `base64_binary`
+  embeddings with Hamming distance.
+</Note>
+
+When the API returns a cost breakdown, it is exposed via
+`providerMetadata.perplexity.cost` (`inputCost`, `totalCost`, `currency`):
+
+```ts
+const { embedding, providerMetadata } = await embed({
+  model: perplexity.embedding('pplx-embed-v1-4b'),
+  value: 'sunny day at the beach',
+});
+
+console.log(providerMetadata?.perplexity?.cost);
+// { inputCost: 0.0001, totalCost: 0.0001, currency: 'USD' }
+```
+
+### Provider Options
+
+You can pass provider-specific options via the `providerOptions.perplexity` field:
+
+```ts
+const { embedding } = await embed({
+  model: perplexity.embedding('pplx-embed-v1-4b'),
+  value: 'sunny day at the beach',
+  providerOptions: {
+    perplexity: {
+      // Matryoshka truncation of the output vector (128 up to the model size).
+      dimensions: 512,
+      // Quantized encoding format. Defaults to 'base64_int8'.
+      encodingFormat: 'base64_int8',
+    },
+  },
+});
+```
+
+The following optional provider options are available for embedding models:
+
+- **dimensions** _number_
+
+  The number of dimensions the resulting output embeddings should have.
+  Ranges from 128 up to the model's full size (1024 for `0.6b` models, 2560 for
+  `4b` models).
+
+- **encodingFormat** _'base64_int8' | 'base64_binary'_
+
+  The quantized encoding format returned by the API. Defaults to `base64_int8`.
+
+### Embedding Model Capabilities
+
+| Model                | Dimensions | Max Values Per Call |
+| -------------------- | ---------- | ------------------- |
+| `pplx-embed-v1-0.6b` | 1024       | 512                 |
+| `pplx-embed-v1-4b`   | 2560       | 512                 |
 
 ## Model Capabilities
 
@@ -119787,6 +120006,253 @@ Learn more about [tools and tool calling](/docs/ai-sdk-core/tools-and-tool-calli
 [telemetry](/docs/ai-sdk-core/telemetry).
 
 ---
+title: Code Mode
+description: Let models orchestrate AI SDK tools with sandboxed JavaScript and TypeScript.
+---
+
+# Code Mode
+
+Code mode lets a model write JavaScript or TypeScript that calls your AI SDK
+tools. The generated code runs in an isolated QuickJS sandbox and returns a JSON-serializable result.
+
+Instead of calling tools one at a time, a model can use code mode to:
+
+- call independent tools concurrently
+- transform and combine tool results
+- filter large tool responses before returning them to the model
+- use JavaScript control flow for multi-step operations
+
+Code mode is provided by the `@ai-sdk/code-mode` package.
+
+<Note type="warning">
+  Code mode is experimental and its APIs may change in future releases. It
+  requires Node.js 22 or newer and is not available in browser or edge runtimes.
+</Note>
+
+## Installation
+
+```bash
+pnpm add ai @ai-sdk/code-mode zod
+```
+
+## Using Code Mode with `generateText`
+
+Define your tools in one tool set and use `experimental_toolCallers` to select
+which tools code mode can call:
+
+```ts
+import { experimental_codeModeTool as codeModeTool } from '@ai-sdk/code-mode';
+import { generateText, isStepCount, tool } from 'ai';
+import { z } from 'zod';
+
+const getInventory = tool({
+  description: 'Get available inventory for a product.',
+  inputSchema: z.object({
+    productId: z.string(),
+  }),
+  outputSchema: z.object({
+    productId: z.string(),
+    availableUnits: z.number(),
+  }),
+  execute: async ({ productId }) => ({
+    productId,
+    availableUnits: 42,
+  }),
+});
+
+const getDemand = tool({
+  description: 'Get requested units for a product.',
+  inputSchema: z.object({
+    productId: z.string(),
+  }),
+  outputSchema: z.object({
+    productId: z.string(),
+    requestedUnits: z.number(),
+  }),
+  execute: async ({ productId }) => ({
+    productId,
+    requestedUnits: 31,
+  }),
+});
+
+const tools = {
+  code_mode: codeModeTool({
+    executionPolicy: {
+      timeoutMs: 30_000,
+    },
+  }),
+  getInventory,
+  getDemand,
+} as const;
+
+const result = await generateText({
+  model: __MODEL__,
+  tools,
+  experimental_toolCallers: ({ code_mode }) => ({
+    getInventory: [code_mode],
+    getDemand: [code_mode],
+  }),
+  stopWhen: isStepCount(10),
+  prompt: 'Compare inventory and demand for product sku_123.',
+});
+```
+
+The keys returned by `experimental_toolCallers` are the tools being governed.
+The values identify their allowed callers. In this example, `getInventory` and
+`getDemand` are available through `code_mode`, but they are not exposed to the
+model as directly callable tools. Include `'direct'` when a tool should also be
+callable directly:
+
+```ts
+experimental_toolCallers: ({ code_mode }) => ({
+  getInventory: ['direct', code_mode],
+});
+```
+
+Tools without an `experimental_toolCallers` entry keep their existing direct
+tool-calling behavior.
+
+The code mode tool description includes TypeScript signatures generated from
+the input and output schemas of its allowed tools. Descriptions,
+`inputExamples`, and precise schemas help the model write correct code.
+
+For the example above, the model can generate a program like:
+
+```ts
+const [inventory, demand] = await Promise.all([
+  tools.getInventory({ productId: 'sku_123' }),
+  tools.getDemand({ productId: 'sku_123' }),
+]);
+
+return {
+  sufficient: inventory.availableUnits >= demand.requestedUnits,
+  remaining: inventory.availableUnits - demand.requestedUnits,
+};
+```
+
+Each provided tool is available through the global `tools` object. Tool names
+that are not valid JavaScript identifiers use bracket notation:
+
+```ts
+const user = await tools['lookup-user']({ userId: 'user_123' });
+return { id: user.id, plan: user.plan };
+```
+
+## Writing Code Mode Programs
+
+Generated programs support:
+
+- JavaScript and type-stripped TypeScript
+- top-level `await` and `return`
+- standard JavaScript control flow and data transformations
+- `Promise.all` for concurrent tool calls
+- `JSON.parse` and `JSON.stringify`
+- `console.log`, `console.info`, `console.debug`, and `console.error`
+
+Every tool call is asynchronous and must be awaited or otherwise observed.
+Returning while tool calls are still detached fails the invocation and aborts
+the outstanding work.
+
+Programs and tool inputs and outputs cross the sandbox boundary as JSON. Return
+only JSON-serializable values. TypeScript support is limited to removing type
+syntax; code mode does not perform type checking or provide a full TypeScript
+compiler.
+
+## Direct Execution
+
+Use `experimental_runCodeMode` when you want to execute a program directly
+instead of exposing code mode to a model:
+
+```ts
+import { experimental_runCodeMode as runCodeMode } from '@ai-sdk/code-mode';
+
+const result = await runCodeMode({
+  js: `
+    const inventory = await tools.getInventory({
+      productId: 'sku_123',
+    });
+
+    return {
+      productId: inventory.productId,
+      available: inventory.availableUnits > 0,
+    };
+  `,
+  tools: { getInventory },
+});
+```
+
+`runCodeMode` returns the value returned by the program. It uses the same
+sandbox and execution limits as the AI SDK tool.
+
+## Execution Limits
+
+Every invocation has limits for runtime, memory, source size, results, tool
+payloads, console output, and tool calls. Override them with
+`executionPolicy`:
+
+```ts
+const codeMode = codeModeTool({
+  executionPolicy: {
+    timeoutMs: 30_000,
+    memoryLimitBytes: 64 * 1024 * 1024,
+    maxResultBytes: 1024 * 1024,
+    maxBridgeRequests: 100,
+    maxInFlightBridgeRequests: 10,
+  },
+});
+```
+
+The available limits are:
+
+- `timeoutMs`: total execution time
+- `memoryLimitBytes`: QuickJS memory
+- `maxStackSizeBytes`: QuickJS stack
+- `maxSourceBytes`: generated source code
+- `maxResultBytes`: returned result
+- `maxConsoleOutputBytes`: combined console output
+- `maxToolInputBytes`: input for each tool call
+- `maxToolOutputBytes`: output from each tool call
+- `maxBridgeRequests`: total tool calls
+- `maxInFlightBridgeRequests`: concurrent tool calls
+
+Use `experimental_setMaxWorkers` to set a process-wide cap on concurrent code
+mode workers:
+
+```ts
+import { experimental_setMaxWorkers as setMaxWorkers } from '@ai-sdk/code-mode';
+
+setMaxWorkers(4);
+```
+
+Without an explicit cap, code mode chooses one based on available memory, up to
+32 workers.
+
+## Isolation and Tool Access
+
+Each invocation receives a fresh QuickJS context. Sandboxed code cannot access:
+
+- Node.js globals such as `process`, `require`, or `module`
+- the host file system or module loader
+- `fetch`, WebCrypto, or performance APIs
+- `eval` or dynamic `Function` construction
+
+Network or system access must be implemented in a tool and explicitly provided
+to code mode.
+
+<Note type="warning">
+  Treat the sandbox as defense in depth. Generated code and tool arguments are
+  untrusted. Tools execute in your host application, outside the QuickJS
+  sandbox, and every capability exposed by a provided tool is available to the
+  generated program. Enforce authorization and validate inputs inside each tool.
+</Note>
+
+Tool input schemas are validated before their `execute` functions run. Abort
+signals and AI SDK tool execution context are forwarded to nested tool calls.
+
+Code mode does not currently support approval flows for nested tool calls.
+Tools that require approval are rejected instead of being executed.
+
+---
 title: Prompt Engineering
 description: Learn how to develop prompts with AI SDK Core.
 ---
@@ -126028,7 +126494,7 @@ Called after the provider response has been normalized and parsed, before local 
     {
       name: 'modelId',
       type: 'string',
-      description: 'Model identifier for this model call.',
+      description: 'Provider-returned model identifier for this model call.',
     },
     {
       name: 'finishReason',
@@ -157586,6 +158052,152 @@ The following provider options are available via `providerOptions.alibaba`:
 Please see the [Alibaba Cloud Model Studio docs](https://www.alibabacloud.com/help/en/model-studio/models) for a full
 list of available models. You can also pass any available provider model ID as
 a string if needed.
+
+---
+title: MiniMax
+description: Learn how to use MiniMax models with the AI SDK.
+---
+
+# MiniMax Provider
+
+The [MiniMax](https://www.minimax.io) provider offers access to the MiniMax-M
+series of language models through the MiniMax API, including models with
+reasoning capabilities.
+
+API keys can be obtained from the [MiniMax Platform](https://platform.minimax.io).
+
+## Setup
+
+The MiniMax provider is available via the `@ai-sdk/minimax` module. You can install it with:
+
+<InstallPackages packages="@ai-sdk/minimax" />
+
+## Provider Instance
+
+You can import the default provider instance `minimax` from `@ai-sdk/minimax`:
+
+```ts
+import { minimax } from '@ai-sdk/minimax';
+```
+
+For custom configuration, you can import `createMiniMax` and create a provider instance with your settings:
+
+```ts
+import { createMiniMax } from '@ai-sdk/minimax';
+
+const minimax = createMiniMax({
+  apiKey: process.env.MINIMAX_API_KEY ?? '',
+});
+```
+
+You can use the following optional settings to customize the MiniMax provider instance:
+
+- **baseURL** _string_
+
+  Use a different URL prefix for API calls.
+  The default prefix is `https://api.minimax.io/v1`
+
+- **apiKey** _string_
+
+  API key that is being sent using the `Authorization` header. It defaults to
+  the `MINIMAX_API_KEY` environment variable
+
+- **headers** _Record&lt;string,string&gt;_
+
+  Custom headers to include in the requests
+
+- **fetch** _(input: RequestInfo, init?: RequestInit) => Promise&lt;Response&gt;_
+
+  Custom [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation
+
+## Language Models
+
+You can create language models using a provider instance:
+
+```ts
+import { minimax } from '@ai-sdk/minimax';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: minimax('minimax-m3'),
+  prompt: 'Write a vegetarian lasagna recipe for 4 people.',
+});
+```
+
+You can also use the `.chat()` or `.languageModel()` factory methods:
+
+```ts
+const model = minimax.chat('minimax-m3');
+// or
+const model = minimax.languageModel('minimax-m3');
+```
+
+MiniMax language models can be used in the `streamText` function
+(see [AI SDK Core](/docs/ai-sdk-core)).
+
+### Reasoning
+
+MiniMax-M models can produce intermediate reasoning ("thinking") before their
+final response. You control this behavior through provider options. The reasoning
+output is streamed through the standard AI SDK reasoning parts.
+
+```ts
+import { minimax, type MiniMaxLanguageModelOptions } from '@ai-sdk/minimax';
+import { generateText } from 'ai';
+
+const { text, reasoningText } = await generateText({
+  model: minimax('minimax-m3'),
+  providerOptions: {
+    minimax: {
+      thinking: { type: 'adaptive' },
+    } satisfies MiniMaxLanguageModelOptions,
+  },
+  prompt: 'How many "r"s are in the word "strawberry"?',
+});
+
+console.log(reasoningText);
+console.log(text);
+```
+
+See [AI SDK UI: Chatbot](/docs/ai-sdk-ui/chatbot#reasoning) for more details on how to integrate reasoning into your chatbot.
+
+### Provider Options
+
+The following optional provider options are available for MiniMax language models:
+
+- **thinking** _object_
+
+  Controls the model's reasoning ("thinking") behavior.
+  - **type** _'adaptive' | 'disabled'_
+    - `'adaptive'`: the model decides when to reason (deep reasoning enabled)
+    - `'disabled'`: the model responds directly without reasoning, for higher
+      throughput and lower latency
+
+  When omitted, the model uses its provider-side default.
+
+  <Note>
+    Thinking control is only supported on `minimax-m3`. The M2.x models always
+    think, so `'disabled'` has no effect on them.
+  </Note>
+
+## Model Capabilities
+
+| Model                    | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ------------------------ | ----------- | ----------------- | ---------- | -------------- |
+| `minimax-m3`             | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.7`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.7-highspeed` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.5`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.5-highspeed` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.1`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2.1-highspeed` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `minimax-m2`             | <Cross />   | <Check />         | <Check />  | <Check />      |
+
+<Note>
+  Please see the [MiniMax docs](https://platform.minimax.io/docs) for a full
+  list of available models. You can also pass any available provider model ID as
+  a string if needed.
+</Note>
 
 ---
 title: Cerebras

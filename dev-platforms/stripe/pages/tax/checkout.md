@@ -23,9 +23,9 @@ Stripe Tax automatically calculates taxes on purchases and *subscriptions* (A Su
 
 ## See also
 
+- [Adaptive Pricing and Stripe Tax](https://docs.stripe.com/tax/calculating/adaptive-pricing.md)
 - [Determine customer locations](https://docs.stripe.com/tax/customer-locations.md)
-- [Collect customer tax IDs](https://docs.stripe.com/tax/checkout/tax-ids.md)
+- [Collect tax IDs with Checkout](https://docs.stripe.com/tax/checkout/tax-ids.md)
 - [Test your tax integration](https://docs.stripe.com/tax/testing.md)
 - [Reporting and filing](https://docs.stripe.com/tax/reports.md)
-- [Use Stripe Tax with Connect](https://docs.stripe.com/tax/connect.md)
 

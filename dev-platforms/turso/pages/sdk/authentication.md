@@ -4,13 +4,17 @@ source: https://docs.turso.tech/sdk/authentication
 path: sdk/authentication
 ---
 
-SDKs connect to Turso using the `libsql://` protocol, unless using the [HTTP API](/sdk/http).
+SDKs connect using the `turso://` protocol for [Turso](/tursodb/quickstart) databases and the `libsql://` protocol for [libSQL](/libsql) databases, unless using the [HTTP API](/sdk/http).
 
 ## Database URL
 
 You can find your database URL using the [Turso CLI](/cli/db/show) or [Platform API](/api-reference/databases/retrieve), it looks something like this:
 
 <CodeGroup>
+  ```bash Turso theme={null}
+  turso://[DB-NAME]-[ORG-NAME].turso.io
+  ```
+
   ```bash libSQL theme={null}
   libsql://[DB-NAME]-[ORG-NAME].turso.io
   ```

@@ -27,7 +27,8 @@ Choose your path to get started with Turso:
   </Card>
 
   <Card title="Turso Cloud" icon="cloud" href="/turso-cloud">
-    Fully managed database platform with branching, analytics, backups,and more.
+    Fully managed platform for Turso and libSQL databases, with branching,
+    analytics, backups, and more.
   </Card>
 
   <Card title="How Well You Know Turso?" icon="circle-question" href="https://www.howwellyouknow.com/play/turso">

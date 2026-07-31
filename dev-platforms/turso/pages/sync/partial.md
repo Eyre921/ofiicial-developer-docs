@@ -39,7 +39,7 @@ Both modes continue to lazily fetch missing pages on demand.
 
   const db = await connect({
     path: './app.db',
-    url: 'libsql://...',
+    url: 'turso://...',
     authToken: process.env.TURSO_AUTH_TOKEN,
     partialSyncExperimental: {
       bootstrapStrategy: { kind: 'prefix', length: 128 * 1024 }, // 128 KiB
@@ -53,9 +53,9 @@ Both modes continue to lazily fetch missing pages on demand.
 
   conn = turso.sync.connect(
       path="./app.db",
-      remote_url="libsql://...",
-      remote_auth_token=os.environ["TURSO_AUTH_TOKEN"],
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      remote_url="turso://...",
+      auth_token=os.environ["TURSO_AUTH_TOKEN"],
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncPrefixBootstrap(length=128 * 1024),
       ),
   )
@@ -63,15 +63,15 @@ Both modes continue to lazily fetch missing pages on demand.
 
   ```go Go theme={null}
   import (
-  	"turso"
+  	turso "turso.tech/database/tursogo"
   )
 
   db, err := turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
-    Path:            "./app.db",
-    RemoteUrl:       "libsql://...",
-    RemoteAuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyPrefix: 128 * 1024, // 128 KiB
+    Path:      "./app.db",
+    RemoteUrl: "turso://...",
+    AuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyPrefix: 128 * 1024, // 128 KiB
     },
   })
   ```
@@ -85,7 +85,7 @@ Both modes continue to lazily fetch missing pages on demand.
 
   const db = await connect({
     path: './app.db',
-    url: 'libsql://...',
+    url: 'turso://...',
     authToken: process.env.TURSO_AUTH_TOKEN,
     partialSyncExperimental: {
       bootstrapStrategy: {
@@ -101,8 +101,8 @@ Both modes continue to lazily fetch missing pages on demand.
 
   conn = turso.sync.connect(
       path=":memory:",
-      remote_url="libsql://...",
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      remote_url="turso://...",
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncQueryBootstrap(
               query="SELECT * FROM messages WHERE user_id = 'u_123' LIMIT 100"
           ),
@@ -112,15 +112,15 @@ Both modes continue to lazily fetch missing pages on demand.
 
   ```go Go theme={null}
   import (
-  	"turso"
+  	turso "turso.tech/database/tursogo"
   )
 
   db, err := turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
-    Path:            "./app.db",
-    RemoteUrl:       "libsql://...",
-    RemoteAuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyQuery: "SELECT * FROM messages WHERE user_id = 'u_123' LIMIT 100",
+    Path:      "./app.db",
+    RemoteUrl: "turso://...",
+    AuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyQuery: "SELECT * FROM messages WHERE user_id = 'u_123' LIMIT 100",
     },
   })
   ```
@@ -271,7 +271,7 @@ The default `segment_size` is **128 KiB** (typically 32 pages on a 4 KiB page si
   ```py Python theme={null}
   turso.sync.connect(
       ...
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncPrefixBootstrap(length=128 * 1024),
           segment_size=16 * 1024,
       ),
@@ -281,8 +281,8 @@ The default `segment_size` is **128 KiB** (typically 32 pages on a 4 KiB page si
   ```go Go theme={null}
   turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
     ...
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyPrefix: 128 * 1024, // 128 KiB
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyPrefix: 128 * 1024, // 128 KiB
       SegmentSize: 16 * 1024,
     },
   })
@@ -400,7 +400,7 @@ This reduces the number of future on-demand fetches and helps avoid stalls durin
   ```py Python theme={null}
   turso.sync.connect(
       ...
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncPrefixBootstrap(length=128 * 1024),
           prefetch=True,
       ),
@@ -410,8 +410,8 @@ This reduces the number of future on-demand fetches and helps avoid stalls durin
   ```go Go theme={null}
   turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
     ...
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyPrefix: 128 * 1024, // 128 KiB
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyPrefix: 128 * 1024, // 128 KiB
       Prefetch: true,
     },
   })

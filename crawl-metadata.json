@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -10,10 +10,10 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
-    "status": "error: curl failed (35) for https://code.claude.com/docs/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
+    "status": "error: curl failed (28) for https://code.claude.com/docs/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/groq": {
     "status": "error: curl failed (22) for https://console.groq.com/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
@@ -38,14 +38,15 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 295,
+    "pages": 213,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (7) for https://platform.claude.com/llms-full.txt: curl: (7) Failed to connect to platform.claude.com port 443 after 44 ms: Could not connect to server\n"
   },
   "agent-frameworks/langchain": {
-    "status": "error: curl failed (28) for https://docs.langchain.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 9518394 bytes received\ncurl: (28) Operation timed out after 90002 milliseconds with 5340336 bytes received\ncurl: (28) Operation timed out a"
+    "pages": 1521,
+    "status": "ok"
   },
   "voice-multimodal/assemblyai": {
     "pages": 0,
@@ -60,8 +61,7 @@
     "status": "ok"
   },
   "vector-db/qdrant": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (22) for https://qdrant.tech/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "vector-db/chroma": {
     "pages": 146,
@@ -100,7 +100,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -185,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 92,
+    "pages": 97,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -193,16 +193,16 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 305,
+    "pages": 307,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 375,
+    "pages": 376,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1211,
+    "pages": 1214,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-30T11:30:53Z"
+  "_last_crawl": "2026-07-31T11:30:42Z"
 }

@@ -1,5 +1,5 @@
 ---
-title: "Stt"
+title: "STT"
 source: https://openrouter.ai/docs/client-sdks/typescript/sdks/stt/README.md
 path: docs/client-sdks/typescript/sdks/stt/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/typescript/sdks/stt/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Stt
+# STT
 
 > Speech-to-text endpoints
 

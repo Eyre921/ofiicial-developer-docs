@@ -14,7 +14,7 @@ This file routes agents to the smallest useful TanStack docs source. Fetch the l
 - [TanStack Query](https://tanstack.com/query/latest/llms.txt): Powerful asynchronous state management, server-state utilities and data fetching. Frameworks: React, Preact, Solid, Vue, Svelte, Angular, Lit. Packages: @tanstack/query-core, react-query. GitHub: https://github.com/tanstack/query.
 - [TanStack DB](https://tanstack.com/db/latest/llms.txt): The reactive client-first store for your API. Frameworks: React, Vue, Solid, Svelte, Vanilla. Packages: @tanstack/db, @tanstack/react-db. GitHub: https://github.com/tanstack/db.
 - [TanStack Store](https://tanstack.com/store/latest/llms.txt): Framework agnostic data store with reactive framework adapters. Frameworks: React, Preact, Solid, Svelte, Vue, Angular, Lit. Packages: @tanstack/store. GitHub: https://github.com/tanstack/store.
-- [TanStack AI](https://tanstack.com/ai/latest/llms.txt): A powerful, open-source AI SDK with a unified interface across multiple providers. Frameworks: React, Vue, Solid, Svelte, Preact, Vanilla. Packages: @tanstack/ai-client. GitHub: https://github.com/tanstack/ai.
+- [TanStack AI](https://tanstack.com/ai/latest/llms.txt): The headless agent framework for TypeScript. Bring your own stack. Frameworks: React, Vue, Solid, Svelte, Preact, Angular, Vanilla. Packages: @tanstack/ai-client. GitHub: https://github.com/tanstack/ai.
 
 ## UI & UX docs
 

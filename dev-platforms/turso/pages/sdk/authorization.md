@@ -46,9 +46,9 @@ Both approaches support [fine-grained permissions](/sdk/authorization/fine-grain
 All tokens are passed as the `authToken` when creating a database client:
 
 ```javascript theme={null}
-import { createClient } from "@tursodatabase/serverless";
+import { connect } from "@tursodatabase/serverless";
 
-const db = createClient({
+const db = connect({
   url: "<your-database-url>",
   authToken: "<your-token>",
 });

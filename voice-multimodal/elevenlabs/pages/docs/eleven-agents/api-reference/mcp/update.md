@@ -296,19 +296,19 @@ components:
     type_:ConvAiUserSecretDbModel:
       type: object
       properties:
-        id:
-          type: string
         name:
           type: string
         encrypted_value:
           type: string
         nonce:
           type: string
+        id:
+          type: string
       required:
-        - id
         - name
         - encrypted_value
         - nonce
+        - id
       description: >-
         User-specific secret model that are not shared with other users in a
         workspace.

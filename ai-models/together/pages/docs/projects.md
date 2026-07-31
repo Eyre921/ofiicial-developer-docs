@@ -116,9 +116,9 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Dedicated model inference     | ✅               | ✅          |
 | Dedicated container inference | ✅               | ✅          |
 | Uploaded models and adapters  | ✅               | ✅          |
-| Fine-tuning                   | ✅               | ❌          |
-| Files                         | ✅               | ❌          |
-| Evaluations                   | ✅               | ❌          |
+| Fine-tuning                   | ✅               | ✅          |
+| Files                         | ✅               | ✅          |
+| Evaluations                   | ✅               | ✅          |
 | Batch                         | ✅               | ❌          |
 | Code Interpreter              | ✅               | N/A        |
 

@@ -11,6 +11,7 @@ url: https://docs.sentry.io/api/mobile-builds/
 
 # Mobile Builds
 
+* #### [Create a skipped Size Analysis status check](https://docs.sentry.io/api/mobile-builds/create-a-skipped-size-analysis-status-check.md)
 * #### [Get the latest installable build for a project](https://docs.sentry.io/api/mobile-builds/get-the-latest-installable-build-for-a-project.md)
 * #### [Retrieve install info for a given artifact](https://docs.sentry.io/api/mobile-builds/retrieve-install-info-for-a-given-artifact.md)
 * #### [Retrieve Size Analysis results for a given artifact](https://docs.sentry.io/api/mobile-builds/retrieve-size-analysis-results-for-a-given-artifact.md)
@@ -18,6 +19,7 @@ url: https://docs.sentry.io/api/mobile-builds/
 
 ## Pages in this section
 
+- [Create a skipped Size Analysis status check](https://docs.sentry.io/api/mobile-builds/create-a-skipped-size-analysis-status-check.md)
 - [Get the latest installable build for a project](https://docs.sentry.io/api/mobile-builds/get-the-latest-installable-build-for-a-project.md)
 - [Retrieve install info for a given artifact](https://docs.sentry.io/api/mobile-builds/retrieve-install-info-for-a-given-artifact.md)
 - [Retrieve Size Analysis results for a given artifact](https://docs.sentry.io/api/mobile-builds/retrieve-size-analysis-results-for-a-given-artifact.md)

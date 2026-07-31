@@ -3041,9 +3041,11 @@ components:
       example:
         allowed_models:
           - anthropic/*
-          - openai/gpt-4o
+          - openai/*
         cost_tier: low
         enabled: true
+        excluded_models:
+          - openai/gpt-4o
         id: auto-beta-router
       properties:
         allowed_models:
@@ -3094,6 +3096,18 @@ components:
             Set to false to disable the auto-beta-router plugin for this
             request. Defaults to true.
           type: boolean
+        excluded_models:
+          description: >-
+            List of model patterns to exclude from auto-beta-router selection.
+            Supports wildcards (e.g., "meta-llama/*" excludes all Llama models).
+            Applied after allowed_models, so an excluded pattern always wins
+            over an allowed one.
+          example:
+            - openai/gpt-4o
+            - meta-llama/*
+          items:
+            type: string
+          type: array
         id:
           enum:
             - auto-beta-router
@@ -3105,9 +3119,11 @@ components:
       example:
         allowed_models:
           - anthropic/*
-          - openai/gpt-4o
+          - openai/*
         cost_tier: medium
         enabled: true
+        excluded_models:
+          - openai/gpt-4o
         id: auto-router
         pin_model: false
       properties:
@@ -3156,6 +3172,18 @@ components:
             Set to false to disable the auto-router plugin for this request.
             Defaults to true.
           type: boolean
+        excluded_models:
+          description: >-
+            List of model patterns to exclude from auto-router selection.
+            Supports wildcards (e.g., "meta-llama/*" excludes all Llama models).
+            Applied after allowed_models, so an excluded pattern always wins
+            over an allowed one.
+          example:
+            - openai/gpt-4o
+            - meta-llama/*
+          items:
+            type: string
+          type: array
         id:
           enum:
             - auto-router
@@ -4687,6 +4715,7 @@ components:
         - switchpoint
         - tencent
         - tenstorrent
+        - thinkingmachines
         - together
         - upstage
         - venice
@@ -5577,10 +5606,13 @@ components:
             - integer
             - 'null'
         service_tier:
-          description: The service tier to use for processing this request.
+          description: >-
+            The service tier to use for processing this request. `fast` is
+            accepted as an alias for `priority`.
           enum:
             - auto
             - default
+            - fast
             - flex
             - priority
             - scale
@@ -7563,6 +7595,31 @@ components:
       required:
         - data
       type: object
+    CreateScimGroupMappingRequest:
+      properties:
+        role:
+          enum:
+            - admin
+            - member
+          type: string
+        scim_group_id:
+          format: uuid
+          type: string
+        workspace_id:
+          format: uuid
+          type: string
+      required:
+        - scim_group_id
+        - workspace_id
+        - role
+      type: object
+    CreateScimGroupMappingResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ScimGroupMapping'
+      required:
+        - data
+      type: object
     CreateWorkspaceRequest:
       example:
         default_image_model: openai/dall-e-3
@@ -8003,6 +8060,14 @@ components:
         deleted:
           const: true
           description: Always `true` on success.
+          type: boolean
+      required:
+        - deleted
+      type: object
+    DeleteScimGroupMappingResponse:
+      properties:
+        deleted:
+          const: true
           type: boolean
       required:
         - deleted
@@ -9963,6 +10028,13 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/PresetDesignatedVersion'
+      required:
+        - data
+      type: object
+    GetScimGroupMappingResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ScimGroupMapping'
       required:
         - data
       type: object
@@ -12190,6 +12262,30 @@ components:
         - data
         - total_count
       type: object
+    ListScimGroupMappingsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ScimGroupMapping'
+          type: array
+        total_count:
+          type: integer
+      required:
+        - data
+        - total_count
+      type: object
+    ListScimGroupsResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ScimGroup'
+          type: array
+        total_count:
+          type: integer
+      required:
+        - data
+        - total_count
+      type: object
     ListWorkspaceBudgetsResponse:
       example:
         data:
@@ -14016,6 +14112,7 @@ components:
                 - Switchpoint
                 - Tencent
                 - Tenstorrent
+                - Thinking Machines
                 - Together
                 - Upstage
                 - Venice
@@ -20454,6 +20551,7 @@ components:
         - Switchpoint
         - Tencent
         - Tenstorrent
+        - Thinking Machines
         - Together
         - Upstage
         - Venice
@@ -20832,6 +20930,9 @@ components:
           additionalProperties: {}
           type: object
         tenstorrent:
+          additionalProperties: {}
+          type: object
+        thinkingmachines:
           additionalProperties: {}
           type: object
         together:
@@ -21217,6 +21318,7 @@ components:
             - Switchpoint
             - Tencent
             - Tenstorrent
+            - Thinking Machines
             - Together
             - Upstage
             - Venice
@@ -22260,6 +22362,7 @@ components:
             - failed_to_download_image
             - image_file_not_found
             - bio_policy
+            - data_residency_mismatch
           type: string
         message:
           type: string
@@ -22419,9 +22522,13 @@ components:
             - 'null'
         service_tier:
           default: auto
+          description: >-
+            The service tier to use for processing this request. `fast` is
+            accepted as an alias for `priority`.
           enum:
             - auto
             - default
+            - fast
             - flex
             - priority
             - scale
@@ -22603,6 +22710,77 @@ components:
         days).
       example: 900
       type: integer
+    ScimGroup:
+      example:
+        created_at: '2025-08-24T10:30:00.000Z'
+        display_name: Engineering
+        external_id: group-external-id
+        id: 550e8400-e29b-41d4-a716-446655440000
+        organization_id: org_123456
+        updated_at: '2025-08-24T10:30:00.000Z'
+      properties:
+        created_at:
+          type: string
+        display_name:
+          type: string
+        external_id:
+          type:
+            - string
+            - 'null'
+        id:
+          format: uuid
+          type: string
+        organization_id:
+          type: string
+        updated_at:
+          type: string
+      required:
+        - id
+        - organization_id
+        - external_id
+        - display_name
+        - created_at
+        - updated_at
+      type: object
+    ScimGroupMapping:
+      example:
+        created_at: '2025-08-24T10:30:00.000Z'
+        id: 770e8400-e29b-41d4-a716-446655440000
+        organization_id: org_123456
+        role: member
+        scim_group_id: 550e8400-e29b-41d4-a716-446655440000
+        updated_at: '2025-08-24T10:30:00.000Z'
+        workspace_id: 660e8400-e29b-41d4-a716-446655440000
+      properties:
+        created_at:
+          type: string
+        id:
+          format: uuid
+          type: string
+        organization_id:
+          type: string
+        role:
+          enum:
+            - admin
+            - member
+          type: string
+        scim_group_id:
+          format: uuid
+          type: string
+        updated_at:
+          type: string
+        workspace_id:
+          format: uuid
+          type: string
+      required:
+        - id
+        - organization_id
+        - scim_group_id
+        - workspace_id
+        - role
+        - created_at
+        - updated_at
+      type: object
     SearchContextSizeEnum:
       description: Size of the search context for web search tools
       enum:
@@ -22964,11 +23142,11 @@ components:
         voice:
           description: Voice identifier (provider-specific).
           example: en_paul_neutral
+          minLength: 1
           type: string
       required:
         - model
         - input
-        - voice
       type: object
     StopServerToolsWhen:
       description: >-
@@ -25119,6 +25297,23 @@ components:
       required:
         - data
       type: object
+    UpdateScimGroupMappingRequest:
+      properties:
+        role:
+          enum:
+            - admin
+            - member
+          type: string
+      required:
+        - role
+      type: object
+    UpdateScimGroupMappingResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ScimGroupMapping'
+      required:
+        - data
+      type: object
     UpdateWorkspaceRequest:
       example:
         name: Updated Workspace
@@ -25433,6 +25628,7 @@ components:
           enum:
             - 480p
             - 720p
+            - 768p
             - 1080p
             - 1K
             - 2K
@@ -25632,6 +25828,7 @@ components:
             enum:
               - 480p
               - 720p
+              - 768p
               - 1080p
               - 1K
               - 2K
@@ -25656,8 +25853,14 @@ components:
               - 720x1080
               - 720x1280
               - 720x1680
+              - 768x768
+              - 768x1024
+              - 768x1152
+              - 768x1366
+              - 768x1792
               - 854x480
               - 960x720
+              - 1024x768
               - 1080x720
               - 1080x1080
               - 1080x1440
@@ -25665,19 +25868,31 @@ components:
               - 1080x1920
               - 1080x2520
               - 1120x480
+              - 1152x768
               - 1280x720
+              - 1366x768
               - 1440x1080
+              - 1440x1440
+              - 1440x1920
+              - 1440x2160
+              - 1440x2560
+              - 1440x3360
               - 1620x1080
               - 1680x720
+              - 1792x768
               - 1920x1080
+              - 1920x1440
+              - 2160x1440
               - 2160x2160
               - 2160x2880
               - 2160x3240
               - 2160x3840
               - 2160x5040
               - 2520x1080
+              - 2560x1440
               - 2880x2160
               - 3240x2160
+              - 3360x1440
               - 3840x2160
               - 5040x2160
             type: string
@@ -28100,6 +28315,7 @@ paths:
               - switchpoint
               - tencent
               - tenstorrent
+              - thinkingmachines
               - together
               - upstage
               - venice
@@ -37998,6 +38214,455 @@ paths:
         - Responses
       x-speakeasy-name-override: send
       x-speakeasy-stream-request-field: stream
+  /scim/group-mappings:
+    get:
+      description: >-
+        List SCIM group-to-workspace mappings for the organization. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: listScimGroupMappings
+      parameters:
+        - description: Number of records to skip for pagination
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: Number of records to skip for pagination
+            example: 0
+            minimum: 0
+            type:
+              - integer
+              - 'null'
+        - description: Maximum number of records to return (max 100)
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 50
+            description: Maximum number of records to return (max 100)
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListScimGroupMappingsResponse'
+          description: List of SCIM group mappings
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List SCIM group mappings
+      tags:
+        - SCIM
+      x-speakeasy-name-override: listMappings
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
+    post:
+      description: >-
+        Create a SCIM group-to-workspace role mapping. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: createScimGroupMapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScimGroupMappingRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScimGroupMappingResponse'
+          description: SCIM group mapping created
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Create a SCIM group mapping
+      tags:
+        - SCIM
+      x-speakeasy-name-override: create
+  /scim/group-mappings/{id}:
+    delete:
+      description: >-
+        Delete a SCIM group-to-workspace mapping. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: deleteScimGroupMapping
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            type: string
+        - description: >-
+            Required. Whether to keep workspace members after deleting the
+            mapping. `false` **removes** the members this mapping granted access
+            to; `true` deletes the mapping while leaving membership intact as
+            manually-managed. There is deliberately no default — omitting it
+            returns `400` so the destructive path cannot be reached by accident.
+            Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is
+            likewise required.
+          in: query
+          name: keep_members
+          required: true
+          schema:
+            anyOf:
+              - enum:
+                  - 'true'
+                  - 'false'
+                type: string
+              - type: boolean
+            description: >-
+              Required. Whether to keep workspace members after deleting the
+              mapping. `false` **removes** the members this mapping granted
+              access to; `true` deletes the mapping while leaving membership
+              intact as manually-managed. There is deliberately no default —
+              omitting it returns `400` so the destructive path cannot be
+              reached by accident. Mirrors the dashboard, whose
+              `DeleteMappingSchema.keepMembers` is likewise required.
+            example: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteScimGroupMappingResponse'
+          description: SCIM group mapping deleted
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Delete a SCIM group mapping
+      tags:
+        - SCIM
+      x-speakeasy-name-override: delete
+    get:
+      description: >-
+        Get a SCIM group-to-workspace mapping. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: getScimGroupMapping
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetScimGroupMappingResponse'
+          description: SCIM group mapping
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Get a SCIM group mapping
+      tags:
+        - SCIM
+      x-speakeasy-name-override: read
+    patch:
+      description: >-
+        Update a SCIM group mapping role. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: updateScimGroupMapping
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            format: uuid
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScimGroupMappingRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateScimGroupMappingResponse'
+          description: SCIM group mapping updated
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Update a SCIM group mapping
+      tags:
+        - SCIM
+      x-speakeasy-name-override: update
+  /scim/groups:
+    get:
+      description: >-
+        List SCIM groups for the organization. [Management
+        key](/docs/guides/overview/auth/management-api-keys) required.
+      operationId: listScimGroups
+      parameters:
+        - description: Number of records to skip for pagination
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: Number of records to skip for pagination
+            example: 0
+            minimum: 0
+            type:
+              - integer
+              - 'null'
+        - description: Maximum number of records to return (max 100)
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 50
+            description: Maximum number of records to return (max 100)
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListScimGroupsResponse'
+          description: List of SCIM groups
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: List SCIM groups
+      tags:
+        - SCIM
+      x-speakeasy-name-override: listGroups
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
   /videos:
     post:
       description: >-
@@ -39328,6 +39993,8 @@ tags:
     name: Rerank
   - description: OpenAI-compatible Responses API endpoints
     name: Responses
+  - description: SCIM endpoints
+    name: SCIM
   - description: Speech-to-text endpoints
     name: STT
     x-displayName: Transcriptions

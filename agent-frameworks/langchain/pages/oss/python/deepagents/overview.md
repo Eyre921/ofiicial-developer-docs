@@ -6,7 +6,8 @@ path: oss/python/deepagents/overview
 
 Build agents that can plan, use subagents, and leverage file systems for complex tasks
 
-Deep Agents is the easiest way to start building agents and applications that are powered by LLMs—with built-in capabilities for task planning, file systems for context management, subagent-spawning, and long-term memory.
+Deep Agents is the easiest way to start building agents and applications that are powered by LLMs—with built-in capabilities for file systems for context management, subagent-spawning, and long-term memory.
+Optional capabilities such as [task planning](#task-planning) and [skills](#skills) extend the harness when your use case needs them.
 You can use deep agents for any task, including complex, multi-step tasks.
 
 Deep Agents comes with the following built-in capabilities:
@@ -193,7 +194,7 @@ Deep Agents is an ["agent harness"](/oss/python/concepts/products#agent-harnesse
   </Card>
 
   <Card title="Delegation" icon="sitemap" href="#delegation">
-    Subagent spawning and task planning
+    Subagent spawning and optional task planning
   </Card>
 
   <Card title="Steering" icon="user" href="#steering">
@@ -251,7 +252,7 @@ The backends support the following file system operations:
 | `grep`       | Search file contents with multiple output modes (files only, content with context, or counts)                                                                                                                            |
 | `execute`    | Run shell commands in the environment (available with [sandbox backends](/oss/python/deepagents/sandboxes) only)                                                                                                         |
 
-<Note>The `delete` tool requires `deepagents` 0.7.a1 or newer. Recursive directory deletion requires 0.7.a2 or newer. Backends that do not support deletion have the tool automatically hidden from the model.</Note>
+<Note>The `delete` tool requires `deepagents>=0.7`. Backends that do not support deletion have the tool automatically hidden from the model.</Note>
 
 <Accordion title="Supported multimodal file extensions">
   | Type                                               | Extensions                                                                |
@@ -283,7 +284,7 @@ The backends support the following file system operations:
 
 <Accordion title="Restricting filesystem tools" icon="filter">
   <Note>
-    The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7.0a4`.
+    The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7`.
   </Note>
 
   To expose only a subset of the filesystem tools listed above, instead of hiding them all, pass a `tools` allowlist to [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) and provide the instance through `middleware=`. Any built-in filesystem tool left out of the list is removed from the model's tool list.
@@ -402,14 +403,98 @@ For other providers, see [Middleware integrations](/oss/python/integrations/midd
 
 The delegation component enables agents to break large problems into smaller, parallelizable units of work. It has two layers:
 
-* **[Task planning](#task-planning)**: a built-in `write_todos` tool for structured task tracking
+* **[Task planning](#task-planning)**: an opt-in `write_todos` tool for structured task tracking
 * **[Subagents](#subagents)**: ephemeral child agents that handle isolated subtasks
 
 ### Task planning
 
-The harness provides a `write_todos` tool that lets agents maintain a structured task list during execution.
+Task planning is an opt-in harness capability that lets agents maintain a structured task list during execution.
+
+Starting in v0.7 task planning is opt-in only. In earlier versions, task planning middleware was included by default.
+
+Planning is often useful for:
+
+* Long or complicated multi-step tasks
+* Less capable models that benefit from an explicit accountability tool
+* UIs that stream progress from agent state (see [Todo list](/oss/python/deepagents/frontend/todo-list))
+
+Pass [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) to the middleware parameter to give the agent a `write_todos` tool for maintaining a structured task list during execution.
+
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain.agents.middleware import TodoListMiddleware
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      middleware=[TodoListMiddleware()],
+  )
+  ```
+</CodeGroup>
 
 Tasks support status tracking (`'pending'`, `'in_progress'`, `'completed'`) and are persisted in agent state. This gives agents a lightweight planning layer for organizing long-running and multi-step work.
+
+For configuration options and behavior details, see [To-do list](/oss/python/langchain/middleware/built-in#to-do-list).
 
 ### Subagents
 

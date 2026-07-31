@@ -5,7 +5,7 @@ path: reference/api/2026-04/control-plane/create_index_from_backup
 ---
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_control_2026-04.oas.yaml post /backups/{backup_id}/create-index
-Create an index from a backup.
+Create an index from a backup. For serverless backups, you can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
 
 <RequestExample>
   ```bash curl theme={null}

@@ -47,7 +47,13 @@ Welcome to Turso Cloud! Get started in minutes.
   </Step>
 
   <Step title="Create a Database">
-    Now create your first database with the name `my-db`:
+    Turso Cloud hosts two SQLite-compatible engines: [Turso](/tursodb/quickstart), with concurrent writes and multi-user access built in, and [libSQL](/libsql). Create your first Turso database with the name `my-db`:
+
+    ```bash theme={null}
+    turso db create my-db --tursodb
+    ```
+
+    To create a libSQL database instead, omit the `--tursodb` flag:
 
     ```bash theme={null}
     turso db create my-db

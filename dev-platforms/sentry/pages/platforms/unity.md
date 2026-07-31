@@ -59,7 +59,7 @@ Install the package via the [Unity Package Manager using a Git URL](https://docs
 https://github.com/getsentry/unity.git
 ```
 
-To use a specific version of the SDK, append `#4.7.0` to the URL.
+To use a specific version of the SDK, append `#4.8.0` to the URL.
 
 ## [Configure](https://docs.sentry.io/platforms/unity.md#configure)
 

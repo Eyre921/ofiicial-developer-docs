@@ -1,5 +1,5 @@
 ---
-title: "Auto-Scaling Asynchronous SageMaker Endpoints"
+title: "Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)"
 source: https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md
 path: docs/auto-scaling-sagemaker-async
 ---
@@ -8,7 +8,11 @@ path: docs/auto-scaling-sagemaker-async
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
 
-# Auto-Scaling Asynchronous SageMaker Endpoints
+# Auto-Scaling Asynchronous SageMaker Endpoints (Currently Disabled)
+
+#### This feature is currently disabled
+
+Asynchronous SageMaker endpoints are disabled because of an Amazon SageMaker platform limitation. If you need access to this feature, let your [Deepgram representative](https://deepgram.com/contact-us) or your [AWS sales representative](https://aws.amazon.com/contact-us/sales-support/) know.
 
 Deepgram's speech-to-text models can be deployed on Amazon SageMaker as **asynchronous inference endpoints**, which queue incoming requests and process them from Amazon S3. Async endpoints handle **pre-recorded files only** (no streaming) — payloads up to **1 GB**, processing times up to **one hour**, and near real-time latency — and, unlike real-time endpoints, they can **autoscale to zero** when there are no requests to process, so you only pay while the endpoint is actively working.
 

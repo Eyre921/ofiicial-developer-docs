@@ -504,6 +504,9 @@ Radar might block it [depending on your settings](https://docs.stripe.com/radar/
 | Dynamic risk thresholds | 4000008400001017 | This charge triggers the Radar Dynamic risk thresholds control, when enabled.
 
 Radar blocks the transaction if you enable the [Dynamic risk thresholds](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-thresholds). |
+| Free trial abuse | 4001858821843804 | This charge triggers the Radar free trial abuse risk control, when enabled.
+
+Radar blocks the transaction if you enable the [free trial abuse risk control](https://docs.stripe.com/radar/risk-settings.md). |
 | Adaptive 3DS | 4000008405600003 | This charge triggers the Radar Adaptive 3DS risk control, when enabled.
 
 If you enable Adaptive 3DS, Radar requests 3DS authentication when using this test card. |
@@ -551,6 +554,9 @@ Radar might block it [depending on your settings](https://docs.stripe.com/radar/
 | Dynamic risk thresholds | `pm_card_radarDynamicRiskThreshold` | This charge triggers the Radar Dynamic risk thresholds control, when enabled.
 
 Radar blocks the transaction if you enable the [Dynamic risk thresholds](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-thresholds). |
+| Free trial abuse | `pm_card_freeTrialAbuseBlock` | This charge triggers the Radar free trial abuse risk control, when enabled.
+
+Radar blocks the transaction if you enable the [free trial abuse risk control](https://docs.stripe.com/radar/risk-settings.md). |
 | Adaptive 3DS | `pm_card_adaptive3dsChallenge` | This charge triggers the Radar Adaptive 3DS risk control, when enabled.
 
 If you enable Adaptive 3DS, Radar requests 3DS authentication when using this test card. |
@@ -600,6 +606,9 @@ Radar might block it [depending on your settings](https://docs.stripe.com/radar/
 | Dynamic risk thresholds | `tok_radarDynamicRiskThreshold` | This charge triggers the Radar Dynamic risk thresholds control, when enabled.
 
 Radar blocks the transaction if you enable the [Dynamic risk thresholds](https://docs.stripe.com/radar/risk-settings.md#dynamic-risk-thresholds). |
+| Free trial abuse | `tok_freeTrialAbuseBlock` | This charge triggers the Radar free trial abuse risk control, when enabled.
+
+Radar blocks the transaction if you enable the [free trial abuse risk control](https://docs.stripe.com/radar/risk-settings.md). |
 | Adaptive 3DS | `tok_adaptive3dsChallenge` | This charge triggers the Radar Adaptive 3DS risk control, when enabled.
 
 If you enable Adaptive 3DS, Radar requests 3DS authentication when using this test card. |

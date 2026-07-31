@@ -74,10 +74,13 @@ Rules:
 
 Policies take effect immediately.
 
+A rate limit policy can also carry a condition on a custom request header, so traffic from a single subject splits into separate limits by header value. Use this to give each of your own end customers its own throughput allowance under one API key. For more information, see [Per-customer policies](/langsmith/llm-gateway-header-policies).
+
 ## Next steps
 
 * [Spend policies](/langsmith/llm-gateway-spend-policies): set cost caps alongside rate limits.
-* [PII and secrets redaction](/langsmith/llm-gateway-redaction): add data protection policies.
+* [Per-customer policies](/langsmith/llm-gateway-header-policies): split a limit by a custom request header so each end customer gets its own allowance.
+* [Data protection](/langsmith/llm-gateway-data-protection): add data protection policies.
 
 ***
 

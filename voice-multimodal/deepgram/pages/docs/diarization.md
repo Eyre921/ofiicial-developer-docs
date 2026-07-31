@@ -148,6 +148,23 @@ When using diarization for live streaming audio, only the `speaker` value will b
 ]
 ```
 
+### Diarizer Model Metadata
+
+When diarization runs, the response `metadata` includes a `diarize_info` object identifying which diarizer model produced the results. This is useful when `diarize_model=latest` resolves to different versions across batch and streaming.
+
+```json JSON
+"metadata": {
+  ...
+  "diarize_info": {
+    "model_uuid": "e2ec2b8a-9b3c-4f1a-8f2e-1a2b3c4d5e6f",
+    "arch": "v2"
+  }
+}
+```
+
+* `model_uuid` — the UUID of the diarizer model that ran.
+* `arch` — the diarizer architecture family, `v1` or `v2`.
+
 ## Format Response
 
 To improve readability, you can use a JSON processor to parse the JSON. In this example, we use [JQ](https://stedolan.github.io/jq/) and further improve readability by turning on Deepgram's [punctuation](/docs/punctuation/) and [utterances](/docs/utterances/) features:

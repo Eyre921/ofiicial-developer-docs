@@ -1079,11 +1079,13 @@ These restrictions might differ if you use [cross-border payouts](https://docs.s
 
 If you turn off automatic payouts, you must manually send funds to your bank account. You can do this in the [Dashboard](https://dashboard.stripe.com/settings/payouts) or by using the API to [create payouts](https://docs.stripe.com/api.md#create_payout).
 
-Manual payouts are available in all regions except Brazil and India, where payouts are always automatic and daily. In most regions, manual payouts typically take 1-4 business days to arrive in your bank account after initiating the manual payout.
+Manual payouts are available in all regions except Brazil and India, where payouts are always automatic and daily. In most regions, manual payouts typically take 1-4 business days to arrive in your bank account after initiating the manual payout. Same-day manual payouts are available in the US, UK, and Eurozone under the conditions outlined in the following table:
 
-If your Stripe account that operates in the United Kingdom has a standard [T+3 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) and you initiate a manual payout during business hours, the funds typically arrive in your bank account on the same business day. This is limited to 10 same-day manual payouts per day, with a maximum transaction amount of 1 million GBP each. All other manual payouts typically arrive within 2 business days in your bank account.
-
-If your Stripe account that operates in the United States has a standard [T+2 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) and you initiate a manual payout during business hours, the funds typically arrive in your bank account on the same business day. This payout is subject to an account limit of 10 manual payouts per day and a maximum transaction amount of 1 million USD. All other manual payouts typically arrive within 1 business day in your bank account.
+| Region | Eligible currency | Eligible businesses | Payout limit |
+| --- | --- | --- | --- |
+| US | USD | Standard [T+2 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) or slower | Manual payouts initiated before 5 pm US/Eastern are eligible for same-day manual payouts. The limit is 10 same-day manual payouts per day with a maximum of 1 million USD each. All other manual payouts typically arrive within 1 business day. |
+| GB | GBP | Standard [T+3 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) or slower | Manual payouts initiated before 5 pm Europe/London are eligible for same-day manual payouts. The limit is 10 same-day manual payouts per day with a maximum of 1 million GBP each. All other manual payouts typically arrive within 2 business days. |
+| CH, EU, GB, MT, NO | EUR | Standard [T+3 settlement timing](https://docs.stripe.com/payouts.md#payout-speed) or slower. If your recipient bank has a high failure rate for same-day banking rails, funds arrive the next business day. | Manual payouts initiated before 4 pm Europe/Copenhagen are eligible for same-day manual payouts. The limit is 10 same-day manual payouts per day with a maximum of 1 million EUR each. All other manual payouts typically arrive within 1 business day. |
 
 ```curl
 curl https://api.stripe.com/v1/payouts \

@@ -122,9 +122,10 @@ For a list of the chat model integrations and their capabilities, see the [chat 
 
 **Routers** (also called proxies or gateways) give you access to models from multiple providers through a single API and credential. They can simplify billing, let you switch between models without changing integrations, and offer features like automatic fallbacks and load balancing.
 
-| Provider                             | Integration                                                      | Description                                                             |
-| :----------------------------------- | :--------------------------------------------------------------- | :---------------------------------------------------------------------- |
-| [OpenRouter](https://openrouter.ai/) | [`ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) | Unified access to models from OpenAI, Anthropic, Google, Meta, and more |
+| Provider                             | Integration                                                      | Description                                                                 |
+| :----------------------------------- | :--------------------------------------------------------------- | :-------------------------------------------------------------------------- |
+| [OpenRouter](https://openrouter.ai/) | [`ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) | Unified access to models from OpenAI, Anthropic, Google, Meta, and more     |
+| [FuturMix](https://futurmix.ai/)     | [`ChatOpenAI`](https://futurmix.ai/)                             | Unified AI gateway for 22+ models with OpenAI-compatible API and 99.99% SLA |
 
 Routers are useful when you want to:
 

@@ -8293,10 +8293,6 @@ Turso supports point-in-time recovery (PITR) for databases. PITR allows you to r
 2. You update your application to use the new database connection string.
 3. You delete the old database when you no longer need it.
 
-<Info>
-  The newly created database includes data only from periods prior to the specified timestamp. Additionally, there may be a gap of up to 15 seconds in the data immediately preceding the timestamp, as this depends on the timing of Turso's most recent periodic batch checkpoint.
-</Info>
-
 ## Usage
 
 <CodeGroup>
@@ -9741,12 +9737,12 @@ Connect to Turso databases from Vercel serverless and edge environments. Configu
 
 |                       | `@tursodatabase/serverless`                  | `@libsql/client`                   |
 | --------------------- | -------------------------------------------- | ---------------------------------- |
-| **Status**            | Production-ready                             | Production-ready                   |
+| **Use with**          | [Turso](/tursodb/quickstart) databases       | [libSQL](/libsql) databases        |
 | **Dependencies**      | Uses only `fetch` — zero native dependencies | Requires Node.js or `/web` subpath |
-| **Concurrent writes** | Planned                                      | Will not be supported              |
+| **Concurrent writes** | Yes — built into the Turso engine            | Not supported                      |
 | **ORM support**       | Not yet supported                            | Drizzle, Prisma, and others        |
 
-**`@tursodatabase/serverless`** is the lightest option with zero native dependencies — and will be the driver to later support concurrent writes. Use **`@libsql/client`** if you need a battle-tested driver today with ORM integration.
+Match the driver to your database engine: **`@tursodatabase/serverless`** for [Turso](/tursodb/quickstart) databases, **`@libsql/client`** for [libSQL](/libsql) databases and ORM integration (Drizzle, Prisma).
 
 ### Quickstart
 
@@ -9766,7 +9762,7 @@ Connect to Turso databases from Vercel serverless and edge environments. Configu
       authToken: process.env.TURSO_AUTH_TOKEN,
     });
 
-    const stmt = conn.prepare("SELECT * FROM users WHERE id = ?");
+    const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
     const row = await stmt.get([123]);
     ```
 
@@ -9987,7 +9983,8 @@ Choose your path to get started with Turso:
   </Card>
 
   <Card title="Turso Cloud" icon="cloud" href="/turso-cloud">
-    Fully managed database platform with branching, analytics, backups,and more.
+    Fully managed platform for Turso and libSQL databases, with branching,
+    analytics, backups, and more.
   </Card>
 
   <Card title="How Well You Know Turso?" icon="circle-question" href="https://www.howwellyouknow.com/play/turso">
@@ -10085,11 +10082,11 @@ libSQL is a fork of SQLite. It maintains the same file format, the same API, and
 |                      | libSQL                           | Turso Database                                              |
 | -------------------- | -------------------------------- | ----------------------------------------------------------- |
 | Approach             | Fork of SQLite                   | Full rewrite of SQLite                                      |
-| Maturity             | Production-ready                 | Evolving (beta)                                             |
+| Maturity             | Production-ready                 | Production-ready                                            |
 | SQLite compatibility | Full (same file format and API)  | Backwards compatible                                        |
 | Best for             | Mission-critical workloads today | New projects, agents, smart devices, high-density use cases |
 
-Both are open-contribution and maintained by Turso. [Turso Cloud](/turso-cloud) currently runs on libSQL and will integrate the Turso Database engine in the future.
+Both are open-contribution and maintained by Turso, and both can be deployed on [Turso Cloud](/turso-cloud): libSQL has powered it for years, and Turso databases are now available on the platform as well.
 
 ## Extensions
 
@@ -10104,13 +10101,12 @@ A full list of supported extensions can be found [here](/features/sqlite-extensi
 # Local Development
 Source: https://docs.turso.tech/local-development
 
-Build locally using SQLite, libSQL Server or Turso.
+Build locally with a local Turso database, or a local libSQL server.
 
 Developers can build locally with Turso using either of the following methods:
 
-* [SQLite](#sqlite) — local SQLite database file
+* [Local Turso database](#local-turso-database) — local database file, no server needed (recommended)
 * [Turso CLI](#turso-cli) — managed libSQL server
-* [Turso Database](#turso-database) — remote Turso database
 
 ## Using a dump locally
 
@@ -10129,36 +10125,27 @@ You can always dump your production database and use it locally for development:
     ```
   </Step>
 
-  <Step title="Connect to SQLite file">
-    You can use any of the methods below with the `local.db` file, or you can use a new file name if you prefer to create a database from scratch.
+  <Step title="Connect to the file">
+    You can use either of the methods below with the `local.db` file, or you can use a new file name if you prefer to create a database from scratch.
   </Step>
 </Steps>
 
-## SQLite
+## Local Turso database
 
-There are a few things to keep in mind when using SQLite for local development:
-
-* Doesn't have all the features of libSQL
-* Works with non-serverless based Turso SDKs
-
-When working with an [SDK](/sdk), you can pass it a `file:` URL to connect to a SQLite database file instead of a remote Turso database:
+Whenever your application runs against a local database, we recommend the [Turso packages](/sdk). They are fully SQLite-compatible — they open existing SQLite files — and run entirely in your process, no server needed:
 
 <CodeGroup>
   ```ts JavaScript theme={null}
-  import { createClient } from "@libsql/client";
+  import { connect } from "@tursodatabase/database";
 
-  const client = createClient({
-    url: "file:local.db",
-  });
+  const db = await connect("local.db");
   ```
 
   ```rust Rust theme={null}
-  let client = libsql_client::Client::from_config(libsql_client::Config {
-      url: url::Url::parse("file:local.db").unwrap(),
-      auth_token: None,
-  })
-  .await
-  .unwrap();
+  use turso::Builder;
+
+  let db = Builder::new_local("local.db").build().await?;
+  let conn = db.connect()?;
   ```
 
   ```go Go theme={null}
@@ -10166,30 +10153,20 @@ When working with an [SDK](/sdk), you can pass it a `file:` URL to connect to a 
 
   import (
     "database/sql"
-    "fmt"
-    "os"
 
-    _ "github.com/tursodatabase/go-libsql"
+    _ "turso.tech/database/tursogo"
   )
 
   func main() {
-    dbName := "file:./local.db"
-
-    db, err := sql.Open("libsql", dbName)
-    if err != nil {
-      fmt.Fprintf(os.Stderr, "failed to open db %s", err)
-      os.Exit(1)
-    }
+    db, _ := sql.Open("turso", "local.db")
     defer db.Close()
   }
   ```
 
   ```python Python theme={null}
-  import libsql_client
+  import turso
 
-  client = libsql_client.create_client_sync(
-      url="file:local.db"
-  )
+  db = turso.connect("local.db")
   ```
 </CodeGroup>
 
@@ -10205,40 +10182,23 @@ When working with an [SDK](/sdk), you can pass it a `file:` URL to connect to a 
 
 ## Turso CLI
 
-If you're using [libSQL](/libsql) specific features like [extensions](/libsql#extensions), you should use the Turso CLI:
+If you're developing against a [libSQL](/libsql) database and use libSQL-specific features like [extensions](/libsql#extensions), you should use the Turso CLI:
 
 ```bash theme={null}
 turso dev
 ```
 
-This will start a local libSQL server and create a database for you. You can then connect to it using the `url` option in your SDK:
+This will start a local libSQL server and create a database for you. You can then connect to it with your libSQL client using the `url` option:
 
-<CodeGroup>
-  ```ts JavaScript theme={null}
-  import { createClient } from "@libsql/client";
+```ts JavaScript theme={null}
+import { createClient } from "@libsql/client";
 
-  const client = createClient({
-    url: "http://127.0.0.1:8080",
-  });
-  ```
+const client = createClient({
+  url: "http://127.0.0.1:8080",
+});
+```
 
-  ```rust Rust theme={null}
-  let client = libsql_client::Client::from_config(libsql_client::Config {
-      url: url::Url::parse("http://127.0.0.1:8080").unwrap(),
-      auth_token: None,
-  })
-  .await
-  .unwrap();
-  ```
-
-  ```python Python theme={null}
-  import libsql_client
-
-  client = libsql_client.create_client_sync(
-      url="http://127.0.0.1:8080"
-  )
-  ```
-</CodeGroup>
+The same URL works with the libSQL clients for [other languages](/sdk).
 
 <br />
 
@@ -10252,12 +10212,12 @@ If you want to persist changes, or use a production dump, you can pass the `--db
 turso dev --db-file local.db
 ```
 
-## Turso Database
+## Turso Cloud database
 
-If you already have a database created with Turso, you can use that same one in development by passing the `url` option to your SDK.
+If you already have a database created on Turso Cloud, you can use that same one in development by passing the `url` option to your SDK.
 
 <Warning>
-  Keep in mind that using the Turso hosted database will incur platform costs and count towards your quota. Consider using [SQLite](#sqlite) or [Turso CLI](#turso-cli) for local development to avoid platform costs.
+  Keep in mind that using the Turso Cloud hosted database will incur platform costs and count towards your quota. Consider one of the local methods above to avoid platform costs.
 </Warning>
 
 ## Connecting a GUI
@@ -10318,7 +10278,13 @@ Welcome to Turso Cloud! Get started in minutes.
   </Step>
 
   <Step title="Create a Database">
-    Now create your first database with the name `my-db`:
+    Turso Cloud hosts two SQLite-compatible engines: [Turso](/tursodb/quickstart), with concurrent writes and multi-user access built in, and [libSQL](/libsql). Create your first Turso database with the name `my-db`:
+
+    ```bash theme={null}
+    turso db create my-db --tursodb
+    ```
+
+    To create a libSQL database instead, omit the `--tursodb` flag:
 
     ```bash theme={null}
     turso db create my-db
@@ -10696,13 +10662,17 @@ Source: https://docs.turso.tech/sdk/authentication
 
 
 
-SDKs connect to Turso using the `libsql://` protocol, unless using the [HTTP API](/sdk/http).
+SDKs connect using the `turso://` protocol for [Turso](/tursodb/quickstart) databases and the `libsql://` protocol for [libSQL](/libsql) databases, unless using the [HTTP API](/sdk/http).
 
 ## Database URL
 
 You can find your database URL using the [Turso CLI](/cli/db/show) or [Platform API](/api-reference/databases/retrieve), it looks something like this:
 
 <CodeGroup>
+  ```bash Turso theme={null}
+  turso://[DB-NAME]-[ORG-NAME].turso.io
+  ```
+
   ```bash libSQL theme={null}
   libsql://[DB-NAME]-[ORG-NAME].turso.io
   ```
@@ -10772,9 +10742,9 @@ Both approaches support [fine-grained permissions](/sdk/authorization/fine-grain
 All tokens are passed as the `authToken` when creating a database client:
 
 ```javascript theme={null}
-import { createClient } from "@tursodatabase/serverless";
+import { connect } from "@tursodatabase/serverless";
 
-const db = createClient({
+const db = connect({
   url: "<your-database-url>",
   authToken: "<your-token>",
 });
@@ -10894,11 +10864,11 @@ Instead of managing tokens manually, you can let your authentication provider is
     Get the JWT from your auth provider and pass it as the `authToken`:
 
     ```javascript theme={null}
-    import { createClient } from "@tursodatabase/serverless";
+    import { connect } from "@tursodatabase/serverless";
 
     const authToken = await getAuthToken(); // e.g., from Clerk, Auth0
 
-    const db = createClient({
+    const db = connect({
       url: "<your-database-url>",
       authToken,
     });
@@ -11858,15 +11828,70 @@ In this Go quickstart we will learn how to:
 
 ## Remote Access (Over-the-Wire)
 
-If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the `libsql-client-go` package. It connects to your database via the libSQL wire protocol — no local file needed, pure Go.
+If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the driver that matches your database engine: `tursogo-serverless` for [Turso databases](/tursodb/quickstart), or `libsql-client-go` for [libSQL](/libsql) databases.
 
 <Info>
   For most applications, we recommend running a local database with sync (`NewTursoSyncDb`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 </Info>
 
+### Remote Turso database: tursogo-serverless
+
+`tursogo-serverless` connects to a remote Turso database over HTTP — pure Go, no CGO, no native libraries. It implements the standard `database/sql` interface, compatible with the embedded `tursogo` driver.
+
 <Steps>
   <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+
+    <Snippet />
+
+    <Info>You will want to store these as environment variables.</Info>
+  </Step>
+
+  <Step title="Install">
+    ```bash theme={null}
+    go get turso.tech/database/tursogo-serverless
+    ```
+  </Step>
+
+  <Step title="Connect and query">
+    ```go theme={null}
+    package main
+
+    import (
+    	"database/sql"
+    	"fmt"
+    	"os"
+
+    	turso "turso.tech/database/tursogo-serverless"
+    )
+
+    func main() {
+    	db := sql.OpenDB(turso.NewConnector(
+    		os.Getenv("TURSO_DATABASE_URL"),
+    		os.Getenv("TURSO_AUTH_TOKEN"),
+    	))
+    	defer db.Close()
+
+    	rows, _ := db.Query("SELECT * FROM users")
+    	defer rows.Close()
+    	for rows.Next() {
+    		var id int
+    		var name string
+    		rows.Scan(&id, &name)
+    		fmt.Printf("User: %d %s\n", id, name)
+    	}
+    }
+    ```
+  </Step>
+</Steps>
+
+### Remote libSQL database: libsql-client-go
+
+`libsql-client-go` connects to a remote libSQL database via the libSQL wire protocol — no local file needed, pure Go.
+
+<Steps>
+  <Step title="Retrieve database credentials">
+    You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
 
     <Snippet />
 
@@ -11926,18 +11951,18 @@ Source: https://docs.turso.tech/sdk/go/reference
 
 Go Reference for Turso
 
-Turso offers two Go packages:
+Turso offers four Go packages:
 
-|                       | `tursogo`                       | `libsql-client-go`            | `go-libsql`                                    |
-| --------------------- | ------------------------------- | ----------------------------- | ---------------------------------------------- |
-| **Use case**          | Local / embedded database, sync | Remote access (over-the-wire) | Existing libSQL codebases                      |
-| **Engine**            | Turso Database (rewrite)        | libSQL wire protocol          | libSQL (SQLite fork)                           |
-| **Concurrent writes** | Yes (MVCC)                      | N/A (remote)                  | Not supported                                  |
-| **Sync**              | push/pull (local-first)         | —                             | Embedded Replicas (writes go to cloud primary) |
-| **CGO**               | Not required                    | Not required                  | Required                                       |
-| **API**               | `database/sql`                  | `database/sql`                | `database/sql`                                 |
+|                       | `tursogo`                       | `tursogo-serverless`                  | `libsql-client-go`                     | `go-libsql`                                    |
+| --------------------- | ------------------------------- | ------------------------------------- | -------------------------------------- | ---------------------------------------------- |
+| **Use case**          | Local / embedded database, sync | Remote Turso database (over-the-wire) | Remote libSQL database (over-the-wire) | Existing libSQL codebases                      |
+| **Engine**            | Turso (rewrite)                 | Turso (rewrite)                       | libSQL wire protocol                   | libSQL (SQLite fork)                           |
+| **Concurrent writes** | Yes (MVCC)                      | Yes (MVCC)                            | N/A (remote)                           | Not supported                                  |
+| **Sync**              | push/pull (local-first)         | —                                     | —                                      | Embedded Replicas (writes go to cloud primary) |
+| **CGO**               | Not required                    | Not required                          | Not required                           | Required                                       |
+| **API**               | `database/sql`                  | `database/sql`                        | `database/sql`                         | `database/sql`                                 |
 
-**Starting a new project?** Use `tursogo` for local/embedded use or sync. Use `libsql-client-go` for remote access. Neither requires CGO.
+**Starting a new project?** Use `tursogo` for local/embedded use or sync. For remote access, match the driver to the database engine: [`tursogo-serverless`](/sdk/go/quickstart) for Turso databases, `libsql-client-go` for libSQL databases. None of these require CGO.
 
 ## tursogo
 
@@ -12220,11 +12245,11 @@ In this quickstart we will learn how to:
 
 |                  | `@tursodatabase/serverless`                  | `@libsql/client`                   | Raw HTTP               |
 | ---------------- | -------------------------------------------- | ---------------------------------- | ---------------------- |
-| **Status**       | Production-ready                             | Production-ready                   | Always available       |
+| **Use with**     | [Turso](/tursodb/quickstart) databases       | [libSQL](/libsql) databases        | Any database           |
 | **Dependencies** | Uses only `fetch` — zero native dependencies | Requires Node.js or `/web` subpath | None (any HTTP client) |
 | **ORM support**  | Not yet supported                            | Drizzle, Prisma, and others        | N/A                    |
 
-**`@tursodatabase/serverless`** is the lightest option with zero native dependencies. Use **`@libsql/client`** if you need a battle-tested driver today with ORM integration.
+Match the driver to your database engine: **`@tursodatabase/serverless`** for [Turso](/tursodb/quickstart) databases, **`@libsql/client`** for [libSQL](/libsql) databases.
 
 <Tabs>
   <Tab title="@tursodatabase/serverless">
@@ -12241,12 +12266,12 @@ In this quickstart we will learn how to:
         ```typescript theme={null}
         import { connect } from "@tursodatabase/serverless";
 
-        const conn = await connect({
+        const conn = connect({
           url: process.env.TURSO_DATABASE_URL,
           authToken: process.env.TURSO_AUTH_TOKEN,
         });
 
-        const stmt = conn.prepare("SELECT * FROM users WHERE id = ?");
+        const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
         const row = await stmt.get([123]);
         ```
       </Step>
@@ -12512,7 +12537,7 @@ Turso Databases can be accessed via HTTP. The API enables developers to perform 
 
 ## Base URL
 
-Simply replace your database URL protocol `libsql://` with `https://`:
+Simply replace your database URL protocol (`turso://` for Turso databases, `libsql://` for libSQL databases) with `https://`:
 
 ```bash theme={null}
 https://[databaseName]-[organizationSlug].turso.io
@@ -13072,14 +13097,19 @@ Source: https://docs.turso.tech/sdk/introduction
 
 ## Which package should I use?
 
-| Use case                                                                    | TypeScript                  | Python                | Go                    | Rust                             |
-| --------------------------------------------------------------------------- | --------------------------- | --------------------- | --------------------- | -------------------------------- |
-| **Local database** (embedded, on-device, offline)                           | `@tursodatabase/database`   | `pyturso`             | `tursogo`             | `turso`                          |
-| **Local database + cloud sync** (push/pull)                                 | `@tursodatabase/sync`       | `pyturso` (with sync) | `tursogo` (with sync) | `turso` (with `sync` feature)    |
-| **Remote access** (servers, Docker, serverless, edge — any over-the-wire)   | `@tursodatabase/serverless` | `libsql`              | `libsql-client-go`    | `libsql` (with `remote` feature) |
-| **libSQL** — ORM support (Drizzle, Prisma), production-ready, battle-tested | `@libsql/client`            | `libsql`              | `go-libsql`           | `libsql`                         |
+Two rules cover almost every case:
 
-**Starting a new project?** Use `@tursodatabase/database` (TypeScript), `pyturso` (Python), `tursogo` (Go), or `turso` (Rust). These are built on the Turso Database engine — the ground-up rewrite of SQLite with concurrent writes, async I/O, and local-first sync.
+1. **If a local database is involved, use the Turso packages.** That means fully local databases (embedded, on-device, offline) and local databases that sync with the cloud — even when the database on the other side is libSQL.
+2. **If your application only talks to a cloud database over the network, match the driver to the database engine.** [Turso databases](/tursodb/quickstart) use the serverless drivers; [libSQL](/libsql) databases use the libSQL clients.
+
+| Use case                                          | TypeScript                  | Python                | Go                    | Rust                             |
+| ------------------------------------------------- | --------------------------- | --------------------- | --------------------- | -------------------------------- |
+| **Local database** (embedded, on-device, offline) | `@tursodatabase/database`   | `pyturso`             | `tursogo`             | `turso`                          |
+| **Local database + cloud sync** (push/pull)       | `@tursodatabase/sync`       | `pyturso` (with sync) | `tursogo` (with sync) | `turso` (with `sync` feature)    |
+| **Remote Turso database** (over-the-wire)         | `@tursodatabase/serverless` | `turso_serverless`    | `tursogo-serverless`  | `turso_serverless`               |
+| **Remote libSQL database** (over-the-wire)        | `@libsql/client`            | `libsql`              | `libsql-client-go`    | `libsql` (with `remote` feature) |
+
+**Starting a new project?** Use `@tursodatabase/database` (TypeScript), `pyturso` (Python), `tursogo` (Go), or `turso` (Rust). These are built on the Turso engine — the ground-up rewrite of SQLite with concurrent writes, async I/O, and local-first sync.
 
 **Need sync?** Use [Turso Sync](/sync/usage) for local reads and writes with explicit `push()` / `pull()` to Turso Cloud.
 
@@ -13089,13 +13119,13 @@ Source: https://docs.turso.tech/sdk/introduction
 * **Rust** — [Toasty](/sdk/rust/orm/toasty), the async ORM from the Tokio project, has a native Turso driver built on the `turso` crate.
 * **Python** — see the [SQLAlchemy guide](/sdk/python/orm/sqlalchemy).
 
-**Migrating from SQLite?** Turso Database is a drop-in replacement. Your existing SQL, schema, and queries work unchanged.
+**Migrating from SQLite?** Turso is a drop-in replacement. Your existing SQL, schema, and queries work unchanged.
 
-**Already using `@libsql/client`, `libsql`, or `go-libsql`?** These packages are built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that powers Turso Cloud today. They are production-ready and battle-tested. If your workload needs concurrent writes, push/pull sync, or local-first writes (offline / multi-writer / bidirectional), the Turso Database packages are also a good choice — pick the one that fits your workload.
+**Already using `@libsql/client`, `libsql`, or `go-libsql`?** These packages are built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that has powered Turso Cloud for years. They are production-ready and battle-tested, and remain the recommended way to access libSQL databases remotely. If your workload needs concurrent writes, push/pull sync, or local-first writes (offline / multi-writer / bidirectional), consider a Turso database and its packages instead.
 
-### Why multiple packages in TypeScript?
+### The serverless drivers
 
-Keeping `@tursodatabase/database` and `@tursodatabase/serverless` separate means minimal bundle size. `@tursodatabase/serverless` uses only `fetch` — zero native dependencies, so it works in Node.js, Docker containers, serverless functions, edge runtimes, and browsers.
+The serverless drivers speak SQL over HTTP — no persistent connections, no native libraries. They work anywhere your language runs: servers, Docker containers, serverless functions, and edge runtimes. Each mirrors the API of its embedded counterpart, so code moves between local and remote with minimal changes.
 
 <Info>
   **Need sync?** For new projects, use [Turso Sync](/sync/usage) — it gives you local reads and writes with explicit `push()` / `pull()` to the cloud. The libSQL-based SDKs below also support Embedded Replicas, where reads are local and writes are sent to the cloud primary.
@@ -14623,15 +14653,66 @@ In this Python quickstart we will learn how to:
 
 ## Remote Access (Over-the-Wire)
 
-If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), you can use the `libsql` package. It connects to your database via HTTP — no local file needed.
+If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the driver that matches your database engine: `turso_serverless` for [Turso databases](/tursodb/quickstart), or `libsql` for [libSQL](/libsql) databases.
 
 <Info>
   For most applications, we recommend running a local database with [Turso Sync](/sync/usage) (`turso.sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 </Info>
 
+### Remote Turso database: turso\_serverless
+
+`turso_serverless` connects to a remote Turso database over HTTP — no persistent connections, no native extensions, just the standard library. Like `pyturso`, it implements the standard DB-API interface.
+
 <Steps>
   <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+
+    <Snippet />
+
+    <Info>You will want to store these as environment variables.</Info>
+  </Step>
+
+  <Step title="Install">
+    ```bash theme={null}
+    uv add turso_serverless
+    ```
+
+    Or with pip:
+
+    ```bash theme={null}
+    pip install turso_serverless
+    ```
+  </Step>
+
+  <Step title="Connect and query">
+    ```py theme={null}
+    import os
+    import turso_serverless
+
+    conn = turso_serverless.connect(
+        os.environ["TURSO_DATABASE_URL"],
+        auth_token=os.environ["TURSO_AUTH_TOKEN"],
+    )
+
+    conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
+    conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
+    conn.commit()
+
+    for row in conn.execute("SELECT * FROM users"):
+        print(row)
+
+    conn.close()
+    ```
+  </Step>
+</Steps>
+
+### Remote libSQL database: libsql
+
+`libsql` connects to a remote libSQL database via HTTP — no local file needed.
+
+<Steps>
+  <Step title="Retrieve database credentials">
+    You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
 
     <Snippet />
 
@@ -14682,17 +14763,17 @@ Source: https://docs.turso.tech/sdk/python/reference
 
 Python Reference for Turso
 
-Turso offers two Python packages:
+Turso offers three Python packages:
 
-|                       | `pyturso`                       | `libsql`                                       |
-| --------------------- | ------------------------------- | ---------------------------------------------- |
-| **Use case**          | Local / embedded database, sync | Existing libSQL codebases                      |
-| **Engine**            | Turso Database (rewrite)        | libSQL (SQLite fork)                           |
-| **Concurrent writes** | Yes (MVCC)                      | Not supported                                  |
-| **Sync**              | push/pull (local-first)         | Embedded Replicas (writes go to cloud primary) |
-| **API**               | Python `sqlite3`-compatible     | Python `sqlite3`-compatible                    |
+|                       | `pyturso`                       | `turso_serverless`                    | `libsql`                                          |
+| --------------------- | ------------------------------- | ------------------------------------- | ------------------------------------------------- |
+| **Use case**          | Local / embedded database, sync | Remote Turso database (over-the-wire) | Remote libSQL database, existing libSQL codebases |
+| **Engine**            | Turso (rewrite)                 | Turso (rewrite)                       | libSQL (SQLite fork)                              |
+| **Concurrent writes** | Yes (MVCC)                      | Yes (MVCC)                            | Not supported                                     |
+| **Sync**              | push/pull (local-first)         | —                                     | Embedded Replicas (writes go to cloud primary)    |
+| **API**               | Python `sqlite3`-compatible     | Python `sqlite3`-compatible           | Python `sqlite3`-compatible                       |
 
-**Starting a new project?** Use `pyturso` — it is built on the Turso Database engine with concurrent writes and local-first sync.
+**Starting a new project?** Use `pyturso` — it is built on the Turso engine with concurrent writes and local-first sync. For remote access over the network, match the driver to the database engine: [`turso_serverless`](/sdk/python/quickstart) for Turso databases, `libsql` for libSQL databases.
 
 ## pyturso
 
@@ -15635,15 +15716,63 @@ In this Rust quickstart we will learn how to:
 
 ## Remote Access (Over-the-Wire)
 
-If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the `libsql` crate with the `remote` feature. It connects over HTTP — no local file needed, no C compiler required.
+If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the crate that matches your database engine: `turso_serverless` for [Turso databases](/tursodb/quickstart), or `libsql` (with the `remote` feature) for [libSQL](/libsql) databases.
 
 <Info>
   For most applications, we recommend running a local database with sync (`turso::sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 </Info>
 
+### Remote Turso database: turso\_serverless
+
+`turso_serverless` connects to a remote Turso database over HTTP — no persistent connections, no C compiler required. Its API mirrors the embedded `turso` crate, so code moves between local and remote with minimal changes.
+
 <Steps>
   <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+
+    <Snippet />
+
+    <Info>You will want to store these as environment variables.</Info>
+  </Step>
+
+  <Step title="Install">
+    ```bash theme={null}
+    cargo add turso_serverless tokio --features tokio/full
+    ```
+  </Step>
+
+  <Step title="Connect and query">
+    ```rust theme={null}
+    use turso_serverless::Builder;
+
+    #[tokio::main]
+    async fn main() -> Result<(), Box<dyn std::error::Error>> {
+        let db = Builder::new_remote(std::env::var("TURSO_DATABASE_URL")?)
+            .with_auth_token(std::env::var("TURSO_AUTH_TOKEN")?)
+            .build()
+            .await?;
+        let conn = db.connect()?;
+
+        let mut rows = conn.query("SELECT * FROM users", ()).await?;
+        while let Some(row) = rows.next().await? {
+            let id: i64 = row.get(0)?;
+            let name: String = row.get(1)?;
+            println!("User: {} {}", id, name);
+        }
+
+        Ok(())
+    }
+    ```
+  </Step>
+</Steps>
+
+### Remote libSQL database: libsql
+
+The `libsql` crate with the `remote` feature connects to a remote libSQL database over HTTP — no local file needed, no C compiler required.
+
+<Steps>
+  <Step title="Retrieve database credentials">
+    You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
 
     <Snippet />
 
@@ -15707,17 +15836,17 @@ Source: https://docs.turso.tech/sdk/rust/reference
 
 Rust Reference for Turso
 
-Turso offers two Rust crates:
+Turso offers three Rust crates:
 
-|                       | `turso`                         | `libsql`                                                  |
-| --------------------- | ------------------------------- | --------------------------------------------------------- |
-| **Use case**          | Local / embedded database, sync | Remote access, existing libSQL codebases                  |
-| **Engine**            | Turso Database (rewrite)        | libSQL (SQLite fork)                                      |
-| **Concurrent writes** | Yes (MVCC)                      | Not supported                                             |
-| **Sync**              | push/pull (local-first)         | Embedded Replicas (writes go to cloud primary)            |
-| **C compiler**        | Not required                    | Required for `core`, `replication`, `encryption` features |
+|                       | `turso`                         | `turso_serverless`                    | `libsql`                                                  |
+| --------------------- | ------------------------------- | ------------------------------------- | --------------------------------------------------------- |
+| **Use case**          | Local / embedded database, sync | Remote Turso database (over-the-wire) | Remote libSQL database, existing libSQL codebases         |
+| **Engine**            | Turso (rewrite)                 | Turso (rewrite)                       | libSQL (SQLite fork)                                      |
+| **Concurrent writes** | Yes (MVCC)                      | Yes (MVCC)                            | Not supported                                             |
+| **Sync**              | push/pull (local-first)         | —                                     | Embedded Replicas (writes go to cloud primary)            |
+| **C compiler**        | Not required                    | Not required                          | Required for `core`, `replication`, `encryption` features |
 
-**Starting a new project?** Use `turso` for local/embedded use or sync. Use `libsql` with the `remote` feature for over-the-wire access (no C compiler needed).
+**Starting a new project?** Use `turso` for local/embedded use or sync. For remote access, match the crate to the database engine: [`turso_serverless`](/sdk/rust/quickstart) for Turso databases, `libsql` with the `remote` feature for libSQL databases (no C compiler needed).
 
 ## turso
 
@@ -17539,13 +17668,13 @@ In this TypeScript quickstart we will learn how to:
   </Step>
 </Steps>
 
-## Recommended: @tursodatabase/serverless (Remote / Over-the-Wire)
+## Remote Turso database: @tursodatabase/serverless
 
-`@tursodatabase/serverless` is the recommended package for **any application that connects to a remote Turso Cloud database over the network** — including Node.js servers, Docker containers, serverless functions, and edge runtimes (Cloudflare Workers, Vercel Edge, Deno Deploy). It uses only `fetch` — zero native dependencies, works everywhere.
+`@tursodatabase/serverless` is the package for applications that connect to a remote [Turso database](/tursodb/quickstart) on Turso Cloud over the network — including Node.js servers, Docker containers, serverless functions, and edge runtimes (Cloudflare Workers, Vercel Edge, Deno Deploy). It uses only `fetch` — zero native dependencies, works everywhere.
 
 <Steps>
   <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
 
     <Snippet />
 
@@ -17595,9 +17724,9 @@ In this TypeScript quickstart we will learn how to:
   </Step>
 </Steps>
 
-## @libsql/client
+## Remote libSQL database: @libsql/client
 
-Use `@libsql/client` for ORM integration (Drizzle, Prisma) or if you have an existing codebase built on it. See the [reference](/sdk/ts/reference#libsqlclient) for full documentation.
+`@libsql/client` is the package for applications that connect to a remote [libSQL](/libsql) database on Turso Cloud. It is also the package to use for ORM integration (Drizzle, Prisma). See the [reference](/sdk/ts/reference#libsqlclient) for full documentation.
 
 <Steps>
   <Step title="Install">
@@ -17625,18 +17754,18 @@ Source: https://docs.turso.tech/sdk/ts/reference
 
 TypeScript Reference for Turso
 
-Turso offers three TypeScript packages:
+Turso offers four TypeScript packages:
 
-|                       | `@tursodatabase/database` | `@tursodatabase/sync`       | `@tursodatabase/serverless`                           | `@libsql/client`                               |
-| --------------------- | ------------------------- | --------------------------- | ----------------------------------------------------- | ---------------------------------------------- |
-| **Use case**          | Local / embedded database | Local database + cloud sync | Remote access (servers, containers, serverless, edge) | ORM support (Drizzle, Prisma)                  |
-| **Engine**            | Turso Database (rewrite)  | Turso Database (rewrite)    | Turso Database                                        | libSQL (SQLite fork)                           |
-| **Dependencies**      | Native (Node.js, WASM)    | Native (Node.js)            | `fetch` only — zero native deps                       | Requires Node.js or `/web` subpath             |
-| **Concurrent writes** | Yes (MVCC)                | Yes (MVCC)                  | Planned                                               | Not supported                                  |
-| **Sync**              | —                         | push/pull (local-first)     | —                                                     | Embedded Replicas (writes go to cloud primary) |
-| **ORM support**       | Drizzle (beta)            | —                           | —                                                     | Drizzle, Prisma, and others                    |
+|                       | `@tursodatabase/database` | `@tursodatabase/sync`       | `@tursodatabase/serverless`                                   | `@libsql/client`                                      |
+| --------------------- | ------------------------- | --------------------------- | ------------------------------------------------------------- | ----------------------------------------------------- |
+| **Use case**          | Local / embedded database | Local database + cloud sync | Remote Turso database (servers, containers, serverless, edge) | Remote libSQL database, ORM support (Drizzle, Prisma) |
+| **Engine**            | Turso (rewrite)           | Turso (rewrite)             | Turso                                                         | libSQL (SQLite fork)                                  |
+| **Dependencies**      | Native (Node.js, WASM)    | Native (Node.js)            | `fetch` only — zero native deps                               | Requires Node.js or `/web` subpath                    |
+| **Concurrent writes** | Yes (MVCC)                | Yes (MVCC)                  | Yes (MVCC)                                                    | Not supported                                         |
+| **Sync**              | —                         | push/pull (local-first)     | —                                                             | Embedded Replicas (writes go to cloud primary)        |
+| **ORM support**       | Drizzle (beta)            | —                           | —                                                             | Drizzle, Prisma, and others                           |
 
-**Starting a new project?** Use `@tursodatabase/database` for local/embedded use, `@tursodatabase/sync` for local + cloud sync, or `@tursodatabase/serverless` for any application that connects to a remote Turso Cloud database (Node.js servers, Docker containers, serverless functions, edge runtimes). **Using an ORM?** Use `@libsql/client` — it's production-ready and supported by Drizzle, Prisma, and others. Drizzle has [beta support](https://orm.drizzle.team/docs/connect-turso-database) for `@tursodatabase/database` for local/embedded use.
+**Starting a new project?** Use `@tursodatabase/database` for local/embedded use, `@tursodatabase/sync` for local + cloud sync, and `@tursodatabase/serverless` to reach a remote [Turso database](/tursodb/quickstart) over the network (Node.js servers, Docker containers, serverless functions, edge runtimes). **Connecting to a remote [libSQL](/libsql) database, or using an ORM?** Use `@libsql/client` — it's production-ready and supported by Drizzle, Prisma, and others. Drizzle has [beta support](https://orm.drizzle.team/docs/connect-turso-database) for `@tursodatabase/database` for local/embedded use.
 
 The following runtime environments are known to be compatible:
 
@@ -17803,7 +17932,7 @@ const row = await stmt2.get([1]);
 
 ## @libsql/client
 
-The `@libsql/client` package is built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that powers Turso Cloud today. It is production-ready, battle-tested, and the right choice when you need ORM integration beyond Drizzle (e.g., Prisma) or are working with an existing `@libsql/client`-based codebase.
+The `@libsql/client` package is built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that has powered Turso Cloud for years. It is production-ready, battle-tested, and the right choice for remote access to libSQL databases, when you need ORM integration beyond Drizzle (e.g., Prisma), or when working with an existing `@libsql/client`-based codebase.
 
 <Info>
   With `@libsql/client` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `@tursodatabase/sync` with [Turso Sync](/sync/usage).
@@ -31353,7 +31482,7 @@ Point your sync client at `http://localhost:8080`. No auth token is needed for t
   package main
 
   import (
-  	"turso"
+  	turso "turso.tech/database/tursogo"
   )
 
   db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
@@ -31520,7 +31649,7 @@ Both modes continue to lazily fetch missing pages on demand.
 
   const db = await connect({
     path: './app.db',
-    url: 'libsql://...',
+    url: 'turso://...',
     authToken: process.env.TURSO_AUTH_TOKEN,
     partialSyncExperimental: {
       bootstrapStrategy: { kind: 'prefix', length: 128 * 1024 }, // 128 KiB
@@ -31534,9 +31663,9 @@ Both modes continue to lazily fetch missing pages on demand.
 
   conn = turso.sync.connect(
       path="./app.db",
-      remote_url="libsql://...",
-      remote_auth_token=os.environ["TURSO_AUTH_TOKEN"],
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      remote_url="turso://...",
+      auth_token=os.environ["TURSO_AUTH_TOKEN"],
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncPrefixBootstrap(length=128 * 1024),
       ),
   )
@@ -31544,15 +31673,15 @@ Both modes continue to lazily fetch missing pages on demand.
 
   ```go Go theme={null}
   import (
-  	"turso"
+  	turso "turso.tech/database/tursogo"
   )
 
   db, err := turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
-    Path:            "./app.db",
-    RemoteUrl:       "libsql://...",
-    RemoteAuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyPrefix: 128 * 1024, // 128 KiB
+    Path:      "./app.db",
+    RemoteUrl: "turso://...",
+    AuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyPrefix: 128 * 1024, // 128 KiB
     },
   })
   ```
@@ -31566,7 +31695,7 @@ Both modes continue to lazily fetch missing pages on demand.
 
   const db = await connect({
     path: './app.db',
-    url: 'libsql://...',
+    url: 'turso://...',
     authToken: process.env.TURSO_AUTH_TOKEN,
     partialSyncExperimental: {
       bootstrapStrategy: {
@@ -31582,8 +31711,8 @@ Both modes continue to lazily fetch missing pages on demand.
 
   conn = turso.sync.connect(
       path=":memory:",
-      remote_url="libsql://...",
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      remote_url="turso://...",
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncQueryBootstrap(
               query="SELECT * FROM messages WHERE user_id = 'u_123' LIMIT 100"
           ),
@@ -31593,15 +31722,15 @@ Both modes continue to lazily fetch missing pages on demand.
 
   ```go Go theme={null}
   import (
-  	"turso"
+  	turso "turso.tech/database/tursogo"
   )
 
   db, err := turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
-    Path:            "./app.db",
-    RemoteUrl:       "libsql://...",
-    RemoteAuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyQuery: "SELECT * FROM messages WHERE user_id = 'u_123' LIMIT 100",
+    Path:      "./app.db",
+    RemoteUrl: "turso://...",
+    AuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyQuery: "SELECT * FROM messages WHERE user_id = 'u_123' LIMIT 100",
     },
   })
   ```
@@ -31752,7 +31881,7 @@ The default `segment_size` is **128 KiB** (typically 32 pages on a 4 KiB page si
   ```py Python theme={null}
   turso.sync.connect(
       ...
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncPrefixBootstrap(length=128 * 1024),
           segment_size=16 * 1024,
       ),
@@ -31762,8 +31891,8 @@ The default `segment_size` is **128 KiB** (typically 32 pages on a 4 KiB page si
   ```go Go theme={null}
   turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
     ...
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyPrefix: 128 * 1024, // 128 KiB
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyPrefix: 128 * 1024, // 128 KiB
       SegmentSize: 16 * 1024,
     },
   })
@@ -31881,7 +32010,7 @@ This reduces the number of future on-demand fetches and helps avoid stalls durin
   ```py Python theme={null}
   turso.sync.connect(
       ...
-      partial_sync_opts=turso.sync.PartialSyncOpts(
+      partial_sync_experimental=turso.sync.PartialSyncOpts(
           bootstrap_strategy=turso.sync.PartialSyncPrefixBootstrap(length=128 * 1024),
           prefetch=True,
       ),
@@ -31891,8 +32020,8 @@ This reduces the number of future on-demand fetches and helps avoid stalls durin
   ```go Go theme={null}
   turso.NewTursoSyncDb(context.Background(), turso.TursoSyncDbConfig{
     ...
-    PartialSyncConfig: turso.TursoPartialSyncConfig{
-      BoostrapStrategyPrefix: 128 * 1024, // 128 KiB
+    PartialSyncExperimental: turso.TursoPartialSyncConfig{
+      BootstrapStrategyPrefix: 128 * 1024, // 128 KiB
       Prefetch: true,
     },
   })
@@ -31923,7 +32052,7 @@ This guide shows how to set up a Turso database and use the sync features from y
   <Step title="1. Setup Turso Cloud database">
     * Follow our [Quickstart](/quickstart) to install the CLI, create a database
 
-    * Get the database URL (`libsql://...`):
+    * Get the database URL (`turso://...`):
 
     ```
     turso db show <db>
@@ -31940,7 +32069,7 @@ This guide shows how to set up a Turso database and use the sync features from y
     You need three essentials to enable sync:
 
     * Local path: where the local, synced tursodb file is stored
-    * Remote URL: your Turso Cloud URL (`libsql://...`)
+    * Remote URL: your Turso Cloud URL (`turso://...`)
     * Auth token: Turso Cloud token to authenticate requests
 
     <CodeGroup>
@@ -31949,7 +32078,7 @@ This guide shows how to set up a Turso database and use the sync features from y
 
       const db = await connect({
         path: './app.db',                               // local path
-        url: 'libsql://...',                            // remote URL (generated with turso db show <db-name> --url)
+        url: 'turso://...',                            // remote URL (generated with turso db show <db-name> --url)
         authToken: process.env.TURSO_AUTH_TOKEN,        // authentication token (generated with turso db tokens create <db-name>)
         // longPollTimeoutMs: 10_000,                   // optional: server waits before replying to pull
         // bootstrapIfEmpty: false,                     // set to false to avoid bootstrapping on first run
@@ -31962,8 +32091,8 @@ This guide shows how to set up a Turso database and use the sync features from y
 
       conn = turso.sync.connect(
           path="./app.db",                                  # local path
-          remote_url="libsql://...",                        # remote URL (generated with turso db show <db-name> --url)
-          remote_auth_token=os.environ["TURSO_AUTH_TOKEN"], # authentication token (generated with turso db tokens create <db-name>)
+          remote_url="turso://...",                        # remote URL (generated with turso db show <db-name> --url)
+          auth_token=os.environ["TURSO_AUTH_TOKEN"],        # authentication token (generated with turso db tokens create <db-name>)
           # long_poll_timeout_ms=10_000,                    # optional: server waits before replying to pull
           # bootstrap_if_empty=False,                       # set to false to avoid bootstrapping on first run
       )
@@ -31973,15 +32102,15 @@ This guide shows how to set up a Turso database and use the sync features from y
       package main
 
       import (
-      	"turso"
+      	turso "turso.tech/database/tursogo"
       )
 
       db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
         Path:              "./app.db",                    // local path
-        RemoteUrl:         "libsql://...",                // remote URL (generated with turso db show <db-name> --url)
-        RemoteAuthToken:   os.Getenv("TURSO_AUTH_TOKEN"), // authentication token (generated with turso db tokens create <db-name>)
+        RemoteUrl:         "turso://...",                // remote URL (generated with turso db show <db-name> --url)
+        AuthToken:         os.Getenv("TURSO_AUTH_TOKEN"), // authentication token (generated with turso db tokens create <db-name>)
         // LongPollTimeoutMs: 10_000,                     // optional: server waits before replying to pull
-        // BootstrapIfEmpty: false,                       // set to false to avoid bootstrapping on first run
+        // BootstrapIfEmpty: new(bool),                   // *bool; point at false to avoid bootstrapping on first run
       })
       ```
     </CodeGroup>
@@ -32183,7 +32312,7 @@ If your app needs to accept writes without internet connectivity, write locally 
   conn = turso.sync.connect(
       path="./local.db",
       remote_url=os.environ["TURSO_URL"],
-      remote_auth_token=os.environ["TURSO_AUTH_TOKEN"],
+      auth_token=os.environ["TURSO_AUTH_TOKEN"],
       bootstrap_if_empty=False,
   )
 
@@ -32207,13 +32336,14 @@ If your app needs to accept writes without internet connectivity, write locally 
   ```
 
   ```go Go theme={null}
-  // BootstrapIfEmpty: false lets the app start offline without
-  // needing to reach the remote on first launch
+  // BootstrapIfEmpty pointing at false lets the app start offline
+  // without needing to reach the remote on first launch
+  noBootstrap := false
   db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
   	Path:             "./local.db",
   	RemoteUrl:        os.Getenv("TURSO_URL"),
-  	RemoteAuthToken:  os.Getenv("TURSO_AUTH_TOKEN"),
-  	BootstrapIfEmpty: false,
+  	AuthToken:        os.Getenv("TURSO_AUTH_TOKEN"),
+  	BootstrapIfEmpty: &noBootstrap,
   })
 
   func syncWhenOnline(ctx context.Context, db *turso.TursoSyncDb) {
@@ -32241,15 +32371,19 @@ This is the modern equivalent of the `offline: true` flag from [`@libsql/client`
 # Turso Cloud Documentation
 Source: https://docs.turso.tech/turso-cloud
 
-Your fully managed SQLite-compatible database platform built on libSQL
+Fully managed platform for SQLite-compatible databases. Deploy Turso, a rewrite of SQLite with concurrent writes and multi-user access built in, or libSQL, the battle-tested SQLite fork. No need to switch to Postgres for concurrency.
+
+Turso Cloud is a fully managed database platform, designed to scale from prototype to production. It hosts two database engines, both fully compatible with SQLite:
+
+* **[Turso](/tursodb/quickstart)** — a ground-up rewrite of SQLite. Turso supports **concurrent writes** and **multi-user access by default**: many clients can read and write the same database at the same time, over the network. If SQLite's single-writer limitation is what would push you toward a client-server database like Postgres, Turso removes it — you keep SQLite's simplicity and compatibility and gain the concurrency. Concurrent writes are the headline, but not the whole story: see the [Turso documentation](/tursodb/quickstart) for change data capture, vector search, encryption, sync, and more.
+
+* **[libSQL](/libsql)** — a fork of SQLite, battle-tested in production on Turso Cloud for years.
 
 <Note>
-  Turso Cloud currently runs on **libSQL** (SQLite-compatible). The
-  next-generation Turso Database engine is in alpha development and will be
-  integrated into Turso Cloud in the future.
+  Turso databases on Turso Cloud are in early preview — a reflection of how
+  recently the offering landed on the platform, not of the engine itself.
+  Create one with `turso db create --tursodb`.
 </Note>
-
-Turso Cloud is your fully managed SQLite-compatible database platform, designed to scale from prototype to production. Built on [libSQL](/libsql), Turso Cloud provides the performance and reliability of SQLite with the convenience and scalability of a modern cloud database service.
 
 <CardGroup>
   <Card
@@ -32507,8 +32641,8 @@ Learn how to manage, distribute and integrate your databases with the CLI, API a
 }
     href="/sdk"
   >
-    Connect and integrate Turso into your application with one of our libSQL
-    drivers.
+    Connect and integrate your application with one of our client SDKs, for
+    Turso and libSQL databases alike.
   </Card>
 
   <Card title="Tutorials" icon="newspaper" href="https://turso.tech/blog">

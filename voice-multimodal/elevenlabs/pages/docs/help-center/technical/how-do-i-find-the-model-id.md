@@ -16,28 +16,28 @@ Here is a list of the current models, and you can also find more information abo
   Flagship Models
 </strong>
 
-| Multilingual v2               | eleven\_multilingual\_v2      |
+| Model Name                    | Model ID                      |
 | ----------------------------- | ----------------------------- |
+| Multilingual v2               | eleven\_multilingual\_v2      |
 | Flash v2.5                    | eleven\_flash\_v2\_5          |
 | Flash v2                      | eleven\_flash\_v2             |
-| Turbo v2                      | eleven\_turbo\_v2             |
 | Turbo v2.5                    | eleven\_turbo\_v2\_5          |
+| Turbo v2                      | eleven\_turbo\_v2             |
 | Multilingual Speech to Speech | eleven\_multilingual\_sts\_v2 |
 | English Speech to Speech      | eleven\_english\_sts\_v2      |
 
- 
+***
 
 <strong>
   Older Models
 </strong>
 
-| English v1      | eleven\_monolingual\_v1  |
-| --------------- | ------------------------ |
-| Multilingual v1 | eleven\_multilingual\_v1 |
-| Turbo v2.5      | eleven\_turbo\_v2\_5     |
-| Turbo v2        | eleven\_turbo\_v2        |
+| Model Name | Model ID             |
+| ---------- | -------------------- |
+| Turbo v2.5 | eleven\_turbo\_v2\_5 |
+| Turbo v2   | eleven\_turbo\_v2    |
 
- 
+***
 
 <strong>
   Cost when generating via the website:

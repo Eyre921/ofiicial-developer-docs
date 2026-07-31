@@ -1,5 +1,5 @@
 ---
-title: "Byok"
+title: "BYOK"
 source: https://openrouter.ai/docs/client-sdks/go/sdks/byok/README.md
 path: docs/client-sdks/go/sdks/byok/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/go/sdks/byok/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Byok
+# BYOK
 
 > BYOK endpoints
 
@@ -48,7 +48,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Byok.List(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil, nil)
+    res, err := s.BYOK.List(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil, nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -119,7 +119,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Byok.Create(ctx, components.CreateBYOKKeyRequest{
+    res, err := s.BYOK.Create(ctx, components.CreateBYOKKeyRequest{
         Key: "sk-proj-abc123...",
         Name: optionalnullable.From(openrouter.Pointer("Production OpenAI Key")),
         Provider: components.BYOKProviderSlugOpenai,
@@ -178,7 +178,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Byok.Delete(ctx, "11111111-2222-3333-4444-555555555555")
+    res, err := s.BYOK.Delete(ctx, "11111111-2222-3333-4444-555555555555")
     if err != nil {
         log.Fatal(err)
     }
@@ -232,7 +232,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Byok.Get(ctx, "11111111-2222-3333-4444-555555555555")
+    res, err := s.BYOK.Get(ctx, "11111111-2222-3333-4444-555555555555")
     if err != nil {
         log.Fatal(err)
     }
@@ -288,7 +288,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Byok.Update(ctx, "11111111-2222-3333-4444-555555555555", components.UpdateBYOKKeyRequest{
+    res, err := s.BYOK.Update(ctx, "11111111-2222-3333-4444-555555555555", components.UpdateBYOKKeyRequest{
         Disabled: openrouter.Pointer(false),
         Name: optionalnullable.From(openrouter.Pointer("Updated OpenAI Key")),
     })

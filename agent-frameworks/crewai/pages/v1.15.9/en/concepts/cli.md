@@ -540,7 +540,7 @@ Trace collection is controlled by checking three settings in priority order:
   CrewAI CLI handles authentication to the Tool Repository automatically when
   adding packages to your project. Just append `crewai` before any `uv` command
   to use it. E.g. `crewai uv add requests`. For more information, see [Tool
-  Repository](https://docs.crewai.com/enterprise/features/tool-repository) docs.
+  Repository](https://docs-platform.crewai.com/platform/en/guides/tool-repository) docs.
 </Tip>
 
 <Note>

@@ -258,8 +258,8 @@ In production, you would typically use a more robust persistent store, such as a
   | [`PerplexityEmbeddings`](/oss/python/integrations/embeddings/perplexity)                               | <span><a href="https://pypi.org/project/langchain-perplexity/">  <img alt="Downloads per month" /></a></span>             |
   | [`SambanovaEmbeddings`](/oss/python/integrations/embeddings/sambanova)                                 | <span><a href="https://pypi.org/project/langchain-sambanova/">  <img alt="Downloads per month" /></a></span>              |
   | [`Oracle AI vector search generate`](/oss/python/integrations/embeddings/oracleai)                     | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span>               |
-  | [`BasetenEmbeddings`](/oss/python/integrations/embeddings/baseten)                                     | <span><a href="https://pypi.org/project/langchain-baseten/">  <img alt="Downloads per month" /></a></span>                |
   | [`OCIGenAIEmbeddings`](/oss/python/integrations/embeddings/oci_generative_ai)                          | <span><a href="https://pypi.org/project/langchain-oci/">  <img alt="Downloads per month" /></a></span>                    |
+  | [`BasetenEmbeddings`](/oss/python/integrations/embeddings/baseten)                                     | <span><a href="https://pypi.org/project/langchain-baseten/">  <img alt="Downloads per month" /></a></span>                |
   | [`TogetherEmbeddings`](/oss/python/integrations/embeddings/together)                                   | <span><a href="https://pypi.org/project/langchain-together/">  <img alt="Downloads per month" /></a></span>               |
   | [`Voyage AI`](/oss/python/integrations/embeddings/voyageai)                                            | <span><a href="https://pypi.org/project/langchain-voyageai/">  <img alt="Downloads per month" /></a></span>               |
   | [`UpstageEmbeddings`](/oss/python/integrations/embeddings/upstage)                                     | <span><a href="https://pypi.org/project/langchain-upstage/">  <img alt="Downloads per month" /></a></span>                |
@@ -270,12 +270,14 @@ In production, you would typically use a more robust persistent store, such as a
   | [`Localai`](https://localai.io/features/embeddings/index.html)                                         | <span><a href="https://pypi.org/project/langchain-localai/">  <img alt="Downloads per month" /></a></span>                |
   | [`Modelscope`](https://www.modelscope.cn/docs/sdk/pipelines)                                           | <span><a href="https://pypi.org/project/langchain-modelscope-integration/">  <img alt="Downloads per month" /></a></span> |
   | [`AIMlAPIEmbeddings`](https://docs.aimlapi.com/)                                                       | <span><a href="https://pypi.org/project/langchain-aimlapi/">  <img alt="Downloads per month" /></a></span>                |
+  | [`DoublewordEmbeddings`](https://docs.doubleword.ai)                                                   | <span><a href="https://pypi.org/project/langchain-doubleword/">  <img alt="Downloads per month" /></a></span>             |
   | [`PredictionGuardEmbeddings`](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | <span><a href="https://pypi.org/project/langchain-predictionguard/">  <img alt="Downloads per month" /></a></span>        |
   | [`ForgeEmbeddings`](https://voxell.ai/forge)                                                           | <span><a href="https://pypi.org/project/langchain-voxell/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`TelnyxEmbeddings`](https://developers.telnyx.com/docs/inference/models)                              | <span><a href="https://pypi.org/project/langchain-telnyx/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Isaacus`](https://docs.isaacus.com/)                                                                 | <span><a href="https://pypi.org/project/langchain-isaacus/">  <img alt="Downloads per month" /></a></span>                |
   | [`GreenNodeEmbeddings`](https://greennode.ai/)                                                         | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span>              |
-  | [`Lindorm`](https://help.aliyun.com/document_detail/174640.html)                                       | <span><a href="https://pypi.org/project/langchain-lindorm-integration/">  <img alt="Downloads per month" /></a></span>    |
   | [`Netmind`](https://github.com/protagolabs/langchain-netmind)                                          | <span><a href="https://pypi.org/project/langchain-netmind/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Lindorm`](https://help.aliyun.com/document_detail/174640.html)                                       | <span><a href="https://pypi.org/project/langchain-lindorm-integration/">  <img alt="Downloads per month" /></a></span>    |
 </div>
 
 ***

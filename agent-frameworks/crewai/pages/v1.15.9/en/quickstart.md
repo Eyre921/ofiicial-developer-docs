@@ -238,11 +238,11 @@ Push your Flow to **[CrewAI AMP](https://app.crewai.com)** once it runs locally 
 </CodeGroup>
 
 <Tip>
-  The first deploy usually takes **around 1 minute**. Full prerequisites and the web UI flow are in [Deploy to AMP](/en/enterprise/guides/deploy-to-amp).
+  The first deploy usually takes **around 1 minute**. Full prerequisites and the web UI flow are in [Deploy to AMP](https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp).
 </Tip>
 
 <CardGroup>
-  <Card title="Deploy guide" icon="book" href="/en/enterprise/guides/deploy-to-amp">
+  <Card title="Deploy guide" icon="book" href="https://docs-platform.crewai.com/platform/en/guides/deploy-to-amp">
     Step-by-step AMP deployment (CLI and dashboard).
   </Card>
 

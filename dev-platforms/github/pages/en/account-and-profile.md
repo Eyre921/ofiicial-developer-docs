@@ -12,7 +12,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Account](/en/account-and-profile/get-started/account)
 
-  <p>Get started with your GitHub account.</p>
+  Get started with your GitHub account.
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
@@ -28,7 +28,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
-  Demonstrate your skills to hiring managers with your GitHub profile.
+  <p>Demonstrate your skills to hiring managers with your GitHub profile.</p>
 
 * [Setting your commit email address](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)
 

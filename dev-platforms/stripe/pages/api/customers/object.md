@@ -356,7 +356,7 @@ Possible enum values:
     - `subscriptions.data.application` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
       ID of the Connect Application that created the subscription.
 
-    - `subscriptions.data.application_fee_percent` (float, nullable)
+    - `subscriptions.data.application_fee_percent` (number, nullable)
       A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account.
 
     - `subscriptions.data.automatic_tax` (object)
@@ -601,7 +601,7 @@ Possible enum values:
       - `subscriptions.data.default_tax_rates.display_name` (string)
         The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
 
-      - `subscriptions.data.default_tax_rates.effective_percentage` (float, nullable)
+      - `subscriptions.data.default_tax_rates.effective_percentage` (number, nullable)
         Actual/effective tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage reflects the rate actually used to calculate tax based on the product’s taxability and whether the user is registered to collect taxes in the corresponding jurisdiction.
 
       - `subscriptions.data.default_tax_rates.flat_amount` (object, nullable)
@@ -635,7 +635,7 @@ Possible enum values:
       - `subscriptions.data.default_tax_rates.metadata` (map, nullable)
         Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
-      - `subscriptions.data.default_tax_rates.percentage` (float)
+      - `subscriptions.data.default_tax_rates.percentage` (number)
         Tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage includes the statutory tax rate of non-taxable jurisdictions.
 
       - `subscriptions.data.default_tax_rates.rate_type` (enum, nullable)
@@ -1005,7 +1005,7 @@ Possible enum values:
           - `subscriptions.data.items.data.tax_rates.display_name` (string)
             The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
 
-          - `subscriptions.data.items.data.tax_rates.effective_percentage` (float, nullable)
+          - `subscriptions.data.items.data.tax_rates.effective_percentage` (number, nullable)
             Actual/effective tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage reflects the rate actually used to calculate tax based on the product’s taxability and whether the user is registered to collect taxes in the corresponding jurisdiction.
 
           - `subscriptions.data.items.data.tax_rates.flat_amount` (object, nullable)
@@ -1039,7 +1039,7 @@ Possible enum values:
           - `subscriptions.data.items.data.tax_rates.metadata` (map, nullable)
             Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
-          - `subscriptions.data.items.data.tax_rates.percentage` (float)
+          - `subscriptions.data.items.data.tax_rates.percentage` (number)
             Tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage includes the statutory tax rate of non-taxable jurisdictions.
 
           - `subscriptions.data.items.data.tax_rates.rate_type` (enum, nullable)
@@ -1980,7 +1980,7 @@ Possible enum values:
           - `subscriptions.data.pending_update.subscription_items.tax_rates.display_name` (string)
             The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
 
-          - `subscriptions.data.pending_update.subscription_items.tax_rates.effective_percentage` (float, nullable)
+          - `subscriptions.data.pending_update.subscription_items.tax_rates.effective_percentage` (number, nullable)
             Actual/effective tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage reflects the rate actually used to calculate tax based on the product’s taxability and whether the user is registered to collect taxes in the corresponding jurisdiction.
 
           - `subscriptions.data.pending_update.subscription_items.tax_rates.flat_amount` (object, nullable)
@@ -2014,7 +2014,7 @@ Possible enum values:
           - `subscriptions.data.pending_update.subscription_items.tax_rates.metadata` (map, nullable)
             Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
-          - `subscriptions.data.pending_update.subscription_items.tax_rates.percentage` (float)
+          - `subscriptions.data.pending_update.subscription_items.tax_rates.percentage` (number)
             Tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage includes the statutory tax rate of non-taxable jurisdictions.
 
           - `subscriptions.data.pending_update.subscription_items.tax_rates.rate_type` (enum, nullable)
@@ -2141,7 +2141,7 @@ Possible enum values:
     - `subscriptions.data.transfer_data` (object, nullable)
       The account (if any) the subscription’s payments will be attributed to for tax reporting, and where funds from each payment will be transferred to for each of the subscription’s invoices.
 
-      - `subscriptions.data.transfer_data.amount_percent` (float, nullable)
+      - `subscriptions.data.transfer_data.amount_percent` (number, nullable)
         A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
 
       - `subscriptions.data.transfer_data.destination` (string, expandable (can be expanded into an object with the `expand` request parameter))

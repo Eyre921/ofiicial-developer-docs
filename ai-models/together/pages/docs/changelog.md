@@ -4,6 +4,114 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 29, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available for [fine-tuning](/docs/fine-tuning/supported-models):
+
+  * `nvidia/NVIDIA-Nemotron-Nano-9B-v2`.
+  * `Qwen/Qwen3-Next-80B-A3B-Instruct`.
+  * `Qwen/Qwen3-Next-80B-A3B-Thinking`.
+  * `Qwen/Qwen3-0.6B`.
+  * `Qwen/Qwen3-0.6B-Base`.
+  * `Qwen/Qwen3-1.7B`.
+  * `Qwen/Qwen3-1.7B-Base`.
+  * `Qwen/Qwen3-4B`.
+  * `Qwen/Qwen3-4B-Base`.
+  * `Qwen/Qwen3-8B`.
+  * `Qwen/Qwen3-8B-Base`.
+  * `Qwen/Qwen3-14B`.
+  * `Qwen/Qwen3-14B-Base`.
+  * `Qwen/Qwen3-32B`.
+  * `Qwen/Qwen3-30B-A3B-Base`.
+  * `Qwen/Qwen3-30B-A3B`.
+  * `Qwen/Qwen3-30B-A3B-Instruct-2507`.
+  * `Qwen/Qwen3-235B-A22B`.
+  * `Qwen/Qwen3-235B-A22B-Instruct-2507`.
+  * `Qwen/Qwen3-Coder-30B-A3B-Instruct`.
+  * `Qwen/Qwen3-Coder-480B-A35B-Instruct`.
+  * `Qwen/Qwen3-VL-8B-Instruct`.
+  * `Qwen/Qwen3-VL-32B-Instruct`.
+  * `Qwen/Qwen3-VL-30B-A3B-Instruct`.
+  * `Qwen/Qwen3-VL-235B-A22B-Instruct`.
+  * `Qwen/Qwen2.5-72B-Instruct`.
+  * `Qwen/Qwen2.5-72B`.
+  * `Qwen/Qwen2.5-32B-Instruct`.
+  * `Qwen/Qwen2.5-32B`.
+  * `Qwen/Qwen2.5-14B-Instruct`.
+  * `Qwen/Qwen2.5-14B`.
+  * `Qwen/Qwen2.5-7B-Instruct`.
+  * `Qwen/Qwen2.5-7B`.
+  * `Qwen/Qwen2.5-3B-Instruct`.
+  * `Qwen/Qwen2.5-3B`.
+  * `Qwen/Qwen2.5-1.5B-Instruct`.
+  * `Qwen/Qwen2.5-1.5B`.
+  * `Qwen/Qwen2-72B-Instruct`.
+  * `Qwen/Qwen2-72B`.
+  * `Qwen/Qwen2-7B-Instruct`.
+  * `Qwen/Qwen2-7B`.
+  * `Qwen/Qwen2-1.5B-Instruct`.
+  * `Qwen/Qwen2-1.5B`.
+  * `moonshotai/Kimi-K2.5`.
+  * `moonshotai/Kimi-K2-Thinking`.
+  * `moonshotai/Kimi-K2-Instruct-0905`.
+  * `moonshotai/Kimi-K2-Instruct`.
+  * `moonshotai/Kimi-K2-Base`.
+  * `zai-org/GLM-5`.
+  * `zai-org/GLM-4.7`.
+  * `zai-org/GLM-4.6`.
+  * `deepseek-ai/DeepSeek-R1-0528`.
+  * `deepseek-ai/DeepSeek-R1`.
+  * `deepseek-ai/DeepSeek-V3-0324`.
+  * `deepseek-ai/DeepSeek-V3`.
+  * `deepseek-ai/DeepSeek-V3.1-Base`.
+  * `deepseek-ai/DeepSeek-V3-Base`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-32k`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-131k`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`.
+  * `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`.
+  * `meta-llama/Llama-4-Scout-17B-16E`.
+  * `meta-llama/Llama-4-Maverick-17B-128E`.
+  * `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`.
+  * `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`.
+  * `meta-llama/Llama-3.2-3B-Instruct`.
+  * `meta-llama/Llama-3.2-3B`.
+  * `meta-llama/Llama-3.2-1B-Instruct`.
+  * `meta-llama/Llama-3.2-1B`.
+  * `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-8B-Reference`.
+  * `meta-llama/Meta-Llama-3.1-8B-131k-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-32k-Reference`.
+  * `meta-llama/Meta-Llama-3.1-70B-131k-Reference`.
+  * `meta-llama/Meta-Llama-3-8B-Instruct`.
+  * `meta-llama/Meta-Llama-3-8B`.
+  * `meta-llama/Meta-Llama-3-70B-Instruct`.
+  * `google/gemma-3-270m`.
+  * `google/gemma-3-270m-it`.
+  * `google/gemma-3-1b-it`.
+  * `google/gemma-3-1b-pt`.
+  * `google/gemma-3-4b-it`.
+  * `google/gemma-3-4b-it-VLM`.
+  * `google/gemma-3-4b-pt`.
+  * `google/gemma-3-12b-it`.
+  * `google/gemma-3-12b-it-VLM`.
+  * `google/gemma-3-12b-pt`.
+  * `google/gemma-3-27b-it`.
+  * `google/gemma-3-27b-it-VLM`.
+  * `google/gemma-3-27b-pt`.
+  * `mistralai/Mixtral-8x7B-v0.1`.
+  * `mistralai/Mistral-7B-Instruct-v0.2`.
+  * `mistralai/Mistral-7B-v0.1`.
+  * `togethercomputer/llama-2-7b-chat`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="July 28, 2026">
   ## A/B variant percent updates in the CLI
 

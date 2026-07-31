@@ -260,7 +260,7 @@ Possible enum values:
   - `add_invoice_items.tax_rates` (array of strings, optional)
     The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item.
 
-- `application_fee_percent` (float, optional)
+- `application_fee_percent` (number, optional)
   A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage. For more information, see the application fees [documentation](https://docs.stripe.com/connect/subscriptions.md#collecting-fees-on-subscriptions).
 
 - `automatic_tax` (object, optional)
@@ -1066,7 +1066,7 @@ Possible enum values:
   - `transfer_data.destination` (string, required)
     ID of an existing, connected Stripe account.
 
-  - `transfer_data.amount_percent` (float, optional)
+  - `transfer_data.amount_percent` (number, optional)
     A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
 
 - `trial_end` (string, value is "now" | timestamp, optional)

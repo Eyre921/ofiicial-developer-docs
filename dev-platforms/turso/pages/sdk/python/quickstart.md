@@ -84,15 +84,66 @@ In this Python quickstart we will learn how to:
 
 ## Remote Access (Over-the-Wire)
 
-If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), you can use the `libsql` package. It connects to your database via HTTP — no local file needed.
+If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the driver that matches your database engine: `turso_serverless` for [Turso databases](/tursodb/quickstart), or `libsql` for [libSQL](/libsql) databases.
 
 <Info>
   For most applications, we recommend running a local database with [Turso Sync](/sync/usage) (`turso.sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 </Info>
 
+### Remote Turso database: turso\_serverless
+
+`turso_serverless` connects to a remote Turso database over HTTP — no persistent connections, no native extensions, just the standard library. Like `pyturso`, it implements the standard DB-API interface.
+
 <Steps>
   <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+
+    <Snippet />
+
+    <Info>You will want to store these as environment variables.</Info>
+  </Step>
+
+  <Step title="Install">
+    ```bash theme={null}
+    uv add turso_serverless
+    ```
+
+    Or with pip:
+
+    ```bash theme={null}
+    pip install turso_serverless
+    ```
+  </Step>
+
+  <Step title="Connect and query">
+    ```py theme={null}
+    import os
+    import turso_serverless
+
+    conn = turso_serverless.connect(
+        os.environ["TURSO_DATABASE_URL"],
+        auth_token=os.environ["TURSO_AUTH_TOKEN"],
+    )
+
+    conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
+    conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
+    conn.commit()
+
+    for row in conn.execute("SELECT * FROM users"):
+        print(row)
+
+    conn.close()
+    ```
+  </Step>
+</Steps>
+
+### Remote libSQL database: libsql
+
+`libsql` connects to a remote libSQL database via HTTP — no local file needed.
+
+<Steps>
+  <Step title="Retrieve database credentials">
+    You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
 
     <Snippet />
 

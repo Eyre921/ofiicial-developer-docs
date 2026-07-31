@@ -14,7 +14,7 @@ GitHub Pages turns any GitHub repository into a live website—no separate hosti
 
 * [Quickstart for GitHub Pages](/en/pages/quickstart)
 
-  You can use GitHub Pages to showcase some open source projects, host a blog, or even share your résumé. This guide will help get you started on creating your next website.
+  You can use GitHub Pages to showcase open source projects, host a blog, or even share your résumé. This guide will help get you started on creating your next website.
 
 * [What is GitHub Pages?](/en/pages/getting-started-with-github-pages/what-is-github-pages)
 
@@ -24,7 +24,7 @@ GitHub Pages turns any GitHub repository into a live website—no separate hosti
 
 * [Quickstart for GitHub Pages](/en/pages/quickstart)
 
-  You can use GitHub Pages to showcase some open source projects, host a blog, or even share your résumé. This guide will help get you started on creating your next website.
+  You can use GitHub Pages to showcase open source projects, host a blog, or even share your résumé. This guide will help get you started on creating your next website.
 
 * [What is GitHub Pages?](/en/pages/getting-started-with-github-pages/what-is-github-pages)
 

@@ -18,6 +18,18 @@ Full-text search ranks documents by keyword and phrase relevance using **BM25** 
 
 **When to use it.** Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, an [index with dense vectors](/guides/get-started/concepts#index-with-dense-vectors) (the vector API) is simpler; see [Search overview](/guides/search/search-overview) to choose the right approach.
 
+### Capabilities
+
+What full-text search does and doesn't match:
+
+| Capability                      | Status                                                                                                                                                                                                                     |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fuzzy matching (typo tolerance) | Supported in `query_string` queries only ([query syntax](#query-syntax-reference))                                                                                                                                         |
+| Stemming                        | Supported, opt-in per field at index creation ([stemming](#stemming))                                                                                                                                                      |
+| Stop-word removal               | Supported, opt-in per field at index creation ([tokens & analyzers](#tokens-and-analyzers))                                                                                                                                |
+| Substring / n-gram matching     | Supported, opt-in per field at index creation. Can't be combined with stemming or stop words on the same field ([n-grams](#substring-search-with-n-grams))                                                                 |
+| Synonym expansion               | Not supported. A search for `car` won't match a document containing only `automobile`. Use [semantic search](/guides/search/semantic-search) or [hybrid search](/guides/search/hybrid-search) for synonyms or paraphrases. |
+
 **The path, end to end.** Create an index with a [schema](#schema-definition) that declares your ranking fields, upsert your data as JSON documents, then search by choosing one ranking signal per search request with `score_by`. The [end-to-end example](#end-to-end-example) below stitches all three steps into one runnable script, and the sections after it cover each operation in detail.
 
 Pinecone's document API stores typed fields you declare in a schema. How it works:

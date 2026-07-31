@@ -49,7 +49,7 @@ Point your sync client at `http://localhost:8080`. No auth token is needed for t
   package main
 
   import (
-  	"turso"
+  	turso "turso.tech/database/tursogo"
   )
 
   db, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{

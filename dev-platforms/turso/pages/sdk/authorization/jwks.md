@@ -51,11 +51,11 @@ Instead of managing tokens manually, you can let your authentication provider is
     Get the JWT from your auth provider and pass it as the `authToken`:
 
     ```javascript theme={null}
-    import { createClient } from "@tursodatabase/serverless";
+    import { connect } from "@tursodatabase/serverless";
 
     const authToken = await getAuthToken(); // e.g., from Clerk, Auth0
 
-    const db = createClient({
+    const db = connect({
       url: "<your-database-url>",
       authToken,
     });

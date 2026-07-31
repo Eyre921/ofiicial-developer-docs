@@ -1,10 +1,10 @@
 ---
-title: "Traces, Engine, and access control"
+title: "Traces and access control"
 source: https://docs.langchain.com/langsmith/llm-gateway-access
 path: langsmith/llm-gateway-access
 ---
 
-Understand where gateway traces land, how policy violations surface in LangSmith Engine, and who can see and configure what.
+Understand where gateway traces land and who can see and configure what.
 
 <Note>
   **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
@@ -26,6 +26,10 @@ Gateway-proxied calls are distinguishable from direct LLM calls by the project t
 * **Policy evaluation results:** every gateway span records which policies were evaluated and their outcome via `langsmith.metadata.gateway.policy.matched_ids/_names`, `passed_ids/_names`, and `violated_ids/_names`, so both passes and blocks are captured.
 * **Guard rule matches:** when redaction policies apply, the guard pipeline emits a `rule_id → count` map stamped onto the span as `policy.matched_rules`, `passed_rules`, and `violated_rules`. These are rule IDs, not PII or secret category labels.
 * **Cost data:** token counts and cost are computed inline and feed the same spend accumulator that spend-cap policies enforce against.
+
+### Trace content and billing
+
+When **Trace content** is disabled in a gateway data retention policy, request and response bodies are not stored. The gateway still emits a metadata-only trace that can include token usage, latency, status, and model information. Gateway-emitted metadata-only traces are excluded from trace-based billing. Model usage still contributes to gateway spend tracking.
 
 ## LangSmith Engine integration
 
@@ -90,7 +94,7 @@ If you need to limit who can see gateway traces, you have two options:
 
 * [Admin setup](/langsmith/llm-gateway-admin-setup): the step-by-step guide for configuring all of this.
 * [Spend policies](/langsmith/llm-gateway-spend-policies): attach cost limits to API keys and users.
-* [PII and secrets redaction](/langsmith/llm-gateway-redaction): configure data protection policies.
+* [Data protection](/langsmith/llm-gateway-data-protection): configure data protection policies.
 
 ***
 

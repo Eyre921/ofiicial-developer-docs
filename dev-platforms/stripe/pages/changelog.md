@@ -10,6 +10,94 @@ Keep track of changes and upgrades to the Stripe API.
 
 # Dahlia
 [Learn what's changing in Dahlia](https://docs.stripe.com/changelog/dahlia.md)
+## 2026-07-29.dahlia
+
+### Billing and invoicing
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds invoice description, footer, and custom parameters to the Subscription Schedules and Quotes APIs](https://docs.stripe.com/changelog/dahlia/2026-07-29/invoice-description-footer-and-custom-fields.md) | Billing, Invoicing | Non-breaking | api |
+| [Adds subscription metadata support to invoice previews](https://docs.stripe.com/changelog/dahlia/2026-07-29/adds-subscription-metadata-support-to-invoice-preview.md) | Invoicing, Billing | Non-breaking | api |
+| [Adds the trial property to subscription schedule phases](https://docs.stripe.com/changelog/dahlia/2026-07-29/subscription-schedule-phases-trial-property.md) | Billing | Non-breaking | api |
+| [Adds item-level discount support for pending updates](https://docs.stripe.com/changelog/dahlia/2026-07-29/item-level-discounts-for-pending-updates.md) | Billing | Non-breaking | api |
+
+### Connect
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds the ability to show who initiated a top-up](https://docs.stripe.com/changelog/dahlia/2026-07-29/top-up-initiated-by-property.md) | Connect | Non-breaking | api |
+| [Adds Payment Method support to Top-ups](https://docs.stripe.com/changelog/dahlia/2026-07-29/adds-payment-method-support-to-top-ups.md) | Connect | Non-breaking | api |
+| [Adds new address fields to Accounts v1 for Singapore compliance](https://docs.stripe.com/changelog/dahlia/2026-07-29/accounts-v1-address-fields.md) | All products | Non-breaking | api |
+| [Adds a new Smart Disputes management feature to Account Session embedded components](https://docs.stripe.com/changelog/dahlia/2026-07-29/account-session-embedded-components-smart-disputes-management.md) | Connect, Payments | Non-breaking | api |
+| [Adds new address fields to Accounts v2 for Singapore compliance](https://docs.stripe.com/changelog/dahlia/2026-07-29/accounts-v2-address-fields.md) | Connect | Non-breaking | api |
+| [Enables rejecting connected accounts with non-zero balances and controlling whether to pause payouts](https://docs.stripe.com/changelog/dahlia/2026-07-29/reject-connected-accounts-with-non-zero-balances.md) | Connect | Non-breaking | api |
+| [Adds the ability to reverse platform rejections on connected accounts](https://docs.stripe.com/changelog/dahlia/2026-07-29/unreject-connected-account-endpoint.md) | Connect | Non-breaking | api |
+
+### Financial Connections
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds explicit session configuration options for Financial Connections](https://docs.stripe.com/changelog/dahlia/2026-07-29/financial-connections-advanced-session-config.md) | Financialconnections | Non-breaking | api |
+| [Adds deactivation event notifications for Financial Connections accounts and authorizations](https://docs.stripe.com/changelog/dahlia/2026-07-29/financial-connections-deactivation-event-notifications.md) | Financialconnections | Non-breaking | api |
+
+### Issuing
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds Correos as an Issuing card shipping carrier in the EU](https://docs.stripe.com/changelog/dahlia/2026-07-29/adds-correos-as-an-issuing-card-shipping-carrier-in-the-eu.md) | Issuing | Non-breaking | api |
+| [Adds the business name field to the shipping address for Issuing cards](https://docs.stripe.com/changelog/dahlia/2026-07-29/issuing-cards-shipping-address-business-name.md) | Issuing | Non-breaking | api |
+
+### Payments
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds the ability to update shipping options, consent collection, and future usage support on Payment Links](https://docs.stripe.com/changelog/dahlia/2026-07-29/payment-links-update-endpoint-new-parameters.md) | Paymentlinks | Non-breaking | api |
+| [Adds the ability to indicate that you don’t intend to reuse Samsung Pay and PAYCO payment method types](https://docs.stripe.com/changelog/dahlia/2026-07-29/samsung-pay-and-payco-setup-future-usage-none-only.md) | Payments | Non-breaking | api |
+| [Adds customer and payment method details to the Refunds API](https://docs.stripe.com/changelog/dahlia/2026-07-29/adds-customer-and-payment-method-details-to-the-refunds-api.md) | Payments | Non-breaking | api |
+| [Adds support for new banks to FPX payments](https://docs.stripe.com/changelog/dahlia/2026-07-29/fpx-payments-new-banks.md) | Payments, Elements, Checkout | Non-breaking | api |
+| [Adds CHAPS as a supported network for funding instructions](https://docs.stripe.com/changelog/dahlia/2026-07-29/chaps-as-supported-networks.md) | Payments | Non-breaking | api |
+| [Adds the allowed payment method types parameter to Payment Intents and Setup Intents](https://docs.stripe.com/changelog/dahlia/2026-07-29/allowed-payment-method-types-parameter.md) | Payments | Non-breaking | api |
+| [Adds MB WAY support to the Hosted Invoice Page](https://docs.stripe.com/changelog/dahlia/2026-07-29/hosted-invoice-page-mb-way-support.md) | Payments | Non-breaking | api |
+| [Adds data share only as a 3D Secure authentication result](https://docs.stripe.com/changelog/dahlia/2026-07-29/3d-secure-data-share-only.md) | Payments | Non-breaking | api |
+| [Adds card network details to the Dispute object](https://docs.stripe.com/changelog/dahlia/2026-07-29/dispute-payment-method-details-card-network.md) | Payments | Non-breaking | api |
+| [Adds the ability to list Payment Records](https://docs.stripe.com/changelog/dahlia/2026-07-29/list-payment-records.md) | Payments | Non-breaking | api |
+
+### Tax
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds support for parking tax registration types in the US](https://docs.stripe.com/changelog/dahlia/2026-07-29/us-parking-tax-registration-types.md) | Tax | Non-breaking | api |
+| [Adds support for Canary Islands tax ID type](https://docs.stripe.com/changelog/dahlia/2026-07-29/canary-islands-tax-id-type.md) | Tax | Non-breaking | api |
+
+### Additional updates
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds Alipay support for invoices and subscriptions that send invoices for collection](https://docs.stripe.com/changelog/dahlia/2026-07-29/alipay-support-for-invoices-and-subscriptions-with-sendinvoice-collection.md) | Invoicing, Billing, Payments | Non-breaking | api |
+| [Adds a referrer parameter to Radar options on Payment Intents](https://docs.stripe.com/changelog/dahlia/2026-07-29/radar-options-referrer.md) | Radar, Payments | Non-breaking | api |
+
+## 2026-07-29.preview
+
+### Tax
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Renames the tax IDs property to tax ID in Checkout Session collected information](https://docs.stripe.com/changelog/dahlia/2026-07-29/checkout-session-collected-information-tax-ids-rename.md) | Checkout | Breaking | api |
+| [Renames the taxes parameter to tax items in industry metadata payment details](https://docs.stripe.com/changelog/dahlia/2026-07-29/industry-metadata-taxes-parameter-rename.md) | Payments | Breaking | api |
+| [Adds the live mode indicator to the Tax Location object](https://docs.stripe.com/changelog/dahlia/2026-07-29/tax-location-live-mode-indicator.md) | Tax | Non-breaking | api |
+
+### Additional updates
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Shows errors for eventually due requirements](https://docs.stripe.com/changelog/dahlia/2026-07-29/shows-errors-for-eventually-due-requirements.md) | Connect | Breaking | api |
+| [Updates Received Debits to enable bank transfer types other than US bank accounts](https://docs.stripe.com/changelog/dahlia/2026-07-29/change-us-bank-account-to-optional-on-received-debit-bank-transfer-to-enable-additional-bank-transfer-types.md) | Treasury | Breaking | api |
+| [Adds additional next action support for Shared Payment Tokens](https://docs.stripe.com/changelog/dahlia/2026-07-29/spts-next-action-support.md) | Payments | Breaking | api |
+| [Deprecates legacy payout type for balance transfers in the ReceivedCredit API](https://docs.stripe.com/changelog/dahlia/2026-07-29/received-credit-payout-v1-deprecation.md) | All products | Non-breaking | api |
+| [Adds support for updating Issuing Cardholder names](https://docs.stripe.com/changelog/dahlia/2026-07-29/issuing-cardholder-name-parameter.md) | Issuing | Non-breaking | api |
+| [Adds the ability to list and retrieve trial offers](https://docs.stripe.com/changelog/dahlia/2026-07-29/adds-list-and-retrieve-api-methods-for-trial-offers.md) | Billing | Non-breaking | api |
+| [Adds SCIM and SSO user role change actions to Activity Logs](https://docs.stripe.com/changelog/dahlia/2026-07-29/activity-logs-scim-and-sso-user-role-change-actions.md) | All products | Non-breaking | api |
+
 ## 2026-06-24.dahlia
 
 ### Checkout
@@ -644,7 +732,6 @@ Keep track of changes and upgrades to the Stripe API.
 | --- | --- | --- | --- |
 | [Adds the ability to update the metadata and display name of a Financial Account](https://docs.stripe.com/changelog/clover/2025-10-29/update-financial-account.md) | Treasury | Non-breaking | api |
 | [Updates to Payment Record APIs](https://docs.stripe.com/changelog/clover/2025-10-29/payment-records-updates.md) | Payments | Non-breaking | api |
-| [Adds a shareable payment portal link for Rechnung invoices](https://docs.stripe.com/changelog/clover/2025-10-29/rechnung-payment-portal-url.md) | Payments | Non-breaking | api |
 | [Adds Tax ID Element support to Customer Sessions](https://docs.stripe.com/changelog/clover/2025-10-29/cs-add-tax-id-element-to-customer-session.md) | Elements | Non-breaking | api |
 | [Adds new error codes for the crypto wallet payout method](https://docs.stripe.com/changelog/clover/2025-10-29/crypto-wallet-errors.md) | Payments | Non-breaking | api |
 | [Adds tracking for which tax provider resolved a Customer location](https://docs.stripe.com/changelog/clover/2025-10-29/tax-provider-customer-location.md) | Tax | Non-breaking | api |

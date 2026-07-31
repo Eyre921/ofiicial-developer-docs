@@ -1,5 +1,5 @@
 ---
-title: "Tts"
+title: "TTS"
 source: https://openrouter.ai/docs/client-sdks/python/sdks/tts/README.md
 path: docs/client-sdks/python/sdks/tts/readme
 ---
@@ -8,7 +8,7 @@ path: docs/client-sdks/python/sdks/tts/readme
 > Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-# Tts
+# TTS
 
 > Text-to-speech endpoints
 
@@ -38,7 +38,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.tts.create_speech(input="Hello world", model="mistralai/voxtral-mini-tts-2603", voice="en_paul_neutral", response_format="pcm", speed=1)
+    res = open_router.tts.create_speech(input="Hello world", model="mistralai/voxtral-mini-tts-2603", response_format="pcm", speed=1, voice="en_paul_neutral")
 
     # Handle response
     print(res)
@@ -51,13 +51,13 @@ with OpenRouter(
 | -------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
 | `input`                    | *str*                                                                                                  | :heavy\_check\_mark: | Text to synthesize                                                                                                                                          | Hello world                     |
 | `model`                    | *str*                                                                                                  | :heavy\_check\_mark: | TTS model identifier                                                                                                                                        | mistralai/voxtral-mini-tts-2603 |
-| `voice`                    | *str*                                                                                                  | :heavy\_check\_mark: | Voice identifier (provider-specific).                                                                                                                       | en\_paul\_neutral               |
 | `http_referer`             | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                 |
 | `x_open_router_title`      | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                 |
 | `x_open_router_categories` | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                 |
 | `provider`                 | [Optional\[components.SpeechRequestProvider\]](../../components/speechrequestprovider.mdx)             | :heavy\_minus\_sign: | Provider-specific passthrough configuration                                                                                                                 |                                 |
 | `response_format`          | [Optional\[components.SpeechRequestResponseFormat\]](../../components/speechrequestresponseformat.mdx) | :heavy\_minus\_sign: | Audio output format                                                                                                                                         | pcm                             |
 | `speed`                    | *Optional\[float]*                                                                                     | :heavy\_minus\_sign: | Playback speed multiplier. Only used by models that support it (e.g. OpenAI TTS). Ignored by other providers.                                               | 1                               |
+| `voice`                    | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | Voice identifier (provider-specific).                                                                                                                       | en\_paul\_neutral               |
 | `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                    | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                 |
 
 ### Response

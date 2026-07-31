@@ -12283,7 +12283,7 @@ Global options are optional and work with any Neon CLI command.
 | Option            | Description                                                                    | Type    | Default                                                         | Required |
 | ----------------- | ------------------------------------------------------------------------------ | ------- | --------------------------------------------------------------- | :------: |
 | `--analytics`     | Manage analytics. Example: --no-analytics, --analytics false                   | boolean | `true`                                                          |    No    |
-| `--api-key`       | Neon API key, authenticates without `neon auth`                                | string  | NEON\_API\_KEY environment variable                             |    No    |
+| `--api-key`       | Neon API key, authenticates without `neon auth`                                | string  | `""`                                                            |    No    |
 | `--color`         | Colorize the output. Example: --no-color, --color false                        | boolean | `true`                                                          |    No    |
 | `--config-dir`    | Path to config directory                                                       | string  | \~/.config/neonctl (or $XDG\_CONFIG\_HOME/neonctl)              |    No    |
 | `--context-file`  | Context file with default org, project, and branch IDs, created by `neon link` | string  | nearest .neon file, searching upward from the current directory |    No    |
@@ -51257,15 +51257,15 @@ A single [`neon.ts`](https://neon.com/docs/reference/neon-ts) file declares your
 
 Work through the commands on the right:
 
-1. `neon link` and `neon checkout` pull the branch's `DATABASE_URL` into `.env.local`. If you created the project through the API or Console, run `neon auth` first to sign in the CLI.
-2. `neon config init` scaffolds `neon.ts` and installs `@neon/config`. The generated file includes a branch policy; leave it in place and add the `preview` block shown in later steps alongside it. The `neon.ts` snippets below omit the branch policy for brevity.
+1. `neon link` connects the directory to your project (writing a `.neon` file); `neon checkout` then pins the branch and pulls its env vars, including `DATABASE_URL`, into `.env.local`. If you haven't signed in to the CLI yet, run `neon auth` first.
+2. `neon config init` scaffolds `neon.ts` and installs `@neon/config` and `@neon/env`. It includes a branch policy; keep it and add the `preview` blocks shown in later steps alongside it (those snippets omit the policy for brevity).
 
 Postgres is already available on the branch, so `DATABASE_URL` is in `.env.local` and you can build the data layer before adding any beta services.
 
 ```bash filename="Terminal"
 neon link            # select the my-backend project
-neon checkout main   # pull DATABASE_URL into .env.local
-neon config init     # scaffold neon.ts, install @neon/config
+neon checkout main   # pin the branch, pull env vars into .env.local
+neon config init     # scaffold neon.ts, install @neon/config and @neon/env
 ```
 
 ## Install dependencies
@@ -51391,6 +51391,7 @@ The action returns the object's public URL. In a real app you'd store that URL o
 import { defineConfig } from '@neon/config/v1';
 
 export default defineConfig({
+  // branch policy omitted for brevity; keep the one from `neon config init`
   preview: {
     buckets: {
       images: { access: 'public_read' },
@@ -51553,7 +51554,7 @@ export default app;
 
 Declare the function and the AI Gateway in `neon.ts`, then `neon deploy`. Neon builds the function, gives it a public URL, and injects the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`) so the `@neon/ai-sdk-provider` inside the function needs no configuration.
 
-Retrieve the function's URL and add it to `.env.local` as `NEXT_PUBLIC_POSTS_FN_URL` (the `NEXT_PUBLIC_` prefix exposes it to the browser, which calls the assistant directly).
+Copy the `invocation_url` from the `neon functions get posts` output into `.env.local` as `NEXT_PUBLIC_POSTS_FN_URL` (the `NEXT_PUBLIC_` prefix exposes it to the browser, which calls the assistant directly). `NEXT_PUBLIC_` variables are read at build time, so restart the dev server if it's already running.
 
 A Neon Function has its own URL, so the browser calls it directly. That keeps a long stream off your host's serverless timeout.
 
@@ -51565,6 +51566,7 @@ The first AI Gateway call on a new branch can return a `403` while the credentia
 import { defineConfig } from '@neon/config/v1';
 
 export default defineConfig({
+  // branch policy omitted for brevity; keep the one from `neon config init`
   preview: {
     aiGateway: true,
     buckets: {
@@ -51579,9 +51581,13 @@ export default defineConfig({
 
 ```bash filename="Terminal"
 neon deploy
+neon functions get posts   # prints the invocation_url
+```
 
-# print the function's details, then copy its invocation_url
-neon functions get posts
+```
+slug           posts
+name           posts assistant
+invocation_url https://<branch_id>-posts.compute.<cell>.us-east-2.aws.neon.tech/
 ```
 
 ```bash filename=".env.local"
@@ -52663,7 +52669,7 @@ Building an app with users? [Set up Managed Better Auth](https://neon.com/docs/a
 
 --- [Document source](https://neon.com/docs/get-started/why-neon.md) ---
 
-> Summary: Neon is a serverless Postgres platform built on a storage-compute separation architecture, making instant branching, autoscaling, scale-to-zero, and point-in-time restore intrinsic rather than add-ons. Choose Neon when you need a fully managed, usage-based Postgres backend that scales from zero to production without capacity planning. A Databricks company since May 2025, Neon also offers Managed Better Auth and an HTTP Data API alongside full standard Postgres compatibility.
+> Summary: Neon is a serverless Postgres platform built on a storage-compute separation architecture, making instant branching, autoscaling, scale-to-zero, and point-in-time restore intrinsic rather than add-ons. Choose Neon when you need a fully managed, usage-based Postgres backend that scales from zero to production without capacity planning. Neon, now a part of Databricks since May 2025, also offers Managed Better Auth and an HTTP Data API alongside full standard Postgres compatibility.
 
 # Why Neon?
 
@@ -52677,7 +52683,7 @@ We aim to deliver Postgres as a cloud service that feels effortless, from your f
 
 Neon is built on a distributed, cloud-native architecture that separates storage and compute, giving Postgres the scale, reliability, and efficiency modern applications require. This foundation unlocks the features developers expect today (autoscaling, scale-to-zero, instant branching, instant restores, usage-based pricing, and much more) without changing the Postgres you already know.
 
-**Tip: A Databricks company**
+**Tip: Neon, now a part of Databricks**
 
 In May 2025, Neon joined Databricks to shape the future of Postgres and AI-native development. Our mission stayed the same, but we're now backed by the performance, security, and global scale of the Databricks Data Intelligence Platform. Neon's architectural foundation also powers [Lakebase](https://www.databricks.com/product/lakebase); learn more in [Neon and Lakebase](https://neon.com/docs/introduction/neon-and-lakebase).
 
@@ -52805,9 +52811,9 @@ The final piece follows naturally from the others. Computes in Neon do not store
 - Handle fleets of thousands of short-lived databases
 - Support agent-driven and highly dynamic workloads
 
-**Tip: Neon vs Lakebase**
+**Tip: Neon and Lakebase**
 
-For a full breakdown of both products, including when to choose each, see [Neon vs Lakebase](https://neon.com/docs/introduction/neon-and-lakebase).
+Lakebase Postgres, the database Neon runs on, is also available on Databricks. For what's the same in both places and when to choose each, see [Neon and Lakebase](https://neon.com/docs/introduction/neon-and-lakebase).
 
 > **Contact us**
 >
@@ -100252,7 +100258,7 @@ Neon's design intentionally keeps object storage off the critical path. Object s
 
 **Note: What is the difference between Neon and Lakebase?**
 
-Both products share the same architectural foundation but Lakebase comes with additional features integrating it with the rest of the Databricks Data and AI platform. For a full comparison, see [Neon and Lakebase](https://neon.com/docs/introduction/neon-and-lakebase).
+Neon and Databricks run the same database, Lakebase Postgres, on the same infrastructure. What surrounds it differs: on Neon it anchors a complete backend for apps and agents, while Databricks integrates it with the rest of the Data Intelligence Platform. For a full comparison, see [Neon and Lakebase](https://neon.com/docs/introduction/neon-and-lakebase).
 
 ## Resource hierarchy
 
@@ -102045,98 +102051,105 @@ If you've got feature requests or feedback about what you'd like to see in Neon 
 
 --- [Document source](https://neon.com/docs/introduction/neon-and-lakebase.md) ---
 
-> Summary: Neon and Databricks Lakebase share the same serverless Postgres architecture, but serve different audiences. Neon targets developers, startups, and agentic platforms. Lakebase runs natively in the Databricks Data Intelligence Platform for enterprises that need OLTP unified with analytics, AI pipelines, and Unity Catalog governance. Use this page to decide which product fits your workload based on team type, deployment environment, and data access model.
+> Summary: Lakebase Postgres is an OLTP database where storage and compute are separated and durable object storage is the source of truth. It runs in two places: on Neon, a complete backend for apps and agents built for developers, startups, and agent platforms, and on Databricks, the Data and AI platform for businesses. Same infrastructure, same technology, same core feature set. Use this page to understand the lakebase architecture and decide where to run it.
 
-# Neon vs Lakebase
+# Neon and Lakebase
 
-Two products, one architectural foundation — how to choose
+How to choose where to run Lakebase Postgres
 
-In 2025, Neon joined Databricks. Neon continues as a standalone serverless Postgres platform, but the same architectural foundation now also powers Databricks Lakebase, a managed Postgres product that runs natively in the Databricks Data Intelligence Platform. This section explains the [lakebase category](https://www.databricks.com/blog/what-is-a-lakebase) and how to determine whether Neon or Lakebase is a better fit for your workload.
+In 2025, Neon joined Databricks. The serverless Postgres architecture that Neon pioneered is now the foundation of Lakebase Postgres, a database you can run in two places: on Neon and on Databricks. Wherever you run it, it's the same infrastructure, the same technology, and the same core feature set. What differs is what's built around the database. This page explains the [lakebase category](https://www.databricks.com/blog/what-is-a-lakebase), what's the same in both places, and how to choose between them.
 
-### Lakebase architecture: Postgres built on object storage
+## What is a lakebase?
 
-A lakebase is a new category of operational database: OLTP built directly on cloud object storage, the same storage layer already used by your lakehouse. Durability and history live in the object store, not on servers. This decouples storage from compute, making compute stateless and elastic. Operational data becomes lake-native by default, accessible to analytics and AI without ETL.
+![Standard database compared to lakebase. On the left, compute and storage live together on one machine and each replica keeps a full copy of the data. On the right, stateless Postgres compute runs in a layer separate from shared, durable object storage](https://neon.com/docs/introduction/database-vs-lakebase.svg "no-border")
 
-Databricks is pioneering the category with [Lakebase](https://www.databricks.com/product/lakebase), a managed serverless Postgres service built on the same architectural foundation as Neon and deeply integrated into the Databricks Data Intelligence Platform. This integration unlocks capabilities that only make sense when an operational database lives alongside analytical data:
+At the broadest level, a lakebase is a type of OLTP database where storage and compute are separated and the source of truth for storage is cheap, durable object storage. That architectural choice has consequences that traditional Postgres deployments can't match:
 
-- **No ETL friction.** Operational data is already in the lakehouse storage layer, so analytics, dashboards, and ML pipelines can access it without replication, CDC jobs, or fragile sync workflows.
-- **Unified analytics and AI.** Operational and analytical workloads work on the same data foundation.
-- **Lakehouse-native governance.** Access control, lineage, and security policies apply consistently across operational and analytical data through Unity Catalog.
-- **Serverless operations.** Like Neon, Lakebase removes manual capacity planning by using stateless compute that scales automatically and is optimized for Databricks environments.
+- **Compute is stateless and elastic.** Because no compute node owns the data, compute can scale up under load, scale down when idle, and [scale to zero](https://neon.com/docs/introduction/scale-to-zero) entirely. Read replicas spin up without copying data.
+- **History is cheap.** Object storage is inexpensive enough to retain a full history of changes, which makes [instant point-in-time restore](https://neon.com/docs/introduction/branch-restore) practical instead of a slow backup-and-restore exercise.
+- **Copies are virtual.** [Branches](https://neon.com/docs/introduction/branching) are copy-on-write views over shared storage, so a full copy of your database for development, testing, or an agent workflow is created in seconds and costs nothing until it diverges.
+- **Operational data is lake-native.** Data lives in the same storage layer as the lakehouse, so analytics and AI can reach it without ETL pipelines or fragile sync jobs.
 
-### How to choose between Neon and Lakebase
+## Where Lakebase Postgres runs
 
-Neon and Lakebase share the same core architectural principles, but they are optimized for different environments and team structures:
+Lakebase Postgres is the Databricks implementation of a lakebase: Postgres, built on the architecture described above. It's available in two places:
 
-- Neon is Postgres for developers, startups, and agent platforms.
-- Lakebase is Postgres for businesses whose operational data benefits from participating directly in the Databricks Lakehouse, alongside analytics, governance, and AI workflows.
+- **On Neon**, as the database at the core of a complete backend for apps and agents: Postgres alongside [Auth](https://neon.com/docs/auth/overview), [Data API](https://neon.com/docs/data-api/overview), [Object Storage](https://neon.com/docs/storage/overview), [Functions](https://neon.com/docs/compute/functions/overview), and [AI Gateway](https://neon.com/docs/ai-gateway/overview).
+- **On Databricks**, as [Lakebase](https://www.databricks.com/product/lakebase), an enterprise-grade Postgres database tightly integrated into the rest of the Databricks Data Intelligence Platform: Unity Catalog governance, lakehouse analytics, notebooks, and AI workflows.
 
-**Choose Neon if:**
+The database itself doesn't change between them. What surrounds it differs, because Neon and Databricks serve different customers: Neon is built for developers, startups, and agent platforms; Databricks is the Data and AI platform for businesses.
 
-- You're a developer looking for a hands-off Postgres to power side projects, experiments, or personal apps without setup friction or infrastructure management
-- You're a young startup focused on shipping quickly and need a database that keeps up without slowing your team down
-- You're a small team iterating fast, looking for ways to accelerate the software lifecycle and deploy safely without blockers
-- You're building an agent-driven or codegen platform (like Replit, Lovable, or Bolt) and need to spin up and manage fleets of databases efficiently, with costs that stay under control through usage-based pricing and scale-to-zero
+|                         | Neon                                                                                                                                                                                                                          | Databricks                                                                                                                   |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **The database**        | Lakebase Postgres                                                                                                                                                                                                             | Lakebase Postgres                                                                                                            |
+| **Integrated products** | [Auth](https://neon.com/docs/auth/overview), [Functions](https://neon.com/docs/compute/functions/overview), [Object Storage](https://neon.com/docs/storage/overview), [AI Gateway](https://neon.com/docs/ai-gateway/overview) | Lakehouse, Lakeflow, Unity Catalog, Unity AI Gateway, [all Databricks products](https://www.databricks.com/product/platform) |
+| **What it is**          | A complete backend for apps and agents                                                                                                                                                                                        | The Data and AI platform for businesses                                                                                      |
+| **Built for**           | Developers, startups, agent and codegen platforms                                                                                                                                                                             | Enterprises, data and AI teams, companies building on Databricks                                                             |
+| **How teams use it**    | Build, iterate, preview, and deploy apps quickly                                                                                                                                                                              | Operate production-grade OLTP databases with tight integration to the data lake                                              |
+| **Governance**          | Project-level access controls                                                                                                                                                                                                 | Lakehouse-wide governance via Unity Catalog                                                                                  |
 
-**Choose Lakebase if:**
+## Core database features
 
-- You're building on the Databricks Data Intelligence Platform
-- You're running data-intensive or AI-driven applications where unified governance, lineage, and access control across OLTP and analytical data are essential
-- You're a data or AI team that needs operational data to be immediately available for analytics, notebooks, and ML workflows
-- You're an enterprise team that highly values security, compliance, and platform-level integrations
+Because Neon and Databricks run the same infrastructure, the core feature set is the same. The links below go to the Neon and Databricks documentation for the same underlying capability. Databricks availability is based on the [Lakebase documentation](https://docs.databricks.com/aws/en/oltp/projects/).
 
-| Product                        | Neon                                                   | Lakebase                                                               |
-| ------------------------------ | ------------------------------------------------------ | ---------------------------------------------------------------------- |
-| **Architecture**               | lakebase                                               | lakebase                                                               |
-| **What it is**                 | Serverless Postgres for applications                   | Postgres for the Lakehouse                                             |
-| **Who is it for**              | Developers, startups, agentic & codegen platforms      | Enterprises, data & AI teams, companies building on Databricks         |
-| **Where it runs**              | Standalone serverless Postgres platform                | Native to the Databricks Data Intelligence Platform                    |
-| **How teams use it**           | Build, iterate, preview, and deploy apps quickly       | Operate OLTP data alongside analytics and AI pipelines                 |
-| **Development workflows**      | Branching, previews, instant restores, rapid iteration | Branching-based workflows integrated with notebooks and pipelines      |
-| **Data access model**          | Application-centric (ORMs, drivers, APIs)              | Lakehouse-centric (SQL, notebooks, AI tooling, pipelines)              |
-| **Operational model**          | Developer-first                                        | Enterprise-grade                                                       |
-| **Scaling behavior**           | Autoscaling and scale-to-zero                          | Autoscaling and scale-to-zero aligned with Databricks serverless model |
-| **Governance & security**      | Project-level access controls                          | Lakehouse-wide governance via Unity Catalog                            |
-| **Analytics & AI integration** | Via external tools and pipelines                       | Native integration with Databricks analytics and AI                    |
-| **Best fit when**              | You're building and shipping applications quickly      | You want OLTP data to participate directly in the Lakehouse            |
+| Feature                             | On Neon                                                                | On Databricks                                                                                      |
+| ----------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Branching**                       | [Branching](https://neon.com/docs/introduction/branching)              | [Branches](https://docs.databricks.com/aws/en/oltp/projects/branches)                              |
+| **Autoscaling**                     | [Autoscaling](https://neon.com/docs/introduction/autoscaling)          | [Autoscaling](https://docs.databricks.com/aws/en/oltp/projects/autoscaling)                        |
+| **Scale to zero**                   | [Scale to zero](https://neon.com/docs/introduction/scale-to-zero)      | [Scale to zero](https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero)                    |
+| **Read replicas**                   | [Read replicas](https://neon.com/docs/introduction/read-replicas)      | [Read replicas](https://docs.databricks.com/aws/en/oltp/projects/read-replicas)                    |
+| **Instant restore (point-in-time)** | [Instant restore](https://neon.com/docs/introduction/branch-restore)   | [Point-in-time restore](https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore)    |
+| **Connection pooling**              | [Connection pooling](https://neon.com/docs/connect/connection-pooling) | Built-in PgBouncer ([Connect](https://docs.databricks.com/aws/en/oltp/projects/connect))           |
+| **Data API (REST)**                 | [Data API](https://neon.com/docs/data-api/overview)                    | [Lakebase Data API](https://docs.databricks.com/aws/en/oltp/projects/data-api)                     |
+| **Management API**                  | [Neon API](https://neon.com/docs/reference/api)                        | [Lakebase API guide](https://docs.databricks.com/aws/en/oltp/projects/api-usage)                   |
+| **CLI**                             | [Neon CLI](https://neon.com/docs/cli/install)                          | [Databricks CLI for Lakebase](https://docs.databricks.com/aws/en/oltp/projects/cli)                |
+| **Terraform**                       | [Terraform provider](https://neon.com/docs/reference/terraform)        | [Terraform for Lakebase](https://docs.databricks.com/aws/en/oltp/projects/automate-with-terraform) |
+| **MCP server**                      | [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server)            | [MCP on Databricks](https://docs.databricks.com/aws/en/generative-ai/mcp/managed-mcp)              |
 
-### Feature availability
+## Features around the database
 
-Neon and Lakebase share the same Postgres engine and serverless storage architecture, so many capabilities exist in both. The table below maps concrete features to each product, with links to the documentation. Lakebase availability is based on the [Lakebase documentation](https://docs.databricks.com/aws/en/oltp/projects/).
+The features around the database are where Neon and Databricks diverge, because each is designed for a different customer. Neon leans into developer workflow and the backend services apps and agents need; Databricks leans into enterprise operations, governance, and integration with the rest of the Data Intelligence Platform.
 
-| Feature                                              | Neon                                                                                                               | Lakebase                                                                                                                                   |
+| Feature                                              | On Neon                                                                                                            | On Databricks                                                                                                                              |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Branching**                                        | Yes ([Branching](https://neon.com/docs/introduction/branching))                                                    | Yes ([Branches](https://docs.databricks.com/aws/en/oltp/projects/branches))                                                                |
-| **Autoscaling**                                      | Yes ([Autoscaling](https://neon.com/docs/introduction/autoscaling))                                                | Yes ([Autoscaling](https://docs.databricks.com/aws/en/oltp/projects/autoscaling))                                                          |
-| **Scale to zero**                                    | Yes ([Scale to zero](https://neon.com/docs/introduction/scale-to-zero))                                            | Yes ([Scale to zero](https://docs.databricks.com/aws/en/oltp/projects/scale-to-zero))                                                      |
-| **Read replicas**                                    | Yes ([Read replicas](https://neon.com/docs/introduction/read-replicas))                                            | Yes ([Read replicas](https://docs.databricks.com/aws/en/oltp/projects/read-replicas))                                                      |
-| **Instant restore (point-in-time)**                  | Yes ([Instant restore](https://neon.com/docs/introduction/branch-restore))                                         | Yes ([Point-in-time restore](https://docs.databricks.com/aws/en/oltp/projects/point-in-time-restore))                                      |
 | **High availability**                                | Coming soon ([Roadmap](https://neon.com/docs/introduction/roadmap))                                                | Yes ([High availability](https://docs.databricks.com/aws/en/oltp/projects/manage-high-availability))                                       |
 | **Cross-cloud disaster recovery (DR)**               | Not available                                                                                                      | Private preview                                                                                                                            |
-| **Connection pooling**                               | Yes ([Connection pooling](https://neon.com/docs/connect/connection-pooling))                                       | Yes, built-in PgBouncer ([Connect](https://docs.databricks.com/aws/en/oltp/projects/connect))                                              |
-| **Data API (REST)**                                  | Yes ([Data API](https://neon.com/docs/data-api/overview))                                                          | Yes ([Lakebase Data API](https://docs.databricks.com/aws/en/oltp/projects/data-api))                                                       |
-| **Management API**                                   | Yes ([Neon API](https://neon.com/docs/reference/api))                                                              | Yes ([Lakebase API guide](https://docs.databricks.com/aws/en/oltp/projects/api-usage))                                                     |
-| **CLI**                                              | Yes ([Neon CLI](https://neon.com/docs/cli/install))                                                                | Yes ([Databricks CLI for Lakebase](https://docs.databricks.com/aws/en/oltp/projects/cli))                                                  |
-| **Terraform**                                        | Yes ([Terraform provider](https://neon.com/docs/reference/terraform))                                              | Yes ([Terraform for Lakebase](https://docs.databricks.com/aws/en/oltp/projects/automate-with-terraform))                                   |
-| **MCP server**                                       | Yes ([Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server))                                                  | Yes, Databricks managed MCP ([MCP on Databricks](https://docs.databricks.com/aws/en/generative-ai/mcp/managed-mcp))                        |
+| **Managed user authentication**                      | Yes ([Managed Better Auth](https://neon.com/docs/auth/overview))                                                   | Not yet; database access uses Databricks identity and Postgres roles ([Connect](https://docs.databricks.com/aws/en/oltp/projects/connect)) |
 | **GitHub integration**                               | Yes ([GitHub integration](https://neon.com/docs/guides/neon-github-integration))                                   | Via GitHub Actions ([GitHub Actions](https://docs.databricks.com/aws/en/dev-tools/ci-cd/github))                                           |
 | **Private networking (Private Link)**                | Yes ([Private Networking](https://neon.com/docs/guides/neon-private-networking))                                   | Yes ([Data protection](https://docs.databricks.com/aws/en/oltp/projects/private-link))                                                     |
-| **Managed user authentication**                      | Yes ([Managed Better Auth](https://neon.com/docs/auth/overview))                                                   | Not yet; database access uses Databricks identity and Postgres roles ([Connect](https://docs.databricks.com/aws/en/oltp/projects/connect)) |
 | **Metrics and logs export (Datadog, OpenTelemetry)** | Yes ([Datadog](https://neon.com/docs/guides/datadog), [OpenTelemetry](https://neon.com/docs/guides/opentelemetry)) | Via the Databricks platform                                                                                                                |
 | **HIPAA compliance**                                 | Yes ([HIPAA](https://neon.com/docs/security/hipaa))                                                                | Yes, via Databricks ([HIPAA](https://docs.databricks.com/aws/en/security/privacy/hipaa))                                                   |
 | **SOC 2**                                            | Yes ([Compliance](https://neon.com/docs/security/compliance))                                                      | Yes, via Databricks ([SOC](https://www.databricks.com/trust/compliance/soc))                                                               |
 | **Vercel Marketplace**                               | Yes ([Vercel integration](https://neon.com/docs/guides/vercel-overview))                                           | Not yet                                                                                                                                    |
 | **Vercel Integration**                               | Yes ([Vercel-Managed integration](https://neon.com/docs/guides/vercel-managed-integration))                        | Not yet                                                                                                                                    |
 
-### Provider and region availability
+## How to choose
 
-Neon runs on AWS. Lakebase inherits the cloud reach of the Databricks platform, with availability that varies by provider. For the full, current region lists, follow the links below.
+You get the same database either way, so the decision comes down to what you need around it and how your team works.
 
-| Cloud provider | Neon                                                                                                             | Lakebase                                                                                                                |
+**Choose Neon if:**
+
+- You're a developer looking for a hands-off Postgres to power side projects, experiments, or personal apps without setup friction or infrastructure management
+- You're a startup focused on shipping quickly and want a complete backend, database included, that keeps up without slowing your team down
+- You're a small team iterating fast, using branching and previews to accelerate the software lifecycle and deploy safely
+- You're building an agent or codegen platform (like Replit, Lovable, or Bolt) and need to spin up and manage fleets of databases efficiently, with costs that stay under control through usage-based pricing and scale to zero
+
+**Choose Databricks if:**
+
+- You're building on the Databricks Data Intelligence Platform
+- You're running data-intensive or AI-driven applications where unified governance, lineage, and access control across OLTP and analytical data are essential
+- You're a data or AI team that needs operational data to be immediately available for analytics, notebooks, and ML workflows
+- You're an enterprise team that highly values security, compliance, high availability, and platform-level integrations
+
+## Provider and region availability
+
+Neon runs on AWS. Lakebase Postgres on Databricks inherits the cloud reach of the Databricks platform, with availability that varies by provider. For the full, current region lists, follow the links below.
+
+| Cloud provider | Neon                                                                                                             | Databricks                                                                                                              |
 | -------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | **AWS**        | Yes ([Neon regions](https://neon.com/docs/introduction/regions))                                                 | Yes, generally available ([AWS regions](https://docs.databricks.com/aws/en/oltp/projects/manage-projects#availability)) |
 | **Azure**      | No, Azure support is being deprecated ([Neon regions](https://neon.com/docs/introduction/regions#azure-regions)) | Yes, in beta ([Azure regions](https://learn.microsoft.com/en-us/azure/databricks/oltp/projects/manage-projects))        |
-| **GCP**        | No, on the [roadmap](https://neon.com/docs/introduction/roadmap)                                                 | Yes, in beta ([GCP regions](https://docs.databricks.com/gcp/en/oltp/projects/manage-projects#availability))             |
+| **GCP**        | Not available                                                                                                    | Yes, in beta ([GCP regions](https://docs.databricks.com/gcp/en/oltp/projects/manage-projects#availability))             |
 
 **Tip: Keep exploring Lakebase**
 
@@ -103158,7 +103171,7 @@ A Neon project's region does not change after creation. To use another region, c
 
 --- [Document source](https://neon.com/docs/introduction/roadmap.md) ---
 
-> Summary: Neon's public product roadmap tracks what is in flight, recently shipped, and planned across compute, storage, security, and cloud regions. Planned features include higher storage and compute limits, CMK encryption, RBAC, PCI compliance, and GCP support. Recently shipped milestones include Postgres 18 GA, a major write throughput improvement, Managed Better Auth GA, and the AI agent pricing plan.
+> Summary: Neon's public product roadmap tracks what is in flight, recently shipped, and planned across compute, storage, security, and cloud regions. Planned features include higher storage and compute limits, CMK encryption, RBAC, and PCI compliance. Recently shipped milestones include Postgres 18 GA, a major write throughput improvement, Managed Better Auth GA, and the AI agent pricing plan.
 
 # Roadmap
 
@@ -103194,7 +103207,6 @@ We're accelerating work on improving and scaling the core database on Neon as we
 ### Clouds & regions
 
 - Region expansion for paid plan users. Let us know where you want to see Neon next: [Request a region](https://neon.com/docs/introduction/regions)
-- Google Cloud Platform (GCP) support (targeting late 2025)
 
 ### Database storage
 
@@ -103246,7 +103258,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Require 2FA for your organization**: Org admins can now enforce two-factor authentication for all members from Organization Settings. [Learn more](https://neon.com/docs/manage/orgs-manage#require-2fa-for-organization-members).
 - **One-click Neon MCP setup for Kiro**: The Neon MCP Server now supports an Add to Kiro badge for one-click MCP setup in the Kiro IDE. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon).
 - **Postgres 18 general availability**: Postgres 18 is now generally available on Neon. [Read the announcement](https://neon.com/blog/postgres-18).
-- **Organization spend limits**: Set a monthly spending limit for your organization from the Billing page and receive email alerts when you reach 80% and 100% of that limit. [Learn more](https://neon.com/docs/introduction/spending-limit).
+- **Organization spending notifications**: Set a monthly spending threshold for your organization from the Billing page and receive email alerts when you reach 80% and 100% of that threshold. [Learn more](https://neon.com/docs/introduction/spending-notifications).
 - **Neon plugin for OpenAI Codex**: The Neon Postgres plugin is now available in the OpenAI Codex plugin directory, adding the Neon MCP Server and Agent Skills to Codex so you can manage projects, branches, and databases from chat. [Learn more](https://neon.com/docs/ai/ai-codex-plugin)
 - **Neon Postgres in Stripe Projects**: Neon is now part of Stripe Projects, so you can provision a Neon database as part of a Stripe CLI app setup alongside other services. [Read the announcement](https://neon.com/blog/neon-works-with-stripe-projects-for-agentic-provisioning)
 - **Automatic cache prewarming**: Neon now prewarms your compute's in-memory cache during scheduled compute updates, protecting query performance immediately after the update restarts Postgres. [Read the blog post](https://neon.com/blog/prewarming)
@@ -103445,21 +103457,21 @@ _That you'll get unpredictable costs due to traffic spikes_. We provide transpar
 - [Variable workload use cases](https://neon.com/variable-load)
 - [Postgres for SaaS use cases](https://neon.com/use-cases/postgres-for-saas)
 
---- [Document source](https://neon.com/docs/introduction/spending-limit.md) ---
+--- [Document source](https://neon.com/docs/introduction/spending-notifications.md) ---
 
-> Summary: Spending limits cap an organization's total monthly Neon charges on Launch and Scale plans, triggering email alerts at 80% and 100% of the configured amount. When the limit is reached, projects continue running and charges accumulate until you raise the limit or the billing cycle resets. Organization admins set, edit, or disable the limit in the Neon Console or via the Management API.
+> Summary: Spending notifications alert organization admins when monthly Neon charges on Launch and Scale plans reach 80% and 100% of a configured threshold. Projects continue running and charges accumulate until you raise the threshold or the billing cycle resets. Organization admins set, edit, or disable notifications in the Neon Console or via the Management API.
 
-# Spending limit
+# Spending notifications
 
-Manage your organization's spending with better visibility and control
+Get alerts when your organization's Neon spending approaches a threshold you set
 
 **What you will learn:**
 
-- What a spending limit does
-- Who can set one
-- How to enable, edit, and disable a limit in the Console
-- How to manage limits with the Neon Management API
-- What happens when the limit is reached
+- What spending notifications do
+- Who can set them up
+- How to enable, edit, and disable notifications in the Console
+- How to manage notification thresholds with the Neon Management API
+- What happens when the threshold is reached
 
 **Related topics**
 
@@ -103468,21 +103480,68 @@ Manage your organization's spending with better visibility and control
 - [Cost optimization](https://neon.com/docs/introduction/cost-optimization)
 - [Neon API keys](https://neon.com/docs/manage/api-keys#create-an-api-key)
 
-## About spending limits
+## About spending notifications
 
-A spending limit helps you control your organization's Neon spending. When charges approach the limit, organization admins receive email alerts so they can take action before the bill grows further.
+Spending notifications help you keep track of your organization's Neon spending. When charges approach the threshold you set, organization admins receive email alerts so they can take action before the bill grows further.
 
-Spending limits are available on the Launch and Scale plans. You can manage them from the **Billing** page in the Neon Console or with the [Neon Management API](https://neon.com/docs/introduction/spending-limit#manage-spending-limits-with-the-neon-api).
+Spending notifications are available on the Launch and Scale plans. You can manage them from the **Billing** page in the Neon Console or with the [Neon Management API](https://neon.com/docs/introduction/spending-notifications#manage-spending-notifications-with-the-neon-api).
 
 **Coming Soon: Automatic project suspension**
 
-Currently, email alerts are the only available action. Automatic project suspension is coming soon: When the limit is reached, projects' computes will pause until you raise the limit or the next monthly billing period begins.
+Currently, email alerts are the only available action. Automatic project suspension is coming soon: when the threshold is reached, projects' computes will pause until you raise the threshold or the next monthly billing period begins.
 
-## Who can set a spending limit
+## Who can set up spending notifications
 
-Only organization admins can enable, edit, or disable a spending limit. Other members see the limit in read-only form on the **Billing** page.
+Only organization admins can enable, edit, or disable spending notifications. Other members see the notification threshold in read-only form on the **Billing** page.
 
-## Manage spending limits with the Neon API
+## Alert thresholds
+
+When a spending notification is configured, Neon sends email alerts to organization admins at two thresholds:
+
+- When spending reaches 80% of the threshold
+- When spending reaches 100% of the threshold
+
+Neon checks your spending every 15 minutes. Once spending crosses a threshold, an alert email goes out, and reminders continue weekly until you raise the threshold or the billing cycle resets.
+
+## Enable spending notifications
+
+1. Navigate to the [Neon Console](https://console.neon.tech).
+2. Select your organization from the breadcrumb menu at the top-left.
+3. Select **Billing** from the menu.
+4. On the **Spending Notifications** card, select **Enable**.
+5. In the **Enable Spending Notifications** dialog, enter a whole-dollar amount.
+6. Select **Enable**.
+
+The **Spending Notifications** card now shows the current spending and a progress bar toward the threshold.
+
+## Edit the threshold
+
+1. Navigate to the **Billing** page.
+2. On the **Spending Notifications** card, select **Edit**.
+3. Update the amount and select **Save**.
+
+You can also open the edit dialog from the over-threshold banner by selecting **Manage spending notifications**. The banner appears in the Console when spending is approaching the threshold or has reached it.
+
+## Disable spending notifications
+
+1. Navigate to the **Billing** page.
+2. On the **Spending Notifications** card, select **Disable**.
+3. Confirm in the **Disable Spending Notifications** dialog.
+
+After you disable notifications, no further email alerts are sent and the over-threshold banner no longer appears.
+
+## What happens when the threshold is reached
+
+When your organization's monthly charges reach the threshold:
+
+- Admins receive a final email alert.
+- A banner appears in the Neon Console showing **Threshold reached**, with a **Manage spending notifications** link that opens the edit dialog.
+
+Projects continue to run, and charges continue to accumulate, until you raise the threshold or the billing cycle resets at the start of the next month. Automatic project suspension is coming soon and will stop compute charges at the threshold.
+
+**Note:** A spending notification threshold applies to the organization's total monthly Neon charges across all projects in that organization. If you belong to multiple organizations, set a separate threshold for each.
+
+## Manage spending notifications with the Neon API
 
 The Management API exposes spending limits at:
 
@@ -103490,64 +103549,17 @@ The Management API exposes spending limits at:
 
 Replace `{org_id}` with your organization ID (see [Finding your org_id](https://neon.com/docs/manage/orgs-api#finding-your-org_id)). Authenticate with a [personal API key](https://neon.com/docs/manage/api-keys#create-an-api-key) or another allowed credential for the Management API.
 
-| Action                  | Method                                                                                                                                  | Who can use it                                               |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Read the current limit  | [Retrieve the organization's monthly spending limit](https://neon.com/docs/reference/api/organizations/get-organization-spending-limit) | Organization members with **read** access (Launch and Scale) |
-| Set or change the limit | [Set the organization's monthly spending limit](https://neon.com/docs/reference/api/organizations/set-organization-spending-limit)      | **Organization admins** only (Launch and Scale)              |
-| Remove the limit        | [Clear the organization's monthly spending limit](https://neon.com/docs/reference/api/organizations/delete-organization-spending-limit) | **Organization admins** only (Launch and Scale)              |
+| Action                      | Method                                                                                                                                  | Who can use it                                               |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Read the current threshold  | [Retrieve the organization's monthly spending limit](https://neon.com/docs/reference/api/organizations/get-organization-spending-limit) | Organization members with **read** access (Launch and Scale) |
+| Set or change the threshold | [Set the organization's monthly spending limit](https://neon.com/docs/reference/api/organizations/set-organization-spending-limit)      | **Organization admins** only (Launch and Scale)              |
+| Remove the threshold        | [Clear the organization's monthly spending limit](https://neon.com/docs/reference/api/organizations/delete-organization-spending-limit) | **Organization admins** only (Launch and Scale)              |
 
-**Request body (`PUT`):** send `spending_limit_cents` as a positive integer (monthly cap in **cents**; minimum **1**). For example, `$100.00` per month is `10000`. Values **`0`** and **`null`** are rejected; to clear a limit, call **`DELETE`** on the same path (idempotent when no limit is configured).
+**Request body (`PUT`):** send `spending_limit_cents` as a positive integer (monthly threshold in **cents**; minimum **1**). For example, `$100.00` per month is `10000`. Values **`0`** and **`null`** are rejected; to clear a threshold, call **`DELETE`** on the same path (idempotent when no threshold is configured).
 
-**Response (`GET` / `PUT` 200):** the API returns `spending_limit_cents`, or `null` when no limit is set. Alerts at 80% and 100% of the cap behave the same as for Console-managed limits; computes are not suspended by this feature.
+**Response (`GET` / `PUT` 200):** the API returns `spending_limit_cents`, or `null` when no threshold is set. Alerts at 80% and 100% of the threshold behave the same as for Console-managed notifications; computes are not suspended by this feature.
 
 See the linked API reference pages for response codes, schemas, and **Try it** examples.
-
-## Alert thresholds
-
-When a spending limit is set, Neon sends email alerts to organization admins at two thresholds:
-
-- When spending reaches 80% of the limit
-- When spending reaches 100% of the limit
-
-Neon checks your spending every 15 minutes. Once spending crosses a threshold, an alert email goes out, and reminders continue weekly until you raise the limit or the billing cycle resets.
-
-## Enable a spending limit
-
-1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select your organization from the breadcrumb menu at the top-left.
-3. Select **Billing** from the menu.
-4. On the **Spending limit** card, select **Enable**.
-5. In the **Enable spending limit** dialog, enter a whole-dollar amount.
-6. Select **Enable**.
-
-The **Spending limit** card now shows the current spending and a progress bar toward the limit.
-
-## Edit the limit
-
-1. Navigate to the **Billing** page.
-2. On the **Spending limit** card, select **Edit**.
-3. Update the amount and select **Save**.
-
-You can also open the edit dialog from the over-limit banner by selecting **Manage spending limit**. The banner appears in the Console when spending is approaching the limit or has reached it.
-
-## Disable the limit
-
-1. Navigate to the **Billing** page.
-2. On the **Spending limit** card, select **Disable**.
-3. Confirm in the **Disable spending limit** dialog.
-
-After you disable the limit, no further email alerts are sent and the over-limit banner no longer appears.
-
-## What happens when the limit is reached
-
-When your organization's monthly charges reach the limit:
-
-- Admins receive a final email alert.
-- A banner appears in the Neon Console showing **Limit reached**, with a **Manage spending limit** link that opens the edit dialog.
-
-Projects continue to run, and charges continue to accumulate, until you raise the limit or the billing cycle resets at the start of the next month. Automatic project suspension is coming soon and will stop compute charges at the limit.
-
-**Note:** A spending limit applies to the organization's total monthly Neon charges across all projects in that organization. If you belong to multiple organizations, set a separate limit for each.
 
 --- [Document source](https://neon.com/docs/introduction/status.md) ---
 
@@ -117892,7 +117904,7 @@ The raw layer and all request, response, and error types are generated from the 
 
 # Acceptable Use Policy
 
-Neon is a Databricks Company. Please refer to the [Databricks Acceptable Use Policy](https://www.databricks.com/legal/acceptable-use-policy).
+Neon is part of the Databricks Platform. Please refer to the [Databricks Acceptable Use Policy](https://www.databricks.com/legal/acceptable-use-policy).
 
 For Neon-specific expectations on abuse of resources, unauthorized modifications, and other security and compliance topics, see [Security overview](https://neon.com/docs/security/security-overview).
 

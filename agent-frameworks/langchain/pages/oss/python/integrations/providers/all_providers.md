@@ -17,6 +17,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Local, offline-capable Microsoft Word (.docx) redlining and parsing tools for LLM agents.
   </Card>
 
+  <Card title="Alephant AI" href="https://alephant.io/" icon="link">
+    AI gateway for cost control, BYOK routing, and multi-provider model access.
+  </Card>
+
   <Card title="Ads4GPTs" href="https://github.com/ADS4GPTs/ads4gpts" icon="link">
     Advertising platform for GPT applications and AI services.
   </Card>
@@ -27,6 +31,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="AG-UI Protocol" href="https://docs.ag-ui.com/quickstart/applications" icon="link">
     Open event-based protocol for connecting LangGraph agents to any frontend.
+  </Card>
+
+  <Card title="Agentic SpendGuard" href="https://agenticspendguard.dev" icon="link">
+    Runtime budget gate that blocks LLM calls that would exceed spend limits.
   </Card>
 
   <Card title="AgentMail" href="https://docs.agentmail.to/" icon="link">
@@ -93,8 +101,16 @@ Browse the complete collection of integrations available for Python. LangChain P
     DataStax Astra DB vector database platform.
   </Card>
 
+  <Card title="ATR Guardrail" href="https://github.com/Agent-Threat-Rule/agent-threat-rules/tree/main/integrations/langchain" icon="link">
+    Runtime detection of prompt injection, tool poisoning, and unsafe tool calls using Agent Threat Rules.
+  </Card>
+
   <Card title="AWS" href="/oss/python/integrations/providers/aws" icon="brand-aws">
     Amazon Web Services cloud platform and AI services.
+  </Card>
+
+  <Card title="AxioRank" href="https://app.axiorank.com/docs/integrations/langchain" icon="link">
+    Security gateway for AI agents: govern tool calls and model turns with allow, deny, and redact policies.
   </Card>
 
   <Card title="Azure AI" href="/oss/python/integrations/providers/azure_ai" icon="brand-windows">
@@ -181,6 +197,14 @@ Browse the complete collection of integrations available for Python. LangChain P
     Distributed SQL database for machine data.
   </Card>
 
+  <Card title="CRW" href="https://fastcrw.com" icon="link">
+    Open-source Firecrawl-compatible web scraper for LLM-ready markdown, HTML, or JSON.
+  </Card>
+
+  <Card title="CVFile" href="https://cvfile.org" icon="link">
+    Open .cv PDF/A-3u format with embedded Markdown, HTML, and JSON Resume payloads.
+  </Card>
+
   <Card title="Dappier" href="https://docs.dappier.com/" icon="link">
     Real-time AI data platform and API.
   </Card>
@@ -205,6 +229,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Advanced reasoning and coding AI models.
   </Card>
 
+  <Card title="Delegare" href="https://docs.delegare.dev" icon="link">
+    Agent payment authorization infrastructure with AP2 mandates and x402 handling.
+  </Card>
+
   <Card title="Dell" href="/oss/python/integrations/providers/dell" icon="link">
     Dell Technologies AI and computing solutions.
   </Card>
@@ -215,6 +243,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Docugami" href="/oss/python/integrations/providers/docugami" icon="link">
     Document AI and semantic processing.
+  </Card>
+
+  <Card title="Doubleword" href="https://docs.doubleword.ai" icon="link">
+    OpenAI-compatible inference platform with first-class batch-inference support.
   </Card>
 
   <Card title="Discord Shikenso" href="/oss/python/integrations/providers/discord-shikenso" icon="link">
@@ -285,8 +317,16 @@ Browse the complete collection of integrations available for Python. LangChain P
     Fast inference for open and proprietary language models.
   </Card>
 
+  <Card title="FuturMix" href="https://futurmix.ai/" icon="link">
+    Unified AI gateway for 22+ models with OpenAI-compatible API.
+  </Card>
+
   <Card title="Groq" href="/oss/python/integrations/providers/groq" icon="link">
     Ultra-fast inference with specialized hardware.
+  </Card>
+
+  <Card title="Haldir" href="https://haldir.xyz/docs" icon="link">
+    Governance layer for AI agents with scoped sessions, encrypted secrets, hash-chained audit, and policy enforcement.
   </Card>
 
   <Card title="Helicone" href="/oss/python/integrations/providers/helicone" icon="link">
@@ -303,6 +343,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="IBM" href="/oss/python/integrations/providers/ibm" icon="link">
     IBM Watson AI and enterprise solutions.
+  </Card>
+
+  <Card title="Instanode" href="https://instanode.dev/docs" icon="link">
+    Zero-setup Postgres and webhook provisioning for AI agents.
   </Card>
 
   <Card title="Isaacus" href="https://docs.isaacus.com/" icon="link">
@@ -387,6 +431,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="MindsDB" href="/oss/python/integrations/providers/mindsdb" icon="link">
     AI layer for databases and data platforms.
+  </Card>
+
+  <Card title="Mixpeek" href="https://docs.mixpeek.com/agent-integrations/langchain" icon="link">
+    Multimodal search, ingest, and vector store for video, image, audio, and documents.
   </Card>
 
   <Card title="MLflow Tracking" href="/oss/python/integrations/providers/mlflow_tracking" icon="link">
@@ -489,6 +537,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Oracle's AI and machine learning services.
   </Card>
 
+  <Card title="Opedd" href="https://opedd.com/for-ai-agents" icon="link">
+    Licensed, rights-cleared content for RAG and agents with verifiable license keys.
+  </Card>
+
   <Card title="Oxylabs" href="https://github.com/oxylabs/langchain-oxylabs" icon="link">
     Web scraping and proxy services.
   </Card>
@@ -541,6 +593,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Logic programming language integration.
   </Card>
 
+  <Card title="ProxyClaw" href="https://docs.proxyclaw.ai" icon="link">
+    Residential proxy tool for web scraping with geo-targeted IPs.
+  </Card>
+
   <Card title="PyMuPDF4LLM" href="https://github.com/lakinduboteju/langchain-pymupdf4llm" icon="link">
     PDF processing optimized for LLM ingestion.
   </Card>
@@ -555,6 +611,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Redis" href="/oss/python/integrations/providers/redis" icon="link">
     In-memory data structure store and cache.
+  </Card>
+
+  <Card title="RelayShield" href="https://api.relayshield.net/developers" icon="link">
+    Identity and agentic-attack-surface threat intelligence.
   </Card>
 
   <Card title="Remembrall" href="/oss/python/integrations/providers/remembrall" icon="link">
@@ -591,6 +651,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="SAP" href="/oss/python/integrations/providers/sap" icon="link">
     Enterprise software and AI solutions.
+  </Card>
+
+  <Card title="Scavio" href="https://scavio.dev/docs/langchain" icon="link">
+    Real-time search API for AI agents across web, shopping, YouTube, Reddit, and TikTok.
   </Card>
 
   <Card title="ScrapeGraph" href="https://github.com/ScrapeGraphAI/langchain-scrapegraph" icon="link">
@@ -633,8 +697,16 @@ Browse the complete collection of integrations available for Python. LangChain P
     Load transcripts and metadata from YouTube, TikTok, and more.
   </Card>
 
+  <Card title="SuperColony" href="https://www.supercolony.ai/skill" icon="link">
+    Verifiable AI agent intelligence from a swarm of autonomous agents.
+  </Card>
+
   <Card title="SurrealDB" href="https://surrealdb.com/docs/cloud/getting-started" icon="link">
     Multi-model database for modern applications.
+  </Card>
+
+  <Card title="Synap" href="https://maximem.ai" icon="link">
+    Persistent long-term memory layer for AI agents.
   </Card>
 
   <Card title="Synmerco" href="https://synmerco.com" icon="link">
@@ -649,6 +721,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Project management platform for agile teams.
   </Card>
 
+  <Card title="TalorData" href="https://www.talordata.com/docs" icon="link">
+    Unified SERP API across 33 search engines with geo-targeting.
+  </Card>
+
   <Card title="Tavily" href="/oss/python/integrations/providers/tavily" icon="link">
     AI-optimized search API for applications.
   </Card>
@@ -659,6 +735,14 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Teradata" href="https://github.com/Teradata/langchain-teradata" icon="link">
     Autonomous AI platform with integrated vector search.
+  </Card>
+
+  <Card title="Tessera" href="https://github.com/kenithphilip/Tessera" icon="link">
+    Signed trust labels and taint-tracking that gate tool calls on untrusted context.
+  </Card>
+
+  <Card title="Telnyx" href="https://telnyx.com" icon="link">
+    OpenAI-compatible AI inference APIs for chat models and embeddings.
   </Card>
 
   <Card title="Tilores" href="https://github.com/tilotech/tilores-langchain" icon="link">
@@ -691,6 +775,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="UniRate" href="https://unirateapi.com" icon="link">
     Currency exchange API with 593+ fiat, crypto, and commodity rates.
+  </Card>
+
+  <Card title="Uniswap" href="https://github.com/Conrad-sudo/langchain-uniswap-v2" icon="link">
+    Live Uniswap V2 swap quotes and unsigned swap transactions for Ethereum and Base.
   </Card>
 
   <Card title="Unstructured" href="/oss/python/integrations/providers/unstructured" icon="link">

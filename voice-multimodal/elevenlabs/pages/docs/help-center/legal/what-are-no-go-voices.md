@@ -8,7 +8,7 @@ path: docs/help-center/legal/what-are-no-go-voices
 
 # What are No-Go Voices?
 
-In our continuing efforts to ensure a positive experience for all users of our platform, we’re taking specific steps to prevent AI voices from being used to spread misinformation. While our [terms](https://elevenlabs.io/terms) already prohibit using our platform to impersonate or harm others, we are taking the added measure of introducing a “<strong>no-go voices</strong>” safeguard. This safeguard is designed to detect and prevent the creation of specific voice clones. We are working to expand this safeguard to other languages and election cycles. We also aim to continually refine this measure through practical testing and feedback.
+In our continuing efforts to ensure a positive experience for all users of our platform, we’re taking specific steps to prevent AI voices from being used to spread misinformation. While our [terms](https://elevenlabs.io/terms) already prohibit using our platform to impersonate or harm others, we are taking the added measure of introducing a “<strong>no-go voices</strong>” safeguard. This safeguard is designed to detect and prevent the creation of specific voice clones. We are working to expand this safeguard to other languages. We also aim to continually refine this measure through practical testing and feedback.
 
  
 
@@ -16,7 +16,7 @@ In our continuing efforts to ensure a positive experience for all users of our p
   What is the purpose of the no-go voices policy?
 </strong>
 
-* This safeguard restricts the creation of voice clones that approximate the voices of political figures, including those actively involved in presidential elections in the US and UK, as part of our broader commitment to prevent AI voices from being used to fabricate misleading content.
+* This safeguard restricts the creation of voice clones that approximate the voices of prominent public figures, as part of our broader commitment to prevent AI voices from being used to fabricate misleading content.
 
 <strong>
   What happens to banned voices?

@@ -6,7 +6,8 @@ path: oss/javascript/deepagents/overview
 
 Build agents that can plan, use subagents, and leverage file systems for complex tasks
 
-Deep Agents is the easiest way to start building agents and applications that are powered by LLMs—with built-in capabilities for task planning, file systems for context management, subagent-spawning, and long-term memory.
+Deep Agents is the easiest way to start building agents and applications that are powered by LLMs—with built-in capabilities for file systems for context management, subagent-spawning, and long-term memory.
+Optional capabilities such as [task planning](#task-planning) and [skills](#skills) extend the harness when your use case needs them.
 You can use deep agents for any task, including complex, multi-step tasks.
 
 Deep Agents comes with the following built-in capabilities:
@@ -70,7 +71,7 @@ Deep Agents is an ["agent harness"](/oss/javascript/concepts/products#agent-harn
   </Card>
 
   <Card title="Delegation" icon="sitemap" href="#delegation">
-    Subagent spawning and task planning
+    Subagent spawning and optional task planning
   </Card>
 
   <Card title="Steering" icon="user" href="#steering">
@@ -242,14 +243,98 @@ For other providers, see [Middleware integrations](/oss/javascript/integrations/
 
 The delegation component enables agents to break large problems into smaller, parallelizable units of work. It has two layers:
 
-* **[Task planning](#task-planning)**: a built-in `write_todos` tool for structured task tracking
+* **[Task planning](#task-planning)**: an opt-in `write_todos` tool for structured task tracking
 * **[Subagents](#subagents)**: ephemeral child agents that handle isolated subtasks
 
 ### Task planning
 
-The harness provides a `write_todos` tool that lets agents maintain a structured task list during execution.
+Task planning is an opt-in harness capability that lets agents maintain a structured task list during execution.
+
+Starting in v0.7 task planning is opt-in only. In earlier versions, task planning middleware was included by default.
+
+Planning is often useful for:
+
+* Long or complicated multi-step tasks
+* Less capable models that benefit from an explicit accountability tool
+* UIs that stream progress from agent state (see [Todo list](/oss/javascript/deepagents/frontend/todo-list))
+
+Pass [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) to the middleware parameter to give the agent a `write_todos` tool for maintaining a structured task list during execution.
+
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { todoListMiddleware } from "langchain";
+
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    middleware: [todoListMiddleware()],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { todoListMiddleware } from "langchain";
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    middleware: [todoListMiddleware()],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { todoListMiddleware } from "langchain";
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    middleware: [todoListMiddleware()],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { todoListMiddleware } from "langchain";
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    middleware: [todoListMiddleware()],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { todoListMiddleware } from "langchain";
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    middleware: [todoListMiddleware()],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { todoListMiddleware } from "langchain";
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    middleware: [todoListMiddleware()],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { todoListMiddleware } from "langchain";
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    middleware: [todoListMiddleware()],
+  });
+  ```
+</CodeGroup>
 
 Tasks support status tracking (`'pending'`, `'in_progress'`, `'completed'`) and are persisted in agent state. This gives agents a lightweight planning layer for organizing long-running and multi-step work.
+
+For configuration options and behavior details, see [To-do list](/oss/javascript/langchain/middleware/built-in#to-do-list).
 
 ### Subagents
 

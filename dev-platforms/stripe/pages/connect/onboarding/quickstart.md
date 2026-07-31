@@ -2041,7 +2041,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 requests==2.32.5
-stripe==15.3.0
+stripe==15.4.0
 toml==0.10.2
 Werkzeug==3.1.5
           <h2>Rocket Rides</h2>

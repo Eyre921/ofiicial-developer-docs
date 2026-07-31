@@ -6,7 +6,7 @@ path: reference/api/2026-04/control-plane/create_index
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_control_2026-04.oas.yaml post /indexes
 Create a Pinecone index. This is where you specify the measure of similarity, the dimension of vectors to be stored in the index, which cloud provider you would like to deploy with, and more.
-  
+To restore from a backup, set `spec.serverless.source_backup_id` and specify the target `cloud` and `region`. Same-cloud cross-region restore is supported when available for the backup's source region. Cross-cloud restore is not supported.
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
 

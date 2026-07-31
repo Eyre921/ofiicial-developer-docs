@@ -2852,7 +2852,7 @@ Possible enum values:
 - `subscription_data` (object, optional)
   A subset of parameters to be passed to subscription creation for Checkout Sessions in `subscription` mode.
 
-  - `subscription_data.application_fee_percent` (float, optional)
+  - `subscription_data.application_fee_percent` (number, optional)
     A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account. To use an application fee percent, the request must be made on behalf of another account, using the `Stripe-Account` header or an OAuth key. For more information, see the application fees [documentation](https://docs.stripe.com/connect/subscriptions.md#collecting-fees-on-subscriptions).
 
   - `subscription_data.billing_cycle_anchor` (timestamp, optional)
@@ -2964,7 +2964,7 @@ Possible enum values:
     - `subscription_data.transfer_data.destination` (string, required)
       ID of an existing, connected Stripe account.
 
-    - `subscription_data.transfer_data.amount_percent` (float, optional)
+    - `subscription_data.transfer_data.amount_percent` (number, optional)
       A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the destination account. By default, the entire amount is transferred to the destination.
 
   - `subscription_data.trial_end` (integer, optional)

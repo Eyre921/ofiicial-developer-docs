@@ -13,11 +13,11 @@ In this quickstart we will learn how to:
 
 |                  | `@tursodatabase/serverless`                  | `@libsql/client`                   | Raw HTTP               |
 | ---------------- | -------------------------------------------- | ---------------------------------- | ---------------------- |
-| **Status**       | Production-ready                             | Production-ready                   | Always available       |
+| **Use with**     | [Turso](/tursodb/quickstart) databases       | [libSQL](/libsql) databases        | Any database           |
 | **Dependencies** | Uses only `fetch` — zero native dependencies | Requires Node.js or `/web` subpath | None (any HTTP client) |
 | **ORM support**  | Not yet supported                            | Drizzle, Prisma, and others        | N/A                    |
 
-**`@tursodatabase/serverless`** is the lightest option with zero native dependencies. Use **`@libsql/client`** if you need a battle-tested driver today with ORM integration.
+Match the driver to your database engine: **`@tursodatabase/serverless`** for [Turso](/tursodb/quickstart) databases, **`@libsql/client`** for [libSQL](/libsql) databases.
 
 <Tabs>
   <Tab title="@tursodatabase/serverless">
@@ -34,12 +34,12 @@ In this quickstart we will learn how to:
         ```typescript theme={null}
         import { connect } from "@tursodatabase/serverless";
 
-        const conn = await connect({
+        const conn = connect({
           url: process.env.TURSO_DATABASE_URL,
           authToken: process.env.TURSO_AUTH_TOKEN,
         });
 
-        const stmt = conn.prepare("SELECT * FROM users WHERE id = ?");
+        const stmt = await conn.prepare("SELECT * FROM users WHERE id = ?");
         const row = await stmt.get([123]);
         ```
       </Step>

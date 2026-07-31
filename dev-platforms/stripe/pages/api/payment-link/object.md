@@ -120,7 +120,7 @@ Possible enum values:
 - `application_fee_amount` (integer, nullable)
   The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner’s Stripe account.
 
-- `application_fee_percent` (float, nullable)
+- `application_fee_percent` (number, nullable)
   This represents the percentage of the subscription invoice total that will be transferred to the application owner’s Stripe account.
 
 - `automatic_tax` (object)
@@ -637,7 +637,7 @@ Possible enum values:
         - `line_items.data.taxes.rate.display_name` (string)
           The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
 
-        - `line_items.data.taxes.rate.effective_percentage` (float, nullable)
+        - `line_items.data.taxes.rate.effective_percentage` (number, nullable)
           Actual/effective tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage reflects the rate actually used to calculate tax based on the product’s taxability and whether the user is registered to collect taxes in the corresponding jurisdiction.
 
         - `line_items.data.taxes.rate.flat_amount` (object, nullable)
@@ -671,7 +671,7 @@ Possible enum values:
         - `line_items.data.taxes.rate.metadata` (map, nullable)
           Set of [key-value pairs](https://docs.stripe.com/docs/api/metadata.md) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
 
-        - `line_items.data.taxes.rate.percentage` (float)
+        - `line_items.data.taxes.rate.percentage` (number)
           Tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true, this percentage includes the statutory tax rate of non-taxable jurisdictions.
 
         - `line_items.data.taxes.rate.rate_type` (enum, nullable)

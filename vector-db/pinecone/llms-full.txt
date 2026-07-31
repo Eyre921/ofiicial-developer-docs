@@ -29008,6 +29008,18 @@ Full-text search ranks documents by keyword and phrase relevance using **BM25** 
 
 **When to use it.** Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, an [index with dense vectors](/guides/get-started/concepts#index-with-dense-vectors) (the vector API) is simpler; see [Search overview](/guides/search/search-overview) to choose the right approach.
 
+### Capabilities
+
+What full-text search does and doesn't match:
+
+| Capability                      | Status                                                                                                                                                                                                                     |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fuzzy matching (typo tolerance) | Supported in `query_string` queries only ([query syntax](#query-syntax-reference))                                                                                                                                         |
+| Stemming                        | Supported, opt-in per field at index creation ([stemming](#stemming))                                                                                                                                                      |
+| Stop-word removal               | Supported, opt-in per field at index creation ([tokens & analyzers](#tokens-and-analyzers))                                                                                                                                |
+| Substring / n-gram matching     | Supported, opt-in per field at index creation. Can't be combined with stemming or stop words on the same field ([n-grams](#substring-search-with-n-grams))                                                                 |
+| Synonym expansion               | Not supported. A search for `car` won't match a document containing only `automobile`. Use [semantic search](/guides/search/semantic-search) or [hybrid search](/guides/search/hybrid-search) for synonyms or paraphrases. |
+
 **The path, end to end.** Create an index with a [schema](#schema-definition) that declares your ranking fields, upsert your data as JSON documents, then search by choosing one ranking signal per search request with `score_by`. The [end-to-end example](#end-to-end-example) below stitches all three steps into one runnable script, and the sections after it cover each operation in detail.
 
 Pinecone's document API stores typed fields you declare in a schema. How it works:
@@ -37971,7 +37983,7 @@ Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/create_inde
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_control_2026-04.oas.yaml post /indexes
 Create a Pinecone index. This is where you specify the measure of similarity, the dimension of vectors to be stored in the index, which cloud provider you would like to deploy with, and more.
-  
+To restore from a backup, set `spec.serverless.source_backup_id` and specify the target `cloud` and `region`. Same-cloud cross-region restore is supported when available for the backup's source region. Cross-cloud restore is not supported.
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
 
@@ -46611,7 +46623,7 @@ Serverless indexes do not support collections.
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/create_index_from_backup
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_control_2026-04.oas.yaml post /backups/{backup_id}/create-index
-Create an index from a backup.
+Create an index from a backup. For serverless backups, you can optionally set `read_capacity` so the restored index is created with dedicated read nodes (DRN) instead of defaulting to on-demand capacity.
 
 <RequestExample>
   ```bash curl theme={null}
@@ -47030,7 +47042,8 @@ Serverless indexes do not support collections.
 Source: https://docs.pinecone.io/reference/api/2026-04/control-plane/list_index_backups
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/db_control_2026-04.oas.yaml get /indexes/{index_name}/backups
-List all backups for an index.
+When `include_deleted` is false (or omitted), `index_name` must resolve to an active index in the project. If no active index by that name exists—including the case where only deleted indexes have used the name—the API returns **404**, not an empty list.
+When `include_deleted` is true, the API returns backups from every index in the project that has ever used this name (active and deleted). The `source_index_deleted_at` field is present only when the backup is from a deleted index. **404** is returned only when no index by that name has ever existed in the project (active or deleted).
 
 <RequestExample>
   ```bash curl theme={null}

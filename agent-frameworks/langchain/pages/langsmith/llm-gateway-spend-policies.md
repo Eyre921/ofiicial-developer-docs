@@ -66,6 +66,8 @@ You can apply multiple time windows to the same scope. For example, a workspace 
 
 Policies take effect immediately. The gateway evaluates them on every incoming request with sub-second enforcement latency.
 
+A spend policy can also carry a condition on a custom request header, so traffic from a single subject splits into separate caps by header value. Use this to cap each of your own end customers under one API key. For more information, see [Per-customer policies](/langsmith/llm-gateway-header-policies).
+
 ## View spend
 
 The spend visibility dashboard shows real-time cost rollups so you can understand where your LLM budget is going before you reach the limit.
@@ -80,7 +82,8 @@ This is useful for diagnosing whether a blocked request represents a genuine cos
 
 ## Next steps
 
-* [PII and secrets redaction](/langsmith/llm-gateway-redaction): add data protection policies alongside cost controls.
+* [Per-customer policies](/langsmith/llm-gateway-header-policies): split a cap by a custom request header so each end customer gets its own limit.
+* [Data protection](/langsmith/llm-gateway-data-protection): add data protection policies alongside cost controls.
 
 ***
 

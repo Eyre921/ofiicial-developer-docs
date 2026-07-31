@@ -109,15 +109,70 @@ In this Go quickstart we will learn how to:
 
 ## Remote Access (Over-the-Wire)
 
-If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the `libsql-client-go` package. It connects to your database via the libSQL wire protocol — no local file needed, pure Go.
+If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the driver that matches your database engine: `tursogo-serverless` for [Turso databases](/tursodb/quickstart), or `libsql-client-go` for [libSQL](/libsql) databases.
 
 <Info>
   For most applications, we recommend running a local database with sync (`NewTursoSyncDb`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 </Info>
 
+### Remote Turso database: tursogo-serverless
+
+`tursogo-serverless` connects to a remote Turso database over HTTP — pure Go, no CGO, no native libraries. It implements the standard `database/sql` interface, compatible with the embedded `tursogo` driver.
+
 <Steps>
   <Step title="Retrieve database credentials">
-    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+    You will need an existing Turso database to continue. If you don't have one, create one with `turso db create --tursodb` (see the [quickstart](/quickstart)).
+
+    <Snippet />
+
+    <Info>You will want to store these as environment variables.</Info>
+  </Step>
+
+  <Step title="Install">
+    ```bash theme={null}
+    go get turso.tech/database/tursogo-serverless
+    ```
+  </Step>
+
+  <Step title="Connect and query">
+    ```go theme={null}
+    package main
+
+    import (
+    	"database/sql"
+    	"fmt"
+    	"os"
+
+    	turso "turso.tech/database/tursogo-serverless"
+    )
+
+    func main() {
+    	db := sql.OpenDB(turso.NewConnector(
+    		os.Getenv("TURSO_DATABASE_URL"),
+    		os.Getenv("TURSO_AUTH_TOKEN"),
+    	))
+    	defer db.Close()
+
+    	rows, _ := db.Query("SELECT * FROM users")
+    	defer rows.Close()
+    	for rows.Next() {
+    		var id int
+    		var name string
+    		rows.Scan(&id, &name)
+    		fmt.Printf("User: %d %s\n", id, name)
+    	}
+    }
+    ```
+  </Step>
+</Steps>
+
+### Remote libSQL database: libsql-client-go
+
+`libsql-client-go` connects to a remote libSQL database via the libSQL wire protocol — no local file needed, pure Go.
+
+<Steps>
+  <Step title="Retrieve database credentials">
+    You will need an existing libSQL database to continue. If you don't have one, [create one](/quickstart).
 
     <Snippet />
 

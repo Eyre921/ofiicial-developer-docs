@@ -8,6 +8,18 @@ path: revenue-recognition/performance-obligations-api
 
 Learn how to model performance obligation fulfillment in Stripe Revenue Recognition.
 
+### Request to join the preview for the Revenue Recognition Performance Obligations API.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/revenue-recognition/performance-obligations-api" \
+  -d '{"email": "EMAIL", "preview": "revrec_pob_api_preview"}'
+```
+
 ## Overview 
 
 Performance obligation fulfillment is an important part of revenue recognition in accounting and finance. It refers to the completion of a transaction in which the seller has delivered the goods or services promised to the customer, and can recognize revenue for the sale. There are several scenarios where fulfillment occurs and revenue can be recognized, including but not limited to:

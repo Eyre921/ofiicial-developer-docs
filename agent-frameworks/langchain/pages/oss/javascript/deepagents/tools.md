@@ -7,7 +7,7 @@ path: oss/javascript/deepagents/tools
 Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 
 Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
-Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/javascript/deepagents/overview#execution-environment) for planning, file management, and subagent spawning.
+Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/javascript/deepagents/overview#execution-environment) for file management and subagent spawning.
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -609,17 +609,18 @@ For detailed configuration options—including stdio servers, OAuth authenticati
 
 In addition to the tools you provide, every Deep Agent comes with a built-in set of tools from the harness:
 
-| Tool          | Description                                                 |
-| ------------- | ----------------------------------------------------------- |
-| `ls`          | List files in a directory                                   |
-| `read_file`   | Read file contents (with pagination and multimodal support) |
-| `write_file`  | Create new files                                            |
-| `edit_file`   | Perform exact string replacements in files                  |
-| `glob`        | Find files matching a glob pattern                          |
-| `grep`        | Search file contents                                        |
-| `execute`     | Run shell commands (sandbox backends only)                  |
-| `task`        | Spawn a subagent to handle a delegated task                 |
-| `write_todos` | Manage a structured todo list                               |
+| Tool         | Description                                                 |
+| ------------ | ----------------------------------------------------------- |
+| `ls`         | List files in a directory                                   |
+| `read_file`  | Read file contents (with pagination and multimodal support) |
+| `write_file` | Create new files                                            |
+| `edit_file`  | Perform exact string replacements in files                  |
+| `glob`       | Find files matching a glob pattern                          |
+| `grep`       | Search file contents                                        |
+| `execute`    | Run shell commands (sandbox backends only)                  |
+| `task`       | Spawn a subagent to handle a delegated task                 |
+
+To add structured task planning with `write_todos`, opt in with [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware). See [Task planning](/oss/javascript/deepagents/overview#task-planning).
 
 For a full breakdown of what each built-in tool does, see [Harness overview](/oss/javascript/deepagents/overview#execution-environment).
 
