@@ -428,7 +428,9 @@ Group by `annotations.team`, `annotations.project`, or `annotations.environment`
   Content-Type: application/json
   ```
 
-  Annotation values are validated server-side; unrecognized keys are dropped silently.
+  Annotation values are validated server-side. Only the recognized keys — `team`, `project`, `environment` — are stored; any other segment (an unknown key, an empty value like `project=`, or a bare token) is dropped on its own, and the recognized keys in the same header are always preserved.
+
+  In responses these tags appear under the short keys `team` / `project` / `environment` in the `group` map: you group and filter by the `annotations.`-prefixed names, but the response omits the prefix.
 
 ## Cookbook: per-API-key reporting recipes
 
@@ -6740,6 +6742,10 @@ Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and 
 
 Before creating cost or resources, it shows the resolved parameters and estimated cost for confirmation.
 
+## Usage data and privacy
+
+To improve the skill, authenticated API calls include the skill version and a random session ID. Fireworks uses this metadata with existing account and training job records for internal product analytics. Prompts and datasets are not collected, and usage data is not shared outside Fireworks.
+
 <Note>
   The Fireworks CLI (`firectl`) may block mutating commands inside an AI-agent environment. When that happens, the skill gives you the exact command to run manually, then resumes monitoring and reporting.
 </Note>
@@ -8479,7 +8485,7 @@ Use either method for:
           --output-model new-model-id
         ```
 
-        Choose a base model and shape that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as compatible with DPO or ORPO.
+        Choose a base model that [Models](/fine-tuning/models) marks as DPO-enabled, and a shape published for it.
       </Tab>
     </Tabs>
   </Step>
@@ -10056,7 +10062,7 @@ For SFT and DPO pricing, see the [pricing page](https://fireworks.ai/pricing).
 
 ## Supported base models
 
-Fireworks supports fine-tuning for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is method and parameter-mode specific: a model can support SFT without supporting DPO, RFT, LoRA, or full-parameter training on the same shapes. Use the live [Training Shapes](/fine-tuning/training-api/training-shapes) method-support matrix before creating a job.
+Fireworks supports fine-tuning for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is method and parameter-mode specific: a model can support SFT without supporting DPO, RFT, LoRA, or full-parameter training. Check the live per-model matrix on [Models](/fine-tuning/models) before creating a job.
 
 Custom models uploaded by users are not automatically tunable. To use managed fine-tuning with an uploaded custom base model, the model must have a corresponding Hugging Face URL. Fireworks uses that URL to infer the training renderer and locate compatible training shapes. A custom model is supported only when Fireworks can resolve both a supported renderer and at least one compatible training shape. After the Hugging Face URL is set, tunability is refreshed by a background operation that runs about every 30 minutes, so the model may take up to 30 minutes to show as `Tunable: true`. We are working to make this refresh faster.
 
@@ -10096,6 +10102,48 @@ Choose LoRA when you want efficient adapter training and flexible deployment, in
 <Warning>
   **Deprecation notice:** The `deployedModel` request key for routing to LoRA addons is deprecated and will not be supported for any new deployments. Please migrate to the `model` field with the `<model_name>#<deployment_name>` format described in [Routing requests to LoRA addons](/fine-tuning/deploying-loras#routing-requests-to-lora-addons).
 </Warning>
+
+
+# Models
+Source: https://docs.fireworks.ai/fine-tuning/models
+
+Which base models you can train on Fireworks and the surfaces each one is available on.
+
+Managed fine-tuning, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO), Training API jobs by parameter mode (LoRA or full-parameter).
+
+## Model availability
+
+Pick a model to see the surfaces and methods it is enabled for, plus any training shapes that back it. Switch to **All models** for the full matrix.
+
+<ModelsCatalog />
+
+## Next steps
+
+<CardGroup>
+  <Card title="Managed Fine-Tuning" href="/fine-tuning/managed-finetuning-intro" icon="wand-magic-sparkles">
+    Hand Fireworks your data and let the platform run the job
+  </Card>
+
+  <Card title="Training API" href="/fine-tuning/training-api/introduction" icon="code">
+    Write your own training loop against a Tinker-compatible API
+  </Card>
+
+  <Card title="Serverless Models" href="/fine-tuning/training-api/serverless#models" icon="bolt">
+    Serverless Training API model catalog with per-token pricing
+  </Card>
+
+  <Card title="Training Shapes" href="/fine-tuning/training-api/training-shapes" icon="microchip">
+    What a shape pins and how to reference one
+  </Card>
+
+  <Card title="Dedicated Training" href="/fine-tuning/training-api/dedicated" icon="server">
+    Provision a trainer and sampler on reserved GPU capacity
+  </Card>
+
+  <Card title="Pricing" href="https://fireworks.ai/pricing" icon="tag">
+    Current rates across training and inference
+  </Card>
+</CardGroup>
 
 
 # Monitor Training
@@ -11992,7 +12040,7 @@ RFT cost depends on the selected model and compatible training shape, rollout vo
 
 ## Before estimating
 
-1. Choose an RFT-compatible model in the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix.
+1. Choose an RFT-enabled model on [Models](/fine-tuning/models).
 2. Resolve the shape and parameter mode used by the job.
 3. Read current [pricing](https://fireworks.ai/pricing), including any eligible managed RFT promotion.
 4. Record dataset rows, epochs, rollout candidates, maximum output tokens, expected average output length, evaluator latency, and concurrency.
@@ -13339,7 +13387,7 @@ The Training API uses the same Tinker-compatible primitives on two infrastructur
 | Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                     |
 | Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                       |
 | Methods           | SFT and RL on the supported serverless surface                   | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
-| Models            | Current serverless model list                                    | Models with an enabled dedicated training shape                                               |
+| Models            | [Serverless-enabled models](/fine-tuning/models)                 | Models with an enabled dedicated training shape                                               |
 | Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability            |
 | Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
 | Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                  |
@@ -13350,7 +13398,7 @@ Always verify current models, limits, prices, and feature status in the [Serverl
 
 ## Choose serverless when
 
-* The base model appears in the current serverless model list.
+* The base model is marked as serverless-enabled on [Models](/fine-tuning/models).
 * LoRA SFT or RL covers the task.
 * You want to start without provisioning trainer or inference resources.
 * Per-token billing fits a small or bursty experiment.
@@ -13405,7 +13453,7 @@ cfg = Config(
     output_model_id="qwen3-8b-finetuned",
     dcp_save_interval=10,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
 )
 main(cfg)
@@ -13704,7 +13752,7 @@ cfg = Config(
     teacher_model="accounts/fireworks/models/qwen3-32b",
     dataset="/path/to/prompts.jsonl",
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
     deployment=DeployConfig(tokenizer_model="Qwen/Qwen3-8B"),
     max_rows=100,
@@ -13803,7 +13851,7 @@ cfg = Config(
     batch_size=4,
     max_seq_len=4096,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
         reference_training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200-forward",
     ),
     wandb=WandBConfig(entity="my-team", project="dpo-experiment"),
@@ -13862,7 +13910,7 @@ service = build_service_client(
     max_context_length=None,
     learning_rate=1e-5,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
         reference_training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200-forward",
     ),
     # deployment=None  → trainer-only provisioning (DPO has no rollouts)
@@ -14026,7 +14074,7 @@ Each recipe follows the same pattern: import `Config` and `main`, set your confi
 
 All launch examples below use `trainer=TrainerConfig(training_shape_id=...)` for explicit shape selection. Cookbook recipes can also auto-select validated shapes when `training_shape_id` is unset. The main run-level trainer knob you may set alongside a shape is `replica_count` for replicated HSDP launches; reference shapes can usually be left unset because the cookbook auto-selects or uses a shared-session reference when appropriate.
 
-If you want field-level details about what a training shape controls and what stays configurable, see [Training Shapes](/fine-tuning/training-api/training-shapes) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
+If you want field-level details about what a training shape controls and what stays configurable, see [Training shapes](/fine-tuning/training-api/training-shapes) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
 <Note>
   `InfraConfig` and the standalone `setup_infra` / `ResourceCleanup` helpers are **deprecated and removed from the recipe surface**. Recipes now take `trainer=TrainerConfig(...)` (and `deployment=DeployConfig(...)` for RL). See [Migrating from the deprecated managed infra](/fine-tuning/training-api/cookbook/reference#deprecated-managed-infra-infraconfig).
@@ -14047,7 +14095,7 @@ cfg = Config(
     epochs=1,
     batch_size=4,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
 )
 
@@ -14066,7 +14114,7 @@ cfg = Config(
     dataset="/path/to/prompts.jsonl",
     max_rows=100,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
     deployment=DeployConfig(
         deployment_id="grpo-serving",
@@ -14124,7 +14172,7 @@ Training-client launch settings: which training shape to use, the optional refer
 from training.utils import TrainerConfig
 
 trainer = TrainerConfig(
-    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     reference_training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200-forward",
 )
 ```
@@ -14149,7 +14197,7 @@ To request replicated HSDP for a run:
 
 ```python theme={null}
 trainer = TrainerConfig(
-    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     replica_count=2,
 )
 ```
@@ -14490,7 +14538,7 @@ cfg = Config(
     batch_size=4,
     learning_rate=1e-5,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
 )
 
@@ -14560,7 +14608,7 @@ cfg = Config(
     epochs=1,
     batch_size=4,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
     dcp_save_interval=50,
     init_from_checkpoint="previous-job-id:step-100",  # optional
@@ -14747,7 +14795,7 @@ model, shape, parameters, cost ceiling, and cleanup flags before running it.
 
 ### Step 3: Choose the model and training shape
 
-Use the live [Training Shapes](/fine-tuning/training-api/training-shapes) catalog. Pass the full shared shape ID and let the SDK resolve its validated version and linked deployment shape.
+Pick a shape from your model's entry on [Models](/fine-tuning/models). Pass the full shared shape ID and let the SDK resolve its validated version and linked deployment shape.
 
 Do not copy accelerator type, GPU count, image tag, or deployment-shape details into the config when the training shape owns them.
 
@@ -14813,7 +14861,7 @@ For the canonical decision rules and comparison table, see [Choose Serverless or
 
 * [Dedicated quickstart](/fine-tuning/training-api/quickstart)
 * [Training and Sampling](/fine-tuning/training-api/training-and-sampling)
-* [Training Shapes](/fine-tuning/training-api/training-shapes)
+* [Models](/fine-tuning/models): available models, their shapes, and how shapes work
 * [Saving and Loading](/fine-tuning/training-api/saving-and-loading)
 * [Cookbook overview](/fine-tuning/training-api/cookbook/overview)
 * [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup)
@@ -15426,7 +15474,7 @@ api_key = os.environ["FIREWORKS_API_KEY"]
 base_url = os.environ.get("FIREWORKS_BASE_URL", "https://api.fireworks.ai")
 
 base_model = "accounts/fireworks/models/qwen3-8b"
-shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k-h200"
+shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k"
 
 service = FiretitanServiceClient.from_firetitan_config(
     api_key=api_key,
@@ -15582,7 +15630,7 @@ service = FiretitanServiceClient.from_firetitan_config(
     base_model="accounts/fireworks/models/qwen3-8b",
     tokenizer_model="Qwen/Qwen3-8B",
     lora_rank=0,
-    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     deployment_id="research-serving",
     cleanup_trainer_on_close=True,
     cleanup_deployment_on_close="scale_to_zero",
@@ -15891,11 +15939,13 @@ The one thing you **can** adjust is the **replica count**. Use `min_replica_coun
 deploy_mgr.create_or_get(DeploymentConfig(
     deployment_id="rl-serving",
     base_model="accounts/fireworks/models/qwen3-8b",
-    deployment_shape="accounts/fireworks/deploymentShapes/qwen3-8b-128k-h200",
+    deployment_shape="accounts/fireworks/deploymentShapes/<deployment-shape>",
     min_replica_count=1,
     max_replica_count=4,
 ))
 ```
+
+You normally do not name a deployment shape at all: on the shape path the SDK reads it from the training shape's `deploymentShapeVersion`. Set it explicitly only when you are managing deployments outside that flow, and take the value from the training shape rather than hand-writing one.
 
 ## Operational guidance
 
@@ -16176,7 +16226,7 @@ print(profile.node_count)             # e.g. 1
 print(profile.pipeline_parallelism)   # e.g. 1
 ```
 
-See [Training Shapes](/fine-tuning/training-api/training-shapes) for the user-facing shape workflow.
+See [Training shapes](/fine-tuning/training-api/training-shapes) for the user-facing shape workflow.
 
 ### `validate_output_model_id(output_model_id)`
 
@@ -16240,7 +16290,7 @@ Returned by `resolve_training_profile`:
 
 * [TrainerJobManager](/fine-tuning/training-api/reference/trainer-job-manager) -- trainer job lifecycle (extends FireworksClient)
 * [Saving and Loading](/fine-tuning/training-api/saving-and-loading) -- checkpoint save, load, and promote workflows
-* [Training Shapes](/fine-tuning/training-api/training-shapes) -- available shapes and deployment linkage
+* [Training shapes](/fine-tuning/training-api/training-shapes) -- what a shape pins, and its deployment linkage
 
 
 # FiretitanServiceClient & TrainingClient
@@ -16271,7 +16321,7 @@ service = FiretitanServiceClient.from_firetitan_config(
     base_model="accounts/fireworks/models/qwen3-8b",
     tokenizer_model="Qwen/Qwen3-8B",
     lora_rank=0,
-    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     deployment_id="research-serving",   # set create_deployment=False for trainer-only flows
     learning_rate=1e-5,
     replica_count=1,                     # deployment replicas
@@ -16672,7 +16722,7 @@ Create a service-mode trainer job and return immediately (without waiting). Retu
 ```python theme={null}
 created = rlor_mgr.create(TrainerJobConfig(
     base_model="accounts/fireworks/models/qwen3-8b",
-    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     lora_rank=0,
     learning_rate=1e-5,
 ))
@@ -16696,7 +16746,7 @@ Create a service-mode trainer and poll until the endpoint is healthy. Combines `
 ```python theme={null}
 endpoint = rlor_mgr.create_and_wait(TrainerJobConfig(
     base_model="accounts/fireworks/models/qwen3-8b",
-    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     lora_rank=0,
     learning_rate=1e-5,
     display_name="grpo-policy-trainer",
@@ -16810,7 +16860,7 @@ When `training_shape_ref` is set (the recommended **shape path**), the training 
 | Field                        | Type                                | Default | Description                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------------- | ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `base_model`                 | `str`                               | —       | Base model name (e.g. `"accounts/fireworks/models/qwen3-8b"`)                                                                                                                                                                                                                                                                                                   |
-| `training_shape_ref`         | `str \| None`                       | `None`  | Full training-shape resource name (e.g. `accounts/fireworks/trainingShapes/<shape>` or `.../versions/<ver>`). Use `mgr.resolve_training_profile(...)` to get the pinned versioned ref. See [Training Shapes](/fine-tuning/training-api/training-shapes).                                                                                                        |
+| `training_shape_ref`         | `str \| None`                       | `None`  | Full training-shape resource name (e.g. `accounts/fireworks/trainingShapes/<shape>` or `.../versions/<ver>`). Use `mgr.resolve_training_profile(...)` to get the pinned versioned ref. See [Training shapes](/fine-tuning/training-api/training-shapes).                                                                                                        |
 | `lora_rank`                  | `int`                               | `0`     | LoRA rank. `0` for full-parameter tuning, or a positive integer (e.g. `16`, `64`) for LoRA                                                                                                                                                                                                                                                                      |
 | `max_context_length`         | `int \| None`                       | `None`  | Maximum sequence length. Usually inherited from the training shape on the shape path.                                                                                                                                                                                                                                                                           |
 | `learning_rate`              | `float`                             | `1e-5`  | Learning rate for the optimizer                                                                                                                                                                                                                                                                                                                                 |
@@ -16867,7 +16917,7 @@ See [`FireworksClient` > TrainingShapeProfile](/fine-tuning/training-api/referen
 ## Related guides
 
 * [FiretitanServiceClient](/fine-tuning/training-api/reference/service-client) — create a `FiretitanTrainingClient` for a live trainer endpoint
-* [Training Shapes](/fine-tuning/training-api/training-shapes) — available shapes and deployment linkage
+* [Training shapes](/fine-tuning/training-api/training-shapes) — what a shape pins, and its deployment linkage
 * [Cleanup](/fine-tuning/training-api/reference/cleanup) — resource cleanup
 
 
@@ -17285,7 +17335,7 @@ Source: https://docs.fireworks.ai/fine-tuning/training-api/serverless
 Run LoRA fine-tuning and RL on a shared pooled trainer, with no provisioning and per-token pricing.
 
 <Info>
-  Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and mention "serverless training."
+  Serverless training is currently in **private preview** and access is gated per account. [Request access](https://fireworks.ai/contact-training) and select "Serverless Training API."
 </Info>
 
 Serverless training connects to a shared, already-running pooled trainer through the gateway and returns training and sampling clients. There is no trainer job or inference deployment to provision or delete. Close each sampler and the service client when finished.
@@ -17298,7 +17348,7 @@ Not sure whether the shared pool fits your workload? [Compare serverless and ded
   * **Install the SDK** (same one as the dedicated path, no separate console flow): `pip install "fireworks-ai[training]"`
   * **For the runnable example, clone the cookbook:** `git clone https://github.com/fw-ai/cookbook && pip install -e ./cookbook/training`
   * **Point at the serverless endpoint:** `base_url="https://api.fireworks.ai/training/v1/serverless"`
-  * **Pick a base model enabled for serverless training on your account.** Availability changes during private preview; verify it before launch.
+  * **Pick a base model enabled for serverless training on your account.** See [Models](#models) below. Availability changes during private preview; verify it before launch.
   * Set your API key and run the [Quickstart](#quickstart) below.
 </Info>
 
@@ -17411,7 +17461,7 @@ service = FiretitanServiceClient(
 )
 
 base_model = "accounts/fireworks/models/qwen3p6-27b"
-max_seq_len = 65536  # enforce this when rendering prompts and training datums
+max_seq_len = 131072  # enforce this when rendering prompts and training datums
 training_client = service.create_lora_training_client(base_model=base_model, rank=8)
 
 print(f"session={service.training_session_id} run={training_client.run_id}")
@@ -17457,13 +17507,29 @@ Track reward over time; improvement depends on the task, data, reward function, 
 
 ## Pricing
 
-Serverless training is billed per token. Available models, meter definitions, and rates can change during private preview. Verify current availability and [pricing](https://fireworks.ai/pricing) before launch.
+Serverless training is billed per token, across three meters: prefill, sample, and train. Current rates per model are in [Models](#models) below. Available models, meter definitions, and rates can change during private preview, so verify current availability and [pricing](https://fireworks.ai/pricing) before launch.
 
 ## Supported models and limits
 
 ### Models
 
-Use a base model enabled for serverless training on your account. Serverless is LoRA only. For full-parameter training or a model not enabled on the shared pool, use [Dedicated Training](/fine-tuning/training-api/dedicated).
+Serverless models are not selected by shape. You attach to a shared, always-on trainer pool with a base model and your own `max_seq_len`, and pay only for the tokens you prefill, sample, and train. Serverless is LoRA only, for SFT and RL.
+
+<ServerlessModelsTable />
+
+* Checkpoint storage for serverless models is included during private preview.
+* The serverless model catalog evolves, and other frontier models are coming soon. For full-parameter training or a model not on that list, use [Dedicated Training](/fine-tuning/training-api/dedicated).
+* For per-model availability across all training surfaces, see the [Models](/fine-tuning/models) catalog.
+
+#### What the meters mean
+
+Serverless training bills three separate token meters, so a run's cost depends on the mix of rollout and training tokens your loop generates:
+
+| Meter       | What it counts                                                                                                                          |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Prefill** | Prompt tokens processed by the sampler before generation. Repeated prefixes hit the cache and bill at the cached rate, an 80% discount. |
+| **Sample**  | Tokens generated by the sampler during rollouts.                                                                                        |
+| **Train**   | Tokens passed through `forward_backward`, i.e. the datums you train on.                                                                 |
 
 ### Capacity and rate limits (private preview)
 
@@ -17476,6 +17542,18 @@ Use a base model enabled for serverless training on your account. Serverless is 
 * **Set `max_seq_len` explicitly.** Serverless has no dedicated instance to infer sequence length from.
 * **Cross-run checkpoint resume is not yet supported.** A checkpoint saved during a run can only be resumed by that same run. Forking a new run from a prior run's checkpoint (Tinker's `create_training_client_from_state`) is dedicated-only today.
 * **Serving your trained adapter.** Sample in-session during the run. To serve afterward, deploy the adapter on a dedicated or preemptible deployment; serverless per-token serving of your own fine-tuned LoRA is not available yet.
+
+## Video walkthrough: Train a prompt router
+
+This walkthrough fine-tunes Qwen 3.5 9B with LoRA SFT to classify prompts and route them to a small or large model. It covers the local Python loop, pooled serverless trainer, in-session evaluation, and the before-and-after comparison.
+
+<Frame>
+  <iframe title="Train a prompt router with Fireworks Serverless Training" />
+</Frame>
+
+<Card title="Open the serverless prompt-router notebook" icon="github" href="https://github.com/fw-ai/cookbook/blob/main/training/case-studies/sft_prompt_router/prompt_router_serverless.ipynb">
+  Follow the complete Cookbook example for dataset preparation, LoRA SFT, sampling, and evaluation.
+</Card>
 
 ## Next steps
 
@@ -17537,7 +17615,7 @@ base_url = os.environ.get("FIREWORKS_BASE_URL", "https://api.fireworks.ai")
 
 base_model = "accounts/fireworks/models/qwen3-8b"
 tokenizer_model = "Qwen/Qwen3-8B"
-shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k-h200"
+shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k"
 
 service = FiretitanServiceClient.from_firetitan_config(
     api_key=api_key,
@@ -17692,50 +17770,98 @@ Source: https://docs.fireworks.ai/fine-tuning/training-api/training-shapes
 
 Pre-configured GPU and model training profiles that simplify distributed training setup.
 
-# Training Shapes
+In practice, a training shape is the user-facing launch input for trainer jobs. Most users only need to choose a training shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k` and pass it to the API as `training_shape_id`.
 
-In practice, a training shape is the user-facing launch input for trainer jobs. Most users only need to choose a training shape ID such as `accounts/fireworks/trainingShapes/qwen3p5-9b-256k` and pass it to the API.
-
-<Warning>
-  **A training shape is the recommended launch path for normal trainer jobs.** In most cases, pass the full shared shape path  as `training_shape_id`, and the SDK resolves the pinned version for you. Advanced compatibility launches can still use manager-level shape refs and direct infra fields, but use that path only when you know the exact hardware and image configuration.
-</Warning>
-
-The `fireworks` account is the shared public shape catalog. Shapes published under  can be referenced by all users.
+The `fireworks` account is the shared public shape catalog. Shapes published under `accounts/fireworks/trainingShapes/<shape>` can be referenced by all users. [See the full training shapes catalog here](/fine-tuning/models#model-availability).
 
 You do not need to know the versioned shape reference, image tag, GPU layout, or linked deployment shape ahead of time. The API resolves those details internally.
+
+## Concepts
+
+**Training shape.** A validated trainer configuration for one base model and one training method. It fixes the GPU layout for each trainer replica and the training context limit for that model and method. Shapes exist so you do not have to size distributed training yourself.
+
+**Shape ID vs. shape version.** The shape ID is the stable name you pass, such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`. Behind it sits a series of pinned versions holding the exact GPU counts, context limit, and trainer image. You pass the ID; the API resolves the validated version at launch.
+
+**Training shape vs. deployment shape.** A training shape configures the trainer. Each one links to a deployment shape that configures the inference instance used for RL rollouts / sampling, and on the shape path that linked shape owns the deployment's GPU type, node count, and serving engine configuration. You normally do not name a deployment shape at all, because the API reads it from the training shape's `deploymentShapeVersion`.
+
+**Training method.** Each shape declares one training method, either LoRA or full-parameter, and a model may offer both. Your `lora_rank` must agree with the method the shape declares: `0` for a full-parameter shape, a positive integer for a LoRA shape. These are not two independent settings. Changing `lora_rank` does not convert a shape to the other method, because the method is part of the profile the shape was validated for and it affects the GPU layout and context limit the shape carries.
+
+Read the method off the shape card before you launch. For the same model, the LoRA shape and the full-parameter shape often differ in both GPU count and maximum context, so the two are rarely interchangeable.
 
 ## What You Need To Know
 
 For most users, the workflow is:
 
-1. Pick a training shape ID from the available shapes list below. In most cases this should be the full shared path .
+1. Pick a training shape ID from the per-model shape cards in the [model catalog](/fine-tuning/models#model-availability). In most cases this should be the full shared path `accounts/fireworks/trainingShapes/<shape>`.
 2. Pass it as `training_shape_id` to a cookbook recipe's `TrainerConfig`, or to `FiretitanServiceClient.from_firetitan_config(...)`.
-3. Let the SDK resolve the pinned shape version and linked deployment shape.
+3. Let the API resolve the pinned shape version and linked deployment shape.
 
-That is the only shape-specific value you choose yourself.
+The shape ID is normally the only shape-specific value you set. Everything else about the shape is resolved for you.
+
+Whether you can skip the shape ID depends on which of the two paths you use:
+
+* **Cookbook recipe.** You can leave `training_shape_id` unset, and the recipe picks a validated shape for you from your `base_model`, `lora_rank`, and `max_seq_len`.
+* **`FiretitanServiceClient` directly.** Set the shape ID yourself. The recipe layer is what does the picking, so there is nothing to pick for you here.
+
+On either path, set the shape ID yourself when you need a specific GPU layout or context limit.
 
 ## What A Training Shape Controls
 
-When you specify a training shape, it provides the trainer with:
+A validated shape version can pin every field below. Together these are the launch profile, and none of them are yours to set. The hardware fields size one trainer replica: `acceleratorCount` × `nodeCount` is the GPU count for a single replica.
 
-* GPU and node layout: `acceleratorType`, `acceleratorCount`, `nodeCount`
-* Model limits: `maxSupportedContextLength`
-* Trainer runtime: `trainerImageTag`
-* Linked serving setup: `deploymentShapeVersion`
+| Field                       | What it pins                                                                                                                                                             |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `baseModel`                 | The single base model this shape is validated for. A shape is not portable to another model.                                                                             |
+| `trainerMode`               | The training method, shown as Full-Param or LoRA in the catalog.                                                                                                         |
+| `acceleratorType`           | The GPU type, such as B200 or B300.                                                                                                                                      |
+| `acceleratorCount`          | GPUs per node.                                                                                                                                                           |
+| `nodeCount`                 | Nodes per trainer replica.                                                                                                                                               |
+| `minTotalAcceleratorCount`  | The smallest total world size, across all data-parallel replicas, that the shape has been validated at, when validation recorded one.                                    |
+| `trainerShardingScheme`     | The sharding and parallelism profile validated for the trainer launch.                                                                                                   |
+| `baseModelWeightPrecision`  | The precision for base weights during training, when the shape sets one. `BFLOAT16` applies no quantization; `FP8`, `FP4_FP8`, `INT8`, and `NF4` are quantized variants. |
+| `maxSupportedContextLength` | The validated training context limit for this model and method.                                                                                                          |
+| `trainerImageTag`           | The validated trainer runtime image.                                                                                                                                     |
+| `deploymentShapeVersion`    | The linked deployment shape version used for rollouts and sampling.                                                                                                      |
+
+The shape resource also carries metadata that does not affect a launch: `name`, `displayName`, `description`, `createTime`, `updateTime`, `modelType`, and `parameterCount`.
+
+Total GPUs for a run are the shape's per-replica GPUs multiplied by your replica count, so a 4-GPU shape launched with `replica_count=2` consumes 8 GPUs.
+
+For example, `qwen3-8b-128k` is the full-parameter shape for Qwen 3 8B. Below is version `vnuk8fdq` in full.
+
+| Field                       | Value in version `vnuk8fdq`                                                 |
+| --------------------------- | --------------------------------------------------------------------------- |
+| `name`                      | `accounts/fireworks/trainingShapes/qwen3-8b-128k`                           |
+| `baseModel`                 | `accounts/fireworks/models/qwen3-8b`                                        |
+| `trainerMode`               | `POLICY_TRAINER`, shown as Full-Param in the catalog. Use `lora_rank=0`.    |
+| `acceleratorType`           | `NVIDIA_B200_180GB`, shown as B200                                          |
+| `acceleratorCount`          | `4`                                                                         |
+| `nodeCount`                 | `1`                                                                         |
+| `trainerShardingScheme`     | Tensor 1, pipeline 1, context 4, expert 1, sequence parallelism not enabled |
+| `maxSupportedContextLength` | `128000`, shown as 128K (128,000 tokens)                                    |
+| `baseModelWeightPrecision`  | `WEIGHT_PRECISION_UNSPECIFIED`, so this shape does not pin a precision      |
+| `minTotalAcceleratorCount`  | Not set on this shape                                                       |
+| `trainerImageTag`           | `0.383.0`                                                                   |
+| `deploymentShapeVersion`    | `accounts/fireworks/deploymentShapes/rft-qwen3-8b/versions/gyiqbrd6`        |
+
+To read the same fields for the version you will actually launch on:
+
+```bash theme={null}
+firectl training-shape-version get \
+  accounts/fireworks/trainingShapes/qwen3-8b-128k/versions/latest
+```
 
 ## What You Can And Can't Change
 
 You can still configure normal training-loop fields such as:
 
-* `base_model`
-* `lora_rank`
+* `lora_rank`, which must match the shape's training method
 * `learning_rate`
-* `display_name`
 * Trainer replica count (`TrainerConfig.replica_count` or `trainer_replica_count`)
 * Deployment replica count (`DeployConfig.replica_count` or `replica_count`)
 
 <Note>
-  Shape-owned infra is locked. Do not try to override `accelerator_type`, `accelerator_count`, `node_count`, `custom_image_tag`, or the linked deployment shape.
+  Shape-owned infra is locked on the shape path. Do not set `accelerator_type`, `accelerator_count`, `node_count`, or `custom_image_tag`; the shape supplies all four. The linked deployment shape can be overridden through `deployment_shape`, but only for deployments you manage outside the normal flow.
 </Note>
 
 Gradient accumulation is not a trainer-launch setting. To accumulate gradients, call `forward_backward...` multiple times from your client loop before a single `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/loss-functions#applying-the-optimizer-step).
@@ -17744,49 +17870,33 @@ For field-level behavior and dataclass details, see the [`FiretitanServiceClient
 
 ## Using a Training Shape
 
-The only shape-specific input you provide is the shape ID:
+At launch, the shape ID resolves in three steps:
 
-1. **You provide the shape ID** (e.g. `accounts/fireworks/trainingShapes/qwen3p5-9b-256k`) — no version needed.
-2. **The SDK resolves the latest validated version** during managed service provisioning.
-3. **The SDK applies the linked deployment shape** when you request a sampler deployment.
+1. **You provide the shape ID** (e.g. `accounts/fireworks/trainingShapes/qwen3-8b-128k`), with no version needed.
+2. **The API resolves the latest validated version** when the service client provisions the trainer.
+3. **The API applies the linked deployment shape** when you request a sampler deployment.
 
-Pass the shape ID to the managed service:
+Pass the shape ID to the SDK-managed service client (`FiretitanServiceClient`):
 
 ```python theme={null}
 from fireworks.training.sdk import FiretitanServiceClient
 
-shape_id = "accounts/fireworks/trainingShapes/qwen3p5-9b-256k"
+shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k"
 
 service = FiretitanServiceClient.from_firetitan_config(
     api_key=api_key,
-    base_model="accounts/fireworks/models/qwen3p5-9b",
+    base_model="accounts/fireworks/models/qwen3-8b",
     training_shape_id=shape_id,
     lora_rank=0,
     create_deployment=False,
 )
 training_client = service.create_training_client(
-    base_model="accounts/fireworks/models/qwen3p5-9b",
+    base_model="accounts/fireworks/models/qwen3-8b",
     lora_rank=0,
 )
 ```
 
-<Warning>
-  Use the full training shape ID including the account prefix (for example `accounts/fireworks/trainingShapes/qwen3p5-9b-256k`). The `fireworks` account is the shared public account for training shapes, and you do **not** need to hand-write a versioned `training_shape_ref` yourself.
-</Warning>
-
-## Available Training Shapes
-
-Below is a searchable catalog of customer-ready training shapes per model. During Reinforcement Fine-Tuning (RFT), two types of models are often deployed: a **policy trainer** (which updates its weights) and a **reference model** (which is forward-only).
-
-* **Policy trainer shapes** are used for standard Supervised Fine-Tuning (SFT) or as the active policy model during Reinforcement Learning (RL).
-* **LoRA trainer shapes** are used for parameter-efficient fine-tuning.
-* **Forward-only / reference shapes** are used for reference models in RL pipelines. They do not require optimizer states or backward passes, and thus often require fewer resources.
-
-The **Surfaces** column shows whether each shape supports direct **API** training jobs, customer-facing **Managed** training (SFT/DPO/RFT webapp), or both — based on model tunability, shape readiness, and linked deployment configuration.
-
-Select a model from the dropdown to view the **Training method support** matrix (SFT / DPO / RFT × LoRA / Full-Param) with per-method surfaces and total GPU requirements, plus the backing training shapes for that model.
-
-<TrainingShapesCatalog />
+*Note: You do not need to hand-write a versioned `training_shape_ref` yourself. Advanced compatibility launches can still use manager-level shape refs and direct infra fields, but take that path only when you know the exact hardware and image configuration.*
 
 
 # Vision Inputs
@@ -17797,7 +17907,7 @@ Fine-tune vision-language models (VLMs) with the Training API using multimodal c
 The Training API supports vision-language model (VLM) fine-tuning, allowing you to train models that understand both images and text. This works across all training modes — SFT, DPO, and RL — using the same API primitives and cookbook recipes you already know.
 
 <Note>
-  VLM support in the Training API requires a VLM-compatible training shape. See [Training Shapes](/fine-tuning/training-api/training-shapes#qwen3-vl) for available shapes.
+  VLM support in the Training API requires a VLM-compatible training shape. See [Models](/fine-tuning/models) for the shapes published on each VLM.
 </Note>
 
 ## What changes for vision
@@ -18142,11 +18252,11 @@ Use the corresponding cookbook recipes (`dpo_loop`, `rl_loop`) with a VLM traini
 | ----------- | --------------------------------------------------- | ------- | ---- |
 | Qwen3 VL 8B | `accounts/fireworks/trainingShapes/qwen3-vl-8b-65k` | 65k     | 4    |
 
-See [Training Shapes](/fine-tuning/training-api/training-shapes#qwen3-vl) for the full list and details.
+See [Models](/fine-tuning/models) for the full list and details.
 
 ## Related guides
 
-* [Training Shapes](/fine-tuning/training-api/training-shapes) — available VLM and text training shapes
+* [Models](/fine-tuning/models) — available VLM and text training shapes, and the surfaces each model is enabled for
 * [Supervised Fine Tuning - Vision (Managed)](/fine-tuning/fine-tuning-vlm) — managed VLM fine-tuning without writing training loops
 * [Querying Vision Language Models](/guides/querying-vision-language-models) — inference with VLMs
 * [Cookbook SFT](/fine-tuning/training-api/cookbook/sft) — SFT recipe details
@@ -18199,7 +18309,7 @@ Before launching an RFT job, ensure you have the following set up. Our quickstar
   </Accordion>
 
   <Accordion title="Base model selected">
-    Choose a model that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as RFT-compatible. `accounts/fireworks/models/qwen3-4b` is a common small starting point when enabled for the account.
+    Choose a model that [Models](/fine-tuning/models) marks as RFT-enabled. `accounts/fireworks/models/qwen3-4b` is a common small starting point when enabled for the account.
   </Accordion>
 </AccordionGroup>
 
@@ -19361,7 +19471,7 @@ A reinforcement learning variant used in RFT. Optimizes model outputs using grou
 Fine-tuning using reinforcement learning signals rather than labeled examples. Trains the model to maximize a reward function — useful for tasks with verifiable outcomes such as math, code, and reasoning.
 
 **Training shape**\
-The hardware configuration used for a fine-tuning job. Selected via `--training-shape` in firectl. Determines GPU type, count, and whether LoRA or full-parameter training is used.
+A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed fine-tuning jobs select a compatible shape for you.
 
 **`dcp_save_interval`**\
 RFT training parameter that controls how often full training state (weights + optimizer) is checkpointed. Default is `0` (disabled). Set to a positive integer to enable full checkpoint-and-resume including optimizer state.
@@ -27284,8 +27394,10 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [Kimi K2.6 Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                 | \$2.00 / \$0.30 / \$8.00  | —                             |
 | [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                          | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22     |
 | [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)                      | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
+| [DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)          | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42     |
 | [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                          | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50      |
 | [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                     | \$2.10 / \$0.21 / \$6.60  | —                             |
+| [GLM 5.2 Fast US](https://app.fireworks.ai/models/fireworks/glm-5p2)                                  | \$2.10 / \$0.21 / \$6.60  | —                             |
 | [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)                                          | \$1.40 / \$0.26 / \$4.40  | \$2.10 / \$0.39 / \$6.60      |
 | [GLM 5.1 Fast](https://app.fireworks.ai/models/fireworks/glm-5p1)                                     | \$2.80 / \$0.52 / \$8.80  | —                             |
 | [Qwen 3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus)                               | \$0.40 / \$0.08 / \$1.60  | —                             |
@@ -27321,7 +27433,7 @@ Embeddings are billed per 1M input tokens.
 
 ## Notes
 
-* [US-only Serverless](/serverless/us-only-serverless) endpoints are priced at a 10% premium to the base model serverless prices.
+* [US-only Serverless](/serverless/us-only-serverless) endpoints are priced at a 10% premium to the base model serverless prices, except GLM 5.2 Fast US, which matches global GLM 5.2 Fast pricing.
 * For account-level controls (spend tiers, monthly budget, on-demand GPU quotas), see [Account quotas](/guides/quotas_usage/account-quotas).
 
 
@@ -27448,9 +27560,10 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 
 ## Available models
 
-| Model   | `model` ID                              |
-| ------- | --------------------------------------- |
-| Kimi K3 | `accounts/fireworks/routers/kimi-k3-us` |
+| Model        | `model` ID                                   |
+| ------------ | -------------------------------------------- |
+| Kimi K3      | `accounts/fireworks/routers/kimi-k3-us`      |
+| GLM 5.2 Fast | `accounts/fireworks/routers/glm-5p2-fast-us` |
 
 ## How to use it
 
@@ -27481,7 +27594,7 @@ print(response.choices[0].message.content)
 
 ## Pricing
 
-US-only endpoints are priced at a 10% premium to the base model serverless prices. See [Serverless pricing](/serverless/pricing).
+US-only endpoints are priced at a 10% premium to the base model serverless prices, except GLM 5.2 Fast US, which matches global GLM 5.2 Fast pricing. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

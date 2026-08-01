@@ -1,5 +1,5 @@
 ---
-title: "Retrieve Broadcast Metrics"
+title: "Retrieve Metrics"
 source: https://resend.com/docs/api-reference/broadcasts/get-broadcast-metrics
 path: docs/api-reference/broadcasts/get-broadcast-metrics
 ---

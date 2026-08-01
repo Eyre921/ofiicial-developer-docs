@@ -15,6 +15,18 @@ Stripe can calculate tax on sales in the locations listed in the table below. Se
 - How Stripe calculates tax
 - How to report and file your taxes
 
+### Request to join the preview for manual tax rules.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/tax/supported-countries" \
+  -d '{"email": "EMAIL", "preview": "manual_tax_rules_waitlist_unsupported_jurisdiction_preview"}'
+```
+
 You can also learn about tax calculation and collection in each region:
 
 - [Africa](https://docs.stripe.com/tax/supported-countries/africa.md)

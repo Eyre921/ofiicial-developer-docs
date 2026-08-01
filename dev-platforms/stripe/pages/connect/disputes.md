@@ -17,16 +17,26 @@ This guide describes how Stripe processes disputes for each charge type and how 
 
 ## Direct charges
 
-For connected accounts that use [direct charges](https://docs.stripe.com/connect/direct-charges.md), Stripe always attempts to debit the disputed amount from the connected account’s balance. However, the dispute fee, as well as ultimate responsibility for the disputed amount, depends on whether your platform is [responsible for negative balances](https://docs.stripe.com/connect/risk-management.md#identify-negative-balance-responsibility). It doesn’t matter whether your platform is responsible for other Stripe fees.
+For connected accounts that use [direct charges](https://docs.stripe.com/connect/direct-charges.md), Stripe always attempts to debit disputed amounts from the connected account’s balance. However, if Stripe can’t debit the amount, ultimate responsibility depends on whether Stripe or the platform is [responsible for negative balances](https://docs.stripe.com/connect/risk-management.md#identify-negative-balance-responsibility).
 
-| Negative balance responsibility | Disputed amount responsibility | Dispute fee responsibility |
-| --- | --- | --- |
-| Stripe | Stripe debits the disputed amount from the connected account, and Stripe is responsible for the loss if the amount can’t be debited. | Stripe debits the dispute fee from the connected account, and Stripe is responsible for the loss if the amount can’t be debited. |
-| Platform | Stripe debits the disputed amount from the connected account, but if the connected account balance is insufficient, Stripe debits it from the platform. | Stripe debits the dispute fee from the platform, and the platform is responsible for the loss if the amount can’t be debited. |
+For dispute-related fees, responsibility depends on your connected account options. The following table shows whether Stripe debits dispute-related fees from the platform or the connected account:
 
-> #### Legacy connected account types
-> 
-> If you use Express or Custom connected accounts, see [Fee behavior on connected accounts](https://docs.stripe.com/connect/direct-charges-fee-payer-behavior.md#application_custom-or-application_express) for information about dispute fees.
+| Account option | Dispute fee payer |
+| --- | --- |
+| v2 `Account` with [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) = `application` | Platform |
+| v2 `Account` with [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) = any of the following values, including legacy Standard, Express, and Custom accounts:
+- `stripe`
+- `application_custom`
+- `application_express` | Connected account |
+| v2 `Account` with [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) = `application_unified_accounts_beta` and without [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Connected account |
+| v2 `Account` with [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) = `application_unified_accounts_beta` and with [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Platform |
+| v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = `application` | Platform |
+| v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = any of the following values, including legacy Standard, Express, and Custom accounts:
+- `account`
+- `application_custom`
+- `application_express` | Connected account |
+| v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = `application_unified_accounts_beta` and without [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Connected account |
+| v1 `Account` with [controller.fees.payer](https://docs.stripe.com/api/accounts/create.md#create_account-controller-fees-payer) = `application_unified_accounts_beta` and with [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md#eligibility) enabled | Platform |
 
 ## Destination and separate charges and transfers
 
@@ -54,10 +64,14 @@ The following components support dispute management:
 
 Note: The following is a preview/demo component that behaves differently than live mode usage with real connected accounts. The actual component has more functionality than what might appear in this demo component. For example, for connected accounts without Stripe dashboard access (custom accounts), no user authentication is required in production.
 
+## Smart Disputes
+
+If you use [Smart Disputes](https://docs.stripe.com/disputes/smart-disputes.md), you can [enable Smart Disputes auto-responses for your connected accounts](https://docs.stripe.com/disputes/smart-disputes/auto-respond.md?dashboard-or-api=dashboard#settings-for-connect-platforms).
+
 ## See also
 
-- [Respond to disputes](https://docs.stripe.com/disputes/responding.md)
 - [Dispute categories](https://docs.stripe.com/disputes/categories.md)
-- [Prevent disputes and fraud](https://docs.stripe.com/disputes/prevention.md)
 - [Use Radar with Connect](https://docs.stripe.com/connect/radar.md)
+- [Smart Disputes](https://docs.stripe.com/disputes/smart-disputes.md)
+- [Smart Disputes fee passthrough](https://docs.stripe.com/connect/smart-disputes-fee-passthrough.md)
 

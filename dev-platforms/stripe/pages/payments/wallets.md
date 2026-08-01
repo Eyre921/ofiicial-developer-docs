@@ -92,7 +92,7 @@ The following table shows which Stripe products support each wallet:
 | [PayPal](https://docs.stripe.com/payments/paypal.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported 3 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | N/A (online payments only) |
 | [PayPay](https://docs.stripe.com/payments/paypay.md) | ✓ Supported 8 | ✓ Supported 1,2,3 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | N/A (online payments only) |
 | [Revolut Pay](https://docs.stripe.com/payments/revolut-pay.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | N/A (online payments only) |
-| [Samsung Pay](https://docs.stripe.com/payments/samsung-pay/accept-a-payment.md) | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | ✓ Supported |
+| [Samsung Pay](https://docs.stripe.com/payments/samsung-pay/accept-a-payment.md) | - Unsupported | ✓ Supported 1,2 | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | ✓ Supported |
 | [Satispay](https://docs.stripe.com/payments/satispay.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | N/A (online payments only) |
 | [Stablecoins and crypto](https://docs.stripe.com/payments/stablecoin-payments.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Invite only | ✓ Supported | ✓ Supported | N/A (online payments only) |
 | [Vipps](https://docs.stripe.com/payments/vipps.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | N/A (online payments only) |
@@ -118,6 +118,7 @@ The following table describes each wallet’s compatibility with API-based payme
 | [PayPal](https://docs.stripe.com/payments/paypal.md) | `paypal` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | Yes |
 | [PayPay](https://docs.stripe.com/payments/paypay.md) | `paypay` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Revolut Pay](https://docs.stripe.com/payments/revolut-pay.md) | `revolut_pay` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | Yes |
+| [Samsung Pay](https://docs.stripe.com/payments/samsung-pay/accept-a-payment.md) | `samsung_pay` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Secure Remote Commerce](https://docs.stripe.com/secure-remote-commerce.md) | A comma-separated list of accepted card brands | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Stablecoins and crypto](https://docs.stripe.com/payments/stablecoin-payments.md) | `crypto` | ✓ Supported | Invite only | - Unsupported | Invite only | Yes |
 | [Vipps](https://docs.stripe.com/payments/vipps.md) | `vipps` | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | Yes |

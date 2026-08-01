@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 393 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -223,6 +223,7 @@
 - `fine-tuning/finetuning-intro` — [Training Overview](pages/fine-tuning/finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/finetuning-intro)
 - `fine-tuning/how-rft-works` — [Basics](pages/fine-tuning/how-rft-works.md) · [原文](https://docs.fireworks.ai/fine-tuning/how-rft-works)
 - `fine-tuning/managed-finetuning-intro` — [Managed Fine-Tuning Overview](pages/fine-tuning/managed-finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro)
+- `fine-tuning/models` — [Models](pages/fine-tuning/models.md) · [原文](https://docs.fireworks.ai/fine-tuning/models)
 - `fine-tuning/monitor-training` — [Monitor Training](pages/fine-tuning/monitor-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/monitor-training)
 - `fine-tuning/multi-turn-cost-comparison` — [Price comparison vs Tinker](pages/fine-tuning/multi-turn-cost-comparison.md) · [原文](https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison)
 - `fine-tuning/parameter-tuning` — [Parameter Tuning](pages/fine-tuning/parameter-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/parameter-tuning)

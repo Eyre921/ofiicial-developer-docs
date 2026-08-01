@@ -6,6 +6,14 @@ path: docs/box/guides/web-scraping-playwright
 
 In this guide, we use Upstash Box to run [Playwright](https://playwright.dev) against a JavaScript-heavy site, scrape structured data from it, and pull the results back to our own server. Because a Box is a real Linux container rather than a restricted serverless runtime, Chromium and its system dependencies install and run exactly like they would on your laptop.
 
+<Note>
+  Boxes also ship a managed, pre-installed browser. Create one with `browser:
+  true` and drive Chromium through the SDK, or [connect Playwright over
+  CDP](/docs/box/overall/browser/connect) with no install step. This guide shows
+  the manual route, where the box's agent installs and controls Playwright
+  itself. See [Browser](/docs/box/overall/browser/overview) for the built-in one.
+</Note>
+
 ***
 
 ## 1. Installation

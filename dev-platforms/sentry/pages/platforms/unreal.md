@@ -134,6 +134,7 @@ If you set a limit per issue, as in the example above, a limit of 5, Sentry will
 - [Enriching Events](https://docs.sentry.io/platforms/unreal/enriching-events.md)
 - [Data Management](https://docs.sentry.io/platforms/unreal/data-management.md)
 - [Tracing](https://docs.sentry.io/platforms/unreal/tracing.md)
+- [App Hangs and ANRs](https://docs.sentry.io/platforms/unreal/app-hangs.md)
 - [Session Replay](https://docs.sentry.io/platforms/unreal/session-replay.md)
 - [Logs](https://docs.sentry.io/platforms/unreal/logs.md)
 - [Application Metrics](https://docs.sentry.io/platforms/unreal/metrics.md)

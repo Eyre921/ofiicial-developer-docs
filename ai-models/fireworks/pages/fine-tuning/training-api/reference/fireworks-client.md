@@ -96,7 +96,7 @@ print(profile.node_count)             # e.g. 1
 print(profile.pipeline_parallelism)   # e.g. 1
 ```
 
-See [Training Shapes](/fine-tuning/training-api/training-shapes) for the user-facing shape workflow.
+See [Training shapes](/fine-tuning/training-api/training-shapes) for the user-facing shape workflow.
 
 ### `validate_output_model_id(output_model_id)`
 
@@ -160,4 +160,4 @@ Returned by `resolve_training_profile`:
 
 * [TrainerJobManager](/fine-tuning/training-api/reference/trainer-job-manager) -- trainer job lifecycle (extends FireworksClient)
 * [Saving and Loading](/fine-tuning/training-api/saving-and-loading) -- checkpoint save, load, and promote workflows
-* [Training Shapes](/fine-tuning/training-api/training-shapes) -- available shapes and deployment linkage
+* [Training shapes](/fine-tuning/training-api/training-shapes) -- what a shape pins, and its deployment linkage

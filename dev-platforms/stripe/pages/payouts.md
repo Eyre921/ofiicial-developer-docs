@@ -1077,7 +1077,7 @@ These restrictions might differ if you use [cross-border payouts](https://docs.s
 
 ### Manual payouts
 
-If you turn off automatic payouts, you must manually send funds to your bank account. You can do this in the [Dashboard](https://dashboard.stripe.com/settings/payouts) or by using the API to [create payouts](https://docs.stripe.com/api.md#create_payout).
+If you turn off automatic payouts, you must manually send funds to your bank account. You can do this in the [Dashboard](https://dashboard.stripe.com/settings/payouts) or by using the API to [create payouts](https://docs.stripe.com/api/payouts/create.md).
 
 Manual payouts are available in all regions except Brazil and India, where payouts are always automatic and daily. In most regions, manual payouts typically take 1-4 business days to arrive in your bank account after initiating the manual payout. Same-day manual payouts are available in the US, UK, and Eurozone under the conditions outlined in the following table:
 

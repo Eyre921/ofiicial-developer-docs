@@ -33,7 +33,7 @@ That gives you a complete, replayable record of each session that you can join b
 | [`ConversationText`](/docs/voice-agent-conversation-text) (`role`, `content`)                                               | The transcript of every user and agent turn. The core record. Includes `languages` / `languages_hinted` when using `flux-general-multi`.                                                  |
 | [`AgentThinking`](/docs/voice-agent-agent-thinking) (`content`)                                                             | What the agent was processing before it responded.                                                                                                                                        |
 | [`FunctionCallRequest`](/docs/voice-agent-function-call-request)                                                            | Tool-call requests with `id`, `name`, `arguments`, and the `client_side` flag. See [Function Calling](/docs/voice-agents-function-calling) for details.                                   |
-| [`LatencyReport`](/docs/voice-agent-latency-report)                                                                         | Detailed LLM, TTS, and end-to-end latency breakdown. See [section below](#latencyreport-detailed-latency-telemetry).                                                                      |
+| [`LatencyReport`](/docs/voice-agent-latency-report)                                                                         | Detailed STT / LLM / TTS latency breakdown. See [section below](#latencyreport-detailed-latency-telemetry).                                                                               |
 | [`UserStartedSpeaking`](/docs/voice-agent-user-started-speaking) / [`AgentAudioDone`](/docs/voice-agent-agent-audio-done)   | Turn boundaries and barge-in timing.                                                                                                                                                      |
 | [`Error` / `Warning`](/docs/voice-agent-errors-warnings) (`code`, `description`)                                            | Failure and degradation tracking.                                                                                                                                                         |
 | [`Acknowledgements`](/docs/voice-agent-acknowledgements) (`ListenUpdated`, `ThinkUpdated`, `SpeakUpdated`, `PromptUpdated`) | Confirms the exact moment an `Update*` message was applied. If an acknowledgement is missing, the update may not have landed — useful for troubleshooting mid-call configuration changes. |
@@ -56,10 +56,11 @@ Skip the raw binary audio frames unless you specifically need call recordings. I
 
 The server emits a [`LatencyReport`](/docs/voice-agent-latency-report) event after each turn. This is the richest latency signal available. Capture it the same way as every other frame.
 
-It breaks down LLM, TTS, and end-to-end latency. All fields are floats in seconds, and each is optional (omitted when not applicable to that turn):
+It breaks latency down across the full STT → LLM → TTS pipeline. All fields are floats in seconds, and each is optional (omitted when not applicable to that turn):
 
 | Field                  | What It Measures                                               |
 | ---------------------- | -------------------------------------------------------------- |
+| `stt_latency`          | Speech-to-text: audio received to transcript produced          |
 | `ttt_token_latency`    | Time to first token of any type (text, tool call, or thinking) |
 | `ttt_text_latency`     | Time to first text token from the LLM                          |
 | `ttt_tool_latency`     | Time to first tool-call token from the LLM                     |

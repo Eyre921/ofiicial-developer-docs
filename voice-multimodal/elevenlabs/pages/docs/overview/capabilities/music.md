@@ -27,6 +27,8 @@ Created in collaboration with labels, publishers, and artists, Eleven Music is c
 
 Audio Reference lets you upload a short audio track to guide the style and sound of a new Music v2 generation. This gives the model an additional creative reference alongside your text prompt.
 
+To use Audio Reference, navigate to **Music** > **Generations** and use the **+ Reference** button in the **Prompt** section to add an audio reference.
+
 You can upload a reference track of up to approximately 30 seconds in commonly used audio formats. Every uploaded reference is screened for copyright compliance before it can be used.
 
 Audio Reference influences characteristics such as the overall sound, production style, instrumentation, tempo, and mood of the generated track. It does not copy or remix the uploaded audio, and the result remains a newly generated composition.
@@ -35,7 +37,7 @@ Audio Reference is intended to guide a generation toward a similar style and sou
 designed for genre transformation — for example, uploading a jazz track and requesting a rap
 version may not produce reliable results.
 
-Audio Reference is available with Music v2 on all plans, including the Free plan.
+Audio Reference is available with Music v2 on all paid plans.
 
 ## Music Finetunes
 

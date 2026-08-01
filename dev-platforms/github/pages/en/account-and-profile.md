@@ -12,7 +12,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Account](/en/account-and-profile/get-started/account)
 
-  Get started with your GitHub account.
+  <p>Get started with your GitHub account.</p>
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
@@ -20,7 +20,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Quickstart for your personal dashboard](/en/account-and-profile/get-started/personal-dashboard-quickstart)
 
-  Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.
+  <p>Your personal dashboard helps you track issues and pull requests, find your top repositories and teams, stay up-to-date with organizations and repositories you're subscribed to, and explore recommended repositories.</p>
 
 * [Personalize your profile](/en/account-and-profile/tutorials/personalize-your-profile)
 

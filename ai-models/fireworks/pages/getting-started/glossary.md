@@ -139,7 +139,7 @@ A reinforcement learning variant used in RFT. Optimizes model outputs using grou
 Fine-tuning using reinforcement learning signals rather than labeled examples. Trains the model to maximize a reward function — useful for tasks with verifiable outcomes such as math, code, and reasoning.
 
 **Training shape**\
-The hardware configuration used for a fine-tuning job. Selected via `--training-shape` in firectl. Determines GPU type, count, and whether LoRA or full-parameter training is used.
+A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed fine-tuning jobs select a compatible shape for you.
 
 **`dcp_save_interval`**\
 RFT training parameter that controls how often full training state (weights + optimizer) is checkpointed. Default is `0` (disabled). Set to a positive integer to enable full checkpoint-and-resume including optimizer state.

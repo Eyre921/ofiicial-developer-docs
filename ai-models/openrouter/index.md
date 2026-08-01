@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 307 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 308 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -275,6 +275,7 @@
 - `docs/guides/features/workspaces/workspace-budgets` — [Workspace Budgets](pages/docs/guides/features/workspaces/workspace-budgets.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets.md)
 - `docs/guides/features/zdr` — [Zero Data Retention](pages/docs/guides/features/zdr.md) · [原文](https://openrouter.ai/docs/guides/features/zdr.md)
 - `docs/guides/features/zero-completion-insurance` — [Zero Completion Insurance](pages/docs/guides/features/zero-completion-insurance.md) · [原文](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md)
+- `docs/guides/ori/files` — [Where Ori writes files](pages/docs/guides/ori/files.md) · [原文](https://openrouter.ai/docs/guides/ori/files.md)
 - `docs/guides/overview/auth/byok` — [BYOK](pages/docs/guides/overview/auth/byok.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/byok.md)
 - `docs/guides/overview/auth/management-api-keys` — [Management API Keys](pages/docs/guides/overview/auth/management-api-keys.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md)
 - `docs/guides/overview/auth/oauth` — [OAuth PKCE](pages/docs/guides/overview/auth/oauth.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/oauth.md)

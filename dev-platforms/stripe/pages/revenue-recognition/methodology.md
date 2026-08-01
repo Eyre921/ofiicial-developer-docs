@@ -12,7 +12,7 @@ Recognizing revenue is a fundamental part of accrual accounting — Stripe Reven
 
 Stripe Revenue Recognition includes:
 
-- Recognized and deferred [revenue summaries](https://docs.stripe.com/revenue-recognition/reports/monthly-summary.md)
+- Recognized and deferred [revenue summaries](https://docs.stripe.com/revenue-recognition/reports/period-summary.md)
 - Downloadable accounting [reports and waterfall charts](https://docs.stripe.com/revenue-recognition/reports/waterfall.md)
 - Interactive revenue numbers for [full audit transparency](https://docs.stripe.com/revenue-recognition/reports/audit-numbers.md)
 - Configurable accounting period controls and [revenue recognition rules](https://docs.stripe.com/revenue-recognition/rules.md)

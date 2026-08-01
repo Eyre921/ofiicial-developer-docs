@@ -24,6 +24,9 @@
 - [Background messages](https://docs.vapi.ai/assistants/background-messages.md): Silently update chat history with background messages
 - [Idle messages](https://docs.vapi.ai/assistants/idle-messages.md): Keep users engaged during conversation pauses
 - [Assistant hooks](https://docs.vapi.ai/assistants/assistant-hooks.md): Automate actions on call events and interruptions
+- [Call timeout settings](https://docs.vapi.ai/documentation/assistants/conversation-behavior/call-timeout-settings.md): Configure silence and maximum-duration timeouts for assistants, distinguish inactivity from total call duration, and troubleshoot timeout call endings.
+- [Keypad input settings](https://docs.vapi.ai/documentation/assistants/conversation-behavior/keypad-input-settings.md): Keypad input settings let assistants collect caller-entered digits. Configure timeouts and delimiters for menus, codes, and account information during calls.
+- [End call phrases](https://docs.vapi.ai/documentation/assistants/conversation-behavior/end-call-phrases.md): End call phrases let assistants end calls after saying configured text. Choose reliable phrases and prevent unintended transcript matches during calls.
 - [Background speech denoising](https://docs.vapi.ai/documentation/assistants/conversation-behavior/background-speech-denoising.md): Filter out noise and background speech while users are talking
 - [Pronunciation dictionaries](https://docs.vapi.ai/assistants/pronunciation-dictionaries.md): Control how your AI assistant pronounces specific words and phrases
 - [Email address reading](https://docs.vapi.ai/assistants/email-address-reading.md): Get your voice agent to collect, read back, and confirm email addresses clearly
@@ -242,6 +245,13 @@
 - API reference > Calls [Get Call](https://docs.vapi.ai/api-reference/calls/get.md)
 - API reference > Calls [Delete Call](https://docs.vapi.ai/api-reference/calls/delete.md)
 - API reference > Calls [Update Call](https://docs.vapi.ai/api-reference/calls/update.md)
+- API reference > Calls [Download Call Mono Recording](https://docs.vapi.ai/api-reference/calls/call-artifact-controller-mono-recording-download.md)
+- API reference > Calls [Download Call Stereo Recording](https://docs.vapi.ai/api-reference/calls/call-artifact-controller-stereo-recording-download.md)
+- API reference > Calls [Download Call Video Recording](https://docs.vapi.ai/api-reference/calls/call-artifact-controller-video-recording-download.md)
+- API reference > Calls [Download Call Customer Recording](https://docs.vapi.ai/api-reference/calls/call-artifact-controller-customer-recording-download.md)
+- API reference > Calls [Download Call Assistant Recording](https://docs.vapi.ai/api-reference/calls/call-artifact-controller-assistant-recording-download.md)
+- API reference > Calls [Download Call Packet Capture (pcap)](https://docs.vapi.ai/api-reference/calls/call-artifact-controller-pcap-download.md)
+- API reference > Calls [Download Call Logs](https://docs.vapi.ai/api-reference/calls/call-artifact-controller-call-logs-download.md)
 - API reference > Chats [List Chats](https://docs.vapi.ai/api-reference/chats/list.md)
 - API reference > Chats [Create Chat](https://docs.vapi.ai/api-reference/chats/create.md)
 - API reference > Chats [Get Chat](https://docs.vapi.ai/api-reference/chats/get.md)
@@ -249,9 +259,12 @@
 - API reference > Chats [Create Chat (OpenAI Compatible)](https://docs.vapi.ai/api-reference/chats/create-response.md)
 - API reference > Campaigns [List Campaigns](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-find-all.md)
 - API reference > Campaigns [Create Campaign](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-create.md)
+- API reference > Campaigns [List Campaigns V2](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-find-all-v-2.md)
+- API reference > Campaigns [Create Campaign V2](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-create-v-2.md)
+- API reference > Campaigns [Get Campaign V2](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-find-one-v-2.md)
+- API reference > Campaigns [Delete Campaign](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-remove-v-2.md)
+- API reference > Campaigns [Update Campaign](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-update-v-2.md)
 - API reference > Campaigns [Get Campaign](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-find-one.md)
-- API reference > Campaigns [Delete Campaign](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-remove.md)
-- API reference > Campaigns [Update Campaign](https://docs.vapi.ai/api-reference/campaigns/campaign-controller-update.md)
 - API reference > Sessions [List Sessions](https://docs.vapi.ai/api-reference/sessions/list.md)
 - API reference > Sessions [Create Session](https://docs.vapi.ai/api-reference/sessions/create.md)
 - API reference > Sessions [Get Session](https://docs.vapi.ai/api-reference/sessions/get.md)
@@ -285,6 +298,12 @@
 - API reference > Insight [Update Insight](https://docs.vapi.ai/api-reference/insight/insight-controller-update.md)
 - API reference > Insight [Run Insight](https://docs.vapi.ai/api-reference/insight/insight-controller-run.md)
 - API reference > Insight [Preview Insight](https://docs.vapi.ai/api-reference/insight/insight-controller-preview.md)
+- API reference > Board [Get Boards](https://docs.vapi.ai/api-reference/board/board-controller-find-all.md)
+- API reference > Board [Create Board](https://docs.vapi.ai/api-reference/board/board-controller-create.md)
+- API reference > Board [Get Default Metrics Overview Board](https://docs.vapi.ai/api-reference/board/board-controller-metrics-overview-ensure.md)
+- API reference > Board [Get Board](https://docs.vapi.ai/api-reference/board/board-controller-find-one.md)
+- API reference > Board [Delete Board](https://docs.vapi.ai/api-reference/board/board-controller-remove.md)
+- API reference > Board [Update Board](https://docs.vapi.ai/api-reference/board/board-controller-update.md)
 - API reference > Eval [List Evals](https://docs.vapi.ai/api-reference/eval/eval-controller-get-paginated.md)
 - API reference > Eval [Create Eval](https://docs.vapi.ai/api-reference/eval/eval-controller-create.md)
 - API reference > Eval [Get Eval](https://docs.vapi.ai/api-reference/eval/eval-controller-get.md)

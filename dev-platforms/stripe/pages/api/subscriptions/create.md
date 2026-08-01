@@ -952,6 +952,11 @@ Possible enum values:
     - `link`
       Link
 
+    - `mb_way`
+      MB WAY
+
+      Only supported when `collection_method` is `send_invoice`.
+
     - `multibanco`
       Multibanco
 

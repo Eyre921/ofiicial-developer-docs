@@ -53,7 +53,7 @@ cfg = Config(
     teacher_model="accounts/fireworks/models/qwen3-32b",
     dataset="/path/to/prompts.jsonl",
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
     deployment=DeployConfig(tokenizer_model="Qwen/Qwen3-8B"),
     max_rows=100,

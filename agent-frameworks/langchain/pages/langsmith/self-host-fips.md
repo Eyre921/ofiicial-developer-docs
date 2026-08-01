@@ -18,17 +18,18 @@ The `-fips` variants are built on top of [Chainguard FIPS container images](http
 
 Every LangChain-authored image has a `-fips` counterpart published at the same tag as the non-FIPS version:
 
-| Non-FIPS image                           | FIPS image                                    |
-| ---------------------------------------- | --------------------------------------------- |
-| `langchain/langsmith-ace-backend`        | `langchain/langsmith-ace-backend-fips`        |
-| `langchain/langsmith-backend`            | `langchain/langsmith-backend-fips`            |
-| `langchain/langsmith-frontend`           | `langchain/langsmith-frontend-fips`           |
-| `langchain/langsmith-go-backend`         | `langchain/langsmith-go-backend-fips`         |
-| `langchain/langsmith-playground`         | `langchain/langsmith-playground-fips`         |
-| `langchain/hosted-langserve-backend`     | `langchain/hosted-langserve-backend-fips`     |
-| `langchain/langgraph-operator`           | `langchain/langgraph-operator-fips`           |
-| `langchain/agent-builder-tool-server`    | `langchain/agent-builder-tool-server-fips`    |
-| `langchain/agent-builder-trigger-server` | `langchain/agent-builder-trigger-server-fips` |
+| Non-FIPS image                    | FIPS image                             |
+| --------------------------------- | -------------------------------------- |
+| `langchain/langsmith-ace-backend` | `langchain/langsmith-ace-backend-fips` |
+| `langchain/langsmith-backend`     | `langchain/langsmith-backend-fips`     |
+| `langchain/langsmith-frontend`    | `langchain/langsmith-frontend-fips`    |
+| `langchain/langgraph-operator`    | `langchain/langgraph-operator-fips`    |
+
+<Note>
+  **Fewer images from LangSmith 0.16.21 (chart `0.16.0-rc.17`) onward.** The platform backend, playground, host backend, and the Fleet tool and trigger servers now all run from the single `langsmith-backend` image, so `langsmith-go-backend-fips`, `langsmith-playground-fips`, `hosted-langserve-backend-fips`, `agent-builder-tool-server-fips`, and `agent-builder-trigger-server-fips` are no longer needed. The corresponding `values.yaml` keys: `platformBackendImage`, `playgroundImage`, `hostBackendImage`, `fleetToolServerImage`, and `fleetTriggerServerImage`, have been removed from the chart; any values you still set for them are ignored.
+
+  On **earlier** versions those five images are published with `-fips` counterparts at the same tag as well; point each of those keys at its `-fips` repository too.
+</Note>
 
 PostgreSQL, Redis, and ClickHouse are not published as FIPS variants by LangChain. If your deployment requires FIPS for these components, bring your own FIPS-mode service and connect via [external Postgres](/langsmith/self-host-external-postgres), [external Redis](/langsmith/self-host-external-redis), or [external ClickHouse](/langsmith/self-host-external-clickhouse).
 
@@ -40,38 +41,26 @@ We consider this acceptable for regulated environments: FIPS governs the platfor
 
 ## Use FIPS images
 
-Update `values.yaml` in your LangSmith Helm installation to point each LangChain image repository at its `-fips` counterpart, keeping your existing tag. Replace `0.15.0` with the [LangSmith version](/langsmith/self-hosted-changelog) you want to deploy:
+Update `values.yaml` in your LangSmith Helm installation to point each LangChain image repository at its `-fips` counterpart, keeping your existing tag. Replace `0.16.21` with the [LangSmith version](/langsmith/self-hosted-changelog) you want to deploy:
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 images:
   aceBackendImage:
     repository: "langchain/langsmith-ace-backend-fips"
     pullPolicy: IfNotPresent
-    tag: "0.15.0"
+    tag: "0.16.21"
   backendImage:
     repository: "langchain/langsmith-backend-fips"
     pullPolicy: IfNotPresent
-    tag: "0.15.0"
+    tag: "0.16.21"
   frontendImage:
     repository: "langchain/langsmith-frontend-fips"
     pullPolicy: IfNotPresent
-    tag: "0.15.0"
-  hostBackendImage:
-    repository: "langchain/hosted-langserve-backend-fips"
-    pullPolicy: IfNotPresent
-    tag: "0.15.0"
+    tag: "0.16.21"
   operatorImage:
     repository: "langchain/langgraph-operator-fips"
     pullPolicy: IfNotPresent
-    tag: "0.15.0"
-  platformBackendImage:
-    repository: "langchain/langsmith-go-backend-fips"
-    pullPolicy: IfNotPresent
-    tag: "0.15.0"
-  playgroundImage:
-    repository: "langchain/langsmith-playground-fips"
-    pullPolicy: IfNotPresent
-    tag: "0.15.0"
+    tag: "0.16.21"
 ```
 
 Apply the change and upgrade following the [Upgrading LangSmith](/langsmith/self-host-upgrades) guide.
@@ -108,7 +97,7 @@ Locate applicable CMVP certificate(s) at: CMVP #4985
 You can also verify an image outside Kubernetes:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-docker run --rm --entrypoint openssl-fips-test langchain/langsmith-go-backend-fips:0.15.0
+docker run --rm --entrypoint openssl-fips-test langchain/langsmith-backend-fips:0.16.21
 ```
 
 For more detail on interpreting the output, see [Chainguard's FIPS verification guide](https://edu.chainguard.dev/chainguard/fips/verify-fips/).

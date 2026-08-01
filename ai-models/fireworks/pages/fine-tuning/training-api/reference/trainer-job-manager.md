@@ -45,7 +45,7 @@ Create a service-mode trainer job and return immediately (without waiting). Retu
 ```python theme={null}
 created = rlor_mgr.create(TrainerJobConfig(
     base_model="accounts/fireworks/models/qwen3-8b",
-    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     lora_rank=0,
     learning_rate=1e-5,
 ))
@@ -69,7 +69,7 @@ Create a service-mode trainer and poll until the endpoint is healthy. Combines `
 ```python theme={null}
 endpoint = rlor_mgr.create_and_wait(TrainerJobConfig(
     base_model="accounts/fireworks/models/qwen3-8b",
-    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_ref="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     lora_rank=0,
     learning_rate=1e-5,
     display_name="grpo-policy-trainer",
@@ -183,7 +183,7 @@ When `training_shape_ref` is set (the recommended **shape path**), the training 
 | Field                        | Type                                | Default | Description                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------------- | ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `base_model`                 | `str`                               | —       | Base model name (e.g. `"accounts/fireworks/models/qwen3-8b"`)                                                                                                                                                                                                                                                                                                   |
-| `training_shape_ref`         | `str \| None`                       | `None`  | Full training-shape resource name (e.g. `accounts/fireworks/trainingShapes/<shape>` or `.../versions/<ver>`). Use `mgr.resolve_training_profile(...)` to get the pinned versioned ref. See [Training Shapes](/fine-tuning/training-api/training-shapes).                                                                                                        |
+| `training_shape_ref`         | `str \| None`                       | `None`  | Full training-shape resource name (e.g. `accounts/fireworks/trainingShapes/<shape>` or `.../versions/<ver>`). Use `mgr.resolve_training_profile(...)` to get the pinned versioned ref. See [Training shapes](/fine-tuning/training-api/training-shapes).                                                                                                        |
 | `lora_rank`                  | `int`                               | `0`     | LoRA rank. `0` for full-parameter tuning, or a positive integer (e.g. `16`, `64`) for LoRA                                                                                                                                                                                                                                                                      |
 | `max_context_length`         | `int \| None`                       | `None`  | Maximum sequence length. Usually inherited from the training shape on the shape path.                                                                                                                                                                                                                                                                           |
 | `learning_rate`              | `float`                             | `1e-5`  | Learning rate for the optimizer                                                                                                                                                                                                                                                                                                                                 |
@@ -240,5 +240,5 @@ See [`FireworksClient` > TrainingShapeProfile](/fine-tuning/training-api/referen
 ## Related guides
 
 * [FiretitanServiceClient](/fine-tuning/training-api/reference/service-client) — create a `FiretitanTrainingClient` for a live trainer endpoint
-* [Training Shapes](/fine-tuning/training-api/training-shapes) — available shapes and deployment linkage
+* [Training shapes](/fine-tuning/training-api/training-shapes) — what a shape pins, and its deployment linkage
 * [Cleanup](/fine-tuning/training-api/reference/cleanup) — resource cleanup

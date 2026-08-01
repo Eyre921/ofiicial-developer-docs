@@ -4,5 +4,5 @@ source: https://docs.langchain.com/langsmith/smith-api/sandboxes/delete-a-snapsh
 path: langsmith/smith-api/sandboxes/delete-a-snapshot
 ---
 
-/langsmith/langsmith-platform-openapi.json delete /v2/sandboxes/snapshots/{snapshot_id}
+/langsmith/langsmith-platform-openapi.json delete /api/v2/sandboxes/snapshots/{snapshot_id}
 Delete a snapshot by ID. The underlying storage is reclaimed asynchronously.

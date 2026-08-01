@@ -29,7 +29,7 @@ service = FiretitanServiceClient.from_firetitan_config(
     base_model="accounts/fireworks/models/qwen3-8b",
     tokenizer_model="Qwen/Qwen3-8B",
     lora_rank=0,
-    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     deployment_id="research-serving",   # set create_deployment=False for trainer-only flows
     learning_rate=1e-5,
     replica_count=1,                     # deployment replicas

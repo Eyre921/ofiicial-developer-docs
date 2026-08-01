@@ -114,6 +114,10 @@ Function calls executed in earlier sessions, with arguments and results.
 
 The full schema and field-by-field reference live on the [History](/docs/voice-agent-history) page.
 
+### Continuing past the maximum session length
+
+Sessions close automatically at 2 hours. The server sends a `MAXIMUM_SESSION_LENGTH_APPROACHING` warning at 1 hour 55 minutes and a terminal `MAXIMUM_SESSION_LENGTH_REACHED` error at 2 hours. To carry a long conversation across that boundary, capture the session's history, open a new connection, and replay the turns in `agent.context.messages`. See [Maximum session length](/docs/voice-agent-errors-warnings#maximum-session-length).
+
 ### Toggling history
 
 History is enabled by default. To disable it, set:

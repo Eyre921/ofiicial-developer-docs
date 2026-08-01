@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/audiobooks
 
 # Audiobooks
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d66167d5a9f0a41adc461dc06a6a6fd12813044bfbe44f4621cea93a1b8a0242/assets/images/product-guides/studio/audiobooks-new-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260731%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260731T101158Z&X-Amz-Expires=604800&X-Amz-Signature=f39b24c5f866c8b0e374c3657fb50a49366683243ba488f791a3e3e529335ed2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks" title="audiobooks-new-project" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d66167d5a9f0a41adc461dc06a6a6fd12813044bfbe44f4621cea93a1b8a0242/assets/images/product-guides/studio/audiobooks-new-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T113217Z&X-Amz-Expires=604800&X-Amz-Signature=08b6ec76e13407c97767ac5353a7cb1055d8cb351867077cd38fea404d6511e8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks" title="audiobooks-new-project" />
 
 ## Overview
 
@@ -16,115 +16,151 @@ Audiobooks provides an end-to-end workflow for turning written content into stud
 
 You can paste or upload your manuscript, generate lifelike narration using ElevenLabs voices, and structure your project with chapters. Enhance your audiobook with music and sound effects, and edit and refine narration directly in the editor.
 
+Character Casting automatically detects every character in your manuscript, proposes a voice for each one, and lets you preview them on real dialogue from your book. When you change a character's voice, every line they speak updates across the entire book.
+
 Once complete, you can export your audiobook or publish it directly to listening platforms such as ElevenReader and partner marketplaces.
 
 Audiobooks also supports dynamic narration, a mode that allows listeners to choose their preferred voice during playback.
 
 ## Guide
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6f40fdd9e48caf899c67599e82c64a3a2e09b1f2d87cd2af75e168ab62f516f7/assets/images/product-guides/studio/audiobooks-create-new-book.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260731%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260731T101158Z&X-Amz-Expires=604800&X-Amz-Signature=48b61a12f8824e9c8d44bdc38e7f68fc44dd49755b8c7fd29b9f8a1f1628efb8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - create new book" title="audiobooks-create-new-book" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6073f48ff8f4e4e0379ff214b309073fd440ca626b72282537a7c757a46c6673/assets/images/product-guides/studio/audiobooks-create-new-book.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T113217Z&X-Amz-Expires=604800&X-Amz-Signature=c3d0f8d09e19692ef4c60577dda949355bed13e359df9d7fe02061ad6aa7876c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - create new book" title="audiobooks-create-new-book" />
 
-#### Create a new audiobook
+#### Upload your file and select base settings
 
-Click **Create new book** from the Audiobooks page to start a new project.
+Select **Create an Audiobook** from the Audiobooks page to start a new project.
 
-After opening the editor, you can begin by:
+### Upload your manuscript
 
-* uploading a document
-* pasting text directly
-* importing content from a URL
+Drag and drop your manuscript into the upload area, or browse your device to select a file. Audiobooks currently supports:
 
-#### Add and organize chapters
+* EPUB
+* PDF
 
-Use the **Chapters** panel to structure your audiobook.
+### Choose a narration style
 
-* Click the **+** button to add new chapters
-* Rename and reorder chapters as needed
-* If you upload a document with chapters, they will be detected automatically
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T113217Z&X-Amz-Expires=604800&X-Amz-Signature=71652016b7a505f7d75934635dce6c09d7a20e3fcd616565ef13d4960a9b86de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks narration style selection" />
 
-#### Generate narration
+Select how you want your audiobook to be narrated:
 
-Select a chapter and use the **Play** button in the player to generate or preview narration.
+* **Single cast** — One narrator voice reads the entire book
+* **Multi cast** — A narrator and distinct voices are assigned to characters detected in the manuscript
 
-* If narration has already been generated, the **Play** button will play existing audio without using credits
-* If narration has not yet been generated, audio will be created during playback, which will cost credits
+Choose **Single cast** when one voice should narrate the entire book. Choose **Multi cast** when you want a more theatrical production with separate voices for the narrator and characters.
 
-Narration is generated at the paragraph level within each chapter.
+### Select a model
 
-#### Playback modes
+Choose the AI model you want to use for your audiobook. For lifelike, emotionally rich results, **Eleven Multilingual v2 (Studio Quality)** is recommended for long-form voiceovers and audiobooks. It supports 29 languages.
 
-You can choose how playback and generation behave using the mode selector to the left of the Play button:
+Select **Continue** to begin processing your manuscript.
 
-* **Selection** — plays or generates audio only for the selected paragraph
-* **Until end (generate one at a time)** — plays from the selected paragraph to the end of the chapter, generating one paragraph at a time
-* **Until end (generate clips ahead)** — plays from the selected paragraph to the end of the chapter, generating multiple paragraphs ahead for smoother playback
+#### Parse and format your manuscript
 
-Playing already generated audio does not consume credits. Credits are only used when generating new narration.
+After you select **Continue**, ElevenLabs automatically parses your file. The system analyzes the document to extract metadata, chapters, and formatting.
 
-#### Enhance your audiobook
+When parsing is complete, you will arrive at the **Formatting** screen.
 
-You can enrich your audiobook with additional audio layers:
+### Review the cover image
 
-* **Voices** — choose or update the narration voice
-* **Sound effects (SFX)** — add effects from the library or generate custom sounds
-* **Music** — select from the Music Marketplace or generate new tracks
+If your EPUB or PDF includes a cover, the system automatically extracts it and displays it as the audiobook artwork. You can:
 
-To add music or sound effects:
+* Replace the cover
+* Remove the cover
+* Keep the extracted cover
 
-* Click the **+** icon to import them into your project
-* They will appear as separate tracks on the timeline and play alongside narration
+### Review the detected sections
 
-#### Choose narration mode
+ElevenLabs identifies structural sections in your manuscript, such as:
 
-Audiobooks supports two narration modes:
+* Copyright notices
+* Dedications
+* Prologues
+* Chapters
+* Epilogues
+* Other formatted sections
 
-* **Original audio** — narration is pre-generated using a selected voice
-* **Dynamic narration** — listeners can choose their preferred voice during playback
+Use the checkboxes to select or deselect the sections you want included in the audiobook.
 
-To switch modes, open the project status panel from the top right of the editor and click **Change mode**.
+Review the detected structure carefully before continuing. Manuscript formatting can vary, and the system may not always identify sections exactly as intended.
 
-In dynamic narration mode, music, sound effects, and external audio are not included in playback.
+#### Select voices and cast characters
 
-#### Export your audiobook
+In the **Characters** step, you select the voices for your audiobook.
 
-To export your audiobook, click **Publish** in the top right corner and open the **Export** tab.
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T113217Z&X-Amz-Expires=604800&X-Amz-Signature=41489daef69c6f257ce5fbb3b3b1eda52bb0ee0fa5f171716974c421f62a08c7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks character casting" />
 
-You can configure:
+### Cast a multi-cast audiobook
 
-* **Export scope** — full project or individual chapters
-* **Media type** — audio, timeline data (AAF), or subtitles
-* **File structure** — single file or chapter-based ZIP
-* **Audio format** — MP3 or WAV
+If you selected **Multi cast**, ElevenLabs analyzes your manuscript and detects characters it believes speak in the story. You can then assign a unique voice to:
 
-If some sections are not yet generated, they will be completed during export.
+* The main narrator
+* Each detected character
+* Other speakers identified in the manuscript
 
-#### Publish and distribute
+Character detection is AI-generated and should be treated as a starting point. The system may not identify every character, especially minor characters, unnamed characters, or speakers who are difficult to distinguish from the surrounding narration.
 
-To distribute your audiobook, click **Publish** in the top right corner and stay on the **Publish** tab.
+The current limit is up to 150 detected voices per book.
 
-You can publish directly to:
+Review the detected character list and adjust the cast as needed. Add, change, or remove voice assignments so the final cast matches your manuscript.
 
-* **ElevenReader** — for in-app listening and distribution
-* **Partner platforms** such as Spotify and InAudio
-* **ElevenLabs Video** or **Audio Native** for additional formats
+Previewing a voice with custom audio uses credits.
 
-Publishing allows you to share your audiobook with listeners and, on supported platforms like ElevenReader, start earning from distribution.
+### Explore the Voice Library
 
-#### Publishing to ElevenReader
+Browse the available studio-quality voices, or use search and filters to find a suitable voice. Filters include:
 
-When publishing to ElevenReader, you will go through a submission flow to prepare your audiobook for distribution.
+* Language
+* Accent
+* Category
+* Gender
+* Age
 
-This includes:
+You can preview voices before assigning them.
 
-* Creating or selecting an author profile
-* Adding book metadata (title, subtitle, cover image)
-* Providing distribution details
-* Setting up payouts and agreements
-* Reviewing and submitting your audiobook
+Previewing a voice with custom audio uses credits.
 
-After submission, your audiobook will be reviewed before becoming available in the ElevenReader app.
+#### Review and add pronunciation rules
+
+The **Pronunciations** step helps you control how names, places, invented words, and other unusual terms are spoken.
+
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T113217Z&X-Amz-Expires=604800&X-Amz-Signature=c97e9ff8376218cc3655de22de6f067c470e398df045a48274314a50875b4e76&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks pronunciations editor" />
+
+### Review automatically detected terms
+
+ElevenLabs scans your manuscript and suggests terms that may need pronunciation rules. These might include character names, place names, or fictional terms.
+
+The suggestions are generated automatically, so they may not include every word that matters to your book. Review the list and add rules for any important terms that need special treatment.
+
+### Add a pronunciation rule
+
+For each term, you can create a rule, such as an **Alias**, and enter the desired **Output**. The output tells the model how the term should sound.
+
+You can also select **Add rule** in the top-right corner to manually search for a word and define its pronunciation.
+
+### Preview pronunciations in context
+
+Select the **Play** icon next to a rule to hear the chosen voice read the sentence from your manuscript where the term appears.
+
+Listening in context helps you check:
+
+* The pronunciation
+* The cadence
+* The surrounding sentence
+* Whether the rule works with the assigned voice
+
+Empty rules are skipped, and the model uses its default pronunciation for those terms.
+
+#### Create your audiobook
+
+When you are satisfied with the formatting, voice casting, and pronunciation rules, select **Create audiobook** in the bottom-right corner.
+
+ElevenLabs then begins creating your audiobook. After this is complete, you can manage the project, review the results, export the audio files, or publish the finished project to ElevenReader, where listeners can enjoy it.
 
 ## Editing and playback
+
+After your audiobook is created, you can refine and enhance it in the editor.
+
+### Generating and previewing narration
 
 Once your content is added, you can generate and preview narration directly in the editor.
 
@@ -136,9 +172,35 @@ The status of each paragraph is shown by a bar to the left of the text:
 * **Dark bar** — narration has been generated
 * **Light grey bar** — narration has not yet been generated
 
+#### Playback modes
+
+You can choose how playback and generation behave using the mode selector to the left of the Play button:
+
+* **Selection** — plays or generates audio only for the selected paragraph
+* **Until end (generate one at a time)** — plays from the selected paragraph to the end of the chapter, generating one paragraph at a time
+* **Until end (generate clips ahead)** — plays from the selected paragraph to the end of the chapter, generating multiple paragraphs ahead for smoother playback
+
+Playing already generated audio does not consume credits. Credits are only used when generating
+new narration.
+
+### Editing your audiobook
+
 You can edit text, adjust voice settings, or change timing, and then regenerate specific sections as needed.
 
 The timeline allows you to review how narration, music, and sound effects play together and make adjustments before exporting.
+
+### Enhancing your audiobook
+
+You can enrich your audiobook with additional audio layers:
+
+* **Voices** — choose or update the narration voice
+* **Sound effects (SFX)** — add effects from the library or generate custom sounds
+* **Music** — select from the Music Marketplace or generate new tracks
+
+To add music or sound effects:
+
+* Click the **+** icon to import them into your project
+* They will appear as separate tracks on the timeline and play alongside narration
 
 ## Voice and model settings
 
@@ -204,7 +266,7 @@ Audio quality is automatically determined by your subscription plan and project 
 
 To check the exact output quality for your project, click **Publish** in the top-right corner, open the **Export** tab, and hover over the **Audio format** field to see details such as bitrate and sample rate.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b812960229644047965dd935ffc1fe79a6bbe1aaf930b3fdbf977b313479c8b0/assets/images/product-guides/studio/audiobooks-publish.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260731%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260731T101158Z&X-Amz-Expires=604800&X-Amz-Signature=f56f2a26eff49326ade3df58af23ae8f0b413939b89d6e7d7ab896971f76c093&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Publish your audiobook" title="audiobooks-publish" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b812960229644047965dd935ffc1fe79a6bbe1aaf930b3fdbf977b313479c8b0/assets/images/product-guides/studio/audiobooks-publish.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T113217Z&X-Amz-Expires=604800&X-Amz-Signature=6950f78b90d80ef6dfccf7a95ca206ea69d84ee14ad669ea813e10d3e9d31b9f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Publish your audiobook" title="audiobooks-publish" />
 
 ### Important behavior
 
@@ -229,7 +291,7 @@ This allows you to adjust and refine narration at a very granular level.
 
 ### Pronunciation dictionaries
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/116b9e87ac11971f051aace66ee692f858509cb2e57abbd82d6422fe83333259/assets/images/product-guides/studio/audiobooks-pronunciation_dictionaries.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260731%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260731T101158Z&X-Amz-Expires=604800&X-Amz-Signature=e6ae9372da9cc227816316d6fccda21df46339572df92b5ef2578c85ab2afaad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - pronunciation dictionaries" title="audiobooks-pronunciation_dictionaries" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/116b9e87ac11971f051aace66ee692f858509cb2e57abbd82d6422fe83333259/assets/images/product-guides/studio/audiobooks-pronunciation_dictionaries.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260801T113217Z&X-Amz-Expires=604800&X-Amz-Signature=a482793f9aef442977cb86979a794c6100af543eb5f4783dc90241027f2c0ca4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - pronunciation dictionaries" title="audiobooks-pronunciation_dictionaries" />
 
 You can control how specific words are spoken using pronunciation dictionaries.
 
@@ -263,6 +325,30 @@ You can also upload a dictionary file or manage all dictionaries from the Pronun
 * Phoneme rules are only supported on English models, e.g. Flash v2
 
 Pronunciation dictionaries are especially helpful for maintaining consistency across long audiobooks.
+
+## Character Casting
+
+Character Casting helps you assign the right voice to every character in your book. When you upload a manuscript, Audiobooks detects the characters, proposes a voice for each one, and lets you preview them on actual dialogue from your book.
+
+### Updating characters after generation
+
+If you change a character's voice after generating audio, this will clear the previous audio for that character. You will need to regenerate the audio using the new voice, which will use credits. You will be asked to confirm the change before proceeding.
+
+Every line the character speaks updates across the entire book. You do not need to manually reassign individual paragraphs or chapters. To automatically regenerate audio for all affected paragraphs, export a new version of the audiobook. You will only be charged credits for the paragraphs that need regenerating.
+
+### Voice library
+
+Audiobooks supports narration in 90+ languages with a library of over 10,000 voices. You can also clone your own voice in seconds if you want to narrate yourself or provide character voices.
+
+### Best practices
+
+Review the formatting before moving forward from the parsing step. Incorrectly detected sections can affect the final audiobook.
+
+For multi-cast projects, check every detected character and voice assignment. Pay particular attention to unnamed or minor characters, which may be harder for the system to identify correctly.
+
+Listen to pronunciation previews in context rather than relying only on the written rule. A pronunciation that sounds correct on its own may need adjustment within a full sentence.
+
+Review the generated audiobook before exporting or publishing it. Audiobooks can automate much of the production process, but editorial and quality checks are essential for a polished result.
 
 ## Chapters
 
@@ -302,7 +388,11 @@ This mode is ideal for:
 
 Music, sound effects, and external audio are not included in dynamic narration playback.
 
-## Export options
+## Export and publishing
+
+### Export options
+
+To export your audiobook, click **Publish** in the top right corner and open the **Export** tab.
 
 Audiobooks provides flexible export options depending on how you want to use your content.
 
@@ -327,7 +417,33 @@ Audiobooks provides flexible export options depending on how you want to use you
 * MP3
 * WAV
 
-Exporting will automatically generate any remaining sections before downloading.
+If some sections are not yet generated, they will be completed automatically during export, which will use credits.
+
+### Publishing and distribution
+
+To distribute your audiobook, click **Publish** in the top right corner and stay on the **Publish** tab.
+
+You can publish directly to:
+
+* **ElevenReader** — for in-app listening and distribution
+* **Partner platforms** such as Spotify and InAudio
+* **ElevenLabs Video** or **Audio Native** for additional formats
+
+Publishing allows you to share your audiobook with listeners and, on supported platforms like ElevenReader, start earning from distribution.
+
+### Publishing to ElevenReader
+
+When publishing to ElevenReader, you will go through a submission flow to prepare your audiobook for distribution.
+
+This includes:
+
+* Creating or selecting an author profile
+* Adding book metadata (title, subtitle, cover image)
+* Providing distribution details
+* Setting up payouts and agreements
+* Reviewing and submitting your audiobook
+
+After submission, your audiobook will be reviewed before becoming available in the ElevenReader app.
 
 ## Organizing your audiobooks with series
 
@@ -372,6 +488,48 @@ To create a series:
 
       Yes. You can distribute your audiobook across multiple platforms, including ElevenReader
       and supported partner marketplaces.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Character Casting?
+
+      Character Casting automatically detects every character in your manuscript, proposes a
+      voice for each one, and lets you preview them on real dialogue from your book. When you
+      change a character's voice, every line they speak updates across the entire book.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How many voices can I use in an audiobook?
+
+      You can use as many voices as needed for your audiobook. The voice library includes over
+      10,000 voices across 90+ languages, and you can also clone your own voice for narration or
+      character voices. For Character Casting, the current limit is up to 150 detected voices
+      per book.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What file formats are supported?
+
+      Audiobooks supports EPUB and PDF formats. When you upload a file, the system automatically
+      parses your manuscript to extract metadata, chapters, and formatting. If your file
+      includes a cover image, it will be automatically extracted.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What if my manuscript fails during processing?
+
+      Very large manuscripts or complex projects may occasionally fail during processing. If
+      this happens, check the manuscript structure and try again. When reporting an issue,
+      include details about the file, its size and format, and the stage where processing
+      failed.
     </td>
   </tr>
 </tbody>

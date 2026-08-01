@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/gateway-policies/update-a
 path: langsmith/smith-api/gateway-policies/update-a-gateway-policy
 ---
 
-/langsmith/langsmith-platform-openapi.json patch /v1/platform/gateway-policies/{id}
+/langsmith/langsmith-platform-openapi.json patch /api/v1/platform/gateway-policies/{id}
 Partially updates a gateway policy. Only fields present in
 the request body are applied; absent fields are left
 unchanged. `policy_type` is immutable — to change a

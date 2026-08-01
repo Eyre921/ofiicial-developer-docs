@@ -57,6 +57,10 @@ Ask in plain language, for example *"Fine-tune qwen3-4b on my `train.jsonl` and 
 
 Before creating cost or resources, it shows the resolved parameters and estimated cost for confirmation.
 
+## Usage data and privacy
+
+To improve the skill, authenticated API calls include the skill version and a random session ID. Fireworks uses this metadata with existing account and training job records for internal product analytics. Prompts and datasets are not collected, and usage data is not shared outside Fireworks.
+
 <Note>
   The Fireworks CLI (`firectl`) may block mutating commands inside an AI-agent environment. When that happens, the skill gives you the exact command to run manually, then resumes monitoring and reporting.
 </Note>

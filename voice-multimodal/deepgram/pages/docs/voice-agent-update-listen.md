@@ -12,25 +12,30 @@ path: docs/voice-agent-update-listen
 
 &#x20;Voice Agent
 
-The `UpdateListen` message is a JSON message that updates the speech-to-text configuration of your existing Flux model during a conversation.
+The `UpdateListen` message is a JSON message that updates the speech-to-text configuration during a conversation.
 
 ## Purpose
 
-The `UpdateListen` message allows you to change Listen parameters on the fly without restarting the session. You can adjust end-of-turn detection thresholds, keyterms, and language hints while continuing to use the same Flux model.
+The `UpdateListen` message allows you to change Listen parameters on the fly without restarting the session. You can switch the speech-to-text model and language, and adjust end-of-turn thresholds and keyterms.
 
-The payload uses the same shape as `agent.listen` in the [`Settings`](/docs/voice-agent-settings) message — tunable fields live under `listen.provider` alongside the required provider identity.
-
-The provider identity (`type`, `version`, `model`) is required and must match the current session. You cannot change the model (e.g., switch from `flux-general-en` to `flux-general-multi`) or version mid-session. Attempting to do so is rejected with a `Warning` (code `UPDATE_LISTEN_UNSUPPORTED_FIELDS_CHANGED`) and the session keeps its existing config.
+The payload uses the same shape as `agent.listen` in the [`Settings`](/docs/voice-agent-settings) message — every field lives under `listen.provider`.
 
 ### Tunable Parameters
 
 | Parameter                             | Type    | Description                                                                                                                                                            |
 | ------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `listen.provider.model`               | String  | Speech-to-text [model](/docs/models-languages-overview) to switch to, such as `nova-3-general` or `flux-general-multi`.                                                |
+| `listen.provider.language`            | String  | [Language](/docs/models-languages-overview) code for transcription, such as `en` or `multi`. Supported with V1 (Nova) models.                                          |
+| `listen.provider.version`             | String  | Deepgram speech-to-text API version: `v1` for Nova models, `v2` for Flux.                                                                                              |
 | `listen.provider.eot_threshold`       | Number  | Confidence threshold for [end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.5` - `0.9`.                                              |
 | `listen.provider.eager_eot_threshold` | Number  | Confidence threshold for [eager end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.3` - `0.9`.                                        |
 | `listen.provider.eot_timeout_ms`      | Integer | Time in milliseconds after speech to finish a turn regardless of EOT confidence.                                                                                       |
-| `listen.provider.keyterms`            | Array   | [Keyterms](/docs/keyterm) to boost recognition for. Replaces the current keyterms list.                                                                                |
+| `listen.provider.keyterms`            | Array   | [Keyterms](/docs/keyterm) to boost recognition for. Replaces the current keyterms list. Flux models only.                                                              |
 | `listen.provider.language_hints`      | Array   | Array of BCP-47 language codes to bias toward. Only supported with `flux-general-multi`. See [supported languages](/docs/flux/language-prompting#supported-languages). |
+
+Send the fields that apply to the model you are switching to: `language` for V1 (Nova) models, and `keyterms`, the end-of-turn fields, and `language_hints` for V2 (Flux) models.
+
+Keyterms can only be updated mid-session for Flux models. Nova-3 keyterms are fixed for the life of the session — set them in the [`Settings`](/docs/voice-agent-settings) message at the start of the session, which works for both Flux and Nova-3.
 
 ### Partial Update Semantics
 
@@ -42,7 +47,21 @@ The provider identity (`type`, `version`, `model`) is required and must match th
 
 To send the `UpdateListen` message, send the following JSON message to the server:
 
-```json JSON
+```json Nova (V1)
+{
+    "type": "UpdateListen",
+    "listen": {
+        "provider": {
+            "type": "deepgram",
+            "version": "v1",
+            "model": "nova-3-general",
+            "language": "es"
+        }
+    }
+}
+```
+
+```json Flux (V2)
 {
     "type": "UpdateListen",
     "listen": {

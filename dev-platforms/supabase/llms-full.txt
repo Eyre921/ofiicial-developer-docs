@@ -8655,7 +8655,7 @@ Data API error unspecified
 
 One can filter for API errors in the [log explorer](https://supabase.com/dashboard/project/_/logs/explorer). Below are useful queries for filtering and analyzing API errors:
 
-#### Find all API errors that occurred at the database level
+### Find all API errors that occurred at the database level
 
 ```sql
 select
@@ -8679,7 +8679,7 @@ order by timestamp desc
 limit 100;
 ```
 
-#### Find specific database error from the data API
+### Find specific database error from the data API
 
 ```sql
 select
@@ -8703,7 +8703,7 @@ limit 100;
 
 Note: PostgREST error codes are only captured in the logs for projects running V14+. You can check your PostgREST version and upgrade your project in the [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure)
 
-#### Find specific API error
+### Find specific API error
 
 ```sql
 select
@@ -8723,7 +8723,7 @@ where
   and regexp_contains(proxy_status, '(?i)THE_RELEVANT_STATUS_CODE');
 ```
 
-#### Count errors per path by hour:
+### Count errors per path by hour:
 
 ```sql
 select
@@ -8745,7 +8745,7 @@ where status_code >= 300 and regexp_contains(path, '^/rest/v1/')
 group by hour, proxy_status, path;
 ```
 
-#### Find data API request from specific authenticated user
+### Find data API request from specific authenticated user
 
 ```sql
 select
@@ -9494,11 +9494,11 @@ The architecture behind Supabase Auth.
 There are four major layers to Supabase Auth:
 
 1. [Client layer.](#client-layer) This can be one of the Supabase client SDKs, or manually made HTTP requests using the HTTP client of your choice.
-2. Kong API gateway. This is shared between all Supabase products.
+2. Envoy API gateway. This is shared between all Supabase products.
 3. [Auth service](#auth-service) (formerly known as GoTrue).
 4. [Postgres database.](#postgres) This is shared between all Supabase products.
 
-![Diagram showing the architecture of Supabase. The Kong API gateway sits in front of 7 services: GoTrue, PostgREST, Realtime, Storage, pg_meta, Functions, and pg_graphql. All the services talk to a single Postgres instance.](https://supabase.com/docs/img/supabase-architecture.svg)
+![Diagram showing the architecture of Supabase. The Envoy API gateway sits in front of 7 services: GoTrue, PostgREST, Realtime, Storage, pg_meta, Functions, and pg_graphql. All the services talk to a single Postgres instance.](https://supabase.com/docs/img/supabase-architecture.svg)
 
 ## Client layer
 
@@ -15982,7 +15982,7 @@ The following table provides a comprehensive list of error codes you may encount
 | `captcha_failed` | CAPTCHA challenge could not be verified with the CAPTCHA provider. Check your CAPTCHA integration. |
 | `conflict` | General database conflict, such as concurrent requests on resources that should not be modified concurrently. Can often occur when you have too many session refresh requests firing off at the same time for a user. Check your app for concurrency issues, and if detected, back off exponentially. |
 | `email_address_invalid` | Example and test domains are currently not supported. Use a different email address. |
-| `email_address_not_authorized` | Email sending is not allowed for this address as your project is using the default SMTP service. Emails can only be sent to members in your Supabase organization. If you want to send emails to others, set up a custom SMTP provider. Learn more: [Setting up a custom SMTP provider](https://supabase.com/docs/guides/auth/auth-smtp) |
+| `email_address_not_authorized` | Email sending is not allowed for this address as your project is using the default SMTP service. Emails can only be sent to members in your Supabase organization. If you want to send emails to others, set up a custom SMTP provider. Learn more: [Setting up a custom SMTP provider](/docs/guides/auth/auth-smtp) |
 | `email_conflict_identity_not_deletable` | Unlinking this identity causes the user's account to change to an email address which is already used by another user account. Indicates an issue where the user has two different accounts using different primary email addresses. You may need to migrate user data to one of their accounts in this case. |
 | `email_exists` | Email address already exists in the system. |
 | `email_not_confirmed` | Signing in is not allowed for this user as the email address is not confirmed. |
@@ -15995,7 +15995,7 @@ The following table provides a comprehensive list of error codes you may encount
 | `hook_timeout_after_retry` | Unable to reach hook after maximum number of retries. |
 | `identity_already_exists` | The identity to which the API relates is already linked to a user. |
 | `identity_not_found` | Identity to which the API call relates does not exist, such as when an identity is unlinked or deleted. |
-| `insufficient_aal` | To call this API, the user must have a higher Authenticator Assurance Level. To resolve, ask the user to solve an MFA challenge. Learn more: [MFA](https://supabase.com/docs/guides/auth/auth-mfa) |
+| `insufficient_aal` | To call this API, the user must have a higher Authenticator Assurance Level. To resolve, ask the user to solve an MFA challenge. Learn more: [MFA](/docs/guides/auth/auth-mfa) |
 | `invalid_credentials` | Login credentials or grant type not recognized. |
 | `invite_not_found` | Invite is expired or already used. |
 | `manual_linking_disabled` | Calling the supabase.auth.linkUser() and related APIs is not enabled on the Auth server. |
@@ -16008,7 +16008,7 @@ The following table provides a comprehensive list of error codes you may encount
 | `mfa_totp_enroll_not_enabled` | Enrollment of MFA TOTP factors is disabled. |
 | `mfa_totp_verify_not_enabled` | Login via TOTP factors and verification of new TOTP factors is disabled. |
 | `mfa_verification_failed` | MFA challenge could not be verified -- wrong TOTP code. |
-| `mfa_verification_rejected` | Further MFA verification is rejected. Only returned if the MFA verification attempt hook returns a reject decision. Learn more: [MFA verification hook](https://supabase.com/docs/guides/auth/auth-hooks/mfa-verification-hook) |
+| `mfa_verification_rejected` | Further MFA verification is rejected. Only returned if the MFA verification attempt hook returns a reject decision. Learn more: [MFA verification hook](/docs/guides/auth/auth-hooks/mfa-verification-hook) |
 | `mfa_verified_factor_exists` | Verified phone factor already exists for a user. Unenroll existing verified phone factor to continue. |
 | `mfa_web_authn_enroll_not_enabled` | Enrollment of MFA Web Authn factors is disabled. |
 | `mfa_web_authn_verify_not_enabled` | Login via WebAuthn factors and verification of new WebAuthn factors is disabled. |
@@ -16027,7 +16027,7 @@ The following table provides a comprehensive list of error codes you may encount
 | `provider_email_needs_verification` | Not all OAuth providers verify their user's email address. Supabase Auth requires emails to be verified, so this error is sent out when a verification email is sent after completing the OAuth flow. |
 | `reauthentication_needed` | A user needs to reauthenticate to change their password. Ask the user to reauthenticate by calling the supabase.auth.reauthenticate() API. |
 | `reauthentication_not_valid` | Verifying a reauthentication failed, the code is incorrect. Ask the user to enter a new code. |
-| `refresh_token_already_used` | Refresh token has been revoked and falls outside the refresh token reuse interval. See the documentation on sessions for further information. Learn more: [Auth sessions](https://supabase.com/docs/guides/auth/sessions) |
+| `refresh_token_already_used` | Refresh token has been revoked and falls outside the refresh token reuse interval. See the documentation on sessions for further information. Learn more: [Auth sessions](/docs/guides/auth/sessions) |
 | `refresh_token_not_found` | Session containing the refresh token not found. |
 | `request_timeout` | Processing the request took too long. Retry the request. |
 | `same_password` | A user that is updating their password must use a different password than the one currently used. |
@@ -16037,10 +16037,10 @@ The following table provides a comprehensive list of error codes you may encount
 | `saml_idp_already_exists` | (Admin API.) Adding a SAML identity provider that is already added. |
 | `saml_idp_not_found` | SAML identity provider not found. Most often returned after IdP-initiated sign-in with an unregistered SAML identity provider in Supabase Auth. |
 | `saml_metadata_fetch_failed` | (Admin API.) Adding or updating a SAML provider failed as its metadata could not be fetched from the provided URL. |
-| `saml_provider_disabled` | Using Enterprise SSO with SAML 2.0 is not enabled on the Auth server. Learn more: [Enterprise SSO](https://supabase.com/docs/guides/auth/enterprise-sso/auth-sso-saml) |
+| `saml_provider_disabled` | Using Enterprise SSO with SAML 2.0 is not enabled on the Auth server. Learn more: [Enterprise SSO](/docs/guides/auth/enterprise-sso/auth-sso-saml) |
 | `saml_relay_state_expired` | SAML relay state is an object that tracks the progress of a supabase.auth.signInWithSSO() request. The SAML identity provider should respond after a fixed amount of time, after which this error is shown. Ask the user to sign in again. |
 | `saml_relay_state_not_found` | SAML relay states are progressively cleaned up after they expire, which can cause this error. Ask the user to sign in again. |
-| `session_expired` | Session to which the API request relates has expired. This can occur if an inactivity timeout is configured, or the session entry has exceeded the configured timebox value. See the documentation on sessions for more information. Learn more: [Auth sessions](https://supabase.com/docs/guides/auth/sessions) |
+| `session_expired` | Session to which the API request relates has expired. This can occur if an inactivity timeout is configured, or the session entry has exceeded the configured timebox value. See the documentation on sessions for more information. Learn more: [Auth sessions](/docs/guides/auth/sessions) |
 | `session_not_found` | Session to which the API request relates no longer exists. This can occur if the user has signed out, or the session entry in the database was deleted in some other way. |
 | `signup_disabled` | Sign ups (new account creation) are disabled on the server. |
 | `single_identity_not_deletable` | Every user must have at least one identity attached to it, so deleting (unlinking) an identity is not allowed if it's the only one for the user. |
@@ -18349,7 +18349,7 @@ You'll receive:
 
 Caution: Store the client secret securely. It will only be shown once. If you lose it, you can regenerate a new one from the **OAuth Apps** page.
 
-#### Token endpoint authentication method
+### Token endpoint authentication method
 
 When a client exchanges an authorization code or refreshes a token, it must authenticate with the token endpoint. The `token_endpoint_auth_method` controls how this authentication happens:
 
@@ -36015,7 +36015,7 @@ Each Supabase project is a pre-configured Postgres cluster. You can override som
 
 Note: Customizing Postgres configurations provides *advanced* control over your database, but inappropriate settings can lead to severe performance degradation or project instability.
 
-### Viewing settings
+## Viewing settings
 
 To list all Postgres settings and their descriptions, run:
 
@@ -38535,7 +38535,7 @@ notify pgrst, 'reload config';
 
 Drizzle Quickstart
 
-### Connecting with Drizzle
+## Connecting with Drizzle
 
 [Drizzle ORM](https://github.com/drizzle-team/drizzle-orm) is a TypeScript ORM for SQL databases designed with maximum type safety in mind. You can use their ORM to connect to your database.
 
@@ -38603,7 +38603,7 @@ Using Postgres extensions.
 Extensions are exactly as they sound - they "extend" the database with functionality which isn't part of the Postgres core.
 Supabase has pre-installed some of the most useful open source extensions.
 
-### Enable and disable extensions
+## Enable and disable extensions
 
 **Dashboard**
 
@@ -38635,11 +38635,11 @@ Some extensions can only be created under a specific schema, for example, `postg
 
 In addition to the pre-configured extensions, you can also install your own SQL extensions directly in the database using Supabase's SQL editor. The SQL code for the extensions, including plpgsql extensions, can be added through the SQL editor.
 
-### Upgrade extensions
+## Upgrade extensions
 
 If a new version of an extension becomes available on Supabase, you need to initiate a software upgrade in the [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure) to access it. Software upgrades can also be initiated by restarting your server in the [General Settings](https://supabase.com/dashboard/project/_/settings/general).
 
-### Full list of extensions
+## Full list of extensions
 
 Supabase is pre-configured with over 50 extensions and you can install additional extensions through the [database.dev](https://database.dev/) package manager.
 
@@ -40346,15 +40346,15 @@ To prevent PGAudit from monitoring the problematic roles, you'll want to change 
 
 ## FAQ
 
-#### Using PGAudit to debug database functions
+### Using PGAudit to debug database functions
 
 Technically yes, but it is not the best approach. It is better to check out our [function debugging guide](https://supabase.com/docs/guides/database/functions#general-logging) instead.
 
-#### Downloading database logs
+### Downloading database logs
 
 In the [Logs Dashboard](https://supabase.com/dashboard/project/_/logs/postgres-logs) you can download logs as CSVs.
 
-#### Logging observed table rows
+### Logging observed table rows
 
 By default, PGAudit records queries, but not the returned rows. You can modify this behavior with the `pgaudit.log_rows` variable:
 
@@ -40368,13 +40368,13 @@ alter role "postgres" set pgaudit.log_rows to 'off';
 
 You should not do this unless you are *absolutely* certain it is necessary for your use case. It can expose sensitive values to your logs that ideally should not be preserved. Furthermore, if done in excess, it can noticeably reduce database performance.
 
-#### Logging function parameters
+### Logging function parameters
 
 We don't currently support configuring `pgaudit.log_parameter` because it may log secrets in encrypted columns if you are using [pgsodium](https://supabase.com/docs/guides/database/extensions/pgsodium) or[Vault](https://supabase.com/docs/guides/database/vault).
 
 You can upvote this [feature request](https://github.com/orgs/supabase/discussions/20183) with your use-case if you'd like this restriction lifted.
 
-#### Does PGAudit support system wide configurations?
+### Does PGAudit support system wide configurations?
 
 PGAudit allows settings to be applied to 3 different database scopes:
 
@@ -61924,7 +61924,7 @@ For scripted migrations or ultra-light remote work you’ll still lean on plain 
 
 Postgres.js Quickstart
 
-### Connecting with Postgres.js
+## Connecting with Postgres.js
 
 [Postgres.js](https://github.com/porsager/postgres) is a full-featured Postgres client for Node.js and Deno.
 
@@ -65169,9 +65169,9 @@ Monitoring replication lag is important and there are 3 ways to do this:
    - pg\_stat\_replication\_replay\_lag - lag to replay WAL files from the source DB on the target DB (throttled by disk or high activity)
    - pg\_stat\_replication\_send\_lag - lag in sending WAL files from the source DB (a high lag means that the publisher is not being asked to send new WAL files OR network issues)
 
-### Primary
+## Primary
 
-#### Replication status and lag
+### Replication status and lag
 
 The `pg_stat_replication` table shows the status of any replicas connected to the primary database.
 
@@ -65180,7 +65180,7 @@ select pid, application_name, state, sent_lsn, write_lsn, flush_lsn, replay_lsn,
 from pg_stat_replication;
 ```
 
-#### Replication slot status
+### Replication slot status
 
 A replication slot can be in one of three states:
 
@@ -65194,7 +65194,7 @@ The state can be checked using the `pg_replication_slots` table:
 select slot_name, active, state from pg_replication_slots;
 ```
 
-#### WAL size
+### WAL size
 
 The WAL size can be checked using the `pg_ls_waldir()` function:
 
@@ -65202,15 +65202,15 @@ The WAL size can be checked using the `pg_ls_waldir()` function:
 select * from pg_ls_waldir();
 ```
 
-#### Check the LSN
+### Check the LSN
 
 ```sql
 select pg_current_wal_lsn();
 ```
 
-### Subscriber
+## Subscriber
 
-#### Subscription status
+### Subscription status
 
 The `pg_subscription` table shows the status of any subscriptions on a replica and the `pg_subscription_rel` table shows the status of each table within a subscription.
 
@@ -65242,7 +65242,7 @@ ORDER BY
     table_name;
 ```
 
-#### Check the LSN
+### Check the LSN
 
 ```sql
 select pg_last_wal_replay_lsn();
@@ -65261,7 +65261,7 @@ This guide covers setting up **manual logical replication** using your own tools
 
 Note: This guide is for replicating data to destination systems using your own tools. For deploying read-only databases across multiple regions, see [read replicas](https://supabase.com/docs/guides/platform/read-replicas) instead.
 
-### Prerequisites
+## Prerequisites
 
 To set up replication, the following is recommended:
 
@@ -65553,14 +65553,14 @@ Note: Supabase Pipelines is currently in public alpha. Features and behavior may
 
 After setting up Supabase Pipelines, you can monitor the status and health of your pipelines directly from the Dashboard. A pipeline first performs an initial sync of existing rows, then uses ongoing replication (CDC) to send subsequent database changes to your destination.
 
-### Viewing pipeline status
+## Viewing pipeline status
 
 To monitor your pipelines:
 
 1. Navigate to the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard
 2. You'll see a list of all your destinations with their pipeline status
 
-#### Pipeline states
+### Pipeline states
 
 Each destination shows its pipeline in one of these states:
 
@@ -65574,13 +65574,13 @@ Each destination shows its pipeline in one of these states:
 | **Failed**     | Pipeline has encountered an error (hover over the status to view error details) |
 | **Unknown**    | The Dashboard can't currently determine the pipeline status                     |
 
-### Viewing detailed pipeline metrics
+## Viewing detailed pipeline metrics
 
 For detailed information about a specific pipeline, click **View pipeline** on the destination. This opens the pipeline status page where you can monitor replication performance and table states.
 
 ![Running pipeline status page showing replication metrics and a live table](https://supabase.com/docs/img/database/replication/pipelines-metrics.png)
 
-#### Replication lag metrics
+### Replication lag metrics
 
 The status page shows replication lag metrics that help you determine how far the pipeline is behind Postgres. These metrics are loaded directly from Postgres replication slot state.
 
@@ -65600,7 +65600,7 @@ Pipelines uses one main pipeline replication slot for ongoing replication. Durin
 
 Temporary table-sync slots show the same kind of lag and slot health metrics while they are active. After a table finishes its initial sync and catches up, its temporary slot is removed and ongoing replication continues through the main pipeline slot. For overall replication health, focus first on the main pipeline slot.
 
-#### Slot statuses
+### Slot statuses
 
 Replication slot status tells you whether Postgres is still retaining the WAL that the pipeline needs to continue from its current position.
 
@@ -65612,7 +65612,7 @@ Replication slot status tells you whether Postgres is still retaining the WAL th
 | **Lost**       | Broken. Some WAL files this pipeline's replication slot needs have already been removed. The pipeline can no longer continue from this slot. Recreate the pipeline, or set **Invalidated slot behavior** to **Recreate** in the pipeline's advanced settings and restart it. |
 | **Unknown**    | Postgres reported an unknown or unavailable state for this pipeline's replication slot.                                                                                                                                                                                      |
 
-#### Table states
+### Table states
 
 The pipeline status page also shows the state of individual tables being replicated. Each table can be in one of these states:
 
@@ -65627,7 +65627,7 @@ The pipeline status page also shows the state of individual tables being replica
 | **Not Available** | Table state is temporarily unavailable while the pipeline changes state  |
 | **Unknown**       | The Dashboard received a table state it doesn't recognize                |
 
-### Dealing with replication lag
+## Dealing with replication lag
 
 Replication lag means the pipeline is behind the source database. Some lag is expected during the initial sync, after a burst of writes, or after restarting a stopped pipeline. Lag becomes a problem when it keeps increasing, when **WAL retention remaining** is running low, or when the slot status moves to **Unreserved** or **Lost**.
 
@@ -65640,7 +65640,7 @@ Lag can come from several places:
 - **Stopped or disconnected pipeline**: When a pipeline is stopped, disconnected, or failed, Postgres keeps WAL for the slot until the retention limit is reached.
 - **Slow initial sync**: A temporary table-sync slot can fall behind if existing rows are copied more slowly than new changes are written to that table.
 
-#### Initial sync and table-sync slots
+### Initial sync and table-sync slots
 
 A common initial sync issue happens when a large or busy table is still in **Copying** while new rows keep being inserted or updated. The temporary table-sync slot retains changes that happen during the initial sync. If copying is too slow compared to the table's write rate, the slot can move to **Unreserved** and then **Lost** if Postgres removes changes the sync still needs.
 
@@ -65652,7 +65652,7 @@ When a table-sync slot is lost, the affected table needs to run its initial sync
 
 After the affected table finishes copying and catches up, the temporary slot is deleted. The table then continues through the main pipeline replication slot.
 
-#### Investigate the lag
+### Investigate the lag
 
 1. Open [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) and check the destination's lag column.
 2. Click **View pipeline** and check **Waiting to sync**, **WAL retention remaining**, **Last check-in**, **Connected**, and **Slot status**.
@@ -65660,7 +65660,7 @@ After the affected table finishes copying and catches up, the temporary slot is 
 4. Open [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) and look for destination errors, retries, rate limits, schema errors, or repeated restarts.
 5. Compare the lag trend with recent database activity, such as imports, migrations, bulk updates, or long transactions.
 
-#### Respond based on the slot status
+### Respond based on the slot status
 
 | Slot status    | What to do                                                                                                                                                                                                                                                                                                       |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -65670,7 +65670,7 @@ After the affected table finishes copying and catches up, the temporary slot is 
 | **Lost**       | The pipeline cannot continue from the existing slot because required WAL has been removed. Recreate the pipeline, or set **Invalidated slot behavior** to **Recreate** in the pipeline's advanced settings and restart the pipeline. This creates a new slot and starts replication from scratch for all tables. |
 | **Unknown**    | Check replication logs for errors or missing slot details. If the status remains unknown while the pipeline should be running, contact support with the pipeline ID and recent log details.                                                                                                                      |
 
-#### Reduce future lag risk
+### Reduce future lag risk
 
 - Keep publications focused on the tables and operations you need at the destination.
 - Avoid leaving pipelines stopped for long periods while the source database is still receiving writes.
@@ -65678,11 +65678,11 @@ After the affected table finishes copying and catches up, the temporary slot is 
 - For BigQuery, verify that service account permissions, table requirements, and replica identity settings match the [BigQuery destination guide](https://supabase.com/docs/guides/database/replication/bigquery).
 - If the initial sync is the bottleneck, review **Table sync workers** and **Copy connections per table** in the pipeline's advanced settings. Increasing either can use more source database connections; increasing table sync workers can also use more temporary replication slots.
 
-### Handling errors
+## Handling errors
 
 Errors can occur at two levels: per table or per pipeline.
 
-#### Table errors
+### Table errors
 
 Table errors occur during the initial sync and affect individual tables. These errors can be retried without stopping the entire pipeline.
 
@@ -65696,7 +65696,7 @@ Table errors occur during the initial sync and affect individual tables. These e
 
 When a table encounters an error during the initial sync, you can reset the table state. This restarts that table's initial sync from the beginning.
 
-#### Pipeline errors
+### Pipeline errors
 
 Pipeline errors can occur during startup or ongoing replication and affect the entire pipeline. If a non-retryable pipeline-level error occurs, the entire pipeline stops and enters a **Failed** state instead of silently skipping the failure.
 
@@ -65714,7 +65714,7 @@ To recover from a pipeline error, you'll need to:
 2. Fix the underlying issue (e.g., destination connectivity, schema compatibility)
 3. Restart the pipeline from the destinations list
 
-### Viewing logs
+## Viewing logs
 
 To see detailed logs for all your pipelines:
 
@@ -65724,16 +65724,16 @@ To see detailed logs for all your pipelines:
 
 Note: Logs contain diagnostic information that may be too technical for most users. If you're experiencing issues with replication, reaching out to support with your error details is recommended.
 
-### Common monitoring scenarios
+## Common monitoring scenarios
 
-#### Checking if replication is healthy
+### Checking if replication is healthy
 
 1. Navigate to the [**Database > Replication**](https://supabase.com/dashboard/project/_/database/replication) section of the Dashboard
 2. Verify your destination shows a "Running" status
 3. Click **View pipeline** to check replication lag and table states
 4. Ensure all tables show a "Live" state
 
-#### Investigating errors
+### Investigating errors
 
 If you see a **Failed** status:
 
@@ -65743,7 +65743,7 @@ If you see a **Failed** status:
 4. Navigate to the [**Logs > Replication**](https://supabase.com/dashboard/project/_/logs/replication-logs) section of the Dashboard for full error details
 5. For table errors, attempt to reset the affected tables
 
-#### Monitoring performance
+### Monitoring performance
 
 To ensure optimal performance:
 
@@ -65752,7 +65752,7 @@ To ensure optimal performance:
 3. Review logs for warnings or performance issues
 4. If lag is consistently high, review your publication and destination configuration
 
-### Troubleshooting
+## Troubleshooting
 
 If you notice issues with your replication:
 
@@ -65764,7 +65764,7 @@ If you notice issues with your replication:
 
 For more troubleshooting tips, see the [Pipelines FAQ](https://supabase.com/docs/guides/database/replication/pipelines-faq).
 
-### Next steps
+## Next steps
 
 - [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines)
 - [View the Pipelines FAQ](https://supabase.com/docs/guides/database/replication/pipelines-faq)
@@ -70737,7 +70737,7 @@ How to use Chrome DevTools to debug Edge Functions.
 
 Since [v1.171.0](https://github.com/supabase/cli/releases/tag/v1.171.0) the Supabase CLI supports debugging Edge Functions via the v8 inspector protocol, allowing for debugging via [Chrome DevTools](https://developer.chrome.com/docs/devtools/) and other Chromium-based browsers.
 
-### Inspect with Chrome Developer Tools
+## Inspect with Chrome Developer Tools
 
 1. Serve your functions in inspect mode. This will set a breakpoint at the first line to pause script execution before any code runs.
    ```bash
@@ -71264,17 +71264,17 @@ Tips for getting started with Edge Functions.
 
 Here are a few recommendations when you first start developing Edge Functions.
 
-### Using HTTP methods
+## Using HTTP methods
 
 Edge Functions support `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, and `OPTIONS`. A Function can be designed to perform different actions based on a request's HTTP method. See the [example on building a RESTful service](https://github.com/supabase/supabase/tree/master/examples/edge-functions/supabase/functions/restful-tasks) to learn how to handle different HTTP methods in your Function.
 
 Caution: HTML content is not supported. `GET` requests that return `text/html` will be rewritten to `text/plain`.
 
-### Naming Edge Functions
+## Naming Edge Functions
 
 We recommend using hyphens to name functions because hyphens are the most URL-friendly of all the naming conventions (snake\_case, camelCase, PascalCase).
 
-### Organizing your Edge Functions
+## Organizing your Edge Functions
 
 We recommend developing "fat functions". This means that you should develop few large functions, rather than many small functions. One common pattern when developing Functions is that you need to share code between two or more Functions. To do this, you can store any shared code in a folder prefixed with an underscore (`_`). We also recommend a separate folder for [Unit Tests](https://supabase.com/docs/guides/functions/unit-test) including the name of the function followed by a `-test` suffix.
 We recommend this folder structure:
@@ -71298,7 +71298,7 @@ We recommend this folder structure:
     └── config.toml
 ```
 
-### Using config.toml
+## Using config.toml
 
 Individual function configuration like [JWT verification](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.verify_jwt) and [import map location](https://supabase.com/docs/guides/local-development/cli/config#functions.function_name.import_map) can be set via the `config.toml` file.
 
@@ -71308,7 +71308,7 @@ verify_jwt = false
 import_map = './import_map.json'
 ```
 
-### Not using TypeScript
+## Not using TypeScript
 
 When you create a new Edge Function, it will use TypeScript by default. However, it is possible to write and deploy Edge Functions using pure JavaScript.
 
@@ -71324,12 +71324,12 @@ entrypoint = './functions/hello-world/index.js' # path must be relative to confi
 
 You can use any `.ts`, `.js`, `.tsx`, `.jsx` or `.mjs` file as the `entrypoint` for a Function.
 
-### Error handling
+## Error handling
 
 The `supabase-js` library provides several error types that you can use to handle errors that might occur when invoking Edge Functions:
 
 ```js
-import { FunctionsHttpError, FunctionsRelayError, FunctionsFetchError } from '@supabase/supabase-js'
+import { FunctionsFetchError, FunctionsHttpError, FunctionsRelayError } from '@supabase/supabase-js'
 
 const { data, error } = await supabase.functions.invoke('hello', {
   headers: { 'my-custom-header': 'my-custom-header-value' },
@@ -71346,7 +71346,7 @@ if (error instanceof FunctionsHttpError) {
 }
 ```
 
-### Database Functions vs Edge Functions
+## Database Functions vs Edge Functions
 
 For data-intensive operations we recommend using [Database Functions](https://supabase.com/docs/guides/database/functions), which are executed within your database and can be called remotely using the [REST and GraphQL API](https://supabase.com/docs/guides/api).
 
@@ -72093,7 +72093,7 @@ Use the [send email hook](https://supabase.com/docs/guides/auth/auth-hooks/send-
 
 Note: Prefer to jump straight to the code? [Check out the example on GitHub](https://github.com/supabase/supabase/tree/master/examples/edge-functions/supabase/functions/auth-hook-react-email-resend).
 
-### Prerequisites
+## Prerequisites
 
 To get the most out of this guide, you’ll need to:
 
@@ -72102,7 +72102,7 @@ To get the most out of this guide, you’ll need to:
 
 Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
-### 1. Create Supabase function
+## 1. Create Supabase function
 
 Create a new function locally:
 
@@ -72110,16 +72110,16 @@ Create a new function locally:
 supabase functions new send-email
 ```
 
-### 2. Edit the handler function
+## 2. Edit the handler function
 
 Paste the following code into the `index.ts` file:
 
 ```tsx supabase/functions/send-email/index.ts
-import { Webhook } from 'npm:standardwebhooks@^1'
 import { renderAsync } from 'npm:@react-email/components@^1'
 import { withSupabase } from 'npm:@supabase/server@^1'
 import React from 'npm:react@^19'
 import { Resend } from 'npm:resend@^6'
+import { Webhook } from 'npm:standardwebhooks@^1'
 
 import { MagicLinkEmail } from './_templates/magic-link.tsx'
 
@@ -72191,7 +72191,7 @@ export default {
 }
 ```
 
-### 3. Create React Email templates
+## 3. Create React Email templates
 
 Create a new `_templates` folder following the [recommended project structure](https://supabase.com/docs/guides/functions/development-environment#recommended-project-structure) and add a new `magic-link.tsx` file with the following code:
 
@@ -72330,7 +72330,7 @@ const code = {
 
 Note: You can find a selection of React Email templates in the [React Email Examples](https://react.email/examples).
 
-### 4. Deploy the Function
+## 4. Deploy the Function
 
 Deploy function to Supabase:
 
@@ -72340,7 +72340,7 @@ supabase functions deploy send-email --no-verify-jwt
 
 Note down the function URL, you will need it in the next step!
 
-### 5. Configure the Send Email Hook
+## 5. Configure the Send Email Hook
 
 - Go to the [Auth Hooks](https://supabase.com/dashboard/project/_/auth/hooks) section of the Supabase dashboard and create a new "Send Email hook".
 - Select HTTPS as the hook type.
@@ -73218,11 +73218,11 @@ In this example, we will use [`magick-wasm`](https://github.com/dlemstra/magick-
 
 Caution: Edge Functions currently doesn't support image processing libraries such as `Sharp`, which depend on native libraries. Only WASM-based libraries are supported.
 
-### Prerequisites
+## Prerequisites
 
 Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
-### Create the Edge Function
+## Create the Edge Function
 
 Create a new function locally:
 
@@ -73231,7 +73231,7 @@ supabase functions new image-blur
 
 ```
 
-### Write the function
+## Write the function
 
 In this example, we are implementing a function allowing users to upload an image and get a blurred thumbnail.
 
@@ -73239,7 +73239,7 @@ Here's the implementation in `index.ts` file:
 
 
 
-### Test it locally
+## Test it locally
 
 You can test the function locally by running:
 
@@ -73260,7 +73260,7 @@ curl --location '<http://localhost:54321/functions/v1/image-blur>' \\
 
 If you open the `output.png` file you will find a transformed version of your original image.
 
-### Deploy to your hosted project
+## Deploy to your hosted project
 
 Deploy the function to your Supabase project.
 
@@ -74182,7 +74182,7 @@ In this tutorial you're implementing three parts:
 
 You can find the complete example code on [GitHub](https://github.com/supabase/supabase/tree/master/examples/ai/edge-functions)
 
-### Create the database table and webhook
+## Create the database table and webhook
 
 Given the [following table definition](https://github.com/supabase/supabase/blob/master/examples/ai/edge-functions/supabase/migrations/20240408072601_embeddings.sql):
 
@@ -74311,7 +74311,7 @@ Sending emails from Edge Functions using the Resend API.
 
 Sending emails from Edge Functions using the [Resend API](https://resend.com/).
 
-### Prerequisites
+## Prerequisites
 
 To get the most out of this guide, you’ll need to:
 
@@ -74320,7 +74320,7 @@ To get the most out of this guide, you’ll need to:
 
 Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
-### 1. Create Supabase function
+## 1. Create Supabase function
 
 Create a new function locally:
 
@@ -74330,7 +74330,7 @@ supabase functions new resend
 
 Store the `RESEND_API_KEY` in your `.env` file.
 
-### 2. Edit the handler function
+## 2. Edit the handler function
 
 Paste the following code into the `index.ts` file:
 
@@ -74362,7 +74362,7 @@ const handler = async (_request: Request): Promise<Response> => {
 export default { fetch: withSupabase({ auth: ['user', 'secret'] }, handler) }
 ```
 
-### 3. Deploy and send email
+## 3. Deploy and send email
 
 Run function locally:
 
@@ -74386,7 +74386,7 @@ supabase functions deploy resend --no-verify-jwt
 
 Caution: When you deploy to Supabase, make sure that your `RESEND_API_KEY` is set in [Edge Function Secrets Management](https://supabase.com/dashboard/project/_/functions/secrets)
 
-### 4. Try it yourself
+## 4. Try it yourself
 
 Find the complete example on [GitHub](https://github.com/resendlabs/resend-supabase-edge-functions-example).
 
@@ -74399,12 +74399,12 @@ Monitor Edge Functions with the Sentry Deno SDK.
 
 Add the [Sentry Deno SDK](https://docs.sentry.io/platforms/javascript/guides/deno/) to your Supabase Edge Functions to track exceptions and get notified of errors or performance issues.
 
-### Prerequisites
+## Prerequisites
 
 - [Create a Sentry account](https://sentry.io/signup/).
 - Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) installed.
 
-### 1. Create Supabase function
+## 1. Create Supabase function
 
 Create a new function locally:
 
@@ -74412,7 +74412,7 @@ Create a new function locally:
 supabase functions new sentryfied
 ```
 
-### 2. Add the Sentry Deno SDK
+## 2. Add the Sentry Deno SDK
 
 Handle exceptions within your function and send them to Sentry.
 
@@ -74455,7 +74455,7 @@ export default {
 }
 ```
 
-### 3. Deploy and test
+## 3. Deploy and test
 
 Run function locally:
 
@@ -74472,7 +74472,7 @@ Deploy function to Supabase:
 supabase functions deploy sentryfied --no-verify-jwt
 ```
 
-### 4. Try it yourself
+## 4. Try it yourself
 
 Find the complete example on [GitHub](https://github.com/supabase/supabase/tree/master/examples/edge-functions/supabase/functions/sentryfied/index.ts).
 
@@ -77016,7 +77016,7 @@ For example, libraries like [magick-wasm](https://supabase.com/docs/guides/funct
 
 ***
 
-### Writing a Wasm module
+## Writing a Wasm module
 
 You can use different languages and SDKs to write Wasm modules. For this tutorial, we will write a basic Wasm module in Rust that adds two numbers.
 
@@ -77371,7 +77371,7 @@ Resources for getting started with Supabase.
 
 [Local Development: Use the Supabase CLI to develop locally and collaborate between teams.](/docs/guides/local-development)
 
-### Use cases
+## Use cases
 
 [AI, Vectors, and embeddings: Build AI-enabled applications using our Vector toolkit.](/docs/guides/ai#examples)
 
@@ -77379,7 +77379,7 @@ Resources for getting started with Supabase.
 
 [Partner Gallery: Postgres full-text search, image storage, and more.](https://github.com/supabase-community/partner-gallery-example#supabase-partner-gallery-example)
 
-### Framework quickstarts
+## Framework quickstarts
 
 [React: Learn how to create a Supabase project, add some sample data to your database, and query the data from a React app.](/docs/guides/getting-started/quickstarts/reactjs)
 
@@ -77409,7 +77409,7 @@ Resources for getting started with Supabase.
 
 
 
-### Web app demos
+## Web app demos
 
 [Next.js: Learn how to build a user management app with Next.js and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-nextjs)
 
@@ -77429,7 +77429,7 @@ Resources for getting started with Supabase.
 
 [Refine: Learn how to build a user management app with Refine and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-refine)
 
-### Mobile tutorials
+## Mobile tutorials
 
 [Flutter: Learn how to build a user management app with Flutter and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-flutter)
 
@@ -77607,7 +77607,7 @@ Our goal at Supabase is to make *all* of Postgres easy to use. That doesn’t me
 
 Each Supabase project consists of several tools:
 
-![Diagram showing the architecture of Supabase. The Kong API gateway sits in front of 7 services: GoTrue, PostgREST, Realtime, Storage, pg_meta, Functions, and pg_graphql. All the services talk to a single Postgres instance.](https://supabase.com/docs/img/supabase-architecture.svg)
+![Diagram showing the architecture of Supabase. The Envoy API gateway sits in front of 7 services: GoTrue, PostgREST, Realtime, Storage, pg_meta, Functions, and pg_graphql. All the services talk to a single Postgres instance.](https://supabase.com/docs/img/supabase-architecture.svg)
 
 ### Postgres (database)
 
@@ -77690,14 +77690,14 @@ A cloud-native, multi-tenant Postgres connection pooler.
 - License: [Apache 2.0](https://github.com/supabase/supavisor/blob/main/LICENSE)
 - Language: Elixir
 
-### Kong (API gateway)
+### Envoy (API gateway)
 
-A cloud-native API gateway, built on top of NGINX.
+A cloud-native, high-performance edge and service proxy.
 
-- Official Docs: [docs.konghq.com](https://docs.konghq.com/)
-- Source code: [github.com/kong/kong](https://github.com/kong/kong)
-- License: [Apache 2.0](https://github.com/Kong/kong/blob/master/LICENSE)
-- Language: Lua
+- Official Docs: [envoyproxy.io](https://www.envoyproxy.io/docs/envoy/latest/)
+- Source code: [github.com/envoyproxy/envoy](https://github.com/envoyproxy/envoy)
+- License: [Apache 2.0](https://github.com/envoyproxy/envoy/blob/main/LICENSE)
+- Language: C++
 
 ## Product principles
 
@@ -80634,6 +80634,218 @@ Start the app and go to [http://localhost:3000](http://localhost:3000) in a brow
 ```bash
 npm run dev
 ```
+
+
+---
+
+# Use Supabase with Spring Boot
+
+Learn how to create a Spring Boot project and connect it to your Supabase project.
+
+
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- Java 17 or later, which you can check with `java -version`
+- `curl` and `unzip`, to download and extract the generated project
+
+## 1. Create a Spring Boot project
+
+Use [Spring Initializr](https://start.spring.io) to scaffold a new project with the Web, Spring Data JPA, and Postgres Driver dependencies. Run the following from the directory where you keep your projects.
+
+```bash
+curl https://start.spring.io/starter.zip \
+  -d dependencies=web,data-jpa,postgresql \
+  -d type=maven-project \
+  -d language=java \
+  -d groupId=com.example \
+  -d artifactId=instruments \
+  -d name=instruments \
+  -o instruments.zip
+unzip instruments.zip -d instruments && cd instruments
+```
+
+## 2. Install Supabase's Agent Skills (optional)
+
+Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
+
+To install, run the following command in the root of your project:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up the Postgres connection details
+
+Go to [database.new](https://database.new) and create a new Supabase project. Save your database password securely.
+
+When your project is up and running, navigate to its dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session).
+
+Caution: The Transaction pooler (port `6543`) doesn't work as your app's main data source, because Spring Data JPA uses Hibernate, which relies on server-side prepared statements. Use the Session pooler, or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
+
+Under the **Session pooler** (port `5432`), select the **JDBC** tab and copy the connection string. Replace the password placeholder with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space.
+
+Note: You can reset your database password in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
+
+The connection string contains your database password, and `application.properties` is committed with your project. Set the string as an environment variable instead, and set it the same way on whatever platform you deploy to.
+
+```bash
+export SUPABASE_DB_URL='jdbc:postgresql://xxxx.pooler.supabase.com:5432/postgres?user=postgres.xxxx&password=[YOUR-PASSWORD]&sslmode=require'
+```
+
+The string you copied doesn't set `sslmode`, so add it. The driver defaults to `prefer`, which falls back to sending your data in plaintext if the encrypted attempt fails. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
+
+Then reference the variable, along with the driver, in `src/main/resources/application.properties`.
+
+```text name=src/main/resources/application.properties
+spring.datasource.url=${SUPABASE_DB_URL}
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+```
+
+If the app fails to start with `Unable to determine Dialect without JDBC metadata`, Hibernate couldn't open a connection at all. Look above that line in the logs for the real cause, most commonly `password authentication failed`.
+
+## 4. Change the default schema
+
+By default Hibernate creates tables in the `public` schema. We recommend changing this as Supabase exposes the `public` schema as a [data API](https://supabase.com/docs/guides/api).
+
+Create the schema from the [Table Editor](https://supabase.com/dashboard/project/_/editor) as your app will need it before start. Then point **Hibernate** at it in `application.properties`.
+
+```text name=src/main/resources/application.properties
+spring.jpa.properties.hibernate.default_schema=app
+```
+
+## 5. Create an entity and repository
+
+Spring Data JPA maps Java classes to database tables. Create an `Instrument` entity in `src/main/java/com/example/instruments/Instrument.java`. With `spring.jpa.hibernate.ddl-auto=update` set, Hibernate creates the `instruments` table for you when the app starts.
+
+```java name=src/main/java/com/example/instruments/Instrument.java
+package com.example.instruments;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "instruments")
+public class Instrument {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    public Instrument() {}
+
+    public Instrument(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+Create an `InstrumentRepository` interface in the same package. Extending `JpaRepository` gives you `findAll`, `save`, and other query methods without writing any implementation.
+
+```java name=src/main/java/com/example/instruments/InstrumentRepository.java
+package com.example.instruments;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InstrumentRepository extends JpaRepository<Instrument, Long> {}
+```
+
+## 6. Seed sample data
+
+Add a `CommandLineRunner` bean to `InstrumentsApplication.java` that saves some sample instruments the first time the app starts.
+
+```java name=src/main/java/com/example/instruments/InstrumentsApplication.java
+package com.example.instruments;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class InstrumentsApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(InstrumentsApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner seedInstruments(InstrumentRepository instrumentRepository) {
+        return args -> {
+            if (instrumentRepository.count() == 0) {
+                instrumentRepository.save(new Instrument("violin"));
+                instrumentRepository.save(new Instrument("viola"));
+                instrumentRepository.save(new Instrument("cello"));
+            }
+        };
+    }
+}
+```
+
+## 7. Query data from the app
+
+Create an `InstrumentController` that fetches every row from the `instruments` table through the repository and returns it as JSON.
+
+```java name=src/main/java/com/example/instruments/InstrumentController.java
+package com.example.instruments;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class InstrumentController {
+
+    private final InstrumentRepository instrumentRepository;
+
+    public InstrumentController(InstrumentRepository instrumentRepository) {
+        this.instrumentRepository = instrumentRepository;
+    }
+
+    @GetMapping("/instruments")
+    public List<Instrument> getInstruments() {
+        return instrumentRepository.findAll();
+    }
+}
+```
+
+## 8. Start the app
+
+Run the Spring Boot app, and go to [http://localhost:8080/instruments](http://localhost:8080/instruments) in your browser. You should see the list of instruments.
+
+```bash
+./mvnw spring-boot:run
+```
+
+## Next steps
+
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- Replace `ddl-auto` with [database migrations](https://supabase.com/docs/guides/deployment/database-migrations) before going to production
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
 
 ---
@@ -100559,7 +100771,7 @@ You can purchase Supabase through the AWS Marketplace. Buying through AWS Market
 
 When you make a purchase on AWS Marketplace, AWS will calculate sales taxes, VAT, GST, service tax, etc. (“Indirect Taxes”), if applicable, based on the location of your AWS account. You can find more details in the [AWS tax help guide](https://aws.amazon.com/tax-help/marketplace-buyers/).
 
-### Plans available through the AWS Marketplace
+## Plans available through the AWS Marketplace
 
 - Free Plan: not available
 - Pro Plan: available, self-serve
@@ -100614,20 +100826,20 @@ Linking an existing organization will result in the following:
 
 # AWS Marketplace FAQ
 
-#### The payment for completing the subscription on the AWS Marketplace fails.
+## The payment for completing the subscription on the AWS Marketplace fails.
 
 For more information on payment errors, refer to the [AWS documentation](https://docs.aws.amazon.com/marketplace/latest/buyerguide/buyer-paying-for-products.html#payment-methods).
 
-#### How can the Spend Cap for an organization managed through the AWS Marketplace be enabled?
+## How can the Spend Cap for an organization managed through the AWS Marketplace be enabled?
 
 For organizations on the Pro Plan that are managed through the AWS Marketplace, the Spend Cap is not available.
 In your AWS account, you can set up a budget for marketplace purchases (or for a specific marketplace product) and receive notifications once the budget is exceeded.
 
-#### How to cancel your AWS Marketplace subscription
+## How to cancel your AWS Marketplace subscription
 
 You can cancel your marketplace subscription within 48 hours of purchase. To do so, open a support ticket via the Supabase dashboard. After the 48-hour period, cancellation is no longer possible. If you cancel within the first 48 hours, the upfront charge for the fixed subscription fee will be refunded. Any usage costs incurred up to that point will not be refunded.
 
-#### Does purchasing Supabase through the AWS Marketplace count toward your AWS spend commitment?
+## Does purchasing Supabase through the AWS Marketplace count toward your AWS spend commitment?
 
 Yes, marketplace purchases do count toward the spend commitment.
 
@@ -100891,26 +101103,26 @@ This documentation covers frequently asked questions around subscription plans, 
 
 ## Organizations and projects
 
-#### What are organizations and projects?
+### What are organizations and projects?
 
 The Supabase Platform has "organizations" and "projects". An organization may contain multiple projects. Each project is a dedicated Supabase instance with all of its sub-services including Storage, Auth, Functions and Realtime.
 Each organization only has a single subscription with a single plan (Free, Pro, Team or Enterprise). Project add-ons such as [Compute](https://supabase.com/docs/guides/platform/compute-and-disk), [IPv4](https://supabase.com/docs/guides/platform/ipv4-address), [Log Drains](https://supabase.com/docs/guides/telemetry/log-drains), [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone), [Custom Domains](https://supabase.com/docs/guides/platform/custom-domains) and [PITR](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) are configured per project and are added to your organization subscription.
 
 Read more on [About billing on Supabase](https://supabase.com/docs/guides/platform/billing-on-supabase#organization-based-billing).
 
-#### How many free projects can I have?
+### How many free projects can I have?
 
 You are entitled to two active free projects. Paused projects do not count towards your quota. Note that within an organization, we count the free project limits from all members that are either Owner or Admin. If you’ve got another organization member with the Admin or Owner role that has already exhausted their free project quota, you won’t be able to launch another free project in that organization. You can create another Free Plan organization or change the role of the affected member in your [organization’s team settings](https://supabase.com/dashboard/org/_/team).
 
-#### Can I mix free and paid projects in a single organization?
+### Can I mix free and paid projects in a single organization?
 
 The subscription plan is set on the organization level and it is not possible to mix paid and non-paid projects inside a single organization. However, you can have a paid and a free organization and make use of the [self-serve project transfers](https://supabase.com/docs/guides/platform/project-transfer) to organize your projects. All projects in an organization benefit from the subscription plan. If your organization is on the Pro Plan, all projects within the organization benefit from no project pausing, automated backups and so on.
 
-#### Can I transfer my projects to another organization?
+### Can I transfer my projects to another organization?
 
 Yes, you can transfer your projects to another organization. You can find instructions on how to transfer your projects [here](https://supabase.com/docs/guides/platform/project-transfer).
 
-#### Can I transfer my credits to another organization?
+### Can I transfer my credits to another organization?
 
 Yes, you can transfer the credits to another organization. Submit a [support ticket](https://supabase.help).
 
@@ -100918,11 +101130,11 @@ Yes, you can transfer the credits to another organization. Submit a [support tic
 
 See the [Pricing page](https://supabase.com/pricing) for details.
 
-#### Are there any charges for paused projects?
+### Are there any charges for paused projects?
 
 No, we do not charge for paused projects. Compute hours are only counted for active instances. Paused projects do not incur any compute usage charges.
 
-#### How are multiple projects billed under a paid organization?
+### How are multiple projects billed under a paid organization?
 
 We provide a dedicated server for every Supabase project. Each paid organization comes with $10 in Compute Credits to cover one project on the default compute size. Additional projects start at \~$10 a month (billed hourly).
 
@@ -100934,7 +101146,7 @@ Running 3 projects in a Pro Plan organization on the default Micro instance:
 
 Refer to our [Compute](https://supabase.com/docs/guides/platform/manage-your-usage/compute#billing-examples) docs for more examples and insights.
 
-#### How does compute billing work?
+### How does compute billing work?
 
 Each Supabase project is a dedicated VM and Postgres database. By default, your instance runs on the Micro compute instance. You have the option to upgrade your compute size in your [Project settings](https://supabase.com/dashboard/project/_/settings/addons). See [Compute Add-ons](https://supabase.com/docs/guides/platform/compute-and-disk) for available options.
 
@@ -100946,7 +101158,7 @@ If you upgrade your project to a larger instance for 10 hours and then downgrade
 
 Read more about [Compute usage](https://supabase.com/docs/guides/platform/manage-your-usage/compute).
 
-#### What is egress and how is it billed?
+### What is egress and how is it billed?
 
 Egress refers to the total bandwidth (network traffic) quota available to each organization. This quota can be used for various purposes such as Storage, Realtime, Auth, Functions, Supavisor, Log Drains and Database. Each plan includes a specific egress quota, and any additional usage beyond that quota is billed accordingly.
 
@@ -100956,41 +101168,41 @@ Read more about [Egress usage](https://supabase.com/docs/guides/platform/manage-
 
 ## Plans and subscriptions
 
-#### How do I change my subscription plan?
+### How do I change my subscription plan?
 
 Change your subscription plan in your [organization's billing settings](https://supabase.com/dashboard/org/_/billing). To upgrade to an Enterprise Plan, complete the [Enterprise request form](https://forms.supabase.com/enterprise).
 
-#### What happens if I cancel my subscription?
+### What happens if I cancel my subscription?
 
 The organization is given [credits](https://supabase.com/docs/guides/platform/credits) for unused time on the subscription plan. The credits will not expire and can be used again in the future. You may see an additional charge for unbilled excessive usage charges from your previous billing cycle.
 
 Read more about [downgrades](https://supabase.com/docs/guides/platform/manage-your-subscription#downgrade).
 
-#### I mistakenly upgraded the wrong organization and then downgraded it. Could you issue a refund?
+### I mistakenly upgraded the wrong organization and then downgraded it. Could you issue a refund?
 
 We can transfer the amount as [credits](https://supabase.com/docs/guides/platform/credits) to another organization of your choice. You can use these credits to upgrade the organization, or if you have already upgraded, the credits will be used to pay the next month's invoice. Please create a [support ticket](https://supabase.help) for this case.
 
-#### How do I get an annual subscription?
+### How do I get an annual subscription?
 
 We currently do not support annual plans officially. However, you can do a [credit top-up](https://supabase.com/docs/guides/platform/credits#credit-top-ups) to avoid monthly payments.
 
 ## Quotas and spend caps
 
-#### What will happen when I exceed the Free Plan quota?
+### What will happen when I exceed the Free Plan quota?
 
 You will be notified when you exceed the Free Plan quota. It is important to take action at this point. If you continue to exceed the limits, service restrictions will apply. To avoid service restrictions, you can [manage your usage](https://supabase.com/docs/guides/platform/manage-your-usage) or upgrade to a paid plan. Learn more about restrictions in the [Fair Use Policy](#fair-use-policy) section.
 
-#### What will happen when I exceed the Pro Plan quota and have the spend cap on?
+### What will happen when I exceed the Pro Plan quota and have the spend cap on?
 
 You will be notified when you exceed your Pro Plan quota. To unblock yourself, you can toggle off your spend cap in your [organization's billing settings](https://supabase.com/dashboard/org/_/billing) to pay for over-usage beyond the Pro plans limits. If you continue to exceed the limits without managing your usage or turning off the spend cap, restrictions will apply. Learn more about restrictions in the [Fair Use Policy](#fair-use-policy) section.
 
-#### How do I scale beyond the limits of my Pro Plan?
+### How do I scale beyond the limits of my Pro Plan?
 
 The Pro Plan has a Spend Cap enabled by default to keep costs under control. If you want to scale beyond the plan's included quota, switch off the Spend Cap to pay for additional usage beyond the plans included limits. You can toggle the Spend Cap in the [organization's billing settings](https://supabase.com/dashboard/org/_/billing). Read more about the [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap).
 
 ## Fair Use Policy
 
-#### What is the Fair Use Policy?
+### What is the Fair Use Policy?
 
 Our Fair Use Policy gives developers the freedom to build and experiment with Supabase, while protecting our infrastructure. Under the Fair Use policy, service restrictions may apply to your organization if:
 
@@ -101001,13 +101213,13 @@ Our Fair Use Policy gives developers the freedom to build and experiment with Su
 
 You will receive a notification before Fair Use Policy restrictions are applied. However, in some cases, like suspected abuse of our services, restrictions may be applied without prior notice.
 
-#### What is a grace period and does it reset after usage drops?
+### What is a grace period and does it reset after usage drops?
 
 When your organization exceeds plan limits, you receive a grace period before fair use policy applies. After this grace period ends, the dashboard will continue to show a notice indicating that your grace period is over, even if you have dropped back under plan limits. This is a warning that serves as an indicator that your organization previously exceeded usage limits.
 
 This persistent warning means that if you exceed your plan limits again, you will not receive another grace period and your project will be restricted. The notice and indicator will automatically clear if you continue to stay under plan limits for multiple billing cycles.
 
-#### How is the Fair Use Policy applied?
+### How is the Fair Use Policy applied?
 
 The Fair Use Policy is applied through service restrictions. This could mean:
 
@@ -101018,7 +101230,7 @@ The Fair Use Policy is applied through service restrictions. This could mean:
 
 The Fair Use Policy is generally applied to all projects of the restricted organization.
 
-#### How can I remove restrictions applied from the Fair Use Policy?
+### How can I remove restrictions applied from the Fair Use Policy?
 
 To remove restrictions, you will need to address the issue that caused the restriction. This could be reducing your usage, paying overdue invoices, updating your payment method, or any other issue that caused the restriction. Once the issue is resolved, the restriction will be lifted.
 
@@ -101028,69 +101240,69 @@ Note: Pausing or deleting a project stops new usage from accumulating, but does 
 
 ## Reports and invoices
 
-#### Where do I find my invoices?
+### Where do I find my invoices?
 
 You can find all invoices from your organization on your [organization’s invoices page](https://supabase.com/dashboard/org/_/billing#invoices).
 
-#### Where can I see a breakdown of usage?
+### Where can I see a breakdown of usage?
 
 You can find the breakdown of your usage on your [organization’s usage page](https://supabase.com/dashboard/org/_/usage).
 
-#### Where can I check my credit balance?
+### Where can I check my credit balance?
 
 You can check your Credit balance on the [organization’s billing page](https://supabase.com/dashboard/org/_/billing). Credits will be used on future invoices before charging your payment method. If you have enough credits to cover an invoice, there is no charge at all.
 
-#### Can I change the details of an existing invoice?
+### Can I change the details of an existing invoice?
 
 Any changes made to your billing details will only be reflected in your upcoming invoices. Our payment provider cannot regenerate previous invoices. Therefore, make sure to update the billing details before the upcoming invoices are finalized.
 
 ## Payments and billing cycle
 
-#### What payment methods are available?
+### What payment methods are available?
 
 We accept credit card payments only. If you cannot pay via credit card, we do offer alternatives for larger upfront payments. Create a [support ticket](https://supabase.help) in case you’re interested.
 
-#### What credit card brands are supported?
+### What credit card brands are supported?
 
 Visa, Mastercard, American Express, Japan Credit Bureau (JCB), China UnionPay (CUP), Cartes Bancaires
 
-#### What currency can I pay in?
+### What currency can I pay in?
 
 All our invoices are issued in USD, but you can pay in any currency so long as the credit card provider allows charging in USD after conversion.
 
-#### Can I change the payment method?
+### Can I change the payment method?
 
 Yes, you will have to add the new payment method before being allowed to remove the old one.
 This can be done from your dashboard on the [organization’s billing page](https://supabase.com/dashboard/org/_/billing).
 
 Read more on [Manage your payment methods](https://supabase.com/docs/guides/platform/manage-your-subscription#manage-your-payment-methods).
 
-#### Can I pay upfront for multiple months?
+### Can I pay upfront for multiple months?
 
 You can top up your credit balance to cover multiple months through your [organization’s billing page](https://supabase.com/dashboard/org/_/billing).
 
 Read more on [Credit top-ups](https://supabase.com/docs/guides/platform/credits#credit-top-ups).
 
-#### When are payments taken?
+### When are payments taken?
 
 Payments are taken at the beginning of each billing cycle. You will be charged once a month. You can see the current billing cycle and upcoming invoice in your [organization's billing settings](https://supabase.com/dashboard/org/_/billing). The subscription plan fee is charged upfront, whereas usage-charges, including compute, are charged in arrears based on your usage.
 
 Read more on [Your monthly invoice](https://supabase.com/docs/guides/platform/your-monthly-invoice).
 
-#### Where can I change my billing details?
+### Where can I change my billing details?
 
 You can update your billing details on the [organization’s billing page](https://supabase.com/dashboard/org/_/billing).
 Note that any changes made to your billing details will only be reflected in your upcoming invoices. Our payment provider cannot regenerate previous invoices.
 
-#### What happens if I am unable to make the payment?
+### What happens if I am unable to make the payment?
 
 When an invoice becomes overdue, we will pause your projects and downgrade your organization to the Free Plan. You will be able to restore your projects once you have paid all outstanding invoices.
 
-#### Can I use a credit top-up to pay an outstanding invoice?
+### Can I use a credit top-up to pay an outstanding invoice?
 
 Credit top-ups apply only to future invoices. They cannot be used to pay or adjust outstanding invoices.
 
-#### Why am I overdue?
+### Why am I overdue?
 
 We were unable to charge your payment method. This likely means that the payment was not successfully processed with the credit card on your account profile.
 You can be overdue when
@@ -101105,39 +101317,39 @@ If you are still facing issues, raise a [support ticket](https://supabase.help).
 
 Payments are always in USD and may show up as coming from Singapore, given our payment entity is in Singapore. Make sure you allow payments from Singapore and in USD
 
-#### Can I delay my payment?
+### Can I delay my payment?
 
 No, you cannot delay your payment.
 
-#### Can I get a refund of my unused credits?
+### Can I get a refund of my unused credits?
 
 No, we do not provide refunds. Please refer to our [Terms of Service](https://supabase.com/terms#1-fees).
 
-#### What do I do if my bill looks wrong?
+### What do I do if my bill looks wrong?
 
 Take a moment to review our [Your monthly invoice](https://supabase.com/docs/guides/platform/your-monthly-invoice) page, which may help clarify any questions about your invoice. If it still looks wrong, submit a [support ticket](https://supabase.help) through the dashboard. Select the affected organization and provide the invoice number for us to look at your case.
 
 ## Taxes
 
-#### Does Supabase charge sales tax, VAT or GST?
+### Does Supabase charge sales tax, VAT or GST?
 
 Supabase is rolling out sales tax in applicable US states, and VAT, GST, and other indirect taxes for customers where required by law. The tax amount applied to your invoice depends on your billing address and the tax regulations in your jurisdiction.
 
-#### Why is Supabase collecting tax now?
+### Why is Supabase collecting tax now?
 
 As a cloud services provider operating globally, Supabase is required to collect and remit indirect taxes in an increasing number of jurisdictions. We’re updating our billing practices to meet these obligations and ensure compliance with local tax regulations.
 
-#### Will every customer be charged tax?
+### Will every customer be charged tax?
 
 No. Tax is only applied in jurisdictions where Supabase is registered to collect it. If your billing address is in one of those jurisdictions, you’ll see tax applied on your invoice. If it is not, your invoices will not include tax.
 
-#### When will customers start seeing tax on their invoices?
+### When will customers start seeing tax on their invoices?
 
 We are progressively rolling out tax collection across international jurisdictions. The roll out begins on May 1, 2026 and completes by June 30, 2026.
 
 You will receive an email notification in advance of any changes to your invoicing.
 
-#### Do I need to do anything?
+### Do I need to do anything?
 
 For most customers, nothing changes on your end. Supabase automatically calculates the applicable tax based on the billing address associated with your organization.
 
@@ -101146,11 +101358,11 @@ There are two cases where action may be needed:
 - If your organization is VAT- or GST-registered, make sure you have entered a valid Tax ID in your [organization’s billing page](https://supabase.com/dashboard/org/_/billing#address). This allows us to apply the correct tax treatment, such as reverse charge for eligible B2B transactions.
 - If your organization is tax-exempt, submit your exemption certificate to [tax-documents@supabase.io](mailto:tax-documents@supabase.io) so we can verify and apply the exemption to your organization.
 
-#### What if my billing address is missing or incorrect?
+### What if my billing address is missing or incorrect?
 
 A valid billing address is required for us to calculate the correct tax and comply with tax regulations. Make sure your billing address is up to date in your [organization’s billing page](https://supabase.com/dashboard/org/_/billing#address) to avoid any disruption.
 
-#### Where do I add my tax ID?
+### Where do I add my tax ID?
 
 You can add or update your Tax ID directly in the Supabase Dashboard under your [organization’s billing page](https://supabase.com/dashboard/org/_/billing#address).
 
@@ -101158,25 +101370,25 @@ Providing a valid Tax ID ensures we apply the correct tax treatment for your reg
 
 If you do not see an option for your country’s Tax ID format, please open a [support ticket](https://supabase.help) and we’ll make sure it is recorded on your account.
 
-#### What if my organization is tax-exempt?
+### What if my organization is tax-exempt?
 
 If your organization qualifies for a tax exemption, email your exemption certificate to [tax-documents@supabase.io](mailto:tax-documents@supabase.io).
 
 Our team will verify the certificate and update your account accordingly. Once approved, tax will no longer be applied to your invoices.
 
-#### How does tax appear on my invoices?
+### How does tax appear on my invoices?
 
 Tax is shown separately at the bottom of your invoice, clearly broken out from the cost of the products and services you’re subscribed to. This makes it easy to distinguish between your subscription costs and any applicable tax.
 
-#### How is tax handled on prepaid credit top ups or packages?
+### How is tax handled on prepaid credit top ups or packages?
 
 If you purchase a prepaid top up or credit package, tax is assessed at the time of purchase, not when the credits are later consumed against usage or subscription invoices. This ensures the correct tax rate is applied based on your billing address at the time of purchase.
 
-#### Are marketplace purchases affected?
+### Are marketplace purchases affected?
 
 If you use Supabase through a cloud marketplace such as AWS Marketplace or Vercel Marketplace, the marketplace provider handles tax collection and remittance. In those cases, Supabase does not separately charge tax on marketplace-billed invoices.
 
-#### Who should I contact with questions about tax?
+### Who should I contact with questions about tax?
 
 For questions about tax collection, exemptions, or your Tax ID, please open a [support ticket](https://supabase.help).
 
@@ -102298,7 +102510,7 @@ nslookup db.<PROJECT_REF>.supabase.co
 
 The pooler and direct connection strings can be found in the [project connect page](https://supabase.com/dashboard/project/_?showConnect=true):
 
-#### Direct connection
+### Direct connection
 
 IPv6 unless IPv4 Add-On is enabled
 
@@ -102307,7 +102519,7 @@ IPv6 unless IPv4 Add-On is enabled
 postgresql://postgres:[YOUR-PASSWORD]@db.ajrbwkcuthywfihaarmflo.supabase.co:5432/postgres
 ```
 
-#### Supavisor in transaction mode (port 6543)
+### Supavisor in transaction mode (port 6543)
 
 Always uses an IPv4 address
 
@@ -102316,7 +102528,7 @@ Always uses an IPv4 address
 postgresql://postgres.ajrbwkcuthywddfihrmflo:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres
 ```
 
-#### Supavisor in session mode (port 5432)
+### Supavisor in session mode (port 5432)
 
 Always uses an IPv4 address
 
@@ -106922,7 +107134,7 @@ If replication for Supabase Realtime was used in the old database, enable public
 
 ### Special considerations
 
-##### Preserving migration history
+#### Preserving migration history
 
 If you were using Supabase CLI for managing migrations on your old database and would like to preserve the migration history in your newly restored project, you need to insert the migration records separately using the following commands.
 
@@ -106937,7 +107149,7 @@ psql \
   --dbname "$NEW_DB_URL"
 ```
 
-##### Schema changes to `auth` and `storage`
+#### Schema changes to `auth` and `storage`
 
 If you have modified the `auth` and `storage` schemas in your old project, such as adding triggers or Row Level Security(RLS) policies, you have to restore them separately. The Supabase CLI can help you diff the changes to these schemas using the following commands.
 
@@ -106948,11 +107160,11 @@ supabase db diff --linked --schema auth,storage > changes.sql
 
 ### Troubleshooting notes
 
-##### Disabling triggers during restore:
+#### Disabling triggers during restore:
 
 Setting `session_replication_role` to `replica` disables triggers during the migration, preventing columns from being double encrypted.
 
-##### Custom roles require passwords
+#### Custom roles require passwords
 
 If you created any [custom roles](https://supabase.com/dashboard/project/_/database/roles) with the `LOGIN` attribute, you must manually set their passwords in the new project. This can be done with the SQL command:
 
@@ -106960,7 +107172,7 @@ If you created any [custom roles](https://supabase.com/dashboard/project/_/datab
 alter user "YOUR_USER" with password 'SOME_NEW_PASSWORD';
 ```
 
-##### `supabase_admin` permission errors
+#### `supabase_admin` permission errors
 
 If you encounter permission errors related to `supabase_admin` during restore:
 
@@ -106971,7 +107183,7 @@ If you encounter permission errors related to `supabase_admin` during restore:
   ALTER ... OWNER TO "supabase_admin"
 ```
 
-##### `cli_login_postgres` role grant error
+#### `cli_login_postgres` role grant error
 
 If you encounter the error:
 
@@ -106987,7 +107199,7 @@ DETAIL:  Only roles with the ADMIN option on role "postgres" may grant this role
 GRANT "postgres" TO "cli_login_postgres" WITH INHERIT FALSE GRANTED BY "supabase_admin";
 ```
 
-##### `cli_login_postgres` role issues after cloning
+#### `cli_login_postgres` role issues after cloning
 
 The `cli_login_role` must be created by the `supabase_admin` role. If the migration process cloned over the role before the CLI could generate its own version, it may encounter the error:
 
@@ -107966,7 +108178,7 @@ To use PrivateLink with your Supabase project:
 
 ## Getting started
 
-#### Step 1: Add AWS account
+### Step 1: Add AWS account
 
 Navigate to your project's Integrations section to set up PrivateLink:
 
@@ -107980,7 +108192,7 @@ Navigate to your project's Integrations section to set up PrivateLink:
 
 After submission, Supabase creates a VPC Lattice Resource Configuration for your project and sends an AWS Resource Share to the specified AWS Account ID. This process may take a few moments. Once complete, the account will show a "Ready" status, indicating that the resource share has been sent to your AWS account and is ready to be accepted.
 
-#### Step 2: Accept resource share
+### Step 2: Accept resource share
 
 Supabase will send you an AWS Resource Share containing the VPC Lattice Resource Configurations for your projects. To accept this share:
 
@@ -107995,7 +108207,7 @@ Supabase will send you an AWS Resource Share containing the VPC Lattice Resource
 
 After accepting, you'll see the resource configurations appear in your [Shared with me > Shared resources](https://console.aws.amazon.com/ram/home#SharedResources) section of the RAM console and the [PrivateLink and Lattice > Resource configurations](https://console.aws.amazon.com/vpcconsole/home#ResourceConfigs) section of the VPC console.
 
-#### Step 3: Configure security groups
+### Step 3: Configure security groups
 
 Ensure your security groups allow traffic on the appropriate ports:
 
@@ -108007,11 +108219,11 @@ Ensure your security groups allow traffic on the appropriate ports:
    - Destination that is appropriate for your network. i.e. the subnet of your VPC or security group of your application instances
 5. Finish creating the security group by clicking **Create security group**
 
-#### Step 4: Create connection
+### Step 4: Create connection
 
 In your AWS account, you have two options to establish connectivity:
 
-##### Option A: Create a PrivateLink endpoint
+#### Option A: Create a PrivateLink endpoint
 
 1. Navigate to the VPC console in your AWS account
 2. Go to [Endpoints](https://console.aws.amazon.com/vpcconsole/home#Endpoints:) in the left sidebar
@@ -108032,7 +108244,7 @@ In your AWS account, you have two options to establish connectivity:
     - The IP addresses of the endpoint will be listed in the **Subnets** section of the endpoint details
     - The DNS record will be in the **Associations** section of the endpoint details in the **DNS Name** field if you enabled it in step 8
 
-##### Option B: Attach resource configuration to an existing VPC lattice service network
+#### Option B: Attach resource configuration to an existing VPC lattice service network
 
 1. **This method is only recommended if you have an existing VPC Lattice Service Network**
 2. Navigate to the VPC Lattice console in your AWS account
@@ -108044,7 +108256,7 @@ In your AWS account, you have two options to establish connectivity:
 8. After creation, you will see the resource configuration in the Resource configurations section of your service network with the status "Active"
 9. For connectivity, click on the association details and the domain name will be listed in the **DNS entries** section
 
-#### Step 5: Test connectivity
+### Step 5: Test connectivity
 
 Verify the private connection is working correctly from your VPC:
 
@@ -108058,7 +108270,7 @@ psql "postgresql://[username]:[password]@[private-endpoint]:5432/postgres"
 
 You should see a successful connection without any public internet traffic.
 
-#### Step 6: Update applications
+### Step 6: Update applications
 
 Configure your applications to use the private connection details:
 
@@ -108077,7 +108289,7 @@ postgresql://user:pass@db.[project-ref].supabase.co:5432/postgres
 postgresql://user:pass@your-private-endpoint.vpce.amazonaws.com:5432/postgres
 ```
 
-#### Step 7: Disable public connectivity (optional)
+### Step 7: Disable public connectivity (optional)
 
 For maximum security, you can disable public internet access for your database:
 
@@ -111527,7 +111739,7 @@ When you create a Queue in Supabase, you can choose to create helper database fu
 
 Database functions in `pgmq_public` can be exposed via Supabase Data API so consumers client-side can call them. Visit the [Quickstart](https://supabase.com/docs/guides/queues/quickstart) for an example.
 
-### `pgmq_public.pop(queue_name)`
+## `pgmq_public.pop(queue_name)`
 
 Retrieves the next available message and deletes it from the specified Queue.
 
@@ -111535,7 +111747,7 @@ Retrieves the next available message and deletes it from the specified Queue.
 
 ***
 
-### `pgmq_public.send(queue_name, message, sleep_seconds)`
+## `pgmq_public.send(queue_name, message, sleep_seconds)`
 
 Adds a Message to the specified Queue, optionally delaying its visibility to all consumers by a number of seconds.
 
@@ -111545,7 +111757,7 @@ Adds a Message to the specified Queue, optionally delaying its visibility to all
 
 ***
 
-### `pgmq_public.send_batch(queue_name, messages, sleep_seconds)`
+## `pgmq_public.send_batch(queue_name, messages, sleep_seconds)`
 
 Adds a batch of Messages to the specified Queue, optionally delaying their availability to all consumers by a number of seconds.
 
@@ -111555,7 +111767,7 @@ Adds a batch of Messages to the specified Queue, optionally delaying their avail
 
 ***
 
-### `pgmq_public.archive(queue_name, message_id)`
+## `pgmq_public.archive(queue_name, message_id)`
 
 Archives a Message by moving it from the Queue table to the Queue's archive table.
 
@@ -111564,7 +111776,7 @@ Archives a Message by moving it from the Queue table to the Queue's archive tabl
 
 ***
 
-### `pgmq_public.delete(queue_name, message_id)`
+## `pgmq_public.delete(queue_name, message_id)`
 
 Permanently deletes a Message from the specified Queue.
 
@@ -111573,7 +111785,7 @@ Permanently deletes a Message from the specified Queue.
 
 ***
 
-### `pgmq_public.read(queue_name, sleep_seconds, n)`
+## `pgmq_public.read(queue_name, sleep_seconds, n)`
 
 Reads up to "n" Messages from the specified Queue with an optional "sleep\_seconds" (visibility timeout).
 
@@ -114422,67 +114634,93 @@ List of operational codes to help understand your deployment and usage.
 | Error code | Description | Action |
 | --- | --- | --- |
 | `ChannelRateLimitReached` | The number of channels you can create has reached its limit. |  |
+| `ChannelShutdown` | The channel was shut down and an error system message was pushed to the client. |  |
+| `CheckOidsError` | Error when fetching the publication tables (OIDs) during the periodic check; the existing OIDs, replication slot and subscribers are left untouched. |  |
 | `ClientJoinRateLimitReached` | The rate of joins per second from your clients has reached the channel limits. |  |
-| `ConnectionInitializing` | Database is initializing connection. |  |
+| `ClientPresenceRateLimitReached` | A single client sent Presence updates too frequently and had its channel closed. This usually means Presence is being used for high-frequency updates it is not designed for. Learn more: [Troubleshooting guide for the ClientPresenceRateLimitReached error](/docs/guides/troubleshooting/realtime-client-presence-rate-limit-reached) | Reserve Presence for slow-changing state and use Broadcast for high-frequency updates such as live cursors, or throttle your track() calls. |
 | `ConnectionRateLimitReached` | The number of connected clients has reached its limit. |  |
-| `DatabaseConnectionIssue` | Database had connection issues and connection was not able to be established. |  |
-| `DatabaseLackOfConnections` | Realtime was not able to connect to the tenant's database due to not having enough available connections. Learn more: [Connection management guide](https://supabase.com/docs/guides/database/connection-management) | Verify your database connection limits. |
-| `ErrorAuthorizingWebsocket` | Error when trying to authorize the WebSocket connection. | Verify user information on connect. |
+| `DatabaseConnectionRateLimitReached` | The rate of attempts to connect to the database has reached the limit. |  |
+| `DatabaseLackOfConnections` | Realtime was not able to connect to the tenant's database due to not having enough available connections. Learn more: [Connection management guide](/docs/guides/database/connection-management) | Verify your database connection limits. |
+| `DropReplicationSlotFailed` | Error when dropping the replication slot after the publication became empty; the poller stops so the temporary slot is released with the connection. |  |
 | `ErrorConnectingToWebsocket` | Error when trying to connect to the WebSocket server. | Verify user information on connect. |
 | `ErrorExecutingTransaction` | Error executing a database transaction in tenant database. |  |
 | `ErrorOnRpcCall` | Error when calling another realtime node. |  |
+| `ErrorRunningQuery` | Error when running a query against the tenant database. |  |
 | `ErrorStartingPostgresCDC` | Error when starting the Postgres CDC extension which is used for Postgres Changes. |  |
-| `ErrorStartingPostgresCDCStream` | Error when starting the Postgres CDC stream which is used for Postgres Changes. |  |
+| `HttpClientError` | Phoenix converted an exception into a 4xx HTTP response (for example a request to an unknown route). The log includes the underlying error and status. |  |
+| `HttpServerError` | Phoenix converted an unhandled exception into a 5xx HTTP response. The log includes the underlying error and status to explain a server error that request metrics alone would not surface. |  |
 | `IncreaseConnectionPool` | The number of connections you have set for Realtime are not enough to handle your current use case. |  |
+| `IncreaseSubscriptionConnectionPool` | The subscription connection pool hit too many database timeouts and should be increased. |  |
 | `InitializingProjectConnection` | Connection against Tenant database is still starting. |  |
-| `InvalidJWTExpiration` | JWT exp claim value it's incorrect. |  |
+| `InvalidJoinPayload` | The payload provided to Realtime on connect is invalid. |  |
+| `InvalidJWTToken` | The JWT provided on connect is expired or is missing required claims (`role` and `exp`). |  |
+| `InvalidPresencePayload` | Payload from track event sent to Presence isn't a map. |  |
 | `JanitorFailedToDeleteOldMessages` | Scheduled task for realtime.message cleanup was unable to run. |  |
+| `JoinsRateLimitReached` | The rate of joins per second from your clients has reached the limit and the connection was refused. |  |
 | `JwtSignatureError` | JWT signature was not able to be validated. |  |
+| `JwtSignerError` | Failed to generate a JWT signer — check your JWT secret or JWKS configuration. |  |
 | `MalformedJWT` | Token received does not comply with the JWT format. |  |
-| `MigrationCheckFailed` | Check to see if we require to run migrations fails. |  |
+| `MalformedWebSocketMessage` | Received a WebSocket message that is empty, invalid JSON, or missing required fields (`ref`, `topic`, or `event`). The connection is kept alive but the message is dropped. |  |
+| `MessagePerSecondRateLimitReached` | The rate of messages per second from your clients has reached the channel limits. |  |
+| `MigrationCountMismatch` | The cached `migrations_ran` count did not match the tenant database and is being reconciled. |  |
+| `MigrationCountMismatchReconcileFailed` | Failed to reconcile the `migrations_ran` count mismatch between the cache and the tenant database. |  |
 | `MigrationsFailedToRun` | Error when running the migrations against the Tenant database that are required by Realtime. |  |
+| `MissingAPIKey` | No API key was provided in the `x-api-key` header or `apikey` query parameter. |  |
+| `MissingPartition` | Realtime was unable to find the expected messages partition. |  |
 | `PartitionCreationFailed` | Error when creating partitions for realtime.messages. |  |
 | `PoolingReplicationError` | Error when pooling the replication slot. |  |
 | `PoolingReplicationPreparationError` | Error when preparing the replication slot. |  |
+| `PresenceRateLimitReached` | Limit of presence events reached globally. |  |
+| `PrivateOnly` | The connection was rejected because this project only allows private channels. |  |
+| `QueryCanceled` | A database query was canceled, usually due to a statement timeout. |  |
 | `RealtimeDisabledForConfiguration` | The configuration provided to Realtime on connect will not be able to provide you any Postgres Changes. | Verify your configuration on channel startup as you might not have your tables properly registered. |
-| `RealtimeDisabledForTenant` | Realtime has been disabled for the tenant. Learn more: [Troubleshooting guide for suspended projects](https://supabase.com/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas) | Your project may have been suspended for exceeding usage quotas. Contact support with your project reference ID and a description of your Realtime use case. |
+| `RealtimeDisabledForTenant` | Realtime has been disabled for the tenant. Learn more: [Troubleshooting guide for suspended projects](/docs/guides/troubleshooting/realtime-project-suspended-for-exceeding-quotas) | Your project may have been suspended for exceeding usage quotas. Contact support with your project reference ID and a description of your Realtime use case. |
 | `RealtimeNodeDisconnected` | Realtime is a distributed application and this means that one the system is unable to communicate with one of the distributed nodes. |  |
 | `RealtimeRestarting` | Realtime is currently restarting. |  |
 | `ReconnectSubscribeToPostgres` | Postgres changes still waiting to be subscribed. |  |
-| `ReplicationMaxWalSendersReached` | Maximum number of WAL senders reached in tenant database. Learn more: [Configuring max WAL senders](https://supabase.com/docs/guides/database/custom-postgres-config#cli-configurable-settings) |  |
+| `ReplicationConnectionDown` | The replication connection was terminated and a recovery window has been opened. |  |
+| `ReplicationConnectionRecoveryFailed` | The database check failed while trying to recover the replication connection. |  |
+| `ReplicationConnectionTimeout` | Replication connection timed out during initialization. |  |
+| `ReplicationMaxWalSendersReached` | Maximum number of WAL senders reached in tenant database. Learn more: [Configuring max WAL senders](/docs/guides/database/custom-postgres-config#cli-configurable-settings) |  |
+| `ReplicationPollerConnectionFailed` | Error when the replication poller process fails to connect to the database on startup. |  |
+| `ReplicationPollerMaxRetriesReached` | The replication poller gave up after the maximum number of consecutive retries and stopped the tenant's Postgres Changes workers. |  |
+| `ReplicationRecoveryWindowExceeded` | The replication connection recovery window was exceeded and the connection was terminated. |  |
 | `ReplicationSlotBeingUsed` | The replication slot is being used by another transaction. |  |
+| `ReplicationSlotLagCheckSkipped` | The periodic replication slot lag check could not be completed, typically because the tenant database connection was unavailable. The check is skipped and retried on the next watchdog interval. |  |
+| `ReplicationSlotLagTooHigh` | The replication slot WAL lag has exceeded 50% of `max_slot_wal_keep_size`. The replication connection is shut down and will be restarted to prevent the slot from being invalidated by PostgreSQL. |  |
 | `RlsPolicyError` | Error on RLS policy used for authorization. |  |
-| `StartListenAndReplicationFailed` | Error when starting the replication and listening of errors for database broadcasting. |  |
+| `RpcError` | Error returned when calling another realtime node over RPC. |  |
+| `StartReplicationFailed` | Error when starting the replication and listening of errors for database broadcasting. |  |
+| `SubscriptionCleanupFailed` | Error when trying to clean up all subscriptions on subscription manager initialization or OID change. |  |
 | `SubscriptionDeletionFailed` | Error when trying to delete a subscription for postgres changes. |  |
+| `SubscriptionManagerConnectionFailed` | Error when the subscription manager process fails to connect to the database on startup. |  |
 | `SynInitializationError` | Our framework to syncronize processes has failed to properly startup a connection to the database. |  |
-| `TableHasSpacesInName` | The table you are trying to listen to has spaces in its name which we are unable to support. | Change the table name to not have spaces in it. |
 | `TenantNotFound` | The tenant you are trying to connect to does not exist. | Verify the tenant name you are trying to connect to exists in the realtime.tenants table. |
 | `TimeoutOnRpcCall` | RPC request within the Realtime server has timed out. |  |
 | `TopicNameRequired` | You are trying to use Realtime without a topic name set. |  |
 | `UnableCheckoutConnection` | Error when trying to checkout a connection from the tenant pool. |  |
+| `UnableToBroadcastChanges` | Error when trying to broadcast database changes (realtime.messages) to subscribers. |  |
 | `UnableToCheckProcessesOnRemoteNode` | Error when trying to check the processes on a remote node. |  |
 | `UnableToConnectToProject` | Unable to connect to Project database. |  |
 | `UnableToConnectToTenantDatabase` | Realtime was not able to connect to the tenant's database. |  |
-| `UnableToCreateCounter` | Error when trying to create a counter to track rate limits for a tenant. |  |
-| `UnableToDecrementCounter` | Error when trying to decrement a counter to track rate limits for a tenant. |  |
-| `UnableToDeletePhantomSubscriptions` | Error when trying to delete subscriptions that are no longer being used. |  |
 | `UnableToDeleteTenant` | Error when trying to delete a tenant. |  |
 | `UnableToEncodeJson` | An error were we are not handling correctly the response to be sent to the end user. |  |
-| `UnableToFindCounter` | Error when trying to find a counter to track rate limits for a tenant. |  |
-| `UnableToIncrementCounter` | Error when trying to increment a counter to track rate limits for a tenant. |  |
-| `UnableToListenToTenantDatabase` | Unable to LISTEN for notifications against the Tenant Database. |  |
-| `UnableToProcessListenPayload` | Payload sent in NOTIFY operation was not JSON parsable. |  |
+| `UnableToHandleBroadcast` | Error when handling a broadcast message. |  |
+| `UnableToHandlePresence` | Error when handling a presence message on a channel. |  |
+| `UnableToReplayMessages` | An error while replaying messages. |  |
 | `UnableToSetPolicies` | Error when setting up Authorization Policies. |  |
 | `UnableToSubscribeToPostgres` | Error when trying to subscribe to Postgres changes. |  |
 | `UnableToTrackPresence` | Error when handling track presence for this socket. |  |
-| `UnableToUpdateCounter` | Error when trying to update a counter to track rate limits for a tenant. |  |
 | `Unauthorized` | Unauthorized access to Realtime channel. |  |
+| `UnexpectedMessageReceived` | An unexpected message was received by the replication connection process. |  |
 | `UnhandledProcessMessage` | Unhandled message received by a Realtime process. |  |
-| `UnknownDataProcessed` | An unknown data type was processed by the Realtime system. |  |
+| `UnknownError` | An unhandled error occurred. |  |
 | `UnknownErrorOnChannel` | An error we are not handling correctly was triggered on a channel. |  |
 | `UnknownErrorOnController` | An error we are not handling correctly was triggered on a controller. |  |
+| `UnknownErrorOnWebSocketMessage` | An unexpected error occurred while processing an incoming WebSocket message. The connection is kept alive but the message is dropped. |  |
 | `UnknownPresenceEvent` | Presence event type not recognized by service. |  |
 | `UnprocessableEntity` | Received a HTTP request with a body that was not able to be processed by the endpoint. |  |
+| `WarnSendingBroadcastMessage` | Warning when `realtime.send` or `realtime.send_binary` cannot insert the message. Learn more: [Realtime troubleshooting guide](/docs/guides/realtime/troubleshooting) |  |
 
 
 ---
@@ -119622,7 +119860,7 @@ Resources for getting started building with Supabase.
 
 [Glossary: Definitions for terminology and acronyms used in the Supabase documentation.](/docs/guides/resources/glossary)
 
-### Migrate to Supabase
+## Migrate to Supabase
 
 [Auth0: Move your auth users from Auth0 to a Supabase project.](/docs/guides/platform/migrating-to-supabase/auth0)
 
@@ -119644,7 +119882,7 @@ Resources for getting started building with Supabase.
 
 [Microsoft SQL Server: Migrate your Microsoft SQL Server database to Supabase.](/docs/guides/platform/migrating-to-supabase/mssql)
 
-### Postgres resources
+## Postgres resources
 
 [Managing Indexes: Improve query performance using various index types in Postgres.](/docs/guides/database/postgres/indexes)
 
@@ -119816,7 +120054,7 @@ Under HIPAA, both covered entities and business associates have distinct respons
 
 Caution: The hosted Supabase platform has the necessary controls to meet HIPAA requirements. These controls are not supported out of the box in self-hosted Supabase. HIPAA controls extend further than the Supabase product, encompassing legal agreements (BAAs) with providers, operating controls and policies. Achieving HIPAA compliance with self-hosted Supabase is out of scope for this documentation and you should consult your auditor for further guidance.
 
-### Customer responsibilities
+## Customer responsibilities
 
 Covered entities (the customer) are organizations that directly handle PHI, such as health plans, healthcare clearinghouses, and healthcare providers that conduct certain electronic transactions.
 
@@ -119824,7 +120062,7 @@ Covered entities (the customer) are organizations that directly handle PHI, such
 2. **Business Associate Agreements (BAAs)**: Customers must sign a BAA with Supabase. When the covered entity engages a business associate to help carry out its healthcare activities, it must have a written BAA. This agreement outlines the business associate's responsibilities and requires them to comply with HIPAA Rules.
 3. **Internal Compliance Programs**: Customers must [configure their HIPAA projects](https://supabase.com/docs/guides/platform/hipaa-projects) and follow the guidance given by the security advisor. Covered entities are responsible for implementing internal processes and compliance programs to ensure they meet HIPAA requirements.
 
-### Supabase responsibilities
+## Supabase responsibilities
 
 Supabase as the business associate, and the vendors used by Supabase, are the entities that perform functions or activities on behalf of the customer.
 
@@ -120319,7 +120557,7 @@ It is the customer’s responsibility to ensure that testing activities are alig
 
 Furthermore, Supabase runs a [Vulnerability Disclosure Program](https://hackerone.com/ca63b563-9661-4ac3-8d23-7581582ef451/embedded_submissions/new) (VDP) with HackerOne, and external security researchers may report any bugs found within the scope of the aforementioned program. Customer penetration testing does not form part of this VDP.
 
-### Permitted services
+## Permitted services
 
 - Authentication
 - Database
@@ -120329,7 +120567,7 @@ Furthermore, Supabase runs a [Vulnerability Disclosure Program](https://hackeron
 - `https://<customer_project_ref>.supabase.co/*`
 - `https://db.<customer_project_ref>.supabase.co/*`
 
-### Prohibited testing and activities
+## Prohibited testing and activities
 
 - Any activity contrary to what is listed in the AUP.
 - Denial of Service (DoS) and Distributed Denial of Service (DDoS) testing.
@@ -120372,14 +120610,14 @@ Our [HIPAA documentation](https://supabase.com/docs/guides/security/hipaa-compli
 
 SOC 2 compliance is a critical aspect of data security for Supabase and our customers. Being fully SOC 2 compliant is a shared responsibility and here’s a breakdown of the responsibilities for both parties:
 
-#### Supabase responsibilities
+### Supabase responsibilities
 
 1. **Security Measures**: Supabase implements robust security controls to protect customer data. These includes measures to prevent data breaches and ensure the confidentiality and integrity of the information managed and stored by the platform. Supabase is obliged to be vigilant about security risks and must demonstrate that our security measures meet industry standards through regular audits.
 2. **Compliance Audits**: Supabase undergoes SOC 2 audits yearly to verify that our data management practices comply with the Trust Services Criteria (TSC), which include security, availability, processing integrity, confidentiality, and privacy. These audits are conducted by an independent third party.
 3. **Incident Response**: Supabase has an incident response plan in place to handle data breaches efficiently. This plan outlines how the organization detects issues, responds to incidents, and manages system vulnerabilities.
 4. **Reporting**: Upon a successful audit, Supabase receive a SOC 2 report that details our compliance status. This report is available to customers as a SOC 2 Type 2 report, and allows customers and stakeholders to assure that Supabase has implemented adequate and the requisite safeguards to protect sensitive information.
 
-#### Customer responsibilities
+### Customer responsibilities
 
 1. **Compliance Requirements**: Understand your own compliance requirements. While SOC 2 compliance is not a legal requirement, many enterprise customers require their providers to have a SOC 2 report. This is because it provides assurance that the provider has implemented robust controls to protect customer data.
 2. **Due Diligence**: Customers must perform due diligence when selecting Supabase as a provider. This includes reviewing the SOC 2 Type 2 report to ensure that Supabase meets the expected security standards. Customers should also understand the division of responsibilities between themselves and Supabase to avoid duplication of effort.
@@ -120387,7 +120625,7 @@ SOC 2 compliance is a critical aspect of data security for Supabase and our cust
 4. **Control Compliance**: If a customer needs to be SOC 2 compliant, they should themselves implement the requisite controls and undergo a SOC 2 audit.
 5. **Audit logging**: Supabase sets [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging) to off by default for new projects. If your SOC 2 program requires connection audit evidence, enable connection logging and define how you retain and review those logs.
 
-#### Shared responsibilities
+### Shared responsibilities
 
 1. **Data Security**: Both customers and Supabase share the responsibility of ensuring data security. While the Supabase, as the provider, implements the security controls, the customer must ensure that their use of the Supabase platform does not compromise these controls.
 2. **Control Compliance**: Supabase asserts through our SOC 2 that all requisite security controls are met. Customers wishing to also be SOC 2 compliant need to go through their own SOC 2 audit, verifying that security controls are met on the customer's side.
@@ -120443,7 +120681,7 @@ Host Supabase on your own infrastructure.
 
 Self-hosting is a good fit if you need full control over your data, have compliance requirements that prevent you from using managed services, or want to run Supabase in an isolated environment.
 
-### How self-hosted Supabase differs
+## How self-hosted Supabase differs
 
 Self-hosted Supabase is different from:
 
@@ -120452,7 +120690,7 @@ Self-hosted Supabase is different from:
 
 Self-hosted Supabase mimics a single project. Studio doesn't support multiple organizations or projects. Platform-only [features](https://supabase.com/features) such as branching, advanced metrics beyond logs, managed backups and PITR, analytics and vector buckets, ETL, and the platform management API are **unavailable** in self-hosted configuration. Most settings are configured through [environment variables](https://github.com/supabase/supabase/blob/master/docker/.env.example).
 
-### Your responsibilities when self-hosting
+## Your responsibilities when self-hosting
 
 When you self-host, **you are responsible for**:
 
@@ -120464,7 +120702,7 @@ When you self-host, **you are responsible for**:
 - Backups and disaster recovery
 - Monitoring and uptime
 
-### Telemetry
+## Telemetry
 
 Self-hosted Supabase (run via Docker Compose) **does not phone home or collect any telemetry**.
 
@@ -125863,7 +126101,7 @@ Learn how Supabase Storage caches objects with a CDN.
 
 All assets uploaded to Supabase Storage are cached on a Content Delivery Network (CDN) to improve the latency for users all around the world. CDNs are a geographically distributed set of servers or **nodes** which cache content from an **origin server**. For Supabase Storage, the origin is the storage server running in the [same region as your project](https://supabase.com/dashboard/project/_/settings/general). Aside from performance, CDNs also help with security and availability by mitigating Distributed Denial of Service (DDoS) and other application attacks.
 
-### Example
+## Example
 
 The following example shows how a CDN helps with performance.
 
@@ -125879,7 +126117,7 @@ Note: Note that CDNs might still evict your object from their cache if it has no
 
 The cache status of a particular request is sent in the `cf-cache-status` header. A cache status of `MISS` indicates that the CDN node did not have the object in its cache and had to ping the origin to get it. A cache status of `HIT` indicates that the object was sent directly from the CDN.
 
-### Public vs private buckets
+## Public vs private buckets
 
 Objects in public buckets do not require any authorization to access objects. This leads to a better cache hit rate compared to private buckets.
 
@@ -126247,9 +126485,9 @@ For more advanced filtering needs, use the [Logs Explorer](https://supabase.com/
 
 Note: For more details on filtering the log tables, see [Advanced Log Filtering](https://supabase.com/docs/guides/monitoring-and-debugging/advanced-log-filtering)
 
-### Example Storage queries for the Logs Explorer
+## Example Storage queries for the Logs Explorer
 
-#### Filter by status 5XX error
+### Filter by status 5XX error
 
 ```sql
 select
@@ -126269,7 +126507,7 @@ order by timestamp desc
 limit 100;
 ```
 
-#### Filter by status 4XX error
+### Filter by status 4XX error
 
 ```sql
 select
@@ -126289,7 +126527,7 @@ order by timestamp desc
 limit 100;
 ```
 
-#### Filter by method
+### Filter by method
 
 ```sql
 select id, storage_logs.timestamp, event_message, r.method
@@ -126302,7 +126540,7 @@ order by timestamp desc
 limit 100;
 ```
 
-#### Filter by IP address
+### Filter by IP address
 
 ```sql
 select id, storage_logs.timestamp, event_message, r.remoteAddress
@@ -126570,19 +126808,19 @@ Here are some optimizations that you can consider to improve performance and red
 
 If your project has high egress, these optimizations can help reducing it.
 
-#### Resize images
+### Resize images
 
 Images typically make up most of your egress. By keeping them as small as possible, you can cut down on egress and boost your application's performance. You can take advantage of our [Image Transformation](https://supabase.com/docs/guides/storage/serving/image-transformations) service to optimize any image on the fly.
 
-#### Set a high cache-control value
+### Set a high cache-control value
 
 Using the browser cache can effectively lower your egress since the asset remains stored in the user's browser after the initial download. Setting a high `cache-control` value ensures the asset stays in the user's browser for an extended period, decreasing the need to download it from the server repeatedly. Read more [here](https://supabase.com/docs/guides/storage/cdn/smart-cdn#cache-duration)
 
-#### Limit the upload size
+### Limit the upload size
 
 You have the option to set a maximum upload size for your bucket. Doing this can prevent users from uploading and then downloading excessively large files. You can control the maximum file size by configuring this option at the [bucket level](https://supabase.com/docs/guides/storage/buckets/creating-buckets).
 
-#### Smart CDN
+### Smart CDN
 
 By leveraging our [Smart CDN](https://supabase.com/docs/guides/storage/cdn/smart-cdn), you can achieve a higher cache hit rate and therefore lower your egress cached, as we charge less for cached egress (see [egress pricing](https://supabase.com/docs/guides/platform/manage-your-usage/egress#pricing)).
 
@@ -127148,7 +127386,7 @@ Learn the storage schema
 
 Supabase Storage provides SQL helper functions which you can use to write RLS policies.
 
-### `storage.filename()`
+## `storage.filename()`
 
 Returns the name of a file. For example, if your file is stored in `public/subfolder/avatar.png` it would return: `'avatar.png'`
 
@@ -127166,7 +127404,7 @@ using (
 );
 ```
 
-### `storage.foldername()`
+## `storage.foldername()`
 
 Returns an array path, with all of the subfolders that a file belongs to. For example, if your file is stored in `public/subfolder/avatar.png` it would return: `[ 'public', 'subfolder' ]`
 
@@ -127184,7 +127422,7 @@ with check (
 );
 ```
 
-### `storage.extension()`
+## `storage.extension()`
 
 Returns the extension of a file. For example, if your file is stored in `public/subfolder/avatar.png` it would return: `'png'`
 
@@ -127202,7 +127440,7 @@ with check (
 );
 ```
 
-### `storage.allow_only_operation()`
+## `storage.allow_only_operation()`
 
 Returns `true` when the current Storage API operation exactly matches the provided operation name.
 
@@ -127232,7 +127470,7 @@ using (
 );
 ```
 
-### `storage.allow_any_operation()`
+## `storage.allow_any_operation()`
 
 Returns `true` when the current Storage API operation exactly matches any operation in the provided array.
 
@@ -127619,6 +127857,7 @@ Our client libraries methods like `getPublicUrl` and `createSignedUrl` support t
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
+
 const supabase = createClient('your_project_url', 'your_supabase_api_key')
 
 // ---cut---
@@ -127688,6 +127927,7 @@ To share a transformed image in a private bucket for a fixed amount of time, pro
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
+
 const supabase = createClient('your_project_url', 'your_supabase_api_key')
 
 // ---cut---
@@ -127744,6 +127984,7 @@ To download a transformed image, pass the `transform` option to the `download` f
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
+
 const supabase = createClient('your_project_url', 'your_supabase_api_key')
 
 // ---cut---
@@ -127826,6 +128067,7 @@ In case you'd like to return the original format of the image and **opt-out** fr
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
+
 const supabase = createClient('your_project_url', 'your_supabase_api_key')
 
 // ---cut---
@@ -127949,6 +128191,7 @@ Example:
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
+
 const supabase = createClient('your_project_url', 'your_supabase_api_key')
 
 // ---cut---
@@ -128035,6 +128278,7 @@ Example:
 
 ```ts
 import { createClient } from '@supabase/supabase-js'
+
 const supabase = createClient('your_project_url', 'your_supabase_api_key')
 
 // ---cut---
@@ -128149,7 +128393,7 @@ Our solution to image resizing and optimization can be self-hosted as with any o
 
 Note: If you run the official self-hosted stack from the [`supabase/supabase`](https://github.com/supabase/supabase/tree/master/docker) Docker Compose setup, an `imgproxy` service is **already included** and wired up to the `storage` service for you (the `storage` service sets `ENABLE_IMAGE_TRANSFORMATION: "true"` and `IMGPROXY_URL: http://imgproxy:5001`). You only need the steps below if you run `storage-api` outside of that Compose stack and have to provide your own imgproxy container.
 
-#### imgproxy configuration:
+### imgproxy configuration:
 
 Deploy an imgproxy container with the following configuration:
 
@@ -128163,7 +128407,7 @@ imgproxy:
 
 Note: make sure that this service can only be reachable within an internal network and not exposed to the public internet
 
-#### Storage API configuration:
+### Storage API configuration:
 
 Once [imgproxy](https://imgproxy.net/) is deployed we need to configure a couple of environment variables in your self-hosted [`storage-api`](https://github.com/supabase/storage-api) service as follows:
 
@@ -128463,13 +128707,13 @@ with open("./assets/40mb.jpg", "rb") as fs:
     )
 ```
 
-### Upload URL
+## Upload URL
 
 When uploading using the resumable upload endpoint, the storage server creates a unique URL for each upload, even for multiple uploads to the same path. All chunks will be uploaded to this URL using the `PATCH` method.
 
 This unique upload URL will be valid for **up to 24 hours**. If the upload is not completed within 24 hours, the URL will expire and you'll need to start the upload again. TUS client libraries typically create a new URL if the previous one expires.
 
-### Concurrency
+## Concurrency
 
 When two or more clients upload to the same upload URL only one of them will succeed. The other clients will receive a `409 Conflict` error. Only 1 client can upload to the same upload URL at a time which prevents data corruption.
 
@@ -128477,7 +128721,7 @@ When two or more clients upload a file to the same path using different upload U
 
 If you provide the `x-upsert` header the last client to complete the upload will succeed instead.
 
-### Uppy example
+## Uppy example
 
 You can check a [full example using Uppy](https://github.com/supabase/supabase/tree/master/examples/storage/resumable-upload-uppy).
 
@@ -128488,7 +128732,7 @@ Uppy has integrations with different frameworks:
 - [Vue](https://uppy.io/docs/vue/)
 - [Angular](https://uppy.io/docs/angular/)
 
-### Presigned uploads
+## Presigned uploads
 
 Resumable uploads also supports using signed upload tokens to created time-limited URLs that you can share to your users by invoking the `createSignedUploadUrl` method on the SDK and including the returned token in the `x-signature` header of the resumable upload.
 
@@ -130764,6 +131008,7 @@ results = index.query(
 - [Prisma Error Management](https://supabase.com/docs/guides/troubleshooting/prisma-error-management-Cm5P_o)
 - [Project Status reports unhealthy services](https://supabase.com/docs/guides/troubleshooting/project-status-reports-unhealthy-services)
 - [rclone error: 's3 protocol error: received listing v1 with IsTruncated set, no NextMarker and no Contents'](https://supabase.com/docs/guides/troubleshooting/rclone-error-s3-protocol-error-received-listing-v1-with-istruncated-set-no-nextmarker-and-no-contents-e64d34)
+- [Realtime: ClientPresenceRateLimitReached error](https://supabase.com/docs/guides/troubleshooting/realtime-client-presence-rate-limit-reached)
 - [Realtime "Concurrent Peak Connections" quota](https://supabase.com/docs/guides/troubleshooting/realtime-concurrent-peak-connections-quota-jdDqcp)
 - [Realtime connections giving `TIMED_OUT` errors](https://supabase.com/docs/guides/troubleshooting/realtime-connections-timed_out-status)
 - [Debug Realtime with Logger and Log Levels](https://supabase.com/docs/guides/troubleshooting/realtime-debugging-with-logger)
@@ -130933,7 +131178,7 @@ We're currently investigating an issue where the tables responsible for keeping 
 
 We've documented some of the migrations that run into this issue and their corresponding fix here:
 
-### Auth: `operator does not exist: uuid = text`
+## Auth: `operator does not exist: uuid = text`
 
 Temporary fix: Run `insert into auth.schema_migrations values ('20221208132122');` via the [SQL editor](https://supabase.com/dashboard/project/_/sql/new) to fix the issue.
 
@@ -130962,16 +131207,16 @@ Supabase projects are designed for compatibility with IPv6-only NAT64/DNS64 envi
 
 # Are all features available in self-hosted Supabase?
 
-### Overview
+## Overview
 
 The self-hosted version is pretty similar to the hosted one. It might not always have the latest features right away, but it includes everything you need to get your application up and running.
 
-### Feature availability
+## Feature availability
 
 To know what features are available in the self-hosted version, refer to the comprehensive list here:
 [Supabase Features](https://supabase.com/features)
 
-### Self-hosting documentation
+## Self-hosting documentation
 
 For detailed steps and guidance on how to set up and manage your self-hosted Supabase instance, follow the documentation provided:
 [Self-Hosting Guide](https://supabase.com/docs/guides/self-hosting)
@@ -131098,7 +131343,7 @@ Certain queries, like indexing a table or changing a column's data type, are inh
 
 To execute long-running queries, follow the below steps.
 
-### Install an external SQL client
+## Install an external SQL client
 
 The guide focuses on [psql](https://supabase.com/docs/guides/database/psql) but you can use any Postgres client.
 
@@ -131118,7 +131363,7 @@ Once installed, you can find your PSQL string on the dashboard by clicking [conn
 
 Note: If you are working in an [IPv6 environment](https://github.com/orgs/supabase/discussions/27034) or have the IPv4 Add-On, it is preferable to use the direct connection.
 
-### Increase the query timeout
+## Increase the query timeout
 
 Then you can increase the query timeout solely for your session:
 
@@ -131556,15 +131801,15 @@ limit 100;
 
 They tend to be caused by one of the following factors.
 
-### Attempted to access a forbidden schema
+## Attempted to access a forbidden schema
 
 API roles cannot access certain schemas, most notably `auth` and `vault`. This restriction extends to Foreign Data Wrappers relying on `vault`. While you can bypass it using a [security definer function](https://supabase.com/docs/guides/database/functions?queryGroups=language\&language=sql\&queryGroups=example-view\&example-view=sql#security-definer-vs-invoker), these schemas are intentionally restricted for security reasons.
 
-### Attempted to access a custom schema
+## Attempted to access a custom schema
 
 If you created a custom schema, you will have to give the Database API permission to query it. Follow our [Using Custom Schemas guide](https://supabase.com/docs/guides/api/using-custom-schemas) for more directions.
 
-### Missing table-level privileges
+## Missing table-level privileges
 
 If you see an error like `permission denied for table your_table`, the querying role may not have the required privilege for the operation.
 
@@ -131594,11 +131839,11 @@ Note: Granting privileges allows access to your table through the Data API, so y
 
 For more information, see [Securing your API](https://supabase.com/docs/guides/api/securing-your-api).
 
-### Configured column-level restrictions
+## Configured column-level restrictions
 
 If you've set column-based access in the [Dashboard](https://supabase.com/dashboard/project/_/database/column-privileges) or via SQL, queries will fail with a `42501` error when accessing restricted columns. This includes using `select *`, as it expands to include forbidden columns.
 
-### RLS:
+## RLS:
 
 If the anon or authenticated roles attempt to UPDATE or INSERT values without the necessary RLS permissions, Postgres will return a 42501 error.
 
@@ -131745,7 +131990,7 @@ on profiles for select using (
 
 # Disabling Prepared statements
 
-### It is important to note that although the direct connections and Supavisor in session mode support prepared statements, Supavisor in transaction mode does not.
+## It is important to note that although the direct connections and Supavisor in session mode support prepared statements, Supavisor in transaction mode does not.
 
 ## How to disable prepared statements for Supavisor in transaction mode
 
@@ -131956,7 +132201,7 @@ from
 
 ## Finding errors
 
-#### API level errors
+### API level errors
 
 The `metadata.request.url` contains PostgREST formatted queries.
 
@@ -132005,7 +132250,7 @@ where
 
 PostgREST has an [error reference table](https://postgrest.org/en/v12/references/errors.html) that you can use to interpret status codes.
 
-#### Database-level errors
+### Database-level errors
 
 However, some errors that are reported through the Database API occur at the Postgres level. If it is not clear which error occurred you should reference the timestamp of the error and try to see if you can find it in the Postgres logs.
 
@@ -132965,7 +133210,7 @@ An internal 504 from an Edge Function means the function failed to initiate a re
 
 As of now, this limit cannot be increased. If your function always needs more time than allowed, skip to [When optimization isn't enough](#when-optimization-is-not-enough) section. Otherwise, follow the steps below to speed up response times.
 
-### Step 1: Identifying slow Functions
+## Step 1: Identifying slow Functions
 
 You can filter for 504 events in the Log Explorer with the below [query](https://supabase.com/dashboard/project/_/logs/explorer?q=select%0A++cast%28timestamp+as+datetime%29+as+timestamp%2C%0A++req.pathname%2C%0A++res.status_code%2C%0A++metadata.execution_time_ms%0Afrom%0A++function_edge_logs%0A++cross+join+UNNEST%28metadata%29+as+metadata%0A++cross+join+UNNEST%28metadata.request%29+as+req%0A++cross+join+UNNEST%28metadata.response%29+as+res%0Awhere+res.status_code+%3D+504%0Alimit+20%3B):
 
@@ -133007,7 +133252,7 @@ limit 20;
 
 Once candidate functions are identified, you can investigate more thoroughly.
 
-### Step 2: Investigating slow Functions
+## Step 2: Investigating slow Functions
 
 Add `console.time` labels around suspicious sections to pinpoint where time is being spent:
 
@@ -133030,11 +133275,11 @@ Common culprits:
 - External APIs that are throttling or rate-limiting you
 - Loops without a clear escape condition
 
-### Step 3: Optimize
+## Step 3: Optimize
 
 The below suggestions are some strategies you can pursue to reduce execution times.
 
-#### Parallelizing requests
+### Parallelizing requests
 
 If requests are independent of one another, rather than calling them sequentially, you can speed up operations by calling them in parallel with [Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all):
 
@@ -133050,15 +133295,15 @@ const [resultA, resultB] = await Promise.all([
 ])
 ```
 
-#### Splitting up logic
+### Splitting up logic
 
 The Edge Function may be doing more than it needs to. It may be better to split up it's logic into multiple parts that can be called individually and run for shorter periods.
 
-#### Use background tasks \[utilize-background-tasks]
+### Use background tasks \[utilize-background-tasks]
 
 You can initiate functions in a background task to be handled independently of the request/response handler. The process is outlined in the [Background Task docs](https://supabase.com/docs/guides/functions/background-tasks)
 
-#### Offload work to the client or an external service
+### Offload work to the client or an external service
 
 Instead of managing all operations within the function itself, there may be an external API that can execute jobs faster and then send back results. Alternatively, you may be able to offload some processing to the requester rather than doing everything within the function itself.
 
@@ -133097,7 +133342,7 @@ group by req.pathname, res.status_code
 limit 10;
 ```
 
-### When optimization is not enough
+## When optimization is not enough
 
 Edge Functions have a hard runtime ceiling that cannot be raised. If your use case genuinely requires more, consider:
 
@@ -134966,7 +135211,7 @@ chmod +x entrypoint.sh
 
 When facing high CPU utilization, slow query performance, and an `ERROR: must be a superuser to terminate superuser process` message regarding an autovacuum, it indicates that a critical, non-terminable autovacuum operation is running on your Postgres database. This guide explains why this happens and what steps you can take.
 
-### **Core Postgres concepts**
+## Core Postgres concepts
 
 To understand this issue, it's essential to grasp a few core Postgres concepts:
 
@@ -134984,7 +135229,7 @@ Every transaction in Postgres is assigned a unique Transaction ID (XID). These X
 
 To prevent this critical issue, Postgres initiates a special autovacuum operation: the **"wraparound prevention vacuum."**
 
-### **Understanding the problem: A critical autovacuum**
+## Understanding the problem: A critical autovacuum
 
 When you encounter the `ERROR: must be a superuser to terminate superuser process` associated with an autovacuum marked "to prevent wraparound," it signifies that this mandatory, system-critical operation is underway.
 
@@ -134997,7 +135242,7 @@ When you encounter the `ERROR: must be a superuser to terminate superuser proces
 **Why is it running?**
 This situation often arises in large, high-write tables (e.g., `your_table`, which might be hundreds of GBs in size and contain hundreds of millions of rows) that accumulate dead tuples rapidly. When the transaction ID age of the table approaches a critical threshold, Postgres automatically triggers this emergency autovacuum. For instance, if a table has millions of rows and over a million dead rows, exceeding its configured `autovacuum_vacuum_scale_factor` (e.g., 0.2), a regular autovacuum might initiate. However, if the XID age continues to increase, the system prioritizes the wraparound prevention vacuum to safeguard data integrity.
 
-### **Mitigating performance impact during a critical autovacuum**
+## Mitigating performance impact during a critical autovacuum
 
 Since the wraparound prevention autovacuum cannot be stopped, the best approach is to provide the database with sufficient resources to complete the operation as efficiently as possible.
 
@@ -135011,7 +135256,7 @@ Since the wraparound prevention autovacuum cannot be stopped, the best approach 
    - **Why it helps:** Autovacuum is an I/O-intensive operation, involving a lot of reading and writing. Higher disk performance can significantly speed up the process.
    - **Considerations:** Cloud providers may limit the number of disk modifications (e.g., up to four in a rolling 24-hour window). You can start a new modification immediately after the previous one finishes, provided you have not exceeded this rolling 24-hour quota.
 
-### **Monitoring progress and future prevention**
+## Monitoring progress and future prevention
 
 **Monitoring the Current Autovacuum:**
 You can monitor the progress of the active autovacuum processes using the `pg_stat_progress_vacuum` view:
@@ -135328,9 +135573,9 @@ While important, the size of the database isn't the sole determinant of restorat
 
 > For the curious: [here is a list of all built-in indexes in Postgres](https://www.postgresql.org/docs/current/indexes-types.html)
 
-### Postgres internals
+## Postgres internals
 
-#### How an index is chosen
+### How an index is chosen
 
 Postgres, internally, contains a few components that manage query execution:
 
@@ -135417,11 +135662,11 @@ To reset statistics within the database, you can use the following query:
 select pg_stat_reset();
 ```
 
-### Complex or composite indexes
+## Complex or composite indexes
 
 > For a more complete rundown, check the [Postgres Official Docs](https://www.postgresql.org/docs/current/indexes-multicolumn.html)
 
-#### Multi-column indexes
+### Multi-column indexes
 
 If you make independent indexes on multiple columns, Postgres will likely use each of them independently to find the relevant rows and then combine the results together.
 
@@ -135437,7 +135682,7 @@ from test2
 where major = constant and minor = constant;
 ```
 
-#### Ordered indexes
+### Ordered indexes
 
 If you're using an ORDER BY clause, [indexes can also be pre-sorted by DESC/ASC](https://www.postgresql.org/docs/current/indexes-ordering.html) for better performance.
 
@@ -135446,7 +135691,7 @@ If you're using an ORDER BY clause, [indexes can also be pre-sorted by DESC/ASC]
 CREATE INDEX test3_desc_index ON test3 (id DESC NULLS LAST);
 ```
 
-#### Functional indexes
+### Functional indexes
 
 Although not as common, indexes can also be leveraged against modified values, such as when using a LOWER function:
 
@@ -135458,7 +135703,7 @@ create index test1_lower_col1_idx on test1 (lower(col1));
 select * from test1 where lower(col1) = 'value';
 ```
 
-#### Covering indexes
+### Covering indexes
 
 Indexes contain pointers to a specific row, but you could instruct an index to hold a copy of a column's value for even faster retrieval. These are known as `covering` indexes. Because maintaining a copy is storage intensive, you should avoid using it for values with large data footprints.[ FULL VIDEO ON TOPIC](https://www.youtube.com/watch?v=bBu_V8CfWgM)
 
@@ -135466,7 +135711,7 @@ Indexes contain pointers to a specific row, but you could instruct an index to h
 CREATE INDEX a_b_idx ON x (a,b) INCLUDE (c);
 ```
 
-#### Indexes on JSONB
+### Indexes on JSONB
 
 Although a GIN/GIST index can be used to index entire JSONB bodies, you can also target only specific Key-values with standard BTREE indexes:
 
@@ -135550,17 +135795,17 @@ SHOW max_connections;
 
 **Three** factors must be taken into consideration when adjusting the direct connection limit:
 
-#### Process schedulers and Postgres internals
+### Process schedulers and Postgres internals
 
 Allowing too many direct connections in your database can overburden Postgres schedulers and other internal modules. This will result in a noticeable decrease in query throughput, despite having more connections available. EnterpriseDB wrote a wonderful [article](https://www.enterprisedb.com/postgres-tutorials/why-you-should-use-connection-pooling-when-setting-maxconnections-postgres) that outlines some of the considerations.
 
 The default connection values are set based on a solid understanding of Postgres architecture, and straying too far from them is *likely* to hinder performance. However, with some experimentation, you might discover a value better suited to your specific needs. Still, unless there's a compelling reason to adjust the setting, it's generally advisable to stick with the defaults or change the values judiciously.'
 
-#### Memory
+### Memory
 
 > If you do not know how to monitor memory and CPU with Supabase Grafana, [check here](https://github.com/orgs/supabase/discussions/27141).
 
-##### Each direct connection is a running process that will consume active memory
+#### Each direct connection is a running process that will consume active memory
 
 This is a Grafana Chart of unhealthy memory usage:
 
@@ -135588,7 +135833,7 @@ select
   ) || ' * ' || current_setting('maintenance_work_mem') || ')) / ' || current_setting('work_mem');
 ```
 
-#### CPU
+### CPU
 
 The below chart is an example of what can occur to the CPU if 100s of connections are inappropriately opened/closed every second or many CPU intensive queries are run in parallel
 
@@ -135986,7 +136231,7 @@ Queries can use complex syntax, so it is often helpful to isolate by referenced 
 
 All failed queries, including those from PostgREST, Auth, and external libraries (e.g., Prisma) are logged with helpful error messages for debugging.
 
-##### Server/Role mapping
+#### Server/Role mapping
 
 API servers have assigned database roles for connecting to the database:
 
@@ -136052,7 +136297,7 @@ limit 100;
 
 ## Logging for compliance and security
 
-#### Customized object and role activity logging
+### Customized object and role activity logging
 
 > ⚠️ NOTE: This is specifically designated for those using the `postgres` role or [custom roles](https://supabase.com/docs/guides/database/postgres/roles) to interact with their database. Those using the Database REST API should reference the [Database API Logging Guide](https://github.com/orgs/supabase/discussions/22849) instead.
 
@@ -136074,7 +136319,7 @@ where
  parsed.user_name = 'API_role'
 ```
 
-#### Filtering by IP
+### Filtering by IP
 
 > If you are connecting from a known, limited range of IP addresses, you should enable [network restrictions](https://supabase.com/docs/guides/platform/network-restrictions).
 
@@ -136137,7 +136382,7 @@ where
 
 > WARNING: lenient settings can lead to over-logging, impacting database performance while creating noise in the logs.
 
-##### Severity levels
+#### Severity levels
 
 The `log_min_messages` variable determines what is severe enough to log. Here are the severity thresholds from the [Postgres docs](https://www.postgresql.org/docs/current/runtime-config-logging.html).
 
@@ -136161,7 +136406,7 @@ alter role postgres set log_min_messages = '<NEW VALUE>';
 show log_min_messages; -- default WARNING
 ```
 
-##### Configuring queries logged
+#### Configuring queries logged
 
 By default, only failed queries are logged. The [PGAudit extension](https://supabase.com/docs/guides/database/extensions/pgaudit) extends Postgres's built-in logging abilities. It can be used to selectively track all queries in your database by:
 
@@ -136170,25 +136415,25 @@ By default, only failed queries are logged. The [PGAudit extension](https://supa
 - database object
 - entire database
 
-##### Logging within database functions
+#### Logging within database functions
 
 To track or debug functions, logging can be configured by following the [function debugging guide](https://supabase.com/docs/guides/database/functions#general-logging)
 
 ## Frequently Asked Questions
 
-##### How to join different log tables
+### How to join different log tables
 
 No, log tables are independent from each other and do not share any primary/foreign key relations for joining.
 
-##### How to download logs
+### How to download logs
 
 At the moment, the way to download logs is through the Log Dashboard as a CSV
 
-##### What is logged?
+### What is logged?
 
 To see the default types of events that are logged, you can check this [guide](https://gist.github.com/TheOtherBrian1/991d32c2b00dbc75d29b80d4cdf41aa7).
 
-#### Other resources:
+### Other resources:
 
 - [Regex for filtering logs](https://github.com/orgs/supabase/discussions/22640)
 - [Debugging with the DB API logs](https://github.com/orgs/supabase/discussions/22849)
@@ -136208,7 +136453,7 @@ Here are the steps for you to migrate your application from the `auth-helpers` p
 
 Depending on your implementation, you may ignore some parts of this documentation and use your own implementation (i.e. using API routes vs. Server Actions). What's important is you replace the clients provided by `auth-helpers` with the utility functions created using clients provided by `@supabase/ssr`.
 
-### 1. Uninstall Supabase Auth helpers and install the Supabase SSR package
+## 1. Uninstall Supabase Auth helpers and install the Supabase SSR package
 
 It's important that you don't use both `auth-helpers-nextjs` and `@supabase/ssr` packages in the same application to avoid running into authentication issues.
 
@@ -136217,7 +136462,7 @@ npm uninstall @supabase/auth-helpers-nextjs @supabase/supabase-js
 npm install @supabase/ssr @supabase/supabase-js
 ```
 
-### 2. Create the library functions to create Supabase clients
+## 2. Create the library functions to create Supabase clients
 
 ```
 // lib/supabase/client.ts
@@ -136331,7 +136576,7 @@ export async function updateSession(request: NextRequest) {
 }
 ```
 
-### 3. Replace your proxy.ts file
+## 3. Replace your proxy.ts file
 
 ```
 // proxy.ts
@@ -136357,7 +136602,7 @@ export const config = {
 }
 ```
 
-### 4. Create your server actions to handle login and sign up
+## 4. Create your server actions to handle login and sign up
 
 ```
 // app/login/actions.ts
@@ -136410,7 +136655,7 @@ export async function signup(formData: FormData) {
 }
 ```
 
-### 5. Use the server actions in your login page UI
+## 5. Use the server actions in your login page UI
 
 ```
 // app/login/page.tsx
@@ -136431,7 +136676,7 @@ export default function LoginPage() {
 }
 ```
 
-### 6. Client components
+## 6. Client components
 
 ```
 'use client';
@@ -136453,7 +136698,7 @@ export default async function Page() {
 }
 ```
 
-### 7. Server components
+## 7. Server components
 
 ```
 // replace
@@ -136477,7 +136722,7 @@ export default async function Page() {
 }
 ```
 
-### 8. Route handlers
+## 8. Route handlers
 
 ```
 // replace
@@ -136533,7 +136778,7 @@ Symptoms of HTTP API issues include:
 - 5xx response codes
 - High response times
 
-### Under-provisioned resources
+## Under-provisioned resources
 
 The most common class of issues that causes HTTP timeouts and 5xx response codes is the under-provisioning of resources for your project. This can cause your project to be unable to service the traffic it is receiving.
 
@@ -136732,7 +136977,7 @@ import Stripe from "https://esm.sh/stripe@11.2.0?target=deno";
 
 > Building an index without the `CONCURRENTLY` modifier will lock the table, but it will also increase build times. For general advice about indexes, check out this [guide](https://github.com/orgs/supabase/discussions/22449).
 
-### **To speed up queries, it is ideal to create an HSNW index on your embedded column**
+## **To speed up queries, it is ideal to create an HSNW index on your embedded column**
 
 The general structure for creating an HNSW index follows this pattern:
 
@@ -136964,13 +137209,13 @@ The CPU chart shows 4 distinct metrics of interest:
 
 As the CPU peaks towards 100%, queries and database tasks will begin to throttle, as they won't have enough time or access to the CPU.
 
-#### Other useful Supabase Grafana guides:
+### Other useful Supabase Grafana guides:
 
 - [Connections](https://github.com/orgs/supabase/discussions/27141)
 - [Disk](https://github.com/orgs/supabase/discussions/27003)
 - [Memory](https://github.com/orgs/supabase/discussions/27021)
 
-#### Optimizing
+### Optimizing
 
 1. [Optimize your queries](https://supabase.com/docs/guides/database/query-optimization).
 2. [Add indexes](https://github.com/orgs/supabase/discussions/22449) if possible.
@@ -137058,7 +137303,7 @@ Other useful Supabase Grafana guides:
 - [Memory](https://github.com/orgs/supabase/discussions/27021)
 - [CPU](https://github.com/orgs/supabase/discussions/27022)
 
-### Esoteric factors
+## Esoteric factors
 
 **Webhooks**:
 Supabase webhooks use the pg\_net extension to handle requests. The `net.http_request_queue` table isn't indexed to keep write costs low. However, if you upload millions of rows to a webhook-enabled table in rapid succession, it can significantly increase the read costs for the extension.
@@ -137542,7 +137787,7 @@ They're all intertwined to some extent. If IO, CPU, or Memory are constrained, t
 
 Branching in Supabase (Branching 2.0) relies on the current migration files in your project—**not** a schema dump—when creating environments from `main`. This means if your `main` branch lacks migration history, branching will not fully capture your schema. This is a known limitation highlighted in the [Branching 2.0 documentation](https://supabase.com/blog/branching-2-0#current-limitations). Follow the steps below to generate, synchronize, and repair your migration history for smooth branching.
 
-#### 1. Prerequisites: Prepare local Supabase environment
+## 1. Prerequisites: Prepare local Supabase environment
 
 - If you do not have a local environment set up already, follow the Supabase local development getting started guide:
   - [Running Supabase Locally](https://supabase.com/docs/guides/local-development/cli/getting-started).
@@ -137556,7 +137801,7 @@ supabase start
 
 ***
 
-#### 2. Pull remote schema into migrations
+## 2. Pull remote schema into migrations
 
 With your project linked, run:
 
@@ -137568,7 +137813,7 @@ This command generates a migration file in your `supabase/migrations` folder whi
 
 ***
 
-#### 3. Sync remote migration history
+## 3. Sync remote migration history
 
 Upon running the above command, the Supabase CLI will typically prompt with:
 
@@ -137589,13 +137834,13 @@ Run the exact repair command provided, replacing the timestamp as instructed (ex
 
 ***
 
-#### 4. Proceed with Branching
+## 4. Proceed with Branching
 
 Once your migration history is up to date, continue to use branching features as normal. Each new branch will now inherit the correct migrations from your `main` branch.
 
 ***
 
-#### Additional tips
+## Additional tips
 
 If further issues arise (such as schema drift or migration mismatches), review the [troubleshooting documentation](https://supabase.com/docs/guides/deployment/branching/troubleshooting#migration-issues), and consider manual repair with [`supabase migration repair`](https://supabase.com/docs/reference/cli/supabase-migration-repair).
 
@@ -137680,11 +137925,11 @@ As the initial step in debugging not-delivered emails, check your project's [Aut
 
 Once handed over to the email provider, Supabase has no control over email delivery. There can be multiple reasons why emails do not reach the user's inbox.
 
-#### 1. Issues with the email provider.
+## 1. Issues with the email provider.
 
 The email provider's logs are the next place to look for email delivery issues. There are cases where the email provider blocks the delivery due to past bounced-back emails. Some email providers maintain a suppression list for not sending emails due to several reasons. You can read more about it here - [https://sendgrid.com/en-us/blog/what-is-a-suppression-list](https://sendgrid.com/en-us/blog/what-is-a-suppression-list)
 
-#### 2. Issues with the user's email server
+## 2. Issues with the user's email server
 
 Many email firewalls maintain a denylist of IPs and domain names for security reasons and as spam filters. Sometimes, they block incoming emails from unknown addresses with certain keywords such as password reset, verification link, etc. In these cases, ask the user to check with their email server admin to see if they are blocking your email domain or quarantining the incoming emails. If you use the default provider, the email domain is `supabase.io`. Some information on email firewalls are available here - [https://mailchimp.com/help/about-email-firewalls/](https://mailchimp.com/help/about-email-firewalls/).
 
@@ -138494,6 +138739,52 @@ To resolve this, explicitly instruct `rclone` to use S3 List API Version 2. This
 
 Example:
 `rclone lsf supabase:bucket-name --s3-list-version 2`
+
+
+---
+
+# Realtime: ClientPresenceRateLimitReached error
+
+If a client sends Presence updates too frequently, you may see this error code in your [Realtime logs](https://supabase.com/dashboard/project/_/logs/realtime-logs):
+
+```
+ClientPresenceRateLimitReached
+```
+
+On the client side, the channel receives a `system` error message and is then closed. Any Presence, Broadcast, or Postgres Changes subscriptions on that channel stop until the client reconnects.
+
+This error almost always means Presence is being used for high-frequency updates that it isn't designed for. This guide explains the limit, why it exists, and how to fix it.
+
+## Why the error occurs
+
+Each client has a per-connection limit on how often it can send Presence updates. By default, a client can send at most **5 Presence updates within a 30-second window**. Both `track()` and `untrack()` calls count toward this limit. When a client exceeds it, Realtime logs `ClientPresenceRateLimitReached` and shuts the channel down.
+
+This is a per-client safeguard, and it is separate from the project-wide presence events per second limit (logged as `PresenceRateLimitReached`). A single client can hit `ClientPresenceRateLimitReached` on its own, even when overall project usage is low.
+
+The limit exists because Presence syncs state through the server and notifies **every** subscriber on the channel on each change. A client that calls `track()` in a tight loop—for example, on every mouse move to share a cursor position—multiplies its updates across all subscribers and degrades the channel for everyone. The rate limit stops one client from doing this.
+
+## How to fix it
+
+The fix is to stop sending frequent Presence updates. Choose the option that matches your use case.
+
+### Use Broadcast for high-frequency updates
+
+Presence is meant for slow-changing state such as online/offline status, the document a user is viewing, or which page they're on. For high-frequency or fire-and-forget data—live cursors, typing indicators, pointer positions—use [Broadcast](https://supabase.com/docs/guides/realtime/broadcast) instead. Broadcast relays messages through Realtime to connected clients without maintaining synced Presence state, so it handles rapid updates without triggering this limit.
+
+### Throttle your Presence updates
+
+If you do need Presence for state that changes often, throttle your `track()` and `untrack()` calls so the client sends at most a few Presence updates per window. Only update Presence when the shared state changes, and coalesce bursts into a single update rather than sending one on every event.
+
+## How to prevent it
+
+- Reserve Presence for slow-changing state, and reach for [Broadcast](https://supabase.com/docs/guides/realtime/broadcast) for anything that updates rapidly. See the guidance in the [Presence guide](https://supabase.com/docs/guides/realtime/presence).
+- Call `track()` only when the shared state changes, not on a timer or on every input event.
+
+## Related resources
+
+- [Presence](https://supabase.com/docs/guides/realtime/presence) — when to use Presence and how it works
+- [Broadcast](https://supabase.com/docs/guides/realtime/broadcast) — the right tool for high-frequency updates
+- [Realtime limits](https://supabase.com/docs/guides/realtime/limits) — other limits that apply to your project
 
 
 ---
@@ -139552,15 +139843,15 @@ order by n.nspname, p.proname;
 
 A 500 error in Auth typically indicates an issue with an external dependency, such as your database or SMTP provider, rather than with Auth itself. This guide will help you explore the Auth logs to identify the underlying cause.
 
-#### Prerequisites
+### Prerequisites
 
-##### Open the log explorer
+#### Open the log explorer
 
 Ensure you have access to the [Dashboard's Log Explorer](https://supabase.com/dashboard/project/_/logs/explorer) and set the time range appropriately:
 
 ![image](/docs/img/troubleshooting/152d65ad-f0ed-47cf-8dcb-1e31c6221e71.png)
 
-##### Improving log readability
+#### Improving log readability
 
 Logs are displayed in a table format, which can be challenging to read. Double-clicking on a row will expand it for easier viewing:
 
@@ -139731,7 +140022,7 @@ Test a simplified email template in the [Auth Dashboard](https://supabase.com/da
 
 # Resolving 'cannot execute UPDATE in a read-only transaction' on transaction pooler connections
 
-### Key technical terms
+## Key technical terms
 
 **Transaction Pooling**
 A connection management method used by tools like Supavisor or PgBouncer. Instead of giving every client a dedicated, permanent connection to the database, the pooler maintains a small set of "backend connections." It lends one of these connections to a client for the duration of a single transaction, then immediately takes it back to give to another client.
@@ -139744,29 +140035,29 @@ That backend connection has *state*. Postgres connections carry settings like ti
 
 ***
 
-### Understanding the problem: The "sticky" state
+## Understanding the problem: The "sticky" state
 
 When you encounter the error `cannot execute UPDATE in a read-only transaction` while using a transaction pooler (typically on port 6543), even when you have verified that the connection is made to the primary database and the database itself is not in read-only mode (check with `SHOW default_transaction_read_only;` or `SELECT pg_is_in_recovery();` using a direct connection on port 5432), it signifies that a backend connection has been unintentionally locked into a read-only state.
 
 **Note:** If your database is in read-only mode (for example, due to exceeding disk space limits), you can review this guide: [Database Size and Read-Only Mode](https://supabase.com/docs/guides/platform/database-size#read-only-mode). The remainder of this guide addresses a different issue specific to transaction pooling.
 
-#### The cause: Connection contamination
+### The cause: Connection contamination
 
 In transaction pooling mode, reset behavior is intentionally limited for performance, so session state can persist unless explicitly reset. If a client, script, or automated task changes a session-level setting, that setting "sticks" to the backend connection.
 
 When that backend connection is returned to the pool, the next client to use it inherits that exact state. If a previous script set the connection to "read-only" for safety and failed to reset it, any subsequent application attempt to perform an `UPDATE` or `INSERT` using that same backend will fail.
 
-#### Why is the error sporadic?
+### Why is the error sporadic?
 
 The error appears intermittent because it only occurs when your application is randomly assigned a "contaminated" backend connection from the pool. Other connections in the same pool may still be in the default read-write state, leading to a confusing mix of successful and failed requests.
 
 ***
 
-### Step-by-step resolution
+## Step-by-step resolution
 
 To resolve this issue, you must identify and remove any commands that modify the session state globally rather than locally.
 
-#### 1. Audit application and scripts
+### 1. Audit application and scripts
 
 Search your application code, migration scripts, and maintenance tasks for the following session-level commands:
 
@@ -139775,7 +140066,7 @@ Search your application code, migration scripts, and maintenance tasks for the f
 
 Even if these commands are used in secondary scripts (like data exports or safety-first maintenance tasks) and not the main application, they can still contaminate the pool used by the main application.
 
-#### 2. Implement "safe" settings
+### 2. Implement "safe" settings
 
 If you need to execute a read-only transaction for safety, use transaction-level commands that only affect the current transaction and do not persist on the backend connection.
 
@@ -139787,7 +140078,7 @@ If you have existing scripts that use session-level settings and cannot be immed
 - **Temporary workaround:** Ensure they explicitly reset the state before closing the connection with `SET default_transaction_read_only = off;`
 - **Best approach:** Connect directly to port 5432 (bypassing the pooler) for scripts requiring special session states
 
-#### 3. Connection string verification
+### 3. Connection string verification
 
 Ensure your application is using the intended pooler.
 
@@ -139796,7 +140087,7 @@ Ensure your application is using the intended pooler.
 
 ***
 
-### Best practices for transaction pooling
+## Best practices for transaction pooling
 
 - **Use Dedicated Connections for Maintenance:** If a script requires a specific session state (like a long-running read-only export), connect directly to the database (port 5432) rather than using the transaction pooler (port 6543). This prevents maintenance settings from leaking into the application's connection pool.%
 
@@ -139805,7 +140096,7 @@ Ensure your application is using the intended pooler.
 
 # Resolving database hostname and managing your IP address
 
-### Finding your database hostname
+## Finding your database hostname
 
 Your database's hostname is crucial for establishing a direct connection. It resolves to the underlying IP address of your database.
 
@@ -139815,7 +140106,7 @@ Example Hostname: `db.zcjtzmeifsoteyjytnbc.supabase.co`
 
 ![Screenshot 2024-04-02 at 11 38 28 AM](/docs/img/troubleshooting/565c96e0-cbb9-4e7a-b0aa-5b423afc0ada.png)
 
-### Managing your IP address
+## Managing your IP address
 
 To determine your current IP address, you can use an [IP address lookup](https://whatismyipaddress.com/hostname-ip) website or the terminal command:
 
@@ -139824,14 +140115,14 @@ To determine your current IP address, you can use an [IP address lookup](https:/
 
 Example IPv6 Address: `2a05:d014:1c06:5f0c:d7a9:8616:bee2:30df`
 
-### IPv6 address
+## IPv6 address
 
 Upon project creation, a static IPv6 address is assigned. However, it's essential to understand that this IPv6 address can change due to specific actions:
 
 - When a project is paused or resumed.
 - During database version upgrades.
 
-### IPv4 address
+## IPv4 address
 
 Opting for the static [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address) provides a more stable connection address. The IPv4 address remains constant unless:
 
@@ -140329,7 +140620,7 @@ Some results:
 
 # RLS Simplified
 
-### Basic summary
+## Basic summary
 
 Row-Level Security (RLS) Policy: A `WHERE` or `CHECK` condition applied automatically to database queries
 
@@ -140571,7 +140862,7 @@ PostgREST logs showing the error:
 
 We want to clarify and provide reassurance on this topic.
 
-### Security overview:
+## Security overview:
 
 Enabling anonymous sign-ins on your project does not reduce its security. Here's why:
 
@@ -140579,7 +140870,7 @@ Enabling anonymous sign-ins on your project does not reduce its security. Here's
 - Security Policies: All role-based security policies (RLS) applicable to regular users also apply to anonymous users.
 - Identity Verification Measures: Even though anonymous users do not initially provide an email or phone number, the security of your project remains robust. But to prevent misuse, we recommend implementing additional security measure such as [CAPTCHA](https://supabase.com/docs/guides/auth/auth-captcha): to ensure that interactions are genuinely human.
 
-### Practical use cases:
+## Practical use cases:
 
 - Demo Mode: You can enable users to try out your product in a demo mode without full account creation.
 - Feature Restrictions: You can limit certain actions (like posting public content) to users who sign up with more identifiable information (e.g., Google or Apple sign-ins), while still allowing anonymous users to explore your app.
@@ -140934,11 +141225,11 @@ The internet uses a system called the Internet Protocol (IP) to route communicat
 - **IPv4**: Introduced in 1980, it's the original version.
 - **IPv6**: Launched in 1999, it offers a much larger address space and is the preferred future-proof option.
 
-#### Supabase and IPv6
+### Supabase and IPv6
 
 All Supabase databases provide a direct connection string that maps to an IPv6 address.
 
-#### Working with IPv6 incompatible hosts
+### Working with IPv6 incompatible hosts
 
 Here are your options if your server platform doesn't support IPv6:
 
@@ -140948,7 +141239,7 @@ Here are your options if your server platform doesn't support IPv6:
 
 > Note: the IPv4 Add-On costs $0.0055 an hour, which equates to \~$4.00 if left on for a full month (\~720 hours)
 
-#### Checking IPv6 support
+### Checking IPv6 support
 
 The majority of services are IPv6 compatible. However, there are a few prominent ones that only accept IPv4 connections:
 
@@ -140965,7 +141256,7 @@ curl -6 https://ifconfig.co/ip
 
 If the command returns an IPv6 address, the network is IPv6 compatible.
 
-#### Finding your database's IP address
+### Finding your database's IP address
 
 To determine your current IP address, you can use an IP address [lookup website](https://whatismyipaddress.com/hostname-ip) or the terminal command:
 
@@ -140977,7 +141268,7 @@ This command queries the domain name servers to find the IP address of the given
 
 Example IPv6 Address: `2a05:d014:1c06:5f0c:d7a9:8616:bee2:30df`
 
-#### Identifying your connections
+### Identifying your connections
 
 The pooler and direct connection strings can be found on the dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true).
 
@@ -140988,14 +141279,14 @@ The pooler and direct connection strings can be found on the dashboard by clicki
 postgresql://postgres:[YOUR-PASSWORD]@db.ajrbwkcuthywfihaarmflo.supabase.co:5432/postgres
 ```
 
-##### Supavisor in transaction mode (port 6543)
+#### Supavisor in transaction mode (port 6543)
 
 ```sh
 # Example transaction string
 postgresql://postgres.ajrbwkcuthywddfihrmflo:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres
 ```
 
-##### Supavisor in session mode (port 5432)
+#### Supavisor in session mode (port 5432)
 
 ```sh
 # Example session string
@@ -141094,7 +141385,7 @@ Optimizing:
 5. [Remove bloat](https://supabase.com/docs/reference/cli/supabase-inspect-db): Bloat can fragment data across pages, causing redundant data to be pulled from disk.
 6. Table refactoring: Split tables to isolate columns that are less frequently accessed, so they are not redundantly pulled into memory while accessing hotter data
 
-### Other useful Supabase Grafana guides:
+## Other useful Supabase Grafana guides:
 
 - [Connections](https://github.com/orgs/supabase/discussions/27141)
 - [Disk](https://github.com/orgs/supabase/discussions/27003)
@@ -141282,7 +141573,7 @@ To avoid this IP lockout issue in the future, stop application instances before 
 
 # Supavisor FAQ
 
-### What problems do poolers solve?
+## What problems do poolers solve?
 
 Postgres stands out from other databases by opting to create a new process, not a new thread, for each direct connection. While this design choice brings [numerous benefits](https://www.postgresql.org/message-id/1098894087.31930.62.camel@localhost.localdomain), it introduces a startup penalty for new connections. Moreover, connections are more memory-intensive and can strain Postgres's internal schedulers, limiting the sustainable number that can be formed. Resultingly, developers must be mindful of how they allocate the resource.
 
@@ -141290,11 +141581,11 @@ When a client (backend server) connects to Postgres, the connection is stateful 
 
 Postgres's shortcomings are particularly evident when handling transient servers, like edge functions. They not only hoard connections for brief queries but also aggressively open and close connections, straining the database.
 
-### How do poolers solve the problem?
+## How do poolers solve the problem?
 
 A pooler is ultimately a load balancer for database connections. It maintains several hot connections that it triages to clients. This reduces the startup cost of creating a new process on Postgres. The pooler can also more efficiently manage a database's finite connections by only allowing clients to access them when they need to execute a query (A.K.A. transaction mode).
 
-### Are poolers necessary?
+## Are poolers necessary?
 
 All database connection libraries, such as Prisma, SQLAlchemy, and Postgres.js have built-in poolers. These are known as application-side poolers and they are fundamental for sustainable connection management. Most libraries have default pool sizes that may need to be changed for specific workloads. As an example, most edge/serverless functions are called to service a single user's request. They usually require significantly fewer connections (often 1 is optimal) than a dedicated application server.
 
@@ -141306,13 +141597,13 @@ When connecting to your application from serverless/edge functions, horizontally
 
 They sit between the database and your client servers. They are solely optimized for sustaining high numbers of client connections and queuing and triaging queries to the database. Although they add network complexity, they are necessary when managing auto-scaling servers that can hypothetically form an infinite amount of connections.
 
-### Where are the connection strings
+## Where are the connection strings
 
 Supabase provides 3 database connection strings that can be used simultaneously if necessary. You can find them on the dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true).
 
 
 
-#### Direct connections:
+### Direct connections:
 
 > "Note uses an IPv6 address by default. [Check here to see if your network is IPv6 compatible](https://github.com/orgs/supabase/discussions/27034)"
 
@@ -141321,21 +141612,21 @@ Supabase provides 3 database connection strings that can be used simultaneously 
 postgresql://postgres:[YOUR-PASSWORD]@db.ajrbwkcuthywfihaarmflo.supabase.co:5432/postgres
 ```
 
-#### Supavisor in transaction mode (port 6543)
+### Supavisor in transaction mode (port 6543)
 
 ```sh
 # Example transaction string
 postgresql://postgres.ajrbwkcuthywddfihrmflo:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres
 ```
 
-#### Supavisor in session mode (port 5432)
+### Supavisor in session mode (port 5432)
 
 ```sh
 # Example session string
 postgresql://postgres.ajrbwkcuthywfddihrmflo:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 ```
 
-### Supavisor: Transaction mode vs. Session mode?
+## Supavisor: Transaction mode vs. Session mode?
 
 When a client forms a direct connection with Postgres, it usually makes a few queries but may not use the connection the entire time. In transaction mode, a client is allowed to make a single query before being sent back to the figurative "waiting room". This prevents greedy or sedentary clients from hoarding connections. In most cases, this increases query throughput and is optimal.
 
@@ -141345,11 +141636,11 @@ This behavior mirrors a direct connection, allowing greedy clients to monopolize
 
 Depending on your application's configurations, having the pooler manage a queue of patient clients is preferable to the alternative of constantly polling the database to check for an available connection. Session mode can queue clients for up to a minute. If this isn't particularly relevant to your application design, then the primary benefit is that it is [IPv4 compatible](https://github.com/orgs/supabase/discussions/27034). Also, unlike transaction mode, it supports prepared statements.
 
-### What happens when a client library, such as Prisma, connects through Supavisor?
+## What happens when a client library, such as Prisma, connects through Supavisor?
 
 When clients connect to either Postgres or Supavisor, they do so with the Postgres Wire Protocol. Because of this, clients treat connections with pooler as if they were directly connected to Postgres. The pooler then smoothly acts as a messenger between the database and the client.
 
-### What are "client connections"?
+## What are "client connections"?
 
 In summary, they have nothing to do with front-end clients. They are the amount of backend-server connections that can connect to a serverside pooler.
 Imagine a chess tournament with 60 boards. Each board represents a connection in a database. When a player sits down at a board, it's like a client connecting to the database. They can take their time with their moves or sit there, not making any.
@@ -141358,11 +141649,11 @@ But when the tournament fills up and all the boards are taken, new players are t
 
 Now, imagine the tournament organizers decide to expand the venue to house 200 people without adding more tables. Even when all boards are occupied, players don't have to leave. They can wait in the wings, and the moment a board opens up, someone from the waiting area can take their place. Likewise, if someone ends their game, but wants to play again, they can go back to the waiting area. The waiting area represents the "Max Client Connections". Ultimately, the additional capacity provided by the pooler ensures fewer people are turned away from the "tournament".
 
-### In the context of Supavisor, what does "pool size" mean?
+## In the context of Supavisor, what does "pool size" mean?
 
 "Pool size" refers to the maximum number of direct connections the pooler can maintain per unique user, database, and mode combination. You can adjust it in the [project connect page](https://supabase.com/dashboard/project/_/database/settings) to strike a balance between efficient resource utilization and accommodating peak traffic.
 
-### What is the "user+db+mode" combination?
+## What is the "user+db+mode" combination?
 
 Postgres is not a database. It is a Relational Database Management System (RDMS). Within it, you can spawn Postgres databases. In Supabase, it is a common pattern to use the default database called `postgres`, but you could create more:
 
@@ -141388,7 +141679,7 @@ postgres://[USER].shfmmplnqscentnakbkl:[password]@aws-0-ca-central-1.pooler.supa
 
 When a distinct combination connects to your database, a new direct connection pool will be created. That means if you have two combinations connecting and the "Pool Size" is set to 120, each combination will have permission to form 120 connections. This can become problematic if collectively they exhaust all available direct connections.
 
-### **Does Supavisor immediately establish the max pool size?**
+## **Does Supavisor immediately establish the max pool size?**
 
 No, it doesn't. See why:
 
@@ -141398,7 +141689,7 @@ No, it doesn't. See why:
 - In transaction mode, once a direct connection is established, the pooler will keep it available for reuse for another client. However, if the connection remains unused for 5 minutes, the pooler will close it to free up database resources. In session mode, the connection will be immediately closed.
 - If a client is connected to the pooler, then at least 1 hot connection will be sustained, even if no client needs it.
 
-### **How to change pool size**
+## **How to change pool size**
 
 In the [Dashboard's Database Settings](https://supabase.com/dashboard/project/_/database/settings), you can configure Supavisor's "Pool Size":
 
@@ -141406,13 +141697,13 @@ In the [Dashboard's Database Settings](https://supabase.com/dashboard/project/_/
 
 You can also change the pool size for PostgREST's (DB API) internal pooler at the bottom of the [application settings](https://supabase.com/dashboard/project/_/settings/api).
 
-### Do all services on Supabase use Supavisor?
+## Do all services on Supabase use Supavisor?
 
 Supabase Storage uses Supavisor internally. The other servers that communicate with Postgres (PostgREST, Realtime, and Auth) all rely on internal application poolers.
 
 Supavisor is primarily intended for users who do not want to rely on the Supabase Client libraries and instead prefer to work with external ORMs, such as Prisma, Drizzle, and Psycopg.
 
-### **Whether to change Supavisor's pool size?**
+## **Whether to change Supavisor's pool size?**
 
 In an ideal scenario, Postgres would support an unlimited number of direct connections, but there's a limit to how many it can handle. If Supavisor uses most of the available connections, you risk depriving other servers, such as Auth, from accessing your database. Still, as much as possible, you want to give your pooler freedom to grow its pool as needed to service demand.
 
@@ -141420,7 +141711,7 @@ It's important to note that the Storage server also uses Supavisor as a unique "
 
 As a rule of thumb, if you're using the DB REST API or multiple app-based "user+db+mode" combinations, try to keep the pooler's usage under 40% of available connections. Otherwise, you can cautiously increase usage to around 80%. These percentages are flexible and depend on your application's usage and setup. Monitor connection usage to determine the optimal allocation without depriving other servers of necessary connections.
 
-### **How to monitor connections**
+## **How to monitor connections**
 
 > EDIT: a more in-depth [troubleshooting guide](https://github.com/orgs/supabase/discussions/27141) for connection monitoring was published
 
@@ -141428,7 +141719,7 @@ Connection usage can be monitored with a Supabase Grafana Dashboard. It provides
 
 You can check our [GitHub repo](https://github.com/supabase/supabase-grafana) for setup instructions for local deployments or free cloud deployments on [Fly.io](http://fly.io/). Refer to Supabase [documentation](https://supabase.com/docs/guides/monitoring-and-debugging/metrics) to learn more about the metrics endpoint.
 
-### **Can Supavisor really support a million connections?**
+## **Can Supavisor really support a million connections?**
 
 It depends.
 
@@ -141479,7 +141770,7 @@ This issue occurs when `datconnlimit` gets modified. The default value for `datc
 
 When team members run SQL queries from the Dashboard SQL Editor, and if that query is logged in the Postgres Logs, it's not immediately clear who executed which query. This guide shows you how to track queries back to the specific team member who ran them.
 
-### **Understanding Dashboard query execution**
+## **Understanding Dashboard query execution**
 
 First, it helps to understand how Dashboard queries are executed. When someone runs a query from the SQL editor, it's routed through the `postgres` role at the database level. The Supabase Dashboard automatically appends metadata comments to queries, specifically `-- user: [UUID]`, `-- source: dashboard`, and `-- date`.
 
@@ -141487,7 +141778,7 @@ By default, that role has `log_statement` set to `ddl`, which means Postgres log
 
 So, if someone truncates a table, and you're relying on the default logging, you won't see it.
 
-### **Enabling data modification logging**
+## **Enabling data modification logging**
 
 To make those operations visible, you can increase the logging level for the `postgres` role:
 
@@ -141515,7 +141806,7 @@ Notice that the log includes:
 
 That UUID corresponds to the team member who logged in via the Supabase Dashboard and executed queries in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). But at this point, it's only an ID - not yet a name or email.
 
-### **Mapping UUIDs to team members**
+## **Mapping UUIDs to team members**
 
 To map the UUID, you'll need to query the Management API. The process looks like this:
 
@@ -141545,7 +141836,7 @@ The response will include entries like:
 
 Now you can directly match `user_id` values from the Postgres logs to the corresponding team members.
 
-### **Querying logs for specific operations**
+## **Querying logs for specific operations**
 
 Navigate to the [Logs Explorer](https://supabase.com/dashboard/project/_/logs/explorer) and query `postgres_logs`. Here's an example query that searches for data-modifying operations and maps user IDs to team members:
 
@@ -141592,11 +141883,11 @@ This query:
 
 You can further refine your search by filtering for specific commands like `TRUNCATE` or `DELETE` where `parsed.user_name = 'postgres'`.
 
-### **Tracking external tools**
+## **Tracking external tools**
 
 For external tools like n8n or other applications connecting to your database, you can identify the source of database changes by appending `?application_name=example_app_name` to your connection string. This ensures the source is clearly identified in the logs, making it easier to distinguish between Dashboard operations and external tool operations.
 
-### **Additional logging levels**
+## **Additional logging levels**
 
 Postgres supports these `log_statement` values:
 
@@ -141692,7 +141983,7 @@ With this, you can transfer your edge functions between your Supabase projects.
 
 For a detailed, step-by-step guide on restoring your database from the Supabase platform to a [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting) instance, see [Restore a Platform Project to Self-Hosted](https://supabase.com/docs/guides/self-hosting/restore-from-platform).
 
-### Quick reference
+## Quick reference
 
 Back up your cloud database:
 
@@ -141890,15 +142181,15 @@ If these steps don't resolve the issue, open a support ticket via the Supabase D
 
 # Understanding Postgres EXPLAIN Output
 
-### Introduction
+## Introduction
 
 This guide is designed to help you understand how to use the Postgres [EXPLAIN and EXPLAIN ANALYZE](https://www.postgresql.org/docs/current/sql-explain.html) commands to optimize and debug SQL queries. Understanding the output of these commands can help you improve the performance of your applications by optimizing database interactions.
 
-### What is explain?
+## What is explain?
 
 The Postgres EXPLAIN command shows the execution plan of a SQL query. This plan describes how the Postgres database will execute the query, including how tables will be scanned—by using sequential scans, index scans, etc.—and how rows will be joined.
 
-### How to use explain in Supabase
+## How to use explain in Supabase
 
 **Using EXPLAIN through the SQL Editor**
 
@@ -141919,7 +142210,7 @@ const { data, error } = await supabase
   .explain({analyze:true,verbose:true})
 ```
 
-### Detailed breakdown of explain output components
+## Detailed breakdown of explain output components
 
 ### 1. Plan type
 
@@ -141954,7 +142245,7 @@ const { data, error } = await supabase
 
 ![image](/docs/img/troubleshooting/10950be3-264b-4a41-bc71-3d431c2756b2.png)
 
-### Detailed components in explain analyze
+## Detailed components in explain analyze
 
 When running EXPLAIN ANALYZE, additional information is provided, including:
 
@@ -141979,7 +142270,7 @@ Planning Time: 0.135 ms
 
 - **Planning Time: 0.135 ms:** Planning Time refers to the amount of time the Postgres query planner takes to analyze the query and create an execution plan. This time is measured in milliseconds.
 
-### You might be asking yourself now, why there is two different sets of metrics : `(cost=0.42..2.64 rows=1 width=164) (actual time=0.020..0.021 rows=1 loops=1)`?
+## You might be asking yourself now, why there is two different sets of metrics : `(cost=0.42..2.64 rows=1 width=164) (actual time=0.020..0.021 rows=1 loops=1)`?
 
 To answer you, one is for the estimated cost and performance, and another for the actual performance of the query as explained above.
 
@@ -141989,7 +142280,7 @@ To answer you, one is for the estimated cost and performance, and another for th
 
 **Identifying Bottlenecks**: If the actual time is significantly higher than expected, or if loops are more frequent than anticipated, these could be indicators of performance bottlenecks in the query.
 
-### How to read a complex explain output
+## How to read a complex explain output
 
 First, you have to understand that a Postgres execution plan is a tree structure consisting of several nodes. The top node (the Aggregate above) is at the top, and lower nodes are indented and start with an arrow (->). Nodes with the same indentation are on the same level (for example, the two relations combined with a join).
 
@@ -142013,7 +142304,7 @@ Postgres executes a plan top down, that is, it starts with producing the first r
 
 On top of that, you have to multiply the cost and the time with the number of “loops” to get the total time spent in a node.
 
-### Common nodes in Postgres explain output
+## Common nodes in Postgres explain output
 
 | Node Type             | Description                                                                    |
 | --------------------- | ------------------------------------------------------------------------------ |
@@ -142035,7 +142326,7 @@ On top of that, you have to multiply the cost and the time with the number of �
 | **Foreign Scan**      | Fetches data from foreign data sources outside the local database.             |
 | **Function Scan**     | Retrieves results from a set-returning function.                               |
 
-### What to focus on in explain analyze output
+## What to focus on in explain analyze output
 
 - Find the nodes where most of the execution time was spent.
   `Hash Join  (cost=100.00..200.00 rows=1000 width=50) (actual time=50.012..150.023 rows=1000 loops=1)`
@@ -142056,7 +142347,7 @@ Seq Scan on products  (cost=0.00..100.00 rows=300 width=50) (actual time=50.000.
 Explanation:
 This sequential scan took 50 to 100 milliseconds and filtered out 2997 of 3000 rows, indicating that only a few rows met the condition. This scenario is ideal for an index on the price column to optimize the performance by reducing the need for a full table scan.
 
-### Understanding the significance of milliseconds in Query Performance
+## Understanding the significance of milliseconds in Query Performance
 
 Determining whether 100 milliseconds for e.g is noteworthy in the context of identifying performance bottlenecks depends on various factors:
 
@@ -142070,12 +142361,12 @@ For complex queries that involve multiple joins, subqueries, or aggregation func
 
 So, the acceptable performance threshold can vary by application. For real-time systems or high-frequency trading platforms, even a few milliseconds can be critical, whereas for batch processing or data warehousing, longer execution times might be acceptable.
 
-### Tools to interpret explain analyze output
+## Tools to interpret explain analyze output
 
 Since reading a longer execution plan is quite cumbersome, you can use the website [https://explain.depesz.com/](https://explain.depesz.com/) to better visualize the query. If you paste the execution plan in the text area and hit “Submit”, you will get output like this:
 ![image](/docs/img/troubleshooting/830b81aa-ae52-44a4-aa49-32c2a6296af7.png)
 
-### Tips for optimizing queries
+## Tips for optimizing queries
 
 - **Add Indexes:** Improve performance by adding indexes on columns that are frequently used in WHERE clauses or JOIN conditions.
 
@@ -142083,7 +142374,7 @@ Since reading a longer execution plan is quite cumbersome, you can use the websi
 
 - **Update Statistics:** Ensure that statistics are up to date to help the optimizer make better choices.
 
-### Conclusion
+## Conclusion
 
 Understanding EXPLAIN and EXPLAIN ANALYZE output can significantly enhance your ability to write efficient SQL queries. Regularly analyze query performance and make adjustments as your dataset grows and changes.
 
@@ -142096,7 +142387,7 @@ For more insights, you can also check out: [https://aws.amazon.com/blogs/databas
 
 Since each Supabase project uses Postgres as its underlying database engine, it’s common to adjust logging settings for various reasons—whether for debugging issues, monitoring database performance, or auditing actions. However, modifying logging levels improperly can lead to an excessive amount of log data being generated, which can fill up your disk space and cause significant performance degradation or even system failure.
 
-### 1. Overview of Postgres logging levels
+## 1. Overview of Postgres logging levels
 
 Postgres provides multiple logging levels that allow you to control how much information gets logged. These include:
 
@@ -142126,7 +142417,7 @@ PANIC: database system shutdown requested
 
 The default log level is set to **WARNING** through the log\_min\_messages setting, and we recommend keeping it that way.
 
-### 2. How high log levels can affect your database
+## 2. How high log levels can affect your database
 
 When users alter a high level of log settings, the database can start generating an overwhelming number of log entries. This can escalate to issues such as:
 
@@ -142136,7 +142427,7 @@ When users alter a high level of log settings, the database can start generating
 
 - Database Lockups: In extreme cases, if the disk is filled to capacity with logs, your database could lock up, leading to downtime or severe performance degradation.
 
-### 3. Common scenarios that cause log overload
+## 3. Common scenarios that cause log overload
 
 Here are a few common scenarios where excessive logging can become a problem:
 
@@ -142146,7 +142437,7 @@ Here are a few common scenarios where excessive logging can become a problem:
 
 - Frequent Write Operations: If your database processes a lot of write operations (such as inserts, updates, or deletes), even low-level logs (like NOTICE or INFO) can lead to significant log accumulation.
 
-### 4. How to manage Postgres log levels effectively
+## 4. How to manage Postgres log levels effectively
 
 **a. Choose the Right Log Level**
 For most users, setting Postgres logs to WARNING or ERROR is sufficient for regular operations. Here’s a general guideline:
@@ -142184,11 +142475,11 @@ ALTER ROLE postgres SET log_min_messages TO 'ERROR';
 ALTER ROLE postgres RESET log_min_messages;
 ```
 
-### 5. Conclusion
+## 5. Conclusion
 
 Postgres logs provide a powerful way to gain valuable insights into your database activity and performance when properly configured, but the key lies in finding the right balance. When set up properly, they can be incredibly useful.
 
-### 6. Other resources
+## 6. Other resources
 
 **a. What Events Are Logged in Postgres**
 For a detailed explanation of the types of events logged in your database (such as connection events, checkpoint events, long-running queries, cron jobs, and severity-based logging), you can refer to the official documentation here:
@@ -142501,7 +142792,7 @@ Vercel has three environments, which map to different stages of the deployment l
 - **Preview** is used for all other Git branches, including pull requests, feature branches, and persistent branches like staging. If you deploy a staging branch, it still runs under the Preview environment unless you explicitly create a separate environment in Vercel and map that branch to it.
 - **Development** is only used for local development via the Vercel CLI (`vercel dev`). It allows your local environment to pull env vars from Vercel, but it does not apply to Git branches or deployments on the platform.
 
-### Creating a staging environment
+## Creating a staging environment
 
 On the Hobby plan, staging is implemented by scoping Preview environment variables to a branch. On the Pro plan, staging can be configured as a dedicated environment with its own settings.
 
@@ -142623,11 +142914,11 @@ You might be surprised to know that gaps in sequence IDs are a normal aspect of 
 
 It's also important to understand the distinction that sequences guarantee **uniqueness**, but not **consecutiveness**, and this should not imply any issues relating to data integrity with your database.
 
-### How to check the name of your sequence
+## How to check the name of your sequence
 
 If you don't know the name of your sequence, it's often formed based on a standard naming convention: table\_name\_id\_seq, where table\_name is the name of your table and id is the name of your serial column.
 
-### Common reasons for gaps in sequences
+## Common reasons for gaps in sequences
 
 1. Rollbacks
    One of the most common reasons for a gap is the rollback of a transaction. If you initiate a transaction that includes an insert operation, the sequence responsible for generating the ID for the new row increments. If, for any reason, the transaction doesn't complete successfully—perhaps due to a constraint violation or a deliberate decision to rollback—the insert operation is undone, but the sequence value used is not returned or reused. The documentation explains that as well:
@@ -142643,7 +142934,7 @@ If you don't know the name of your sequence, it's often formed based on a standa
 4. Upserts
    When an upsert is executed, it can still increase the sequence even if it is set to do nothing on conflicts
 
-### Checking for gaps
+## Checking for gaps
 
 To check for gaps in the sequence of IDs in a Postgres table, you can use a SQL query that compares the sequence of IDs to a generated series of numbers that spans the same range:
 
@@ -142659,7 +142950,7 @@ WHERE
 
 This query should help you pinpoint where gaps exist.
 
-### Encountering errors and adjusting sequences
+## Encountering errors and adjusting sequences
 
 In operations involving sequences, you might encounter an error message such as:
 
@@ -142681,7 +142972,7 @@ And reset the sequence value to match the highest ID plus one:
 Or, alternatively, adjust the sequence to a specific new value:
 `ALTER SEQUENCE '{table}_{column}_seq' RESTART WITH new_value;`
 
-### Implementing a gapless ID sequence
+## Implementing a gapless ID sequence
 
 If your application requires contiguous IDs and you decide to build a gapless sequence. Think twice about this, as it will serialize all transactions that use that “sequence” which will then deteriorate your data modification performance considerably. However, if your application truly requires gapless IDs, then you can use a Trigger: After a successful insert, use a database trigger to assign an ID based on a custom logic that finds the next available gapless ID.
 

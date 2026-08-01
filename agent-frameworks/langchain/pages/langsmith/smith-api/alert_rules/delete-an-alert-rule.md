@@ -4,5 +4,5 @@ source: https://docs.langchain.com/langsmith/smith-api/alert_rules/delete-an-ale
 path: langsmith/smith-api/alert_rules/delete-an-alert-rule
 ---
 
-/langsmith/langsmith-platform-openapi.json delete /v1/platform/alerts/{session_id}/{alert_rule_id}
+/langsmith/langsmith-platform-openapi.json delete /api/v1/platform/alerts/{session_id}/{alert_rule_id}
 Deletes an alert rule

@@ -32,7 +32,7 @@ Browse the complete collection of integrations available for JavaScript/TypeScri
 
 ## LangGraph integrations
 
-Connect LangGraph agents to front ends.
+Connect LangGraph agents to front ends and observability platforms.
 
 <Columns>
   <Card title="AG-UI Protocol" href="https://docs.ag-ui.com/" icon="link">
@@ -45,6 +45,10 @@ Connect LangGraph agents to front ends.
 
   <Card title="OpenUI" href="/oss/javascript/langchain/frontend/integrations/openui" icon="react">
     Render adaptive, agent-generated interfaces from LangGraph and Deep Agents using OpenUI.
+  </Card>
+
+  <Card title="The Context Company" href="https://docs.thecontextcompany.com/frameworks/langchain-langgraph" icon="link">
+    Observability and customer analytics for production AI agents.
   </Card>
 </Columns>
 
@@ -69,6 +73,10 @@ Connect LangGraph agents to front ends.
 
   <Card title="Cerebras" href="/oss/javascript/integrations/chat/cerebras">
     Ultra-fast inference with Cerebras Systems' AI processors.
+  </Card>
+
+  <Card title="Ceki" href="https://ceki.me" icon="link">
+    Marketplace of real residential Chrome sessions for AI agents.
   </Card>
 
   <Card title="Cloudflare Workers AI" href="/oss/javascript/integrations/chat/cloudflare_workersai">
@@ -245,6 +253,10 @@ Connect LangGraph agents to front ends.
 
   <Card title="Google Cloud SQL PostgreSQL" href="/oss/javascript/integrations/vectorstores/google_cloudsql_pg" icon="brand-google">
     PostgreSQL with vector extensions on Google Cloud.
+  </Card>
+
+  <Card title="Infino" href="https://infino.ai/docs" icon="https://mintcdn.com/langchain-5e9cc07a/aup58lONW4AWxpkl/images/providers/infino-icon.png?fit=max&auto=format&n=aup58lONW4AWxpkl&q=85&s=f06e566173e074c78ef54d43e30b606b">
+    Vector, BM25, and hybrid retrieval over one engine on object storage.
   </Card>
 
   <Card title="Memory Vector Store" href="/oss/javascript/integrations/vectorstores/memory">
@@ -480,7 +492,15 @@ Connect LangGraph agents to front ends.
 
 ## Callbacks
 
-<Columns />
+<Columns>
+  <Card title="Respan" href="https://www.respan.ai/docs" icon="link">
+    Trace LangChain.js, LangGraph.js, and Langflow-style callback runs in Respan.
+  </Card>
+
+  <Card title="SafePrompt" href="https://docs.safeprompt.dev" icon="link">
+    Validate prompts for prompt injection before they reach your model.
+  </Card>
+</Columns>
 
 ***
 

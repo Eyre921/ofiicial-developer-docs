@@ -29,3 +29,5 @@ Send `KeepAlive` only during a period when the client is not sending audio. Whil
 ```
 
 The server does not respond to `KeepAlive`.
+
+`KeepAlive` does not extend the [maximum session length](/docs/voice-agent-errors-warnings#maximum-session-length) of 2 hours. The server closes every session at the 2-hour mark, however much traffic it has seen.

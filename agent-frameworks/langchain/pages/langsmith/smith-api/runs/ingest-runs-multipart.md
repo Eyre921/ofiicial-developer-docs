@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/runs/ingest-runs-multipar
 path: langsmith/smith-api/runs/ingest-runs-multipart
 ---
 
-/langsmith/langsmith-platform-openapi.json post /runs/multipart
+/langsmith/langsmith-platform-openapi.json post /api/v1/runs/multipart
 Ingests multiple runs, feedback objects, and binary attachments in a single `multipart/form-data` request.
 **Part‑name pattern**: `<event>.<run_id>[.<field>]` where `event` ∈ {`post`, `patch`, `feedback`, `attachment`}.
 * `post|patch.<run_id>` – JSON run payload.

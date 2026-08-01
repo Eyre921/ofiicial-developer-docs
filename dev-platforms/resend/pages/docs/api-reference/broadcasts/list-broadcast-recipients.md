@@ -1,5 +1,5 @@
 ---
-title: "List Broadcast Recipients"
+title: "List Recipients"
 source: https://resend.com/docs/api-reference/broadcasts/list-broadcast-recipients
 path: docs/api-reference/broadcasts/list-broadcast-recipients
 ---

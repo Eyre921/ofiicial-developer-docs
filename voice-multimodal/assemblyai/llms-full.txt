@@ -16689,6 +16689,125 @@ while (true) {
 }
 ```
 
+## Choose a locale
+
+When English is detected by automatic language detection, the transcript is rendered in the default US English spelling. Set your preferred English locale to render it in a regional spelling variant instead.
+
+- Set `language_detection_options.localization` to a locale code. The supported values are `en_au` (Australian English) and `en_uk` (British English).
+- When English is detected, the transcript uses that locale's spelling — for example `colour`, `behaviour`, and `organise`.
+- `language_code` in the response returns the region-aware code (such as `en_au`) instead of the base `en`.
+
+```python title="Python" for="python" highlight={21}  expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+
+headers = {
+    "authorization": "<YOUR_API_KEY>"
+}
+
+with open("./my-audio.mp3", "rb") as f:
+  response = requests.post(base_url + "/v2/upload",
+                          headers=headers,
+                          data=f)
+
+upload_url = response.json()["upload_url"]
+
+data = {
+    "audio_url": upload_url, # You can also use a URL to an audio or video file on the web
+    "language_detection": True,
+    "language_detection_options": {
+      "localization": ["en_au"]
+  }
+}
+
+url = base_url + "/v2/transcript"
+response = requests.post(url, json=data, headers=headers)
+
+transcript_id = response.json()['id']
+polling_endpoint = base_url + "/v2/transcript/" + transcript_id
+
+while True:
+  transcription_result = requests.get(polling_endpoint, headers=headers).json()
+
+  if transcription_result['status'] == 'completed':
+    print(transcription_result['text'])
+    print(transcription_result['language_code'])
+    break
+
+  elif transcription_result['status'] == 'error':
+    raise RuntimeError(f"Transcription failed: {transcription_result['error']}")
+
+  else:
+    time.sleep(3)
+```
+
+```javascript title="JavaScript" for="javascript" highlight={24}  expandable
+import fs from "fs-extra";
+
+const baseUrl = "https://api.assemblyai.com";
+
+const headers = {
+  authorization: "<YOUR_API_KEY>",
+};
+
+const path = "./my-audio.mp3";
+const audioData = await fs.readFile(path);
+let res = await fetch(`${baseUrl}/v2/upload`, {
+  method: "POST",
+  headers,
+  body: audioData,
+});
+if (!res.ok) throw new Error(`Error: ${res.status}`);
+const uploadResponse = await res.json();
+const uploadUrl = uploadResponse.upload_url;
+
+const data = {
+  audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
+  language_detection: true,
+  language_detection_options: {
+    localization: ["en_au"],
+  },
+};
+
+const url = `${baseUrl}/v2/transcript`;
+res = await fetch(url, {
+  method: "POST",
+  headers: { ...headers, "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+if (!res.ok) throw new Error(`Error: ${res.status}`);
+const response = await res.json();
+
+const transcriptId = response.id;
+const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
+
+while (true) {
+  res = await fetch(pollingEndpoint, { headers });
+  if (!res.ok) throw new Error(`Error: ${res.status}`);
+  const transcriptionResult = await res.json();
+
+  if (transcriptionResult.status === "completed") {
+    console.log(transcriptionResult.text);
+    console.log(transcriptionResult.language_code);
+    break;
+  } else if (transcriptionResult.status === "error") {
+    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+}
+```
+
+  **Things to know**
+
+  - **Only applies to English.** If the detected language isn't English, transcription proceeds as normal in the detected language. The locale is applied only when the detected language is English; otherwise the request is unaffected.
+  - **English only.** `en_au` and `en_uk` are the only supported locales today. Base and default-region codes such as `en` and `en_us` aren't localization variants and return a `400`.
+  - **One locale per base language.** Passing both `en_au` and `en_uk` returns a `400`.
+  - **Requires automatic language detection.** `localization` only applies when `language_detection` is `true`. If you already know the language, set `language_code` to `en_au` or `en_uk` directly instead.
+  - **Spelling only.** Localization affects spelling, not vocabulary or grammar.
+
 ## Confidence score
 
 If language detection is enabled, the API returns a confidence score for the detected language. The score ranges from 0.0 (low confidence) to 1.0 (high confidence).
@@ -85269,6 +85388,16 @@ components:
               minimum: 0
               maximum: 1
               default: 0.3
+            localization:
+              x-label: Localization
+              description: |
+                Render the transcript in a regional variant of the detected language. Supported values are `en_au` (Australian English) and `en_uk` (British English) — only English is supported today, and you can specify at most one locale per base language. Base or default-region codes such as `en` and `en_us` are not localization variants and return a `400`.
+
+                When the detected language matches the requested locale's base language, the transcript uses that locale's spelling and `language_code` returns the region-aware code (for example `en_au`) instead of the base `en`. Otherwise, when the detected language isn't available as a locale, the option is ignored. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+              type: array
+              items:
+                x-label: locale
+                type: string
 
         multichannel:
           x-label: Multichannel
@@ -86852,6 +86981,16 @@ components:
               minimum: 0
               maximum: 1
               default: 0.3
+            localization:
+              x-label: Localization
+              description: |
+                Render the transcript in a regional variant of the detected language. Supported values are `en_au` (Australian English) and `en_uk` (British English) — only English is supported today, and you can specify at most one locale per base language. Base or default-region codes such as `en` and `en_us` are not localization variants and return a `400`.
+
+                When the detected language matches the requested locale's base language, the transcript uses that locale's spelling and `language_code` returns the region-aware code (for example `en_au`) instead of the base `en`. Otherwise, when the detected language isn't available as a locale, the option is ignored. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+              type: array
+              items:
+                x-label: locale
+                type: string
 
         multichannel:
           x-label: Multichannel

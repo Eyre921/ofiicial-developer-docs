@@ -61,6 +61,10 @@ path: docs/voice-agent-feature-overview
 | [Function Call Request](/docs/voice-agent-function-call-request)   |
 | [Function Call Response](/docs/voice-agent-function-call-response) |
 
+## Session Length
+
+Sessions close automatically after 2 hours. The server warns you 5 minutes ahead with `MAXIMUM_SESSION_LENGTH_APPROACHING` and closes the session with a `MAXIMUM_SESSION_LENGTH_REACHED` error. To keep a conversation going, start a new session and replay the prior turns in `agent.context`. See [Maximum session length](/docs/voice-agent-errors-warnings#maximum-session-length).
+
 ## Rate Limits
 
 For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).

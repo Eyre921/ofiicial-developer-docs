@@ -9,7 +9,7 @@ Fine-tune vision-language models (VLMs) with the Training API using multimodal c
 The Training API supports vision-language model (VLM) fine-tuning, allowing you to train models that understand both images and text. This works across all training modes — SFT, DPO, and RL — using the same API primitives and cookbook recipes you already know.
 
 <Note>
-  VLM support in the Training API requires a VLM-compatible training shape. See [Training Shapes](/fine-tuning/training-api/training-shapes#qwen3-vl) for available shapes.
+  VLM support in the Training API requires a VLM-compatible training shape. See [Models](/fine-tuning/models) for the shapes published on each VLM.
 </Note>
 
 ## What changes for vision
@@ -354,11 +354,11 @@ Use the corresponding cookbook recipes (`dpo_loop`, `rl_loop`) with a VLM traini
 | ----------- | --------------------------------------------------- | ------- | ---- |
 | Qwen3 VL 8B | `accounts/fireworks/trainingShapes/qwen3-vl-8b-65k` | 65k     | 4    |
 
-See [Training Shapes](/fine-tuning/training-api/training-shapes#qwen3-vl) for the full list and details.
+See [Models](/fine-tuning/models) for the full list and details.
 
 ## Related guides
 
-* [Training Shapes](/fine-tuning/training-api/training-shapes) — available VLM and text training shapes
+* [Models](/fine-tuning/models) — available VLM and text training shapes, and the surfaces each model is enabled for
 * [Supervised Fine Tuning - Vision (Managed)](/fine-tuning/fine-tuning-vlm) — managed VLM fine-tuning without writing training loops
 * [Querying Vision Language Models](/guides/querying-vision-language-models) — inference with VLMs
 * [Cookbook SFT](/fine-tuning/training-api/cookbook/sft) — SFT recipe details

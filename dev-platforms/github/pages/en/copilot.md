@@ -662,6 +662,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   BYOK allows you to use the Copilot SDK with your own API keys from model providers, bypassing GitHub Copilot authentication. This is useful for enterprise deployments, custom model hosting, or when you want direct billing with your model provider.
 
+* [Server-to-server authentication](/en/copilot/how-tos/copilot-sdk/auth/server-to-server-tokens)
+
+  Use a short-lived installation access token when a service needs to make Copilot requests on behalf of an organization without a user's credentials. In GitHub Actions, use the built-in `GITHUB_TOKEN` instead.
+
 * [The agent loop](/en/copilot/how-tos/copilot-sdk/features/agent-loop)
 
   How the Copilot CLI processes a user message end-to-end: from prompt to `session.idle`.
@@ -717,6 +721,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Streaming session events](/en/copilot/how-tos/copilot-sdk/features/streaming-events)
 
   Every action the Copilot agent takes—thinking, writing code, running tools—is emitted as a **session event** you can subscribe to. This guide is a field-level reference for each event type so you know exactly what data to expect without reading the SDK source.
+
+* [Usage and billing metrics](/en/copilot/how-tos/copilot-sdk/features/usage-and-billing)
+
+  This guide shows how to read token counts, context-window utilization, AI credit cost, and account quota from a Copilot SDK application. Examples are shown for TypeScript, Python, Go, .NET, Java, and Rust.
 
 * [Error handling hook](/en/copilot/how-tos/copilot-sdk/hooks/error-handling)
 

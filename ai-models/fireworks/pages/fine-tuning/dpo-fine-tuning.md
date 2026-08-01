@@ -149,7 +149,7 @@ Use either method for:
           --output-model new-model-id
         ```
 
-        Choose a base model and shape that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as compatible with DPO or ORPO.
+        Choose a base model that [Models](/fine-tuning/models) marks as DPO-enabled, and a shape published for it.
       </Tab>
     </Tabs>
   </Step>

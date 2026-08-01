@@ -195,11 +195,13 @@ The one thing you **can** adjust is the **replica count**. Use `min_replica_coun
 deploy_mgr.create_or_get(DeploymentConfig(
     deployment_id="rl-serving",
     base_model="accounts/fireworks/models/qwen3-8b",
-    deployment_shape="accounts/fireworks/deploymentShapes/qwen3-8b-128k-h200",
+    deployment_shape="accounts/fireworks/deploymentShapes/<deployment-shape>",
     min_replica_count=1,
     max_replica_count=4,
 ))
 ```
+
+You normally do not name a deployment shape at all: on the shape path the SDK reads it from the training shape's `deploymentShapeVersion`. Set it explicitly only when you are managing deployments outside that flow, and take the value from the training shape rather than hand-writing one.
 
 ## Operational guidance
 

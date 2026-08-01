@@ -465,7 +465,7 @@
 - `revenue-recognition/reports` — [Revenue Recognition reports](pages/revenue-recognition/reports.md) · [原文](https://docs.stripe.com/revenue-recognition/reports.md)
 - `revenue-recognition/reports/audit-numbers` — [Audit your numbers](pages/revenue-recognition/reports/audit-numbers.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/audit-numbers.md)
 - `revenue-recognition/reports/income-statement` — [Income statement](pages/revenue-recognition/reports/income-statement.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/income-statement.md)
-- `revenue-recognition/reports/monthly-summary` — [Monthly summary](pages/revenue-recognition/reports/monthly-summary.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/monthly-summary.md)
+- `revenue-recognition/reports/period-summary` — [Period summary](pages/revenue-recognition/reports/period-summary.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/period-summary.md)
 - `revenue-recognition/reports/sigma-and-sdp` — [Revenue Recognition reports in Sigma and SDP](pages/revenue-recognition/reports/sigma-and-sdp.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/sigma-and-sdp.md)
 - `revenue-recognition/reports/trial-balance` — [Trial balance](pages/revenue-recognition/reports/trial-balance.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/trial-balance.md)
 - `revenue-recognition/reports/waterfall` — [Revenue waterfall](pages/revenue-recognition/reports/waterfall.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/waterfall.md)

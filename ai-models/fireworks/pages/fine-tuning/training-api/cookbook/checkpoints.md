@@ -27,7 +27,7 @@ cfg = Config(
     output_model_id="qwen3-8b-finetuned",
     dcp_save_interval=10,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
 )
 main(cfg)

@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/optimize-classifier
 path: langsmith/optimize-classifier
 ---
 
-This tutorial walks through optimizing a classifier based on user a feedback. Classifiers are great to optimize because its generally pretty simple to collect the desired output, which makes it easy to create few shot examples based on user feedback. That is exactly what we will do in this example.
+This tutorial shows you how to optimize a classifier based on user feedback. Classifiers are great to optimize because its generally pretty simple to collect the desired output, which makes it easy to create few shot examples based on user feedback. That is exactly what we will do in this example.
 
 ## The objective
 

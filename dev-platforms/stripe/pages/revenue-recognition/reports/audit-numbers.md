@@ -11,22 +11,30 @@ Use the Stripe Dashboard to examine the details of your revenue numbers.
 You can get a detailed view of accounting numbers from the Dashboard either by customers or by transactions for:
 
 - Each number in the [period summary report](https://docs.stripe.com/revenue-recognition/reports/period-summary.md)
+
 - Each number in the [revenue waterfall report](https://docs.stripe.com/revenue-recognition/reports/waterfall.md)
+
 - Each number in the AR aging summary report
+
 - A customer
+
 - An invoice
+
 - An invoice line item
+
 - A payment
+
 - An Apple subscriber
+
 - A Google order
 
-## Monthly summary report 
+## Period summary report 
 
-Choose a month in [the monthly summary section](https://dashboard.stripe.com/revenue-recognition) to get a report of the activity that occurred during that time.
+Choose a period in [the period summary section](https://dashboard.stripe.com/revenue-recognition/statements?tab=period_summary) to get a report of the activity that occurred during that time.
 
-Click an amount in the report to see the details of this number broken down into a list of customers and their total amount for the month.
+Click an amount in the report to see the details of this number broken down into a list of customers and their total amount for the period.
 
-In the customer list, click a customer name to see all their transactions for the month.
+In the customer list, click a customer name to see all their transactions for the period.
 
 ## Revenue waterfall report 
 

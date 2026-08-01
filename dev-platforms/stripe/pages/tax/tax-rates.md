@@ -12,6 +12,18 @@ Stripe allows you to define any number of tax rates and apply them to *invoices*
 
 If you’re looking for automated tax calculation where you don’t need to define the rates, use [Stripe Tax](https://docs.stripe.com/tax.md).
 
+### Request to join the preview for manual tax rules.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/tax/tax-rates" \
+  -d '{"email": "EMAIL", "preview": "manual_tax_rules_waitlist_tax_rates_preview"}'
+```
+
 > If you use a third-party tax provider such as Avalara, Anrok, or Sphere, use their [native Stripe integration](https://docs.stripe.com/tax/third-party-apps.md) to calculate tax automatically for subscriptions and invoices. Use Tax Rates for cases where you have a fixed set of rates or use a provider without a native integration.
 
 When applying tax rates, Stripe calculates the [total tax amount](https://docs.stripe.com/tax/tax-rates.md#tax-amounts) per tax rate, and summarizes it in a table that you can export into tax summary reports.

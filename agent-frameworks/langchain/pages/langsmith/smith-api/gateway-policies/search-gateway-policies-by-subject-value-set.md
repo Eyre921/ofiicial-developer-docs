@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/gateway-policies/search-g
 path: langsmith/smith-api/gateway-policies/search-gateway-policies-by-subject-value-set
 ---
 
-/langsmith/langsmith-platform-openapi.json post /v1/platform/gateway-policies/search
+/langsmith/langsmith-platform-openapi.json post /api/v1/platform/gateway-policies/search
 Batch variant of GET /v1/platform/gateway-policies for
 fetching policies that match a set of subject_matcher_values
 under one subject_matcher_key. Accepts the values in a JSON

@@ -121,7 +121,7 @@ model, shape, parameters, cost ceiling, and cleanup flags before running it.
 
 ### Step 3: Choose the model and training shape
 
-Use the live [Training Shapes](/fine-tuning/training-api/training-shapes) catalog. Pass the full shared shape ID and let the SDK resolve its validated version and linked deployment shape.
+Pick a shape from your model's entry on [Models](/fine-tuning/models). Pass the full shared shape ID and let the SDK resolve its validated version and linked deployment shape.
 
 Do not copy accelerator type, GPU count, image tag, or deployment-shape details into the config when the training shape owns them.
 
@@ -187,7 +187,7 @@ For the canonical decision rules and comparison table, see [Choose Serverless or
 
 * [Dedicated quickstart](/fine-tuning/training-api/quickstart)
 * [Training and Sampling](/fine-tuning/training-api/training-and-sampling)
-* [Training Shapes](/fine-tuning/training-api/training-shapes)
+* [Models](/fine-tuning/models): available models, their shapes, and how shapes work
 * [Saving and Loading](/fine-tuning/training-api/saving-and-loading)
 * [Cookbook overview](/fine-tuning/training-api/cookbook/overview)
 * [Cleanup and Teardown](/fine-tuning/training-api/reference/cleanup)

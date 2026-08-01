@@ -7,10 +7,10 @@ path: langsmith/llm-gateway-custom-providers
 Route requests through the LLM Gateway to a custom OpenAI- or Anthropic-compatible endpoint, such as a self-hosted open-source model.
 
 <Note>
-  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). Sign up for [the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
-In addition to the [built-in providers](/langsmith/llm-gateway#supported-providers), the LLM Gateway can proxy requests to **any OpenAI-compatible or Anthropic-compatible endpoint** you configure yourself, such as a self-hosted open-source model served through an inference server (vLLM, Ollama, and similar).
+In addition to the [built-in providers](/langsmith/llm-gateway-direct-model-access#choose-a-provider-path), the LLM Gateway can proxy requests to **any OpenAI-compatible or Anthropic-compatible endpoint** you configure yourself, such as a self-hosted open-source model served through an inference server (vLLM, Ollama, and similar).
 
 ## How it works
 
@@ -25,7 +25,7 @@ The gateway uses the following options from the configuration:
 
 * A **base URL**: the upstream endpoint the gateway forwards requests to.
 * A **model name**: the model identifier your upstream expects.
-* An **API key**: stored as a [workspace secret](/langsmith/llm-gateway-admin-setup#2-add-provider-secrets), never sent by the client.
+* An **API key**: stored as a [workspace secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets), never sent by the client.
 
 You address the saved configuration by name through one of two routes, depending on whether you want callers to choose the model or want to enforce the configured one:
 

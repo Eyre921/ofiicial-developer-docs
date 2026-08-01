@@ -303,7 +303,9 @@ Group by `annotations.team`, `annotations.project`, or `annotations.environment`
   Content-Type: application/json
   ```
 
-  Annotation values are validated server-side; unrecognized keys are dropped silently.
+  Annotation values are validated server-side. Only the recognized keys — `team`, `project`, `environment` — are stored; any other segment (an unknown key, an empty value like `project=`, or a bare token) is dropped on its own, and the recognized keys in the same header are always preserved.
+
+  In responses these tags appear under the short keys `team` / `project` / `environment` in the `group` map: you group and filter by the `annotations.`-prefixed names, but the response omits the prefix.
 
 ## Cookbook: per-API-key reporting recipes
 

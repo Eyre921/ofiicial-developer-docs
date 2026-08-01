@@ -4797,6 +4797,13 @@ This method creates an instance of an embedded form. Call [initCheckoutFormSdk](
           Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
       - `phone`
         The phone number of the contact.
+    - `features`
+      Configuration for client-side features of the embedded form. Use this to disable default features of the Checkout Session that you prefer to implement in your own UI instead.
+      - `promotionCodeCollection`
+        Controls whether to show promotion code input in the embedded form. Defaults to `'auto'`.
+
+- `'auto'`: Shows the promotion code input if the Checkout Session enables [allow_promotion_codes](https://docs.stripe.com/api/checkout/sessions/create#create_checkout_session-allow_promotion_codes).
+- `'never'`: Never shows the promotion code input in the embedded form. Use this if you build your own promotion code input outside of the form.
     - `expressCheckout`
       Express checkout configuration options.
       - `buttonHeight`
@@ -8129,6 +8136,13 @@ target the Element for styling or testing.
           Two-letter country code, capitalized. Valid two-letter country codes are specified by ISO3166 alpha-2.
       - `phone`
         The phone number of the contact.
+    - `features`
+      Configuration for client-side features of the embedded form. Use this to disable default features of the Checkout Session that you prefer to implement in your own UI instead.
+      - `promotionCodeCollection`
+        Controls whether to show promotion code input in the embedded form. Defaults to `'auto'`.
+
+- `'auto'`: Shows the promotion code input if the Checkout Session enables [allow_promotion_codes](https://docs.stripe.com/api/checkout/sessions/create#create_checkout_session-allow_promotion_codes).
+- `'never'`: Never shows the promotion code input in the embedded form. Use this if you build your own promotion code input outside of the form.
     - `expressCheckout`
       Express checkout configuration options.
       - `buttonHeight`

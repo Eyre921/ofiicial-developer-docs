@@ -923,6 +923,10 @@ components:
           enum:
             - LatencyReport
           description: Message type identifier for the latency report
+        stt_latency:
+          type: number
+          format: double
+          description: 'Speech-to-text: time from audio received to transcript produced, in seconds'
         ttt_token_latency:
           type: number
           format: double
@@ -1579,8 +1583,13 @@ components:
     GoogleThinkProviderVersion:
       type: string
       enum:
+        - ai-studio-v1beta
+        - gemini-enterprise-agent-v1
         - v1beta
-      description: The REST API version for the Google generative language API
+      description: >-
+        The Google API used for the request: ai-studio-v1beta for the AI Studio API, or gemini-enterprise-agent-v1 for
+        the Gemini Enterprise Agent (GEA) API. v1beta is accepted as an alias for ai-studio-v1beta. Defaults based on
+        the Deepgram Voice Agent endpoint you connect to.
       title: GoogleThinkProviderVersion
     GoogleThinkProviderModel:
       type: string
@@ -1599,7 +1608,10 @@ components:
             - google
         version:
           $ref: '#/components/schemas/GoogleThinkProviderVersion'
-          description: The REST API version for the Google generative language API
+          description: >-
+            The Google API used for the request: ai-studio-v1beta for the AI Studio API, or gemini-enterprise-agent-v1
+            for the Gemini Enterprise Agent (GEA) API. v1beta is accepted as an alias for ai-studio-v1beta. Defaults
+            based on the Deepgram Voice Agent endpoint you connect to.
         model:
           $ref: '#/components/schemas/GoogleThinkProviderModel'
           description: Google model to use
@@ -2197,16 +2209,21 @@ components:
         - audio
         - agent
       title: AgentV1_AgentV1Settings
+    ChannelsAgentV1MessagesAgentV1UpdateListenListenProvider:
+      oneOf:
+        - $ref: '#/components/schemas/DeepgramListenProviderV1'
+        - $ref: '#/components/schemas/DeepgramListenProviderV2'
+      title: ChannelsAgentV1MessagesAgentV1UpdateListenListenProvider
     ChannelsAgentV1MessagesAgentV1UpdateListenListen:
       type: object
       properties:
         provider:
-          $ref: '#/components/schemas/DeepgramListenProviderV2'
+          $ref: '#/components/schemas/ChannelsAgentV1MessagesAgentV1UpdateListenListenProvider'
       required:
         - provider
       description: >-
-        Listen configuration to update. Contains a provider object with the same schema as Settings. The provider
-        identity (type, version, model) is required and must match the current session.
+        Listen configuration to update. Contains a provider object with the same schema as Settings. The model and
+        language can be changed mid-session. Keyterms can only be updated mid-session for Flux models.
       title: ChannelsAgentV1MessagesAgentV1UpdateListenListen
     AgentV1_AgentV1UpdateListen:
       type: object
@@ -2219,8 +2236,8 @@ components:
         listen:
           $ref: '#/components/schemas/ChannelsAgentV1MessagesAgentV1UpdateListenListen'
           description: >-
-            Listen configuration to update. Contains a provider object with the same schema as Settings. The provider
-            identity (type, version, model) is required and must match the current session.
+            Listen configuration to update. Contains a provider object with the same schema as Settings. The model and
+            language can be changed mid-session. Keyterms can only be updated mid-session for Flux models.
       required:
         - type
         - listen

@@ -238,13 +238,54 @@ When you use Deepgram's [managed LLM](/docs/voice-agent-llm-models) or [managed 
 
 ### EU Regional Support
 
-Today, Deepgram routes managed provider traffic through EU endpoints for **OpenAI**. When you connect to `api.eu.deepgram.com` and use a managed OpenAI LLM or TTS model, the underlying requests to OpenAI are routed through OpenAI's EU infrastructure.
+Today, Deepgram routes managed provider traffic through EU endpoints for **OpenAI** and **Google**. When you connect to `api.eu.deepgram.com` and use a managed OpenAI LLM or TTS model, the underlying requests to OpenAI are routed through OpenAI's EU infrastructure. Managed Google LLMs default to the EU Gemini Enterprise Agent (GEA) endpoint — see [Google LLM APIs](#google-llm-apis) below.
 
 Other managed providers do not yet offer EU-specific endpoints. As providers expand their regional availability, Deepgram will adopt those endpoints automatically — no configuration change required on your side.
+
+### Google LLM APIs
+
+Deepgram's managed [Google LLMs](/docs/voice-agent-llm-models#google) run on either of Google's APIs:
+
+* **AI Studio** (`generativelanguage.googleapis.com`) — a single global endpoint with the broadest model coverage.
+* **Gemini Enterprise Agent (GEA)** — formerly the Vertex API. Offers regional endpoints, so requests to Gemini models stay in the region you select.
+
+Select the API with the `think.provider.version` parameter in your `Settings` message, whichever Deepgram Voice Agent endpoint you connect to:
+
+| `think.provider.version`     | Google API                               |
+| ---------------------------- | ---------------------------------------- |
+| `ai-studio-v1beta`           | AI Studio                                |
+| `gemini-enterprise-agent-v1` | Gemini Enterprise Agent (GEA)            |
+| `v1beta`                     | AI Studio — alias for `ai-studio-v1beta` |
+
+```json
+{
+  "agent": {
+    "think": {
+      "provider": {
+        "type": "google",
+        "version": "gemini-enterprise-agent-v1",
+        "model": "gemini-2.5-flash"
+      }
+    }
+  }
+}
+```
+
+When you omit `version`, the default depends on the Deepgram endpoint:
+
+| Deepgram Voice Agent endpoint                          | Default `version`                                                     |
+| ------------------------------------------------------ | --------------------------------------------------------------------- |
+| `wss://agent.deepgram.com/v1/agent/converse` (general) | `ai-studio-v1beta` — global AI Studio, the broadest model coverage    |
+| `wss://api.eu.deepgram.com/v1/agent/converse` (EU)     | `gemini-enterprise-agent-v1` — GEA EU, every request served in the EU |
+| `wss://api.au.deepgram.com/v1/agent/converse` (AU)     | `ai-studio-v1beta` — global AI Studio                                 |
+
+Fewer Gemini models are available on the EU GEA endpoint than on global AI Studio. For current model availability by region, see [Google's documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations#multi-region).
 
 ### AU Regional Support
 
 When you connect to `api.au.deepgram.com` and use Deepgram managed models for speech-to-text (`listen`) and text-to-speech (`speak`) — for example, `nova-3` and `aura-2` — Deepgram processes that audio within Australia.
+
+GEA does not offer Australia-specific endpoints today, so the AU endpoint defaults to global AI Studio (`ai-studio-v1beta`). Deepgram will add support when Google makes those endpoints available.
 
 The voice agent LLM (`think`) runs on a third-party provider, where data residency and processing location are distinct. OpenAI, for example, offers Australian data residency — your content is stored at rest in Australia — but performs inference outside Australia. No managed in-region LLM is available today, so the `think` step is processed outside Australia even when residency applies. See [OpenAI's data residency guide](https://developers.openai.com/api/docs/guides/your-data#which-models-and-features-are-eligible-for-data-residency) for provider specifics.
 

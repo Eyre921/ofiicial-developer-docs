@@ -122,7 +122,7 @@ Set the API keys, for example:
 <Tip>
   **Using LangSmith Gateway**
 
-  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#using-langchain-and-deep-agents), or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider#make-a-call) to access models without a provider key.
+  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider) to access models without a provider key.
 </Tip>
 
 ## Build a basic agent

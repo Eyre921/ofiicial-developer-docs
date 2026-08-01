@@ -291,8 +291,6 @@ To run your model outside Together, download the checkpoint by job ID:
 
   client = Together()
 
-  # `checkpoint` is required unless you set `checkpoint_step`.
-  # Use "merged" for LoRA jobs; full fine-tunes only support "model_output_path".
   response = client.fine_tuning.content(ft_id="<JOB_ID>", checkpoint="merged")
   response.write_to_file("my-model/model.tar.zst")
   ```
@@ -303,8 +301,6 @@ To run your model outside Together, download the checkpoint by job ID:
 
   const client = new Together();
 
-  // `checkpoint` is required unless you set `checkpoint_step`.
-  // Use 'merged' for LoRA jobs; full fine-tunes only support 'model_output_path'.
   const response = await client.fineTuning.content({ ft_id: "<JOB_ID>", checkpoint: "merged" });
   const buffer = Buffer.from(await response.arrayBuffer());
   fs.writeFileSync("my-model/model.tar.zst", buffer);
@@ -313,16 +309,14 @@ To run your model outside Together, download the checkpoint by job ID:
 
 ### Choose a checkpoint type
 
-The `checkpoint` parameter selects what to download. It's required for the v2 SDK's `content()` method and the `GET /v1/finetune/download` endpoint, unless you pass `checkpoint_step`, which downloads a specific intermediate step and overrides `checkpoint`. Valid values depend on how the job was trained.
+The `checkpoint` parameter selects what to download. If you omit it, the API picks a default automatically: `merged` for LoRA jobs and `model_output_path` for full fine-tunes. You can also pass `checkpoint_step`, which downloads a specific intermediate step and overrides `checkpoint`. Valid values depend on how the job was trained.
 
 | Job type       | Valid `checkpoint` values                   | What you get                                                                                                                                                                                                                                                                                  |
 | -------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LoRA fine-tune | `merged`, `adapter`, or `model_output_path` | `merged` combines the base model and adapter into self-contained weights, the usual choice for running the model locally or uploading it elsewhere. `adapter` returns only the LoRA adapter weights, so you can load them on top of the base model yourself (for example, with PEFT or vLLM). |
-| Full fine-tune | `model_output_path` only                    | The full set of trained model weights. `merged` and `adapter` return an error for full fine-tunes.                                                                                                                                                                                            |
+| Full fine-tune | `model_output_path` only                    | The full set of trained model weights. `adapter` returns an error for full fine-tunes.                                                                                                                                                                                                        |
 
 `model_output_path` returns the raw training output directory before any merging. It works for both job types but is mainly useful for advanced workflows that need the unmodified artifacts: for LoRA jobs, prefer `merged` or `adapter`; for full fine-tunes, it's the only option.
-
-The v1 SDK's `client.fine_tuning.download()` selects the checkpoint automatically (`merged` for LoRA jobs, `model_output_path` for full fine-tunes), so you don't pass a `checkpoint` argument there.
 
 The output is a `.tar.zst` archive that uses [ZStandard](https://github.com/facebook/zstd) compression. On macOS, install `zstd` with Homebrew and decompress:
 

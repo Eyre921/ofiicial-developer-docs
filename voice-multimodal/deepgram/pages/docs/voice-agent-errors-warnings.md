@@ -51,6 +51,7 @@ The server sends an `Error` message when something prevents the session from con
 | `AGENT_ID_NOT_SUPPORTED`               | Agent ID is not supported in the current server configuration.                                                | Authenticate the project. Self-hosted builds do not support Agent ID in unauthenticated mode.                                                                |
 | `INVALID_AGENT_ID`                     | The Agent ID is invalid.                                                                                      | Verify the Agent ID exists and the format is correct. Check the Deepgram console for valid Agent IDs.                                                        |
 | `FAILED_TO_THINK`                      | The agent could not produce an LLM response after exhausting all retries and fallbacks.                       | Review your `think` provider configuration and error messages. Always specify a fallback `think` provider to survive individual provider outages.            |
+| `MAXIMUM_SESSION_LENGTH_REACHED`       | The session was closed after reaching the maximum session length of 2 hours.                                  | Start a new session and carry the conversation forward with `agent.context`. See [Maximum session length](#maximum-session-length).                          |
 
 ## `Warning`
 
@@ -68,17 +69,31 @@ Warnings are non-fatal. The application continues to function normally.
 
 ### Warning codes
 
-| Code                                       | Description                                                       | Recommended action                                                                                                                                                                                   |
-| ------------------------------------------ | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `INJECT_AGENT_MESSAGE_DURING_USER_SPEECH`  | `InjectAgentMessage` was ignored during user speech.              | Wait for the user to finish before injecting a new agent message.                                                                                                                                    |
-| `INJECT_AGENT_MESSAGE_DURING_AGENT_SPEECH` | `InjectAgentMessage` was ignored during agent speech.             | Wait for the agent to finish its current response before injecting a new message, or send `InjectAgentMessage` with `behavior: "queue"`. See [Inject Agent](/docs/voice-agent-inject-agent-message). |
-| `PROMPT_TOO_LONG`                          | The prompt exceeded the maximum allowed length and was truncated. | Reduce prompt length. The limit is 25,000 characters for managed LLMs and unlimited for BYO LLMs.                                                                                                    |
-| `THINK_REQUEST_FAILED`                     | A `think` provider request failed.                                | Review the provider error message. Specify a fallback `think` provider to survive individual provider outages.                                                                                       |
-| `SPEAK_REQUEST_FAILED`                     | A `speak` provider request failed.                                | Review the provider error message. Specify a fallback `speak` provider to survive individual provider outages.                                                                                       |
-| `FUNCTION_CALL_FAILED`                     | A function call failed.                                           | Review the provider error message. Specify a fallback `think` provider to survive individual provider outages.                                                                                       |
-| `SLOW_THINK_REQUEST`                       | A `think` provider request is taking a long time.                 | Monitor for ongoing slowness and consider a different `think` provider if your use case is latency-sensitive.                                                                                        |
-| `SLOW_SPEAK_REQUEST`                       | A `speak` provider request is taking a long time.                 | Monitor for ongoing slowness and consider a different `speak` provider if your use case is latency-sensitive.                                                                                        |
-| `GPT_4O_STREAM_END_ERROR`                  | `gpt-4o` failed to send a final done message.                     | Monitor for ongoing errors and consider a different LLM model or provider.                                                                                                                           |
+| Code                                       | Description                                                                                             | Recommended action                                                                                                                                                                                   |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `INJECT_AGENT_MESSAGE_DURING_USER_SPEECH`  | `InjectAgentMessage` was ignored during user speech.                                                    | Wait for the user to finish before injecting a new agent message.                                                                                                                                    |
+| `INJECT_AGENT_MESSAGE_DURING_AGENT_SPEECH` | `InjectAgentMessage` was ignored during agent speech.                                                   | Wait for the agent to finish its current response before injecting a new message, or send `InjectAgentMessage` with `behavior: "queue"`. See [Inject Agent](/docs/voice-agent-inject-agent-message). |
+| `PROMPT_TOO_LONG`                          | The prompt exceeded the maximum allowed length and was truncated.                                       | Reduce prompt length. The limit is 25,000 characters for managed LLMs and unlimited for BYO LLMs.                                                                                                    |
+| `THINK_REQUEST_FAILED`                     | A `think` provider request failed.                                                                      | Review the provider error message. Specify a fallback `think` provider to survive individual provider outages.                                                                                       |
+| `SPEAK_REQUEST_FAILED`                     | A `speak` provider request failed.                                                                      | Review the provider error message. Specify a fallback `speak` provider to survive individual provider outages.                                                                                       |
+| `FUNCTION_CALL_FAILED`                     | A function call failed.                                                                                 | Review the provider error message. Specify a fallback `think` provider to survive individual provider outages.                                                                                       |
+| `SLOW_THINK_REQUEST`                       | A `think` provider request is taking a long time.                                                       | Monitor for ongoing slowness and consider a different `think` provider if your use case is latency-sensitive.                                                                                        |
+| `SLOW_SPEAK_REQUEST`                       | A `speak` provider request is taking a long time.                                                       | Monitor for ongoing slowness and consider a different `speak` provider if your use case is latency-sensitive.                                                                                        |
+| `GPT_4O_STREAM_END_ERROR`                  | `gpt-4o` failed to send a final done message.                                                           | Monitor for ongoing errors and consider a different LLM model or provider.                                                                                                                           |
+| `MAXIMUM_SESSION_LENGTH_APPROACHING`       | The session will automatically close in 5 minutes after reaching the maximum session length of 2 hours. | End the conversation, or start a new session and pass the prior turns in `agent.context`. See [Maximum session length](#maximum-session-length).                                                     |
+
+## Maximum session length
+
+A Voice Agent session runs for a maximum of 2 hours. Two events mark the limit:
+
+| Time into the session | Event              | Code                                 |
+| --------------------- | ------------------ | ------------------------------------ |
+| 1 hour 55 minutes     | `Warning`          | `MAXIMUM_SESSION_LENGTH_APPROACHING` |
+| 2 hours               | `Error` (terminal) | `MAXIMUM_SESSION_LENGTH_REACHED`     |
+
+At 2 hours the server closes the session, so treat the warning as your cue to wrap up. To continue a conversation past the limit, open a new WebSocket connection and pass the prior turns in `agent.context.messages` — the agent resumes with full awareness of what was said. See [Maintaining Context](/docs/voice-agent-conversation-context#history).
+
+[`KeepAlive`](/docs/agent-keep-alive) holds an idle connection open, but it does not extend the 2-hour limit.
 
 ## Handling errors and warnings
 

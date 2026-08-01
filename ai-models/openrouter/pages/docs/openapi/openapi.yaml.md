@@ -11613,6 +11613,11 @@ components:
                             type: array
                           - type: string
                           - type: 'null'
+                      type:
+                        default: message
+                        enum:
+                          - message
+                        type: string
                     type: object
                 description: An output message item
                 example:
@@ -26514,8 +26519,8 @@ components:
             - 'null'
         default_guardrail_id:
           description: >-
-            Deterministic ID of the workspace's implicitly-created default
-            guardrail
+            Deterministic ID derived from the workspace ID. The default
+            guardrail is materialized when its configuration is first written.
           example: 595d5849-7e86-51fd-a7c0-705c34e4afff
           format: uuid
           type: string
@@ -31737,7 +31742,9 @@ paths:
                   message: Resource not found
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
-          description: Not Found - Resource does not exist
+          description: >-
+            Guardrail not found, or the workspace default guardrail has not been
+            configured yet.
         '500':
           content:
             application/json:
@@ -31754,8 +31761,9 @@ paths:
       x-speakeasy-name-override: get
     patch:
       description: >-
-        Update an existing guardrail. Collection fields use replace semantics:
-        send the full desired set on every update. [Management
+        Update an existing guardrail, or materialize an unconfigured workspace
+        default guardrail. Collection fields use replace semantics: send the
+        full desired set on every update. [Management
         key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: updateGuardrail
       parameters:
@@ -31817,7 +31825,10 @@ paths:
                   message: Invalid request parameters
               schema:
                 $ref: '#/components/schemas/BadRequestResponse'
-          description: Bad Request - Invalid request parameters or malformed input
+          description: >-
+            Invalid request, or an attempt to change a workspace default
+            guardrail's name (which is derived from its workspace and not
+            editable).
         '401':
           content:
             application/json:

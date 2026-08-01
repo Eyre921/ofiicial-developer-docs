@@ -60,6 +60,40 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 | `open_ai` | `gpt-4o-mini`         | `Standard`   |
 | `open_ai` | `gpt-4o`              | `Advanced`   |
 
+#### Example using Deepgram's managed OpenAI LLM
+
+```json JSON
+  // ... other settings ...
+  "think": {
+    "provider": {
+      "type": "open_ai",
+      "model": "gpt-4o-mini",
+      "temperature": 0.5
+    }
+  }
+  // ... other settings ...
+```
+
+#### Example using a custom OpenAI endpoint (BYO)
+
+```json JSON
+  // ... other settings ...
+  "think": {
+    "provider": {
+      "type": "open_ai",
+      "model": "gpt-4o-mini",
+      "temperature": 0.5
+    },
+    "endpoint": {
+      "url": "https://api.openai.com/v1/chat/completions",
+      "headers": {
+        "authorization": "Bearer xxxxxxxxx"
+      }
+    }
+  }
+  // ... other settings ...
+```
+
 ### Anthropic
 
 | Provider    | Model                      | Pricing Tier            |
@@ -70,6 +104,41 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 | `anthropic` | `claude-haiku-4-5`         | `Standard`              |
 | `anthropic` | `claude-3-5-haiku-latest`  | `Standard`              |
 | `anthropic` | `claude-sonnet-4-20250514` | `Advanced` (Deprecated) |
+
+#### Example using Deepgram's managed Anthropic LLM
+
+```json JSON
+  // ... other settings ...
+  "think": {
+    "provider": {
+      "type": "anthropic",
+      "model": "claude-haiku-4-5",
+      "temperature": 0.5
+    }
+  }
+  // ... other settings ...
+```
+
+#### Example using a custom Anthropic endpoint (BYO)
+
+```json JSON
+  // ... other settings ...
+  "think": {
+    "provider": {
+      "type": "anthropic",
+      "model": "claude-haiku-4-5",
+      "temperature": 0.5
+    },
+    "endpoint": {
+      "url": "https://api.anthropic.com/v1/messages",
+      "headers": {
+        "x-api-key": "xxxxxxxxx",
+        "anthropic-version": "2023-06-01"
+      }
+    }
+  }
+  // ... other settings ...
+```
 
 ### Google
 
@@ -83,6 +152,16 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
 | `google` | `gemini-2.5-flash`              | `Standard`                           |
 | `google` | `gemini-2.0-flash-lite`         | `Standard`                           |
 
+Deepgram supports both of Google's APIs for managed Gemini models: the AI Studio API and the Gemini Enterprise Agent (GEA) API, formerly the Vertex API. GEA offers regional endpoints, so requests can stay in the region you select, while global AI Studio offers the broadest model coverage. You can specify either API from any Deepgram Voice Agent endpoint using the `think.provider.version` parameter; the default depends on which Deepgram endpoint you connect to.
+
+| `think.provider.version`     | Google API                               |
+| ---------------------------- | ---------------------------------------- |
+| `ai-studio-v1beta`           | AI Studio                                |
+| `gemini-enterprise-agent-v1` | Gemini Enterprise Agent (GEA)            |
+| `v1beta`                     | AI Studio — alias for `ai-studio-v1beta` |
+
+For defaults, regional availability, and configuration details, see [Regional Endpoints](/reference/regional-endpoints#google-llm-apis).
+
 #### Example using Deepgram's managed Google LLM
 
 ```json JSON
@@ -90,6 +169,7 @@ See the [Amazon Bedrock](#amazon-bedrock) section below for credentials and endp
   "think": {
     "provider": {
       "type": "google",
+      "version": "ai-studio-v1beta",
       "model": "gemini-2.5-flash",
       "temperature": 0.5
     }

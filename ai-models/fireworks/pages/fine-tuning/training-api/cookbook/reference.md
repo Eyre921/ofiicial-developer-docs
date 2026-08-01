@@ -14,7 +14,7 @@ Training-client launch settings: which training shape to use, the optional refer
 from training.utils import TrainerConfig
 
 trainer = TrainerConfig(
-    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     reference_training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200-forward",
 )
 ```
@@ -39,7 +39,7 @@ To request replicated HSDP for a run:
 
 ```python theme={null}
 trainer = TrainerConfig(
-    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+    training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     replica_count=2,
 )
 ```

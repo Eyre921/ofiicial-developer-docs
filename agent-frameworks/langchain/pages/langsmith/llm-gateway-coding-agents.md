@@ -7,20 +7,20 @@ path: langsmith/llm-gateway-coding-agents
 Configure Claude Code, Codex, Gemini CLI, and Deep Agents to route LLM calls through the LLM Gateway.
 
 <Note>
-  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 Configure coding agents to route LLM calls through the LLM Gateway, giving your organization cost controls, observability, and audit trails on developer LLM usage without changing agent code.
 
 Most coding agents let you override the LLM provider endpoint via environment variables or configuration files. By pointing them at the LLM Gateway instead of the provider directly, all LLM calls flow through the gateway. The gateway authenticates the caller, resolves the actual provider key from workspace secrets, enforces policies, and traces the call. No agent code changes required.
 
-The gateway supports Anthropic, AWS Bedrock, Baseten, Fireworks, Google Gemini, Google Vertex AI, and OpenAI. For the full list and required secrets, see [Supported providers](/langsmith/llm-gateway#supported-providers).
+The gateway supports Anthropic, AWS Bedrock, Baseten, Fireworks, Google Gemini, Google Vertex AI, and OpenAI. For the full list and required secrets, see [Direct model access](/langsmith/llm-gateway-direct-model-access#choose-a-provider-path).
 
 ## Prerequisites
 
 * Your [Organization admin](/langsmith/rbac#organization-admin) has completed [Admin setup](/langsmith/llm-gateway-admin-setup).
 * You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations).
-* You have set the [gateway environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables) in your terminal.
+* You have set the [gateway environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks) in your terminal.
 
 ## Supported clients
 
@@ -31,7 +31,7 @@ The gateway supports Anthropic, AWS Bedrock, Baseten, Fireworks, Google Gemini, 
 
 ## Claude Code CLI
 
-No extra configuration beyond the [environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables). Run:
+No extra configuration beyond the [environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks). Run:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 claude
@@ -59,7 +59,7 @@ env_key = "LANGSMITH_API_KEY"
 supports_websockets = false
 ```
 
-Make sure the `LANGSMITH_API_KEY` environment variable is [set](/langsmith/llm-gateway-quickstart#1-set-environment-variables), then run:
+Make sure the `LANGSMITH_API_KEY` environment variable is [set](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks), then run:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 codex
@@ -71,7 +71,7 @@ codex
 
 ## Gemini CLI
 
-No extra configuration beyond the [environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables). Run:
+No extra configuration beyond the [environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks). Run:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 gemini
@@ -81,7 +81,7 @@ Gemini CLI will use `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` from your envi
 
 ## Deep Agents
 
-No extra configuration beyond the [environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables). For details, refer to the [provider selection docs](/oss/deepagents/code/providers#provider-reference). Run:
+No extra configuration beyond the [environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks). For details, refer to the [provider selection docs](/oss/deepagents/code/providers#provider-reference). Run:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 deepagents

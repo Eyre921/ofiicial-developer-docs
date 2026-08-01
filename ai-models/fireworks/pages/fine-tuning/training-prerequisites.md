@@ -47,7 +47,7 @@ Before launching an RFT job, ensure you have the following set up. Our quickstar
   </Accordion>
 
   <Accordion title="Base model selected">
-    Choose a model that the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix marks as RFT-compatible. `accounts/fireworks/models/qwen3-4b` is a common small starting point when enabled for the account.
+    Choose a model that [Models](/fine-tuning/models) marks as RFT-enabled. `accounts/fireworks/models/qwen3-4b` is a common small starting point when enabled for the account.
   </Accordion>
 </AccordionGroup>
 

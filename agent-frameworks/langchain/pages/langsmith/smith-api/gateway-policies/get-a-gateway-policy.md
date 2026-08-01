@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/gateway-policies/get-a-ga
 path: langsmith/smith-api/gateway-policies/get-a-gateway-policy
 ---
 
-/langsmith/langsmith-platform-openapi.json get /v1/platform/gateway-policies/{id}
+/langsmith/langsmith-platform-openapi.json get /api/v1/platform/gateway-policies/{id}
 Returns a single gateway policy by id. Cross-org access is
 rejected with 404
 

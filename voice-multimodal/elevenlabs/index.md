@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1214 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1215 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -412,6 +412,7 @@
 - `docs/eleven-agents/api-reference/environment-variables/list` — [List environment variables](pages/docs/eleven-agents/api-reference/environment-variables/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/list.md)
 - `docs/eleven-agents/api-reference/environment-variables/update` — [Update environment variable](pages/docs/eleven-agents/api-reference/environment-variables/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md)
 - `docs/eleven-agents/api-reference/exotel/outbound-call` — [Outbound call via Exotel](pages/docs/eleven-agents/api-reference/exotel/outbound-call.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/exotel/outbound-call.md)
+- `docs/eleven-agents/api-reference/knowledge-base/bulk-delete` — [Bulk delete knowledge base documents](pages/docs/eleven-agents/api-reference/knowledge-base/bulk-delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-delete.md)
 - `docs/eleven-agents/api-reference/knowledge-base/bulk-move` — [Bulk move documents](pages/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md)
 - `docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job` — [Cancel crawl job](pages/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md)
 - `docs/eleven-agents/api-reference/knowledge-base/compute-rag-index` — [Compute RAG index](pages/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md)

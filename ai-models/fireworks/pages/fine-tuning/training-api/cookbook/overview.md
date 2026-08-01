@@ -41,7 +41,7 @@ Each recipe follows the same pattern: import `Config` and `main`, set your confi
 
 All launch examples below use `trainer=TrainerConfig(training_shape_id=...)` for explicit shape selection. Cookbook recipes can also auto-select validated shapes when `training_shape_id` is unset. The main run-level trainer knob you may set alongside a shape is `replica_count` for replicated HSDP launches; reference shapes can usually be left unset because the cookbook auto-selects or uses a shared-session reference when appropriate.
 
-If you want field-level details about what a training shape controls and what stays configurable, see [Training Shapes](/fine-tuning/training-api/training-shapes) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
+If you want field-level details about what a training shape controls and what stays configurable, see [Training shapes](/fine-tuning/training-api/training-shapes) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
 <Note>
   `InfraConfig` and the standalone `setup_infra` / `ResourceCleanup` helpers are **deprecated and removed from the recipe surface**. Recipes now take `trainer=TrainerConfig(...)` (and `deployment=DeployConfig(...)` for RL). See [Migrating from the deprecated managed infra](/fine-tuning/training-api/cookbook/reference#deprecated-managed-infra-infraconfig).
@@ -62,7 +62,7 @@ cfg = Config(
     epochs=1,
     batch_size=4,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
 )
 
@@ -81,7 +81,7 @@ cfg = Config(
     dataset="/path/to/prompts.jsonl",
     max_rows=100,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
     deployment=DeployConfig(
         deployment_id="grpo-serving",

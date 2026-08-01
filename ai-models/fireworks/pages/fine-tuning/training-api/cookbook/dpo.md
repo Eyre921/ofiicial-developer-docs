@@ -44,7 +44,7 @@ cfg = Config(
     batch_size=4,
     max_seq_len=4096,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
         reference_training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200-forward",
     ),
     wandb=WandBConfig(entity="my-team", project="dpo-experiment"),
@@ -103,7 +103,7 @@ service = build_service_client(
     max_context_length=None,
     learning_rate=1e-5,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
         reference_training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200-forward",
     ),
     # deployment=None  → trainer-only provisioning (DPO has no rollouts)

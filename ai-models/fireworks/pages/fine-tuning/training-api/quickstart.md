@@ -43,7 +43,7 @@ api_key = os.environ["FIREWORKS_API_KEY"]
 base_url = os.environ.get("FIREWORKS_BASE_URL", "https://api.fireworks.ai")
 
 base_model = "accounts/fireworks/models/qwen3-8b"
-shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k-h200"
+shape_id = "accounts/fireworks/trainingShapes/qwen3-8b-128k"
 
 service = FiretitanServiceClient.from_firetitan_config(
     api_key=api_key,

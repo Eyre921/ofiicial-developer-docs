@@ -7,7 +7,7 @@ path: langsmith/llm-gateway-access
 Understand where gateway traces land and who can see and configure what.
 
 <Note>
-  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 Every call through the LLM Gateway is traced to LangSmith, and policy violations surface in [LangSmith Engine](/langsmith/engine) for triage.

@@ -10,9 +10,10 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 
 ## Available models
 
-| Model   | `model` ID                              |
-| ------- | --------------------------------------- |
-| Kimi K3 | `accounts/fireworks/routers/kimi-k3-us` |
+| Model        | `model` ID                                   |
+| ------------ | -------------------------------------------- |
+| Kimi K3      | `accounts/fireworks/routers/kimi-k3-us`      |
+| GLM 5.2 Fast | `accounts/fireworks/routers/glm-5p2-fast-us` |
 
 ## How to use it
 
@@ -43,7 +44,7 @@ print(response.choices[0].message.content)
 
 ## Pricing
 
-US-only endpoints are priced at a 10% premium to the base model serverless prices. See [Serverless pricing](/serverless/pricing).
+US-only endpoints are priced at a 10% premium to the base model serverless prices, except GLM 5.2 Fast US, which matches global GLM 5.2 Fast pricing. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

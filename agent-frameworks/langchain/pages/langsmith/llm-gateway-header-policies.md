@@ -7,7 +7,7 @@ path: langsmith/llm-gateway-header-policies
 Split gateway spend caps and rate limits by a custom request header so each of your end customers gets its own limit under a single API key.
 
 <Note>
-  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A [spend policy](/langsmith/llm-gateway-spend-policies) or [rate limit policy](/langsmith/llm-gateway-rate-limit-policies) can carry a condition on a custom request header, so traffic from a single subject splits into separate limits by header value. Use this to cap each of your own end customers, tenants, or teams without issuing a separate [LangSmith API key](/langsmith/create-account-api-key) for each one.
@@ -86,7 +86,7 @@ Attach the header to each request your backend makes on behalf of an end custome
 </CodeGroup>
 
 <Note>
-  If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway#regional-gateways).
+  If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
 </Note>
 
 ### Step 2. Create a cap for one customer

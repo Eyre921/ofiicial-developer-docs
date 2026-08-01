@@ -1656,7 +1656,7 @@ You can retrieve broadcasts created via both this API and the Resend dashboard.
 </ResponseExample>
 
 
-# Retrieve Broadcast Metrics
+# Retrieve Metrics
 Source: https://resend.com/docs/api-reference/broadcasts/get-broadcast-metrics
 
 GET /broadcasts/:broadcast_id/metrics
@@ -1859,7 +1859,7 @@ reported as unique counts.
 </ResponseExample>
 
 
-# List Broadcast Recipients
+# List Recipients
 Source: https://resend.com/docs/api-reference/broadcasts/list-broadcast-recipients
 
 GET /broadcasts/:broadcast_id/recipients

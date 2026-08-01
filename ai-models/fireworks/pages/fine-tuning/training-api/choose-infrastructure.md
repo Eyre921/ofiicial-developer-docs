@@ -46,7 +46,7 @@ The Training API uses the same Tinker-compatible primitives on two infrastructur
 | Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                     |
 | Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                       |
 | Methods           | SFT and RL on the supported serverless surface                   | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
-| Models            | Current serverless model list                                    | Models with an enabled dedicated training shape                                               |
+| Models            | [Serverless-enabled models](/fine-tuning/models)                 | Models with an enabled dedicated training shape                                               |
 | Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability            |
 | Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
 | Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                  |
@@ -57,7 +57,7 @@ Always verify current models, limits, prices, and feature status in the [Serverl
 
 ## Choose serverless when
 
-* The base model appears in the current serverless model list.
+* The base model is marked as serverless-enabled on [Models](/fine-tuning/models).
 * LoRA SFT or RL covers the task.
 * You want to start without provisioning trainer or inference resources.
 * Per-token billing fits a small or bursty experiment.

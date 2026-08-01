@@ -102,10 +102,6 @@ Anthropic models include a cache write cost in addition to cached input.
 | Model            | Release status | Category    | Tier         | Threshold (input tokens) | Input | Cached input | Output |
 | ---------------- | -------------- | ----------- | ------------ | ------------------------ | ----: | -----------: | -----: |
 |                  |                |             |              |                          |       |              |        |
-| Gemini 2.5 Pro   | GA             | Powerful    | Default      | Not applicable           | $1.25 |       $0.125 | $10.00 |
-|                  |                |             |              |                          |       |              |        |
-| Gemini 3 Flash   | Public preview | Lightweight | Default      | Not applicable           | $0.50 |        $0.05 |  $3.00 |
-|                  |                |             |              |                          |       |              |        |
 | Gemini 3.1 Pro   | Public preview | Powerful    | Default      | ≤ 200K                   | $2.00 |        $0.20 | $12.00 |
 |                  |                |             |              |                          |       |              |        |
 | Gemini 3.1 Pro   | Public preview | Powerful    | Long context | > 200K                   | $4.00 |        $0.40 | $18.00 |

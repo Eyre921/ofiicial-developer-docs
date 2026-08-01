@@ -14,7 +14,7 @@ RFT cost depends on the selected model and compatible training shape, rollout vo
 
 ## Before estimating
 
-1. Choose an RFT-compatible model in the live [Training Shapes](/fine-tuning/training-api/training-shapes) matrix.
+1. Choose an RFT-enabled model on [Models](/fine-tuning/models).
 2. Resolve the shape and parameter mode used by the job.
 3. Read current [pricing](https://fireworks.ai/pricing), including any eligible managed RFT promotion.
 4. Record dataset rows, epochs, rollout candidates, maximum output tokens, expected average output length, evaluator latency, and concurrency.

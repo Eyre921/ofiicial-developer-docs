@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/gateway-policies/create-a
 path: langsmith/smith-api/gateway-policies/create-a-gateway-policy
 ---
 
-/langsmith/langsmith-platform-openapi.json post /v1/platform/gateway-policies
+/langsmith/langsmith-platform-openapi.json post /api/v1/platform/gateway-policies
 Creates a gateway policy for the calling organization.
 
 **policy_type** is one of `spend_cap`, `default_spend_cap`,

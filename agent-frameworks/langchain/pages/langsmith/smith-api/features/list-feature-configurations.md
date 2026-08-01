@@ -4,5 +4,5 @@ source: https://docs.langchain.com/langsmith/smith-api/features/list-feature-con
 path: langsmith/smith-api/features/list-feature-configurations
 ---
 
-/langsmith/langsmith-platform-openapi.json get /v1/platform/features
+/langsmith/langsmith-platform-openapi.json get /api/v1/platform/features
 Returns a consolidated view of default models and disabled models per feature for the workspace.

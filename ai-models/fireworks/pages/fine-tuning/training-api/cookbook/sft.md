@@ -26,7 +26,7 @@ cfg = Config(
     batch_size=4,
     learning_rate=1e-5,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
 )
 
@@ -96,7 +96,7 @@ cfg = Config(
     epochs=1,
     batch_size=4,
     trainer=TrainerConfig(
-        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200",
+        training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
     ),
     dcp_save_interval=50,
     init_from_checkpoint="previous-job-id:step-100",  # optional

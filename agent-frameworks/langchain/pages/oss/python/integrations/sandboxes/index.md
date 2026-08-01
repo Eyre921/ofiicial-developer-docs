@@ -18,6 +18,8 @@ Sandboxes provide isolated execution environments for running agent-generated co
   | [`E2BSandbox`](https://e2b.dev/docs)                                                            | <span><a href="https://pypi.org/project/langchain-e2b/">  <img alt="Downloads per month" /></a></span>                       |
   | [`VercelSandbox`](https://vercel.com/docs/vercel-sandbox)                                       | <span><a href="https://pypi.org/project/langchain-vercel-sandbox/">  <img alt="Downloads per month" /></a></span>            |
   | [`OpenShellSandbox`](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell) | <span><a href="https://pypi.org/project/langchain-nvidia-openshell/">  <img alt="Downloads per month" /></a></span>          |
+  | [`UpstashBoxSandbox`](https://upstash.com/docs/box)                                             | <span><a href="https://pypi.org/project/langchain-upstash-box/">  <img alt="Downloads per month" /></a></span>               |
+  | [`SuperserveSandbox`](https://docs.superserve.ai)                                               | <span><a href="https://pypi.org/project/langchain-superserve/">  <img alt="Downloads per month" /></a></span>                |
   | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith)                             | <span>N/A</span>                                                                                                             |
 </div>
 

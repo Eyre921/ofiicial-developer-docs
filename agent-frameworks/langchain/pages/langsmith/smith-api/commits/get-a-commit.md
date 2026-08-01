@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/smith-api/commits/get-a-commit
 path: langsmith/smith-api/commits/get-a-commit
 ---
 
-/langsmith/langsmith-platform-openapi.json get /commits/{owner}/{repo}/{commit}
+/langsmith/langsmith-platform-openapi.json get /api/v1/commits/{owner}/{repo}/{commit}
 Retrieves a specific commit by hash, tag, or "latest" for a repository.
 This endpoint supports both authenticated and unauthenticated access.
 Authenticated users can access private repos, while unauthenticated users can only access public repos.

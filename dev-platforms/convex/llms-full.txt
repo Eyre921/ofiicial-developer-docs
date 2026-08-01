@@ -47,6 +47,7 @@
 
 ## database
 
+- [Commit Timestamp](/database/advanced/commit-timestamp.md): Efficient iteration using a strictly increasing sequence identifier.
 - [OCC and Atomicity](/database/advanced/occ.md): Optimistic concurrency control and transaction atomicity in Convex
 - [Schema Philosophy](/database/advanced/schema-philosophy.md): Convex schema design philosophy and best practices
 - [System Tables](/database/advanced/system-tables.md): Access metadata for Convex built-in features through system tables including scheduled functions and file storage information.
@@ -11492,7 +11493,7 @@ Insert a new document into the table.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/database.ts:427](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L427)
+[server/database.ts:425](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L425)
 
 ***
 
@@ -11517,7 +11518,7 @@ New fields are added. Existing fields are overwritten. Fields set to `undefined`
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/database.ts:442](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L442)
+[server/database.ts:440](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L440)
 
 ***
 
@@ -11540,7 +11541,7 @@ Replace the value of an existing document, overwriting its old value.
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/database.ts:454](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L454)
+[server/database.ts:452](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L452)
 
 ***
 
@@ -11562,7 +11563,7 @@ Delete an existing document.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[server/database.ts:464](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L464)
+[server/database.ts:462](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L462)
 
 
 ---
@@ -12828,6 +12829,24 @@ const metadata = await ctx.db.system.get("_storage", storageId);
 
 [server/database.ts:163](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L163)
 
+***
+
+### vars[​](#vars "Direct link to vars")
+
+• **vars**: `Object`
+
+Values that are not known until the mutation commits.
+
+#### Type declaration[​](#type-declaration "Direct link to Type declaration")
+
+| Name       | Type                                                                | Description                                                                                                                                                                                                                                                                                |
+| ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `commitTs` | [`CommitTsPlaceholder`](/api/classes/values.CommitTsPlaceholder.md) | The placeholder for the transaction's commit timestamp. Written into a document field via `db.insert`, it resolves at commit to an int64 (`bigint`) ordered by commit order. Within the writing mutation, reading the field back yields the placeholder, which cannot be used as a number. |
+
+#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+
+[server/database.ts:378](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L378)
+
 ## Methods[​](#methods "Direct link to Methods")
 
 ### get[​](#get "Direct link to get")
@@ -12865,7 +12884,7 @@ const user = await ctx.db.get("users", userId);
 
 [GenericDatabaseReader](/api/interfaces/server.GenericDatabaseReader.md).[get](/api/interfaces/server.GenericDatabaseReader.md#get)
 
-#### Defined in[​](#defined-in-1 "Direct link to Defined in")
+#### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
 [server/database.ts:30](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L30)
 
@@ -12897,7 +12916,7 @@ Supported for backwards compatibility. Prefer `db.get(tableName, id)` in new cod
 
 [GenericDatabaseReader](/api/interfaces/server.GenericDatabaseReader.md).[get](/api/interfaces/server.GenericDatabaseReader.md#get)
 
-#### Defined in[​](#defined-in-2 "Direct link to Defined in")
+#### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
 [server/database.ts:44](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L44)
 
@@ -12933,7 +12952,7 @@ Queries don't execute immediately, so calling this method and extending its quer
 
 [GenericDatabaseReader](/api/interfaces/server.GenericDatabaseReader.md).[query](/api/interfaces/server.GenericDatabaseReader.md#query)
 
-#### Defined in[​](#defined-in-3 "Direct link to Defined in")
+#### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
 [server/database.ts:57](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L57)
 
@@ -12970,7 +12989,7 @@ This does not guarantee that the ID exists (i.e. `db.get(tableName, id)` may ret
 
 [GenericDatabaseReader](/api/interfaces/server.GenericDatabaseReader.md).[normalizeId](/api/interfaces/server.GenericDatabaseReader.md#normalizeid)
 
-#### Defined in[​](#defined-in-4 "Direct link to Defined in")
+#### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
 [server/database.ts:73](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L73)
 
@@ -13013,7 +13032,7 @@ const taskId = await ctx.db.insert("tasks", {
 
 The [GenericId](/api/modules/values.md#genericid) of the new document.
 
-#### Defined in[​](#defined-in-5 "Direct link to Defined in")
+#### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
 [server/database.ts:240](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L240)
 
@@ -13063,7 +13082,7 @@ await ctx.db.patch("tasks", taskId, { assignee: undefined });
 
 `Promise`<`void`>
 
-#### Defined in[​](#defined-in-6 "Direct link to Defined in")
+#### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
 [server/database.ts:271](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L271)
 
@@ -13094,7 +13113,7 @@ Supported for backwards compatibility. Prefer `db.patch(tableName, id, value)` i
 
 `Promise`<`void`>
 
-#### Defined in[​](#defined-in-7 "Direct link to Defined in")
+#### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
 [server/database.ts:293](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L293)
 
@@ -13142,7 +13161,7 @@ await ctx.db.replace("users", userId, {
 
 `Promise`<`void`>
 
-#### Defined in[​](#defined-in-8 "Direct link to Defined in")
+#### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
 [server/database.ts:321](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L321)
 
@@ -13171,7 +13190,7 @@ Supported for backwards compatibility. Prefer `db.replace(tableName, id, value)`
 
 `Promise`<`void`>
 
-#### Defined in[​](#defined-in-9 "Direct link to Defined in")
+#### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
 [server/database.ts:340](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L340)
 
@@ -13206,7 +13225,7 @@ await ctx.db.delete("tasks", taskId);
 
 `Promise`<`void`>
 
-#### Defined in[​](#defined-in-10 "Direct link to Defined in")
+#### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
 [server/database.ts:356](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L356)
 
@@ -13228,7 +13247,7 @@ Supported for backwards compatibility. Prefer `db.delete(tableName, id)` in new 
 
 `Promise`<`void`>
 
-#### Defined in[​](#defined-in-11 "Direct link to Defined in")
+#### Defined in[​](#defined-in-12 "Direct link to Defined in")
 
 [server/database.ts:373](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L373)
 
@@ -13308,7 +13327,7 @@ Scope the database to a specific table.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/database.ts:412](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L412)
+[server/database.ts:410](https://github.com/get-convex/convex-js/blob/main/src/server/database.ts#L410)
 
 
 ---
@@ -22895,7 +22914,7 @@ The size in bytes
 
 #### Defined in[​](#defined-in-19 "Direct link to Defined in")
 
-[values/size.ts:155](https://github.com/get-convex/convex-js/blob/main/src/values/size.ts#L155)
+[values/size.ts:159](https://github.com/get-convex/convex-js/blob/main/src/values/size.ts#L159)
 
 ***
 
@@ -35748,7 +35767,7 @@ Each component has its own `_generated` directory in addition to the `convex/_ge
 
 ### Environment variables[​](#environment-variables "Direct link to Environment variables")
 
-A component's functions are isolated from the app's environment variables and cannot access just any value from the app's `process.env`. Instead, components can declare their own typed environment variables in `convex.config.ts`:
+A component's functions are isolated from the app's environment variables and cannot access just any value from the app's `process.env`. Only the [system environment variables](/production/environment-variables.md#system-environment-variables) (`CONVEX_CLOUD_URL` and `CONVEX_SITE_URL`) are available in every component function. For anything else, components can declare their own typed environment variables in `convex.config.ts`:
 
 component/convex.config.ts
 
@@ -35880,6 +35899,8 @@ return await ctx.runAction(components.sampleComponent.lib.translate, {
 
 See below for other strategies for static configuration.
 
+A component's declared environment variables are bound to the installed component instance and only exist at runtime. Read them inside function handlers rather than at module scope: module-scope code also runs during deployment analysis, where these values are not yet defined.
+
 ### HTTP Actions[​](#http-actions "Direct link to HTTP Actions")
 
 Components can define their own `http.ts` file with HTTP routes, just like the main app. The app that installs the component chooses where these routes are accessible by specifying an `httpPrefix` (see [Using Components: HTTP Routes](/components/using.md#http-routes)).
@@ -35936,7 +35957,7 @@ component.use(childComponent, { httpPrefix: "/child/" });
 export default component;
 ```
 
-Within a component’s HTTP action, `process.env.CONVEX_SITE_URL` reflects the full URL where the component is mounted, including the `httpPrefix`. This allows the component to construct correct URLs for callbacks, redirects, or self-referencing links without needing to know its mount path at build time.
+Within all of a component’s functions, `process.env.CONVEX_SITE_URL` reflects the full URL where the component is mounted, including the `httpPrefix`. This allows the component to construct correct URLs for callbacks, redirects, or self-referencing links without needing to know its mount path at build time.
 
 **Limitation:** Component HTTP actions do not have access to `ctx.auth` or the app’s environment variables. If an HTTP handler needs to authenticate users or access data from the application, define the HTTP action handler in the component’s client code and mount it in the app’s `convex/http.ts` instead. There’s an example of this pattern in the [Twilio component](https://github.com/get-convex/twilio/blob/0bdf7fd4ee7dd46d442be3693280564eea597b68/src/client/index.ts#L71).
 
@@ -37619,6 +37640,174 @@ The [applications page](https://dashboard.convex.dev/team/settings/applications)
 
 * **Authorized Applications** lists the third-party applications you have authorized, via OAuth, to access this team on your behalf. You can revoke an application's access here at any time. Like team access tokens, an authorized application can only perform actions you have access to on the team, and you can only see the applications you authorized yourself.
 * **Your OAuth Applications** lets you create and manage OAuth applications so that other Convex users can authorize your product to manage their teams or projects. See [OAuth Applications](/platform-apis/oauth-applications.md) for details.
+
+
+---
+
+# Commit Timestamp
+
+A commit timestamp represents the time (in nanoseconds) when a mutation commits. The value is not observable within the mutation, but with the `db.vars.commitTs` placeholder you can have the value inserted at commit time into documents or the return value.
+
+This can be used to to model a queue, or to implement an `updatedAt` field. You could define an index on a field that captures the commit time, then use that to iterate over new or updated documents without worrying about missing changes due to out-of-order commits. For tips on using CommitTs for efficient iteration, see the notes in the [Batch Worker Component README](https://github.com/get-convex/batch-worker).
+
+convex/work.ts
+
+```
+export const enqueue = mutation({
+
+  args: { payload: v.string() },
+
+  handler: async (ctx, { payload }) => {
+
+    await ctx.db.insert("work", {
+
+      payload,
+
+      updatedAt: ctx.db.vars.commitTs,
+
+    });
+
+  },
+
+});
+```
+
+`db.vars.commitTs` is a placeholder value while the mutation executes. When the mutation commits, the value gets resolved to the commit timestamp in nanoseconds.
+
+## Commit timestamp vs. `_creationTime`[​](#commit-timestamp-vs-_creationtime "Direct link to commit-timestamp-vs-_creationtime")
+
+Note that the commit timestamp is not the same as the `_creationTime` system field.
+
+|                                           | `db.vars.commitTs`      | `_creationTime`              |
+| ----------------------------------------- | ----------------------- | ---------------------------- |
+| **Timing**                                | Assigned at commit time | Based on function start time |
+| **Units**                                 | Nanoseconds             | Milliseconds                 |
+| **Type when inserted**                    | CommitTsPlaceholder     | Float64 (Number)             |
+| **Type after committed**                  | Int64 (BigInt)          | Float64 (Number)             |
+| **Reflects commit order**                 | ✅ Yes                  | ❌ No                        |
+| **Shared for inserts within transaction** | ✅ Yes                  | ❌ No (db.insert advances)   |
+
+Mutations execute concurrently before committing, so `_creationTime` does not necessarily reflect the order in which the mutations committed. This mean you can be reading the last committed document in a table, ordered by `_creationTime`, and then later a new document could be inserted with an earlier `_creationTime`. This can lead to missing documents when iterating over a table.
+
+With an index on `db.vars.commitTs`, you do not need to worry about this, as the timestamp is strictly increasing. Since inserted documents will always have a greater commit timestamp, the tombstones will always end where the new documents begin.
+
+## Using the commit timestamp[​](#using-the-commit-timestamp "Direct link to Using the commit timestamp")
+
+During function execution, new documents inserted with `db.vars.commitTs` will have the `CommitTsPlaceholder`. Resolved commit timestamps are Int64s (bigint in JS). You can use the `v.commitTs()` validator in argument and return validators and schema definitions. It accepts both resolved Int64 values and the commit timestamp placeholder. Fields with the commit timestamp are otherwise like any other field: they can be used in indexes, nested objects, arrays, and unions.
+
+convex/schema.ts
+
+```
+import { defineSchema, defineTable } from "convex/server";
+
+import { v } from "convex/values";
+
+
+
+export default defineSchema({
+
+  work: defineTable({
+
+    payload: v.string(),
+
+    updatedAt: v.commitTs(),
+
+  }).index("by_updatedAt", ["updatedAt"]),
+
+});
+```
+
+You can check for the placeholder before using the commit timestamp type.
+
+convex/work.ts
+
+```
+if (commitTs instanceof CommitTsPlaceholder) {
+
+  return "pending";
+
+}
+
+// commitTs is an Int64
+```
+
+You can query for documents inserted in the current transaction using a commit timestamp index. This can be useful inside components or nested function where you may not have context from the parent transaction.
+
+convex/work.ts
+
+```
+export const enqueueAndListPending = mutation({
+
+  args: { payload: v.string() },
+
+  handler: async (ctx, { payload }) => {
+
+    await ctx.db.insert("work", {
+
+      payload,
+
+      updatedAt: ctx.db.vars.commitTs,
+
+    });
+
+    return await ctx.db
+
+      .query("work")
+
+      .withIndex("by_updatedAt", (q) => q.eq("updatedAt", ctx.db.vars.commitTs))
+
+      .collect();
+
+  },
+
+});
+```
+
+The commit timestamp placeholder can be passed into or returned from a nested function.
+
+convex/work.ts
+
+```
+export const enqueueWithTimestamp = mutation({
+
+  args: { payload: v.string(), updatedAt: v.commitTs() },
+
+  returns: v.commitTs(),
+
+  handler: async (ctx, { payload, updatedAt }) => {
+
+    await ctx.db.insert("work", { payload, updatedAt });
+
+    return updatedAt;
+
+  },
+
+});
+
+
+
+export const enqueueViaSubtransaction = mutation({
+
+  args: { payload: v.string() },
+
+  returns: v.commitTs(),
+
+  handler: async (ctx, { payload }): Promise<bigint | CommitTsPlaceholder> => {
+
+    return await ctx.runMutation(api.commitTs.enqueueWithTimestamp, {
+
+      payload,
+
+      updatedAt: ctx.db.vars.commitTs,
+
+    });
+
+  },
+
+});
+```
+
+Note that it is not possible to schedule a function with the commit timestamp as an argument. Furthermore, you cannot return the commit timestamp placeholder from a query, as queries are not committed.
 
 
 ---
@@ -39901,6 +40090,8 @@ export default defineSchema({
 
     boolean: v.boolean(),
 
+    commitTs: v.commitTs(),
+
     nestedObject: v.object({
 
       property: v.string(),
@@ -40292,6 +40483,7 @@ Convex supports the following types of values:
 | Boolean     | [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#boolean_type)                                 | `true`                 | `v.boolean()`                                                                                     | bool                                                    |                                                                                                                                                                                                                                                                                                                                                        |
 | String      | [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#string_type)                                   | `"abc"`                | `v.string()`                                                                                      | string                                                  | Strings are stored as UTF-8 and must be valid Unicode sequences. Strings must be smaller than the 1MB total size limit when encoded as UTF-8.                                                                                                                                                                                                          |
 | Bytes       | [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)                     | `new ArrayBuffer(8)`   | `v.bytes()`                                                                                       | string (base64)                                         | Convex supports first class bytestrings, passed in as `ArrayBuffer`s. Bytestrings must be smaller than the 1MB total size limit for Convex types.                                                                                                                                                                                                      |
+| CommitTs    | [bigint](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#bigint_type) or `CommitTsPlaceholder`          | `db.vars.commitTs`     | `v.commitTs()`                                                                                    | string (base10)                                         | Either an Int64 commit timestamp or a placeholder. See [Commit Timestamp](/database/advanced/commit-timestamp.md).                                                                                                                                                                                                                                     |
 | Array       | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)                                 | `[1, 3.2, "abc"]`      | `v.array(values)`                                                                                 | array                                                   | Arrays can have at most 8192 values.                                                                                                                                                                                                                                                                                                                   |
 | Object      | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#objects)                                       | `{a: "abc"}`           | `v.object({property: value})`                                                                     | object                                                  | Convex only supports "plain old JavaScript objects" (objects that do not have a custom prototype). Convex includes all [enumerable properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties). Objects can have at most 1024 entries. Field names must be nonempty and not start with "$" or "\_". |
 | Record      | [Record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)                                       | `{"a": "1", "b": "2"}` | `v.record(keys, values)`                                                                          | object                                                  | Records are objects at runtime, but can have dynamic keys. Keys must be only ASCII characters, nonempty, and not start with "$" or "\_".                                                                                                                                                                                                               |
@@ -45396,6 +45588,7 @@ Convex supports the following types of values:
 | Boolean     | [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#boolean_type)                                 | `true`                 | `v.boolean()`                                                                                     | bool                                                    |                                                                                                                                                                                                                                                                                                                                                        |
 | String      | [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#string_type)                                   | `"abc"`                | `v.string()`                                                                                      | string                                                  | Strings are stored as UTF-8 and must be valid Unicode sequences. Strings must be smaller than the 1MB total size limit when encoded as UTF-8.                                                                                                                                                                                                          |
 | Bytes       | [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)                     | `new ArrayBuffer(8)`   | `v.bytes()`                                                                                       | string (base64)                                         | Convex supports first class bytestrings, passed in as `ArrayBuffer`s. Bytestrings must be smaller than the 1MB total size limit for Convex types.                                                                                                                                                                                                      |
+| CommitTs    | [bigint](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#bigint_type) or `CommitTsPlaceholder`          | `db.vars.commitTs`     | `v.commitTs()`                                                                                    | string (base10)                                         | Either an Int64 commit timestamp or a placeholder. See [Commit Timestamp](/database/advanced/commit-timestamp.md).                                                                                                                                                                                                                                     |
 | Array       | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)                                 | `[1, 3.2, "abc"]`      | `v.array(values)`                                                                                 | array                                                   | Arrays can have at most 8192 values.                                                                                                                                                                                                                                                                                                                   |
 | Object      | [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#objects)                                       | `{a: "abc"}`           | `v.object({property: value})`                                                                     | object                                                  | Convex only supports "plain old JavaScript objects" (objects that do not have a custom prototype). Convex includes all [enumerable properties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties). Objects can have at most 1024 entries. Field names must be nonempty and not start with "$" or "\_". |
 | Record      | [Record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)                                       | `{"a": "1", "b": "2"}` | `v.record(keys, values)`                                                                          | object                                                  | Records are objects at runtime, but can have dynamic keys. Keys must be only ASCII characters, nonempty, and not start with "$" or "\_".                                                                                                                                                                                                               |
@@ -48467,6 +48660,7 @@ Use `log.audit(params)` inside your Convex function to emit an audit log. `param
 * `log.vars.userAgent` - `User-Agent` header of client initiating the request. Note that `User-Agent` headers that are too long (over 512 bytes) may be truncated
 * `log.vars.requestId` - the request ID
 * `log.vars.now` - the timestamp of when the function was run or replayed from the cache, as milliseconds from the Unix epoch
+* `log.vars.convexActor` - information about the admin, if the function was invoked using admin auth (either directly or while acting as an end user, e.g. from the dashboard), otherwise `null`
 
 convex/getDocument.ts
 
@@ -50111,23 +50305,19 @@ This feature is currently in beta, and we'd love to improve these limitations. L
 
 ### Configuring the TypeScript compiler[​](#configuring-the-typescript-compiler "Direct link to Configuring the TypeScript compiler")
 
-By default, Convex will use the `tsc` binary installed in your project for typechecking. If you would like to use the TypeScript 7 native preview instead, you can set the `typescriptCompiler` option to `tsgo`. Note that `@typescript/native-preview` must be installed in your project to use `tsgo`.
+By default, Convex uses the `tsc` binary installed in your project for typechecking. This works with TypeScript 6 and TypeScript 7 without any additional `convex.json` configuration.
 
-Convex version requirement
-
-To use the TypeScript 7 native preview, you must use the `convex` NPM package version 1.31.1 or later.
-
-convex.json
+To use TypeScript 7, install it as your project's TypeScript version:
 
 ```
-{
-
-  "$schema": "./node_modules/convex/schemas/convex.schema.json",
-
-  "typescriptCompiler": "tsgo"
-
-}
+npm install --save-dev typescript@^7
 ```
+
+TypeScript 7.0 does not include a JavaScript API, so if other tools in your project import it, follow TypeScript's [side-by-side installation](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-60) instructions. Convex picks up TypeScript 7 in that setup too.
+
+Migrating from the TypeScript 7 preview
+
+If you previously installed `@typescript/native-preview` and set `"typescriptCompiler": "tsgo"`, replace the preview package with stable TypeScript 7 and remove the `typescriptCompiler` setting. Stable TypeScript 7 uses Convex's default `tsc` selection.
 
 ### Configuring bundler options[​](#configuring-bundler-options "Direct link to Configuring bundler options")
 
@@ -53767,23 +53957,7 @@ crons.monthly(
 
   "payment reminder",
 
-  { day: 1, hourUTC: 16, minuteUTC: 0 }, // Every month on the first day at 8:00am PST
-
-  internal.payments.sendPaymentEmail,
-
-  { email: "my_email@gmail.com" }, // argument to sendPaymentEmail
-
-);
-
-
-
-// An alternative way to create the same schedule as above with cron syntax
-
-crons.cron(
-
-  "payment reminder duplicate",
-
-  "0 16 1 * *",
+  { day: 1, hourUTC: 16 }, // Convex chooses the minute within the 16:00 UTC hour
 
   internal.payments.sendPaymentEmail,
 

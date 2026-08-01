@@ -7,7 +7,7 @@ path: langsmith/llm-gateway-rate-limit-policies
 Limit the number of requests or tokens a user, workspace, or API key can send through the LLM Gateway in a rolling time window.
 
 <Note>
-  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
 A rate limit policy restricts how many **requests** or **tokens** a subject can consume through the [LLM Gateway](/langsmith/llm-gateway) in a short rolling time window. The gateway enforces the limit in real time and blocks any request that would push the subject past it, returning a `429` response with a `Retry-After` header:
