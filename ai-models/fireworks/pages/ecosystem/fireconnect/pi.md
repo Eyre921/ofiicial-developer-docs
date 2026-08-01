@@ -12,7 +12,7 @@ Use Fireworks AI models in Pi with the FireConnect CLI
 
 * [Pi](https://pi.dev) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -35,11 +35,11 @@ Use your `fpk_...` key during `login` or with `--api-key`:
 fireconnect pi on --api-key fpk_...
 ```
 
-FireConnect detects Fire Pass keys and defaults Pi to `glm-fast-latest`.
+FireConnect detects Fire Pass keys and defaults Pi to `kimi-fast-latest`.
 
 ## Default model
 
-Pi routes a single default model. The default is `glm-fast-latest`.
+Pi routes a single default model. The default is `kimi-fast-latest`.
 
 ## What gets written
 

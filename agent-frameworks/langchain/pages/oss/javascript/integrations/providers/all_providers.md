@@ -325,6 +325,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Load runs and datasets from LangSmith.
   </Card>
 
+  <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
+    Cloud sandboxes for AI agents with fast cold starts.
+  </Card>
+
   <Card title="Soniox" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox">
     High-accuracy multilingual speech-to-text API.
   </Card>

@@ -6,7 +6,7 @@ path: fireworks-nexus/usage-limits
 
 Set per-user spending limits on serverless inference — account defaults and per-user overrides
 
-Set spending limits for individual users in your account on serverless (per-token) inference. You can apply an account-wide default cap and override it for specific users. When a user reaches their limit, their further serverless requests are blocked until the billing period resets.
+Set spending limits for individual users in your account on serverless (per-token) inference. Part of [Fireworks Nexus](/fireworks-nexus/overview) for team spend control. You can apply an account-wide default cap and override it for specific users. When a user reaches their limit, their further serverless requests are blocked until the billing period resets.
 
 <Note>
   Per-user usage limits are available on request. Reach out to your Fireworks

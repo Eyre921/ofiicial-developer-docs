@@ -12,7 +12,7 @@ Use Fireworks AI models in Claude Code with the FireConnect CLI
 
 * [Claude Code](https://claude.ai/code) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* The FireConnect CLI v0.9.0+ (see [Install](/ecosystem/fireconnect/overview#install))
+* The FireConnect CLI v0.9.1+ (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -47,20 +47,32 @@ Use your `fpk_...` key during `login` or with `--api-key`:
 fireconnect claude on --api-key fpk_...
 ```
 
-FireConnect detects Fire Pass keys and routes all model aliases to `glm-fast-latest`.
+FireConnect detects Fire Pass keys and routes all model aliases to `kimi-fast-latest`.
 
-## Default model mapping
+## Example model mapping
+
+When you run `fireconnect claude on` without model flags, FireConnect applies the mapping below. First-time setup opens an interactive model picker unless you pass `--non-interactive`. Override any slot with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, or `--subagent`.
 
 | Alias    | Standard key (`fw_...`) | Fire Pass key (`fpk_...`) |
 | -------- | ----------------------- | ------------------------- |
-| main     | `glm-fast-latest`       | `glm-fast-latest`         |
-| opus     | `glm-fast-latest`       | `glm-fast-latest`         |
-| fable    | `glm-fast-latest`       | `glm-fast-latest`         |
-| sonnet   | `kimi-fast-latest`      | `glm-fast-latest`         |
-| haiku    | `deepseek-v4-flash`     | `glm-fast-latest`         |
-| subagent | `deepseek-v4-flash`     | `glm-fast-latest`         |
+| main     | `kimi-fast-latest`      | `kimi-fast-latest`        |
+| opus     | `glm-fast-latest`       | `kimi-fast-latest`        |
+| sonnet   | `glm-fast-latest`       | `kimi-fast-latest`        |
+| haiku    | `deepseek-v4-flash`     | `kimi-fast-latest`        |
+| fable    | `kimi-fast-latest`      | `kimi-fast-latest`        |
+| subagent | `deepseek-v4-flash`     | `kimi-fast-latest`        |
 
-Short model IDs like `glm-fast-latest` are expanded to full Fireworks paths (for example, `accounts/fireworks/routers/glm-fast-latest[1m]`). FireConnect appends the `[1m]` suffix on `main`, `opus`, and `fable` so Claude Code enables 1M context. The `subagent` slot is written without `[1m]` because Claude Code forwards that value verbatim to the provider API.
+Short model IDs expand to full Fireworks paths when needed. FireConnect appends `[1m]` on slots that use 1M-context models (for example `glm-fast-latest` on `opus` and `sonnet`). The `subagent` slot never gets `[1m]` because Claude Code forwards that value verbatim to the provider API.
+
+FireConnect saves your chosen mapping per key type. Reopen the wizard anytime:
+
+```bash theme={null}
+fireconnect claude on --interactive
+```
+
+Use `--non-interactive` to skip the wizard and apply saved preferences or the example mapping above. `--interactive` cannot be combined with model flags like `--model` or `--opus`.
+
+In the wizard, toggle between **fast models** (routers on the high-speed path) and **non-fast models** (pinned model IDs that stay stable across catalog updates).
 
 ## What gets written
 
@@ -68,14 +80,14 @@ FireConnect writes these settings to `~/.claude/settings.json`. Claude Code auth
 
 ```json theme={null}
 {
+  "model": "kimi-fast-latest",
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.fireworks.ai/inference",
-    "ANTHROPIC_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "accounts/fireworks/routers/kimi-fast-latest",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "accounts/fireworks/models/deepseek-v4-flash",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "accounts/fireworks/routers/glm-fast-latest[1m]",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "accounts/fireworks/models/deepseek-v4-flash",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-fast-latest[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-fast-latest[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-fast-latest",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
     "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
   }
 }
@@ -162,7 +174,7 @@ Pair with `fireconnect claude status` for per-slot Fireworks rates and `fireconn
 
 Claude Code's cost column in the `/model` picker still uses Anthropic list prices. The [session usage](#session-usage) section above is the better place to estimate real Fireworks spend.
 
-FireConnect cannot override Claude Code's price column. For example, the default `glm-fast-latest` mapping may show Opus-tier estimates around **$5 / $25 per Mtok** while Fireworks bills at model-specific serverless rates (often much lower). Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
+FireConnect cannot override Claude Code's price column. For example, the example `kimi-fast-latest` main mapping may show Opus-tier estimates while Fireworks bills at model-specific serverless rates (often much lower). Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
 
 FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Fireworks rates for your **main** model. That text appears as the subtitle on the custom picker entry at the bottom of `/model`, not in the price column.
 
@@ -176,7 +188,7 @@ fireconnect claude usage      # Session token usage and estimated Fireworks cost
 fireconnect claude help       # Show harness-specific help
 ```
 
-Run `fireconnect claude help` for all options, including `--settings-path` (custom `settings.json` location) and `--routing-preference` when using FireRouter.
+Run `fireconnect claude help` for all options, including `--interactive`, `--settings-path` (custom `settings.json` location), and `--routing-preference` when using FireRouter.
 
 ### Switch models
 

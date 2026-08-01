@@ -20,11 +20,11 @@ This page covers turning the feature on and querying the results for Deepgram wo
 
 With detailed observability enabled, three metric sources publish to CloudWatch's OTel-compatible metric store:
 
-| Source                   | Example metrics                                                                           | Notes                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------------ | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **GPU (DCGM exporter)**  | `DCGM_FI_DEV_GPU_UTIL`, `DCGM_FI_DEV_FB_USED`, `DCGM_FI_DEV_MEM_COPY_UTIL`                | Per-GPU series. On multi-GPU instance types (for example Aura-2 deployments on `ml.g6.12xlarge`), each GPU reports separately — no more summed or averaged utilization hiding a saturated device.                                                                                                                                                                                       |
-| **Host (node exporter)** | `node_cpu_seconds_total`, `node_memory_MemTotal_bytes`, `node_disk_io_time_seconds_total` | Standard Prometheus node-exporter metrics for the instance.                                                                                                                                                                                                                                                                                                                             |
-| **Deepgram container**   | `engine_active_requests{kind="stream"}`, `engine_estimated_stream_capacity`               | The collector scrapes the container's Prometheus endpoint on port 8080 at `/metrics`. These are the same API and Engine metrics documented in the self-hosted [Metrics Guide](/docs/metrics-guide). Requires a Deepgram container version that serves this endpoint; GPU and host metrics work with every version because they are collected by AWS on the host, outside the container. |
+| Source                   | Example metrics                                                                                                           | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GPU (DCGM exporter)**  | `DCGM_FI_DEV_GPU_UTIL`, `DCGM_FI_DEV_FB_USED`, `DCGM_FI_DEV_MEM_COPY_UTIL`                                                | Per-GPU series. On multi-GPU instance types (for example Aura-2 deployments on `ml.g6.12xlarge`), each GPU reports separately — no more summed or averaged utilization hiding a saturated device.                                                                                                                                                                                                                                                                                                                                                             |
+| **Host (node exporter)** | `node_cpu_seconds_total`, `node_memory_MemTotal_bytes`, `node_disk_io_time_seconds_total`                                 | Standard Prometheus node-exporter metrics for the instance.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Deepgram container**   | `engine_active_requests{kind="stream"}`, `engine_estimated_stream_capacity`, `sagemaker_endpoint_health{state="healthy"}` | The collector scrapes the container's Prometheus endpoint on port 8080 at `/metrics`. The `api_` and `engine_` families are the same metrics documented in the self-hosted [Metrics Guide](/docs/metrics-guide). `sagemaker_endpoint_health` is specific to SageMaker deployments — see [Read health as a metric](/docs/health-checks-sagemaker#read-health-as-a-metric). Requires a Deepgram container version that serves this endpoint; GPU and host metrics work with every version because they are collected by AWS on the host, outside the container. |
 
 Every series carries SageMaker resource labels, including `aws.sagemaker.endpoint.name`, the variant name, and the instance ID, so you can filter and group across a scaled-out fleet.
 
@@ -86,6 +86,8 @@ Then filter to one endpoint. The SageMaker resource labels use OTel dotted names
 DCGM_FI_DEV_GPU_UTIL{"aws.sagemaker.endpoint.name"="YOUR_ENDPOINT_NAME"}
 ```
 
+Substituting underscores for the dots — `aws_sagemaker_endpoint_name` — is valid PromQL that matches no series. The query succeeds and returns an empty result rather than an error, which is easy to misread as the metric not being published. Always quote the dotted label name.
+
 ### Prometheus-compatible HTTP API
 
 CloudWatch exposes a standard Prometheus query API for these metrics at `https://monitoring.YOUR_AWS_REGION.amazonaws.com/api/v1/query`, authenticated with SigV4 (service name `monitoring`). Any tool that can sign requests works; for example with [awscurl](https://github.com/okigan/awscurl):
@@ -104,7 +106,18 @@ awscurl --service monitoring --region YOUR_AWS_REGION \
 
 Because the API is Prometheus-compatible, you can also point Grafana or other Prometheus-native observability tools at it. See the [AWS documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch-detailed-observability.html) for supported integrations.
 
-Detailed-observability metrics live in the OTel metric store only — they do not appear in `aws cloudwatch list-metrics` or the classic metric namespaces. Use PromQL to query them.
+* Detailed-observability metrics live in the OTel metric store only — they do not appear in `aws cloudwatch list-metrics` or the classic metric namespaces. Use PromQL to query them.
+* `/metrics` always responds, even when the container's internal API and Engine metric sources are not yet reachable. In that case it serves `sagemaker_endpoint_health` alone, so a scrape during startup returns health rather than failing.
+
+### Check endpoint health
+
+`sagemaker_endpoint_health` reports the container's own view of whether it can serve inference. Exactly one `state` reports `1`:
+
+```promql
+sagemaker_endpoint_health{state="critical"}
+```
+
+A `1` means the container cannot recover without being replaced. Query the family without a `state` filter to see the current state across a fleet and read whichever series is `1`. See [Read health as a metric](/docs/health-checks-sagemaker#read-health-as-a-metric) for what each state means.
 
 ## Related resources
 

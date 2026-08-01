@@ -248,16 +248,17 @@ Individual execution traces and spans from your LLM applications.
 
 Automated run rules that trigger actions based on run conditions.
 
-| Operation               | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
-| ----------------------- | :-------------: | :--------------: | :--------------: | ------------------- |
-| List all run rules      |        ✓        |         ✓        |         ✓        | `rules:read`        |
-| Create a run rule       |        ✓        |         ✓        |         ✗        | `rules:create`      |
-| Update a run rule       |        ✓        |         ✓        |         ✗        | `rules:update`      |
-| Delete a run rule       |        ✓        |         ✓        |         ✗        | `rules:delete`      |
-| View rule logs          |        ✓        |         ✓        |         ✓        | `rules:read`        |
-| Get last applied rule   |        ✓        |         ✓        |         ✓        | `rules:read`        |
-| Manually trigger a rule |        ✓        |         ✓        |         ✗        | `rules:update`      |
-| Trigger multiple rules  |        ✓        |         ✓        |         ✗        | `rules:update`      |
+| Operation                           | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission         |
+| ----------------------------------- | :-------------: | :--------------: | :--------------: | --------------------------- |
+| List all run rules                  |        ✓        |         ✓        |         ✓        | `rules:read`                |
+| Create a run rule                   |        ✓        |         ✓        |         ✗        | `rules:create`              |
+| Update a run rule                   |        ✓        |         ✓        |         ✗        | `rules:update`              |
+| Delete a run rule                   |        ✓        |         ✓        |         ✗        | `rules:delete`              |
+| View rule logs                      |        ✓        |         ✓        |         ✓        | `rules:read`                |
+| Get last applied rule               |        ✓        |         ✓        |         ✓        | `rules:read`                |
+| Manually trigger a rule             |        ✓        |         ✓        |         ✗        | `rules:update`              |
+| Trigger multiple rules              |        ✓        |         ✓        |         ✗        | `rules:update`              |
+| Configure per-action data retention |        ✓        |         ✗        |         ✗        | `rules:configure-retention` |
 
 ### Alerts
 

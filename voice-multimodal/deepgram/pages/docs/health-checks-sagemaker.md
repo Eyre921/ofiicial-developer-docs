@@ -43,6 +43,30 @@ SageMaker keeps polling `/ping` every few seconds. If the container reaches a st
 
 SageMaker then replaces the instance automatically. Replacement is not instantaneous: AWS requires a sustained failure signal, so a brief blip does not cycle your fleet.
 
+## Read health as a metric
+
+`/ping` is a yes/no signal consumed by SageMaker. The container also publishes the same health state as a Prometheus gauge, `sagemaker_endpoint_health`, so you can chart it and alarm on it. With [detailed observability](/docs/prometheus-otel-sagemaker) enabled, it reaches CloudWatch automatically.
+
+All four series are always present. The current state reports `1`, the rest report `0`:
+
+```
+sagemaker_endpoint_health{state="healthy"} 1
+sagemaker_endpoint_health{state="initializing"} 0
+sagemaker_endpoint_health{state="degraded"} 0
+sagemaker_endpoint_health{state="critical"} 0
+```
+
+| `state`        | Meaning                                                                                  | What to do                                                                                                                                                |
+| -------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `initializing` | Normal startup while models load. `/ping` returns `503` and SageMaker routes no traffic. | Nothing. Expect this on every new instance.                                                                                                               |
+| `healthy`      | The container is serving inference.                                                      | Nothing.                                                                                                                                                  |
+| `degraded`     | A recoverable fault. The container refuses new requests until it clears.                 | Watch it. A brief `degraded` that returns to `healthy` is self-recovery working as designed.                                                              |
+| `critical`     | The container cannot recover on its own. Only replacement clears this state.             | SageMaker replaces the instance. If it recurs, contact your [Deepgram representative](https://deepgram.com/contact-us) with the Endpoint name and Region. |
+
+Because every state is always emitted, an alarm on any one of them never reads "no data" while the container is running. A series that disappears entirely means the scrape failed — a different condition, worth alarming on separately.
+
+The container emits this gauge itself, so `/metrics` answers even when the internal API and Engine metric sources are not yet reachable — during startup, for example. In that window the response carries the health gauge alone rather than failing the scrape.
+
 ## Streaming connections use a separate check
 
 `/ping` reports instance health. Each bidirectional streaming connection has its own liveness check defined by the WebSocket protocol ([RFC 6455](https://datatracker.ietf.org/doc/html/rfc6455#section-5.5.2)): SageMaker sends a Ping frame about once a minute, the container replies with a Pong, and several consecutive unanswered Pings close that connection.
@@ -61,11 +85,13 @@ These appear in the Endpoint's CloudWatch Log Group, `/aws/sagemaker/Endpoints/Y
 
 ## When to take action
 
-| What you observe                                                              | What to do                                                                                                                                                                                         |
-| ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Endpoint stays in `Creating`, then `Failed`                                   | Check the container logs — the reason is in the container output, not the SageMaker console error. If the container was still loading when the window expired, raise the two timeout fields above. |
-| An instance was replaced once and service recovered                           | Nothing. Automatic recovery worked.                                                                                                                                                                |
-| Instances are replaced repeatedly, or `composite health check failed` appears | Contact your [Deepgram representative](https://deepgram.com/contact-us) with the Endpoint name, Region, and log excerpts.                                                                          |
+| What you observe                                                              | What to do                                                                                                                                                                                              |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Endpoint stays in `Creating`, then `Failed`                                   | Check the container logs — the reason is in the container output, not the SageMaker console error. If the container was still loading when the window expired, raise the two timeout fields above.      |
+| An instance was replaced once and service recovered                           | Nothing. Automatic recovery worked.                                                                                                                                                                     |
+| Instances are replaced repeatedly, or `composite health check failed` appears | Contact your [Deepgram representative](https://deepgram.com/contact-us) with the Endpoint name, Region, and log excerpts.                                                                               |
+| `sagemaker_endpoint_health{state="critical"}` is `1`                          | The instance will not self-recover. Let SageMaker replace it. Contact your [Deepgram representative](https://deepgram.com/contact-us) if it recurs — a restart alone will not fix the underlying fault. |
+| `sagemaker_endpoint_health{state="degraded"}` is `1` briefly, then `healthy`  | Nothing. Self-recovery worked.                                                                                                                                                                          |
 
 To catch this before your users do, alarm on `Invocation5XXErrors` — see [Configure CloudWatch alarms](/docs/observability-sagemaker#configure-cloudwatch-alarms).
 
@@ -74,6 +100,7 @@ To catch this before your users do, alarm on `Invocation5XXErrors` — see [Conf
 ## Related resources
 
 * [Observability for Amazon SageMaker](/docs/observability-sagemaker)
+* [Prometheus & OpenTelemetry Metrics](/docs/prometheus-otel-sagemaker) — how to collect `sagemaker_endpoint_health` and query it with PromQL
 * [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint)
 * [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint)
 * [Status Endpoint](/docs/self-hosted-status-endpoint) — the health states a Deepgram node reports, shared with self-hosted deployments

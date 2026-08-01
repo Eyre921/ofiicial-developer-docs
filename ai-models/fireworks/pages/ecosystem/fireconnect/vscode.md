@@ -17,7 +17,7 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 * [Visual Studio Code](https://code.visualstudio.com) with the [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) extension
 * GitHub Copilot **Pro** or **Enterprise** (the free tier only supports the Auto model)
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 

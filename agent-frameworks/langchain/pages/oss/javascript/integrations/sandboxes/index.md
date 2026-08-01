@@ -38,6 +38,14 @@ Sandboxes provide isolated execution environments for running agent-generated co
 
     <span>Modal</span>
   </a>
+
+  <a href="https://leap0.dev/docs">
+    <img alt="" />
+
+    <img alt="" />
+
+    <span>Leap0</span>
+  </a>
 </div>
 
 If you'd like to contribute a sandbox, see [Implement a sandbox integration](/oss/javascript/contributing/implement-langchain#sandboxes).

@@ -50,22 +50,23 @@ LangChain defines sensitive application data as `inputs`, `outputs`, `errors`, `
 
 Using a LangSmith-managed ClickHouse setup, **all feedback data fields are stored in ClickHouse**:
 
-| Field Name                 | Type     | Description                                                                                            |
-| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| `id`                       | UUID     | Unique identifier for the record itself                                                                |
-| `created_at`               | datetime | Timestamp when the record was created                                                                  |
-| `modified_at`              | datetime | Timestamp when the record was last modified                                                            |
-| `session_id`               | UUID     | Unique identifier for the experiment or tracing project the run was a part of                          |
-| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                  |
-| `key`                      | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                    |
-| `score`                    | number   | Numerical score associated with the feedback key                                                       |
-| `value`                    | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.               |
-| `comment`                  | string   | Any comment or annotation associated with the record. This can be a justification for the score given. |
-| `correction`               | object   | Reserved for storing correction details, if any                                                        |
-| `feedback_source`          | object   | Object containing information about the feedback source                                                |
-| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                 |
-| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                            |
-| `feedback_source.user_id`  | UUID     | Unique identifier for the user providing feedback                                                      |
+| Field Name                 | Type     | Description                                                                                                               |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `id`                       | UUID     | Unique identifier for the record itself                                                                                   |
+| `created_at`               | datetime | Timestamp when the record was created                                                                                     |
+| `modified_at`              | datetime | Timestamp when the record was last modified                                                                               |
+| `session_id`               | UUID     | Unique identifier for the experiment or tracing project the run was a part of. Required when creating feedback for a run. |
+| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                                     |
+| `start_time`               | datetime | Start time of the run the feedback is for. Optional, but providing it lets LangSmith process the feedback quicker.        |
+| `key`                      | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                                       |
+| `score`                    | number   | Numerical score associated with the feedback key                                                                          |
+| `value`                    | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.                                  |
+| `comment`                  | string   | Any comment or annotation associated with the record. This can be a justification for the score given.                    |
+| `correction`               | object   | Reserved for storing correction details, if any                                                                           |
+| `feedback_source`          | object   | Object containing information about the feedback source                                                                   |
+| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                                    |
+| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                                               |
+| `feedback_source.user_id`  | UUID     | Unique identifier for the user providing feedback                                                                         |
 
 This [reference doc](/langsmith/feedback-data-format) explains the stored feedback format, which is the LangSmith's way of representing evaluation scores and annotations on runs.
 

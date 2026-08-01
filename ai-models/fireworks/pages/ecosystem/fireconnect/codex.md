@@ -12,7 +12,7 @@ Use Fireworks AI models in OpenAI Codex CLI with the FireConnect CLI
 
 * [OpenAI Codex CLI](https://developers.openai.com/codex) installed (0.134+)
 * A standard [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`)
-* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Warning>
   Fire Pass keys (`fpk_...`) are not supported for Codex yet. The `/responses` endpoint requires a standard Fireworks API key.
@@ -35,7 +35,7 @@ After `fireconnect codex on` or `off`, `config.toml` is updated immediately. To 
 
 ## Default model
 
-Codex routes a single default model. The default is `glm-fast-latest`.
+Codex routes a single default model. The default is `kimi-fast-latest`.
 
 ```bash theme={null}
 fireconnect codex status

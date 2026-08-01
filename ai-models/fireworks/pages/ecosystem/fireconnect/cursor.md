@@ -12,7 +12,7 @@ Use Fireworks AI models in Cursor IDE with the FireConnect CLI
 
 * [Cursor](https://cursor.com) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
   **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
@@ -105,7 +105,7 @@ Use your `fpk_...` key during `login` or with `--api-key`:
 fireconnect cursor on --api-key fpk_...
 ```
 
-Fire Pass keys default to `glm-fast-latest`.
+Fire Pass keys default to `kimi-fast-latest`.
 
 ## CLI reference
 

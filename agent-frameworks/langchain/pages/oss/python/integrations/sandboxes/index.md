@@ -20,6 +20,7 @@ Sandboxes provide isolated execution environments for running agent-generated co
   | [`OpenShellSandbox`](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell) | <span><a href="https://pypi.org/project/langchain-nvidia-openshell/">  <img alt="Downloads per month" /></a></span>          |
   | [`UpstashBoxSandbox`](https://upstash.com/docs/box)                                             | <span><a href="https://pypi.org/project/langchain-upstash-box/">  <img alt="Downloads per month" /></a></span>               |
   | [`SuperserveSandbox`](https://docs.superserve.ai)                                               | <span><a href="https://pypi.org/project/langchain-superserve/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Leap0Sandbox`](https://leap0.dev/docs)                                                        | <span><a href="https://pypi.org/project/langchain-leap0/">  <img alt="Downloads per month" /></a></span>                     |
   | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith)                             | <span>N/A</span>                                                                                                             |
 </div>
 

@@ -252,6 +252,8 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os  # [!code highlight]
+
   from openai import OpenAI
   from langsmith import traceable, Client, uuid7  # [!code highlight]
   from langsmith.wrappers import wrap_openai
@@ -291,7 +293,12 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
           langsmith_extra={"run_id": run_id},  # [!code highlight]
       )  # [!code highlight]
       ls_client = Client()  # [!code highlight]
-      ls_client.create_feedback(run_id, key="user-score", score=1.0)  # [!code highlight]
+      # Feedback requires the UUID of the tracing project that owns the run  # [!code highlight]
+      project_name = os.environ.get("LANGSMITH_PROJECT", "default")  # [!code highlight]
+      session_id = ls_client.create_project(project_name=project_name, upsert=True).id  # [!code highlight]
+      ls_client.create_feedback(  # [!code highlight]
+          run_id, key="user-score", score=1.0, session_id=session_id  # [!code highlight]
+      )  # [!code highlight]
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -313,9 +320,12 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
   }
 
   let capturedRunId: string; // [!code highlight]
+  let capturedProjectName: string; // [!code highlight]
 
   const supportBot = traceable(async function supportBot(question: string): Promise<string> {
-      capturedRunId = getCurrentRunTree().id; // [!code highlight]
+      const runTree = getCurrentRunTree(); // [!code highlight]
+      capturedRunId = runTree.id; // [!code highlight]
+      capturedProjectName = runTree.project_name; // [!code highlight]
       const context = retriever(question);
       const systemMessage =
           "You are a helpful customer support agent. " +
@@ -334,14 +344,24 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
   (async () => {
       await supportBot("How many users can I have on the Starter plan?"); // [!code highlight]
       const lsClient = new Client(); // [!code highlight]
-      await lsClient.createFeedback(capturedRunId, "user-score", { score: 1.0 }); // [!code highlight]
+      // Feedback requires the UUID of the tracing project that owns the run // [!code highlight]
+      const { id: sessionId } = await lsClient.createProject({ // [!code highlight]
+          projectName: capturedProjectName, // [!code highlight]
+          upsert: true, // [!code highlight]
+      }); // [!code highlight]
+      await lsClient.createFeedback({ // [!code highlight]
+          runId: capturedRunId, // [!code highlight]
+          sessionId, // [!code highlight]
+          key: "user-score", // [!code highlight]
+          score: 1.0, // [!code highlight]
+      }); // [!code highlight]
       await lsClient.flush(); // [!code highlight]
   })();
   ```
 </CodeGroup>
 
 <Note>
-  In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your app, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace.
+  In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your app, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace. Because feedback also requires the project UUID, pass `session_id` alongside the `run_id`.
 </Note>
 
 The feedback appears in the **Feedback** tab when you inspect the run in the UI. You can then filter runs by feedback score using the filtering controls in the **Runs** table.

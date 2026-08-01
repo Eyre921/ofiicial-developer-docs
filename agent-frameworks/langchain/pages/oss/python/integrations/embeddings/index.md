@@ -278,6 +278,7 @@ In production, you would typically use a more robust persistent store, such as a
   | [`GreenNodeEmbeddings`](https://greennode.ai/)                                                         | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span>              |
   | [`Netmind`](https://github.com/protagolabs/langchain-netmind)                                          | <span><a href="https://pypi.org/project/langchain-netmind/">  <img alt="Downloads per month" /></a></span>                |
   | [`Lindorm`](https://help.aliyun.com/document_detail/174640.html)                                       | <span><a href="https://pypi.org/project/langchain-lindorm-integration/">  <img alt="Downloads per month" /></a></span>    |
+  | [`EmpirioLabsEmbeddings`](https://docs.empiriolabs.ai)                                                 | <span><a href="https://pypi.org/project/langchain-empiriolabs/">  <img alt="Downloads per month" /></a></span>            |
 </div>
 
 ***

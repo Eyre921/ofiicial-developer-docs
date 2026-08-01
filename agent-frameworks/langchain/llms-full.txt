@@ -2402,7 +2402,7 @@ Retention behavior by action:
 * **Feedback via API or SDK**: Feedback is added to any run on the trace (or any trace in the thread) through an API or SDK call that explicitly passes `extend_trace_retention=true` (`extendTraceRetention: true` in TypeScript). For more information, see [Attach user feedback](/langsmith/attach-user-feedback). The LangSmith UI sends feedback and notes without extending retention.
 * **Online evaluators**: An online evaluator scores the trace and its retention setting is enabled. Both trace-level and thread-level evaluators can opt out of this upgrade.
 * **Automation rules**: An [automation rule](/langsmith/rules#create-a-rule) with retention extension enabled matches any run within a trace.
-* **Manual annotation queue adds** (no upgrade): Manually adding runs to an [annotation queue](/langsmith/annotation-queues#assign-runs-to-a-single-run-queue) does not upgrade retention by default.
+* **Manual annotation queue adds** (no upgrade): Manually adding runs or threads to an [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) does not upgrade retention by default.
 
 This change applies to new actions only. Traces that were already upgraded by a previous action keep their extended retention.
 
@@ -8345,7 +8345,7 @@ Source: https://docs.langchain.com/langsmith/annotation-queues
 
 
 
-*Annotation queues* give human reviewers a focused workflow for attaching feedback to specific [runs](/langsmith/observability-concepts#runs). While you can always annotate [traces](/langsmith/observability-concepts#traces) inline, annotation queues let you group runs together, prescribe rubrics, and track reviewer progress.
+*Annotation queues* give human reviewers a focused workflow for attaching feedback to specific [runs](/langsmith/observability-concepts#runs) or [threads](/langsmith/observability-concepts#threads). While you can always annotate [traces](/langsmith/observability-concepts#traces) inline, annotation queues let you group runs and threads together, prescribe rubrics, and track reviewer progress. Reviewing an entire thread lets you evaluate a full multi-turn conversation, capturing quality signals that a single run cannot.
 
 <Info>
   You can also manage annotation queues and feedback configs programmatically with the SDK. Refer to [Manage feedback & annotation queues programmatically](/langsmith/annotation-queues-sdk).
@@ -8353,7 +8353,7 @@ Source: https://docs.langchain.com/langsmith/annotation-queues
 
 LangSmith supports two queue styles:
 
-* [**Single-run annotation queues**](#single-run-annotation-queues) present one run at a time and let reviewers submit any rubric feedback you configure. Single-run queues also support [assertions](/langsmith/assertions) to capture acceptance criteria for offline evaluation.
+* [**Single-run annotation queues**](#single-run-annotation-queues) present one queue item at a time, either a run or a thread, and let reviewers submit any rubric feedback you configure. For **run** items, single-run queues also support [assertions](/langsmith/assertions) to capture acceptance criteria for offline evaluation.
 * [**Pairwise annotation queues (PAQs)**](#pairwise-annotation-queues) present two runs side-by-side so reviewers can quickly decide which output is better (or if they are equivalent) against the rubric items you define.
 
 <Tip>
@@ -8362,50 +8362,56 @@ LangSmith supports two queue styles:
 
 ## Single-run annotation queues
 
-Single-run queues present one run at a time and let reviewers submit any rubric feedback you configure. They can be created directly from the **Annotation queues** section in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues).
+Single-run queues present one item at a time and let reviewers submit any rubric feedback you configure. They can be created directly from the **Annotation queues** section in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotation-queues). A queue can contain a mix of run items and thread items. A *thread item* represents an entire conversation and is reviewed against the same rubric as a run item.
+
+Run items and thread items support different capabilities:
+
+| Capability       | Run items | Thread items |
+| ---------------- | --------- | ------------ |
+| Rubric feedback  | Yes       | Yes          |
+| Reviewer notes   | Yes       | No           |
+| Assertions       | Yes       | No           |
+| Add to Dataset   | Yes       | No           |
+| Default dataset  | Yes       | No           |
+| Automation rules | Yes       | No           |
 
 ### Create a single-run queue
 
 1. Navigate to **Annotation Queues** in the left navigation.
-2. Click **+ Annotation Queue** in the top-left corner.
-
-   <img alt="Create Annotation Queue form with Basic Details, Annotation Rubric, and Feedback sections." />
+2. Click **+ Annotation Queue** in the top-left corner to open the **Create Annotation Queue** panel.
 
 #### Basic details
 
 1. Fill in the **Name** and **Description** of the queue.
-2. Optionally assign a **default dataset** to streamline exporting reviewed runs into a dataset in your LangSmith [workspace](/langsmith/administration-overview#workspaces).
+2. Optionally select an **Application**.
+3. Optionally **Select a default dataset** to streamline exporting reviewed runs into a dataset in your LangSmith [workspace](/langsmith/administration-overview#workspaces). Default datasets apply when you use **Add to Dataset** on run items; thread items do not support adding to a dataset.
 
 #### Annotation rubric
 
-1. Draft some high-level **Instructions** for your annotators, which will be shown in the sidebar on every run.
-2. Click **+ Add a feedback rubric** to add feedback keys to your annotation queue. Annotators will be presented with these feedback keys on each run.
-3. Add a description for each, as well as a short description of each category, if the feedback is categorical.
+1. Draft some high-level **Instructions** for your annotators, which will be shown in the sidebar on every item.
+2. Click **+ Add a feedback rubric** to add feedback keys to your annotation queue. Annotators will be presented with these feedback keys on each item.
+3. Add a description for each, as well as a short description of each category, if the feedback type is categorical.
 
-   <img alt="Annotation queue rubric form with instructions and desired feedback entered." />
-
-   For example, with the descriptions in the previous screenshot, reviewers will see the **Annotation Rubric** details in the right-hand pane of the UI.
-
-   <img alt="The rendered rubric for reviewers from the example instructions." />
+   Reviewers see the **Instructions** and **Feedback** details in the right-hand pane of the UI.
 
 #### Collaborator settings
 
-Set a number of reviewers or the maximum time you want to reserve the item to a collaborator. When there are multiple annotators for a run, you can choose to have the run stay in the queue until all reviewers have marked it as **Done**. The settings are as follows:
+Set a number of reviewers or the maximum time you want to reserve the item to a collaborator. When there are multiple annotators for an item, you can choose to have the item stay in the queue until all reviewers have marked it as **Done**. In these settings, "run" refers to any queue item, including thread items. The settings are as follows:
 
-* **All workspace members review each run**: When enabled, a run remains in the queue until every [workspace](/langsmith/administration-overview#workspaces) member has marked their review as **Done**.
+* **All workspace members review each run**: When enabled, an item remains in the queue until every [workspace](/langsmith/administration-overview#workspaces) member has marked their review as **Done**.
 
-* **Enable reservations on runs**: Reserving a run locks it for your review for a set amount of time. While a run is reserved, other reviewers can view it but cannot add feedback or notes. Reservations are disabled if all workspace members review each run.
+* **Enable reservations on runs**: Reserving an item locks it for your review for a set amount of time. While an item is reserved, other reviewers can view it but cannot add feedback or notes. Reservations are disabled if all workspace members review each run.
 
-  If a reviewer has viewed a run and then leaves the run without marking it **Done**, the reservation will expire after the specified **Reservation length**. The run is then released back into the queue and can be reserved by another reviewer.
+  If a reviewer has viewed an item and then leaves without marking it **Done**, the reservation will expire after the specified **Reservation length**. The item is then released back into the queue and can be reserved by another reviewer.
 
   <Note>
-    Clicking **Requeue** for a run's annotation will only move the current run to the end of the current user's queue; it won't affect the queue order of any other user. It will also release the reservation that the current user has on that run.
+    Clicking **Requeue** for an item's annotation will only move the current item to the end of the current user's queue; it won't affect the queue order of any other user. It will also release the reservation that the current user has on that item.
   </Note>
 
-* **Number of reviewers per run**: This determines the number of reviewers that must mark a run as **Done** for it to be removed from the queue.
+* **Number of reviewers per run**: This determines the number of reviewers that must mark an item as **Done** for it to be removed from the queue.
 
   * Reviewers cannot view the feedback left by other reviewers.
-  * Comments on runs are visible to all reviewers.
+  * Comments on items are visible to all reviewers.
 
   <Note>
     The **Number of reviewers per run** setting is hidden when **Use assigned reviewers** is enabled (see below).
@@ -8414,15 +8420,15 @@ Set a number of reviewers or the maximum time you want to reserve the item to a 
 * **Use assigned reviewers**: Enable this toggle to use specific workspace members instead of a count-based threshold. When enabled:
 
   * A multi-select user picker appears so you can choose specific workspace members as assigned reviewers.
-  * A run is marked **Completed** only when every assigned reviewer has submitted their review. Queue items progress through three states: **Needs Review** → **Needs Others' Review** → **Completed**.
-  * Non-assigned workspace members can still annotate runs, but their submissions do not count toward completion.
+  * An item is marked **Completed** only when every assigned reviewer has submitted their review. Queue items progress through three states: **Needs Review** → **Needs Others' Review** → **Completed**.
+  * Non-assigned workspace members can still annotate items, but their submissions do not count toward completion.
   * Any workspace member can edit the assigned reviewers list in the queue settings.
 
   <Note>
     When you add a new assigned reviewer to a queue that already has completed items, those items do not revert to pending. If you remove an assigned reviewer, any items they had not yet reviewed recalculate their completion status.
   </Note>
 
-Because of these settings, the number of runs visible to each reviewer can differ from the total queue size.
+Because of these settings, the number of items visible to each reviewer can differ from the total queue size.
 
 ### Edit a queue's settings
 
@@ -8433,26 +8439,50 @@ Because of these settings, the number of runs visible to each reviewer can diffe
 
 2. In the **Edit Annotation Queue** panel, modify any of the settings you configured during queue creation and click **Save**.
 
-### Assign runs to a single-run queue
+### Assign runs and threads to a single-run queue
 
-There are several ways to populate a single-run queue with work items:
+There are several ways to populate a single-run queue with items:
 
-* **From the Details view**: Click **Add to Annotation Queue** in the top-right corner of any trace. You can add any intermediate [run](/langsmith/observability-concepts#runs), but not the root span.
+* **From the Details view**: In a [tracing project](/langsmith/observability-concepts#projects), click into any row to open the side panel in the [Details view](/langsmith/view-traces#details-view). Click **+ Add**, then **Add to Annotation Queue** in the top-right. In the popover, under **What to add**, choose **Selected run** (the current run) or **Entire thread** (the full conversation that run belongs to).
 
-  <img alt="Trace view with the Add to Annotation Queue button highlighted at the top of the screen." />
+  You can add any intermediate [run](/langsmith/observability-concepts#runs) as a run item, but not the root run. **Entire thread** requires the run to be part of a thread (instrumented with `thread_id` / `session_id` metadata).
 
-* **From the runs table**: Select multiple runs, then click **Add to Annotation Queue** at the bottom of the page.
+  <img alt="Add to Annotation Queue popover with What to add tabs for Selected run and Entire thread, and a queue picker." />
+
+  <img alt="Add to Annotation Queue popover with What to add tabs for Selected run and Entire thread, and a queue picker." />
+
+  <Note>
+    If the **Entire thread** option is unavailable or the **Threads** tab is empty, the runs are not instrumented with `thread_id` / `session_id` metadata.
+  </Note>
+
+* **From the Traces or Runs tab**: In a tracing project, select either the **Traces** or **Runs** tab. Use the row checkboxes to select one or more items. Click **Add to Annotation Queue** at the bottom of the page. Use **What to add** to enqueue each selection as a **Selected run** or as its **Entire thread**.
 
   <img alt="View of the runs table with runs selected. Add to Annotation Queue button at the bottom of the page." />
 
-* **Automation rules**: [Set up a rule](/langsmith/rules) to automatically assign runs that match a filter (for example, errors or low user scores) into a queue.
+  <img alt="View of the runs table with runs selected. Add to Annotation Queue button at the bottom of the page." />
 
-* **Datasets & experiments**: Select one or more [experiments](/langsmith/evaluation-concepts#experiment) within a dataset and click **<Icon icon="pencil" /> Annotate**. Choose an existing queue or create a new one, then confirm the (single-run) queue option.
+* **From the Threads tab**: In a tracing project, select the **Threads** tab. Use the row checkboxes to select one or more items. Click **Add to Annotation Queue** at the bottom of the page. Selected threads are added as thread items.
+
+  <img alt="Threads tab with selected threads and the Add to Annotation Queue bulk action." />
+
+  <img alt="Threads tab with selected threads and the Add to Annotation Queue bulk action." />
+
+* **Automation rules**: [Set up a rule](/langsmith/rules) to automatically assign **runs** that match a filter (for example, errors or low user scores) into a queue.
+
+  <Note>
+    Automation rules enqueue run items only. They do not add entire threads as thread items.
+  </Note>
+
+* **Datasets & Experiments**: Select one or more [experiments](/langsmith/evaluation-concepts#experiment) within a dataset and click **<Icon icon="pencil" /> Annotate**. Select **Add to Annotation Queue**, then choose an existing queue or create a new one. Experiment annotate flows add run items.
+
+  <img alt="Selected experiments with the Annotate button at the bottom of the page." />
 
   <img alt="Selected experiments with the Annotate button at the bottom of the page." />
 
 <Note>
-  Manually adding runs to an annotation queue does not change trace retention by default. The trace keeps the retention configured for its project unless another action explicitly extends retention. For the full retention model, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
+  You can add at most **100** runs or threads to an annotation queue in a single action. To enqueue more, repeat the add flow in batches of 100 or fewer.
+
+  Manually adding runs or threads to an annotation queue does not change trace retention by default. The trace keeps the retention configured for its project unless another action explicitly extends retention. For the full retention model, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
 </Note>
 
 ### Review a single-run queue
@@ -8461,21 +8491,32 @@ There are several ways to populate a single-run queue with work items:
 
    The queue list includes an **Assigned Reviewers** column showing which reviewers are assigned to each queue. To see only queues assigned to you, click the **Assigned to me** filter at the top of the list.
 
-2. Click on the queue you want to review. This will take you to a focused, cyclical view of the runs in the queue that require review. A left side panel shows the status of each run (**Needs Review**, **Needs Others' Review**, **Completed**).
+2. Click on the queue you want to review. This will take you to a focused, cyclical view of the items in the queue that require review. A left side panel lists queue items (runs and threads) and shows the status of each (**Needs Review**, **Needs Others' Review**, **Completed**). Use **View all items** to open the full queue list.
 
-3. Add **Reviewer Notes**, score [**Feedback**](/langsmith/observability-concepts#feedback) criteria, or mark the run as reviewed. To build a dataset, edit the run's input and output to create a corrected reference example and click **Add to Dataset**. Click **Delete** to remove the run from the queue for all users, regardless of any current reservations or queue settings.
+3. Review the current item:
 
-   Instead of crafting a corrected reference output by hand, you can [write assertions](/langsmith/assertions) directly in the review side panel and save them as the example's expected output.
+   * **Run items**: Inspect inputs and outputs in the center pane. Add **Reviewer Notes**, score [**Feedback**](/langsmith/observability-concepts#feedback) criteria, or mark the item as reviewed. To build a dataset, edit the run's input and output to create a corrected reference example and click **Add to Dataset**. Instead of crafting a corrected reference output by hand, you can [write **Assertions**](/langsmith/assertions) directly in the review side panel and save them as the example's expected output.
+   * **Thread items**: The center pane shows the conversation transcript for that thread. Read the transcript and score the same rubric **Feedback** keys. Use **View item** to open the thread in the conversation peek.
+
+   Click **Delete** to remove the item from the queue for all users, regardless of any current reservations or queue settings.
+
+   <Note>
+     Thread items support rubric feedback only. See the [capability table](#single-run-annotation-queues) for what differs between run and thread items.
+   </Note>
+
+   <img alt="Annotation queue reviewing a thread item with the conversation transcript and rubric feedback pane." />
+
+   <img alt="Annotation queue reviewing a thread item with the conversation transcript and rubric feedback pane." />
 
    Feedback and notes submitted while reviewing an annotation queue do not change the trace's [retention tier](/langsmith/usage-and-billing#data-retention-auto-upgrades).
 
    <Tip>
-     The keyboard shortcuts that are next to each option can help streamline the review process.
+     Use the keyboard shortcuts next to each option to review items faster.
    </Tip>
 
 ## Pairwise annotation queues
 
-Pairwise annotation queues (PAQs) present two runs side-by-side so reviewers can quickly decide which output is better (or if they are equivalent) against the rubric items you define. They are designed for fast A/B comparisons between two experiments (often a baseline vs. a candidate model) and must be created from the **Datasets & Experiments** pages.
+Pairwise annotation queues (PAQs) present two runs side-by-side so reviewers can quickly decide which output is better (or if they are equivalent) against the rubric items you define. They are designed for fast A/B comparisons between two experiments (often a baseline vs. a candidate model) and must be created from the **Datasets & Experiments** pages. Pairwise queues use run comparisons only; they do not enqueue thread items.
 
 ### Create a pairwise queue
 
@@ -9587,7 +9628,7 @@ Use assertions when:
 * You want to capture acceptance criteria in plain English without leaving the review flow.
 
 <Note>
-  Assertions are available on [single-run annotation queues](/langsmith/annotation-queues#single-run-annotation-queues). [Pairwise queues](/langsmith/annotation-queues#pairwise-annotation-queues) are unchanged. Assertions are available in the LangSmith UI only.
+  Assertions are available on **run** items in [single-run annotation queues](/langsmith/annotation-queues#single-run-annotation-queues). They are not available on [thread](/langsmith/observability-concepts#threads) items or [pairwise queues](/langsmith/annotation-queues#pairwise-annotation-queues). Assertions are available in the LangSmith UI only.
 </Note>
 
 <Tip>
@@ -9859,11 +9900,15 @@ The following example creates a trace with two child runs, then logs feedback ag
       trace_id = root_run.id
       child_runs = root_run.child_runs
 
+  # Resolve the UUID of the project that owns the trace
+  session_id = client.create_project(project_name=root_run.session_name, upsert=True).id
+
   # Provide feedback for a trace (a.k.a. a root run)
   client.create_feedback(
       key="user_feedback",
       score=1,
       trace_id=trace_id,
+      session_id=session_id,
       comment="the user said that ..."
   )
 
@@ -9876,6 +9921,7 @@ The following example creates a trace with two child runs, then logs feedback ag
       # trace_id= is optional but recommended to enable batched and backgrounded
       # feedback ingestion.
       trace_id=trace_id,
+      session_id=session_id,
   )
   ```
 
@@ -9886,14 +9932,16 @@ The following example creates a trace with two child runs, then logs feedback ag
       // ... Run your application and get the run_id...
       // This information can be the result of a user-facing feedback form
 
-  await client.createFeedback(
+  // Resolve the UUID of the project that owns the trace
+  const { id: sessionId } = await client.createProject({ projectName: "default", upsert: true });
+
+  await client.createFeedback({
       runId,
-      "feedback-key",
-      {
-          score: 1.0,
-          comment: "comment",
-      }
-  );
+      sessionId,
+      key: "feedback-key",
+      score: 1.0,
+      comment: "comment",
+  });
   ```
 </CodeGroup>
 
@@ -17207,7 +17255,8 @@ for example_with_runs in results["examples_with_runs"]:
                 client.create_feedback(
                     run_id=run.id,
                     key=WEIGHTED_FEEDBACK_NAME,
-                    score=float(score)
+                    score=float(score),
+                    session_id=run.session_id,
                 )
 ```
 
@@ -26456,10 +26505,7 @@ fleet:
     # Organization ID where OAuth providers are configured
     providerOrgId: "<your-org-id>"
     # Add provider IDs for integrations you want to enable.
-    # Slack requires additional configuration.
     slackOAuthProvider: "<provider-id>"
-    slackSigningSecret: "<signing-secret>"
-    slackBotId: "<bot-id>"
     googleOAuthProvider: "<provider-id>"
     linkedinOAuthProvider: "<provider-id>"
     linearOAuthProvider: "<provider-id>"
@@ -26798,104 +26844,9 @@ fleet:
   </Accordion>
 
   <Accordion title="Slack OAuth provider">
-    To enable Slack OAuth for Fleet, create a Slack app and configure it with the required scopes, credentials, and event subscriptions.
+    One Slack OAuth provider powers both Slack tools and the Slack apps you add to individual agents, so Slack setup lives with the rest of the Slack integration.
 
-    <Steps>
-      <Step title="Create a Slack app">
-        Go to [api.slack.com/apps](https://api.slack.com/apps) and click **Create New App**.
-      </Step>
-
-      <Step title="Add scopes">
-        In **OAuth & Permissions**, add the following scopes:
-
-        * `channels:history`
-        * `channels:read`
-        * `chat:write`
-        * `groups:history`
-        * `groups:read`
-        * `im:history`
-        * `im:read`
-        * `im:write`
-        * `mpim:history`
-        * `team:read`
-        * `users:read`
-        * `users:read.email`
-      </Step>
-
-      <Step title="Copy credentials from Slack">
-        Copy the **Client ID**, **Client Secret**, and **Signing Secret** from the Slack app settings.
-      </Step>
-
-      <Step title="Configure OAuth provider in LangSmith">
-        In LangSmith, go to **Settings > OAuth Providers** and add a new provider:
-
-        * **Client ID**: from Slack app
-        * **Client Secret**: from Slack app
-        * **Authorization URL**: `https://slack.com/oauth/v2/authorize`
-        * **Token URL**: `https://slack.com/api/oauth.v2.access`
-        * **Provider ID**: Unique string, for example: `slack`
-      </Step>
-
-      <Step title="Add redirect URI to Slack">
-        Add the following redirect URI to your Slack app under **OAuth & Permissions > Redirect URLs**, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID (for example, `slack`):
-
-        ```
-        https://<hostname>/host-oauth-callback/<provider-id>
-        ```
-      </Step>
-
-      <Step title="Get the bot ID">
-        1. Get the bot token from **OAuth & Permissions** in your Slack app.
-        2. Run the following command:
-
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        curl -X POST https://slack.com/api/auth.test \
-          -H "Authorization: Bearer <bot-token>"
-        ```
-
-        3. Copy the `bot_id` from the response.
-      </Step>
-
-      <Step title="Apply the changes">
-        Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts) and deploy:
-
-        ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        fleet:
-          oauth:
-            providerOrgId: "<your-org-id>"
-            slackOAuthProvider: "<provider-id>"
-            slackSigningSecret: "<signing-secret>"
-            slackBotId: "<bot-id>"
-        ```
-
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-        ```
-      </Step>
-
-      <Step title="Enable event subscriptions">
-        1. After deployment, go to **Event Subscriptions** in your Slack app and enable events.
-
-        2. Set the **Request URL** to:
-
-           ```
-           https://<hostname>/v1/triggers/webhooks/d809e66e-0000-4000-8000-000000000002
-           ```
-
-           The UUID is a fixed LangSmith identifier — do not replace it.
-
-        3. Add the following bot events:
-           * `message.channels`
-           * `message.groups`
-           * `message.im`
-           * `message.mpim`
-      </Step>
-
-      <Step title="Set up triggers and tools">
-        1. Add the Slack bot to the channel you want it to read from.
-        2. When configuring the Slack tool or trigger in Fleet, provide the **channel ID** and **channel name**.
-      </Step>
-    </Steps>
+    For the full walkthrough, see [Set up Slack on Self-hosted](/langsmith/fleet/slack-app#set-up-slack-on-self-hosted). It covers creating the Slack app, adding bot scopes, registering the provider, setting the redirect URI, and configuring Helm values.
   </Accordion>
 </AccordionGroup>
 
@@ -41251,22 +41202,23 @@ Source: https://docs.langchain.com/langsmith/feedback-data-format
 
 Feedback is stored in a simple format with the following fields:
 
-| Field Name                 | Type     | Description                                                                                            |
-| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| `id`                       | UUID     | Unique identifier for the record itself                                                                |
-| `created_at`               | datetime | Timestamp when the record was created                                                                  |
-| `modified_at`              | datetime | Timestamp when the record was last modified                                                            |
-| `session_id`               | UUID     | Unique identifier for the experiment or tracing project the run was a part of                          |
-| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                  |
-| `key`                      | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                    |
-| `score`                    | number   | Numerical score associated with the feedback key                                                       |
-| `value`                    | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.               |
-| `comment`                  | string   | Any comment or annotation associated with the record. This can be a justification for the score given. |
-| `correction`               | object   | Reserved for storing correction details, if any                                                        |
-| `feedback_source`          | object   | Object containing information about the feedback source                                                |
-| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                 |
-| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                            |
-| `feedback_source.user_id`  | UUID     | Unique identifier for the user providing feedback                                                      |
+| Field Name                 | Type     | Description                                                                                                               |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `id`                       | UUID     | Unique identifier for the record itself                                                                                   |
+| `created_at`               | datetime | Timestamp when the record was created                                                                                     |
+| `modified_at`              | datetime | Timestamp when the record was last modified                                                                               |
+| `session_id`               | UUID     | Unique identifier for the experiment or tracing project the run was a part of. Required when creating feedback for a run. |
+| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                                     |
+| `start_time`               | datetime | Start time of the run the feedback is for. Optional, but providing it lets LangSmith process the feedback quicker.        |
+| `key`                      | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                                       |
+| `score`                    | number   | Numerical score associated with the feedback key                                                                          |
+| `value`                    | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.                                  |
+| `comment`                  | string   | Any comment or annotation associated with the record. This can be a justification for the score given.                    |
+| `correction`               | object   | Reserved for storing correction details, if any                                                                           |
+| `feedback_source`          | object   | Object containing information about the feedback source                                                                   |
+| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                                    |
+| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                                               |
+| `feedback_source.user_id`  | UUID     | Unique identifier for the user providing feedback                                                                         |
 
 Here is an example JSON representation of a feedback record in the above format:
 
@@ -44890,22 +44842,41 @@ web-research/
 # Integrate Slack with an agent
 Source: https://docs.langchain.com/langsmith/fleet/slack-app
 
-Connect LangSmith Fleet to your Slack workspace to let your agents communicate with users in Slack.
+Connect LangSmith Fleet to your Slack workspace so your agents work as Slack bots your team can tag directly.
 
-With LangSmith Fleet, you can add an agent to your Slack workspace so your team can work with it directly in Slack.
+Fleet turns any agent into a Slack teammate your team can tag in a channel or message directly. The bot is the agent, not a relay in front of it: it runs with the agent's own instructions, tools, and permissions. Every agent can have its own Slack app, so a single Slack workspace can run as many Slack bots as you have agents: one triaging support, one watching the on-call rotation, one digging through research.
 
-After you add an agent to Slack, it can:
+## Choose a setup path
 
-* Receive messages from Slack and start a run with the message content.
-* Reply in your Slack workspace after processing a message.
-* Read thread messages and conversation history for context.
-* Read file attachments included in Slack messages.
+<CardGroup>
+  <Card title="LangSmith Cloud" icon="cloud" href="#set-up-slack-on-langsmith-cloud">
+    Connect Slack once, then add a Slack app to any agent in one click.
+  </Card>
 
-Fleet maps each agent to a single Slack app, so users experience the Slack bot as your agent deployed in Slack rather than a separate service that relays messages.
+  <Card title="Self-hosted" icon="server" href="#set-up-slack-on-self-hosted">
+    Configure a Slack OAuth provider, then create a custom Slack app per agent.
+  </Card>
+</CardGroup>
+
+After setup, see:
+
+* [Use your agent in Slack](#use-your-agent-in-slack): Invite the bot to a channel, tag it, and respond to approvals.
+* [Add Slack tools](#add-slack-tools): Let an agent post to Slack no matter how it was triggered.
+* [Troubleshooting](#troubleshooting): Fix a bot that does not respond or refuses a mention.
+
+## What an agent can do in Slack
+
+Once connected, the agent can:
+
+* Start a run from a mention in a channel, a direct message, or a group direct message.
+* Reply in the thread it was mentioned in.
+* Read thread and channel history for context.
+* Read file attachments on the messages it receives.
+* Pause on a sensitive tool and collect your approval in Slack.
+
+Each agent maps to exactly one Slack app.
 
 <Warning>
-  Disclaimer:
-
   **AI-generated content**: All responses from agents in Slack are generated by AI and may contain errors or inaccuracies. Always verify important information.
 </Warning>
 
@@ -44915,39 +44886,203 @@ Fleet maps each agent to a single Slack app, so users experience the Slack bot a
   For current pricing information, see the [LangSmith pricing page](https://www.langchain.com/pricing).
 </Info>
 
-## Add your agent to Slack
+## Set up Slack on LangSmith Cloud
 
-After you authenticate with Slack once, you can add any agent to Slack in one click. Fleet creates a Slack app for the agent and configures it with the agent's name, description, and icon.
-
-<Note>
-  One-click Slack setup is available on LangSmith Cloud. On [Self-hosted](/langsmith/deploy-self-hosted-full-platform#enable-fleet-insights-and-chat), create and link a custom Slack app manually instead. See [Connect a custom Slack app (Self-hosted)](#connect-a-custom-slack-app-self-hosted).
-</Note>
+On LangSmith Cloud, Fleet creates and installs each agent's Slack app for you. Connect Slack once, then add a Slack app to any agent in one click.
 
 ### Prerequisites
 
-* An existing agent in Fleet (see [Quickstart](/langsmith/fleet/quickstart) to create one).
+* An existing agent in Fleet. See [Quickstart](/langsmith/fleet/quickstart) to create one.
 * A Slack workspace where you can install apps.
 
-### Connect Slack
+### Step 1. Connect the Fleet Slack manager
+
+The Fleet Slack app acts as a manager for your workspace. A single connection grants two things:
+
+* **Slack tool access**: The bot scopes an agent needs to post messages, read channel and thread history, and send direct messages.
+* **App management**: The scopes that let Fleet create a dedicated Slack app for an agent and install it in your workspace on your behalf, which is what makes one-click deploy possible.
+
+To connect, open the **Integrations** page in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app), search for **Slack**, and click **Connect** on the Slack card. Fleet also runs this connection inline the first time you add a Slack app to an agent, so you can skip ahead to [Step 2](#step-2-add-a-slack-app-to-an-agent) and authorize when prompted.
+
+<Note>
+  The first time someone in your workspace connects, Slack may route the request to a Slack workspace admin. When the admin reviews it, they can either:
+
+  * **Allow Fleet to install apps**: Anyone in the workspace can then create a Slack agent from Fleet without another approval.
+  * **Require approval for each app**: Every Slack agent that Fleet creates needs a separate admin approval before it installs.
+
+  If your workspace requires per-app approval, follow [Add an app that needs admin approval](#add-an-app-that-needs-admin-approval).
+</Note>
+
+### Step 2. Add a Slack app to an agent
 
 <Steps>
-  <Step title="Open the Channels drawer">
-    Open your agent, then in the sidebar expand the **Channels** drawer.
+  <Step title="Add Slack to the agent">
+    In [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-slack-app), select your agent and open its configuration sidebar. Expand the **Channels** drawer and select **Slack**. Click **Add to Slack**. If you have not connected Slack yet, Fleet runs the [manager authorization](#step-1-connect-the-fleet-slack-manager) first.
+
+    (Optional) Expand **Advanced** and enable **Allow bot triggers** to let messages from other Slack bots start a run.
   </Step>
 
-  <Step title="Connect Slack">
-    1. Click **Connect your first channel**, then select **Slack**.
-    2. The first time you connect, authenticate with Slack and authorize Fleet. After that, adding an agent to Slack takes one click.
-  </Step>
+  <Step title="Confirm the install">
+    Fleet creates a Slack app named after your agent, using its description and icon, and installs it in your workspace. The bot then sends you a direct message with tips for inviting it to channels and mentioning it.
 
-  <Step title="Confirm the Slack app">
-    Fleet creates a Slack app named after your agent and links it to the agent. Each agent maps to one Slack app, and each Slack app links to one agent.
+    To confirm the app is connected, expand the **Channels** drawer in the agent's configuration sidebar. A live Slack channel shows an **Active** status.
   </Step>
 </Steps>
 
+### Add an app that needs admin approval
+
+If your Slack workspace requires an admin to approve each app, Fleet saves the new app as a draft instead of installing it. Completing setup takes two rounds:
+
+1. Click **Finish setup** on the pending Slack row. Slack opens a window where you click **Request** to send the app to your workspace admin.
+2. After the admin approves it, return to Fleet and click **Finish setup** again. Fleet installs the app and activates the channel.
+
+## Set up Slack on Self-hosted
+
+Self-hosted deployments do not use the Fleet Slack manager. Instead, configure a Slack OAuth provider once for the instance, then create a custom Slack app for each agent from a manifest that Fleet generates.
+
+### Step 1. Set up the Slack OAuth provider
+
+Every self-hosted instance needs this one-time setup before agents can use Slack. It enables [Slack tools](#add-slack-tools) for your agents and turns on the Slack channel, which is what lets you add custom apps in Step 2.
+
+<Steps>
+  <Step title="Configure Helm">
+    Choose a provider ID, for example `slack-oauth-provider`. Add it to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), along with the organization that holds your OAuth providers, and deploy:
+
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    fleet:
+      oauth:
+        # Organization ID where OAuth providers are configured
+        providerOrgId: "<your-org-id>"
+        slackOAuthProvider: "<provider-id>"
+    ```
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+    ```
+
+    Confirm the Fleet pods restart. The provider ID is only a name at this point. The remaining steps create the provider it refers to.
+  </Step>
+
+  <Step title="Create a Slack app for the provider">
+    Go to [api.slack.com/apps](https://api.slack.com/apps) and click **Create New App**.
+  </Step>
+
+  <Step title="Add bot scopes">
+    In **OAuth & Permissions**, add the following bot token scopes:
+
+    * `channels:history`
+    * `channels:read`
+    * `chat:write`
+    * `files:write`
+    * `groups:history`
+    * `groups:read`
+    * `im:history`
+    * `im:read`
+    * `im:write`
+    * `mpim:history`
+    * `mpim:read`
+    * `team:read`
+    * `users:read`
+    * `users:read.email`
+  </Step>
+
+  <Step title="Register the provider in LangSmith">
+    Copy the **Client ID** and **Client Secret** from **Basic Information** in your Slack app. In LangSmith, go to **Settings > OAuth Providers** and add a provider:
+
+    * **Provider ID**: The ID you set as `slackOAuthProvider`.
+    * **Client ID**: From the Slack app.
+    * **Client Secret**: From the Slack app.
+    * **Authorization URL**: `https://slack.com/oauth/v2/authorize`
+    * **Token URL**: `https://slack.com/api/oauth.v2.access`
+
+    Register it in the organization you set as `providerOrgId`. Fleet resolves the provider from that organization, so a provider registered elsewhere fails with an unknown provider error.
+  </Step>
+
+  <Step title="Add the redirect URI to Slack">
+    In the Slack app, go to **OAuth & Permissions > Redirect URLs** and add the following, replacing `<hostname>` with your LangSmith hostname and `<provider-id>` with your provider ID:
+
+    ```
+    https://<hostname>/host-oauth-callback/<provider-id>
+    ```
+  </Step>
+</Steps>
+
+Until `slackOAuthProvider` is set, Fleet does not register the Slack trigger, **Add Slack App** stays disabled, and the Slack channel does not appear on agents.
+
 <Note>
-  When your agent is first added to a Slack workspace, it sends you a direct message with tips for inviting it to channels and mentioning it.
+  Each custom Slack app in [Step 2](#step-2-create-a-custom-slack-app) gets its own OAuth provider, which the wizard registers from the credentials you paste. That is why Step 2 asks for a separate client ID, client secret, and signing secret.
 </Note>
+
+### Step 2. Create a custom Slack app
+
+Start this flow from the agent you want the bot to run, so Fleet links the app for you when you finish.
+
+<Steps>
+  <Step title="Open the Slack setup dialog">
+    Select your agent and open its configuration sidebar. Expand the **Channels** drawer and select **Slack**.
+
+    You can also start from the **Integrations** page: select **Slack & Teams** in the left navigation, then in the **Slack Apps** section click **Add Slack App**.
+  </Step>
+
+  <Step title="Create the app in Slack">
+    1. Enter a name for the bot.
+    2. Click **Create Slack App**. Fleet opens the Slack API site with a prefilled app manifest.
+    3. Choose the workspace where you want to install the bot.
+
+    <Warning>
+      Do not create the Slack app outside this flow. The generated manifest sets the event subscription URL, interactivity URL, OAuth redirect URL, and scopes that Fleet needs. An app created by hand does not receive events.
+    </Warning>
+  </Step>
+
+  <Step title="Enter your app credentials">
+    Back in Fleet, click **Continue To Credentials** and copy the following values from your new Slack app:
+
+    * **App ID**: From **Basic Information**.
+    * **Client ID**: From **Basic Information > App Credentials**.
+    * **Client secret**: From **Basic Information > App Credentials**. Click **Show** in Slack and copy the whole value.
+    * **Signing secret**: From **Basic Information > App Credentials**. Click **Show** in Slack and copy the whole value.
+
+    (Optional) Enable **Allow bot triggers** to let messages from other Slack bots start a run.
+
+    Click **Save Credentials**.
+  </Step>
+
+  <Step title="Connect OAuth">
+    1. Click **Connect OAuth**. Slack opens an authorization window.
+    2. Click **Allow** to install the app in your workspace.
+
+    **Slack apps that need admin approval**: If Slack shows **Request** instead of **Allow**, your workspace requires admin approval:
+
+    1. In the Slack window, click **Request** to send the install request to your admin. This is what actually notifies the admin.
+    2. Back in Fleet, click **Save & Request Approval**. Despite its name, this button only saves the app as a draft so you can resume once the admin approves.
+
+    See [Finish a draft Slack app](#finish-a-draft-slack-app).
+  </Step>
+
+  <Step title="Finish setup">
+    Click **Finish**. If you started from an agent, Fleet links the app to that agent. If you started from the **Integrations** page, choose an agent from the dropdown, or click **Finish Without Agent** to link one later.
+  </Step>
+</Steps>
+
+### Finish a draft Slack app
+
+Clicking **Save & Request Approval** saves the app as a draft, so you keep your progress while a Slack admin reviews the install request. The draft appears under **Pending Slack admin approval** in the **Slack Apps** section.
+
+After your admin approves the app:
+
+1. On the **Integrations** page, select **Slack & Teams** in the left navigation to open the **Slack Apps** section.
+2. Click **Resume Setup** on the draft.
+3. Re-enter the **Client secret** and **Signing secret**. Fleet does not store secrets on a draft, so copy them from Slack again.
+4. Click **Save Credentials**, then **Connect OAuth**, then **Allow** in Slack.
+5. Select the agent to link the app to, then click **Finish**.
+
+<Note>
+  Each agent can have only one Slack app, and each Slack app can be linked to only one agent.
+</Note>
+
+## Use your agent in Slack
+
+Once the app is installed, invite the agent to a channel, tag it to start a run, and respond to approval requests without leaving Slack.
 
 ### Invite the agent to a channel
 
@@ -44955,13 +45090,15 @@ After you authenticate with Slack once, you can add any agent to Slack in one cl
 2. Type `/invite @YourAgentName` to invite it.
 3. Mention the agent with `@YourAgentName` to start a run. The agent replies in a thread.
 
-## Approve or deny actions in Slack
+You can also send the bot a direct message or add it to a group direct message.
+
+### Approve or deny actions in Slack
 
 When an agent pauses on a tool that requires approval, it raises the request directly in Slack. The message names the tool and the action, with **Approve** and **Deny** buttons, so you can respond without leaving Slack.
 
-For more information on approvals, see [Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop).
+For more information, see [Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop).
 
-## Error messages in Slack
+### Error messages in Slack
 
 If an agent encounters an error during a run, it replies in the Slack thread instead of going silent. For some error types, such as authentication errors, the reply includes more detail so you can resolve the issue.
 
@@ -44991,86 +45128,28 @@ To add Slack tools:
   Set each tool to **Auto** to run it without approval, or **Ask** to require approval before it runs. For more information, see [Human-in-the-loop](/langsmith/fleet/essentials#human-in-the-loop).
 </Note>
 
-## Connect a custom Slack app (Self-hosted)
-
-On Self-hosted, one-click Slack setup is not available. Instead, create and link a custom Slack app manually from the **Integrations** page by copying your Slack app credentials into Fleet.
-
-### Create the Slack app
-
-<Steps>
-  <Step title="Create a new Slack app">
-    1. Navigate to the **Integrations** page in Fleet and go to the **Apps** section.
-    2. Click **Add Slack App**.
-    3. Enter a name for the bot.
-    4. Click **Create Slack App**. You will be redirected to the Slack API site with a popup asking you to pick a workspace.
-
-    <Warning>
-      Do not create a separate Slack app outside of this flow. The app must be created through this popup.
-    </Warning>
-  </Step>
-
-  <Step title="Select your workspace">
-    1. Choose the workspace where you want to install the bot.
-    2. Click **Next**.
-    3. Click **Create Bot**.
-  </Step>
-
-  <Step title="Enter your app credentials">
-    After creating the bot, you will receive your app credentials. Enter the following credentials in Fleet:
-
-    * App ID
-    * Client ID
-    * Client secret
-    * Signing secret
-
-    <Note>
-      Copy the full client secret and signing secret carefully to ensure a successful connection.
-    </Note>
-  </Step>
-
-  <Step title="Connect OAuth">
-    1. Click **Connect OAuth**.
-    2. Click **Allow** to give Fleet access to your app.
-  </Step>
-
-  <Step title="Finish setup">
-    Link your Slack bot to an existing agent, or click **Finish** to link later.
-  </Step>
-</Steps>
-
-### Link the custom app to an agent
-
-You can link a custom Slack app to an agent from the **Integrations** page or from the agent sidebar. Each agent can only have one Slack app, and each Slack app can only be linked to one agent.
-
-<Tabs>
-  <Tab title="From the Integrations page">
-    1. Navigate to the **Slack Apps** section on the **Integrations** page in Fleet.
-    2. Select the app you want to link.
-    3. From the dropdown menu, choose the agent you want to link to.
-    4. Verify that **\<Agent Name>** appears next to the app name.
-  </Tab>
-
-  <Tab title="From the agent sidebar">
-    1. Open your agent from **My Agents** in the left-hand navigation.
-    2. In the sidebar, expand the **Channels** drawer.
-    3. Select **Slack**.
-    4. From the dropdown menu, select the Slack app you want to link.
-  </Tab>
-</Tabs>
-
 ## Troubleshooting
 
 ### Agent does not respond
 
-If your agent is not responding, you can try the following:
+If your agent is not responding, try the following:
 
 * Check the thread in the Fleet UI for errors.
 * Verify the agent was invited to the channel.
-* Try deleting the Slack app in the **Channels** drawer, then going through [setup](#add-your-agent-to-slack) again.
+* Confirm the Slack channel is not paused in the **Channels** drawer.
+* Delete the Slack app in the **Channels** drawer, then set it up again.
 
 ### Not allowed to tag the bot
 
-If you receive a private message saying you are not allowed to tag the bot, your Slack ID is not authorized for that agent. The agent's owner needs to share the agent with you, either by sharing run access with the whole workspace or with you individually.
+If you receive a private message saying you are not allowed to tag the bot, your Slack ID is not authorized for that agent. The agent's owner needs to [share the agent](/langsmith/fleet/manage-agent-settings#change-access-to-the-agent) with you, either by sharing run access with the whole LangSmith workspace or with you individually.
+
+### Slack app stays pending approval
+
+A Slack row that stays in the pending state is waiting on a Slack admin. Ask an admin to approve the app in Slack, then click **Finish setup** again. See [Add an app that needs admin approval](#add-an-app-that-needs-admin-approval).
+
+### Add Slack App is disabled
+
+On Self-hosted, the **Add Slack App** button in the **Slack Apps** section is disabled until `fleet.oauth.slackOAuthProvider` is set. See [Set up the Slack OAuth provider](#step-1-set-up-the-slack-oauth-provider).
 
 ## Next steps
 
@@ -50660,22 +50739,23 @@ LangChain defines sensitive application data as `inputs`, `outputs`, `errors`, `
 
 Using a LangSmith-managed ClickHouse setup, **all feedback data fields are stored in ClickHouse**:
 
-| Field Name                 | Type     | Description                                                                                            |
-| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| `id`                       | UUID     | Unique identifier for the record itself                                                                |
-| `created_at`               | datetime | Timestamp when the record was created                                                                  |
-| `modified_at`              | datetime | Timestamp when the record was last modified                                                            |
-| `session_id`               | UUID     | Unique identifier for the experiment or tracing project the run was a part of                          |
-| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                  |
-| `key`                      | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                    |
-| `score`                    | number   | Numerical score associated with the feedback key                                                       |
-| `value`                    | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.               |
-| `comment`                  | string   | Any comment or annotation associated with the record. This can be a justification for the score given. |
-| `correction`               | object   | Reserved for storing correction details, if any                                                        |
-| `feedback_source`          | object   | Object containing information about the feedback source                                                |
-| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                 |
-| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                            |
-| `feedback_source.user_id`  | UUID     | Unique identifier for the user providing feedback                                                      |
+| Field Name                 | Type     | Description                                                                                                               |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `id`                       | UUID     | Unique identifier for the record itself                                                                                   |
+| `created_at`               | datetime | Timestamp when the record was created                                                                                     |
+| `modified_at`              | datetime | Timestamp when the record was last modified                                                                               |
+| `session_id`               | UUID     | Unique identifier for the experiment or tracing project the run was a part of. Required when creating feedback for a run. |
+| `run_id`                   | UUID     | Unique identifier for a specific run within a session                                                                     |
+| `start_time`               | datetime | Start time of the run the feedback is for. Optional, but providing it lets LangSmith process the feedback quicker.        |
+| `key`                      | string   | A key describing the criteria of the feedback, e.g. `'correctness'`                                                       |
+| `score`                    | number   | Numerical score associated with the feedback key                                                                          |
+| `value`                    | string   | Reserved for storing a value associated with the score. Useful for categorical feedback.                                  |
+| `comment`                  | string   | Any comment or annotation associated with the record. This can be a justification for the score given.                    |
+| `correction`               | object   | Reserved for storing correction details, if any                                                                           |
+| `feedback_source`          | object   | Object containing information about the feedback source                                                                   |
+| `feedback_source.type`     | string   | The type of source where the feedback originated, e.g. `'api'`, `'app'`, `'evaluator'`                                    |
+| `feedback_source.metadata` | object   | Reserved for additional metadata, currently                                                                               |
+| `feedback_source.user_id`  | UUID     | Unique identifier for the user providing feedback                                                                         |
 
 This [reference doc](/langsmith/feedback-data-format) explains the stored feedback format, which is the LangSmith's way of representing evaluation scores and annotations on runs.
 
@@ -52348,16 +52428,16 @@ Choose the request format already used by your application. The format does not 
 | Anthropic Messages      | `POST /v1/messages`         |
 | OpenAI Responses        | `POST /v1/responses`        |
 
-Set `model` to a provider-prefixed ID such as `openai/gpt-5.4-mini` or `anthropic/claude-sonnet-4-6`. When the selected provider uses a different native format, the gateway translates the request and response.
+Set `model` to a provider-prefixed bring-your-own-key ID such as `openai/gpt-5.4-mini` or `anthropic/claude-opus-5`, or use a [Gateway Credits](/langsmith/llm-gateway-credits) model slug such as `moonshotai/kimi-k3`. The model ID determines the upstream route. When the selected provider uses a different native format, the gateway translates the request and response.
 
 For base URLs, examples, translation behavior, and regional endpoints, see [API formats](/langsmith/llm-gateway-api-formats).
 
 ## Choose how credentials are managed
 
-| Option                                                       | Upstream credential                                                                                                                  | Setup and billing                                                                 |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| Bring your own provider account                              | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account.                                |
-| [Gateway Credits](/langsmith/llm-gateway-langchain-provider) | LangChain owns the upstream credential.                                                                                              | No provider secret is required. Invocations are billed to your LangSmith account. |
+| Option                                            | Upstream credential                                                                                                                  | Setup and billing                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Bring your own provider account                   | An administrator stores the provider key in workspace [Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). | The provider bills usage to your provider account.                                |
+| [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain owns the upstream credential.                                                                                              | No provider secret is required. Invocations are billed to your LangSmith account. |
 
 ## Go further
 
@@ -52599,7 +52679,7 @@ Source: https://docs.langchain.com/langsmith/llm-gateway-api-formats
 
 Use OpenAI Chat Completions, Anthropic Messages, or OpenAI Responses requests to call models across providers through the LLM Gateway.
 
-The standard LLM Gateway API supports three request and response formats. Choose the format your application already uses, then call models across configured providers with provider-prefixed model IDs.
+The standard LLM Gateway API supports three request and response formats. Choose the format your application already uses, then call bring-your-own-key or Gateway Credits models through the same endpoint.
 
 <Note>
   **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
@@ -52615,7 +52695,7 @@ The standard LLM Gateway API supports three request and response formats. Choose
 
 All formats authenticate with a workspace-scoped LangSmith API key. Pass it as the provider API key or as an `Authorization: Bearer` token.
 
-Set `model` to `<provider>/<model>`, such as `openai/gpt-5.4-mini` or `anthropic/claude-sonnet-4-6`. The request format does not limit which configured provider you can call.
+For bring-your-own-key models, set `model` to `<provider>/<model>`, such as `openai/gpt-5.4-mini` or `anthropic/claude-sonnet-4-6`. For Gateway Credits models, pass a supported model name, such as `moonshotai/kimi-k3`.
 
 ## Use Chat Completions
 
@@ -52754,7 +52834,7 @@ Every request resolves the same Provider Secrets, policies, and tracing configur
 
 ## List models
 
-Call `GET /v1/models` to list models available across providers configured for the workspace. The gateway aggregates each provider's model catalog into a single OpenAI-compatible list:
+Call `GET /v1/models` to list models available from providers configured for the workspace and from [Gateway Credits](/langsmith/llm-gateway-credits). The gateway returns a single OpenAI-compatible list:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/v1/models \
@@ -52767,12 +52847,13 @@ curl https://gateway.smith.langchain.com/v1/models \
   "data": [
     {"id": "openai/gpt-5.4-mini", "object": "model"},
     {"id": "fireworks/accounts/fireworks/models/glm-5p2", "object": "model"},
-    {"id": "anthropic/claude-sonnet-4-6", "object": "model"}
+    {"id": "anthropic/claude-opus-5", "object": "model"},
+    {"id": "moonshotai/kimi-k3", "object": "model"}
   ]
 }
 ```
 
-Every model ID is prefixed with the provider name in the form `<provider>/<model>`; use this prefixed ID as `model` when making a call. A provider without a configured secret is omitted.
+Bring-your-own-key model IDs use the form `<provider>/<model>`. Hosted models use the slug shown in the response. Pass either ID exactly as shown when making a call. A bring-your-own-key provider without a configured secret is omitted; hosted models do not require a provider secret.
 
 ## Use a regional gateway
 
@@ -52789,13 +52870,13 @@ Keep the same path for the selected API format.
 
 ## Handle errors
 
-| Status or symptom                                           | Meaning                                                                                               |
-| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `400 Bad Request`                                           | The request is malformed, the model ID is not provider-prefixed, or the request cannot be translated. |
-| `401 Unauthorized`                                          | The LangSmith API key is missing or invalid.                                                          |
-| `403 Forbidden`                                             | The key does not have the required gateway permissions.                                               |
-| `429 Too Many Requests`                                     | A gateway rate limit or an upstream provider rate limit was reached.                                  |
-| No models with a provider prefix appear in `GET /v1/models` | The provider may not be configured or may not have returned a model catalog.                          |
+| Status or symptom                                           | Meaning                                                                                                              |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `400 Bad Request`                                           | The request is malformed, the model ID is unavailable or incorrectly formatted, or the request cannot be translated. |
+| `401 Unauthorized`                                          | The LangSmith API key is missing or invalid.                                                                         |
+| `403 Forbidden`                                             | The key does not have the required gateway permissions.                                                              |
+| `429 Too Many Requests`                                     | A gateway rate limit or an upstream provider rate limit was reached.                                                 |
+| No models with a provider prefix appear in `GET /v1/models` | The provider may not be configured or may not have returned a model catalog.                                         |
 
 For setup-specific resolutions, see the [Quickstart](/langsmith/llm-gateway-quickstart).
 
@@ -52821,40 +52902,41 @@ For setup-specific resolutions, see the [Quickstart](/langsmith/llm-gateway-quic
 # Set up coding agents
 Source: https://docs.langchain.com/langsmith/llm-gateway-coding-agents
 
-Configure Claude Code, Codex, Gemini CLI, and Deep Agents to route LLM calls through the LLM Gateway.
+Configure Claude Code, Codex, Gemini CLI, and Deep Agents Code to route LLM calls through the LLM Gateway.
 
 <Note>
   **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 </Note>
 
-Configure coding agents to route LLM calls through the LLM Gateway, giving your organization cost controls, observability, and audit trails on developer LLM usage without changing agent code.
+Configure coding agents to use the standard LLM Gateway endpoint for centralized cost controls, observability, and audit trails. The gateway authenticates each caller, routes by model ID, enforces policies, and traces each call.
 
-Most coding agents let you override the LLM provider endpoint via environment variables or configuration files. By pointing them at the LLM Gateway instead of the provider directly, all LLM calls flow through the gateway. The gateway authenticates the caller, resolves the actual provider key from workspace secrets, enforces policies, and traces the call. No agent code changes required.
-
-The gateway supports Anthropic, AWS Bedrock, Baseten, Fireworks, Google Gemini, Google Vertex AI, and OpenAI. For the full list and required secrets, see [Direct model access](/langsmith/llm-gateway-direct-model-access#choose-a-provider-path).
+Claude Code can use the standard Anthropic Messages format, while Codex and Deep Agents Code can use the standard OpenAI-compatible formats. Gemini CLI uses Google's native API and requires [direct model access](/langsmith/llm-gateway-direct-model-access).
 
 ## Prerequisites
 
-* Your [Organization admin](/langsmith/rbac#organization-admin) has completed [Admin setup](/langsmith/llm-gateway-admin-setup).
+* Your [Organization admin](/langsmith/rbac#organization-admin) has enabled the gateway and completed any required [provider setup](/langsmith/llm-gateway-admin-setup).
 * You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations).
-* You have set the [gateway environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks) in your terminal.
+* For bring-your-own-key models, your workspace has the corresponding provider secret. [Gateway Credits models](/langsmith/llm-gateway-credits) do not require a provider secret.
 
-## Supported clients
+Set your LangSmith API key before configuring a client:
 
-* Claude Code CLI
-* Codex CLI
-* Gemini CLI
-* Deep Agents
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
+```
 
 ## Claude Code CLI
 
-No extra configuration beyond the [environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks). Run:
+Point Claude Code at the standard Messages endpoint and use a provider-prefixed model ID:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
+export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+export ANTHROPIC_MODEL="anthropic/claude-opus-5"
+
 claude
 ```
 
-Claude Code will use `ANTHROPIC_BASE_URL` and `ANTHROPIC_API_KEY` from your environment automatically.
+Claude Code appends `/v1/messages` to `ANTHROPIC_BASE_URL`. The gateway uses the `anthropic/` prefix to resolve the workspace's Anthropic provider secret.
 
 <Warning>
   Claude Desktop plugins break when the gateway is configured. Claude users on a paid plan (Plus, Max) are not yet supported.
@@ -52862,112 +52944,77 @@ Claude Code will use `ANTHROPIC_BASE_URL` and `ANTHROPIC_API_KEY` from your envi
 
 ## Codex CLI
 
-Codex requires a TOML configuration file in addition to environment variables.
-
-Add this to `~/.codex/config.toml`:
+Codex uses the Responses API. Add the following to `~/.codex/config.toml` to call the hosted Kimi K3 model with Gateway Credits through the standard endpoint:
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+model = "moonshotai/kimi-k3"
 model_provider = "langsmith-gateway"
 
 [model_providers.langsmith-gateway]
 name = "LangSmith Gateway"
-base_url = "https://gateway.smith.langchain.com/openai/v1"
+base_url = "https://gateway.smith.langchain.com/v1"
 env_key = "LANGSMITH_API_KEY"
+wire_api = "responses"
 supports_websockets = false
 ```
 
-Make sure the `LANGSMITH_API_KEY` environment variable is [set](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks), then run:
+Then run:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 codex
 ```
 
+To use a bring-your-own-key model instead, replace `model` with its provider-prefixed ID, such as `openai/gpt-5.4-mini`.
+
 <Warning>
-  Codex Desktop plugins break when the gateway is configured. The TOML configuration forces authentication through the gateway, so OpenAI no longer handles plugin auth directly.
+  Codex Desktop plugins break when the gateway is configured. The TOML configuration forces authentication through the gateway, so OpenAI no longer handles plugin authentication directly.
 </Warning>
 
 ## Gemini CLI
 
-No extra configuration beyond the [environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks). Run:
+Gemini CLI sends Google's native Generate Content requests, which the standard endpoint does not expose. Follow [Direct model access](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks) to configure the `/gemini` route, then run:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 gemini
 ```
 
-Gemini CLI will use `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` from your environment automatically.
+## Deep Agents Code
 
-## Deep Agents
-
-No extra configuration beyond the [environment variables](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks). For details, refer to the [provider selection docs](/oss/deepagents/code/providers#provider-reference). Run:
+Use the OpenAI-compatible client with the standard endpoint, then pass the hosted model slug through the `openai` integration:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents
+export OPENAI_BASE_URL="https://gateway.smith.langchain.com/v1"
+export OPENAI_API_KEY="$LANGSMITH_API_KEY"
+
+dcode --model openai:moonshotai/kimi-k3
 ```
 
-## Python SDK usage
-
-If you call LLM providers from Python scripts rather than through a coding agent, swap the `base_url`:
-
-<Tabs>
-  <Tab title="OpenAI SDK">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
-
-    from openai import OpenAI
-
-    client = OpenAI(
-        base_url="https://gateway.smith.langchain.com/openai/v1",
-        api_key=os.environ["LANGSMITH_API_KEY"],
-    )
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": "Say hello!"}],
-    )
-    print(response.choices[0].message.content)
-    ```
-  </Tab>
-
-  <Tab title="Anthropic SDK">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
-
-    import anthropic
-
-    client = anthropic.Anthropic(
-        base_url="https://gateway.smith.langchain.com/anthropic",
-        api_key=os.environ["LANGSMITH_API_KEY"],
-    )
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": "Say hello!"}],
-    )
-    print(message.content[0].text)
-    ```
-  </Tab>
-</Tabs>
+To use a bring-your-own-key model, keep the standard base URL and pass a provider-prefixed model after `openai:`, for example, `openai:anthropic/claude-opus-5`. For provider-native integrations and model IDs, see [Direct model access](/langsmith/llm-gateway-direct-model-access#configure-langchain-and-deep-agents).
 
 ## Company-wide deployment
 
-For organizations rolling the gateway out to all developers, distribute the configuration through MDM (mobile device management) or a shared shell profile. The key pieces to distribute are:
+For organizations rolling the gateway out to all developers, distribute the configuration through mobile device management or a shared shell profile. Distribute:
 
-1. The gateway base URL (`https://gateway.smith.langchain.com`).
-2. A workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) per user (or per team, depending on your policy granularity).
-3. The Codex `config.toml` if your organization uses Codex.
+1. The standard gateway base URL for each client.
+2. A workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) per user or team, depending on your policy granularity.
+3. The model IDs approved for each coding agent.
+4. The Codex `config.toml` if your organization uses Codex.
 
-Provider API keys stay centralized in LangSmith workspace secrets.
+Provider API keys stay centralized in LangSmith workspace secrets. Gateway Credits models do not require provider API keys.
 
 ## Verify the setup
 
 After configuring a coding agent, make a test call and confirm that:
 
-1. The call succeeds (the agent gets a response).
-2. A trace appears in the `gateway` and `gateway-<short_api_key>-<api_key_id>` tracing projects in your LangSmith workspace.
+1. The call succeeds and the agent receives a response.
+2. A trace appears in the `gateway` or `gateway-<short_api_key>-<api_key_id>` tracing project in your LangSmith workspace.
 
-If the call fails with a `403`, check that your API key's role includes `gateway:invoke` and `workspaces:read`. If it fails with a `400` mentioning a missing provider key, ask your org admin to add the provider's key to workspace secrets.
+If the call fails with a `403`, check that your API key's role includes `gateway:invoke` and `workspaces:read`. If a bring-your-own-key call fails with a `400` mentioning a missing provider key, ask your organization admin to add the provider's key to workspace secrets.
 
 ## Next steps
 
+* [Gateway Credits](/langsmith/llm-gateway-credits): call hosted models without a provider secret.
+* [Direct model access](/langsmith/llm-gateway-direct-model-access): configure provider-native routes for coding agents that require them.
 * [Spend policies](/langsmith/llm-gateway-spend-policies): set cost limits on developer LLM usage.
 * [Traces, Engine, and access control](/langsmith/llm-gateway-access): understand where gateway traces appear.
 
@@ -52980,6 +53027,142 @@ If the call fails with a `403`, check that your API key's role includes `gateway
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-coding-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Gateway Credits
+Source: https://docs.langchain.com/langsmith/llm-gateway-credits
+
+Use Gateway Credits to access models without a provider key, just authenticate with LangSmith.
+
+<Note>
+  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages). APIs and features may change as we iterate.
+</Note>
+
+**Gateway Credits** let you call LangChain-hosted models through the standard LLM Gateway API without setting up a provider account or key. Authenticate with only your [LangSmith API key](/langsmith/create-account-api-key). No [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) is required.
+
+The gateway routes each request based on its model ID. A hosted model slug such as `moonshotai/kimi-k3` uses Gateway Credits. A model ID that starts with a configured bring-your-own-key provider, such as `anthropic/claude-opus-5`, uses that provider's secret instead.
+
+<Card title="Base URL" icon="link">
+  Point any supported client at the standard gateway API:
+
+  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  https://gateway.smith.langchain.com/v1
+  ```
+
+  Authenticate with your LangSmith API key as a bearer token.
+
+  For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
+</Card>
+
+## Available models
+
+Select a hosted model by ID in the request body. Model IDs are case-insensitive.
+
+| Model ID               | Description                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| `moonshotai/kimi-k2.6` | Kimi K2.6 by Moonshot AI. A strong general-purpose model. Powered by Fireworks Inference. |
+| `moonshotai/kimi-k3`   | Kimi K3 by Moonshot AI. Powered by Fireworks Inference.                                   |
+
+List every model available to your workspace, including configured bring-your-own-key providers and hosted models, with the standard model-list endpoint:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/models \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY"
+```
+
+Use a returned model ID exactly as shown in the `model` field of a prompt request.
+
+## Prerequisites
+
+Before using Gateway Credits:
+
+* Your organization is on a paid plan ([Developer, Plus, Startup, or Premier](/langsmith/pricing-plans)).
+* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) attached to a role with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations). See [Admin setup](/langsmith/llm-gateway-admin-setup) if you are unsure.
+
+## Make a call
+
+Point an OpenAI-compatible client at `https://gateway.smith.langchain.com/v1`, authenticate with your LangSmith API key, and set `model` to a hosted model ID.
+
+<CodeGroup>
+  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://gateway.smith.langchain.com/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"moonshotai/kimi-k3","messages":[{"role":"user","content":"ping"}]}'
+  ```
+
+  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  from openai import OpenAI
+
+  client = OpenAI(
+      base_url="https://gateway.smith.langchain.com/v1",
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  response = client.chat.completions.create(
+      model="moonshotai/kimi-k3",
+      messages=[{"role": "user", "content": "ping"}],
+  )
+  print(response.choices[0].message.content)
+  ```
+
+  ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  from langchain.chat_models import init_chat_model
+
+  model = init_chat_model(
+      model="moonshotai/kimi-k3",
+      model_provider="openai",
+      base_url="https://gateway.smith.langchain.com/v1",
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  print(model.invoke("ping").content)
+  ```
+</CodeGroup>
+
+## Supported endpoints
+
+Hosted models use the same standard API formats as bring-your-own-key models:
+
+| Method and path             | Behavior                                      |
+| --------------------------- | --------------------------------------------- |
+| `POST /v1/chat/completions` | OpenAI Chat Completions, including streaming. |
+| `POST /v1/messages`         | Anthropic Messages, including streaming.      |
+| `POST /v1/responses`        | OpenAI Responses.                             |
+| `GET /v1/models`            | Lists models available to the workspace.      |
+
+For request examples and translation behavior, see [API formats](/langsmith/llm-gateway-api-formats).
+
+## Pricing
+
+Gateway Credits are available on all paid plans besides Enterprise. See [the pricing page](https://www.langchain.com/pricing) for plan details and current rates. Gateway Credits are denominated in **LangChain Credit Units (LCUs)** at **\$1.50 per LCU**; each call consumes LCUs based on token usage.
+
+Standard gateway [spend policies](/langsmith/llm-gateway-spend-policies) apply to hosted-model traffic, so any organization, workspace, API key, or user cap you have configured also governs Gateway Credit usage. You can control Gateway Credit consumption with the same tools you use for bring-your-own-key providers. For example, cap a specific API key at \$200/month across every provider, or set a workspace-wide daily limit that includes hosted-model calls.
+
+## Tracing
+
+Like all gateway traffic, hosted-model calls are traced to LangSmith. For where traces land and how to control access to them, see [Traces, Engine, and access control](/langsmith/llm-gateway-access).
+
+## Next steps
+
+* [Quickstart](/langsmith/llm-gateway-quickstart): make your first gateway-proxied call.
+* [API formats](/langsmith/llm-gateway-api-formats): call models through Chat Completions, Messages, or Responses.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): add cost limits to Gateway Credit usage.
+* [Direct model access](/langsmith/llm-gateway-direct-model-access): use provider-native APIs and model IDs.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-credits.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -53258,7 +53441,7 @@ Append a provider path to your regional gateway base URL:
 | Google Vertex AI | `/vertex`    | `VERTEX_SERVICE_ACCOUNT_JSON` |
 | OpenAI           | `/openai`    | `OPENAI_API_KEY`              |
 
-LangChain also offers [managed models](/langsmith/llm-gateway-langchain-provider) through the `/langchain` path. These models require no provider secret of your own.
+[Gateway Credits models](/langsmith/llm-gateway-credits) use the standard endpoint rather than a provider-specific path. These hosted models require no provider secret of your own.
 
 ## Configure provider SDKs
 
@@ -53771,138 +53954,6 @@ The sync script in [step 3](#step-3-sync-policies-with-your-customer-list) appli
 </div>
 
 
-# Gateway Credits
-Source: https://docs.langchain.com/langsmith/llm-gateway-langchain-provider
-
-Use Gateway Credits to access models without a provider key, just authenticate with LangSmith.
-
-<Note>
-  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages). APIs and features may change as we iterate.
-</Note>
-
-The `/langchain` provider gives you access to call models through the LLM Gateway without setting up a provider account or key. **Gateway Credits** are required to access models in this way. With [other providers](/langsmith/llm-gateway-direct-model-access#choose-a-provider-path), you bring your own account and key; with Gateway Credits, you authenticate with only your [LangSmith API key](/langsmith/create-account-api-key) and no [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) setup is required.
-
-<Card title="Base URL" icon="link">
-  Point any OpenAI-compatible client at:
-
-  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  https://gateway.smith.langchain.com/langchain/v1
-  ```
-
-  Authenticate with your LangSmith API key as a bearer token.
-
-  For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
-</Card>
-
-## Available models
-
-The provider is OpenAI-compatible. Select a model by ID in the request body, and the gateway routes it to the upstream model. Model IDs are case-insensitive.
-
-| Model ID               | Description                                                                               |
-| ---------------------- | ----------------------------------------------------------------------------------------- |
-| `moonshotai/Kimi-K2.6` | Kimi K2.6 by Moonshot AI. A strong general-purpose model. Powered by Fireworks Inference. |
-| `moonshotai/Kimi-K3`   | Kimi K3 by Moonshot AI. Powered by Fireworks Inference.                                   |
-
-You can also list the available models programmatically:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl https://gateway.smith.langchain.com/langchain/v1/models \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY"
-```
-
-The response is the standard OpenAI `/v1/models` list containing only the available model IDs above.
-
-## Prerequisites
-
-Before calling the `/langchain` provider:
-
-* Your organization is on a paid plan ([Developer, Plus, Startup, or Premier](/langsmith/pricing-plans)).
-* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) attached to a role with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations). See [Admin setup](/langsmith/llm-gateway-admin-setup) if you are unsure.
-
-## Make a call
-
-Point any OpenAI-compatible client at `https://gateway.smith.langchain.com/langchain/v1`, authenticate with your LangSmith API key, and set `model` to one of the advertised model IDs.
-
-<CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/langchain/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"moonshotai/Kimi-K2.6","messages":[{"role":"user","content":"ping"}]}'
-  ```
-
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-
-  from openai import OpenAI
-
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/langchain/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.chat.completions.create(
-      model="moonshotai/Kimi-K2.6",
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(response.choices[0].message.content)
-  ```
-
-  ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-
-  from langchain.chat_models import init_chat_model
-
-  model = init_chat_model(
-      model="moonshotai/Kimi-K2.6",
-      model_provider="openai",
-      base_url="https://gateway.smith.langchain.com/langchain/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  print(model.invoke("ping").content)
-  ```
-</CodeGroup>
-
-## Supported endpoints
-
-The `/langchain` provider forwards two OpenAI-compatible prompt endpoints and serves the model list locally:
-
-| Method & path                         | Behavior                               |
-| ------------------------------------- | -------------------------------------- |
-| `POST /langchain/v1/chat/completions` | Chat completions, including streaming. |
-| `POST /langchain/v1/responses`        | OpenAI Responses API.                  |
-| `GET /langchain/v1/models`            | Lists the available model IDs.         |
-
-Any other path returns `404`. A request for a model that is not advertised also returns `404` with a message listing the available model IDs.
-
-## Pricing
-
-Gateway Credits are available on all paid plans besides Enterprise. See [the pricing page](https://www.langchain.com/pricing) for plan details and current rates. Gateway Credits are denominated in **LangChain Credit Units (LCUs)** at **\$1.50 per LCU**; each call consumes LCUs based on token usage.
-
-Standard gateway [spend policies](/langsmith/llm-gateway-spend-policies) apply to `/langchain` traffic, so any organization, workspace, API key, or user cap you have configured also governs Gateway Credit usage. You can control Gateway Credit consumption with the same tools you use for bring-your-own-key providers. For example, cap a specific API key at \$200/month across every provider, or set a workspace-wide daily limit that includes `/langchain` calls.
-
-## Tracing
-
-Like all gateway traffic, calls to `/langchain` are traced to LangSmith. For where traces land and how to control access to them, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
-
-## Next steps
-
-* [Quickstart](/langsmith/llm-gateway-quickstart): make your first gateway-proxied call.
-* [Spend policies](/langsmith/llm-gateway-spend-policies): add cost limits to `/langchain` usage.
-* [Custom model providers](/langsmith/llm-gateway-custom-providers): route to your own OpenAI-compatible endpoints.
-
-***
-
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-langchain-provider.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
-
-
 # Monitor LLM Gateway spend
 Source: https://docs.langchain.com/langsmith/llm-gateway-monitoring
 
@@ -53996,7 +54047,7 @@ Source: https://docs.langchain.com/langsmith/llm-gateway-quickstart
 
 Make your first LLM Gateway request with cURL, Python, or TypeScript.
 
-The LLM Gateway lets you call models across configured providers with one LangSmith API key. This quickstart uses the OpenAI Chat Completions format as the default path.
+The LLM Gateway lets you call models across configured providers through one standard endpoint with one LangSmith API key. This quickstart uses the OpenAI Chat Completions format to call an Anthropic model.
 
 <Note>
   **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
@@ -54006,33 +54057,27 @@ The LLM Gateway lets you call models across configured providers with one LangSm
 
 Before you start, confirm that:
 
-* Your [Organization admin](/langsmith/rbac#organization-admin) has enabled the LLM Gateway and added provider API keys to workspace secrets. To set this up, refer to [Admin setup](/langsmith/llm-gateway-admin-setup).
-* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) attached to a role with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations). Ask your org admin if you're unsure.
+* Your [Organization admin](/langsmith/rbac#organization-admin) has enabled the LLM Gateway. For bring-your-own-key models, the admin must also add the provider API key to workspace secrets. To set this up, see [Admin setup](/langsmith/llm-gateway-admin-setup).
+* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) attached to a role with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations). Ask your organization admin if you are unsure.
+
+You can call a [Gateway Credits model](/langsmith/llm-gateway-credits) without a provider secret. The example below uses a bring-your-own-key Anthropic model.
 
 ## 1. Set environment variables
 
-Set the following in your terminal (or add them to your `~/.zshrc` to persist across sessions):
+Set the standard gateway base URL and your LangSmith API key:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export BASE_URL="https://gateway.smith.langchain.com"
-
-export ANTHROPIC_BASE_URL="$BASE_URL/anthropic"
-export OPENAI_BASE_URL="$BASE_URL/openai/v1"
-export GOOGLE_GEMINI_BASE_URL="$BASE_URL/gemini"
-
+export LANGSMITH_GATEWAY_BASE_URL="https://gateway.smith.langchain.com/v1"
 export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
-
-export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
-export OPENAI_API_KEY="$LANGSMITH_API_KEY"
-export GEMINI_API_KEY="$LANGSMITH_API_KEY"
-export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
 ```
 
-This points all provider SDKs at the LangSmith Gateway and uses your LangSmith API key for authentication. The gateway resolves actual provider keys from your workspace's Provider Secrets—you never need local copies of provider API keys.
+The unified base URL accepts provider-prefixed bring-your-own-key model IDs, such as `anthropic/claude-opus-5`, and hosted model slugs, such as `moonshotai/kimi-k3`. The model ID determines the upstream route.
 
 <Note>
   If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-api-formats#use-a-regional-gateway).
 </Note>
+
+To preserve a provider's native API without format translation, use a [direct provider route](/langsmith/llm-gateway-direct-model-access) instead.
 
 ### Using LangChain and Deep Agents
 
@@ -54043,7 +54088,7 @@ export LANGSMITH_GATEWAY="true"
 export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
-This routes all supported chat models through the gateway at `https://gateway.smith.langchain.com`. To use a different gateway (e.g. the EU instance), set its URL instead of `true`:
+This routes all supported chat models through the gateway at `https://gateway.smith.langchain.com`. To use a different gateway (for example, the EU instance), set its URL instead of `true`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_GATEWAY="https://eu.gateway.smith.langchain.com"
@@ -54051,10 +54096,10 @@ export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 ```
 
 <Note>
-  If the Gateway is enabled but `LANGSMITH_GATEWAY_API_KEY` is unset, the Gateway will fall back to `LANGSMITH_API_KEY`.
+  If the gateway is enabled but `LANGSMITH_GATEWAY_API_KEY` is unset, the gateway falls back to `LANGSMITH_API_KEY`.
 </Note>
 
-You can also configure base URLs and API keys for individual providers as described in the [section above](#1-set-environment-variables). See [more details](#more-details) below for provider support and interactions with provider-specific environment variables.
+You can also configure base URLs and API keys for individual providers. See the following accordion for provider support and interactions with provider-specific environment variables.
 
 <Accordion title="More details">
   * Supported in Python only.
@@ -54070,7 +54115,7 @@ You can also configure base URLs and API keys for individual providers as descri
     export OPENAI_API_BASE="https://my.custom.gateway/openai/v2"
     ```
 
-  The table below shows how the base URL and key are resolved, using OpenAI as the example (other providers use their own `*_API_BASE` / `*_API_KEY` variables). `GW default` is `https://gateway.smith.langchain.com/openai/v1`.
+  The following table shows how the base URL and key are resolved, using OpenAI as the example (other providers use their own `*_API_BASE` and `*_API_KEY` variables). `GW default` is `https://gateway.smith.langchain.com/openai/v1`.
 
   | `LANGSMITH_GATEWAY` | `LANGSMITH_GATEWAY_API_KEY` | `OPENAI_API_BASE`   | `OPENAI_API_KEY` | `base_url=` kwarg | Resolved base URL   | Resolved key |
   | ------------------- | --------------------------- | ------------------- | ---------------- | ----------------- | ------------------- | ------------ |
@@ -54091,11 +54136,11 @@ You can also configure base URLs and API keys for individual providers as descri
 ## 2. Make a call
 
 <CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
+  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
       -H "Authorization: Bearer $LANGSMITH_API_KEY" \
       -H "Content-Type: application/json" \
-      -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"ping"}]}'
   ```
 
   ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -54104,31 +54149,28 @@ You can also configure base URLs and API keys for individual providers as descri
   from openai import OpenAI
 
   client = OpenAI(
-      base_url=os.environ["OPENAI_BASE_URL"],
+      base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
       api_key=os.environ["LANGSMITH_API_KEY"],
   )
   response = client.chat.completions.create(
-      model="gpt-4o-mini",
+      model="anthropic/claude-opus-5",
       messages=[{"role": "user", "content": "ping"}],
   )
   print(response.choices[0].message.content)
   ```
 
-  ```python Anthropic SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+  ```typescript OpenAI SDK (TypeScript) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import OpenAI from "openai";
 
-  import anthropic
-
-  client = anthropic.Anthropic(
-      base_url=os.environ["ANTHROPIC_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  message = client.messages.create(
-      model="claude-sonnet-4-6",
-      max_tokens=1024,
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(message.content[0].text)
+  const client = new OpenAI({
+    baseURL: process.env.LANGSMITH_GATEWAY_BASE_URL,
+    apiKey: process.env.LANGSMITH_API_KEY,
+  });
+  const response = await client.chat.completions.create({
+    model: "anthropic/claude-opus-5",
+    messages: [{ role: "user", content: "ping" }],
+  });
+  console.log(response.choices[0].message.content);
   ```
 
   ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -54137,11 +54179,10 @@ You can also configure base URLs and API keys for individual providers as descri
   from langchain.agents import create_agent
   from langchain.chat_models import init_chat_model
 
-  # Anthropic shown here; OpenAI and Gemini are also supported by swapping base_url and model_provider.
   model = init_chat_model(
-      model="claude-sonnet-4-6",
-      model_provider="anthropic",
-      base_url=os.environ["ANTHROPIC_BASE_URL"],
+      model="anthropic/claude-opus-5",
+      model_provider="openai",
+      base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
       api_key=os.environ["LANGSMITH_API_KEY"],
   )
   agent = create_agent(model=model, system_prompt="You are a helpful assistant.")
@@ -54150,14 +54191,14 @@ You can also configure base URLs and API keys for individual providers as descri
   ```
 </CodeGroup>
 
-A `200` response with a chat completion confirms the gateway, your API key, and your role permissions are all working.
+A `200` response with a chat completion confirms that the gateway, your API key, role permissions, and selected model route are working.
 
 ## 3. View your trace
 
 Open the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) and navigate to the tracing project named `gateway` or `gateway-<short_api_key>-<api_key_id>` in the workspace associated with your API key. You should see a new trace for the call you just made.
 
 <Note>
-  If your application also emits its own LangSmith traces (for example, via [LangChain or LangGraph tracing](/langsmith/observability)), the gateway-side trace and your application trace appear as separate runs. Linking gateway traces to the parent application run is not yet supported.
+  If your application also emits its own LangSmith traces, for example, through [LangChain or LangGraph tracing](/langsmith/observability), the gateway-side trace and your application trace appear as separate runs. Linking gateway traces to the parent application run is not yet supported.
 </Note>
 
 ## 4. Set a spend policy (optional)
@@ -54168,19 +54209,20 @@ See [Spend policies](/langsmith/llm-gateway-spend-policies) for the full guide o
 
 ## How the gateway handles requests
 
-Here's what the gateway did when you made a call:
+The gateway performs these steps for each standard endpoint request:
 
-1. **Authenticated** your request using the LangSmith API key.
-2. **Resolved** the actual provider API key (for example, `OPENAI_API_KEY`) from your workspace's Provider Secrets.
-3. **Evaluated** any active policies (spend limits, PII redaction, secrets redaction).
-4. **Proxied** the request to the upstream provider.
-5. **Traced** the call to LangSmith, including token counts, cost, and any policy events.
-
-Routing through the gateway requires no application code changes.
+1. **Authenticates** the request using the LangSmith API key.
+2. **Selects** a hosted model or configured bring-your-own-key provider from the model ID.
+3. **Resolves** the upstream credential. Hosted models use Gateway Credits, while bring-your-own-key models use workspace Provider Secrets.
+4. **Evaluates** active policies, including spend limits, PII redaction, and secrets redaction.
+5. **Translates** the request and response when the selected provider uses a different API format.
+6. **Traces** the call to LangSmith, including token counts, cost, and policy events.
 
 ## Next steps
 
-* [Set up coding agents](/langsmith/llm-gateway-coding-agents): route Claude Code, Codex, or Gemini CLI through the gateway.
+* [Set up coding agents](/langsmith/llm-gateway-coding-agents): route Claude Code, Codex, Gemini CLI, or Deep Agents Code through the gateway.
+* [API formats](/langsmith/llm-gateway-api-formats): use Chat Completions, Messages, or Responses through the standard endpoint.
+* [Direct model access](/langsmith/llm-gateway-direct-model-access): use provider-native request and response formats.
 * [Spend policies](/langsmith/llm-gateway-spend-policies): configure cost limits across your organization.
 * [Data protection](/langsmith/llm-gateway-data-protection): prevent sensitive data from reaching providers.
 
@@ -56543,12 +56585,13 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
   primary_client = Client(api_key="primary-key")
   secondary_client = Client(api_key="secondary-key")
 
+  primary_project = "production"
   secondary_project = "backup-project"
 
   with tracing_context(
       replicas=[
           {
-              "project_name": "production",
+              "project_name": primary_project,
               "primary": True,
               "client": primary_client,
           },
@@ -56568,11 +56611,16 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       secondary_project,
   )
 
+  # Each replica has its own project; resolve the corresponding project UUIDs
+  primary_session_id = primary_client.create_project(project_name=primary_project, upsert=True).id
+  secondary_session_id = secondary_client.create_project(project_name=secondary_project, upsert=True).id
+
   # Submit feedback to the primary replica using the original run ID
   primary_client.create_feedback(
       trace_id=run.id,
       key="user-rating",
       score=1,
+      session_id=primary_session_id,
   )
 
   # Submit feedback to the secondary replica using the computed run ID
@@ -56580,6 +56628,7 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       trace_id=secondary_run_id,
       key="user-rating",
       score=1,
+      session_id=secondary_session_id,
   )
   ```
 
@@ -56591,6 +56640,7 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
   const primaryClient = new Client({ apiKey: "primary-key" });
   const secondaryClient = new Client({ apiKey: "secondary-key" });
 
+  const primaryProject = "production";
   const secondaryProject = "backup-project";
 
   let primaryRunId: string | undefined;
@@ -56605,7 +56655,7 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       client: primaryClient,
       replicas: [
         {
-          projectName: "production",
+          projectName: primaryProject,
           primary: true,
           client: primaryClient,
         },
@@ -56627,13 +56677,29 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       secondaryProject
     );
 
+    // Each replica has its own project; resolve the corresponding project UUIDs
+    const { id: primarySessionId } = await primaryClient.createProject({
+      projectName: primaryProject,
+      upsert: true,
+    });
+    const { id: secondarySessionId } = await secondaryClient.createProject({
+      projectName: secondaryProject,
+      upsert: true,
+    });
+
     // Submit feedback to the primary replica using the original run ID
-    await primaryClient.createFeedback(primaryRunId, "user-rating", {
+    await primaryClient.createFeedback({
+      runId: primaryRunId,
+      sessionId: primarySessionId,
+      key: "user-rating",
       score: 1,
     });
 
     // Submit feedback to the secondary replica using the computed run ID
-    await secondaryClient.createFeedback(secondaryRunId, "user-rating", {
+    await secondaryClient.createFeedback({
+      runId: secondaryRunId,
+      sessionId: secondarySessionId,
+      key: "user-rating",
       score: 1,
     });
   }
@@ -58292,6 +58358,10 @@ You can use [run rules](/langsmith/rules) to add traces automatically to a datas
 You can optionally configure annotation queues with a default dataset, though you can add runs to any dataset by using the dataset switcher on the bottom of the screen. Once you select the right dataset, click **Add to Dataset** or hit the hot key `D` to add the run to it.
 
 Any modifications you make to the run in your annotation queue will carry over to the dataset, and all metadata associated with the run will also be copied.
+
+<Note>
+  **Add to Dataset** is available for **run** queue items only. [Thread](/langsmith/observability-concepts#threads) items in an annotation queue support rubric feedback, but not dataset export.
+</Note>
 
 <Tip>
   You can also set up rules to add runs that meet specific criteria to an annotation queue using [automation rules](/langsmith/rules).
@@ -69261,6 +69331,8 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os  # [!code highlight]
+
   from openai import OpenAI
   from langsmith import traceable, Client, uuid7  # [!code highlight]
   from langsmith.wrappers import wrap_openai
@@ -69300,7 +69372,12 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
           langsmith_extra={"run_id": run_id},  # [!code highlight]
       )  # [!code highlight]
       ls_client = Client()  # [!code highlight]
-      ls_client.create_feedback(run_id, key="user-score", score=1.0)  # [!code highlight]
+      # Feedback requires the UUID of the tracing project that owns the run  # [!code highlight]
+      project_name = os.environ.get("LANGSMITH_PROJECT", "default")  # [!code highlight]
+      session_id = ls_client.create_project(project_name=project_name, upsert=True).id  # [!code highlight]
+      ls_client.create_feedback(  # [!code highlight]
+          run_id, key="user-score", score=1.0, session_id=session_id  # [!code highlight]
+      )  # [!code highlight]
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -69322,9 +69399,12 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
   }
 
   let capturedRunId: string; // [!code highlight]
+  let capturedProjectName: string; // [!code highlight]
 
   const supportBot = traceable(async function supportBot(question: string): Promise<string> {
-      capturedRunId = getCurrentRunTree().id; // [!code highlight]
+      const runTree = getCurrentRunTree(); // [!code highlight]
+      capturedRunId = runTree.id; // [!code highlight]
+      capturedProjectName = runTree.project_name; // [!code highlight]
       const context = retriever(question);
       const systemMessage =
           "You are a helpful customer support agent. " +
@@ -69343,14 +69423,24 @@ Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets
   (async () => {
       await supportBot("How many users can I have on the Starter plan?"); // [!code highlight]
       const lsClient = new Client(); // [!code highlight]
-      await lsClient.createFeedback(capturedRunId, "user-score", { score: 1.0 }); // [!code highlight]
+      // Feedback requires the UUID of the tracing project that owns the run // [!code highlight]
+      const { id: sessionId } = await lsClient.createProject({ // [!code highlight]
+          projectName: capturedProjectName, // [!code highlight]
+          upsert: true, // [!code highlight]
+      }); // [!code highlight]
+      await lsClient.createFeedback({ // [!code highlight]
+          runId: capturedRunId, // [!code highlight]
+          sessionId, // [!code highlight]
+          key: "user-score", // [!code highlight]
+          score: 1.0, // [!code highlight]
+      }); // [!code highlight]
       await lsClient.flush(); // [!code highlight]
   })();
   ```
 </CodeGroup>
 
 <Note>
-  In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your app, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace.
+  In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your app, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace. Because feedback also requires the project UUID, pass `session_id` alongside the `run_id`.
 </Note>
 
 The feedback appears in the **Feedback** tab when you inspect the run in the UI. You can then filter runs by feedback score using the filtering controls in the **Runs** table.
@@ -71060,10 +71150,13 @@ run_id = uuid7()
 topic_classifier(
     "fix bug in LCEL",
     langsmith_extra={"run_id": run_id})
+# Resolve the UUID of the project that owns the trace
+session_id = ls_client.create_project(project_name="classifier", upsert=True).id
 ls_client.create_feedback(
     run_id,
     key="user-score",
     score=1.0,
+    session_id=session_id,
 )
 ```
 
@@ -71075,10 +71168,12 @@ run_id = uuid7()
 topic_classifier(
     "fix bug in documentation",
     langsmith_extra={"run_id": run_id})
+session_id = ls_client.create_project(project_name="classifier", upsert=True).id
 ls_client.create_feedback(
     run_id,
     key="correction",
-    correction="documentation")
+    correction="documentation",
+    session_id=session_id)
 ```
 
 ## Set up automations
@@ -71502,16 +71597,17 @@ Individual execution traces and spans from your LLM applications.
 
 Automated run rules that trigger actions based on run conditions.
 
-| Operation               | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
-| ----------------------- | :-------------: | :--------------: | :--------------: | ------------------- |
-| List all run rules      |        ✓        |         ✓        |         ✓        | `rules:read`        |
-| Create a run rule       |        ✓        |         ✓        |         ✗        | `rules:create`      |
-| Update a run rule       |        ✓        |         ✓        |         ✗        | `rules:update`      |
-| Delete a run rule       |        ✓        |         ✓        |         ✗        | `rules:delete`      |
-| View rule logs          |        ✓        |         ✓        |         ✓        | `rules:read`        |
-| Get last applied rule   |        ✓        |         ✓        |         ✓        | `rules:read`        |
-| Manually trigger a rule |        ✓        |         ✓        |         ✗        | `rules:update`      |
-| Trigger multiple rules  |        ✓        |         ✓        |         ✗        | `rules:update`      |
+| Operation                           | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission         |
+| ----------------------------------- | :-------------: | :--------------: | :--------------: | --------------------------- |
+| List all run rules                  |        ✓        |         ✓        |         ✓        | `rules:read`                |
+| Create a run rule                   |        ✓        |         ✓        |         ✗        | `rules:create`              |
+| Update a run rule                   |        ✓        |         ✓        |         ✗        | `rules:update`              |
+| Delete a run rule                   |        ✓        |         ✓        |         ✗        | `rules:delete`              |
+| View rule logs                      |        ✓        |         ✓        |         ✓        | `rules:read`                |
+| Get last applied rule               |        ✓        |         ✓        |         ✓        | `rules:read`                |
+| Manually trigger a rule             |        ✓        |         ✓        |         ✗        | `rules:update`              |
+| Trigger multiple rules              |        ✓        |         ✓        |         ✗        | `rules:update`              |
+| Configure per-action data retention |        ✓        |         ✗        |         ✗        | `rules:configure-retention` |
 
 ### Alerts
 
@@ -77794,7 +77890,9 @@ Automation rules can trigger actions such as: adding traces to a dataset, adding
   To configure online evaluations, visit the [online evaluations](/langsmith/online-evaluations-llm-as-judge) page.
 </Info>
 
-<Note>An automation rule can upgrade matching traces to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades) when retention extension is enabled for that rule. This upgrade impacts trace pricing, but ensures that traces meeting your automation criteria (typically those most valuable for analysis) are preserved for investigation. Retention extension is enabled by default for new rules. For the full retention model, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).</Note>
+<Note>
+  An automation rule can upgrade matching traces to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades) when retention extension is enabled for that rule. This upgrade impacts trace pricing, but ensures that traces meeting your automation criteria (typically those most valuable for analysis) are preserved for investigation. Each action type has its own default, refer to the [action-level retention settings](#create-a-rule) for details. For the full retention model, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
+</Note>
 
 ## How automation rules execute
 
@@ -77834,13 +77932,20 @@ In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_cam
 6. Select an action to trigger when the rule is applied. There are four actions you can take with an automation rule:
 
    * **Add to dataset**: Add the inputs and outputs of the trace to a [dataset](/langsmith/evaluation-concepts#datasets).
-   * **Add to annotation queue**: Add the trace to an [annotation queue](/langsmith/annotation-queues).
+   * **Add to annotation queue**: Add the matching run/trace to an [annotation queue](/langsmith/annotation-queues) as a **run** item. Automation rules do not enqueue entire [threads](/langsmith/observability-concepts#threads) as thread items; to review a full conversation, add the thread from the UI ([Assign runs and threads](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)).
    * **Trigger webhook**: Trigger a [webhook](/langsmith/use-webhooks) with the trace data.
    * **Extend data retention**: Extends the data retention period on matching traces that use base retention [(refer to the data retention docs for more details)](/langsmith/usage-and-billing#data-retention).
 
-   <Note>
-     Only the **Extend data retention** action and evaluators with retention extension enabled upgrade traces. Other actions (add to dataset, add to annotation queue, trigger webhook) do not change trace retention. For the full retention model, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
-   </Note>
+     <Note>
+       Each action has an independent **Extend data retention** toggle that controls whether matching traces are upgraded to extended retention:
+
+       * **Add to dataset**: opt-in (default: off). Enable the toggle to upgrade matching traces.
+       * **Add to annotation queue**: opt-out (default: on). Disable the toggle to skip upgrading matching traces.
+       * **Trigger webhook**: opt-in (default: off). Enable the toggle to upgrade matching traces.
+       * **Extend data retention** action and online/code evaluators: unchanged; always upgrade matching traces.
+
+       The retention toggle for each action is an admin-only control, gated by the [`rules:configure-retention`](/langsmith/organization-workspace-operations#rules) permission. Non-admin workspace members see the toggles as disabled and cannot change them, but can still create and edit rules without affecting retention settings. For the full retention model, refer to [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
+     </Note>
 
 ## View logs for your automations
 
@@ -78590,7 +78695,7 @@ runs_resp = requests.post(
     json={
         "session": [experiment_id],
         "is_root": True,  # Only fetch root runs
-        "select": ["id", "reference_example_id", "outputs"],
+        "select": ["id", "reference_example_id", "outputs", "session_id"],
     }
 )
 
@@ -78616,6 +78721,7 @@ for run in runs:
         "run_id": str(run["id"]),
         "key": "correctness",  # The name of your evaluation metric
         "score": 1.0 if is_correct else 0.0,
+        "session_id": run["session_id"],  # Required: the run's tracing project UUID
         "comment": f"Expected: {expected_output}, Got: {actual_output}",  # Optional
     }
 
@@ -78677,7 +78783,7 @@ runs = requests.post(
     json={
         "session": experiment_ids,
         "is_root": True, # Only fetch root runs (spans) which contain the end outputs
-        "select": ["id", "reference_example_id", "outputs"],
+        "select": ["id", "reference_example_id", "outputs", "session_id"],
     }
 ).json()
 runs = runs["runs"]
@@ -78700,6 +78806,7 @@ for example_id, runs in example_id_to_runs_map.items():
             "score": 1 if i == 0 else 0,
             "run_id": str(run["id"]),
             "key": "ranked_preference",
+            "session_id": run["session_id"],  # Required: the run's tracing project UUID
             "feedback_group_id": str(feedback_group_id),
             "comparative_experiment_id": comparative_experiment_id,
         }
@@ -109748,33 +109855,58 @@ Once enabled, costs appear directly in the LangSmith UI alongside each traced De
 # Trace Gemini Live applications
 Source: https://docs.langchain.com/langsmith/trace-gemini-live
 
-Trace Gemini Live voice agents built with the Google Agent Development Kit (ADK) in LangSmith.
+Trace Gemini Live voice agents in LangSmith using the LangSmith SDK.
 
 <Note>
   This integration is in beta, so its API may change.
 </Note>
 
-Gemini Live is a speech-to-speech model that ADK streams to your app as `run_live` events. The integration captures each conversation as a single LangSmith trace, with a span for every meaningful event (transcripts, tool calls, turn boundaries, and interruptions).
+Gemini Live is a speech-to-speech model that streams typed events over a WebSocket. Whether you build with a raw `google-genai` connection or the Google Agent Development Kit (ADK), the integration captures each conversation as a single LangSmith trace with spans for transcripts, model responses, tool calls, turn boundaries, and interruptions.
 
-Trace your [Gemini Live](https://ai.google.dev/gemini-api/docs/live-api) voice agents, built with the [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/streaming/), to LangSmith with the LangSmith ADK integration. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
+Trace your [Gemini Live](https://ai.google.dev/gemini-api/docs/live-api) voice agents to LangSmith. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
-<Note>
-  The ADK Live integration requires `langsmith[google-adk-live]>=0.9.7` (separate from the `langsmith[google-adk]` batch integration).
-</Note>
+To trace non-live text agents, tools, and multi-agent workflows built with ADK, see [Trace Google ADK applications](/langsmith/trace-with-google-adk).
 
-To trace text agents, tools, and multi-agent workflows built with ADK, see [Trace Google ADK applications](/langsmith/trace-with-google-adk).
+## Choose an approach
+
+LangSmith provides a tracing integration for each way to connect to Gemini Live:
+
+* If you connect directly with `client.aio.live.connect(...)`, use `wrap_gemini_live`.
+* If you build with [Google ADK](https://google.github.io/adk-docs/streaming/), use `LangSmithGoogleADKLivePlugin`.
 
 ## Install
 
+### Use the Gemini Live client
+
+Install the `gemini-live` extra for a raw `google-genai` connection:
+
 <CodeGroup>
   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[google-adk-live]" google-genai
+  pip install "langsmith[gemini-live]"
   ```
 
   ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[google-adk-live]" google-genai
+  uv add "langsmith[gemini-live]"
   ```
 </CodeGroup>
+
+### Use Google ADK
+
+Install the `google-adk-live` extra for an ADK application:
+
+<CodeGroup>
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install "langsmith[google-adk-live]"
+  ```
+
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add "langsmith[google-adk-live]"
+  ```
+</CodeGroup>
+
+<Note>
+  The ADK Live integration requires `langsmith[google-adk-live]>=0.9.7`. This extra is separate from the `langsmith[google-adk]` batch integration.
+</Note>
 
 ## Set environment variables
 
@@ -109783,11 +109915,107 @@ LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=<your-desired-langsmith-project>
 GOOGLE_API_KEY=<your-google-api-key>
+GEMINI_LIVE_MODEL=<your-gemini-live-model>
 ```
 
-## Set up tracing
+## Use the Gemini Live client
 
-Import `LangSmithGoogleADKLivePlugin` and register it on your `Runner`. It runs alongside your own `run_live` loop, so your loop only handles audio playback, barge-ins, and UI updates:
+Use this approach when your application opens the WebSocket with `client.aio.live.connect(...)` and owns the audio and tool loops.
+
+### Set up tracing
+
+Enable input and output transcription in the live configuration. `wrap_gemini_live` returns a transparent proxy for the connected session, so your existing receive loop, audio handling, and tool dispatch remain unchanged:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+
+from google import genai
+from google.genai import types
+from langsmith.integrations.gemini_live import wrap_gemini_live
+
+model = os.environ["GEMINI_LIVE_MODEL"]
+client = genai.Client()
+config = types.LiveConnectConfig(
+    response_modalities=[types.Modality.AUDIO],
+    input_audio_transcription=types.AudioTranscriptionConfig(),
+    output_audio_transcription=types.AudioTranscriptionConfig(),
+)
+
+async with (
+    client.aio.live.connect(model=model, config=config) as raw,
+    wrap_gemini_live(
+        raw,
+        model=model,
+        project_name="gemini-live-voice",
+    ) as session,
+):
+    async for message in session.receive():
+        ...  # play audio, run tools, handle barge-ins, and update the UI
+```
+
+<Note>
+  Transcription is opt-in. To show transcripts in the trace, set both `input_audio_transcription` and `output_audio_transcription` on `LiveConnectConfig`.
+</Note>
+
+### Group a conversation into a thread
+
+Each wrapped session is captured as its own trace with its own thread ID. To supply an ID, for example to group the conversation with related interactions in a LangSmith [thread](/langsmith/threads), pass `thread_id`:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+wrap_gemini_live(
+    raw,
+    model=model,
+    thread_id=thread_id,
+    project_name="gemini-live-voice",
+)
+```
+
+Create one wrapper per connected Gemini Live session. Each wrapper owns isolated tracing and transcript state, so concurrent conversations remain separate.
+
+### Record the conversation audio
+
+Feed microphone and playback audio to the wrapped session to attach a single stereo recording, with the user on the left channel and the agent on the right channel:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+RECORDING_SAMPLE_RATE = 24_000
+
+async with (
+    client.aio.live.connect(model=model, config=config) as raw,
+    wrap_gemini_live(
+        raw,
+        model=model,
+        sample_rate=RECORDING_SAMPLE_RATE,
+        is_agent_speaking=lambda: speaker.buffered_bytes() > 0,
+    ) as session,
+):
+    # Record audio after playback so discarded audio from a barge-in is omitted.
+    speaker.set_played_callback(session.record_agent_audio)
+
+    async def send_mic(mic_chunk):
+        await session.send_realtime_input(
+            audio=types.Blob(
+                data=mic_chunk,
+                mime_type=f"audio/pcm;rate={microphone.sample_rate}",
+            )
+        )
+        session.record_user_audio(
+            resample_pcm16(
+                mic_chunk,
+                microphone.sample_rate,
+                RECORDING_SAMPLE_RATE,
+            )
+        )
+```
+
+Record both channels as PCM16 at the wrapper's `sample_rate`. Record the agent's audio from the speaker so the attachment reflects only what the user heard. For the underlying attachment API, see [Upload files with traces](/langsmith/upload-files-with-traces).
+
+## Use Google ADK
+
+Use this approach when ADK owns the Gemini Live session and tool loop.
+
+### Set up tracing
+
+Import `LangSmithGoogleADKLivePlugin` and register it on your `Runner`. It runs alongside your `run_live` loop, so your loop only handles audio playback, barge-ins, and UI updates:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from google.adk.agents.run_config import RunConfig, StreamingMode
@@ -109817,22 +110045,22 @@ async for event in runner.run_live(
     live_request_queue=queue,
     run_config=run_config,
 ):
-    ...  # play audio, handle barge-in, update the UI
+    ...  # play audio, handle barge-ins, and update the UI
 ```
 
 <Note>
-  Transcription is opt-in. To show transcripts, set both `input_audio_transcription` and `output_audio_transcription` on the `RunConfig`.
+  Transcription is opt-in. To show transcripts, set both `input_audio_transcription` and `output_audio_transcription` on `RunConfig`.
 </Note>
 
 <Note>
-  On a graceful end (the live request queue closing), ADK sends its `after_run` callback and the plugin finalizes the trace for you.
+  On a graceful end, when the live request queue closes, ADK sends its `after_run` callback and the plugin finalizes the trace.
 
-  On a cancelled run, such as a console app that stops `run_live` on Ctrl-C, ADK may not send that callback, so call `plugin.finalize(session_id=adk_session.id)` during teardown. Otherwise, you lose the trace and the audio attachment built at finalize. The call is idempotent, so it does nothing if ADK's callback already ran.
+  On a cancelled run, such as a console app that stops `run_live` on Ctrl-C, ADK might not send that callback. Call `plugin.finalize(session_id=adk_session.id)` during teardown so the trace and audio attachment are finalized. The call is idempotent, so it does nothing if ADK's callback already ran.
 </Note>
 
-## Group a conversation into a thread
+### Group a conversation into a thread
 
-Each conversation is captured as its own trace with its own thread ID. To supply your own ID, for example to group the conversation with related interactions in a LangSmith [thread](/langsmith/threads), pass a `thread_id_provider` to the plugin:
+Each conversation is captured as its own trace with its own thread ID. To supply an ID, for example to group the conversation with related interactions in a LangSmith [thread](/langsmith/threads), pass a `thread_id_provider` to the plugin:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 plugin = LangSmithGoogleADKLivePlugin(
@@ -109841,18 +110069,18 @@ plugin = LangSmithGoogleADKLivePlugin(
 )
 ```
 
-A single plugin instance is shared across every `run_live` call and it resolves the thread ID once, at the start of each conversation. The default keeps concurrent conversations separate. If you pass a `thread_id_provider` on a server handling concurrent conversations, it returns the ID for the current conversation rather than a fixed value; for example, by reading a `ContextVar` set at the start of each run.
+A single plugin instance is shared across every `run_live` call and resolves the thread ID once at the start of each conversation. The default keeps concurrent conversations separate. If you pass a `thread_id_provider` on a server handling concurrent conversations, return the ID for the current conversation, for example by reading a `ContextVar` set at the start of each run.
 
-## Record the conversation audio
+### Record the conversation audio
 
-If you feed your microphone and playback audio to the plugin, it attaches a single stereo recording (user left, agent right) to the trace:
+Feed microphone and playback audio to the plugin to attach a single stereo recording, with the user on the left channel and the agent on the right channel:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 plugin.record_user_audio(mic_chunk)      # user mic PCM16
 plugin.record_agent_audio(played_chunk)  # agent PCM16 as played
 ```
 
-To accurately reflect what is heard, record the user's microphone capture before resampling it for ADK and tap the speaker for the agent's audio. Feed both channels at the same sample rate (the plugin's `sample_rate` is 24 kHz by default). For the underlying attachment API, see [Upload files with traces](/langsmith/upload-files-with-traces).
+Record the user's microphone capture before resampling it for ADK, and record the agent's audio from the speaker. Feed both channels at the same sample rate. The plugin's `sample_rate` is 24 kHz by default. For the underlying attachment API, see [Upload files with traces](/langsmith/upload-files-with-traces).
 
 ## Next steps
 
@@ -119897,7 +120125,7 @@ Retention behavior by action:
 * **Feedback via API or SDK**: Feedback is added to any run on the trace (or any trace in the thread) through an API or SDK call that explicitly passes `extend_trace_retention=true` (`extendTraceRetention: true` in TypeScript). For more information, see [Attach user feedback](/langsmith/attach-user-feedback). The LangSmith UI sends feedback and notes without extending retention.
 * **Online evaluators**: An online evaluator scores the trace and its retention setting is enabled. Both trace-level and thread-level evaluators can opt out of this upgrade.
 * **Automation rules**: An [automation rule](/langsmith/rules#create-a-rule) with retention extension enabled matches any run within a trace.
-* **Manual annotation queue adds** (no upgrade): Manually adding runs to an [annotation queue](/langsmith/annotation-queues#assign-runs-to-a-single-run-queue) does not upgrade retention by default.
+* **Manual annotation queue adds** (no upgrade): Manually adding runs or threads to an [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) does not upgrade retention by default.
 
 This change applies to new actions only. Traces that were already upgraded by a previous action keep their extended retention.
 
@@ -120072,7 +120300,7 @@ The extended data retention traces limit has side effects. If the limit is alrea
 1. run automation rules that extend trace retention
 2. run evaluators that extend trace retention
 
-Actions that do not change trace retention are not counted against the extended-retention trace limit. You can still submit feedback in the LangSmith UI, add runs to annotation queues, and run automation rules or evaluators with retention extension disabled when the limit is reached.
+Actions that do not change trace retention are not counted against the extended-retention trace limit. You can still submit feedback in the LangSmith UI, add runs or threads to annotation queues, and run automation rules or evaluators with retention extension disabled when the limit is reached.
 
 ### Updating usage limits
 
@@ -123163,7 +123391,7 @@ From the Details view, you can also:
 * **Share a trace:** Generate a public link to the trace. Refer to [Manage a trace](/langsmith/manage-trace#share-a-trace).
 * **View server logs:** Access server logs associated with a trace generated by a LangSmith deployment. Refer to [Manage a trace](/langsmith/manage-trace#view-server-logs).
 * **Add to a dataset:** Save the run as an example in a dataset for use in evaluations. Refer to [Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project).
-* **Add to an annotation queue:** Send the run to a queue for human review and feedback. Refer to [Annotation queues](/langsmith/annotation-queues#assign-runs-to-a-single-run-queue).
+* **Add to an annotation queue:** Send the run or its entire [thread](/langsmith/observability-concepts#threads) to a queue for human review and feedback. Refer to [Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue).
 
 ***
 
@@ -146044,7 +146272,7 @@ Deep Agents is the easiest way to start building agents and applications that ar
 Optional capabilities such as [task planning](#task-planning) and [skills](#skills) extend the harness when your use case needs them.
 You can use deep agents for any task, including complex, multi-step tasks.
 
-Deep Agents comes with the following built-in capabilities:
+Deep Agents comes with the following capabilities:
 
 * **Take actions in an environment**: Take actions via tools, read and write files, execute code
 * **Connect to your data**: Load memories, skills, and domain knowledge at the right moment
@@ -146982,7 +147210,7 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
 <Tip>
   **Using LangSmith Gateway**
 
-  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider) to access models without a provider key.
+  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-credits) to access models without a provider key.
 </Tip>
 
 ## Step 3: Create a search tool
@@ -150343,6 +150571,14 @@ These examples assume you have already created a sandbox/devbox using the provid
     <img alt="" />
 
     <span>Daytona</span>
+  </a>
+
+  <a href="https://leap0.dev/docs">
+    <img alt="" />
+
+    <img alt="" />
+
+    <span>Leap0</span>
   </a>
 
   <a href="/oss/javascript/integrations/providers/modal">
@@ -158188,16 +158424,16 @@ For detailed configuration options—including stdio servers, OAuth authenticati
 
 In addition to the tools you provide, every Deep Agent comes with a built-in set of tools from the harness:
 
-| Tool         | Description                                                 |
-| ------------ | ----------------------------------------------------------- |
-| `ls`         | List files in a directory                                   |
-| `read_file`  | Read file contents (with pagination and multimodal support) |
-| `write_file` | Create new files                                            |
-| `edit_file`  | Perform exact string replacements in files                  |
-| `glob`       | Find files matching a glob pattern                          |
-| `grep`       | Search file contents                                        |
-| `execute`    | Run shell commands (sandbox backends only)                  |
-| `task`       | Spawn a subagent to handle a delegated task                 |
+| Tool         | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| `ls`         | List files in a directory.                                   |
+| `read_file`  | Read file contents (with pagination and multimodal support). |
+| `write_file` | Create new files.                                            |
+| `edit_file`  | Perform exact string replacements in files.                  |
+| `glob`       | Find files matching a glob pattern.                          |
+| `grep`       | Search file contents.                                        |
+| `execute`    | Run shell commands (sandbox backends only).                  |
+| `task`       | Spawn a subagent to handle a delegated task.                 |
 
 To add structured task planning with `write_todos`, opt in with [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware). See [Task planning](/oss/javascript/deepagents/overview#task-planning).
 
@@ -165029,6 +165265,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Load runs and datasets from LangSmith.
   </Card>
 
+  <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
+    Cloud sandboxes for AI agents with fast cold starts.
+  </Card>
+
   <Card title="Soniox" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox">
     High-accuracy multilingual speech-to-text API.
   </Card>
@@ -166028,6 +166268,14 @@ Sandboxes provide isolated execution environments for running agent-generated co
     <img alt="" />
 
     <span>Modal</span>
+  </a>
+
+  <a href="https://leap0.dev/docs">
+    <img alt="" />
+
+    <img alt="" />
+
+    <span>Leap0</span>
   </a>
 </div>
 
@@ -193944,7 +194192,7 @@ Set the API keys, for example:
 <Tip>
   **Using LangSmith Gateway**
 
-  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider) to access models without a provider key.
+  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-credits) to access models without a provider key.
 </Tip>
 
 ## Build a basic agent
@@ -211350,7 +211598,7 @@ This quickstart demonstrates how to build a calculator agent using the LangGraph
 For conceptual information, see [Graph API overview](/oss/javascript/langgraph/graph-api) and [Functional API overview](/oss/javascript/langgraph/functional-api).
 
 <Info>
-  For this example, you will need to set up a [Claude (Anthropic)](https://www.anthropic.com/) account and get an API key. Then, set the `ANTHROPIC_API_KEY` environment variable in your terminal. See [chat model integrations](/oss/javascript/integrations/chat) for all available providers. If you use [LangSmith Gateway](/langsmith/llm-gateway), you can [bring your own provider keys](/langsmith/llm-gateway-quickstart) or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider) to access models without a provider key.
+  For this example, you will need to set up a [Claude (Anthropic)](https://www.anthropic.com/) account and get an API key. Then, set the `ANTHROPIC_API_KEY` environment variable in your terminal. See [chat model integrations](/oss/javascript/integrations/chat) for all available providers. If you use [LangSmith Gateway](/langsmith/llm-gateway), you can [bring your own provider keys](/langsmith/llm-gateway-quickstart) or use [Gateway Credits](/langsmith/llm-gateway-credits) to access models without a provider key.
 </Info>
 
 <Tabs>
@@ -241126,7 +241374,7 @@ Deep Agents is the easiest way to start building agents and applications that ar
 Optional capabilities such as [task planning](#task-planning) and [skills](#skills) extend the harness when your use case needs them.
 You can use deep agents for any task, including complex, multi-step tasks.
 
-Deep Agents comes with the following built-in capabilities:
+Deep Agents comes with the following capabilities:
 
 * **Take actions in an environment**: Take actions via tools, read and write files, execute code
 * **Connect to your data**: Load memories, skills, and domain knowledge at the right moment
@@ -242375,7 +242623,7 @@ Before you begin, make sure you have an API key from a model provider (e.g., Gem
 <Tip>
   **Using LangSmith Gateway**
 
-  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider) to access models without a provider key.
+  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-credits) to access models without a provider key.
 </Tip>
 
 ## Step 3: Create a search tool
@@ -255298,19 +255546,17 @@ For detailed configuration options—including stdio servers, OAuth authenticati
 
 In addition to the tools you provide, every Deep Agent comes with a built-in set of tools from the harness:
 
-| Tool         | Description                                                 |
-| ------------ | ----------------------------------------------------------- |
-| `ls`         | List files in a directory                                   |
-| `read_file`  | Read file contents (with pagination and multimodal support) |
-| `write_file` | Create a new file, or overwrite an existing one             |
-| `edit_file`  | Perform exact string replacements in files                  |
-| `delete`     | Delete a file, or a directory and its contents recursively  |
-| `glob`       | Find files matching a glob pattern                          |
-| `grep`       | Search file contents                                        |
-| `execute`    | Run shell commands (sandbox backends only)                  |
-| `task`       | Spawn a subagent to handle a delegated task                 |
-
-<Note>The `delete` tool requires `deepagents>=0.7`.</Note>
+| Tool         | Description                                                                                               |
+| ------------ | --------------------------------------------------------------------------------------------------------- |
+| `ls`         | List files in a directory.                                                                                |
+| `read_file`  | Read file contents (with pagination and multimodal support).                                              |
+| `write_file` | Create a new file, or overwrite an existing one.                                                          |
+| `edit_file`  | Perform exact string replacements in files.                                                               |
+| `delete`     | Delete a file, or a directory and its contents recursively. The `delete` tool requires `deepagents>=0.7`. |
+| `glob`       | Find files matching a glob pattern.                                                                       |
+| `grep`       | Search file contents.                                                                                     |
+| `execute`    | Run shell commands (sandbox backends only).                                                               |
+| `task`       | Spawn a subagent to handle a delegated task.                                                              |
 
 To add structured task planning with `write_todos`, opt in with [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware). See [Task planning](/oss/python/deepagents/overview#task-planning).
 
@@ -255503,10 +255749,12 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
   | [`ChatFeatherlessAI`](https://github.com/featherlessai/langchain-featherless-ai)                | <span>✅</span> | <span>❌</span>                              | <span>❌</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-featherless-ai/">  <img alt="Downloads per month" /></a></span>          |
   | [`ChatAlephantAI`](https://alephant.io/)                                                        | <span />       | <span />                                    | <span />                                                      | <span />                                                | <span><a href="https://pypi.org/project/langchain-alephantai/">  <img alt="Downloads per month" /></a></span>              |
   | [`ChatPipeshift`](https://github.com/pipeshift-org/langchain-pipeshift)                         | <span>✅</span> | <span>❌</span>                              | <span>❌</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-pipeshift/">  <img alt="Downloads per month" /></a></span>               |
+  | [`ChatNeuralwatt`](https://neuralwatt.com)                                                      | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-neuralwatt/">  <img alt="Downloads per month" /></a></span>              |
   | [`ChatTelnyx`](https://developers.telnyx.com/docs/inference/models)                             | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-telnyx/">  <img alt="Downloads per month" /></a></span>                  |
   | [`ChatGreenNode`](https://github.com/greennode-ai/langchain-greennode)                          | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span>               |
   | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow)                          | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-seekrflow/">  <img alt="Downloads per month" /></a></span>               |
   | [`ChatNetmind`](https://github.com/protagolabs/langchain-netmind)                               | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span><a href="https://pypi.org/project/langchain-netmind/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`ChatEmpirioLabs`](https://docs.empiriolabs.ai)                                                | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span><a href="https://pypi.org/project/langchain-empiriolabs/">  <img alt="Downloads per month" /></a></span>             |
   | [`FuturMix`](https://futurmix.ai/)                                                              | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>✅</span>                                          | <span>N/A</span>                                                                                                           |
   | [`TokenMix`](https://tokenmix.ai/docs)                                                          | <span>✅</span> | <span>✅</span>                              | <span>✅</span>                                                | <span>❌</span>                                          | <span>N/A</span>                                                                                                           |
 </div>
@@ -255548,7 +255796,9 @@ To implement your own checkpointer for a custom storage backend, see [Build a cu
 | Redis                                                                                            | [`langgraph-checkpoint-redis`](https://pypi.org/project/langgraph-checkpoint-redis/)         | [redis-developer/langgraph-redis](https://github.com/redis-developer/langgraph-redis)                                           |
 | [Cockroach DB](/oss/python/integrations/providers/cockroachdb#langgraph-checkpointer)            | [`langchain-cockroachdb`](https://pypi.org/project/langchain-cockroachdb/)                   | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb)                                       |
 | [Aerospike](/oss/python/integrations/providers/aerospike#langgraph-checkpointer)                 | [`langgraph-checkpoint-aerospike`](https://pypi.org/project/langgraph-checkpoint-aerospike/) | [aerospike-community/aerospike-langgraph](https://github.com/aerospike-community/aerospike-langgraph)                           |
+| [ScyllaDB](https://docs.scylladb.com)                                                            | [`langgraph-checkpoint-scylladb`](https://pypi.org/project/langgraph-checkpoint-scylladb/)   | [scylladb/langchain-scylladb](https://github.com/scylladb/langchain-scylladb/tree/main/libs/langgraph-checkpoint-scylladb)      |
 | [Tigris](https://www.tigrisdata.com/docs/)                                                       | [`langgraph-checkpoint-tigris`](https://pypi.org/project/langgraph-checkpoint-tigris/)       | [tigrisdata/tigris-langgraph](https://github.com/tigrisdata/tigris-langgraph/tree/main/libs/checkpoint-tigris)                  |
+| [TypeDB](https://typedb.com/docs)                                                                | [`langgraph-checkpoint-typedb`](https://pypi.org/project/langgraph-checkpoint-typedb/)       | [typedb/langgraph-checkpoint-typedb](https://github.com/typedb/langgraph-checkpoint-typedb)                                     |
 
 ***
 
@@ -255635,10 +255885,12 @@ The below document loaders allow you to load PDF documents.
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file)                  | Uses Unstructured's open source library to load PDFs                                                             | Package     |
 | [Upstage Document Parse Loader](/oss/python/integrations/document_loaders/upstage)           | Load PDF files using UpstageDocumentParseLoader                                                                  | Package     |
 | [Docling](/oss/python/integrations/document_loaders/docling)                                 | Load PDF files using Docling                                                                                     | Package     |
+| [MinerU](https://mineru.net)                                                                 | Load PDF and other documents using MinerU                                                                        | Package     |
 | [UnDatasIO](https://undatas.io)                                                              | Load PDF files using UnDatasIO                                                                                   | Package     |
 | [OpenDataLoader PDF](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | Load PDF files using OpenDataLoader PDF                                                                          | Package     |
 | [CVFileLoader](https://cvfile.org)                                                           | Load .cv PDF/A-3u files with embedded Markdown, HTML, and JSON Resume payloads                                   | Package     |
 | [pdfmuse](https://github.com/casperkwok/pdfmuse)                                             | Load PDF and DOCX files deterministically, with exact coordinates, tables and per-block section metadata for RAG | Package     |
+| [oxidize-pdf](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)       | Load PDF files using a Rust engine with element-disjoint RAG chunking                                            | Package     |
 
 ### Cloud providers
 
@@ -255692,6 +255944,7 @@ The below document loaders allow you to load data from common data formats.
   | [`ProxyHatLoader`](https://docs.proxyhat.com)                                                                | <span><a href="https://pypi.org/project/langchain-proxyhat/">  <img alt="Downloads per month" /></a></span>                 |
   | [`OpeddFeedLoader`](https://opedd.com/for-ai-agents)                                                         | <span><a href="https://pypi.org/project/langchain-opedd/">  <img alt="Downloads per month" /></a></span>                    |
   | [`SpidraLoader`](https://docs.spidra.io)                                                                     | <span><a href="https://pypi.org/project/langchain-spidra/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`MinerULoader`](https://mineru.net)                                                                         | <span><a href="https://pypi.org/project/langchain-mineru/">  <img alt="Downloads per month" /></a></span>                   |
   | [`CVFileLoader`](https://cvfile.org)                                                                         | <span><a href="https://pypi.org/project/langchain-cvfile/">  <img alt="Downloads per month" /></a></span>                   |
   | [`Google memorystore for Redis`](/oss/python/integrations/document_loaders/google_memorystore_redis)         | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/">  <img alt="Downloads per month" /></a></span> |
   | [`HyperbrowserLoader`](https://docs.hyperbrowser.ai)                                                         | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>             |
@@ -255712,6 +255965,7 @@ The below document loaders allow you to load data from common data formats.
   | [`PlasmateSOMLLoader`](https://docs.plasmate.app/integration-langchain)                                      | <span><a href="https://pypi.org/project/langchain-plasmate/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Google cloud SQL for SQL server`](/oss/python/integrations/document_loaders/google_cloud_sql_mssql)        | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/">  <img alt="Downloads per month" /></a></span>   |
   | [`AgentMail`](https://github.com/agentmail-to/langchain-agentmail)                                           | <span><a href="https://pypi.org/project/langchain-agentmail/">  <img alt="Downloads per month" /></a></span>                |
+  | [`OxidizePdfLoader`](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)                | <span><a href="https://pypi.org/project/langchain-oxidize-pdf/">  <img alt="Downloads per month" /></a></span>              |
   | [`Google el carro for Oracle workloads`](https://github.com/googleapis/langchain-google-el-carro-python/)    | <span><a href="https://pypi.org/project/langchain-google-el-carro/">  <img alt="Downloads per month" /></a></span>          |
   | [`PowerScaleDocumentLoader`](/oss/python/integrations/document_loaders/powerscale)                           | <span><a href="https://pypi.org/project/powerscale-rag-connector/">  <img alt="Downloads per month" /></a></span>           |
 </div>
@@ -256006,6 +256260,7 @@ In production, you would typically use a more robust persistent store, such as a
   | [`GreenNodeEmbeddings`](https://greennode.ai/)                                                         | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span>              |
   | [`Netmind`](https://github.com/protagolabs/langchain-netmind)                                          | <span><a href="https://pypi.org/project/langchain-netmind/">  <img alt="Downloads per month" /></a></span>                |
   | [`Lindorm`](https://help.aliyun.com/document_detail/174640.html)                                       | <span><a href="https://pypi.org/project/langchain-lindorm-integration/">  <img alt="Downloads per month" /></a></span>    |
+  | [`EmpirioLabsEmbeddings`](https://docs.empiriolabs.ai)                                                 | <span><a href="https://pypi.org/project/langchain-empiriolabs/">  <img alt="Downloads per month" /></a></span>            |
 </div>
 
 ***
@@ -256065,6 +256320,7 @@ Middleware enables context engineering, harness customization, and runtime safet
   | [`CopilotKit`](/oss/python/langchain/frontend/integrations/copilotkit)                                      | CopilotKit middleware and FastAPI bridge for Deep Agents, create\_agent graphs, AG-UI, and the React and runtime clients                                                                                                                                                                                                                                                                 | [`CopilotKit/CopilotKit`](https://github.com/CopilotKit/CopilotKit)                                                                                                                         | <span><a href="https://pypi.org/project/copilotkit/">  <img alt="Downloads per month" /></a></span>                   |
   | [`compact-middleware`](https://github.com/emanueleielo/compact-middleware)                                  | Claude Code's compaction engine as LangChain middleware. Multi-level context compaction for long-running agents.                                                                                                                                                                                                                                                                         | [`emanueleielo/compact-middleware`](https://github.com/emanueleielo/compact-middleware)                                                                                                     | <span><a href="https://pypi.org/project/compact-middleware/">  <img alt="Downloads per month" /></a></span>           |
   | [`prompt-shield`](https://github.com/mthamil107/prompt-shield)                                              | Runtime prompt-injection firewall. Scans inputs, tool results, and outputs across detectors and output scanners with block, flag, and log modes.                                                                                                                                                                                                                                         | [`mthamil107/prompt-shield`](https://github.com/mthamil107/prompt-shield)                                                                                                                   | <span><a href="https://pypi.org/project/prompt-shield-ai/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Highflame`](https://github.com/highflame-ai/highflame-sdk)                                                | Runtime AI security guardrails — prompt injection, PII/DLP, content safety — applied as middleware via Highflame Shield (OWASP LLM Top 10).                                                                                                                                                                                                                                              | [`highflame-ai/highflame-sdk`](https://github.com/highflame-ai/highflame-sdk)                                                                                                               | <span><a href="https://pypi.org/project/highflame/">  <img alt="Downloads per month" /></a></span>                    |
   | [`Cisco AI Defense`](https://github.com/cisco-ai-defense/ai-defense-langchain-middleware)                   | Runtime security inspection                                                                                                                                                                                                                                                                                                                                                              | [`cisco-ai-defense/ai-defense-langchain-middleware`](https://github.com/cisco-ai-defense/ai-defense-langchain-middleware)                                                                   | <span><a href="https://pypi.org/project/langchain-cisco-aidefense/">  <img alt="Downloads per month" /></a></span>    |
   | [`langchain-collapse`](https://github.com/johanity/langchain-collapse)                                      | Preventive context management. Collapses consecutive tool-call groups before they fill the context window.                                                                                                                                                                                                                                                                               | [`johanity/langchain-collapse`](https://github.com/johanity/langchain-collapse)                                                                                                             | <span><a href="https://pypi.org/project/langchain-collapse/">  <img alt="Downloads per month" /></a></span>           |
   | [`OpenBox`](https://docs.openbox.ai/getting-started/langgraph)                                              | Real-time governance for LangGraph and Deep Agents. Policies, guardrails, HITL, OTel hook governance, and behavior rules.                                                                                                                                                                                                                                                                | [`OpenBox-AI/openbox-langgraph-sdk-python`](https://github.com/OpenBox-AI/openbox-langgraph-sdk-python)                                                                                     | <span><a href="https://pypi.org/project/openbox-langgraph-sdk-python/">  <img alt="Downloads per month" /></a></span> |
@@ -256166,7 +256422,7 @@ Browse the complete collection of integrations available for Python. LangChain P
   </Card>
 
   <Card title="AI Identity" href="https://ai-identity.co/docs" icon="link">
-    Per-agent identity, scoped API access, and tamper-proof audit logging for LangChain agents.
+    Per-agent identity, scoped API access, and tamper-evident audit logging for LangChain agents.
   </Card>
 
   <Card title="AI21" href="/oss/python/integrations/providers/ai21" icon="link">
@@ -256237,6 +256493,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Microsoft Azure AI and cognitive services.
   </Card>
 
+  <Card title="Baidu" href="https://www.paddleocr.com" icon="link">
+    Baidu's AI services and language models.
+  </Card>
+
   <Card title="Baseten" href="/oss/python/integrations/providers/baseten" icon="link">
     ML model deployment and serving platform.
   </Card>
@@ -256259,6 +256519,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="CAMB AI" href="https://docs.camb.ai" icon="link">
     Multilingual audio and localization services supporting 140+ languages.
+  </Card>
+
+  <Card title="Capsule" href="https://github.com/mavdol/langchain-capsule" icon="link">
+    Run Python and JavaScript code in isolated WebAssembly sandboxes.
   </Card>
 
   <Card title="Cerebras" href="/oss/python/integrations/providers/cerebras" icon="link">
@@ -256405,6 +256669,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Distributed search and analytics engine.
   </Card>
 
+  <Card title="EmpirioLabs AI" href="https://docs.empiriolabs.ai" icon="link">
+    Frontier open models through one OpenAI-compatible API.
+  </Card>
+
   <Card title="Engram" href="https://docs.engram.ai/integrations/langchain" icon="link">
     Cognitive memory infrastructure for AI agents: confidence scoring, contradiction detection, and memory lifecycle.
   </Card>
@@ -256435,6 +256703,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="GoodMem" href="https://docs.goodmem.ai" icon="link">
     Long-term memory layer for AI agents with semantic storage and retrieval.
+  </Card>
+
+  <Card title="GoodSender" href="https://goodsender.com/docs" icon="link">
+    Free email API with transactional templates and consent-gated custom email.
   </Card>
 
   <Card title="Google" href="/oss/python/integrations/providers/google" icon="brand-google">
@@ -256485,12 +256757,20 @@ Browse the complete collection of integrations available for Python. LangChain P
     LLM observability and monitoring platform.
   </Card>
 
+  <Card title="Highflame" href="https://github.com/highflame-ai/highflame-sdk" icon="link">
+    Runtime AI security guardrails for LangChain and LangGraph middleware.
+  </Card>
+
   <Card title="HighSNR" href="https://www.high-snr.com/docs.html" icon="link">
     Deterministic, privacy-first context optimizer for compressing documents and retrieved chunks to a token budget.
   </Card>
 
   <Card title="Hindsight" href="https://docs.hindsight.vectorize.io/sdks/integrations/langgraph" icon="link">
     Open-source long-term memory engine for AI agents.
+  </Card>
+
+  <Card title="HuangtingFlux" href="https://huangtingflux.com/integrations/langchain" icon="link">
+    Remote MCP server that reduces agent token usage via a three-stage SOP workflow.
   </Card>
 
   <Card title="Hugging Face" href="/oss/python/integrations/providers/huggingface" icon="link">
@@ -256561,6 +256841,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     LLM engineering platform and observability.
   </Card>
 
+  <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
+    Cloud sandboxes for AI agents with fast cold starts.
+  </Card>
+
   <Card title="Lindorm" href="https://help.aliyun.com/document_detail/174640.html" icon="link">
     Alibaba Cloud's multi-model database service.
   </Card>
@@ -256611,6 +256895,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="MindsDB" href="/oss/python/integrations/providers/mindsdb" icon="link">
     AI layer for databases and data platforms.
+  </Card>
+
+  <Card title="MinerU" href="https://mineru.net" icon="link">
+    Open-source document parsing for PDFs and office files into Markdown.
   </Card>
 
   <Card title="Mixpeek" href="https://docs.mixpeek.com/agent-integrations/langchain" icon="link">
@@ -256671,6 +256959,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="NetMind" href="https://github.com/protagolabs/langchain-netmind" icon="link">
     Decentralized AI computing network.
+  </Card>
+
+  <Card title="Neuralwatt" href="https://neuralwatt.com" icon="link">
+    Energy-aware AI inference with per-call energy and carbon metrics.
   </Card>
 
   <Card title="Nimble" href="https://docs.nimbleway.com/" icon="link">
@@ -256735,6 +257027,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Opedd" href="https://opedd.com/for-ai-agents" icon="link">
     Licensed, rights-cleared content for RAG and agents with verifiable license keys.
+  </Card>
+
+  <Card title="oxidize-pdf" href="https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain" icon="link">
+    Rust-powered PDF loader with element-disjoint RAG chunking.
   </Card>
 
   <Card title="Oxylabs" href="https://github.com/oxylabs/langchain-oxylabs" icon="link">
@@ -256821,6 +257117,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Vector similarity search engine.
   </Card>
 
+  <Card title="Querit" href="https://querit.com/docs" icon="link">
+    Real-time web search API for AI applications.
+  </Card>
+
   <Card title="Ray Serve" href="/oss/python/integrations/providers/ray_serve" icon="link">
     Scalable model serving framework.
   </Card>
@@ -256903,6 +257203,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Shale Protocol" href="/oss/python/integrations/providers/shaleprotocol" icon="link">
     Decentralized AI inference protocol.
+  </Card>
+
+  <Card title="ScyllaDB" href="https://docs.scylladb.com" icon="link">
+    High-performance distributed NoSQL database for real-time AI.
   </Card>
 
   <Card title="SibFly" href="https://sibfly.com" icon="link">
@@ -257017,6 +257321,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Entity resolution and data matching.
   </Card>
 
+  <Card title="Tonic Textual" href="https://textual.tonic.ai" icon="link">
+    Detect, extract, and transform PII in text, JSON, HTML, and files.
+  </Card>
+
   <Card title="Timbr" href="/oss/python/integrations/providers/timbr" icon="link">
     Semantic layer for data integration and querying.
   </Card>
@@ -257039,6 +257347,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="TrueLens" href="/oss/python/integrations/providers/trulens" icon="link">
     Evaluation framework for LLM applications.
+  </Card>
+
+  <Card title="TypeDB" href="https://typedb.com/docs" icon="link">
+    Strongly-typed database for complex, relational data and knowledge graph applications.
   </Card>
 
   <Card title="UnDatasIO" href="https://undatas.io" icon="link">
@@ -259665,6 +259977,7 @@ Sandboxes provide isolated execution environments for running agent-generated co
   | [`OpenShellSandbox`](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell) | <span><a href="https://pypi.org/project/langchain-nvidia-openshell/">  <img alt="Downloads per month" /></a></span>          |
   | [`UpstashBoxSandbox`](https://upstash.com/docs/box)                                             | <span><a href="https://pypi.org/project/langchain-upstash-box/">  <img alt="Downloads per month" /></a></span>               |
   | [`SuperserveSandbox`](https://docs.superserve.ai)                                               | <span><a href="https://pypi.org/project/langchain-superserve/">  <img alt="Downloads per month" /></a></span>                |
+  | [`Leap0Sandbox`](https://leap0.dev/docs)                                                        | <span><a href="https://pypi.org/project/langchain-leap0/">  <img alt="Downloads per month" /></a></span>                     |
   | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith)                             | <span>N/A</span>                                                                                                             |
 </div>
 
@@ -259807,7 +260120,7 @@ The following table shows tools that execute online searches in some shape or fo
 | Tool/Toolkit                                                                       | Free/Paid                                   | Return Data                                                                                      |
 | ---------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | [cloro](https://docs.cloro.dev)                                                    | Paid                                        | URL, Snippet, Title, Answer                                                                      |
-| [CrustAPI](https://crustapi.com/docs)                                              | Free tier available                         | URL, Title, Snippet, Maps, News, Shopping, Images, Videos, Places, Scholar, Patents, LinkedIn    |
+| [CrustAPI](https://crustapi.com/docs)                                              | 3,000 free credits/month, no card           | URL, Title, Snippet, Maps, News, Shopping, Images, Videos, Places, Scholar, Patents, LinkedIn    |
 | [Exa Search](/oss/python/integrations/tools/exa_search)                            | 1000 free searches/month                    | URL, Author, Title, Published Date                                                               |
 | [Google Search](/oss/python/integrations/tools/google_search)                      | Paid                                        | URL, Snippet, Title                                                                              |
 | [iFlow Search](https://platform.iflow.cn/)                                         | Paid                                        | URL, Title, Snippet, Date                                                                        |
@@ -259827,6 +260140,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [Apify](https://docs.apify.com/platform/integrations/langchain)                    | Free tier, pay-per-use (varies by Actor)    | Actor output (varies by Actor)                                                                   |
 | [Xpoz](https://www.xpoz.ai/docs)                                                   | Free tier available                         | Posts, user profiles, comments, engagement metrics (Twitter/X, Instagram, Reddit, TikTok)        |
 | [You.com Search](/oss/python/integrations/tools/you)                               | \$100 in credits on sign up                 | URL, Title, Page Content                                                                         |
+| [Querit](https://querit.com/docs)                                                  | 1000 free searches/month on sign up         | URL, Snippet, Title, Page\_Age, Site\_Name, Site\_Icon                                           |
 
 ## Code interpreter
 
@@ -259836,6 +260150,7 @@ The following table shows tools that can be used as code interpreters:
 | -------------------------------------------------------------------------------------------------------------- | ------------------------------ | ---------------------------- | --------------------- | ------------------- | --------------------- |
 | [Amazon Bedrock AgentCore Code Interpreter](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter) | Python, JavaScript, TypeScript | Configurable (up to 8 hours) | ✅                     | Text, Images, Files | ❌                     |
 | [Azure Container Apps dynamic sessions](/oss/python/integrations/tools/azure_dynamic_sessions)                 | Python                         | 1 Hour                       | ✅                     | Text, Images        | ❌                     |
+| [Capsule Code Interpreter](https://github.com/mavdol/langchain-capsule)                                        | Python, JavaScript             | Stateless or session-based   | ✅ (REPL tools)        | Text                | ✅                     |
 
 ## Productivity
 
@@ -259844,6 +260159,7 @@ The following table shows tools that can be used to automate tasks in productivi
 | Tool/Toolkit                                                 | Pricing                                                                        |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | [Gmail Toolkit](/oss/python/integrations/tools/google_gmail) | Free, with limit of 250 quota units per user per second                        |
+| [GoodSender Toolkit](https://goodsender.com/docs)            | Free tier (100,000 emails/month), no credit card required                      |
 | [AgentLine Toolkit](https://docs.agentline.cloud)            | $2/number one-time, $0.10/min calls, pay-as-you-go                             |
 | [AgentMail Toolkit](https://docs.agentmail.to/)              | Free tier available, with [pay-as-you-go pricing](https://agentmail.to) after  |
 | [AgenticEmail Toolkit](https://agenticemail.dev/docs)        | Free tier available, with [paid plans](https://agenticemail.dev/pricing) after |
@@ -259898,6 +260214,14 @@ The following table shows tools that can be used to execute financial transactio
 | [Privy](/oss/python/integrations/tools/privy)                     | Free    | Create wallets with configurable permissions and execute transactions with speed.             |
 | [Uniswap V2](https://github.com/Conrad-sudo/langchain-uniswap-v2) | Free    | Get live Uniswap V2 swap quotes and prepare unsigned swap transactions for Ethereum and Base. |
 
+## AI Workflow Optimization
+
+The following tools optimize AI Agent workflows by reducing token usage and enforcing structured SOPs:
+
+| Tool/Toolkit                                                      | Pricing                  | Key Features                                                                                     |
+| ----------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------ |
+| [HuangtingFlux](https://huangtingflux.com/integrations/langchain) | Free (public MCP server) | 40% token reduction via 3-stage SOP: input compression, rolling summarization, output refinement |
+
 ## Integration platforms
 
 The following platforms provide access to multiple tools and services through a unified interface:
@@ -259914,9 +260238,10 @@ The following table shows tools that can be used for security-related tasks:
 | Tool/Toolkit                                                    | Pricing                    | Capabilities                                                                                                                                             |
 | --------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [URLCheck](https://urlcheck.dev)                                | 100 free requests/day      | Verify URL safety before agent navigation. Supports optional intent-aware risk analysis. Returns actionable access directives (ALLOW/DENY/RETRY\_LATER). |
-| [AI Identity](https://ai-identity.co/docs)                      | Free tier available        | Per-agent cryptographic API keys, scoped policy enforcement, and tamper-proof audit logging via a gateway in front of tools and LLM calls.               |
+| [AI Identity](https://ai-identity.co/docs)                      | Free tier available        | Per-agent cryptographic API keys, scoped policy enforcement, and tamper-evident audit logging via a gateway in front of tools and LLM calls.             |
 | [RelayShield](https://api.relayshield.net/developers)           | Paid                       | MCP server registry-risk and prompt-injection-breach checks before high-impact agent actions.                                                            |
 | [SidClaw](https://docs.sidclaw.com/docs/integrations/langchain) | Free hosted tier available | Policy evaluation, human approval workflows, and tamper-evident audit trails for LangChain tool calls.                                                   |
+| [Tonic Textual](https://textual.tonic.ai)                       | Requires account           | Detect, extract, synthesize, or tokenize PII in text, JSON, HTML, and files.                                                                             |
 
 ## All tools and toolkits
 
@@ -259991,6 +260316,7 @@ The following table shows tools that can be used for security-related tasks:
   | [`SearchApiSearch`](https://www.searchapi.io/docs/google)                                                        | <span><a href="https://pypi.org/project/langchain-searchapi/">  <img alt="Downloads per month" /></a></span>              |
   | [`AgentLineToolkit`](https://docs.agentline.cloud)                                                               | <span><a href="https://pypi.org/project/langchain-agentline/">  <img alt="Downloads per month" /></a></span>              |
   | [`Synap`](https://maximem.ai)                                                                                    | <span><a href="https://pypi.org/project/maximem-synap-langchain/">  <img alt="Downloads per month" /></a></span>          |
+  | [`Synoppy`](https://synoppy.com/docs)                                                                            | <span><a href="https://pypi.org/project/langchain-synoppy/">  <img alt="Downloads per month" /></a></span>                |
   | [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2)                                        | <span><a href="https://pypi.org/project/langchain-uniswap-v2/">  <img alt="Downloads per month" /></a></span>             |
   | [`Robocorp toolkit`](https://github.com/robocorp/robocorp)                                                       | <span><a href="https://pypi.org/project/langchain-robocorp/">  <img alt="Downloads per month" /></a></span>               |
   | [`Hyperbrowser browser agent`](https://docs.hyperbrowser.ai/)                                                    | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>           |
@@ -260018,7 +260344,9 @@ The following table shows tools that can be used for security-related tasks:
   | [`Agentql`](https://docs.agentql.com/)                                                                           | <span><a href="https://pypi.org/project/langchain-agentql/">  <img alt="Downloads per month" /></a></span>                |
   | [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb)                                       | <span><a href="https://pypi.org/project/langchain-spicedb/">  <img alt="Downloads per month" /></a></span>                |
   | [`RustChainToolkit`](https://github.com/Scottcjn/langchain-rustchain)                                            | <span><a href="https://pypi.org/project/langchain-rustchain-tools/">  <img alt="Downloads per month" /></a></span>        |
+  | [`Tonic Textual`](https://textual.tonic.ai)                                                                      | <span><a href="https://pypi.org/project/langchain-textual/">  <img alt="Downloads per month" /></a></span>                |
   | [`Synmerco`](https://synmerco.com/docs)                                                                          | <span><a href="https://pypi.org/project/synmerco-langchain/">  <img alt="Downloads per month" /></a></span>               |
+  | [`OptionsAhoy`](https://optionsahoy.com/for-agents)                                                              | <span><a href="https://pypi.org/project/optionsahoy-langchain/">  <img alt="Downloads per month" /></a></span>            |
   | [`GracefulFailTool`](https://selfheal.dev/docs)                                                                  | <span><a href="https://pypi.org/project/graceful-fail/">  <img alt="Downloads per month" /></a></span>                    |
   | [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs)                                                        | <span><a href="https://pypi.org/project/langchain-oxylabs/">  <img alt="Downloads per month" /></a></span>                |
   | [`Privy`](/oss/python/integrations/tools/privy)                                                                  | <span><a href="https://pypi.org/project/langchain-privy/">  <img alt="Downloads per month" /></a></span>                  |
@@ -260056,8 +260384,13 @@ The following table shows tools that can be used for security-related tasks:
   | [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                           | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
   | [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                    | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
   | [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                       | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Capsule`](https://github.com/mavdol/langchain-capsule)                                                         | <span><a href="https://pypi.org/project/langchain-capsule/">  <img alt="Downloads per month" /></a></span>                |
+  | [`GoodSender Toolkit`](https://goodsender.com/docs)                                                              | <span><a href="https://pypi.org/project/langchain-goodsender/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Querit`](https://querit.com/docs)                                                                              | <span><a href="https://pypi.org/project/langchain-querit/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`DynamicFeed`](https://dynamicfeed.ai/integrations)                                                             | <span><a href="https://pypi.org/project/dynamicfeed-tools/">  <img alt="Downloads per month" /></a></span>                |
   | [`Hlido`](https://hlido.eu/docs/)                                                                                | <span><a href="https://pypi.org/project/hlido-langchain/">  <img alt="Downloads per month" /></a></span>                  |
   | [`Browserless`](https://browserless.io)                                                                          | <span>N/A</span>                                                                                                          |
+  | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain)                                              | <span>N/A</span>                                                                                                          |
   | [`Search1API Toolkit`](https://www.search1api.com/docs/integrations/langchain)                                   | <span>N/A</span>                                                                                                          |
 </div>
 
@@ -261027,6 +261360,7 @@ vector_store.similarity_search(
   | [`Vedb for mysql`](https://www.volcengine.com/docs/6357)                                                                                            | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-volcengine-mysql/">  <img alt="Downloads per month" /></a></span>         |
   | [`Volcengine rds for mysql`](https://www.volcengine.com/docs/6313)                                                                                  | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-volcengine-mysql/">  <img alt="Downloads per month" /></a></span>         |
   | [`LindormVectorStore`](https://help.aliyun.com/document_detail/2773369.html)                                                                        | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span><a href="https://pypi.org/project/langchain-lindorm-integration/">  <img alt="Downloads per month" /></a></span>      |
+  | [`FAISS`](https://github.com/facebookresearch/faiss)                                                                                                | <span />       | <span />       | <span />         | <span />          | <span />       | <span />              | <span />       | <span />             | <span>N/A</span>                                                                                                            |
   | [`InMemoryVectorStore`](/oss/python/integrations/vectorstores/in_memory)                                                                            | <span>✅</span> | <span>✅</span> | <span>❌</span>   | <span>✅</span>    | <span>✅</span> | <span>❌</span>        | <span>❌</span> | <span>✅</span>       | <span>N/A</span>                                                                                                            |
 </div>
 
@@ -287241,7 +287575,7 @@ Set the API keys, for example:
 <Tip>
   **Using LangSmith Gateway**
 
-  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider) to access models without a provider key.
+  The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#2-make-a-call), or use [Gateway Credits](/langsmith/llm-gateway-credits) to access models without a provider key.
 </Tip>
 
 ## Build a basic agent
@@ -305090,7 +305424,7 @@ This quickstart demonstrates how to build a calculator agent using the LangGraph
 For conceptual information, see [Graph API overview](/oss/python/langgraph/graph-api) and [Functional API overview](/oss/python/langgraph/functional-api).
 
 <Info>
-  For this example, you will need to set up a [Claude (Anthropic)](https://www.anthropic.com/) account and get an API key. Then, set the `ANTHROPIC_API_KEY` environment variable in your terminal. See [chat model integrations](/oss/python/integrations/chat) for all available providers. If you use [LangSmith Gateway](/langsmith/llm-gateway), you can [bring your own provider keys](/langsmith/llm-gateway-quickstart) or use [Gateway Credits](/langsmith/llm-gateway-langchain-provider) to access models without a provider key.
+  For this example, you will need to set up a [Claude (Anthropic)](https://www.anthropic.com/) account and get an API key. Then, set the `ANTHROPIC_API_KEY` environment variable in your terminal. See [chat model integrations](/oss/python/integrations/chat) for all available providers. If you use [LangSmith Gateway](/langsmith/llm-gateway), you can [bring your own provider keys](/langsmith/llm-gateway-quickstart) or use [Gateway Credits](/langsmith/llm-gateway-credits) to access models without a provider key.
 </Info>
 
 <Tabs>

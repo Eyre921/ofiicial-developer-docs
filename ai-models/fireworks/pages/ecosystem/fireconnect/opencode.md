@@ -12,7 +12,7 @@ Use Fireworks AI models in OpenCode with the FireConnect CLI
 
 * [OpenCode](https://opencode.ai) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -35,11 +35,11 @@ Use your `fpk_...` key during `login` or with `--api-key`:
 fireconnect opencode on --api-key fpk_...
 ```
 
-FireConnect detects Fire Pass keys and defaults OpenCode to `glm-fast-latest`.
+FireConnect detects Fire Pass keys and defaults OpenCode to `kimi-fast-latest`.
 
 ## Default model
 
-OpenCode routes a single default model (no opus/sonnet/haiku alias slots). The default is `glm-fast-latest`, written to config as `fireworks-ai/glm-fast-latest`.
+OpenCode routes a single default model (no opus/sonnet/haiku alias slots). The default is `kimi-fast-latest`, written to config as `fireworks-ai/kimi-fast-latest`.
 
 Short model IDs like `glm-5p1` are expanded to full Fireworks paths (for example, `accounts/fireworks/models/glm-5p1`).
 

@@ -704,12 +704,13 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
   primary_client = Client(api_key="primary-key")
   secondary_client = Client(api_key="secondary-key")
 
+  primary_project = "production"
   secondary_project = "backup-project"
 
   with tracing_context(
       replicas=[
           {
-              "project_name": "production",
+              "project_name": primary_project,
               "primary": True,
               "client": primary_client,
           },
@@ -729,11 +730,16 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       secondary_project,
   )
 
+  # Each replica has its own project; resolve the corresponding project UUIDs
+  primary_session_id = primary_client.create_project(project_name=primary_project, upsert=True).id
+  secondary_session_id = secondary_client.create_project(project_name=secondary_project, upsert=True).id
+
   # Submit feedback to the primary replica using the original run ID
   primary_client.create_feedback(
       trace_id=run.id,
       key="user-rating",
       score=1,
+      session_id=primary_session_id,
   )
 
   # Submit feedback to the secondary replica using the computed run ID
@@ -741,6 +747,7 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       trace_id=secondary_run_id,
       key="user-rating",
       score=1,
+      session_id=secondary_session_id,
   )
   ```
 
@@ -752,6 +759,7 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
   const primaryClient = new Client({ apiKey: "primary-key" });
   const secondaryClient = new Client({ apiKey: "secondary-key" });
 
+  const primaryProject = "production";
   const secondaryProject = "backup-project";
 
   let primaryRunId: string | undefined;
@@ -766,7 +774,7 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       client: primaryClient,
       replicas: [
         {
-          projectName: "production",
+          projectName: primaryProject,
           primary: true,
           client: primaryClient,
         },
@@ -788,13 +796,29 @@ The **primary** replica keeps the original run ID unchanged. Each **secondary** 
       secondaryProject
     );
 
+    // Each replica has its own project; resolve the corresponding project UUIDs
+    const { id: primarySessionId } = await primaryClient.createProject({
+      projectName: primaryProject,
+      upsert: true,
+    });
+    const { id: secondarySessionId } = await secondaryClient.createProject({
+      projectName: secondaryProject,
+      upsert: true,
+    });
+
     // Submit feedback to the primary replica using the original run ID
-    await primaryClient.createFeedback(primaryRunId, "user-rating", {
+    await primaryClient.createFeedback({
+      runId: primaryRunId,
+      sessionId: primarySessionId,
+      key: "user-rating",
       score: 1,
     });
 
     // Submit feedback to the secondary replica using the computed run ID
-    await secondaryClient.createFeedback(secondaryRunId, "user-rating", {
+    await secondaryClient.createFeedback({
+      runId: secondaryRunId,
+      sessionId: secondarySessionId,
+      key: "user-rating",
       score: 1,
     });
   }

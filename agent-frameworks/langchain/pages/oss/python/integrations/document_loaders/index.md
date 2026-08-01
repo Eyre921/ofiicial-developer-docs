@@ -73,10 +73,12 @@ The below document loaders allow you to load PDF documents.
 | [Unstructured](/oss/python/integrations/document_loaders/unstructured_file)                  | Uses Unstructured's open source library to load PDFs                                                             | Package     |
 | [Upstage Document Parse Loader](/oss/python/integrations/document_loaders/upstage)           | Load PDF files using UpstageDocumentParseLoader                                                                  | Package     |
 | [Docling](/oss/python/integrations/document_loaders/docling)                                 | Load PDF files using Docling                                                                                     | Package     |
+| [MinerU](https://mineru.net)                                                                 | Load PDF and other documents using MinerU                                                                        | Package     |
 | [UnDatasIO](https://undatas.io)                                                              | Load PDF files using UnDatasIO                                                                                   | Package     |
 | [OpenDataLoader PDF](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | Load PDF files using OpenDataLoader PDF                                                                          | Package     |
 | [CVFileLoader](https://cvfile.org)                                                           | Load .cv PDF/A-3u files with embedded Markdown, HTML, and JSON Resume payloads                                   | Package     |
 | [pdfmuse](https://github.com/casperkwok/pdfmuse)                                             | Load PDF and DOCX files deterministically, with exact coordinates, tables and per-block section metadata for RAG | Package     |
+| [oxidize-pdf](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)       | Load PDF files using a Rust engine with element-disjoint RAG chunking                                            | Package     |
 
 ### Cloud providers
 
@@ -130,6 +132,7 @@ The below document loaders allow you to load data from common data formats.
   | [`ProxyHatLoader`](https://docs.proxyhat.com)                                                                | <span><a href="https://pypi.org/project/langchain-proxyhat/">  <img alt="Downloads per month" /></a></span>                 |
   | [`OpeddFeedLoader`](https://opedd.com/for-ai-agents)                                                         | <span><a href="https://pypi.org/project/langchain-opedd/">  <img alt="Downloads per month" /></a></span>                    |
   | [`SpidraLoader`](https://docs.spidra.io)                                                                     | <span><a href="https://pypi.org/project/langchain-spidra/">  <img alt="Downloads per month" /></a></span>                   |
+  | [`MinerULoader`](https://mineru.net)                                                                         | <span><a href="https://pypi.org/project/langchain-mineru/">  <img alt="Downloads per month" /></a></span>                   |
   | [`CVFileLoader`](https://cvfile.org)                                                                         | <span><a href="https://pypi.org/project/langchain-cvfile/">  <img alt="Downloads per month" /></a></span>                   |
   | [`Google memorystore for Redis`](/oss/python/integrations/document_loaders/google_memorystore_redis)         | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/">  <img alt="Downloads per month" /></a></span> |
   | [`HyperbrowserLoader`](https://docs.hyperbrowser.ai)                                                         | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>             |
@@ -150,6 +153,7 @@ The below document loaders allow you to load data from common data formats.
   | [`PlasmateSOMLLoader`](https://docs.plasmate.app/integration-langchain)                                      | <span><a href="https://pypi.org/project/langchain-plasmate/">  <img alt="Downloads per month" /></a></span>                 |
   | [`Google cloud SQL for SQL server`](/oss/python/integrations/document_loaders/google_cloud_sql_mssql)        | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/">  <img alt="Downloads per month" /></a></span>   |
   | [`AgentMail`](https://github.com/agentmail-to/langchain-agentmail)                                           | <span><a href="https://pypi.org/project/langchain-agentmail/">  <img alt="Downloads per month" /></a></span>                |
+  | [`OxidizePdfLoader`](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain)                | <span><a href="https://pypi.org/project/langchain-oxidize-pdf/">  <img alt="Downloads per month" /></a></span>              |
   | [`Google el carro for Oracle workloads`](https://github.com/googleapis/langchain-google-el-carro-python/)    | <span><a href="https://pypi.org/project/langchain-google-el-carro/">  <img alt="Downloads per month" /></a></span>          |
   | [`PowerScaleDocumentLoader`](/oss/python/integrations/document_loaders/powerscale)                           | <span><a href="https://pypi.org/project/powerscale-rag-connector/">  <img alt="Downloads per month" /></a></span>           |
 </div>

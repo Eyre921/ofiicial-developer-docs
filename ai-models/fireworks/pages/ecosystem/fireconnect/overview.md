@@ -6,7 +6,7 @@ path: ecosystem/fireconnect/overview
 
 Route Claude Code, OpenCode, Codex, Pi, Cursor, VS Code, and Deep Agents through Fireworks AI or Microsoft Foundry models
 
-[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off without hand-editing config files.
+[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. It is a core component of [Fireworks Nexus](/fireworks-nexus/overview) and also works standalone with any Fireworks API key. Install once, sign in once, then flip any supported harness on or off without hand-editing config files.
 
 Choose where inference runs:
 
@@ -17,6 +17,15 @@ Choose where inference runs:
   New here? Run `fireconnect login`, then `fireconnect claude on`, restart Claude Code, and send `hi`. Try the [side-by-side demo](/ecosystem/fireconnect/demo) if you want to compare before switching.
 </Tip>
 
+## What's new in v0.9.1
+
+FireConnect **0.9.1** improves upgrades and Claude model setup:
+
+* **Seamless upgrades**: from 0.9.0 on, reinstalling or running `fireconnect upgrade` keeps harness settings in place — Claude Code stays connected
+* **In-place upgrade**: `fireconnect upgrade`, or answer **Yes** when an interactive terminal prompts you that a newer version is available
+* **Claude model preferences**: first-run onboarding wizard, `--interactive` / `--non-interactive`, and persisted mappings per key type (`fw_...` vs `fpk_...`)
+* **Reliability**: baked API keys across harness configs, WebSearch MCP auth refresh on upgrade/login, clearer catalog labels
+
 ## What's new in v0.9.0
 
 FireConnect **0.9.0** adds a global model catalog, first-class FireRouter support, and safer upgrades:
@@ -26,7 +35,7 @@ FireConnect **0.9.0** adds a global model catalog, first-class FireRouter suppor
 * **Claude usage reports**: `fireconnect claude usage`
 * **Web search MCP**: HTTP MCP for live search with a Fireworks API key ([details](/ecosystem/fireconnect/websearch-mcp)). FireConnect auto-install on Claude Code; other harnesses coming soon.
 
-See [Upgrade to v0.9.0](#upgrade-to-v090) before enabling FireRouter or web search on an older install.
+If you are upgrading from **before 0.9.0**, see [Upgrade FireConnect](#upgrade-fireconnect) before enabling FireRouter or web search.
 
 ## Guides
 
@@ -122,23 +131,29 @@ The installer clones the CLI to `~/.fireconnect/cli`, installs dependencies, and
 
 You do not have to run `login` first. `fireconnect claude on` runs sign-in inline if needed.
 
-### Upgrade to v0.9.0
+### Upgrade FireConnect
 
-Re-run the install script to upgrade FireConnect.
+Upgrade with either command:
 
 ```bash theme={null}
+fireconnect upgrade
+# or
 curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
 ```
 
-If Claude Code was connected, the installer temporarily restores your original settings. Reconnect after upgrade:
+**On FireConnect 0.9.0 or newer**, harness settings are preserved — Claude Code and other harnesses stay connected across upgrade or reinstall. No need to run `fireconnect claude off` first.
+
+In an interactive terminal, FireConnect may prompt **Upgrade now?** when a newer release is available. Answer **Yes** to run `fireconnect upgrade`, or **No** to snooze the prompt for a day.
+
+**Upgrading from before 0.9.0** with Claude Code connected: FireConnect temporarily restores your original Claude settings before updating. Reconnect after upgrade:
 
 ```bash theme={null}
 fireconnect claude on
 ```
 
-For CI, set `FIRECONNECT_AUTO_OFF_CLAUDE=1` to skip prompts. Check version with `fireconnect --version`.
+For non-interactive installs (CI), set `FIRECONNECT_AUTO_OFF_CLAUDE=1` to restore automatically. Check version with `fireconnect --version`.
 
-After upgrading, see the v0.9.0 guides: [CLI reference](/ecosystem/fireconnect/cli-reference), [recommended models](/ecosystem/fireconnect/recommended-models), [side-by-side demo](/ecosystem/fireconnect/demo), and [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
+After upgrading, see the [CLI reference](/ecosystem/fireconnect/cli-reference), [recommended models](/ecosystem/fireconnect/recommended-models), [side-by-side demo](/ecosystem/fireconnect/demo), and [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
 
 ## Sign in
 

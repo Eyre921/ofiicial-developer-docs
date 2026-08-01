@@ -17,7 +17,7 @@ The following table shows tools that execute online searches in some shape or fo
 | Tool/Toolkit                                                                       | Free/Paid                                   | Return Data                                                                                      |
 | ---------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | [cloro](https://docs.cloro.dev)                                                    | Paid                                        | URL, Snippet, Title, Answer                                                                      |
-| [CrustAPI](https://crustapi.com/docs)                                              | Free tier available                         | URL, Title, Snippet, Maps, News, Shopping, Images, Videos, Places, Scholar, Patents, LinkedIn    |
+| [CrustAPI](https://crustapi.com/docs)                                              | 3,000 free credits/month, no card           | URL, Title, Snippet, Maps, News, Shopping, Images, Videos, Places, Scholar, Patents, LinkedIn    |
 | [Exa Search](/oss/python/integrations/tools/exa_search)                            | 1000 free searches/month                    | URL, Author, Title, Published Date                                                               |
 | [Google Search](/oss/python/integrations/tools/google_search)                      | Paid                                        | URL, Snippet, Title                                                                              |
 | [iFlow Search](https://platform.iflow.cn/)                                         | Paid                                        | URL, Title, Snippet, Date                                                                        |
@@ -37,6 +37,7 @@ The following table shows tools that execute online searches in some shape or fo
 | [Apify](https://docs.apify.com/platform/integrations/langchain)                    | Free tier, pay-per-use (varies by Actor)    | Actor output (varies by Actor)                                                                   |
 | [Xpoz](https://www.xpoz.ai/docs)                                                   | Free tier available                         | Posts, user profiles, comments, engagement metrics (Twitter/X, Instagram, Reddit, TikTok)        |
 | [You.com Search](/oss/python/integrations/tools/you)                               | \$100 in credits on sign up                 | URL, Title, Page Content                                                                         |
+| [Querit](https://querit.com/docs)                                                  | 1000 free searches/month on sign up         | URL, Snippet, Title, Page\_Age, Site\_Name, Site\_Icon                                           |
 
 ## Code interpreter
 
@@ -46,6 +47,7 @@ The following table shows tools that can be used as code interpreters:
 | -------------------------------------------------------------------------------------------------------------- | ------------------------------ | ---------------------------- | --------------------- | ------------------- | --------------------- |
 | [Amazon Bedrock AgentCore Code Interpreter](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter) | Python, JavaScript, TypeScript | Configurable (up to 8 hours) | ✅                     | Text, Images, Files | ❌                     |
 | [Azure Container Apps dynamic sessions](/oss/python/integrations/tools/azure_dynamic_sessions)                 | Python                         | 1 Hour                       | ✅                     | Text, Images        | ❌                     |
+| [Capsule Code Interpreter](https://github.com/mavdol/langchain-capsule)                                        | Python, JavaScript             | Stateless or session-based   | ✅ (REPL tools)        | Text                | ✅                     |
 
 ## Productivity
 
@@ -54,6 +56,7 @@ The following table shows tools that can be used to automate tasks in productivi
 | Tool/Toolkit                                                 | Pricing                                                                        |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | [Gmail Toolkit](/oss/python/integrations/tools/google_gmail) | Free, with limit of 250 quota units per user per second                        |
+| [GoodSender Toolkit](https://goodsender.com/docs)            | Free tier (100,000 emails/month), no credit card required                      |
 | [AgentLine Toolkit](https://docs.agentline.cloud)            | $2/number one-time, $0.10/min calls, pay-as-you-go                             |
 | [AgentMail Toolkit](https://docs.agentmail.to/)              | Free tier available, with [pay-as-you-go pricing](https://agentmail.to) after  |
 | [AgenticEmail Toolkit](https://agenticemail.dev/docs)        | Free tier available, with [paid plans](https://agenticemail.dev/pricing) after |
@@ -108,6 +111,14 @@ The following table shows tools that can be used to execute financial transactio
 | [Privy](/oss/python/integrations/tools/privy)                     | Free    | Create wallets with configurable permissions and execute transactions with speed.             |
 | [Uniswap V2](https://github.com/Conrad-sudo/langchain-uniswap-v2) | Free    | Get live Uniswap V2 swap quotes and prepare unsigned swap transactions for Ethereum and Base. |
 
+## AI Workflow Optimization
+
+The following tools optimize AI Agent workflows by reducing token usage and enforcing structured SOPs:
+
+| Tool/Toolkit                                                      | Pricing                  | Key Features                                                                                     |
+| ----------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------ |
+| [HuangtingFlux](https://huangtingflux.com/integrations/langchain) | Free (public MCP server) | 40% token reduction via 3-stage SOP: input compression, rolling summarization, output refinement |
+
 ## Integration platforms
 
 The following platforms provide access to multiple tools and services through a unified interface:
@@ -124,9 +135,10 @@ The following table shows tools that can be used for security-related tasks:
 | Tool/Toolkit                                                    | Pricing                    | Capabilities                                                                                                                                             |
 | --------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [URLCheck](https://urlcheck.dev)                                | 100 free requests/day      | Verify URL safety before agent navigation. Supports optional intent-aware risk analysis. Returns actionable access directives (ALLOW/DENY/RETRY\_LATER). |
-| [AI Identity](https://ai-identity.co/docs)                      | Free tier available        | Per-agent cryptographic API keys, scoped policy enforcement, and tamper-proof audit logging via a gateway in front of tools and LLM calls.               |
+| [AI Identity](https://ai-identity.co/docs)                      | Free tier available        | Per-agent cryptographic API keys, scoped policy enforcement, and tamper-evident audit logging via a gateway in front of tools and LLM calls.             |
 | [RelayShield](https://api.relayshield.net/developers)           | Paid                       | MCP server registry-risk and prompt-injection-breach checks before high-impact agent actions.                                                            |
 | [SidClaw](https://docs.sidclaw.com/docs/integrations/langchain) | Free hosted tier available | Policy evaluation, human approval workflows, and tamper-evident audit trails for LangChain tool calls.                                                   |
+| [Tonic Textual](https://textual.tonic.ai)                       | Requires account           | Detect, extract, synthesize, or tokenize PII in text, JSON, HTML, and files.                                                                             |
 
 ## All tools and toolkits
 
@@ -201,6 +213,7 @@ The following table shows tools that can be used for security-related tasks:
   | [`SearchApiSearch`](https://www.searchapi.io/docs/google)                                                        | <span><a href="https://pypi.org/project/langchain-searchapi/">  <img alt="Downloads per month" /></a></span>              |
   | [`AgentLineToolkit`](https://docs.agentline.cloud)                                                               | <span><a href="https://pypi.org/project/langchain-agentline/">  <img alt="Downloads per month" /></a></span>              |
   | [`Synap`](https://maximem.ai)                                                                                    | <span><a href="https://pypi.org/project/maximem-synap-langchain/">  <img alt="Downloads per month" /></a></span>          |
+  | [`Synoppy`](https://synoppy.com/docs)                                                                            | <span><a href="https://pypi.org/project/langchain-synoppy/">  <img alt="Downloads per month" /></a></span>                |
   | [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2)                                        | <span><a href="https://pypi.org/project/langchain-uniswap-v2/">  <img alt="Downloads per month" /></a></span>             |
   | [`Robocorp toolkit`](https://github.com/robocorp/robocorp)                                                       | <span><a href="https://pypi.org/project/langchain-robocorp/">  <img alt="Downloads per month" /></a></span>               |
   | [`Hyperbrowser browser agent`](https://docs.hyperbrowser.ai/)                                                    | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span>           |
@@ -228,7 +241,9 @@ The following table shows tools that can be used for security-related tasks:
   | [`Agentql`](https://docs.agentql.com/)                                                                           | <span><a href="https://pypi.org/project/langchain-agentql/">  <img alt="Downloads per month" /></a></span>                |
   | [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb)                                       | <span><a href="https://pypi.org/project/langchain-spicedb/">  <img alt="Downloads per month" /></a></span>                |
   | [`RustChainToolkit`](https://github.com/Scottcjn/langchain-rustchain)                                            | <span><a href="https://pypi.org/project/langchain-rustchain-tools/">  <img alt="Downloads per month" /></a></span>        |
+  | [`Tonic Textual`](https://textual.tonic.ai)                                                                      | <span><a href="https://pypi.org/project/langchain-textual/">  <img alt="Downloads per month" /></a></span>                |
   | [`Synmerco`](https://synmerco.com/docs)                                                                          | <span><a href="https://pypi.org/project/synmerco-langchain/">  <img alt="Downloads per month" /></a></span>               |
+  | [`OptionsAhoy`](https://optionsahoy.com/for-agents)                                                              | <span><a href="https://pypi.org/project/optionsahoy-langchain/">  <img alt="Downloads per month" /></a></span>            |
   | [`GracefulFailTool`](https://selfheal.dev/docs)                                                                  | <span><a href="https://pypi.org/project/graceful-fail/">  <img alt="Downloads per month" /></a></span>                    |
   | [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs)                                                        | <span><a href="https://pypi.org/project/langchain-oxylabs/">  <img alt="Downloads per month" /></a></span>                |
   | [`Privy`](/oss/python/integrations/tools/privy)                                                                  | <span><a href="https://pypi.org/project/langchain-privy/">  <img alt="Downloads per month" /></a></span>                  |
@@ -266,8 +281,13 @@ The following table shows tools that can be used for security-related tasks:
   | [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                           | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
   | [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                    | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
   | [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless)                       | <span><a href="https://pypi.org/project/langchain-scrapeless/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Capsule`](https://github.com/mavdol/langchain-capsule)                                                         | <span><a href="https://pypi.org/project/langchain-capsule/">  <img alt="Downloads per month" /></a></span>                |
+  | [`GoodSender Toolkit`](https://goodsender.com/docs)                                                              | <span><a href="https://pypi.org/project/langchain-goodsender/">  <img alt="Downloads per month" /></a></span>             |
+  | [`Querit`](https://querit.com/docs)                                                                              | <span><a href="https://pypi.org/project/langchain-querit/">  <img alt="Downloads per month" /></a></span>                 |
+  | [`DynamicFeed`](https://dynamicfeed.ai/integrations)                                                             | <span><a href="https://pypi.org/project/dynamicfeed-tools/">  <img alt="Downloads per month" /></a></span>                |
   | [`Hlido`](https://hlido.eu/docs/)                                                                                | <span><a href="https://pypi.org/project/hlido-langchain/">  <img alt="Downloads per month" /></a></span>                  |
   | [`Browserless`](https://browserless.io)                                                                          | <span>N/A</span>                                                                                                          |
+  | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain)                                              | <span>N/A</span>                                                                                                          |
   | [`Search1API Toolkit`](https://www.search1api.com/docs/integrations/langchain)                                   | <span>N/A</span>                                                                                                          |
 </div>
 

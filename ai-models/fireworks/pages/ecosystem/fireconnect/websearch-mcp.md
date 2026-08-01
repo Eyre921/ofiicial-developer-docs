@@ -62,7 +62,7 @@ For Claude Code with FireConnect:
 fireconnect claude on
 ```
 
-For eligible accounts, FireConnect installs `fireworks-websearch`, adds Claude Code-specific `permissions.deny` entries for built-in web tools, and configures keychain-backed auth. Look for `Web search → fireworks-websearch (installed)` in the CLI output.
+For eligible accounts, FireConnect installs `fireworks-websearch`, adds Claude Code-specific `permissions.deny` entries for built-in web tools, and writes a literal Bearer token into the MCP config (refreshed on `fireconnect upgrade` or `fireconnect login`). Look for `Web search → fireworks-websearch (installed)` in the CLI output.
 
 On other harnesses, add the [MCP endpoint](#mcp-endpoint) manually until FireConnect support ships.
 

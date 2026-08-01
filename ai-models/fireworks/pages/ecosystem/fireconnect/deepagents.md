@@ -12,7 +12,7 @@ Use Fireworks AI models in LangChain Deep Agents Code with the FireConnect CLI
 
 * [Deep Agents Code](https://docs.langchain.com/oss/python/deepagents/cli) (`dcode`) installed
 * A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or a [Fire Pass](/firepass) key (`fpk_...`)
-* FireConnect **v0.9.0+** (see [Install](/ecosystem/fireconnect/overview#install))
+* FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 ## Enable Fireworks routing
 
@@ -35,7 +35,7 @@ fireconnect deepagents status
 
 ## Default model
 
-Deep Agents routes a single default model. The default is `glm-fast-latest`, written to config as `fireworks:<model-id>`.
+Deep Agents routes a single default model. The default is `kimi-fast-latest`, written to config as `fireworks:<model-id>`.
 
 ## What gets written
 

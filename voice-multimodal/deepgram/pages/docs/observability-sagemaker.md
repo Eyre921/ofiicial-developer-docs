@@ -259,6 +259,8 @@ aws logs filter-log-events \
 
 CloudWatch alarms monitor a metric and trigger notifications or actions when the metric crosses a threshold. Use alarms to detect capacity issues, error spikes, and infrastructure problems before they affect users.
 
+For a signal that fires before errors reach callers, see [Read health as a metric](/docs/health-checks-sagemaker#read-health-as-a-metric) — the container reports `degraded` and `critical` states directly.
+
 ### Recommended alarms
 
 The following alarms cover the most critical failure and capacity scenarios for Deepgram on SageMaker.

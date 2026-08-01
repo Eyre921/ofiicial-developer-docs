@@ -46,11 +46,15 @@ The following example creates a trace with two child runs, then logs feedback ag
       trace_id = root_run.id
       child_runs = root_run.child_runs
 
+  # Resolve the UUID of the project that owns the trace
+  session_id = client.create_project(project_name=root_run.session_name, upsert=True).id
+
   # Provide feedback for a trace (a.k.a. a root run)
   client.create_feedback(
       key="user_feedback",
       score=1,
       trace_id=trace_id,
+      session_id=session_id,
       comment="the user said that ..."
   )
 
@@ -63,6 +67,7 @@ The following example creates a trace with two child runs, then logs feedback ag
       # trace_id= is optional but recommended to enable batched and backgrounded
       # feedback ingestion.
       trace_id=trace_id,
+      session_id=session_id,
   )
   ```
 
@@ -73,14 +78,16 @@ The following example creates a trace with two child runs, then logs feedback ag
       // ... Run your application and get the run_id...
       // This information can be the result of a user-facing feedback form
 
-  await client.createFeedback(
+  // Resolve the UUID of the project that owns the trace
+  const { id: sessionId } = await client.createProject({ projectName: "default", upsert: true });
+
+  await client.createFeedback({
       runId,
-      "feedback-key",
-      {
-          score: 1.0,
-          comment: "comment",
-      }
-  );
+      sessionId,
+      key: "feedback-key",
+      score: 1.0,
+      comment: "comment",
+  });
   ```
 </CodeGroup>
 

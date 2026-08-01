@@ -6,7 +6,7 @@ path: ecosystem/firerouter/overview
 
 Route LLM requests between closed-source and open models with FireRouter
 
-FireRouter is a managed routing service for **any LLM workload**. Request the FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to decide whether it can be served by a cheaper Fireworks open model or should pass through to a closed-source model.
+FireRouter is a managed routing service for **any LLM workload**. It is part of [Fireworks Nexus](/fireworks-nexus/overview) and also available on self-serve through the Fireworks inference API or [FireConnect](/ecosystem/fireconnect/overview). Request the FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to decide whether it can be served by a cheaper Fireworks open model or should pass through to a closed-source model.
 
 The result is lower cost on simpler requests without giving up closed-source quality on harder ones.
 
@@ -49,7 +49,7 @@ fireconnect claude on --model firerouter
 
 See the [FireConnect overview: Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter, and [FireConnect + FireRouter](/ecosystem/fireconnect/overview#firerouter) for quick enable steps. Per-harness guides (Claude Code slot flags, Codex Anthropic env, routing preference) live on each harness page.
 
-Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade to v0.9.0](/ecosystem/fireconnect/overview#upgrade-to-v090).
+Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect).
 
 Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. Without an Anthropic key, FireRouter still redirects to open models but cannot pass through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication).
 

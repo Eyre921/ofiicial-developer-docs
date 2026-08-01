@@ -17,6 +17,7 @@ fireconnect status       # Show sign-in state and where the key is stored
 fireconnect configure    # Set the provider (Azure/Foundry) and Anthropic key for FireRouter
 fireconnect model list   # Browse the global Fireworks coding model catalog
 fireconnect demo         # Race Anthropic vs Fireworks on the same prompt
+fireconnect upgrade      # Update FireConnect (curl/git install only)
 fireconnect uninstall    # Disable all harnesses, restore configs, remove CLI
 fireconnect help         # Show help
 fireconnect --version    # Print the installed CLI version (-V also works)
@@ -89,6 +90,11 @@ Each IDE harness (`cursor`, `vscode`) supports `on`, `off`, `status`, and `help`
 
 Use `--model <id>` for the primary model. Claude Code also supports slot flags: `--opus`, `--sonnet`, `--haiku`, `--fable`, `--subagent`.
 
+Claude Code-only flags:
+
+* `--interactive` — open the model mapping wizard (cannot combine with model flags)
+* `--non-interactive` — skip first-run onboarding; use saved preferences or example defaults
+
 On the Foundry path, pass your model with `--model` (for example, `--model FW-GLM-5.2`).
 
 <Tip>
@@ -131,6 +137,14 @@ Claude Code additionally reads harness-local keys from `~/.claude/settings.json`
 | `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
 | `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
 
+### v0.9.1 changes
+
+| Feature                | Details                                                                                        |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| `fireconnect upgrade`  | In-place upgrade for curl/git installs; interactive terminals may prompt **Upgrade now?**      |
+| Seamless upgrade       | From 0.9.0 on, harness settings (including Claude Code) are preserved across upgrade/reinstall |
+| Claude `--interactive` | Model mapping wizard with fast/non-fast profile toggle; preferences persist per key type       |
+
 ### v0.9.0 changes
 
 | Before                               | After                                                  |
@@ -145,4 +159,4 @@ Claude Code additionally reads harness-local keys from `~/.claude/settings.json`
 
 * [FireConnect overview](/ecosystem/fireconnect/overview)
 * [Recommended models](/ecosystem/fireconnect/recommended-models)
-* [Upgrade to v0.9.0](/ecosystem/fireconnect/overview#upgrade-to-v090)
+* [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect)
