@@ -40,7 +40,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 
-  You can find ways to contribute to open source projects on GitHub that are relevant to you.
+  <p>You can find ways to contribute to open source projects on GitHub that are relevant to you.</p>
 
 ## Links
 
