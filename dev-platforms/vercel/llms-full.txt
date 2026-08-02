@@ -579,6 +579,9 @@ The table below shows a list of events logged on the Activity page.
 | page-integrity-resource-rejected | Active | A resource was rejected in Page Integrity. |
 | page-integrity-script-approval-rule-created | Active | A Page Integrity script approval rule was created. |
 | page-integrity-script-approval-rule-deleted | Active | A Page Integrity script approval rule was deleted. |
+| passkey-created | Active | A new passkey was created. |
+| passkey-deleted | Active | An existing passkey was deleted. |
+| passkey-updated | Active | The name of the existing passkey was updated. |
 | passport-access-granted | Active | A visitor authenticated to a Passport-protected project. |
 | password-protection-disabled | Active | Advanced Deployment Protection was disabled for the team. |
 | password-protection-enabled | Active | Advanced Deployment Protection was enabled for the team. |
@@ -809,8 +812,14 @@ The table below shows a list of events logged on the Activity page.
 | user-emu-account-archived | Active | A user archived their personal account during enterprise-managed user setup. |
 | user-emu-account-deleted | Active | A user deleted their personal account during enterprise-managed user setup. |
 | user-emu-account-recovered | Active | A user recovered their archived account using a recovery code. |
+| user-mfa-challenge-failed | Active | A two-factor challenge attempt failed. |
 | user-mfa-challenge-verified | Active | A two-factor challenge was verified |
+| user-mfa-change-failed | Active | An attempt to change two-factor configuration failed. |
+| user-mfa-configuration-updated | Active | Two-factor configuration was updated |
+| user-mfa-recovery-codes-regenerated | Active | Two-factor recovery codes were regenerated |
+| user-mfa-removed | Active | MFA was removed from a user account. |
 | user-mfa-setup-skipped | Active | Two-factor authentication setup was skipped |
+| user-mfa-totp-verified | Active | A Two-factor authenticator app was added |
 | user-primary-email-updated | Active | The primary email was changed |
 | user-token-created | Active | A Personal Access Token was created. |
 | user-token-deleted | Active | A Token was deleted. |

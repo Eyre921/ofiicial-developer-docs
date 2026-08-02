@@ -36,7 +36,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 
-  <p>Learn how to migrate your existing CI/CD workflows to GitHub Actions.</p>
+  Learn how to migrate your existing CI/CD workflows to GitHub Actions.
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
