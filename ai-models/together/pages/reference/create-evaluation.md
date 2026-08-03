@@ -4,4 +4,4 @@ source: https://docs.together.ai/reference/create-evaluation
 path: reference/create-evaluation
 ---
 
-POST /evaluation
+openapi.yaml POST /evaluation

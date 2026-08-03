@@ -4,6 +4,22 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 31, 2026">
+  ## Model upload progress in the console
+
+  While a remote model upload is pending or running, the [Models](https://api.together.ai/models) page shows an **Uploading** badge on the model under **My models** and floats it to the top of the list. Opening the model shows a live **Upload progress** event log until the job finishes.
+
+  See [Check upload status](/docs/dedicated-endpoints/custom-models#check-upload-status).
+</Update>
+
+<Update label="July 29, 2026">
+  ## Models page visibility filter
+
+  The [Models](https://api.together.ai/models) page now lists Internal-visibility models from every project in your organization under **My models**, not only from the selected project. A **Visibility** filter lets you show **Internal** models, **Private** models, or both.
+
+  See [Upload a fine-tuned model](/docs/dedicated-endpoints/custom-models#create-the-model).
+</Update>
+
 <Update label="July 29, 2026">
   ## Model deprecations
 
@@ -1414,7 +1430,7 @@ path: docs/changelog
 
   You can now run evaluations:
 
-  * Using [Serverless LoRA](/docs/lora-inference#serverless-lora-inference) models, including supported LoRA fine-tuned models.
+  * Using [Serverless LoRA](/docs/fine-tuning/lora-vs-full) models, including supported LoRA fine-tuned models.
   * Using [dedicated model inference](/docs/dedicated-endpoints), including fine-tuned models deployed via dedicated endpoints.
 </Update>
 

@@ -196,7 +196,7 @@ DeepgramClient client = DeepgramClient.builder()
 
 Once connected, follow the same steps as the [Voice Agent Getting Started](/docs/voice-agent) guide to configure and interact with your agent. For additional SDK configuration details, see [Using SDKs with Self-Hosted](/docs/using-sdks-with-self-hosted).
 
-***
+---
 
 What's Next
 

@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/deployments-list
 path: reference/deployments-list
 ---
 
-GET /deployments
+openapi.yaml GET /deployments
 Get a list of all deployments in your project

@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/deployments-storage-volumes-list
 path: reference/deployments-storage-volumes-list
 ---
 
-GET /deployments/storage/volumes
+openapi.yaml GET /deployments/storage/volumes
 Retrieve all volumes in your project

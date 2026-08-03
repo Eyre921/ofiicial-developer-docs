@@ -33,6 +33,10 @@ Save the following as `batch_input.jsonl`:
 | `method`    | string | Conditional | Set to `"FILE"` when batching `/v1/audio/transcriptions` or `/v1/audio/translations` so the worker dispatches each request as `multipart/form-data`. Omit for chat completion batches. See [Run an audio transcription batch](#run-an-audio-transcription-batch). |
 | `body`      | object | Yes         | Request body matching the endpoint's schema.                                                                                                                                                                                                                      |
 
+<Warning>
+  Each line must be under 10 MB. The limit applies to the full serialized line, so inline base64 payloads count toward it (e.g. a single high-resolution image embedded as a `data:image/...;base64,` URL). Oversized lines aren't caught during validation, and will fail with `error reading input file`. To stay under the limit, reference images by hosted URL instead of inlining them, or resize and compress images before encoding.
+</Warning>
+
 ## Step 2: Upload the file
 
 Upload the JSONL file with `purpose="batch-api"`. The upload returns a file object whose `id` you'll pass to the batch job in the next step.

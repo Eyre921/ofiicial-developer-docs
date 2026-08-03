@@ -143,4 +143,4 @@ https://api.deepgram.com/v1/listen?model=whisper-SIZE
 | `whisper-medium` OR `whisper` | [See available](/docs/deepgram-whisper-cloud#supported-languages) |
 | `whisper-large`               | [See available](/docs/deepgram-whisper-cloud#supported-languages) |
 
-***
+---

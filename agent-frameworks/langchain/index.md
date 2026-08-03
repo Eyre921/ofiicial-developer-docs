@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1518 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1520 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -940,7 +940,9 @@
 - `langsmith/smith-api/sandboxes/list-sandboxes` — [List sandboxes](pages/langsmith/smith-api/sandboxes/list-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-sandboxes)
 - `langsmith/smith-api/sandboxes/list-snapshots` — [List snapshots](pages/langsmith/smith-api/sandboxes/list-snapshots.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/list-snapshots)
 - `langsmith/smith-api/sandboxes/open-a-sandbox-tcp-tunnel` — [Open a sandbox TCP tunnel](pages/langsmith/smith-api/sandboxes/open-a-sandbox-tcp-tunnel.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/open-a-sandbox-tcp-tunnel)
+- `langsmith/smith-api/sandboxes/resume-a-streamed-sandbox-command` — [Resume a streamed sandbox command](pages/langsmith/smith-api/sandboxes/resume-a-streamed-sandbox-command.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/resume-a-streamed-sandbox-command)
 - `langsmith/smith-api/sandboxes/start-a-sandbox` — [Start a sandbox](pages/langsmith/smith-api/sandboxes/start-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/start-a-sandbox)
+- `langsmith/smith-api/sandboxes/start-a-streamed-sandbox-command` — [Start a streamed sandbox command](pages/langsmith/smith-api/sandboxes/start-a-streamed-sandbox-command.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/start-a-streamed-sandbox-command)
 - `langsmith/smith-api/sandboxes/stop-a-sandbox` — [Stop a sandbox](pages/langsmith/smith-api/sandboxes/stop-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/stop-a-sandbox)
 - `langsmith/smith-api/sandboxes/update-a-registry` — [Update a registry](pages/langsmith/smith-api/sandboxes/update-a-registry.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/update-a-registry)
 - `langsmith/smith-api/sandboxes/update-a-sandbox` — [Update a sandbox](pages/langsmith/smith-api/sandboxes/update-a-sandbox.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sandboxes/update-a-sandbox)

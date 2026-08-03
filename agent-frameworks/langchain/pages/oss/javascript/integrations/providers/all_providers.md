@@ -123,6 +123,10 @@ Connect LangGraph agents to front ends and observability platforms.
     GPT models and OpenAI's comprehensive chat capabilities.
   </Card>
 
+  <Card title="SCX" href="https://scx.ai/">
+    Open-weight chat and multimodal models with image and video input over SCX's OpenAI-compatible API.
+  </Card>
+
   <Card title="xAI" href="/oss/javascript/integrations/chat/xai">
     xAI's Grok models for conversational AI.
   </Card>
@@ -233,6 +237,10 @@ Connect LangGraph agents to front ends and observability platforms.
 
   <Card title="Pinecone" href="/oss/javascript/integrations/embeddings/pinecone">
     Pinecone's embedding models and vector database.
+  </Card>
+
+  <Card title="SCX" href="https://scx.ai/">
+    4096-dimension E5-Mistral embeddings over SCX's OpenAI-compatible API.
   </Card>
 </Columns>
 

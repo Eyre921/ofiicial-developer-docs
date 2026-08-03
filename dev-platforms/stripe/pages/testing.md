@@ -976,7 +976,7 @@ To mimic different scenarios, use these microdeposit amounts *or* 0.01 descripto
 
 ### Test settlement behavior
 
-Test transactions settle instantly and are added to your available test balance. This behavior differs from livemode, where transactions can take [multiple days](https://docs.stripe.com/testing.md#timing) to settle in your available balance.
+Test transactions settle instantly and are added to your available test balance. This behavior differs from livemode, where transactions can take [multiple days](https://docs.stripe.com/payments/ach-direct-debit.md#timing) to settle in your available balance.
 
 #### SEPA Direct Debit
 

@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/dmi/ab-experiments-update
 path: reference/dmi/ab-experiments-update
 ---
 
-PATCH /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Updates an experiment's description or member traffic percentages. Use the experiment etag for optimistic concurrency.

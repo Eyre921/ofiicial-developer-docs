@@ -130,6 +130,8 @@ Use the Express Dashboard when your connected accounts:
 - Don’t require developer tools or advanced reporting.
 - Benefit from a lightweight, platform-branded UI.
 
+[View the demo](https://express.stripe.dev)
+
 You can [configure the Express Dashboard](https://docs.stripe.com/connect/customize-express-dashboard.md#customize-features) to customize which features, such as disputes, refunds, and manual payouts, your connected accounts can access.
 
 You can always add [Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md) to your own website in tandem with providing access to the Express Dashboard.

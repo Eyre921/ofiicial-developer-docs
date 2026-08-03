@@ -18,7 +18,7 @@ This guide focuses on using Deepgram Console. If you would like to use the Deepg
 
 This guide only applies to Console projects which have been granted access to self-hosted products. If you have access, your [Console](https://console.deepgram.com/login) menu should have an "Self-Hosted" tab, as shown below.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c/images/edd10ba-ps_2024-07-15_094100.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113249Z&X-Amz-Expires=604800&X-Amz-Signature=b5af788cc1b5eb7315a771486daf8af00ebf8c85463ff5fd2e41c6b680f88541&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c/images/edd10ba-ps_2024-07-15_094100.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233304Z&X-Amz-Expires=604800&X-Amz-Signature=742185a294fb4583df50d18a809b86eef1b38d29f7c14c06c31101db0a7d62a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 If you do not have this tab in Console, your project has either:
 
@@ -35,7 +35,7 @@ You can use the [Deepgram Console](https://console.deepgram.com/login) or the De
 
 After receiving your key, you can dismiss the pop-up and return to the `API Keys` page. You should see your new self-hosted API key, and if you expand the details, you can view the self-hosted products which can be licensed by that key.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/b218956d7dbb408bfff11da6fd02baff5a460c5cbbcd31cfc12f968f487fe8a6/images/70047e9-ps_2024-07-15_095415.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113249Z&X-Amz-Expires=604800&X-Amz-Signature=361c8b864e9d7c71a526f140efb2a1cdbc15efed37c707385b628a6491b493d9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/b218956d7dbb408bfff11da6fd02baff5a460c5cbbcd31cfc12f968f487fe8a6/images/70047e9-ps_2024-07-15_095415.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233304Z&X-Amz-Expires=604800&X-Amz-Signature=5f76e39ca6d2164a89aa9b42ee7068656328b106053b0cbe630e2dc0879998a4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Depending on your self-hosted agreement with Deepgram, you may have access to different products. All self-hosted customers have access to API and Engine. For access to the [License Proxy](/docs/license-proxy), please contact [Support](https://deepgram.com/contact-us/).
 
@@ -47,13 +47,13 @@ Distribution credentials are *not* the same as self-hosted API keys. In our docu
 
 1. Back on the [Console](https://console.deepgram.com) page, use the menu on the left and click on the "Self-Hosted" tab, then click "Create New Distribution Credentials".
 
-   ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c/images/edd10ba-ps_2024-07-15_094100.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113249Z&X-Amz-Expires=604800&X-Amz-Signature=b5af788cc1b5eb7315a771486daf8af00ebf8c85463ff5fd2e41c6b680f88541&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/ce3dd5ce35b13be3dc2dc1d4db490fa2595386098cc34f491584bf95c8e50a2c/images/edd10ba-ps_2024-07-15_094100.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233304Z&X-Amz-Expires=604800&X-Amz-Signature=742185a294fb4583df50d18a809b86eef1b38d29f7c14c06c31101db0a7d62a5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/2983e3d374dd79c34b5c3c4dca7d40b5a8939275114ad0ef7717b1510630a7b8/images/d0f206c-ps_2023-08-04_095150.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113249Z&X-Amz-Expires=604800&X-Amz-Signature=b197859b05e6c0d57543a8bfee07545f5d0b70787ea5fdfe58da7bf5736cd75f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/2983e3d374dd79c34b5c3c4dca7d40b5a8939275114ad0ef7717b1510630a7b8/images/d0f206c-ps_2023-08-04_095150.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233304Z&X-Amz-Expires=604800&X-Amz-Signature=a500065473e3e1b345bc91cdb98bf323516fcdde40b14b013fa3e62549652967&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Provide a name for your distribution credentials and click "Create Credentials".
 
-   ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/4342a2c3051f1a9047e060cdd815ee78cc38147087e57c7bb8b60c41c6160b61/images/4c1ee36-ps_2024-07-15_095604.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113249Z&X-Amz-Expires=604800&X-Amz-Signature=31d59fd6d78d6a0ea4e1aac9b0a83127ee8d2028d198c94988536278f72c3070&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/4342a2c3051f1a9047e060cdd815ee78cc38147087e57c7bb8b60c41c6160b61/images/4c1ee36-ps_2024-07-15_095604.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233304Z&X-Amz-Expires=604800&X-Amz-Signature=fcc8aa41b127ee3e7d5e1add270da2794f1b1a2ca6cac54b47ea043920784c1a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 3. Your new credentials will be shown, which include:
 
@@ -63,11 +63,11 @@ Distribution credentials are *not* the same as self-hosted API keys. In our docu
 
    You can use the `secret` as your password for the `shell` command. Again, take note of the displayed values, as they can't be accessed again. Once you've copied it, check the box affirming you understand this and click "Got it".
 
-![Distribution credentials limited secret access](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/09e31055925f38aba5e810a562badba0f089f3e07b7751aa478d42142a85db7b/images/232d72f-Screenshot_2023-06-28_at_11.47.01_AM.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113249Z&X-Amz-Expires=604800&X-Amz-Signature=a1f65bb27daec159a331f6db0d0ccec7e10abb3796bb6098b8e72a94a530f793&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Distribution credentials limited secret access](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/09e31055925f38aba5e810a562badba0f089f3e07b7751aa478d42142a85db7b/images/232d72f-Screenshot_2023-06-28_at_11.47.01_AM.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233304Z&X-Amz-Expires=604800&X-Amz-Signature=9e59be1fe0cd250608c9a7dbeb61126b748d281dea078206a651b7f9746a55b5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 5. The pop-up will be dismissed and you will be back on the "Self-Hosted" page. You should see your new distribution credentials and the container images which can be accessed with those credentials.
 
-   ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/51816f5ea9c7acf2f707d3c586fb3e27e3913b81333757c4783a302520f8c59d/images/09ea5d9-ps_2024-07-15_095816.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113249Z&X-Amz-Expires=604800&X-Amz-Signature=c858737a6582bc4462d1487cf5a0c0c3318874e9409e921e29daf994aecf001c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/51816f5ea9c7acf2f707d3c586fb3e27e3913b81333757c4783a302520f8c59d/images/09ea5d9-ps_2024-07-15_095816.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233304Z&X-Amz-Expires=604800&X-Amz-Signature=97d15271a245e9ea21f69c89f0d44475ffe36021ca4e8395129aacdaf5c19659&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Migration for Legacy Licensing and Container Distribution
 
@@ -101,7 +101,7 @@ If your image tags have the prefix `quay.io`, such as some of the examples below
    1. Edit any custom `api.toml` and `engine.toml` configuration files. Replace the value at `[license.key]` with your API key secret.
    2. If needed, edit the `docker-compose.yml` file (or other orchestration platform files) to replace the key used by the License Proxy or other add-on products. Replace the value at `--license-key` with your API key secret.
 
-***
+---
 
 What's Next
 

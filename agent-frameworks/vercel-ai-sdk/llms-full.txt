@@ -41706,6 +41706,17 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
+- **has** _Array&lt;'implicit-caching' | 'vision'&gt;_
+
+  Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
+
+  Supported capabilities:
+
+  - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
+  - `'vision'` — models that accept image input.
+
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input.
+
 - **providerTimeouts** _object_
 
   Per-provider timeouts for BYOK credentials in milliseconds. Controls how long to wait for a provider to start responding before falling back to the next available provider.
@@ -41809,6 +41820,56 @@ const { text } = await generateText({
   providerOptions: {
     gateway: {
       quotaEntityId: "org-123",
+    } satisfies GatewayProviderOptions,
+  },
+});
+```
+
+#### Filtering by Model Capability
+
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, and `'vision'` limits routing to models that accept image input. If no provider model for the requested model satisfies the capabilities, the request fails.
+
+```ts
+import type { GatewayProviderOptions } from "@ai-sdk/gateway";
+import { generateText } from "ai";
+
+const { text } = await generateText({
+  model: "openai/gpt-5.5",
+  prompt: "Summarize this report...",
+  providerOptions: {
+    gateway: {
+      has: ["implicit-caching"],
+    } satisfies GatewayProviderOptions,
+  },
+});
+```
+
+Use `'vision'` when the request sends image input, so the gateway only routes to
+provider models that can accept it:
+
+```ts
+import type { GatewayProviderOptions } from "@ai-sdk/gateway";
+import { generateText } from "ai";
+import fs from "node:fs";
+
+const { text } = await generateText({
+  model: "anthropic/claude-sonnet-4.6",
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "Describe the image in detail." },
+        {
+          type: "file",
+          mediaType: "image/png",
+          data: fs.readFileSync("./data/comic-cat.png"),
+        },
+      ],
+    },
+  ],
+  providerOptions: {
+    gateway: {
+      has: ["vision"],
     } satisfies GatewayProviderOptions,
   },
 });
@@ -80842,6 +80903,17 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
+- **has** _Array&lt;'implicit-caching' | 'vision'&gt;_
+
+  Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
+
+  Supported capabilities:
+
+  - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
+  - `'vision'` — models that accept image input.
+
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input.
+
 - **providerTimeouts** _object_
 
   Per-provider timeouts for BYOK credentials in milliseconds. Controls how long to wait for a provider to start responding before falling back to the next available provider.
@@ -80971,6 +81043,56 @@ const { text } = await generateText({
   providerOptions: {
     gateway: {
       quotaEntityId: "org-123",
+    } satisfies GatewayProviderOptions,
+  },
+});
+```
+
+#### Filtering by Model Capability
+
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, and `'vision'` limits routing to models that accept image input. If no provider model for the requested model satisfies the capabilities, the request fails.
+
+```ts
+import type { GatewayProviderOptions } from "@ai-sdk/gateway";
+import { generateText } from "ai";
+
+const { text } = await generateText({
+  model: "openai/gpt-5.5",
+  prompt: "Summarize this report...",
+  providerOptions: {
+    gateway: {
+      has: ["implicit-caching"],
+    } satisfies GatewayProviderOptions,
+  },
+});
+```
+
+Use `'vision'` when the request sends image input, so the gateway only routes to
+provider models that can accept it:
+
+```ts
+import type { GatewayProviderOptions } from "@ai-sdk/gateway";
+import { generateText } from "ai";
+import fs from "node:fs";
+
+const { text } = await generateText({
+  model: "anthropic/claude-sonnet-4.6",
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "Describe the image in detail." },
+        {
+          type: "file",
+          mediaType: "image/png",
+          data: fs.readFileSync("./data/comic-cat.png"),
+        },
+      ],
+    },
+  ],
+  providerOptions: {
+    gateway: {
+      has: ["vision"],
     } satisfies GatewayProviderOptions,
   },
 });
@@ -120242,7 +120364,10 @@ Define your tools in one tool set and use `experimental_toolCallers` to select
 which tools code mode can call:
 
 ```ts
-import { experimental_codeModeTool as codeModeTool } from '@ai-sdk/code-mode';
+import {
+  DIRECT_TOOL_CALL,
+  experimental_codeModeTool as codeModeTool,
+} from '@ai-sdk/code-mode';
 import { generateText, isStepCount, tool } from 'ai';
 import { z } from 'zod';
 
@@ -120289,25 +120414,25 @@ const tools = {
 const result = await generateText({
   model: __MODEL__,
   tools,
-  experimental_toolCallers: ({ code_mode }) => ({
-    getInventory: [code_mode],
-    getDemand: [code_mode],
-  }),
+  experimental_toolCallers: {
+    getInventory: ['code_mode'],
+    getDemand: ['code_mode'],
+  },
   stopWhen: isStepCount(10),
   prompt: 'Compare inventory and demand for product sku_123.',
 });
 ```
 
-The keys returned by `experimental_toolCallers` are the tools being governed.
+The keys in `experimental_toolCallers` are the tools being governed.
 The values identify their allowed callers. In this example, `getInventory` and
 `getDemand` are available through `code_mode`, but they are not exposed to the
-model as directly callable tools. Include `'direct'` when a tool should also be
-callable directly:
+model as directly callable tools. Include `DIRECT_TOOL_CALL` when a tool should
+also be callable directly:
 
 ```ts
-experimental_toolCallers: ({ code_mode }) => ({
-  getInventory: ['direct', code_mode],
-});
+experimental_toolCallers: {
+  getInventory: ['code_mode', DIRECT_TOOL_CALL],
+};
 ```
 
 Tools without an `experimental_toolCallers` entry keep their existing direct
@@ -123169,33 +123294,62 @@ const { video } = await generateVideo({
   longer timeouts (60 seconds or more) depending on the model and video length.
 </Note>
 
-### Polling Timeout
+### Polling
 
-Video generation is an asynchronous process that can take several minutes to complete. Most providers use a polling mechanism where the SDK periodically checks if the video is ready. The default polling timeout is typically 5 minutes, which may not be sufficient for longer videos or certain models.
+Video generation is an asynchronous process that can take several minutes to complete. The SDK automatically polls the provider to check if the video is ready. You can configure the polling behavior:
 
-You can configure the polling timeout using provider-specific options. Each provider exports a type for its options that you can use with `satisfies` for type safety:
-
-```tsx highlight={"8-12"}
+```tsx highlight={"8-11"}
 import { experimental_generateVideo as generateVideo } from 'ai';
-import { fal, type FalVideoModelOptions } from '@ai-sdk/fal';
+import { fal } from '@ai-sdk/fal';
 
 const { video } = await generateVideo({
   model: fal.video('luma-dream-machine/ray-2'),
   prompt: 'A cinematic timelapse of a city from dawn to dusk',
   duration: 10,
-  providerOptions: {
-    fal: {
-      pollTimeoutMs: 600000, // 10 minutes
-    } satisfies FalVideoModelOptions,
+  poll: {
+    intervalMs: 5000, // Check every 5 seconds (default)
+    timeoutMs: 600000, // Timeout after 10 minutes (default)
   },
 });
 ```
 
-<Note>
-  For production use, we recommend setting `pollTimeoutMs` to at least 10
-  minutes (600000ms) to account for varying generation times across different
-  models and video lengths.
-</Note>
+For durable workflows that provide their own sleep primitive, pass it as
+`poll.delay`. The custom delay is used for both polling intervals and webhook
+timeouts.
+
+### Webhooks
+
+For models with native webhook support, pass a `webhook` factory that returns a
+public URL and a promise that resolves when your application receives the
+webhook request:
+
+```tsx highlight={"8-15"}
+import { fal } from '@ai-sdk/fal';
+import { experimental_generateVideo as generateVideo } from 'ai';
+import { createWebhook } from './create-webhook';
+
+const { video } = await generateVideo({
+  model: fal.video('luma-dream-machine/ray-2'),
+  prompt: 'A cinematic timelapse of a city from dawn to dusk',
+  poll: {
+    timeoutMs: 600000, // Wait up to 10 minutes for the webhook
+  },
+  webhook: async () => {
+    const { url, received } = await createWebhook();
+    return { url, received };
+  },
+});
+```
+
+`createWebhook` is an application-specific helper that registers a webhook
+listener before returning. Its `received` promise must resolve with the request
+`headers` and `body`. The SDK sends `url` to the provider, waits for `received`,
+and then retrieves the completed video.
+
+You can provide `poll` together with `webhook`. For models with native webhook
+support, `poll.timeoutMs` limits how long the SDK waits for the notification.
+If the model does not support webhooks, the SDK falls back to polling with the
+provided interval and timeout.
 
 ### Custom Headers
 
@@ -128519,7 +128673,7 @@ import { useState } from 'react';
 
 export default function Page() {
   const [input, setInput] = useState('');
-  const { messages, sendMessage, status } = useChat({
+  const { error, messages, sendMessage, status } = useChat({
     id: 'example-chat',
     transport: new DefaultChatTransport({
       api: '/api/chat',
@@ -128544,6 +128698,8 @@ export default function Page() {
           })}
         </div>
       ))}
+
+      {error && <div>{error.message}</div>}
 
       <form
         onSubmit={event => {
@@ -128645,8 +128801,10 @@ result stream back to a UI message stream:
 ```ts filename='app/api/chat/route.ts'
 import { agent } from './agent';
 import { detachAndPersist, resumeOrCreateSession } from './session-store';
+import { getHarnessErrorMessage } from '@ai-sdk/harness/agent';
 import {
   convertToModelMessages,
+  createUIMessageStream,
   createUIMessageStreamResponse,
   toUIMessageStream,
   type UIMessage,
@@ -128664,19 +128822,33 @@ export async function POST(request: Request) {
 
   const chatId = body.id;
   const messages = await convertToModelMessages(body.messages);
-  const session = await resumeOrCreateSession({ agent, chatId });
-  const result = await agent.stream({ session, messages });
 
   return createUIMessageStreamResponse({
-    stream: toUIMessageStream({
-      stream: result.stream,
-      onEnd: async () => {
-        await detachAndPersist({ chatId, session });
+    stream: createUIMessageStream({
+      execute: async ({ writer }) => {
+        const session = await resumeOrCreateSession({ agent, chatId });
+        const result = await agent.stream({ session, messages });
+
+        writer.merge(
+          toUIMessageStream({
+            stream: result.stream,
+            onError: getHarnessErrorMessage,
+            onEnd: async () => {
+              await detachAndPersist({ chatId, session });
+            },
+          }),
+        );
       },
+      onError: getHarnessErrorMessage,
     }),
   });
 }
 ```
+
+Creating the UI message stream before acquiring the session ensures sandbox,
+bootstrap, and harness startup failures are sent as UI error parts instead of
+becoming generic HTTP errors. `getHarnessErrorMessage` preserves reviewed,
+client-safe harness messages and masks unknown server errors.
 
 Do not use `createAgentUIStreamResponse` directly with `HarnessAgent` unless you
 wrap the agent to inject the required session. `HarnessAgent.stream()` requires
@@ -137751,11 +137923,15 @@ The following gateway provider options are available:
 
   The unique identifier for the entity against which quota is tracked. Used for quota management and enforcement purposes.
 
-- **has** _Array&lt;'implicit-caching'&gt;_
+- **has** _Array&lt;'implicit-caching' | 'vision'&gt;_
 
-  Restricts routing to provider models that have all of the specified capabilities. Currently supports `'implicit-caching'`, which limits routing to models that perform automatic (implicit) prompt caching. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
+  Restricts routing to provider models that have all of the specified capabilities. Applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. If no provider model for the requested model satisfies the capabilities, the request fails. Unsupported values are rejected.
 
-  Example: `has: ['implicit-caching']` will only route to models that support implicit caching.
+  Supported capabilities:
+  - `'implicit-caching'` — models that perform automatic (implicit) prompt caching.
+  - `'vision'` — models that accept image input.
+
+  Example: `has: ['implicit-caching']` will only route to models that support implicit caching. Example: `has: ['vision']` will only route to models that accept image input.
 
 - **providerTimeouts** _object_
 
@@ -137893,7 +138069,7 @@ const { text } = await generateText({
 
 #### Filtering by Model Capability
 
-Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. Currently `'implicit-caching'` is supported, which limits routing to models that perform automatic prompt caching. If no provider model for the requested model satisfies the capabilities, the request fails.
+Set `has` to restrict routing to provider models that have the specified capabilities. This applies to both BYOK and system credentials, since the capability is a property of the model rather than the credential. `'implicit-caching'` limits routing to models that perform automatic prompt caching, and `'vision'` limits routing to models that accept image input. If no provider model for the requested model satisfies the capabilities, the request fails.
 
 ```ts
 import type { GatewayProviderOptions } from '@ai-sdk/gateway';
@@ -137905,6 +138081,37 @@ const { text } = await generateText({
   providerOptions: {
     gateway: {
       has: ['implicit-caching'],
+    } satisfies GatewayProviderOptions,
+  },
+});
+```
+
+Use `'vision'` when the request sends image input, so the gateway only routes to
+provider models that can accept it:
+
+```ts
+import type { GatewayProviderOptions } from '@ai-sdk/gateway';
+import { generateText } from 'ai';
+import fs from 'node:fs';
+
+const { text } = await generateText({
+  model: 'anthropic/claude-sonnet-4.6',
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'Describe the image in detail.' },
+        {
+          type: 'file',
+          mediaType: 'image/png',
+          data: fs.readFileSync('./data/comic-cat.png'),
+        },
+      ],
+    },
+  ],
+  providerOptions: {
+    gateway: {
+      has: ['vision'],
     } satisfies GatewayProviderOptions,
   },
 });
@@ -158441,6 +158648,12 @@ creates a task and polls until it completes, then returns the resulting MP4 URL.
 fractional value is rounded and an out-of-range value is clamped, each with a
 warning. The only supported output resolution is `2K`.
 
+For **text-to-video**, `aspectRatio` defaults to `16:9` when omitted. The MiniMax
+API requires a concrete ratio for text-only requests and does not accept
+`adaptive`. For **reference-to-video**, the API default is `adaptive` when
+`aspectRatio` is omitted. For **image-to-video** with frame images, the aspect
+ratio follows the input image.
+
 <Note>
   Result URLs are time-limited. Download and persist the video to your own
   storage promptly after generation.
@@ -161110,6 +161323,26 @@ endpoint is intended for live audio rather than bulk file upload.
 Ink 2 supports English audio and uses Cartesia's native turn detection by
 default. To finalize only when the input audio stream ends, pass
 `providerOptions.cartesia.streaming.turnDetection: false`.
+
+By default, the provider maps `audio/pcm`, `audio/pcmu`, and `audio/pcma` to
+16-bit PCM, G.711 μ-law, and G.711 A-law respectively. To stream another raw
+PCM representation, set `providerOptions.cartesia.streaming.encoding` to
+`pcm_s32le`, `pcm_f16le`, or `pcm_f32le`. For example:
+
+```ts
+const result = streamTranscribe({
+  model: cartesia.transcription('ink-2'),
+  audio,
+  inputAudioFormat: { type: 'audio/pcm', rate: 48000 },
+  providerOptions: {
+    cartesia: {
+      streaming: {
+        encoding: 'pcm_f32le',
+      },
+    },
+  },
+});
+```
 
 See [Transcription](/docs/ai-sdk-core/transcription) for more information about
 streaming transcription.

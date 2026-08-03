@@ -63506,6 +63506,16 @@ Each utterance in the `utterances` array includes a `translated_texts` object wi
 }
 ```
 
+## Force Translation
+
+By default our translation system will skip translating if the target language and the detected language is the same.
+For example if a transcript is english and you request a language to be translated to english then we will skip the
+translation and prevent you from being charged for a useless action.
+
+However, on occasion a transcript will have a brief intro in a language, but then the rest of the transcript is another.
+Also some transcripts have multiple languages being spoken. If you know this is common and you see translations being
+skipped, you can set `force_translation` to true to ensure the translation happens.
+
 ## API reference
 
 ### Request
@@ -63570,6 +63580,7 @@ curl -X POST \
 | `translation.target_languages`             | array   | Yes       | Array of language codes to translate the transcript into. See the supported languages table for available language codes.                                                                                                                 |
 | `translation.formal`                       | boolean | No        | Whether to use formal language in translations. Defaults to `false`. When `true`, uses formal pronouns and grammatical forms.                                                                                                             |
 | `translation.match_original_utterance`     | boolean | No        | Whether to include translated texts for each utterance. Defaults to `false`. When `true`, returns a `translated_texts` key within each utterance in the `utterances` array. Requires `speaker_labels` to be set to `true` in the request. |
+| `translation.force_translation`     | boolean | No        | Force the system to translate even if it detects that the target language and detected language are the same.  |
 
 ### Response
 

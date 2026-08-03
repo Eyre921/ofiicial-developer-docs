@@ -60,7 +60,7 @@ If you encounter issues with concurrency or rate limits, Deepgram offers several
 * **Community Support**: Join the [Deepgram Discord community](https://discord.gg/xWRaCDBtW4) or participate in [GitHub Discussions](https://github.com/orgs/deepgram/discussions) for assistance.
 * **Enterprise Support**: Enterprise plan subscribers can reach out to the support team via email or Slack for dedicated support.
 
-***
+---
 
 What’s Next
 

@@ -575,7 +575,10 @@ If your business has multiple Stripe accounts, we might generate a financing off
 
 To qualify for an offer through Stripe Capital, your business must:
 
-- Be located or incorporated in Canada. We don’t serve sole proprietors based in Quebec at this time.
+- Be located or incorporated in Canada. However, we don’t support:
+  - Businesses in Saskatchewan
+  - Sole proprietors based in Quebec
+  - New applications from Prince Edward Island
 - Have processed payments on Stripe for at least 3 months.
 - Have an average processing volume of 1,000 CAD for the last 3 months.
 - Don’t operate as a fisherperson, farmer, feedlot or ranch operator.

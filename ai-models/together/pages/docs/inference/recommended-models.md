@@ -12,14 +12,14 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 
 ## Chat & text
 
-| Use case                     | Recommended model          | Model string                | Alternatives                                                        | Learn more                                                    |
-| :--------------------------- | :------------------------- | :-------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------ |
-| **Chat**                     | Kimi K2.6 (instant mode)   | `moonshotai/Kimi-K2.6`      | `MiniMaxAI/MiniMax-M3`                                              | [Chat completions](/docs/inference/chat/overview)             |
-| **Reasoning**                | Kimi K2.6 (reasoning mode) | `moonshotai/Kimi-K2.6`      | `zai-org/GLM-5.2`                                                   | [Reasoning](/docs/inference/chat/reasoning)                   |
-| **Coding agents**            | Kimi K2.7 Code             | `moonshotai/Kimi-K2.7-Code` | `zai-org/GLM-5.2`                                                   | [Build coding agents](/docs/how-to-build-coding-agents)       |
-| **Small and fast**           | Gemma 4 31B IT             | `google/gemma-4-31B-it`     | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`                             | -                                                             |
-| **Mid-size general purpose** | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`      | `MiniMaxAI/MiniMax-M2.7`, `meta-llama/Llama-3.3-70B-Instruct-Turbo` | -                                                             |
-| **Function calling**         | GLM-5.2                    | `zai-org/GLM-5.2`           | `moonshotai/Kimi-K2.6`                                              | [Function calling](/docs/inference/function-calling/overview) |
+| Use case                     | Recommended model          | Model string                | Alternatives                              | Learn more                                                    |
+| :--------------------------- | :------------------------- | :-------------------------- | :---------------------------------------- | :------------------------------------------------------------ |
+| **Chat**                     | Kimi K2.6 (instant mode)   | `moonshotai/Kimi-K2.6`      | `MiniMaxAI/MiniMax-M3`                    | [Chat completions](/docs/inference/chat/overview)             |
+| **Reasoning**                | Kimi K2.6 (reasoning mode) | `moonshotai/Kimi-K2.6`      | `zai-org/GLM-5.2`                         | [Reasoning](/docs/inference/chat/reasoning)                   |
+| **Coding agents**            | Kimi K2.7 Code             | `moonshotai/Kimi-K2.7-Code` | `zai-org/GLM-5.2`                         | [Build coding agents](/docs/how-to-build-coding-agents)       |
+| **Small and fast**           | Gemma 4 31B IT             | `google/gemma-4-31B-it`     | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`   | -                                                             |
+| **Mid-size general purpose** | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`      | `meta-llama/Llama-3.3-70B-Instruct-Turbo` | -                                                             |
+| **Function calling**         | GLM-5.2                    | `zai-org/GLM-5.2`           | `moonshotai/Kimi-K2.6`                    | [Function calling](/docs/inference/function-calling/overview) |
 
 ## Vision
 

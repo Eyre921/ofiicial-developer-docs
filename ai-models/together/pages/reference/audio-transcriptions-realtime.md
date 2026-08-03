@@ -4,7 +4,7 @@ source: https://docs.together.ai/reference/audio-transcriptions-realtime
 path: reference/audio-transcriptions-realtime
 ---
 
-GET /realtime
+openapi.yaml GET /realtime
 Establishes a WebSocket connection for real-time audio transcription. This endpoint uses WebSocket protocol (wss://api.together.ai/v1/realtime) for bidirectional streaming communication.
 
 **Connection Setup:**

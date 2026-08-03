@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/dmi/ab-experiments-get
 path: reference/dmi/ab-experiments-get
 ---
 
-GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.

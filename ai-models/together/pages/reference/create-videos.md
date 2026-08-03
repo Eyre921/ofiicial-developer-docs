@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/create-videos
 path: reference/create-videos
 ---
 
-POST /videos
+openapi.yaml POST /videos
 Create a video

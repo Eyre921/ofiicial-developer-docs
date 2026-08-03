@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 321 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 320 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -18,7 +18,6 @@
 - `docs/agent-skills` — [Coding agent setup](pages/docs/agent-skills.md) · [原文](https://docs.together.ai/docs/agent-skills)
 - `docs/agno` — [Agno](pages/docs/agno.md) · [原文](https://docs.together.ai/docs/agno)
 - `docs/ai-evaluations` — [Overview](pages/docs/ai-evaluations.md) · [原文](https://docs.together.ai/docs/ai-evaluations)
-- `docs/ai-evaluations-ui` — [AI evaluations UI](pages/docs/ai-evaluations-ui.md) · [原文](https://docs.together.ai/docs/ai-evaluations-ui)
 - `docs/ai-search-engine` — [Build an AI search engine](pages/docs/ai-search-engine.md) · [原文](https://docs.together.ai/docs/ai-search-engine)
 - `docs/ai-tutor` — [Build an interactive AI tutor with Llama 3.1](pages/docs/ai-tutor.md) · [原文](https://docs.together.ai/docs/ai-tutor)
 - `docs/api-keys-authentication` — [Authentication](pages/docs/api-keys-authentication.md) · [原文](https://docs.together.ai/docs/api-keys-authentication)

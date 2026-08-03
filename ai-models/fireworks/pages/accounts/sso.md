@@ -13,6 +13,7 @@ If you have an enterprise account, Fireworks supports bringing your own identity
 
 * OpenID Connect (OIDC) provider
 * SAML 2.0 provider
+* Optionally, the work-email domain your users sign in with, so they can start SSO by entering their email instead of your account ID
 
 <Info>
   Coordinate with your Fireworks AI representative to enable the integration.

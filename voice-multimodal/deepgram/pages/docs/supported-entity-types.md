@@ -110,4 +110,4 @@ Some entity types (`cardinal`, `ordinal`, `percent`) are not included in any red
 | routing\_number        | Routing number associated with a bank or financial institution |                                                                | `numbers`        |
 | zodiac\_sign           | Names of Zodiac signs                                          |                                                                | `pii`            |
 
-***
+---

@@ -653,4 +653,4 @@ The `transaction_key` in the `metadata` field can be ignored. The result is alwa
 * [Streaming audio](/docs/live-streaming-audio): Transcribe audio in real time.
 * [Use cases](/docs/transcribe-recorded-calls-with-twilio): Explore ways to use Deepgram products.
 
-***
+---

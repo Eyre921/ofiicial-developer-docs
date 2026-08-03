@@ -26,7 +26,7 @@ Here is a list of the current models, and you can also find more information abo
 | Multilingual Speech to Speech | eleven\_multilingual\_sts\_v2 |
 | English Speech to Speech      | eleven\_english\_sts\_v2      |
 
-***
+---
 
 <strong>
   Older Models
@@ -37,7 +37,7 @@ Here is a list of the current models, and you can also find more information abo
 | Turbo v2.5 | eleven\_turbo\_v2\_5 |
 | Turbo v2   | eleven\_turbo\_v2    |
 
-***
+---
 
 <strong>
   Cost when generating via the website:

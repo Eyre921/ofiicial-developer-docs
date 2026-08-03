@@ -123,4 +123,4 @@ Finally, we see that each `sentence` object contains:
 * `start`: Number of seconds into the audio stream that the sentence starts.
 * `end`: Number of seconds into the audio stream that the sentence ends.
 
-***
+---

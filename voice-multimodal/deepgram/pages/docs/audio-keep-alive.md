@@ -482,4 +482,4 @@ Here is an example timeline demonstrating the behavior.
 | Resume sending audio payloads                                    | 30 seconds | *n/a*                                 |
 | Results received                                                 | 35 seconds | 10-15 seconds                         |
 
-***
+---

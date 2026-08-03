@@ -127,4 +127,4 @@ When enabled, the transcript for each received streaming response shows a key ca
 ...
 ```
 
-***
+---

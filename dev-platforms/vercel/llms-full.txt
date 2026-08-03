@@ -1,4 +1,94 @@
 --------------------------------------------------------------------------------
+title: "Access tokens"
+description: "Create and scope Vercel access tokens to your full account, a team, or a single project, then use them to authenticate API and CLI requests."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/accounts/access-tokens"
+--------------------------------------------------------------------------------
+
+# Access tokens
+
+Vercel access tokens authenticate requests to the [Vercel REST API](/docs/rest-api#creating-an-access-token) and the [Vercel CLI](/docs/cli/tokens) on your behalf. You create and manage them on the [Account Tokens page](https://vercel.com/account/tokens), under the Settings area of your account, and you can also create them without the dashboard using the [REST API](/docs/rest-api/authentication/create-an-auth-token) or the CLI.
+
+A token's value appears only once, at creation, so copy it then and store it somewhere secure because you cannot retrieve it again afterward. Every token carries a scope that determines which resources it can reach. This page explains the three scoping levels and walks through [creating a **project-scoped token**](#project-scoped-access-token), which limits a token to a single project.
+
+## Token scoping levels
+
+When you create a token, you choose how far its access reaches. Vercel supports three levels:
+
+| Scope             | Access                                                                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Full Account**  | Acts on your personal account and every team you belong to. The Scope dropdown labels this option "Full Account".                    |
+| **Team**          | Limited to a single team. The token can read and write that team's resources across all of its projects.                            |
+| **Project**       | Limited to a single project within a team. The token can only read and write resources belonging to that one project.               |
+
+A project-scoped token denies any request to another project, to a user-level resource, or to a team-level resource. This keeps jobs, tools, and workflows constrained to the projects they need rather than granting them the entire team or your full account.
+
+> **💡 Note:** Some teams require you to enable two-factor authentication or SAML before you
+> can create tokens scoped to them. If a team enforces this, the dashboard tells
+> you so when you select it.
+
+## Project-scoped access token
+
+This section covers creating a project-scoped access token from the dashboard.
+
+### Prerequisites
+
+- A Vercel account.
+- Membership in the team that owns the project you want to scope the token to.
+- Two-factor authentication enabled on your account, if the target team requires it.
+
+- ### Open the Account Tokens page
+  In the scope selector at the top left of the dashboard's navigation bar, make sure you are viewing your personal account rather than a team. Then go to the [Account Tokens page](https://vercel.com/account/tokens), also found under the Settings area of your account.
+
+- ### Name the token
+  Enter a descriptive name for the token so you can identify it later.
+
+- ### Select the team
+  Open the **Scope** dropdown and select the team that owns the project. Clicking the team drills into its list of projects.
+
+- ### Select the project
+  Select the project you want the token to be limited to.
+  > **💡 Note:** Selecting **All Projects** instead of an individual project creates a
+  > team-scoped token rather than a project-scoped one.
+
+- ### Choose an expiration and create the token
+  Choose an expiration and select **Create**.
+
+- ### Copy the token
+  Copy the token now. Personal access tokens begin with the prefix `vcp_`, and the value will not be shown again.
+
+## Use a scoped token with the API
+
+Pass the token as a Bearer token in the `Authorization` header of your request.
+
+```bash filename="terminal"
+curl "https://api.vercel.com/v9/projects" \
+  -H "Authorization: Bearer vcp_xxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+*Listing projects with a scoped access token*
+
+Team- and project-scoped tokens do not require the `teamId` query parameter or the team `slug` on API requests. Vercel infers the team and project from the token's scope, so you can omit those parameters. Full-account tokens still need `?teamId=` when targeting a specific team's resources.
+
+## Create and manage tokens programmatically
+
+You can create tokens without the dashboard through two paths.
+
+- **REST API**, where the [create an auth token](/docs/rest-api/authentication/create-an-auth-token) endpoint accepts an optional `projectId` in the request body to scope the token to a project.
+- **Vercel CLI**, where [`vercel tokens`](/docs/cli/tokens) manages tokens from the command line. Use `vercel tokens add --project <PROJECT_ID>` to create a project-scoped token.
+
+> **💡 Note:** Creating tokens through the CLI or API requires a full-account token. A
+> project-scoped token cannot mint new tokens.
+
+## Related
+
+- [Vercel REST API authentication](/docs/rest-api#creating-an-access-token)
+- [Managing tokens with the Vercel CLI](/docs/cli/tokens)
+- [Create an auth token API endpoint](/docs/rest-api/authentication/create-an-auth-token)
+- [Account Management](/docs/accounts)
+
+
+--------------------------------------------------------------------------------
 title: "Account Management"
 description: "Learn how to manage your Vercel account and team members."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -543,6 +633,8 @@ The table below shows a list of events logged on the Activity page.
 | log-drain-deleted | Replaced | A log drain was deleted. (Replaced by drain-deleted) |
 | log-drain-disabled | Replaced | A log drain was disabled. (Replaced by drain-updated) |
 | log-drain-enabled | Replaced | A log drain was enabled. (Replaced by drain-updated) |
+| login-connection-linked | Active | An OAuth/SSO login connection was linked to the account. |
+| login-connection-unlinked | Active | An OAuth/SSO login connection was disconnected from the account. |
 | manual-deployment-promotion-created | Active | A deployment was manually promoted to production. |
 | marketplace-flex-commit-opt-in | Active | The team opted in to paying Marketplace invoices from its Flexible Commitment. |
 | marketplace-integration-allowlist-updated | Active | The team's marketplace integration allowlist configuration was changed. |
@@ -816,6 +908,7 @@ The table below shows a list of events logged on the Activity page.
 | user-mfa-challenge-verified | Active | A two-factor challenge was verified |
 | user-mfa-change-failed | Active | An attempt to change two-factor configuration failed. |
 | user-mfa-configuration-updated | Active | Two-factor configuration was updated |
+| user-mfa-recovery-code-used | Active | A two-factor recovery (backup) code was used to sign in. |
 | user-mfa-recovery-codes-regenerated | Active | Two-factor recovery codes were regenerated |
 | user-mfa-removed | Active | MFA was removed from a user account. |
 | user-mfa-setup-skipped | Active | Two-factor authentication setup was skipped |
@@ -832,6 +925,7 @@ The table below shows a list of events logged on the Activity page.
 | vcr-repository-permission-added | Active | A team was granted access to a container registry repository. |
 | vcr-repository-permission-removed | Active | A team's access to a container registry repository was revoked. |
 | vcr-repository-permissions-cleared | Active | Every team's access to a container registry repository was revoked. |
+| vcr-repository-visibility-changed | Active | A container registry repository was made public or private. |
 | vercel-agent-elevated-permissions-approved | Active | A Vercel Agent elevated access request was approved. |
 | vercel-agent-elevated-permissions-requested | Active | A Vercel Agent plan requested elevated access. |
 | vercel-agent-session-created | Active | A Vercel Agent session was created. |
@@ -53777,7 +53871,7 @@ source: "https://vercel.com/docs/cli/vcr"
 
 # vercel vcr
 
-The `vercel vcr` command is the entry point for managing [Vercel Container Registry](/docs/container-registry) (VCR) from the Vercel CLI. It groups subcommands for listing, inspecting, creating, and deleting repositories, and for managing their tags and images. The full command surface is documented in the [Container Registry CLI Reference](/docs/container-registry/cli-reference). This page summarizes the entry point and links to the full reference.
+The `vercel vcr` command is the entry point for managing [Vercel Container Registry](/docs/container-registry) (VCR) from the Vercel CLI. It groups subcommands for listing, inspecting, creating, and deleting repositories, for managing their tags and images, and for sharing repositories with other teams. The full command surface is documented in the [Container Registry CLI Reference](/docs/container-registry/cli-reference). This page summarizes the entry point and links to the full reference.
 
 ## Usage
 
@@ -53808,7 +53902,7 @@ OIDC token.*
 
 ## Full reference
 
-For the full list of subcommands, options, and examples, see the [Container Registry CLI Reference](/docs/container-registry/cli-reference). Use `vercel vcr login` to authenticate Docker, Podman, or Buildah with VCR, `vercel vcr tag` to browse a repository's tags, and `vercel vcr image` to list, inspect, or delete images. To push and pull images, use Docker-compatible tooling as described in the [Container Registry documentation](/docs/container-registry#push-an-image).
+For the full list of subcommands, options, and examples, see the [Container Registry CLI Reference](/docs/container-registry/cli-reference). Use `vercel vcr login` to authenticate Docker, Podman, or Buildah with VCR, `vercel vcr tag` to browse a repository's tags, `vercel vcr image` to list, inspect, or delete images, and `vercel vcr permissions` to manage which teams a repository is [shared](/docs/container-registry#share-a-repository) with. To push and pull images, use Docker-compatible tooling as described in the [Container Registry documentation](/docs/container-registry#push-an-image).
 
 ## Related
 
@@ -61602,7 +61696,7 @@ source: "https://vercel.com/docs/container-registry/cli-reference"
 
 # Container Registry CLI Reference
 
-The `vercel vcr` command group lets you manage [Vercel Container Registry](/docs/container-registry) (VCR) repositories, tags, and images from your terminal. Use it to list, inspect, create, and delete repositories, browse a repository's tags, and manage the images stored in each repository.
+The `vercel vcr` command group lets you manage [Vercel Container Registry](/docs/container-registry) (VCR) repositories, tags, and images from your terminal. Use it to list, inspect, create, and delete repositories, browse a repository's tags, manage the images stored in each repository, and control which teams a repository is [shared](/docs/container-registry#share-a-repository) with.
 
 `vercel vcr` is part of the [Vercel CLI](/docs/cli). To push and pull images, use Docker-compatible tooling as described in the [Container Registry documentation](/docs/container-registry#push-an-image).
 
@@ -61666,6 +61760,7 @@ vercel vcr <subcommand> [OPTIONS]
 - [`login`](#vercel-vcr-login): Authenticate a container tool with the Vercel Container Registry.
 - [`tag`](#vercel-vcr-tag): List or inspect a repository's tags. (alias: `tags`)
 - [`image`](#vercel-vcr-image): List, inspect, or delete images in a repository. (alias: `images`)
+- [`permissions`](#vercel-vcr-permissions): Manage which teams can pull images from a repository. (alias: `permission`)
 
 For more help, try running `vercel vcr <subcommand> --help`.
 
@@ -62089,6 +62184,181 @@ vercel vcr image rm my-app image_Ml0PUBaNT8SRrYXDOOEiFedAsAEs --yes
 | `<repository>` | The name or ID of the repository the image belongs to. |
 | `<image-id>`   | The ID of the image to delete.                 |
 
+## `vercel vcr permissions`
+
+Manage which teams can pull images from a container registry repository. See [Share a repository](/docs/container-registry#share-a-repository) for how sharing works.
+
+```bash filename="terminal"
+vercel vcr permissions <repository> <subcommand> [OPTIONS]
+```
+
+Unlike `vercel vcr tag` and `vercel vcr image`, the repository comes before the subcommand.
+
+### `vercel vcr permissions` subcommands
+
+- [`ls`](#vercel-vcr-permissions-ls): List teams with access to a repository. (alias: `list`)
+- [`add`](#vercel-vcr-permissions-add): Give one or more teams access to pull images from a repository.
+- [`rm`](#vercel-vcr-permissions-rm): Remove one or more teams' access to a repository. (alias: `remove`)
+- [`clear`](#vercel-vcr-permissions-clear): Remove access to a repository for every team.
+
+## `vercel vcr permissions ls`
+
+List the teams a repository is shared with, and when each team was added.
+
+```bash filename="terminal"
+vercel vcr permissions <repository> ls [OPTIONS]
+```
+
+### `vercel vcr permissions ls` example
+
+```bash filename="terminal"
+# List teams with access to a repository
+vercel vcr permissions my-repository ls
+
+# List teams with access as JSON
+vercel vcr permissions my-repository ls --format json
+```
+
+### `vercel vcr permissions ls` options
+
+| Option                   | Short | Description                                            |
+| ------------------------ | ----- | ------------------------------------------------------ |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project).   |
+| `--limit <number>`       | -     | Number of results to return per page (max: 100).       |
+| `--cursor <token>`       | `-c`  | Cursor from a previous page to continue listing from.  |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                         |
+
+### `vercel vcr permissions ls` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr permissions ls` arguments
+
+| Argument       | Description                                          |
+| -------------- | ---------------------------------------------------- |
+| `<repository>` | The name or ID of the repository to list access for. |
+
+## `vercel vcr permissions add`
+
+Give one or more teams access to pull images from a repository.
+
+```bash filename="terminal"
+vercel vcr permissions <repository> add <team> [OPTIONS]
+```
+
+Teams that start with `team_` are treated as team IDs. Anything else is treated as a team slug.
+
+### `vercel vcr permissions add` example
+
+```bash filename="terminal"
+# Share a repository with a team by ID
+vercel vcr permissions my-repository add team_1a2b3c4d
+
+# Share a repository with a team by slug
+vercel vcr permissions my-repository add my-team
+
+# Share a repository with multiple teams
+vercel vcr permissions my-repository add team_1a2b3c4d,other-team
+```
+
+### `vercel vcr permissions add` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr permissions add` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr permissions add` arguments
+
+| Argument       | Description                                                                      |
+| -------------- | -------------------------------------------------------------------------------- |
+| `<repository>` | The name or ID of the repository to share.                                       |
+| `<team>`       | One or more team IDs or slugs to grant access to, comma or space separated.      |
+
+## `vercel vcr permissions rm`
+
+Remove one or more teams' access to a repository.
+
+```bash filename="terminal"
+vercel vcr permissions <repository> rm <team> [OPTIONS]
+```
+
+### `vercel vcr permissions rm` example
+
+```bash filename="terminal"
+# Remove a team's access by ID
+vercel vcr permissions my-repository rm team_1a2b3c4d
+
+# Remove multiple teams' access
+vercel vcr permissions my-repository rm team_1a2b3c4d,other-team
+```
+
+### `vercel vcr permissions rm` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr permissions rm` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr permissions rm` arguments
+
+| Argument       | Description                                                                    |
+| -------------- | ------------------------------------------------------------------------------ |
+| `<repository>` | The name or ID of the repository to remove access from.                        |
+| `<team>`       | One or more team IDs or slugs to revoke access from, comma or space separated. |
+
+## `vercel vcr permissions clear`
+
+Remove access to a repository for every team.
+
+```bash filename="terminal"
+vercel vcr permissions <repository> clear [OPTIONS]
+```
+
+### `vercel vcr permissions clear` example
+
+```bash filename="terminal"
+# Clear all repository permissions, with a confirmation prompt
+vercel vcr permissions my-repository clear
+
+# Clear all repository permissions without the confirmation prompt
+vercel vcr permissions my-repository clear --yes
+```
+
+### `vercel vcr permissions clear` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr permissions clear` flags
+
+| Flag     | Short | Description                   |
+| -------- | ----- | ----------------------------- |
+| `--yes`  | `-y`  | Skip the confirmation prompt. |
+| `--help` | `-h`  | Display help information.     |
+
+### `vercel vcr permissions clear` arguments
+
+| Argument       | Description                                        |
+| -------------- | -------------------------------------------------- |
+| `<repository>` | The name or ID of the repository to clear access for. |
+
 
 --------------------------------------------------------------------------------
 title: "Container Registry limits and pricing"
@@ -62120,11 +62390,12 @@ The total image size is calculated from the compressed layers and config blob re
 
 ### Plan limits
 
-| Resource                 | Hobby | Pro    | Enterprise |
-| ------------------------ | ----- | ------ | ---------- |
-| Repositories per project | 10    | 1,000  | 5,000      |
-| Images per repository    | 50    | 10,000 | 50,000     |
-| Tags per repository      | 1,000 | 10,000 | 50,000     |
+| Resource                          | Hobby | Pro    | Enterprise |
+| --------------------------------- | ----- | ------ | ---------- |
+| Repositories per project          | 10    | 1,000  | 5,000      |
+| Images per repository             | 50    | 10,000 | 50,000     |
+| Tags per repository               | 1,000 | 10,000 | 50,000     |
+| Teams a repository is shared with | 100   | 100    | 100        |
 
 ### Compatibility limits
 
@@ -62226,9 +62497,44 @@ Pull a VCR image with the same full repository path:
 docker pull vcr.vercel.com/team-slug/project-slug/my-repository:latest
 ```
 
+## Share a repository
+
+Share a repository with other Vercel teams to give them read access to its images. Sharing applies to the whole repository, including all of its tags and images.
+
+Repositories belong to a single project. To use a repository's images from other projects in your team, share the repository with your own team.
+
+To share a repository from your project dashboard:
+
+1. Open [**Images**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fimages\&title=Go+to+Images) in your project dashboard and select the repository.
+2. Open the **Settings** tab.
+3. Under **Repository Sharing**, enter the team ID or slug of the team you want to share with, then click **Add Team**.
+
+You can share a repository with up to 100 teams. To revoke access, remove the team from the same section.
+
+You can also manage sharing from the CLI with [`vercel vcr permissions`](/docs/container-registry/cli-reference#vercel-vcr-permissions):
+
+```bash filename="terminal"
+# Share a repository with a team
+vercel vcr permissions my-repository add other-team
+
+# List teams with access
+vercel vcr permissions my-repository ls
+
+# Revoke a team's access
+vercel vcr permissions my-repository rm other-team
+```
+
+Teams with access can pull images and use them in [Vercel Sandbox](/docs/sandbox/concepts/images#use-a-shared-image). They can't push images, delete images, or share the repository with other teams.
+
+A team with access pulls a shared image with its full repository path after authenticating as their own team:
+
+```bash filename="terminal"
+docker pull vcr.vercel.com/team-slug/project-slug/my-repository:latest
+```
+
 ## Manage repositories from the CLI
 
-Use the `vercel vcr` command group in the [Vercel CLI](/docs/cli) to list, inspect, create, and delete repositories, and to manage their tags and images. For all commands, subcommands, and options, see the [Container Registry CLI Reference](/docs/container-registry/cli-reference).
+Use the `vercel vcr` command group in the [Vercel CLI](/docs/cli) to list, inspect, create, and delete repositories, to manage their tags and images, and to manage repository sharing. For all commands, subcommands, and options, see the [Container Registry CLI Reference](/docs/container-registry/cli-reference).
 
 ## Limits and pricing
 
@@ -77367,22 +77673,24 @@ callback, which returns a `runtimeContext` object that rides onto the model-call
 
 --------------------------------------------------------------------------------
 title: "eve"
-description: "eve is a filesystem-first framework for building durable backend AI agents that run on Vercel."
+description: "Learn how to deploy and run durable backend AI agents built with the open-source eve framework on Vercel."
 last_updated: "2018-10-20T01:46:40.000Z"
 source: "https://vercel.com/docs/eve"
 --------------------------------------------------------------------------------
 
 # eve
 
-[eve](https://eve.dev/) is a filesystem-first framework for durable backend AI agents. You define each agent with files
-under an `agent/` directory. eve discovers those files and compiles them into an app that runs on
-[Vercel Functions](/docs/functions).
-
 > **💡 Note:** eve is currently in beta and subject to the
 > .
 > The framework, APIs, documentation, and behavior may change before general availability.
 
-eve uses these Vercel services:
+[eve](https://eve.dev/) is an open-source, filesystem-first framework for durable backend AI agents. You define each
+agent with files under an `agent/` directory, and eve discovers those files and compiles them into a
+runnable app. eve runs locally, on Vercel, or on a long-running Node.js host, and can use AI Gateway
+or call AI SDK model providers directly.
+
+These docs cover deploying and running eve on Vercel. In this environment, the compiled app runs on
+[Vercel Functions](/docs/functions) and integrates with these services:
 
 - [Vercel Workflows](/docs/workflows) persist session state and resume interrupted work.
 - [Vercel Sandbox](/docs/sandbox) isolates code execution.
@@ -77407,6 +77715,9 @@ standard script from the scaffold:
 ```bash
 pnpm dev
 ```
+
+See the [eve Getting Started guide](https://eve.dev/docs/getting-started) for the complete setup,
+local development, and first-session walkthrough.
 
 ## Define an agent
 
@@ -77479,6 +77790,8 @@ curl http://127.0.0.1:3000/eve/v1/session/<sessionId>/stream
   token usage in the Vercel dashboard.
 
 ## Resources
+
+**eve documentation**: Explore the complete framework documentation, including guides, channels, tools, skills, and API references. [Learn more →](https://eve.dev/docs)
 
 **Concepts**: Learn how eve agents, sessions, channels, tools, skills, connections, and sandboxes fit together. [Learn more →](/docs/eve/concepts)
 
@@ -90322,11 +90635,11 @@ async function abortPendingTask() {
 
 The table below shows a highlight of the valid config options. For detailed information on all the config options, see the [Configuring Functions](/docs/functions/configuring-functions) docs.
 
-| Property                                                        | Type     | Description                                                                                                                                                                               |
-| --------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`runtime`](/docs/functions/configuring-functions/runtime)      | `string` | This optional property defines the runtime to use, and if not set the runtime will default to `nodejs`.                                                                                   |
-| [`regions`](/docs/functions/configuring-functions/region)       | `string` | This optional property and can be used to specify the [region](/docs/regions#region-list) in which your function should execute. This can only be set when the `runtime` is set to `edge` |
-| [`maxDuration`](/docs/functions/configuring-functions/duration) | `int`    | This optional property can be used to specify the maximum duration in seconds that your function can run for. This can't be set when the `runtime` is set to `edge`                       |
+| Property                                                        | Type     | Description                                                                                                                                                                                                                          |
+| --------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`runtime`](/docs/functions/configuring-functions/runtime)      | `string` | This optional property defines the runtime to use, and if not set the runtime will default to `nodejs`. Starting in Next.js 16.3, setting `runtime` to `edge` is no longer supported.                                                |
+| [`regions`](/docs/functions/configuring-functions/region)       | `string` | This optional property can be used to specify the [region](/docs/regions#region-list) in which your function should execute.                                                                                                         |
+| [`maxDuration`](/docs/functions/configuring-functions/duration) | `int`    | This optional property can be used to specify the maximum duration in seconds that your function can run for.                                                                                                                        |
 
 > For \["nextjs-app"]:
 
@@ -90345,11 +90658,11 @@ export const maxDuration = 15;
 
 The table below shows a highlight of the valid config options. For detailed information on all the config options, see the [Configuring Functions](/docs/functions/configuring-functions) docs.
 
-| Property                                                          | Type     | Description                                                                                                                                                                                |
-| ----------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`runtime`](/docs/functions/configuring-functions/runtime)        | `string` | This optional property defines the runtime to use, and if not set the runtime will default to `nodejs`.                                                                                    |
-| [`preferredRegion`](/docs/functions/configuring-functions/region) | `string` | This optional property and can be used to specify the [regions](/docs/regions#region-list) in which your function should execute. This can only be set when the `runtime` is set to `edge` |
-| [`maxDuration`](/docs/functions/configuring-functions/duration)   | `int`    | This optional property can be used to specify the maximum duration in seconds that your function can run for. This can't be set when the `runtime` is set to `edge`                        |
+| Property                                                          | Type     | Description                                                                                                                                                                                                                            |
+| ----------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`runtime`](/docs/functions/configuring-functions/runtime)        | `string` | This optional property defines the runtime to use, and if not set the runtime will default to `nodejs`. Starting in Next.js 16.3, setting `runtime` to `edge` is no longer supported.                                                  |
+| [`preferredRegion`](/docs/functions/configuring-functions/region) | `string` | This optional property can be used to specify the [regions](/docs/regions#region-list) in which your function should execute.                                                                                                          |
+| [`maxDuration`](/docs/functions/configuring-functions/duration)   | `int`    | This optional property can be used to specify the maximum duration in seconds that your function can run for.                                                                                                                          |
 
 ## `SIGTERM` signal
 
@@ -91780,54 +92093,10 @@ source: "https://vercel.com/docs/functions/runtimes/edge"
 > reliability. Both runtimes run on [Fluid compute](/docs/fluid-compute) with
 > [Active CPU pricing](/docs/functions/usage-and-pricing).
 
+> **💡 Note:** Starting in Next.js 16.3, setting `runtime = 'edge'` is no longer supported.
+> Routes and pages run on Node.js.
+
 To convert your Vercel Function to use the Edge runtime, add the following code to your function:
-
-```ts {1} filename="app/api/my-function/route.ts" framework=nextjs-app
-export const runtime = 'edge'; // 'nodejs' is the default
-
-export function GET(request: Request) {
-  return new Response(`I am an Vercel Function!`, {
-    status: 200,
-  });
-}
-```
-
-```js {1} filename="app/api/my-function/route.js" framework=nextjs-app
-export const runtime = 'edge'; // 'nodejs' is the default
-
-export function GET(request) {
-  return new Response(`I am an Vercel Function!`, {
-    status: 200,
-  });
-}
-```
-
-```ts {4-6} filename="pages/api/handler.ts" framework=nextjs
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
-export const config = {
-  runtime: 'edge', // 'nodejs' is the default
-};
-
-export default function handler(request: NextRequest) {
-  return NextResponse.json({
-    name: `I am an Vercel Function!`,
-  });
-}
-```
-
-```js {1-3} filename="pages/api/handler.js" framework=nextjs
-export const config = {
-  runtime: 'edge', // 'nodejs' is the default
-};
-
-export default function handler(request) {
-  return NextResponse.json({
-    name: `I am an Vercel Function!`,
-  });
-}
-```
 
 ```ts {3-5} filename="api/runtime-example.ts" framework=other
 import type { VercelRequest, VercelResponse } from '@vercel/node';
@@ -91869,73 +92138,6 @@ By default, Vercel Functions using the Edge runtime execute in the region closes
 If your function depends on a data source, you may want it to be close to that source for fast responses.
 
 To configure which region (or multiple regions) you want your function to execute in, pass the [ID of your preferred region(s)](/docs/regions#region-list) in the following way:
-
-```ts {5-7} filename="pages/api/regional-example.ts" framework=nextjs
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
-export const config = {
-  runtime: 'edge', // this must be set to `edge`
-  // execute this function on iad1 or hnd1, based on the connecting client location
-  regions: ['iad1', 'hnd1'],
-};
-
-export default function handler(request: NextRequest) {
-  return NextResponse.json({
-    name: `I am an Vercel Function! (executed on ${process.env.VERCEL_REGION})`,
-  });
-}
-```
-
-```js {2-4} filename="pages/api/regional-example.js" framework=nextjs
-export const config = {
-  runtime: 'edge', // this must be set to `edge`
-  // execute this function on iad1 or hnd1, based on the connecting client location
-  regions: ['iad1', 'hnd1'],
-};
-
-export default function handler(request) {
-  return NextResponse.json({
-    name: `I am an Vercel Function! (executed on ${process.env.VERCEL_REGION})`,
-  });
-}
-```
-
-> For \['nextjs-app']:
-
-The `preferredRegion` option can be used to specify a single region using a string value, or multiple regions using a string array. See the  for more information.
-
-```ts {1-3} filename="app/api/regional-example/route.ts" framework=nextjs-app
-export const runtime = 'edge'; // 'nodejs' is the default
-// execute this function on iad1 or hnd1, based on the connecting client location
-export const preferredRegion = ['iad1', 'hnd1'];
-export const dynamic = 'force-dynamic'; // no caching
-
-export function GET(request: Request) {
-  return new Response(
-    `I am an Vercel Function! (executed on ${process.env.VERCEL_REGION})`,
-    {
-      status: 200,
-    },
-  );
-}
-```
-
-```js {1-3} filename="app/api/regional-example/route.js" framework=nextjs-app
-export const runtime = 'edge'; // 'nodejs' is the default
-// execute this function on iad1 or hnd1, based on the connecting client location
-export const preferredRegion = ['iad1', 'hnd1'];
-export const dynamic = 'force-dynamic'; // no caching
-
-export function GET(request) {
-  return new Response(
-    `I am an Vercel Function! (executed on ${process.env.VERCEL_REGION})`,
-    {
-      status: 200,
-    },
-  );
-}
-```
 
 ```ts {2-4} filename="api/regional-example.ts" framework=other
 export const config = {
@@ -108739,9 +108941,6 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Vade automations deletion requests per minute. | 30 | 60 | `owner` |
 | Vade automation manual trigger requests per minute. | 30 | 60 | `owner` |
 | Vade automation runs retrieval requests per minute. | 250 | 60 | `owner` |
-| Sandbox vCPUs created per 10 minutes for Hobby plan. | 40 | 600 | `owner` |
-| Sandbox vCPUs created per minute for Pro plan. | 200 | 60 | `owner` |
-| Sandbox vCPUs created per minute for Enterprise plan. | 400 | 60 | `owner` |
 | Sandbox control plane requests per minute for Hobby plan. | 1000 | 60 | `owner` |
 | Sandbox control plane requests per minute for Pro plan. | 10000 | 60 | `owner` |
 | Sandbox control plane requests per minute for Enterprise plan. | 100000 | 60 | `owner` |
@@ -109051,6 +109250,7 @@ You can view details for each request to analyze and improve your debugging expe
 | **Cache Reason**       | Why the response missed, bypassed, or served stale for static requests. See [Cache Status and Reasons](/docs/caching/cache-status). |
 | **Cache Age**          | For ISR responses, how long ago the served cache entry was generated                                                        |
 | **Cache TTL**          | For ISR responses, how long the cache entry stays fresh before it revalidates                                               |
+| **PPR State**          | The [PPR state](/docs/partial-prerendering/ppr-state) for Partial Prerendering routes (`Static`, `Partial`, `Dynamic`)      |
 | **Middleware**         | Metadata about middleware execution such as location and duration                                                           |
 | **Function**           | Metadata about function execution including function name, location, runtime, duration, memory usage, and start type        |
 | **Deployment**         | Metadata about the deployment that produced the logs including id, environment, and branch                                  |
@@ -128438,6 +128638,7 @@ There are several fields available for use within the [Filter](#filter) and [gro
 | `WAF Action`        | Group by the WAF action taken by the [Vercel Firewall](/docs/security/vercel-waf) (`deny`, `challenge`, `rate_limit`, `bypass` or `log`)                                                                                                                                         |
 | `WAF Rule ID`       | Group by the firewall rule ID                                                                                                                                                                                                                                                    |
 | `Skew Protection`   | When `active`, the request would have been subject to [version skew](/docs/skew-protection) but was protected, otherwise `inactive`.                                                                                                                                             |
+| `PPR State`         | Group by the [Partial Prerendering state](/docs/partial-prerendering/ppr-state) for a request (`Static`, `Partial`, or `Dynamic`)                                                                                                                                                |
 | `Sandbox Name`      | Group by the sandbox name                                                                                                                                                                                                                                                        |
 | `Sandbox Session ID` | Group by the sandbox session ID                                                                                                                                                                                                                                                  |
 
@@ -129936,6 +130137,7 @@ Extended permissions add granular capabilities that can be combined with roles:
 |      | Deploy to production from CLI, rollback and promote any deployment.         | [Developer](/docs/rbac/access-roles#developer-role), [Contributor](/docs/rbac/access-roles#contributor-role)                                                                                                                                                    | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 |                                  | Read-only usage team-wide including prices and invoices.                    | [Developer](/docs/rbac/access-roles#developer-role), [Security](/docs/rbac/access-roles#security-role), [Member](/docs/rbac/access-roles#member-role), [Viewer](/docs/rbac/access-roles#viewer-role)                                                            | [Owner](/docs/rbac/access-roles#owner-role), [Billing](/docs/rbac/access-roles#billing-role) |
 |                    | Install and use Vercel integrations, marketplace integrations, and storage. | [Developer](/docs/rbac/access-roles#developer-role), [Security](/docs/rbac/access-roles#security-role), [Billing](/docs/rbac/access-roles#billing-role), [Viewer](/docs/rbac/access-roles#viewer-role), [Contributor](/docs/rbac/access-roles#contributor-role) | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
+|                        | Create and manage team-wide connectors, project connections, installations, and tokens. | [Developer](/docs/rbac/access-roles#developer-role), [Security](/docs/rbac/access-roles#security-role), [Billing](/docs/rbac/access-roles#billing-role), [Viewer](/docs/rbac/access-roles#viewer-role), [Contributor](/docs/rbac/access-roles#contributor-role) | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 |                    | Create and manage project environments.                                     | [Developer](/docs/rbac/access-roles#developer-role), [Member](/docs/rbac/access-roles#member-role)                                                                                                                                                              | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 |  | Create and manage environment variables.                                    | [Developer](/docs/rbac/access-roles#developer-role)                                                                                                                                                                                                             | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 
@@ -129949,11 +130151,11 @@ Team roles provide the foundation of access control. Each role has a specific sc
 | ----------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **[Owner](/docs/rbac/access-roles#owner-role)**             | Complete control over all team and project settings                    | All extended permissions (already includes all permissions by default)                                                                                                                                                                                                                                                    |
 | **[Member](/docs/rbac/access-roles#member-role)**           | Can manage projects but not team settings                              | - [Environment Manager](#environment-manager)  - [Usage Viewer](#usage-viewer)                                                                                                                                                                                                                                       |
-| **[Developer](/docs/rbac/access-roles#developer-role)**     | Can deploy and manage projects with limitations on production settings | - [Create Project](#create-project)  - [Full Production Deployment](#full-production-deployment)  - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Environment Manager](#environment-manager)  - [Environment Variable Manager](#environment-variable-manager) |
-| **[Billing](/docs/rbac/access-roles#billing-role)**         | Manages financial aspects only                                         | - [Integration Manager](#integration-manager)                                                                                                                                                                                                                                                                             |
-| **[Security](/docs/rbac/access-roles#security-role)**       | Manages security features team-wide                                    | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)                                                                                                                                                                                                                                       |
-| **[Viewer](/docs/rbac/access-roles#viewer-role)**           | Read-only access to all projects                                       | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)                                                                                                                                                                                                                                       |
-| **[Contributor](/docs/rbac/access-roles#contributor-role)** | Configurable role that can be assigned project-level roles             | - [Full Production Deployment](#full-production-deployment)  - [Integration Manager](#integration-manager)  See project-level table for compatible project roles and permissions                                                                                                                                |
+| **[Developer](/docs/rbac/access-roles#developer-role)**     | Can deploy and manage projects with limitations on production settings | - [Create Project](#create-project)  - [Full Production Deployment](#full-production-deployment)  - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)  - [Environment Manager](#environment-manager)  - [Environment Variable Manager](#environment-variable-manager) |
+| **[Billing](/docs/rbac/access-roles#billing-role)**         | Manages financial aspects only                                         | - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)                                                                                                                                                                                                                             |
+| **[Security](/docs/rbac/access-roles#security-role)**       | Manages security features team-wide                                    | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)                                                                                                                                                                                        |
+| **[Viewer](/docs/rbac/access-roles#viewer-role)**           | Read-only access to all projects                                       | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)                                                                                                                                                                                        |
+| **[Contributor](/docs/rbac/access-roles#contributor-role)** | Configurable role that can be assigned project-level roles             | - [Full Production Deployment](#full-production-deployment)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)  See project-level table for compatible project roles and permissions                                                                                  |
 
 ## How combinations work
 
@@ -130298,6 +130500,7 @@ Existing team roles can be combined with permission groups to create custom acce
 | **Create Project**                | Allows the user to create a new project.                                                              | Developer, Contributor               | Owner, Member       |
 | **Full Production Deployment**    | Deploy to production from CLI, rollback and promote any deployment.                                   | Developer, Contributor               | Owner, Member       |
 | **Usage Viewer**                  | Read-only usage team-wide including prices and invoices.                                              | Developer, Security, Billing, Viewer | Owner               |
+| **Connector Manager**             | Create and manage team-wide connectors, project connections, installations, and tokens.               | Developer, Security, Billing, Viewer, Contributor | Owner, Member       |
 | **Environment Manager**           | Create and manage project environments.                                                               | Developer                            | Owner               |
 | **Environment Variable Manager**  | Create and manage environment variables.                                                              | Developer                            | Owner, Member       |
 | **Deployment Protection Manager** | Configure password protection, deployment protection by pass, and Vercel Authentication for projects. | Developer                            | Owner, Member       |
@@ -133620,47 +133823,9 @@ The following limits apply to requests processed by Routing Middleware:
 
 Routing Middleware is available on the [Node.js](/docs/functions/runtimes/node-js), [Bun](/docs/functions/runtimes/bun), and [Edge](/docs/functions/runtimes/edge) runtimes. The default runtime for Routing Middleware is Edge. You can change the runtime to Node.js by exporting a [`config`](/docs/routing-middleware/api#config-object) object with a `runtime` property in your  file.
 
+> For \['nextjs', 'nextjs-app']:
+
 To use the Bun runtime, set [`bunVersion`](/docs/project-configuration/vercel-json#bunversion) in your `vercel.json` file and your runtime config to `nodejs`.
-
-```ts filename="middleware.ts" framework=nextjs-app
-export const config = {
-  runtime: 'nodejs', // or 'edge' (default)
-};
-export default function middleware(request: Request) {
-  // Your middleware logic here
-  return new Response('Hello from your Middleware!');
-}
-```
-
-```js filename="middleware.js" framework=nextjs-app
-export const config = {
-  runtime: 'nodejs' // or 'edge' (default)
-}
-export default function middleware(request: Request) {
-  // Your middleware logic here
-  return new Response('Hello from your Middleware!');
-}
-```
-
-```ts filename="middleware.ts" framework=nextjs
-export const config = {
-  runtime: 'nodejs', // or 'edge' (default)
-};
-export default function middleware(request: Request) {
-  // Your middleware logic here
-  return new Response('Hello from your Middleware!');
-}
-```
-
-```js filename="middleware.js" framework=nextjs
-export const config = {
-  runtime: 'nodejs', // or 'edge' (default)
-};
-export default function middleware(request) {
-  // Your middleware logic here
-  return new Response('Hello from your Middleware!');
-}
-```
 
 ```ts filename="middleware.ts" framework=other
 export const config = {
@@ -135359,13 +135524,13 @@ source: "https://vercel.com/docs/sandbox/concepts/images"
 
 # Images
 
-By default, sandboxes boot from a Vercel base runtime such as `node24` or `python3.13`. These runtimes cover most workloads, and you can [install extra packages](/kb/guide/how-to-install-system-packages-in-vercel-sandbox) at runtime or [snapshot](/docs/sandbox/concepts/snapshots) a sandbox after setup to reuse it later.
+Custom images give you full control over the sandbox environment. Define the Linux distribution, system packages, language toolchains, and filesystem layout in a Dockerfile, and your sandboxes boot straight into that environment with nothing to install at runtime. Reuse an image you already build for CI or production, or build one specifically for your agents.
 
-Use a custom image when your sandbox needs system packages, language tooling, or a filesystem layout that already exists in a Dockerfile. Sandbox pulls custom images from [Vercel Container Registry (VCR)](/docs/container-registry), a project-scoped registry for OCI images.
+Sandbox pulls custom images from [Vercel Container Registry (VCR)](/docs/container-registry), a project-scoped registry for OCI images. Pin environments with tags and digests, and [share a repository](/docs/container-registry#share-a-repository) to reuse one image across projects and teams.
 
 ## How images work
 
-When you pass an `image` to `Sandbox.create()`, Vercel resolves the reference against VCR for the authenticated project and boots the sandbox from that image's filesystem instead of a base runtime.
+When you pass an `image` to `Sandbox.create()`, Vercel resolves the reference against VCR and boots the sandbox from that image's filesystem instead of a base runtime. Bare repository names resolve against the authenticated project, and [team-scoped references](#image-references) resolve against the referenced team and project.
 
 VCR only serves an image to Sandbox once it has prepared an optimized `linux/amd64` build. After you push an image, VCR reports a readiness state on the repository details page:
 
@@ -135418,16 +135583,44 @@ try {
 
 ## Image references
 
-`image` accepts a repository name, tag, digest, or fully qualified VCR URL:
+`image` accepts a repository name, tag, digest, or team-scoped reference:
 
-| Reference                                                        | What it resolves  |
-| ---------------------------------------------------------------- | ----------------- |
-| `my-repository`                                                  | The `latest` tag  |
-| `my-repository:v1`                                               | A specific tag    |
-| `my-repository@sha256:...`                                       | A specific digest |
-| `vcr.vercel.com/team-slug/project-slug/my-repository`            | The `latest` tag  |
-| `vcr.vercel.com/team-slug/project-slug/my-repository:v1`         | A specific tag    |
-| `vcr.vercel.com/team-slug/project-slug/my-repository@sha256:...` | A specific digest |
+| Reference                                                        | What it resolves                                        |
+| ---------------------------------------------------------------- | ------------------------------------------------------- |
+| `my-repository`                                                  | The `latest` tag in the authenticated project           |
+| `my-repository:v1`                                               | A specific tag in the authenticated project             |
+| `my-repository@sha256:...`                                       | A specific digest in the authenticated project          |
+| `team-slug/project-slug/my-repository`                           | The `latest` tag in the referenced team and project     |
+| `team-slug/project-slug/my-repository:v1`                        | A specific tag in the referenced team and project       |
+| `team-slug/project-slug/my-repository@sha256:...`                | A specific digest in the referenced team and project    |
+| `vcr.vercel.com/team-slug/project-slug/my-repository:v1`         | Same as the team-scoped reference, using the fully qualified registry URL |
+
+The `vcr.vercel.com/` prefix is optional and works with any team-scoped form, including tags and digests.
+
+A team-scoped reference resolves against the referenced team and project. It works when the reference points at the authenticated project, or at a repository that has been [shared](/docs/container-registry#share-a-repository) with your team. If the repository doesn't exist or isn't shared with your team, `Sandbox.create()` returns `not_found`.
+
+## Use a shared image
+
+A team can [share a VCR repository](/docs/container-registry#share-a-repository) to give other teams read access to its images. Once a repository is shared with your team, create sandboxes from its images with a team-scoped reference:
+
+```ts filename="index.ts"
+import { Sandbox } from '@vercel/sandbox';
+
+const sandbox = await Sandbox.create({
+  image: 'other-team/their-project/shared-repository:latest',
+});
+```
+
+Sharing also works within a team. VCR repositories belong to a single project, so by default a sandbox can only use images from its own project. To use a repository's images from other projects in your team, share the repository with your own team:
+
+```ts filename="index.ts"
+import { Sandbox } from '@vercel/sandbox';
+
+// Created in a different project of my-team
+const sandbox = await Sandbox.create({
+  image: 'my-team/other-project/my-repository:latest',
+});
+```
 
 
 --------------------------------------------------------------------------------
@@ -136571,7 +136764,7 @@ For detailed information about runtimes, available packages, and sudo configurat
 ## Features
 
 - **[Isolation](/docs/sandbox/concepts#isolation-architecture)**: Each sandbox runs in a secure Firecracker microVM with its own filesystem and network. Run untrusted code without affecting production.
-- **[Node.js and Python runtimes](/docs/sandbox/concepts/runtimes#runtimes)**: Choose from `node26`, `node24`, `node22`, or `python3.13` with full root access. [Install any package or binary you need](/kb/guide/how-to-install-system-packages-in-vercel-sandbox).
+- **[Custom images (beta)](/docs/sandbox/concepts/images)**: Start sandboxes from your own OCI images stored in [Vercel Container Registry](/docs/container-registry). Build your system packages and tooling into an image, and share it across projects and teams.
 - **[System-privileged processes](/docs/sandbox/concepts/runtimes#system-privileged-processes)**: Run workloads that need system-level privileges, such as container runtimes like Docker, VPN clients, and FUSE filesystem drivers.
 - **[Fast startup](/docs/sandbox/concepts#how-sandboxes-work)**: Sandboxes start in milliseconds, making them ideal for real-time user interactions and latency-sensitive workloads.
 - **[Multi-agent isolation](/docs/sandbox/multi-agent)**: Give each AI agent its own Linux user with a private home directory, and share files between agents with groups.
@@ -136580,6 +136773,7 @@ For detailed information about runtimes, available packages, and sudo configurat
 - **[Tags](/docs/sandbox/concepts/tags)**: Categorize sandboxes by environment, team, or any other criteria using key-value tags.
 - **[Drives (beta)](/docs/sandbox/concepts/drives)**: Attach persistent filesystem storage to sandboxes and reuse data across sandbox runs.
 - **[CLI and SDKs](/docs/sandbox/sdk-reference)**: Manage sandboxes through the CLI, JS SDK, or Python SDK. Automate sandbox workflows in your application.
+- **[Node.js and Python default runtimes](/docs/sandbox/concepts/runtimes#runtimes)**: By default, use Amazon Linux with `node26`, `node24`, `node22`, or `python3.13` with full root access. [Install any package or binary you need](/kb/guide/how-to-install-system-packages-in-vercel-sandbox).
 
 ## Resources
 
@@ -137977,7 +138171,7 @@ Sandboxes are persistent by default: when the sandbox stops, the filesystem is a
 | `source`             | `snapshot`                   | No       | Create from a snapshot.  `snapshotId`: string                                                                                                                                                                                                          |
 | `resources.vcpus`    | `number`                     | No       | Number of vCPUs (2048 MB RAM per vCPU). Defaults to 2.                                                                                                                                                                                                       |
 | `runtime`            | `string`                     | No       | Runtime image such as `"node26"`, `"node24"`, `"node22"`, or `"python3.13"`.                                                                                                                                                                                 |
-| `image`              | `string`                     | No       | VCR custom image reference for the authenticated project. Bare repository names use the `latest` tag.  Example: `"my-repository"`, `"my-repository:v1"`, `"my-repository@sha256:..."`, and `"vcr.vercel.com/my-team/my-project/my-repository:latest"`. |
+| `image`              | `string`                     | No       | VCR custom image reference. Bare repository names resolve against the authenticated project and use the `latest` tag. Team-scoped references resolve against the referenced team and project, including [repositories shared with your team](/docs/sandbox/concepts/images#use-a-shared-image).  Example: `"my-repository"`, `"my-repository:v1"`, `"my-repository@sha256:..."`, and `"other-team/their-project/shared-repository:latest"`. |
 | `ports`              | `number[]`                   | No       | Ports to expose for `sandbox.domain()`. Up to 15.                                                                                                                                                                                                            |
 | `timeout`            | `number`                     | No       | Session timeout in milliseconds. Defaults to 5 minutes.                                                                                                                                                                                                      |
 | `networkPolicy`      | `NetworkPolicy`              | No       | Firewall rules for sandbox egress traffic. Defaults to `"allow-all"`.                                                                                                                                                                                        |
@@ -147601,7 +147795,7 @@ if (result.statusCode === 304) {
 }
 ```
 
-## Protecting public blobs with the firewall&#x20;
+## Protecting public blobs with the firewall
 
 Anyone with the URL can request a public blob, and each download counts toward your [Blob Data Transfer](/docs/vercel-blob#blob-data-transfer) usage. You can control this traffic with [Vercel WAF](/docs/vercel-firewall/vercel-waf) rules, such as [rate limiting](/docs/vercel-firewall/vercel-waf/rate-limiting) or [IP blocking](/docs/vercel-firewall/vercel-waf/ip-blocking), to stop hotlinking, scraping, and abusive download patterns. To enable it:
 
@@ -147701,7 +147895,7 @@ Headers that enhance security by preventing unauthorized downloads, blocking ext
 
 All files stored on Vercel Blob are secured using AES-256 encryption. This encryption process is applied at rest and is transparent, ensuring that files are encrypted before being saved to the disk and decrypted upon retrieval.
 
-### Firewall and WAF integration&#x20;
+### Firewall and WAF integration
 
 Vercel Blob is protected by Vercel's [platform-wide firewall](/docs/vercel-firewall#platform-wide-firewall) which provides DDoS mitigation and blocks abnormal or suspicious levels of incoming requests.
 

@@ -206,4 +206,4 @@ Configure messages are validated using the same rules as initial connection para
 * [Getting Started with Flux](/docs/flux/quickstart) - Quickstart guide with basic configuration
 * [Close Stream](/docs/flux/close-stream) - Force stream closure and final transcription
 
-***
+---

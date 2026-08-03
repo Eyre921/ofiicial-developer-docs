@@ -6,7 +6,7 @@ path: ecosystem/fireconnect/overview
 
 Route Claude Code, OpenCode, Codex, Pi, Cursor, VS Code, and Deep Agents through Fireworks AI or Microsoft Foundry models
 
-[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. It is a core component of [Fireworks Nexus](/fireworks-nexus/overview) and also works standalone with any Fireworks API key. Install once, sign in once, then flip any supported harness on or off without hand-editing config files.
+[FireConnect](https://github.com/fw-ai/fireconnect) is an open-source CLI that routes agentic coding harnesses through Fireworks models. Install once, sign in once, then flip any supported harness on or off without hand-editing config files.
 
 Choose where inference runs:
 

@@ -199,7 +199,7 @@ The Deepgram API and Engine containers listen on port `8080` by default, and the
 
 The next step is to learn more about provisioning a deployment environment. Deepgram has official guides for using Docker, Podman, and Kubernetes as container orchestrators. Follow each the links below to get an overview of the pros and cons of each orchestrator and decide which is appropriate for your use case.
 
-***
+---
 
 What's Next
 

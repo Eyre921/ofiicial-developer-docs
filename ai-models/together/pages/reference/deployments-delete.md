@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/deployments-delete
 path: reference/deployments-delete
 ---
 
-DELETE /deployments/{id}
+openapi.yaml DELETE /deployments/{id}
 Delete an existing deployment

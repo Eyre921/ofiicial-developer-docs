@@ -186,8 +186,8 @@ Now, head over to your project on [Sentry.io](https://sentry.io) to view the col
 
 Need help locating the captured errors in your Sentry project?
 
-* Open the [**Issues**](https://sentry.io/orgredirect/organizations/:orgslug/issues/) page and select an error from the issues list to view the full details and context of this error. For more details, see this [interactive walkthrough](https://docs.sentry.io/product/sentry-basics/integrate-frontend/generate-first-error.md#ui-walkthrough).
-* Open the [**Traces**](https://sentry.io/orgredirect/organizations/:orgslug/explore/traces/) page and select a trace to reveal more information about each span, its duration, and any errors. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/sentry-basics/distributed-tracing/generate-first-error.md#ui-walkthrough).
+* Open the [**Issues**](https://sentry.io/orgredirect/organizations/:orgslug/issues/) page and select an error from the issues list to view the full details and context of this error. For more details, see the [Issue Details documentation](https://docs.sentry.io/product/issues/issue-details.md).
+* Open the [**Traces**](https://sentry.io/orgredirect/organizations/:orgslug/explore/traces/) page and select a trace to reveal more information about each span, its duration, and any errors. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/sentry-basics/getting-started-tutorial/generate-first-error.md#ui-walkthrough).
 * Open the [**Profiles**](https://sentry.io/orgredirect/organizations/:orgslug/profiling/) page, select a transaction, and then a profile ID to view its flame graph. For more information, click [here](https://docs.sentry.io/product/profiling/profile-details.md).
 * Open the [**Logs**](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/) page and filter by service, environment, or search keywords to view log entries from your application. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/logs.md#overview).
 * Open the [**Application Metrics**](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics) page to view and analyze your metrics. For more details, see this [interactive walkthrough](https://docs.sentry.io/product/metrics.md#overview).
@@ -213,6 +213,7 @@ Are you having problems setting up the SDK?
 - [Capturing Errors](https://docs.sentry.io/platforms/python/usage.md)
 - [Logs](https://docs.sentry.io/platforms/python/logs.md)
 - [Tracing](https://docs.sentry.io/platforms/python/tracing.md)
+- [Agent Tracing](https://docs.sentry.io/platforms/python/agent-tracing.md)
 - [Application Metrics](https://docs.sentry.io/platforms/python/metrics.md)
 - [Profiling](https://docs.sentry.io/platforms/python/profiling.md)
 - [Crons](https://docs.sentry.io/platforms/python/crons.md)

@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/dmi/placement-profiles-list
 path: reference/dmi/placement-profiles-list
 ---
 
-GET /projects/{projectId}/placement-profiles
+openapi.yaml GET /projects/{projectId}/placement-profiles
 Lists reusable, project-visible placement policies that control the regions where deployments may be scheduled.

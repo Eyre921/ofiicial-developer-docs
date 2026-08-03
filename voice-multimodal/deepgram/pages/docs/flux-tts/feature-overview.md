@@ -73,4 +73,4 @@ The streaming WebSocket only — the batch REST transport is a single request/re
 
 For information on Deepgram's concurrency rate limits, see the [API Rate Limits documentation](/reference/api-rate-limits).
 
-***
+---

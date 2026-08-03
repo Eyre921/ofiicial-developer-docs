@@ -90,7 +90,7 @@ The response object values for `topics` are:
 * `topic`: The name of the topic detected by the model.
 * `confidence_score`: a floating point from 0 to 1 representing the models confidence in this prediction.
 
-***
+---
 
 ### API Warning Response
 

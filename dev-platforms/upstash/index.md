@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 599 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 600 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -37,6 +37,7 @@
 - `docs/box/guides/langchain-deep-agents` — [LangChain Deep Agents](pages/docs/box/guides/langchain-deep-agents.md) · [原文](https://upstash.com/docs/box/guides/langchain-deep-agents)
 - `docs/box/guides/nextjs-setup` — [Next.js Setup](pages/docs/box/guides/nextjs-setup.md) · [原文](https://upstash.com/docs/box/guides/nextjs-setup)
 - `docs/box/guides/openclaw-setup` — [OpenClaw Setup](pages/docs/box/guides/openclaw-setup.md) · [原文](https://upstash.com/docs/box/guides/openclaw-setup)
+- `docs/box/guides/pi-setup` — [Pi Setup](pages/docs/box/guides/pi-setup.md) · [原文](https://upstash.com/docs/box/guides/pi-setup)
 - `docs/box/guides/remote-development` — [Remote Development](pages/docs/box/guides/remote-development.md) · [原文](https://upstash.com/docs/box/guides/remote-development)
 - `docs/box/guides/tanstack-ai-file-editor` — [AI File Editor with TanStack AI](pages/docs/box/guides/tanstack-ai-file-editor.md) · [原文](https://upstash.com/docs/box/guides/tanstack-ai-file-editor)
 - `docs/box/guides/web-scraping-playwright` — [Scrape Dynamic Websites with Playwright](pages/docs/box/guides/web-scraping-playwright.md) · [原文](https://upstash.com/docs/box/guides/web-scraping-playwright)

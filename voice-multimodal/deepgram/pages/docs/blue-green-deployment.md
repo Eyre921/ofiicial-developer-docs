@@ -57,7 +57,7 @@ graph LR
     class GreenAPI,GreenEngine,GreenLicense greenClass
 ```
 
-***
+---
 
 ## What's Next
 

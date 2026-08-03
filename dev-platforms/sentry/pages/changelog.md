@@ -221,7 +221,7 @@ url: https://docs.sentry.io/changelog/
 **Modified:**
 
 * [AI Agents Module](https://develop.sentry.dev/sdk/telemetry/traces/modules/ai-agents/)
-* [Instrument AI Agents](https://docs.sentry.io/platforms/python/tracing/instrumentation/custom-instrumentation/ai-agents-module.md)
+* [Instrument AI Agents](https://docs.sentry.io/platforms/python/agent-tracing.md)
 * [Model Costs](https://docs.sentry.io/product/agents/costs.md)
 
 ***

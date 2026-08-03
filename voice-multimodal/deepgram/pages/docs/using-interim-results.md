@@ -94,4 +94,4 @@ another big problem in the speech analytics space when customers first bring the
 
 You can compare this result with your base transcript to calculate WER.
 
-***
+---

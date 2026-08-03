@@ -79,7 +79,7 @@ The `[fips]` configuration flag does not control TLS behavior. TLS 1.3 enforceme
 
 The deployment above reaches Deepgram's hosted license server through the License Proxy, which requires outbound internet access. If you require running FIPS-compliant self-hosted Deepgram deployments in environments without public internet connectivity, contact your Deepgram account team to inquire about airgapped access, which uses the FIPS Billing image (`quay.io/deepgram/self-hosted-billing:release-260728-fips`) to run license validation offline.
 
-***
+---
 
 ## What's Next
 

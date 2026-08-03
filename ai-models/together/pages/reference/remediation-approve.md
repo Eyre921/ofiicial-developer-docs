@@ -4,7 +4,7 @@ source: https://docs.together.ai/reference/remediation-approve
 path: reference/remediation-approve
 ---
 
-POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/approve
+openapi.yaml POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/approve
 Approves a pending remediation.
 
 Only remediations with state PENDING_APPROVAL can be approved.

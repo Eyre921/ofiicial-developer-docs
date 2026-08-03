@@ -4,4 +4,4 @@ source: https://docs.together.ai/reference/get-evaluation-status
 path: reference/get-evaluation-status
 ---
 
-GET /evaluation/{id}/status
+openapi.yaml GET /evaluation/{id}/status

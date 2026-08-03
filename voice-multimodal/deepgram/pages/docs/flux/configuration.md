@@ -44,7 +44,7 @@ Confidence threshold required to trigger an `EndOfTurn` event, signaling that th
 wss://api.deepgram.com/v2/listen?model=flux-general-en&eot_threshold=0.8
 ```
 
-***
+---
 
 ### `eager_eot_threshold`
 
@@ -74,7 +74,7 @@ wss://api.deepgram.com/v2/listen?model=flux-general-en&eager_eot_threshold=0.6&e
 
 **Important**: The transcript in `EagerEndOfTurn` will **exactly match** the transcript in the subsequent `EndOfTurn` event (if no `TurnResumed` occurs). This guarantees consistency for caching strategies.
 
-***
+---
 
 ### `eot_timeout_ms`
 
@@ -132,7 +132,7 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 **Best for:** Basic conversational agents, demos, getting started
 
-***
+---
 
 ### Low-Latency Mode
 
@@ -159,7 +159,7 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 **Best for:** High-volume customer service, fast-paced Q\&A, responsiveness over accuracy
 
-***
+---
 
 ### High-Reliability Mode
 
@@ -184,7 +184,7 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 **Best for:** Medical/legal transcription, critical documentation, formal settings
 
-***
+---
 
 ### Complex Pipeline Mode
 
@@ -211,7 +211,7 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 **Best for:** RAG systems, tool-calling agents, multi-step reasoning workflows
 
-***
+---
 
 ### Multilingual Mode
 

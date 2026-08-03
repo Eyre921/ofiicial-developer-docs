@@ -20,7 +20,7 @@ For optimal performance, see our [minimum recommended hardware specifications](/
 
 The overhead of managing a bare-metal server can be arduous, and the majority of our clients choose to use cloud-managed servers for this reason. If you do choose to manage a bare-metal server, make sure to complete the steps in the [self-hosted introduction](/docs/self-hosted-introduction#prerequisites) before proceeding, and install a [recommended Linux distribution](/docs/self-hosted-deployment-environments#operating-system).
 
-***
+---
 
 What’s Next
 

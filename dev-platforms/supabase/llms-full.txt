@@ -7410,6 +7410,17 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
 const { data: todos, error } = await supabase.from('todos').select('*')
 ```
 
+**C#**
+
+```c#
+// Initialize the client
+var supabase = new Supabase.Client(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+await supabase.InitializeAsync();
+
+// Make a request
+var todos = await supabase.From<Todo>().Get();
+```
+
 **cURL**
 
 ```bash
@@ -7950,6 +7961,28 @@ let response = try await supabase
   .from("leaderboard")
   .select()
   .order("score", ascending: false)
+```
+
+**C#**
+
+```c#
+[Table("leaderboard")]
+class Leaderboard : BaseModel
+{
+    [PrimaryKey("id", false)]
+    public int Id { get; set; }
+
+    [Column("player")]
+    public string Player { get; set; }
+
+    [Column("score")]
+    public int Score { get; set; }
+}
+
+var result = await supabase
+  .From<Leaderboard>()
+  .Order(x => x.Score, Ordering.Descending)
+  .Get();
 ```
 
 
@@ -9372,6 +9405,21 @@ final data = await supabase.schema('myschema').from('todos').select();
 
 ```
 
+**C#**
+
+```c#
+// Initialize the client with a custom schema
+var supabase = new Supabase.Client(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  new SupabaseOptions { Schema = "myschema" }
+);
+await supabase.InitializeAsync();
+
+// Make a request
+var todos = await supabase.From<Todo>().Get();
+```
+
 **cURL**
 
 ```bash
@@ -9710,6 +9758,14 @@ Call the [`sign_in_anonymously()`](https://supabase.com/docs/reference/python/au
 response = supabase.auth.sign_in_anonymously()
 ```
 
+**C#**
+
+Call the [`SignInAnonymously()`](https://supabase.com/docs/reference/csharp/sign-in-anonymously) method:
+
+```c#
+var session = await supabase.Auth.SignInAnonymously();
+```
+
 ## Convert an anonymous user to a permanent user
 
 Converting an anonymous user to a permanent user requires [linking an identity](https://supabase.com/docs/guides/auth/auth-identity-linking#manual-linking-beta) to the user. This requires you to [enable manual linking](https://supabase.com/dashboard/project/_/auth/providers) in your Supabase project.
@@ -9785,6 +9841,20 @@ response = supabase.auth.update_user({
 })
 ```
 
+**C#**
+
+You can use the [`Update()`](https://supabase.com/docs/reference/csharp/update-user) method to link an email or phone identity to the anonymous user. To add a password for the anonymous user, the user's email or phone number needs to be verified first.
+
+```c#
+var updateEmail = await supabase.Auth.Update(new UserAttributes { Email = "valid.email@supabase.io" });
+
+// verify the user's email by clicking on the email change link
+// or entering the 6-digit OTP sent to the email address
+
+// once the user has been verified, update the password
+var updatePassword = await supabase.Auth.Update(new UserAttributes { Password = "password" });
+```
+
 ### Link an OAuth identity
 
 **JavaScript**
@@ -9830,6 +9900,15 @@ You can use the [`link_identity()`](https://supabase.com/docs/reference/python/a
 
 ```python
 response = supabase.auth.link_identity({'provider': 'google'})
+```
+
+**C#**
+
+You can use the [`LinkIdentity()`](https://supabase.com/docs/reference/csharp/link-identity) method to link an OAuth identity to the anonymous user.
+
+```c#
+var state = await supabase.Auth.LinkIdentity(Provider.Google, new SignInOptions { FlowType = OAuthFlowType.PKCE });
+var authorizeUrl = state.Uri;
 ```
 
 ## Access control
@@ -10222,6 +10301,13 @@ response = supabase.auth.sign_in_with_otp({
 })
 ```
 
+**C#**
+
+```c#
+var options = new SignInOptions { RedirectTo = "https://example.com/welcome" };
+var didSendMagicLink = await supabase.Auth.SendMagicLink("valid.email@supabase.io", options);
+```
+
 That's it for the implicit flow.
 
 If you're using PKCE flow, edit the Magic Link [email template](https://supabase.com/docs/guides/auth/auth-email-templates) to send a token hash:
@@ -10334,6 +10420,12 @@ response = supabase.auth.sign_in_with_otp({
 })
 ```
 
+**C#**
+
+```c#
+await supabase.Auth.SendMagicLink("valid.email@supabase.io");
+```
+
 If the request is successful, you receive a response with `error: null` and a `data` object where both `user` and `session` are null. Let the user know to check their email inbox.
 
 ```json
@@ -10394,6 +10486,12 @@ response = supabase.auth.verify_otp({
   'token': '123456',
   'type': 'email',
 })
+```
+
+**C#**
+
+```c#
+var session = await supabase.Auth.VerifyOTP("email@example.com", "123456", EmailOtpType.Email);
 ```
 
 If successful, the user is now logged in, and you receive a valid session that looks like:
@@ -13983,6 +14081,15 @@ Supabase Auth allows a user to initiate identity linking with a different email 
 response = supabase.auth.link_identity({'provider': 'google'})
 ```
 
+**C#**
+
+Supabase Auth allows a user to initiate identity linking with a different email address when they are logged in. To link an OAuth identity to the user, call [`LinkIdentity()`](https://supabase.com/docs/reference/csharp/link-identity):
+
+```c#
+var state = await supabase.Auth.LinkIdentity(Provider.Google, new SignInOptions { FlowType = OAuthFlowType.PKCE });
+var authorizeUrl = state.Uri;
+```
+
 In the example above, the user will be redirected to Google to complete the OAuth2.0 flow. Once the OAuth2.0 flow has completed successfully, the user will be redirected back to the application and the Google identity will be linked to the user. You can enable manual linking from your project's authentication [configuration options](https://supabase.com/dashboard/project/_/auth/providers) or by setting the environment variable `GOTRUE_SECURITY_MANUAL_LINKING_ENABLED: true` when self-hosting.
 
 ### Link identity with native OAuth (ID token)
@@ -14115,6 +14222,21 @@ google_identity = next((identity for identity in response.identities if identity
 # unlink the google identity from the user
 if google_identity:
     response = supabase.auth.unlink_identity(google_identity.identity_id)
+```
+
+**C#**
+
+Use `CurrentUser.Identities` to get all the identities linked to a user. Then, call [`UnlinkIdentity()`](https://supabase.com/docs/reference/csharp/unlink-identity) to unlink the identity. The user needs to be logged in and have at least 2 linked identities in order to unlink an existing identity.
+
+```c#
+// get all identities linked to the user
+var identities = supabase.Auth.CurrentUser.Identities;
+
+// find the google identity linked to the user
+var googleIdentity = identities.First(x => x.Provider == "google");
+
+// unlink the google identity from the user
+await supabase.Auth.UnlinkIdentity(googleIdentity);
 ```
 
 ## Frequently asked questions
@@ -15943,6 +16065,15 @@ Rest exceptions are split into a few classes:
 
 All instances and subclasses of a `AuthRestException` have a `errorCode` property that can be used to identify the error returned by the server.
 
+**C#**
+
+All exceptions originating from the `supabase.Auth` namespace of the C# client library are wrapped by the `GotrueException` class.
+
+`GotrueException` exposes:
+
+- `StatusCode` -- the HTTP status code returned by the Supabase Auth API.
+- `Reason` -- a `FailureHint.Reason` value that categorizes the error, so you can branch on it without parsing the message.
+
 ## HTTP status codes
 
 Below are the most common HTTP status codes you might encounter, along with their meanings in the context of Supabase Auth:
@@ -16293,6 +16424,15 @@ supabase.auth.signInWith(SSO) {
 ```
 
 Calling [`signInWith(SSO)`](https://supabase.com/docs/reference/kotlin/auth-signinwithsso) starts the sign-in process using the identity provider registered for the `company.com` domain name. It is not required that identity providers be assigned one or multiple domain names, in which case you can use the provider's unique ID instead.
+
+**C#**
+
+```c#
+var response = await supabase.Auth.SignInWithSSO("company.com");
+var ssoUrl = response.Uri;
+```
+
+Calling [`SignInWithSSO`](https://supabase.com/docs/reference/csharp/sign-in-with-sso) starts the sign-in process using the identity provider registered for the `company.com` domain name. It is not required that identity providers be assigned one or multiple domain names, in which case you can use the provider's unique ID instead.
 
 ### Understanding attribute mappings
 
@@ -17299,6 +17439,19 @@ val data = supabase.auth.signUpWith(Email) {
 }
 ```
 
+**C#**
+
+```c#
+var session = await supabase.Auth.SignUp("valid.email@supabase.io", "example-password", new SignUpOptions
+{
+    Data = new Dictionary<string, object>
+    {
+        { "first_name", "John" },
+        { "age", 27 }
+    }
+});
+```
+
 User metadata is stored on the `raw_user_meta_data` column of the `auth.users` table. To view the metadata:
 
 **JavaScript**
@@ -17335,6 +17488,13 @@ val user = supabase.auth.retrieveUserForCurrentSession()
 //Or you can use the user from the current session:
 val user = supabase.auth.currentUserOrNull()
 val metadata = user?.userMetadata
+```
+
+**C#**
+
+```c#
+var user = supabase.Auth.CurrentUser;
+var metadata = user?.UserMetadata;
 ```
 
 ## Deleting users
@@ -20598,6 +20758,15 @@ data = await supabase.auth.sign_up({
 })
 ```
 
+**C#**
+
+To sign up the user, call [`SignUp()`](https://supabase.com/docs/reference/csharp/sign-up) with their email address and password. You can optionally specify a URL to redirect to after the user clicks the confirmation link.
+
+```c#
+var options = new SignUpOptions { RedirectTo = "https://example.com/welcome" };
+var session = await supabase.Auth.SignUp("valid.email@supabase.io", "example-password", options);
+```
+
 **PKCE flow**
 
 The PKCE flow allows for server-side authentication. Unlike the implicit flow, which directly provides your app with the access token after the user clicks the confirmation link, the PKCE flow requires an intermediate token exchange step before you can get the access token.
@@ -20901,6 +21070,14 @@ data = supabase.auth.sign_up({
 })
 ```
 
+**C#**
+
+To sign up the user, call [`SignUp()`](https://supabase.com/docs/reference/csharp/sign-up) with their email address and password:
+
+```c#
+var session = await supabase.Auth.SignUp("valid.email@supabase.io", "example-password");
+```
+
 ### Signing in with an email and password
 
 **JavaScript**
@@ -20969,6 +21146,14 @@ data = client.auth.sign_in_with_password({
 })
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-password) with their email address and password:
+
+```c#
+var session = await supabase.Auth.SignIn("valid.email@supabase.io", "example-password");
+```
+
 ### Resetting a password
 
 **Implicit flow**
@@ -21028,6 +21213,16 @@ await supabase.auth.resetPasswordForEmail(
   'valid.email@supabase.io',
   redirectTo: 'http://example.com/account/update-password',
 );
+```
+
+**C#**
+
+```c#
+var options = new ResetPasswordForEmailOptions("valid.email@supabase.io")
+{
+    RedirectTo = "http://example.com/account/update-password",
+};
+await supabase.Auth.ResetPasswordForEmail(options);
 ```
 
 #### Step 2: Create a change password page
@@ -21303,6 +21498,12 @@ supabase.auth.reset_password_email('valid.email@supabase.io')
 await supabase.auth.resetPasswordForEmail('valid.email@supabase.io');
 ```
 
+**C#**
+
+```c#
+await supabase.Auth.ResetPasswordForEmail("valid.email@supabase.io");
+```
+
 Once you have a session, collect the user's new password and call `updateUser` to update their password.
 
 **JavaScript**
@@ -21342,6 +21543,12 @@ supabase.auth.update_user({'password': 'new_password'})
 final UserResponse res = await supabase.auth.updateUser(
   UserAttributes(password: 'new_password'),
 );
+```
+
+**C#**
+
+```c#
+await supabase.Auth.Update(new UserAttributes { Password = "new_password" });
 ```
 
 #### Verifying the current password
@@ -21458,6 +21665,12 @@ final AuthResponse res = await supabase.auth.signUp(
 );
 ```
 
+**C#**
+
+```c#
+var session = await supabase.Auth.SignUp(SignUpType.Phone, "+13334445555", "some-password");
+```
+
 **HTTP**
 
 ```bash
@@ -21540,6 +21753,12 @@ final AuthResponse res = await supabase.auth.verifyOTP(
 );
 ```
 
+**C#**
+
+```c#
+var session = await supabase.Auth.VerifyOTP("+13334445555", "123456", MobileOtpType.SMS);
+```
+
 **HTTP**
 
 ```bash
@@ -21605,6 +21824,12 @@ final AuthResponse res = await supabase.auth.signInWithPassword(
   phone: '+13334445555',
   password: 'some-password',
 );
+```
+
+**C#**
+
+```c#
+var session = await supabase.Auth.SignIn(SignInType.Phone, "+13334445555", "some-password");
 ```
 
 **HTTP**
@@ -21704,6 +21929,12 @@ response = supabase.auth.sign_in_with_otp({
 })
 ```
 
+**C#**
+
+```c#
+await supabase.Auth.SignIn(SignInType.Phone, "+13334445555");
+```
+
 **HTTP**
 
 ```bash
@@ -21777,6 +22008,14 @@ response = supabase.auth.verify_otp({
 })
 ```
 
+**C#**
+
+You should present a form to the user so they can input the 6 digit pin, then send it along with the phone number to `VerifyOTP`:
+
+```c#
+var session = await supabase.Auth.VerifyOTP("+13334445555", "123456", MobileOtpType.SMS);
+```
+
 **HTTP**
 
 ```bash
@@ -21844,6 +22083,12 @@ supabase.auth.updateUser {
 response = supabase.auth.update_user({
   'phone': '123456789',
 })
+```
+
+**C#**
+
+```c#
+var response = await supabase.Auth.Update(new UserAttributes { Phone = "123456789" });
 ```
 
 The user receives an SMS with a 6-digit pin that you must [verify](#verifying-a-phone-otp) within 60 seconds.
@@ -24918,6 +25163,12 @@ suspend fun logout() {
 supabase.auth.sign_out()
 ```
 
+**C#**
+
+```c#
+await supabase.Auth.SignOut();
+```
+
 ## Sign out and scopes
 
 Supabase Auth allows you to specify three different scopes for when a user invokes the [sign out API](https://supabase.com/docs/reference/javascript/auth-signout) in your application:
@@ -24961,6 +25212,16 @@ await supabase.auth.signOut();
 
 // sign out from all sessions
 supabase.auth.signOut(SignOutScope.GLOBAL)
+```
+
+**C#**
+
+```c#
+// defaults to the global scope
+await supabase.Auth.SignOut();
+
+// sign out from the current session only
+await supabase.Auth.SignOut(SignOutScope.Local);
 ```
 
 Upon sign out, all refresh tokens and potentially other database objects related to the affected sessions are destroyed and the client library removes the session stored in the local storage medium.
@@ -26123,6 +26384,15 @@ suspend fun signInWithAzure() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Azure` as the provider. Request the `email` scope:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Azure, new SignInOptions { Scopes = "email" });
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -26395,6 +26665,14 @@ suspend fun signOut() {
 }
 ```
 
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
+```
+
 ## Obtain the provider refresh token
 
 Azure OAuth2.0 doesn't return the `provider_refresh_token` by default. If you need the `provider_refresh_token` returned, you will need to include the following scope:
@@ -26436,6 +26714,13 @@ suspend fun signInWithAzure() {
         scopes.add("offline_access")
     }
 }
+```
+
+**C#**
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Azure, new SignInOptions { Scopes = "offline_access" });
+var signInUrl = state.Uri;
 ```
 
 ## Resources
@@ -26562,6 +26847,15 @@ suspend fun signInWithBitbucket() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Bitbucket` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Bitbucket);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -26832,6 +27126,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -26973,6 +27275,15 @@ When your user signs in, call [signInWith(Provider)](https://supabase.com/docs/r
 suspend fun signInWithDiscord() {
 	supabase.auth.signInWith(Discord)
 }
+```
+
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Discord` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Discord);
+var signInUrl = state.Uri;
 ```
 
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
@@ -27249,6 +27560,14 @@ suspend fun signOut() {
 }
 ```
 
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
+```
+
 ## Resources
 
 - [Supabase - Get started for free](https://supabase.com)
@@ -27504,6 +27823,15 @@ When your user signs in, call [signInWith(Provider)](https://supabase.com/docs/r
 suspend fun signInWithFacebook() {
 	supabase.auth.signInWith(Facebook)
 }
+```
+
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Facebook` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Facebook);
+var signInUrl = state.Uri;
 ```
 
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
@@ -27795,6 +28123,14 @@ suspend fun signOut() {
 }
 ```
 
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
+```
+
 ## Testing your integration
 
 Facebook apps start in **Development** mode, which has the following limitations:
@@ -27995,6 +28331,15 @@ suspend fun signInWithFigma() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Figma` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Figma);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -28265,6 +28610,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -28416,6 +28769,15 @@ suspend fun signInWithGithub() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Github` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Github);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -28686,6 +29048,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -28809,6 +29179,15 @@ suspend fun signInWithGitLab() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Gitlab` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Gitlab);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -29079,6 +29458,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -30229,6 +30616,15 @@ suspend fun signInWithKakao() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Kakao` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Kakao);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -30496,6 +30892,14 @@ suspend fun signOut() {
 }
 ```
 
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
+```
+
 ## Using Kakao Login JS SDK
 
 [Kakao Login JS SDK](https://developers.kakao.com/docs/latest/en/kakaologin/js) is an official Kakao SDK for authenticating Kakao users on websites.
@@ -30658,6 +31062,15 @@ suspend fun signInWithKeycloak() {
 		scopes.add("openid")
 	}
 }
+```
+
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.KeyCloak` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.KeyCloak, new SignInOptions { Scopes = "openid" });
+var signInUrl = state.Uri;
 ```
 
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
@@ -30931,6 +31344,14 @@ suspend fun signOut() {
 }
 ```
 
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
+```
+
 ## Resources
 
 - You can find the Keycloak OpenID endpoint configuration under the realm settings.
@@ -31072,6 +31493,15 @@ When your user signs in, call [signInWith(Provider)](https://supabase.com/docs/r
 suspend fun signInWithKaLinkedIn() {
 	supabase.auth.signInWith(LinkedIn)
 }
+```
+
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.LinkedInOIDC` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.LinkedInOIDC);
+var signInUrl = state.Uri;
 ```
 
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
@@ -31344,6 +31774,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## LinkedIn Open ID Connect (OIDC)
@@ -31488,6 +31926,15 @@ suspend fun signInWithNotion() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Notion` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Notion);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -31758,6 +32205,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -31917,6 +32372,15 @@ suspend fun signInWithSlack() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Slack` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Slack);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -32187,6 +32651,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -32343,6 +32815,15 @@ suspend fun signInWithSpotify() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Spotify` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Spotify);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -32613,6 +33094,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -32754,6 +33243,15 @@ suspend fun signInWithTwitch() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Twitch` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Twitch);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -33024,6 +33522,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -33188,6 +33694,15 @@ When your user signs in, call [signInWith(Provider)](https://supabase.com/docs/r
 suspend fun signInWithX() {
 	supabase.auth.signInWith(X)
 }
+```
+
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Twitter` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Twitter);
+var signInUrl = state.Uri;
 ```
 
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
@@ -33470,6 +33985,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -33765,6 +34288,15 @@ suspend fun signInWithZoom() {
 }
 ```
 
+**C#**
+
+When your user signs in, call [`SignIn()`](https://supabase.com/docs/reference/csharp/sign-in-with-oauth) with `Provider.Zoom` as the provider:
+
+```c#
+var state = await supabase.Auth.SignIn(Provider.Zoom);
+var signInUrl = state.Uri;
+```
+
 For a PKCE flow, for example in Server-Side Auth, you need an extra step to handle the code exchange. When calling `signInWithOAuth`, provide a `redirectTo` URL which points to a callback route. This redirect URL should be added to your [redirect allow list](https://supabase.com/docs/guides/auth/redirect-urls).
 
 **Client**
@@ -34035,6 +34567,14 @@ When your user signs out, call [signOut()](https://supabase.com/docs/reference/k
 suspend fun signOut() {
 	supabase.auth.signOut()
 }
+```
+
+**C#**
+
+When your user signs out, call [SignOut()](https://supabase.com/docs/reference/csharp/sign-out) to remove them from the browser session and any objects from local storage:
+
+```c#
+await supabase.Auth.SignOut();
 ```
 
 ## Resources
@@ -35361,6 +35901,26 @@ supabase.from_('arraytest').insert(
 .execute()
 ```
 
+**C#**
+
+Insert a record from the C# client:
+
+```c#
+[Table("arraytest")]
+class ArrayTest : BaseModel
+{
+    [PrimaryKey("id", false)]
+    public int Id { get; set; }
+
+    [Column("textarray")]
+    public List<string> Textarray { get; set; }
+}
+
+await supabase
+  .From<ArrayTest>()
+  .Insert(new ArrayTest { Id = 2, Textarray = new List<string> { "one", "two", "three", "four" } });
+```
+
 ## View the results
 
 **Dashboard**
@@ -35450,6 +36010,17 @@ returns:
     textarray: ["Harry", "Larry", "Moe"],
   )
 ]
+```
+
+**C#**
+
+This returns the entire array field:
+
+```c#
+var result = await supabase
+  .From<ArrayTest>()
+  .Select(x => new object[] { x.Textarray })
+  .Get();
 ```
 
 ## Resources
@@ -41257,6 +41828,12 @@ const { data, error } = supabase.rpc('function_name')
 val data = supabase.postgrest.rpc("function_name")
 ```
 
+**C#**
+
+```c#
+await supabase.Rpc("function_name", null);
+```
+
 ## Examples
 
 ### Scalar functions
@@ -41471,6 +42048,34 @@ val data = supabase.from("restaurants").insert(listOf(
 ))
 ```
 
+**C#**
+
+```c#
+[Table("restaurants")]
+class Restaurant : BaseModel
+{
+    [PrimaryKey("id", false)]
+    public long Id { get; set; }
+
+    [Column("name")]
+    public string Name { get; set; }
+
+    [Column("location")]
+    public string Location { get; set; }
+}
+```
+
+```c#
+var restaurants = new List<Restaurant>
+{
+    new Restaurant { Name = "Supa Burger", Location = "POINT(-73.946823 40.807416)" },
+    new Restaurant { Name = "Supa Pizza", Location = "POINT(-73.94581 40.807475)" },
+    new Restaurant { Name = "Supa Taco", Location = "POINT(-73.945826 40.80629)" }
+};
+
+await supabase.From<Restaurant>().Insert(restaurants);
+```
+
 Notice the order in which you pass the latitude and longitude. Longitude comes first, and is because longitude represents the x-axis of the location. Another thing to watch for is when inserting data from the client library, there is no comma between the two values, only a single space.
 
 At this point, if you go into your Supabase dashboard and look at the data, you will notice that the value of the `location` column looks something like this.
@@ -41555,6 +42160,16 @@ val data = supabase.postgrest.rpc(
         put("lon", -73.946713)
     }
 )
+```
+
+**C#**
+
+```c#
+await supabase.Rpc("nearby_restaurants", new Dictionary<string, object>
+{
+    { "lat", 40.807313 },
+    { "long", -73.946713 }
+});
 ```
 
 **Result**
@@ -41667,6 +42282,18 @@ val data = supabase.postgrest.rpc(
         put("max_lon", -73.945)
     }
 )
+```
+
+**C#**
+
+```c#
+await supabase.Rpc("restaurants_in_view", new Dictionary<string, object>
+{
+    { "min_lat", 40.807 },
+    { "min_long", -73.946 },
+    { "max_lat", 40.808 },
+    { "max_long", -73.945 }
+});
 ```
 
 **Result**
@@ -58084,6 +58711,15 @@ val data = supabase.from("books").select {
 data = supabase.from_('books').select().eq('title', 'Harry').execute()
 ```
 
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Where(x => x.Title == "Harry")
+  .Get();
+```
+
 The equality symbol above (`=`) is very "strict" on what it matches. In a full text search context, we might want to find all "Harry Potter" books and so we can rewrite the
 example above:
 
@@ -58126,6 +58762,15 @@ val data = supabase.from("books").select {
         textSearch("title", "'Harry'", TextSearchType.NONE)
     }
 }
+```
+
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("title", Operator.FTS, new FullTextSearchConfig("'Harry'", null))
+  .Get();
 ```
 
 ## Basic full text queries
@@ -58184,6 +58829,15 @@ val data = supabase.from("books").select {
 
 ```python
 data = supabase.from_('books').select().text_search('description', "'big'").execute()
+```
+
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("description", Operator.FTS, new FullTextSearchConfig("'big'", null))
+  .Get();
 ```
 
 **Data**
@@ -58285,6 +58939,21 @@ $$ language sql immutable;
 data = supabase.from_('books').select().text_search('title_description', "little").execute()
 ```
 
+**C#**
+
+```sql
+create function title_description(books) returns text as $$
+  select $1.title || ' ' || $1.description;
+$$ language sql immutable;
+```
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("title_description", Operator.FTS, new FullTextSearchConfig("little", null))
+  .Get();
+```
+
 **Data**
 
 | id | title                 | author                 | description                                 |
@@ -58352,6 +59021,15 @@ val data = supabase.from("books").select {
 data = supabase.from_('books').select().text_search('description', "'little' & 'big'").execute()
 ```
 
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("description", Operator.FTS, new FullTextSearchConfig("'little' & 'big'", null))
+  .Get();
+```
+
 **Data**
 
 | id | title  | author            | description                      |
@@ -58416,6 +59094,15 @@ val data = supabase.from("books").select {
 
 ```python
 response = client.from_('books').select().text_search('description', "'little' | 'big'").execute()
+```
+
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("description", Operator.FTS, new FullTextSearchConfig("'little' | 'big'", null))
+  .Get();
 ```
 
 **Data**
@@ -58492,6 +59179,12 @@ val result = supabase.postgrest.rpc("search_books_by_title_prefix", rpcParams)
 data = client.rpc('search_books_by_title_prefix', { 'prefix': 'Lit' }).execute()
 ```
 
+**C#**
+
+```c#
+await supabase.Rpc("search_books_by_title_prefix", new Dictionary<string, object> { { "prefix", "Lit" } });
+```
+
 This function takes a prefix parameter and returns all books where the title contains a word starting with that prefix. The `:*` operator is used to denote a prefix match in the `to_tsquery()` function.
 
 ## Handling spaces in queries
@@ -58523,6 +59216,15 @@ const { data, error } = await supabase
   .from('books')
   .select()
   .textSearch('description', 'green eggs', { type: 'websearch' })
+```
+
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("description", Operator.WFTS, new FullTextSearchConfig("green eggs", null))
+  .Get();
 ```
 
 ### Quoted phrases
@@ -58661,6 +59363,15 @@ val data = supabase.from("books").select {
 data = client.from_('books').select().text_search('fts', "'little' & 'big'").execute()
 ```
 
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("fts", Operator.FTS, new FullTextSearchConfig("'little' & 'big'", null))
+  .Get();
+```
+
 **Data**
 
 | id | title  | author            | description                      | fts                                                     |
@@ -58732,6 +59443,15 @@ val data = supabase.from("books").select {
 data = client.from_('books').select().text_search('description', "'big' <-> 'dreams'").execute()
 ```
 
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("description", Operator.FTS, new FullTextSearchConfig("'big' <-> 'dreams'", null))
+  .Get();
+```
+
 We can also use the `<->` to find words within a certain distance of each other. For example to find `year` and `school` within 2 words of each other:
 
 **SQL**
@@ -58787,6 +59507,15 @@ val data = supabase.from("books").select {
 
 ```python
 data = client.from_('books').select().text_search('description', "'year' <2> 'school'").execute()
+```
+
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("description", Operator.FTS, new FullTextSearchConfig("'year' <2> 'school'", null))
+  .Get();
 ```
 
 ### Negation: `!` \[#negation]
@@ -58849,6 +59578,15 @@ val data = supabase.from("books").select {
 data = client.from_('books').select().text_search('description', "'big' & !'little'").execute()
 ```
 
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Filter("description", Operator.FTS, new FullTextSearchConfig("'big' & !'little'", null))
+  .Get();
+```
+
 ## Ranking search results \[#ranking]
 
 Postgres provides ranking functions to sort search results by relevance, helping you present the most relevant matches first. Since ranking functions need to be computed server-side, use RPC functions and generated columns.
@@ -58893,6 +59631,12 @@ final result = await client
 
 ```python
 data = client.rpc('search_books', { 'search_query': 'big' }).execute()
+```
+
+**C#**
+
+```c#
+await supabase.Rpc("search_books", new Dictionary<string, object> { { "search_query", "big" } });
 ```
 
 **SQL**
@@ -59006,6 +59750,16 @@ data = client.rpc('search_books_weighted', { 'search_query': 'Harry' }).execute(
 custom_data = client.rpc('search_books_custom_weights', { 'search_query': 'Harry' }).execute()
 ```
 
+**C#**
+
+```c#
+// Search with standard weighted ranking
+await supabase.Rpc("search_books_weighted", new Dictionary<string, object> { { "search_query", "Harry" } });
+
+// Search with custom weights
+await supabase.Rpc("search_books_custom_weights", new Dictionary<string, object> { { "search_query", "Harry" } });
+```
+
 **SQL**
 
 ```sql
@@ -59065,6 +59819,12 @@ final result = await client
 data = client.rpc('search_books_fts', { 'search_query': 'little & big' }).execute()
 ```
 
+**C#**
+
+```c#
+await supabase.Rpc("search_books_fts", new Dictionary<string, object> { { "search_query", "little & big" } });
+```
+
 **SQL**
 
 ```sql
@@ -59099,6 +59859,13 @@ $$ language plpgsql;
 const { data, error } = await supabase.rpc('websearch_books', {
   search_text: '"little puppy" or train -vegetables',
 })
+```
+
+**C#**
+
+```c#
+// Support natural search syntax
+await supabase.Rpc("websearch_books", new Dictionary<string, object> { { "search_text", "\"little puppy\" or train -vegetables" } });
 ```
 
 **SQL**
@@ -59213,6 +59980,14 @@ data = supabase.rpc('hello_world').execute()
 ```
 
 Reference: [`rpc()`](../../reference/python/rpc)
+
+**C#**
+
+```c#
+await supabase.Rpc("hello_world", null);
+```
+
+Reference: [`Rpc()`](../../reference/csharp/rpc)
 
 ## Returning data sets
 
@@ -59413,6 +60188,12 @@ val data = supabase.postgrest.rpc(
 
 ```python
 data = supabase.rpc('add_planet', params={'name': 'Jakku'}).execute()
+```
+
+**C#**
+
+```c#
+await supabase.Rpc("add_planet", new Dictionary<string, object> { { "name", "Jakku" } });
 ```
 
 ## Suggestions
@@ -60199,6 +60980,15 @@ val data = supabase.from("orchestral_sections").select(Columns.raw("id, name, in
 data = supabase.from_('orchestral_sections').select('id, name, instruments(id, name)').execute()
 ```
 
+**C#**
+
+```c#
+var result = await supabase
+  .From<OrchestralSection>()
+  .Select("id, name, instruments(id, name)")
+  .Get();
+```
+
 **GraphQL**
 
 ```javascript
@@ -60683,6 +61473,15 @@ val data = supabase.from("teams").select(Columns.raw("id, team_name, users(id, n
 data = supabase.from_('teams').select('id, team_name, users(id, name)').execute()
 ```
 
+**C#**
+
+```c#
+var result = await supabase
+  .From<Team>()
+  .Select("id, team_name, users(id, name)")
+  .Get();
+```
+
 **GraphQL**
 
 ````javascript
@@ -60871,6 +61670,27 @@ data = supabase.from_('shifts').select("""
     badge_scan_time
   )
 """).execute()
+```
+
+**C#**
+
+```c#
+var result = await supabase
+  .From<Shift>()
+  .Select(@"
+    *,
+    start_scan:scans!scan_id_start (
+      id,
+      user_id,
+      badge_scan_time
+    ),
+    end_scan:scans!scan_id_end (
+      id,
+      user_id,
+      badge_scan_time
+    )
+  ")
+  .Get();
 ```
 
 **GraphQL**
@@ -61257,6 +62077,48 @@ supabase.from_('books').insert([
 ]).execute()
 ```
 
+**C#**
+
+```c#
+[Table("books")]
+class Book : BaseModel
+{
+    [Column("title")]
+    public string Title { get; set; }
+
+    [Column("author")]
+    public string Author { get; set; }
+
+    [Column("metadata")]
+    public BookMetadata Metadata { get; set; }
+}
+
+class BookMetadata
+{
+    [JsonProperty("description")]
+    public string Description { get; set; }
+
+    [JsonProperty("price")]
+    public double Price { get; set; }
+
+    [JsonProperty("ages")]
+    public List<int> Ages { get; set; }
+}
+```
+
+```c#
+var books = new List<Book>
+{
+    new Book { Title = "The Poky Little Puppy", Author = "Janette Sebring Lowrey", Metadata = new BookMetadata { Description = "Puppy is slower than other, bigger animals.", Price = 5.95, Ages = new List<int> { 3, 6 } } },
+    new Book { Title = "The Tale of Peter Rabbit", Author = "Beatrix Potter", Metadata = new BookMetadata { Description = "Rabbit eats some vegetables.", Price = 4.49, Ages = new List<int> { 2, 5 } } },
+    new Book { Title = "Tootle", Author = "Gertrude Crampton", Metadata = new BookMetadata { Description = "Little toy train has big dreams.", Price = 3.99, Ages = new List<int> { 2, 5 } } },
+    new Book { Title = "Green Eggs and Ham", Author = "Dr. Seuss", Metadata = new BookMetadata { Description = "Sam has changing food preferences and eats unusually colored food.", Price = 7.49, Ages = new List<int> { 4, 8 } } },
+    new Book { Title = "Harry Potter and the Goblet of Fire", Author = "J.K. Rowling", Metadata = new BookMetadata { Description = "Fourth year of school starts, big drama ensues.", Price = 24.95, Ages = new List<int> { 10, 99 } } }
+};
+
+await supabase.From<Book>().Insert(books);
+```
+
 ## Query JSON data
 
 Querying JSON data is similar to querying other data, with a few other features to access nested values.
@@ -61327,6 +62189,15 @@ data = supabase.from_('books').select("""
   high_age: metadata->ages->1
 """
 ).execute()
+```
+
+**C#**
+
+```c#
+var result = await supabase
+  .From<Book>()
+  .Select("title, description:metadata->>description, price:metadata->price, low_age:metadata->ages->0, high_age:metadata->ages->1")
+  .Get();
 ```
 
 **Result**
@@ -61684,6 +62555,7 @@ Once you've covered the basics, these guides help with other use cases and featu
 - **[Backups](https://supabase.com/docs/guides/platform/backups):** Daily backups on every project, with point-in-time recovery on paid plans. Backups cover the database itself; objects stored through the Storage API are not included.
 - **[Query performance and optimization](https://supabase.com/docs/guides/database/query-optimization):** Indexes, the query planner, and tools for finding slow queries.
 - **[Roles and permissions](https://supabase.com/docs/guides/database/postgres/roles):** The Postgres roles Supabase ships with and how to add your own.
+- **[Deployment & Branching](https://supabase.com/docs/guides/deployment):** Preview environments, branching, migrations, and production readiness for your database changes.
 
 
 ---
@@ -66400,6 +67272,41 @@ supabase
         Movie("The Empire Strikes Back", "After the Rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda."),
         Movie("Return of the Jedi", "After a daring mission to rescue Han Solo from Jabba the Hutt, the Rebels dispatch to Endor to destroy the second Death Star."),
     ))
+```
+
+**C#**
+
+```c#
+[Table("movies")]
+class Movie : BaseModel
+{
+    [PrimaryKey("id", false)]
+    public long Id { get; set; }
+
+    [Column("name")]
+    public string Name { get; set; }
+
+    [Column("description")]
+    public string Description { get; set; }
+}
+```
+
+```c#
+var movies = new List<Movie>
+{
+    new Movie
+    {
+        Name = "The Empire Strikes Back",
+        Description = "After the Rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda."
+    },
+    new Movie
+    {
+        Name = "Return of the Jedi",
+        Description = "After a daring mission to rescue Han Solo from Jabba the Hutt, the Rebels dispatch to Endor to destroy the second Death Star."
+    }
+};
+
+await supabase.From<Movie>().Insert(movies);
 ```
 
 ### Bulk data loading
@@ -78259,9 +79166,11 @@ npm create astro@latest my-app
 cd my-app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -78295,7 +79204,7 @@ export default defineConfig({
 
 ## 7. Declare Supabase environment variables
 
-Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=astro\&tab=frameworks):
+Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=astro\&connectTab=frameworks):
 
 Open Connect panel
 
@@ -78436,9 +79345,11 @@ Create a minimal Expo app using the `create-expo-app` command with the blank Typ
 npx create-expo-app my-app --template blank-typescript
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -78458,7 +79369,7 @@ cd my-app && npx expo install @supabase/supabase-js react-native-url-polyfill ex
 
 ## 6. Declare Supabase environment variables
 
-Create a `.env` file in the root of your project and populate it with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true).
+Create a `.env` file in the root of your project and populate it with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=exporeactnative).
 
 Open Connect panel
 
@@ -78471,7 +79382,7 @@ EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 
 ### Get API details
 
-To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=).
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=mobiles\&framework=exporeactnative).
 
 
 
@@ -78635,9 +79546,11 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -78657,7 +79570,7 @@ pip install flask supabase
 
 ## 6. Create environment variables file
 
-Create a `.env` file in your project root and populate it with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true):
+Create a `.env` file in your project root and populate it with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=flask):
 
 Open Connect panel
 
@@ -78668,7 +79581,7 @@ SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 
 ### Get API details
 
-To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=).
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=flask).
 
 
 
@@ -78795,9 +79708,11 @@ Create a Flutter app using the `flutter create` command.
 flutter create my_app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -78817,7 +79732,7 @@ supabase_flutter: ^2.0.0
 
 ## 6. Initialize the Supabase client
 
-Open `lib/main.dart` and edit the main function to initialize Supabase using your project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=flutter\&tab=mobiles):
+Open `lib/main.dart` and edit the main function to initialize Supabase using your project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=flutter\&connectTab=mobiles):
 
 Open Connect panel
 
@@ -78932,6 +79847,13 @@ To do this, add the following line to the `android/app/src/main/AndroidManifest.
 </manifest>
 ```
 
+## Next steps
+
+- Learn how to build a complete user management app with authentication in the [Flutter tutorial](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter)
+- Explore the [supabase-flutter](https://github.com/supabase/supabase-flutter) library on GitHub
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+
 
 ---
 
@@ -78996,9 +79918,11 @@ Bootstrap the Hono example app from the Supabase Samples using the CLI.
 npx supabase@latest bootstrap hono
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -79016,7 +79940,7 @@ npm install
 
 ## 6. Set up the required environment variables
 
-Copy the `.env.example` file to `.env` and update the values with your Supabase project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&tab=frameworks).
+Copy the `.env.example` file to `.env` and update the values with your Supabase project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks).
 
 Lastly, [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/auth/providers) in the Auth settings.
 
@@ -79024,9 +79948,11 @@ Lastly, [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/aut
 cp .env.example .env
 ```
 
+Open Connect panel
+
 ### Get API details
 
-To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=).
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=\&framework=).
 
 
 
@@ -79110,9 +80036,11 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 
 Select the **Xcode > New Project > iOS > App** menu item.
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -79130,7 +80058,7 @@ Make sure to add `Supabase` product package as a dependency to your application 
 
 ## 6. Initialize the Supabase client
 
-Create a new `Supabase.swift` file add a new Supabase instance using your project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=swift\&tab=mobiles):
+Create a new `Supabase.swift` file add a new Supabase instance using your project URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=swift\&connectTab=mobiles):
 
 Open Connect panel
 
@@ -79211,6 +80139,8 @@ If you want to implement authentication features like magic links or OAuth, you 
 
 - Learn how to build a complete user management app with authentication in the [Swift tutorial](https://supabase.com/docs/guides/getting-started/tutorials/with-swift)
 - Explore the [supabase-swift](https://github.com/supabase/supabase-swift) library on GitHub
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
 
 ---
@@ -79272,9 +80202,11 @@ Note: If you disabled the Data API during project setup, enable it in the [**Int
 
 Select the **Android Studio > New > New Android Project** menu item.
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -79320,7 +80252,7 @@ You can create a Supabase client whenever you need to perform an API call.
 
 For a quick example, create a client at the top of the `MainActivity.kt` file below the imports.
 
-Replace the `supabaseUrl` and `supabaseKey` with your own, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=androidkotlin\&tab=mobiles):
+Replace the `supabaseUrl` and `supabaseKey` with your own, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=androidkotlin\&connectTab=mobiles):
 
 Open Connect panel
 
@@ -79413,6 +80345,13 @@ fun InstrumentsList() {
 
 Run the app on an emulator or a physical device by clicking the `Run app` button in Android Studio.
 
+## Next steps
+
+- Learn how to build a complete user management app with authentication in the [Kotlin tutorial](https://supabase.com/docs/guides/getting-started/tutorials/with-kotlin)
+- Explore the [supabase-kt](https://github.com/supabase-community/supabase-kt) library on GitHub
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+
 
 ---
 
@@ -79479,9 +80418,11 @@ See the [Laravel docs](https://laravel.com/docs/10.x/installation#creating-a-lar
 composer create-project laravel/laravel example-app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -79500,9 +80441,7 @@ php artisan breeze:install
 
 ## 6. Set up the Postgres connection details
 
-Go to [database.new](https://database.new) and create a new Supabase project. Save your database password securely.
-
-When your project is up and running, navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session).
+Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
 Look for the Session Pooler connection string and copy the string. You will need to replace the Password with your saved database password. You can reset your database password in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
 
@@ -79510,7 +80449,7 @@ Note: If you're in an [IPv6 environment](https://github.com/orgs/supabase/discus
 
 ```bash name=.env
 DB_CONNECTION=pgsql
-DB_URL=postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
+DB_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:5432/postgres
 ```
 
 ## 7. Change the default schema
@@ -79534,9 +80473,11 @@ The schema you specify in `search_path` has to exist on Supabase. You can create
     'prefix' => '',
     'prefix_indexes' => true,
     'search_path' => 'laravel',
-    'sslmode' => 'prefer',
+    'sslmode' => 'require',
 ],
 ```
+
+Laravel ships with `sslmode` set to `prefer`, which sends your data in plaintext if the encrypted attempt fails. Set it to `require` so the connection fails instead. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
 
 ## 8. Run the database migrations
 
@@ -79555,6 +80496,12 @@ Run the development server. Go to [http://127.0.0.1:8000](http://127.0.0.1:8000)
 ```bash
 php artisan serve
 ```
+
+## Next steps
+
+- Learn more about [Supabase Auth](https://supabase.com/docs/guides/auth) if you want to replace Laravel's built-in authentication
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
 
 ---
@@ -79620,9 +80567,11 @@ Use the `create-next-app` command and the `with-supabase` template, to create a 
 npx create-next-app -e with-supabase
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -79632,7 +80581,7 @@ npx skills add supabase/agent-skills
 
 ## 5. Declare Supabase environment variables
 
-Rename `.env.example` to `.env.local` and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nextjs\&tab=frameworks).
+Rename `.env.example` to `.env.local` and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nextjs\&connectTab=frameworks).
 
 Open Connect panel
 
@@ -79756,9 +80705,11 @@ Create a Nuxt app using the `npx nuxi` command.
 npx nuxi@latest init my-app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -79778,7 +80729,7 @@ cd my-app && npm install @supabase/supabase-js
 
 ## 6. Declare Supabase environment variables
 
-Create a `.env` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nuxt\&tab=frameworks):
+Create a `.env` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nuxt\&connectTab=frameworks):
 
 Open Connect panel
 
@@ -79847,6 +80798,13 @@ npm run dev
 
 Note: The community-maintained [@nuxtjs/supabase](https://supabase.nuxtjs.org/) module provides an alternate DX for working with Supabase in Nuxt.
 
+## Next steps
+
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+
 
 ---
 
@@ -79911,9 +80869,11 @@ Create a React app using a [Vite](https://vitejs.dev/guide/) template.
 npm create vite@latest my-app -- --template react
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -79933,7 +80893,7 @@ cd my-app && npm install @supabase/supabase-js
 
 ## 6. Declare Supabase environment variables
 
-Create a `.env.local` file and populate it with your Supabase URL and publishable key that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=react\&tab=frameworks)
+Create a `.env.local` file and populate it with your Supabase URL and publishable key that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=react\&connectTab=frameworks)
 
 Open Connect panel
 
@@ -80019,17 +80979,19 @@ Learn how to create a Supabase project, add some sample data to your database us
 
 
 
-## 1. Setup your new Supabase project
+## 1. Create a Supabase project
 
-[Create a new project](https://supabase.com/dashboard) in the Supabase Dashboard.
+To start, you need a Supabase project.
 
-Note: Be sure to make note of the Database Password you used as you will need this later to connect to your database.
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
 
-![New project for redwoodjs](/docs/img/guides/getting-started/quickstarts/redwoodjs/new-project.png)
+Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create-a-project) or ask [the MCP server](https://supabase.com/docs/guides/ai-tools/mcp#account-management) to create a new Supabase project.
+
+Save your database password securely. You need it for the connection string.
 
 ## 2. Gather database connection strings
 
-Open the project [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true). This quickstart connects using the [**Transaction pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) and [**Session pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) mode. Transaction mode is used for application queries and Session mode is used for running migrations with Prisma.
+Open the project [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct). This quickstart connects using the [**Transaction pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=transaction) and [**Session pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session) mode. Transaction mode is used for application queries and Session mode is used for running migrations with Prisma.
 
 To do this, set the connection mode to `Transaction` in the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings) and copy the connection string and append `?pgbouncer=true&connection_limit=1`. `pgbouncer=true` disables Prisma from generating prepared statements. This is required since our connection pooler does not support prepared statements in transaction mode yet. The `connection_limit=1` parameter is only required if you are using Prisma from a serverless environment. This is the Transaction mode connection string.
 
@@ -80038,8 +81000,6 @@ To get the Session mode connection pooler string, change the port of the connect
 You will need the Transaction mode connection string and the Session mode connection string to set up environment variables in Step 6.
 
 Note: You can copy and paste these connection strings from the Supabase Dashboard when needed in later steps.
-
-![pooled connection for redwoodjs](/docs/img/guides/getting-started/quickstarts/redwoodjs/pooled-connection-strings.png)
 
 ## 3. Create a RedwoodJS app
 
@@ -80053,9 +81013,11 @@ While TypeScript is recommended, If you want a JavaScript app, omit the `--ts` f
 yarn create redwood-app my-app --ts
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -80076,11 +81038,11 @@ In your `.env` file, add the following environment variables for your database c
 - The `DIRECT_URL` should use the Session mode connection string you copied in Step 2.
 
 ```bash name=.env
-# Transaction mode connection string used for migrations
-DATABASE_URL="postgres://postgres.[project-ref]:[db-password]@xxx.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+# Transaction mode connection string — used by Prisma Client for app queries
+DATABASE_URL="postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
 
-# Session mode connection string — used by Prisma Client
-DIRECT_URL="postgres://postgres.[project-ref]:[db-password]@xxx.pooler.supabase.com:5432/postgres"
+# Session mode connection string — used by Prisma Migrate
+DIRECT_URL="postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:5432/postgres"
 ```
 
 ## 7. Update your Prisma schema
@@ -80159,13 +81121,17 @@ yarn rw g scaffold instrument
 
 Start the app via `yarn rw dev`. A browser will open to the RedwoodJS Splash page.
 
-![RedwoodJS Splash Page](/docs/img/redwoodjs-qs-splash.png)
-
 ## 13. View instruments UI
 
 Click on `/instruments` to visit [http://localhost:8910/instruments](http://localhost:8910/instruments) where should see the list of instruments.
 
 You may now edit, delete, and add new instruments using the scaffolded UI.
+
+## Next steps
+
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
 
 ---
@@ -80233,11 +81199,11 @@ The `refine-supabase` preset adds `@refinedev/supabase` supplementary package th
 npm create refine-app@latest -- --preset refine-supabase my-app
 ```
 
-![Refine welcome page](/docs/img/refine-qs-welcome-page.png)
-
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -80247,15 +81213,22 @@ npx skills add supabase/agent-skills
 
 ## 5. Update `supabaseClient` with environment variables
 
-Update the `supabaseClient` with the `SUPABASE_URL` and `SUPABASE_KEY` of your Supabase API, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=refine\&tab=frameworks). The `supabaseClient` is used in auth provider and data provider methods that allow the Refine app to connect to your Supabase backend.
+Create a `.env` file and populate it with your Supabase URL and publishable key, which you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=refine\&connectTab=frameworks).
 
 Open Connect panel
+
+```text name=.env
+VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
+VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
+```
+
+Update `src/utility/supabaseClient.ts` to read the URL and publishable key from these environment variables. The `supabaseClient` is used in auth provider and data provider methods that allow the Refine app to connect to your Supabase backend.
 
 ```ts name=src/utility/supabaseClient.ts
 import { createClient } from '@refinedev/supabase'
 
-const SUPABASE_URL = '<your-supabase-url>'
-const SUPABASE_KEY = '<your-supabase-publishable-key>'
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 
 export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
   db: {
@@ -80365,17 +81338,21 @@ function App() {
 export default App
 ```
 
-## 8. View instruments pages
+## 8. Start the app
 
-Start the app with the following command:
+Run the development server, go to [http://localhost:5173/instruments](http://localhost:5173/instruments) in a browser, and you should see the instruments pages along the `/instruments` routes. You can edit and add new instruments using the Inferencer-generated UI.
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:5173/instruments](http://localhost:5173/instruments) in a browser, and you should be able to see the instruments pages along the `/instruments` routes. You can edit and add new instruments using the Inferencer generated UI.
-
 The Inferencer auto-generated code gives you a good starting point on which to keep building your `list`, `create`, `show` and `edit` pages. You can get these by clicking the `Show the auto-generated code` buttons in their respective pages.
+
+## Next steps
+
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
 
 ---
@@ -80386,7 +81363,17 @@ Learn how to create a Rails project and connect it to your Supabase Postgres dat
 
 
 
-## 1. Create a Rails project
+## 1. Create a Supabase project
+
+To start, you need a Supabase project.
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create-a-project) or ask [the MCP server](https://supabase.com/docs/guides/ai-tools/mcp#account-management) to create a new Supabase project.
+
+Save your database password securely. You need it for the connection string.
+
+## 2. Create a Rails project
 
 With your Ruby and Rails versions up to date, run `rails new` on your terminal to scaffold a new project.
 
@@ -80396,9 +81383,14 @@ Check the [Rails docs](https://guides.rubyonrails.org/getting_started.html) for 
 
 ```bash
 rails new blog -d=postgresql
+cd blog
 ```
 
+## 3. Install Supabase's Agent Skills (optional)
+
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -80406,25 +81398,25 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
-## 3. Install MCP server (optional)
+## 4. Install MCP server (optional)
 
 The Supabase MCP server connects AI assistants to Supabase, allowing you to interact with your projects on your behalf. Find out more on how to add it to your client in [the MCP docs](https://supabase.com/docs/guides/ai-tools/mcp).
 
-## 4. Set up the Postgres connection details
+## 5. Set up the Postgres connection details
 
-Go to [database.new](https://database.new) and create a new Supabase project. Save your database password securely.
+Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
-When your project is up and running, navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session).
-
-Look for the Session Pooler connection string and copy the string. You will need to replace the Password with your saved database password. You can reset your database password in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
+Look for the Session Pooler connection string and copy the string. You will need to replace the Password with your saved database password, and [percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space. You can reset your database password in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings) if you do not have it.
 
 Note: If you're in an [IPv6 environment](https://github.com/orgs/supabase/discussions/27034) or have the IPv4 Add-On, you can use the direct connection string instead of Supavisor in Session mode.
 
-```bash name=.env
-export DATABASE_URL=postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
+Set the connection string as an environment variable. Rails reads `DATABASE_URL` from the environment and connects with it, so you don't need to edit `config/database.yml`. The export applies to the current shell session, so run it in the same shell as the Rails commands in the following steps. `sslmode=require` stops the driver from falling back to sending your data in plaintext.
+
+```bash
+export DATABASE_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-[REGION].pooler.supabase.com:5432/postgres?sslmode=require
 ```
 
-## 5. Create and run a database migration
+## 6. Create and run a database migration
 
 Rails includes Active Record as the ORM as well as database migration tooling which generates the SQL migration files for you.
 
@@ -80435,7 +81427,7 @@ bin/rails generate model Article title:string body:text
 bin/rails db:migrate
 ```
 
-## 6. Use the model to interact with the database
+## 7. Use the model to interact with the database
 
 You can use the included Rails console to interact with the database. For example, you can create new entries or list all entries in a Model's table.
 
@@ -80450,13 +81442,19 @@ article.save # Saves the entry to the database
 Article.all
 ```
 
-## 7. Start the app
+## 8. Start the app
 
 Run the development server. Go to [http://127.0.0.1:3000](http://127.0.0.1:3000) in a browser to see your application running.
 
 ```bash
 bin/rails server
 ```
+
+## Next steps
+
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
 
 ---
@@ -80522,9 +81520,11 @@ Create a SolidJS app using the `degit` command.
 npx degit solidjs/templates/js my-app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -80544,7 +81544,7 @@ cd my-app && npm install @supabase/supabase-js
 
 ## 6. Declare Supabase environment variables
 
-Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=solidjs\&tab=frameworks):
+Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=solidjs\&connectTab=frameworks):
 
 Open Connect panel
 
@@ -80604,6 +81604,12 @@ Start the app and go to [http://localhost:3000](http://localhost:3000) in a brow
 npm run dev
 ```
 
+## Next steps
+
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+
 
 ---
 
@@ -80620,7 +81626,17 @@ Before you begin, make sure you have:
 - Java 17 or later, which you can check with `java -version`
 - `curl` and `unzip`, to download and extract the generated project
 
-## 1. Create a Spring Boot project
+## 1. Create a Supabase project
+
+To start, you need a Supabase project.
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Note: Use [the Management API](https://supabase.com/docs/reference/api/v1-create-a-project) or ask [the MCP server](https://supabase.com/docs/guides/ai-tools/mcp#account-management) to create a new Supabase project.
+
+Save your database password securely. You need it for the connection string.
+
+## 2. Create a Spring Boot project
 
 Use [Spring Initializr](https://start.spring.io) to scaffold a new project with the Web, Spring Data JPA, and Postgres Driver dependencies. Run the following from the directory where you keep your projects.
 
@@ -80636,7 +81652,7 @@ curl https://start.spring.io/starter.zip \
 unzip instruments.zip -d instruments && cd instruments
 ```
 
-## 2. Install Supabase's Agent Skills (optional)
+## 3. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
 
@@ -80648,11 +81664,9 @@ To install, run the following command in the root of your project:
 npx skills add supabase/agent-skills
 ```
 
-## 3. Set up the Postgres connection details
+## 4. Set up the Postgres connection details
 
-Go to [database.new](https://database.new) and create a new Supabase project. Save your database password securely.
-
-When your project is up and running, navigate to its dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session).
+Navigate to your project dashboard and click on [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=direct\&method=session).
 
 Caution: The Transaction pooler (port `6543`) doesn't work as your app's main data source, because Spring Data JPA uses Hibernate, which relies on server-side prepared statements. Use the Session pooler, or the direct connection string if you're in an [IPv6 environment](https://supabase.com/docs/guides/troubleshooting/supabase--your-network-ipv4-and-ipv6-compatibility-cHe3BP) or have the [IPv4 Add-On](https://supabase.com/docs/guides/platform/ipv4-address).
 
@@ -80663,7 +81677,7 @@ Note: You can reset your database password in your [Database Settings](https://s
 The connection string contains your database password, and `application.properties` is committed with your project. Set the string as an environment variable instead, and set it the same way on whatever platform you deploy to.
 
 ```bash
-export SUPABASE_DB_URL='jdbc:postgresql://xxxx.pooler.supabase.com:5432/postgres?user=postgres.xxxx&password=[YOUR-PASSWORD]&sslmode=require'
+export SUPABASE_DB_URL='jdbc:postgresql://aws-[REGION].pooler.supabase.com:5432/postgres?user=postgres.[PROJECT-REF]&password=[YOUR-PASSWORD]&sslmode=require'
 ```
 
 The string you copied doesn't set `sslmode`, so add it. The driver defaults to `prefer`, which falls back to sending your data in plaintext if the encrypted attempt fails. You can also [enforce SSL](https://supabase.com/docs/guides/platform/ssl-enforcement) on the database side.
@@ -80678,7 +81692,7 @@ spring.jpa.hibernate.ddl-auto=update
 
 If the app fails to start with `Unable to determine Dialect without JDBC metadata`, Hibernate couldn't open a connection at all. Look above that line in the logs for the real cause, most commonly `password authentication failed`.
 
-## 4. Change the default schema
+## 5. Change the default schema
 
 By default Hibernate creates tables in the `public` schema. We recommend changing this as Supabase exposes the `public` schema as a [data API](https://supabase.com/docs/guides/api).
 
@@ -80688,7 +81702,7 @@ Create the schema from the [Table Editor](https://supabase.com/dashboard/project
 spring.jpa.properties.hibernate.default_schema=app
 ```
 
-## 5. Create an entity and repository
+## 6. Create an entity and repository
 
 Spring Data JPA maps Java classes to database tables. Create an `Instrument` entity in `src/main/java/com/example/instruments/Instrument.java`. With `spring.jpa.hibernate.ddl-auto=update` set, Hibernate creates the `instruments` table for you when the app starts.
 
@@ -80741,7 +81755,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InstrumentRepository extends JpaRepository<Instrument, Long> {}
 ```
 
-## 6. Seed sample data
+## 7. Seed sample data
 
 Add a `CommandLineRunner` bean to `InstrumentsApplication.java` that saves some sample instruments the first time the app starts.
 
@@ -80773,7 +81787,7 @@ public class InstrumentsApplication {
 }
 ```
 
-## 7. Query data from the app
+## 8. Query data from the app
 
 Create an `InstrumentController` that fetches every row from the `instruments` table through the repository and returns it as JSON.
 
@@ -80801,7 +81815,7 @@ public class InstrumentController {
 }
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Run the Spring Boot app, and go to [http://localhost:8080/instruments](http://localhost:8080/instruments) in your browser. You should see the list of instruments.
 
@@ -80880,9 +81894,11 @@ Create a SvelteKit app using the `npm create` command.
 npx sv create my-app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -80902,7 +81918,7 @@ cd my-app && npm install @supabase/supabase-js
 
 ## 6. Declare Supabase environment variables
 
-Create a `.env` file at the root of your project and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=sveltekit\&tab=frameworks):
+Create a `.env` file at the root of your project and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=sveltekit\&connectTab=frameworks):
 
 Open Connect panel
 
@@ -81072,9 +82088,11 @@ Create a TanStack Start app using the official CLI.
 npx @tanstack/cli@latest create my-app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -81266,9 +82284,11 @@ Create a Vue app using the `npm init` command.
 npm init vue@latest my-app
 ```
 
-## 4. Install Agent Skills (optional)
+## 4. Install Supabase's Agent Skills (optional)
 
 Supabase's [Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) is a curated set of instructions that give your AI agent procedural knowledge about working with Supabase.
+
+Install them so your AI coding agent can produce more accurate, reliable code using current Supabase patterns, such as authentication, server-side rendering, and database migrations, rather than relying solely on training data.
 
 To install, run the following command in the root of your project:
 
@@ -81288,7 +82308,7 @@ cd my-app && npm install @supabase/supabase-js
 
 ## 6. Declare Supabase environment variables
 
-Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=vue\&tab=frameworks):
+Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper below, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=vuejs\&connectTab=frameworks):
 
 Open Connect panel
 
@@ -81299,7 +82319,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 
 ### Get API details
 
-To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=vue).
+To interact with data in database tables, you use the client libraries that wrap [the auto-generated Data API endpoints](https://supabase.com/docs/guides/api), authenticating using the Project URL and key from [the project **Connect** dialog](https://supabase.com/dashboard/project/_?showConnect=true\&connectTab=frameworks\&framework=vuejs).
 
 
 
@@ -81356,6 +82376,13 @@ Start the app and go to [http://localhost:5173](http://localhost:5173) in a brow
 ```bash
 npm run dev
 ```
+
+## Next steps
+
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
+- Set up [Auth](https://supabase.com/docs/guides/auth) for your app
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
 
 
 ---
@@ -99629,6 +100656,7 @@ Pick the workflow that best matches your tooling. Cards link to Supabase-authore
 - [Grafana Cloud (SaaS)](/docs/guides/monitoring-and-debugging/metrics/grafana-cloud). Use Grafana Cloud’s managed Prometheus (works on Free + Pro tiers) and import the Supabase dashboard without running any infrastructure.
 - [Grafana + self-hosted Prometheus](/docs/guides/monitoring-and-debugging/metrics/grafana-self-hosted). Run Prometheus yourself following the official installation guidance and pair it with Grafana plus our dashboard JSON and alert pack.
 - [Datadog](https://docs.datadoghq.com/integrations/supabase/). Scrape the Metrics API with the Datadog Agent or Prometheus remote write and monitor Supabase alongside your app telemetry.
+- [Elastic](https://www.elastic.co/docs/reference/integrations/supabase). Use Elastic's managed Supabase integration to scrape metrics. The integration automatically installs dashboards, alert templates, and SLO templates as data arrives.
 - [Vendor-agnostic / BYO Prometheus](/docs/guides/monitoring-and-debugging/metrics/vendor-agnostic). Connect AWS AMP, Grafana Mimir, VictoriaMetrics, or any Prometheus-compatible SaaS with the same scrape job pattern.
 
 ![Supabase Grafana dashboard showcasing database metrics](https://supabase.com/docs/img/guides/platform/supabase-grafana-prometheus.png)
@@ -99638,6 +100666,7 @@ Pick the workflow that best matches your tooling. Cards link to Supabase-authore
 - [Supabase Grafana repository](https://github.com/supabase/supabase-grafana) for dashboard JSON and alert examples.
 - [Grafana Cloud’s Supabase integration doc](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-supabase/) (community-maintained, built on this Metrics API).
 - [Datadog’s Supabase integration doc](https://docs.datadoghq.com/integrations/supabase/) (community-maintained, built on this Metrics API).
+- [Elastic’s Supabase integration doc](https://www.elastic.co/docs/reference/integrations/supabase) (community-maintained).
 - [Log Drains ](https://supabase.com/docs/guides/monitoring-and-debugging/log-drains) for exporting event-based telemetry alongside metrics.
 - [Query Performance report](https://supabase.com/dashboard/project/_/observability/query-performance) for built-in visualizations based on the same underlying metrics.
 
@@ -103780,7 +104809,7 @@ You can view Log Drain Events usage on the [organization's usage page](https://s
 
 # Manage Logs Ingest usage
 
-Caution: Logs pricing is being rolled out. Quotas and rates on this page are confirmed but billing enforcement is not yet live. This page will be updated when the rollout is complete.
+Caution: Logs pricing is being rolled out. Pricing details and included quotas on this page are subject to change. This page will be updated when billing enforcement goes live.
 
 ## What you are charged for
 
@@ -103796,43 +104825,11 @@ Usage is shown as "Logs Ingest" on your invoice.
 
 ## Pricing
 
-$0.50 per GB. You are only charged for usage exceeding your subscription plan's
-quota.
-
-| Plan       | Quota  | Over-Usage per GB |
-| ---------- | ------ | ----------------- |
-| Free       | 5 GB   | -                 |
-| Pro        | 5 GB   | $0.50             |
-| Team       | 5 GB   | $0.50             |
-| Enterprise | Custom | Custom            |
+Pricing details and included quotas will be published here when billing enforcement goes live.
 
 ## Billing examples
 
-### Within quota
-
-The organization's Logs Ingest usage is within the quota, so no charges for Logs Ingest apply.
-
-| Line Item           | Units     | Costs   |
-| ------------------- | --------- | ------- |
-| Pro Plan            | 1         | $25     |
-| Compute Hours Micro | 744 hours | $10     |
-| Logs Ingest         | 2 GB      | $0      |
-| **Subtotal**        |           | **$35** |
-| Compute Credits     |           | -$10    |
-| **Total**           |           | **$25** |
-
-### Exceeding quota
-
-The organization's Logs Ingest usage exceeds the quota by 7 GB, incurring charges for this additional usage.
-
-| Line Item           | Units     | Costs     |
-| ------------------- | --------- | --------- |
-| Pro Plan            | 1         | $25       |
-| Compute Hours Micro | 744 hours | $10       |
-| Logs Ingest         | 12 GB     | $3.5      |
-| **Subtotal**        |           | **$38.5** |
-| Compute Credits     |           | -$10      |
-| **Total**           |           | **$28.5** |
+Billing examples will be published here when pricing is finalized.
 
 ## View usage
 
@@ -103840,12 +104837,13 @@ You can view Logs Ingest usage on the [organization's usage page](https://supaba
 
 ## Optimize usage
 
-Every service in your Supabase project automatically generates Logs — you don't write them directly. Log volume scales with your application's traffic and behavior. To reduce ingest volume:
+Every service in your Supabase project automatically generates logs — you don't write them directly. Log volume scales with your application's traffic and behavior. To reduce ingest volume:
 
+- **Configure Postgres logging settings.** Postgres emits logs for connections, checkpoints, statements, and more — many of which can be tuned or disabled. Adjusting settings such as `log_connections`, `log_min_duration_statement`, and `log_statement` can significantly reduce Postgres log volume. See [Customizing Postgres configs](https://supabase.com/docs/guides/database/custom-postgres-config) for the full list of configurable parameters.
 - **Reduce log-level verbosity** in your Edge Functions and server-side code (for example, `info` → `warn` in production).
 - **Audit verbose logging in your application code.** Application-level logs forwarded to Supabase services count toward ingest.
 - **Cap log payload size.** Large structured payloads can inflate GB-billed volume.
-- **Investigate spikes.** Use the [**Logs Explorer**](https://supabase.com/dashboard/project/_/logs-explorer) section of the Dashboard to find services or endpoints producing unusually high volume.
+- **Investigate spikes.** Use the [**Logs Explorer**](https://supabase.com/dashboard/project/_/logs-explorer) in the Dashboard to find services or endpoints producing unusually high volume.
 
 ## Exceeding Quotas
 
@@ -103858,7 +104856,7 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 # Manage Logs Query usage
 
-Caution: Logs pricing is being rolled out. Quotas and rates on this page are confirmed but billing enforcement is not yet live. This page will be updated when the rollout is complete.
+Caution: Logs pricing is being rolled out. Pricing details and included quotas on this page are subject to change. This page will be updated when billing enforcement goes live.
 
 ## What you are charged for
 
@@ -103874,43 +104872,11 @@ Usage is shown as "Logs Query" on your invoice.
 
 ## Pricing
 
-$0.002 per GB. You are only charged for usage exceeding your subscription plan's
-quota.
-
-| Plan       | Quota    | Over-Usage per GB |
-| ---------- | -------- | ----------------- |
-| Free       | 1,000 GB | -                 |
-| Pro        | 1,000 GB | $0.002            |
-| Team       | 1,000 GB | $0.002            |
-| Enterprise | Custom   | Custom            |
+Pricing details and included quotas will be published here when billing enforcement goes live.
 
 ## Billing examples
 
-### Within quota
-
-The organization's Logs Query usage is within the quota, so no charges for Logs Query apply.
-
-| Line Item           | Units     | Costs   |
-| ------------------- | --------- | ------- |
-| Pro Plan            | 1         | $25     |
-| Compute Hours Micro | 744 hours | $10     |
-| Logs Query          | 300 GB    | $0      |
-| **Subtotal**        |           | **$35** |
-| Compute Credits     |           | -$10    |
-| **Total**           |           | **$25** |
-
-### Exceeding quota
-
-The organization's Logs Query usage exceeds the quota by 4,000 GB, incurring charges for this additional usage.
-
-| Line Item           | Units     | Costs   |
-| ------------------- | --------- | ------- |
-| Pro Plan            | 1         | $25     |
-| Compute Hours Micro | 744 hours | $10     |
-| Logs Query          | 5,000 GB  | $8      |
-| **Subtotal**        |           | **$43** |
-| Compute Credits     |           | -$10    |
-| **Total**           |           | **$33** |
+Billing examples will be published here when pricing is finalized.
 
 ## View usage
 
@@ -103918,9 +104884,12 @@ You can view Logs Query usage on the [organization's usage page](https://supabas
 
 ## Optimize usage
 
-- **Narrow your query time ranges.** Querying a 7-day window scans 7× more data than a 1-day window.
-- **Use filters early.** Adding service or endpoint filters reduces the volume scanned.
-- **Be cautious with programmatic log access.** Polling the logs API frequently from scripts, agents, or third-party integrations can inflate query GB rapidly. If you need to stream logs continuously, [Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains) are a more cost-effective option than repeated queries.
+Logs Query usage scales directly with the time range and data volume you scan. Keep usage low by:
+
+- **Using the Logs Explorer** in the [Dashboard](https://supabase.com/dashboard/project/_/logs-explorer) for ad-hoc queries — it surfaces the most relevant log data without over-scanning.
+- **Keeping time ranges narrow.** A 1-day window scans 7× less data than a 7-day window.
+- **Applying service and endpoint filters early** to reduce the volume scanned per query.
+- **Avoiding frequent programmatic polling.** Repeated API or CLI log queries accumulate GB rapidly. For continuous log streaming, [Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains) are more cost-effective.
 
 ## Exceeding Quotas
 
@@ -103933,22 +104902,16 @@ When you are exceeding your quotas while being on a Free Plan or having [Spend C
 
 # Manage Logs usage
 
-Caution: Logs pricing is being rolled out. Quotas and rates on this page are confirmed but billing enforcement is not yet live. This page will be updated when the rollout is complete.
+Caution: Logs pricing is being rolled out. Pricing details and included quotas on this page are subject to change. This page will be updated when billing enforcement goes live.
 
 Logs usage is metered on two SKUs:
 
 - **Logs Ingest** — the total GB of log data Supabase ingests across all your project's services (Postgres, API gateway, Auth, Storage, Realtime, Edge Functions, etc.) during the billing cycle.
 - **Logs Query** — the total GB of log data scanned when you read logs via the Studio UI, the Management API, the CLI, or any other interface.
 
-Each plan includes a free quota for both. Usage beyond the quota is billed per GB.
+Each plan includes a free quota for both. Usage beyond the quota is billed per GB. Pricing details and quotas will be published on the per-SKU pages below when billing enforcement goes live.
 
-| SKU         | Included (per month) | Over-Usage (Pro, Team) |
-| ----------- | -------------------- | ---------------------- |
-| Logs Ingest | 5 GB                 | $0.50 per GB           |
-| Logs Query  | 1,000 GB             | $0.002 per GB          |
-| Enterprise  | Custom               | Custom                 |
-
-For full billing details, invoice examples, and optimization tips, see the per-SKU pages:
+For optimization tips and billing details, see the per-SKU pages:
 
 - [Manage Logs Ingest usage](https://supabase.com/docs/guides/platform/manage-your-usage/logs-ingest)
 - [Manage Logs Query usage](https://supabase.com/docs/guides/platform/manage-your-usage/logs-query)
@@ -108133,7 +109096,7 @@ show log_connections;
 
 Secure private network connectivity to your Supabase database using AWS VPC Lattice.
 
-Note: PrivateLink is currently in beta and available only to Team and Enterprise customers.
+Note: PrivateLink is available only to Team and Enterprise customers.
 Contact support if you would like to create a PrivateLink connection for a read-only replica.
 
 PrivateLink provides enterprise-grade private network connectivity between your AWS VPC and your Supabase database using AWS VPC Lattice. This eliminates exposure to the public internet by creating a secure, private connection that keeps your database traffic within the AWS network backbone.
@@ -108145,13 +109108,12 @@ By enabling PrivateLink, database connections never traverse the public internet
 Supabase PrivateLink is an organisation level configuration. It works by sharing a [VPC Lattice Resource Configuration](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html) to any number of AWS Accounts for each of your Supabase projects. Connectivity can be achieved by either associating the Resource Configuration to a PrivateLink endpoint, or a [VPC Lattice Service Network](https://docs.aws.amazon.com/vpc-lattice/latest/ug/service-networks.html). This means:
 
 - Database traffic flows through private AWS infrastructure only
-- Connection latency is typically reduced compared to public internet routing
 - Network isolation provides enhanced security posture
 - Attack surface is minimized by eliminating public exposure
 
 The connection architecture changes from public internet routing to a dedicated private path through AWS's secure network backbone.
 
-Supabase PrivateLink currently supports direct database and PgBouncer connections only. It does not support other Supabase services like API, Storage, Auth, or Realtime. These services will continue to operate over public internet connections.
+Supabase PrivateLink supports direct database connections on port `5432` and PgBouncer connections on port `6543`. It does not support other Supabase services like API, Storage, Auth, or Realtime. These services will continue to operate over public internet connections.
 
 ## Requirements
 
@@ -108199,9 +109161,11 @@ Ensure your security groups allow traffic on the appropriate ports:
 1. Navigate to the [VPC console > Security Groups](https://console.aws.amazon.com/vpcconsole/home#SecurityGroups:)
 2. Create a new security group for the endpoint or service network by clicking [Create security group](https://console.aws.amazon.com/vpcconsole/home#CreateSecurityGroup:)
 3. Give your security group a descriptive name and select the appropriate VPC
-4. Add an inbound rule for:
-   - Type: Postgres (TCP, port 5432)
-   - Destination that is appropriate for your network. i.e. the subnet of your VPC or security group of your application instances
+4. Add inbound rule(s) for the connection mode you use:
+   - Direct connection: Postgres (TCP, port `5432`)
+   - PgBouncer connection: Custom TCP (port `6543`)
+   - If you use both direct and PgBouncer connections, add both rules
+   - Set the destination appropriate for your network (for example, your VPC subnet or your application instances' security group)
 5. Finish creating the security group by clicking **Create security group**
 
 ### Step 4: Create connection
@@ -108250,7 +109214,11 @@ Verify the private connection is working correctly from your VPC:
 3. Test the connection using the private endpoint:
 
 ```bash
+# Direct connection (Postgres)
 psql "postgresql://[username]:[password]@[private-endpoint]:5432/postgres"
+
+# PgBouncer connection
+psql "postgresql://[username]:[password]@[private-endpoint]:6543/postgres"
 ```
 
 You should see a successful connection without any public internet traffic.
@@ -108264,27 +109232,33 @@ Configure your applications to use the private connection details:
 3. Update any database connection pooling configurations
 4. Test application connectivity thoroughly
 
-Example connection string update:
+Example connection string updates:
 
 ```
+# Direct connection (Postgres)
 # Before (public)
 postgresql://user:pass@db.[project-ref].supabase.co:5432/postgres
 
 # After (private)
 postgresql://user:pass@your-private-endpoint.vpce.amazonaws.com:5432/postgres
+
+# PgBouncer connection
+# Before (public)
+postgresql://user:pass@db.[project-ref].supabase.co:6543/postgres
+
+# After (private)
+postgresql://user:pass@your-private-endpoint.vpce.amazonaws.com:6543/postgres
 ```
 
-### Step 7: Disable public connectivity (optional)
+### Step 7: Restrict public database access (optional)
 
-For maximum security, you can disable public internet access for your database:
+For maximum security, you can restrict public database access in your project settings:
 
-1. Contact Supabase support to disable public connectivity
-2. Ensure all applications are successfully using the private connection
-3. Update any monitoring or backup tools to use the private endpoint
+1. Go to [**Database** > **Settings**](https://supabase.com/dashboard/project/_/database/settings)
+2. In **Network Restrictions**, enable **Restrict all access**
+3. Ensure all applications, monitoring, and backup tools are using the private endpoint before enabling this setting
 
-## Beta limitations
-
-During the beta phase:
+## Limitations
 
 - **Read Replicas**: To establish PrivateLink with a Read Replica, reach out to your account rep.
 - **Feature Evolution**: The setup process and capabilities may evolve as we refine the offering
@@ -108618,6 +109592,12 @@ It is safe to drop this failed Read Replica, and in the event of a transient iss
 # Available regions
 
 Each Supabase project is deployed to one primary region. Choose the location closest to your users for the best performance.
+
+## Data residency
+
+The region you choose also determines where your primary project data is stored. If your data residency requirements call for data to stay within a specific jurisdiction, choose a [specific region](#specific-regions) rather than a general region grouping.
+
+General regions deploy to *an* available AWS region within that broader area, which may not match a specific jurisdiction. For example, the "Europe" general region includes London and Zurich, which are not EU member states. Region selection is a data-location control, not proof of regulatory compliance. For GDPR considerations, see the [GDPR compliance guide](https://supabase.com/docs/guides/security/gdpr-compliance).
 
 ## General regions
 
@@ -113625,6 +114605,16 @@ async def create_supabase():
   return supabase
 ```
 
+**C#**
+
+```c#
+var supabase = new Supabase.Client(
+    "https://<project>.supabase.co",
+    "<sb_publishable_... key>"
+);
+await supabase.InitializeAsync();
+```
+
 ### Receive Broadcast messages
 
 You can receive Broadcast messages by providing a callback to the channel.
@@ -113721,6 +114711,29 @@ def message_received(payload):
 await my_channel
   .on_broadcast('shout', message_received) # Listen for "shout". Can be "*" to listen to all events
   .subscribe()
+```
+
+**C#**
+
+```c#
+class ShoutBroadcast : BaseBroadcast
+{
+    [JsonProperty("message")]
+    public string Message { get; set; }
+}
+
+// Join a room/topic. Can be anything except for 'realtime'.
+var myChannel = supabase.Realtime.Channel("test-channel");
+
+// Register a typed broadcast and log any messages we receive
+var broadcast = myChannel.Register<ShoutBroadcast>();
+broadcast.AddBroadcastEventHandler((sender, _) =>
+{
+    Console.WriteLine(broadcast.Current());
+});
+
+// Subscribe to the channel
+await myChannel.Subscribe();
 ```
 
 ## Send messages
@@ -113863,6 +114876,18 @@ def on_subscribe(status, err):
   ))
 
 await my_channel.subscribe(on_subscribe)
+```
+
+**C#**
+
+```c#
+var myChannel = supabase.Realtime.Channel("test-channel");
+var broadcast = myChannel.Register<ShoutBroadcast>();
+
+await myChannel.Subscribe();
+
+// Send a broadcast message over the WebSocket
+await broadcast.Send("shout", new ShoutBroadcast { Message = "Hi" });
 ```
 
 ### Broadcast from the Database
@@ -114092,6 +115117,23 @@ def on_subscribe(status, err):
 my_channel.subscribe(on_subscribe)
 ```
 
+**C#**
+
+By default, broadcast messages are only sent to other clients. You can broadcast messages back to the sender by setting the `broadcastSelf` parameter to `true`.
+
+```c#
+var myChannel = supabase.Realtime.Channel("room-2");
+var broadcast = myChannel.Register<ShoutBroadcast>(broadcastSelf: true);
+broadcast.AddBroadcastEventHandler((sender, _) =>
+{
+    Console.WriteLine(broadcast.Current());
+});
+
+await myChannel.Subscribe();
+
+await broadcast.Send("test-my-messages", new ShoutBroadcast { Message = "talking to myself" });
+```
+
 ### Acknowledge messages
 
 **JavaScript**
@@ -114177,6 +115219,20 @@ myChannel.broadcast(event = "acknowledge", buildJsonObject {  })
 **Python**
 
 Unsupported in Python yet.
+
+**C#**
+
+You can confirm that the Realtime servers have received your message by setting the `broadcastAck` parameter to `true`. `Send` then returns `true` once the server acknowledges the message.
+
+```c#
+var myChannel = supabase.Realtime.Channel("room-3");
+var broadcast = myChannel.Register<ShoutBroadcast>(broadcastAck: true);
+
+await myChannel.Subscribe();
+
+var acknowledged = await broadcast.Send("acknowledge", new ShoutBroadcast { Message = "Hi" });
+Console.WriteLine(acknowledged);
+```
 
 Use this to guarantee that the server has received the message before resolving `channelD.send`'s promise. If the `ack` config is not set to `true` when creating the channel, the promise returned by `channelD.send` will resolve immediately.
 
@@ -114768,6 +115824,12 @@ pip install supabase
 conda install -c conda-forge supabase
 ```
 
+**C#**
+
+```bash
+dotnet add package Supabase
+```
+
 ### 2. Initialize the client
 
 Get your project URL and key.
@@ -114827,6 +115889,18 @@ key: str = "<sb_publishable_key>"
 supabase: Client = create_client(url, key)
 ```
 
+**C#**
+
+```c#
+using Supabase;
+
+var supabase = new Client(
+  "https://<project>.supabase.co",
+  "<sb_publishable_key>"
+);
+await supabase.InitializeAsync();
+```
+
 ### 3. Create your first Channel
 
 Channels are the foundation of Realtime. Think of them as rooms where clients can communicate. Each channel is identified by a topic name and if they are public or private.
@@ -114861,6 +115935,15 @@ let channel = supabase.channel("room:lobby:messages") {
 ```python
 # Create a channel with a descriptive topic name
 channel = supabase.channel('room:lobby:messages', params={'config': {'private': True }})
+```
+
+**C#**
+
+```c#
+// Create a channel with a descriptive topic name.
+// Note: The C# SDK does not yet support private channel configuration,
+// so this connects to a public channel.
+var channel = supabase.Realtime.Channel("room:lobby:messages");
 ```
 
 ### 4. Set up authorization
@@ -114968,6 +116051,39 @@ channel.send_broadcast_message(
         "timestamp": datetime.now().isoformat()
     }
 )
+```
+
+**C#**
+
+```c#
+class MessageBroadcast : BaseBroadcast
+{
+    [JsonProperty("text")]
+    public string Text { get; set; }
+
+    [JsonProperty("user")]
+    public string User { get; set; }
+
+    [JsonProperty("timestamp")]
+    public string Timestamp { get; set; }
+}
+
+// Listen for messages
+var broadcast = channel.Register<MessageBroadcast>();
+broadcast.AddBroadcastEventHandler((sender, _) =>
+{
+    Console.WriteLine($"New message: {broadcast.Current()}");
+});
+
+await channel.Subscribe();
+
+// Send a message
+await broadcast.Send("message_sent", new MessageBroadcast
+{
+    Text = "Hello, world!",
+    User = "john_doe",
+    Timestamp = DateTime.UtcNow.ToString("o")
+});
 ```
 
 #### 5.2 using HTTP/REST API
@@ -115244,6 +116360,13 @@ class RealtimeManager:
 with RealtimeManager() as channel:
     # Use channel here
     pass
+```
+
+**C#**
+
+```c#
+// Remove the channel when you are done with it to free up resources
+supabase.Realtime.Remove(channel);
 ```
 
 ## Choose the right feature
@@ -115570,6 +116693,21 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("schema-db-changes");
+
+// Subscribes to the "public" schema in Postgres
+channel.Register(new PostgresChangesOptions("public"));
+channel.AddPostgresChangeHandler(ListenType.All, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 The channel name can be any string except 'realtime'.
 
 ### Listening to specific events
@@ -115875,6 +117013,66 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+Pass the `ListenType` to select the event.
+
+**Insert**
+
+```c#
+var channel = supabase.Realtime.Channel("schema-db-changes");
+
+channel.Register(new PostgresChangesOptions("public", eventType: ListenType.Inserts));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
+**Update**
+
+```c#
+var channel = supabase.Realtime.Channel("schema-db-changes");
+
+channel.Register(new PostgresChangesOptions("public", eventType: ListenType.Updates));
+channel.AddPostgresChangeHandler(ListenType.Updates, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
+**Delete**
+
+```c#
+var channel = supabase.Realtime.Channel("schema-db-changes");
+
+channel.Register(new PostgresChangesOptions("public", eventType: ListenType.Deletes));
+channel.AddPostgresChangeHandler(ListenType.Deletes, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
+**All events**
+
+```c#
+var channel = supabase.Realtime.Channel("schema-db-changes");
+
+channel.Register(new PostgresChangesOptions("public", eventType: ListenType.All));
+channel.AddPostgresChangeHandler(ListenType.All, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 The channel name can be any string except 'realtime'.
 
 ### Listening to specific tables
@@ -115958,6 +117156,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("table-db-changes");
+
+channel.Register(new PostgresChangesOptions("public", "todos"));
+channel.AddPostgresChangeHandler(ListenType.All, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 The channel name can be any string except 'realtime'.
@@ -116050,6 +117262,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 ).subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("db-changes");
+
+channel.Register(new PostgresChangesOptions("public", "messages"));
+channel.Register(new PostgresChangesOptions("public", "users", eventType: ListenType.Inserts));
+
+channel.AddPostgresChangeHandler(ListenType.All, (sender, change) => Console.WriteLine(change.Payload));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) => Console.WriteLine(change.Payload));
+
+await channel.Subscribe();
+```
+
 ### Filtering for specific changes
 
 Use the `filter` parameter for granular changes:
@@ -116139,6 +117365,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("table-filter-changes");
+
+channel.Register(new PostgresChangesOptions("public", "todos", ListenType.Inserts, "id=eq.1"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 ## Available filters
@@ -116281,6 +117521,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "messages", ListenType.Updates, "body=eq.hey"));
+channel.AddPostgresChangeHandler(ListenType.Updates, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 This filter uses Postgres's `=` filter.
 
 ### Not equal to (`neq`)
@@ -116393,6 +117647,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "messages", ListenType.Inserts, "body=neq.bye"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 This filter uses Postgres's `!=` filter.
@@ -116508,6 +117776,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "profiles", ListenType.Inserts, "age=lt.65"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 This filter uses Postgres's `<` filter, so it works for non-numeric types. Make sure to check the expected behavior of the compared data's type.
 
 ### Less than or equal to (`lte`)
@@ -116619,6 +117901,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "profiles", ListenType.Updates, "age=lte.65"));
+channel.AddPostgresChangeHandler(ListenType.Updates, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 This filter uses Postgres' `<=` filter, so it works for non-numeric types. Make sure to check the expected behavior of the compared data's type.
@@ -116734,6 +118030,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "products", ListenType.Inserts, "quantity=gt.10"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 This filter uses Postgres's `>` filter, so it works for non-numeric types. Make sure to check the expected behavior of the compared data's type.
 
 ### Greater than or equal to (`gte`)
@@ -116847,6 +118157,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "products", ListenType.Inserts, "quantity=gte.10"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 This filter uses Postgres's `>=` filter, so it works for non-numeric types. Make sure to check the expected behavior of the compared data's type.
 
 ### Contained in list (in)
@@ -116958,6 +118282,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "colors", ListenType.Inserts, "name=in.(red,blue,yellow)"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 This filter uses Postgres's `= ANY`. Realtime allows a maximum of 100 values for this filter.
@@ -117074,6 +118412,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "articles", ListenType.Inserts, "title=ilike.%breaking%"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 `like` uses Postgres's `LIKE` and `ilike` uses `ILIKE`. Both require a text-compatible column. The examples above use `ilike`; swap in `like` for case-sensitive matching—usage is otherwise identical.
 
 ### Regular expression matching (`match`, `imatch`)
@@ -117186,6 +118538,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "posts", ListenType.Inserts, @"slug=match.^post-\d+$"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 `match` uses Postgres's `~` operator and `imatch` uses `~*`. Both require a text-compatible column, and the pattern is validated when you subscribe. The examples above use `match`; swap in `imatch` for case-insensitive matching—usage is otherwise identical.
@@ -117302,6 +118668,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "todos", ListenType.Updates, "completed_at=is.null"));
+channel.AddPostgresChangeHandler(ListenType.Updates, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 This filter uses Postgres's `IS` operator.
 
 ### Distinct from (`isdistinct`)
@@ -117416,6 +118796,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "orders", ListenType.Updates, "status=isdistinct.shipped"));
+channel.AddPostgresChangeHandler(ListenType.Updates, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 ### Negating a filter (`not`)
 
 Prefix any operator with `not.` to invert it — for example `not.in`, `not.is`, or `not.like`.
@@ -117527,6 +118921,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "posts", ListenType.All, "status=not.in.(draft,archived)"));
+channel.AddPostgresChangeHandler(ListenType.All, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 ### Combining filters with `AND`
@@ -117651,6 +119059,20 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   callback=lambda payload: print(payload)
 )
 .subscribe()
+```
+
+**C#**
+
+```c#
+var channel = supabase.Realtime.Channel("changes");
+
+channel.Register(new PostgresChangesOptions("public", "orders", ListenType.Inserts, "amount=gt.100,status=eq.open"));
+channel.AddPostgresChangeHandler(ListenType.Inserts, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
 ```
 
 Note: Values that contain reserved characters (`,`, `(`, `)`, `"`, or `\`) must be double-quoted PostgREST-style so the server doesn't read them as condition or list boundaries — for example `name=eq."Doe, Jane"`. The `postgresChangesFilter()` builder (JavaScript), `PostgresChangeFilter` (Dart), and `RealtimePostgresFilter` (Swift) apply this quoting for you.
@@ -117845,6 +119267,23 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 .subscribe()
 ```
 
+**C#**
+
+```c#
+// Set your custom JWT after instantiating the client and before subscribing to a channel
+supabase.Realtime.SetAuth("your-custom-jwt");
+
+var channel = supabase.Realtime.Channel("db-changes");
+
+channel.Register(new PostgresChangesOptions("public", "messages", ListenType.All, "body=eq.bye"));
+channel.AddPostgresChangeHandler(ListenType.All, (sender, change) =>
+{
+    Console.WriteLine(change.Payload);
+});
+
+await channel.Subscribe();
+```
+
 ## Limitations
 
 ### Delete events are not filterable
@@ -118012,6 +119451,16 @@ SUPABASE_KEY = '<sb_publishable_... key>'
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 ```
 
+**C#**
+
+```c#
+var supabase = new Supabase.Client(
+    "https://<project>.supabase.co",
+    "<sb_publishable_... key>"
+);
+await supabase.InitializeAsync();
+```
+
 ### Sync and track state
 
 **JavaScript**
@@ -118102,6 +119551,33 @@ room_one
   .on_presence_join(lambda key, curr_presences, joined_presences: print('join', key, curr_presences, joined_presences))
   .on_presence_leave(lambda key, curr_presences, left_presences: print('leave', key, curr_presences, left_presences))
   .subscribe()
+```
+
+**C#**
+
+Listen to the `Sync`, `Join`, and `Leave` events triggered whenever any client joins or leaves the channel or changes their slice of state:
+
+```c#
+class UserStatus : BasePresence
+{
+    [JsonProperty("user")]
+    public string User { get; set; }
+
+    [JsonProperty("online_at")]
+    public string OnlineAt { get; set; }
+}
+
+var roomOne = supabase.Realtime.Channel("room_01");
+var presence = roomOne.Register<UserStatus>(Guid.NewGuid().ToString());
+
+presence.AddPresenceEventHandler(EventType.Sync, (sender, type) =>
+{
+    Console.WriteLine($"sync: {presence.CurrentState}");
+});
+presence.AddPresenceEventHandler(EventType.Join, (sender, type) => Console.WriteLine("join"));
+presence.AddPresenceEventHandler(EventType.Leave, (sender, type) => Console.WriteLine("leave"));
+
+await roomOne.Subscribe();
 ```
 
 ### Sending state
@@ -118206,6 +119682,21 @@ def on_subscribe(status, err):
 room_one.subscribe(on_subscribe)
 ```
 
+**C#**
+
+```c#
+var roomOne = supabase.Realtime.Channel("room_01");
+var presence = roomOne.Register<UserStatus>(Guid.NewGuid().ToString());
+
+await roomOne.Subscribe();
+
+await presence.Track(new UserStatus
+{
+    User = "user-1",
+    OnlineAt = DateTime.UtcNow.ToString("o")
+});
+```
+
 A client will receive state from any other client that is subscribed to the same topic (in this case `room_01`). It will also automatically trigger its own `sync` and `join` event handlers.
 
 ### Stop tracking
@@ -118262,6 +119753,12 @@ untrackPresence()
 
 ```python
 room_one.untrack()
+```
+
+**C#**
+
+```c#
+await presence.Untrack();
 ```
 
 ## Presence options
@@ -118325,6 +119822,13 @@ channel_c = supabase.channel('test', {
     },
   },
 })
+```
+
+**C#**
+
+```c#
+var channelC = supabase.Realtime.Channel("test");
+var presence = channelC.Register<UserStatus>("userId-123");
 ```
 
 
@@ -120000,17 +121504,44 @@ The [SOC 2 Compliance Guide](https://supabase.com/docs/guides/security/soc-2-com
 
 The [HIPAA Compliance Guide](https://supabase.com/docs/guides/security/hipaa-compliance) explains Supabase's HIPAA responsibilities. Additional [security and compliance controls](https://supabase.com/docs/guides/deployment/shared-responsibility-model#managing-healthcare-data) for projects that deal with electronic Protected Health Information (ePHI) and require HIPAA compliance are available through the HIPAA add-on.
 
+Supabase is ISO 27001 certified. ISO 27001 is an internationally recognized standard for information security management systems (ISMS), confirming that we maintain rigorous controls to protect customer data. Enterprise and Team customers can access our ISO 27001 certificate [on the dashboard](https://supabase.com/dashboard/org/_/documents).
+
+Supabase supports GDPR-related requirements with EU-region hosting for data residency and a Data Processing Agreement (DPA) for customers who need one. The [GDPR compliance guide](https://supabase.com/docs/guides/security/gdpr-compliance) covers shared responsibility, residency scope, and the DPA.
+
 ## Platform configuration
 
 As a hosted platform, Supabase provides additional security controls to further enhance the security posture depending on organizations' own requirements or obligations.
 
 These can be found under the [dedicated security page](https://supabase.com/dashboard/org/_/security) under organization settings. And are described in greater detail [here](https://supabase.com/docs/guides/security/platform-security).
 
+Supabase protects against Distributed Denial of Service (DDoS) attacks at the edge via Cloudflare. At the infrastructure layer, fail2ban blocks IP addresses after repeated log-detected abuse, such as failed authentication attempts.
+
 ## Product configuration
 
 Each product offered by Supabase comes with customizable security controls and these security controls help ensure that applications built on Supabase are secure, compliant, and resilient against various threats.
 
 The [security configuration guides](https://supabase.com/docs/guides/security/product-security) provide detailed information for configuring individual products.
+
+
+---
+
+# GDPR compliance and Supabase
+
+How Supabase supports GDPR-compliant deployments, including data residency and the Data Processing Agreement (DPA).
+
+Supabase supports building GDPR-compliant applications. Building a compliant application is a [shared responsibility](https://supabase.com/docs/guides/deployment/shared-responsibility-model): Supabase secures the underlying infrastructure, while you're responsible for your application's data processing activities, consent flows, and access controls.
+
+## Data residency
+
+Each Supabase project is deployed to a single primary region, and your project's primary Postgres database, Auth service, and Storage objects are hosted in that region. Choosing a [specific region](https://supabase.com/docs/guides/platform/regions#specific-regions) within the EU pins these services to that exact AWS region.
+
+Note that the "Europe" general region grouping also includes London (UK) and Zurich (Switzerland) — both have GDPR-adequacy data protection regimes, but neither is an EU member state. If your compliance requirements call for data to stay within the EU specifically, choose a specific EU region rather than the general Europe grouping. See [available regions](https://supabase.com/docs/guides/platform/regions) for the full list.
+
+Choosing a region is a data-location control and does not make your application GDPR compliant on its own. Backups, logs, data exported to external systems, Edge Function execution, and sub-processors can affect your data residency and international transfer analysis.
+
+## Data processing agreement (DPA)
+
+If you need a formal data processing contract under GDPR, Supabase provides a Data Processing Agreement (DPA). [Request or view the DPA](https://supabase.com/legal/dpa).
 
 
 ---
@@ -120471,7 +122002,7 @@ PrivateLink provides enterprise-grade private network connectivity between your 
 
 For configuration information, see [PrivateLink](https://supabase.com/docs/guides/platform/privatelink)
 
-Note: PrivateLink is currently in beta. To establish PrivateLink with a Read Replica, reach out to your account rep.
+Note: To establish PrivateLink with a Read Replica, reach out to your account rep.
 
 
 ---
@@ -121627,17 +123158,19 @@ The `config add` / `config remove` commands manage the `COMPOSE_FILE` [variable]
 
 ## Updating
 
-We publish stable releases of the Docker Compose setup approximately once a month. The versions in each release are tested together, so they may lag behind the latest images on Docker Hub. To update, apply the latest changes from the repository, then stop and start the services. If you want to run different versions of individual services, you can change the image tags in the Docker Compose file, but compatibility is **not guaranteed**. All Supabase images are available on [Docker Hub](https://hub.docker.com/u/supabase).
+We publish stable snapshots of the Docker Compose setup approximately once a month. The images are tested together, so they may lag behind the latest updates on [Docker Hub](https://hub.docker.com/u/supabase). If you want to run different versions of individual services, you can change the image tags in the compose files, but compatibility is **not guaranteed**.
 
-To follow the changes and updates, refer to the self-hosted Supabase [changelog](https://github.com/supabase/supabase/blob/master/docker/CHANGELOG.md). Make sure to also check the [GitHub Discussions](https://github.com/orgs/supabase/discussions/categories/changelog?discussions_q=is%3Aopen+category%3AChangelog+label%3Aself-hosted).
+To follow the updates, refer to the self-hosted Supabase [changelog](https://github.com/supabase/supabase/blob/master/docker/CHANGELOG.md) and the [GitHub Discussions](https://github.com/orgs/supabase/discussions/categories/changelog?discussions_q=is%3Aopen+category%3AChangelog+label%3Aself-hosted).
 
-After updating the configuration, stop and start the stack or individual services to pick up the changes. This may result in downtime for your applications and users.
+The `update.sh` script updates an existing deployment in place. By default, it pulls the [latest](https://github.com/supabase/supabase/tags) `self-hosted/v*` configuration and merges it over your files with a three-way merge.
 
-For example, you'd like to update or rollback the Studio image. Follow the steps below:
+Refer to [Update your self-hosted deployment](https://supabase.com/docs/guides/self-hosting/updating) for the full walkthrough - breaking changes, conflict resolution, pinning a release, and older installs without a recorded version.
+
+To change or roll back a single service's image instead of updating everything - for example, Studio:
 
 1. Check the [supabase/studio](https://hub.docker.com/r/supabase/studio/tags) images on [Supabase Docker Hub](https://hub.docker.com/u/supabase)
-2. Find the latest version (tag) number. It looks something like `2026.04.27-sha-5f60601`
-3. Update the Studio `image` configuration in the `docker-compose.yml` file. It should look like this: `image: supabase/studio:2026.04.27-sha-5f60601`
+2. Find the version (tag) you want. It looks something like `2026.04.27-sha-5f60601`
+3. Update the Studio `image` in `docker-compose.yml`: `image: supabase/studio:2026.04.27-sha-5f60601`
 4. Run `sh run.sh pull` to pull the new image, then `sh run.sh recreate studio` to update Studio without taking down the rest of the stack.
 
 ## Uninstalling
@@ -124988,6 +126521,195 @@ The user took too long between initiating SSO and completing authentication at t
 
 ---
 
+# Update Your Self-Hosted Deployment
+
+Update an existing self-hosted Supabase deployment to a newer release.
+
+A supplemental script (`update.sh`) pulls a newer version of the self-hosted Supabase configuration on top of your existing deployment. It uses a three-way merge, so your secrets, overrides, and local edits survive, while merge conflicts are surfaced.
+
+It is the supported way to keep a self-hosted deployment current with upstream releases. Each run is incremental and gated: it preserves your `.env` and data, backs up your configuration, and stops to flag breaking changes before applying anything. New installs are version-tracked automatically. It is not a one-click upgrade from an arbitrary state - catching up an older, untracked deployment requires manual intervention (read below).
+
+Note: `update.sh` needs to know the release your deployment started from, recorded in a `.supabase-version` file. A recent `setup.sh` writes it, but older or manually-set-up deployments will not have it. If yours doesn't, start with [Coming from an old, untracked install](#coming-from-an-old-untracked-install) - it is a one-time step.
+
+If you are comfortable with git and keep a clone of the repository, you can also bring upstream changes in with `git`'s own tools instead of `update.sh` - a more hands-on version of the same three-way merge.
+
+## How it works
+
+`update.sh` compares three versions of every vendor file:
+
+- base - the release your deployment is currently on, recorded in `.supabase-version` (written by `setup.sh`, then advanced to the new release after each successful update)
+- new - the release you are updating to (the latest `self-hosted/v*` tag by default)
+- yours - the files in your deployment directory
+
+It applies the changes between base and new to your files. Where you never edited a file, it updates cleanly. Where you edited a file but the release did not touch the same lines, your edit is kept. Only when both changed the same lines do you have a conflict to resolve.
+
+Your secrets and data are never merged. The values in the `.env` file you set are kept and the new keys from `.env.example` are appended. Paths listed in `.gitignore` are left untouched.
+
+## Before you start
+
+Danger: `update.sh` backs up your configuration files to `backups/`, but it does not back up Postgres or Storage data. Back those up separately first.
+
+- Run from your deployment directory (where `docker-compose.yml` and `.env` live).
+- `update.sh` needs `git` and `jq` on the host.
+- Deployments created with `setup.sh` record their version in `.supabase-version`, and `update.sh` advances it after each successful update. If that file is missing, refer to [Setting a recorded version](#setting-a-recorded-version).
+
+If your deployment predates `update.sh` - it ships with the self-hosted configuration from v0.7.1 onward - download it into your deployment directory first. You only need to do this once; later updates keep the script current for you.
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/supabase/supabase/master/docker/update.sh -o update.sh
+```
+
+## How to update
+
+Preview what would change, without affecting anything:
+
+```sh
+sh update.sh --dry-run
+```
+
+A meaningful preview needs a recorded base version. `--dry-run` on a deployment with no `.supabase-version` (and no `--from`) falls back to the same limited [report-only](#setting-a-recorded-version) output as a plain run. It can only list brand-new files, not what would change or conflict.
+
+Apply the update - it targets the latest `self-hosted/v*` release:
+
+```sh
+sh update.sh
+```
+
+Review the output from `update.sh` - especially any conflicts, new `.env` keys, and breaking-change notices.
+
+Then pull the new images and recreate the containers:
+
+```sh
+sh run.sh pull
+sh run.sh recreate
+```
+
+### What it changes
+
+Updated:
+
+- `docker-compose.yml`, override templates, `volumes/*`, scripts, `.env.example`
+- `volumes/functions/main/index.ts`
+
+Excluded:
+
+- Current `.env` configuration
+- Paths in `.gitignore`: data directories, snippets, your edge functions
+
+## Breaking changes
+
+Some releases need a manual step before their files can be applied - for example, a Postgres major upgrade. `update.sh` reads these from the [release manifest](https://github.com/supabase/supabase/blob/master/docker/upgrades.json) and, before changing any files, prints the required steps and asks you to confirm. If you are not ready, decline the prompt - nothing has been modified yet.
+
+Complete the listed steps, then re-run `sh update.sh`.
+
+## Resolving conflicts
+
+If the summary lists conflicts, `update.sh` writes standard merge markers into those files and exits with status `2`. Open each file, pick the correct content, and remove the `<<<<<<<`, `=======`, and `>>>>>>>` markers:
+
+```yaml
+<<<<<<< yours (docker-compose.yml)
+      image: supabase/studio:your-pinned-tag
+=======
+      image: supabase/studio:new-tag
+>>>>>>> new (self-hosted/v0.7.0)
+```
+
+Keep editing the files where you want to preserve your own changes. When a file contains many conflicts and you have no edits worth keeping - overwriting it with the file from the target release is often easier. For example:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/supabase/supabase/self-hosted/v0.7.0/docker/run.sh > run.sh
+```
+
+Alternatively, if you kept a clone in `./supabase`:
+
+```sh
+git -C ./supabase show self-hosted/v0.7.0:docker/run.sh > run.sh
+```
+
+Then start the stack:
+
+```sh
+sh run.sh pull
+sh run.sh recreate
+```
+
+A conflict means you edited a [self-hosted Supabase configuration](https://github.com/supabase/supabase/tree/master/docker) file and the release changed the same lines.
+
+While conflicts remain, `update.sh` does not advance `.supabase-version` - it records the new release only on a clean run. After you resolve the markers, re-run `sh update.sh` to finalize the version stamp.
+
+## Update to a specific release
+
+```sh
+sh update.sh --to self-hosted/v0.7.0
+```
+
+Check the [changelog](https://github.com/supabase/supabase/blob/master/docker/CHANGELOG.md) for available releases.
+
+## Setting a recorded version
+
+Without `.supabase-version`, `update.sh` cannot merge safely and runs in a limited report mode. Only files and `.env` keys that are entirely new to you can be listed. However, because the full comparison needs a base, it is not possible to detect which existing files would change or have conflicts. Record the version your files came from once, then re-run.
+
+Prefer the exact commit your `./docker` files came from. It gives the cleanest merge and conflicts only where you edited a file that the release also changed. Use the full 40-character commit SHA: `update.sh` fetches the base from GitHub.
+
+To find it, clone the repository, find the commit whose date matches your files, and expand it to a full SHA:
+
+```sh
+git clone --filter=blob:none https://github.com/supabase/supabase
+cd supabase
+
+# Browse docker/ history, newest first, as "date short-hash subject":
+git log --date=short --format='%ad %h %s' -- docker
+
+# Expand the short hash you picked into the full SHA update.sh needs:
+git rev-parse <short-hash>
+```
+
+In the deployment directory, record it (or pass it once with `--from`):
+
+```sh
+printf 'ref=<full-40-char-sha>\n' > .supabase-version
+```
+
+The right commit is not always the one from the day you first deployed. If you have refreshed any files since, choose the commit closest to your newest `docker/` files. A base older than your files turns everything newer into a conflict (refer to [Coming from an old, untracked install](#coming-from-an-old-untracked-install)).
+
+If you cannot find the commit, use the closest release tag instead - compare the image tags in `docker-compose.yml` / `.env` against [versions.md](https://github.com/supabase/supabase/blob/master/docker/versions.md). This is an approximation, so expect conflicts proportional to how far your files have drifted:
+
+```sh
+printf 'ref=self-hosted/v0.7.0\n' > .supabase-version
+```
+
+Note: The clone above is only needed to look up a commit - you can delete it once you have the SHA. `setup.sh` deliberately does not leave one behind. If you prefer to keep a clone around to inspect history or diff against upstream, treat it as a read-only reference: do not run your stack from it, and do not rely on it as your base version. Your recorded base lives outside the clone in `.supabase-version` - a clone you later `git pull` or edit no longer reflects what you installed.
+
+## Coming from an old, untracked install
+
+Long-running deployments are usually assembled from several upstream points over time, rather than frozen at one commit. For instance, a newer `docker-compose.yml` copied in a month ago, or `run.sh` added manually later. A three-way merge (this tool, or `git` itself) assumes a single common ancestor, so no base will match every file, and files newer than your chosen base show up as conflicts. Expect conflicts roughly proportional to the deployment's age. This is normal, and this first catch-up is a one-time cost: after it succeeds, the version is recorded and every future update is a clean, gated merge.
+
+1. Run `sh update.sh` once. With no recorded version it stays in report-only mode and lists the new files and `.env` keys without changing anything.
+2. Record your base (learn more in [Setting a recorded version](#setting-a-recorded-version)) - the commit closest to your newest files, or the closest release tag.
+3. Preview. Run `sh update.sh --dry-run` and check the conflict count. If it is high, try a newer base - too old a base turns every file added since then into a conflict.
+4. Back up your database separately - `update.sh` backs up configuration only.
+5. Apply the update, then resolve conflicts. Most conflicts will be in "vendor files" you never meant to own - `run.sh`, `setup.sh`, `tests/*`, the override templates. For those, copy the new version as-is. The conflicts that need manual editing are usually in the compose configuration you deliberately changed. Your `.env` is never conflicted - `update.sh` appends new keys for you to review separately. The tool surfaces everything for you to triage. Refer to [Resolving conflicts](#resolving-conflicts) for more details.
+6. Handle Postgres. Postgres 17 became the default in v0.6.0. If you are still on Postgres 15, do not recreate straight onto 17 - follow [Upgrade to Postgres 17](https://supabase.com/docs/guides/self-hosting/postgres-upgrade-17), or pin Postgres 15 with the `docker-compose.pg15.yml` override. Read the [changelog](https://github.com/supabase/supabase/blob/master/docker/CHANGELOG.md) for the breaking changes across the range you are crossing.
+7. Run `sh run.sh pull`, then `sh run.sh recreate`.
+
+Note: If you only ever customized `.env` and never edited compose configuration or scripts, taking the new version for every conflict is exactly right - your real configuration lives in `.env`, which `update.sh` never merges. If instead the deployment has drifted heavily and the dry run shows an unmanageable number of conflicts, a clean reinstall at the latest release with `setup.sh` (reusing your `.env` and data volumes) can be less work than resolving them all.
+
+## Restore from backup
+
+Configuration backups are written to `backups/pre-update-*.tgz` before each update. If something goes wrong, extract or compare against that archive.
+
+## Command-line options
+
+| Flag           | Purpose                                                     |
+| -------------- | ----------------------------------------------------------- |
+| `--dry-run`    | Show the plan; write nothing                                |
+| `--to <tag>`   | Update to a specific release                                |
+| `--from <ref>` | Supply the base version when `.supabase-version` is missing |
+| `--yes`        | Skip the breaking-change confirmation prompt                |
+
+
+---
+
 # Storage
 
 Use Supabase to store and serve files.
@@ -126000,6 +127722,14 @@ supabase.storage.create_bucket(
 
 [Reference.](https://supabase.com/docs/reference/python/storage-createbucket)
 
+**C#**
+
+```c#
+var bucket = await supabase.Storage.CreateBucket("avatars", new BucketUpsertOptions { Public = true });
+```
+
+[Reference.](https://supabase.com/docs/reference/csharp/create-bucket)
+
 ## Restricting uploads
 
 When creating a bucket you can add additional configurations to restrict the type or size of files you want this bucket to contain.
@@ -126188,6 +127918,14 @@ async function purgeCachedObject() {
 }
 ```
 
+**C#**
+
+```c#
+var response = await supabase.Storage
+  .From("bucket_name")
+  .PurgeCache("folder_name/file_name.png");
+```
+
 **cURL**
 
 ```bash
@@ -126220,6 +127958,12 @@ async function purgeBucketCache() {
     console.log(data.message) // 'success'
   }
 }
+```
+
+**C#**
+
+```c#
+var response = await supabase.Storage.PurgeBucketCache("bucket_name");
 ```
 
 **cURL**
@@ -126327,6 +128071,22 @@ except Exception as error:
     # Access error details
     print(f'Error: {error}')
     # The SDK now handles bad responses from the server gracefully
+```
+
+**C#**
+
+```c#
+try
+{
+    var bytes = await supabase.Storage.From("avatars").Download("avatar.png");
+}
+catch (SupabaseStorageException error)
+{
+    // Access error details
+    Console.WriteLine($"Error message: {error.Message}");
+    Console.WriteLine($"HTTP status: {error.StatusCode}");
+    Console.WriteLine($"Reason: {error.Reason}");
+}
 ```
 
 ## Storage error codes
@@ -126944,6 +128704,14 @@ response = supabase.storage.create_bucket('avatars')
 
 [Reference.](https://supabase.com/docs/reference/python/storage-createbucket)
 
+**C#**
+
+```c#
+var bucket = await supabase.Storage.CreateBucket("avatars");
+```
+
+[Reference.](https://supabase.com/docs/reference/csharp/create-bucket)
+
 ## Upload a file
 
 You can upload a file from the Dashboard, or within a browser using our JS libraries.
@@ -126983,6 +128751,18 @@ void main() async {
 ```
 
 [Reference.](https://pub.dev/documentation/storage_client/latest/storage_client/SupabaseStorageClient/createBucket.html)
+
+**C#**
+
+```c#
+var imagePath = Path.Combine("Assets", "avatar1.png");
+
+await supabase.Storage
+  .From("avatars")
+  .Upload(imagePath, "public/avatar1.png");
+```
+
+[Reference.](https://supabase.com/docs/reference/csharp/from-upload)
 
 ## Download a file
 
@@ -127035,6 +128815,14 @@ response = supabase.storage.from_('avatars').download('public/avatar1.png')
 ```
 
 [Reference.](https://supabase.com/docs/reference/python/storage-from-download)
+
+**C#**
+
+```c#
+var bytes = await supabase.Storage.From("avatars").Download("public/avatar1.png");
+```
+
+[Reference.](https://supabase.com/docs/reference/csharp/from-download)
 
 ## Add security rules
 
@@ -127884,6 +129672,16 @@ url = supabase.storage.from_('avatars').get_public_url(
 )
 ```
 
+**C#**
+
+```c#
+var url = supabase.Storage.From("bucket").GetPublicUrl("image.jpg", new TransformOptions
+{
+    Width = 500,
+    Height = 600
+});
+```
+
 An example URL could look like this:
 
 ```
@@ -127943,6 +129741,16 @@ let url = try await supabase.storage.from("bucket")
 val url = supabase.storage.from("bucket").createSignedUrl("image.jpg", 60.seconds) {
 	size(200, 200)
 }
+```
+
+**C#**
+
+```c#
+var url = await supabase.Storage.From("bucket").CreateSignedUrl("image.jpg", 60000, new TransformOptions
+{
+    Width = 200,
+    Height = 200
+});
 ```
 
 The transformation options are embedded into the token attached to the URL — they cannot be changed once signed.
@@ -128020,6 +129828,16 @@ response = supabase.storage.from_('bucket').download(
     'height': 300,
   },
 )
+```
+
+**C#**
+
+```c#
+var data = await supabase.Storage.From("bucket").Download("image.jpg", new TransformOptions
+{
+    Width = 800,
+    Height = 300
+});
 ```
 
 ## Automatic image optimization (WebP)
@@ -128111,6 +129929,17 @@ response = supabase.storage.from_('bucket').download(
     },
   }
 )
+```
+
+**C#**
+
+```c#
+var data = await supabase.Storage.From("bucket").Download("image.jpeg", new TransformOptions
+{
+    Width = 200,
+    Height = 200,
+    Format = "origin"
+});
 ```
 
 ## Next.js loader
@@ -128227,6 +130056,15 @@ response = supabase.storage.from_('bucket').download(
 )
 ```
 
+**C#**
+
+```c#
+var data = await supabase.Storage.From("bucket").Download("image.jpg", new TransformOptions
+{
+    Quality = 50
+});
+```
+
 ### Resizing
 
 You can use `width` and `height` parameters to resize an image to a specific dimension. If only one parameter is specified, the image will be resized and cropped, maintaining the aspect ratio.
@@ -128322,6 +130160,17 @@ response = supabase.storage.from_('bucket').download(
     }
   }
 )
+```
+
+**C#**
+
+```c#
+var data = await supabase.Storage.From("bucket").Download("image.jpg", new TransformOptions
+{
+    Width = 800,
+    Height = 300,
+    Resize = TransformOptions.ResizeType.Contain // Cover | Fill
+});
 ```
 
 ### Limits
@@ -128678,6 +130527,15 @@ with open("./assets/40mb.jpg", "rb") as fs:
     )
 ```
 
+**C#**
+
+C# supports resumable uploads natively via `UploadOrResume`:
+
+```c#
+await supabase.Storage.From("bucket_name")
+  .UploadOrResume("local_file_path", "file_path", new FileOptions { Upsert = true });
+```
+
 ## Upload URL
 
 When uploading using the resumable upload endpoint, the storage server creates a unique URL for each upload, even for multiple uploads to the same path. All chunks will be uploaded to this URL using the `PATCH` method.
@@ -128730,6 +130588,16 @@ response = supabase.storage.from_('bucket_name').create_signed_upload_url(
 
 # Use the signed URL token in resumable upload headers
 # Include response.token in the x-signature header
+```
+
+**C#**
+
+```c#
+// Create a signed upload URL
+var signedUrl = await supabase.Storage.From("bucket_name").CreateUploadSignedUrl("file_path");
+
+// Use the signed URL token in resumable upload headers
+// Include signedUrl.Token in the x-signature header
 ```
 
 See this [full example using Uppy with signed URLs](https://github.com/supabase/supabase/tree/master/examples/storage/resumable-upload-signed-uppy) for more context.
@@ -128887,6 +130755,12 @@ supabase.storage.from("bucket_name").upload("file_path", file)
 response = supabase.storage.from_('bucket_name').upload('file_path', file)
 ```
 
+**C#**
+
+```c#
+await supabase.Storage.From("bucket_name").Upload("local_file_path", "file_path");
+```
+
 **cURL**
 
 ```bash
@@ -128959,6 +130833,14 @@ supabase.storage.from("bucket_name").upload("file_path", bytes) {
 response = supabase.storage.from_('bucket_name').upload('file_path', file, {
   'upsert': 'true',
 })
+```
+
+**C#**
+
+```c#
+await supabase.Storage
+  .From("bucket_name")
+  .Upload("local_file_path", "file_path", new FileOptions { Upsert = true });
 ```
 
 **cURL**
@@ -129036,6 +130918,18 @@ supabase.storage.from("bucket_name").upload("file_path", bytes) {
 response = supabase.storage.from_('bucket_name').upload('file_path', file, {
   'content-type': 'image/jpeg',
 })
+```
+
+**C#**
+
+```c#
+await supabase.Storage
+  .From("bucket_name")
+  .Upload(
+    "local_file_path",
+    "file_path",
+    new FileOptions { ContentType = "image/jpeg" },
+    inferContentType: false);
 ```
 
 **cURL**
@@ -140825,6 +142719,41 @@ PostgREST logs showing the error:
 - Currently, we don't really shutdown PostgREST when the Data API is disabled. You will see a schema called `pg_pgrst_no_exposed_schemas` added in the exposed schemas.
 - This should not adversely affect the project, although it may result in additional entries in your logs.
 - We're aware of this issue and are working on it.
+
+## Workaround
+
+To stop the missing-schema log entries:
+
+1. Open the SQL Editor.
+2. Run the following statements:
+
+   ```sql
+   -- Create a schema with nothing inside
+   create schema pgrst_no_exposed_schemas;
+
+   -- Set the db-schemas configuration
+   alter role authenticator set pgrst.db_schemas = 'pgrst_no_exposed_schemas';
+
+   -- Reload PostgREST's schema cache and configuration
+   notify pgrst;
+   ```
+
+PostgREST now exposes an empty schema, which stops the missing-schema errors.
+
+## Re-enable the Data API
+
+Before you re-enable the data API:
+
+1. Open the SQL Editor.
+2. Run the following statements:
+
+   ```sql
+   -- Reset the db-schemas configuration
+   alter role authenticator reset pgrst.db_schemas;
+
+   -- Reload PostgREST's schema cache and configuration
+   notify pgrst;
+   ```
 
 
 ---

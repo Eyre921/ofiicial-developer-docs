@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/deployments-storage-volumes-get
 path: reference/deployments-storage-volumes-get
 ---
 
-GET /deployments/storage/volumes/{id}
+openapi.yaml GET /deployments/storage/volumes/{id}
 Retrieve details of a specific volume by its ID or name

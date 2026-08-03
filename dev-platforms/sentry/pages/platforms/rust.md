@@ -33,7 +33,7 @@ To add Sentry to your Rust project, add a new dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-sentry = "0.49.0"
+sentry = "0.49.1"
 ```
 
 ## [Configure](https://docs.sentry.io/platforms/rust.md#configure)

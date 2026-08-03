@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/batch-list
 path: reference/batch-list
 ---
 
-GET /batches
+openapi.yaml GET /batches
 List all batch jobs for the authenticated user

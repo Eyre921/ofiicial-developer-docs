@@ -190,7 +190,7 @@ If you are having trouble with words rooted in different languages in your text,
 
 [Having issues with pronunciation and pauses?](https://deepgram.typeform.com/aura-tts-fixes)
 
-***
+---
 
 What’s Next
 

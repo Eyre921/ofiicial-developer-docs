@@ -82,4 +82,4 @@ The following commands will be converted.
 | new line         | `<\n>`         |
 | new paragraph    | `<\n\n>`       |
 
-***
+---

@@ -50,4 +50,4 @@ Every voice handles general conversational synthesis. Use the character notes be
 * [Feature Overview](/docs/flux-tts/feature-overview)
 * [Migrating from Aura to Flux TTS](/docs/flux-tts/migrating)
 
-***
+---

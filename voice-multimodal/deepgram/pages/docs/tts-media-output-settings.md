@@ -104,7 +104,7 @@ Some formats specify their sample rates, so we cannot provide `sample_rate` opti
 
 Uncompressed audio formats don't have configurable bit rates, so we cannot provide `bit_rate` options for them.
 
-***
+---
 
 What’s Next
 

@@ -163,4 +163,4 @@ function addSpeakingTime(speaker, duration, timePerSpeaker) {
 }
 ```
 
-***
+---

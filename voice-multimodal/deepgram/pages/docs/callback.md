@@ -92,4 +92,4 @@ As Deepgram analyzes the audio, the way in which it sends requests back to the p
 
 If a WebSocket callback connection is disconnected at any point, the entire real-time transcription stream is killed; this maintains the strong guarantee of a one-to-one relationship between incoming real-time connections and outgoing WebSocket callback connections.
 
-***
+---

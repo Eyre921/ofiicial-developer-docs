@@ -9,10 +9,6 @@ Open weight models for personal agentic coding — Fire Pass
 Fire Pass is a pass that gives you access to **Open weight models** for use in agentic coding harnesses like [Claude Code](/ecosystem/fireconnect/claude-code), [OpenCode](/ecosystem/fireconnect/opencode), Cline, Kilo Code, OpenClaw, and [LangChain Deep Agents](https://docs.langchain.com/oss/python/deepagents/models) — with no per-token charges for included models. Check the [Fire Pass page](https://app.fireworks.ai/fire-pass) for the latest enabled models.
 
 <Note>
-  **Fire Pass is separate from [Fireworks Nexus](/fireworks-nexus/overview).** Fire Pass is an invite-only promotion for personal, non-production coding. Nexus is the team control plane for connecting harnesses, intelligent routing, and per-seat spend limits.
-</Note>
-
-<Note>
   **Fire Pass** is an experimental product. Features, availability, and
   pricing are subject to change.
 </Note>

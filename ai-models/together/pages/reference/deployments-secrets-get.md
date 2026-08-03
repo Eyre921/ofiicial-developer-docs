@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/deployments-secrets-get
 path: reference/deployments-secrets-get
 ---
 
-GET /deployments/secrets/{id}
+openapi.yaml GET /deployments/secrets/{id}
 Retrieve details of a specific secret by its ID or name

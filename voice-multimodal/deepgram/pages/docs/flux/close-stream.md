@@ -50,4 +50,4 @@ Upon receiving the `CloseStream` message, the server will process all remaining 
 * [Configure](/docs/flux/configure) - Update stream configuration mid-stream
 * [Getting Started with Flux](/docs/flux/quickstart) - Quickstart guide with basic configuration
 
-***
+---

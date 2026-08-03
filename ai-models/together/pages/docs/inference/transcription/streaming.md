@@ -103,6 +103,8 @@ Switch between them with the tabs below.
     If an endpoint fails for good, calls raise `RealtimeConnectionError`. When the server reports it cannot currently serve (`exc.code == "no_healthy_workers"`, including WebSocket close code `4503`), the SDK raises immediately with no same-endpoint retry so you can rotate. To keep a conversation alive across endpoint outages, run a failover ring: on failure, `session.pending_audio()` hands you the un-transcribed speech to seed a new session on another endpoint.
 
     ```python theme={null}
+    import asyncio
+
     from together import AsyncTogether
     from together.realtime import RealtimeConnectionError
 
@@ -112,24 +114,30 @@ Switch between them with the tabs below.
         ("https://api.together.ai/v1", "openai/whisper-large-v3-endpoint2"),
     ]
 
-    carry_over = b""  # audio a failed endpoint received but never transcribed
 
-    for base_url, model in endpoints:
-        client = AsyncTogether(base_url=base_url)
-        session = client.beta.realtime.transcription(
-            model=model,
-            sample_rate=16_000,
-            reconnect={"max_attempts": 0},  # switch endpoints immediately
-        )
-        try:
-            async with session:
-                if carry_over:
-                    await session.append(carry_over)
-                # ... stream the rest of your audio ...
-            break
-        except RealtimeConnectionError as exc:
-            # Includes exc.code == "no_healthy_workers". Take back untranscribed audio.
-            carry_over = session.pending_audio()
+    async def transcribe_with_failover():
+        carry_over = b""  # audio a failed endpoint received but never transcribed
+
+        for base_url, model in endpoints:
+            client = AsyncTogether(base_url=base_url)
+            session = client.beta.realtime.transcription(
+                model=model,
+                sample_rate=16_000,
+                reconnect={"max_attempts": 0},  # switch endpoints immediately
+            )
+            try:
+                async with session:
+                    if carry_over:
+                        await session.append(carry_over)
+                    # ... stream the rest of your audio ...
+                break
+            except RealtimeConnectionError as exc:
+                # Includes exc.code == "no_healthy_workers". Take back
+                # untranscribed audio.
+                carry_over = session.pending_audio()
+
+
+    asyncio.run(transcribe_with_failover())
     ```
 
     ## Synchronous usage

@@ -48,6 +48,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 
 | Version | Release Date | Description |
 | --- | --- | --- |
+| `4.01.06.00` | 8/3/2026 | - General bug fixes and code improvements. |
 | `4.01.05.00` | 6/30/2026 | - General bug fixes and code improvements. |
 | `4.01.04.00` | 5/26/2026 | - General bug fixes and code improvements.
 - Added support for the following languages: Croatian, Turkish, Estonian, Hungarian, Latvian, Lithuanian, Maltese, Slovak, Slovenian, Romanian, and Bulgarian. |

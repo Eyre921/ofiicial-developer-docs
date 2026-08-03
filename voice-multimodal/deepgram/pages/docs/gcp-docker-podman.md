@@ -74,7 +74,7 @@ To complete the rest of the installation, including configuring your environment
 
    1. This will open an SSH window in-browser. If you wish to connect via your own SSH client, see the [GCP documentation on adding your own SSH keys to the VM](https://cloud.google.com/compute/docs/connect/add-ssh-keys).
 
-***
+---
 
 What’s Next
 

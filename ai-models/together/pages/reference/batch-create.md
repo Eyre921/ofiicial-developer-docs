@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/batch-create
 path: reference/batch-create
 ---
 
-POST /batches
+openapi.yaml POST /batches
 Create a new batch job with the given input file and endpoint

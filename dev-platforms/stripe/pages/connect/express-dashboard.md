@@ -10,6 +10,8 @@ Learn about the features of the Express Dashboard.
 
 The Express Dashboard is a user interface that’s available to your platform’s connected accounts. They can use the Express Dashboard to monitor their available balance, view upcoming *payouts* (A payout is the transfer of funds to an external account, usually a bank account, in the form of a deposit), view payments, manage disputes, issue refunds, and track their earnings in real time. This guide outlines the features of the Express Dashboard and how your connected accounts can access it.
 
+[View the demo](https://express.stripe.dev)
+
 ## Features
 
 The Express Dashboard displays the connected account’s balance transactions and net volume. You can [customize the features available to your connected accounts in the Express Dashboard](https://docs.stripe.com/connect/customize-express-dashboard.md#customize-features).

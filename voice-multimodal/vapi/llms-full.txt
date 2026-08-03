@@ -209,6 +209,7 @@
 - [Definitions](https://docs.vapi.ai/glossary.md): Useful terms and definitions for Vapi & voice AI applications.
 - [RSS Feed](https://docs.vapi.ai/rss-feed.md): Stay updated with the latest incidents from Vapi or third party providers
 - [Data Flow](https://docs.vapi.ai/security-and-privacy/data-flow.md): How data flows through Vapi's voice pipeline. What's processed in real time, what's stored by default, and how custom storage or custom model servers change where data lives.
+- [API keys](https://docs.vapi.ai/security-and-privacy/api-keys.md): API keys authenticate requests to Vapi. Learn where to find public and private keys, choose the correct type, restrict access, and store each key securely.
 - [Single Sign-On (SSO)](https://docs.vapi.ai/security-and-privacy/sso.md): Let your team access Vapi through your identity provider using SAML or OIDC.
 - [JWT Authentication](https://docs.vapi.ai/customization/jwt-authentication.md): Secure API authentication guide
 - [Recording consent plan](https://docs.vapi.ai/security-and-privacy/recording-consent-plan.md): Learn how to configure recording consent plans to ensure compliance with privacy laws and regulations

@@ -81,7 +81,7 @@ tg beta models create gemma-4-31b-it \
 ```
 
 <Note>
-  Uploaded models are Private by default, visible only to members of your project. Internal visibility makes a model visible to everyone in your organization, and Public makes it visible to anyone.
+  Uploaded models are Private by default, visible only in the project that owns them. Internal visibility makes a model discoverable from every project in your organization. On the [Models](https://api.together.ai/models) page, Internal models from other projects appear under **My models** alongside the selected project's own models. Use the **Visibility** filter (**Internal** or **Private**) to narrow the list. Checking both options matches either scope.
 </Note>
 
 Save the returned model `id` (for example `ml_abc123`). You pass this value to the upload command in the next step. Whether a record holds full weights or a LoRA adapter is fixed when you create it: `create` defaults `--type` to `model`, so a full model needs no type flag. To register a LoRA adapter instead, pass `--type adapter` on create, as described in [Upload a LoRA adapter](/docs/dedicated-endpoints/adapter).
@@ -153,7 +153,7 @@ The console combines creating the model record and uploading its weights into a 
   </Step>
 
   <Step title="Import">
-    Select **Import**. The upload runs server-side, with progress shown below the form.
+    Select **Import**. The upload runs server-side, with progress shown below the form. You can leave the form: the model appears under **My models** with an **Uploading** badge while the job is pending or running.
   </Step>
 </Steps>
 
@@ -179,7 +179,7 @@ Once the job reaches `REMOTE_UPLOAD_STATUS_SUCCEEDED`, confirm the files landed:
 tg beta models ls-files ml_abc123
 ```
 
-You can also see uploaded models on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard.
+You can also track uploads on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard. While a remote upload is pending or running, the model floats to the top of **My models** with an **Uploading** badge. Open the model to watch the live **Upload progress** event log on the model detail page. The revisions table appears after the upload finishes. That list also includes Internal-visibility models from other projects in your organization. Use the **Visibility** filter to show only **Internal** or only **Private** models.
 
 ## Check revision validation
 

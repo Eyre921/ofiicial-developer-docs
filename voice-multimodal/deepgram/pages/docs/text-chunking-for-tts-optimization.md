@@ -570,4 +570,4 @@ When using text chunking as a strategy to minimize latency, some factors to keep
 * Dynamic chunking - Implement a flexible chunking strategy that adjusts chunk sizes dynamically based on the length and structure of the input text.
 * User expectations - Consider the preferences and needs of users, such as their tolerance for latency, the desired quality of synthesized speech, and their overall satisfaction with the application's performance.
 
-***
+---

@@ -108,7 +108,7 @@ The API container also accepts a legacy `--json` flag for JSON output. If both `
 
 The `--log-format` flag is available in release `260319` and later on all self-hosted container images.
 
-***
+---
 
 ## What's Next
 

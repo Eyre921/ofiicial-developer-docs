@@ -491,6 +491,28 @@ The output shows your spend for:
 - **Current month**: spend to date, by provider
 - **Previous months**: total spend, by provider
 
+By default, the command shows spend from the past 6 months. Use `--duration` or `--since`/`--until` to change the time range:
+
+```bash
+stripe projects spend --duration 3m
+```
+
+Use `--duration` with a positive whole number of months or days, such as `3m`, `12m`, or `90d`. Use `all` to show charges since January 1, 2026.
+
+Use `--since` or `--until` with a date in `YYYY-MM-DD` format. You can use either option on its own or use both together. The command includes the full calendar months containing the dates. For example, `--since 2026-01-15` includes all of January, and `--until 2026-03-10` includes all of March.
+
+```bash
+stripe projects spend --since 2026-01-15 --until 2026-03-10
+```
+
+You can’t combine `--duration` with `--since` or `--until`.
+
+To view spend for a specific provider:
+
+```bash
+stripe projects spend [provider]
+```
+
 ### Set a spend limit 
 
 Use `stripe projects billing update` to set spend limits on your payment method. You can set a global limit that applies across all providers, or a per-provider limit for more granular control.

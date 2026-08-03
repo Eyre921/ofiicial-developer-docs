@@ -481,4 +481,4 @@ Be sure to update your data parsing logic to correctly navigate the nested respo
 1. Compare the transcript text from both AssemblyAI and Deepgram.
 2. Evaluate the confidence scores and accuracy of the transcriptions.
 
-***
+---

@@ -184,4 +184,4 @@ This is a list of Deepgram Features and their current status for use with Deepgr
 * There is a 10 minute time out for all Deepgram models. Transcription requests that run longer than 10 minutes will return a 504 error.
 * Whisper models are not available on the [EU endpoint](/reference/custom-endpoints#eu-endpoint). If you require EU data residency, use a Deepgram model such as Nova-3.
 
-***
+---

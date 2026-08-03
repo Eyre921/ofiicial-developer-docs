@@ -4,7 +4,7 @@ source: https://docs.together.ai/reference/remediation-reject
 path: reference/remediation-reject
 ---
 
-POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/reject
+openapi.yaml POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/reject
 Rejects a pending remediation.
 
 Only remediations with state PENDING_APPROVAL can be rejected.

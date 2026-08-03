@@ -19,7 +19,7 @@ This tutorial will guide you through creating a web client that can interact wit
 Looking for a complete example? Check out our [Next.js demo on
 GitHub](https://github.com/elevenlabs/examples/tree/main/agents/nextjs/quickstart).
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e/assets/images/conversational-ai/nextjs-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T095555Z&X-Amz-Expires=604800&X-Amz-Signature=d31860b0ccf7c872fd78f0481eccee9d76046cadb072602b7f47a9cca11590fb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c1bc26a84d079cebcdfe6b4eb602bd27476d5afc92419e9ddfb92b755ca8058e/assets/images/conversational-ai/nextjs-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233259Z&X-Amz-Expires=604800&X-Amz-Signature=af579d75ca4772f2a37116b113351c3c11a6ae085d57b598da4a11284f294fbf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Setup
 
@@ -53,7 +53,7 @@ Run the following command to start the development server and open the provided 
 npm run dev
 ```
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a/assets/images/conversational-ai/nextjs-splash.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T095555Z&X-Amz-Expires=604800&X-Amz-Signature=0954b0bae602fe54264109d4f2d7b0ce9c2574c5bfdf33dffa9bfc1f7e519f12&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/537e2c5609df75b2fd15bf3a37c86da75410de053dfb0c76267a72d7b8d9914a/assets/images/conversational-ai/nextjs-splash.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233259Z&X-Amz-Expires=604800&X-Amz-Signature=1d2cc31271048f5fcb602feb0711dffcca7adca1596015701579f9703a55024a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Implement ElevenLabs Agents
 

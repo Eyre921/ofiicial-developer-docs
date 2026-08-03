@@ -4,7 +4,7 @@ source: https://docs.together.ai/reference/audio-speech-websocket
 path: reference/audio-speech-websocket
 ---
 
-GET /audio/speech/websocket
+openapi.yaml GET /audio/speech/websocket
 Establishes a WebSocket connection for real-time text-to-speech generation. This endpoint uses WebSocket protocol (wss://api.together.ai/v1/audio/speech/websocket) for bidirectional streaming communication.
 
 **Connection Setup:**

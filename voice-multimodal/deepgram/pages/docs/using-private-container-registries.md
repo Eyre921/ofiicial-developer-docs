@@ -274,7 +274,7 @@ GKE clusters with default IAM settings should have access to pull images from yo
    helm upgrade -f my-values.yaml [RELEASE_NAME] deepgram/deepgram-self-hosted --atomic --timeout 60m
    ```
 
-***
+---
 
 What’s Next
 

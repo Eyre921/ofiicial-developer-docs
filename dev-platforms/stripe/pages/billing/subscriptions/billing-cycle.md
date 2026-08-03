@@ -184,9 +184,9 @@ curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
 
 #### Dashboard
 
-1. On the [Subscriptions](https://dashboard.stripe.com/subscriptions) page in the Dashboard, find the subscription you want to update.
-2. Click its overflow menu ⋯, and select **Update subscription**.
-3. Expand the **Billing and payment collection** section, and click **Bill today instead**. We automatically prevent charging for the days already paid from the previous cycle. In the preview, click **Show details** to see the prorated invoice.
+1. On the [Subscriptions](https://dashboard.stripe.com/subscriptions), click the overflow menu ⋯ and choose **Update subscription**.
+2. Scroll to **Advanced options** and select **Reset the billing cycle**.
+3. Select the **Prorate changes** toggle to prevent overcharging for the days already paid from the previous cycle.
 4. Click **Update subscription**.
 
 ### Change the billing period using a trial period
@@ -215,17 +215,9 @@ curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
 #### Dashboard
 
 1. On the [Subscriptions](https://dashboard.stripe.com/subscriptions) page, find the subscription you want to update.
-
-2. Click its overflow menu ⋯, and select **Update subscription**.
-
-3. Expand **Subscription options**, and click **Trial period**, and select the trial duration. The end of the trial becomes the new billing cycle anchor date. We automatically prevent charging for the days already paid from the previous cycle. In the preview, click **Show details** to see the prorated invoice.
-
-4. If the trial ends and the customer doesn’t add a payment method, you can choose to either:
-
-   - **Continue subscription and send invoice**: Stripe sends an email to the customer with a link to a payment page to continue the subscription
-   - **Cancel subscription**
-   - **Pause subscription**
-
+2. Click **Update subscription**.
+3. Click **Add trial** and enter the number of days of the trial. The end of the trial becomes the new billing cycle anchor date.
+4. Deselect the **Prorate changes** toggle to prevent crediting the customer for already paid days.
 5. Click **Update subscription**.
 
 ## Usage-based billing

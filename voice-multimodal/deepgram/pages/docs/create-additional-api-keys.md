@@ -71,7 +71,7 @@ curl --request POST \
 
 If you choose to create temporary API keys, please be aware that those are limited to **250 per day**. If you need temporary API tokens for your application we recommend using [Token-Based Authentication](/guides/fundamentals/token-based-authentication).
 
-***
+---
 
 What’s Next
 

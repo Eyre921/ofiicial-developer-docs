@@ -39,7 +39,7 @@ Some models are offered as **passthrough**, meaning that Together forwards your 
 
 ## Enterprise data residency and private networking
 
-For customers with data-residency, regulatory, or compliance requirements, Together supports private networking and VPC-based deployments. [Contact us](https://www.together.ai/contact) to discuss the right setup for your workload.
+For customers with data-residency, regulatory, or compliance requirements (for example, GDPR-driven EU-region deployments), Together supports private networking and VPC-based deployments, including in EU regions. Serverless endpoints do not offer region selection; use a [dedicated endpoint](/docs/dedicated-endpoints/overview) or [contact us](https://www.together.ai/contact) to discuss the right setup for your workload. For the full legal picture, see the [privacy policy](https://www.together.ai/privacy).
 
 ## Third-party model providers
 

@@ -382,7 +382,7 @@ You can check the costs for the import, queries, and storage in the Pinecone con
 | Storage   | 4 hours         | \$0.33/GB/month        | \$0.09         |
 | **Total** |                 |                        | **\$90.37**    |
 
-<Note>Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through August 31, 2026, so on those plans the import portion of this example would be \$0 and the total would be \$78.17. The figures above assume the standard overage rate.</Note>
+<Note>Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through August 30, 2026, so on those plans the import portion of this example would be \$0 and the total would be \$78.17. The figures above assume the standard overage rate.</Note>
 
 <Steps>
   <Step title="Import costs">

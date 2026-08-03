@@ -26,7 +26,7 @@ Deepgram offers the following deployment options:
 | **Updates**                                | Automatic rolling updates | Deepgram makes regular updates available for customer to apply. In case of critical updates (for example, security patches), Deepgram notifies customer. |
 | **Service & Uptime Reporting**             | Monitored by Deepgram     | Monitored by customer                                                                                                                                    |
 
-***
+---
 
 What’s Next
 

@@ -1464,143 +1464,6 @@ We concurrently submit requests to our serverless inference. Time for completion
 For small jobs (less than 1000 samples) we expect to complete in under an hour.
 
 
-# AI evaluations UI
-Source: https://docs.together.ai/docs/ai-evaluations-ui
-
-Guide to using the AI Evaluations UI for model assessment
-
-## Introduction
-
-This guide explains how to perform evaluations using the Together AI UI.
-
-<Info>
-  For a comprehensive guide with detailed parameter descriptions and API examples, see [AI Evaluations](/docs/ai-evaluations).
-</Info>
-
-## Step 1: Upload Your Dataset
-
-Navigate to [https://api.together.ai/evaluations](https://api.together.ai/evaluations) and click "Create Evaluation".
-
-<Frame>
-  <img alt="Create Evaluation button" />
-</Frame>
-
-Upload your dataset or select one from your library. Preview your dataset content in the "Dataset Preview" section.
-
-<Frame>
-  <img alt="Dataset upload interface" />
-</Frame>
-
-## Step 2: Customize Your Evaluation Job
-
-### Evaluation Types
-
-| Type         | Description                                                           |
-| :----------- | :-------------------------------------------------------------------- |
-| **Classify** | Categorizes input into one of the provided categories                 |
-| **Score**    | Evaluates input and produces a score within a specified range         |
-| **Compare**  | Compares responses from two models to determine which performs better |
-
-### Judge Configuration
-
-Configure the judge model that will evaluate your inputs:
-
-| Field             | Type            | Required | Description                                   |
-| :---------------- | :-------------- | :------- | :-------------------------------------------- |
-| `judge model`     | string          | Yes      | The model used for evaluation                 |
-| `system template` | Jinja2 template | Yes      | Instructions for the judge to assess the data |
-
-<Frame>
-  <img alt="Judge configuration interface" />
-</Frame>
-
-### Evaluation Type Parameters
-
-**Classify parameters:**
-
-| Field               | Type             | Description                                                                 |
-| :------------------ | :--------------- | :-------------------------------------------------------------------------- |
-| `labels`            | list of strings  | Categories for classification. Mark each as 'pass' or 'fail' for statistics |
-| `model_to_evaluate` | object or string | Model configuration or dataset column name                                  |
-
-**Score parameters:**
-
-| Field               | Type             | Description                                                |
-| :------------------ | :--------------- | :--------------------------------------------------------- |
-| `min_score`         | float            | Minimum score the judge can assign                         |
-| `max_score`         | float            | Maximum score the judge can assign                         |
-| `pass_threshold`    | float            | Score at or above which is considered "passing" (optional) |
-| `model_to_evaluate` | object or string | Model configuration or dataset column name                 |
-
-**Compare parameters:**
-
-| Field     | Type             | Description                                       |
-| :-------- | :--------------- | :------------------------------------------------ |
-| `model_a` | object or string | First model configuration or dataset column name  |
-| `model_b` | object or string | Second model configuration or dataset column name |
-
-### Model Evaluation Configuration
-
-Choose how to provide responses for evaluation:
-
-* **Configure** – Generate new responses using a model
-* **Field name** – Use existing responses from your dataset
-
-#### Option 1: Model Configuration Object
-
-Use when generating new responses for evaluation:
-
-| Field                | Type            | Required      | Description                                                                             |
-| :------------------- | :-------------- | :------------ | :-------------------------------------------------------------------------------------- |
-| `model_name`         | string          | Yes           | One of our [supported models](/docs/evaluations-supported-models)                       |
-| `model_source`       | string          | Yes           | `"serverless"`, `"dedicated"`, or `"external"`                                          |
-| `system_template`    | Jinja2 template | Yes           | Generation instructions (see [Templates](/docs/ai-evaluations#understanding-templates)) |
-| `input_template`     | Jinja2 template | Yes           | Input format, e.g., `"{{prompt}}"`                                                      |
-| `max_tokens`         | integer         | No            | Maximum tokens for generation                                                           |
-| `temperature`        | float           | No            | Temperature setting for generation                                                      |
-| `external_api_token` | string          | When external | API bearer token for external providers                                                 |
-| `external_base_url`  | string          | No            | Custom base URL for external APIs                                                       |
-
-#### Option 2: Column Reference
-
-Use when evaluating pre-existing data from your dataset. Simply specify the column name containing the data to evaluate.
-
-<Frame>
-  <img alt="Model configuration interface" />
-</Frame>
-
-### Using External Models
-
-<Info>
-  When using `model_source = "external"`:
-
-  * Enter a supported shortcut (e.g., `openai/gpt-5`). See [Supported External Models](/docs/evaluations-supported-models).
-  * Provide your `external_api_token` for the provider.
-  * Optionally set `external_base_url` for custom OpenAI `chat/completions`-compatible endpoints.
-</Info>
-
-For dedicated model inference, set `model_source = "dedicated"` and paste your endpoint ID into the model field. See [dedicated model inference](/docs/dedicated-endpoints/overview).
-
-## Step 3: Monitor Job Progress
-
-Wait for your evaluation job to complete. The UI will show the current status of your job.
-
-<Frame>
-  <img alt="Job progress monitoring" />
-</Frame>
-
-## Step 4: Review Results
-
-Once complete, you can:
-
-* Preview statistics and responses in the Dataset Preview
-* Download the result file using the "Download" button
-
-<Frame>
-  <img alt="Results preview" />
-</Frame>
-
-
 # Set up OIDC authentication
 Source: https://docs.together.ai/docs/cluster-oidc
 
@@ -2938,7 +2801,7 @@ tg beta models create gemma-4-31b-it \
 ```
 
 <Note>
-  Uploaded models are Private by default, visible only to members of your project. Internal visibility makes a model visible to everyone in your organization, and Public makes it visible to anyone.
+  Uploaded models are Private by default, visible only in the project that owns them. Internal visibility makes a model discoverable from every project in your organization. On the [Models](https://api.together.ai/models) page, Internal models from other projects appear under **My models** alongside the selected project's own models. Use the **Visibility** filter (**Internal** or **Private**) to narrow the list. Checking both options matches either scope.
 </Note>
 
 Save the returned model `id` (for example `ml_abc123`). You pass this value to the upload command in the next step. Whether a record holds full weights or a LoRA adapter is fixed when you create it: `create` defaults `--type` to `model`, so a full model needs no type flag. To register a LoRA adapter instead, pass `--type adapter` on create, as described in [Upload a LoRA adapter](/docs/dedicated-endpoints/adapter).
@@ -3010,7 +2873,7 @@ The console combines creating the model record and uploading its weights into a 
   </Step>
 
   <Step title="Import">
-    Select **Import**. The upload runs server-side, with progress shown below the form.
+    Select **Import**. The upload runs server-side, with progress shown below the form. You can leave the form: the model appears under **My models** with an **Uploading** badge while the job is pending or running.
   </Step>
 </Steps>
 
@@ -3036,7 +2899,7 @@ Once the job reaches `REMOTE_UPLOAD_STATUS_SUCCEEDED`, confirm the files landed:
 tg beta models ls-files ml_abc123
 ```
 
-You can also see uploaded models on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard.
+You can also track uploads on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard. While a remote upload is pending or running, the model floats to the top of **My models** with an **Uploading** badge. Open the model to watch the live **Upload progress** event log on the model detail page. The revisions table appears after the upload finishes. That list also includes Internal-visibility models from other projects in your organization. Use the **Visibility** filter to show only **Internal** or only **Private** models.
 
 ## Check revision validation
 
@@ -5714,7 +5577,7 @@ Set `model_source = "serverless"` to use Together's serverless inference.
 | DeepSeek-V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
 | Llama 3.3 70B Instruct Turbo       | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
 | LFM2 24B A2B                       | `LiquidAI/LFM2-24B-A2B`                   |
-| MiniMax M2.7                       | `MiniMaxAI/MiniMax-M2.7`                  |
+| MiniMax M3                         | `MiniMaxAI/MiniMax-M3`                    |
 | Kimi K2.5                          | `moonshotai/Kimi-K2.5`                    |
 | Kimi K2.6                          | `moonshotai/Kimi-K2.6`                    |
 | Qwen3 235B A22B Instruct 2507      | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput` |
@@ -6423,6 +6286,187 @@ job = client.fine_tuning.create(
 ```
 
 The model evaluates against the validation set at the specified intervals. Eval loss appears in the [training metrics](/docs/fine-tuning/monitoring) and (if `wandb_api_key` is set) on your W\&B dashboard.
+
+
+# Early stopping
+Source: https://docs.together.ai/docs/fine-tuning/early-stopping
+
+Halt a fine-tuning job when validation loss stops improving.
+
+Early stopping halts a job when the validation loss stops improving and promotes the best available checkpoint as the final model. Use this feature when you're not sure how many epochs the run actually needs, and you want to avoid paying for steps that don't improve model performance. The job still finishes as `completed` with a deployable model, and the unused steps are refunded automatically.
+
+You can enable early stopping for both [supervised fine-tuning](/docs/fine-tuning/supervised) and [preference tuning (DPO)](/docs/fine-tuning/preference-tuning) jobs.
+
+Early stopping is driven by validation, so it requires a validation file and one or more evaluations. See [split into train and validation](/docs/fine-tuning/data-preparation#split-into-train-and-validation) for details on how to prepare a `validation_file` and set `n_evals`.
+
+## Enable early stopping
+
+To turn on early stopping, supply a validation file, set `n_evals` high enough to detect a plateau, and set `early_stopping_enabled=true` in your job creation call:
+
+<CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning create \
+    --training-file "<TRAINING_FILE_ID>" \
+    --validation-file "<VALIDATION_FILE_ID>" \
+    --model "Qwen/Qwen3.5-9B" \
+    --n-epochs 5 \
+    --n-evals 10 \
+    --early-stopping-enabled \
+    --early-stopping-patience 2 \
+    --early-stopping-min-delta 0.0 \
+    --early-stopping-warmup-evals 1
+  ```
+
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  job = client.fine_tuning.create(
+      training_file="<TRAINING_FILE_ID>",
+      validation_file="<VALIDATION_FILE_ID>",
+      model="Qwen/Qwen3.5-9B",
+      n_epochs=5,
+      n_evals=10,
+      early_stopping_enabled=True,
+      early_stopping_patience=2,
+      early_stopping_min_delta=0.0,
+      early_stopping_warmup_evals=1,
+  )
+  print(job.id)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const job = await client.fineTuning.create({
+    training_file: "<TRAINING_FILE_ID>",
+    validation_file: "<VALIDATION_FILE_ID>",
+    model: "Qwen/Qwen3.5-9B",
+    n_epochs: 5,
+    n_evals: 10,
+    early_stopping_enabled: true,
+    early_stopping_patience: 2,
+    early_stopping_min_delta: 0.0,
+    early_stopping_warmup_evals: 1,
+  });
+  console.log(job.id);
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter                     | Default | Description                                                                                                                                              |
+| ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `early_stopping_enabled`      | `false` | Turn early stopping on. Requires `validation_file` and `n_evals >= patience + warmup_evals + 1`.                                                         |
+| `early_stopping_patience`     | `2`     | Number of consecutive non-improving evaluations to allow before stopping.                                                                                |
+| `early_stopping_min_delta`    | `0.0`   | Minimum decrease in `eval_loss` that counts as an improvement.                                                                                           |
+| `early_stopping_warmup_evals` | `1`     | Initial evaluations to skip before patience starts counting. Their `eval_loss` still updates the best value that later evaluations are compared against. |
+
+## Retrieve the result
+
+When the job finishes, retrieve it and read the early stopping fields off the response:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  job = client.fine_tuning.retrieve(id="<JOB_ID>")
+
+  print(job.early_stopped)  # True if the run was halted early
+  print(job.early_stopping_best_step)  # step of the promoted checkpoint
+  print(job.early_stopping_best_metric)  # eval_loss at that step
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const job = await client.fineTuning.retrieve("<JOB_ID>");
+
+  console.log(job.early_stopped); // true if the run was halted early
+  console.log(job.early_stopping_best_step); // step of the promoted checkpoint
+  console.log(job.early_stopping_best_metric); // eval_loss at that step
+  ```
+</CodeGroup>
+
+The response surfaces the early stopping decision and the best checkpoint:
+
+* `early_stopped`: `true` if patience was exhausted or a non-finite (NaN/Inf) eval loss halted the run, otherwise `false`.
+* `early_stopping_best_step`: The training step whose checkpoint was promoted as the final model, or the halt step when no improving evaluation was recorded.
+* `early_stopping_best_metric`: The value of `eval_loss` at that step (`null` if no improving evaluation was recorded).
+
+For example, a job that requested 5 epochs but stopped once the validation loss plateaued returns something like this (abbreviated to the relevant fields):
+
+```json theme={null}
+{
+  "id": "ft-9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
+  "status": "completed",
+  "model": "Qwen/Qwen3.5-9B",
+  "n_epochs": 5,
+  "epochs_completed": 3,
+  "n_evals": 10,
+  "evals_completed": 6,
+  "total_steps": 120,
+  "steps_completed": 72,
+  "early_stopped": true,
+  "early_stopping_best_step": 48,
+  "early_stopping_best_metric": 0.4213
+}
+```
+
+Here the best evaluation landed at step 48; the next two evaluations didn't improve on it (because `early_stopping_patience` is 2), so the run halted at step 72 and the step-48 checkpoint was promoted as the final model. `steps_completed` (72) is below `total_steps` (120), and the unused steps are refunded.
+
+The [events log](/reference/get-fine-tunes-id-events) also records an `early_stopped` entry at the halt step and a `refund` entry for the unused steps, which are credited back to your project automatically. To see the full history of `eval_loss` across evaluations and understand why early stopping fired, [retrieve the job's metrics](/docs/fine-tuning/monitoring#retrieve-metrics).
+
+## Find the final checkpoint
+
+An early-stopped job ships the final checkpoint from `early_stopping_best_step`, not the halt step. When you [list checkpoints](/reference/cli/finetune#list-checkpoints), the final entry's `step` field reports that promoted step, so it matches `early_stopping_best_step` on the job. A job that didn't stop early reports the last completed step instead.
+
+To confirm this, retrieve the job and compare its `early_stopping_best_step` against the final checkpoint's `step`:
+
+<CodeGroup>
+  ```bash CLI theme={null}
+  tg fine-tuning list-checkpoints <JOB_ID>
+  ```
+
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  job = client.fine_tuning.retrieve("<JOB_ID>")
+  checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
+
+  final = next(
+      c
+      for c in checkpoints.data
+      if "intermediate" not in c.checkpoint_type.lower()
+  )
+  # For an early-stopped job, these two values match.
+  print(final.step, job.early_stopping_best_step)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const job = await client.fineTuning.retrieve("<JOB_ID>");
+  const checkpoints = await client.fineTuning.listCheckpoints("<JOB_ID>");
+
+  const final = checkpoints.data.find(
+    (c) => !c.checkpoint_type.toLowerCase().includes("intermediate"),
+  );
+  // For an early-stopped job, these two values match.
+  console.log(final?.step, job.early_stopping_best_step);
+  ```
+</CodeGroup>
 
 
 # Function-calling fine-tuning
@@ -10710,6 +10754,7 @@ Batch jobs run against a separate rate-limit pool from the standard real-time AP
 
 * Up to 50,000 requests per batch.
 * Up to 100 MB per input file.
+* Up to 10 MB per line in the input file. Inline base64 payloads, such as images embedded as `data:image/...;base64,` URLs, count toward this limit.
 * Up to 30B tokens enqueued per model at any time.
 * Completion window defaults to `24h` and cannot be changed; it is a best-effort target.
 
@@ -10743,7 +10788,6 @@ The following serverless models are not currently available for batch processing
 | `deepseek-ai/DeepSeek-R1`     |
 | `deepseek-ai/DeepSeek-V3.1`   |
 | `deepseek-ai/DeepSeek-V4-Pro` |
-| `MiniMaxAI/MiniMax-M2.7`      |
 | `moonshotai/Kimi-K2.5`        |
 | `moonshotai/Kimi-K2.6`        |
 
@@ -10804,6 +10848,10 @@ Save the following as `batch_input.jsonl`:
 | `custom_id` | string | Yes         | Unique identifier for tracking (max 64 chars).                                                                                                                                                                                                                    |
 | `method`    | string | Conditional | Set to `"FILE"` when batching `/v1/audio/transcriptions` or `/v1/audio/translations` so the worker dispatches each request as `multipart/form-data`. Omit for chat completion batches. See [Run an audio transcription batch](#run-an-audio-transcription-batch). |
 | `body`      | object | Yes         | Request body matching the endpoint's schema.                                                                                                                                                                                                                      |
+
+<Warning>
+  Each line must be under 10 MB. The limit applies to the full serialized line, so inline base64 payloads count toward it (e.g. a single high-resolution image embedded as a `data:image/...;base64,` URL). Oversized lines aren't caught during validation, and will fail with `error reading input file`. To stay under the limit, reference images by hosted URL instead of inlining them, or resize and compress images before encoding.
+</Warning>
 
 ## Step 2: Upload the file
 
@@ -11770,7 +11818,7 @@ The following models support reasoning on [serverless inference](/docs/serverles
 
 | Model                      | API string                          | Type                   | Context length |
 | :------------------------- | :---------------------------------- | :--------------------- | :------------- |
-| MiniMax M2.7               | `MiniMaxAI/MiniMax-M2.7`            | Reasoning only         | 202K           |
+| MiniMax M3                 | `MiniMaxAI/MiniMax-M3`              | Hybrid (on by default) | 512K           |
 | DeepSeek-V4-Pro            | `deepseek-ai/DeepSeek-V4-Pro`       | Hybrid (on by default) | 512K           |
 | GLM-5                      | `zai-org/GLM-5`                     | Hybrid (on by default) | 200K           |
 | Kimi K2.6                  | `moonshotai/Kimi-K2.6`              | Hybrid (on by default) | 262K           |
@@ -16650,14 +16698,14 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 
 ## Chat & text
 
-| Use case                     | Recommended model          | Model string                | Alternatives                                                        | Learn more                                                    |
-| :--------------------------- | :------------------------- | :-------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------ |
-| **Chat**                     | Kimi K2.6 (instant mode)   | `moonshotai/Kimi-K2.6`      | `MiniMaxAI/MiniMax-M3`                                              | [Chat completions](/docs/inference/chat/overview)             |
-| **Reasoning**                | Kimi K2.6 (reasoning mode) | `moonshotai/Kimi-K2.6`      | `zai-org/GLM-5.2`                                                   | [Reasoning](/docs/inference/chat/reasoning)                   |
-| **Coding agents**            | Kimi K2.7 Code             | `moonshotai/Kimi-K2.7-Code` | `zai-org/GLM-5.2`                                                   | [Build coding agents](/docs/how-to-build-coding-agents)       |
-| **Small and fast**           | Gemma 4 31B IT             | `google/gemma-4-31B-it`     | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`                             | -                                                             |
-| **Mid-size general purpose** | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`      | `MiniMaxAI/MiniMax-M2.7`, `meta-llama/Llama-3.3-70B-Instruct-Turbo` | -                                                             |
-| **Function calling**         | GLM-5.2                    | `zai-org/GLM-5.2`           | `moonshotai/Kimi-K2.6`                                              | [Function calling](/docs/inference/function-calling/overview) |
+| Use case                     | Recommended model          | Model string                | Alternatives                              | Learn more                                                    |
+| :--------------------------- | :------------------------- | :-------------------------- | :---------------------------------------- | :------------------------------------------------------------ |
+| **Chat**                     | Kimi K2.6 (instant mode)   | `moonshotai/Kimi-K2.6`      | `MiniMaxAI/MiniMax-M3`                    | [Chat completions](/docs/inference/chat/overview)             |
+| **Reasoning**                | Kimi K2.6 (reasoning mode) | `moonshotai/Kimi-K2.6`      | `zai-org/GLM-5.2`                         | [Reasoning](/docs/inference/chat/reasoning)                   |
+| **Coding agents**            | Kimi K2.7 Code             | `moonshotai/Kimi-K2.7-Code` | `zai-org/GLM-5.2`                         | [Build coding agents](/docs/how-to-build-coding-agents)       |
+| **Small and fast**           | Gemma 4 31B IT             | `google/gemma-4-31B-it`     | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`   | -                                                             |
+| **Mid-size general purpose** | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`      | `meta-llama/Llama-3.3-70B-Instruct-Turbo` | -                                                             |
+| **Function calling**         | GLM-5.2                    | `zai-org/GLM-5.2`           | `moonshotai/Kimi-K2.6`                    | [Function calling](/docs/inference/function-calling/overview) |
 
 ## Vision
 
@@ -18635,6 +18683,8 @@ Switch between them with the tabs below.
     If an endpoint fails for good, calls raise `RealtimeConnectionError`. When the server reports it cannot currently serve (`exc.code == "no_healthy_workers"`, including WebSocket close code `4503`), the SDK raises immediately with no same-endpoint retry so you can rotate. To keep a conversation alive across endpoint outages, run a failover ring: on failure, `session.pending_audio()` hands you the un-transcribed speech to seed a new session on another endpoint.
 
     ```python theme={null}
+    import asyncio
+
     from together import AsyncTogether
     from together.realtime import RealtimeConnectionError
 
@@ -18644,24 +18694,30 @@ Switch between them with the tabs below.
         ("https://api.together.ai/v1", "openai/whisper-large-v3-endpoint2"),
     ]
 
-    carry_over = b""  # audio a failed endpoint received but never transcribed
 
-    for base_url, model in endpoints:
-        client = AsyncTogether(base_url=base_url)
-        session = client.beta.realtime.transcription(
-            model=model,
-            sample_rate=16_000,
-            reconnect={"max_attempts": 0},  # switch endpoints immediately
-        )
-        try:
-            async with session:
-                if carry_over:
-                    await session.append(carry_over)
-                # ... stream the rest of your audio ...
-            break
-        except RealtimeConnectionError as exc:
-            # Includes exc.code == "no_healthy_workers". Take back untranscribed audio.
-            carry_over = session.pending_audio()
+    async def transcribe_with_failover():
+        carry_over = b""  # audio a failed endpoint received but never transcribed
+
+        for base_url, model in endpoints:
+            client = AsyncTogether(base_url=base_url)
+            session = client.beta.realtime.transcription(
+                model=model,
+                sample_rate=16_000,
+                reconnect={"max_attempts": 0},  # switch endpoints immediately
+            )
+            try:
+                async with session:
+                    if carry_over:
+                        await session.append(carry_over)
+                    # ... stream the rest of your audio ...
+                break
+            except RealtimeConnectionError as exc:
+                # Includes exc.code == "no_healthy_workers". Take back
+                # untranscribed audio.
+                carry_over = session.pending_audio()
+
+
+    asyncio.run(transcribe_with_failover())
     ```
 
     ## Synchronous usage
@@ -29540,187 +29596,6 @@ Intermediate checkpoints carry the IDs from the upload at that step. Final model
 </CardGroup>
 
 
-# Early stopping
-Source: https://docs.together.ai/docs/fine-tuning/early-stopping
-
-Halt a fine-tuning job when validation loss stops improving.
-
-Early stopping halts a job when the validation loss stops improving and promotes the best available checkpoint as the final model. Use this feature when you're not sure how many epochs the run actually needs, and you want to avoid paying for steps that don't improve model performance. The job still finishes as `completed` with a deployable model, and the unused steps are refunded automatically.
-
-You can enable early stopping for both [supervised fine-tuning](/docs/fine-tuning/supervised) and [preference tuning (DPO)](/docs/fine-tuning/preference-tuning) jobs.
-
-Early stopping is driven by validation, so it requires a validation file and one or more evaluations. See [split into train and validation](/docs/fine-tuning/data-preparation#split-into-train-and-validation) for details on how to prepare a `validation_file` and set `n_evals`.
-
-## Enable early stopping
-
-To turn on early stopping, supply a validation file, set `n_evals` high enough to detect a plateau, and set `early_stopping_enabled=true` in your job creation call:
-
-<CodeGroup>
-  ```bash CLI theme={null}
-  tg fine-tuning create \
-    --training-file "<TRAINING_FILE_ID>" \
-    --validation-file "<VALIDATION_FILE_ID>" \
-    --model "Qwen/Qwen3.5-9B" \
-    --n-epochs 5 \
-    --n-evals 10 \
-    --early-stopping-enabled \
-    --early-stopping-patience 2 \
-    --early-stopping-min-delta 0.0 \
-    --early-stopping-warmup-evals 1
-  ```
-
-  ```python Python theme={null}
-  from together import Together
-
-  client = Together()
-
-  job = client.fine_tuning.create(
-      training_file="<TRAINING_FILE_ID>",
-      validation_file="<VALIDATION_FILE_ID>",
-      model="Qwen/Qwen3.5-9B",
-      n_epochs=5,
-      n_evals=10,
-      early_stopping_enabled=True,
-      early_stopping_patience=2,
-      early_stopping_min_delta=0.0,
-      early_stopping_warmup_evals=1,
-  )
-  print(job.id)
-  ```
-
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai";
-
-  const client = new Together();
-
-  const job = await client.fineTuning.create({
-    training_file: "<TRAINING_FILE_ID>",
-    validation_file: "<VALIDATION_FILE_ID>",
-    model: "Qwen/Qwen3.5-9B",
-    n_epochs: 5,
-    n_evals: 10,
-    early_stopping_enabled: true,
-    early_stopping_patience: 2,
-    early_stopping_min_delta: 0.0,
-    early_stopping_warmup_evals: 1,
-  });
-  console.log(job.id);
-  ```
-</CodeGroup>
-
-## Parameters
-
-| Parameter                     | Default | Description                                                                                                                                              |
-| ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `early_stopping_enabled`      | `false` | Turn early stopping on. Requires `validation_file` and `n_evals >= patience + warmup_evals + 1`.                                                         |
-| `early_stopping_patience`     | `2`     | Number of consecutive non-improving evaluations to allow before stopping.                                                                                |
-| `early_stopping_min_delta`    | `0.0`   | Minimum decrease in `eval_loss` that counts as an improvement.                                                                                           |
-| `early_stopping_warmup_evals` | `1`     | Initial evaluations to skip before patience starts counting. Their `eval_loss` still updates the best value that later evaluations are compared against. |
-
-## Retrieve the result
-
-When the job finishes, retrieve it and read the early stopping fields off the response:
-
-<CodeGroup>
-  ```python Python theme={null}
-  from together import Together
-
-  client = Together()
-
-  job = client.fine_tuning.retrieve(id="<JOB_ID>")
-
-  print(job.early_stopped)  # True if the run was halted early
-  print(job.early_stopping_best_step)  # step of the promoted checkpoint
-  print(job.early_stopping_best_metric)  # eval_loss at that step
-  ```
-
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai";
-
-  const client = new Together();
-
-  const job = await client.fineTuning.retrieve("<JOB_ID>");
-
-  console.log(job.early_stopped); // true if the run was halted early
-  console.log(job.early_stopping_best_step); // step of the promoted checkpoint
-  console.log(job.early_stopping_best_metric); // eval_loss at that step
-  ```
-</CodeGroup>
-
-The response surfaces the early stopping decision and the best checkpoint:
-
-* `early_stopped`: `true` if patience was exhausted or a non-finite (NaN/Inf) eval loss halted the run, otherwise `false`.
-* `early_stopping_best_step`: The training step whose checkpoint was promoted as the final model, or the halt step when no improving evaluation was recorded.
-* `early_stopping_best_metric`: The value of `eval_loss` at that step (`null` if no improving evaluation was recorded).
-
-For example, a job that requested 5 epochs but stopped once the validation loss plateaued returns something like this (abbreviated to the relevant fields):
-
-```json theme={null}
-{
-  "id": "ft-9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
-  "status": "completed",
-  "model": "Qwen/Qwen3.5-9B",
-  "n_epochs": 5,
-  "epochs_completed": 3,
-  "n_evals": 10,
-  "evals_completed": 6,
-  "total_steps": 120,
-  "steps_completed": 72,
-  "early_stopped": true,
-  "early_stopping_best_step": 48,
-  "early_stopping_best_metric": 0.4213
-}
-```
-
-Here the best evaluation landed at step 48; the next two evaluations didn't improve on it (because `early_stopping_patience` is 2), so the run halted at step 72 and the step-48 checkpoint was promoted as the final model. `steps_completed` (72) is below `total_steps` (120), and the unused steps are refunded.
-
-The [events log](/reference/get-fine-tunes-id-events) also records an `early_stopped` entry at the halt step and a `refund` entry for the unused steps, which are credited back to your project automatically. To see the full history of `eval_loss` across evaluations and understand why early stopping fired, [retrieve the job's metrics](/docs/fine-tuning/monitoring#retrieve-metrics).
-
-## Find the final checkpoint
-
-An early-stopped job ships the final checkpoint from `early_stopping_best_step`, not the halt step. When you [list checkpoints](/reference/cli/finetune#list-checkpoints), the final entry's `step` field reports that promoted step, so it matches `early_stopping_best_step` on the job. A job that didn't stop early reports the last completed step instead.
-
-To confirm this, retrieve the job and compare its `early_stopping_best_step` against the final checkpoint's `step`:
-
-<CodeGroup>
-  ```bash CLI theme={null}
-  tg fine-tuning list-checkpoints <JOB_ID>
-  ```
-
-  ```python Python theme={null}
-  from together import Together
-
-  client = Together()
-
-  job = client.fine_tuning.retrieve("<JOB_ID>")
-  checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
-
-  final = next(
-      c
-      for c in checkpoints.data
-      if "intermediate" not in c.checkpoint_type.lower()
-  )
-  # For an early-stopped job, these two values match.
-  print(final.step, job.early_stopping_best_step)
-  ```
-
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai";
-
-  const client = new Together();
-
-  const job = await client.fineTuning.retrieve("<JOB_ID>");
-  const checkpoints = await client.fineTuning.listCheckpoints("<JOB_ID>");
-
-  const final = checkpoints.data.find(
-    (c) => !c.checkpoint_type.toLowerCase().includes("intermediate"),
-  );
-  // For an early-stopped job, these two values match.
-  console.log(final?.step, job.early_stopping_best_step);
-  ```
-</CodeGroup>
-
-
 # Troubleshooting fine-tuning jobs
 Source: https://docs.together.ai/docs/fine-tuning/troubleshooting
 
@@ -37444,7 +37319,7 @@ reference_models = [
     "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "moonshotai/Kimi-K2.6",
-    "MiniMaxAI/MiniMax-M2.7",
+    "MiniMaxAI/MiniMax-M3",
 ]
 aggregator_model = "moonshotai/Kimi-K2.6"
 aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
@@ -37512,7 +37387,7 @@ reference_models = [
     "zai-org/GLM-5.2",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "moonshotai/Kimi-K2.6",
-    "MiniMaxAI/MiniMax-M2.7",
+    "MiniMaxAI/MiniMax-M3",
 ]
 aggregator_model = "moonshotai/Kimi-K2.6"
 aggreagator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query. Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
@@ -38588,13 +38463,13 @@ Run multiple LLMs in parallel and aggregate their solutions.
       "zai-org/GLM-5.2",
       "openai/gpt-oss-120b",
       "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-      "MiniMaxAI/MiniMax-M2.7",
+      "MiniMaxAI/MiniMax-M3",
   ]
 
   user_prompt = """Jenna and her mother picked some apples from their apple farm.
   Jenna picked half as many apples as her mom. If her mom got 20 apples, how many apples did they both pick?"""
 
-  aggregator_model = "deepseek-ai/DeepSeek-V3"
+  aggregator_model = "deepseek-ai/DeepSeek-V4-Pro"
 
   aggregator_system_prompt = """You have been provided with a set of responses from various open-source models to the latest user query.
   Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information
@@ -38627,7 +38502,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
     "zai-org/GLM-5.2",
     "openai/gpt-oss-120b",
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    "MiniMaxAI/MiniMax-M2.7",
+    "MiniMaxAI/MiniMax-M3",
   ];
 
   const userPrompt = dedent`
@@ -38637,7 +38512,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
     If her mom got 20 apples, how many apples did they both pick?
   `;
 
-  const aggregatorModel = "deepseek-ai/DeepSeek-V3";
+  const aggregatorModel = "deepseek-ai/DeepSeek-V4-Pro";
 
   const aggregatorSystemPrompt = dedent`
     You have been provided with a set of responses from various
@@ -39098,7 +38973,7 @@ Some models are offered as **passthrough**, meaning that Together forwards your 
 
 ## Enterprise data residency and private networking
 
-For customers with data-residency, regulatory, or compliance requirements, Together supports private networking and VPC-based deployments. [Contact us](https://www.together.ai/contact) to discuss the right setup for your workload.
+For customers with data-residency, regulatory, or compliance requirements (for example, GDPR-driven EU-region deployments), Together supports private networking and VPC-based deployments, including in EU regions. Serverless endpoints do not offer region selection; use a [dedicated endpoint](/docs/dedicated-endpoints/overview) or [contact us](https://www.together.ai/contact) to discuss the right setup for your workload. For the full legal picture, see the [privacy policy](https://www.together.ai/privacy).
 
 ## Third-party model providers
 
@@ -44796,7 +44671,7 @@ Source: https://docs.together.ai/external-link-02
 # Create audio generation request
 Source: https://docs.together.ai/reference/audio-speech
 
-POST /audio/speech
+openapi.yaml POST /audio/speech
 Generate audio from input text
 
 
@@ -44804,7 +44679,7 @@ Generate audio from input text
 # Create realtime text-to-speech
 Source: https://docs.together.ai/reference/audio-speech-websocket
 
-GET /audio/speech/websocket
+openapi.yaml GET /audio/speech/websocket
 Establishes a WebSocket connection for real-time text-to-speech generation. This endpoint uses WebSocket protocol (wss://api.together.ai/v1/audio/speech/websocket) for bidirectional streaming communication.
 
 **Connection Setup:**
@@ -44948,7 +44823,7 @@ All client and server message types support an optional `context_id` field. This
 # Create audio transcription request
 Source: https://docs.together.ai/reference/audio-transcriptions
 
-POST /audio/transcriptions
+openapi.yaml POST /audio/transcriptions
 Transcribes audio into text
 
 
@@ -44956,7 +44831,7 @@ Transcribes audio into text
 # Real-time audio transcription via WebSocket
 Source: https://docs.together.ai/reference/audio-transcriptions-realtime
 
-GET /realtime
+openapi.yaml GET /realtime
 Establishes a WebSocket connection for real-time audio transcription. This endpoint uses WebSocket protocol (wss://api.together.ai/v1/realtime) for bidirectional streaming communication.
 
 **Connection Setup:**
@@ -45095,7 +44970,7 @@ All parameters are Omitted fields use their defaults.
 # Create audio translation request
 Source: https://docs.together.ai/reference/audio-translations
 
-POST /audio/translations
+openapi.yaml POST /audio/translations
 Translates audio into English
 
 
@@ -45103,7 +44978,7 @@ Translates audio into English
 # Cancel a batch job
 Source: https://docs.together.ai/reference/batch-cancel
 
-POST /batches/{id}/cancel
+openapi.yaml POST /batches/{id}/cancel
 Cancel a batch job by ID
 
 
@@ -45111,7 +44986,7 @@ Cancel a batch job by ID
 # Create a batch job
 Source: https://docs.together.ai/reference/batch-create
 
-POST /batches
+openapi.yaml POST /batches
 Create a new batch job with the given input file and endpoint
 
 
@@ -45119,7 +44994,7 @@ Create a new batch job with the given input file and endpoint
 # Get a batch job
 Source: https://docs.together.ai/reference/batch-get
 
-GET /batches/{id}
+openapi.yaml GET /batches/{id}
 Get details of a batch job by ID
 
 
@@ -45127,7 +45002,7 @@ Get details of a batch job by ID
 # List batch jobs
 Source: https://docs.together.ai/reference/batch-list
 
-GET /batches
+openapi.yaml GET /batches
 List all batch jobs for the authenticated user
 
 
@@ -45135,7 +45010,7 @@ List all batch jobs for the authenticated user
 # Create chat completion
 Source: https://docs.together.ai/reference/chat-completions
 
-POST /chat/completions
+openapi.yaml POST /chat/completions
 Generate a model response for a given chat conversation. Supports single queries and multi-turn conversations with system, user, and assistant messages.
 
 
@@ -45143,7 +45018,7 @@ Generate a model response for a given chat conversation. Supports single queries
 # Create completion
 Source: https://docs.together.ai/reference/completions
 
-POST /completions
+openapi.yaml POST /completions
 Generate text completions for a given prompt using a language, code, or image model.
 
 
@@ -45151,7 +45026,7 @@ Generate text completions for a given prompt using a language, code, or image mo
 # Create video
 Source: https://docs.together.ai/reference/create-videos
 
-POST /videos
+openapi.yaml POST /videos
 Create a video
 
 
@@ -45159,7 +45034,7 @@ Create a video
 # Create embedding
 Source: https://docs.together.ai/reference/embeddings
 
-POST /embeddings
+openapi.yaml POST /embeddings
 Generate vector embeddings for one or more text inputs. Returns numerical arrays representing semantic meaning, useful for search, classification, and retrieval.
 
 
@@ -45167,7 +45042,7 @@ Generate vector embeddings for one or more text inputs. Returns numerical arrays
 # Fetch video metadata
 Source: https://docs.together.ai/reference/get-videos-id
 
-GET /videos/{id}
+openapi.yaml GET /videos/{id}
 Fetch video metadata
 
 
@@ -45175,15 +45050,23 @@ Fetch video metadata
 # Create job
 Source: https://docs.together.ai/reference/post-fine-tunes
 
-POST /fine-tunes
+openapi.yaml POST /fine-tunes
 Create a fine-tuning job with the provided model and training data.
+
+
+
+# Estimate price
+Source: https://docs.together.ai/reference/post-fine-tunes-estimate-price
+
+openapi.yaml POST /fine-tunes/estimate-price
+Estimate the price of a fine-tuning job.
 
 
 
 # Create image
 Source: https://docs.together.ai/reference/post-images-generations
 
-POST /images/generations
+openapi.yaml POST /images/generations
 Use an image model to generate an image for a given prompt.
 
 
@@ -45191,7 +45074,7 @@ Use an image model to generate an image for a given prompt.
 # Create a rerank request
 Source: https://docs.together.ai/reference/rerank
 
-POST /rerank
+openapi.yaml POST /rerank
 Rerank a list of documents by relevance to a query. Returns a relevance score and ordering index for each document.
 
 
@@ -45199,7 +45082,7 @@ Rerank a list of documents by relevance to a query. Returns a relevance score an
 # Execute code
 Source: https://docs.together.ai/reference/tci-execute
 
-POST /tci/execute
+openapi.yaml POST /tci/execute
 Executes the given code snippet and returns the output. Without a session_id, a new session is created to run the code. If you pass a valid session_id, the code runs in that session. This is useful for running multiple code snippets in the same environment, because dependencies and similar things are persisted
 between calls to the same session.
 
@@ -45209,7 +45092,7 @@ between calls to the same session.
 # List active sessions
 Source: https://docs.together.ai/reference/tci-sessions
 
-GET /tci/sessions
+openapi.yaml GET /tci/sessions
 Lists all your currently active sessions.
 
 
@@ -45218,7 +45101,7 @@ Lists all your currently active sessions.
 # Create a GPU cluster
 Source: https://docs.together.ai/reference/clusters-create
 
-POST /compute/clusters
+openapi.yaml POST /compute/clusters
 Create an Instant Cluster on Together's high-performance GPU clusters.
 With features like on-demand scaling, long-lived resizable high-bandwidth shared DC-local storage,
 Kubernetes and Slurm cluster flavors, a REST API, and Terraform support,
@@ -45230,7 +45113,7 @@ you can run workloads flexibly without complex infrastructure management.
 # Delete GPU cluster by cluster ID
 Source: https://docs.together.ai/reference/clusters-delete
 
-DELETE /compute/clusters/{cluster_id}
+openapi.yaml DELETE /compute/clusters/{cluster_id}
 Delete a GPU cluster by cluster ID.
 
 
@@ -45238,7 +45121,7 @@ Delete a GPU cluster by cluster ID.
 # Get GPU cluster by cluster ID
 Source: https://docs.together.ai/reference/clusters-get
 
-GET /compute/clusters/{cluster_id}
+openapi.yaml GET /compute/clusters/{cluster_id}
 Retrieve information about a specific GPU cluster.
 
 
@@ -45246,7 +45129,7 @@ Retrieve information about a specific GPU cluster.
 # List all GPU clusters
 Source: https://docs.together.ai/reference/clusters-list
 
-GET /compute/clusters
+openapi.yaml GET /compute/clusters
 List all GPU clusters.
 
 
@@ -45254,14 +45137,14 @@ List all GPU clusters.
 # List regions and corresponding supported driver versions
 Source: https://docs.together.ai/reference/clusters-list-regions
 
-GET /compute/regions
+openapi.yaml GET /compute/regions
 
 
 
 # Update a GPU cluster
 Source: https://docs.together.ai/reference/clusters-update
 
-PUT /compute/clusters/{cluster_id}
+openapi.yaml PUT /compute/clusters/{cluster_id}
 Update the configuration of an existing GPU cluster.
 
 
@@ -45269,7 +45152,7 @@ Update the configuration of an existing GPU cluster.
 # Create a shared volume
 Source: https://docs.together.ai/reference/clusters_storages-create
 
-POST /compute/clusters/storage/volumes
+openapi.yaml POST /compute/clusters/storage/volumes
 Instant Clusters supports long-lived, resizable in-DC shared storage with user data persistence.
 You can dynamically create and attach volumes to your cluster at cluster creation time, and resize as your data grows.
 All shared storage is backed by multi-NIC bare metal paths, ensuring high-throughput and low-latency performance for shared storage.
@@ -45280,7 +45163,7 @@ All shared storage is backed by multi-NIC bare metal paths, ensuring high-throug
 # Delete a shared volume by ID
 Source: https://docs.together.ai/reference/clusters_storages-delete
 
-DELETE /compute/clusters/storage/volumes/{volume_id}
+openapi.yaml DELETE /compute/clusters/storage/volumes/{volume_id}
 Delete a shared volume. Note that if this volume is attached to a cluster, deleting will fail.
 
 
@@ -45289,7 +45172,7 @@ Delete a shared volume. Note that if this volume is attached to a cluster, delet
 # Get a shared volume by ID
 Source: https://docs.together.ai/reference/clusters_storages-get
 
-GET /compute/clusters/storage/volumes/{volume_id}
+openapi.yaml GET /compute/clusters/storage/volumes/{volume_id}
 Retrieve information about a specific shared volume.
 
 
@@ -45297,7 +45180,7 @@ Retrieve information about a specific shared volume.
 # List all shared volumes
 Source: https://docs.together.ai/reference/clusters_storages-list
 
-GET /compute/clusters/storage/volumes
+openapi.yaml GET /compute/clusters/storage/volumes
 List all shared volumes.
 
 
@@ -45305,7 +45188,7 @@ List all shared volumes.
 # Update a shared volume
 Source: https://docs.together.ai/reference/clusters_storages-update
 
-PUT /compute/clusters/storage/volumes
+openapi.yaml PUT /compute/clusters/storage/volumes
 Update the configuration of an existing shared volume.
 
 
@@ -45314,14 +45197,14 @@ Update the configuration of an existing shared volume.
 # Create an evaluation job
 Source: https://docs.together.ai/reference/create-evaluation
 
-POST /evaluation
+openapi.yaml POST /evaluation
 
 
 
 # Delete a file
 Source: https://docs.together.ai/reference/delete-files-id
 
-DELETE /files/{id}
+openapi.yaml DELETE /files/{id}
 Delete a previously uploaded data file.
 
 
@@ -45329,7 +45212,7 @@ Delete a previously uploaded data file.
 # Delete a fine-tune job
 Source: https://docs.together.ai/reference/delete-fine-tunes-id
 
-DELETE /fine-tunes/{id}
+openapi.yaml DELETE /fine-tunes/{id}
 Delete a fine-tuning job.
 
 
@@ -45337,7 +45220,7 @@ Delete a fine-tuning job.
 # Create a new deployment
 Source: https://docs.together.ai/reference/deployments-create
 
-POST /deployments
+openapi.yaml POST /deployments
 Create a new deployment with specified configuration
 
 
@@ -45345,7 +45228,7 @@ Create a new deployment with specified configuration
 # Delete a deployment
 Source: https://docs.together.ai/reference/deployments-delete
 
-DELETE /deployments/{id}
+openapi.yaml DELETE /deployments/{id}
 Delete an existing deployment
 
 
@@ -45353,7 +45236,7 @@ Delete an existing deployment
 # Get a deployment by ID or name
 Source: https://docs.together.ai/reference/deployments-get
 
-GET /deployments/{id}
+openapi.yaml GET /deployments/{id}
 Retrieve details of a specific deployment by its ID or name
 
 
@@ -45361,7 +45244,7 @@ Retrieve details of a specific deployment by its ID or name
 # Get the list of deployments
 Source: https://docs.together.ai/reference/deployments-list
 
-GET /deployments
+openapi.yaml GET /deployments
 Get a list of all deployments in your project
 
 
@@ -45369,7 +45252,7 @@ Get a list of all deployments in your project
 # Get logs for a deployment
 Source: https://docs.together.ai/reference/deployments-logs
 
-GET /deployments/{id}/logs
+openapi.yaml GET /deployments/{id}/logs
 Retrieve logs from a deployment, optionally filtered by replica ID.
 
 
@@ -45377,7 +45260,7 @@ Retrieve logs from a deployment, optionally filtered by replica ID.
 # Create a new secret
 Source: https://docs.together.ai/reference/deployments-secrets-create
 
-POST /deployments/secrets
+openapi.yaml POST /deployments/secrets
 Create a new secret to store sensitive configuration values
 
 
@@ -45385,7 +45268,7 @@ Create a new secret to store sensitive configuration values
 # Delete a secret
 Source: https://docs.together.ai/reference/deployments-secrets-delete
 
-DELETE /deployments/secrets/{id}
+openapi.yaml DELETE /deployments/secrets/{id}
 Delete an existing secret
 
 
@@ -45393,7 +45276,7 @@ Delete an existing secret
 # Get a secret by ID or name
 Source: https://docs.together.ai/reference/deployments-secrets-get
 
-GET /deployments/secrets/{id}
+openapi.yaml GET /deployments/secrets/{id}
 Retrieve details of a specific secret by its ID or name
 
 
@@ -45401,7 +45284,7 @@ Retrieve details of a specific secret by its ID or name
 # Get the list of project secrets
 Source: https://docs.together.ai/reference/deployments-secrets-list
 
-GET /deployments/secrets
+openapi.yaml GET /deployments/secrets
 Retrieve all secrets in your project
 
 
@@ -45409,7 +45292,7 @@ Retrieve all secrets in your project
 # Update a secret
 Source: https://docs.together.ai/reference/deployments-secrets-update
 
-PATCH /deployments/secrets/{id}
+openapi.yaml PATCH /deployments/secrets/{id}
 Update an existing secret's value or metadata
 
 
@@ -45417,7 +45300,7 @@ Update an existing secret's value or metadata
 # Download a file
 Source: https://docs.together.ai/reference/deployments-storage-get
 
-GET /deployments/storage/{filename}
+openapi.yaml GET /deployments/storage/{filename}
 Download a file by redirecting to a signed URL
 
 
@@ -45425,7 +45308,7 @@ Download a file by redirecting to a signed URL
 # Create a new volume
 Source: https://docs.together.ai/reference/deployments-storage-volumes-create
 
-POST /deployments/storage/volumes
+openapi.yaml POST /deployments/storage/volumes
 Create a new volume to preload files in deployments
 
 
@@ -45433,7 +45316,7 @@ Create a new volume to preload files in deployments
 # Delete a volume
 Source: https://docs.together.ai/reference/deployments-storage-volumes-delete
 
-DELETE /deployments/storage/volumes/{id}
+openapi.yaml DELETE /deployments/storage/volumes/{id}
 Delete an existing volume
 
 
@@ -45441,7 +45324,7 @@ Delete an existing volume
 # Get a volume by ID or name
 Source: https://docs.together.ai/reference/deployments-storage-volumes-get
 
-GET /deployments/storage/volumes/{id}
+openapi.yaml GET /deployments/storage/volumes/{id}
 Retrieve details of a specific volume by its ID or name
 
 
@@ -45449,7 +45332,7 @@ Retrieve details of a specific volume by its ID or name
 # Get the list of project volumes
 Source: https://docs.together.ai/reference/deployments-storage-volumes-list
 
-GET /deployments/storage/volumes
+openapi.yaml GET /deployments/storage/volumes
 Retrieve all volumes in your project
 
 
@@ -45457,7 +45340,7 @@ Retrieve all volumes in your project
 # Update a volume
 Source: https://docs.together.ai/reference/deployments-storage-volumes-update
 
-PATCH /deployments/storage/volumes/{id}
+openapi.yaml PATCH /deployments/storage/volumes/{id}
 Update an existing volume's configuration or contents
 
 
@@ -45465,7 +45348,7 @@ Update an existing volume's configuration or contents
 # Update a deployment
 Source: https://docs.together.ai/reference/deployments-update
 
-PATCH /deployments/{id}
+openapi.yaml PATCH /deployments/{id}
 Update an existing deployment configuration
 
 
@@ -45473,7 +45356,7 @@ Update an existing deployment configuration
 # Create an A/B experiment
 Source: https://docs.together.ai/reference/dmi/ab-experiments-create
 
-POST /projects/{projectId}/endpoints/{endpointId}/abExperiments
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/abExperiments
 Creates a managed control/variant split across two to 20 deployments under the same endpoint. Exactly one member is the control, member percentages must add up to 100, and the split applies only to traffic that the endpoint would otherwise send to the control.
 
 
@@ -45481,7 +45364,7 @@ Creates a managed control/variant split across two to 20 deployments under the s
 # Delete an A/B experiment
 Source: https://docs.together.ai/reference/dmi/ab-experiments-delete
 
-DELETE /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Deletes an A/B experiment and removes its managed traffic split. The deployments themselves are not deleted.
 
 
@@ -45489,7 +45372,7 @@ Deletes an A/B experiment and removes its managed traffic split. The deployments
 # Get an A/B experiment
 Source: https://docs.together.ai/reference/dmi/ab-experiments-get
 
-GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Retrieves an A/B experiment and its participating deployments, roles, and traffic percentages.
 
 
@@ -45497,7 +45380,7 @@ Retrieves an A/B experiment and its participating deployments, roles, and traffi
 # List A/B experiments
 Source: https://docs.together.ai/reference/dmi/ab-experiments-list
 
-GET /projects/{projectId}/endpoints/{endpointId}/abExperiments
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/abExperiments
 Lists the managed live-traffic experiments configured for an endpoint.
 
 
@@ -45505,7 +45388,7 @@ Lists the managed live-traffic experiments configured for an endpoint.
 # Update an A/B experiment
 Source: https://docs.together.ai/reference/dmi/ab-experiments-update
 
-PATCH /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/abExperiments/{id}
 Updates an experiment's description or member traffic percentages. Use the experiment etag for optimistic concurrency.
 
 
@@ -45513,7 +45396,7 @@ Updates an experiment's description or member traffic percentages. Use the exper
 # Add a deployment adapter
 Source: https://docs.together.ai/reference/dmi/adapters-add
 
-POST /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters
 Attaches a LoRA adapter to a deployment. If the deployment is at adapter capacity, force can evict the oldest adapter.
 
 
@@ -45521,7 +45404,7 @@ Attaches a LoRA adapter to a deployment. If the deployment is at adapter capacit
 # Get a deployment adapter
 Source: https://docs.together.ai/reference/dmi/adapters-get
 
-GET /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters/{id}
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters/{id}
 Gets an attached adapter and its per-cluster load state.
 
 
@@ -45529,7 +45412,7 @@ Gets an attached adapter and its per-cluster load state.
 # List deployment adapters
 Source: https://docs.together.ai/reference/dmi/adapters-list
 
-GET /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters
 Lists LoRA adapters attached to a deployment with per-cluster load state.
 
 
@@ -45537,7 +45420,7 @@ Lists LoRA adapters attached to a deployment with per-cluster load state.
 # Remove a deployment adapter
 Source: https://docs.together.ai/reference/dmi/adapters-remove
 
-DELETE /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters/{id}
+openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters/{id}
 Detaches an adapter from a deployment using its row-level etag for optimistic concurrency.
 
 
@@ -45545,7 +45428,7 @@ Detaches an adapter from a deployment using its row-level etag for optimistic co
 # Update a deployment adapter
 Source: https://docs.together.ai/reference/dmi/adapters-update
 
-PATCH /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters/{id}
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/deployments/{deploymentId}/adapters/{id}
 Updates the pinned revision of an attached adapter using its row-level etag for optimistic concurrency.
 
 
@@ -45553,7 +45436,7 @@ Updates the pinned revision of an attached adapter using its row-level etag for 
 # Create a deployment
 Source: https://docs.together.ai/reference/dmi/deployments-create
 
-POST /projects/{projectId}/endpoints/{endpointId}/deployments
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/deployments
 Creates a model deployment under an endpoint. The deployment provisions asynchronously; monitor its status before routing live traffic to it.
 
 
@@ -45561,7 +45444,7 @@ Creates a model deployment under an endpoint. The deployment provisions asynchro
 # Delete a deployment
 Source: https://docs.together.ai/reference/dmi/deployments-delete
 
-DELETE /projects/{projectId}/endpoints/{endpointId}/deployments/{id}
+openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/deployments/{id}
 Permanently deletes a deployment from its endpoint. Remove the deployment from live traffic first; use `etag` to reject the request if it changed after it was read.
 
 
@@ -45569,7 +45452,7 @@ Permanently deletes a deployment from its endpoint. Remove the deployment from l
 # Get a deployment
 Source: https://docs.together.ai/reference/dmi/deployments-get
 
-GET /projects/{projectId}/endpoints/{endpointId}/deployments/{id}
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/deployments/{id}
 Retrieves a deployment's desired configuration, placement, runtime information, and current provisioning status.
 
 
@@ -45577,7 +45460,7 @@ Retrieves a deployment's desired configuration, placement, runtime information, 
 # List deployments
 Source: https://docs.together.ai/reference/dmi/deployments-list
 
-GET /projects/{projectId}/endpoints/{endpointId}/deployments
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/deployments
 Lists the deployments attached to an endpoint, including their model, configuration, scaling settings, placement, and current status.
 
 
@@ -45585,7 +45468,7 @@ Lists the deployments attached to an endpoint, including their model, configurat
 # Update a deployment
 Source: https://docs.together.ai/reference/dmi/deployments-update
 
-PATCH /projects/{projectId}/endpoints/{endpointId}/deployments/{id}
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/deployments/{id}
 Updates mutable deployment fields such as its model, configuration, autoscaling bounds, or LoRA support. Changes that affect serving may trigger asynchronous reprovisioning.
 
 
@@ -45593,7 +45476,7 @@ Updates mutable deployment fields such as its model, configuration, autoscaling 
 # Get endpoint analytics
 Source: https://docs.together.ai/reference/dmi/endpoints-analytics
 
-GET /projects/{projectId}/endpoints/{id}/analytics
+openapi.yaml GET /projects/{projectId}/endpoints/{id}/analytics
 Returns aggregated request, token, latency, throughput, error, and resource-utilization metrics for an endpoint over a time range. Optionally includes time-series buckets and a per-deployment breakdown.
 
 
@@ -45601,7 +45484,7 @@ Returns aggregated request, token, latency, throughput, error, and resource-util
 # Create an endpoint
 Source: https://docs.together.ai/reference/dmi/endpoints-create
 
-POST /projects/{projectId}/endpoints
+openapi.yaml POST /projects/{projectId}/endpoints
 Creates a stable, inference-addressable endpoint. Add one or more deployments and configure its traffic split before sending inference requests to the endpoint name.
 
 
@@ -45609,7 +45492,7 @@ Creates a stable, inference-addressable endpoint. Add one or more deployments an
 # Delete an endpoint
 Source: https://docs.together.ai/reference/dmi/endpoints-delete
 
-DELETE /projects/{projectId}/endpoints/{id}
+openapi.yaml DELETE /projects/{projectId}/endpoints/{id}
 Permanently deletes an endpoint. Delete its deployments first; use `etag` to reject the request if the endpoint changed after it was read.
 
 
@@ -45617,7 +45500,7 @@ Permanently deletes an endpoint. Delete its deployments first; use `etag` to rej
 # Get an endpoint
 Source: https://docs.together.ai/reference/dmi/endpoints-get
 
-GET /projects/{projectId}/endpoints/{id}
+openapi.yaml GET /projects/{projectId}/endpoints/{id}
 Retrieves an endpoint and lightweight summaries of the deployments attached to it.
 
 
@@ -45625,7 +45508,7 @@ Retrieves an endpoint and lightweight summaries of the deployments attached to i
 # List endpoints
 Source: https://docs.together.ai/reference/dmi/endpoints-list
 
-GET /projects/{projectId}/endpoints
+openapi.yaml GET /projects/{projectId}/endpoints
 Lists the dedicated inference endpoints owned by the specified project.
 
 
@@ -45633,7 +45516,7 @@ Lists the dedicated inference endpoints owned by the specified project.
 # List endpoint events
 Source: https://docs.together.ai/reference/dmi/endpoints-list-events
 
-GET /projects/{projectId}/endpoints/{id}/events
+openapi.yaml GET /projects/{projectId}/endpoints/{id}/events
 Lists an endpoint's audit and lifecycle events newest first. The feed combines endpoint changes with provisioning, scaling, readiness, rollout, and other events from deployments under the endpoint.
 
 
@@ -45641,7 +45524,7 @@ Lists an endpoint's audit and lifecycle events newest first. The feed combines e
 # List organization endpoints
 Source: https://docs.together.ai/reference/dmi/endpoints-list-organization
 
-GET /organizations/{organizationId}/endpoints
+openapi.yaml GET /organizations/{organizationId}/endpoints
 Lists endpoints shared with every project in the specified organization. Project-private and public endpoints are not included.
 
 
@@ -45649,7 +45532,7 @@ Lists endpoints shared with every project in the specified organization. Project
 # Update an endpoint
 Source: https://docs.together.ai/reference/dmi/endpoints-update
 
-PATCH /projects/{projectId}/endpoints/{id}
+openapi.yaml PATCH /projects/{projectId}/endpoints/{id}
 Updates mutable endpoint fields such as its endpoint string, visibility, or deployment traffic split. Use `updateMask` to select fields explicitly and `etag` in the request body for optimistic concurrency.
 
 
@@ -45657,7 +45540,7 @@ Updates mutable endpoint fields such as its endpoint string, visibility, or depl
 # Get an inference instance type
 Source: https://docs.together.ai/reference/dmi/instance-types-get
 
-GET /public/inference-instance-types/{id}
+openapi.yaml GET /public/inference-instance-types/{id}
 Retrieves the GPU resources, pricing, regional availability, and best-effort capacity headroom for one inference instance type.
 
 
@@ -45665,15 +45548,23 @@ Retrieves the GPU resources, pricing, regional availability, and best-effort cap
 # List inference instance types
 Source: https://docs.together.ai/reference/dmi/instance-types-list
 
-GET /public/inference-instance-types
+openapi.yaml GET /public/inference-instance-types
 Lists hardware instance types currently available to inference deployments, including GPU resources, pricing, regions, and best-effort capacity headroom.
+
+
+
+# Create a model
+Source: https://docs.together.ai/reference/dmi/models-create
+
+openapi.yaml POST /projects/{projectId}/models
+Registers a custom model resource in the project. Registration creates the model's metadata; upload or import model files separately before deploying it.
 
 
 
 # List project models
 Source: https://docs.together.ai/reference/dmi/models-list
 
-GET /projects/{projectId}/models
+openapi.yaml GET /projects/{projectId}/models
 Lists custom model resources owned by the specified project. Use the organization endpoint to list models shared across projects or the supported-model catalog to discover Together-hosted base models.
 
 
@@ -45681,7 +45572,7 @@ Lists custom model resources owned by the specified project. Use the organizatio
 # Get a placement profile
 Source: https://docs.together.ai/reference/dmi/placement-profiles-get
 
-GET /projects/{projectId}/placement-profiles/{id}
+openapi.yaml GET /projects/{projectId}/placement-profiles/{id}
 Retrieves a reusable placement profile and its ordered region preferences.
 
 
@@ -45689,7 +45580,7 @@ Retrieves a reusable placement profile and its ordered region preferences.
 # List placement profiles
 Source: https://docs.together.ai/reference/dmi/placement-profiles-list
 
-GET /projects/{projectId}/placement-profiles
+openapi.yaml GET /projects/{projectId}/placement-profiles
 Lists reusable, project-visible placement policies that control the regions where deployments may be scheduled.
 
 
@@ -45697,7 +45588,7 @@ Lists reusable, project-visible placement policies that control the regions wher
 # Create a shadow experiment target
 Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-create
 
-POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
 Adds a deployment under the same endpoint as a target for mirrored requests.
 
 
@@ -45705,7 +45596,7 @@ Adds a deployment under the same endpoint as a target for mirrored requests.
 # Delete a shadow experiment target
 Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-delete
 
-DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
+openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
 Removes a target from a shadow experiment without deleting the underlying deployment.
 
 
@@ -45713,7 +45604,7 @@ Removes a target from a shadow experiment without deleting the underlying deploy
 # Get a shadow experiment target
 Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-get
 
-GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
 Retrieves one target configured to receive mirrored requests from a shadow experiment.
 
 
@@ -45721,7 +45612,7 @@ Retrieves one target configured to receive mirrored requests from a shadow exper
 # List shadow experiment targets
 Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-list
 
-GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
 Lists the deployments that receive mirrored requests from a shadow experiment.
 
 
@@ -45729,7 +45620,7 @@ Lists the deployments that receive mirrored requests from a shadow experiment.
 # Update a shadow experiment target
 Source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-update
 
-PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets/{id}
 Updates a shadow target's name, deployment, or description. `updateMask` is required and must select at least one mutable field.
 
 
@@ -45737,7 +45628,7 @@ Updates a shadow target's name, deployment, or description. `updateMask` is requ
 # Create a shadow experiment
 Source: https://docs.together.ai/reference/dmi/shadow-experiments-create
 
-POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
+openapi.yaml POST /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
 Creates an experiment that mirrors a sampled portion of endpoint traffic to one or more target deployments without returning their responses to clients. Add a description with the update operation after creation.
 
 
@@ -45745,7 +45636,7 @@ Creates an experiment that mirrors a sampled portion of endpoint traffic to one 
 # Delete a shadow experiment
 Source: https://docs.together.ai/reference/dmi/shadow-experiments-delete
 
-DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
+openapi.yaml DELETE /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
 Deletes a shadow experiment and its target records. The underlying deployments are not deleted.
 
 
@@ -45753,7 +45644,7 @@ Deletes a shadow experiment and its target records. The underlying deployments a
 # Get a shadow experiment
 Source: https://docs.together.ai/reference/dmi/shadow-experiments-get
 
-GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
 Retrieves a shadow experiment, including its sampling strategy and target deployments.
 
 
@@ -45761,7 +45652,7 @@ Retrieves a shadow experiment, including its sampling strategy and target deploy
 # List shadow experiments
 Source: https://docs.together.ai/reference/dmi/shadow-experiments-list
 
-GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments
 Lists experiments that mirror sampled endpoint traffic to target deployments without affecting client responses. Set `includeTargets=true` to include target details inline.
 
 
@@ -45769,7 +45660,7 @@ Lists experiments that mirror sampled endpoint traffic to target deployments wit
 # Update a shadow experiment
 Source: https://docs.together.ai/reference/dmi/shadow-experiments-update
 
-PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
+openapi.yaml PATCH /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{id}
 Updates a shadow experiment's description or source sampling strategy. `updateMask` is required; source changes also require the current `etag` in the request body.
 
 
@@ -45777,7 +45668,7 @@ Updates a shadow experiment's description or source sampling strategy. `updateMa
 # Get a supported model
 Source: https://docs.together.ai/reference/dmi/supported-models-get
 
-GET /supported-models/{id}
+openapi.yaml GET /supported-models/{id}
 Retrieves a Together-hosted base model and the certified model, configuration, hardware, and performance profiles available for deployment.
 
 
@@ -45785,7 +45676,7 @@ Retrieves a Together-hosted base model and the certified model, configuration, h
 # List supported models
 Source: https://docs.together.ai/reference/dmi/supported-models-list
 
-GET /supported-models
+openapi.yaml GET /supported-models
 Lists Together-hosted base models that can be deployed for dedicated inference, together with their capabilities and certified deployment profiles.
 
 
@@ -45793,21 +45684,21 @@ Lists Together-hosted base models that can be deployed for dedicated inference, 
 # Get evaluation job details
 Source: https://docs.together.ai/reference/get-evaluation
 
-GET /evaluation/{id}
+openapi.yaml GET /evaluation/{id}
 
 
 
 # Get evaluation job status and results
 Source: https://docs.together.ai/reference/get-evaluation-status
 
-GET /evaluation/{id}/status
+openapi.yaml GET /evaluation/{id}/status
 
 
 
 # List all files
 Source: https://docs.together.ai/reference/get-files
 
-GET /files
+openapi.yaml GET /files
 List the metadata for all uploaded data files.
 
 
@@ -45815,7 +45706,7 @@ List the metadata for all uploaded data files.
 # Retrieve file metadata
 Source: https://docs.together.ai/reference/get-files-id
 
-GET /files/{id}
+openapi.yaml GET /files/{id}
 Retrieve the metadata for a single uploaded data file.
 
 
@@ -45823,7 +45714,7 @@ Retrieve the metadata for a single uploaded data file.
 # Get file contents
 Source: https://docs.together.ai/reference/get-files-id-content
 
-GET /files/{id}/content
+openapi.yaml GET /files/{id}/content
 Get the contents of a single uploaded data file.
 
 
@@ -45831,7 +45722,7 @@ Get the contents of a single uploaded data file.
 # List all jobs
 Source: https://docs.together.ai/reference/get-fine-tunes
 
-GET /fine-tunes
+openapi.yaml GET /fine-tunes
 List the metadata for all fine-tuning jobs. Returns a list of FinetuneResponseTruncated objects.
 
 
@@ -45839,7 +45730,7 @@ List the metadata for all fine-tuning jobs. Returns a list of FinetuneResponseTr
 # List job
 Source: https://docs.together.ai/reference/get-fine-tunes-id
 
-GET /fine-tunes/{id}
+openapi.yaml GET /fine-tunes/{id}
 List the metadata for a single fine-tuning job.
 
 
@@ -45847,7 +45738,7 @@ List the metadata for a single fine-tuning job.
 # List checkpoints
 Source: https://docs.together.ai/reference/get-fine-tunes-id-checkpoint
 
-GET /fine-tunes/{id}/checkpoints
+openapi.yaml GET /fine-tunes/{id}/checkpoints
 List the checkpoints for a single fine-tuning job.
 
 
@@ -45855,7 +45746,7 @@ List the checkpoints for a single fine-tuning job.
 # List job events
 Source: https://docs.together.ai/reference/get-fine-tunes-id-events
 
-GET /fine-tunes/{id}/events
+openapi.yaml GET /fine-tunes/{id}/events
 List the events for a single fine-tuning job.
 
 
@@ -45863,7 +45754,7 @@ List the events for a single fine-tuning job.
 # Get metrics
 Source: https://docs.together.ai/reference/get-fine-tunes-id-metrics
 
-GET /fine-tunes/{id}/metrics
+openapi.yaml GET /fine-tunes/{id}/metrics
 Retrieves recorded training metrics for a fine-tuning job in chronological order. All query parameters are optional: omit them to retrieve all metrics.
 
 
@@ -45872,7 +45763,7 @@ Retrieves recorded training metrics for a fine-tuning job in chronological order
 # Get model limits
 Source: https://docs.together.ai/reference/get-fine-tunes-models-limits
 
-GET /fine-tunes/models/limits
+openapi.yaml GET /fine-tunes/models/limits
 Get model limits for a specific fine-tuning model.
 
 
@@ -45880,7 +45771,7 @@ Get model limits for a specific fine-tuning model.
 # Download model
 Source: https://docs.together.ai/reference/get-finetune-download
 
-GET /finetune/download
+openapi.yaml GET /finetune/download
 Receive a compressed fine-tuned model or checkpoint.
 
 
@@ -45888,29 +45779,21 @@ Receive a compressed fine-tuned model or checkpoint.
 # Get model list
 Source: https://docs.together.ai/reference/list-evaluation-models
 
-GET /evaluation/model-list
+openapi.yaml GET /evaluation/model-list
 
 
 
 # Get all evaluation jobs
 Source: https://docs.together.ai/reference/list-evaluations
 
-GET /evaluation
-
-
-
-# Estimate price
-Source: https://docs.together.ai/reference/post-fine-tunes-estimate-price
-
-POST /fine-tunes/estimate-price
-Estimate the price of a fine-tuning job.
+openapi.yaml GET /evaluation
 
 
 
 # Cancel job
 Source: https://docs.together.ai/reference/post-fine-tunes-id-cancel
 
-POST /fine-tunes/{id}/cancel
+openapi.yaml POST /fine-tunes/{id}/cancel
 Cancel a currently running fine-tuning job. Returns a FinetuneResponseTruncated object.
 
 
@@ -45918,7 +45801,7 @@ Cancel a currently running fine-tuning job. Returns a FinetuneResponseTruncated 
 # Cancel a queued job
 Source: https://docs.together.ai/reference/queue-cancel
 
-POST /queue/cancel
+openapi.yaml POST /queue/cancel
 Cancel a pending job. Only jobs in pending status can be canceled.
 Running jobs cannot be stopped. Returns the job status after the
 attempt. If the job is not pending, returns 409 with the current status
@@ -45930,7 +45813,7 @@ unchanged.
 # Clear a model's pending jobs
 Source: https://docs.together.ai/reference/queue-clear
 
-POST /queue/clear
+openapi.yaml POST /queue/clear
 Cancel all pending jobs for the given model. Running jobs are left untouched. Returns the number of jobs that were canceled.
 
 
@@ -45938,7 +45821,7 @@ Cancel all pending jobs for the given model. Running jobs are left untouched. Re
 # Get queue metrics
 Source: https://docs.together.ai/reference/queue-metrics
 
-GET /queue/metrics
+openapi.yaml GET /queue/metrics
 Get the current queue statistics for a model, including pending and running job counts.
 
 
@@ -45946,7 +45829,7 @@ Get the current queue statistics for a model, including pending and running job 
 # Get job status
 Source: https://docs.together.ai/reference/queue-status
 
-GET /queue/status
+openapi.yaml GET /queue/status
 Poll the current status of a previously submitted job. Provide the request_id and model as query parameters.
 
 
@@ -45954,7 +45837,7 @@ Poll the current status of a previously submitted job. Provide the request_id an
 # Submit a queued job
 Source: https://docs.together.ai/reference/queue-submit
 
-POST /queue/submit
+openapi.yaml POST /queue/submit
 Submit a new job to the queue for asynchronous processing. Jobs are
 processed in strict priority order (higher priority first, FIFO within
 the same priority). Returns a request ID that can be used to poll status
@@ -45966,7 +45849,7 @@ or cancel the job.
 # Remediation approve
 Source: https://docs.together.ai/reference/remediation-approve
 
-POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/approve
+openapi.yaml POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/approve
 Approves a pending remediation.
 
 Only remediations with state PENDING_APPROVAL can be approved.
@@ -45981,7 +45864,7 @@ on the remediation after approval.
 # Remediation cancel
 Source: https://docs.together.ai/reference/remediation-cancel
 
-POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/cancel
+openapi.yaml POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/cancel
 Cancels a pending remediation.
 
 Only remediations in PENDING_APPROVAL or PENDING state can be cancelled.
@@ -45992,7 +45875,7 @@ Only remediations in PENDING_APPROVAL or PENDING state can be cancelled.
 # Remediation create
 Source: https://docs.together.ai/reference/remediation-create
 
-POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations
+openapi.yaml POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations
 Creates a new remediation for an instance.
 
 Remediations created via the API goes directly to PENDING state.
@@ -46006,7 +45889,7 @@ These operations can also be rejected by calling /reject.
 # Remediation get
 Source: https://docs.together.ai/reference/remediation-get
 
-GET /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}
+openapi.yaml GET /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}
 Retrieve the status of a specific remdiation on a specific instance in a specific cluster.
 
 
@@ -46014,14 +45897,14 @@ Retrieve the status of a specific remdiation on a specific instance in a specifi
 # Remediation list
 Source: https://docs.together.ai/reference/remediation-list
 
-GET /compute/clusters/{cluster_id}/instances/{optional_instance_id}/remediations
+openapi.yaml GET /compute/clusters/{cluster_id}/instances/{optional_instance_id}/remediations
 
 
 
 # Remediation reject
 Source: https://docs.together.ai/reference/remediation-reject
 
-POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/reject
+openapi.yaml POST /compute/clusters/{cluster_id}/instances/{instance_id}/remediations/{remediation_id}/reject
 Rejects a pending remediation.
 
 Only remediations with state PENDING_APPROVAL can be rejected.
@@ -46036,7 +45919,7 @@ on the remediation after rejection.
 # Upload a file
 Source: https://docs.together.ai/reference/upload-file
 
-POST /files/upload
+openapi.yaml POST /files/upload
 Upload a file with specified purpose, file name, and file type.
 
 
@@ -46044,7 +45927,7 @@ Upload a file with specified purpose, file name, and file type.
 # Get API key identity
 Source: https://docs.together.ai/reference/whoami
 
-GET /whoami
+openapi.yaml GET /whoami
 Returns identity information about the authenticated API key. Useful for confirming which project and organization a key is scoped to, and for obtaining the project slug used to compose the `model` value (`<project_slug>/<endpoint_slug>`) in dedicated endpoint inference calls.
 Requires a Bearer API key in the `Authorization` header. Cookie, session, and SLS JWT credentials are not accepted.
 
@@ -46055,6 +45938,22 @@ Requires a Bearer API key in the `Authorization` header. Cookie, session, and SL
 Source: https://docs.together.ai/docs/changelog
 
 
+
+<Update label="July 31, 2026">
+  ## Model upload progress in the console
+
+  While a remote model upload is pending or running, the [Models](https://api.together.ai/models) page shows an **Uploading** badge on the model under **My models** and floats it to the top of the list. Opening the model shows a live **Upload progress** event log until the job finishes.
+
+  See [Check upload status](/docs/dedicated-endpoints/custom-models#check-upload-status).
+</Update>
+
+<Update label="July 29, 2026">
+  ## Models page visibility filter
+
+  The [Models](https://api.together.ai/models) page now lists Internal-visibility models from every project in your organization under **My models**, not only from the selected project. A **Visibility** filter lets you show **Internal** models, **Private** models, or both.
+
+  See [Upload a fine-tuned model](/docs/dedicated-endpoints/custom-models#create-the-model).
+</Update>
 
 <Update label="July 29, 2026">
   ## Model deprecations
@@ -47466,7 +47365,7 @@ Source: https://docs.together.ai/docs/changelog
 
   You can now run evaluations:
 
-  * Using [Serverless LoRA](/docs/lora-inference#serverless-lora-inference) models, including supported LoRA fine-tuned models.
+  * Using [Serverless LoRA](/docs/fine-tuning/lora-vs-full) models, including supported LoRA fine-tuned models.
   * Using [dedicated model inference](/docs/dedicated-endpoints), including fine-tuned models deployed via dedicated endpoints.
 </Update>
 
@@ -50514,7 +50413,7 @@ The `project_slug` is the DNS-friendly project identifier used when constructing
 # Get a model configuration
 Source: https://docs.together.ai/reference/dmi/configs-get
 
-GET /projects/{projectId}/configs/{id}
+openapi.yaml GET /projects/{projectId}/configs/{id}
 Retrieves a model configuration revision by ID, including its runtime selectors and certifications.
 
 
@@ -50522,7 +50421,7 @@ Retrieves a model configuration revision by ID, including its runtime selectors 
 # List model configurations
 Source: https://docs.together.ai/reference/dmi/configs-list
 
-GET /projects/{projectId}/configs
+openapi.yaml GET /projects/{projectId}/configs
 Lists production-ready configuration revisions compatible with a reference model. Specify the model with `referenceModel` or the deprecated `referenceModelId`; if both are supplied, they must identify the same model. Results include public configurations and configurations owned by the specified project.
 
 
@@ -50530,7 +50429,7 @@ Lists production-ready configuration revisions compatible with a reference model
 # Create a remote model upload
 Source: https://docs.together.ai/reference/dmi/model-uploads-create
 
-POST /projects/{projectId}/models/uploads
+openapi.yaml POST /projects/{projectId}/models/uploads
 Starts an asynchronous job that imports model files from Hugging Face or a presigned URL into a registered model and creates a model revision when the import completes.
 
 
@@ -50538,7 +50437,7 @@ Starts an asynchronous job that imports model files from Hugging Face or a presi
 # Get a remote model upload
 Source: https://docs.together.ai/reference/dmi/model-uploads-get
 
-GET /projects/{projectId}/models/uploads/{id}
+openapi.yaml GET /projects/{projectId}/models/uploads/{id}
 Retrieves the status, progress details, retry counts, and timestamps for a remote model import job.
 
 
@@ -50546,7 +50445,7 @@ Retrieves the status, progress details, retry counts, and timestamps for a remot
 # List remote model uploads
 Source: https://docs.together.ai/reference/dmi/model-uploads-list
 
-GET /projects/{projectId}/models/uploads
+openapi.yaml GET /projects/{projectId}/models/uploads
 Lists asynchronous jobs that import model files from Hugging Face or a presigned remote URL.
 
 
@@ -50554,23 +50453,15 @@ Lists asynchronous jobs that import model files from Hugging Face or a presigned
 # List remote model upload events
 Source: https://docs.together.ai/reference/dmi/model-uploads-list-events
 
-GET /projects/{projectId}/models/uploads/{id}/events
+openapi.yaml GET /projects/{projectId}/models/uploads/{id}/events
 Lists progress and diagnostic events for a remote model import job.
-
-
-
-# Create a model
-Source: https://docs.together.ai/reference/dmi/models-create
-
-POST /projects/{projectId}/models
-Registers a custom model resource in the project. Registration creates the model's metadata; upload or import model files separately before deploying it.
 
 
 
 # Delete a model
 Source: https://docs.together.ai/reference/dmi/models-delete
 
-DELETE /projects/{projectId}/models/{id}
+openapi.yaml DELETE /projects/{projectId}/models/{id}
 Permanently deletes a custom model resource. The model must not be in use by an active deployment.
 
 
@@ -50578,7 +50469,7 @@ Permanently deletes a custom model resource. The model must not be in use by an 
 # Get a model
 Source: https://docs.together.ai/reference/dmi/models-get
 
-GET /projects/{projectId}/models/{id}
+openapi.yaml GET /projects/{projectId}/models/{id}
 Retrieves a custom model's metadata, visibility, weight information, and base-model relationship.
 
 
@@ -50586,7 +50477,7 @@ Retrieves a custom model's metadata, visibility, weight information, and base-mo
 # List model files
 Source: https://docs.together.ai/reference/dmi/models-list-files
 
-GET /projects/{projectId}/models/{id}/files
+openapi.yaml GET /projects/{projectId}/models/{id}/files
 Lists files in the latest or specified revision of a model, including paths, sizes, and content hashes.
 
 
@@ -50594,7 +50485,7 @@ Lists files in the latest or specified revision of a model, including paths, siz
 # List organization models
 Source: https://docs.together.ai/reference/dmi/models-list-organization
 
-GET /organizations/{organizationId}/models
+openapi.yaml GET /organizations/{organizationId}/models
 Lists custom models shared with every project in the specified organization. Project-private and public models are not included.
 
 
@@ -50602,7 +50493,7 @@ Lists custom models shared with every project in the specified organization. Pro
 # List model revisions
 Source: https://docs.together.ai/reference/dmi/models-list-revisions
 
-GET /projects/{projectId}/models/{id}/revisions
+openapi.yaml GET /projects/{projectId}/models/{id}/revisions
 Lists the immutable file revisions available for a custom model, newest first.
 
 
@@ -50610,7 +50501,7 @@ Lists the immutable file revisions available for a custom model, newest first.
 # Update a model
 Source: https://docs.together.ai/reference/dmi/models-update
 
-PATCH /projects/{projectId}/models/{id}
+openapi.yaml PATCH /projects/{projectId}/models/{id}
 Updates mutable model metadata such as its inference name, description, base model, or visibility.
 
 

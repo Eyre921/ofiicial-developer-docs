@@ -76,4 +76,4 @@ If you are using a Large Language Model (LLM) to generate input text for Aura-2,
 
 **Remember:** Natural text input produces natural speech output. The formatting choices you make directly impact how Aura-2 interprets and vocalizes your content.
 
-***
+---

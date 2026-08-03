@@ -90,6 +90,10 @@ Looking for the right open source model? Whether you're exploring by use case or
   For audio/video workloads, start with `Qwen3 Omni 30B A3B Instruct`. `NVIDIA Nemotron 3 Nano Omni 30B A3B` is a newer omni option, but its reasoning mode is currently limited to text+image inputs; use `enable_thinking: false` for video/audio requests.
 </Tip>
 
+<Tip>
+  Looking for a smaller MiniLM, BGE, or nomic style embedder? Those legacy models are not shown in the Model Library but still serve on serverless. See [embeddings and reranking](/guides/querying-embeddings-models) for the supported ids.
+</Tip>
+
 ***
 
 ## Migrating from Closed Models?

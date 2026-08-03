@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/dmi/shadow-experiment-targets-list
 path: reference/dmi/shadow-experiment-targets-list
 ---
 
-GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
+openapi.yaml GET /projects/{projectId}/endpoints/{endpointId}/shadowExperiments/{experimentId}/targets
 Lists the deployments that receive mirrored requests from a shadow experiment.

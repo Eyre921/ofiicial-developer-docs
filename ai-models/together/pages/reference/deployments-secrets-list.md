@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/deployments-secrets-list
 path: reference/deployments-secrets-list
 ---
 
-GET /deployments/secrets
+openapi.yaml GET /deployments/secrets
 Retrieve all secrets in your project

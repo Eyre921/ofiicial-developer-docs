@@ -85,6 +85,10 @@ The **[Sentry Cookbook](https://sentry.io/cookbook/)** has step-by-step recipes 
 
 Follow along with a sample app to set up error monitoring or distributed tracing end-to-end:
 
+* #### [Getting Started Tutorial](https://docs.sentry.io/product/sentry-basics/getting-started-tutorial.md)
+
+  Follow this step-by-step tutorial to set up Sentry error monitoring and distributed tracing for a sample fullstack JavaScript app. You'll learn how to trace errors from your frontend through to your backend, see readable stack traces, and pinpoint the commit that caused them.
+
 * #### [Performance Monitoring](https://docs.sentry.io/product/sentry-basics/performance-monitoring.md)
 
   Track application performance across your full stack with distributed tracing, automated issue detection, and pre-built dashboards.
@@ -95,9 +99,7 @@ Follow along with a sample app to set up error monitoring or distributed tracing
 
 ## Pages in this section
 
-- [Distributed Tracing Tutorial](https://docs.sentry.io/product/sentry-basics/distributed-tracing.md)
+- [Getting Started Tutorial](https://docs.sentry.io/product/sentry-basics/getting-started-tutorial.md)
 - [Performance Monitoring](https://docs.sentry.io/product/sentry-basics/performance-monitoring.md)
 - [User Feedback Basics](https://docs.sentry.io/product/sentry-basics/user-feedback-basics.md)
-- [Frontend Error Monitoring Tutorial](https://docs.sentry.io/product/sentry-basics/integrate-frontend.md)
-- [Backend Error Monitoring Tutorial](https://docs.sentry.io/product/sentry-basics/integrate-backend.md)
 

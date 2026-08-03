@@ -189,4 +189,4 @@ For example, say Fruit Company has customers Apple, Banana, and Pear. Fruit Comp
 
 At the end of the month, Fruit Company can rely on those tags to correctly bill Apple, Banana, and Pear for their respective usage.
 
-***
+---

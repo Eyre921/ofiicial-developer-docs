@@ -274,7 +274,7 @@ This guide walked you through installing the NVIDIA drivers to interact with our
 
 As a reminder, many of our guides assume use of Docker. If you are on Red Hat Enterprise Linux or have another reason to use Podman instead of Docker, keep in mind the commands and configuration may be slightly different.
 
-***
+---
 
 What’s Next
 

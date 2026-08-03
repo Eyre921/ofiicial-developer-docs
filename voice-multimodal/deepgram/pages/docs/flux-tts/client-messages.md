@@ -88,4 +88,4 @@ The server closes an idle session after **60 seconds** with no inbound client me
 * [Build a Flux TTS Voice Agent](/docs/flux-tts/voice-agent) — these messages in a full agent loop
 * [Getting Started](/docs/flux-tts/quickstart) — connect and send your first turn
 
-***
+---

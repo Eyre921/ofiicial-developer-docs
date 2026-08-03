@@ -24,6 +24,7 @@ Batch jobs run against a separate rate-limit pool from the standard real-time AP
 
 * Up to 50,000 requests per batch.
 * Up to 100 MB per input file.
+* Up to 10 MB per line in the input file. Inline base64 payloads, such as images embedded as `data:image/...;base64,` URLs, count toward this limit.
 * Up to 30B tokens enqueued per model at any time.
 * Completion window defaults to `24h` and cannot be changed; it is a best-effort target.
 
@@ -57,7 +58,6 @@ The following serverless models are not currently available for batch processing
 | `deepseek-ai/DeepSeek-R1`     |
 | `deepseek-ai/DeepSeek-V3.1`   |
 | `deepseek-ai/DeepSeek-V4-Pro` |
-| `MiniMaxAI/MiniMax-M2.7`      |
 | `moonshotai/Kimi-K2.5`        |
 | `moonshotai/Kimi-K2.6`        |
 

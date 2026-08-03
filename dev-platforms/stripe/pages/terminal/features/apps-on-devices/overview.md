@@ -98,6 +98,7 @@ During installation, the Stripe SmartPOS OS automatically grants [Android permis
 | [android.permission.BLUETOOTH_CONNECT](https://developer.android.com/reference/android/Manifest.permission#BLUETOOTH_CONNECT) |
 | [android.permission.BLUETOOTH_SCAN](https://developer.android.com/reference/android/Manifest.permission#BLUETOOTH_SCAN) |
 | [android.permission.CAMERA](https://developer.android.com/reference/android/Manifest.permission#CAMERA) |
+| [android.permission.CHANGE_WIFI_MULTICAST_STATE](https://developer.android.com/reference/android/Manifest.permission#CHANGE_WIFI_MULTICAST_STATE) |
 | [android.permission.FOREGROUND_SERVICE](https://developer.android.com/reference/android/Manifest.permission#FOREGROUND_SERVICE) |
 | [android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE](https://developer.android.com/reference/android/Manifest.permission#FOREGROUND_SERVICE_CONNECTED_DEVICE) |
 | [android.permission.FOREGROUND_SERVICE_DATA_SYNC](https://developer.android.com/reference/android/Manifest.permission#FOREGROUND_SERVICE_DATA_SYNC) |

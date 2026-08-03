@@ -25,7 +25,7 @@ Set `model_source = "serverless"` to use Together's serverless inference.
 | DeepSeek-V4 Pro                    | `deepseek-ai/DeepSeek-V4-Pro`             |
 | Llama 3.3 70B Instruct Turbo       | `meta-llama/Llama-3.3-70B-Instruct-Turbo` |
 | LFM2 24B A2B                       | `LiquidAI/LFM2-24B-A2B`                   |
-| MiniMax M2.7                       | `MiniMaxAI/MiniMax-M2.7`                  |
+| MiniMax M3                         | `MiniMaxAI/MiniMax-M3`                    |
 | Kimi K2.5                          | `moonshotai/Kimi-K2.5`                    |
 | Kimi K2.6                          | `moonshotai/Kimi-K2.6`                    |
 | Qwen3 235B A22B Instruct 2507      | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput` |

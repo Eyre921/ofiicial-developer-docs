@@ -30,7 +30,7 @@ Clone the [Dialogflow Example](https://github.com/deepgram/dialogflow-example) r
 
 Dialogflow agents can accept user input in the form of audio or text. If you send audio to an agent, Google will transcribe it with their own speech-to-text engine. In order to use Deepgram's transcription, we need to transcribe the audio outside of Dialogflow and send the resulting text to our agent. If we also want to use Deepgram's text-to-speech for the bot's voice, we must configure Dialogflow to return agent responses as text. This diagram depicts the full process:
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04/images/c213cc7-dialogflow-architecture-tts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T113149Z&X-Amz-Expires=604800&X-Amz-Signature=713b5c353f1c6d0e625b3aa988c904efe09432e53f2e656e4da2f7ca210906f3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/2bff12016a25152ac9274d36282420b0395a1f99f876710a76055d7f45be2c04/images/c213cc7-dialogflow-architecture-tts.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T233204Z&X-Amz-Expires=604800&X-Amz-Signature=730409f25c98a5dfa349cf950e2ee63e71306f0717f3499799055d81ba213e35&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 1. The user speaks into their microphone.
 2. The integration continuously streams the user's speech to Deepgram.
@@ -114,7 +114,7 @@ Finally, you may choose to use Deepgram's [UtteranceEnd](/docs/understanding-end
 
 Deepgram's partner AudioCodes offers a managed solution called [VoiceAI Connect](https://voiceaiconnect.audiocodes.com/google-dialogflow), which enables you to pair Deepgram's speech-to-text with many different bot frameworks, including Dialogflow CX. Read more about our integration with AudioCodes [here](https://deepgram.com/learn/audiocodes-voicebots-integration).
 
-***
+---
 
 What’s Next
 

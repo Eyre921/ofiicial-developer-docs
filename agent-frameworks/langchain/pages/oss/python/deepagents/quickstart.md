@@ -121,16 +121,22 @@ Google, OpenAI, and Anthropic offer built-in web search tools that run server-si
   <Tab title="Provider search (recommended)">
     <CodeGroup>
       ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+
       # Google's built-in search — no extra install or API key needed
       internet_search = {"google_search": {}}
       ```
 
       ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+
       # OpenAI's built-in web search — no extra install or API key needed
       internet_search = {"type": "web_search"}
       ```
 
       ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      from deepagents import create_deep_agent
+
       # Anthropic's built-in web search — no extra install or API key needed
       internet_search = {"type": "web_search_20260209", "name": "web_search"}
       ```

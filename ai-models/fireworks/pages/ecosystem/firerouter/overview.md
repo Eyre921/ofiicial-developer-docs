@@ -6,7 +6,7 @@ path: ecosystem/firerouter/overview
 
 Route LLM requests between closed-source and open models with FireRouter
 
-FireRouter is a managed routing service for **any LLM workload**. It is part of [Fireworks Nexus](/fireworks-nexus/overview) and also available on self-serve through the Fireworks inference API or [FireConnect](/ecosystem/fireconnect/overview). Request the FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to decide whether it can be served by a cheaper Fireworks open model or should pass through to a closed-source model.
+FireRouter is a managed routing service for **any LLM workload**. Request the FireRouter model through the [Fireworks inference API](/tools-sdks/openai-compatibility), and FireRouter scores each turn to decide whether it can be served by a cheaper Fireworks open model or should pass through to a closed-source model.
 
 The result is lower cost on simpler requests without giving up closed-source quality on harder ones.
 

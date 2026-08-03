@@ -4,5 +4,5 @@ source: https://docs.together.ai/reference/batch-cancel
 path: reference/batch-cancel
 ---
 
-POST /batches/{id}/cancel
+openapi.yaml POST /batches/{id}/cancel
 Cancel a batch job by ID

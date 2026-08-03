@@ -130,7 +130,7 @@ def transcribe() -> dict:
     return json.loads(deepgram_req.text)
 ```
 
-***
+---
 
 What’s Next
 
