@@ -18,8 +18,8 @@ Build MCP servers and clients using our official SDKs. SDKs are classified into 
 | <Icon icon="golang" />   [Go](https://go.sdk.modelcontextprotocol.io)            | [modelcontextprotocol/go-sdk](https://github.com/modelcontextprotocol/go-sdk)                 | <Badge>Tier 1</Badge> |
 | <Icon icon="java" />   [Java](https://java.sdk.modelcontextprotocol.io)          | [modelcontextprotocol/java-sdk](https://github.com/modelcontextprotocol/java-sdk)             | <Badge>Tier 2</Badge> |
 | <Icon icon="rust" />   [Rust](https://rust.sdk.modelcontextprotocol.io)          | [modelcontextprotocol/rust-sdk](https://github.com/modelcontextprotocol/rust-sdk)             | <Badge>Tier 2</Badge> |
+| <Icon icon="gem" />   [Ruby](https://ruby.sdk.modelcontextprotocol.io)           | [modelcontextprotocol/ruby-sdk](https://github.com/modelcontextprotocol/ruby-sdk)             | <Badge>Tier 2</Badge> |
 | <Icon icon="swift" />   Swift                                                    | [modelcontextprotocol/swift-sdk](https://github.com/modelcontextprotocol/swift-sdk)           | <Badge>Tier 3</Badge> |
-| <Icon icon="gem" />   [Ruby](https://ruby.sdk.modelcontextprotocol.io)           | [modelcontextprotocol/ruby-sdk](https://github.com/modelcontextprotocol/ruby-sdk)             | <Badge>Tier 3</Badge> |
 | <Icon icon="php" />   [PHP](https://php.sdk.modelcontextprotocol.io)             | [modelcontextprotocol/php-sdk](https://github.com/modelcontextprotocol/php-sdk)               | <Badge>Tier 3</Badge> |
 | <Icon icon="square-k" />   [Kotlin](https://kotlin.sdk.modelcontextprotocol.io)  | [modelcontextprotocol/kotlin-sdk](https://github.com/modelcontextprotocol/kotlin-sdk)         | <Badge>Tier 3</Badge> |
 

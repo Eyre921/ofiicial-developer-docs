@@ -28916,7 +28916,7 @@ export default function TabLayout() {
 ---
 
 ---
-modificationDate: June 30, 2026
+modificationDate: August 03, 2026
 title: Native tabs
 description: Learn how to use the native tabs layout in Expo Router.
 ---
@@ -29041,9 +29041,9 @@ You can use the `Icon` component to customize the icon displayed in the tab bar 
 
 Alternatively, you can pass `{default: ..., selected: ...}` to the `sf`, `xcasset`, `drawable`, `md`, or `src` prop to specify different icons for the default and selected states.
 
-> On Android, distinct selected icons for `src`, `drawable` and `md` require SDK 56 or later (powered by `react-native-screens` 4.25+). On earlier SDKs the selected variant is ignored and the default icon is used in both states.
+> On Android, distinct selected icons require SDK 56 or later (powered by `react-native-screens` 4.25+). On SDK 55, `src` accepts the object form but the selected variant is ignored and the default icon is used in both states. The `drawable` and `md` props accept only a string on SDK 55, so pass a single icon name that is used for both states.
 
-#### SDK 55 and later
+#### SDK 56 and later
 
 ```tsx
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
@@ -29056,6 +29056,25 @@ export default function TabLayout() {
           sf={{ default: 'house', selected: 'house.fill' }}
           md={{ default: 'home', selected: 'home_filled' }}
         />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="settings">
+        <NativeTabs.Trigger.Icon src={require('../../../assets/setting_icon.png')} />
+      </NativeTabs.Trigger>
+    </NativeTabs>
+  );
+}
+```
+
+#### SDK 55
+
+```tsx
+import { NativeTabs } from 'expo-router/unstable-native-tabs';
+
+export default function TabLayout() {
+  return (
+    <NativeTabs>
+      <NativeTabs.Trigger name="index">
+        <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="settings">
         <NativeTabs.Trigger.Icon src={require('../../../assets/setting_icon.png')} />
@@ -29841,6 +29860,8 @@ const styles = StyleSheet.create({
 
 ### Keyboard avoidance on Android
 
+> This feature is available in SDK 56 and later.
+
 By default on Android, the keyboard overlays the native tab bar. To have the tab bar lift above the keyboard instead, pass the `tabBarRespectsIMEInsets` prop on `NativeTabs`:
 
 ```tsx
@@ -30044,11 +30065,12 @@ Extract the tab UI into a component with platform-specific extensions. A single 
  `app-tabs.web.tsx — headless tabs for web`
 
 ```tsx
+import { ThemeProvider, DefaultTheme } from 'expo-router';
 import AppTabs from '@/components/app-tabs';
 
 export default function Layout() {
   return (
-    <ThemeProvider>
+    <ThemeProvider value={DefaultTheme}>
       <AppTabs />
     </ThemeProvider>
   );
@@ -30171,6 +30193,8 @@ export default function HomeScreen() {
 
 This happens because the default theme uses a white background color. To fix this, wrap your app in Expo Router's `ThemeProvider` with the appropriate theme.
 
+> `ThemeProvider`, `DarkTheme`, and `DefaultTheme` are exported from `expo-router` in SDK 56 and later. For SDK 55, import them from `@react-navigation/native` instead.
+
 **For apps supporting both light and dark modes:**
 
 ```tsx
@@ -30242,6 +30266,8 @@ export default function HomeScreen() {
 Header buttons with liquid glass styling may flicker or flash their background when switching tabs in dark mode on iOS 26. This happens because the default theme doesn't match the system dark mode, causing visual artifacts in the liquid glass rendering.
 
 The fix is the same as for the white background flash issue: wrap your layout with `<ThemeProvider>` from `expo-router` using the appropriate theme.
+
+> `ThemeProvider`, `DarkTheme`, and `DefaultTheme` are exported from `expo-router` in SDK 56 and later. For SDK 55, import them from `@react-navigation/native` instead.
 
 **For apps supporting both light and dark modes:**
 

@@ -44,7 +44,7 @@ The coach does not apply changes automatically. When it identifies an improvemen
 
 Proposals start as **pending**. Open the **Coaching** tab on your agent's page to review them. Filter by status, type, or date range. Select a proposal to view its rationale and diff, then click **Approve** or **Reject**. You can also review proposals in Slack. Approved changes are applied to the coached agent immediately. Rejected proposals leave the configuration unchanged.
 
-![Coaching tab showing pending proposals](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/500549e03d34f27ad0f27def46cb3285a5a6b3f7eaeb8ea55b7cbb6c90beda2a/assets/images/conversational-ai/coaching_tab.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260802%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260802T233222Z&X-Amz-Expires=604800&X-Amz-Signature=89a2922903008cc082f9f3775b2cd156fec1169c7bedeb086fec90ad7d68d00e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Coaching tab showing pending proposals](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/500549e03d34f27ad0f27def46cb3285a5a6b3f7eaeb8ea55b7cbb6c90beda2a/assets/images/conversational-ai/coaching_tab.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T094954Z&X-Amz-Expires=604800&X-Amz-Signature=1cb26fdce25fcea78ffd6522ac9f02ed2fbc122af6e97a2f11d7df126e34b72e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 | Type                | Description                                                          |
 | ------------------- | -------------------------------------------------------------------- |
@@ -68,13 +68,13 @@ Coaching is enabled for all agents by default. To talk to the coach from Slack, 
 
 Go to the **History** tab and select a completed conversation.
 
-![Analyze with coach button in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/803acba254d6521b34316802d9f3fea17a6a7dca70637ee07a3a86b3e2df34a4/assets/images/conversational-ai/analyze_with_coach_button.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260802%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260802T233222Z&X-Amz-Expires=604800&X-Amz-Signature=1c140cd6e884ec2269843233a44117b6a0d832e0143cb37810ef008928cdb71e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analyze with coach button in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/803acba254d6521b34316802d9f3fea17a6a7dca70637ee07a3a86b3e2df34a4/assets/images/conversational-ai/analyze_with_coach_button.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T094954Z&X-Amz-Expires=604800&X-Amz-Signature=f78315a050c4f8c6e1767fbaf670c2c3c76b828a8383fbb0624ace236931913b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Start a coaching session
 
 Click **Analyze with coach** to open the coach chat panel next to the transcript.
 
-![Coach chat panel alongside a conversation transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4f6db78527770f8f28b0bac370c709957fbef8f7e1624e531349ffcf03b89ec9/assets/images/conversational-ai/conversation_coaching_side_panel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260802%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260802T233222Z&X-Amz-Expires=604800&X-Amz-Signature=ead59326a21fcb121426f2c24e2339a44ce46d4a62434a89aff736084d22a277&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Coach chat panel alongside a conversation transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4f6db78527770f8f28b0bac370c709957fbef8f7e1624e531349ffcf03b89ec9/assets/images/conversational-ai/conversation_coaching_side_panel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T094954Z&X-Amz-Expires=604800&X-Amz-Signature=950fb158c687bc82abfbbe9e49f6e08d951f2244a736ae983c28ddc892cc81d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Type a question or use a quick prompt (for example, "What went wrong?" or "How can the agent improve?"). Highlight a specific message in the transcript to focus the coach on that part of the conversation.
 
@@ -82,7 +82,7 @@ Type a question or use a quick prompt (for example, "What went wrong?" or "How c
 
 When the coach identifies an improvement, it creates a proposal.
 
-![Coaching proposal with rationale and diff in the dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ab9e8c730c3b37ddffebbd25bcc464cfe1814c97d8f4bcaba0a49d9814eceb92/assets/images/conversational-ai/coaching_proposal.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260802%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260802T233222Z&X-Amz-Expires=604800&X-Amz-Signature=393c1294af2bd3caa32a3bc32ca44a024c664477c961a13e8cbe531bb4858591&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Coaching proposal with rationale and diff in the dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ab9e8c730c3b37ddffebbd25bcc464cfe1814c97d8f4bcaba0a49d9814eceb92/assets/images/conversational-ai/coaching_proposal.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T094954Z&X-Amz-Expires=604800&X-Amz-Signature=9c103265119debf264c40536b2a418a6f1ea912f275ecfb4f7418d617a94fb56&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Create a memory from Slack
 
@@ -98,7 +98,7 @@ The coach replies in the thread and posts a proposal with the proposed change an
 
 Proposal messages in Slack include the type, rationale, diff, and action buttons. When a proposal's status changes from Slack or the dashboard, the Slack message updates to match.
 
-![Coaching proposal in Slack with Approve and Reject buttons](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d77026e2fbf551bf6c2d2dedf056828d5879acd0d54f60f7b18539e48ae7d12b/assets/images/conversational-ai/slack_coaching.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260802%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260802T233222Z&X-Amz-Expires=604800&X-Amz-Signature=35656a825860d02e2bcdeaade207ed0363d420a835d691f4941b4d05550191b8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Coaching proposal in Slack with Approve and Reject buttons](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d77026e2fbf551bf6c2d2dedf056828d5879acd0d54f60f7b18539e48ae7d12b/assets/images/conversational-ai/slack_coaching.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260803%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260803T094954Z&X-Amz-Expires=604800&X-Amz-Signature=d85ff621b60d59bfdee25ab78d11bf97d5fa399075a0db2b7f391bab480db2f5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Coach chat
 

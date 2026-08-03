@@ -80,6 +80,8 @@ After configuring allowed domains for remote images, you can request transformat
 curl -vs 'https://mysitename.netlify.app/.netlify/images?url=https://my-images.com/owl.jpeg'
 ```
 
+Remote source images must be publicly accessible. To protect your users' credentials, Netlify Image CDN does not forward credential-bearing request headers, such as `Authorization` and `Cookie`, when it fetches an image from a remote source. To transform images from a remote source that requires authentication, use URLs that carry their own authorization, such as S3 presigned URLs, and make sure your `remote_images` patterns match them.
+
 ### Size
 
 To change the size of an image, use the following parameters with integers to specify the target size in pixels.

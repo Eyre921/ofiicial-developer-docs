@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 137 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 144 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -57,6 +57,13 @@
 - `docs/2026-07-28/sdk` — [SDKs](pages/docs/2026-07-28/sdk.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/sdk)
 - `docs/2026-07-28/tools/debugging` — [Debugging](pages/docs/2026-07-28/tools/debugging.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/debugging)
 - `docs/2026-07-28/tools/inspector` — [MCP Inspector](pages/docs/2026-07-28/tools/inspector.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector)
+- `docs/2026-07-28/tools/inspector/authorization` — [Authorization](pages/docs/2026-07-28/tools/inspector/authorization.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/authorization)
+- `docs/2026-07-28/tools/inspector/cli` — [CLI client](pages/docs/2026-07-28/tools/inspector/cli.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/cli)
+- `docs/2026-07-28/tools/inspector/configuration` — [Configuration and flags](pages/docs/2026-07-28/tools/inspector/configuration.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/configuration)
+- `docs/2026-07-28/tools/inspector/protocol-eras` — [Protocol eras](pages/docs/2026-07-28/tools/inspector/protocol-eras.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/protocol-eras)
+- `docs/2026-07-28/tools/inspector/recipes` — [Recipes](pages/docs/2026-07-28/tools/inspector/recipes.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/recipes)
+- `docs/2026-07-28/tools/inspector/tui` — [TUI client](pages/docs/2026-07-28/tools/inspector/tui.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/tui)
+- `docs/2026-07-28/tools/inspector/web` — [Web client](pages/docs/2026-07-28/tools/inspector/web.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/web)
 - `docs/2026-07-28/tutorials/security/authorization` — [Understanding Authorization in MCP](pages/docs/2026-07-28/tutorials/security/authorization.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/authorization)
 - `docs/2026-07-28/tutorials/security/security_best_practices` — [Security Best Practices](pages/docs/2026-07-28/tutorials/security/security_best_practices.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices)
 

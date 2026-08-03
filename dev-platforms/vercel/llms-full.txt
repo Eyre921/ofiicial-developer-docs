@@ -108154,30 +108154,30 @@ source: "https://vercel.com/docs/limits"
 
 To prevent abuse of our platform, we apply the following limits to all accounts.
 
-|                                                                                           | Hobby                                                                              | Pro                                                             | Enterprise                                                      |
-| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
-| Projects                                                                                  | 200                                                                                | Unlimited                                                       | Unlimited                                                       |
-| Deployments Created per Day                                                               | 100                                                                                | 6000                                                            | Custom                                                          |
-| Functions Created per Deployment                                                          | [Framework-dependent\*](/docs/functions/runtimes#functions-created-per-deployment) | ∞                                                               | ∞                                                               |
-| [Proxied Request Timeout](#proxied-request-timeout) (Seconds)                             | 120                                                                                | 120                                                             | 120                                                             |
-| [Vercel Projects Connected per Git Repository](#connecting-a-project-to-a-git-repository) | 25                                                                                 | 150                                                             | Custom                                                          |
-| [Routes created per Deployment](#routes-created-per-deployment)                           | 2048                                                                               | 2048                                                            | Custom                                                          |
-| [Build Time per Deployment](#build-time-per-deployment) (Minutes)                         | 45                                                                                 | 45                                                              | 45                                                              |
-| [Static File uploads](#static-file-uploads)                                               | 100 MB                                                                             | 1 GB                                                            | N/A                                                             |
-| [Concurrent Deployments](/docs/builds/managing-builds#on-demand-concurrent-builds)        | 1                                                                                  | [Up to 500\*](/docs/builds/managing-builds#on-demand-concurrent-builds)             | Custom                                                          |
-| Disk Size (GB)                                                                            | 32                                                                                 | 32 up to [64](/docs/builds/managing-builds#build-machine-types) | 32 up to [64](/docs/builds/managing-builds#build-machine-types) |
-| Cron Jobs (per project)                                                                   | [100\*](/docs/cron-jobs/usage-and-pricing)                                         | 100                                                             | 100                                                             |
-| [Deploy Hooks](/docs/deploy-hooks) (per project)                                          | 5                                                                                  | 5                                                               | 10                                                              |
+|                                                                                           | Hobby                                                                              | Pro                                                                     | Enterprise                                                      |
+| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Projects                                                                                  | 200                                                                                | Unlimited                                                               | Unlimited                                                       |
+| Deployments Created per Day                                                               | 100                                                                                | 6000                                                                    | Custom                                                          |
+| Functions Created per Deployment                                                          | [Framework-dependent\*](/docs/functions/runtimes#functions-created-per-deployment) | ∞                                                                       | ∞                                                               |
+| [Proxied Request Timeout](#proxied-request-timeout) (Seconds)                             | 120                                                                                | 120                                                                     | 120                                                             |
+| [Vercel Projects Connected per Git Repository](#connecting-a-project-to-a-git-repository) | 25                                                                                 | 150                                                                     | Custom                                                          |
+| [Routes created per Deployment](#routes-created-per-deployment)                           | 2048                                                                               | 2048                                                                    | Custom                                                          |
+| [Build Time per Deployment](#build-time-per-deployment) (Minutes)                         | 45                                                                                 | 45                                                                      | 45                                                              |
+| [Static File uploads](#static-file-uploads)                                               | 100 MB                                                                             | 1 GB                                                                    | N/A                                                             |
+| [Concurrent Deployments](/docs/builds/managing-builds#on-demand-concurrent-builds)        | 1                                                                                  | [Up to 500\*](/docs/builds/managing-builds#on-demand-concurrent-builds) | Custom                                                          |
+| Disk Size (GB)                                                                            | 32                                                                                 | 32 up to [64](/docs/builds/managing-builds#build-machine-types)         | 32 up to [64](/docs/builds/managing-builds#build-machine-types) |
+| Cron Jobs (per project)                                                                   | [100\*](/docs/cron-jobs/usage-and-pricing)                                         | 100                                                                     | 100                                                             |
+| [Deploy Hooks](/docs/deploy-hooks) (per project)                                          | 5                                                                                  | 5                                                                       | 10                                                              |
 
 ## Usage summary
 
-|                                                                                           | Hobby       | Pro  |
-| ----------------------------------------------------------------------------------------- | ----------- | ---- |
-| Active CPU                                                                                | 4 CPU-hrs   | Usage-based |
-| Provisioned Memory                                                                        | 360 GB-hrs  | Usage-based |
-| Invocations                                                                               | 1 million   | Usage-based |
-| Fast Data Transfer                                                                        | 100 GB      | 1 TB |
-| Fast Origin Transfer                                                                      | Up to 10 GB | Usage-based |
+|                      | Hobby       | Pro         |
+| -------------------- | ----------- | ----------- |
+| Active CPU           | 4 CPU-hrs   | Usage-based |
+| Provisioned Memory   | 360 GB-hrs  | Usage-based |
+| Invocations          | 1 million   | Usage-based |
+| Fast Data Transfer   | 100 GB      | 1 TB        |
+| Fast Origin Transfer | Up to 10 GB | Usage-based |
 
 For Teams on the Pro plan, a monthly usage credit applies to billable resources. After applicable included allowances and credit, Vercel bills usage [on demand](/docs/limits#on-demand-resources-for-pro).
 
@@ -108757,6 +108757,49 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Compliance bulk (zip) document downloads per minute. | 10 | 60 | `user` |
 | Compliance document list requests per minute. | 120 | 60 | `user` |
 | Compliance item detail requests per minute. | 120 | 60 | `user` |
+
+
+## Admission control rate limits
+
+**Admission control rate limits** cap how fast your provisioning rate for a resource can grow. They do not cap the total number of actions in a fixed window.
+
+Each admission control limit has an allowed rate, measured per minute, that moves between a minimum and a maximum. The unit depends on the resource and is named in the limit's description.
+
+- You start at the **minimum rate** when you have made no requests against the limit for 10 minutes.
+- While you consume at or above your current allowed rate, that rate climbs at the **ramp per minute** rate, toward the **maximum rate**.
+- Consuming less than your allowed rate lets it decay back down toward the minimum at the same slope.
+
+Your allowance is one minute's worth of your current allowed rate, so you can spend a full minute of capacity in one burst and then wait for it to refill.
+
+For example, take a limit with a minimum rate of 100 units per minute, a ramp of 200 units per minute, and a maximum rate of 1,000 units per minute. After 10 minutes with no requests you start at 100 units per minute, which gives you an allowance of 100 units. Keep consuming at or above your allowed rate and it climbs to 300 units per minute after one minute, 500 after two minutes, and reaches the 1,000 maximum after four and a half minutes of sustained usage. Drop below your allowed rate and it falls back toward 100 units per minute at the same slope.
+
+Once your recent usage has drawn down your allowance, the API responds with a `429` status code and a `rate_limit_exceeded` error. The error message tells you how to react: while you are below the maximum, it reports the rate you are ramping up to, which means a retry will succeed shortly. Continuing the example above, a request rejected while your allowed rate is 300 units per minute returns a message like:
+
+```
+Allocation rate limit exceeded (300 units/min). Allocation rate is ramping up to 500 units/min, retry shortly.
+```
+
+A single request can be larger than your full allowance. When your allowance is full, that request still goes through, but it drains your allowance below zero. Later requests get a `429` until your allowance refills. Continuing the example above, a 250-unit request admitted when your allowance is 100 units leaves you 150 units short, so follow-up requests are rejected for a short time.
+
+The takeaway when you receive a `429`: your allowance keeps refilling, and the ramp keeps advancing, even while requests are rejected, so retrying after a short delay usually succeeds. The exception is when the error message shows you are already at the maximum rate. In that case, reduce your request rate instead of retrying immediately.
+
+The **admission control rate limits** table consists of the following five columns:
+
+- **Description** - A brief summary of the limit which, where relevant, will advise what type of plan it applies to.
+- **Minimum rate (per minute)** - The rate you start at, and the floor your allowed rate decays back to. The API returns this as `minRate`.
+- **Maximum rate (per minute)** - The highest rate the limit can ramp up to. The API returns this as `maxRate`.
+- **Ramp (per minute)** - How much the allowed rate climbs for each minute of sustained usage, toward the maximum. The API returns this as `stepPerMinute`.
+- **Scope** - How the rate limit is applied:
+  - `owner` - Rate limit applies to the team or to an individual user, depending on the resource.
+  - `user` - Rate limit applies to an individual user.
+  - `team` - Rate limit applies to the team.
+  - `project` - Rate limit applies to an individual project.
+
+| Description | Minimum rate (per minute) | Maximum rate (per minute) | Ramp (per minute) | Scope |
+|-------------|--------------------------|---------------------------|-------------------|-------|
+| Sandbox vCPU provisioning ramp for Hobby plan (vCPUs per minute). | 20 | 40 | 20 | `owner` |
+| Sandbox vCPU provisioning ramp for Pro plan (vCPUs per minute). | 150 | 5000 | 500 | `owner` |
+| Sandbox vCPU provisioning ramp for Enterprise plan (vCPUs per minute). | 150 | 5000 | 500 | `owner` |
 
 
 --------------------------------------------------------------------------------
@@ -136585,7 +136628,7 @@ Vercel Sandbox usage is metered across several dimensions. This page explains ho
 | Snapshot Storage | 15 GB (lifetime) | $0.08/GB-month | $0.08/GB-month |
 | Concurrent Sandboxes | 10 | 2,000 | 2,000 |
 | Max Runtime Duration | 45 minutes | 24 hours | 24 hours |
-| vCPU Allocation Rate | 40/10 min | 200/min | 400/min |
+| vCPU Allocation Rate | 20-40/min | 5,000/min | 5,000/min |
 
 
 On each billing cycle, Hobby plans receive a monthly allotment of Sandbox usage at no cost. Pro and Enterprise plans are charged based on usage.
@@ -136695,15 +136738,23 @@ The number of concurrently running sandboxes is limited by plan.
 
 ### Rate limits
 
-The number of vCPUs you can allocate to new sandboxes is rate-limited by plan. For example, with the Pro plan limit of 200 vCPUs per minute, you can create 25 sandboxes with 8 vCPUs each, or 100 sandboxes with 2 vCPUs each, every minute. All other control plane operations such as running commands or reading files are also subject to rate limits.
+The rate at which you can allocate vCPUs to new sandboxes increases with sustained usage instead of being a fixed cap. The initial value is your plan's starting rate, and sustained usage increases the allowed rate toward the maximum at the limit shown below. After 10 minutes without creating sandboxes, the rate goes back to the starting rate. See [admission control rate limits](/docs/limits#admission-control-rate-limits) for the full behavior.
+
+For example, with a Pro team that was idle, the initial rate is 150 vCPUs per minute, which covers 18 sandboxes with 8 vCPUs each. The team can keep creating sandboxes and the allowed rate increases to a maximum of 500 vCPUs per minute until it reaches 5,000.
+
+Control plane operations such as running commands or reading files use a fixed per-minute limit instead of a ramp increase.
+
+Deleting a sandbox, snapshot, or drive is limited to 20 requests per second per team on all plans. Deletions count against your control plane limit as well, so both limits apply.
+
+For example, if you delete 100 sandboxes in a loop, the first 20 deletions succeed in the first second and the rest return a `429` status code until the next second starts. Those 100 deletions also count toward the control plane limit for your plan, shown in the table below.
 
 [Contact sales](/contact/sales) if you need higher rate limits on Enterprise.
 
-| Plan       | vCPU allocation limit   | Control plane limit         |
-| ---------- | ----------------------- | --------------------------- |
-| Hobby      | 40 vCPUs per 10 minutes | 1,000 requests per minute   |
-| Pro        | 200 vCPUs per minute    | 10,000 requests per minute  |
-| Enterprise | 400 vCPUs per minute    | 100,000 requests per minute |
+| Plan       | Starting vCPU rate   | Ramp                 | Maximum vCPU rate      | Control plane limit         |
+| ---------- | -------------------- | -------------------- | ---------------------- | --------------------------- |
+| Hobby      | 20 vCPUs per minute  | 20 vCPUs per minute  | 40 vCPUs per minute    | 1,000 requests per minute   |
+| Pro        | 150 vCPUs per minute | 500 vCPUs per minute | 5,000 vCPUs per minute | 10,000 requests per minute  |
+| Enterprise | 150 vCPUs per minute | 500 vCPUs per minute | 5,000 vCPUs per minute | 100,000 requests per minute |
 
 ### Snapshot expiration
 

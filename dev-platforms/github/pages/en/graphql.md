@@ -16,23 +16,23 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [Introduction to GraphQL](/en/graphql/guides/introduction-to-graphql)
 
-  <p>Learn useful terminology and concepts for using the GitHub GraphQL API.</p>
+  Learn useful terminology and concepts for using the GitHub GraphQL API.
 
 * [Forming calls with GraphQL](/en/graphql/guides/forming-calls-with-graphql)
 
-  Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.
+  <p>Learn how to authenticate to the GraphQL API, then learn how to create and run queries and mutations.</p>
 
 * [Using pagination in the GraphQL API](/en/graphql/guides/using-pagination-in-the-graphql-api)
 
-  <p>Learn how to traverse data sets using cursor based pagination with the GraphQL API.</p>
+  Learn how to traverse data sets using cursor based pagination with the GraphQL API.
 
 * [Migrating from REST to GraphQL](/en/graphql/guides/migrating-from-rest-to-graphql)
 
-  <p>Learn best practices and considerations for migrating from GitHub's REST API to GitHub's GraphQL API.</p>
+  Learn best practices and considerations for migrating from GitHub's REST API to GitHub's GraphQL API.
 
 * [Rate limits and query limits for the GraphQL API](/en/graphql/overview/rate-limits-and-query-limits-for-the-graphql-api)
 
-  <p>The GitHub GraphQL API has limitations in place to protect against excessive or abusive calls to GitHub's servers.</p>
+  The GitHub GraphQL API has limitations in place to protect against excessive or abusive calls to GitHub's servers.
 
 ## Links
 

@@ -77365,87 +77365,56 @@ need to manually restart it by running `supabase functions serve`.
 
 Resources for getting started with Supabase.
 
-[Build with AI tools: Develop with Supabase AI-first using plugins, MCP, and skills.](/docs/guides/ai-tools)
+- **[Build with AI tools](https://supabase.com/docs/guides/ai-tools):** Develop with Supabase AI-first using plugins, MCP, and skills.
+- **[API Keys](https://supabase.com/docs/guides/getting-started/api-keys):** Learn about the different API keys in Supabase and how to use them.
+- **[Local Development](https://supabase.com/docs/guides/local-development):** Use the Supabase CLI to develop locally and collaborate between teams.
 
-[API Keys: Learn about the different API keys in Supabase and how to use them.](/docs/guides/getting-started/api-keys)
+### Use cases
 
-[Local Development: Use the Supabase CLI to develop locally and collaborate between teams.](/docs/guides/local-development)
+- **[AI, Vectors, and embeddings](https://supabase.com/docs/guides/ai#examples):** Build AI-enabled applications using our Vector toolkit.
+- **[Subscription Payments (SaaS)](https://github.com/vercel/nextjs-subscription-payments#nextjs-subscription-payments-starter):** Clone, deploy, and fully customize a SaaS subscription application with Next.js.
+- **[Partner Gallery](https://github.com/supabase-community/partner-gallery-example#supabase-partner-gallery-example):** Postgres full-text search, image storage, and more.
 
-## Use cases
+### Framework quickstarts
 
-[AI, Vectors, and embeddings: Build AI-enabled applications using our Vector toolkit.](/docs/guides/ai#examples)
-
-[Subscription Payments (SaaS): Clone, deploy, and fully customize a SaaS subscription application with Next.js.](https://github.com/vercel/nextjs-subscription-payments#nextjs-subscription-payments-starter)
-
-[Partner Gallery: Postgres full-text search, image storage, and more.](https://github.com/supabase-community/partner-gallery-example#supabase-partner-gallery-example)
-
-## Framework quickstarts
-
-[React: Learn how to create a Supabase project, add some sample data to your database, and query the data from a React app.](/docs/guides/getting-started/quickstarts/reactjs)
-
-[Next.js: Learn how to create a Supabase project, add some sample data to your database, and query the data from a Next.js app.](/docs/guides/getting-started/quickstarts/nextjs)
-
-[Nuxt: Learn how to create a Supabase project, add some sample data to your database, and query the data from a Nuxt app.](/docs/guides/getting-started/quickstarts/nuxtjs)
-
-[Hono: Learn how to create a Supabase project, add some sample data to your database, secure it with auth, and query the data from a Hono app.](/docs/guides/getting-started/quickstarts/hono)
-
-[RedwoodJS: Learn how to create a Supabase project, add some sample data to your database using Prisma migration and seeds, and query the data from a RedwoodJS app.](/docs/guides/getting-started/quickstarts/redwoodjs)
-
-[Flutter: Learn how to create a Supabase project, add some sample data to your database, and query the data from a Flutter app.](/docs/guides/getting-started/quickstarts/flutter)
-
-[iOS SwiftUI: Learn how to create a Supabase project, add some sample data to your database, and query the data from an iOS app.](/docs/guides/getting-started/quickstarts/ios-swiftui)
-
-[Android Kotlin: Learn how to create a Supabase project, add some sample data to your database, and query the data from an Android Kotlin app.](/docs/guides/getting-started/quickstarts/kotlin)
-
-[SvelteKit: Learn how to create a Supabase project, add some sample data to your database, and query the data from a SvelteKit app.](/docs/guides/getting-started/quickstarts/sveltekit)
-
-[SolidJS: Learn how to create a Supabase project, add some sample data to your database, and query the data from a SolidJS app.](/docs/guides/getting-started/quickstarts/solidjs)
-
-[Vue: Learn how to create a Supabase project, add some sample data to your database, and query the data from a Vue app.](/docs/guides/getting-started/quickstarts/vue)
-
-[TanStack Start: Learn how to create a Supabase project, add some sample data to your database, and query the data from a TanStack Start app.](/docs/guides/getting-started/quickstarts/tanstack)
-
-[Refine: Learn how to create a Supabase project, add some sample data to your database, and query the data from a Refine app.](/docs/guides/getting-started/quickstarts/refine)
+- **[React](https://supabase.com/docs/guides/getting-started/quickstarts/reactjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a React app.
+- **[Next.js](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Next.js app.
+- **[Nuxt](https://supabase.com/docs/guides/getting-started/quickstarts/nuxtjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Nuxt app.
+- **[Hono](https://supabase.com/docs/guides/getting-started/quickstarts/hono):** Learn how to create a Supabase project, add some sample data to your database, secure it with auth, and query the data from a Hono app.
+- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/quickstarts/redwoodjs):** Learn how to create a Supabase project, add some sample data to your database using Prisma migration and seeds, and query the data from a RedwoodJS app.
+- **[Flutter](https://supabase.com/docs/guides/getting-started/quickstarts/flutter):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Flutter app.
+- **[iOS SwiftUI](https://supabase.com/docs/guides/getting-started/quickstarts/ios-swiftui):** Learn how to create a Supabase project, add some sample data to your database, and query the data from an iOS app.
+- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/quickstarts/kotlin):** Learn how to create a Supabase project, add some sample data to your database, and query the data from an Android Kotlin app.
+- **[SvelteKit](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a SvelteKit app.
+- **[SolidJS](https://supabase.com/docs/guides/getting-started/quickstarts/solidjs):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a SolidJS app.
+- **[Vue](https://supabase.com/docs/guides/getting-started/quickstarts/vue):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Vue app.
+- **[TanStack Start](https://supabase.com/docs/guides/getting-started/quickstarts/tanstack):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a TanStack Start app.
+- **[Refine](https://supabase.com/docs/guides/getting-started/quickstarts/refine):** Learn how to create a Supabase project, add some sample data to your database, and query the data from a Refine app.
 
 
 
-## Web app demos
+### Web app demos
 
-[Next.js: Learn how to build a user management app with Next.js and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-nextjs)
+- **[Next.js](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs):** Learn how to build a user management app with Next.js and Supabase Database, Auth, and Storage functionality.
+- **[React](https://supabase.com/docs/guides/getting-started/tutorials/with-react):** Learn how to build a user management app with React and Supabase Database, Auth, and Storage functionality.
+- **[Vue 3](https://supabase.com/docs/guides/getting-started/tutorials/with-vue-3):** Learn how to build a user management app with Vue 3 and Supabase Database, Auth, and Storage functionality.
+- **[Nuxt 3](https://supabase.com/docs/guides/getting-started/tutorials/with-nuxt-3):** Learn how to build a user management app with Nuxt 3 and Supabase Database, Auth, and Storage functionality.
+- **[Angular](https://supabase.com/docs/guides/getting-started/tutorials/with-angular):** Learn how to build a user management app with Angular and Supabase Database, Auth, and Storage functionality.
+- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/tutorials/with-redwoodjs):** Learn how to build a user management app with RedwoodJS and Supabase Database, Auth, and Storage functionality.
+- **[Svelte](https://supabase.com/docs/guides/getting-started/tutorials/with-svelte):** Learn how to build a user management app with Svelte and Supabase Database, Auth, and Storage functionality.
+- **[SvelteKit](https://supabase.com/docs/guides/getting-started/tutorials/with-sveltekit):** Learn how to build a user management app with SvelteKit and Supabase Database, Auth, and Storage functionality.
+- **[Refine](https://supabase.com/docs/guides/getting-started/tutorials/with-refine):** Learn how to build a user management app with Refine and Supabase Database, Auth, and Storage functionality.
 
-[React: Learn how to build a user management app with React and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-react)
+### Mobile tutorials
 
-[Vue 3: Learn how to build a user management app with Vue 3 and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-vue-3)
-
-[Nuxt 3: Learn how to build a user management app with Nuxt 3 and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-nuxt-3)
-
-[Angular: Learn how to build a user management app with Angular and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-angular)
-
-[RedwoodJS: Learn how to build a user management app with RedwoodJS and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-redwoodjs)
-
-[Svelte: Learn how to build a user management app with Svelte and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-svelte)
-
-[SvelteKit: Learn how to build a user management app with SvelteKit and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-sveltekit)
-
-[Refine: Learn how to build a user management app with Refine and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-refine)
-
-## Mobile tutorials
-
-[Flutter: Learn how to build a user management app with Flutter and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-flutter)
-
-[Expo React Native: Learn how to build a user management app with Expo React Native and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-expo-react-native)
-
-[Expo React Native Social Auth: Learn how to implement social authentication in an app with Expo React Native and Supabase Database and Auth functionality.](/docs/guides/auth/quickstarts/with-expo-react-native-social-auth)
-
-[Android Kotlin: Learn how to build a product management app with Android and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-kotlin)
-
-[iOS Swift: Learn how to build a user management app with iOS and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-swift)
-
-[Ionic React: Learn how to build a user management app with Ionic React and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-ionic-react)
-
-[Ionic Vue: Learn how to build a user management app with Ionic Vue and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-ionic-vue)
-
-[Ionic Angular: Learn how to build a user management app with Ionic Angular and Supabase Database, Auth, and Storage functionality.](/docs/guides/getting-started/tutorials/with-ionic-angular)
+- **[Flutter](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter):** Learn how to build a user management app with Flutter and Supabase Database, Auth, and Storage functionality.
+- **[Expo React Native](https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native):** Learn how to build a user management app with Expo React Native and Supabase Database, Auth, and Storage functionality.
+- **[Expo React Native Social Auth](https://supabase.com/docs/guides/auth/quickstarts/with-expo-react-native-social-auth):** Learn how to implement social authentication in an app with Expo React Native and Supabase Database and Auth functionality.
+- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/tutorials/with-kotlin):** Learn how to build a product management app with Android and Supabase Database, Auth, and Storage functionality.
+- **[iOS Swift](https://supabase.com/docs/guides/getting-started/tutorials/with-swift):** Learn how to build a user management app with iOS and Supabase Database, Auth, and Storage functionality.
+- **[Ionic React](https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-react):** Learn how to build a user management app with Ionic React and Supabase Database, Auth, and Storage functionality.
+- **[Ionic Vue](https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-vue):** Learn how to build a user management app with Ionic Vue and Supabase Database, Auth, and Storage functionality.
+- **[Ionic Angular](https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-angular):** Learn how to build a user management app with Ionic Angular and Supabase Database, Auth, and Storage functionality.
 
 
 ---
@@ -98250,7 +98219,17 @@ Because the headers follow the W3C standard, any compliant tracing SDK (OpenTele
 - `@opentelemetry/api` available at runtime — either installed directly or pulled in as a transitive dependency of your tracing SDK
 - A tracing SDK that registers a W3C-compliant propagator with the OpenTelemetry API
 
-If `@opentelemetry/api` is not installed, or there is no active trace context at request time, the SDK silently no-ops.
+Caution: As of `@supabase/supabase-js` version `2.112.0`, the OpenTelemetry integration lives in an opt-in subpath that you load once at your application entry point:
+
+```ts
+import '@supabase/supabase-js/tracing'
+```
+
+The main bundle contains no OpenTelemetry code — this import is what wires it up. The subpath imports `@opentelemetry/api` directly, so your bundler includes it and module resolution fails loudly if it isn't installed. If `tracePropagation` is enabled without this import, the SDK logs a one-time warning and sends requests without trace headers.
+
+On versions `2.106.0`–`2.111.x`, the subpath doesn't exist — don't add the import there. Those versions load `@opentelemetry/api` dynamically and silently no-op when it's missing.
+
+Trace propagation isn't available through the CDN (UMD) build — there's no way to load the tracing runtime there.
 
 ## Set up OpenTelemetry first
 
@@ -98260,9 +98239,11 @@ The Supabase SDK only takes care of propagating the trace context that's already
 
 ## Enable trace propagation
 
-Trace propagation is opt-in. Pass `tracePropagation: true` when creating the client:
+Trace propagation is opt-in and takes two steps: load the tracing runtime at your entry point (version `2.112.0` and later), and pass `tracePropagation: true` when creating the client:
 
 ```ts
+import '@supabase/supabase-js/tracing'
+
 import { trace } from '@opentelemetry/api'
 import { createClient } from '@supabase/supabase-js'
 
@@ -98286,6 +98267,8 @@ For security, trace headers are only attached to requests targeting Supabase dom
 Pass an object instead of `true` for fine-grained control:
 
 ```ts
+import '@supabase/supabase-js/tracing'
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   tracePropagation: {
     enabled: true,
@@ -98317,13 +98300,15 @@ Many tracing SDKs are built on top of OpenTelemetry. They work with this guide a
 
 ## Troubleshooting
 
-The SDK silently no-ops when it can't propagate, which keeps it safe to enable but can mask configuration issues. If `trace_id` is missing from your Supabase logs, check these in order:
+The SDK never throws when it can't propagate, which keeps it safe to enable but can mask configuration issues. If `trace_id` is missing from your Supabase logs, check these in order:
 
+- **The tracing runtime isn't loaded** (version `2.112.0` and later). `tracePropagation` is enabled but your entry point never imports `@supabase/supabase-js/tracing`. The SDK logs a one-time console warning and sends requests without trace headers — look for that warning in your console.
 - **No active span at request time.** The SDK reads the *current* context. If `supabase.from(...)` is called outside `tracer.startActiveSpan(...)` (or equivalent), there's nothing to propagate. Wrap the call in a span or use OpenTelemetry's automatic instrumentation.
-- **`@opentelemetry/api` is not installed** in the app making the request. The SDK imports it dynamically and no-ops if it's missing.
+- **`@opentelemetry/api` is not installed** in the app making the request. On `2.112.0` and later the tracing subpath imports it directly, so a missing package surfaces as a module resolution error. On `2.106.0`–`2.111.x` it's loaded dynamically and the SDK silently no-ops.
 - **No `TracerProvider` registered.** `@opentelemetry/api` defaults to a noop provider that produces non-recorded spans. Make sure your app calls `provider.register()` (or your vendor SDK's equivalent) before making requests.
 - **The upstream trace is not sampled.** By default the SDK respects upstream sampling decisions. Set `respectSamplingDecision: false` to propagate every request regardless of sampling.
 - **You're calling a non-Supabase host through a custom `fetch`.** Trace headers are only attached to Supabase domains (`*.supabase.co`, `*.supabase.in`, `localhost`).
+- **You're using the CDN (UMD) build.** Trace propagation isn't available there — the tracing runtime can't be loaded from a script tag.
 
 
 ---
@@ -119856,43 +119841,29 @@ const channel = supabase
 
 Resources for getting started building with Supabase.
 
-[Examples: Official GitHub examples, curated content from the community, and more.](/docs/guides/getting-started)
+- **[Examples](https://supabase.com/docs/guides/getting-started):** Official GitHub examples, curated content from the community, and more.
+- **[Glossary](https://supabase.com/docs/guides/resources/glossary):** Definitions for terminology and acronyms used in the Supabase documentation.
 
-[Glossary: Definitions for terminology and acronyms used in the Supabase documentation.](/docs/guides/resources/glossary)
+### Migrate to Supabase
 
-## Migrate to Supabase
+- **[Auth0](https://supabase.com/docs/guides/platform/migrating-to-supabase/auth0):** Move your auth users from Auth0 to a Supabase project.
+- **[Firebase Auth](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-auth):** Move your auth users from a Firebase project to a Supabase project.
+- **[Firestore Data](https://supabase.com/docs/guides/platform/migrating-to-supabase/firestore-data):** Migrate the contents of a Firestore collection to a single Postgres table.
+- **[Firebase Storage](https://supabase.com/docs/guides/platform/migrating-to-supabase/firebase-storage):** Convert your Firebase Storage files to Supabase Storage.
+- **[Heroku](https://supabase.com/docs/guides/platform/migrating-to-supabase/heroku):** Migrate your Heroku Postgres database to Supabase.
+- **[Render](https://supabase.com/docs/guides/platform/migrating-to-supabase/render):** Migrate your Render Postgres database to Supabase.
+- **[Amazon RDS](https://supabase.com/docs/guides/platform/migrating-to-supabase/amazon-rds):** Migrate your Amazon RDS database to Supabase.
+- **[Postgres](https://supabase.com/docs/guides/platform/migrating-to-supabase/postgres):** Migrate your Postgres database to Supabase.
+- **[MySQL](https://supabase.com/docs/guides/platform/migrating-to-supabase/mysql):** Migrate your MySQL database to Supabase.
+- **[Microsoft SQL Server](https://supabase.com/docs/guides/platform/migrating-to-supabase/mssql):** Migrate your Microsoft SQL Server database to Supabase.
 
-[Auth0: Move your auth users from Auth0 to a Supabase project.](/docs/guides/platform/migrating-to-supabase/auth0)
+### Postgres resources
 
-[Firebase Auth: Move your auth users from a Firebase project to a Supabase project.](/docs/guides/platform/migrating-to-supabase/firebase-auth)
-
-[Firestore Data: Migrate the contents of a Firestore collection to a single Postgres table.](/docs/guides/platform/migrating-to-supabase/firestore-data)
-
-[Firebase Storage: Convert your Firebase Storage files to Supabase Storage.](/docs/guides/platform/migrating-to-supabase/firebase-storage)
-
-[Heroku: Migrate your Heroku Postgres database to Supabase.](/docs/guides/platform/migrating-to-supabase/heroku)
-
-[Render: Migrate your Render Postgres database to Supabase.](/docs/guides/platform/migrating-to-supabase/render)
-
-[Amazon RDS: Migrate your Amazon RDS database to Supabase.](/docs/guides/platform/migrating-to-supabase/amazon-rds)
-
-[Postgres: Migrate your Postgres database to Supabase.](/docs/guides/platform/migrating-to-supabase/postgres)
-
-[MySQL: Migrate your MySQL database to Supabase.](/docs/guides/platform/migrating-to-supabase/mysql)
-
-[Microsoft SQL Server: Migrate your Microsoft SQL Server database to Supabase.](/docs/guides/platform/migrating-to-supabase/mssql)
-
-## Postgres resources
-
-[Managing Indexes: Improve query performance using various index types in Postgres.](/docs/guides/database/postgres/indexes)
-
-[Cascade Deletes: Understand the types of foreign key constraint deletes.](/docs/guides/database/postgres/cascade-deletes)
-
-[Drop all tables in schema: Delete all tables in a given schema.](/docs/guides/database/postgres/dropping-all-tables-in-schema)
-
-[Select first row per group: Retrieve the first row in each distinct group.](/docs/guides/database/postgres/first-row-in-group)
-
-[Print Postgres version: Find out which version of Postgres you are running.](/docs/guides/database/postgres/which-version-of-postgres)
+- **[Managing Indexes](https://supabase.com/docs/guides/database/postgres/indexes):** Improve query performance using various index types in Postgres.
+- **[Cascade Deletes](https://supabase.com/docs/guides/database/postgres/cascade-deletes):** Understand the types of foreign key constraint deletes.
+- **[Drop all tables in schema](https://supabase.com/docs/guides/database/postgres/dropping-all-tables-in-schema):** Delete all tables in a given schema.
+- **[Select first row per group](https://supabase.com/docs/guides/database/postgres/first-row-in-group):** Retrieve the first row in each distinct group.
+- **[Print Postgres version](https://supabase.com/docs/guides/database/postgres/which-version-of-postgres):** Find out which version of Postgres you are running.
 
 
 ---
@@ -143402,6 +143373,7 @@ const { data } = await supabase.from('profiles').select('*')
 #### With OpenTelemetry tracing
 
 ```ts
+import '@supabase/supabase-js/tracing'
 import { createClient } from '@supabase/supabase-js'
 import { trace } from '@opentelemetry/api'
 
