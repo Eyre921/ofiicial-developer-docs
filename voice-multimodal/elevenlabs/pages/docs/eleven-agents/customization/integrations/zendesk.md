@@ -121,13 +121,13 @@ Retrieves a user's profile so the agent can greet callers by name or verify thei
 
 On your agent's configuration page, click **Add tool** and select **Add integration tool**.
 
-![Add integration tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef3a82e0747f1b1da18fb6b4755812abe161d436582312e47836e621a44d83c7/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100015Z&X-Amz-Expires=604800&X-Amz-Signature=c8c4f4f2519e20c07c95d5844129c0b0d060cb2e851dc59e4fd38f66a109ac17&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add integration tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ef3a82e0747f1b1da18fb6b4755812abe161d436582312e47836e621a44d83c7/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214517Z&X-Amz-Expires=604800&X-Amz-Signature=f089b94f979c396f0e25e908219d6e5c2e726d2e509340821c20469fea605fdd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Select Zendesk tools
 
 Choose your Zendesk connection and toggle the tools you want the agent to use. You can enable as many or as few as needed — for example, a read-only triage agent might only need search and list tools, while a full-service agent might also create and update tickets.
 
-![Select Zendesk tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9161ae75a4c514d477174622bd4857d6faf62a11825bc7d4d191176e52a72f91/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100015Z&X-Amz-Expires=604800&X-Amz-Signature=d50df5c074fb0b8c91f8c7e4e3df5bd698fcc672f2c02db7ba0550bd2d4be332&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Select Zendesk tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9161ae75a4c514d477174622bd4857d6faf62a11825bc7d4d191176e52a72f91/agents-platform/pages/customization/integrations/zendesk/zendesk_add_tool_step_2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214517Z&X-Amz-Expires=604800&X-Amz-Signature=7b1eccc67e179e93fc1f45d9ea22e541774c29daea5499b7e93525787350ab2e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### (Optional) Provide parameters
 

@@ -41,12 +41,6 @@ Note, however, that with asynchronous loading any API calls will have to be made
 
 The Stripe.js URL is versioned—we recommend keeping up to date with the latest version. For more information, see the [Stripe.js versioning and support policy](https://docs.stripe.com/sdks/stripejs-versioning.md).
 
-### Example
-
-```title
-Including Stripe.js
-```
-
 ## Initializing Stripe.js
 
 `Stripe(publishableKey: string, options?: object)`
@@ -2832,22 +2826,10 @@ Additionally, the following classes are automatically added to the container whe
 
 These class names can be customized using the `classes` [option](https://docs.stripe.com/js/elements_object/create_element.md#elements_create-options-classes) when you [create an Element](#elements_create).
 
-### Example
-
-```title
-The Element container
-```
-
 ## Input validation
 
 Stripe elements validate customer input as it is typed.
 To help your customers catch mistakes, listen to `change` events on an `Element` and display any errors.
-
-### Example
-
-```title
-Display validation errors from an Element
-```
 
 ## Postal code formatting
 
@@ -16046,12 +16028,6 @@ Value   | Locale                                   | Elements | Checkout
 `zh`    | Chinese Simplified (China)               | ✔        | ✔
 `zh-HK` | Chinese Traditional (Hong Kong)          | ✔        | ✔
 `zh-TW` | Chinese Traditional (Taiwan)             | ✔        | ✔
-
-### Example
-
-```title
-Create a Stripe instance with a locale
-```
 
 ## Cookies
 

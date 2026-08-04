@@ -11981,6 +11981,16 @@ Call any Neon API route directly (authenticated passthrough).
 
 Usage: `neon api [path] [options]`
 
+### api-keys (alias: `api-key`)
+
+Manage API keys.
+
+| Subcommand                  | Description                                                            |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `neon api-keys create`      | Create an API key. The key is shown once and cannot be retrieved again |
+| `neon api-keys list`        | List API keys for your account, or for an organization                 |
+| `neon api-keys revoke <id>` | Revoke an API key. Anything using it stops working immediately         |
+
 ### auth (alias: `login`)
 
 Authenticate.
@@ -12207,6 +12217,15 @@ Manage organizations.
 | ---------------- | ------------------ |
 | `neon orgs list` | List organizations |
 
+### profiles (alias: `profile`)
+
+Manage named sets of Neon credentials.
+
+| Subcommand                    | Description                                                           |
+| ----------------------------- | --------------------------------------------------------------------- |
+| `neon profiles list`          | List profiles, the account each holds, and where its credentials live |
+| `neon profiles remove <name>` | Revoke a profile's token and remove it                                |
+
 ### projects (alias: `project`)
 
 Manage projects.
@@ -12282,16 +12301,17 @@ Manage VPC endpoints and project VPC restrictions.
 
 Global options are optional and work with any Neon CLI command.
 
-| Option            | Description                                                                    | Type    | Default                                                         | Required |
-| ----------------- | ------------------------------------------------------------------------------ | ------- | --------------------------------------------------------------- | :------: |
-| `--analytics`     | Manage analytics. Example: --no-analytics, --analytics false                   | boolean | `true`                                                          |    No    |
-| `--api-key`       | Neon API key, authenticates without `neon auth`                                | string  | `""`                                                            |    No    |
-| `--color`         | Colorize the output. Example: --no-color, --color false                        | boolean | `true`                                                          |    No    |
-| `--config-dir`    | Path to config directory                                                       | string  | \~/.config/neonctl (or $XDG\_CONFIG\_HOME/neonctl)              |    No    |
-| `--context-file`  | Context file with default org, project, and branch IDs, created by `neon link` | string  | nearest .neon file, searching upward from the current directory |    No    |
-| `--help`, `-h`    | Show help for a command or subcommand                                          | boolean | —                                                               |    No    |
-| `--output`, `-o`  | Set output format Possible values: `json`, `yaml`, `table`                     | string  | `table`                                                         |    No    |
-| `--version`, `-v` | Show version number                                                            | boolean | —                                                               |    No    |
+| Option            | Description                                                                         | Type    | Default                                                         | Required |
+| ----------------- | ----------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------- | :------: |
+| `--analytics`     | Manage analytics. Example: --no-analytics, --analytics false                        | boolean | `true`                                                          |    No    |
+| `--api-key`       | Neon API key, authenticates without `neon auth`                                     | string  | `""`                                                            |    No    |
+| `--color`         | Colorize the output. Example: --no-color, --color false                             | boolean | `true`                                                          |    No    |
+| `--config-dir`    | Path to config directory                                                            | string  | \~/.config/neonctl (or $XDG\_CONFIG\_HOME/neonctl)              |    No    |
+| `--context-file`  | Context file with default org, project, and branch IDs, created by `neon link`      | string  | nearest .neon file, searching upward from the current directory |    No    |
+| `--help`, `-h`    | Show help for a command or subcommand                                               | boolean | —                                                               |    No    |
+| `--output`, `-o`  | Set output format Possible values: `json`, `yaml`, `table`                          | string  | `table`                                                         |    No    |
+| `--profile`       | Named credentials to use, from profiles.json (default: NEON\_PROFILE, else DEFAULT) | string  | —                                                               |    No    |
+| `--version`, `-v` | Show version number                                                                 | boolean | —                                                               |    No    |
 
 More about global options:
 
@@ -12304,6 +12324,210 @@ More about global options:
 ## GitHub repository
 
 The Neon CLI is open source. See the [neondatabase/neon-pkgs](https://github.com/neondatabase/neon-pkgs/tree/main/packages/cli) repository.
+
+--- [Document source](https://neon.com/docs/cli/api-keys.md) ---
+
+> Summary: The `neon api-keys` CLI command manages API keys for your account, an organization, or a single project. Use it to create a key for scripts and CI, list existing keys and when they were last used, and revoke a key you no longer trust.
+
+# Neon CLI command: api-keys
+
+Create, list, and revoke Neon API keys
+
+The `api-keys` command creates, lists, and revokes the API keys that authenticate requests to the Neon API. Keys belong to your account unless you pass `--org-id` or `--project-id`.
+
+A key is shown once, at creation. There is no way to retrieve it later.
+
+For key types, revocation permissions, and rotation, see [Manage API keys](https://neon.com/docs/manage/api-keys).
+
+Subcommands: [create](https://neon.com/docs/cli/api-keys#create), [list](https://neon.com/docs/cli/api-keys#list), [revoke](https://neon.com/docs/cli/api-keys#revoke)
+
+## neon api-keys list
+
+Lists key metadata, never the keys themselves.
+
+```bash
+neon api-keys list [options]
+```
+
+| Option     | Description                                            | Type   | Default | Required |
+| ---------- | ------------------------------------------------------ | ------ | ------- | :------: |
+| `--org-id` | List the organization's keys instead of your account's | string | —       |    No    |
+
+List your account keys:
+
+```bash
+neon api-keys list
+```
+
+```text filename="Output"
+Account API keys
+┌─────────┬──────────────────────┬──────────────────────┬──────────────────────┬─────────────────────┐
+│ Id      │ Name                 │ Created At           │ Last Used At         │ Last Used From Addr │
+├─────────┼──────────────────────┼──────────────────────┼──────────────────────┼─────────────────────┤
+│ 3225782 │ ci-deploy            │ 2026-07-29T00:50:26Z │ 2026-07-29T18:06:55Z │ 192.0.2.10          │
+└─────────┴──────────────────────┴──────────────────────┴──────────────────────┴─────────────────────┘
+```
+
+Organization keys are invisible to your account, so listing them needs `--org-id`:
+
+```bash
+neon api-keys list --org-id org-example-12345678
+```
+
+This covers both scopes, since a project-scoped key is owned by the project's organization. The `Project` column tells them apart:
+
+```text filename="Output"
+API keys in org-example-12345678
+┌─────────┬─────────────┬───────────────────────┬──────────────────────┬──────────────────────┬─────────────────────┐
+│ Id      │ Name        │ Project               │ Created At           │ Last Used At         │ Last Used From Addr │
+├─────────┼─────────────┼───────────────────────┼──────────────────────┼──────────────────────┼─────────────────────┤
+│ 3243240 │ preview-bot │ green-breeze-12345678 │ 2026-08-04T18:51:36Z │ 2026-08-05T18:51:36Z │ 192.0.2.10          │
+├─────────┼─────────────┼───────────────────────┼──────────────────────┼──────────────────────┼─────────────────────┤
+│ 3177950 │ org-key     │ (all projects)        │ 2026-07-08T01:28:49Z │ 2026-07-08T01:31:20Z │ 192.0.2.10          │
+└─────────┴─────────────┴───────────────────────┴──────────────────────┴──────────────────────┴─────────────────────┘
+```
+
+`(all projects)` is a table label only. In JSON and YAML the field is `project_id`, and it is `null` for an organization-wide key:
+
+```bash
+neon api-keys list --org-id org-example-12345678 -o json
+```
+
+```json
+[
+  { "id": 3243240, "name": "preview-bot", "project_id": "green-breeze-12345678" },
+  { "id": 3177950, "name": "org-key", "project_id": null }
+]
+```
+
+## neon api-keys create
+
+Creates a key and prints it once. `--name` is required.
+
+By default the key reaches everything your account can, in every organization. Two mutually exclusive flags change that:
+
+- `--project-id` limits the key to one project. Use this for anything deployed, so a leaked key cannot reach your other projects.
+- `--org-id` transfers ownership to an organization. This is not a restriction: the key reaches every project in that organization, including ones created later.
+
+Both organization forms need organization admin permissions. Each form prints a notice describing what the key can reach.
+
+```bash
+neon api-keys create [options]
+```
+
+| Option         | Description                                                                                    | Type   | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--name`       | A name to identify the key later                                                               | string | —       |    Yes   |
+| `--org-id`     | Create a key for this organization instead of your account                                     | string | —       |    No    |
+| `--project-id` | Create a key that can access only this project. Its organization is looked up from the project | string | —       |    No    |
+
+Create an account key:
+
+```bash
+neon api-keys create --name ci-deploy
+```
+
+```text filename="Output"
+API key
+┌─────────┬───────────┐
+│ Id      │ Name      │
+├─────────┼───────────┤
+│ 3225782 │ ci-deploy │
+└─────────┴───────────┘
+
+napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
+WARNING: Store this key now: it is not shown again.
+WARNING: This key reaches everything your account can, in every organization. Pass --org-id or --project-id to narrow it.
+```
+
+Create a key owned by an organization:
+
+```bash
+neon api-keys create --name org-key --org-id org-example-12345678
+```
+
+```text filename="Output"
+API key
+┌─────────┬─────────┐
+│ Id      │ Name    │
+├─────────┼─────────┤
+│ 3177950 │ org-key │
+└─────────┴─────────┘
+
+napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
+WARNING: Store this key now: it is not shown again.
+WARNING: This key reaches every project in org-example-12345678, including ones created later. Pass --project-id instead to restrict it to one.
+```
+
+Create a key limited to one project. The output adds a `Project` column:
+
+```bash
+neon api-keys create --name preview-bot --project-id green-breeze-12345678
+```
+
+```text filename="Output"
+API key
+┌─────────┬─────────────┬───────────────────────┐
+│ Id      │ Name        │ Project               │
+├─────────┼─────────────┼───────────────────────┤
+│ 3243240 │ preview-bot │ green-breeze-12345678 │
+└─────────┴─────────────┴───────────────────────┘
+
+napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
+WARNING: Store this key now: it is not shown again.
+INFO: Limited to green-breeze-12345678: it cannot create projects, mint API keys, or read any other project. It can still change and delete everything inside that project.
+```
+
+**Important:** A project-scoped key is owned by the project's organization, so it needs `--org-id` to list or revoke.
+
+The key is the last line of stdout, and the notices go to stderr, so you can capture it directly:
+
+```bash
+echo "NEON_API_KEY=$(neon api-keys create --name local-dev -o json | jq -r .key)" >> .env
+```
+
+## neon api-keys revoke
+
+Revokes a key immediately and permanently. Anything using it starts failing, so confirm the ID with `api-keys list` first.
+
+Takes the numeric key ID, not the name. Organization and project-scoped keys need organization admin permissions. See [who can revoke keys](https://neon.com/docs/manage/api-keys#who-can-revoke-keys).
+
+```bash
+neon api-keys revoke <id> [options]
+```
+
+| Option     | Description                                          | Type   | Default | Required |
+| ---------- | ---------------------------------------------------- | ------ | ------- | :------: |
+| `--org-id` | Revoke an organization key instead of an account key | string | —       |    No    |
+
+Revoke an account key:
+
+```bash
+neon api-keys revoke 3225782
+```
+
+```text filename="Output"
+API key
+┌─────────┬───────────┬─────────┬──────────────────────┐
+│ Id      │ Name      │ Revoked │ Last Used At         │
+├─────────┼───────────┼─────────┼──────────────────────┤
+│ 3225782 │ ci-deploy │ true    │ 2026-07-29T18:06:55Z │
+└─────────┴───────────┴─────────┴──────────────────────┘
+```
+
+`Last Used At` is empty for a key that was never used.
+
+Revoke an organization or project-scoped key:
+
+```bash
+neon api-keys revoke 3243240 --org-id org-example-12345678
+```
+
+Without `--org-id`, the same command fails:
+
+```text filename="Output"
+ERROR: No account API key with id 3243240. If it belongs to an organization, pass --org-id. Organization keys are not visible to your account.
+```
 
 --- [Document source](https://neon.com/docs/cli/api.md) ---
 
@@ -13527,11 +13751,13 @@ If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, `confi
 neon config init [options]
 ```
 
-| Option         | Description                                                                                                       | Type    | Default | Required |
-| -------------- | ----------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--install`    | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command. | boolean | `true`  |    No    |
-| `--branch`     | Branch ID or name                                                                                                 | string  | —       |    No    |
-| `--project-id` | Project ID                                                                                                        | string  | —       |    No    |
+| Option          | Description                                                                                                                                                                                                        | Type    | Default | Required |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------- | :------: |
+| `--from-branch` | Seed neon.ts from a branch's live Neon state instead of asking. Uses the branch pinned in .neon, or --branch \<name\|id>, or the project's default branch. The only mode of `config init` that calls the Neon API. | boolean | —       |    No    |
+| `--install`     | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command.                                                                                                  | boolean | `true`  |    No    |
+| `--services`    |                                                                                                                                                                                                                    | string  | —       |    No    |
+| `--branch`      | Branch ID or name                                                                                                                                                                                                  | string  | —       |    No    |
+| `--project-id`  | Project ID                                                                                                                                                                                                         | string  | —       |    No    |
 
 ```bash
 neon config init
@@ -15943,6 +16169,111 @@ neon orgs list -o json
 ```
 
 </details>
+
+--- [Document source](https://neon.com/docs/cli/profiles.md) ---
+
+> Summary: The `neon profiles` CLI command lists and removes named credential sets, so one machine can hold logins for several Neon accounts. Use it to see which profile is active, which account each one holds, and to revoke a profile's token when you no longer need it.
+
+# Neon CLI command: profiles
+
+Manage named sets of Neon credentials
+
+A profile is a pointer to a credentials file, so one machine can hold logins for several Neon accounts and pick between them per command.
+
+Create one by authenticating with a name. There is no `profiles create` command:
+
+```bash
+neon auth --profile work
+```
+
+Then pass it to any command. `neon me` confirms which account a profile holds:
+
+```bash
+neon me --profile work
+```
+
+```text filename="Output"
+┌────────┬──────────────────┬────────────┬────────────────┐
+│ Login  │ Email            │ Name       │ Projects Limit │
+├────────┼──────────────────┼────────────┼────────────────┤
+│ alex   │ alex@domain.com  │ Alex Lopez │ 0              │
+└────────┴──────────────────┴────────────┴────────────────┘
+```
+
+Naming a profile that doesn't exist is an error, not a silent fall back to `DEFAULT`.
+
+Credentials resolve from `--profile`, then `NEON_PROFILE`, then a profile named `DEFAULT`. Nothing persists between commands, so set `NEON_PROFILE` to avoid repeating the flag. `DEFAULT` is what a plain `neon auth` gives you, with or without profiles.
+
+**Note: Profiles carry credentials, not context**
+
+A profile sets which account you act as, not which organization or project. Commands that need one still resolve it from `--org-id`, the `.neon` context file, or a prompt:
+
+```bash
+neon projects list --profile work --org-id org-example-12345678
+```
+
+See [set-context](https://neon.com/docs/cli/set-context) and [checkout](https://neon.com/docs/cli/checkout) for pinning an org or branch.
+
+Subcommands: [list](https://neon.com/docs/cli/profiles#list), [remove](https://neon.com/docs/cli/profiles#remove)
+
+## neon profiles list
+
+Lists each profile, the account it holds, and where its credentials live. `Active` marks the profile this invocation would use.
+
+```bash
+neon profiles list [options]
+```
+
+```bash
+neon profiles list
+```
+
+```text filename="Output"
+Profiles
+┌────────┬─────────┬──────────────────┬──────────┬──────────────────────────────────────┐
+│ Active │ Name    │ Account          │ SignedIn │ Credentials                          │
+├────────┼─────────┼──────────────────┼──────────┼──────────────────────────────────────┤
+│ *      │ DEFAULT │ -                │ yes      │ ~/.config/neon/credentials.json      │
+├────────┼─────────┼──────────────────┼──────────┼──────────────────────────────────────┤
+│        │ work    │ alex@domain.com  │ yes      │ ~/.config/neon/credentials.work.json │
+└────────┴─────────┴──────────────────┴──────────┴──────────────────────────────────────┘
+```
+
+`Account` shows `-` when the profile has no recorded label, as with a `DEFAULT` profile from a plain `neon auth`.
+
+## neon profiles remove
+
+Revokes the profile's token, then removes the profile. Anything using that token stops working immediately.
+
+Pass `--yes` to skip the confirmation prompt. In CI, a removal without `--yes` is refused rather than assumed.
+
+The credentials file is deleted only if the CLI created it. A profile pointing outside the config directory is left on disk, and the command says so, so the secret is still there.
+
+```bash
+neon profiles remove <name> [options]
+```
+
+| Option        | Description                  | Type    | Default | Required |
+| ------------- | ---------------------------- | ------- | ------- | :------: |
+| `--yes`, `-y` | Skip the confirmation prompt | boolean | `false` |    No    |
+
+Remove a profile:
+
+```bash
+neon profiles remove work
+```
+
+```text filename="Output"
+? Remove profile "work" (alex@domain.com)? ' (y/N)
+```
+
+The prompt defaults to no, so pressing Enter leaves the profile in place.
+
+To switch accounts rather than discard one, authenticate again under the same name:
+
+```bash
+neon auth --profile work
+```
 
 --- [Document source](https://neon.com/docs/cli/projects.md) ---
 
@@ -104765,13 +105096,40 @@ Each page lists your existing keys with their name, ID, and creation details, pl
 
 ### Create a personal API key
 
-You can create a personal API key in the Neon Console or using the Neon API.
+You can create a personal API key in the Neon Console, with the Neon CLI, or using the Neon API.
 
 **Console**
 
 In the Neon Console, select **Account settings** > **API keys**. You'll see a list of any existing keys, along with the button to create a new key.
 
 ![Creating a personal API key in the Neon Console](https://neon.com/docs/manage/personal_api_key.png)
+
+**CLI**
+
+The [`neon api-keys create`](https://neon.com/docs/cli/api-keys#create) command creates a personal key. `--name` is required, and the key is printed once:
+
+```bash
+neon api-keys create --name development
+```
+
+```text
+API key
+┌─────────┬─────────────┐
+│ Id      │ Name        │
+├─────────┼─────────────┤
+│ 3225999 │ development │
+└─────────┴─────────────┘
+
+napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
+WARNING: Store this key now: it is not shown again.
+WARNING: This key reaches everything your account can, in every organization. Pass --org-id or --project-id to narrow it.
+```
+
+The key is the last line of stdout, so you can capture it directly:
+
+```bash
+echo "NEON_API_KEY=$(neon api-keys create --name local-dev -o json | jq -r .key)" >> .env
+```
 
 **API**
 
@@ -104811,6 +105169,29 @@ Navigate to your organization's **Settings** > **API keys** to view a list of ex
 
 ![creating an api key from the console](https://neon.com/docs/manage/org_api_keys.png)
 
+**CLI**
+
+Pass `--org-id` to [`neon api-keys create`](https://neon.com/docs/cli/api-keys#create). Find your organization ID with `neon orgs list`:
+
+```bash
+neon api-keys create --name orgkey --org-id org-example-12345678
+```
+
+```text
+API key
+┌─────────┬────────┐
+│ Id      │ Name   │
+├─────────┼────────┤
+│ 3243302 │ orgkey │
+└─────────┴────────┘
+
+napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
+WARNING: Store this key now: it is not shown again.
+WARNING: This key reaches every project in org-example-12345678, including ones created later. Pass --project-id instead to restrict it to one.
+```
+
+You need admin permissions in the organization. As a member the command fails with a permissions error naming your role.
+
 **API**
 
 To create an organization API key via the API, you need to use your personal API key. You also need to have admin-level permissions in the specified organization. This endpoint is rate limited to 10 requests per second; if you create many keys, throttle your requests or use retries with backoff.
@@ -104848,6 +105229,29 @@ Project-scoped API keys have [**Editor** access](https://neon.com/docs/manage/us
 In your organization's **Settings** > **API keys**, click **Create new** and select **Project-scoped** to create a key for your chosen project.
 
 ![Project-scoped API keys from the Console](https://neon.com/docs/manage/project_scoped_select.png)
+
+**CLI**
+
+Pass `--project-id` to [`neon api-keys create`](https://neon.com/docs/cli/api-keys#create). You don't name the organization: the CLI looks it up from the project, and `--org-id` and `--project-id` are mutually exclusive.
+
+```bash
+neon api-keys create --name only-this-project --project-id some-project-123
+```
+
+```text
+API key
+┌─────────┬───────────────────┬───────────────────┐
+│ Id      │ Name              │ Project           │
+├─────────┼───────────────────┼───────────────────┤
+│ 3243162 │ only-this-project │ some-project-123  │
+└─────────┴───────────────────┴───────────────────┘
+
+napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
+WARNING: Store this key now: it is not shown again.
+INFO: Limited to some-project-123: it cannot create projects, mint API keys, or read any other project. It can still change and delete everything inside that project.
+```
+
+A project-scoped key is owned by the project's organization, not by your account, so it does not appear in `neon api-keys list`. Use `neon api-keys list --org-id <org-id>` to see it, and pass the same `--org-id` to revoke it.
 
 **API**
 

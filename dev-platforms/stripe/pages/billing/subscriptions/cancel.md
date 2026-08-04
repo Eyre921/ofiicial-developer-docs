@@ -148,6 +148,8 @@ curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
 
 When you schedule a cancel date that occurs before the billing period ends, the subscription’s items’ [current_period_end](https://docs.stripe.com/api/subscription_item/object.md#subscription_item_object-current_period_end) updates to match the `cancel_at` date. This creates prorations for the change in the current period, unless your update [disables](https://docs.stripe.com/billing/subscriptions/prorations.md#disable-prorations) prorations.
 
+> When `cancel_at` shortens the current billing period, [disabling prorations](https://docs.stripe.com/billing/subscriptions/prorations.md#disable-prorations) can have different invoice line effects depending on the subscription’s [billing mode](https://docs.stripe.com/billing/subscriptions/billing-mode.md). For more information, see [Billing mode comparison](https://docs.stripe.com/billing/subscriptions/billing-mode/compare.md#excluding-prorations-for-the-first-truncated-billing-period).
+
 For `billing_mode=flexible` subscriptions with `status=trialing`, adding, updating, or removing the `cancel_at` value doesn’t affect the [trial_end](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-trial_end) date.
 
 For subscriptions using [billing_mode](https://docs.stripe.com/api/subscriptions/create.md?api-version=2025-04-30.preview#create_subscription-billing_mode), you can use enum helpers with the `cancel_at` parameter to simplify canceling a subscription at the end of a billing period. The `min_period_end` and `max_period_end` helpers allow you to specify when to cancel a subscription based on the billing periods for all subscription items.

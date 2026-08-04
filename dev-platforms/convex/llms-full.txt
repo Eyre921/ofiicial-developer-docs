@@ -494,6 +494,8 @@
 
 # Agent Definition and Usage
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Agents encapsulate models, prompting, tools, and other configuration. They can be defined as globals, or at runtime.
 
 They use threads to contain a series of messages used along the way, whether those messages are from a user, another Agent / LLM, or elsewhere. A thread can have multiple Agents responding, or be used by a single Agent.
@@ -828,6 +830,8 @@ const supportAgent = new Agent(components.agent, {
 ---
 
 # LLM Context
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 By default, the Agent will provide context based on the message history of the thread. This context is used to generate the next message.
 
@@ -1253,6 +1257,8 @@ const ids = await ctx.runMutation(components.agent.vector.index.insertBatch, {
 
 # Debugging
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 ## Debugging in the Playground[​](#debugging-in-the-playground "Direct link to Debugging in the Playground")
 
 Generally the [Playground](/agents/playground.md) gives a lot of information about what's happening, but when that is insufficient, you have other options.
@@ -1449,6 +1455,8 @@ export const myFunction = action({
 
 # Files and Images in Agent messages
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 You can add images and files for the LLM to reference in the messages.
 
 NOTE: Sending URLs to LLMs is much easier with the cloud backend, since it has publicly available storage URLs. To develop locally you can use `ngrok` or similar to proxy the traffic.
@@ -1644,6 +1652,8 @@ npx convex run files:generateImage:replyWithImage '{prompt: "make a picture of a
 
 # Getting Started with Agent
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 To install the agent component, you'll need an existing Convex project. New to Convex? Go through the [tutorial](https://docs.convex.dev/tutorial/).
 
 Run `npm create convex` or follow any of the [quickstarts](https://docs.convex.dev/home) to set one up.
@@ -1740,6 +1750,8 @@ That's it! Check out [Agent Usage](/agents/agent-usage.md) to see more details a
 ---
 
 # Human Agents
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The Agent component generally takes a prompt from a human or agent, and uses an LLM to generate a response.
 
@@ -1995,6 +2007,8 @@ export const humanResponseAsToolCall = internalAction({
 ---
 
 # Messages
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The Agent component stores message and [thread](/agents/threads.md) history to enable conversations between humans and agents.
 
@@ -2367,6 +2381,8 @@ import { ... } from "@convex-dev/agent";
 
 # AI Agents
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Looking to use an AI coding assistant with Convex?
 
 This section is about **building AI agent applications on Convex** (threads, tools, RAG, workflows) with the `@convex-dev/agent` component. If instead you want to use an **AI coding assistant** — Cursor, GitHub Copilot, Claude Code, or Codex — to write your Convex app, head to [AI coding](/ai/overview.md) and the [Convex agent plugins](/ai/convex-plugins.md).
@@ -2483,6 +2499,8 @@ export const continueThread = action({
 
 # Playground
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The Playground UI is a simple way to test, debug, and develop with the agent.
 
 ![Playground UI Screenshot](https://get-convex.github.io/agent/screenshot.png)
@@ -2575,6 +2593,8 @@ It uses the `VITE_CONVEX_URL` env variable, usually pulling it from .env.local.
 ---
 
 # RAG (Retrieval-Augmented Generation) with the Agent component
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The Agent component has built-in capabilities to search message history with hybrid text & vector search. You can also use the RAG component to use other data to search for context.
 
@@ -2765,6 +2785,8 @@ npm run example
 ---
 
 # Rate Limiting
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Rate limiting is a way to control the rate of requests to your AI agent, preventing abuse and managing API budgets.
 
@@ -3143,6 +3165,8 @@ export async function estimateTokens(
 
 # Streaming
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Streaming messages is a great way to give a user feedback and keep an application feeling responsive while using LLMs.
 
 Traditionally streaming happens via HTTP streaming, where the client sends a request and waits until the full response is streamed back. This works out of the box when using the Agent, in the same way you would with the AI SDK. See [below](#consuming-the-stream-yourself-with-the-agent) if that is all you're looking for.
@@ -3498,6 +3522,8 @@ You can pass in another parameter to either skip certain `streamId`s or to start
 
 # Threads
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Threads are a way to group messages together in a linear history. All messages saved in the Agent component are associated with a thread. When a message is generated based on a prompt, it saves the user message and generated agent message(s) automatically.
 
 Threads can be associated with a user, and messages can each individually be associated with a user. By default, messages are associated with the thread's user.
@@ -3673,6 +3699,8 @@ const messages = await listUIMessages(ctx, components.agent, {
 ---
 
 # Tool Approval
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Tool approval lets you require human confirmation before a tool call is executed. This is useful for dangerous or irreversible operations — deleting data, spending money, sending emails — where you want a person to review the action before it happens.
 
@@ -4014,6 +4042,8 @@ For a complete working example, see:
 
 # Tools
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The Agent component supports tool calls, which are a way to allow an LLM to call out to external services or functions. This can be useful for:
 
 * Retrieving data from the database
@@ -4238,6 +4268,8 @@ const agentTool = createTool({
 ---
 
 # Usage Tracking
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 You can provide a `usageHandler` to the agent to track token usage. See an example in [this demo](https://github.com/get-convex/agent/blob/main/example/convex/usage_tracking/usageHandler.ts) that captures usage to a table, then scans it to generate per-user invoices.
 
@@ -4467,6 +4499,8 @@ export default crons;
 ---
 
 # Workflows
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Agentic Workflows can be decomposed into two elements:
 
@@ -4717,6 +4751,8 @@ While there is only an example of a simple workflow here, there are many complex
 
 # Convex Agent Skills
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Agent Skills](https://agentskills.io) are portable packages of instructions and workflows that teach AI coding agents how to perform specialized tasks. Convex provides a set of ready-made skills for common workflows like setting up auth, designing a schema, and running migrations.
 
 ## Install[​](#install "Direct link to Install")
@@ -4776,6 +4812,8 @@ For example, to kick off auth setup in Cursor or Claude Code:
 ---
 
 # Convex MCP Server
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The Convex [Model Context Protocol](https://docs.cursor.com/context/model-context-protocol) (MCP) server provides several tools that allow AI agents to interact with your Convex deployment.
 
@@ -4946,6 +4984,8 @@ Related posts from
 
 # Convex Agent Plugins
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex publishes official plugins for the major coding agents. With the plugin installed, you can describe an app in one sentence and watch your agent scaffold it, running, in front of you, then keep shipping features while it reads your real deployment instead of guessing, catches its own mistakes as it works, and follows idiomatic Convex patterns.
 
 This page explains what the plugins do, how to install them, how to get the most out of them, and how to send us feedback. For agent-specific setup, see the dedicated pages for [Claude Code](/ai/using-claude-code.md), [Codex](/ai/using-codex.md), and [Cursor](/ai/using-cursor.md).
@@ -5023,6 +5063,8 @@ We're constantly working on improving the plugins with rigorous evals and real-w
 
 # AI Code Generation
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex is designed around a small set of composable abstractions with strong guarantees that result in code that is not only faster to write, but easier to read and maintain, whether written by a team member or an LLM. Key features make sure you get bug-free AI generated code:
 
 1. **Queries are Just TypeScript** Your database queries are pure TypeScript functions with end-to-end type safety and IDE support. This means AI can generate database code using the large training set of TypeScript code without switching to SQL.
@@ -5052,7 +5094,6 @@ AI code generation is most effective when you provide it with a set of rules to 
 
 See these documents for install instructions:
 
-* [Codex](/ai/using-codex.md)
 * [GitHub Copilot](/ai/using-github-copilot.md)
 * [![](/assets/images/conductor-logo-fa2224a9c0b89cba358b3a954a8e9051.png)](/ai/using-conductor.md)
 
@@ -5180,6 +5221,8 @@ See [Creating and deleting deploy keys from the CLI](/cli/deploy-key-types.md#de
 
 # Using Claude Code with Convex
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Claude Code](https://claude.com/claude-code), Anthropic's agentic coding tool, makes it easy to write and maintain apps built with Convex. Let's walk through how to set up Claude Code for the best possible results with Convex.
 
 ## Claude Code and Convex[​](#claude-code-and-convex "Direct link to Claude Code and Convex")
@@ -5254,6 +5297,8 @@ For per-agent cloud dev deployments scoped to a single throwaway deploy key, see
 ---
 
 # Using Codex with Convex
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [Codex](https://openai.com/codex), OpenAI's coding agent, makes it easy to write and maintain apps built with Convex. Let's walk through how to set up Codex for the best possible results with Convex.
 
@@ -5374,6 +5419,8 @@ For per-agent cloud dev deployments scoped to a single throwaway deploy key, see
 
 # Using Conductor with Convex
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Conductor](https://conductor.build) is a Mac app that lets you run many coding agents in parallel, each in its own isolated workspace. Conductor pairs naturally with Convex because each agent can run its own `convex dev` against its own deployment without stepping on the others.
 
 ## Starting a new project[​](#starting-a-new-project "Direct link to Starting a new project")
@@ -5430,6 +5477,8 @@ Now you can ask the agent questions like:
 ---
 
 # Using Cursor with Convex
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [Cursor](https://cursor.com), the AI code editor, makes it easy to write and maintain apps built with Convex. Let's walk through how to set up Cursor for the best possible results with Convex.
 
@@ -5560,6 +5609,8 @@ You can perform the above steps for <https://stack.convex.dev/> too if you would
 
 # Using GitHub Copilot with Convex
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [GitHub Copilot](https://github.com/features/copilot), the AI built into VS Code, makes it easy to write and maintain apps built with Convex. Let's walk through how to setup GitHub Copilot for the best possible results with Convex.
 
 ## Add Convex Instructions[​](#add-convex-instructions "Direct link to Add Convex Instructions")
@@ -5619,6 +5670,8 @@ If you want to use the MCP server globally for all your projects then you can ad
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Convex
 
 TypeScript backend SDK, client libraries, and CLI for Convex.
@@ -5651,6 +5704,8 @@ This package also includes [`convex`](https://docs.convex.dev/using/cli), the co
 ---
 
 # Class: BaseConvexClient
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [browser](/api/modules/browser.md).BaseConvexClient
 
@@ -6022,6 +6077,8 @@ A `Promise` fulfilled when the connection has been completely closed.
 ---
 
 # Class: ConvexClient
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [browser](/api/modules/browser.md).ConvexClient
 
@@ -6410,6 +6467,8 @@ An unsubscribe function to stop listening.
 
 # Class: ConvexHttpClient
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [browser](/api/modules/browser.md).ConvexHttpClient
 
 A Convex client that runs queries and mutations over HTTP.
@@ -6659,6 +6718,8 @@ A promise of the action's result.
 ---
 
 # Class: ConvexReactClient
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [react](/api/modules/react.md).ConvexReactClient
 
@@ -7001,6 +7062,8 @@ A `Promise` fulfilled when the connection has been completely closed.
 ---
 
 # Class: Crons
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).Crons
 
@@ -7349,6 +7412,8 @@ Like the unix command `cron`, Sunday is 0, Monday is 1, etc.
 
 # Class: Expression\<T>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).Expression
 
 Expressions are evaluated to produce a [Value](/api/modules/values.md#value) in the course of executing a query.
@@ -7366,6 +7431,8 @@ To construct an expression, use the [FilterBuilder](/api/interfaces/server.Filte
 
 # Class: FilterExpression\<T>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).FilterExpression
 
 Expressions are evaluated to produce a [Value](/api/modules/values.md#value) in the course of executing a query.
@@ -7382,6 +7449,8 @@ To construct an expression, use the [VectorFilterBuilder](/api/interfaces/server
 ---
 
 # Class: HttpRouter
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).HttpRouter
 
@@ -7608,6 +7677,8 @@ Given a JSON string representation of a Request object, return a Response by rou
 
 # Class: IndexRange
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).IndexRange
 
 An expression representing an index range created by [IndexRangeBuilder](/api/interfaces/server.IndexRangeBuilder.md).
@@ -7616,6 +7687,8 @@ An expression representing an index range created by [IndexRangeBuilder](/api/in
 ---
 
 # Class: SchemaDefinition\<Schema, StrictTableTypes>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).SchemaDefinition
 
@@ -7665,6 +7738,8 @@ This should be produced by using [defineSchema](/api/modules/server.md#definesch
 
 # Class: SearchFilter
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).SearchFilter
 
 An expression representing a search filter created by [SearchFilterBuilder](/api/interfaces/server.SearchFilterBuilder.md).
@@ -7679,6 +7754,8 @@ An expression representing a search filter created by [SearchFilterBuilder](/api
 ---
 
 # Class: TableDefinition\<DocumentType, Indexes, SearchIndexes, VectorIndexes>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).TableDefinition
 
@@ -8031,6 +8108,8 @@ Work around for <https://github.com/microsoft/TypeScript/issues/57035>
 
 # Class: CommitTsPlaceholder
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).CommitTsPlaceholder
 
 The placeholder for a transaction's commit timestamp, which is not known until the mutation commits. Write it into a document field via `db.vars.commitTs` and it resolves to an int64 (`bigint`) at commit, ordered by commit order. Reading the field back within the writing mutation yields the placeholder, which cannot be used as a number.
@@ -8107,6 +8186,8 @@ The placeholder for a transaction's commit timestamp, which is not known until t
 ---
 
 # Class: ConvexError\<TData>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [values](/api/modules/values.md).ConvexError
 
@@ -8363,6 +8444,8 @@ Error.prepareStackTrace
 
 # Class: VAny\<Type, IsOptional, FieldPaths>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VAny
 
 The type of the `v.any()` validator.
@@ -8490,6 +8573,8 @@ The kind of validator, `"any"`.
 ---
 
 # Class: VArray\<Type, Element, IsOptional>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [values](/api/modules/values.md).VArray
 
@@ -8634,6 +8719,8 @@ The kind of validator, `"array"`.
 
 # Class: VBoolean\<Type, IsOptional>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VBoolean
 
 The type of the `v.boolean()` validator.
@@ -8759,6 +8846,8 @@ The kind of validator, `"boolean"`.
 ---
 
 # Class: VBytes\<Type, IsOptional>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [values](/api/modules/values.md).VBytes
 
@@ -8886,6 +8975,8 @@ The kind of validator, `"bytes"`.
 
 # Class: VCommitTs\<Type, IsOptional>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VCommitTs
 
 The type of the `v.commitTs()` validator.
@@ -9012,6 +9103,8 @@ The kind of validator, `"commitTs"`.
 
 # Class: VFloat64\<Type, IsOptional>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VFloat64
 
 The type of the `v.float64()` validator.
@@ -9137,6 +9230,8 @@ The kind of validator, `"float64"`.
 ---
 
 # Class: VId\<Type, IsOptional>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [values](/api/modules/values.md).VId
 
@@ -9279,6 +9374,8 @@ The kind of validator, `"id"`.
 
 # Class: VInt64\<Type, IsOptional>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VInt64
 
 The type of the `v.int64()` validator.
@@ -9404,6 +9501,8 @@ The kind of validator, `"int64"`.
 ---
 
 # Class: VLiteral\<Type, IsOptional>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [values](/api/modules/values.md).VLiteral
 
@@ -9546,6 +9645,8 @@ The kind of validator, `"literal"`.
 
 # Class: VNull\<Type, IsOptional>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VNull
 
 The type of the `v.null()` validator.
@@ -9671,6 +9772,8 @@ The kind of validator, `"null"`.
 ---
 
 # Class: VObject\<Type, Fields, IsOptional, FieldPaths>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [values](/api/modules/values.md).VObject
 
@@ -9917,6 +10020,8 @@ Create a new VObject with additional fields merged in.
 
 # Class: VRecord\<Type, Key, Value, IsOptional, FieldPaths>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VRecord
 
 The type of the `v.record()` validator.
@@ -10077,6 +10182,8 @@ The kind of validator, `"record"`.
 
 # Class: VString\<Type, IsOptional>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).VString
 
 The type of the `v.string()` validator.
@@ -10202,6 +10309,8 @@ The kind of validator, `"string"`.
 ---
 
 # Class: VUnion\<Type, T, IsOptional, FieldPaths>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [values](/api/modules/values.md).VUnion
 
@@ -10347,6 +10456,8 @@ The kind of validator, `"union"`.
 ---
 
 # Interface: BaseConvexClientOptions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [browser](/api/modules/browser.md).BaseConvexClientOptions
 
@@ -10556,6 +10667,8 @@ Defaults to false, preserving the original behavior of immediately fetching a fr
 
 # Interface: MutationOptions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [browser](/api/modules/browser.md).MutationOptions
 
 Options for [mutation](/api/classes/browser.BaseConvexClient.md#mutation).
@@ -10578,6 +10691,8 @@ An optimistic update locally updates queries while a mutation is pending. Once t
 ---
 
 # Interface: OptimisticLocalStore
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [browser](/api/modules/browser.md).OptimisticLocalStore
 
@@ -10690,6 +10805,8 @@ This can either be a new value (perhaps derived from the old value from [getQuer
 
 # Interface: SubscribeOptions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [browser](/api/modules/browser.md).SubscribeOptions
 
 Options for [subscribe](/api/classes/browser.BaseConvexClient.md#subscribe).
@@ -10712,6 +10829,8 @@ If there is an existing subscription to a query function with the same name and 
 ---
 
 # Interface: ConvexReactClientOptions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [react](/api/modules/react.md).ConvexReactClientOptions
 
@@ -10961,6 +11080,8 @@ Defaults to false, preserving the original behavior of immediately fetching a fr
 
 # Interface: MutationOptions\<Args>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [react](/api/modules/react.md).MutationOptions
 
 Options for [mutation](/api/classes/react.ConvexReactClient.md#mutation).
@@ -10989,6 +11110,8 @@ An optimistic update locally updates queries while a mutation is pending. Once t
 ---
 
 # Interface: ReactAction\<Action>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [react](/api/modules/react.md).ReactAction
 
@@ -11028,6 +11151,8 @@ The return value of the server-side function call.
 ---
 
 # Interface: ReactMutation\<Mutation>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [react](/api/modules/react.md).ReactMutation
 
@@ -11105,6 +11230,8 @@ A new `ReactMutation` with the update configured.
 ---
 
 # Interface: Watch\<T>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [react](/api/modules/react.md).Watch
 
@@ -11205,6 +11332,8 @@ If we have not yet received a result for this query, this will be `undefined`.
 
 # Interface: WatchQueryOptions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [react](/api/modules/react.md).WatchQueryOptions
 
 Options for [watchQuery](/api/classes/react.ConvexReactClient.md#watchquery).
@@ -11227,6 +11356,8 @@ If there is an existing subscription to a query function with the same name and 
 ---
 
 # Interface: ActionMeta
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).ActionMeta
 
@@ -11279,6 +11410,8 @@ Extra context available in Convex action functions.
 
 # Interface: AdvancedRunQueryOptions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).AdvancedRunQueryOptions
 
 ## Properties[​](#properties "Direct link to Properties")
@@ -11310,6 +11443,8 @@ This is an advanced feature which can introduce subtle race conditions, so its u
 
 # Interface: Auth
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).Auth
 
 An interface to access information about the currently authenticated user within Convex query and mutation functions.
@@ -11339,6 +11474,8 @@ A promise that resolves to a [UserIdentity](/api/interfaces/server.UserIdentity.
 ---
 
 # Interface: BaseTableReader\<DataModel, TableName>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).BaseTableReader
 
@@ -11403,6 +11540,8 @@ Queries don't execute immediately, so calling this method and extending its quer
 ---
 
 # Interface: BaseTableWriter\<DataModel, TableName>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).BaseTableWriter
 
@@ -11570,6 +11709,8 @@ Delete an existing document.
 
 # Interface: CronJob
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).CronJob
 
 A schedule to run a Convex mutation or action on. You can schedule Convex functions to run regularly with interval and exporting it.
@@ -11608,6 +11749,8 @@ A schedule to run a Convex mutation or action on. You can schedule Convex functi
 ---
 
 # Interface: DefineSchemaOptions\<StrictTableNameTypes>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).DefineSchemaOptions
 
@@ -11666,6 +11809,8 @@ By default, `strictTableNameTypes` is `true`.
 ---
 
 # Interface: FilterBuilder\<TableInfo>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).FilterBuilder
 
@@ -12175,6 +12320,8 @@ On this object:
 
 # Interface: GenericActionCtx\<DataModel>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).GenericActionCtx
 
 A set of services for use within Convex action functions.
@@ -12435,6 +12582,8 @@ A promise of IDs and scores for the documents with the nearest vectors
 
 # Interface: GenericDatabaseReader\<DataModel>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).GenericDatabaseReader
 
 An interface to read from the database within Convex query functions.
@@ -12663,6 +12812,8 @@ BaseDatabaseReader.normalizeId
 
 # Interface: GenericDatabaseReaderWithTable\<DataModel>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).GenericDatabaseReaderWithTable
 
 ## Type parameters[​](#type-parameters "Direct link to Type parameters")
@@ -12732,6 +12883,8 @@ BaseDatabaseReaderWithTable.table
 ---
 
 # Interface: GenericDatabaseWriter\<DataModel>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).GenericDatabaseWriter
 
@@ -13256,6 +13409,8 @@ Supported for backwards compatibility. Prefer `db.delete(tableName, id)` in new 
 
 # Interface: GenericDatabaseWriterWithTable\<DataModel>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).GenericDatabaseWriterWithTable
 
 An interface to read from and write to the database within Convex mutation functions.
@@ -13333,6 +13488,8 @@ Scope the database to a specific table.
 ---
 
 # Interface: GenericMutationCtx\<DataModel>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).GenericMutationCtx
 
@@ -13555,6 +13712,8 @@ NOTE: Often you can extract shared logic into a helper function instead. `runMut
 
 # Interface: GenericQueryCtx\<DataModel>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).GenericQueryCtx
 
 A set of services for use within Convex query functions.
@@ -13698,6 +13857,8 @@ NOTE: Often you can extract shared logic into a helper function instead. `runQue
 ---
 
 # Interface: IndexRangeBuilder\<Document, IndexFields, FieldNum>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).IndexRangeBuilder
 
@@ -13879,6 +14040,8 @@ LowerBoundIndexRangeBuilder.lte
 
 # Interface: MutationMeta
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).MutationMeta
 
 Extra context available in Convex mutation functions.
@@ -13961,6 +14124,8 @@ Extra context available in Convex mutation functions.
 ---
 
 # Interface: OrderedQuery\<TableInfo>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).OrderedQuery
 
@@ -14157,6 +14322,8 @@ AsyncIterable.\[asyncIterator]
 
 # Interface: PaginationOptions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).PaginationOptions
 
 The options passed to [paginate](/api/interfaces/server.OrderedQuery.md#paginate).
@@ -14244,6 +14411,8 @@ Currently this is not enforced for search queries.
 
 # Interface: PaginationResult\<T>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).PaginationResult
 
 The result of paginating using [paginate](/api/interfaces/server.OrderedQuery.md#paginate).
@@ -14318,6 +14487,8 @@ When a query reads too much data, it may return 'SplitRecommended' to indicate t
 ---
 
 # Interface: Query\<TableInfo>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).Query
 
@@ -14628,6 +14799,8 @@ Will throw an error if the query returns more than one result.
 ---
 
 # Interface: QueryInitializer\<TableInfo>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).QueryInitializer
 
@@ -14975,6 +15148,8 @@ Will throw an error if the query returns more than one result.
 
 # Interface: QueryMeta
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).QueryMeta
 
 Extra context available in Convex query functions.
@@ -15031,6 +15206,8 @@ Extra context available in Convex query functions.
 ---
 
 # Interface: Scheduler
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).Scheduler
 
@@ -15246,6 +15423,8 @@ await ctx.scheduler.cancel(scheduledFunctionId);
 
 # Interface: SearchFilterBuilder\<Document, SearchIndexConfig>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).SearchFilterBuilder
 
 Builder for defining search filters.
@@ -15304,6 +15483,8 @@ Documents will be returned based on their relevance to the query. This takes int
 
 # Interface: SearchFilterFinalizer\<Document, SearchIndexConfig>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).SearchFilterFinalizer
 
 Builder to define equality expressions as part of a search filter.
@@ -15357,6 +15538,8 @@ Restrict this query to documents where `doc[fieldName] === value`.
 
 # Interface: SearchIndexConfig\<SearchField, FilterFields>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).SearchIndexConfig
 
 The configuration for a full text search index.
@@ -15398,6 +15581,8 @@ Additional fields to index for fast filtering when running search queries.
 ---
 
 # Interface: StorageActionWriter
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).StorageActionWriter
 
@@ -15786,6 +15971,8 @@ The `Id<"_storage">` of the newly stored file.
 
 # Interface: StorageReader
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).StorageReader
 
 An interface to read files from storage within Convex query functions.
@@ -15956,6 +16143,8 @@ Get metadata for a file.
 ---
 
 # Interface: StorageWriter
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).StorageWriter
 
@@ -16234,6 +16423,8 @@ Once a file is deleted, any URLs previously generated by [getUrl](/api/interface
 
 # Interface: SystemDataModel
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).SystemDataModel
 
 Internal type used in Convex code generation!
@@ -16306,6 +16497,8 @@ DataModelFromSchemaDefinition.\_storage
 ---
 
 # Interface: TransactionLimits
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).TransactionLimits
 
@@ -16385,6 +16578,8 @@ Custom limits for a nested transaction. Each field specifies the absolute maximu
 ---
 
 # Interface: UserIdentity
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).UserIdentity
 
@@ -16663,6 +16858,8 @@ JWT claim: `updated_at`
 
 # Interface: ValidatedFunction\<Ctx, ArgsValidator, Returns>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).ValidatedFunction
 
 **`Deprecated`**
@@ -16769,6 +16966,8 @@ This is a function that takes in the appropriate context and arguments and produ
 
 # Interface: VectorFilterBuilder\<Document, VectorIndexConfig>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).VectorFilterBuilder
 
 An interface for defining filters for vector searches.
@@ -16838,6 +17037,8 @@ Is the field at `fieldName` equal to `value`
 
 # Interface: VectorIndexConfig\<VectorField, FilterFields>
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [server](/api/modules/server.md).VectorIndexConfig
 
 The configuration for a vector index.
@@ -16891,6 +17092,8 @@ Additional fields to index for fast filtering when running vector searches.
 ---
 
 # Interface: VectorSearchQuery\<TableInfo, IndexName>
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [server](/api/modules/server.md).VectorSearchQuery
 
@@ -16968,6 +17171,8 @@ e.g. `filter: q => q.or(q.eq("genre", "comedy"), q.eq("genre", "drama"))`
 
 # convex
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 ## Modules[​](#modules "Direct link to Modules")
 
 * [browser](/api/modules/browser.md)
@@ -16982,6 +17187,8 @@ e.g. `filter: q => q.or(q.eq("genre", "comedy"), q.eq("genre", "drama"))`
 ---
 
 # Module: browser
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Tools for accessing Convex in the browser.
 
@@ -17245,6 +17452,8 @@ This is a specialized form of QueryToken used for paginated queries.
 
 # Module: nextjs
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Helpers for integrating Convex into Next.js applications using server rendering.
 
 This module contains:
@@ -17479,6 +17688,8 @@ A promise of the action's result.
 
 # Module: react
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Tools to integrate Convex into React applications.
 
 This module contains:
@@ -17617,7 +17828,7 @@ Type representing the state of an auth integration with Convex.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/ConvexAuthState.tsx:35](https://github.com/get-convex/convex-js/blob/main/src/react/ConvexAuthState.tsx#L35)
+[react/ConvexAuthState.tsx:36](https://github.com/get-convex/convex-js/blob/main/src/react/ConvexAuthState.tsx#L36)
 
 ***
 
@@ -17891,7 +18102,7 @@ The current [ConvexAuthState](/api/modules/react.md#convexauthstate).
 
 #### Defined in[​](#defined-in-13 "Direct link to Defined in")
 
-[react/ConvexAuthState.tsx:53](https://github.com/get-convex/convex-js/blob/main/src/react/ConvexAuthState.tsx#L53)
+[react/ConvexAuthState.tsx:54](https://github.com/get-convex/convex-js/blob/main/src/react/ConvexAuthState.tsx#L54)
 
 ***
 
@@ -17922,7 +18133,7 @@ See [Custom Auth Integration](https://docs.convex.dev/auth/advanced/custom-auth)
 
 #### Defined in[​](#defined-in-14 "Direct link to Defined in")
 
-[react/ConvexAuthState.tsx:86](https://github.com/get-convex/convex-js/blob/main/src/react/ConvexAuthState.tsx#L86)
+[react/ConvexAuthState.tsx:87](https://github.com/get-convex/convex-js/blob/main/src/react/ConvexAuthState.tsx#L87)
 
 ***
 
@@ -18906,6 +19117,8 @@ An object with the same keys as the input. The values are the result of the quer
 
 # Module: react-auth0
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 React login component for use with Auth0.
 
 ## Functions[​](#functions "Direct link to Functions")
@@ -18940,6 +19153,8 @@ See [Convex Auth0](https://docs.convex.dev/auth/auth0) on how to set up Convex w
 ---
 
 # Module: react-clerk
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 React login component for use with Clerk.
 
@@ -18976,6 +19191,8 @@ See [Convex Clerk](https://docs.convex.dev/auth/clerk) on how to set up Convex w
 ---
 
 # Module: server
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Utilities for implementing server-side Convex query and mutation functions.
 
@@ -22434,6 +22651,8 @@ The schema.
 
 # Module: values
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Utilities for working with values stored in Convex.
 
 You can see the full set of supported types at [Types](https://docs.convex.dev/using/types).
@@ -23005,6 +23224,8 @@ The JSON representation of `value`.
 
 # Namespace: Base64
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [values](/api/modules/values.md).Base64
 
 ## Functions[​](#functions "Direct link to Functions")
@@ -23091,6 +23312,8 @@ The JSON representation of `value`.
 ---
 
 # Custom OIDC Provider
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 **Note: This is an advanced feature!** We recommend sticking with the [supported third-party authentication providers](/auth/overview.md).
 
@@ -23249,6 +23472,8 @@ Related posts from
 
 # Custom JWT Provider
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 **Note: This is an advanced feature!** We recommend sticking with the [supported third-party authentication providers](/auth/overview.md).
 
 A [JWT](https://en.wikipedia.org/wiki/JSON_Web_Token) is a string combining three base64-encoded JSON objects containing claims about who a user is valid for a limited period of time like an hour. You can create them with a library like [jose](https://github.com/panva/jose) after receiving some evidence (typically a cookie) of a user's identity or get them from a third party authentication service like [Clerk](https://clerk.com). The information in a JWT is signed (the Convex deployment can tell the information is really from the issuer and hasn't been modified) but generally not encrypted (you can read it by base64-decoding the token or pasting it into [jwt.io](https://jwt.io/).
@@ -23344,6 +23569,8 @@ See the instructions for [Custom OIDC Providers](/auth/advanced/custom-auth.md#c
 ---
 
 # Convex & Auth0
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [Auth0](https://auth0.com) is an authentication platform providing login via passwords, social identity providers, one-time email or SMS access codes, multi-factor authentication, and single sign on and basic user management.
 
@@ -23797,6 +24024,8 @@ The authentication flow looks like this under the hood:
 
 # Convex & WorkOS AuthKit
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [WorkOS AuthKit](https://authkit.com) is an authentication solution that enables sign-in using passwords, social login providers, email one-time codes, two-factor authentication, and user management capabilities.
 
 You can use your own WorkOS account with AuthKit or let Convex create a managed WorkOS team which enables provisioning and configuration of AuthKit environments automatically.
@@ -24052,6 +24281,8 @@ The authentication flow looks like this under the hood:
 ---
 
 # Adding WorkOS AuthKit to an Existing App
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Follow along to learn how to configure an existing Convex application to use WorkOS AuthKit.
 
@@ -25890,6 +26121,8 @@ Now that your app is up and running on Convex and AutKit, refer to the [main doc
 
 # Automatic AuthKit Configuration
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex can **create** AuthKit environments in a WorkOS account made on your behalf. By default WorkOS gives you only two environments, but giving each Convex dev deployment its own AuthKit environment is useful for isolating development user data and configuration changes between multiple developers or agents working in parallel.
 
 The Convex CLI will **configure** AuthKit environments, regardless of whether Convex or you created them, if the `WORKOS_CLIENT_ID` and `WORKOS_API_KEY` environment variables are present in the build environment or the Convex deployment. While developing locally, Convex can write environment variables to `.env.local` to make setting up an AuthKit environment a breeze.
@@ -25952,6 +26185,8 @@ Environments for hosting providers in build environments like Vercel (production
 
 # AuthKit Troubleshooting
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 ## Debugging authentication[​](#debugging-authentication "Direct link to Debugging authentication")
 
 If a user goes through the WorkOS AuthKit login flow successfully, and after being redirected back to your page, `useConvexAuth()` returns `isAuthenticated: false`, it's possible that your backend isn't correctly configured.
@@ -25995,6 +26230,8 @@ You'll need to use a different email address to create your new WorkOS Workspace
 ---
 
 # Convex & Clerk
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [Clerk](https://clerk.com) is an authentication platform providing login via passwords, social identity providers, one-time email or SMS access codes, and multi-factor authentication and user management.
 
@@ -26802,6 +27039,8 @@ The authentication flow looks like this under the hood:
 
 # Convex Auth
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Convex Auth](https://labs.convex.dev/auth) is a library for implementing authentication directly within your Convex backend. This allows you to authenticate users without needing an authentication service or even a hosting server. Convex Auth currently supports client-side React web apps served from a CDN and React Native mobile apps.
 
 **Example:** [Live Demo](https://labs.convex.dev/auth-example) ([Source](https://github.com/get-convex/convex-auth-example))
@@ -26842,6 +27081,8 @@ Learn more in the [Convex Auth docs](https://labs.convex.dev/auth).
 ---
 
 # Storing Users in the Convex Database
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 *If you're using [Convex Auth](/auth/convex-auth.md) the user information is already stored in your database. There's nothing else you need to implement.*
 
@@ -27667,6 +27908,8 @@ export default function App() {
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Debugging Authentication
 
 You have followed one of our authentication guides but something is not working. You have double checked that you followed all the steps, and that you used the correct secrets, but you are still stuck.
@@ -27854,6 +28097,8 @@ Great, let's check they match the JWT token.
 
 # Auth in Functions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 *If you're using Convex Auth, see the [authorization doc](https://labs.convex.dev/auth/authz#use-authentication-state-in-backend-functions).*
 
 Within a Convex [function](/functions/overview.md), you can access information about the currently logged-in user by using the [`auth`](/api/interfaces/server.Auth.md) property of the [`QueryCtx`](/generated-api/server.md#queryctx), [`MutationCtx`](/generated-api/server.md#mutationctx), or [`ActionCtx`](/generated-api/server.md#actionctx) object:
@@ -27972,6 +28217,8 @@ Related posts from
 
 # Authentication
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex deployment endpoints are exposed to the open internet and the claims clients make about who they are must be authenticated to identify users and restrict what data they can see and edit.
 
 Convex is compatible with most authentication providers because it uses OpenID Connect (based on OAuth) ID tokens in the form of JWTs to authenticate WebSocket connections or RPCs. These JWTs can be provided by any service (including your own Convex backend) that implement the appropriate OAuth endpoints to verify them.
@@ -28054,6 +28301,8 @@ Related posts from
 
 # Chef Migration Guide
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex Chef has had a good run but we’re in the process of replacing it with a new incarnation better suited to long-term application development on Convex. Your Chef projects will continue running but your Chef development flow will be impacted in the meantime. We apologize for the inconvenience! Read on for instructions on how to continue developing your existing Chef projects.
 
 ## Continuing to develop on Chef projects[​](#continuing-to-develop-on-chef-projects "Direct link to Continuing to develop on Chef projects")
@@ -28120,6 +28369,8 @@ See the Running Locally section at [github.com/get-convex/chef](https://github.c
 ---
 
 # Agent Mode
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 When logged in on your own machine, agents like Cursor and Claude Code can run CLI commands like `npx convex env list` that use your logged-in credentials run commands against your personal dev environment as if you ran the commands yourself. This works well when you're collaborating with an agent; just like when the agent runs `git commit -am "Fix."`, the commit will use your local git credentials.
 
@@ -28273,6 +28524,8 @@ npx convex deployment select local
 
 # Deploy Keys
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 When you can't log in or use the CLI interactively to specify a project or deployment, for example in a production build environment, the environment variable `CONVEX_DEPLOY_KEY` can be set to a deploy key to make convex CLI commands run non-interactively.
 
 Deploy keys identify a deployment, project, or team; confer permission to take certain actions with those resources; and can change the behavior of the convex CLI.
@@ -28413,6 +28666,8 @@ npx convex deployment token delete <nameOrToken> [--deployment <ref>]
 
 # Local Deployments for Development
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Instead of syncing code to a Convex dev deployment hosted in the cloud, you can develop against a deployment running on your own computer. You can even use the Convex dashboard with local deployments!
 
 ## Background on deployments in Convex[​](#background-on-deployments-in-convex "Direct link to Background on deployments in Convex")
@@ -28485,6 +28740,8 @@ Alternatively, you can self-host a production deployment using the [open source 
 ---
 
 # CLI
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The Convex command-line interface (CLI) is your interface for managing Convex projects and Convex functions.
 
@@ -28899,6 +29156,8 @@ Generating code can require communicating with a convex deployment in order to e
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex ai-files`
 
 Convex AI files help AI coding assistants (Cursor, Claude Code, etc.) understand Convex patterns and APIs. They are set up during your first `npx convex dev` and can be managed at any time with the commands below.
@@ -29012,6 +29271,8 @@ npx convex ai-files remove [options]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex codegen`
 
 Generate code in `convex/_generated/` based on the current contents of `convex/`.
@@ -29046,6 +29307,8 @@ npx convex codegen [options]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex dashboard`
 
@@ -29083,6 +29346,8 @@ npx convex dashboard [options]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex data`
 
@@ -29145,6 +29410,8 @@ npx convex data [options] [table]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex deploy`
 
@@ -29232,6 +29499,8 @@ npx convex deploy [options]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex deployment`
 
@@ -29565,6 +29834,8 @@ npx convex deployment usage-limits remove [options]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex dev`
 
 Develop against a dev deployment, watching for changes
@@ -29637,6 +29908,8 @@ npx convex dev [options]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex docs`
 
 Open the docs in the browser
@@ -29655,6 +29928,8 @@ npx convex docs [options]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex env`
 
@@ -29960,6 +30235,8 @@ npx convex env default list [options]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex export`
 
 Export data, and optionally file storage, from your Convex deployment to a ZIP file.
@@ -30005,6 +30282,8 @@ npx convex export [options]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex function-spec`
 
 List argument and return values to your Convex functions.
@@ -30039,6 +30318,8 @@ npx convex function-spec [options]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex import`
 
@@ -30115,6 +30396,8 @@ npx convex import [options] <path>
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex insights`
 
 Show health insights for a Convex deployment over the last 72 hours. Displays OCC conflicts and resource limit issues that may indicate performance problems.
@@ -30158,6 +30441,8 @@ npx convex insights [options]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex logout`
 
 Log out of Convex on this machine
@@ -30170,6 +30455,8 @@ npx convex logout [options]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex logs`
 
@@ -30211,6 +30498,8 @@ npx convex logs [options]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex mcp`
 
@@ -30271,6 +30560,8 @@ npx convex mcp start [options]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex project`
 
 Manage projects in your team.
@@ -30314,6 +30605,8 @@ npx convex project create [options] [name]
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # `npx convex run`
 
@@ -30402,6 +30695,8 @@ npx convex run [options] [functionName] [args]
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # `npx convex update`
 
 Print instructions for updating the convex package
@@ -30417,11 +30712,19 @@ npx convex update [options]
 
 # Typecheck Performance
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 When you are experiencing slow typechecking performance when pushing code to your Convex deployment (e.g. when running `npx convex dev`), there are a few different strategies you can try to improve performance or debug typechecking bottlenecks.
 
 ## Use the TypeScript 7 compiler[​](#use-the-typescript-7-compiler "Direct link to Use the TypeScript 7 compiler")
 
-The TypeScript 7 native preview, `tsgo`, may run faster than `tsc`. You can [configure your project](/production/project-configuration.md#configuring-the-typescript-compiler) to use `tsgo` with the `typescriptCompiler` option in `convex.json`.
+TypeScript 7's native compiler is generally much faster than earlier versions of TypeScript. To use it, install it as your project's TypeScript version. Convex will use it automatically.
+
+```
+npm install --save-dev typescript@^7
+```
+
+TypeScript 7.0 does not include a JavaScript API, so if other tools in your project need it, follow TypeScript's [side-by-side installation](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-60) instructions. Convex picks up TypeScript 7 in that setup too.
 
 ## Debug slow typechecking[​](#debug-slow-typechecking "Direct link to Debug slow typechecking")
 
@@ -30447,6 +30750,8 @@ You can disable typechecking using the `--typecheck=disable` option with `npx co
 ---
 
 # Kotlin and Convex type conversion
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ## Custom data types[​](#custom-data-types "Direct link to Custom data types")
 
@@ -30584,6 +30889,8 @@ data class ConvexDocument(@SerialName("_id") val id: String)
 ---
 
 # Android Kotlin
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex Android client library enables your Android application to interact with your Convex backend. It allows your frontend code to:
 
@@ -30865,6 +31172,8 @@ The debug logs can contain sensitive data that your application sends to/from yo
 
 # Bun
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Bun](https://bun.sh/) can be used to run scripts and servers that use Convex clients and can even run the Convex CLI.
 
 Convex supports point-in-time queries, mutations and actions (see [HTTP client](/api/classes/browser.ConvexHttpClient.md)) and those plus query subscriptions (see [ConvexClient](/api/classes/browser.ConvexClient.md)) in Bun.
@@ -30913,6 +31222,8 @@ You can always use the `anyApi` object or strings if you don't have the Convex f
 ---
 
 # Node.js
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex supports point-in-time queries (see [HTTP client](/api/classes/browser.ConvexHttpClient.md)) and query subscriptions (see [ConvexClient](/api/classes/browser.ConvexClient.md)) in Node.js.
 
@@ -30984,6 +31295,8 @@ You can always use the `anyApi` object or strings if you don't have the Convex f
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Convex JavaScript Clients
 
@@ -31114,6 +31427,8 @@ setInterval(
 
 # Script Tag
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Sometimes you just want to get your data on a web page: no installing packages, no build steps, no TypeScript. Subscribing to queries deployed to an existing Convex deployment from a script tag is simple.
 
 <!-- -->
@@ -31234,6 +31549,8 @@ See the [Script Tag Quickstart](/quickstart/script-tag.md) for instructions for 
 ---
 
 # Next.js
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [Next.js](https://nextjs.org/) is a React web development framework. When used with Convex, Next.js provides:
 
@@ -31359,6 +31676,8 @@ Obtain the appropriate OpenID Identity JWT in both locations and you should be a
 ---
 
 # Next.js Server Rendering
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Next.js automatically renders both Client and Server Components on the server during the initial page load.
 
@@ -31637,6 +31956,8 @@ To prevent rendering an inconsistent UI avoid using multiple `preloadQuery` call
 
 # Next.js Pages Router
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 This pages covers the Pages Router variant of Next.js. Alternatively see the [App Router](/client/nextjs/app-router/.md) version of this page.
 
 ## Getting started[​](#getting-started "Direct link to Getting started")
@@ -31761,6 +32082,8 @@ To preload data on server side before rendering a reactive query on the client s
 ---
 
 # Next.js Pages Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Learn how to query data from Convex in a Next.js app using the Pages Router.
 
@@ -31922,6 +32245,8 @@ Alternatively see the [App Router](/quickstart/nextjs.md) version of this quicks
 ---
 
 # OpenAPI & Other Languages
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 While Convex doesn't have first-party clients for languages such as Go, Java, or C++, you can generate [OpenAPI](https://swagger.io/specification/) specifications from your Convex deployment to create type-safe clients for languages that aren't currently supported. Under the hood, this uses our [HTTP API](/http-api/.md). This means that your queries will not be reactive/real-time.
 
@@ -32109,6 +32434,8 @@ func (c *ConvexDB) Load(short string) (*Link, error) {
 
 # Python
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 See the [Python Quickstart](/quickstart/python.md) and the
 
 [convex PyPI package docs](https://pypi.org/project/convex/)
@@ -32120,6 +32447,8 @@ See the [Python Quickstart](/quickstart/python.md) and the
 
 # Convex React Native
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 To use Convex in [React Native](https://reactnative.dev/) use the [Convex React client library](/client/react/overview.md).
 
 Follow the [React Native Quickstart](/quickstart/react-native.md) for the different configuration needed specifically for React Native.
@@ -32130,6 +32459,8 @@ You can also clone a working [Convex React Native demo](https://github.com/get-c
 ---
 
 # Configuring Deployment URL
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 When [connecting to your backend](/client/react/overview.md#connecting-to-a-backend) it's important to correctly configure the deployment URL.
 
@@ -32211,6 +32542,8 @@ Your backend functions can use [environment variables](/production/environment-v
 ---
 
 # Optimistic Updates
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Even though Convex queries are completely reactive, sometimes you'll want to update your UI before the mutation changes propagate back to the client. To accomplish this, you can configure an *optimistic update* to execute as part of your mutation.
 
@@ -32386,6 +32719,8 @@ To explore even further, try inserting a mistake into this update! You should se
 ---
 
 # Convex React
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex React is the client library enabling your React application to interact with your Convex backend. It allows your frontend code to:
 
@@ -32825,12 +33160,16 @@ If the internet connection drops, the client will handle reconnecting and re-est
 
 # Rust
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 See the [Rust Quickstart](/quickstart/rust.md) and [`convex` on docs.rs docs](https://docs.rs/convex/latest/convex/). The Rust client is open source and available on [GitHub](https://github.com/get-convex/convex-rs).
 
 
 ---
 
 # Authentication
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 `convex-svelte` integrates with any authentication provider through a small, reactive API. The `setupAuth()` / `useAuth()` primitives below are the low-level integration point; on top of them, the [Auth adapters](#auth-adapters) section covers higher-level options that wire a specific auth system to Convex for you. For background on how authentication works in Convex generally — including hosted providers and the OpenID Connect model — see [Authentication](/auth/overview.md).
 
@@ -33032,6 +33371,8 @@ Authentication exports from `convex-svelte`:
 
 # Convex Svelte
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Convex Svelte](https://www.npmjs.com/package/convex-svelte) is the client library enabling your Svelte application to interact with your Convex backend. It enhances the [`ConvexClient`](/api/classes/browser.ConvexClient.md) with declarative subscriptions for [Svelte 5](https://svelte.dev/), so your frontend code can:
 
 1. Receive live updates to your [queries](/functions/query-functions.md) with automatic reactivity
@@ -33185,6 +33526,8 @@ See [Queries, Mutations & Actions](/client/svelte/reactivity.md) for the full re
 ---
 
 # Queries, Mutations & Actions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 This page covers the core reactive API of [`convex-svelte`](https://www.npmjs.com/package/convex-svelte). Everything here works in **any Svelte app** — SvelteKit, Vite + Svelte, or any other setup.
 
@@ -33669,6 +34012,8 @@ Authentication exports (`setupAuth`, `useAuth`, and related types) are documente
 ---
 
 # SvelteKit Server Rendering
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 This page builds on the core [Queries, Mutations & Actions](/client/svelte/reactivity.md) API. Make sure `setupConvex()` is in your root layout before using these features — see [Overview](/client/svelte/overview.md#setup).
 
@@ -34160,6 +34505,8 @@ The server-only helper `withServerConvexToken` is imported from `convex-svelte/s
 
 # Troubleshooting
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Common errors when using [`convex-svelte`](/client/svelte/overview.md) and how to fix them.
 
 ## `effect_in_teardown` error[​](#effect_in_teardown-error "Direct link to effect_in_teardown-error")
@@ -34186,6 +34533,8 @@ import { api } from "../convex/_generated/api.js";
 ---
 
 # Why server-side rendering with Convex?
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 With a realtime backend like Convex, you might wonder whether SSR is worth the effort — after all, the client will open a WebSocket and get live updates anyway. The short answer: **SSR with Convex is almost always faster for time-to-data on first page load.**
 
@@ -34300,6 +34649,8 @@ Default to SSR. It is faster for time-to-data in every realistic deployment, and
 ---
 
 # Swift and Convex type conversion
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ## Custom data types[​](#custom-data-types "Direct link to Custom data types")
 
@@ -34452,6 +34803,8 @@ The pattern is to store the `Double` values privately and with different names
 ---
 
 # iOS & macOS Swift
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The Convex Swift client library enables your iOS or macOS application to interact with your Convex backend. It allows your frontend code to:
 
@@ -34748,6 +35101,8 @@ The debug logs can contain sensitive data that your application sends to/from yo
 
 # Convex with TanStack Query
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [TanStack Query](https://tanstack.com/query/latest) is an excellent, popular library for managing requests to a server.
 
 The [`@convex-dev/react-query`](https://www.npmjs.com/package/@convex-dev/react-query) library provides [Query Option](https://tanstack.com/query/latest/docs/framework/react/guides/query-options) functions for use with TanStack Query.
@@ -34921,6 +35276,8 @@ Data provided by Convex is never stale, so the `isStale` property of the return 
 ---
 
 # TanStack Start
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [TanStack Start](https://tanstack.com/start/latest) is a full-stack React framework powered by TanStack Router. It provides full-document SSR, streaming, server functions, bundling, and more.
 
@@ -35099,6 +35456,8 @@ To make authenticated Convex calls on the server as well see our setup guides:
 ---
 
 # TanStack Start with Clerk
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Using Clerk with Convex looks like following the [Clerk TanStack Quickstart](https://clerk.com/docs/quickstarts/tanstack-start) and adding Convex like the [Convex TanStack Quickstart](/quickstart/tanstack-start.md) shows. Then to make Clerk identity tokens available everywhere you might make authenticated calls to Convex in TanStack Start, you'll want to
 
@@ -35541,6 +35900,8 @@ Now all queries, mutations, and actions made with [TanStack Query](/client/tanst
 
 # Nuxt
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Nuxt](https://nuxt.com/) is a powerful web framework powered by Vue.
 
 The community-maintained [`convex-nuxt` npm package](https://www.npmjs.com/package/convex-nuxt) provides deep integration of Convex with the Nuxt 3 ecosystem.
@@ -35560,6 +35921,8 @@ You're welcome to ask questions about the library on the [Convex Discord](https:
 
 # Vue
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 [Vue](https://vuejs.org/) is an "approachable, performant and versatile framework for building web user interfaces."
 
 The community-maintained [`convex-vue`](https://www.npmjs.com/package/convex-vue) npm package is a Vue.js integration library for Convex. It also powers [convex-nuxt](/client/vue/nuxt.md).
@@ -35576,6 +35939,8 @@ You're welcome to ask questions about the library on the [Convex Discord](https:
 ---
 
 # Authoring Components
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Building a Convex Component lets you package up Convex functions, schemas, and persistent state into a reusable module that you or other developers can drop into their projects.
 
@@ -36545,6 +36910,8 @@ For NPM packages, this is exposed as `@your/package/test` in the package's `pack
 
 # Components
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex Components package up code and data in a sandbox that allows you to confidently and quickly add new features to your backend.
 
 Convex Components are like mini self-contained Convex backends, and installing them is always safe. They can't read your app's tables or call your app's functions unless you pass them in explicitly.
@@ -36566,6 +36933,8 @@ Components can be installed from NPM or from a local folder. Once installed, the
 ---
 
 # Understanding Components
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex Components are self-contained backend modules that bundle functions, schemas, and data together. They let you add complex functionality to your app—like authentication, rate limiting, or document collaboration—without implementing everything from scratch.
 
@@ -36606,6 +36975,8 @@ Being able to reason about your code is essential to scaling a codebase. Compone
 ---
 
 # Using Components
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex Components add new features to your backend in their own sandbox with their own functions, schema and data, scheduled functions and all other fundamental Convex features.
 
@@ -36884,6 +37255,8 @@ You can use the `data.function.component_path` field in [log streams](/productio
 
 # Deployments
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Each project in Convex has a main production deployment, and each developer on your team can also set up their own personal development deployment. Additionally, there are [preview deployments](/production/multiple-deployments.md#preview) used to test backend changes before they're deployed to production.
 
 While on a [deployment page](https://dashboard.convex.dev/deployment), you may switch between production, your development deployment, and any preview deployments by using the dropdown menu on the top-left of the page.
@@ -36894,6 +37267,8 @@ While on a [deployment page](https://dashboard.convex.dev/deployment), you may s
 ---
 
 # Data
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ![Data Dashboard Page](/screenshots/storybook/pages_project_deployment_data_light.webp)
 
@@ -37028,6 +37403,8 @@ Indexes that have not completed backfilling will be accompanied by a loading spi
 
 # Settings
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The [deployment settings page](https://dashboard.convex.dev/deployment/settings) gives you access to information and configuration options related to a specific deployment.
 
 ## General[​](#general "Direct link to General")
@@ -37094,6 +37471,8 @@ The integrations page allows you to configure [log streaming](/production/integr
 
 # File Storage
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The [file storage page](https://dashboard.convex.dev/deployment/files) displays [files stored in your deployment](/file-storage/overview.md). The page also shows the files' storage IDs, size, and content type. You can upload new files and download or delete existing files.
 
 Storage IDs might be referenced by documents in your database.
@@ -37108,6 +37487,8 @@ When new files are uploaded, the UI will reference the name of the recently uplo
 ---
 
 # Functions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ![Functions Dashboard View](/assets/images/functions-4e088bb973a16398dd86dbe3391dafc3.png)
 
@@ -37213,6 +37594,8 @@ Consider the relationship of the execution time to the cache hit rate. As a rule
 
 # Health
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The [health page](https://dashboard.convex.dev/deployment/) is the landing page for your deployment. On this page, you can see some important information about the health of your deployment.
 
 ## Failure Rate[​](#failure-rate "Direct link to Failure Rate")
@@ -37274,6 +37657,8 @@ Available insights include:
 
 # History
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 ![History Dashboard page](/screenshots/storybook/pages_project_deployment_history_light.webp)
 
 info
@@ -37288,6 +37673,8 @@ You may also view an audit log of team-related events in the [team audit log](/d
 ---
 
 # Logs
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ![Logs Dashboard Page](/assets/images/logs-ed208103a42edfb005e9089a8edad58e.png)
 
@@ -37337,6 +37724,8 @@ All failed executions will include a reason, which will usually be a JavaScript 
 
 # Schedules
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The [schedules page](https://dashboard.convex.dev/deployment/schedules) displays all [scheduled functions](/scheduling/scheduled-functions.md) and [cron jobs](/scheduling/cron-jobs.md) in your deployment. Use the tabs at the top of this page to switch between scheduled functions and cron jobs.
 
 ## Scheduled functions UI[​](#scheduled-functions-ui "Direct link to Scheduled functions UI")
@@ -37359,6 +37748,8 @@ Expanding a specific cron job will open the execution history for the selected j
 ---
 
 # Schema
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ![The Schema page of the dashboard](/screenshots/storybook/pages_project_deployment_schema_light.webp)
 
@@ -37389,6 +37780,8 @@ If you haven't defined a schema yet, Convex can generate one from the documents 
 
 # Dashboard
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 ![Dashboard Projects View](/screenshots/storybook/pages_projects_light.webp)
 
 [The dashboard](https://dashboard.convex.dev/) is the central hub for managing your Convex projects. Here you can create and manage your Convex teams, projects, and deployments.
@@ -37397,6 +37790,8 @@ If you haven't defined a schema yet, Convex can generate one from the documents 
 ---
 
 # Profile
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The [Profile page](https://dashboard.convex.dev/profile) is where you manage your personal Convex account, including your display name, the email addresses associated with your account, your sign-in security settings, and account deletion.
 
@@ -37442,6 +37837,8 @@ The **Delete Account** section at the bottom of the page permanently deletes you
 ---
 
 # Projects
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ![Dashboard Projects View](/screenshots/storybook/pages_projects_light.webp)
 
@@ -37497,6 +37894,8 @@ Once a project is deleted, it cannot be recovered. All deployments and data asso
 ---
 
 # Teams
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 In Convex, your projects are organized by team. Teams are used to share access to your projects with other people. You may switch between teams or create a new team by clicking on the name of your team located on the top of the Convex dashboard. This will open the project selector, where you can switch teams by clicking on the team name once again.
 
@@ -37645,6 +38044,8 @@ The [applications page](https://dashboard.convex.dev/team/settings/applications)
 ---
 
 # Commit Timestamp
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 A commit timestamp represents the time (in nanoseconds) when a mutation commits. The value is not observable within the mutation, but with the `db.vars.commitTs` placeholder you can have the value inserted at commit time into documents or the return value.
 
@@ -37814,6 +38215,8 @@ Note that it is not possible to schedule a function with the commit timestamp as
 
 # OCC and Atomicity
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 In [Queries](/functions/query-functions.md), we mentioned that determinism was important in the way optimistic concurrency control (OCC) was used within Convex. In this section, we'll dive much deeper into *why*.
 
 ## Convex Financial, Inc.[​](#convex-financial-inc "Direct link to Convex Financial, Inc.")
@@ -37933,6 +38336,8 @@ Aside from sheer curiosity about how Convex works, day to day there's no need to
 
 # Schema Philosophy
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 With Convex there is no need to write any `CREATE TABLE` statements, or think through your stored table structure ahead of time so you can name your field and types. You simply put your objects into Convex and keep building your app!
 
 However, moving fast early can be problematic later. "Was that field a number or a string? I think I changed it when I fixed that one bug?"
@@ -37950,6 +38355,8 @@ Once you are ready to formalize your schema, you can define it using our [schema
 
 # System Tables
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 System tables enable read-only access to metadata for built-in Convex features. Currently there are two system tables exposed:
 
 * `"_scheduled_functions"` table contains metadata for [scheduled functions](/scheduling/scheduled-functions.md#retrieving-scheduled-function-status)
@@ -37959,6 +38366,8 @@ You can read data from system tables using the `db.system.get` and `db.system.qu
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex supports Backup & Restore of data via the [dashboard](https://dashboard.convex.dev/deployment/settings/backups).
 
@@ -38051,6 +38460,8 @@ In addition to the downloadable zip backups, dedicated deployments (D1024 and D2
 ---
 
 # Document IDs
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 **Example:** [Relational Data Modeling](https://github.com/get-convex/convex-demos/tree/main/relational-data-modeling)
 
@@ -38199,6 +38610,8 @@ Related posts from
 
 # Data Import & Export
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 If you're bootstrapping your app from existing data, Convex provides three ways to get the data in:
 
 * Import from csv/json into a single table via the [CLI](/database/import-export/import.md#single-table-import).
@@ -38219,6 +38632,8 @@ Data Import & Export<!-- --> <!-- -->is<!-- --> currently a [beta feature](/prod
 
 # Data Export
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 ## Zip Export[​](#zip-export "Direct link to Zip Export")
 
 You can export your data to a zip file from Convex by [taking a backup](/database/backup-restore.md) and downloading it.
@@ -38237,6 +38652,8 @@ You can programmatically do a paginated streaming export by using the [Data Sync
 ---
 
 # Data Import
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 You can import data into Convex from a local file using the command line.
 
@@ -38362,6 +38779,8 @@ Data import uses database bandwidth to write all documents, and file bandwidth i
 
 # Database
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The Convex database provides a relational data model, stores JSON-like documents, and can be used with or without a schema. It "just works," giving you predictable query performance in an easy-to-use interface.
 
 Query and mutation [functions](/functions/overview.md) read and write data through a lightweight JavaScript API. There is nothing to set up and no need to write any SQL. Just use JavaScript to express your app's needs.
@@ -38458,6 +38877,8 @@ Related posts from
 ---
 
 # Paginated Queries
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Paginated queries are [queries](/functions/query-functions.md) that return a list of results in incremental pages.
 
@@ -38788,6 +39209,8 @@ getAllMessages();
 ---
 
 # Reading Data
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [Query](/functions/query-functions.md) and [mutation](/functions/mutation-functions.md) functions can read data from database tables using *document ids* and *document queries*.
 
@@ -39189,6 +39612,8 @@ Related posts from
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Filtering
 
 The [`filter`](/api/interfaces/server.Query.md#filter) method allows you to restrict the documents that your document query returns. This method takes a filter constructed by [`FilterBuilder`](/api/interfaces/server.FilterBuilder.md) and will only select documents that match.
@@ -39415,6 +39840,8 @@ For information on other limits, see [Limits](/production/state/limits.md).
 ---
 
 # Indexes
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Indexes are a data structure that allow you to speed up your [document queries](/database/reading-data/.md#querying-documents) by telling Convex how to organize your documents. Indexes also allow you to change the order of documents in query results.
 
@@ -39741,6 +40168,8 @@ The `by_creation_time` index is created automatically (and is what is used in da
 
 # Introduction to Indexes and Query Performance
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 How do I ensure my Convex [database queries](/database/reading-data/.md) are fast and efficient? When should I define an [index](/database/reading-data/indexes/.md)? What is an index?
 
 This document explains how you should think about query performance in Convex by describing a simplified model of how queries and indexes function.
@@ -40013,6 +40442,8 @@ To learn more about queries and indexes, check out our reference documentation:
 ---
 
 # Schemas
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 A schema is a description of
 
@@ -40466,6 +40897,8 @@ Related posts from
 
 # Data Types
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 All Convex documents are defined as JavaScript objects. These objects can have field values of any of the types below.
 
 You can codify the shape of documents within your tables by [defining a schema](/database/schemas.md).
@@ -40582,6 +41015,8 @@ For more sophisticated printing (formatting) and manipulation of dates and times
 ---
 
 # Writing Data
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [Mutations](/functions/mutation-functions.md) can insert, update, and remove data from database tables.
 
@@ -41022,6 +41457,8 @@ The available fields match those on `TransactionMetrics`: `bytesRead`, `bytesWri
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Version: 1.0.0
 
 # Convex Deployment API
@@ -41066,6 +41503,8 @@ Created in the dashboard under team settings for any team you can manage. Use th
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create log stream
 
 ```
@@ -41084,6 +41523,8 @@ Create a new log stream for the deployment. Errors if a log stream of the given 
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create usage limit
 
 ```
@@ -41101,6 +41542,8 @@ Create a new usage limit config for a deployment.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Data sync
 
@@ -41130,6 +41573,8 @@ The caller must have the `deployment:data:view` permission.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Delete log stream
 
 ```
@@ -41147,6 +41592,8 @@ Delete the deployment's log stream with the given id.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Delete usage limit
 
@@ -41166,6 +41613,8 @@ Delete an existing usage limit config for a deployment.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get canonical URLs
 
 ```
@@ -41181,6 +41630,8 @@ Get the canonical URLs for a deployment.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Get current usage
 
@@ -41204,6 +41655,8 @@ The reported usage is only guaranteed to reflect the full window when `seedStatu
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get deployment info
 
 ```
@@ -41219,6 +41672,8 @@ Returns identity information about this deployment.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Get log stream
 
@@ -41237,6 +41692,8 @@ Get the config for a specific log stream by id.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List active data syncs
 
@@ -41262,6 +41719,8 @@ A data sync is considered active for 3 days after the most recent API call. from
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List audit log events
 
 ```
@@ -41280,6 +41739,8 @@ List a deployment's audit log events on or after a timestamp, from least to most
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List environment variables
 
 ```
@@ -41296,6 +41757,8 @@ Get all environment variables in a deployment. In the future this might not incl
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List log streams
 
 ```
@@ -41311,6 +41774,8 @@ List configs for all existing log streams in a deployment.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List usage limits
 
@@ -41330,6 +41795,8 @@ Get all usage limit configs for a deployment.
 
 # Deployment API
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The public interface of a Convex deployment is defined by the functions defined in files in a convex folder.
 
 The public HTTP endpoints of every Convex deployment consist of custom HTTP endpoints defined by [HTTP Actions](/functions/http-actions.md) and a static [public HTTP API](/http-api/.md).
@@ -41340,6 +41807,8 @@ A client wrapping the Platform APIs for deployments is available in the [`@conve
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Pause deployment
 
@@ -41356,6 +41825,8 @@ Disables a deployment without deleting any data. The deployment will not operate
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Rotate webhook log stream secret
 
@@ -41375,6 +41846,8 @@ Rotate the secret for the webhook log stream.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Unpause deployment
 
 ```
@@ -41390,6 +41863,8 @@ Reenables a deployment that was previously paused. The deployment will resume no
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Update canonical URL
 
@@ -41409,6 +41884,8 @@ Set or unset the canonical URL for a deployment's convex.cloud or convex.site do
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Update environment variables
 
 ```
@@ -41427,6 +41904,8 @@ Update one or many environment variables in a deployment. This will invalidate a
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Update log stream
 
 ```
@@ -41444,6 +41923,8 @@ Update an existing log stream for the deployment. Omit a field to keep the exist
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Update usage limit
 
@@ -41464,6 +41945,8 @@ Replace an existing usage limit config for a deployment.
 ---
 
 # Deployment Platform API
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 info
 
@@ -41505,6 +41988,8 @@ console.log(await response.json());
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Errors and Warnings
 
@@ -41720,6 +42205,8 @@ We exclude `api.d.ts` here because type-only imports are generally safe.
 
 # ESLint rules
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The Convex ESLint plugin provides linter rules that enforce best practices for Convex functions. Let us know if there's a rule you would find helpful!
 
 ## Setup[​](#setup "Direct link to Setup")
@@ -41856,6 +42343,7 @@ const nextConfig: NextConfig = {
 | [`@convex-dev/require-argument-validators`](#require-argument-validators)<br />Require argument validators for Convex functions          | ✅          | 🔧           |
 | [`@convex-dev/explicit-table-ids`](#explicit-table-ids)<br />Require explicit table names in database operations                         | ✅          | 🔧           |
 | [`@convex-dev/no-filter-in-query`](#no-filter-in-query)<br />Warn on `.filter()` in database queries (inefficient)                       | ✅          |              |
+| [`@convex-dev/no-top-of-hour-crons`](#no-top-of-hour-crons)<br />Warn on cron jobs scheduled exactly on the hour                         | ✅          |              |
 | [`@convex-dev/import-wrong-runtime`](#import-wrong-runtime)<br />Prevent Convex runtime files from importing from Node runtime files     |             |              |
 | [`@convex-dev/no-collect-in-query`](#no-collect-in-query)<br />Prefer `.take()` / `.paginate()` over `.collect()` in queries             |             |              |
 
@@ -42097,6 +42585,52 @@ If it is not possible to replace `.filter()` in your query, you can silence this
 // eslint-disable-next-line @convex-dev/no-filter-in-query
 ```
 
+### no-top-of-hour-crons[​](#no-top-of-hour-crons "Direct link to no-top-of-hour-crons")
+
+Warn when a cron job is scheduled at the exact top of the hour.
+
+The top of the hour is the busiest time on the clock: apps receive the most inbound traffic, webhooks, and scheduled work right at `:00`. Pinning a cron there means your background work competes with that peak, making it more likely to hit your app's limits.
+
+The simplest fix is to omit `minuteUTC`. Convex then picks a minute for you and spreads runs across the hour. You can also set a specific off-peak minute if you need the job to run at a predictable time.
+
+```
+// ❌ Runs at the busiest moment of the hour:
+
+crons.hourly("cleanup", { minuteUTC: 0 }, internal.tasks.cleanup);
+
+crons.cron("nightly", "0 3 * * *", internal.tasks.nightly);
+
+
+
+// ✅ Let Convex pick and spread the minute:
+
+crons.hourly("cleanup", internal.tasks.cleanup);
+
+crons.daily("nightly", { hourUTC: 3 }, internal.tasks.nightly);
+
+
+
+// ✅ Or choose a specific off-peak minute:
+
+crons.hourly("cleanup", { minuteUTC: 37 }, internal.tasks.cleanup);
+```
+
+If the job really must run at the top of the hour, you can silence this warning with:
+
+```
+// eslint-disable-next-line @convex-dev/no-top-of-hour-crons
+
+crons.hourly(
+
+  "send a message at the start of every hour",
+
+  { minuteUTC: 0 },
+
+  internal.messages.sendHourlyDigest,
+
+);
+```
+
 ### import-wrong-runtime[​](#import-wrong-runtime "Direct link to import-wrong-runtime")
 
 Prevent Convex runtime files from importing from Node runtime files (files with a `"use node"` directive).
@@ -42144,6 +42678,8 @@ const results = await ctx.db.query("roles").collect();
 
 # Deleting Files
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Files stored in Convex can be deleted from [mutations](/functions/mutation-functions.md), [actions](/functions/actions.md), and [HTTP actions](/functions/http-actions.md) via the [`storage.delete()`](/api/interfaces/server.StorageWriter.md#delete) function, which accepts a storage ID.
 
 Storage IDs correspond to documents in the `"_storage"` system table (see [Metadata](/file-storage/file-metadata.md)), so they can be validated using the `v.id("_storage")`.
@@ -42180,6 +42716,8 @@ export const deleteById = mutation({
 ---
 
 # Accessing File Metadata
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Every stored file is reflected as a document in the `"_storage"` system table. File metadata of a file can be accessed from [queries](/functions/query-functions.md) and [mutations](/functions/mutation-functions.md) via `db.system.get` and `db.system.query`:
 
@@ -42284,6 +42822,8 @@ Note that [`storage.getMetadata()`](/api/interfaces/server.StorageReader.md#getm
 
 # File Storage
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 File Storage makes it easy to implement file upload in your app, store files from and send files to third-party APIs, and to serve dynamic files to your users. All file types are supported.
 
 ## Security model[​](#security-model "Direct link to Security model")
@@ -42316,6 +42856,8 @@ You can manage your stored files on the [dashboard](/dashboard/deployments/file-
 ---
 
 # Serving Files
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Files stored in Convex can be served to your users by generating a URL pointing to a given file.
 
@@ -42476,6 +43018,8 @@ function Image({ storageId }: { storageId: string }) {
 
 # Storing Generated Files
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Files can be uploaded to Convex from a client and stored directly, see [Upload](/file-storage/upload-files.md).
 
 Alternatively files can also be stored after they've been fetched or generated in [actions](/functions/actions.md) and [HTTP actions](/functions/http-actions.md). For example you might call a third-party API to generate an image based on a user prompt and then store that image in Convex.
@@ -42574,6 +43118,8 @@ export const storeResult = internalMutation({
 ---
 
 # Uploading and Storing Files
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Upload files to Convex by [generated upload urls](#uploading-files-via-upload-urls), or via an [custom HTTP Action](#uploading-files-via-an-http-action).
 
@@ -43005,6 +43551,8 @@ http.route({
 ---
 
 # Actions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Actions can call third party services to do things such as processing a payment with [Stripe](https://stripe.com). They can be run in Convex's JavaScript environment or in Node.js. They can interact with the database indirectly by calling [queries](/functions/query-functions.md) and [mutations](/functions/mutation-functions.md).
 
@@ -43511,6 +44059,8 @@ Caveats: Separate runQuery / runMutation calls are valid when intentionally tryi
 
 # Bundling
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Bundling is the process of gathering, optimizing and transpiling the JS/TS source code of [functions](/functions/overview.md) and their dependencies. During development and when deploying, the code is transformed to a format that Convex [runtimes](/functions/runtimes.md) can directly and efficiently execute.
 
 Convex currently bundles all dependencies automatically, but for the Node.js runtime you can disable bundling certain packages via the [external packages](#external-packages) config.
@@ -43689,6 +44239,8 @@ If there is a package that you would like working in your Convex functions, [let
 
 # Debugging
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Debugging is the process of figuring out why your code isn't behaving as you expect.
 
 ## Debugging during development[​](#debugging-during-development "Direct link to Debugging during development")
@@ -43774,6 +44326,8 @@ You can copy and paste a Request ID into your Convex dashboard to view the logs 
 ---
 
 # Error Handling
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 There are four reasons why your Convex [queries](/functions/query-functions.md) and [mutations](/functions/mutation-functions.md) may hit errors:
 
@@ -43915,6 +44469,8 @@ See [Debugging](/functions/debugging.md) and specifically [Finding relevant logs
 ---
 
 # Application Errors
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 If you have expected ways your functions might fail, you can either return different values or throw `ConvexError`s.
 
@@ -44076,6 +44632,8 @@ export function MyApp() {
 ---
 
 # HTTP Actions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 HTTP actions allow you to build an HTTP API right in Convex!
 
@@ -44495,6 +45053,8 @@ fetch("https://<deployment name>.convex.site/myAction", {
 
 # Internal Functions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Internal functions can only be called by other [functions](/functions/overview.md) and cannot be called directly from a [Convex client](/client/react/overview.md).
 
 By default your Convex functions are public and accessible to clients. Public functions may be called by malicious users in ways that cause surprising results. Internal functions help you mitigate this risk. We recommend using internal functions any time you're writing logic that should not be called from a client.
@@ -44618,6 +45178,8 @@ You can define public and internal functions in the same file.
 ---
 
 # Mutations
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Mutations insert, update and remove data from the database, check authentication or perform other business logic, and optionally return a response to the client application.
 
@@ -44937,6 +45499,8 @@ For information on other limits, see [Limits](/production/state/limits.md).
 
 # Functions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Functions run on the backend and are written in JavaScript (or TypeScript). They are automatically available as APIs accessed through [client libraries](/client/react/overview.md). Everything you do in the Convex backend starts from functions.
 
 There are three types of functions:
@@ -44961,6 +45525,8 @@ Here's an overview of the three different types of Convex functions and what the
 ---
 
 # Queries
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Queries are the bread and butter of your backend API. They fetch data from the database, check authentication or perform other business logic, and return data back to the client application.
 
@@ -45327,6 +45893,8 @@ For information on other limits, see [Limits](/production/state/limits.md).
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Runtimes
 
 Convex functions can run in two runtimes:
@@ -45516,6 +46084,8 @@ Note: This configuration is not supported when running the self-hosted Convex ba
 ---
 
 # Argument and Return Value Validation
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Argument and return value validators ensure that [queries](/functions/query-functions.md), [mutations](/functions/mutation-functions.md), and [actions](/functions/actions.md) are called with the correct types of arguments and return the expected types of return values.
 
@@ -45881,6 +46451,8 @@ Notes:
 
 # Generated Code
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex uses code generation to create code that is specific to your app's data model and API. Convex generates JavaScript files (`.js`) with TypeScript type definitions (`.d.ts`).
 
 Code generation isn't required to use Convex, but using the generated code will give you more better autocompletion in your editor and more type safety if you're using TypeScript.
@@ -45901,6 +46473,8 @@ This creates a `convex/_generated` directory that contains:
 ---
 
 # api.js
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 This code is generated
 
@@ -45971,6 +46545,8 @@ export default action({
 
 # dataModel.d.ts
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 This code is generated
 
 These exports are not directly available in the `convex` package!
@@ -46037,6 +46613,8 @@ This type is used to parameterize methods like [`queryGeneric`](/api/modules/ser
 ---
 
 # server.js
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 This code is generated
 
@@ -46294,6 +46872,8 @@ This is an alias of [`GenericDatabaseWriter`](/api/interfaces/server.GenericData
 
 # Convex HTTP API
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The public functions that define a deployment are exposed at public HTTP endpoints.
 
 ## Convex value format[​](#convex-value-format "Direct link to Convex value format")
@@ -46472,6 +47052,8 @@ response = requests.get(url, headers=headers, body=json)
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Cancel a pending team invitation
 
 ```
@@ -46489,6 +47071,8 @@ Cancel a pending team invitation
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Version: 1.0.0
 
@@ -46535,6 +47119,8 @@ Created in the dashboard under team settings for any team you can manage.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create custom domain
 
 ```
@@ -46553,6 +47139,8 @@ Create custom domain
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create a custom role
 
 ```
@@ -46570,6 +47158,8 @@ Creates a new custom role for the team with the specified name, description, and
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Create deploy key
 
@@ -46593,6 +47183,8 @@ When access to the deployment is granted any other way a new token will be creat
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create deployment
 
 ```
@@ -46611,6 +47203,8 @@ Create a new deployment for a project.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create personal access token
 
 ```
@@ -46628,6 +47222,8 @@ Creates a new personal access token for the authenticated user.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Create preview deploy key
 
@@ -46651,6 +47247,8 @@ When access to the project is granted any other way a new token scoped to previe
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create project
 
 ```
@@ -46668,6 +47266,8 @@ Create a new project on a team, optionally provisioning a dev or prod deployment
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Create a team
 
@@ -46692,6 +47292,8 @@ Caller is not authorized to create teams
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Create a team access token
 
 ```
@@ -46715,6 +47317,8 @@ Caller is not authorized to create team access tokens
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Delete custom domain
 
 ```
@@ -46732,6 +47336,8 @@ Remove a custom domain from a deployment.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Delete a custom role
 
@@ -46751,6 +47357,8 @@ Deletes a custom role from the team. Fails with `CustomRoleInUse` if the role is
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Delete deploy key
 
 ```
@@ -46768,6 +47376,8 @@ Deletes a deploy key for the specified deployment. The `id` in the request body 
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Delete deployment
 
@@ -46787,6 +47397,8 @@ Delete a deployment. This will delete all data and files in the deployment, so w
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Delete personal access token
 
 ```
@@ -46804,6 +47416,8 @@ Deletes a personal access token for the authenticated user. The `id` in the requ
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Delete preview deploy key
 
@@ -46823,6 +47437,8 @@ Deletes a preview deploy key for the specified project. The `id` in the request 
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Delete project
 
 ```
@@ -46840,6 +47456,8 @@ Delete a project. Deletes all deployments in the project as well.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Delete a team access token
 
@@ -46859,6 +47477,8 @@ Deletes a team access token, identified by its secret value or name.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get deployment in project by id
 
 ```
@@ -46876,6 +47496,8 @@ Get a deployment within a project by reference, default production deployment, o
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Get deployment in project by slug
 
@@ -46895,6 +47517,8 @@ Get a deployment within a project identified by team and project slug, by refere
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get project by ID
 
 ```
@@ -46912,6 +47536,8 @@ Get a project by its ID.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Get project by slug
 
@@ -46931,6 +47557,8 @@ Get a project by its slug.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get token details
 
 ```
@@ -46946,6 +47574,8 @@ Returns the team ID for team tokens. Especially useful after receiving a team to
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Invite a team member
 
@@ -46965,6 +47595,8 @@ Invite a member to the given team by email. `role` is required and must be one o
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List audit log events
 
 ```
@@ -46982,6 +47614,8 @@ List a team's audit log events within a time range, with optional filters.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List custom domains
 
@@ -47001,6 +47635,8 @@ Get all custom domains configured for a deployment.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List custom roles
 
 ```
@@ -47018,6 +47654,8 @@ Lists all custom roles for the team with cursor-based pagination.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List default environment variables
 
@@ -47037,6 +47675,8 @@ Lists all default environment variables for the specified project, with optional
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List deploy keys
 
 ```
@@ -47054,6 +47694,8 @@ Lists all deploy keys for the specified deployment.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List deployment classes
 
@@ -47073,6 +47715,8 @@ Lists the available deployment classes for a team.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List deployment regions
 
 ```
@@ -47090,6 +47734,8 @@ Lists the available deployment regions for a team.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List deployments
 
@@ -47109,6 +47755,8 @@ List deployments for a projects.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List deployments for team
 
 ```
@@ -47126,6 +47774,8 @@ Lists deployments for a team with pagination, sorting, and filtering.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List local deployments
 
@@ -47145,6 +47795,8 @@ Lists the local deployments for a team.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List pending team invitations
 
 ```
@@ -47162,6 +47814,8 @@ List the pending invitations for the given team.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List personal access tokens
 
@@ -47181,6 +47835,8 @@ Lists all personal access tokens for the authenticated user.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List preview deploy keys
 
 ```
@@ -47198,6 +47854,8 @@ Lists all preview deploy keys for the specified project.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List projects
 
@@ -47217,6 +47875,8 @@ List a page of projects for a team, ordered by descending project ID. Pass `limi
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # List team access tokens
 
 ```
@@ -47234,6 +47894,8 @@ Lists the team access tokens created by the authenticated member for the given t
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # List team members
 
@@ -47254,6 +47916,8 @@ List the members of the given team.
 ---
 
 # Management API
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 info
 
@@ -47306,6 +47970,8 @@ An OpenAPI spec for the Management API is available at <https://api.convex.dev/v
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get deployment
 
 ```
@@ -47323,6 +47989,8 @@ Get details about a cloud deployment.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Transfer deployment
 
@@ -47342,6 +48010,8 @@ Transfer a deployment from its current project to another project within the sam
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Update a custom role
 
 ```
@@ -47359,6 +48029,8 @@ Updates an existing custom role's name, description, and permission statements.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Update default environment variables
 
@@ -47378,6 +48050,8 @@ Creates, updates, or deletes default environment variables for the specified pro
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Update deployment
 
 ```
@@ -47396,6 +48070,8 @@ Updates properties of an existing deployment. Only the fields provided in the re
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Update project
 
 ```
@@ -47413,6 +48089,8 @@ Update a project's name and/or slug. Returns the updated project.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Update a team member's role
 
@@ -47433,6 +48111,8 @@ Sets either the member's built-in `role` (admin/developer) or their `customRoles
 ---
 
 # Embedding the dashboard
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex provides a hosted dashboard that is embeddable via iframe. Embedding the dashboard is useful for developers building AI app generators.
 
@@ -47556,6 +48236,8 @@ export function Dashboard({
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # OAuth Applications
 
@@ -47683,6 +48365,8 @@ OAuth client libraries typically support PKCE already, but to implement it manua
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Platform APIs
 
 info
@@ -47750,6 +48434,8 @@ To view the full list of commands, refer to the [CLI documentation](/cli/overvie
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Tracking Usage
 
 Products built on the Platform APIs often create many Convex deployments programmatically. For example, an AI app builder may spin up a fresh deployment for every user-generated app. In these scenarios, it's important to attribute resource usage back to the deployment that produced it, so you can monitor cost per app, charge your end users, or detect runaway workloads in real time.
@@ -47787,6 +48473,8 @@ A typical pipeline is to receive these events at your webhook, tag each one with
 ---
 
 # Abuse Protection
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Protecting a Convex deployment from abuse — denial-of-service (DDoS) floods, scraping, credential stuffing, and other malicious or expensive traffic — is partly handled for you and partly up to you. This page covers what Convex protects against automatically, what it doesn't, and how to add your own edge for the rest.
 
@@ -47908,6 +48596,8 @@ Reach out to <support@convex.dev> if you have questions about hardening a custom
 
 # Contact Us
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex is a rapidly developing platform and we're always eager to hear your feedback.
 
 ## Feedback and Support[​](#feedback-and-support "Direct link to Feedback and Support")
@@ -47930,6 +48620,8 @@ If you believe you've discovered a bug in Convex's security, please get in touch
 ---
 
 # Custom Domains
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 You can configure a custom domain, like `api.example.com`, to serve HTTP actions or Convex functions from your Convex deployments. The settings for this feature are accessed through the Deployment Settings page on any of your deployments.
 
@@ -47971,6 +48663,8 @@ To use a custom domain to serve your Convex functions, there's an additional ste
 ---
 
 # Environment Variables
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Environment variables are key-value pairs that are useful for storing values you wouldn't want to put in code or in a table, such as an API key. You can set environment variables in Convex through the dashboard and access them in [functions](/functions/overview.md).
 
@@ -48211,6 +48905,8 @@ You can also change the default environment variables from the CLI using `npx co
 
 # Deploy Your Frontend
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 The easiest way to publish your full-stack web app is to use a hosting provider like [Vercel](https://vercel.com) or [Netlify](https://netlify.com).
 
 Both Vercel and Netlify integrate with Git to deploy code whenever a new revision is pushed. To host your app:
@@ -48229,6 +48925,8 @@ If you aren't using Netlify or Vercel, you can follow the Custom Hosting guide.
 ---
 
 # Custom Hosting
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 If you're using only Convex for backend functionality you can host your web app on any static hosting provider. This guide will use [GitHub Pages](https://pages.github.com/) as an example.
 
@@ -48314,6 +49012,8 @@ You will want to configure your [authentication](/auth/overview.md) provider (Cl
 ---
 
 # Using Convex with Netlify
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Hosting your Convex app on Netlify allows you to automatically re-deploy both your backend and your frontend whenever you push your code.
 
@@ -48435,6 +49135,8 @@ Production deployments will work exactly the same as before.
 ---
 
 # Using Convex with Vercel
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Hosting your Convex app on Vercel allows you to automatically re-deploy both your backend and your frontend whenever you push your code.
 
@@ -48582,6 +49284,8 @@ Production deployments will work exactly the same as before.
 
 # Integrations
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex integrates with a variety of supported third party tools for log streaming and exception reporting.
 
 * [Log Streams](/production/integrations/log-streams/.md) enable streaming of log events from your Convex deployment to supported destinations, such as Axiom, Datadog, PostHog, or a custom webhook.
@@ -48645,6 +49349,8 @@ Beyond integrations for logs and exceptions, [Convex Components](/components/ove
 ---
 
 # Audit Logging
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex offers the ability to emit transactional, durable logs to a S3 bucket in your own AWS account. This can be useful for when you need to audit log your users' access to sensitive data. Furthermore, audit logging allows you use *dynamic log variables* to log client IP, `User-Agent`, and other metadata that is not usually available in a query context.
 
@@ -48846,6 +49552,8 @@ If no S3 bucket or log stream is configured, no logs will be emitted, but the au
 
 # Exception Reporting
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Configure exception reporting to gain visibility into errors from your Convex function executions. Convex supports integration with [Sentry](https://sentry.io/), [PostHog Error Tracking](https://posthog.com/docs/error-tracking), and [Datadog Error Tracking](https://www.datadoghq.com/product/error-tracking/).
 
 Currently, exception reporting is only available to Pro users.
@@ -48913,6 +49621,8 @@ Follow the instructions in the [Datadog application](https://app.datadoghq.com/e
 ---
 
 # Log Streams
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Log streams enable streaming of events such as function executions and `console.log`s from your Convex deployment to supported destinations, such as Axiom, Datadog, PostHog, or a custom webhook.
 
@@ -49431,6 +50141,8 @@ Related posts from
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # (Legacy) Event schema
 
 info
@@ -49615,6 +50327,8 @@ Schema
 
 # Streaming Data in and out of Convex
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex provides a [Data Sync API](https://docs.convex.dev/deployment-api/data-sync) for streaming data out of Convex, and a [Data Import CLI](https://docs.convex.dev/database/import-export/import).
 
 You can use the APIs directly or opt to use data integration platforms like [Fivetran](https://www.fivetran.com) and [Airbyte](https://airbyte.com) to automate and smooth the process of syncing your Convex data with other databases.
@@ -49670,6 +50384,8 @@ Streaming import is included with all Convex plans. See the Airbyte docs on how 
 ---
 
 # Working with Multiple Deployments
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 By default, each project has a single shared **prod deployment** and each developer working on the project has their own **dev deployment**.
 
@@ -49836,6 +50552,8 @@ You can change the expiration time for an existing deployment in the dashboard d
 
 # Multiple Repositories
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Your TypeScript clients can call Convex functions in a type-safe way outside of the repository where your Convex functions are defined. By following the steps below, you can generate a file similar to `convex/_generated/api.d.ts` that you can check in and use in a separate repository.
 
 TypeScript API generation is in beta
@@ -49996,6 +50714,8 @@ export default function App() {
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Networking
 
 ## Egress IP addresses[​](#egress-ip-addresses "Direct link to Egress IP addresses")
@@ -50026,6 +50746,8 @@ These IP addresses are shared across all Convex deployments in a region, not jus
 ---
 
 # Deploying Your App to Production
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex is built to serve live, production app traffic. Here we cover how to deploy and maintain a production version of your app.
 
@@ -50111,6 +50833,8 @@ Related posts from
 
 # Pausing a Deployment
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Pausing a deployment is a way to "turn off" a deployment without deleting any data. This can be useful if you have an action that is blowing through a third-party API quota and you just need a big red stop button.
 
 You can pause a deployment from the [deployment settings page](https://dashboard.convex.dev/deployment/settings/pause-deployment) in the dashboard.
@@ -50134,6 +50858,8 @@ A deployment can be resumed with this button on the same page:
 ---
 
 # Project Configuration
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 ## Local development[​](#local-development "Direct link to Local development")
 
@@ -50434,6 +51160,8 @@ Provisioning the Convex-managed WorkOS team and disconnecting it require the you
 
 # Regions
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 You may select a hosting region for your Convex deployment to change the location of your data.
 
 All infrastructure powering your deployment will be hosted in the selected region.
@@ -50458,6 +51186,8 @@ An existing deployment's region cannot be changed. If you need to move your depl
 ---
 
 # Status and Guarantees
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Please [contact us](mailto:support@convex.dev) with any specific requirements or if you want to build a project on Convex that is not yet satisfied by our guarantees.
 
@@ -50509,6 +51239,8 @@ Convex does not yet have an official browser support policy, but we strive to su
 ---
 
 # Limits
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 We’d love for you to have *unlimited* joy building on Convex but engineering practicalities dictate a few limits. This page outlines current limits in the Convex ecosystem.
 
@@ -50706,6 +51438,8 @@ Please see our [Free, Starter, and Professional pricing page](https://www.convex
 
 # Usage Limits
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Usage limits allow you to cap how much usage a single deployment can consume per day or calendar month. Usage limits are a guardrail against runaway workloads: a scheduled function stuck in a loop, an action hammering a third-party API, or unexpected traffic spike that would otherwise show up on your bill.
 
 Deployment limits are especially useful on development deployments, where an AI coding agent left running unattended can burn through a lot of usage.
@@ -50760,6 +51494,8 @@ Every change to a deployment's usage limits is recorded on the deployment's [his
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Version: 1.0.0
 
 # Convex Public HTTP routes
@@ -50772,6 +51508,8 @@ Endpoints that require no authentication
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Execute action
 
@@ -50791,6 +51529,8 @@ Execute an action function.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Execute any function
 
 ```
@@ -50808,6 +51548,8 @@ Execute a query, mutation, or action function by name.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Execute function by URL path
 
@@ -50827,6 +51569,8 @@ Execute a query, mutation, or action function by path in URL.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Get latest timestamp
 
 ```
@@ -50842,6 +51586,8 @@ Get the latest timestamp for queries.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Execute mutation
 
@@ -50861,6 +51607,8 @@ Execute a mutation function.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Execute query at timestamp
 
 ```
@@ -50878,6 +51626,8 @@ Execute a query function at a specific timestamp.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Execute query batch
 
@@ -50897,6 +51647,8 @@ Execute multiple query functions in a batch.
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Execute query (GET)
 
 ```
@@ -50914,6 +51666,8 @@ Execute a query function via GET request.
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Execute query (POST)
 
@@ -50934,6 +51688,8 @@ Execute a query function via POST request.
 ---
 
 # Android Kotlin Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Learn how to query data from Convex in a Android Kotlin project.
 
@@ -51205,6 +51961,8 @@ See the complete [Android Kotlin documentation](/client/android/overview.md).
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Learn how to query data from Convex in a Bun project.
 
 For instructions for subscriptions instead of point-in-time queries see [Bun notes](/client/javascript/bun.md).
@@ -51331,6 +52089,8 @@ See the complete [Bun documentation](/client/javascript/bun.md).
 ---
 
 # Next.js Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex + Next.js
 
@@ -51591,6 +52351,8 @@ See the complete [Next.js documentation](/client/nextjs/app-router/.md).
 
 # Node.js Quickstart
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Learn how to query data from Convex in a Node.js project.
 
 For instructions for subscriptions instead of point-in-time queries and more project configurations (TypeScript, bundlers, CJS vs ESM) see [Node.js notes](/client/javascript/node.md).
@@ -51709,6 +52471,8 @@ See the complete [Node.js documentation](/client/javascript/node.md).
 ---
 
 # Nuxt Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Learn how to query data from Convex in a Nuxt app.
 
@@ -51949,6 +52713,8 @@ See the complete [Nuxt npm package documentation](https://www.npmjs.com/package/
 
 # Quickstarts
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Quickly get up and running with your favorite frontend tooling:
 
 * [React](/quickstart/react.md)
@@ -51975,6 +52741,8 @@ Quickly get up and running with your favorite languages:
 ---
 
 # Python Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Learn how to query data from Convex in a Python app.
 
@@ -52110,6 +52878,8 @@ See the [docs on PyPI](https://pypi.org/project/convex/) for more details.
 ---
 
 # React Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [YouTube video player](https://www.youtube.com/embed/4MgsvjMb59Q)
 
@@ -52320,6 +53090,8 @@ See the complete [React documentation](/client/react/overview.md).
 
 # React Native Quickstart
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Learn how to query data from Convex in a React Native app.
 
 1. Create a React Native app
@@ -52508,6 +53280,8 @@ React native uses the same library as React web. See the complete [React documen
 ---
 
 # Remix Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Learn how to query data from Convex in a Remix app.
 
@@ -52740,6 +53514,8 @@ Remix uses the React web library. See the complete [React documentation](/client
 
 # Rust Quickstart
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Learn how to query data from Convex in a Rust app with Tokio.
 
 1. Create a Cargo project
@@ -52877,6 +53653,8 @@ See the complete [Rust documentation](https://docs.rs/convex/latest/convex/).
 
 # Script Tag Quickstart
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Learn how to query data from Convex from script tags in HTML.
 
 1. Create a new npm project
@@ -52991,6 +53769,8 @@ See the complete [Script Tag documentation](/client/javascript/script-tag.md).
 ---
 
 # Svelte Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Learn how to query data from Convex in a Svelte app.
 
@@ -53186,6 +53966,8 @@ See the [Convex Svelte docs](/client/svelte/overview.md) for the full reactive A
 
 # iOS Swift Quickstart
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Learn how to query data from Convex in an application targeting iOS and MacOS devices built with Swift and SwiftUI.
 
 This quickstart assumes that you have a Mac with Xcode, node and npm installed. If you don’t have those tools, take time to install them first.
@@ -53375,6 +54157,8 @@ See the complete [iOS Swift documentation](/client/swift/overview.md).
 ---
 
 # TanStack Start Quickstart
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 TanStack Start is in Release Candidate
 
@@ -53719,6 +54503,8 @@ For more see the [TanStack Start with Convex](/client/tanstack/tanstack-start/.m
 
 # Vue Quickstart
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Learn how to query data from Convex in a Vue app.
 
 This quickstart guide uses a [community-maintained](/client/vue/overview.md) Vue client for Convex.
@@ -53887,6 +54673,8 @@ See the complete [Vue npm package documentation](https://www.npmjs.com/package/c
 
 # Realtime
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Turns out Convex is automatically realtime! You don’t have to do anything special if you are already using [query functions](/functions/query-functions.md), [database](/database/overview.md), and [client libraries](/client/react/overview.md) in your app. Convex tracks the dependencies to your query functions, including database changes, and triggers the subscription in the client libraries.
 
 ![Convex is automatically reactive and realtime](/assets/images/realtime-3197272a21b075792f6ac922af228378.gif)
@@ -53919,6 +54707,8 @@ Related posts from
 ---
 
 # Cron Jobs
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex allows you to schedule functions to run on a recurring basis. For example, cron jobs can be used to clean up data at a regular interval, send a reminder email at the same time every month, or schedule a backup every Saturday.
 
@@ -53980,7 +54770,49 @@ The third argument is the name of the public function or [internal function](/fu
 
 * [`crons.interval()`](/api/classes/server.Crons.md#interval) runs a function every specified number of `seconds`, `minutes`, or `hours`. The first run occurs when the cron job is first deployed to Convex. Unlike traditional crons, this option allows you to have seconds-level granularity.
 * [`crons.cron()`](/api/classes/server.Crons.md#cron) the traditional way of specifying cron jobs by a string with five fields separated by spaces (e.g. `"* * * * *"`). Times in cron syntax are in the UTC timezone. [Crontab Guru](https://crontab.guru/) is a helpful resource for understanding and creating schedules in this format.
-* [`crons.hourly()`](/api/classes/server.Crons.md#cron), [`crons.daily()`](/api/classes/server.Crons.md#daily), [`crons.weekly()`](/api/classes/server.Crons.md#weekly), [`crons.monthly()`](/api/classes/server.Crons.md#monthly) provide an alternative syntax for common cron schedules with explicitly named arguments.
+* [`crons.hourly()`](/api/classes/server.Crons.md#cron), [`crons.daily()`](/api/classes/server.Crons.md#daily), [`crons.weekly()`](/api/classes/server.Crons.md#weekly), [`crons.monthly()`](/api/classes/server.Crons.md#monthly) provide an alternative syntax for common cron schedules with explicitly named arguments. The `minuteUTC` argument is optional. Leave it out and Convex picks a minute for you, spreading runs across the hour.
+
+Avoid scheduling on the exact top of the hour
+
+The top of the hour (minute `0`) is the busiest time on the clock. Apps receive the most inbound traffic, webhooks, and scheduled work right at `:00`. Scheduling recurring work away from the top of the hour keeps it away from your busiest moments and makes it less likely to compete for your app's resources.
+
+The easiest way is to leave `minuteUTC` out and let Convex pick a minute for you, spreading runs across the hour. You can also set a specific off-peak minute if you need a predictable time.
+
+```
+// ❌ Runs at the busiest moment of the hour:
+
+crons.daily(
+
+  "send reminder",
+
+  { hourUTC: 17, minuteUTC: 0 },
+
+  internal.emails.send,
+
+);
+
+
+
+// ✅ Let Convex pick and spread the minute:
+
+crons.daily("send reminder", { hourUTC: 17 }, internal.emails.send);
+
+
+
+// ✅ Or choose a specific off-peak minute:
+
+crons.daily(
+
+  "send reminder",
+
+  { hourUTC: 17, minuteUTC: 23 },
+
+  internal.emails.send,
+
+);
+```
+
+The [`@convex-dev/no-top-of-hour-crons`](/eslint.md#no-top-of-hour-crons) ESLint rule flags schedules pinned to the top of the hour.
 
 ## Viewing your cron jobs[​](#viewing-your-cron-jobs "Direct link to Viewing your cron jobs")
 
@@ -53996,6 +54828,8 @@ At most one run of each cron job can be executing at any moment. If the function
 ---
 
 # Scheduling
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex lets you easily schedule a function to run once or repeatedly in the future. This allows you to build durable workflows like sending a welcome email a day after someone joins or regularly reconciling your accounts with Stripe. Convex provides two different features for scheduling:
 
@@ -54034,6 +54868,8 @@ Related posts from
 ---
 
 # Scheduled Functions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex allows you to schedule functions to run in the future. This allows you to build powerful durable workflows without the need to set up and maintain queues or other infrastructure.
 
@@ -54246,6 +55082,8 @@ The auth is not propagated from the scheduling to the scheduled function. If you
 
 # AI & Search
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Whether building RAG enabled chatbots or quick search in your applications, Convex provides easy apis to create powerful AI and search enabled products.
 
 [Vector Search](/search/vector-search.md) enables searching for documents based on their semantic meaning. It uses vector embeddings to calculate similarity and retrieve documents that are similar to a given query. Vector search is a key part of common AI techniques like RAG.
@@ -54264,6 +55102,8 @@ Related posts from
 ---
 
 # Full Text Search
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Full text search allows you to find Convex documents that approximately match a search query.
 
@@ -54468,6 +55308,8 @@ For information on other limits, see [here](/production/state/limits.md).
 ---
 
 # Vector Search
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Vector search allows you to find Convex documents similar to a provided vector. Typically, vectors will be embeddings which are numerical representations of text, images, or audio.
 
@@ -54887,6 +55729,8 @@ If any of these features is important for your app, [let us know on Discord](htt
 
 # Self Hosting
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 If you're excited about self-hosting, you can run the Convex backend on your own servers. Self-hosted Convex runs the [open-source backend](https://github.com/get-convex/convex-backend), and contains the same fully up-to-date code the cloud service uses.
 
 To get started with self hosting, follow the self-hosting guide:
@@ -54931,6 +55775,8 @@ Related posts from
 ---
 
 # Custom Roles
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 info
 
@@ -55935,6 +56781,8 @@ The following [JSON Schema](https://json-schema.org/) represents the shape of va
 
 # Team Management
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex provides administrative features for controlling how members access your team, projects, and deployments:
 
 * **[Single Sign-On (SSO)](/team-management/sso.md)** — authenticate team members through your organization's identity provider.
@@ -55947,6 +56795,8 @@ For an overview of the built-in team and project roles, see [Roles and permissio
 ---
 
 # Role Actions
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex represents every permission you can grant on a team, project, or deployment as a named **role action**. Both the built-in team roles (Admin and Developer) and [custom roles](/team-management/custom-roles.md) are defined in terms of the same set of role actions, so this page works as a reference for both:
 
@@ -56145,6 +56995,8 @@ Deploy keys and preview deploy keys are service tokens. Once issued, they carry 
 
 # Single Sign-On (SSO)
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 info
 
 Single Sign-On is only available on Convex Business and Enterprise.
@@ -56204,6 +57056,8 @@ These settings will be available for self-serve configuration in the future.
 
 # Continuous Integration
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Continuous integration allows your team to move fast by combining changes from all team members and automatically testing them on a remote machine.
 
 ## Testing in GitHub Actions[​](#testing-in-github-actions "Direct link to Testing in GitHub Actions")
@@ -56245,6 +57099,8 @@ After you commit and push this file to your repository, GitHub will run `npm run
 
 # Testing Local Backend
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Alternatively to [`convex-test`](/testing/convex-test.md) you can test your functions using the [open-source version of the Convex backend](https://github.com/get-convex/convex-backend).
 
 ## Getting Started[​](#getting-started "Direct link to Getting Started")
@@ -56280,6 +57136,8 @@ See [Continuous Integration](/testing/ci.md) to run your tests on a shared remot
 ---
 
 # convex-test
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 The [`convex-test`](https://www.npmjs.com/package/convex-test) library provides a mock implementation of the Convex backend in JavaScript. It enables fast automated testing of the logic in your [functions](/functions/overview.md).
 
@@ -57116,6 +57974,8 @@ See [Continuous Integration](/testing/ci.md) to run your tests on a shared remot
 
 # Testing
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex makes it easy to test your app via automated tests running in JS or against a real backend, and manually in dev, preview and staging environments.
 
 ## Automated tests[​](#automated-tests "Direct link to Automated tests")
@@ -57155,6 +58015,8 @@ You can set up a separate project as a staging environment to test against. See 
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Convex Tutorial: Calling external services
 
@@ -57374,6 +58236,8 @@ We touched a little bit on setting your app up for success. As your application 
 
 
 ---
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 # Convex Tutorial: A chat app
 
@@ -57680,6 +58544,8 @@ But if you want to see how to call external services and build sophisticated bac
 
 ---
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 # Convex Tutorial: Scaling your app
 
 Convex was designed from the ground up for scale. In the previous section we already talked about how keeping your actions small and most of your logic in queries and mutations are crucial to building fast scalable backends.
@@ -57724,6 +58590,8 @@ Convex enables you to build your MVP fast and then scale to new heights. Many gr
 ---
 
 # Best Practices
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 This is a list of best practices and common anti-patterns around using Convex. We recommend going through this list before broadly releasing your app to production. You may choose to try using all of these best practices from the start, or you may wait until you've gotten major parts of your app working before going through and adopting the best practices here.
 
@@ -59193,6 +60061,8 @@ Alternatively, you can pass in the target time in as an explicit argument from t
 
 # TypeScript
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex provides end-to-end type support when Convex functions are written in [TypeScript](https://www.typescriptlang.org/).
 
 You can gradually add TypeScript to a Convex project: the following steps provide progressively better type support. For the best support you'll want to complete them all.
@@ -59520,6 +60390,8 @@ Related posts from
 
 # Convex Overview
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Convex is the open source, reactive database where queries are TypeScript code running right in the database. Just like React components react to state changes, Convex queries react to database changes.
 
 Convex provides a database, a place to write your server functions, and client libraries. It makes it easy to build and scale dynamic live-updating apps.
@@ -59740,6 +60612,8 @@ Now that you have a good sense of how Convex fits in your app. Let's walk throug
 
 # Dev workflow
 
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
 Let's walk through everything that needs to happen from creating a new project to launching your app in production.
 
 This doc assumes you are building an app with Convex and React and you already have a basic React app already up and running. You can follow one of our [quickstarts](/quickstart/overview.md) to set this up.
@@ -59914,6 +60788,8 @@ Whenever you're ready be sure the read the [Best Practices](/understanding/best-
 ---
 
 # The Zen of Convex
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 [YouTube video player](https://www.youtube.com/embed/dyEWQ9s2ji4?si=ce-M8pt6EWDZ8tfd)
 

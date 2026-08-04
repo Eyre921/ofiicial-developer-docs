@@ -56,7 +56,7 @@ Visit [Locations](https://dashboard.stripe.com/tax/locations) tab in the Dashboa
 
 ## Enable Tax in your Stripe integration or use the Stripe Tax API
 
-The final step in setting up Stripe Tax is to enable automatic tax on your Stripe integration. Here’s how:
+To enable automatic tax on your Stripe integration:
 
 #### No-code
 
@@ -70,7 +70,7 @@ After you click **Get started**, Stripe Tax is automatically enabled for new tra
 
 #### Low-code
 
-If you’re creating [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md), [Subscriptions](https://docs.stripe.com/api/subscriptions.md), or [Invoices](https://docs.stripe.com/api/invoices.md) with the API, you need to add `automatic_tax[enabled]=true` to your integration. Read our guides for more information:
+If you create [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md), [Subscriptions](https://docs.stripe.com/api/subscriptions.md), or [Invoices](https://docs.stripe.com/api/invoices.md) with the API, you need to add `automatic_tax.enabled=true` to your integration. Read our guides for more information:
 
 | Integration | Definition |
 | --- | --- |
@@ -81,7 +81,7 @@ If you’re creating [Checkout Sessions](https://docs.stripe.com/api/checkout/se
 
 ### Update existing recurring items
 
-Enabling tax and configuring automatic collection in your integration doesn’t update your existing subscription, invoice, and payment link instances. You must update them separately to begin calculating and collecting tax. You can complete these updates in the Dashboard or by setting `automatic_tax[enabled]=false` in the respective APIs:
+Enabling tax and configuring automatic collection in your integration doesn’t update your existing subscription, invoice, and payment link instances. You must update them separately to begin calculating and collecting tax. You can complete these updates in the Dashboard or by setting `automatic_tax.enabled=true` in the respective APIs:
 
 - Subscriptions [Dashboard](https://dashboard.stripe.com/subscriptions) or [API](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled)
 - Payment links [Dashboard](https://dashboard.stripe.com/payment-links) or [API](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled)
@@ -89,7 +89,7 @@ Enabling tax and configuring automatic collection in your integration doesn’t 
 
 ## Set up filing
 
-After you add your registrations and start collecting tax, you can set up filing to automatically submit returns and remit tax in the regions where you’re registered. Stripe can help you file automatically in 90+ countries and all US states.
+After you add your registrations and start collecting tax, you can set up filing to automatically submit returns and remit tax in the regions where you’re registered. Stripe can help you file automatically in [over 90 countries](https://docs.stripe.com/tax/supported-countries.md) and in all US states.
 
 For US filings: [Use Stripe, powered by TaxJar](https://docs.stripe.com/tax/file-with-stripe.md)
 

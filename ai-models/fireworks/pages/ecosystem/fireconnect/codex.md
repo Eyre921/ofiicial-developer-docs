@@ -8,6 +8,10 @@ Use Fireworks AI models in OpenAI Codex CLI with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes the [OpenAI Codex CLI](https://developers.openai.com/codex) through Fireworks AI models via the Responses API. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** `fireconnect codex on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [OpenAI Codex CLI](https://developers.openai.com/codex) installed (0.134+)
@@ -75,10 +79,9 @@ Route requests through [FireRouter](/ecosystem/firerouter/overview):
 fireconnect codex on --model firerouter
 export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 4.8
 fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
-fireconnect codex on --model firerouter --routing-preference 4
 ```
 
-FireRouter requires a standard Fireworks API key (`fw_...`). FireConnect rejects `--model firerouter` with Fire Pass keys on every harness. For Codex, FireRouter BYOK reads `ANTHROPIC_API_KEY` from your shell at runtime. Pass `--anthropic-api-key` on `on`, run `fireconnect configure --anthropic-api-key sk-ant-...`, or export the key before starting Codex.
+FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key. Codex also does not support Fire Pass for direct routing. FireRouter BYOK reads `ANTHROPIC_API_KEY` from your shell (Codex does not support `--routing-preference`).
 
 <Warning>
   **MiniMax models are not supported in Codex.** Codex uses the Fireworks Responses API and may insert assistant messages between `tool_calls` and `tool_results`. MiniMax chat templates require `tool_results` to follow `tool_calls` directly. Use Chat Completions harnesses (for example Claude Code or OpenCode) for MiniMax.

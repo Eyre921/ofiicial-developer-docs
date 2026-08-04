@@ -8,6 +8,10 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) adds Fireworks AI models to **[GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) Chat** in [Visual Studio Code](https://code.visualstudio.com) by writing a custom language-model endpoint. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** quit VS Code → `fireconnect vscode on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 <Card title="Manual setup (GitHub Copilot)" icon="github" href="/ecosystem/integrations/github-copilot">
   Step-by-step UI walkthrough with screenshots. Add a Fireworks custom endpoint without the FireConnect CLI
 </Card>
@@ -21,7 +25,7 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 
 ## Enable Fireworks routing
 
-VS Code stores custom-endpoint API keys (encrypted) in `state.vscdb`. **Quit VS Code** before running `on` or `off`. FireConnect hard-errors if VS Code is still running unless you pass `--force`.
+VS Code stores custom-endpoint API keys (encrypted) in `state.vscdb`. **Quit VS Code** before running `on` or `off`. In an interactive terminal, FireConnect waits for you to quit (or pass `--force` to write anyway).
 
 ```bash theme={null}
 fireconnect login

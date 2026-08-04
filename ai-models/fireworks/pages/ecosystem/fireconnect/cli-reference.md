@@ -8,6 +8,8 @@ FireConnect global commands, providers, authentication, and migration
 
 FireConnect uses **harness-first** syntax: `fireconnect <harness> <command>`. Bare harness names run `on` (for example, `fireconnect claude` is the same as `fireconnect claude on`).
 
+To pick or switch models, see **[Models](/ecosystem/fireconnect/models)**. This page is the command and auth reference.
+
 ## Global commands
 
 ```bash theme={null}
@@ -60,10 +62,10 @@ In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provid
 
 ## Providers
 
-| Provider flag         | Where inference runs           | API key               | Supported harnesses              |
-| --------------------- | ------------------------------ | --------------------- | -------------------------------- |
-| `fireworks` (default) | Fireworks gateway              | `fw_...` or `fpk_...` | All harnesses                    |
-| `azure`               | Fireworks on Microsoft Foundry | Azure API key         | All harnesses except Claude Code |
+| Provider flag         | Where inference runs           | API key                                           | Supported harnesses                |
+| --------------------- | ------------------------------ | ------------------------------------------------- | ---------------------------------- |
+| `fireworks` (default) | Fireworks gateway              | `fw_...` (all harnesses) or `fpk_...` (not Codex) | All harnesses with a supported key |
+| `azure`               | Fireworks on Microsoft Foundry | Azure API key                                     | All harnesses except Claude Code   |
 
 Set the default with `fireconnect configure --provider fireworks` or `--provider azure`. Harness `on` commands use the configured provider unless you pass `--azure` or per-command `--base-url` / `--api-key` overrides.
 
@@ -90,10 +92,12 @@ Each IDE harness (`cursor`, `vscode`) supports `on`, `off`, `status`, and `help`
 
 Use `--model <id>` for the primary model. Claude Code also supports slot flags: `--opus`, `--sonnet`, `--haiku`, `--fable`, `--subagent`.
 
+See **[Models](/ecosystem/fireconnect/models)** for a cross-harness quick reference, restart requirements, and common mistakes.
+
 Claude Code-only flags:
 
-* `--interactive` — open the model mapping wizard (cannot combine with model flags)
-* `--non-interactive` — skip first-run onboarding; use saved preferences or example defaults
+* `--interactive`: open the model mapping wizard (cannot combine with model flags)
+* `--non-interactive`: skip first-run onboarding; use saved preferences or example defaults
 
 On the Foundry path, pass your model with `--model` (for example, `--model FW-GLM-5.2`).
 
@@ -101,10 +105,10 @@ On the Foundry path, pass your model with `--model` (for example, `--model FW-GL
   `--main` is a retired alias for `--model` in v0.9.0+. Prefer `--model` in new scripts.
 </Tip>
 
-FireRouter flags (when a slot uses `firerouter`):
+FireRouter flags (when using `firerouter`):
 
-* `--anthropic-api-key sk-ant-...`: BYOK for pass-through to Claude Opus 4.8
-* `--routing-preference <1-5>`: tune savings vs. quality (see [Routing preferences](/ecosystem/firerouter/routing-preferences))
+* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 4.8 pass-through (where the harness supports it)
+* `--routing-preference <1-5>`: savings vs. quality (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
 
 ## API key resolution
 
@@ -125,38 +129,43 @@ Claude Code additionally reads harness-local keys from `~/.claude/settings.json`
 
 ## Migration from earlier syntax
 
-### Pre-0.5.0 syntax
+Only needed if you still have old scripts or muscle memory. Day-to-day use is `fireconnect <harness> on --model <id>`.
 
-| Before                              | After                                         |
-| ----------------------------------- | --------------------------------------------- |
-| `fireconnect on`                    | `fireconnect claude on`                       |
-| `fireconnect off`                   | `fireconnect claude off`                      |
-| `fireconnect status`                | `fireconnect claude status`                   |
-| `fireconnect list`                  | `fireconnect claude status`                   |
-| `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
-| `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
-| `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+<AccordionGroup>
+  <Accordion title="Pre-0.5.0 syntax">
+    | Before                              | After                                         |
+    | ----------------------------------- | --------------------------------------------- |
+    | `fireconnect on`                    | `fireconnect claude on`                       |
+    | `fireconnect off`                   | `fireconnect claude off`                      |
+    | `fireconnect status`                | `fireconnect claude status`                   |
+    | `fireconnect list`                  | `fireconnect claude status`                   |
+    | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
+    | `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
+    | `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+  </Accordion>
 
-### v0.9.1 changes
+  <Accordion title="v0.9.1 changes">
+    | Feature                   | Details                                                                                                                                                                 |
+    | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `fireconnect upgrade`     | In-place upgrade for curl/git installs; interactive terminals may prompt **Upgrade now?**                                                                               |
+    | Seamless upgrade          | From 0.9.0 on, harness settings (including Claude Code) are preserved across upgrade/reinstall                                                                          |
+    | Upgrade from before 0.9.0 | With Claude connected, FireConnect restores original Claude settings before updating; run `fireconnect claude on` afterward. In CI, set `FIRECONNECT_AUTO_OFF_CLAUDE=1` |
+    | Claude `--interactive`    | Model mapping wizard with fast/non-fast profile toggle; preferences persist per key type                                                                                |
+  </Accordion>
 
-| Feature                | Details                                                                                        |
-| ---------------------- | ---------------------------------------------------------------------------------------------- |
-| `fireconnect upgrade`  | In-place upgrade for curl/git installs; interactive terminals may prompt **Upgrade now?**      |
-| Seamless upgrade       | From 0.9.0 on, harness settings (including Claude Code) are preserved across upgrade/reinstall |
-| Claude `--interactive` | Model mapping wizard with fast/non-fast profile toggle; preferences persist per key type       |
-
-### v0.9.0 changes
-
-| Before                               | After                                                  |
-| ------------------------------------ | ------------------------------------------------------ |
-| `fireconnect <harness> model list`   | `fireconnect model list`                               |
-| `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags  |
-| `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)       |
-| `--main <id>` on `on`                | `--model <id>`                                         |
-| Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json` |
+  <Accordion title="v0.9.0 changes">
+    | Before                               | After                                                  |
+    | ------------------------------------ | ------------------------------------------------------ |
+    | `fireconnect <harness> model list`   | `fireconnect model list`                               |
+    | `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags  |
+    | `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)       |
+    | `--main <id>` on `on`                | `--model <id>`                                         |
+    | Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json` |
+  </Accordion>
+</AccordionGroup>
 
 ## See also
 
 * [FireConnect overview](/ecosystem/fireconnect/overview)
-* [Recommended models](/ecosystem/fireconnect/recommended-models)
+* [Models](/ecosystem/fireconnect/models)
 * [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect)

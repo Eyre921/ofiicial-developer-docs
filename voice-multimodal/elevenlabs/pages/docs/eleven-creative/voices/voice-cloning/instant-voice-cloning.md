@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-cloning/instant-voice-cloning
 
 # Instant Voice Cloning
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5771a77cc729af95301635acf8de5519cfb53f40a3f5d38e6af591a880907521/assets/images/product-guides/voices/voice-cloning/voice-cloning-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T112526Z&X-Amz-Expires=604800&X-Amz-Signature=ee068b11d9a2b58652e9954197cda9a0f7a7b3b0edba220d953d97f29b5da974&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning product feature" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5771a77cc729af95301635acf8de5519cfb53f40a3f5d38e6af591a880907521/assets/images/product-guides/voices/voice-cloning/voice-cloning-product-feature.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T202746Z&X-Amz-Expires=604800&X-Amz-Signature=3bafef49badec7e7629331b911ac2872f435ea8c79430b89d6144b8a493addf6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning product feature" />
 
 ## Creating an Instant Voice Clone
 
@@ -32,7 +32,7 @@ Follow the on-screen instructions to upload or record your audio.
 
 ### Confirm voice details
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T112526Z&X-Amz-Expires=604800&X-Amz-Signature=3b5dbd40c08d74a5a5b31b48b72aedc85041544686aef2d414fe48da06bb3c60&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning IVC modal" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3b4b3b8361ca372638c9c315e69588dcc44520bfaa00a3455720d963894d8ed/assets/images/product-guides/voices/voice-cloning/voice-cloning-ivc-modal.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T202746Z&X-Amz-Expires=604800&X-Amz-Signature=f36e9171ebaec7fa82f10bb2bdcdaff4ba5cba2be71ddb0c55cc6ab6624431e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Voice cloning IVC modal" />
 
 Name and label your voice clone, confirm that you have the right and consent to clone the voice, then click **Save voice**.
 

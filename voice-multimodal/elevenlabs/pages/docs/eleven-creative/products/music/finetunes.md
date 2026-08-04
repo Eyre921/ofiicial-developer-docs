@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/music/finetunes
 
 # Music Finetunes
 
-![Music Finetunes hero](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5ab4c7b3a577beb1be4e4f1838dc858d8bf91fae44ecfe1633faf5555f1c5da/assets/images/product-guides/music/music-finetunes-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113211Z&X-Amz-Expires=604800&X-Amz-Signature=bda6596e19c77990682d81ab5c78d2aee1e2fbeec0a3645c5f1a009b2ba21c43&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Music Finetunes hero](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5ab4c7b3a577beb1be4e4f1838dc858d8bf91fae44ecfe1633faf5555f1c5da/assets/images/product-guides/music/music-finetunes-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214520Z&X-Amz-Expires=604800&X-Amz-Signature=6d52255fd3e5551fa2e62e8a2110b490e3da5ece0d207c44f1d6d911f6d155a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Music Finetunes allows you to fine-tune the ElevenLabs music model to your sound. The result is a Finetune that generates new music aligned with your sonic identity - consistently and at scale.
 
@@ -81,7 +81,7 @@ In ElevenCreative, navigate to the Finetunes section and select **Create Finetun
 
 Upload one or more audio tracks that represent the style you want the Finetune to reflect.
 
-![Creating a new finetune](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b852bc15a31af93f3d03163fe046362a7214179b3cc840c20c4ce2d36030f284/assets/images/product-guides/music/music-finetunes-create.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113211Z&X-Amz-Expires=604800&X-Amz-Signature=6b11d08119cea9b449455f27ed7096d1cb967edcead3a9ab601c183d056b9899&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Creating a new finetune](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b852bc15a31af93f3d03163fe046362a7214179b3cc840c20c4ce2d36030f284/assets/images/product-guides/music/music-finetunes-create.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214520Z&X-Amz-Expires=604800&X-Amz-Signature=28fcb8e20bca38f4c2a8a02078c20c7d9a55827abdfba2ce22a204534877628c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Copyright requirements
 
@@ -116,7 +116,7 @@ To generate:
 2. Select your Finetune from the selector
 3. Write your prompt and generate
 
-![Using a finetune](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62e7e5dd4b37d56b9cedf6529af260167b7054ae333ed8cd4a774ea093a8cf90/assets/images/product-guides/music/music-finetunes-use.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113211Z&X-Amz-Expires=604800&X-Amz-Signature=0c4c8b91bec98eb58c73d13b1ba2deaa5b31779ca3383259674f34eac30f867c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Using a finetune](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62e7e5dd4b37d56b9cedf6529af260167b7054ae333ed8cd4a774ea093a8cf90/assets/images/product-guides/music/music-finetunes-use.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214520Z&X-Amz-Expires=604800&X-Amz-Signature=7ef736108225024c374115770bc1cadefb4eb9889c4475c3d7c320339c9adfe8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The Finetune controls stylistic identity. The prompt controls content, mood, tempo, language, and
 structure.

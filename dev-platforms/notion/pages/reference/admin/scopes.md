@@ -12,11 +12,12 @@ Scopes are structured by combining a `resource` and a `capability` (for example,
 
 ### List of Admin API scope resources
 
-| Scope resource         | Description                                                         |
-| :--------------------- | :------------------------------------------------------------------ |
-| `legal-hold`           | Ability to manage legal hold data and members                       |
-| `managed-user-session` | Ability to control managed users' active sessions                   |
-| `workspace`            | Ability to manage your organization's workspaces' data and settings |
+| Scope resource          | Description                                                         |
+| :---------------------- | :------------------------------------------------------------------ |
+| `legal-hold`            | Ability to manage legal hold data and members                       |
+| `managed-user-session`  | Ability to control managed users' active sessions                   |
+| `mcp-client-connection` | Ability to view and govern members' MCP client connections          |
+| `workspace`             | Ability to manage your organization's workspaces' data and settings |
 
 <Warning>
   These scope resources may not be exhaustive. Please consult the API reference you wish to use to see the most accurate scope required to manage the resource you want.
@@ -24,9 +25,9 @@ Scopes are structured by combining a `resource` and a `capability` (for example,
 
 ### List of Admin API scope capabilities
 
-| Scope capability    | Description                                                                                |
-| :------------------ | :----------------------------------------------------------------------------------------- |
-| `read`              | Ability to view a resource                                                                 |
-| `write`             | Ability to modify a resource                                                               |
-| `write-high-impact` | Ability to irreversibly modify a resource (e.g. delete a resource that cannot be restored) |
-| `export`            | Ability to export a resource                                                               |
+| Scope capability    | Description                                                                                 |
+| :------------------ | :------------------------------------------------------------------------------------------ |
+| `read`              | Ability to view a resource                                                                  |
+| `write`             | Ability to modify a resource                                                                |
+| `write-high-impact` | Ability to make sensitive changes, including revoking credentials or changing member access |
+| `export`            | Ability to export a resource                                                                |

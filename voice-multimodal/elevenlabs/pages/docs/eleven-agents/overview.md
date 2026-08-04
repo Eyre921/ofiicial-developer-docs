@@ -11,7 +11,7 @@ path: docs/eleven-agents/overview
 Agents accomplish tasks through natural dialogue - from quick requests to complex, open-ended workflows. ElevenLabs provides voice-rich, expressive models, developer tools for building multimodal agents, and tools to monitor and evaluate agent performance at scale.
 
 <a href="/docs/eleven-agents/build/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113223Z&X-Amz-Expires=604800&X-Amz-Signature=2dfe0e3143dec905587df2c814cc7ffb00f2f973ee5186c6c26d492644f22b65&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T201049Z&X-Amz-Expires=604800&X-Amz-Signature=7ef8e885e282f80224290b9e61f20831e91d654fa7777c1f96acd1f8e80809eb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
   <h3>
     Configure
@@ -24,7 +24,7 @@ Agents accomplish tasks through natural dialogue - from quick requests to comple
 </a>
 
 <a href="/docs/eleven-agents/integrate/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113223Z&X-Amz-Expires=604800&X-Amz-Signature=d3ef0c97e4706d2a8554bd8019e4f88924c295fb2f8fc571fba53432f794768b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T201049Z&X-Amz-Expires=604800&X-Amz-Signature=e047cd3455a83800a543325ee64e8ed0cbcfad23f71d8a12edea49cd5e8bd647&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
   <h3>
     Deploy
@@ -36,7 +36,7 @@ Agents accomplish tasks through natural dialogue - from quick requests to comple
 </a>
 
 <a href="/docs/eleven-agents/operate/overview">
-  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5/assets/images/agents/agents-overview-operate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113223Z&X-Amz-Expires=604800&X-Amz-Signature=a7a4bdb4ffa6519d9a24160e8fd52211664ad61c5ab8f691357a4273611bf322&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
+  <img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5/assets/images/agents/agents-overview-operate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T201049Z&X-Amz-Expires=604800&X-Amz-Signature=543d83d3c5e99f2d75cadab7f1805f3c1d08137c0ba9a03f7d5bd4ab6d30b4bb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="" />
 
   <h3>
     Monitor

@@ -90,7 +90,7 @@ Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full
 
 **LoRA adapter.** Serverless is LoRA only. Pass a positive `rank` (e.g. `rank=8`); base weights stay frozen and shared across the pool, and you train an adapter on top.
 
-**Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights.
+**Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights. See [Saving and loading checkpoints](#saving-and-loading-checkpoints) for the full save / resume / promote surface.
 
 **Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). For multi-turn rollouts, session-affinity headers pin an episode to one replica so the KV cache is reused across turns (see [RL rollout integration](/fine-tuning/rl-rollout-integration)). The sampler runs in the same session, so there's no deployment to create or hot-load.
 
@@ -177,6 +177,143 @@ The end-to-end serverless RL pattern is the standard GRPO / importance-sampling 
 
 Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the complete cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) rather than rebuilding the loop from this page. For a supervised loop, use cross-entropy loss. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
+## Saving and loading checkpoints
+
+Serverless training writes **two different kinds of checkpoint**, and they are not interchangeable:
+
+|                                                            | **Training checkpoint**                 | **Sampler checkpoint**           |
+| ---------------------------------------------------------- | --------------------------------------- | -------------------------------- |
+| Saved by                                                   | `save_state(name)`                      | `save_weights_for_sampler(name)` |
+| Contains                                                   | Adapter weights **and** optimizer state | Current adapter weights only     |
+| Resumable — the trainer can load it back and keep training | ✅ Yes                                   | ❌ No                             |
+| Promotable to a deployable model                           | ❌ No                                    | ✅ Yes                            |
+
+<Warning>
+  Only **sampler checkpoints** can be promoted to a final model, and only **training checkpoints** can be loaded back by the trainer to resume. A training checkpoint cannot be served or promoted; a sampler checkpoint cannot restore training state (weights + optimizer).
+</Warning>
+
+Checkpoint storage is included during private preview.
+
+### Save and resume training checkpoints
+
+Save training checkpoints periodically so an interrupted run can continue:
+
+```python theme={null}
+# Save a training checkpoint (adapter weights + optimizer) for resume
+training_client.save_state("step-0100").result()
+
+# Resume inside the same run: restores weights and optimizer state
+training_client.load_state_with_optimizer("step-0100").result()
+
+# Weights-only load (optimizer resets to zero — a warm start)
+training_client.load_state("step-0100").result()
+```
+
+Save and load calls return futures — call `.result()` to block and surface failures. `save_state` also accepts a `timeout` to bound the wait. Give each checkpoint a distinct name: overwriting an existing name (`overwrite=True`) is not supported.
+
+To see what checkpoints a run has saved, use the session-scoped control-plane list in [Promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) below — the trainer-local `training_client.list_checkpoints()` is not routed on the serverless surface.
+
+### Resume a new run from a training checkpoint
+
+To fork a new run from a previous run's training checkpoint, use `create_training_client_from_state` on the service client. The SDK reads the base model and LoRA configuration from the checkpoint itself, creates a fresh run, and loads the saved state:
+
+```python theme={null}
+# Continue a previous run's training checkpoint in a new run (weights + optimizer)
+resumed_client = service.create_training_client_from_state_with_optimizer(
+    "<account>/<run-id>/step-0100",
+)
+
+# Or warm start from those weights with a fresh optimizer
+resumed_client = service.create_training_client_from_state(
+    "<account>/<run-id>/step-0100",
+)
+```
+
+Checkpoint references are fully qualified as `<account>/<run-id>/<checkpoint-name>`, where `run-id` is the previous run's `training_client.run_id` (`run-<hex>`). `weights_access_token` is not supported — load checkpoints accessible to your API key.
+
+### Promote a sampler checkpoint to a model
+
+Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a standard LoRA addon model). Training checkpoints are not promotable — save a sampler checkpoint first.
+
+<Steps>
+  <Step title="Save a sampler checkpoint during training">
+    ```python theme={null}
+    snapshot = training_client.save_weights_for_sampler("final").result().path
+    ```
+
+    Save one at the end of training, and at any intermediate step you may want to deploy later.
+  </Step>
+
+  <Step title="List the session's checkpoints">
+    Listing and promotion are session-scoped control-plane operations on `FireworksClient` (against the regular API gateway, not the serverless base URL). The session resource name is available as `service.training_session_name`:
+
+    ```python theme={null}
+    import os
+    from datetime import datetime
+    from fireworks.training.sdk import FireworksClient
+
+    fw_client = FireworksClient(api_key=os.environ["FIREWORKS_API_KEY"])
+
+    rows = fw_client.list_training_session_checkpoints(service.training_session_name)
+    target = max(
+        (row for row in rows if row.get("promotable")),
+        key=lambda row: datetime.fromisoformat(row["createTime"].replace("Z", "+00:00")),
+    )
+    ```
+
+    Each row carries `name` (the full 4-segment resource name), `checkpointName`, `checkpointType`, `promotable`, and `createTime`. Two things to know about the values:
+
+    * `checkpointName` is the server-side checkpoint id, **not** the bare name you passed: it is prefixed with the source run id and, for sampler checkpoints, suffixed with an 8-hex-char session id — a save named `final` surfaces as `run-<hex>-final-<8hex>`. Select rows on `promotable` + `createTime` as above, or with a prefix/substring test — never by equality with your logical name.
+    * `checkpointType` is a server enum string: `CHECKPOINT_TYPE_TRAINING_LORA` for training checkpoints, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler checkpoints. Treat it as opaque and filter on `promotable`, which is authoritative.
+  </Step>
+
+  <Step title="Promote the checkpoint">
+    ```python theme={null}
+    model = fw_client.promote_session_checkpoint(
+        name=target["name"],  # accounts/<a>/trainingSessions/<s>/checkpoints/<c>
+        output_model_id="my-serverless-lora",
+        base_model="accounts/fireworks/models/qwen3p6-27b",
+    )
+    ```
+
+    `output_model_id` must be 1-63 characters of lowercase a-z, 0-9, and hyphens. The promoted model appears in your account's model list like any other fine-tuned model.
+  </Step>
+</Steps>
+
+<Note>
+  Session-scoped list and promote require the training session and its bound trainer to still exist. Once the session is deleted or its trainer is drained, both calls return `NOT_FOUND` and the checkpoints are no longer reachable through this API — promote any checkpoint you want to keep before the session is torn down. Cross-run training-checkpoint resume (above) is resolved per run and is not subject to this limit.
+</Note>
+
+### Deploy the promoted model to production
+
+A promoted model deploys like any LoRA model fine-tuned on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.
+
+<Warning>
+  Fine-tuned LoRA models can only be deployed to **on-demand (dedicated) deployments**. Serverless per-token serving of your own fine-tuned LoRA is not available.
+</Warning>
+
+Deploy the promoted model directly:
+
+```bash theme={null}
+firectl deployment create "accounts/<account-id>/models/my-serverless-lora"
+```
+
+Then send requests with the model name:
+
+```python theme={null}
+from fireworks import Fireworks
+
+client = Fireworks()
+response = client.chat.completions.create(
+    model="accounts/<account-id>/models/my-serverless-lora",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+```
+
+For deployment configuration, performance, and troubleshooting, see [Deploying fine-tuned models](/fine-tuning/deploying-loras).
+
+For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, cross-job resolution), see [Saving and Loading](/fine-tuning/training-api/saving-and-loading). For recipe-driven save / resume / promote, see [Checkpoints and Resume (cookbook)](/fine-tuning/training-api/cookbook/checkpoints).
+
 ## Pricing
 
 Serverless training is billed per token, across three meters: prefill, sample, and train. Current rates per model are in [Models](#models) below. Available models, meter definitions, and rates can change during private preview, so verify current availability and [pricing](https://fireworks.ai/pricing) before launch.
@@ -212,8 +349,8 @@ Serverless training bills three separate token meters, so a run's cost depends o
 ### Behavior to know
 
 * **Set `max_seq_len` explicitly.** Serverless has no dedicated instance to infer sequence length from.
-* **Cross-run checkpoint resume is not yet supported.** A checkpoint saved during a run can only be resumed by that same run. Forking a new run from a prior run's checkpoint (Tinker's `create_training_client_from_state`) is dedicated-only today.
-* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, deploy the adapter on a dedicated or preemptible deployment; serverless per-token serving of your own fine-tuned LoRA is not available yet.
+* **Cross-run checkpoint resume.** A training checkpoint can be resumed inside the same run (`load_state_with_optimizer`), or forked into a new run with `create_training_client_from_state` / `create_training_client_from_state_with_optimizer` using a fully qualified `<account>/<run-id>/<checkpoint-name>` reference. See [Saving and loading checkpoints](#saving-and-loading-checkpoints).
+* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own fine-tuned LoRA is not available.
 
 ## Video walkthrough: Train a prompt router
 

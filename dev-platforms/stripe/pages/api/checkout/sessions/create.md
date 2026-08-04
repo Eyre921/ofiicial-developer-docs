@@ -390,7 +390,7 @@ Possible enum values:
         The maximum length is 100 characters.
 
     - `custom_fields.dropdown.default_value` (string, optional)
-      The value that pre-fills the field on the payment page.Must match a `value` in the `options` array.
+      The value that pre-fills the field on the payment page. Must match a `value` in the `options` array.
 
       The maximum length is 100 characters.
 

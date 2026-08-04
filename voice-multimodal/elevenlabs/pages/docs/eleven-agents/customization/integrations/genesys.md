@@ -80,7 +80,7 @@ In Architect, open the Inbound Message Flow you want to use.
    * **escalate** → transfer to a support queue
    * **failure** → transfer to a fallback queue
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/49cf1993f9e6978e75af83e28ac8de1256198630f3c06b9e850c1ce3f4486cb2/agents-platform/pages/customization/integrations/genesys/genesys_example_bot_connector_flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100015Z&X-Amz-Expires=604800&X-Amz-Signature=5949d2e482e56d5f4ef3a8d8791eb05488ac13841e3ed4de2a2dd0c227487d7c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Genesys Bot Connector flow configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/49cf1993f9e6978e75af83e28ac8de1256198630f3c06b9e850c1ce3f4486cb2/agents-platform/pages/customization/integrations/genesys/genesys_example_bot_connector_flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214515Z&X-Amz-Expires=604800&X-Amz-Signature=8898b0b9ed5d85960f11985f26aa5209293530791f2338f98f378ddc3006d735&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Genesys Bot Connector flow configuration" />
 
 #### Configure escalation
 

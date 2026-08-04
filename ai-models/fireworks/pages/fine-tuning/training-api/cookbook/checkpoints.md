@@ -51,6 +51,10 @@ That's the full surface most users need. The rest of this page covers config kno
 | `output_model_id`      | All recipes | `str \| None` | `None`     | If set, promote the final checkpoint to this Fireworks model ID at the end of training                                                     |
 | `init_from_checkpoint` | All recipes | `str \| None` | `None`     | Load weights from another job (`"job-id:checkpoint-name"`). Step counter resets to 0.                                                      |
 
+<Note>
+  On [Serverless Training](/fine-tuning/training-api/serverless) there is no trainer job, so the `"job-id:checkpoint-name"` grammar does not apply. In serverless mode `init_from_checkpoint` accepts a bare checkpoint name (current run) or a fully qualified `"<account>/run-<run-id>/<checkpoint-name>"` cross-run reference. See [Saving and loading checkpoints (serverless)](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints).
+</Note>
+
 ## Resume-training vs serving: which checkpoint to use
 
 Each save can produce up to two different control-plane rows, and they are **not interchangeable**. Selecting the wrong one is the most common cause of a resume that produces incoherent output.

@@ -22101,6 +22101,8 @@ Use the `phone_change` type when calling `verifyOTP` to update a user’s phone 
 
 Learn how to configure Supabase Auth for Astro with server-side rendering.
 
+## Quickstart
+
 1. **Create a new Supabase project**
 
 Head over to [database.new](https://database.new) and create a new Supabase project.
@@ -22651,6 +22653,8 @@ npm run dev
 
 Learn how to configure Supabase Auth for the Next.js App Router.
 
+## Quickstart
+
 1. **Create a new Supabase project**
 
 Head over to [database.new](https://database.new) and create a new Supabase project.
@@ -22718,6 +22722,8 @@ npm run dev
 
 Learn how to use Supabase Auth with React Native
 
+## Quickstart
+
 1. **Create a new Supabase project**
 
 [Launch a new project](https://supabase.com/dashboard) in the Supabase Dashboard.
@@ -22782,6 +22788,8 @@ npm start
 # Use Supabase Auth with React
 
 Learn how to use Supabase Auth with React.js.
+
+## Quickstart
 
 1. **Create a new Supabase project**
 
@@ -26762,7 +26770,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Bitbucket** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -27179,7 +27187,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Discord** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -27615,7 +27623,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Facebook** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -28241,7 +28249,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Figma** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -28652,7 +28660,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **GitHub** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -29097,7 +29105,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **GitLab** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -30516,7 +30524,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Kakao** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -31390,7 +31398,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **LinkedIn** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -31852,7 +31860,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Notion** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -32257,7 +32265,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Slack** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -32700,7 +32708,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Spotify** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -33148,7 +33156,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Twitch** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -33573,7 +33581,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **X / Twitter (OAuth 2.0)** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -34172,7 +34180,7 @@ The next step requires a callback URL, which looks like this: `https://<project-
 - Click on [`Sign In / Providers`](https://supabase.com/dashboard/project/_/auth/providers) under the Configuration section
 - Click on **Zoom** from the accordion list to expand and you'll find your **Callback URL**, you can click `Copy` to copy it to the clipboard
 
-Note: #### Local development
+### Local development
 
 When testing OAuth locally with the Supabase CLI, ensure your OAuth provider
 is configured with the local Supabase Auth callback URL:
@@ -59997,7 +60005,7 @@ For example, if we had a database with some Star Wars data inside:
 
 **Data**
 
-Planets
+### Planets
 
 ```
 | id  | name     |
@@ -60007,7 +60015,7 @@ Planets
 | 3   | Kashyyyk |
 ```
 
-People
+### People
 
 ```
 | id  | name             | planet_id |
@@ -99232,13 +99240,15 @@ limit 100;
 
 ---
 
-# Tracing with the JS SDK
+# Client-side tracing
 
-Propagate W3C trace context from the Supabase JS SDK through Supabase services
+Propagate W3C trace context from the Supabase JS, Swift, and Dart SDKs through Supabase services
 
-The Supabase JS SDK can attach [W3C Trace Context](https://www.w3.org/TR/trace-context/) headers (`traceparent`, `tracestate`, `baggage`) to outgoing requests. The resulting `trace_id` flows through Supabase services and appears in API Gateway and Edge Function logs, so you can correlate client-side spans with the server-side logs they produced — end-to-end, across the network boundary.
+The Supabase JS, Swift, and Dart SDKs can attach [W3C Trace Context](https://www.w3.org/TR/trace-context/) headers (`traceparent`, `tracestate`, `baggage`) to outgoing requests. The resulting `trace_id` flows through Supabase services and appears in API Gateway and Edge Function logs, so you can correlate client-side spans with the server-side logs they produced — end-to-end, across the network boundary.
 
-Because the headers follow the W3C standard, any compliant tracing SDK (OpenTelemetry, Sentry, Datadog, Honeycomb, etc.) can pick up the trace on the server side, including in self-hosted collectors.
+Because the headers follow the W3C standard, any compliant tracing SDK (such as OpenTelemetry, Sentry, Datadog, or Honeycomb) can pick up the trace on the server side, including in self-hosted collectors.
+
+**JavaScript**
 
 ## Requirements
 
@@ -99262,7 +99272,7 @@ Trace propagation isn't available through the CDN (UMD) build — there's no way
 
 The SDK reads from whatever `TracerProvider` you register globally — it doesn't configure one for you. If you haven't instrumented your app yet, follow the [OpenTelemetry JavaScript getting started guide](https://opentelemetry.io/docs/languages/js/getting-started/) to install an SDK (`@opentelemetry/sdk-trace-node` for Node, `@opentelemetry/sdk-trace-web` for browsers) and an exporter for your backend (OTLP, Jaeger, Zipkin, or a vendor-specific one).
 
-The Supabase SDK only takes care of propagating the trace context that's already active when a request is made.
+The Supabase SDK only propagates the trace context that's already active when a request is made.
 
 ## Enable trace propagation
 
@@ -99312,18 +99322,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
 | `enabled`                 | `boolean` | `false` | Enable trace propagation.                                           |
 | `respectSamplingDecision` | `boolean` | `true`  | If `true`, skip propagation when the upstream trace is not sampled. |
 
-## Correlating with Supabase logs
-
-Once trace context is flowing through, the `trace_id` appears in:
-
-- **API Gateway logs** — every request to PostgREST, Auth, Storage, and Realtime
-- **Edge Function logs** — invocations and any structured logs emitted from within the function
-
-If you forward Supabase logs to a third-party backend via [Log Drains](https://supabase.com/docs/guides/monitoring-and-debugging/log-drains), you can join Supabase logs to your own client and server traces using the shared `trace_id`. This is especially useful for self-hosted setups where you already operate your own OpenTelemetry collector — Supabase logs become first-class citizens in your existing tracing UI.
-
 ## Using a vendor tracing SDK
 
-Many tracing SDKs are built on top of OpenTelemetry. They work with this guide as long as a W3C-compliant propagator is registered — but propagator behavior varies. Some vendor SDKs inject only their proprietary headers by default and need extra configuration to also emit the standard `traceparent` header. Check your vendor's OTel integration docs for the exact setup.
+Many tracing SDKs are built on top of OpenTelemetry. They work with this guide as long as a W3C-compliant propagator is registered. Some vendor SDKs inject only their proprietary headers by default and need extra configuration to also emit the standard `traceparent` header. Check your vendor's OTel integration docs for the exact setup.
 
 ## Troubleshooting
 
@@ -99332,10 +99333,111 @@ The SDK never throws when it can't propagate, which keeps it safe to enable but 
 - **The tracing runtime isn't loaded** (version `2.112.0` and later). `tracePropagation` is enabled but your entry point never imports `@supabase/supabase-js/tracing`. The SDK logs a one-time console warning and sends requests without trace headers — look for that warning in your console.
 - **No active span at request time.** The SDK reads the *current* context. If `supabase.from(...)` is called outside `tracer.startActiveSpan(...)` (or equivalent), there's nothing to propagate. Wrap the call in a span or use OpenTelemetry's automatic instrumentation.
 - **`@opentelemetry/api` is not installed** in the app making the request. On `2.112.0` and later the tracing subpath imports it directly, so a missing package surfaces as a module resolution error. On `2.106.0`–`2.111.x` it's loaded dynamically and the SDK silently no-ops.
-- **No `TracerProvider` registered.** `@opentelemetry/api` defaults to a noop provider that produces non-recorded spans. Make sure your app calls `provider.register()` (or your vendor SDK's equivalent) before making requests.
+- **No `TracerProvider` registered.** `@opentelemetry/api` defaults to a noop provider that produces non-recorded spans. Ensure your app calls `provider.register()` (or your vendor SDK's equivalent) before making requests.
 - **The upstream trace is not sampled.** By default the SDK respects upstream sampling decisions. Set `respectSamplingDecision: false` to propagate every request regardless of sampling.
 - **You're calling a non-Supabase host through a custom `fetch`.** Trace headers are only attached to Supabase domains (`*.supabase.co`, `*.supabase.in`, `localhost`).
 - **You're using the CDN (UMD) build.** Trace propagation isn't available there — the tracing runtime can't be loaded from a script tag.
+
+**Swift**
+
+Requires `supabase-swift` `2.51.0` or later and `swift-tools-version: 6.1` or later (SwiftPM trait support).
+
+1. **Add the `OpenTelemetry` trait** to your dependency declaration in `Package.swift`:
+
+   ```swift
+   // Package.swift
+   .package(
+     url: "https://github.com/supabase/supabase-swift.git",
+     from: "2.51.0",
+     traits: ["OpenTelemetry"]
+   )
+   ```
+
+   No changes to `SupabaseClient` are required. After enabling the trait, the active OpenTelemetry span's trace context is automatically injected as a `traceparent` header on every outgoing request across PostgREST, Storage, Auth, Functions, and Realtime. When there is no active span, the header is not added.
+
+2. **Register a `TracerProvider`** at app start. The SDK reads from whatever provider you register globally:
+
+   ```swift
+   import Supabase
+   import OpenTelemetryApi
+   import OpenTelemetrySdk
+
+   let exporter = /* your OTLP / Jaeger / Zipkin exporter */
+   let spanProcessor = SimpleSpanProcessor(spanExporter: exporter)
+   let provider = TracerProviderBuilder()
+     .add(spanProcessor: spanProcessor)
+     .build()
+   OpenTelemetry.registerTracerProvider(tracerProvider: provider)
+   ```
+
+3. **Create your `SupabaseClient`**. Any active span is now propagated automatically:
+
+   ```swift
+   let supabase = SupabaseClient(
+     supabaseURL: URL(string: "https://xyzcompany.supabase.co")!,
+     supabaseKey: "your-publishable-key"
+   )
+   ```
+
+**Dart**
+
+Requires `supabase` `2.x` or later (Flutter or Dart-only).
+
+1. **Implement a `traceContextProvider`** that returns the current `TraceContext` from your tracing library. Return `null` when there is no active span.
+
+2. **Pass `TracePropagationOptions`** when creating the client:
+
+   ```dart
+   import 'package:supabase/supabase.dart';
+
+   final supabase = SupabaseClient(
+     'https://xyzcompany.supabase.co',
+     'your-publishable-key',
+     tracePropagationOptions: TracePropagationOptions(
+       enabled: true,
+       traceContextProvider: () {
+         final span = YourTracer.activeSpan;
+         if (span == null) return null;
+         return TraceContext(
+           traceparent: span.traceparent,
+           tracestate: span.tracestate,
+         );
+       },
+     ),
+   );
+   ```
+
+   For `supabase_flutter`, pass the same option through `Supabase.initialize`:
+
+   ```dart
+   await Supabase.initialize(
+     url: 'https://xyzcompany.supabase.co',
+     anonKey: 'your-publishable-key',
+     tracePropagationOptions: TracePropagationOptions(
+       enabled: true,
+       traceContextProvider: () => yourTraceContextProvider(),
+     ),
+   );
+   ```
+
+## Options
+
+| Option                    | Type                    | Default | Description                                                                                                                                                                       |
+| ------------------------- | ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enabled`                 | `bool`                  | `false` | Enable trace propagation.                                                                                                                                                         |
+| `respectSamplingDecision` | `bool`                  | `true`  | When `true`, skips propagation if the upstream trace is not sampled. Set to `false` to always attach a `trace_id` — useful for log correlation even when traces are not exported. |
+| `traceContextProvider`    | `TraceContextProvider?` | `null`  | Callback returning the current `TraceContext`. Return `null` when there is no active span.                                                                                        |
+
+Headers are only injected on requests targeting Supabase hosts (`*.supabase.co`, `*.supabase.in`, your project host, and loopback addresses for local development). Third-party hosts never receive trace headers.
+
+## Correlating with Supabase logs
+
+After trace context is flowing through, the `trace_id` appears in:
+
+- **API Gateway logs** — every request to PostgREST, Auth, Storage, and Realtime
+- **Edge Function logs** — invocations and any structured logs emitted from within the function
+
+If you forward Supabase logs to a third-party backend via [Log Drains](https://supabase.com/docs/guides/monitoring-and-debugging/log-drains), you can join Supabase logs to your own client and server traces using the shared `trace_id`. This is especially useful for self-hosted setups where you already operate your own OpenTelemetry collector — Supabase logs become first-class citizens in your existing tracing UI.
 
 
 ---
@@ -116689,8 +116791,7 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
   "*",
   schema="public",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -116976,8 +117077,7 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
   "INSERT",
   schema="public",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **Update**
@@ -116987,8 +117087,7 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
   "UPDATE",
   schema="public",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **Delete**
@@ -116998,8 +117097,7 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
   "DELETE",
   schema="public",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **All events**
@@ -117009,8 +117107,7 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
   "*",
   schema="public",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -117154,8 +117251,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   schema="public",
   table="todos",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -117252,7 +117348,7 @@ myChannel.subscribe()
 changes = supabase.channel('db-changes').on_postgres_changes(
   "*",
   schema="public",
-  table="messages"
+  table="messages",
   callback=lambda payload: print(payload)
 ).on_postgres_changes(
   "INSERT",
@@ -117363,8 +117459,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="todos",
   filter="id=eq.1",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -117517,8 +117612,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="messages",
   filter="body=eq.hey",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -117645,8 +117739,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="messages",
   filter="body=neq.bye",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -117772,8 +117865,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="profiles",
   filter="age=lt.65",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -117899,8 +117991,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="profiles",
   filter="age=lte.65",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118026,8 +118117,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="products",
   filter="quantity=gt.10",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118153,8 +118243,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="products",
   filter="quantity=gte.10",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118280,8 +118369,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="products",
   filter="name=in.(red,blue,yellow)",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118408,8 +118496,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="articles",
   filter="title=ilike.%breaking%",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118536,8 +118623,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="posts",
   filter="slug=match.^post-\\d+$",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118664,8 +118750,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="todos",
   filter="completed_at=is.null",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118792,8 +118877,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="orders",
   filter="status=isdistinct.shipped",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -118919,8 +119003,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="posts",
   filter="status=not.in.(draft,archived)",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -119057,8 +119140,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="orders",
   filter="amount=gt.100,status=eq.open",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -119128,6 +119210,18 @@ let changes = await myChannel.postgresChange(
 )
 
 await myChannel.subscribe()
+```
+
+**Python**
+
+```python
+changes = supabase.channel('changes').on_postgres_changes(
+  "*",
+  schema="public",
+  table="profiles",
+  select=["id", "username"],
+  callback=lambda payload: print(payload)
+).subscribe()
 ```
 
 ## Receiving `old` records
@@ -119263,8 +119357,7 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   table="products",
   filter="name=in.(red,blue,yellow)",
   callback=lambda payload: print(payload)
-)
-.subscribe()
+).subscribe()
 ```
 
 **C#**
@@ -122868,6 +122961,7 @@ The script supports Linux only (Debian/Ubuntu and RHEL/CentOS/Fedora) and will:
 - Install prerequisites (`git`, `openssl`, `jq`) and Docker Engine if not already present
 - Sparse-clone the `docker/` directory from the main Supabase [repository](https://github.com/supabase/supabase/)
 - Create a project directory (`supabase-project` by default) and copy the configuration files into it
+- Record the installed release version in `.supabase-version` for future `update.sh` upgrades
 - Prompt for the main URLs (`SUPABASE_PUBLIC_URL`, `API_EXTERNAL_URL`, `SITE_URL`, `PROXY_DOMAIN`) and write them to `.env`
 - Generate all secrets, including a random `DASHBOARD_PASSWORD`, and the asymmetric JWT signing key pair (runs `generate-keys.sh` and `add-new-auth-keys.sh`, and enables the matching entries in `docker-compose.yml`)
 - Pull the Docker images
@@ -122893,7 +122987,7 @@ Not on Linux, or want to do it manually? See [Manual installation](#manual-insta
 
 ### Manual installation
 
-This path gets the Docker Compose configuration onto your server; you'll configure secrets, keys, and URLs in the [next section](#configuring-and-securing-supabase).
+This path gets the Docker Compose configuration onto your server, pinned to a specific tag. You'll set up secrets, keys, and URLs in the [next section](#configuring-and-securing-supabase). For a newer release, use the [latest tag](https://github.com/supabase/supabase/tags).
 
 **GitHub clone**
 
@@ -122901,7 +122995,7 @@ A shallow clone of the full Supabase repository. Works on any OS with `git` inst
 
 ```sh
 # Get the code
-git clone --depth 1 https://github.com/supabase/supabase
+git clone --depth 1 --branch self-hosted/v0.7.1 https://github.com/supabase/supabase
 
 # Make your new supabase project directory
 mkdir supabase-project
@@ -122917,6 +123011,9 @@ cp -rf supabase/docker/. supabase-project
 # Switch to the project directory and create a .env from the example
 cd supabase-project && cp .env.example .env
 
+# Record the base version so update.sh can upgrade this install later
+printf 'ref=self-hosted/v0.7.1\n' > .supabase-version
+
 # Pull the latest images
 docker compose pull
 ```
@@ -122927,7 +123024,7 @@ Only downloads the `docker/` directory from the repository, saving bandwidth and
 
 ```sh
 # Get the code using git sparse checkout
-git clone --filter=blob:none --no-checkout --depth=1 --quiet https://github.com/supabase/supabase
+git clone --filter=blob:none --no-checkout --depth=1 --quiet --branch self-hosted/v0.7.1 https://github.com/supabase/supabase
 cd supabase
 git sparse-checkout init --cone
 git sparse-checkout set docker
@@ -122947,6 +123044,9 @@ cp -rf supabase/docker/. supabase-project
 
 # Switch to the project directory and create a .env from the example
 cd supabase-project && cp .env.example .env
+
+# Record the base version so update.sh can upgrade this install later
+printf 'ref=self-hosted/v0.7.1\n' > .supabase-version
 
 # Pull the latest images
 docker compose pull
@@ -155791,6 +155891,17 @@ let supabase = SupabaseClient(
 )
 ```
 
+#### Initialize Client with OpenTelemetry tracing
+
+```swift
+// Package.swift
+.package(
+  url: "https://github.com/supabase/supabase-swift.git",
+  from: "2.51.0",
+  traits: ["OpenTelemetry"]
+)
+```
+
 ## Database
 
 ## Fetch data: select()
@@ -156512,6 +156623,21 @@ try await supabase
   .in("name", values: ["Rio de Janeiro", "San Francisco"])
 ```
 
+## notIn()
+
+Match only rows where `column` is not included in the `values` array. The negation of `in()`.
+
+### Examples
+
+#### With `select()`
+
+```swift
+try await supabase
+  .from("cities")
+  .select("name, country_id")
+  .notIn("name", values: ["Rio de Janeiro", "San Francisco"])
+```
+
 ## contains()
 
 Match only rows where `column` contains every element appearing in `value`.
@@ -156788,6 +156914,26 @@ try await supabase
   .execute()
 ```
 
+## maybeSingle()
+
+Like `single()`, this sets the `application/vnd.pgrst.object+json` accept header so the server enforces a single result. Unlike `single()`, when the query does not match exactly one row the resulting `PGRST116` error is not thrown — the response `value` is `nil` instead.
+
+- PostgREST returns `PGRST116` both when zero rows match and when more than one row matches. `maybeSingle()` returns `nil` for either case; use `single()` for the strict variant that always throws when the query does not match exactly one row.
+
+### Examples
+
+#### With `select()`
+
+```swift
+let todo: Todo? = try await supabase
+  .from("todos")
+  .select()
+  .eq("id", value: 42)
+  .maybeSingle()
+  .execute()
+  .value
+```
+
 ## csv()
 
 ### Examples
@@ -156870,6 +157016,29 @@ try await supabase
   .explain(format: .json)
   .execute()
   .value
+```
+
+## dryRun()
+
+Executes the mutation but rolls back the transaction instead of committing it, so no changes are persisted.
+
+- The mutation runs and its result (including side effects such as triggers) is returned in the response, but the transaction is rolled back afterward.
+- Useful for testing mutations without touching real data.
+- Requires PostgREST's `db-tx-end` setting to allow client-controlled transaction rollback.
+
+### Examples
+
+#### With `update()`
+
+```swift
+try await supabase
+  .from("todos")
+  .update(["done": true])
+  .eq("id", value: 1)
+  .select()
+  .dryRun()
+  .execute()
+// Row is not actually updated in the database.
 ```
 
 ## Auth
@@ -157274,6 +157443,40 @@ let url = try await supabase.auth.signInWithOAuth(
 
   // Open the URL using your preferred method to complete sign-in process.
   UIApplication.shared.open(url)
+```
+
+## signInWithWeb3()
+
+Signs in a user via a signed Sign in with Ethereum (EIP-4361) or Sign in with Solana message.
+
+- Supports Ethereum (Sign-In with Ethereum) and Solana (Sign-In with Solana), both of which derive from the [EIP-4361](https://eips.ethereum.org/EIPS/eip-4361) standard.
+- Your app is responsible for building the message and obtaining the signature from the user's wallet (e.g. via a WalletConnect session or native wallet SDK) before calling this method.
+- For `Web3Chain.ethereum` the signature is a `0x`-prefixed hex encoded string. For `Web3Chain.solana` it is a base64 encoded string.
+
+### Examples
+
+#### Sign in with an Ethereum wallet
+
+```swift
+let session = try await supabase.auth.signInWithWeb3(
+  credentials: Web3Credentials(
+    chain: .ethereum,
+    message: siweMessage,
+    signature: signatureHex
+  )
+)
+```
+
+#### Sign in with a Solana wallet
+
+```swift
+let session = try await supabase.auth.signInWithWeb3(
+  credentials: Web3Credentials(
+    chain: .solana,
+    message: siwsMessage,
+    signature: signatureBase64
+  )
+)
 ```
 
 ## signInWithPasskey()
@@ -164692,6 +164895,25 @@ response = (
 response = (
     await supabase.channel("room1")
     .on_postgres_changes("UPDATE", schema="public", table="countries", filter="id=eq.200", callback=handle_record_updated)
+    .subscribe()
+)
+```
+
+#### Listen to selected columns only
+
+```python
+def handle_record_updated(payload):
+    print("Updated country:", payload)
+
+response = (
+    await supabase.channel("room1")
+    .on_postgres_changes(
+        "UPDATE",
+        schema="public",
+        table="countries",
+        select=["id", "name"],
+        callback=handle_record_updated,
+    )
     .subscribe()
 )
 ```

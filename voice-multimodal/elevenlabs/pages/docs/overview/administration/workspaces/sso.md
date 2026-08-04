@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/sso
 
 # Single Sign-On (SSO)
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e1575b62be17ed4dbd459539161c7853f9f3e000c8d2eeba01f40e1335d7dad0/assets/images/product-guides/workspaces/workspace-sso.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100015Z&X-Amz-Expires=604800&X-Amz-Signature=0528dbd66e612c7b9c411cbbfca8a9cafa28e1a6919f00a0a85db018b8aa81e5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SSO" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e1575b62be17ed4dbd459539161c7853f9f3e000c8d2eeba01f40e1335d7dad0/assets/images/product-guides/workspaces/workspace-sso.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214535Z&X-Amz-Expires=604800&X-Amz-Signature=a8b06d8af2ee8a1a5486c210d5705b0be782529f072131e6b8d2cd19de70fd5c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="SSO" />
 
 ## Overview
 

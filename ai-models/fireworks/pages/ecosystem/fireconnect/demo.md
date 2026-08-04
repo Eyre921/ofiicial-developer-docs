@@ -67,7 +67,7 @@ Presets: `tetris` (default), `snake`, `tictactoe`, `clock`, or `custom` with you
 fireconnect demo --challenger glm-5p2-fast
 ```
 
-Default challenger is `glm-5p2-fast`. Use any serverless model ID you would pass to `fireconnect claude on --model`.
+Default challenger is `glm-5p2-fast`. Pass any serverless ID from [Models](/ecosystem/fireconnect/models) (same IDs as `fireconnect claude on --model`).
 
 ### Non-interactive / CI-friendly
 
@@ -103,6 +103,8 @@ Liked what you saw on the Fireworks side? Wire it into your daily driver:
 fireconnect claude on --model glm-5p2-fast
 ```
 
+More IDs and latest vs fast guidance: [Models](/ecosystem/fireconnect/models).
+
 Want automatic cost routing instead of a fixed model? Try [FireRouter](/ecosystem/firerouter/overview):
 
 ```bash theme={null}
@@ -123,5 +125,5 @@ The demo ships with FireConnect: [github.com/fw-ai/fireconnect](https://github.c
 ## See also
 
 * [FireConnect overview](/ecosystem/fireconnect/overview)
-* [Recommended models](/ecosystem/fireconnect/recommended-models)
+* [Models](/ecosystem/fireconnect/models)
 * [CLI reference](/ecosystem/fireconnect/cli-reference)

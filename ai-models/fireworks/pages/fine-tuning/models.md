@@ -6,7 +6,7 @@ path: fine-tuning/models
 
 Which base models you can train on Fireworks and the surfaces each one is available on.
 
-Managed fine-tuning, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO), Training API jobs by parameter mode (LoRA or full-parameter).
+Managed fine-tuning, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO, RFT), Training API jobs by parameter mode (LoRA or full-parameter).
 
 ## Model availability
 

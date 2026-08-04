@@ -26,7 +26,7 @@ Edit your `mix.exs` file to add it as a dependency and add the `:sentry` package
 defp deps do
   [
     # ...
-    {:sentry, "~> 13.4.0"},
+    {:sentry, "~> 13.4.1"},
     {:jason, "~> 1.1"},
 
     # If you want to use Sentry's default HTTP client:

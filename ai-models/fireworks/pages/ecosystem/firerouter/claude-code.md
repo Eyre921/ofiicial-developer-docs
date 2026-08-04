@@ -6,7 +6,11 @@ path: ecosystem/firerouter/claude-code
 
 Configure FireRouter in Claude Code by editing settings.json
 
-For one-command setup, use [FireConnect](/ecosystem/fireconnect/claude-code#firerouter) (`fireconnect claude on --model firerouter`, v0.9.0+). This page covers manual configuration by editing `settings.json` directly.
+<Tip>
+  **Prefer FireConnect.** Run `fireconnect claude on --model firerouter` (v0.9.0+) instead of editing JSON by hand. See [Claude Code](/ecosystem/fireconnect/claude-code#firerouter) and [Models](/ecosystem/fireconnect/models).
+</Tip>
+
+This page is only for manual `~/.claude/settings.json` setup when you cannot use FireConnect.
 
 ## Prerequisites
 

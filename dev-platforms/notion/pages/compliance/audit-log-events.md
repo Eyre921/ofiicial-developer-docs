@@ -115,6 +115,11 @@ Events are split into the following categories:
 * **Delete from Trash delay updated**: That the [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
 * **Disable guests toggled**: That a workspace owner has enabled or disabled the ability to add guests to a workspace.
 * **Disable teamspace guests toggled**: That the disable team guests setting was toggled.
+* **Enterprise-managed connection disabled**: That enterprise-managed connections were disabled or removed for the workspace.
+* **Enterprise-managed connection enabled**: That enterprise-managed connections were enabled for the workspace.
+* **Enterprise-managed connection member access denied**: That a workspace member was denied access to enterprise-managed connections.
+* **Enterprise-managed connection member access restored**: That a workspace member's access to enterprise-managed connections was restored.
+* **Enterprise-managed connection updated**: That enterprise-managed connection settings were updated for the workspace.
 * **Export toggled**: That a workspace owner has disabled or enabled exporting.
 * **External AI tool name changed**: That an external agent's display name was changed.
 * **External membership requests toggled**: That external membership requests for the workspace were enabled or disabled.

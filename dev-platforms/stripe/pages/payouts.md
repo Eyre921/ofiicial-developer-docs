@@ -1019,7 +1019,7 @@ For eligible businesses in the US, payment proceeds settle in your [financial ac
 
 ### Supported accounts and settlement currencies 
 
-In most cases, bank accounts must be located in the country where the *settlement currency* (The settlement currency is the currency your bank account uses) is the official currency. For example, SEK bank accounts must be based in Sweden. Stripe also allows you to settle and pay out to banks in select additional currencies, or pay out to non-domestic bank accounts in the local currency. Some additional settlement currencies incur a fee when funds settle. Learn more about [presenting and settling in multiple currencies](https://docs.stripe.com/payouts/multicurrency-settlement.md).
+In most cases, bank accounts must be located in the country where the *settlement currency* (The settlement currency is the currency your bank account uses) is the official currency. For example, SEK bank accounts must be based in Sweden. Stripe also allows you to settle and pay out to banks in select additional currencies, or pay out to non-domestic bank accounts in the local currency. Some additional settlement currencies incur a fee when funds settle. Learn more about [presenting and settling in multiple currencies](https://docs.stripe.com/payouts/multi-currency-settlement.md).
 
 At times, Stripe supports non-primary currencies that don’t incur a settlement fee. See the following table for the list of supported free currencies per country:
 
@@ -1037,7 +1037,7 @@ You can manage your bank accounts and default settlement currency from the [Bank
 
 ## Receive Capital payouts
 
-If your Stripe Capital application is approved, you can choose to receive your financing proceeds directly into your [financial account](https://docs.stripe.com/treasury.md) instead of your external bank account. This gives you faster access to funds and enables you to spend those financing proceeds to convert currencies, send money, and manage expenses.
+If your Stripe Capital application is approved, you can choose to receive your financing proceeds directly into your [financial account](https://docs.stripe.com/treasury.md) instead of your external bank account. This gives you access to funds within minutes and enables you to spend those financing proceeds to convert currencies, send money, and manage expenses.
 
 During the Capital application process, select your financial account as the payout destination. You can also choose your default external bank account if you prefer.
 
@@ -1217,7 +1217,7 @@ With [Instant Payouts](https://docs.stripe.com/payouts/instant-payouts.md), you 
 
 The minimum payout amount depends on the lowest amount we can support with our banking partners. For example, if you’re located in the US and you have less than 1 cent (0.01 of 1 dollar) USD in your Stripe account, you must wait until you accept more payments and increase your balance before you can receive a payout. If your available account balance is less than the minimum payout amount, it remains in your Stripe account until your balance increases.
 
-If you’re in a supported country, you can use [multi-currency settlement](https://docs.stripe.com/payouts/multicurrency-settlement.md) to send a payout to your local bank accounts in a foreign currency. For example, if you’re based in France, you can receive a USD payout in your French bank account, instead of paying for multiple currency exchanges.
+If you’re in a supported country, you can use [multi-currency settlement](https://docs.stripe.com/payouts/multi-currency-settlement.md) to send a payout to your local bank accounts in a foreign currency. For example, if you’re based in France, you can receive a USD payout in your French bank account, instead of paying for multiple currency exchanges.
 
 Minimum payout amounts are typically one base unit of the local currency. See the following collapsed table for a list of countries and their minimum payout amounts:
 
@@ -2984,7 +2984,7 @@ Any fees or losses that you incur because of incorrect information fall under yo
 
 ## Payout fees 
 
-Stripe doesn’t charge you a fee to initiate normal payouts. When you use [multi-currency settlement](https://docs.stripe.com/payouts/multicurrency-settlement.md) in a non-primary currency, Stripe charges the applicable fee when the funds settle, rather than when you pay them out.
+Stripe doesn’t charge you a fee to initiate normal payouts. When you use [multi-currency settlement](https://docs.stripe.com/payouts/multi-currency-settlement.md) in a non-primary currency, Stripe charges the applicable fee when the funds settle, rather than when you pay them out.
 
 ## See also
 

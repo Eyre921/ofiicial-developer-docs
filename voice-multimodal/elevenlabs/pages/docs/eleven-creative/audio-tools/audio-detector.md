@@ -8,7 +8,7 @@ path: docs/eleven-creative/audio-tools/audio-detector
 
 # Audio detector
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b7814fb4d24eb3cde7f7f3b4a8ff415b8d19350db77f201a2c334c8bd0cec2e2/assets/images/product-guides/ai-speech-classifier/speech-detector.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113221Z&X-Amz-Expires=604800&X-Amz-Signature=d13e44eeb7460d5a655f293dd2fb60d0da61a017bb3372e87f7d028e572d18cd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio detector" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b7814fb4d24eb3cde7f7f3b4a8ff415b8d19350db77f201a2c334c8bd0cec2e2/assets/images/product-guides/ai-speech-classifier/speech-detector.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214520Z&X-Amz-Expires=604800&X-Amz-Signature=6870ef756eebb96ef60bafb38a633b920f25be0dc61edb524270dc2b7310b4c4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audio detector" />
 
 ## Overview
 

@@ -29,7 +29,7 @@ To see which currencies you can use to settle funds in a particular country, sel
 
 > For a list of supported presentment currencies, see the [currencies](https://docs.stripe.com/currencies.md#presentment-currencies) documentation.
 [See table on original page](https://docs.stripe.com/connect/payouts-connected-accounts)
-Platforms can also enable their connected accounts to settle funds and pay out to banks in certain non-primary currencies, or pay out to non-domestic bank accounts in the local currency. In some cases, Stripe charges a fee. For more information, see [multi-currency settlement for Connect marketplaces and platforms](https://docs.stripe.com/connect/multicurrency-settlement.md).
+Platforms can also enable their connected accounts to settle funds and pay out to banks in certain non-primary currencies, or pay out to non-domestic bank accounts in the local currency. In some cases, Stripe charges a fee. For more information, see [multi-currency settlement for Connect marketplaces and platforms](https://docs.stripe.com/connect/multi-currency-settlement.md).
 
 ## Payout status 
 

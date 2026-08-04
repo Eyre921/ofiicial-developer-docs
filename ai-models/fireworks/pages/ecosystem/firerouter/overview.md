@@ -47,13 +47,13 @@ fireconnect login
 fireconnect claude on --model firerouter
 ```
 
-See the [FireConnect overview: Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter, and [FireConnect + FireRouter](/ecosystem/fireconnect/overview#firerouter) for quick enable steps. Per-harness guides (Claude Code slot flags, Codex Anthropic env, routing preference) live on each harness page.
+See [FireConnect Models](/ecosystem/fireconnect/models) for how `firerouter` fits next to other short IDs, and [Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter. Per-harness details (Claude slot flags, Codex Anthropic env, routing preference) live on each harness page.
 
 Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect).
 
 Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. Without an Anthropic key, FireRouter still redirects to open models but cannot pass through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication).
 
-Cursor does not support FireRouter through FireConnect.
+Cursor and Deep Agents need workspace BYOK for FireRouter (no local Anthropic key).
 
 ## Endpoint
 
@@ -104,12 +104,12 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 
 ## Client integrations
 
-| Integration                                                     | When to use                                                                       |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for Claude Code, OpenCode, Codex, Pi, and VS Code (recommended) |
-| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                |
-| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup                                                      |
-| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                      |
+| Integration                                                     | When to use                                                                             |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for coding harnesses (recommended). Select with `--model firerouter`. |
+| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                      |
+| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup without FireConnect                                        |
+| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                            |
 
 ## What FireRouter is not
 

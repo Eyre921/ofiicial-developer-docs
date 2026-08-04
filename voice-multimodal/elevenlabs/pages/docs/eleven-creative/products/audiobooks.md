@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/audiobooks
 
 # Audiobooks
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d66167d5a9f0a41adc461dc06a6a6fd12813044bfbe44f4621cea93a1b8a0242/assets/images/product-guides/studio/audiobooks-new-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T083543Z&X-Amz-Expires=604800&X-Amz-Signature=2820840e3796f64c07c03655f6319ff01cd6b890fe3362a5b857e2e5c7046b1e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks" title="audiobooks-new-project" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d66167d5a9f0a41adc461dc06a6a6fd12813044bfbe44f4621cea93a1b8a0242/assets/images/product-guides/studio/audiobooks-new-project.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214522Z&X-Amz-Expires=604800&X-Amz-Signature=c7a75b93bda1b059c96b4c8abcf11b84aa258cd75eac78704cd47d1b755fa727&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks" title="audiobooks-new-project" />
 
 ## Overview
 
@@ -24,7 +24,7 @@ Audiobooks also supports dynamic narration, a mode that allows listeners to choo
 
 ## Guide
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6073f48ff8f4e4e0379ff214b309073fd440ca626b72282537a7c757a46c6673/assets/images/product-guides/studio/audiobooks-create-new-book.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T083543Z&X-Amz-Expires=604800&X-Amz-Signature=98bdd021941a292e5935dfa9188cc869d04ba7e6734381c423ed2edafcea7c73&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - create new book" title="audiobooks-create-new-book" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6073f48ff8f4e4e0379ff214b309073fd440ca626b72282537a7c757a46c6673/assets/images/product-guides/studio/audiobooks-create-new-book.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214522Z&X-Amz-Expires=604800&X-Amz-Signature=ee1c189675f60496c0498a2aa6e60c453ec3c883a35cca3614ded5fd8f6dddce&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - create new book" title="audiobooks-create-new-book" />
 
 #### Upload your file and select base settings
 
@@ -39,7 +39,7 @@ Drag and drop your manuscript into the upload area, or browse your device to sel
 
 ### Choose a narration style
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T083543Z&X-Amz-Expires=604800&X-Amz-Signature=83d341e6426191ebc1af3fff8ac24ba1bc4245c54801198fd26da39214eb9309&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks narration style selection" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214522Z&X-Amz-Expires=604800&X-Amz-Signature=35ebf33264f7c1efc9e097e67b61c3ef94e0a0de7e26c8379d450e4dec0b4d3f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks narration style selection" />
 
 Select how you want your audiobook to be narrated:
 
@@ -87,7 +87,7 @@ Review the detected structure carefully before continuing. Manuscript formatting
 
 In the **Characters** step, you select the voices for your audiobook.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T083543Z&X-Amz-Expires=604800&X-Amz-Signature=430589174e8ab831591fb394daa0a8326aea80f9ca659021e624dae906a9939c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks character casting" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214522Z&X-Amz-Expires=604800&X-Amz-Signature=f58ed52046f389f2393a1cf11b80fc6f3f0b75f6c3f36193eab44f114d1909de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks character casting" />
 
 ### Cast a multi-cast audiobook
 
@@ -123,7 +123,7 @@ Previewing a voice with custom audio uses credits.
 
 The **Pronunciations** step helps you control how names, places, invented words, and other unusual terms are spoken.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T083543Z&X-Amz-Expires=604800&X-Amz-Signature=d64b92b2d9a3a6ff0ccbc3c3749ac1d30a46ec5d893718897131b8f99ed654dd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks pronunciations editor" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214522Z&X-Amz-Expires=604800&X-Amz-Signature=676743cd4d62c35bcfa118b5d8ece7e26ee9c81d543f35dbfb4c137b6a42ba40&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks pronunciations editor" />
 
 ### Review automatically detected terms
 
@@ -266,7 +266,7 @@ Audio quality is automatically determined by your subscription plan and project 
 
 To check the exact output quality for your project, click **Publish** in the top-right corner, open the **Export** tab, and hover over the **Audio format** field to see details such as bitrate and sample rate.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b812960229644047965dd935ffc1fe79a6bbe1aaf930b3fdbf977b313479c8b0/assets/images/product-guides/studio/audiobooks-publish.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T083543Z&X-Amz-Expires=604800&X-Amz-Signature=c8e131e65f523f2a1984db98d64e4323e703ab44ef668d99129d651c73817848&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Publish your audiobook" title="audiobooks-publish" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b812960229644047965dd935ffc1fe79a6bbe1aaf930b3fdbf977b313479c8b0/assets/images/product-guides/studio/audiobooks-publish.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214522Z&X-Amz-Expires=604800&X-Amz-Signature=444e77c0e8210f270558e78638b577b1d7a2b0bad24f7349a60d5a13fbb942d3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Publish your audiobook" title="audiobooks-publish" />
 
 ### Important behavior
 
@@ -291,7 +291,7 @@ This allows you to adjust and refine narration at a very granular level.
 
 ### Pronunciation dictionaries
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/116b9e87ac11971f051aace66ee692f858509cb2e57abbd82d6422fe83333259/assets/images/product-guides/studio/audiobooks-pronunciation_dictionaries.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T083543Z&X-Amz-Expires=604800&X-Amz-Signature=40f0dcd94bbb9910e128a1d050493d9eadf989e6e02bda7a248e192433b73b06&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - pronunciation dictionaries" title="audiobooks-pronunciation_dictionaries" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/116b9e87ac11971f051aace66ee692f858509cb2e57abbd82d6422fe83333259/assets/images/product-guides/studio/audiobooks-pronunciation_dictionaries.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214522Z&X-Amz-Expires=604800&X-Amz-Signature=12e0ae02dab94141b3ff1db05af3fb955249149d6ed7bb3ee0824de41d1cbecd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Audiobooks - pronunciation dictionaries" title="audiobooks-pronunciation_dictionaries" />
 
 You can control how specific words are spoken using pronunciation dictionaries.
 

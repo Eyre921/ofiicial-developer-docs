@@ -8,6 +8,10 @@ Use Fireworks AI models in Claude Code with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [Claude Code](https://claude.ai/code) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** `fireconnect claude on --model <id>` (or `--opus` / `--sonnet` / …). See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [Claude Code](https://claude.ai/code) installed
@@ -39,6 +43,18 @@ hi
 
 After `fireconnect claude on`, start a new Claude Code session or run `/model` to pick up model changes. To use a new model in the same session, start a new session or `/exit` and resume with `claude --resume <id>`.
 
+## Change models
+
+```bash theme={null}
+fireconnect model list --search glm
+fireconnect claude on --model firerouter               # main only
+fireconnect claude on --interactive                    # wizard for all six slots
+fireconnect claude on --opus glm-fast-latest --sonnet glm-fast-latest
+fireconnect claude status
+```
+
+Slot flags are independent. Re-running `on` without flags keeps your current mapping.
+
 ## Using Fire Pass
 
 Use your `fpk_...` key during `login` or with `--api-key`:
@@ -53,16 +69,16 @@ FireConnect detects Fire Pass keys and routes all model aliases to `kimi-fast-la
 
 When you run `fireconnect claude on` without model flags, FireConnect applies the mapping below. First-time setup opens an interactive model picker unless you pass `--non-interactive`. Override any slot with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, or `--subagent`.
 
-| Alias    | Standard key (`fw_...`) | Fire Pass key (`fpk_...`) |
-| -------- | ----------------------- | ------------------------- |
-| main     | `kimi-fast-latest`      | `kimi-fast-latest`        |
-| opus     | `glm-fast-latest`       | `kimi-fast-latest`        |
-| sonnet   | `glm-fast-latest`       | `kimi-fast-latest`        |
-| haiku    | `deepseek-v4-flash`     | `kimi-fast-latest`        |
-| fable    | `kimi-fast-latest`      | `kimi-fast-latest`        |
-| subagent | `deepseek-v4-flash`     | `kimi-fast-latest`        |
+| Alias    | Standard key (`fw_...`)                                                                                                                   | Fire Pass key (`fpk_...`) |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| main     | `firerouter` on first connect when Claude already has Anthropic auth (OAuth / `sk-ant-…`) or workspace BYOK; otherwise `kimi-fast-latest` | `kimi-fast-latest`        |
+| opus     | `glm-fast-latest`                                                                                                                         | `kimi-fast-latest`        |
+| sonnet   | `glm-fast-latest`                                                                                                                         | `kimi-fast-latest`        |
+| haiku    | `deepseek-v4-flash`                                                                                                                       | `kimi-fast-latest`        |
+| fable    | `kimi-fast-latest`                                                                                                                        | `kimi-fast-latest`        |
+| subagent | `deepseek-v4-flash`                                                                                                                       | `kimi-fast-latest`        |
 
-Short model IDs expand to full Fireworks paths when needed. FireConnect appends `[1m]` on slots that use 1M-context models (for example `glm-fast-latest` on `opus` and `sonnet`). The `subagent` slot never gets `[1m]` because Claude Code forwards that value verbatim to the provider API.
+Short model IDs expand automatically. FireConnect appends `[1m]` on 1M-context models (not on `subagent`).
 
 FireConnect saves your chosen mapping per key type. Reopen the wizard anytime:
 
@@ -88,7 +104,7 @@ FireConnect writes these settings to `~/.claude/settings.json`. Claude Code auth
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
     "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-fast-latest",
     "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
-    "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
+    "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: YOUR_FIREWORKS_API_KEY"
   }
 }
 ```
@@ -107,53 +123,33 @@ When installation succeeds, `fireconnect claude on` prints a confirmation such a
 
 ## Browsing and picking models
 
-Browse the global catalog, then configure Claude Code through `on`:
-
 ```bash theme={null}
 fireconnect model list --search glm
 fireconnect claude on --sonnet kimi-latest
-fireconnect claude on --model glm-fast-latest --sonnet kimi-fast-latest
 ```
 
-### `fireconnect model list`
+`fireconnect model list` shows serverless endpoints and pricing. `fireconnect claude status` shows your current mapping and rates.
 
-Lists the shared Fireworks serverless catalog (coding-tagged models plus known platform routers). Every row is tagged `serverless`.
-
-```bash theme={null}
-fireconnect model list
-fireconnect model list --search glm
-fireconnect model list --json
-```
-
-Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`. Standard keys include `firerouter`.
-
-### `fireconnect claude status` vs `fireconnect model list`
-
-| Command                     | Shows                                                                                          |
-| --------------------------- | ---------------------------------------------------------------------------------------------- |
-| `fireconnect claude status` | Your current provider, auth, configured alias mapping, and Fireworks serverless rates per slot |
-| `fireconnect model list`    | Available serverless endpoints from the Fireworks API, with IN / OUT pricing where known       |
+Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
-Route requests through [FireRouter](/ecosystem/firerouter/overview), a managed service that sends simple work to cheaper open models and passes hard requests to Claude Opus 4.8. Requires a standard Fireworks API key (`fw_...`); Fire Pass keys cannot select `firerouter`.
+Route requests through [FireRouter](/ecosystem/firerouter/overview). FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ```bash theme={null}
 fireconnect claude on --model firerouter
 fireconnect claude on --opus firerouter --anthropic-api-key sk-ant-...
 ```
 
-Use `--model firerouter` for the primary model or alias flags like `--opus firerouter` for specific slots.
+Use `--model firerouter` for main, or slot flags like `--opus firerouter`. Pass `--anthropic-api-key sk-ant-...` on `on`, or store it once with `fireconnect configure --anthropic-api-key sk-ant-...`.
 
-Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`.
-
-Bias routing toward savings or quality with `--routing-preference` (`1`–`5`; default `3`):
+Bias savings vs quality with `--routing-preference` (`1`-`5`; default `3`):
 
 ```bash theme={null}
 fireconnect claude on --model firerouter --routing-preference 4
 ```
 
-See [Routing preferences](/ecosystem/firerouter/routing-preferences) for level names.
+See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
 ## Session usage
 
@@ -174,9 +170,21 @@ Pair with `fireconnect claude status` for per-slot Fireworks rates and `fireconn
 
 Claude Code's cost column in the `/model` picker still uses Anthropic list prices. The [session usage](#session-usage) section above is the better place to estimate real Fireworks spend.
 
-FireConnect cannot override Claude Code's price column. For example, the example `kimi-fast-latest` main mapping may show Opus-tier estimates while Fireworks bills at model-specific serverless rates (often much lower). Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
+FireConnect cannot override Claude Code's price column. For example, a `kimi-fast-latest` main mapping may show Opus-tier estimates while Fireworks bills at serverless rates. Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
 
-FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Fireworks rates for your **main** model. That text appears as the subtitle on the custom picker entry at the bottom of `/model`, not in the price column.
+## Troubleshooting
+
+### Text-only models and images
+
+Claude Code cannot mark a model as non-vision. Pasting an image on a **text-only** slot (for example `glm-fast-latest` or `deepseek-v4-flash`) can break the session.
+
+**Recover with `/rewind`**, then avoid images on that slot or map it to a vision model (for example `kimi-fast-latest`):
+
+```bash theme={null}
+fireconnect claude on --sonnet kimi-fast-latest
+```
+
+`fireconnect claude on` warns when your mapping includes text-only models. `fireconnect claude status` labels each slot `vision` or `text-only`.
 
 ## CLI reference
 
@@ -188,14 +196,7 @@ fireconnect claude usage      # Session token usage and estimated Fireworks cost
 fireconnect claude help       # Show harness-specific help
 ```
 
-Run `fireconnect claude help` for all options, including `--interactive`, `--settings-path` (custom `settings.json` location), and `--routing-preference` when using FireRouter.
-
-### Switch models
-
-```bash theme={null}
-fireconnect claude on --model glm-fast-latest --sonnet kimi-fast-latest --haiku deepseek-v4-flash --subagent deepseek-v4-flash
-fireconnect claude on --model firerouter   # route through FireRouter
-```
+Run `fireconnect claude help` for all options.
 
 ### Turn off Fireworks routing
 

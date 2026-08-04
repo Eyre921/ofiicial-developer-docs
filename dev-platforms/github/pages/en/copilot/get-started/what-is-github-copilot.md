@@ -31,6 +31,7 @@ Use Copilot in the following places:
 * GitHub Mobile, as a chat interface
 * Windows Terminal Canary, through the Terminal Chat interface
 * The command line, through the GitHub CLI
+* The GitHub Copilot app, a desktop application for agent-driven development. See [About the GitHub Copilot app](/en/copilot/concepts/agents/github-copilot-app).
 * The GitHub website
 
 See [GitHub Copilot features](/en/copilot/get-started/features).

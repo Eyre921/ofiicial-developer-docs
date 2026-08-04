@@ -8,6 +8,10 @@ Use Fireworks AI models in OpenCode with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [OpenCode](https://opencode.ai) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** `fireconnect opencode on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [OpenCode](https://opencode.ai) installed
@@ -41,7 +45,7 @@ FireConnect detects Fire Pass keys and defaults OpenCode to `kimi-fast-latest`.
 
 OpenCode routes a single default model (no opus/sonnet/haiku alias slots). The default is `kimi-fast-latest`, written to config as `fireworks-ai/kimi-fast-latest`.
 
-Short model IDs like `glm-5p1` are expanded to full Fireworks paths (for example, `accounts/fireworks/models/glm-5p1`).
+Short model IDs like `glm-5p2` are expanded to full Fireworks paths (for example, `accounts/fireworks/models/glm-5p2`).
 
 ## What gets written
 
@@ -58,10 +62,10 @@ FireConnect snapshots your original `opencode.json` before the first change. The
 
 ```bash theme={null}
 fireconnect model list --search glm
-fireconnect opencode on --model glm-5p1
+fireconnect opencode on --model glm-5p2
 ```
 
-`fireconnect model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`. Standard keys include `firerouter`.
+`fireconnect model list` uses your stored key (keychain, config, or `FIREWORKS_API_KEY`). Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
@@ -85,7 +89,7 @@ Run `fireconnect opencode help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect opencode on --model glm-5p1
+fireconnect opencode on --model glm-5p2
 ```
 
 ### Turn off Fireworks routing

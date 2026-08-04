@@ -129,15 +129,19 @@ The BBPOS WisePOS E software consists of four components: the reader application
 
 | Countries | Reader | Firmware | Configuration | ROM |
 | --- | --- | --- | --- | --- |
-| US | `2.43.2.0` | `5.01.03.00` | `szzz_us_v19` | `1.8.7` |
-| CA | `2.43.2.0` | `5.01.03.00` | `szzz_ca_v17` | `1.8.7` |
-| AU | `2.43.2.0` | `5.01.03.00.eftpos` | `szzz_prod_au_v11` | `1.8.7` |
-| MYNZ | `2.43.2.0` | `5.01.03.00` | `szzz_prod_apac_on_v4` | `1.8.7` |
-| SG | `2.43.2.0` | `5.01.03.00` | `szzz_prod_apac_off_v4` | `1.8.7` |
-| GBIEFI | `2.43.2.0` | `5.01.03.00` | `szzz_prod_eu_off_v11` | `1.8.7` |
-| ATBEDKFRITDENLESSECZLUPTCHNO | `2.43.2.0` | `5.01.03.00` | `szzz_prod_eu_on_v7` | `1.8.7` |
+| US | `2.44.1.0` | `5.01.04.00` | `szzz_us_v19` | `1.8.7` |
+| CA | `2.44.1.0` | `5.01.04.00` | `szzz_ca_v17` | `1.8.7` |
+| AU | `2.44.1.0` | `5.01.04.00.eftpos` | `szzz_prod_au_v11` | `1.8.7` |
+| MYNZ | `2.44.1.0` | `5.01.04.00` | `szzz_prod_apac_on_v4` | `1.8.7` |
+| SG | `2.44.1.0` | `5.01.04.00` | `szzz_prod_apac_off_v4` | `1.8.7` |
+| GBIEFI | `2.44.1.0` | `5.01.04.00` | `szzz_prod_eu_off_v11` | `1.8.7` |
+| ATBEDKFRITDENLESSECZLUPTCHNO | `2.44.1.0` | `5.01.04.00` | `szzz_prod_eu_on_v7` | `1.8.7` |
 
 ### Reader software changelog
+
+#### 2026-08-04 (version 2.44.1.0)
+
+- General bug fixes and improvements.
 
 #### 2026-06-29 (version 2.43.3.0)
 

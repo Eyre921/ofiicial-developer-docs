@@ -179,20 +179,40 @@ The following table details the additional data available in the complete [event
 1. **Retrieve the latest state of the related object**: Use the `fetchRelatedObject()` method to retrieve the latest version of the object associated with the event. For example, if you receive a `v1.billing.meter.error_report_triggered event`, `fetchRelatedObject()` retrieves the meter object that triggered an error report.
 2. **Process the notification immediately**: If the event type and resource ID in the notification are sufficient for your use case, you can process it without making an additional API call.
 
-The following example demonstrates how to retrieve the related object definition and additional event payload fields associated when processing a thin event notification:
+The following example shows how to retrieve the latest state of the related object directly from the event notification, without making an additional API call to fetch the event:
 
 #### Java
 
 ```java
-com.stripe.model.EventNotification eventNotification = client.parseEventNotification(payload, signatureHeader, endpointSecret);
-com.stripe.model.v2.Event event = client.v2().core().events().retrieve(eventNotification.getId());
-if (event instanceof V1BillingMeterErrorReportTriggeredEvent) {
-  V1BillingMeterErrorReportTriggeredEvent postedEvent = (V1BillingMeterErrorReportTriggeredEvent) event;
-  // On each type of event, the Stripe library provides a "fetchRelatedObject" method
-  // that performs a network request to Stripe to fetch the latest version
-  // of the object directly associated with the event, in this case, an
-  // "Meter" object.
-  Meter op = postedEvent.fetchRelatedObject();
+com.stripe.model.v2.core.EventNotification eventNotification = client.parseEventNotification(payload, signatureHeader, endpointSecret);
+if (eventNotification instanceof V1BillingMeterErrorReportTriggeredEventNotification) {
+  V1BillingMeterErrorReportTriggeredEventNotification notif =
+      (V1BillingMeterErrorReportTriggeredEventNotification) eventNotification;
+  // fetchRelatedObject() makes one network request to fetch the latest version
+  // of the object associated with this event (a Meter, in this case).
+  // No API call to retrieve the full Event is needed.
+  Meter meter = notif.fetchRelatedObject();
+}
+```
+
+The following example shows how to fetch the complete Event object when your integration requires additional data, such as the `data` hash with contextual information or the `changes` hash with previous attribute values:
+
+#### Java
+
+```java
+com.stripe.model.v2.core.EventNotification eventNotification = client.parseEventNotification(payload, signatureHeader, endpointSecret);
+if (eventNotification instanceof V1BillingMeterErrorReportTriggeredEventNotification) {
+  V1BillingMeterErrorReportTriggeredEventNotification notif =
+      (V1BillingMeterErrorReportTriggeredEventNotification) eventNotification;
+  // Use fetchEvent() when you need additional data in the Event object,
+  // such as the "data" hash with contextual info or the "changes" hash
+  // with previous attribute values.
+  com.stripe.model.v2.core.Event event = notif.fetchEvent();
+  if (event instanceof V1BillingMeterErrorReportTriggeredEvent) {
+    V1BillingMeterErrorReportTriggeredEvent typedEvent =
+        (V1BillingMeterErrorReportTriggeredEvent) event;
+    String summary = typedEvent.getData().getDeveloperMessageSummary();
+  }
 }
 ```
 

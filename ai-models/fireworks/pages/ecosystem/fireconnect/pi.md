@@ -8,6 +8,10 @@ Use Fireworks AI models in Pi with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [Pi](https://pi.dev) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** `fireconnect pi on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [Pi](https://pi.dev) installed
@@ -49,16 +53,16 @@ FireConnect:
 * Stores a **baked plaintext literal** in `fireworks.key` in `~/.pi/agent/auth.json` (mode `0600`)
 * Registers the **preferred serverless catalog** in `~/.pi/agent/models.json` for Pi's `/model` picker
 
-FireConnect snapshots both files under `~/.fireconnect/pi/` before the first change. Running `fireconnect pi off` restores them byte-for-byte.
+FireConnect snapshots `settings.json`, `auth.json`, and `models.json` under `~/.fireconnect/pi/` before the first change. Running `fireconnect pi off` restores them.
 
 ## Browsing and picking models
 
 ```bash theme={null}
 fireconnect model list --search glm
-fireconnect pi on --model glm-5p1
+fireconnect pi on --model glm-5p2
 ```
 
-Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`.
+Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
@@ -81,7 +85,7 @@ Run `fireconnect pi help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect pi on --model glm-5p1
+fireconnect pi on --model glm-5p2
 ```
 
 ### Turn off Fireworks routing

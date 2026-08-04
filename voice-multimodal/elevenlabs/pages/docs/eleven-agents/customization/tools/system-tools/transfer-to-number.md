@@ -77,13 +77,13 @@ Human transfer is configured using the `transfer_to_number` system tool.
 
 Enable human transfer by selecting the `transfer_to_number` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to Human" when adding a tool.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45/assets/images/conversational-ai/transfer_human.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T094519Z&X-Amz-Expires=604800&X-Amz-Signature=9ceb5e2c04332174adee877f242489e03035388d6254b7b3505569f83e3dc49f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Human Transfer Tool" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b0a0985dd32cab9532b38b80aaa90873b4076bb26e7a47ce2e12832dd78ea45/assets/images/conversational-ai/transfer_human.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214519Z&X-Amz-Expires=604800&X-Amz-Signature=0c3412cb763cbb17b2ad5dba652dc1b85472630cd3452d40e036ae0e8c98bbf3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Human Transfer Tool" />
 
 #### Configure tool description (optional)
 
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde/assets/images/conversational-ai/transfer_human_tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T094519Z&X-Amz-Expires=604800&X-Amz-Signature=953e543171609dbd5441a63fdb3f1775089662ab3e53efbec810d16281fce703&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Tool Description" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/23b446030f915db9a10693153e44f95ab59c313e01df2b95291e40e12f2f4bde/assets/images/conversational-ai/transfer_human_tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214519Z&X-Amz-Expires=604800&X-Amz-Signature=45bdded3729dcec55bfbf238befe00119917686a814a77ad4789f38bebcf6b84&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Tool Description" />
 
 #### Define transfer rules
 
@@ -102,7 +102,7 @@ The LLM will use these conditions, along with the tool description, to decide wh
 
 **Blind transfers** are only available when the agent's phone number is imported via the [native Twilio integration](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration) and must be configured via the JSON editor. The original caller ID is preserved, but no warm transfer message is sent to the human operator.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d/assets/images/conversational-ai/transfer_human_rule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T094519Z&X-Amz-Expires=604800&X-Amz-Signature=62adc1955301f322a036b3232463112675430d28b1726bc0e2dc99c32bf748fd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Rules Configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/86e46148dc133fe68e6b517752d38bf493bef8347fee91a577e9f27600bafa5d/assets/images/conversational-ai/transfer_human_rule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214519Z&X-Amz-Expires=604800&X-Amz-Signature=5a66de961f1885f3a6a6d69bb79785281eba60140861ee8c0a70ca6c3933fd95&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Human Transfer Rules Configuration" />
 
 Ensure destinations are correctly formatted:
 

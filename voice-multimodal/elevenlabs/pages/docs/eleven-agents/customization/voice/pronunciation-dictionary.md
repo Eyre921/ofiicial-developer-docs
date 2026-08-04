@@ -32,7 +32,7 @@ switch to the eleven\_v3 model.
 
 Open your agent in the dashboard, navigate to **Voice Settings**, and add a pronunciation dictionary. Save your changes.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113229Z&X-Amz-Expires=604800&X-Amz-Signature=88ee9a5dddb594076cffa67ed6ffd82e2212ea4009c3b64e556e03d133c58275&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add a pronunciation dictionary from the agent's voice settings" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T211940Z&X-Amz-Expires=604800&X-Amz-Signature=b5a00c148f85ac14d66332ba45c23d562a38dd32b1c8773d08c8c815bd20919e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add a pronunciation dictionary from the agent's voice settings" />
 
 #### Update via the CLI
 

@@ -44,7 +44,7 @@ The following tables outline validity windows for authorizing different transact
 
 ### 30-day authorization windows in Japan 
 
-If your account is based in Japan, you can hold JPY-denominated transactions from Visa, Mastercard, JCB, Diners Club, and Discover for up to 30 days. Non-JPY and American Express transactions expire according to the standard authorization windows (#authorization-validity-windows).
+If your account is based in Japan, you can hold JPY-denominated transactions from Visa, Mastercard, JCB, Diners Club, and Discover for up to 30 days. Non-JPY and American Express transactions expire according to the [standard authorization windows](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md#authorization-validity-windows).
 
 ## Payment method limitations 
 

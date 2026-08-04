@@ -263,7 +263,7 @@ training_client.optim_step(
 
 Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
 
-### `save_weights_for_sampler(name, ttl_seconds=None, checkpoint_type=None)`
+### `save_weights_for_sampler(name, checkpoint_type=None)`
 
 Save serving-compatible sampler weights and return a future. This is the normal Tinker-shaped API:
 
@@ -277,7 +277,7 @@ print(saved.path)  # Snapshot identity for create_sampling_client(model_path=...
 
 Full-parameter training saves a base checkpoint first and deltas after that by default. LoRA training always saves base checkpoints. The returned `path` is a public snapshot identity, not a raw storage URI.
 
-### `save_weights_for_sampler_ext(name, checkpoint_type, ttl_seconds)`
+### `save_weights_for_sampler_ext(name, checkpoint_type)`
 
 Fireworks-specific extension that returns a concrete `SaveSamplerResult` instead of a future:
 
@@ -293,7 +293,6 @@ print(result.snapshot_name)  # Session-qualified name for weight sync
 | ----------------- | ------------- | ------- | ---------------------------------------------------- |
 | `name`            | `str`         | —       | Checkpoint name (auto-suffixed with session ID)      |
 | `checkpoint_type` | `str \| None` | `None`  | `"base"` for full weights, `"delta"` for incremental |
-| `ttl_seconds`     | `int \| None` | `None`  | Auto-delete checkpoint after this many seconds       |
 
 <Note>
   On full-parameter training, only `checkpoint_type="base"` produces a promotable blob; `"delta"` cannot be promoted. LoRA is always promotable. See [Checkpoint kinds](/fine-tuning/training-api/cookbook/checkpoints#checkpoint-kinds) for the full promotability matrix.
@@ -301,7 +300,7 @@ print(result.snapshot_name)  # Session-qualified name for weight sync
 
 `save_weights_for_sampler_ext` saves the snapshot only; it does not mutate a deployment. To serve the snapshot, pass `result.snapshot_name` to the managed service weight-sync path, or use `create_sampling_client(model_path=...)` / `create_deployment_sampler(model_path=...)`, which sync and return a sampler.
 
-### `save_state(name, ttl_seconds=None, timeout=None)`
+### `save_state(name, timeout=None)`
 
 Save full train state (weights + optimizer) for resume:
 
@@ -309,11 +308,10 @@ Save full train state (weights + optimizer) for resume:
 training_client.save_state("train_state_step_100").result()
 ```
 
-| Parameter     | Type            | Default | Description                                                   |
-| ------------- | --------------- | ------- | ------------------------------------------------------------- |
-| `name`        | `str`           | —       | Checkpoint name                                               |
-| `ttl_seconds` | `int \| None`   | `None`  | Auto-delete checkpoint after this many seconds                |
-| `timeout`     | `float \| None` | `None`  | If set, block until the save completes or the timeout expires |
+| Parameter | Type            | Default | Description                                                   |
+| --------- | --------------- | ------- | ------------------------------------------------------------- |
+| `name`    | `str`           | —       | Checkpoint name                                               |
+| `timeout` | `float \| None` | `None`  | If set, block until the save completes or the timeout expires |
 
 ### `load_state_with_optimizer(name)`
 

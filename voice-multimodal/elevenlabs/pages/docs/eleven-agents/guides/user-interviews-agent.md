@@ -14,7 +14,7 @@ We built an AI interviewer using ElevenLabs Agents to collect qualitative user f
 
 The goal was to replicate the depth and nuance of live customer interviews without the scheduling, language, and operational constraints of human-led sessions.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b1711145aee1061e0113055518005ec22f4a3c1b251db76f8e7c599a5f2468d/assets/images/agents-interview-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100016Z&X-Amz-Expires=604800&X-Amz-Signature=ba1c9ac47660df0b0d764d2513be086b8575fadb53caf5fb138bbfec8cdd2e80&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="AI interviewer conversation transcript" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b1711145aee1061e0113055518005ec22f4a3c1b251db76f8e7c599a5f2468d/assets/images/agents-interview-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214517Z&X-Amz-Expires=604800&X-Amz-Signature=5edbb49ffd62d695dc6892e8283cfcf3ef1ba40f8d573cee7b13e89adbda6b3e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="AI interviewer conversation transcript" />
 
 ## System architecture
 
@@ -27,7 +27,7 @@ The AI interviewer was implemented entirely on ElevenAgents, with the following 
 
 ## Agent design
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c27dd1e46379f2cf6e2baf32a42dda33945f0505be6e877f182c1f0bd74c819/assets/images/agents-interview-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100016Z&X-Amz-Expires=604800&X-Amz-Signature=ecbf52836aae3fbd8aeecae9b38f35e1cfc4d3dfd06c3646153e6edbaa4b341d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Agent configuration UI" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c27dd1e46379f2cf6e2baf32a42dda33945f0505be6e877f182c1f0bd74c819/assets/images/agents-interview-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214517Z&X-Amz-Expires=604800&X-Amz-Signature=c19c59a8b8033e16095ff71bc05375db399ba4cb5e898e232559d62a6b3ac07a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Agent configuration UI" />
 
 ### Research objectives
 
@@ -192,7 +192,7 @@ Each interview was capped at ten minutes. The agent used the `end_call` tool to:
 
 ## Data collection and analysis
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c61890de3525fdcb252541af0242f6a65e66daa23480413fb6882e962cf0adf8/assets/images/agents-interview-analysis.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100016Z&X-Amz-Expires=604800&X-Amz-Signature=57871277bd19a963ede79615da66fcd89580e58a71cf5e2542900146ffbd9bcb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Analysis and data collection UI" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c61890de3525fdcb252541af0242f6a65e66daa23480413fb6882e962cf0adf8/assets/images/agents-interview-analysis.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T214517Z&X-Amz-Expires=604800&X-Amz-Signature=05883e64168a60062e2079fdec5e5c3234768fc094e93807c61b721be968f6f9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Analysis and data collection UI" />
 
 ### Transcript processing
 

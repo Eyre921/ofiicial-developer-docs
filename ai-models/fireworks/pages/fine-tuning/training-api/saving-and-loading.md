@@ -52,13 +52,6 @@ saved = training_client.save_weights_for_sampler(
     "step-0010",
     checkpoint_type="delta",
 ).result()
-
-# With TTL (auto-delete after N seconds)
-saved = training_client.save_weights_for_sampler(
-    "temp-checkpoint",
-    checkpoint_type="delta",
-    ttl_seconds=3600,
-).result()
 ```
 
 `save_weights_for_sampler_ext(...)` is the Fireworks-specific low-level variant that returns `SaveSamplerResult` directly. Use it when you need a concrete return value immediately; use `save_weights_for_sampler(...).result()` for the Tinker-shaped API.
@@ -160,6 +153,37 @@ curl "https://api.fireworks.ai/v1/accounts/<account-id>/rlorTrainerJobs/<job-id>
 
 Each entry includes `name`, `createTime`, `updateTime`, `checkpointType`, and `promotable`.
 
+### Serverless training sessions
+
+[Serverless Training](/fine-tuning/training-api/serverless) runs have no trainer job, so checkpoint list and promote are scoped to the owning **training session** instead of an `rlorTrainerJobs` resource. Use the session-scoped analogs on `FireworksClient`, addressing the session by its resource name (`service.training_session_name` on the serverless `FiretitanServiceClient`):
+
+```python theme={null}
+import os
+from datetime import datetime
+from fireworks.training.sdk import FireworksClient
+
+client = FireworksClient(api_key=os.environ["FIREWORKS_API_KEY"])
+
+# From the serverless FiretitanServiceClient, e.g. "accounts/<a>/trainingSessions/<s>"
+session_name = service.training_session_name
+
+rows = client.list_training_session_checkpoints(session_name)
+target = max(
+    (row for row in rows if row.get("promotable")),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
+
+model = client.promote_session_checkpoint(
+    name=target["name"],  # accounts/<a>/trainingSessions/<s>/checkpoints/<c>
+    output_model_id="my-serverless-lora",
+    base_model="accounts/fireworks/models/qwen3p6-27b",
+)
+```
+
+Session rows carry `name`, `checkpointName`, `checkpointType`, `promotable`, and `createTime`. `checkpointName` is the server-side checkpoint id — prefixed with the source run id and, for sampler snapshots, suffixed with an 8-hex-char session id — not the bare name you saved. `checkpointType` values are full server enum strings (`CHECKPOINT_TYPE_TRAINING_LORA` for train-state, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler snapshots); treat the field as opaque and filter on `promotable`. As with job-scoped promotion, only sampler (`INFERENCE_*`) snapshots are promotable; train-state (`TRAINING_*`) checkpoints are resume-only. List and promote require the session and its bound trainer to still exist — promote before tearing the session down. See [Saving and loading checkpoints (serverless)](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) for the serverless save / resume flow.
+
 ## Sampler refresh / weight sync
 
 Weight sync pushes a checkpoint onto a running inference deployment without restarting it. With the SDK-managed service client, you do this by saving sampler weights and then creating a sampler for that snapshot:
@@ -199,7 +223,7 @@ training_client.save_state("train_state_step_100").result()
 training_client.load_state_with_optimizer("train_state_step_100").result()
 ```
 
-`save_state` accepts optional `ttl_seconds` and `timeout` parameters. When `timeout` is set, the SDK blocks until the save completes or the timeout expires.
+`save_state` accepts an optional `timeout` parameter. When set, the SDK blocks until the save completes or the timeout expires.
 
 <Note>
   For the raw `FiretitanTrainingClient`, `save_state()`, `load_state()`, and `load_state_with_optimizer()` return futures — call `.result()` to block. The cookbook's `ReconnectableClient` wrapper blocks for you.

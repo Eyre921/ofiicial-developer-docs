@@ -2797,6 +2797,10 @@ Use Fireworks AI models in Claude Code with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [Claude Code](https://claude.ai/code) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** `fireconnect claude on --model <id>` (or `--opus` / `--sonnet` / …). See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [Claude Code](https://claude.ai/code) installed
@@ -2828,6 +2832,18 @@ hi
 
 After `fireconnect claude on`, start a new Claude Code session or run `/model` to pick up model changes. To use a new model in the same session, start a new session or `/exit` and resume with `claude --resume <id>`.
 
+## Change models
+
+```bash theme={null}
+fireconnect model list --search glm
+fireconnect claude on --model firerouter               # main only
+fireconnect claude on --interactive                    # wizard for all six slots
+fireconnect claude on --opus glm-fast-latest --sonnet glm-fast-latest
+fireconnect claude status
+```
+
+Slot flags are independent. Re-running `on` without flags keeps your current mapping.
+
 ## Using Fire Pass
 
 Use your `fpk_...` key during `login` or with `--api-key`:
@@ -2842,16 +2858,16 @@ FireConnect detects Fire Pass keys and routes all model aliases to `kimi-fast-la
 
 When you run `fireconnect claude on` without model flags, FireConnect applies the mapping below. First-time setup opens an interactive model picker unless you pass `--non-interactive`. Override any slot with `--model`, `--opus`, `--sonnet`, `--haiku`, `--fable`, or `--subagent`.
 
-| Alias    | Standard key (`fw_...`) | Fire Pass key (`fpk_...`) |
-| -------- | ----------------------- | ------------------------- |
-| main     | `kimi-fast-latest`      | `kimi-fast-latest`        |
-| opus     | `glm-fast-latest`       | `kimi-fast-latest`        |
-| sonnet   | `glm-fast-latest`       | `kimi-fast-latest`        |
-| haiku    | `deepseek-v4-flash`     | `kimi-fast-latest`        |
-| fable    | `kimi-fast-latest`      | `kimi-fast-latest`        |
-| subagent | `deepseek-v4-flash`     | `kimi-fast-latest`        |
+| Alias    | Standard key (`fw_...`)                                                                                                                   | Fire Pass key (`fpk_...`) |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| main     | `firerouter` on first connect when Claude already has Anthropic auth (OAuth / `sk-ant-…`) or workspace BYOK; otherwise `kimi-fast-latest` | `kimi-fast-latest`        |
+| opus     | `glm-fast-latest`                                                                                                                         | `kimi-fast-latest`        |
+| sonnet   | `glm-fast-latest`                                                                                                                         | `kimi-fast-latest`        |
+| haiku    | `deepseek-v4-flash`                                                                                                                       | `kimi-fast-latest`        |
+| fable    | `kimi-fast-latest`                                                                                                                        | `kimi-fast-latest`        |
+| subagent | `deepseek-v4-flash`                                                                                                                       | `kimi-fast-latest`        |
 
-Short model IDs expand to full Fireworks paths when needed. FireConnect appends `[1m]` on slots that use 1M-context models (for example `glm-fast-latest` on `opus` and `sonnet`). The `subagent` slot never gets `[1m]` because Claude Code forwards that value verbatim to the provider API.
+Short model IDs expand automatically. FireConnect appends `[1m]` on 1M-context models (not on `subagent`).
 
 FireConnect saves your chosen mapping per key type. Reopen the wizard anytime:
 
@@ -2877,7 +2893,7 @@ FireConnect writes these settings to `~/.claude/settings.json`. Claude Code auth
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
     "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-fast-latest",
     "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
-    "ANTHROPIC_CUSTOM_HEADERS": "x-fireworks-api-key: YOUR_FIREWORKS_API_KEY"
+    "ANTHROPIC_CUSTOM_HEADERS": "X-Fireworks-Api-Key: YOUR_FIREWORKS_API_KEY"
   }
 }
 ```
@@ -2896,53 +2912,33 @@ When installation succeeds, `fireconnect claude on` prints a confirmation such a
 
 ## Browsing and picking models
 
-Browse the global catalog, then configure Claude Code through `on`:
-
 ```bash theme={null}
 fireconnect model list --search glm
 fireconnect claude on --sonnet kimi-latest
-fireconnect claude on --model glm-fast-latest --sonnet kimi-fast-latest
 ```
 
-### `fireconnect model list`
+`fireconnect model list` shows serverless endpoints and pricing. `fireconnect claude status` shows your current mapping and rates.
 
-Lists the shared Fireworks serverless catalog (coding-tagged models plus known platform routers). Every row is tagged `serverless`.
-
-```bash theme={null}
-fireconnect model list
-fireconnect model list --search glm
-fireconnect model list --json
-```
-
-Resolves the key from `--api-key`, the OS keychain, `~/.fireconnect/config.json`, or `FIREWORKS_API_KEY`. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`. Standard keys include `firerouter`.
-
-### `fireconnect claude status` vs `fireconnect model list`
-
-| Command                     | Shows                                                                                          |
-| --------------------------- | ---------------------------------------------------------------------------------------------- |
-| `fireconnect claude status` | Your current provider, auth, configured alias mapping, and Fireworks serverless rates per slot |
-| `fireconnect model list`    | Available serverless endpoints from the Fireworks API, with IN / OUT pricing where known       |
+Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
-Route requests through [FireRouter](/ecosystem/firerouter/overview), a managed service that sends simple work to cheaper open models and passes hard requests to Claude Opus 4.8. Requires a standard Fireworks API key (`fw_...`); Fire Pass keys cannot select `firerouter`.
+Route requests through [FireRouter](/ecosystem/firerouter/overview). FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ```bash theme={null}
 fireconnect claude on --model firerouter
 fireconnect claude on --opus firerouter --anthropic-api-key sk-ant-...
 ```
 
-Use `--model firerouter` for the primary model or alias flags like `--opus firerouter` for specific slots.
+Use `--model firerouter` for main, or slot flags like `--opus firerouter`. Pass `--anthropic-api-key sk-ant-...` on `on`, or store it once with `fireconnect configure --anthropic-api-key sk-ant-...`.
 
-Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`.
-
-Bias routing toward savings or quality with `--routing-preference` (`1`–`5`; default `3`):
+Bias savings vs quality with `--routing-preference` (`1`-`5`; default `3`):
 
 ```bash theme={null}
 fireconnect claude on --model firerouter --routing-preference 4
 ```
 
-See [Routing preferences](/ecosystem/firerouter/routing-preferences) for level names.
+See [Routing preferences](/ecosystem/firerouter/routing-preferences).
 
 ## Session usage
 
@@ -2963,9 +2959,21 @@ Pair with `fireconnect claude status` for per-slot Fireworks rates and `fireconn
 
 Claude Code's cost column in the `/model` picker still uses Anthropic list prices. The [session usage](#session-usage) section above is the better place to estimate real Fireworks spend.
 
-FireConnect cannot override Claude Code's price column. For example, the example `kimi-fast-latest` main mapping may show Opus-tier estimates while Fireworks bills at model-specific serverless rates (often much lower). Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
+FireConnect cannot override Claude Code's price column. For example, a `kimi-fast-latest` main mapping may show Opus-tier estimates while Fireworks bills at serverless rates. Check the [billing dashboard](https://app.fireworks.ai/account/billing) for actual spend.
 
-FireConnect also writes `ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION` with Fireworks rates for your **main** model. That text appears as the subtitle on the custom picker entry at the bottom of `/model`, not in the price column.
+## Troubleshooting
+
+### Text-only models and images
+
+Claude Code cannot mark a model as non-vision. Pasting an image on a **text-only** slot (for example `glm-fast-latest` or `deepseek-v4-flash`) can break the session.
+
+**Recover with `/rewind`**, then avoid images on that slot or map it to a vision model (for example `kimi-fast-latest`):
+
+```bash theme={null}
+fireconnect claude on --sonnet kimi-fast-latest
+```
+
+`fireconnect claude on` warns when your mapping includes text-only models. `fireconnect claude status` labels each slot `vision` or `text-only`.
 
 ## CLI reference
 
@@ -2977,14 +2985,7 @@ fireconnect claude usage      # Session token usage and estimated Fireworks cost
 fireconnect claude help       # Show harness-specific help
 ```
 
-Run `fireconnect claude help` for all options, including `--interactive`, `--settings-path` (custom `settings.json` location), and `--routing-preference` when using FireRouter.
-
-### Switch models
-
-```bash theme={null}
-fireconnect claude on --model glm-fast-latest --sonnet kimi-fast-latest --haiku deepseek-v4-flash --subagent deepseek-v4-flash
-fireconnect claude on --model firerouter   # route through FireRouter
-```
+Run `fireconnect claude help` for all options.
 
 ### Turn off Fireworks routing
 
@@ -3013,6 +3014,8 @@ Source: https://docs.fireworks.ai/ecosystem/fireconnect/cli-reference
 FireConnect global commands, providers, authentication, and migration
 
 FireConnect uses **harness-first** syntax: `fireconnect <harness> <command>`. Bare harness names run `on` (for example, `fireconnect claude` is the same as `fireconnect claude on`).
+
+To pick or switch models, see **[Models](/ecosystem/fireconnect/models)**. This page is the command and auth reference.
 
 ## Global commands
 
@@ -3066,10 +3069,10 @@ In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provid
 
 ## Providers
 
-| Provider flag         | Where inference runs           | API key               | Supported harnesses              |
-| --------------------- | ------------------------------ | --------------------- | -------------------------------- |
-| `fireworks` (default) | Fireworks gateway              | `fw_...` or `fpk_...` | All harnesses                    |
-| `azure`               | Fireworks on Microsoft Foundry | Azure API key         | All harnesses except Claude Code |
+| Provider flag         | Where inference runs           | API key                                           | Supported harnesses                |
+| --------------------- | ------------------------------ | ------------------------------------------------- | ---------------------------------- |
+| `fireworks` (default) | Fireworks gateway              | `fw_...` (all harnesses) or `fpk_...` (not Codex) | All harnesses with a supported key |
+| `azure`               | Fireworks on Microsoft Foundry | Azure API key                                     | All harnesses except Claude Code   |
 
 Set the default with `fireconnect configure --provider fireworks` or `--provider azure`. Harness `on` commands use the configured provider unless you pass `--azure` or per-command `--base-url` / `--api-key` overrides.
 
@@ -3096,10 +3099,12 @@ Each IDE harness (`cursor`, `vscode`) supports `on`, `off`, `status`, and `help`
 
 Use `--model <id>` for the primary model. Claude Code also supports slot flags: `--opus`, `--sonnet`, `--haiku`, `--fable`, `--subagent`.
 
+See **[Models](/ecosystem/fireconnect/models)** for a cross-harness quick reference, restart requirements, and common mistakes.
+
 Claude Code-only flags:
 
-* `--interactive` — open the model mapping wizard (cannot combine with model flags)
-* `--non-interactive` — skip first-run onboarding; use saved preferences or example defaults
+* `--interactive`: open the model mapping wizard (cannot combine with model flags)
+* `--non-interactive`: skip first-run onboarding; use saved preferences or example defaults
 
 On the Foundry path, pass your model with `--model` (for example, `--model FW-GLM-5.2`).
 
@@ -3107,10 +3112,10 @@ On the Foundry path, pass your model with `--model` (for example, `--model FW-GL
   `--main` is a retired alias for `--model` in v0.9.0+. Prefer `--model` in new scripts.
 </Tip>
 
-FireRouter flags (when a slot uses `firerouter`):
+FireRouter flags (when using `firerouter`):
 
-* `--anthropic-api-key sk-ant-...`: BYOK for pass-through to Claude Opus 4.8
-* `--routing-preference <1-5>`: tune savings vs. quality (see [Routing preferences](/ecosystem/firerouter/routing-preferences))
+* `--anthropic-api-key sk-ant-...`: BYOK for Claude Opus 4.8 pass-through (where the harness supports it)
+* `--routing-preference <1-5>`: savings vs. quality (Claude Code, OpenCode, Pi, VS Code). See [Routing preferences](/ecosystem/firerouter/routing-preferences)
 
 ## API key resolution
 
@@ -3131,40 +3136,45 @@ Claude Code additionally reads harness-local keys from `~/.claude/settings.json`
 
 ## Migration from earlier syntax
 
-### Pre-0.5.0 syntax
+Only needed if you still have old scripts or muscle memory. Day-to-day use is `fireconnect <harness> on --model <id>`.
 
-| Before                              | After                                         |
-| ----------------------------------- | --------------------------------------------- |
-| `fireconnect on`                    | `fireconnect claude on`                       |
-| `fireconnect off`                   | `fireconnect claude off`                      |
-| `fireconnect status`                | `fireconnect claude status`                   |
-| `fireconnect list`                  | `fireconnect claude status`                   |
-| `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
-| `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
-| `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+<AccordionGroup>
+  <Accordion title="Pre-0.5.0 syntax">
+    | Before                              | After                                         |
+    | ----------------------------------- | --------------------------------------------- |
+    | `fireconnect on`                    | `fireconnect claude on`                       |
+    | `fireconnect off`                   | `fireconnect claude off`                      |
+    | `fireconnect status`                | `fireconnect claude status`                   |
+    | `fireconnect list`                  | `fireconnect claude status`                   |
+    | `fireconnect set --main <id>`       | `fireconnect claude on --model <id>`          |
+    | `fireconnect reset`                 | `fireconnect claude on` (re-applies defaults) |
+    | `fireconnect on --harness opencode` | `fireconnect opencode on`                     |
+  </Accordion>
 
-### v0.9.1 changes
+  <Accordion title="v0.9.1 changes">
+    | Feature                   | Details                                                                                                                                                                 |
+    | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `fireconnect upgrade`     | In-place upgrade for curl/git installs; interactive terminals may prompt **Upgrade now?**                                                                               |
+    | Seamless upgrade          | From 0.9.0 on, harness settings (including Claude Code) are preserved across upgrade/reinstall                                                                          |
+    | Upgrade from before 0.9.0 | With Claude connected, FireConnect restores original Claude settings before updating; run `fireconnect claude on` afterward. In CI, set `FIRECONNECT_AUTO_OFF_CLAUDE=1` |
+    | Claude `--interactive`    | Model mapping wizard with fast/non-fast profile toggle; preferences persist per key type                                                                                |
+  </Accordion>
 
-| Feature                | Details                                                                                        |
-| ---------------------- | ---------------------------------------------------------------------------------------------- |
-| `fireconnect upgrade`  | In-place upgrade for curl/git installs; interactive terminals may prompt **Upgrade now?**      |
-| Seamless upgrade       | From 0.9.0 on, harness settings (including Claude Code) are preserved across upgrade/reinstall |
-| Claude `--interactive` | Model mapping wizard with fast/non-fast profile toggle; preferences persist per key type       |
-
-### v0.9.0 changes
-
-| Before                               | After                                                  |
-| ------------------------------------ | ------------------------------------------------------ |
-| `fireconnect <harness> model list`   | `fireconnect model list`                               |
-| `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags  |
-| `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)       |
-| `--main <id>` on `on`                | `--model <id>`                                         |
-| Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json` |
+  <Accordion title="v0.9.0 changes">
+    | Before                               | After                                                  |
+    | ------------------------------------ | ------------------------------------------------------ |
+    | `fireconnect <harness> model list`   | `fireconnect model list`                               |
+    | `fireconnect <harness> model select` | `fireconnect <harness> on --model <id>` or slot flags  |
+    | `fireconnect <harness> model reset`  | `fireconnect <harness> on` (re-applies defaults)       |
+    | `--main <id>` on `on`                | `--model <id>`                                         |
+    | Claude `apiKeyHelper` auth           | `X-Fireworks-Api-Key` custom header in `settings.json` |
+  </Accordion>
+</AccordionGroup>
 
 ## See also
 
 * [FireConnect overview](/ecosystem/fireconnect/overview)
-* [Recommended models](/ecosystem/fireconnect/recommended-models)
+* [Models](/ecosystem/fireconnect/models)
 * [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect)
 
 
@@ -3174,6 +3184,10 @@ Source: https://docs.fireworks.ai/ecosystem/fireconnect/codex
 Use Fireworks AI models in OpenAI Codex CLI with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes the [OpenAI Codex CLI](https://developers.openai.com/codex) through Fireworks AI models via the Responses API. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
+
+<Tip>
+  **Change models:** `fireconnect codex on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
 
 ## Prerequisites
 
@@ -3242,10 +3256,9 @@ Route requests through [FireRouter](/ecosystem/firerouter/overview):
 fireconnect codex on --model firerouter
 export ANTHROPIC_API_KEY=sk-ant-...   # optional BYOK for pass-through to Claude Opus 4.8
 fireconnect codex on --model firerouter --anthropic-api-key sk-ant-...
-fireconnect codex on --model firerouter --routing-preference 4
 ```
 
-FireRouter requires a standard Fireworks API key (`fw_...`). FireConnect rejects `--model firerouter` with Fire Pass keys on every harness. For Codex, FireRouter BYOK reads `ANTHROPIC_API_KEY` from your shell at runtime. Pass `--anthropic-api-key` on `on`, run `fireconnect configure --anthropic-api-key sk-ant-...`, or export the key before starting Codex.
+FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key. Codex also does not support Fire Pass for direct routing. FireRouter BYOK reads `ANTHROPIC_API_KEY` from your shell (Codex does not support `--routing-preference`).
 
 <Warning>
   **MiniMax models are not supported in Codex.** Codex uses the Fireworks Responses API and may insert assistant messages between `tool_calls` and `tool_results`. MiniMax chat templates require `tool_results` to follow `tool_calls` directly. Use Chat Completions harnesses (for example Claude Code or OpenCode) for MiniMax.
@@ -3347,6 +3360,10 @@ Use Fireworks AI models in Cursor IDE with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [Cursor](https://cursor.com) through Fireworks AI models via Cursor's OpenAI-compatible BYOK path. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** quit Cursor → `fireconnect cursor on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [Cursor](https://cursor.com) installed
@@ -3354,11 +3371,11 @@ Use Fireworks AI models in Cursor IDE with the FireConnect CLI
 * FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
-  **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
+  **Quit Cursor before `on` or `off`.** FireConnect writes Cursor's SQLite settings database; the IDE must be fully closed. `status` is read-only while Cursor is running.
 </Note>
 
 <Warning>
-  **FireRouter is not supported in Cursor.** Use Claude Code, OpenCode, Codex, Pi, or VS Code for FireRouter. Fire Pass keys cannot select `firerouter` in FireConnect on any harness.
+  **FireRouter on Cursor needs workspace BYOK** (no local Anthropic key). FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key, then `fireconnect cursor on --model firerouter`. See [FireRouter](/ecosystem/firerouter/overview).
 </Warning>
 
 ## Enable Fireworks routing
@@ -3530,6 +3547,10 @@ Use Fireworks AI models in LangChain Deep Agents Code with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [LangChain Deep Agents Code](https://docs.langchain.com/oss/python/deepagents/cli) (`dcode`) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** `fireconnect deepagents on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [Deep Agents Code](https://docs.langchain.com/oss/python/deepagents/cli) (`dcode`) installed
@@ -3573,10 +3594,18 @@ FireConnect snapshots `config.toml` under `~/.fireconnect/deepagents/` before th
 
 ```bash theme={null}
 fireconnect model list --search glm
-fireconnect deepagents on --model glm-5p1
+fireconnect deepagents on --model glm-5p2
 ```
 
-Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`.
+Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
+
+## FireRouter
+
+```bash theme={null}
+fireconnect deepagents on --model firerouter
+```
+
+Needs workspace BYOK (same as Cursor).
 
 ## CLI reference
 
@@ -3592,7 +3621,7 @@ Run `fireconnect deepagents help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect deepagents on --model glm-5p1
+fireconnect deepagents on --model glm-5p2
 ```
 
 ### Turn off Fireworks routing
@@ -3712,7 +3741,7 @@ Presets: `tetris` (default), `snake`, `tictactoe`, `clock`, or `custom` with you
 fireconnect demo --challenger glm-5p2-fast
 ```
 
-Default challenger is `glm-5p2-fast`. Use any serverless model ID you would pass to `fireconnect claude on --model`.
+Default challenger is `glm-5p2-fast`. Pass any serverless ID from [Models](/ecosystem/fireconnect/models) (same IDs as `fireconnect claude on --model`).
 
 ### Non-interactive / CI-friendly
 
@@ -3748,6 +3777,8 @@ Liked what you saw on the Fireworks side? Wire it into your daily driver:
 fireconnect claude on --model glm-5p2-fast
 ```
 
+More IDs and latest vs fast guidance: [Models](/ecosystem/fireconnect/models).
+
 Want automatic cost routing instead of a fixed model? Try [FireRouter](/ecosystem/firerouter/overview):
 
 ```bash theme={null}
@@ -3768,7 +3799,7 @@ The demo ships with FireConnect: [github.com/fw-ai/fireconnect](https://github.c
 ## See also
 
 * [FireConnect overview](/ecosystem/fireconnect/overview)
-* [Recommended models](/ecosystem/fireconnect/recommended-models)
+* [Models](/ecosystem/fireconnect/models)
 * [CLI reference](/ecosystem/fireconnect/cli-reference)
 
 
@@ -3839,7 +3870,7 @@ fireconnect deepagents on --model FW-GLM-5.2
 If you omit `--model`, FireConnect defaults to `FW-GLM-5.2`.
 
 <Warning>
-  **Cursor and VS Code:** fully quit the IDE before `on` or `off`. FireConnect writes SQLite state and hard-errors if the app is still running unless you pass `--force`.
+  **Cursor and VS Code:** fully quit the IDE before `on` or `off`. FireConnect writes SQLite state. In an interactive terminal it waits for you to quit; pass `--force` to write anyway.
 </Warning>
 
 ### Endpoint normalization
@@ -3979,12 +4010,121 @@ fireconnect deepagents status
 FireConnect is open source: [github.com/fw-ai/fireconnect](https://github.com/fw-ai/fireconnect)
 
 
+# Models
+Source: https://docs.fireworks.ai/ecosystem/fireconnect/models
+
+Switch models in FireConnect harnesses: latest vs fast, when to pick each ID, and US-only routers
+
+```bash theme={null}
+fireconnect model list --search kimi
+fireconnect <harness> on --model <id>
+# Cursor / VS Code: quit the IDE before on, then reopen
+# Other harnesses: restart after on
+```
+
+`<harness>` is one of: `claude`, `opencode`, `codex`, `pi`, `cursor`, `vscode`, `deepagents`.
+
+There is no `model select` command. Always use `on --model`.
+
+```bash theme={null}
+fireconnect opencode on --model kimi-fast-latest
+fireconnect claude on --model firerouter
+fireconnect claude on --interactive              # Claude: map all six slots
+fireconnect claude on --opus glm-fast-latest --sonnet glm-fast-latest
+```
+
+Claude Code: `--model` sets **main** only; use `--opus`, `--sonnet`, `--haiku`, `--fable`, `--subagent`, or `--interactive` for the rest. Other harnesses take one `--model` for the default. Re-running `on` without `--model` keeps your current choice.
+
+| Harness                          | Apply the change                                    |
+| -------------------------------- | --------------------------------------------------- |
+| Cursor, VS Code                  | **Quit the IDE**, run `on --model`, then reopen     |
+| Claude Code                      | New session, or `/exit` then `claude --resume <id>` |
+| OpenCode, Codex, Pi, Deep Agents | Restart the CLI after `on`                          |
+
+## Latest vs Fast
+
+FireConnect short IDs follow the same [Serverless serving paths](/serverless/serving-paths) as the API:
+
+| Kind                       | Example IDs                           | When to use                                                                                                           |
+| -------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Latest** (standard path) | `kimi-latest`, `glm-latest`           | Best price/quality. Version-tracking routers that move to the current model automatically.                            |
+| **Fast**                   | `kimi-fast-latest`, `glm-fast-latest` | Interactive coding where token speed matters. Same model quality as latest, higher \$/token, aims for **100+ tok/s**. |
+| **Pinned**                 | `kimi-k3`, `glm-5p2`, `kimi-k3-fast`  | Stable ID that does not track new versions.                                                                           |
+
+Prefer `*-latest` / `*-fast-latest` unless you need a pin. Browse live IDs and prices with `fireconnect model list`.
+
+## Which model when
+
+| ID                  | Use when                                                          | Notes                                                  |
+| ------------------- | ----------------------------------------------------------------- | ------------------------------------------------------ |
+| `kimi-fast-latest`  | Default interactive coding; screenshots / UI                      | Vision. Default for most harnesses and Claude `fable`. |
+| `kimi-latest`       | Strong agentic coding with vision, lower \$/token than Fast       | Vision. Standard path.                                 |
+| `glm-fast-latest`   | Fast text-only agent loops (Claude `opus` / `sonnet` defaults)    | Text-only. 1M context.                                 |
+| `glm-latest`        | Cheaper text-only coding / long context                           | Text-only. Same family as Fast at standard price.      |
+| `deepseek-v4-flash` | Haiku / subagent / high-volume background work                    | Text-only. Lowest cost in the coding catalog.          |
+| `firerouter`        | Auto-route easy work to open models, hard work to Claude Opus 4.8 | See [FireRouter](/ecosystem/firerouter/overview).      |
+
+Also useful from `fireconnect model list`: `minimax-latest` / `qwen-plus-latest` (cheaper vision), `deepseek-v4-pro` (stronger text coding than Flash), `kimi-k2p7-code` / `kimi-k2p7-code-fast` (code-focused Kimi).
+
+<Warning>
+  GLM and DeepSeek Flash/Pro are **text-only**. Pasting images on those slots in Claude Code can break the session. Recover with `/rewind`, or use a Kimi ID. See [Claude Code troubleshooting](/ecosystem/fireconnect/claude-code#troubleshooting).
+</Warning>
+
+## US-only
+
+For US-only inference (compliance), pass the **full router path** with `on --model`. FireConnect does not yet expand the short US slugs to routers (unknown short IDs map to `accounts/fireworks/models/...`, which is wrong for these endpoints).
+
+| Model             | Full ID                                      |
+| ----------------- | -------------------------------------------- |
+| Kimi K3 (US)      | `accounts/fireworks/routers/kimi-k3-us`      |
+| GLM 5.2 Fast (US) | `accounts/fireworks/routers/glm-5p2-fast-us` |
+
+```bash theme={null}
+fireconnect claude on --model accounts/fireworks/routers/kimi-k3-us
+fireconnect opencode on --model accounts/fireworks/routers/glm-5p2-fast-us
+```
+
+US-only endpoints are a **10% premium** except GLM 5.2 Fast US (same price as global Fast). Details: [US-only Serverless](/serverless/us-only-serverless).
+
+## Limits
+
+* **Fire Pass** (`fpk_...`): Claude defaults to `kimi-fast-latest`. Catalog is limited. Not on Codex. FireConnect rejects `--model firerouter` with a Fire Pass key on **every** harness; use an `fw_...` account key for FireRouter.
+* **Foundry**: pass the Azure deployment name (`FW-GLM-5.2`), not a short ID. Claude Code does not support Foundry.
+* **FireRouter**: standard key only (`fw_...`), not Fire Pass. Cursor / Deep Agents need workspace BYOK.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Nothing changed after on --model">
+    Restart the harness. For Cursor and VS Code, fully quit the IDE **before** running `on`.
+  </Accordion>
+
+  <Accordion title="Stuck on FireRouter / Fire Pass">
+    FireConnect rejects `--model firerouter` when your stored key is Fire Pass (`fpk_...`), on every harness. Switch to an `fw_...` account key, then run `fireconnect <harness> on --model firerouter` and restart the harness.
+  </Accordion>
+
+  <Accordion title="Foundry says the model was not found">
+    Pass the Azure **deployment name** (for example `FW-GLM-5.2`), not a serverless short ID.
+  </Accordion>
+</AccordionGroup>
+
+## See also
+
+* [FireConnect overview](/ecosystem/fireconnect/overview)
+* [CLI reference](/ecosystem/fireconnect/cli-reference)
+* [Harness guides](/ecosystem/fireconnect/claude-code)
+
+
 # OpenCode
 Source: https://docs.fireworks.ai/ecosystem/fireconnect/opencode
 
 Use Fireworks AI models in OpenCode with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [OpenCode](https://opencode.ai) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
+
+<Tip>
+  **Change models:** `fireconnect opencode on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
 
 ## Prerequisites
 
@@ -4019,7 +4159,7 @@ FireConnect detects Fire Pass keys and defaults OpenCode to `kimi-fast-latest`.
 
 OpenCode routes a single default model (no opus/sonnet/haiku alias slots). The default is `kimi-fast-latest`, written to config as `fireworks-ai/kimi-fast-latest`.
 
-Short model IDs like `glm-5p1` are expanded to full Fireworks paths (for example, `accounts/fireworks/models/glm-5p1`).
+Short model IDs like `glm-5p2` are expanded to full Fireworks paths (for example, `accounts/fireworks/models/glm-5p2`).
 
 ## What gets written
 
@@ -4036,10 +4176,10 @@ FireConnect snapshots your original `opencode.json` before the first change. The
 
 ```bash theme={null}
 fireconnect model list --search glm
-fireconnect opencode on --model glm-5p1
+fireconnect opencode on --model glm-5p2
 ```
 
-`fireconnect model list` resolves the API key from the OS keychain or global config. Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`. Standard keys include `firerouter`.
+`fireconnect model list` uses your stored key (keychain, config, or `FIREWORKS_API_KEY`). Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
@@ -4063,7 +4203,7 @@ Run `fireconnect opencode help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect opencode on --model glm-5p1
+fireconnect opencode on --model glm-5p2
 ```
 
 ### Turn off Fireworks routing
@@ -4157,58 +4297,56 @@ Choose where inference runs:
 * **Fireworks on Microsoft Foundry**: models in your Azure subscription, billed through Azure. See [Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry).
 
 <Tip>
-  New here? Run `fireconnect login`, then `fireconnect claude on`, restart Claude Code, and send `hi`. Try the [side-by-side demo](/ecosystem/fireconnect/demo) if you want to compare before switching.
+  New here? Install and sign in below, then open the [harness guide](#choose-your-harness) for the tool you use. Try the [side-by-side demo](/ecosystem/fireconnect/demo) if you want to compare before switching.
 </Tip>
 
-## What's new in v0.9.1
+## Prerequisites
 
-FireConnect **0.9.1** improves upgrades and Claude model setup:
+* A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or [Fire Pass](/firepass) key (`fpk_...`) for direct routing
+* For Foundry: Azure resource, API key, and deployment. See [portal setup](/ecosystem/integrations/azure-foundry).
+* Node.js 18+
+* At least one supported harness installed locally
 
-* **Seamless upgrades**: from 0.9.0 on, reinstalling or running `fireconnect upgrade` keeps harness settings in place — Claude Code stays connected
-* **In-place upgrade**: `fireconnect upgrade`, or answer **Yes** when an interactive terminal prompts you that a newer version is available
-* **Claude model preferences**: first-run onboarding wizard, `--interactive` / `--non-interactive`, and persisted mappings per key type (`fw_...` vs `fpk_...`)
-* **Reliability**: baked API keys across harness configs, WebSearch MCP auth refresh on upgrade/login, clearer catalog labels
+## Install
 
-## What's new in v0.9.0
+```bash theme={null}
+curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
+fireconnect login
+```
 
-FireConnect **0.9.0** adds a global model catalog, first-class FireRouter support, and safer upgrades:
+The installer clones the CLI to `~/.fireconnect/cli`, installs dependencies, and adds `~/.local/bin/fireconnect`. It does **not** sign you in or write harness settings.
 
-* **Global model catalog**: `fireconnect model list`
-* **FireRouter as a model**: `on --model firerouter` on supported harnesses
-* **Claude usage reports**: `fireconnect claude usage`
-* **Web search MCP**: HTTP MCP for live search with a Fireworks API key ([details](/ecosystem/fireconnect/websearch-mcp)). FireConnect auto-install on Claude Code; other harnesses coming soon.
+After `login`, open your [harness guide](#choose-your-harness) and run `fireconnect <harness> on`. You can also pass `--api-key` or set `FIREWORKS_API_KEY` instead of `login`.
 
-If you are upgrading from **before 0.9.0**, see [Upgrade FireConnect](#upgrade-fireconnect) before enabling FireRouter or web search.
+### Upgrade FireConnect
 
-## Guides
+```bash theme={null}
+fireconnect upgrade
+```
 
-<CardGroup>
-  <Card title="Side-by-side demo" icon="bolt" href="/ecosystem/fireconnect/demo">
-    Race Anthropic vs Fireworks on the same prompt
-  </Card>
+Or re-run the install curl above. On v0.9.0+, your harness stays connected; no need to run `off` first.
 
-  <Card title="Recommended models" icon="list" href="/ecosystem/fireconnect/recommended-models">
-    Serverless short IDs and Fire Pass defaults
-  </Card>
+Check the installed version with `fireconnect --version`. For older releases and CLI renames, see [CLI reference: Migration](/ecosystem/fireconnect/cli-reference#migration-from-earlier-syntax).
 
-  <Card title="CLI reference" icon="terminal" href="/ecosystem/fireconnect/cli-reference">
-    Commands, providers, auth, and migration
-  </Card>
+## Sign in
 
-  <Card title="Microsoft Foundry" icon="microsoft" href="/ecosystem/fireconnect/microsoft-foundry">
-    Route harnesses through Azure deployments
-  </Card>
+```bash theme={null}
+fireconnect login     # browser sign-in or paste a key
+fireconnect logout    # clear stored credentials
+fireconnect status    # sign-in state and key storage
+```
 
-  <Card title="WebSearch MCP" icon="globe" href="/ecosystem/fireconnect/websearch-mcp">
-    Live web search from any harness; FireConnect on Claude Code today
-  </Card>
-</CardGroup>
+Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and applies the correct defaults.
 
-## Harness guides
+See [CLI reference: Sign in options](/ecosystem/fireconnect/cli-reference#sign-in-options) for `--with-token`, `--account`, `logout --revoke`, and `configure`.
+
+## Choose your harness
+
+After install and sign-in, open the guide for the tool you use. Each page covers `on` / `off`, models, and harness-specific notes.
 
 <CardGroup>
   <Card title="Claude Code" icon="terminal" href="/ecosystem/fireconnect/claude-code">
-    Multi-slot model aliases
+    Six model slots + interactive wizard
   </Card>
 
   <Card title="OpenCode" icon="terminal" href="/ecosystem/fireconnect/opencode">
@@ -4236,6 +4374,16 @@ If you are upgrading from **before 0.9.0**, see [Upgrade FireConnect](#upgrade-f
   </Card>
 </CardGroup>
 
+## Models
+
+```bash theme={null}
+fireconnect model list --search glm
+fireconnect <harness> on --model glm-fast-latest
+# Cursor / VS Code: quit before on; others: restart after
+```
+
+`<harness>` is one of: `claude`, `opencode`, `codex`, `pi`, `cursor`, `vscode`, `deepagents`. Full walkthrough: **[Models](/ecosystem/fireconnect/models)**.
+
 ## Harness support
 
 | Harness     | Fireworks gateway | Fire Pass | Microsoft Foundry | [FireRouter](/ecosystem/firerouter/overview) | Guide                                             |
@@ -4244,85 +4392,38 @@ If you are upgrading from **before 0.9.0**, see [Upgrade FireConnect](#upgrade-f
 | OpenCode    |        Yes        |    Yes    |        Yes        |                      Yes                     | [OpenCode](/ecosystem/fireconnect/opencode)       |
 | Codex       |        Yes        |     No    |        Yes        |                      Yes                     | [Codex](/ecosystem/fireconnect/codex)             |
 | Pi          |        Yes        |    Yes    |        Yes        |                      Yes                     | [Pi](/ecosystem/fireconnect/pi)                   |
-| Cursor      |        Yes        |    Yes    |        Yes        |                      No                      | [Cursor](/ecosystem/fireconnect/cursor)           |
+| Cursor      |        Yes        |    Yes    |        Yes        |                Workspace BYOK                | [Cursor](/ecosystem/fireconnect/cursor)           |
 | VS Code     |        Yes        |    Yes    |        Yes        |                      Yes                     | [VS Code](/ecosystem/fireconnect/vscode)          |
-| Deep Agents |        Yes        |    Yes    |        Yes        |                      No                      | [Deep Agents](/ecosystem/fireconnect/deepagents)  |
+| Deep Agents |        Yes        |    Yes    |        Yes        |                Workspace BYOK                | [Deep Agents](/ecosystem/fireconnect/deepagents)  |
 
 **Notes**
 
-* **Microsoft Foundry**: Claude Code does not read `--provider azure` yet. Every other harness in the matrix supports Foundry routing in FireConnect v0.9.0+.
-* **Fire Pass**: not supported on Codex or Foundry. FireConnect also rejects `--model firerouter` with Fire Pass keys (`fpk_...`) on every harness. Use a standard Fireworks API key (`fw_...`) for FireRouter.
-* **Web search MCP**: works from any harness via HTTP MCP with a Fireworks API key (request access from Fireworks). FireConnect auto-install is Claude Code only for now; other harnesses coming soon. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
-* **Cursor / VS Code**: quit the IDE before `on` or `off` (SQLite writes). `status` is read-only.
-
-## Prerequisites
-
-* A [Fireworks API key](https://app.fireworks.ai/settings/users/api-keys) (`fw_...`) or [Fire Pass](/firepass) key (`fpk_...`) for direct routing
-* For Foundry: Azure resource, API key, and deployment. See [portal setup](/ecosystem/integrations/azure-foundry).
-* Node.js 18+
-* At least one supported harness installed locally
-
-## Install
-
-```bash theme={null}
-curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
-fireconnect login
-fireconnect claude on
-```
-
-The installer clones the CLI to `~/.fireconnect/cli`, installs dependencies, and adds `~/.local/bin/fireconnect`. It does **not** sign you in or write harness settings.
-
-You do not have to run `login` first. `fireconnect claude on` runs sign-in inline if needed.
-
-### Upgrade FireConnect
-
-Upgrade with either command:
-
-```bash theme={null}
-fireconnect upgrade
-# or
-curl -fsSL https://raw.githubusercontent.com/fw-ai/fireconnect/main/install.sh | bash
-```
-
-**On FireConnect 0.9.0 or newer**, harness settings are preserved — Claude Code and other harnesses stay connected across upgrade or reinstall. No need to run `fireconnect claude off` first.
-
-In an interactive terminal, FireConnect may prompt **Upgrade now?** when a newer release is available. Answer **Yes** to run `fireconnect upgrade`, or **No** to snooze the prompt for a day.
-
-**Upgrading from before 0.9.0** with Claude Code connected: FireConnect temporarily restores your original Claude settings before updating. Reconnect after upgrade:
-
-```bash theme={null}
-fireconnect claude on
-```
-
-For non-interactive installs (CI), set `FIRECONNECT_AUTO_OFF_CLAUDE=1` to restore automatically. Check version with `fireconnect --version`.
-
-After upgrading, see the [CLI reference](/ecosystem/fireconnect/cli-reference), [recommended models](/ecosystem/fireconnect/recommended-models), [side-by-side demo](/ecosystem/fireconnect/demo), and [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
-
-## Sign in
-
-```bash theme={null}
-fireconnect login     # browser sign-in or paste a key
-fireconnect logout    # clear stored credentials
-fireconnect status    # sign-in state and key storage
-```
-
-Fire Pass keys (`fpk_...`) work during `login` or `on`. FireConnect detects the key type and applies the correct defaults.
-
-See [CLI reference: Sign in options](/ecosystem/fireconnect/cli-reference#sign-in-options) for `--with-token`, `--account`, `logout --revoke`, and `configure`.
+* **Foundry**: not on Claude Code yet.
+* **Fire Pass**: not on Codex or Foundry. FireConnect rejects `--model firerouter` with a Fire Pass (`fpk_...`) key on **every** harness; use an `fw_...` account key for FireRouter.
+* **FireRouter**: Cursor and Deep Agents need workspace BYOK.
+* **Web search MCP**: any harness via HTTP MCP; FireConnect auto-install is Claude Code only today. See [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp).
+* **Cursor / VS Code**: quit the IDE before `on` or `off`. `status` is read-only.
 
 ## FireRouter
 
 [FireRouter](/ecosystem/firerouter/overview) automatically routes simple requests to cheaper open models and hard requests to Claude Opus 4.8. In FireConnect, select it like any other model:
 
 ```bash theme={null}
-fireconnect claude on --model firerouter
+fireconnect <harness> on --model firerouter
 ```
 
-Cursor does not support FireRouter. See the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect) for auth, routing preferences, and supported harnesses.
+Requires a standard Fireworks key (`fw_...`), not Fire Pass. Cursor and Deep Agents also need workspace BYOK. See the [FireRouter overview](/ecosystem/firerouter/overview#fireconnect) and [Harness support](#harness-support).
 
 ## Source
 
 FireConnect is open source: [github.com/fw-ai/fireconnect](https://github.com/fw-ai/fireconnect)
+
+## See also
+
+* [CLI reference](/ecosystem/fireconnect/cli-reference)
+* [Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry)
+* [WebSearch MCP](/ecosystem/fireconnect/websearch-mcp)
+* [Side-by-side demo](/ecosystem/fireconnect/demo)
 
 
 # Pi
@@ -4331,6 +4432,10 @@ Source: https://docs.fireworks.ai/ecosystem/fireconnect/pi
 Use Fireworks AI models in Pi with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [Pi](https://pi.dev) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
+
+<Tip>
+  **Change models:** `fireconnect pi on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
 
 ## Prerequisites
 
@@ -4373,16 +4478,16 @@ FireConnect:
 * Stores a **baked plaintext literal** in `fireworks.key` in `~/.pi/agent/auth.json` (mode `0600`)
 * Registers the **preferred serverless catalog** in `~/.pi/agent/models.json` for Pi's `/model` picker
 
-FireConnect snapshots both files under `~/.fireconnect/pi/` before the first change. Running `fireconnect pi off` restores them byte-for-byte.
+FireConnect snapshots `settings.json`, `auth.json`, and `models.json` under `~/.fireconnect/pi/` before the first change. Running `fireconnect pi off` restores them.
 
 ## Browsing and picking models
 
 ```bash theme={null}
 fireconnect model list --search glm
-fireconnect pi on --model glm-5p1
+fireconnect pi on --model glm-5p2
 ```
 
-Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`.
+Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
 
 ## FireRouter
 
@@ -4405,7 +4510,7 @@ Run `fireconnect pi help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect pi on --model glm-5p1
+fireconnect pi on --model glm-5p2
 ```
 
 ### Turn off Fireworks routing
@@ -4473,61 +4578,16 @@ Restart Pi after switching or running `off`. See [Turn off Foundry routing](/eco
 FireConnect is open source: [github.com/fw-ai/fireconnect](https://github.com/fw-ai/fireconnect)
 
 
-# Recommended models
-Source: https://docs.fireworks.ai/ecosystem/fireconnect/recommended-models
-
-Serverless model short IDs and Fire Pass defaults for FireConnect
-
-Browse live pricing and availability with `fireconnect model list`, then apply a choice with `fireconnect <harness> on --model <id>` or slot flags such as `--sonnet`.
-
-```bash theme={null}
-fireconnect model list --search glm
-fireconnect claude on --model glm-fast-latest --sonnet kimi-fast-latest
-```
-
-## Serverless short IDs
-
-These IDs apply to **direct Fireworks routing** and expand to full Fireworks paths automatically. With [Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry), pass your Foundry model instead (for example, `FW-GLM-5.2`) via `--model`.
-
-| Short ID            | Best for                      | Notes                                                                                                                                                                                |
-| ------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `glm-latest`        | All-around use, agentic tasks | Version-tracking router; strong reasoning, 1M context.                                                                                                                               |
-| `glm-fast-latest`   | Latency-sensitive agentic use | Example mapping uses this for `opus` and `sonnet` in Claude Code. Version-tracking router on the high-speed Fast serving path (100+ tok/s), at a higher per-token price. 1M context. |
-| `glm-5p2-fast`      | Latency-sensitive agentic use | Same as `glm-fast-latest` but pinned to GLM 5.2 rather than version-tracking. 1M context.                                                                                            |
-| `kimi-fast-latest`  | General use (lighter)         | Example mapping uses this for `main` and `fable` in Claude Code. Fast Kimi variant with vision support.                                                                              |
-| `glm-5p1`           | General use (lighter)         | Pinned GLM 5.1; use with `--sonnet glm-5p1` if you prefer it over the example mapping.                                                                                               |
-| `deepseek-v4-flash` | Background / fast tasks       | Example mapping uses this for `haiku` and `subagent` in Claude Code. Lowest latency.                                                                                                 |
-| `firerouter`        | Automatic cost routing        | Sends simple work to open models and hard work to Claude Opus 4.8. See [FireRouter](/ecosystem/firerouter/overview).                                                                 |
-
-## Fire Pass keys
-
-Fire Pass keys (`fpk_...`) route all Claude Code slots to `kimi-fast-latest`. The model browser shows Fire Pass-supported routers: `glm-latest`, `glm-fast-latest`, `glm-5p2-fast`, `kimi-fast-latest`, and `kimi-k2p7-code-fast`.
-
-Fire Pass works with direct Fireworks routing only. Fire Pass keys are not supported on Codex, Microsoft Foundry, or `--model firerouter` in FireConnect (on any harness).
-
-<Warning>
-  Codex does not support Fire Pass keys yet. Use a standard Fireworks API key (`fw_...`) with Codex.
-</Warning>
-
-## Per-harness defaults
-
-Claude Code uses multi-slot aliases (`main`, `opus`, `sonnet`, `haiku`, `fable`, `subagent`). See [Claude Code](/ecosystem/fireconnect/claude-code#example-model-mapping) for the full mapping table.
-
-Other harnesses set a single default model on `on`. Pass `--model <id>` to override.
-
-## See also
-
-* [FireConnect overview](/ecosystem/fireconnect/overview)
-* [CLI reference](/ecosystem/fireconnect/cli-reference)
-* [Side-by-side demo](/ecosystem/fireconnect/demo)
-
-
 # VS Code
 Source: https://docs.fireworks.ai/ecosystem/fireconnect/vscode
 
 Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) adds Fireworks AI models to **[GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) Chat** in [Visual Studio Code](https://code.visualstudio.com) by writing a custom language-model endpoint. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
+
+<Tip>
+  **Change models:** quit VS Code → `fireconnect vscode on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
 
 <Card title="Manual setup (GitHub Copilot)" icon="github" href="/ecosystem/integrations/github-copilot">
   Step-by-step UI walkthrough with screenshots. Add a Fireworks custom endpoint without the FireConnect CLI
@@ -4542,7 +4602,7 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 
 ## Enable Fireworks routing
 
-VS Code stores custom-endpoint API keys (encrypted) in `state.vscdb`. **Quit VS Code** before running `on` or `off`. FireConnect hard-errors if VS Code is still running unless you pass `--force`.
+VS Code stores custom-endpoint API keys (encrypted) in `state.vscdb`. **Quit VS Code** before running `on` or `off`. In an interactive terminal, FireConnect waits for you to quit (or pass `--force` to write anyway).
 
 ```bash theme={null}
 fireconnect login
@@ -4858,7 +4918,11 @@ Source: https://docs.fireworks.ai/ecosystem/firerouter/claude-code
 
 Configure FireRouter in Claude Code by editing settings.json
 
-For one-command setup, use [FireConnect](/ecosystem/fireconnect/claude-code#firerouter) (`fireconnect claude on --model firerouter`, v0.9.0+). This page covers manual configuration by editing `settings.json` directly.
+<Tip>
+  **Prefer FireConnect.** Run `fireconnect claude on --model firerouter` (v0.9.0+) instead of editing JSON by hand. See [Claude Code](/ecosystem/fireconnect/claude-code#firerouter) and [Models](/ecosystem/fireconnect/models).
+</Tip>
+
+This page is only for manual `~/.claude/settings.json` setup when you cannot use FireConnect.
 
 ## Prerequisites
 
@@ -5052,13 +5116,13 @@ fireconnect login
 fireconnect claude on --model firerouter
 ```
 
-See the [FireConnect overview: Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter, and [FireConnect + FireRouter](/ecosystem/fireconnect/overview#firerouter) for quick enable steps. Per-harness guides (Claude Code slot flags, Codex Anthropic env, routing preference) live on each harness page.
+See [FireConnect Models](/ecosystem/fireconnect/models) for how `firerouter` fits next to other short IDs, and [Harness support](/ecosystem/fireconnect/overview#harness-support) for which harnesses support FireRouter. Per-harness details (Claude slot flags, Codex Anthropic env, routing preference) live on each harness page.
 
 Upgrade FireConnect before enabling FireRouter on an older install. See [Upgrade FireConnect](/ecosystem/fireconnect/overview#upgrade-fireconnect).
 
 Pass `--anthropic-api-key sk-ant-...` on `on`, or store a key once with `fireconnect configure --anthropic-api-key sk-ant-...`. Without an Anthropic key, FireRouter still redirects to open models but cannot pass through to Claude Opus 4.8. See [Authentication](/ecosystem/firerouter/authentication).
 
-Cursor does not support FireRouter through FireConnect.
+Cursor and Deep Agents need workspace BYOK for FireRouter (no local Anthropic key).
 
 ## Endpoint
 
@@ -5109,12 +5173,12 @@ Because the pass-through target is Claude Opus 4.8, you must supply an Anthropic
 
 ## Client integrations
 
-| Integration                                                     | When to use                                                                       |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for Claude Code, OpenCode, Codex, Pi, and VS Code (recommended) |
-| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                |
-| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup                                                      |
-| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                      |
+| Integration                                                     | When to use                                                                             |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [FireConnect](/ecosystem/fireconnect/overview)                  | One-command setup for coding harnesses (recommended). Select with `--model firerouter`. |
+| [Quickstart](/ecosystem/firerouter/quickstart)                  | Direct HTTP calls (curl, OpenAI SDK, any OpenAI-compatible client)                      |
+| [Claude Code (manual setup)](/ecosystem/firerouter/claude-code) | Manual `settings.json` setup without FireConnect                                        |
+| [LiteLLM](/ecosystem/firerouter/litellm)                        | Add FireRouter to a LiteLLM Proxy deployment                                            |
 
 ## What FireRouter is not
 
@@ -10163,7 +10227,7 @@ Source: https://docs.fireworks.ai/fine-tuning/models
 
 Which base models you can train on Fireworks and the surfaces each one is available on.
 
-Managed fine-tuning, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO), Training API jobs by parameter mode (LoRA or full-parameter).
+Managed fine-tuning, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT, DPO, RFT), Training API jobs by parameter mode (LoRA or full-parameter).
 
 ## Model availability
 
@@ -13435,18 +13499,18 @@ The Training API uses the same Tinker-compatible primitives on two infrastructur
 
 ## Comparison
 
-| Dimension         | Serverless                                                       | Dedicated                                                                                     |
-| ----------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation | SDK provisions trainer and deployment resources                                               |
-| Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                     |
-| Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                       |
-| Methods           | SFT and RL on the supported serverless surface                   | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
-| Models            | [Serverless-enabled models](/fine-tuning/models)                 | Models with an enabled dedicated training shape                                               |
-| Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability            |
-| Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
-| Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                  |
-| Teardown          | Session lifecycle is managed by the service                      | You must close trainers and delete or scale down deployments                                  |
-| Best fit          | Fast LoRA experiments and first RL iterations                    | Full-parameter work, DPO, sustained RL, larger workloads, explicit lifecycle control          |
+| Dimension         | Serverless                                                                            | Dedicated                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation                      | SDK provisions trainer and deployment resources                                               |
+| Billing           | Per token; no idle GPU charge                                                         | Time-based trainer and deployment billing                                                     |
+| Parameter mode    | LoRA only                                                                             | LoRA and full-parameter                                                                       |
+| Methods           | SFT and RL on the supported serverless surface                                        | SFT, DPO, ORPO, RL, distillation, and custom loops supported by the selected shape and recipe |
+| Models            | [Serverless-enabled models](/fine-tuning/models)                                      | Models with an enabled dedicated training shape                                               |
+| Capacity          | Shared pool and per-account limits                                                    | Resources allocated to the run, subject to account quota and platform availability            |
+| Checkpoint resume | In-run and cross-run train-state resume; session-scoped checkpoint list and promotion | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                           |
+| Sampling          | In-session sampler, no deployment to create                                           | SDK-managed rollout or evaluation deployment                                                  |
+| Teardown          | Session lifecycle is managed by the service                                           | You must close trainers and delete or scale down deployments                                  |
+| Best fit          | Fast LoRA experiments and first RL iterations                                         | Full-parameter work, DPO, sustained RL, larger workloads, explicit lifecycle control          |
 
 Always verify current models, limits, prices, and feature status in the [Serverless Training](/fine-tuning/training-api/serverless) and [Dedicated Training](/fine-tuning/training-api/dedicated) pages before launch.
 
@@ -13530,6 +13594,10 @@ That's the full surface most users need. The rest of this page covers config kno
 | `dcp_save_interval`    | All recipes | `int`         | `0`        | Save a resumable (DCP) checkpoint every N steps. `0` = off. Top-level `Config` field on every recipe (RL, IGPO, async RL, SFT, DPO, ORPO). |
 | `output_model_id`      | All recipes | `str \| None` | `None`     | If set, promote the final checkpoint to this Fireworks model ID at the end of training                                                     |
 | `init_from_checkpoint` | All recipes | `str \| None` | `None`     | Load weights from another job (`"job-id:checkpoint-name"`). Step counter resets to 0.                                                      |
+
+<Note>
+  On [Serverless Training](/fine-tuning/training-api/serverless) there is no trainer job, so the `"job-id:checkpoint-name"` grammar does not apply. In serverless mode `init_from_checkpoint` accepts a bare checkpoint name (current run) or a fully qualified `"<account>/run-<run-id>/<checkpoint-name>"` cross-run reference. See [Saving and loading checkpoints (serverless)](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints).
+</Note>
 
 ## Resume-training vs serving: which checkpoint to use
 
@@ -16609,7 +16677,7 @@ training_client.optim_step(
 
 Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
 
-### `save_weights_for_sampler(name, ttl_seconds=None, checkpoint_type=None)`
+### `save_weights_for_sampler(name, checkpoint_type=None)`
 
 Save serving-compatible sampler weights and return a future. This is the normal Tinker-shaped API:
 
@@ -16623,7 +16691,7 @@ print(saved.path)  # Snapshot identity for create_sampling_client(model_path=...
 
 Full-parameter training saves a base checkpoint first and deltas after that by default. LoRA training always saves base checkpoints. The returned `path` is a public snapshot identity, not a raw storage URI.
 
-### `save_weights_for_sampler_ext(name, checkpoint_type, ttl_seconds)`
+### `save_weights_for_sampler_ext(name, checkpoint_type)`
 
 Fireworks-specific extension that returns a concrete `SaveSamplerResult` instead of a future:
 
@@ -16639,7 +16707,6 @@ print(result.snapshot_name)  # Session-qualified name for weight sync
 | ----------------- | ------------- | ------- | ---------------------------------------------------- |
 | `name`            | `str`         | —       | Checkpoint name (auto-suffixed with session ID)      |
 | `checkpoint_type` | `str \| None` | `None`  | `"base"` for full weights, `"delta"` for incremental |
-| `ttl_seconds`     | `int \| None` | `None`  | Auto-delete checkpoint after this many seconds       |
 
 <Note>
   On full-parameter training, only `checkpoint_type="base"` produces a promotable blob; `"delta"` cannot be promoted. LoRA is always promotable. See [Checkpoint kinds](/fine-tuning/training-api/cookbook/checkpoints#checkpoint-kinds) for the full promotability matrix.
@@ -16647,7 +16714,7 @@ print(result.snapshot_name)  # Session-qualified name for weight sync
 
 `save_weights_for_sampler_ext` saves the snapshot only; it does not mutate a deployment. To serve the snapshot, pass `result.snapshot_name` to the managed service weight-sync path, or use `create_sampling_client(model_path=...)` / `create_deployment_sampler(model_path=...)`, which sync and return a sampler.
 
-### `save_state(name, ttl_seconds=None, timeout=None)`
+### `save_state(name, timeout=None)`
 
 Save full train state (weights + optimizer) for resume:
 
@@ -16655,11 +16722,10 @@ Save full train state (weights + optimizer) for resume:
 training_client.save_state("train_state_step_100").result()
 ```
 
-| Parameter     | Type            | Default | Description                                                   |
-| ------------- | --------------- | ------- | ------------------------------------------------------------- |
-| `name`        | `str`           | —       | Checkpoint name                                               |
-| `ttl_seconds` | `int \| None`   | `None`  | Auto-delete checkpoint after this many seconds                |
-| `timeout`     | `float \| None` | `None`  | If set, block until the save completes or the timeout expires |
+| Parameter | Type            | Default | Description                                                   |
+| --------- | --------------- | ------- | ------------------------------------------------------------- |
+| `name`    | `str`           | —       | Checkpoint name                                               |
+| `timeout` | `float \| None` | `None`  | If set, block until the save completes or the timeout expires |
 
 ### `load_state_with_optimizer(name)`
 
@@ -17185,13 +17251,6 @@ saved = training_client.save_weights_for_sampler(
     "step-0010",
     checkpoint_type="delta",
 ).result()
-
-# With TTL (auto-delete after N seconds)
-saved = training_client.save_weights_for_sampler(
-    "temp-checkpoint",
-    checkpoint_type="delta",
-    ttl_seconds=3600,
-).result()
 ```
 
 `save_weights_for_sampler_ext(...)` is the Fireworks-specific low-level variant that returns `SaveSamplerResult` directly. Use it when you need a concrete return value immediately; use `save_weights_for_sampler(...).result()` for the Tinker-shaped API.
@@ -17293,6 +17352,37 @@ curl "https://api.fireworks.ai/v1/accounts/<account-id>/rlorTrainerJobs/<job-id>
 
 Each entry includes `name`, `createTime`, `updateTime`, `checkpointType`, and `promotable`.
 
+### Serverless training sessions
+
+[Serverless Training](/fine-tuning/training-api/serverless) runs have no trainer job, so checkpoint list and promote are scoped to the owning **training session** instead of an `rlorTrainerJobs` resource. Use the session-scoped analogs on `FireworksClient`, addressing the session by its resource name (`service.training_session_name` on the serverless `FiretitanServiceClient`):
+
+```python theme={null}
+import os
+from datetime import datetime
+from fireworks.training.sdk import FireworksClient
+
+client = FireworksClient(api_key=os.environ["FIREWORKS_API_KEY"])
+
+# From the serverless FiretitanServiceClient, e.g. "accounts/<a>/trainingSessions/<s>"
+session_name = service.training_session_name
+
+rows = client.list_training_session_checkpoints(session_name)
+target = max(
+    (row for row in rows if row.get("promotable")),
+    key=lambda row: datetime.fromisoformat(
+        row["createTime"].replace("Z", "+00:00")
+    ),
+)
+
+model = client.promote_session_checkpoint(
+    name=target["name"],  # accounts/<a>/trainingSessions/<s>/checkpoints/<c>
+    output_model_id="my-serverless-lora",
+    base_model="accounts/fireworks/models/qwen3p6-27b",
+)
+```
+
+Session rows carry `name`, `checkpointName`, `checkpointType`, `promotable`, and `createTime`. `checkpointName` is the server-side checkpoint id — prefixed with the source run id and, for sampler snapshots, suffixed with an 8-hex-char session id — not the bare name you saved. `checkpointType` values are full server enum strings (`CHECKPOINT_TYPE_TRAINING_LORA` for train-state, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler snapshots); treat the field as opaque and filter on `promotable`. As with job-scoped promotion, only sampler (`INFERENCE_*`) snapshots are promotable; train-state (`TRAINING_*`) checkpoints are resume-only. List and promote require the session and its bound trainer to still exist — promote before tearing the session down. See [Saving and loading checkpoints (serverless)](/fine-tuning/training-api/serverless#saving-and-loading-checkpoints) for the serverless save / resume flow.
+
 ## Sampler refresh / weight sync
 
 Weight sync pushes a checkpoint onto a running inference deployment without restarting it. With the SDK-managed service client, you do this by saving sampler weights and then creating a sampler for that snapshot:
@@ -17332,7 +17422,7 @@ training_client.save_state("train_state_step_100").result()
 training_client.load_state_with_optimizer("train_state_step_100").result()
 ```
 
-`save_state` accepts optional `ttl_seconds` and `timeout` parameters. When `timeout` is set, the SDK blocks until the save completes or the timeout expires.
+`save_state` accepts an optional `timeout` parameter. When set, the SDK blocks until the save completes or the timeout expires.
 
 <Note>
   For the raw `FiretitanTrainingClient`, `save_state()`, `load_state()`, and `load_state_with_optimizer()` return futures — call `.result()` to block. The cookbook's `ReconnectableClient` wrapper blocks for you.
@@ -17472,7 +17562,7 @@ Use [Dedicated Training](/fine-tuning/training-api/dedicated) when you need full
 
 **LoRA adapter.** Serverless is LoRA only. Pass a positive `rank` (e.g. `rank=8`); base weights stay frozen and shared across the pool, and you train an adapter on top.
 
-**Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights.
+**Checkpoint / snapshot.** `save_weights_for_sampler(name)` writes your current adapter weights and returns a snapshot path. That path is a public sampler identity, not a raw storage URI — hand it to the sampler to serve exactly those weights. See [Saving and loading checkpoints](#saving-and-loading-checkpoints) for the full save / resume / promote surface.
 
 **Sampling.** `create_sampling_client(model_path=snapshot, tokenizer=...)` returns a sampler bound to that snapshot through the completions API (`/inference/v1/completions`). For multi-turn rollouts, session-affinity headers pin an episode to one replica so the KV cache is reused across turns (see [RL rollout integration](/fine-tuning/rl-rollout-integration)). The sampler runs in the same session, so there's no deployment to create or hot-load.
 
@@ -17559,6 +17649,143 @@ The end-to-end serverless RL pattern is the standard GRPO / importance-sampling 
 
 Track reward over time; improvement depends on the task, data, reward function, and configuration. Use the complete cookbook [`serverless_rl` example](https://github.com/fw-ai/cookbook/tree/main/training/examples/serverless_rl) rather than rebuilding the loop from this page. For a supervised loop, use cross-entropy loss. For the broader RL loss menu and dedicated provisioning, see the [cookbook RL recipes](/fine-tuning/training-api/cookbook/rl).
 
+## Saving and loading checkpoints
+
+Serverless training writes **two different kinds of checkpoint**, and they are not interchangeable:
+
+|                                                            | **Training checkpoint**                 | **Sampler checkpoint**           |
+| ---------------------------------------------------------- | --------------------------------------- | -------------------------------- |
+| Saved by                                                   | `save_state(name)`                      | `save_weights_for_sampler(name)` |
+| Contains                                                   | Adapter weights **and** optimizer state | Current adapter weights only     |
+| Resumable — the trainer can load it back and keep training | ✅ Yes                                   | ❌ No                             |
+| Promotable to a deployable model                           | ❌ No                                    | ✅ Yes                            |
+
+<Warning>
+  Only **sampler checkpoints** can be promoted to a final model, and only **training checkpoints** can be loaded back by the trainer to resume. A training checkpoint cannot be served or promoted; a sampler checkpoint cannot restore training state (weights + optimizer).
+</Warning>
+
+Checkpoint storage is included during private preview.
+
+### Save and resume training checkpoints
+
+Save training checkpoints periodically so an interrupted run can continue:
+
+```python theme={null}
+# Save a training checkpoint (adapter weights + optimizer) for resume
+training_client.save_state("step-0100").result()
+
+# Resume inside the same run: restores weights and optimizer state
+training_client.load_state_with_optimizer("step-0100").result()
+
+# Weights-only load (optimizer resets to zero — a warm start)
+training_client.load_state("step-0100").result()
+```
+
+Save and load calls return futures — call `.result()` to block and surface failures. `save_state` also accepts a `timeout` to bound the wait. Give each checkpoint a distinct name: overwriting an existing name (`overwrite=True`) is not supported.
+
+To see what checkpoints a run has saved, use the session-scoped control-plane list in [Promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) below — the trainer-local `training_client.list_checkpoints()` is not routed on the serverless surface.
+
+### Resume a new run from a training checkpoint
+
+To fork a new run from a previous run's training checkpoint, use `create_training_client_from_state` on the service client. The SDK reads the base model and LoRA configuration from the checkpoint itself, creates a fresh run, and loads the saved state:
+
+```python theme={null}
+# Continue a previous run's training checkpoint in a new run (weights + optimizer)
+resumed_client = service.create_training_client_from_state_with_optimizer(
+    "<account>/<run-id>/step-0100",
+)
+
+# Or warm start from those weights with a fresh optimizer
+resumed_client = service.create_training_client_from_state(
+    "<account>/<run-id>/step-0100",
+)
+```
+
+Checkpoint references are fully qualified as `<account>/<run-id>/<checkpoint-name>`, where `run-id` is the previous run's `training_client.run_id` (`run-<hex>`). `weights_access_token` is not supported — load checkpoints accessible to your API key.
+
+### Promote a sampler checkpoint to a model
+
+Promotion turns a **sampler checkpoint** into a deployable Fireworks model (a standard LoRA addon model). Training checkpoints are not promotable — save a sampler checkpoint first.
+
+<Steps>
+  <Step title="Save a sampler checkpoint during training">
+    ```python theme={null}
+    snapshot = training_client.save_weights_for_sampler("final").result().path
+    ```
+
+    Save one at the end of training, and at any intermediate step you may want to deploy later.
+  </Step>
+
+  <Step title="List the session's checkpoints">
+    Listing and promotion are session-scoped control-plane operations on `FireworksClient` (against the regular API gateway, not the serverless base URL). The session resource name is available as `service.training_session_name`:
+
+    ```python theme={null}
+    import os
+    from datetime import datetime
+    from fireworks.training.sdk import FireworksClient
+
+    fw_client = FireworksClient(api_key=os.environ["FIREWORKS_API_KEY"])
+
+    rows = fw_client.list_training_session_checkpoints(service.training_session_name)
+    target = max(
+        (row for row in rows if row.get("promotable")),
+        key=lambda row: datetime.fromisoformat(row["createTime"].replace("Z", "+00:00")),
+    )
+    ```
+
+    Each row carries `name` (the full 4-segment resource name), `checkpointName`, `checkpointType`, `promotable`, and `createTime`. Two things to know about the values:
+
+    * `checkpointName` is the server-side checkpoint id, **not** the bare name you passed: it is prefixed with the source run id and, for sampler checkpoints, suffixed with an 8-hex-char session id — a save named `final` surfaces as `run-<hex>-final-<8hex>`. Select rows on `promotable` + `createTime` as above, or with a prefix/substring test — never by equality with your logical name.
+    * `checkpointType` is a server enum string: `CHECKPOINT_TYPE_TRAINING_LORA` for training checkpoints, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler checkpoints. Treat it as opaque and filter on `promotable`, which is authoritative.
+  </Step>
+
+  <Step title="Promote the checkpoint">
+    ```python theme={null}
+    model = fw_client.promote_session_checkpoint(
+        name=target["name"],  # accounts/<a>/trainingSessions/<s>/checkpoints/<c>
+        output_model_id="my-serverless-lora",
+        base_model="accounts/fireworks/models/qwen3p6-27b",
+    )
+    ```
+
+    `output_model_id` must be 1-63 characters of lowercase a-z, 0-9, and hyphens. The promoted model appears in your account's model list like any other fine-tuned model.
+  </Step>
+</Steps>
+
+<Note>
+  Session-scoped list and promote require the training session and its bound trainer to still exist. Once the session is deleted or its trainer is drained, both calls return `NOT_FOUND` and the checkpoints are no longer reachable through this API — promote any checkpoint you want to keep before the session is torn down. Cross-run training-checkpoint resume (above) is resolved per run and is not subject to this limit.
+</Note>
+
+### Deploy the promoted model to production
+
+A promoted model deploys like any LoRA model fine-tuned on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.
+
+<Warning>
+  Fine-tuned LoRA models can only be deployed to **on-demand (dedicated) deployments**. Serverless per-token serving of your own fine-tuned LoRA is not available.
+</Warning>
+
+Deploy the promoted model directly:
+
+```bash theme={null}
+firectl deployment create "accounts/<account-id>/models/my-serverless-lora"
+```
+
+Then send requests with the model name:
+
+```python theme={null}
+from fireworks import Fireworks
+
+client = Fireworks()
+response = client.chat.completions.create(
+    model="accounts/<account-id>/models/my-serverless-lora",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+```
+
+For deployment configuration, performance, and troubleshooting, see [Deploying fine-tuned models](/fine-tuning/deploying-loras).
+
+For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, cross-job resolution), see [Saving and Loading](/fine-tuning/training-api/saving-and-loading). For recipe-driven save / resume / promote, see [Checkpoints and Resume (cookbook)](/fine-tuning/training-api/cookbook/checkpoints).
+
 ## Pricing
 
 Serverless training is billed per token, across three meters: prefill, sample, and train. Current rates per model are in [Models](#models) below. Available models, meter definitions, and rates can change during private preview, so verify current availability and [pricing](https://fireworks.ai/pricing) before launch.
@@ -17594,8 +17821,8 @@ Serverless training bills three separate token meters, so a run's cost depends o
 ### Behavior to know
 
 * **Set `max_seq_len` explicitly.** Serverless has no dedicated instance to infer sequence length from.
-* **Cross-run checkpoint resume is not yet supported.** A checkpoint saved during a run can only be resumed by that same run. Forking a new run from a prior run's checkpoint (Tinker's `create_training_client_from_state`) is dedicated-only today.
-* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, deploy the adapter on a dedicated or preemptible deployment; serverless per-token serving of your own fine-tuned LoRA is not available yet.
+* **Cross-run checkpoint resume.** A training checkpoint can be resumed inside the same run (`load_state_with_optimizer`), or forked into a new run with `create_training_client_from_state` / `create_training_client_from_state_with_optimizer` using a fully qualified `<account>/<run-id>/<checkpoint-name>` reference. See [Saving and loading checkpoints](#saving-and-loading-checkpoints).
+* **Serving your trained adapter.** Sample in-session during the run. To serve afterward, [promote a sampler checkpoint to a model](#promote-a-sampler-checkpoint-to-a-model) and [deploy it on an on-demand dedicated deployment](#deploy-the-promoted-model-to-production); serverless per-token serving of your own fine-tuned LoRA is not available.
 
 ## Video walkthrough: Train a prompt router
 
@@ -19153,7 +19380,7 @@ Source: https://docs.fireworks.ai/fireworks-nexus/usage-limits
 
 Set per-user spending limits on serverless inference — account defaults and per-user overrides
 
-Set spending limits for individual users in your account on serverless (per-token) inference. You can apply an account-wide default cap and override it for specific users. When a user reaches their limit, their further serverless requests are blocked until the billing period resets.
+Set spending limits for individual users in your account on serverless (per-token) inference. Nexus accounts start with a **\$100 per-user default** limit. You can change the account-wide default cap and override it for specific users. When a user reaches their limit, their further serverless requests are blocked until the billing period resets.
 
 <Note>
   Per-user usage limits are available on request. Reach out to your Fireworks
@@ -19162,9 +19389,9 @@ Set spending limits for individual users in your account on serverless (per-toke
 
 ## Concepts
 
-* **Account default cap** — the per-user spending limit applied to every user who doesn't have their own override.
+* **Account default cap** — the per-user spending limit applied to every user who doesn't have their own override. Nexus accounts start with a **\$100** default.
 * **Per-user override** — a specific user's own cap. Takes precedence over the account default.
-* **Effective limit** — the limit actually applied to a user: their override if set, otherwise the account default. If neither is set, the user is **uncapped**.
+* **Effective limit** — the limit actually applied to a user: their override if set, otherwise the account default.
 * **Current-period usage** — how much a user (and the account overall) has spent in the current billing period.
 
 All amounts are in USD, and usage resets at the start of each billing period.
@@ -19175,10 +19402,14 @@ Per-user metering applies to **all serverless models** except **[MiniMax M2.7](h
 
 ## Who can do what
 
-* **Account admins** — view and manage everything: set the default cap, set/clear per-user overrides, and view every user's usage.
+* **Account admins** — view and manage everything: update the default cap, set/clear per-user overrides, and view every user's usage.
 * **Members (non-admin)** — view the account-level limits and **their own** usage and limit. Members cannot view other users' limits, list all users, or change any limits.
 
 Each command below is annotated with who can run it.
+
+## In the web app
+
+Account admins can view and update the default per-user cap and per-user overrides in the [Usage limits](https://app.fireworks.ai/settings/usage-limits) page under **Settings** in the Fireworks web app. Members can view the account default and their own usage and limit there.
 
 ## Using `firectl`
 
@@ -19188,11 +19419,11 @@ Each command below is annotated with who can run it.
 # View the account default cap and account-wide usage — any member
 firectl usage-limits get
 
-# Set a $100 default per-user cap — admin only
-firectl usage-limits update --default-user-limit=100
+# Update the default per-user cap — admin only
+firectl usage-limits update --default-user-limit=200
 ```
 
-The default cap applies to every user who doesn't have their own override.
+The default cap applies to every user who doesn't have their own override. New Nexus accounts start with a **\$100** default; change it in [Settings → Usage limits](https://app.fireworks.ai/settings/usage-limits) or with `firectl usage-limits update`.
 
 ### Per-user
 
@@ -19217,16 +19448,14 @@ A user record shows:
 * **override** — their per-user override, if any
 * **exceeded\_until** — set only when the user is currently blocked; shows when the block lifts (the end of the current billing period)
 
-### Cap a single user (no account default)
+### Per-user overrides
 
-You don't need an account-wide default to cap individuals. Set an override for just the users you want to limit and leave the account default unset — only those users are capped, and everyone else stays **uncapped**.
+Set an override when a user needs a different cap than the account default. `firectl usage-limits user unset` removes the override and reverts that user to the account default. The account-wide default cannot be cleared — every user without an override uses it.
 
 ```bash theme={null}
-# Cap only this user; everyone else remains uncapped — admin only
+# Give this user a $50 cap — admin only
 firectl usage-limits user set <USER_ID> --limit=50
 ```
-
-A configured cap enforces by default, so the capped user is blocked at their limit while uncapped users are unaffected.
 
 ## Using the REST API
 
@@ -19250,10 +19479,10 @@ curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
 
 Updates use `PATCH` with a field mask indicating which fields to change:
 
-* `PATCH /v1/accounts/<ACCOUNT_ID>/usageLimits` — set `default_user_limit`
+* `PATCH /v1/accounts/<ACCOUNT_ID>/usageLimits` — update `default_user_limit` (cannot be cleared)
 * `PATCH /v1/accounts/<ACCOUNT_ID>/users/<USER_ID>/usageLimits` — set `limit_override` (an unset value removes the override)
 
-`firectl` (above) is the simplest way to make changes; the same operations are available through the API and SDKs.
+`firectl`, the [web app](#in-the-web-app), and the REST API below all support the same changes.
 
 ## How enforcement works
 
@@ -19261,7 +19490,6 @@ Updates use `PATCH` with a field mask indicating which fields to change:
 * **Limits are per billing period.** Usage and any blocks reset when the period rolls over.
 * **Enforcement is near-real-time, not instantaneous.** After a user crosses their limit there is a short delay (typically a few minutes) before requests start being blocked, and a similar delay before a user is unblocked after you raise their limit. Plan around this lag rather than expecting an immediate cutoff.
 * **A `$0` cap** means the user is allowed no serverless spend — they are blocked immediately.
-* **Removing the account default** leaves users uncapped unless they have their own override.
 * Only **serverless (per-token) inference on [supported models](#supported-models)** counts toward these limits. **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** is excluded. Dedicated deployment (GPU-hour) usage is not metered per user here.
 
 ## FAQ

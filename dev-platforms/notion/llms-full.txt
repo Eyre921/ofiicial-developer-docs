@@ -1185,6 +1185,11 @@ Events are split into the following categories:
 * **Delete from Trash delay updated**: That the [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
 * **Disable guests toggled**: That a workspace owner has enabled or disabled the ability to add guests to a workspace.
 * **Disable teamspace guests toggled**: That the disable team guests setting was toggled.
+* **Enterprise-managed connection disabled**: That enterprise-managed connections were disabled or removed for the workspace.
+* **Enterprise-managed connection enabled**: That enterprise-managed connections were enabled for the workspace.
+* **Enterprise-managed connection member access denied**: That a workspace member was denied access to enterprise-managed connections.
+* **Enterprise-managed connection member access restored**: That a workspace member's access to enterprise-managed connections was restored.
+* **Enterprise-managed connection updated**: That enterprise-managed connection settings were updated for the workspace.
 * **Export toggled**: That a workspace owner has disabled or enabled exporting.
 * **External AI tool name changed**: That an external agent's display name was changed.
 * **External membership requests toggled**: That external membership requests for the workspace were enabled or disabled.
@@ -1615,6 +1620,11 @@ For page events, the page audience describes the visibility level of the target 
 * **workspace.mcp.allowlist\_enabled**: The MCP allowlist was enabled for the workspace.
 * **workspace.mcp.client\_added**: An MCP client was added to the workspace's allowlist.
 * **workspace.mcp.client\_removed**: An MCP client was removed from the workspace's allowlist.
+* **workspace.mcp.enterprise\_managed\_connection\_disabled**: Enterprise-managed connections were disabled or removed for the workspace.
+* **workspace.mcp.enterprise\_managed\_connection\_enabled**: Enterprise-managed connections were enabled for the workspace.
+* **workspace.mcp.enterprise\_managed\_connection\_member\_access\_denied**: A workspace member was denied access to enterprise-managed connections.
+* **workspace.mcp.enterprise\_managed\_connection\_member\_access\_restored**: A workspace member's access to enterprise-managed connections was restored.
+* **workspace.mcp.enterprise\_managed\_connection\_updated**: Enterprise-managed connection settings were updated for the workspace.
 * **workspace.mcp.server\_connected**: An MCP server was connected to the workspace, including via an enterprise-managed connection.
 * **workspace.members\_exported**: A list of workspace members was exported.
 * **workspace.membership\_request\_resolved**: A membership request from a member to add a new person to the workspace was resolved, i.e. the workspace owner either approved or denied the request.
@@ -17151,6 +17161,31 @@ Returns all legal holds for your organization, both active and released.
 </Info>
 
 
+# List MCP client connections in an organization
+Source: https://developers.notion.com/reference/admin/list-mcp-client-connections
+
+openapi-adminApi.json GET /v1/mcp_client_connections
+List inbound MCP client connections across an organization.
+
+The organization bot token must have the following scopes:
+
+* `mcp-client-connection:read`
+
+Returns one result for each member, client, and governance state. Connections are grouped into one row only when `is_enterprise_managed` and `idp_issuer` match, so every workspace in a row can be governed the same way. Within a row, `created_at` is the earliest connection time and `last_active_at` is the most recent activity time.
+
+Use bracket encoding to filter by one or more members or workspaces:
+
+```text theme={null}
+?user_ids[]=aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa&workspace_ids[]=bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+```
+
+Filters only match workspaces in the organization that owns the token. Unknown or out-of-organization IDs return no matching results. A `workspace_ids` filter limits both the returned rows and their connection metadata to the selected workspaces; state from an excluded workspace is not folded into a matching row.
+
+The response contains the standard user reference only. For clients in Notion's trusted registry, `client.name` and `client.type` come from that registry. A custom or unregistered client's name can come from metadata reported by the client and its type is `other`; use `client.key` as the stable identifier. `idp_issuer` is present only for enterprise-managed connections.
+
+This endpoint inventories member-bound OAuth client connections. It does not include direct MCP usage through personal access tokens or workspace-owned internal integrations. Govern personal access tokens with the [personal access token endpoints](/reference/admin/revoke-personal-access-token); manage internal integrations in the workspace's integration settings.
+
+
 # List personal access tokens in a workspace
 Source: https://developers.notion.com/reference/admin/list-personal-access-tokens
 
@@ -17182,6 +17217,25 @@ Remove a user from a legal hold.
 The organization bot token must have the following scopes:
 
 * `legal-hold:write`
+
+
+# Revoke an MCP client connection
+Source: https://developers.notion.com/reference/admin/revoke-mcp-client-connection
+
+openapi-adminApi.json POST /v1/mcp_client_connections/revoke
+Revoke a member's current MCP client connection tokens.
+
+The organization bot token must have the following scopes:
+
+* `mcp-client-connection:write-high-impact`
+
+Revokes active tokens for one member and client in a workspace. Use the [list MCP client connections](/reference/admin/list-mcp-client-connections) endpoint to obtain the `client_key`.
+
+The operation returns the number of tokens revoked. If the member, workspace, or connection is not available to the organization token, the endpoint returns the same not-found response.
+
+<Warning>
+  For an enterprise-managed connection, token revocation is temporary because the client can authenticate again. To block future connections, use [deny or restore enterprise-managed access](/reference/admin/update-mcp-client-connection-enterprise-managed-access) with `access` set to `denied`. The deny applies to that member's enterprise-managed access for the workspace, not only to the connection identified by `client_key`.
+</Warning>
 
 
 # Revoke a personal access token in a workspace
@@ -17217,11 +17271,12 @@ Scopes are structured by combining a `resource` and a `capability` (for example,
 
 ### List of Admin API scope resources
 
-| Scope resource         | Description                                                         |
-| :--------------------- | :------------------------------------------------------------------ |
-| `legal-hold`           | Ability to manage legal hold data and members                       |
-| `managed-user-session` | Ability to control managed users' active sessions                   |
-| `workspace`            | Ability to manage your organization's workspaces' data and settings |
+| Scope resource          | Description                                                         |
+| :---------------------- | :------------------------------------------------------------------ |
+| `legal-hold`            | Ability to manage legal hold data and members                       |
+| `managed-user-session`  | Ability to control managed users' active sessions                   |
+| `mcp-client-connection` | Ability to view and govern members' MCP client connections          |
+| `workspace`             | Ability to manage your organization's workspaces' data and settings |
 
 <Warning>
   These scope resources may not be exhaustive. Please consult the API reference you wish to use to see the most accurate scope required to manage the resource you want.
@@ -17229,12 +17284,12 @@ Scopes are structured by combining a `resource` and a `capability` (for example,
 
 ### List of Admin API scope capabilities
 
-| Scope capability    | Description                                                                                |
-| :------------------ | :----------------------------------------------------------------------------------------- |
-| `read`              | Ability to view a resource                                                                 |
-| `write`             | Ability to modify a resource                                                               |
-| `write-high-impact` | Ability to irreversibly modify a resource (e.g. delete a resource that cannot be restored) |
-| `export`            | Ability to export a resource                                                               |
+| Scope capability    | Description                                                                                 |
+| :------------------ | :------------------------------------------------------------------------------------------ |
+| `read`              | Ability to view a resource                                                                  |
+| `write`             | Ability to modify a resource                                                                |
+| `write-high-impact` | Ability to make sensitive changes, including revoking credentials or changing member access |
+| `export`            | Ability to export a resource                                                                |
 
 
 # Update a legal hold
@@ -17246,6 +17301,23 @@ Update a legal hold.
 The organization bot token must have the following scopes:
 
 * `legal-hold:write`
+
+
+# Deny or restore enterprise-managed MCP client access
+Source: https://developers.notion.com/reference/admin/update-mcp-client-connection-enterprise-managed-access
+
+openapi-adminApi.json PUT /v1/mcp_client_connections/enterprise_managed_access
+Deny or restore a member's enterprise-managed MCP client access.
+
+The organization bot token must have the following scopes:
+
+* `mcp-client-connection:write-high-impact`
+
+Set `access` to `denied` to block future connections and revoke the member's current tokens. Set it to `allowed` to remove the block.
+
+The operation is idempotent. Repeating a deny keeps access blocked and cleans up any current tokens; repeating a restore keeps access allowed. Restoring access requires enterprise-managed connections to be available for the workspace.
+
+The workspace and member must belong to the organization that owns the token. Invalid and out-of-organization targets return the same not-found response.
 
 
 # Versioning

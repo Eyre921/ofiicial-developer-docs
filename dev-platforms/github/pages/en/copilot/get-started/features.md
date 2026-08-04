@@ -60,10 +60,6 @@ Several tools in Copilot code review are in public preview and subject to change
 
 Allow Copilot to work autonomously in the IDE. Copilot will determine which files to make changes to, offer code changes and terminal commands for the user's approval, and iterate to remediate issues until the original task is complete.
 
-### GitHub Spark (public preview)
-
-Build and deploy full-stack applications using natural-language prompts that seamlessly integrate with the GitHub platform for advanced development. See [Building and deploying AI-powered apps with GitHub Spark](/en/copilot/tutorials/spark/build-apps-with-spark).
-
 ## Features for customization
 
 These features can be used to add context to Copilot and improve its performance. For a comparison of when to use each feature, see [Copilot customization cheat sheet](/en/copilot/reference/customization-cheat-sheet).

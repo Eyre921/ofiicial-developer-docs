@@ -24,7 +24,7 @@ Voice changer can be used to complement Text-to-Speech (TTS) by fixing pronuncia
 
 ## Guide
 
-![Voice changer demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2edaef4c56e389edff8faf0c5a43247631432cead38d23023fb6263bb258cc55/assets/images/product-guides/voice-changer/voice-changer-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113206Z&X-Amz-Expires=604800&X-Amz-Signature=b8754cd8cbfbb9e5600255298468a0287e0c607ab4a4e56b48e60636b660bd1b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice changer demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2edaef4c56e389edff8faf0c5a43247631432cead38d23023fb6263bb258cc55/assets/images/product-guides/voice-changer/voice-changer-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T202801Z&X-Amz-Expires=604800&X-Amz-Signature=388bedc187ad61646eef334cc5a672dc0695762fcb5b4422fd3eda8e853ee805&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Audio can be uploaded either directly with an audio file, or spoken live through a microphone. The audio file must be less than **50mb in size**, and either the audio file or your live recording cannot exceed **5 minutes in length**.
 
@@ -44,7 +44,7 @@ You will then see the audio file of this recording, which you can then playback 
 
 ## Settings
 
-![Voice changer settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1f916391e35ad88e7820ca098831d9b76aa6b95ac3689b51f794b526e8778b3/assets/images/product-guides/voice-changer/voice-changer-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T113206Z&X-Amz-Expires=604800&X-Amz-Signature=52586a2170a6ba234cbaba2ea564b2b32bd2b7683e0f74e193472ce1793e57fd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice changer settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1f916391e35ad88e7820ca098831d9b76aa6b95ac3689b51f794b526e8778b3/assets/images/product-guides/voice-changer/voice-changer-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T202801Z&X-Amz-Expires=604800&X-Amz-Signature=00f198bd12e2061c0cd3bf2f94816cb68e1e1a5c85ef07dc3aa4109527aed42c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Learn more about the different voice settings [here](/docs/eleven-creative/playground/text-to-speech#settings).
 

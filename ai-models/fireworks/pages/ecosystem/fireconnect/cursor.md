@@ -8,6 +8,10 @@ Use Fireworks AI models in Cursor IDE with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [Cursor](https://cursor.com) through Fireworks AI models via Cursor's OpenAI-compatible BYOK path. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** quit Cursor → `fireconnect cursor on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [Cursor](https://cursor.com) installed
@@ -15,11 +19,11 @@ Use Fireworks AI models in Cursor IDE with the FireConnect CLI
 * FireConnect **v0.9.1+** (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
-  **Azure routing not implemented yet for Claude Code.** `fireconnect claude on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
+  **Quit Cursor before `on` or `off`.** FireConnect writes Cursor's SQLite settings database; the IDE must be fully closed. `status` is read-only while Cursor is running.
 </Note>
 
 <Warning>
-  **FireRouter is not supported in Cursor.** Use Claude Code, OpenCode, Codex, Pi, or VS Code for FireRouter. Fire Pass keys cannot select `firerouter` in FireConnect on any harness.
+  **FireRouter on Cursor needs workspace BYOK** (no local Anthropic key). FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key, then `fireconnect cursor on --model firerouter`. See [FireRouter](/ecosystem/firerouter/overview).
 </Warning>
 
 ## Enable Fireworks routing

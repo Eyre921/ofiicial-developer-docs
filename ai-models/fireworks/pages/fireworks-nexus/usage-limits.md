@@ -6,7 +6,7 @@ path: fireworks-nexus/usage-limits
 
 Set per-user spending limits on serverless inference — account defaults and per-user overrides
 
-Set spending limits for individual users in your account on serverless (per-token) inference. You can apply an account-wide default cap and override it for specific users. When a user reaches their limit, their further serverless requests are blocked until the billing period resets.
+Set spending limits for individual users in your account on serverless (per-token) inference. Nexus accounts start with a **\$100 per-user default** limit. You can change the account-wide default cap and override it for specific users. When a user reaches their limit, their further serverless requests are blocked until the billing period resets.
 
 <Note>
   Per-user usage limits are available on request. Reach out to your Fireworks
@@ -15,9 +15,9 @@ Set spending limits for individual users in your account on serverless (per-toke
 
 ## Concepts
 
-* **Account default cap** — the per-user spending limit applied to every user who doesn't have their own override.
+* **Account default cap** — the per-user spending limit applied to every user who doesn't have their own override. Nexus accounts start with a **\$100** default.
 * **Per-user override** — a specific user's own cap. Takes precedence over the account default.
-* **Effective limit** — the limit actually applied to a user: their override if set, otherwise the account default. If neither is set, the user is **uncapped**.
+* **Effective limit** — the limit actually applied to a user: their override if set, otherwise the account default.
 * **Current-period usage** — how much a user (and the account overall) has spent in the current billing period.
 
 All amounts are in USD, and usage resets at the start of each billing period.
@@ -28,10 +28,14 @@ Per-user metering applies to **all serverless models** except **[MiniMax M2.7](h
 
 ## Who can do what
 
-* **Account admins** — view and manage everything: set the default cap, set/clear per-user overrides, and view every user's usage.
+* **Account admins** — view and manage everything: update the default cap, set/clear per-user overrides, and view every user's usage.
 * **Members (non-admin)** — view the account-level limits and **their own** usage and limit. Members cannot view other users' limits, list all users, or change any limits.
 
 Each command below is annotated with who can run it.
+
+## In the web app
+
+Account admins can view and update the default per-user cap and per-user overrides in the [Usage limits](https://app.fireworks.ai/settings/usage-limits) page under **Settings** in the Fireworks web app. Members can view the account default and their own usage and limit there.
 
 ## Using `firectl`
 
@@ -41,11 +45,11 @@ Each command below is annotated with who can run it.
 # View the account default cap and account-wide usage — any member
 firectl usage-limits get
 
-# Set a $100 default per-user cap — admin only
-firectl usage-limits update --default-user-limit=100
+# Update the default per-user cap — admin only
+firectl usage-limits update --default-user-limit=200
 ```
 
-The default cap applies to every user who doesn't have their own override.
+The default cap applies to every user who doesn't have their own override. New Nexus accounts start with a **\$100** default; change it in [Settings → Usage limits](https://app.fireworks.ai/settings/usage-limits) or with `firectl usage-limits update`.
 
 ### Per-user
 
@@ -70,16 +74,14 @@ A user record shows:
 * **override** — their per-user override, if any
 * **exceeded\_until** — set only when the user is currently blocked; shows when the block lifts (the end of the current billing period)
 
-### Cap a single user (no account default)
+### Per-user overrides
 
-You don't need an account-wide default to cap individuals. Set an override for just the users you want to limit and leave the account default unset — only those users are capped, and everyone else stays **uncapped**.
+Set an override when a user needs a different cap than the account default. `firectl usage-limits user unset` removes the override and reverts that user to the account default. The account-wide default cannot be cleared — every user without an override uses it.
 
 ```bash theme={null}
-# Cap only this user; everyone else remains uncapped — admin only
+# Give this user a $50 cap — admin only
 firectl usage-limits user set <USER_ID> --limit=50
 ```
-
-A configured cap enforces by default, so the capped user is blocked at their limit while uncapped users are unaffected.
 
 ## Using the REST API
 
@@ -103,10 +105,10 @@ curl -H "Authorization: Bearer $FIREWORKS_API_KEY" \
 
 Updates use `PATCH` with a field mask indicating which fields to change:
 
-* `PATCH /v1/accounts/<ACCOUNT_ID>/usageLimits` — set `default_user_limit`
+* `PATCH /v1/accounts/<ACCOUNT_ID>/usageLimits` — update `default_user_limit` (cannot be cleared)
 * `PATCH /v1/accounts/<ACCOUNT_ID>/users/<USER_ID>/usageLimits` — set `limit_override` (an unset value removes the override)
 
-`firectl` (above) is the simplest way to make changes; the same operations are available through the API and SDKs.
+`firectl`, the [web app](#in-the-web-app), and the REST API below all support the same changes.
 
 ## How enforcement works
 
@@ -114,7 +116,6 @@ Updates use `PATCH` with a field mask indicating which fields to change:
 * **Limits are per billing period.** Usage and any blocks reset when the period rolls over.
 * **Enforcement is near-real-time, not instantaneous.** After a user crosses their limit there is a short delay (typically a few minutes) before requests start being blocked, and a similar delay before a user is unblocked after you raise their limit. Plan around this lag rather than expecting an immediate cutoff.
 * **A `$0` cap** means the user is allowed no serverless spend — they are blocked immediately.
-* **Removing the account default** leaves users uncapped unless they have their own override.
 * Only **serverless (per-token) inference on [supported models](#supported-models)** counts toward these limits. **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** is excluded. Dedicated deployment (GPU-hour) usage is not metered per user here.
 
 ## FAQ

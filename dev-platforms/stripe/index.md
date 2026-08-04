@@ -419,7 +419,7 @@
 
 ## payouts
 
-- `payouts/multicurrency-settlement` — [Multi-currency settlement](pages/payouts/multicurrency-settlement.md) · [原文](https://docs.stripe.com/payouts/multicurrency-settlement.md)
+- `payouts/multi-currency-settlement` — [Multi-currency settlement](pages/payouts/multi-currency-settlement.md) · [原文](https://docs.stripe.com/payouts/multi-currency-settlement.md)
 
 ## products-prices
 

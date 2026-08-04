@@ -62,13 +62,13 @@ Agent transfer is configured using the `transfer_to_agent` system tool.
 
 Enable agent transfer by selecting the `transfer_to_agent` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to AI Agent" when adding a tool.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3e2756669b192395680d48a17c622493faee9fb61649f491bbe66820a91d46ef/assets/images/conversational-ai/transfertool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100015Z&X-Amz-Expires=604800&X-Amz-Signature=6533774d43ab02bfee0d6baea556a0e085e30cc9d4d8e47bd59e905f85459a29&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Transfer Tool" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3e2756669b192395680d48a17c622493faee9fb61649f491bbe66820a91d46ef/assets/images/conversational-ai/transfertool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T204332Z&X-Amz-Expires=604800&X-Amz-Signature=48a5f629bb084b076def5209dc191428642aec2c4fb7426faa416a407f5a4227&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Add Transfer Tool" />
 
 #### Configure tool description (optional)
 
 You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description encompassing the defined transfer rules will be used.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b916200ef66cd0c6f5af7f6ba51b4b48eb1a266c7b10e863ae874c5a11452ae/assets/images/conversational-ai/transferconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100015Z&X-Amz-Expires=604800&X-Amz-Signature=b178d7775f7abf8f96d070c9ae773c0ae8efebf9e54bdcfc362db1d9641fd4de&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Tool Description" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b916200ef66cd0c6f5af7f6ba51b4b48eb1a266c7b10e863ae874c5a11452ae/assets/images/conversational-ai/transferconfig.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T204332Z&X-Amz-Expires=604800&X-Amz-Signature=f10b2e09bf82b5531cb53645beda5c904db7fb8730137e18432e9a8e8ee771ce&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Tool Description" />
 
 #### Define transfer rules
 
@@ -82,7 +82,7 @@ Configure the specific rules for transferring to other agents. For each rule, sp
 
 The LLM will use these conditions, along with the tool description, to decide when and to which agent (by number) to transfer.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1b7e0f58ae757640af46630fde962a78ef4a164a380f974297bb643ccc29443/assets/images/conversational-ai/transferrule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T100015Z&X-Amz-Expires=604800&X-Amz-Signature=ecfc68b14c6bb95c179555e6c5f2cb209d1a7d5ce192964fdf6061e2c88d5b6a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Rules Configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b1b7e0f58ae757640af46630fde962a78ef4a164a380f974297bb643ccc29443/assets/images/conversational-ai/transferrule.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260804%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260804T204332Z&X-Amz-Expires=604800&X-Amz-Signature=018b85e66f4c2214f807e6303bb07d188e09d7f24de5afbbc0f436e517f3c154&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Transfer Rules Configuration" />
 
 Ensure that the user account creating the agent has at least viewer permissions for any target agents specified in the transfer rules.
 

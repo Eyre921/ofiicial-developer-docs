@@ -68,7 +68,7 @@ fireconnect deepagents on --model FW-GLM-5.2
 If you omit `--model`, FireConnect defaults to `FW-GLM-5.2`.
 
 <Warning>
-  **Cursor and VS Code:** fully quit the IDE before `on` or `off`. FireConnect writes SQLite state and hard-errors if the app is still running unless you pass `--force`.
+  **Cursor and VS Code:** fully quit the IDE before `on` or `off`. FireConnect writes SQLite state. In an interactive terminal it waits for you to quit; pass `--force` to write anyway.
 </Warning>
 
 ### Endpoint normalization

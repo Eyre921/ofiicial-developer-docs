@@ -8,6 +8,10 @@ Use Fireworks AI models in LangChain Deep Agents Code with the FireConnect CLI
 
 [FireConnect](https://github.com/fw-ai/fireconnect) routes [LangChain Deep Agents Code](https://docs.langchain.com/oss/python/deepagents/cli) (`dcode`) through Fireworks AI models. See the [FireConnect overview](/ecosystem/fireconnect/overview) for install and CLI basics.
 
+<Tip>
+  **Change models:** `fireconnect deepagents on --model <id>`. See [Models](/ecosystem/fireconnect/models).
+</Tip>
+
 ## Prerequisites
 
 * [Deep Agents Code](https://docs.langchain.com/oss/python/deepagents/cli) (`dcode`) installed
@@ -51,10 +55,18 @@ FireConnect snapshots `config.toml` under `~/.fireconnect/deepagents/` before th
 
 ```bash theme={null}
 fireconnect model list --search glm
-fireconnect deepagents on --model glm-5p1
+fireconnect deepagents on --model glm-5p2
 ```
 
-Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only and cannot select `firerouter`.
+Fire Pass keys only list Fire Pass routers. FireConnect rejects `--model firerouter` with Fire Pass (`fpk_...`) on every harness; use an `fw_...` key.
+
+## FireRouter
+
+```bash theme={null}
+fireconnect deepagents on --model firerouter
+```
+
+Needs workspace BYOK (same as Cursor).
 
 ## CLI reference
 
@@ -70,7 +82,7 @@ Run `fireconnect deepagents help` for all options.
 ### Switch models
 
 ```bash theme={null}
-fireconnect deepagents on --model glm-5p1
+fireconnect deepagents on --model glm-5p2
 ```
 
 ### Turn off Fireworks routing
