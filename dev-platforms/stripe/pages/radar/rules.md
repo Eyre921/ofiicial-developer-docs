@@ -293,7 +293,7 @@ Allow rules override all of your other rules, so use them with caution. Many bus
 
 Allow rules apply to all new payments as soon as you create the rule. This includes any payments that are similar to previously blocked payments. While testing a rule, make sure that you:
 
-- **Examine the number of previously blocked payments that would have been allowed**. Allow rules override all other rules and Stripe’s risk assessment. When testing a new allow rule, all payments shown would have been allowed if this rule were active. This can include payments that were blocked or disputed, impacting your future dispute rates.
+- **Examine the number of previously blocked payments that would have been allowed**. Allow rules override all other rules and Stripe risk assessment. When testing a new allow rule, all payments shown would have been allowed if this rule were active. This can include payments that were blocked or disputed, impacting your future dispute rates.
 - **Continue to block any high-risk payments**. Block high-risk payments by adding the following to any allow rule: `and :risk_level: != 'highest'`
 - **Evaluate a history of legitimate transactions at your business**. You can analyze connections between your own customers to allow a higher volume of transactions based on a history of legitimate purchases. This helps you block fewer payments from customers that have a proven history at your business. To do this, review the [attributes list](https://docs.stripe.com/radar/rules/reference.md#supported-attributes) and look for attributes that include the word “customer.”
 
@@ -336,7 +336,7 @@ Review the sample questions in the following table to help you decide if you nee
 |  | If this rule has anomalous behavior, such as allowing more payments than in previous time periods. | Manually review payments that match this rule to determine if this is the behavior you want. |
 | 3DS | If the 3DS completion rate is high, but the number of disputes or early fraud warnings is low. | Remove the rule because you might be causing friction for your users. |
 |  | If fraud is high for transactions that pass 3DS. | Consider modifying your 3DS rule into a block rule to prevent these users from passing frictionless flow (controlled by issuers) or committing first-party fraud. |
-|  | If the conversion rate for 3DS is low. | This might be an effective rule because it might be mostly blocking fraudsters. Consider manually investigating matched payments to make sure your good users aren’t abandoning because of additional friction. |
+|  | If the conversion rate for 3DS is low. | This might be an effective rule because it might be mostly blocking fraudulent actors. Consider manually investigating matched payments to make sure your good users aren’t abandoning because of additional friction. |
 | Allow | If the number of disputes, early fraud warnings, refunds, or failed payments is high. | Remove the rule that allows bad payments through. |
 | Block | If the number of blocks is going down, but your fraud is still steady or increasing. | Modify your rule because it might no longer be effective. |
 |  | If the number of blocks is going up, but your fraud is still steady or increasing. | Modify your rule because it might block good users. |

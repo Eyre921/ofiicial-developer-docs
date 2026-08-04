@@ -28,7 +28,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
+  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
@@ -36,7 +36,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
-  <p>Learn advanced formatting features by creating a README for your GitHub profile.</p>
+  Learn advanced formatting features by creating a README for your GitHub profile.
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 

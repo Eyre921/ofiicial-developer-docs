@@ -258,7 +258,7 @@ The **Code** is case-insensitive and unique across active promotion codes for an
 - If you create a promotion code that is redeemable by any customer, you can’t create another active promotion code with the same **code**.
 - You can create a promotion code with one **Code**, [inactivate](https://docs.stripe.com/billing/subscriptions/coupons.md#deactivate) it, and then create a new promotion code with the same **Code**.
 
-1. In the Dashboard on the [Create a coupon](https://dashboard.stripe.com/test/coupons/create) page, click the **Use customer-facing coupon codes** button.
+1. In the Dashboard on the [Create a coupon](https://dashboard.stripe.com/test/coupons/create) page, click the **Use customer-facing promotion codes** button.
 2. Enter a code. This is the code that a customer enters during payment to redeem the discount. If you don’t set a code, Stripe generates one for you.
 3. Select requirements for the promotion code. For example, you can restrict the coupon to only being valid on first-time orders.
 

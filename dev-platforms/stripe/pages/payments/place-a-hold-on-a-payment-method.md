@@ -99,7 +99,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=usd \
-  -d "payment_method_types[]=card" \
+  -d "automatic_payment_methods[enabled]=true" \
   -d capture_method=manual
 ```
 
@@ -171,7 +171,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=usd \
-  -d "payment_method_types[]=card" \
+  -d "automatic_payment_methods[enabled]=true" \
   -d "payment_method_options[card][capture_method]=automatic_delayed"
 ```
 
@@ -192,7 +192,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=usd \
-  -d "payment_method_types[]=card" \
+  -d "automatic_payment_methods[enabled]=true" \
   -d "payment_method_options[card][capture_method]=automatic_delayed" \
   -d "payment_method_options[card][capture_by]=target_delay" \
   -d "payment_method_options[card][capture_delay][days]=3"

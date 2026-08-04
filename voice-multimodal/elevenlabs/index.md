@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1206 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1205 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1146,7 +1146,6 @@
 - `docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error` — [When using the website, why am I getting a client-side error?](pages/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md) · [原文](https://elevenlabs.io/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md)
 - `docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out` — [Why is the website refreshing and logging me out?](pages/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md) · [原文](https://elevenlabs.io/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md)
 - `docs/overview/administration/account` — [Account](pages/docs/overview/administration/account.md) · [原文](https://elevenlabs.io/docs/overview/administration/account.md)
-- `docs/overview/administration/assets` — [Assets](pages/docs/overview/administration/assets.md) · [原文](https://elevenlabs.io/docs/overview/administration/assets.md)
 - `docs/overview/administration/billing` — [Billing](pages/docs/overview/administration/billing.md) · [原文](https://elevenlabs.io/docs/overview/administration/billing.md)
 - `docs/overview/administration/consolidated-billing` — [Consolidated billing](pages/docs/overview/administration/consolidated-billing.md) · [原文](https://elevenlabs.io/docs/overview/administration/consolidated-billing.md)
 - `docs/overview/administration/data-residency` — [Data residency](pages/docs/overview/administration/data-residency.md) · [原文](https://elevenlabs.io/docs/overview/administration/data-residency.md)

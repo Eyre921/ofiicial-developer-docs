@@ -8,7 +8,7 @@ path: radar/reviews/risk-insights
 
 Understand risk factors and details about a particular payment.
 
-Using its AI models, Stripe Radar determines the risk score and risk level for a payment and uses them to decide when to block or mark payments for review. The system evaluates hundreds of risk factors about each payment, using data from Stripe’s network across millions of businesses. Risk insights shows you the risk factors that power Stripe Radar.
+Using its AI models, Stripe Radar determines the risk score and risk level for a payment and uses them to decide when to block or mark payments for review. The system evaluates hundreds of risk factors about each payment, using data from the Stripe network across millions of businesses. Risk insights shows you the risk factors that power Stripe Radar.
 
 If you want to see more of Radar’s risk factors, click **Show all insights** from the risk insights section.
 ![](https://b.stripecdn.com/docs-statics-srv/assets/risk-insights-card.ef788006b7b5d6acbb4d237386a3c4ed.png)
@@ -19,7 +19,7 @@ Risk insights for payments
 
 If you don’t see the customer information or locations that you expect, check that your integration follows the Radar [best practices](https://docs.stripe.com/radar/optimize-risk-factors.md).
 
-If your integration doesn’t provide important details like the cardholder’s email address, IP address, or shipping address, Radar can’t compute all of the data it needs to accurately evaluate each payment.
+If your integration doesn’t provide important details such as the cardholder’s email address, IP address, or shipping address, Radar can’t compute all of the data it needs to accurately evaluate each payment.
 
 Risk insights also includes information about the customer, such as matching the cardholder’s name with the provided email, and the success rate of transactions on the Stripe network associated with the email address. A low authorization rate might indicate suspicious behavior, because previous declines sometimes suggest past attempts at fraudulent transactions.
 

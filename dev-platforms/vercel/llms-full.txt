@@ -52923,7 +52923,7 @@ vercel sandbox create --connect
 
 ## Full reference
 
-For the full list of subcommands, flags, and examples, see the [Sandbox CLI Reference](/docs/sandbox/cli-reference). The Sandbox CLI is modeled on the Docker CLI, so commands like `vercel sandbox exec`, `vercel sandbox copy` (alias `cp`), and `vercel sandbox connect` (alias `ssh`) follow familiar shapes. Use `vercel sandbox stop` to stop the current session of a persistent sandbox (the filesystem is snapshotted and can be resumed). To permanently delete a sandbox along with its snapshots and sessions, use `vercel sandbox remove` instead.
+For the full list of subcommands, flags, and examples, see the [Sandbox CLI Reference](/docs/sandbox/cli-reference). The Sandbox CLI is modeled on the Docker CLI, so commands like `vercel sandbox exec`, `vercel sandbox copy` (alias `cp`), and `vercel sandbox connect` (alias `ssh`) follow familiar shapes. Use `vercel sandbox stop` to stop the current session of a persistent sandbox (the filesystem is snapshotted and can be resumed). To permanently delete a sandbox along with its sessions, use `vercel sandbox remove` instead. The sandbox's snapshots are kept until they expire or you delete them.
 
 ## Related
 
@@ -116113,11 +116113,11 @@ For [Partial Prerendering (PPR)](/docs/partial-prerendering) routes, Vercel reco
 
 Every PPR request resolves to one of these states:
 
-| State     | Logged value | What it means                                                                                                  |
-| --------- | ------------ | -------------------------------------------------------------------------------------------------------------- |
-| `Static`  | `page`       | The whole page was prerendered. It was served entirely from the static shell, with no dynamic holes to resume. |
-| `Partial` | `shell`      | A static shell was served, and the postponed dynamic parts were resumed and streamed from your function.       |
-| `Dynamic` | `blocking`   | The static shell was empty, so the entire response came from postponed content resumed by your function.       |
+| State     | What it means                                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------------------------- |
+| `Static`  | The whole page was prerendered. It was served entirely from the static shell, with no dynamic holes to resume. |
+| `Partial` | A static shell was served, and the postponed dynamic parts were resumed and streamed from your function.       |
+| `Dynamic` | The static shell was empty, so the entire response came from postponed content resumed by your function.       |
 
 ## Static
 
@@ -130137,7 +130137,6 @@ Extended permissions add granular capabilities that can be combined with roles:
 |      | Deploy to production from CLI, rollback and promote any deployment.         | [Developer](/docs/rbac/access-roles#developer-role), [Contributor](/docs/rbac/access-roles#contributor-role)                                                                                                                                                    | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 |                                  | Read-only usage team-wide including prices and invoices.                    | [Developer](/docs/rbac/access-roles#developer-role), [Security](/docs/rbac/access-roles#security-role), [Member](/docs/rbac/access-roles#member-role), [Viewer](/docs/rbac/access-roles#viewer-role)                                                            | [Owner](/docs/rbac/access-roles#owner-role), [Billing](/docs/rbac/access-roles#billing-role) |
 |                    | Install and use Vercel integrations, marketplace integrations, and storage. | [Developer](/docs/rbac/access-roles#developer-role), [Security](/docs/rbac/access-roles#security-role), [Billing](/docs/rbac/access-roles#billing-role), [Viewer](/docs/rbac/access-roles#viewer-role), [Contributor](/docs/rbac/access-roles#contributor-role) | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
-|                        | Create and manage team-wide connectors, project connections, installations, and tokens. | [Developer](/docs/rbac/access-roles#developer-role), [Security](/docs/rbac/access-roles#security-role), [Billing](/docs/rbac/access-roles#billing-role), [Viewer](/docs/rbac/access-roles#viewer-role), [Contributor](/docs/rbac/access-roles#contributor-role) | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 |                    | Create and manage project environments.                                     | [Developer](/docs/rbac/access-roles#developer-role), [Member](/docs/rbac/access-roles#member-role)                                                                                                                                                              | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 |  | Create and manage environment variables.                                    | [Developer](/docs/rbac/access-roles#developer-role)                                                                                                                                                                                                             | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role)   |
 
@@ -130151,11 +130150,11 @@ Team roles provide the foundation of access control. Each role has a specific sc
 | ----------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **[Owner](/docs/rbac/access-roles#owner-role)**             | Complete control over all team and project settings                    | All extended permissions (already includes all permissions by default)                                                                                                                                                                                                                                                    |
 | **[Member](/docs/rbac/access-roles#member-role)**           | Can manage projects but not team settings                              | - [Environment Manager](#environment-manager)  - [Usage Viewer](#usage-viewer)                                                                                                                                                                                                                                       |
-| **[Developer](/docs/rbac/access-roles#developer-role)**     | Can deploy and manage projects with limitations on production settings | - [Create Project](#create-project)  - [Full Production Deployment](#full-production-deployment)  - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)  - [Environment Manager](#environment-manager)  - [Environment Variable Manager](#environment-variable-manager) |
-| **[Billing](/docs/rbac/access-roles#billing-role)**         | Manages financial aspects only                                         | - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)                                                                                                                                                                                                                             |
-| **[Security](/docs/rbac/access-roles#security-role)**       | Manages security features team-wide                                    | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)                                                                                                                                                                                        |
-| **[Viewer](/docs/rbac/access-roles#viewer-role)**           | Read-only access to all projects                                       | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)                                                                                                                                                                                        |
-| **[Contributor](/docs/rbac/access-roles#contributor-role)** | Configurable role that can be assigned project-level roles             | - [Full Production Deployment](#full-production-deployment)  - [Integration Manager](#integration-manager)  - [Connector Manager](#connector-manager)  See project-level table for compatible project roles and permissions                                                                                  |
+| **[Developer](/docs/rbac/access-roles#developer-role)**     | Can deploy and manage projects with limitations on production settings | - [Create Project](#create-project)  - [Full Production Deployment](#full-production-deployment)  - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)  - [Environment Manager](#environment-manager)  - [Environment Variable Manager](#environment-variable-manager) |
+| **[Billing](/docs/rbac/access-roles#billing-role)**         | Manages financial aspects only                                         | - [Integration Manager](#integration-manager)                                                                                                                                                                                                                                                                             |
+| **[Security](/docs/rbac/access-roles#security-role)**       | Manages security features team-wide                                    | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)                                                                                                                                                                                                                                       |
+| **[Viewer](/docs/rbac/access-roles#viewer-role)**           | Read-only access to all projects                                       | - [Usage Viewer](#usage-viewer)  - [Integration Manager](#integration-manager)                                                                                                                                                                                                                                       |
+| **[Contributor](/docs/rbac/access-roles#contributor-role)** | Configurable role that can be assigned project-level roles             | - [Full Production Deployment](#full-production-deployment)  - [Integration Manager](#integration-manager)  See project-level table for compatible project roles and permissions                                                                                                                                |
 
 ## How combinations work
 
@@ -130500,7 +130499,6 @@ Existing team roles can be combined with permission groups to create custom acce
 | **Create Project**                | Allows the user to create a new project.                                                              | Developer, Contributor               | Owner, Member       |
 | **Full Production Deployment**    | Deploy to production from CLI, rollback and promote any deployment.                                   | Developer, Contributor               | Owner, Member       |
 | **Usage Viewer**                  | Read-only usage team-wide including prices and invoices.                                              | Developer, Security, Billing, Viewer | Owner               |
-| **Connector Manager**             | Create and manage team-wide connectors, project connections, installations, and tokens.               | Developer, Security, Billing, Viewer, Contributor | Owner, Member       |
 | **Environment Manager**           | Create and manage project environments.                                                               | Developer                            | Owner               |
 | **Environment Variable Manager**  | Create and manage environment variables.                                                              | Developer                            | Owner, Member       |
 | **Deployment Protection Manager** | Configure password protection, deployment protection by pass, and Vercel Authentication for projects. | Developer                            | Owner, Member       |
@@ -134042,7 +134040,7 @@ sandbox <subcommand>
 - [`connect`](#sandbox-connect): Start an interactive shell in an existing sandbox. \[aliases: `ssh`, `shell`]
 - [`copy`](#sandbox-copy): Copy files between your local filesystem and a remote sandbox. \[alias: `cp`]
 - [`stop`](#sandbox-stop): Stop the current session of one or more sandboxes.
-- [`remove`](#sandbox-remove): Permanently delete one or more sandboxes and all their snapshots.
+- [`remove`](#sandbox-remove): Permanently delete one or more sandboxes and all their sessions.
 - [`config`](#sandbox-config): View and update sandbox configuration (resources, timeout, persistence, snapshot retention, network policy, tags).
 - [`sessions`](#sandbox-sessions): Inspect VM sessions for a sandbox.
 - [`snapshot`](#sandbox-snapshot): Take a snapshot of the filesystem of a sandbox.
@@ -134524,7 +134522,9 @@ sandbox stop --project my-project my-sandbox
 
 ## `sandbox remove`
 
-Permanently delete one or more sandboxes, along with all of their snapshots and sessions. Once removed, a sandbox cannot be recovered. Use this instead of `sandbox stop` when you no longer need the sandbox at all.
+Permanently delete one or more sandboxes, along with all of their sessions. Once removed, a sandbox cannot be recovered. Use this instead of `sandbox stop` when you no longer need the sandbox at all.
+
+Removing a sandbox keeps its snapshots, because several sandboxes can start from the same snapshot. Delete those separately with [`sandbox snapshots delete`](#sandbox-snapshots-delete).
 
 ```bash filename="terminal"
 sandbox remove <name> [...name]
@@ -135941,7 +135941,7 @@ await sandbox.update({
 
 ## Delete a sandbox
 
-Deleting a sandbox removes it and all of its snapshots and sessions permanently.
+Deleting a sandbox permanently removes the sandbox and all of its sessions. Its [snapshots](/docs/sandbox/concepts/snapshots) survive the deletion, because several sandboxes can start from the same snapshot. They stay available until they expire or you delete them, and they keep incurring [storage charges](/docs/sandbox/pricing#snapshot-storage) in the meantime.
 
 ```ts filename="index.ts"
 await sandbox.delete();
@@ -136028,7 +136028,7 @@ sandbox config tags my-sandbox --tag env=production
 
 ### Delete a sandbox
 
-`sandbox remove` permanently deletes the sandbox along with all of its snapshots and sessions. The operation is irreversible:
+`sandbox remove` permanently deletes the sandbox along with all of its sessions. The operation is irreversible. The sandbox's snapshots survive it, so delete them separately with [`sandbox snapshots delete`](/docs/sandbox/cli-reference#sandbox-snapshots-delete):
 
 ```bash filename="Terminal"
 sandbox remove my-sandbox
@@ -136237,6 +136237,10 @@ The cycle looks like this:
 3. When you create or resume a sandbox from a snapshot, it starts a new session from the saved state.
 
 You can also snapshot a running sandbox at any time by calling `snapshot()`, which captures its current filesystem before stopping the session.
+
+Snapshots outlive the sandbox they came from. Deleting a sandbox removes the sandbox and its sessions, but its snapshots stay available until they expire or you [delete them](#delete-a-snapshot), and they keep incurring [storage charges](/docs/sandbox/pricing#snapshot-storage) in the meantime.
+
+A snapshot isn't tied to one sandbox. You can create or [fork](/docs/sandbox/sdk-reference#sandbox.fork) any number of sandboxes from the same snapshot, so deleting a single sandbox can't remove a snapshot that other sandboxes still start from.
 
 For the full sandbox-side view of this cycle, see [Understanding Sandboxes](/docs/sandbox/concepts#sandbox-lifecycle) and [Persistent sandboxes](/docs/sandbox/concepts/persistent-sandboxes).
 
@@ -136820,7 +136824,7 @@ Vercel Sandbox usage is metered across several dimensions. This page explains ho
 | Sandbox Creations | 5,000/month | $0.60/1M | $0.60/1M |
 | Sandbox Data Transfer | 20 GB/month | $0.15/GB | $0.15/GB |
 | Snapshot Storage | 15 GB (lifetime) | $0.08/GB-month | $0.08/GB-month |
-| Concurrent Sandboxes | 10 | 2,000 | 2,000 |
+| Concurrent Sandboxes | 10 | 10,000 | 10,000 |
 | Max Runtime Duration | 45 minutes | 24 hours | 24 hours |
 | vCPU Allocation Rate | 20-40/min | 5,000/min | 5,000/min |
 
@@ -136927,8 +136931,8 @@ The number of concurrently running sandboxes is limited by plan.
 | Plan       | Concurrent sandboxes |
 | ---------- | -------------------- |
 | Hobby      | 10                   |
-| Pro        | 2,000                |
-| Enterprise | 2,000+               |
+| Pro        | 10,000               |
+| Enterprise | 10,000               |
 
 ### Rate limits
 
@@ -137824,7 +137828,7 @@ sandbox stop <name>
 # Stop multiple sandboxes
 sandbox stop <name-1> <name-2>
 
-# Permanently delete a sandbox and all its snapshots
+# Permanently delete a sandbox and all its sessions
 sandbox remove <name>
 ```
 
@@ -138488,7 +138492,7 @@ await sandbox.update({
 
 #### `sandbox.delete()`
 
-Permanently delete the sandbox and all of its snapshots and sessions. After deletion the instance becomes inert: further API calls throw immediately.
+Permanently delete the sandbox and all of its sessions. Its snapshots stay available until they expire or you delete them with [`snapshot.delete()`](#snapshot.delete). After deletion the instance becomes inert: further API calls throw immediately.
 
 ```ts
 await sandbox.delete();
@@ -139824,7 +139828,7 @@ Sandboxes stop automatically when their timeout expires. The default is 5 minute
 
 ## Delete a sandbox
 
-Stopping a [persistent sandbox](/docs/sandbox/concepts/persistent-sandboxes) ends the current session but keeps the sandbox so it can be resumed later. To remove the sandbox along with all of its snapshots and sessions, delete it. **This cannot be undone.**
+Stopping a [persistent sandbox](/docs/sandbox/concepts/persistent-sandboxes) ends the current session but keeps the sandbox so it can be resumed later. To remove the sandbox along with all of its sessions, delete it. **This cannot be undone.** Deleting a sandbox keeps its [snapshots](/docs/sandbox/concepts/snapshots), which stay available until they expire or you delete them.
 
 ### Through the dashboard
 

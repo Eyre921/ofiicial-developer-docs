@@ -8,16 +8,16 @@ path: disputes/prevention/card-testing
 
 Learn about this fraudulent activity and how to protect yourself against it.
 
-Card testing is a type of fraudulent activity where someone tries to determine whether stolen card information is valid so that they can use it to make purchases. A fraudster might do this by purchasing stolen credit card information, and then attempting to validate or make purchases with those cards to determine which cards are still valid. Other common terms for card testing are “carding”, “account testing”, “enumeration”, and “card checking.”
+Card testing is a type of fraudulent activity where someone tries to determine whether stolen card information is valid so that they can use it to make purchases. A fraudulent actor might do this by purchasing stolen credit card information, and then attempting to validate or make purchases with those cards to determine which cards are still valid. Other common terms for card testing are “carding”, “account testing”, “enumeration”, and “card checking.”
 
 Fraudulent activity such as card testing is an unavoidable part of online commerce. Card testing, however, has consequences for the entire payments ecosystem, so merchants, card networks, and Stripe share responsibility to prevent it. At Stripe, we’re constantly improving our tools and systems to detect and reduce fraud, but you must remain vigilant with respect to fraud.
 
 ## How card testing works 
 
-Card testers use both card setup and payments to determine whether the stolen or enumerated card information they have is valid or not. To quickly validate many card numbers, fraudsters use scripts to test a large amount of card information at once, and collect 3DS or issuer responses to validate which card information is valid. After they have identified the valid cards, they can cash them with merchants or resell confirmed cards on the dark web.
+Card testers use both card setup and payments to determine whether the stolen or enumerated card information they have is valid or not. To quickly validate many card numbers, fraudulent actors use scripts to test a large amount of card information at once, and collect 3DS or issuer responses to validate which card information is valid. After they have identified the valid cards, they can cash them with merchants or resell confirmed cards on the dark web.
 
-- **Card Setup**—This is a method preferred by fraudsters, as card validation and authorizations during card setup don’t typically show up on cardholder statements. This reduces the likelihood of card holders noticing and reporting the fraudulent activity.
-- **Payments**—Card testers create small amount payments, which cardholders are less likely to notice and report as fraudulent.
+- **Card setup**: This is a method preferred by fraudulent actors, because card validation and authorizations during card setup don’t typically show up on cardholder statements. This reduces the likelihood of card holders noticing and reporting the fraudulent activity.
+- **Payments**: Card testers create small amount payments, which cardholders are less likely to notice and report as fraudulent.
 
 ## Card testing consequences 
 
@@ -58,19 +58,19 @@ Card testers can use your publishable key and use it to retry a large number of 
 
 In addition to implementing mitigation strategies, you want to make sure that you’re keeping your keys safe and don’t publish your secret key publicly. When your credentials are leaked or stolen, card testers can create payments and set up cards using your secret key.
 
-> Not a developer? Using a plugin or platform? Preventing and mitigating card testing typically requires code-level changes, so you’ll need to show this documentation to the developer or vendor who wrote the code and work with them to prevent card testing.
+> If you’re not a developer or if you use a plugin or platform, preventing and mitigating card testing typically requires code-level changes. Show this documentation to the developer or vendor who wrote the code and work with them to prevent card testing.
 
 ### Use a Stripe-recommended integration 
 
-If you use Stripe’s latest Payment Element or Checkout, we have many automated and manual controls in place to mitigate card testing, including rate limiters, AI models, CAPTCHA triggers, ongoing reviews, and so on. When we detect that you’re under a card testing attack, we dynamically choose interventions to suppress the attack as much as possible, while still allowing legitimate users to transact on your account with minimal impact. You see these payments marked as `Blocked by Stripe`.
+If you use the latest Stripe Payment Element or Checkout, we have many automated and manual controls in place to mitigate card testing, including rate limiters, AI models, CAPTCHA triggers, ongoing reviews, and so on. When we detect that you’re under a card testing attack, we dynamically choose interventions to suppress the attack as much as possible, while still allowing legitimate users to transact on your account with minimal impact. You see these payments marked as `Blocked by Stripe`.
 
-*However, the success of Stripe’s controls depends on your integration and what risk factors you send to us*. We use many risk factors to distinguish between card testing and legitimate payments. While we compute some of these risk factors automatically, many of them depend on the information that your integration provides. In general, the more data your integration provides, the more successful card testing prevention can be.
+*However, the success of the Stripe controls depends on your integration and what risk factors you send to us*. We use many risk factors to distinguish between card testing and legitimate payments. While we compute some of these risk factors automatically, many of them depend on the information that your integration provides. In general, the more data your integration provides, the more successful card testing prevention can be.
 
-We recommend using one of Stripe’s [recommended integrations](https://docs.stripe.com/payments/online-payments.md#compare-features-and-availability) to take advantage of the automated [CAPTCHA](https://www.hcaptcha.com/) based protection. Modern CAPTCHA solutions apply multiple risk factors to increase friction for high-risk behavior, while appearing mostly invisible to legitimate users of your service. To opt out of our CAPTCHA integration, reach out to [Stripe Support](https://support.stripe.com/contact/login).
+We recommend using one of the Stripe [recommended integrations](https://docs.stripe.com/payments/online-payments.md#compare-features-and-availability) to take advantage of the automated [CAPTCHA](https://www.hcaptcha.com/) based protection. Modern CAPTCHA solutions apply multiple risk factors to increase friction for high-risk behavior, while appearing mostly invisible to legitimate users of your service. To opt out of our CAPTCHA integration, reach out to [Stripe Support](https://support.stripe.com/contact/login).
 
-Using one of our recommended payment integrations allows you to get the most out of Stripe’s card testing prevention. If you can’t use a recommended integration, include as much data as possible or implement your own controls. While card testing controls are separate from Radar’s protection against fraudulent disputes, they benefit [from the same risk factors used by Radar](https://docs.stripe.com/radar/optimize-risk-factors.md).
+Using one of our recommended payment integrations allows you to get the most out of Stripe card testing prevention. If you can’t use a recommended integration, include as much data as possible or implement your own controls. While card testing controls are separate from Radar’s protection against fraudulent disputes, they benefit [from the same risk factors used by Radar](https://docs.stripe.com/radar/optimize-risk-factors.md).
 
-Including the following information with your payments can have a significant impact on the performance of Stripe’s card testing models. Our recommended integrations enable you to collect this information, while direct integrations might need to explicitly include this data.
+Including the following information with your payments can have a significant impact on the performance of Stripe card testing models. Our recommended integrations enable you to collect this information, while direct integrations might need to explicitly include this data.
 
 - [Advanced fraud detection](https://docs.stripe.com/disputes/prevention/advanced-fraud-detection.md) (Highest impact)
 - IP address
@@ -128,7 +128,7 @@ It might make sense to combine multiple approaches to reduce card testing to max
 
 ### Retry carefully 
 
-Excessive retries (dunning) of payments can look like card testing if they come in extreme spikes with low success rate. Dunning and real card testing attacks might have similar effects on your business, including issuers hardening their risk stance. Make sure that you don’t keep retrying cards set up on fraudulent customers after a card testing attack, because this repeats the original attack. Stripe’s [Smart Retries](https://docs.stripe.com/billing/revenue-recovery/smart-retries.md#non-retryable-decline-codes) already take this into consideration.
+Excessive retries (dunning) of payments can look like card testing if they come in extreme spikes with low success rate. Dunning and real card testing attacks might have similar effects on your business, including issuers hardening their risk stance. Make sure that you don’t keep retrying cards set up on fraudulent customers after a card testing attack, because this repeats the original attack. Stripe [Smart Retries](https://docs.stripe.com/billing/revenue-recovery/smart-retries.md#non-retryable-decline-codes) already take this into consideration.
 
 ### Customize protection based on your risk appetite
 

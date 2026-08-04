@@ -12,11 +12,11 @@ Creating an effective dispute and fraud prevention strategy that best suits your
 
 ## Tools for everyone
 
-These are tools that any Stripe user—whether or not they’re a developer, and whether or not they use any specialized Stripe tools like *Radar* (Stripe Radar helps detect and block fraud for any type of business using machine learning that trains on data across millions of global companies. It’s built into Stripe and requires no additional setup to get started)—can leverage to reduce fraud and dispute incidents.
+These are tools that any Stripe user can implement to reduce fraud and dispute incidents.
 
 ### Be clear and transparent with your customers 
 
-Clear and frequent contact with your customers can help prevent many of the [reasons](https://docs.stripe.com/disputes/categories.md) for disputes. By responding to issues and processing refunds or replacement orders quickly, your customers are far less likely to take the time to dispute a payment. Make your customer service contact information easy to find, keep customers updated throughout their order process, and provide updates about deliveries.
+Clear and frequent contact with your customers can help prevent many of the [reasons](https://docs.stripe.com/disputes/categories.md) for disputes. By responding to issues and processing refunds or replacement orders quickly, your customers are less likely to take the time to dispute a payment. Make your customer service contact information easy to find, keep customers updated throughout their order process, and provide updates about deliveries.
 
 > Include a clear description of your refund and cancellation policies in your terms of service. You can require your users to agree to your terms of service to increase the likelihood that card issuers respect your policies in the event of a dispute.
 
@@ -62,15 +62,15 @@ If none of the above apply, you might want to be more conservative with how freq
 
 If you ship physical goods, consider delaying the shipment by 24-48 hours. This time gives cardholders a chance to spot and report any fraud on their accounts. You would still receive a fraud dispute in this scenario, but at least you wouldn’t also lose the merchandise. Not all cardholders check their statements on a daily basis, however, and their card issuer might not proactively notify them about the transaction.
 
-*Customers* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) that request overnight or expedited shipping should be considered higher risk, as the increased cost of such services is of no consequence to fraudsters. One tactic you can use to identify these types of payments is to offer same day or overnight shipping at a very high cost, many times more expensive than any other shipping option you provide.
+Consider *customers* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) who request overnight or expedited shipping to be higher risk, because the increased cost of these services doesn’t matter to fraudulent actors. One tactic you can use to identify these types of payments is to offer same day or overnight shipping at a disproportionally high cost, many times more expensive than any other shipping option you provide.
 
-It’s far less likely that any legitimate customer would pay such a high cost, but a fraudster would want the goods to be shipped as soon as possible and have no regard for the additional cost. You can then manually screen any customers that opt for the anomalously expensive shipping option and scrutinize the order to determine if it looks genuine. Using a [separate auth and capture process](https://docs.stripe.com/disputes/prevention/best-practices.md#use-auth-and-capture-when-creating-payments) together with [Radar reviews](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments) is a good way to do so.
+It’s less likely that a legitimate customer would pay such a high cost, but a fraudulent actor would want the goods to be shipped as soon as possible regardless of the additional cost. You can then manually screen any customers that opt for the anomalously expensive shipping option and examine the order to determine if it looks genuine. Using a [separate auth and capture process](https://docs.stripe.com/disputes/prevention/best-practices.md#use-auth-and-capture-when-creating-payments) together with [Radar reviews](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments) is a good way to do so.
 
 ### Ship to a verified address
 
 Shipping to a [verified billing address](https://docs.stripe.com/disputes/prevention/verification.md#avs-check) which has passed postal code and street address checks is the safest option. When using an address that hasn’t been verified, you can’t prove that the order was shipped to the legitimate cardholder if the payment is later disputed.
 
-This doesn’t prevent you shipping to a different address, though you should do all you can to mitigate the risks involved. For instance, you may only want to ship orders to a different address for returning customers you already know to be legitimate, or who provide a fully verifiable billing address. In addition, any of the following could indicate the payment is suspicious:
+This doesn’t prevent you shipping to a different address, though you should do all you can to mitigate the risks involved. For instance, you might only want to ship orders to a different address for returning customers you already know to be legitimate, or who provide a fully verifiable billing address. In addition, any of the following could indicate the payment is suspicious:
 
 - The order is much larger than normal, or is only for your most expensive products
 - The customer changed the shipping address after placing the order
@@ -92,7 +92,7 @@ Your account’s [dispute rate](https://docs.stripe.com/disputes/measuring.md#di
 
 If [your plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can place certain payments into [review](https://docs.stripe.com/radar/transaction-reviews.md). These payments are still processed and the credit card charged, unless you’re using a separate auth and capture process. These payments are placed into the [review queue](https://dashboard.stripe.com/radar) for you to take a closer look at. If you suspect the payment is fraudulent, you can refund it.
 
-You should review payments that Stripe has placed into your [review queue](https://dashboard.stripe.com/radar) as soon as possible. Payments with an [elevated risk](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk) of fraud are automatically marked for review. You can also create additional rules to customize the types of payments that should be placed in your review queue.
+Review payments that Stripe has placed into your [review queue](https://dashboard.stripe.com/radar) as soon as possible. We automatically mark payments with an [elevated risk](https://docs.stripe.com/radar/transaction-risk-prevention.md#elevated-risk) of fraud for review. You can also create additional rules to customize the types of payments that you want to place in your review queue.
 
 Here are some considerations when reviewing a payment:
 
@@ -103,7 +103,7 @@ Here are some considerations when reviewing a payment:
 - Have multiple orders from different credit cards originated from this same IP address?
 - Has this customer made many order attempts that have been declined?
 
-If you’re unsure about a payment when you’re reviewing it, you should always contact the customer by phone or email. If a payment’s billing and shipping address don’t match, look into the shipping address using [Google Maps & Street View](https://www.google.com/maps/streetview) to find out more. A common tactic that fraudsters use is to have orders shipped to a freight or mail forwarding service or storage facility that forwards the goods to their actual location.
+If you’re unsure about a payment when you’re reviewing it, always contact the customer by phone or email. If a payment’s billing and shipping address don’t match, look into the shipping address using [Google Maps and Street View](https://www.google.com/maps/streetview) to find out more. A common tactic that fraudulent actors use is to have orders shipped to a freight or mail forwarding service or storage facility that forwards the goods to their actual location.
 
 ### Use Radar rules to automatically block payments or place them in review
 
@@ -159,7 +159,7 @@ Credit card charge attempts are processed in two parts. The charge is first *aut
 
 A [capture later](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) payment flow (sometimes called “auth and capture”) is the process of performing these two steps at separate times. The authorization can be made first, which holds the amount on the card and appears on a customer’s statement as a pending transaction, but doesn’t actually move money out of their account. The charge can then be captured any time up to 7 days after the authorization. Capturing a charge completes the payment and the funds are deducted from the customer’s card. If a charge isn’t captured within the time limit, the authorization is automatically released.
 
-Similar to delayed shipping, this method can allow enough time for potential fraud to come to light, giving you the option to carefully review—and potentially refund—the transaction. Cardholders can’t dispute uncaptured authorizations, only fully captured payments. If [your plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can manually capture these payments in the [review process](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments).
+Similar to delayed shipping, this method can allow enough time to identify potential fraud, giving you the option to carefully review (and potentially refund) the transaction. Cardholders can’t dispute uncaptured authorizations, only fully captured payments. If [your plan](https://docs.stripe.com/radar/how-radar-works.md#compare-plans) supports this feature, you can manually capture these payments in the [review process](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments).
 
 ### Set a custom statement descriptor for each payment
 
@@ -167,7 +167,7 @@ The statement descriptor is the text that appears on customers’ card statement
 
 You can either edit your [default statement descriptor](https://dashboard.stripe.com/settings/public) within the Dashboard or set a [dynamic statement descriptor](https://docs.stripe.com/get-started/account/statement-descriptors.md#dynamic) whenever a payment is created through the API.
 
-While this method can’t help against a fraudster who may have access to a cardholder’s online card issuer or credit account, this is rare. Using the statement descriptor in this manner can provide reassurance that the customer is likely to be genuine. As with some other prevention methods, the added customer friction of this method could lead to some legitimate payments being refunded.
+While this method can’t help against a fraudulent actor who might have access to a cardholder’s online card issuer or credit account, this is rare. Using the statement descriptor in this manner can provide reassurance that the customer is likely to be genuine. As with some other prevention methods, the added customer friction of this method could lead to some legitimate payments being refunded.
 
 ### Review fraud rate increase alerts
 

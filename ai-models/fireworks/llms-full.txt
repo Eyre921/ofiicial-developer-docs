@@ -19171,18 +19171,7 @@ All amounts are in USD, and usage resets at the start of each billing period.
 
 ## Supported models
 
-Per-user metering currently applies to a subset of serverless models. Usage on models **not** listed here does not count toward a user's limit and won't trigger blocking. Coverage is expanding as more models are updated.
-
-Currently supported:
-
-* DeepSeek V4 Flash
-* DeepSeek V4 Pro
-* GLM 5.2
-* GLM 5.2 Fast
-* Kimi K2.6
-* Kimi K2.6 Fast
-* Kimi K2.7 Code
-* Kimi K2.7 Code Fast
+Per-user metering applies to **all serverless models** except **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)**. Usage on MiniMax M2.7 does not count toward a user's limit and won't trigger blocking.
 
 ## Who can do what
 
@@ -19273,7 +19262,7 @@ Updates use `PATCH` with a field mask indicating which fields to change:
 * **Enforcement is near-real-time, not instantaneous.** After a user crosses their limit there is a short delay (typically a few minutes) before requests start being blocked, and a similar delay before a user is unblocked after you raise their limit. Plan around this lag rather than expecting an immediate cutoff.
 * **A `$0` cap** means the user is allowed no serverless spend — they are blocked immediately.
 * **Removing the account default** leaves users uncapped unless they have their own override.
-* Only **serverless (per-token) inference on [supported models](#supported-models)** counts toward these limits. Usage on other serverless models — and dedicated deployment (GPU-hour) usage — is not metered per user here.
+* Only **serverless (per-token) inference on [supported models](#supported-models)** counts toward these limits. **[MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)** is excluded. Dedicated deployment (GPU-hour) usage is not metered per user here.
 
 ## FAQ
 

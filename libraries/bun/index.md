@@ -1,6 +1,6 @@
 # libraries/bun 文档索引
 
-> 共 315 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 316 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -314,6 +314,7 @@
 - `docs/test/index` — [Test runner](pages/docs/test/index.md) · [原文](https://bun.com/docs/test/index)
 - `docs/test/lifecycle` — [Lifecycle hooks](pages/docs/test/lifecycle.md) · [原文](https://bun.com/docs/test/lifecycle)
 - `docs/test/mocks` — [Mocks](pages/docs/test/mocks.md) · [原文](https://bun.com/docs/test/mocks)
+- `docs/test/parallel` — [Parallel & isolated test runs](pages/docs/test/parallel.md) · [原文](https://bun.com/docs/test/parallel)
 - `docs/test/reporters` — [Test Reporters](pages/docs/test/reporters.md) · [原文](https://bun.com/docs/test/reporters)
 - `docs/test/runtime-behavior` — [Runtime behavior](pages/docs/test/runtime-behavior.md) · [原文](https://bun.com/docs/test/runtime-behavior)
 - `docs/test/snapshots` — [Snapshots](pages/docs/test/snapshots.md) · [原文](https://bun.com/docs/test/snapshots)
