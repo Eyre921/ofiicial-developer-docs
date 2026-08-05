@@ -8,7 +8,7 @@ Using PydanticAI with Together
 
 PydanticAI is an agent framework created by the Pydantic team to simplify building production-grade generative AI applications. It brings the ergonomic design philosophy of FastAPI to AI agent development, offering a familiar and type-safe approach to working with language models.
 
-## Installing Libraries
+## Installing libraries
 
 <CodeGroup>
   ```shell Shell theme={null}

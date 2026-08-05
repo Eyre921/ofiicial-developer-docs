@@ -8,7 +8,7 @@ Build a RAG workflow in under five minutes.
 
 In this Quickstart you'll learn how to build a RAG workflow using Together AI in 6 quick steps that can be run in under 5 minutes!
 
-We will leverage the embedding, reranking and inference endpoints.
+You'll leverage the embedding, reranking, and inference endpoints.
 
 ## 1. Register for an account
 
@@ -34,9 +34,9 @@ from together import Together
 client = Together(api_key=TOGETHER_API_KEY)
 ```
 
-## 3. Data Processing and Chunking
+## 3. Data processing and chunking
 
-We will RAG over Paul Graham's latest essay titled [Founder Mode](https://paulgraham.com/foundermode.html). The code below will scrape and load the essay into memory.
+You'll RAG over Paul Graham's latest essay titled [Founder Mode](https://paulgraham.com/foundermode.html). The code below will scrape and load the essay into memory.
 
 ```py Python theme={null}
 import requests
@@ -89,9 +89,9 @@ def create_chunks(document, chunk_size=300, overlap=50):
 chunks = create_chunks(pg_essay, chunk_size=250, overlap=30)
 ```
 
-## 4. Generate Vector Index and Perform Retrieval
+## 4. Generate vector index and perform retrieval
 
-We will now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
+You'll now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
 
 ```py Python theme={null}
 from typing import List
@@ -160,11 +160,11 @@ top_k_indices = vector_retrieval(
 top_k_chunks = [chunks[i] for i in top_k_indices]
 ```
 
-We now have a way to retrieve from the vector index given a query.
+You now have a way to retrieve from the vector index given a query.
 
-## 5. Rerank To Improve Quality
+## 5. Rerank to improve quality
 
-We will use a reranker model to improve retrieved chunk relevance quality:
+You'll use a reranker model to improve retrieved chunk relevance quality:
 
 <Tip>
   Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
@@ -197,9 +197,9 @@ for index in rerank_indices:
 print(reranked_chunks)
 ```
 
-## 6. Call Generative Model
+## 6. Call generative model
 
-We will pass the final 3 concatenated chunks into an LLM to get our final answer.
+You'll pass the final 3 concatenated chunks into an LLM to get the final answer.
 
 ```py Python theme={null}
 query = "What are 'skip-level' meetings?"
@@ -218,4 +218,4 @@ response = client.chat.completions.create(
 response.choices[0].message.content
 ```
 
-If you want to learn more about how to best use open models refer to our [docs](/docs) here!
+If you want to learn more about how to best use open models refer to the [docs](/docs) here!

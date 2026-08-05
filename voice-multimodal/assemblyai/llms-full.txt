@@ -27,8 +27,8 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Best Practices for Building Voice Agents](#best-practices-for-building-voice-agents-docs-voice-agents-best-practices-mdx)
 - [Best Practices for building Contact Center Applications](#best-practices-for-building-contact-center-applications-docs-contact-center-best-practices-mdx)
 - [Integrations](#integrations-docs-integrations-mdx)
-- [Universal 3.5 Pro Realtime on LiveKit](#universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-u3-rt-pro-mdx)
-- [Universal 3.5 Pro Realtime on Pipecat](#universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-u3pro-pipecat-mdx)
+- [Universal 3.5 Pro Realtime on LiveKit](#universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx)
+- [Universal 3.5 Pro Realtime on Pipecat](#universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx)
 - [Zapier Integration with AssemblyAI](#zapier-integration-with-assemblyai-docs-integrations-zapier-mdx)
 - [Integrate Make with AssemblyAI](#integrate-make-with-assemblyai-docs-integrations-make-mdx)
 - [The AssemblyAI n8n Integration](#the-assemblyai-n8n-integration-docs-integrations-n-8-n-mdx)
@@ -134,7 +134,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Optimizing Accuracy and Latency](#optimizing-accuracy-and-latency-docs-streaming-getting-started-optimizing-accuracy-and-latency-mdx)
 - [Turn Detection](#turn-detection-docs-streaming-turn-detection-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-streaming-prompting-and-keyterms-mdx)
-- [Conversation Context](#conversation-context-docs-streaming-universal-3-pro-context-carryover-mdx)
+- [Conversation Context](#conversation-context-docs-streaming-universal-3-5-pro-context-carryover-mdx)
 - [Multilingual Transcription](#multilingual-transcription-docs-streaming-multilingual-transcription-mdx)
 - [Medical Mode](#medical-mode-docs-streaming-medical-mode-mdx)
 - [Voice Focus](#voice-focus-docs-streaming-voice-focus-mdx)
@@ -153,9 +153,9 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Streaming Endpoints and Data Zones](#streaming-endpoints-and-data-zones-docs-streaming-endpoints-and-data-zones-mdx)
 - [Rate limits](#rate-limits-docs-streaming-rate-limits-mdx)
 - [Self-Hosted Streaming](#self-hosted-streaming-docs-streaming-self-hosted-streaming-mdx)
-- [Universal 3.5 Pro Realtime on LiveKit](#universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-u3-rt-pro-mdx)
-- [Universal 3.5 Pro Realtime on Pipecat](#universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-u3pro-pipecat-mdx)
-- [Streaming Migration Guide: Universal Streaming to Universal-3.5 Pro Streaming](#streaming-migration-guide-universal-streaming-to-universal-3-5-pro-streaming-docs-streaming-migration-guides-universal-to-u3-pro-streaming-mdx)
+- [Universal 3.5 Pro Realtime on LiveKit](#universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx)
+- [Universal 3.5 Pro Realtime on Pipecat](#universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx)
+- [Streaming Migration Guide: Universal Streaming to Universal-3.5 Pro Streaming](#streaming-migration-guide-universal-streaming-to-universal-3-5-pro-streaming-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx)
 - [Streaming Migration Guide: Deepgram to AssemblyAI](#streaming-migration-guide-deepgram-to-assemblyai-docs-streaming-migration-guides-dg-to-aai-streaming-mdx)
 - [Migration guide: Speechmatics to AssemblyAI](#migration-guide-speechmatics-to-assemblyai-docs-streaming-migration-guides-speechmatics-to-aai-streaming-mdx)
 - [Streaming Migration Guide: Gladia to AssemblyAI](#streaming-migration-guide-gladia-to-assemblyai-docs-streaming-migration-guides-gladia-to-aai-streaming-mdx)
@@ -382,7 +382,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Universal-3.5 Pro](#universal-3-5-pro-docs-pre-recorded-audio-universal-3-5-pro-mdx)
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
-- [Universal-3.5 Pro Streaming API](#universal-3-5-pro-streaming-api-docs-voice-agents-u3-pro-streaming-api-mdx)
+- [Universal-3.5 Pro Streaming API](#universal-3-5-pro-streaming-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx)
 - [Create a webhook subscription](#create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx)
 - [Delete a webhook subscription](#delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx)
 - [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx)
@@ -430,7 +430,7 @@ Description: Build with our Voice AI Infrastructure
         <path d="M46.3409 183.984V138.234V92.4671V46.7178V0.950684H0.57373V46.7178V92.4671V138.234V183.984V229.751H46.3409H92.0902H137.857V183.984H92.0902H46.3409Z" fill="currentColor" />
       </svg>
     }
-    href="/voice-agents/livekit-u3-rt-pro"
+    href="/voice-agents/livekit-universal-3-5-pro"
   />
   
         <path d="M45.7718 70.7701C50.4477 69.0096 55.7252 70.3307 59.0204 74.0864L101.936 123.001H230.064L272.98 74.0864C276.275 70.3307 281.552 69.0096 286.228 70.7701C290.904 72.5306 294 77.0042 294 82.0005V190H332V214H270V113.873L244.52 142.915C242.242 145.512 238.955 147.001 235.5 147.001H96.5C93.0452 147.001 89.7581 145.512 87.4796 142.915L62 113.873V214H0V190H38V82.0005C38 77.0042 41.0958 72.5306 45.7718 70.7701Z" fill="currentColor" />
@@ -440,7 +440,7 @@ Description: Build with our Voice AI Infrastructure
         <path d="M236 198.001C236 206.837 228.837 214.001 220 214.001C211.163 214.001 204 206.837 204 198.001C204 189.164 211.163 182.001 220 182.001C228.837 182.001 236 189.164 236 198.001Z" fill="currentColor" />
       </svg>
     }
-    href="/voice-agents/u3pro-pipecat"
+    href="/voice-agents/pipecat-universal-3-5-pro"
   />
 
 ---
@@ -5855,7 +5855,7 @@ For a cascading architecture, AssemblyAI has the best speech-to-text model. For 
 
 **LiveKit Agents (recommended)**
 
-LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [Universal-3.5 Pro Streaming on LiveKit](/voice-agents/livekit-u3-rt-pro) for a full guide.
+LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [Universal-3.5 Pro Streaming on LiveKit](/voice-agents/livekit-universal-3-5-pro) for a full guide.
 
 ```python
 from livekit.agents import AgentSession
@@ -5878,7 +5878,7 @@ session = AgentSession(
 
 **Pipecat by Daily**
 
-Pipecat is an open-source framework for conversational AI with maximum customizability. See [Universal-3.5 Pro Streaming on Pipecat](/voice-agents/u3pro-pipecat) for a full guide.
+Pipecat is an open-source framework for conversational AI with maximum customizability. See [Universal-3.5 Pro Streaming on Pipecat](/voice-agents/pipecat-universal-3-5-pro) for a full guide.
 
 ```python
 from pipecat.services.assemblyai.stt import AssemblyAISTTService
@@ -6031,8 +6031,8 @@ Users often produce short backchannel utterances ("mhm", "yeah", "um", "okay") w
 The fix is to gate barge-in on each `Turn` event during agent speech: suppress the interrupt when the transcript is short or every token is a known backchannel. Implementation depends on your stack:
 
 - **Voice Agent API**: semantic interruption classification is built in. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions).
-- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-u3-rt-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
-- **Direct WebSocket**: see [Interruption handling](/voice-agents/u3-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Streaming API page for the combined word-count + filler-word filter.
+- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-universal-3-5-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
+- **Direct WebSocket**: see [Interruption handling](/voice-agents/universal-3-5-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Streaming API page for the combined word-count + filler-word filter.
 
 ### VAD threshold alignment
 
@@ -6360,8 +6360,8 @@ For a complete evaluation framework including accuracy metrics, latency metrics,
 - [Message sequence](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming diarization and multichannel](/streaming/label-speakers-and-separate-channels)
 - [Supported languages](/streaming/getting-started/transcribe-streaming-audio)
-- [LiveKit integration](/voice-agents/livekit-u3-rt-pro)
-- [Pipecat integration](/voice-agents/u3pro-pipecat)
+- [LiveKit integration](/voice-agents/livekit-universal-3-5-pro)
+- [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)
 - [API Playground](https://www.assemblyai.com/playground/streaming)
 - [Changelog](https://www.assemblyai.com/changelog)
 
@@ -7420,7 +7420,7 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
         <path d="M46.3409 183.984V138.234V92.4671V46.7178V0.950684H0.57373V46.7178V92.4671V138.234V183.984V229.751H46.3409H92.0902H137.857V183.984H92.0902H46.3409Z" fill="currentColor" />
       </svg>
     }
-    href="/voice-agents/livekit-u3-rt-pro"
+    href="/voice-agents/livekit-universal-3-5-pro"
   >
     Use AssemblyAI with Livekit's voice agent orchestrator.
   
@@ -7432,7 +7432,7 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
         <path d="M236 198.001C236 206.837 228.837 214.001 220 214.001C211.163 214.001 204 206.837 204 198.001C204 189.164 211.163 182.001 220 182.001C228.837 182.001 236 189.164 236 198.001Z" fill="currentColor" />
       </svg>
     }
-    href="/voice-agents/u3pro-pipecat"
+    href="/voice-agents/pipecat-universal-3-5-pro"
   >
     Use AssemblyAI with Pipecat's voice agent orchestrator.
   
@@ -7525,12 +7525,12 @@ Looking to integrate with a different tool? Check out our [API Reference](/api-r
 
 ---
 
-<a id="universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-u3-rt-pro-mdx"></a>
+<a id="universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx"></a>
 
 # Universal 3.5 Pro Realtime on LiveKit
 
-URL: https://www.assemblyai.com/docs/voice-agents/livekit-u3-rt-pro
-Source: docs/voice-agents/livekit-u3-rt-pro.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/livekit-universal-3-5-pro
+Source: docs/voice-agents/livekit-universal-3-5-pro.mdx
 Navigation: Overview > Use cases & integrations > Integrations > Voice agent orchestrators
 Description: Integrate AssemblyAI's Universal 3.5 Pro Realtime speech-to-text model into a LiveKit voice agent
 
@@ -8103,7 +8103,7 @@ Give the model both sides of the dialog so it transcribes the next user turn mor
 - **The agent half** — what your agent just said, forwarded automatically into `agent_context` by `AgentSession` on `livekit-agents` 1.6.6+ (no wiring needed).
 - **The user half** — prior STT-finalized user turns, carried forward automatically (no configuration needed).
 
-With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, `agent_context` lets the model produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-pro/context-carryover) for the full reference.
+With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, `agent_context` lets the model produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-5-pro/context-carryover) for the full reference.
 
 | Parameter                  | Type    | Description                                                                                                                                                                                                    |
 | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -8517,12 +8517,12 @@ Migrating a production deployment? [Talk to our team](https://www.assemblyai.com
 
 ---
 
-<a id="universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-u3pro-pipecat-mdx"></a>
+<a id="universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx"></a>
 
 # Universal 3.5 Pro Realtime on Pipecat
 
-URL: https://www.assemblyai.com/docs/voice-agents/u3pro-pipecat
-Source: docs/voice-agents/u3pro-pipecat.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/pipecat-universal-3-5-pro
+Source: docs/voice-agents/pipecat-universal-3-5-pro.mdx
 Navigation: Overview > Use cases & integrations > Integrations > Voice agent orchestrators
 Description: Integrate AssemblyAI's Universal 3.5 Pro Realtime speech-to-text model into a Pipecat voice agent
 
@@ -9020,7 +9020,7 @@ Give the model both sides of the dialog so it transcribes the next user turn mor
 - **The agent half** — what your agent just said.
 - **The user half** — prior STT-finalized user turns.
 
-With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, the model can produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-pro/context-carryover) for the full reference.
+With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, the model can produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-5-pro/context-carryover) for the full reference.
 
   **In Pipecat, conversation context is automatic — no event wiring required.**
   As long as your pipeline includes the standard LLM context aggregator (the
@@ -30784,7 +30784,7 @@ To learn more about Streaming Speech-to-Text, see the following resources:
 
 - [Streaming Speech-to-Text overview](/streaming)
 - [Message sequence breakdown](/streaming/getting-started/transcribe-streaming-audio) — understand the `Begin`, `Turn`, and `Termination` events
-- [WebSocket API reference](/api-reference/streaming-api/universal-3-pro-streaming)
+- [WebSocket API reference](/streaming/api-spec/streaming-websocket)
 
 ## Need some help?
 
@@ -31389,12 +31389,12 @@ Prompting behavior differs between streaming and async (pre-recorded) use cases.
 
 ---
 
-<a id="conversation-context-docs-streaming-universal-3-pro-context-carryover-mdx"></a>
+<a id="conversation-context-docs-streaming-universal-3-5-pro-context-carryover-mdx"></a>
 
 # Conversation Context
 
-URL: https://www.assemblyai.com/docs/streaming/universal-3-pro/context-carryover
-Source: docs/streaming/universal-3-pro/context-carryover.mdx
+URL: https://www.assemblyai.com/docs/streaming/universal-3-5-pro/context-carryover
+Source: docs/streaming/universal-3-5-pro/context-carryover.mdx
 Navigation: Real-time STT > Features
 Description: Conversation Context documentation.
 
@@ -33806,7 +33806,7 @@ Source: docs/streaming/message-sequence.mdx
 Navigation: Real-time STT > API reference
 Description: Canonical reference for the streaming WebSocket protocol. Covers every client and server message and the order they appear in.
 
-This page is the canonical reference for the streaming WebSocket protocol: every message the client sends, every message the server emits, and the order they appear in. For the field-level schema of each message, see the [Streaming API reference](/api-reference/streaming-api/universal-3-pro-streaming).
+This page is the canonical reference for the streaming WebSocket protocol: every message the client sends, every message the server emits, and the order they appear in. For the field-level schema of each message, see the [Streaming API reference](/streaming/api-spec/streaming-websocket).
 
 ## Sequence diagram
 
@@ -34987,7 +34987,7 @@ Switch between accuracy/latency trade-off modes mid-session. See [Optimizing acc
 
 - `prompt` — Update the contextual prompt mid-stream as your application learns more about the conversation. See [Prompting guide](/streaming/prompting-and-keyterms).
 - `keyterms_prompt` — Replace the current keyterms list. The most effective way to improve recognition accuracy mid-stream — dynamically swap the list as your voice agent moves between conversation stages. See [Keyterms prompting](/streaming/prompting-and-keyterms).
-- `agent_context` — Pass your voice agent's most recent spoken reply so the model has it as context for the next user turn. See [Context carryover](/streaming/universal-3-pro/context-carryover#passing-your-agents-reply-as-context).
+- `agent_context` — Pass your voice agent's most recent spoken reply so the model has it as context for the next user turn. See [Context carryover](/streaming/universal-3-5-pro/context-carryover#passing-your-agents-reply-as-context).
 - `language_codes` — Update the set of languages transcription is steered toward; takes effect from the next turn. Pass an empty list to clear steering and return to native code-switching.
 
 ### Partials
@@ -35101,7 +35101,7 @@ When a session ends because of an error (rather than a normal closure), the serv
 
 Note that the `on_error` callback is not triggered in this case, as the session closes for a known reason and not due to encountering an error.
 
-If you believe your session received an error or closed due to a reason not listed above, please reach out to support@assemblyai.com with the [session id](/api-reference/streaming-api/universal-3-pro-streaming#receive.receiveSessionBegins.id) and any further details.
+If you believe your session received an error or closed due to a reason not listed above, please reach out to support@assemblyai.com with the [session id](/streaming/api-spec/streaming-websocket#receive.receiveSessionBegins.id) and any further details.
 
 ---
 
@@ -35285,8 +35285,8 @@ This measures the time from when the user actually finishes speaking (end of spe
   the user will use when the turn ends. AssemblyAI provides native endpointing
   in our models, but you can also use our outputs with other providers and their
   End-of-Turn models like
-  [LiveKit](/voice-agents/livekit-u3-rt-pro),
-  [Pipecat](/voice-agents/u3pro-pipecat),
+  [LiveKit](/voice-agents/livekit-universal-3-5-pro),
+  [Pipecat](/voice-agents/pipecat-universal-3-5-pro),
   or [Vapi](https://vapi.ai).
 
 ### End-of-Turn Detection Accuracy
@@ -35426,7 +35426,7 @@ Another benefit of doing a vibe-evals is that truth files don't have to be sourc
 
 **LLM as a judge:** An LLM can automatically identify differences between two transcriptions and pick a winner. However, be cautious: an LLM judge can be misled by outputs that look correct but contain subtle errors (such as translated code-switching segments that read well in English but don't reflect what was actually spoken). Always pair LLM-based judgments with spot-checking against the actual audio. For a structured LLM-based scoring approach, see [LASER](#laser-score-llm-based-asr-evaluation-rubric) above and [aai-cli](https://github.com/alexkroman/aai-cli) for an implementation.
 
-**Live A/B testing:** Set up your voice agent with different STT providers using integrations like [LiveKit](/voice-agents/livekit-u3-rt-pro) where you can swap out providers. Serve transcripts from different providers and collect feedback — ask users to score agent interactions directly, or track indirect signals like support ticket complaints about the agent misunderstanding users.
+**Live A/B testing:** Set up your voice agent with different STT providers using integrations like [LiveKit](/voice-agents/livekit-universal-3-5-pro) where you can swap out providers. Serve transcripts from different providers and collect feedback — ask users to score agent interactions directly, or track indirect signals like support ticket complaints about the agent misunderstanding users.
 
 ## Conclusion
 
@@ -35767,7 +35767,7 @@ If you are receiving this error unexpectedly, verify that all of your sessions a
 
 To ensure sessions are cleaned up correctly:
 
-- If you are using the [WebSocket API](/api-reference/streaming-api/universal-3-pro-streaming) directly, send a `Terminate` message (`{"type": "Terminate"}`) to close the session.
+- If you are using the [WebSocket API](/streaming/api-spec/streaming-websocket) directly, send a `Terminate` message (`{"type": "Terminate"}`) to close the session.
 
 Failing to terminate sessions properly can cause your open-session count to remain artificially high, leading to unexpected rate limit errors when opening new sessions.
 
@@ -35926,12 +35926,12 @@ For deployment questions, image access, license issues, or to report bugs, conta
 
 ---
 
-<a id="universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-u3-rt-pro-mdx"></a>
+<a id="universal-3-5-pro-realtime-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx"></a>
 
 # Universal 3.5 Pro Realtime on LiveKit
 
-URL: https://www.assemblyai.com/docs/voice-agents/livekit-u3-rt-pro
-Source: docs/voice-agents/livekit-u3-rt-pro.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/livekit-universal-3-5-pro
+Source: docs/voice-agents/livekit-universal-3-5-pro.mdx
 Navigation: Real-time STT > Integrations
 Description: Integrate AssemblyAI's Universal 3.5 Pro Realtime speech-to-text model into a LiveKit voice agent
 
@@ -36504,7 +36504,7 @@ Give the model both sides of the dialog so it transcribes the next user turn mor
 - **The agent half** — what your agent just said, forwarded automatically into `agent_context` by `AgentSession` on `livekit-agents` 1.6.6+ (no wiring needed).
 - **The user half** — prior STT-finalized user turns, carried forward automatically (no configuration needed).
 
-With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, `agent_context` lets the model produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-pro/context-carryover) for the full reference.
+With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, `agent_context` lets the model produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-5-pro/context-carryover) for the full reference.
 
 | Parameter                  | Type    | Description                                                                                                                                                                                                    |
 | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -36918,12 +36918,12 @@ Migrating a production deployment? [Talk to our team](https://www.assemblyai.com
 
 ---
 
-<a id="universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-u3pro-pipecat-mdx"></a>
+<a id="universal-3-5-pro-realtime-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx"></a>
 
 # Universal 3.5 Pro Realtime on Pipecat
 
-URL: https://www.assemblyai.com/docs/voice-agents/u3pro-pipecat
-Source: docs/voice-agents/u3pro-pipecat.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/pipecat-universal-3-5-pro
+Source: docs/voice-agents/pipecat-universal-3-5-pro.mdx
 Navigation: Real-time STT > Integrations
 Description: Integrate AssemblyAI's Universal 3.5 Pro Realtime speech-to-text model into a Pipecat voice agent
 
@@ -37421,7 +37421,7 @@ Give the model both sides of the dialog so it transcribes the next user turn mor
 - **The agent half** — what your agent just said.
 - **The user half** — prior STT-finalized user turns.
 
-With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, the model can produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-pro/context-carryover) for the full reference.
+With the agent's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after your agent asks `"What's your email address?"`, the model can produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-5-pro/context-carryover) for the full reference.
 
   **In Pipecat, conversation context is automatic — no event wiring required.**
   As long as your pipeline includes the standard LLM context aggregator (the
@@ -37694,12 +37694,12 @@ Interested in using a different model?
 
 ---
 
-<a id="streaming-migration-guide-universal-streaming-to-universal-3-5-pro-streaming-docs-streaming-migration-guides-universal-to-u3-pro-streaming-mdx"></a>
+<a id="streaming-migration-guide-universal-streaming-to-universal-3-5-pro-streaming-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx"></a>
 
 # Streaming Migration Guide: Universal Streaming to Universal-3.5 Pro Streaming
 
-URL: https://www.assemblyai.com/docs/streaming/migration-guides/universal-to-u3-pro-streaming
-Source: docs/streaming/migration-guides/universal-to-u3-pro-streaming.mdx
+URL: https://www.assemblyai.com/docs/streaming/migration-guides/universal-to-universal-3-5-pro-streaming
+Source: docs/streaming/migration-guides/universal-to-universal-3-5-pro-streaming.mdx
 Navigation: Real-time STT > Guides > Migration guides
 Description: Streaming Migration Guide: Universal Streaming to Universal-3.5 Pro Streaming documentation.
 
@@ -37766,7 +37766,7 @@ This table covers the key parameter, behavior, and response field differences. U
 | **`language_detection`**                | Supported (`true`/`false`, default `false`) with multilingual model                                                                                             | Supported — automatic with code-switching                                     | Remove if set; U3.5 Pro detects language automatically                                                        |
 | **Languages**                           | English default; multilingual requires `speech_model: "universal-streaming-multilingual"`                                                                       | Native multilingual code switching (6 languages) in a single model            | Remove multilingual model switching; optionally pass `language_codes` to bias toward the languages you expect |
 
-Sources: [U3.5 Pro docs](/streaming/getting-started/transcribe-streaming-audio), [Universal docs](/streaming/getting-started/transcribe-streaming-audio), [Turn detection docs](/streaming/getting-started/transcribe-streaming-audio), [API Reference](/api-reference/streaming-api/universal-3-pro-streaming)
+Sources: [U3.5 Pro docs](/streaming/getting-started/transcribe-streaming-audio), [Universal docs](/streaming/getting-started/transcribe-streaming-audio), [Turn detection docs](/streaming/getting-started/transcribe-streaming-audio), [API Reference](/streaming/api-spec/streaming-websocket)
 
 ## Side-by-side code
 
@@ -38129,7 +38129,7 @@ ws.send(json.dumps({"type": "ForceEndpoint"}))
 - [Prompting Guide (Streaming)](/streaming/prompting-and-keyterms)
 - [Keyterms Prompting](/streaming/prompting-and-keyterms)
 - [Supported Languages](/streaming/getting-started/transcribe-streaming-audio)
-- [Streaming API Reference](/api-reference/streaming-api/universal-3-pro-streaming)
+- [Streaming API Reference](/streaming/api-spec/streaming-websocket)
 
 ---
 
@@ -40046,7 +40046,7 @@ To learn more about both Streaming APIs, their key differences, and how to best 
 
 - [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming Speech-to-Text](/streaming/getting-started/transcribe-streaming-audio)
-- [Streaming API reference](/api-reference/streaming-api/universal-3-pro-streaming)
+- [Streaming API reference](/streaming/api-spec/streaming-websocket)
 
 **Speechmatics**
 
@@ -42403,7 +42403,7 @@ For a cascading architecture, AssemblyAI has the best speech-to-text model. For 
 
 **LiveKit Agents (recommended)**
 
-LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [Universal-3.5 Pro Streaming on LiveKit](/voice-agents/livekit-u3-rt-pro) for a full guide.
+LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [Universal-3.5 Pro Streaming on LiveKit](/voice-agents/livekit-universal-3-5-pro) for a full guide.
 
 ```python
 from livekit.agents import AgentSession
@@ -42426,7 +42426,7 @@ session = AgentSession(
 
 **Pipecat by Daily**
 
-Pipecat is an open-source framework for conversational AI with maximum customizability. See [Universal-3.5 Pro Streaming on Pipecat](/voice-agents/u3pro-pipecat) for a full guide.
+Pipecat is an open-source framework for conversational AI with maximum customizability. See [Universal-3.5 Pro Streaming on Pipecat](/voice-agents/pipecat-universal-3-5-pro) for a full guide.
 
 ```python
 from pipecat.services.assemblyai.stt import AssemblyAISTTService
@@ -42579,8 +42579,8 @@ Users often produce short backchannel utterances ("mhm", "yeah", "um", "okay") w
 The fix is to gate barge-in on each `Turn` event during agent speech: suppress the interrupt when the transcript is short or every token is a known backchannel. Implementation depends on your stack:
 
 - **Voice Agent API**: semantic interruption classification is built in. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions).
-- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-u3-rt-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
-- **Direct WebSocket**: see [Interruption handling](/voice-agents/u3-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Streaming API page for the combined word-count + filler-word filter.
+- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-universal-3-5-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
+- **Direct WebSocket**: see [Interruption handling](/voice-agents/universal-3-5-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Streaming API page for the combined word-count + filler-word filter.
 
 ### VAD threshold alignment
 
@@ -42908,8 +42908,8 @@ For a complete evaluation framework including accuracy metrics, latency metrics,
 - [Message sequence](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming diarization and multichannel](/streaming/label-speakers-and-separate-channels)
 - [Supported languages](/streaming/getting-started/transcribe-streaming-audio)
-- [LiveKit integration](/voice-agents/livekit-u3-rt-pro)
-- [Pipecat integration](/voice-agents/u3pro-pipecat)
+- [LiveKit integration](/voice-agents/livekit-universal-3-5-pro)
+- [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)
 - [API Playground](https://www.assemblyai.com/playground/streaming)
 - [Changelog](https://www.assemblyai.com/changelog)
 
@@ -49435,7 +49435,7 @@ def save_transcript():
         f.write(f"AssemblyAI Session ID: {session_data['session_id']}\n")
         f.write(f"Audio file: {session_data['audio_file']}\n")
         f.write(f"Audio duration: {session_data['audio_duration_seconds']} seconds\n")
-        f.write("See all available parameters and defaults at https://www.assemblyai.com/docs/api-reference/streaming-api/universal-3-pro-streaming#request.query\n\n")
+        f.write("See all available parameters and defaults at https://www.assemblyai.com/docs/streaming/api-spec/streaming-websocket#request.query\n\n")
         f.write("\nTranscription Output\n")
         for i, turn in enumerate(session_data["turns"], 1):
             f.write(f"[Turn #{i}]: {turn}\n")
@@ -49696,7 +49696,7 @@ def save_transcript():
         f.write(f"AssemblyAI Session ID: {session_data['session_id']}\n")
         f.write(f"Audio file: {session_data['audio_file']}\n")
         f.write(f"Audio duration: {session_data['audio_duration_seconds']} seconds\n")
-        f.write("See all available parameters and defaults at https://www.assemblyai.com/docs/api-reference/streaming-api/universal-3-pro-streaming#request.query\n\n")
+        f.write("See all available parameters and defaults at https://www.assemblyai.com/docs/streaming/api-spec/streaming-websocket#request.query\n\n")
         f.write("\nTranscription Output\n")
         for i, turn in enumerate(session_data["turns"], 1):
             f.write(f"[Turn #{i}]: {turn}\n")
@@ -52148,7 +52148,7 @@ curl -X POST https://sync.assemblyai.com/transcribe \
 
 ## Looking for streaming context?
 
-For live audio, Real-time STT carries context across turns automatically within a session, and voice agents can interleave their replies with the `agent_context` parameter. See [Context carryover (Real-time)](/streaming/universal-3-pro/context-carryover).
+For live audio, Real-time STT carries context across turns automatically within a session, and voice agents can interleave their replies with the `agent_context` parameter. See [Context carryover (Real-time)](/streaming/universal-3-5-pro/context-carryover).
 
 ---
 
@@ -82091,7 +82091,7 @@ Check out our getting started guides:
 
 If your programming language isn't supported yet, see the WebSocket API:
 
-- [Streaming API reference](/api-reference/streaming-api/universal-3-pro-streaming)
+- [Streaming API reference](/streaming/api-spec/streaming-websocket)
 
 ## Audio requirements
 
@@ -82545,7 +82545,7 @@ To learn about using Streaming Speech-to-Text, see the following resources:
 - [GitHub: End-to-end examples](https://github.com/AssemblyAI-Community/docs-snippets/tree/main/real-time)
 - [GitHub: Cookbook examples](https://github.com/AssemblyAI/cookbook/tree/master/streaming-stt)
 - [GitHub: Use Express.js for Streaming Speech-to-Text](https://github.com/AssemblyAI/realtime-transcription-browser-js-example)
-- [Streaming API reference](/api-reference/streaming-api/universal-3-pro-streaming)
+- [Streaming API reference](/streaming/api-spec/streaming-websocket)
 
 ---
 
@@ -83602,7 +83602,7 @@ When implementing billing tracking, consider the following best practices:
 - Learn more about [webhooks](/pre-recorded-audio/webhooks) and their configuration options
 - Explore the [Submit Transcript API](/api-reference/transcripts/submit) for async transcription
 - Explore the [Get Transcript API](/api-reference/transcripts/get) for retrieving transcript details
-- Review the [Streaming API](/api-reference/streaming-api/universal-3-pro-streaming) for real-time transcription
+- Review the [Streaming API](/streaming/api-spec/streaming-websocket) for real-time transcription
 
 ---
 
@@ -83648,12 +83648,12 @@ Explore additional guides for async and streaming transcription workflows, inclu
 
 ---
 
-<a id="universal-3-5-pro-streaming-api-docs-voice-agents-u3-pro-streaming-api-mdx"></a>
+<a id="universal-3-5-pro-streaming-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx"></a>
 
 # Universal-3.5 Pro Streaming API
 
-URL: https://www.assemblyai.com/docs/voice-agents/u3-pro-streaming-api
-Source: docs/voice-agents/u3-pro-streaming-api.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/universal-3-5-pro-streaming-api
+Source: docs/voice-agents/universal-3-5-pro-streaming-api.mdx
 Navigation: Additional pages
 Description: Build a custom voice agent on AssemblyAI's streaming WebSocket with turn detection, barge-in, and interruption handling without a third-party orchestrator.
 
@@ -83816,7 +83816,7 @@ def on_message(ws, message):
 
   The `BACKCHANNELS` set is domain-customizable. "yes" and "no" are deliberately excluded because they often represent genuine confirmations in booking or IVR scenarios. Edit the set for your use case. `MIN_WORDS = 2` is a reasonable default. Raise it if you see frequent two-word filler ("uh okay", "yeah right") slipping through.
 
-  If you're building on LiveKit, prefer LiveKit's adaptive interruption handling. See [LiveKit > Interruption handling](/voice-agents/livekit-u3-rt-pro#interruption-handling). The strategy on this page is the equivalent for direct-WebSocket integrations.
+  If you're building on LiveKit, prefer LiveKit's adaptive interruption handling. See [LiveKit > Interruption handling](/voice-agents/livekit-universal-3-5-pro#interruption-handling). The strategy on this page is the equivalent for direct-WebSocket integrations.
 
 ## Recommended configuration
 
@@ -83851,8 +83851,8 @@ For cross-cutting topics like dynamic configuration updates, scaling, latency bu
 
 - [Universal-3.5 Pro Streaming overview](/streaming/getting-started/transcribe-streaming-audio)
 - [Universal-3.5 Pro message sequence](/streaming/getting-started/transcribe-streaming-audio)
-- [LiveKit integration](/voice-agents/livekit-u3-rt-pro)
-- [Pipecat integration](/voice-agents/u3pro-pipecat)
+- [LiveKit integration](/voice-agents/livekit-universal-3-5-pro)
+- [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)
 - [Voice agent best practices](/voice-agents/best-practices)
 
 ---
@@ -92293,7 +92293,7 @@ channels:
         location: $message.payload#/keyterms_prompt
 
       agent_context:
-        description: Your voice agent's spoken text (TTS reply). The model uses this as context for the next user turn, which improves accuracy on short or ambiguous replies and on spelled-out entities like emails or IDs. Set at connection time to seed the model with your agent's opening greeting, and/or update mid-stream via `UpdateConfiguration` after each agent reply. Each `UpdateConfiguration` replaces the previously set value. Maximum 1750 characters per value. Universal-3.5 Pro Streaming only. See [Context Carryover](https://www.assemblyai.com/docs/streaming/universal-3-pro/context-carryover).
+        description: Your voice agent's spoken text (TTS reply). The model uses this as context for the next user turn, which improves accuracy on short or ambiguous replies and on spelled-out entities like emails or IDs. Set at connection time to seed the model with your agent's opening greeting, and/or update mid-stream via `UpdateConfiguration` after each agent reply. Each `UpdateConfiguration` replaces the previously set value. Maximum 1750 characters per value. Universal-3.5 Pro Streaming only. See [Context Carryover](https://www.assemblyai.com/docs/streaming/universal-3-5-pro/context-carryover).
         location: $message.payload#/agent_context
         examples:
           - "Welcome to the Krusty Krab, home of the Krabby Patty, may I take your order?"
@@ -92717,7 +92717,7 @@ components:
           description: How soon the first partial is emitted in milliseconds. Useful for tuning voice agent barge-in responsiveness or allowing earlier partials for early LLM inference. Larger values are more confident on interruptions, smaller values result in faster time to first partial.
         agent_context:
           type: string
-          description: Your voice agent's most recent spoken reply (TTS text). The model uses this as context for the next user turn, which improves accuracy on short or ambiguous replies and on spelled-out entities like emails or IDs. Each `UpdateConfiguration` replaces the previously set value. Maximum 1750 characters. See [Context Carryover](https://www.assemblyai.com/docs/streaming/universal-3-pro/context-carryover#passing-your-agents-reply-as-context).
+          description: Your voice agent's most recent spoken reply (TTS text). The model uses this as context for the next user turn, which improves accuracy on short or ambiguous replies and on spelled-out entities like emails or IDs. Each `UpdateConfiguration` replaces the previously set value. Maximum 1750 characters. See [Context Carryover](https://www.assemblyai.com/docs/streaming/universal-3-5-pro/context-carryover#passing-your-agents-reply-as-context).
         mode:
           type: string
           enum: [max_accuracy, min_latency, balanced]

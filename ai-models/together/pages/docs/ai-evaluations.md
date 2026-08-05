@@ -12,10 +12,10 @@ The Together AI Evaluations service is a powerful framework for using LLM-as-a-J
 
 ## Overview
 
-Large language models can serve as judges to evaluate other language models or assess different types of content. You can simply describe in detail how you want the LLM-as-a-Judge to assess your inputs, and it will perform this evaluation for you.
+Large language models can serve as judges to evaluate other language models or assess different types of content. You can describe in detail how you want the LLM-as-a-Judge to assess your inputs, and it will perform this evaluation for you.
 
 For example, they can identify and flag content containing harmful material, personal information, or other policy-violating elements.
-Another common use case is comparing the quality of two LLMs, or configurations of the same model (for example prompts) to determine which performs better on your specific task. Our Evaluations service allows you to easily submit tasks for assessment by a judge language model.
+Another common use case is comparing the quality of two LLMs, or configurations of the same model (for example prompts) to determine which performs better on your specific task. Our Evaluations service allows you to submit tasks for assessment by a judge language model.
 
 With Evaluations, you can:
 
@@ -27,11 +27,11 @@ With Evaluations, you can:
 
 ## Quickstart
 
-To launch evaluations using the UI, please refer to: [AI Evaluations UI](/docs/ai-evaluations-ui)
+To launch evaluations from the UI, open the [Evaluations page](https://api.together.ai/evaluations) in the console.
 
-For the full API specification, please refer to [docs](/reference/create-evaluation)
+For the full API specification, see the [API reference](/reference/create-evaluation).
 
-Get started with the Evaluations API in just a few steps. This example shows you how to run a simple evaluation.
+Get started with the Evaluations API in a few steps. This example shows you how to run a simple evaluation.
 
 ### 1. Prepare Your Dataset
 

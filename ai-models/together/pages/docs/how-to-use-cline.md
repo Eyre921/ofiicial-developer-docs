@@ -6,7 +6,7 @@ path: docs/how-to-use-cline
 
 Learn how to power Cline (an AI coding agent) with Together AI models.
 
-Cline is a popular open source AI coding agent with nearly 2 million installs that is installable through any IDE including VS Code, Cursor, and Windsurf. In this quick guide, we want to take you through how you can combine Cline with powerful open source models on Together AI like Kimi K2.7 Code to supercharge your development process.
+Cline is a popular open source AI coding agent with nearly 2 million installs that is installable through any IDE including VS Code, Cursor, and Windsurf. This quick guide takes you through how you can combine Cline with powerful open source models on Together AI like Kimi K2.7 Code to supercharge your development process.
 
 With Cline's agent, you can ask it to build features, fix bugs, or start new projects for you – and it's fully transparent in terms of the cost and tokens used as you use it. Here's how you can start using it with Kimi K2.7 Code on Together AI:
 
@@ -28,7 +28,7 @@ After it's installed, select Cline from the menu of your IDE to configure it.
 
 ### 3. Configure Together AI & Kimi K2.7 Code
 
-Click "Use your own API key". After this, select Together as the API Provider, paste in your [Together API key](https://api.together.ai/settings/projects/~current/api-keys), and type in any of our models to use. We recommend using `moonshotai/Kimi-K2.7-Code` as it's a powerful coding model built for agentic workflows.
+Select "Use your own API key". After this, select Together as the API Provider, paste in your [Together API key](https://api.together.ai/settings/projects/~current/api-keys), and enter the model you want to use. `moonshotai/Kimi-K2.7-Code` is a good default, a powerful coding model built for agentic workflows.
 
 <Frame>
   <img alt="" />

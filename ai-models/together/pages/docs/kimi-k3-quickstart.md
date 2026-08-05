@@ -586,7 +586,7 @@ Rules to follow:
 
 * Dynamic declarations use exactly the same format as the top-level `tools` field.
 * The system message must have empty content. Sending both `content` and `tools` on it returns `400: a system message with dynamic tools must have empty content`.
-* Declarations apply per request and are not retained by the server. Keep the message in later request history yourself. Keeping it preserves both the tool's availability and the cached prefix; dropping it means the model can no longer call that tool and the changed prefix may miss the cache.
+* Declarations apply per request and are not retained by the server. Keep the message in later request history yourself. Keeping it preserves both the tool's availability and the cached prefix. Dropping it means the model can no longer call that tool and the changed prefix may miss the cache.
 * Append declarations at the tail of `messages`. Appending does not affect the cached prefix, while removing or modifying an earlier declaration may hurt cache hits from that point onward.
 * Keep at least one tool in the top-level `tools` array whenever you send `tool_choice`.
 
@@ -811,7 +811,7 @@ K3 is strongest where a task runs long and needs little supervision:
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | **Give `max_tokens` real headroom**                  | The trace shares the completion budget with the answer. A tight cap returns empty or truncated `content`.                 |
 | **Return the complete assistant message every turn** | `message.model_dump(exclude_none=True)` keeps `reasoning_content` in history, which K3 was trained to depend on.          |
-| **Read both `reasoning_content` and `reasoning`**    | K3 emits the trace on `reasoning_content`; other Together models use the `reasoning` alias. One handler then covers both. |
+| **Read both `reasoning_content` and `reasoning`**    | K3 emits the trace on `reasoning_content`. Other Together models use the `reasoning` alias. One handler then covers both. |
 | **Parse `content` only**                             | Never run JSON parsing over the thinking trace.                                                                           |
 | **Set `reasoning_effort` deliberately**              | `"max"` is the default and the most expensive setting. Match the level to the task.                                       |
 | **Keep prefixes byte-stable**                        | Caching is automatic, so stable prefixes are what pull effective input cost toward \$0.30 per 1M tokens.                  |

@@ -50,6 +50,20 @@ Event triggered when a **domain was successfully updated**.
     AWS region where the domain is configured.
   </ParamField>
 
+  <ParamField type="object">
+    Domain capabilities for sending and receiving emails.
+
+    <Expandable title="properties">
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to send emails.
+      </ParamField>
+
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to receive emails.
+      </ParamField>
+    </Expandable>
+  </ParamField>
+
   <ParamField type="array">
     Array of DNS record objects required for domain verification
 
@@ -96,6 +110,10 @@ Event triggered when a **domain was successfully updated**.
       "status": "not_started",
       "created_at": "2026-04-26T20:21:26.347Z",
       "region": "us-east-1",
+      "capabilities": {
+        "sending": "enabled",
+        "receiving": "enabled"
+      },
       "records": [
         {
           "record": "SPF",

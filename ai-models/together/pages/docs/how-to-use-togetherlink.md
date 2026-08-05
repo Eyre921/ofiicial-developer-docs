@@ -37,9 +37,9 @@ Or run a tool directly. `tclaude`, `tcodex`, `tpi`, and `topencode` are installe
 | `togetherlink codex`    | `tcodex`    | Codex                                                                            |
 | `togetherlink pi`       | `tpi`       | Pi Code                                                                          |
 | `togetherlink opencode` | `topencode` | OpenCode                                                                         |
-| `togetherlink chatgpt`  | —           | ChatGPT Desktop (alpha); `togetherlink codex-app` is a backward-compatible alias |
+| `togetherlink chatgpt`  | None        | ChatGPT Desktop (alpha). `togetherlink codex-app` is a backward-compatible alias |
 
-`togetherlink chatgpt` is only available as a `togetherlink` subcommand — there is no standalone shortcut.
+`togetherlink chatgpt` is only available as a `togetherlink` subcommand. There is no standalone shortcut.
 
 ## Configure your API key
 
@@ -60,7 +60,7 @@ togetherlink configure
 TogetherLink launches the selected coding tool configured to use compatible models hosted by Together AI. How that configuration is applied depends on the tool:
 
 * **Claude Code and Codex** route through a shared local translation proxy daemon managed by TogetherLink. Their normal configuration files remain unchanged.
-* **OpenCode and Pi Code** receive temporary per-run configuration; their normal configuration files remain unchanged. Pi Code may write temporary files during a run.
+* **OpenCode and Pi Code** receive temporary per-run configuration. Their normal configuration files remain unchanged. Pi Code may write temporary files during a run.
 * **ChatGPT Desktop (alpha)** is different: `togetherlink chatgpt` persistently modifies ChatGPT Desktop's configuration so it points at Together AI, and those changes remain in place until you revert them.
 
 To restore ChatGPT Desktop's original configuration, run:

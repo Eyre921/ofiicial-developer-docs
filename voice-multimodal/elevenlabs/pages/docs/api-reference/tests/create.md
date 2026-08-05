@@ -447,6 +447,16 @@ components:
             result_type:
               type: string
               enum:
+                - dummy
+              default: dummy
+          required:
+            - result_type
+          description: DummyToolResultModel variant
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
                 - end_call_success
               default: end_call_success
             status:
@@ -579,45 +589,6 @@ components:
             - result_type
             - dtmf_tones
           description: PlayDTMFResultSuccessModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - run_subagent_error
-              default: run_subagent_error
-            status:
-              type: string
-              enum:
-                - error
-              default: error
-            error:
-              type: string
-          required:
-            - result_type
-            - error
-          description: RunSubagentToolResultErrorModel variant
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - run_subagent_success
-              default: run_subagent_success
-            status:
-              type: string
-              enum:
-                - success
-              default: success
-            query:
-              type: string
-            agent_response:
-              type: string
-          required:
-            - result_type
-            - query
-            - agent_response
-          description: RunSubagentToolResultSuccessModel variant
         - type: object
           properties:
             result_type:
@@ -1259,6 +1230,39 @@ components:
         - image
         - file
       title: ChatSourceMedium
+    GuardrailType:
+      type: string
+      enum:
+        - custom
+        - prompt_injection
+        - self_harm_intent
+        - violence_graphic
+        - sexual
+        - violence
+        - harassment
+        - sexual_minors
+        - self_harm
+        - self_harm_instructions
+        - harassment_threatening
+        - hate
+        - hate_threatening
+        - profanity
+        - religion_or_politics
+        - medical_and_legal
+        - guardrail
+      title: GuardrailType
+    TriggeredGuardrailCommonModel:
+      type: object
+      properties:
+        guardrail_type:
+          $ref: '#/components/schemas/GuardrailType'
+        guardrail_name:
+          type:
+            - string
+            - 'null'
+      required:
+        - guardrail_type
+      title: TriggeredGuardrailCommonModel
     ConversationHistoryTranscriptCommonModel-Input:
       type: object
       properties:
@@ -1343,6 +1347,10 @@ components:
           type:
             - string
             - 'null'
+        triggered_guardrails:
+          type: array
+          items:
+            $ref: '#/components/schemas/TriggeredGuardrailCommonModel'
       required:
         - role
         - time_in_call_secs

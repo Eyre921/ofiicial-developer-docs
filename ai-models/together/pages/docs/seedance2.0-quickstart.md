@@ -386,7 +386,7 @@ The `media` object is the unified way to pass images, videos, and audio into a S
 | `reference_audios` | array | Up to three reference audio files to drive video generation. Each item is a URL. Requires at least one `reference_images` or `reference_videos` entry.                                                                                   |
 
 <Note>
-  Reference videos must be between 2 and 15 seconds long. Files outside this range are rejected with `invalidDuration` (`Media seconds must be in [2, 15] seconds range`). Trim your clip before submitting the job — for example, `ffmpeg -i input.mp4 -t 5 -c copy reference.mp4` produces a 5-second reference clip.
+  Reference videos must be between 2 and 15 seconds long. Files outside this range are rejected with `invalidDuration` (`Media seconds must be in [2, 15] seconds range`). Trim your clip before submitting the job. For example, `ffmpeg -i input.mp4 -t 5 -c copy reference.mp4` produces a 5-second reference clip.
 </Note>
 
 ### Input compatibility

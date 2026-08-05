@@ -6,9 +6,9 @@ path: docs/using-together-with-vercels-ai-sdk
 
 Use Together models with the Vercel AI SDK.
 
-The Vercel AI SDK is a powerful Typescript library designed to help developers build AI-powered applications. Using Together AI and the Vercel AI SDK, you can easily integrate AI into your TypeScript, React, or Next.js project. In this tutorial, we'll look into how easy it is to use Together AI's models and the Vercel AI SDK.
+The Vercel AI SDK is a powerful Typescript library designed to help developers build AI-powered applications. Using Together AI and the Vercel AI SDK, you can integrate AI into your TypeScript, React, or Next.js project. This tutorial shows how to use Together AI's models with the Vercel AI SDK.
 
-## QuickStart: 15 lines of code
+## Quickstart: 15 lines of code
 
 1. Install both the Vercel AI SDK and the Together AI provider package.
 
@@ -108,7 +108,7 @@ Enjoy your delicious vegetarian lasagna!
 
 ## Streaming with the Vercel AI SDK
 
-To stream from Together AI models using the Vercel AI SDK, simply use `streamText` as seen below.
+To stream from Together AI models using the Vercel AI SDK, use `streamText` as seen below.
 
 ```js TypeScript theme={null}
 import { streamText } from "ai";
@@ -166,7 +166,7 @@ Introducing "Luminaria Day" - a joyous holiday celebrated on the spring equinox,
 Luminaria Day is a time to come together, celebrate the return of light and life, and honor the power of human connection.
 ```
 
-## Image Generation
+## Image generation
 
 To generate images with Together AI models using the Vercel AI SDK, use the `.image()` factory method. For more on image generation with the AI SDK see [generateImage()](https://ai-sdk.dev/docs/reference/ai-sdk-core/generate-image).
 
@@ -219,9 +219,9 @@ Available Models:
 * `black-forest-labs/FLUX.1-kontext-max`
 * `black-forest-labs/FLUX.1-krea-dev`
 
-Please see the [Together AI models page](https://docs.together.ai/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
+See the [Together AI models page](https://docs.together.ai/docs/serverless/models#image-models) for a full list of available image models and their capabilities.
 
-## Embedding Models
+## Embedding models
 
 To embed text with Together AI models using the Vercel AI SDK, use the `.embeddingModel()` factory method.
 For more on embedding models with the AI SDK see [embed()](https://ai-sdk.dev/docs/reference/ai-sdk-core/embed).

@@ -302,6 +302,16 @@ paths:
             type:
               - string
               - 'null'
+        - name: parent_conversation_id
+          in: query
+          description: >-
+            Filter conversations by parent conversation ID for subagent
+            conversations.
+          required: false
+          schema:
+            type:
+              - string
+              - 'null'
         - name: topic_ids
           in: query
           description: Filter conversations by topic IDs assigned during topic discovery.

@@ -39,7 +39,7 @@ Once the transfer is complete, you'll have access to all your previous features 
 
 ## Delete your account
 
-You can delete your account through our self-service process. This complies with GDPR and other data protection regulations.
+You can delete your account through the self-service process. This complies with GDPR and other data protection regulations.
 
 1. Log in to your Together AI account
 2. Navigate to your profile settings at [api.together.ai/settings/profile](https://api.together.ai/settings/profile)

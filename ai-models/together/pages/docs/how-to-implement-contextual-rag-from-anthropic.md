@@ -47,7 +47,7 @@ To break down the concept further we break down the process into a one-time inde
 2. Reranker to improve retrieval quality
 3. Generation with Llama3.1 405B
 
-## Install Libraries
+## Install libraries
 
 ```
 pip install together # To access open source LLMs
@@ -56,7 +56,7 @@ pip install beautifulsoup4 # To scrape documents to RAG over
 pip install bm25s # To implement our key-word BM25 search
 ```
 
-## Data Processing and Chunking
+## Data processing and chunking
 
 <Frame>
   <img alt="" />
@@ -131,7 +131,7 @@ Chunk 2: life, forgot to take notes. I'm not going to try to reproduce it here. 
 ...
 ```
 
-## Generating Contextual Chunks
+## Generating contextual chunks
 
 This part contains the main intuition behind `Contextual Retrieval`. We will make an LLM call for each chunk to add much needed relevant context to the chunk. In order to do this we pass in the ENTIRE document per LLM call.
 
@@ -217,7 +217,7 @@ contextual_chunks = [
 
 Now we can embed each chunk into a vector index.
 
-## Vector Index
+## Vector index
 
 We will now use `multilingual-e5-large-instruct` to embed the augmented chunks above into a vector index.
 
@@ -288,7 +288,7 @@ vector_retreival(
 
 We now have a way to retrieve from the vector index given a query.
 
-## BM25 Index
+## BM25 index
 
 Let's build a keyword index that allows us to use BM25 to perform lexical search based on the words present in the query and the contextual chunks. For this we will use the `bm25s` python library:
 
@@ -390,7 +390,7 @@ hybrid_top_k[1]
 hybrid_top_k_docs = [contextual_chunks[index] for index in hybrid_top_k[1]]
 ```
 
-## Reranker To improve Quality
+## Reranker to improve quality
 
 Now we add a retrieval quality improvement step here to make sure only the highest and most semantically similar chunks get sent to our LLM.
 
@@ -424,7 +424,7 @@ This chunk discusses the shift in company management away from the "manager mode
 This chunk explains that founder mode, a hypothetical approach to running a company by its founders, will differ from manager mode in that founders will engage directly with the company, rather than just their direct reports, through "skip-level" meetings, disregarding the traditional principle that CEOs should only interact with their direct reports, as managers do.  can already guess at some of the ways it will differ.The way managers are taught to run companies seems to be like modular design in the sense that you treat subtrees of the org chart as black boxes. You tell your direct reports what to do, and it's
 ```
 
-## Call Generative Model - Llama 3.1 405B
+## Call generative model - Llama 3.1 405B
 
 We will pass the finalized 3 chunks into an LLM to get our final answer.
 

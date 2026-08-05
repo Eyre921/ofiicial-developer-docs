@@ -68,7 +68,7 @@ flux2-dev/
 
 ## Implementation
 
-### Sprocket Worker Code
+### Sprocket worker code
 
 <CodeGroup>
   ```python run.py theme={null}
@@ -169,9 +169,9 @@ flux2-dev/
   ```
 </CodeGroup>
 
-## Key Concepts
+## Key concepts
 
-### Base64 Image Encoding
+### Base64 image encoding
 
 Images are returned as base64-encoded strings for JSON compatibility:
 
@@ -201,7 +201,7 @@ image = Image.open(BytesIO(image_data))
 image.save("output.png")
 ```
 
-### Generation Parameters
+### Generation parameters
 
 Flux2 supports several parameters to control generation:
 
@@ -236,7 +236,7 @@ image = self.pipe(
   ```
 </CodeGroup>
 
-### Check Deployment Status
+### Check deployment status
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -247,7 +247,7 @@ image = self.pipe(
 
 Wait until the deployment shows `running` and replicas are ready before submitting jobs.
 
-### Submit Jobs
+### Submit jobs
 
 Jobs are submitted to the managed queue and processed asynchronously. You'll need to poll for the result.
 
@@ -368,7 +368,7 @@ Jobs are submitted to the managed queue and processed asynchronously. You'll nee
   ```
 </CodeGroup>
 
-## Input Parameters
+## Input parameters
 
 | Parameter             | Type   | Default   | Description                               |
 | --------------------- | ------ | --------- | ----------------------------------------- |
@@ -390,7 +390,7 @@ Jobs are submitted to the managed queue and processed asynchronously. You'll nee
 * `format`: Image format (always `"png"`)
 * `encoding`: Encoding type (always `"base64"`)
 
-### Batch Processing and Autoscaling
+### Batch processing and autoscaling
 
 The configuration above can be updated to include autoscaling by increasing the `max_replicas` parameter. Then when the queue backlog grows, more replicas are added automatically. When workers are idle, replicas are removed (down to `min_replicas`).
 
@@ -424,7 +424,7 @@ When you're done, delete the deployment:
   ```
 </CodeGroup>
 
-## Next Steps
+## Next steps
 
 * [Video Generation Example](/docs/dedicated_containers_video) – Multi-GPU inference with torchrun
 * [OpenAI-Compatible Endpoint Example](/docs/dedicated_containers_openai) – Serve the same model behind the OpenAI Images API

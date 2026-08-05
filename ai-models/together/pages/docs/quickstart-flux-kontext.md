@@ -6,7 +6,7 @@ path: docs/quickstart-flux-kontext
 
 Learn how to use Flux's new in-context image generation models
 
-## Flux Kontext
+## FLUX Kontext
 
 Black Forest Labs has released FLUX Kontext with support on Together AI. These models allow you to generate and edit images through in-context image generation.
 
@@ -76,21 +76,21 @@ Here's how to use the new Kontext models:
   <img alt="" />
 </Frame>
 
-## Available Models
+## Available models
 
 Flux Kontext offers different models for various needs:
 
 * **FLUX.1-kontext-pro**: Best balance of speed and quality (recommended)
 * **FLUX.1-kontext-max**: Maximum image quality for production use
 
-## Common Use Cases
+## Common use cases
 
 * **Style Transfer**: Transform photos into different art styles (watercolor, oil painting, etc.)
 * **Object Modification**: Change colors, add elements, or modify specific parts of an image
 * **Scene Transformation**: Convert daytime to nighttime, change seasons, or alter environments
 * **Character Creation**: Transform portraits into different styles or characters
 
-## Key Parameters
+## Key parameters
 
 Flux Kontext models support the following key parameters:
 

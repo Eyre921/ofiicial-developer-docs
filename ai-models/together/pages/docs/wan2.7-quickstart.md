@@ -17,9 +17,9 @@ Wan 2.7 is a family of video generation models supporting text-to-video, image-t
 | **Wan 2.7 R2V**        | `Wan-AI/wan2.7-r2v`       | Character/object consistency from reference images or videos | Up to 10s |
 | **Wan 2.7 Video Edit** | `Wan-AI/wan2.7-videoedit` | Instruction-based editing, style transfer                    | Up to 10s |
 
-## Text-to-Video
+## Text-to-video
 
-Generate a video from a text prompt. Video generation is asynchronous — you create a job, receive a job ID, and poll for the result.
+Generate a video from a text prompt. Video generation is asynchronous: you create a job, receive a job ID, and poll for the result.
 
 <CodeGroup>
   ```py Python theme={null}
@@ -101,9 +101,9 @@ Generate a video from a text prompt. Video generation is asynchronous — you cr
   ```
 </CodeGroup>
 
-## Text-to-Video with Audio
+## Text-to-video with audio
 
-Drive video generation with an audio file using `media.audio_inputs`. The model synchronizes the generated video to the audio — useful for lip sync, beat-matched motion, or narration-driven scenes. If no audio is provided, the model automatically generates matching background music or sound effects.
+Drive video generation with an audio file using `media.audio_inputs`. The model synchronizes the generated video to the audio, useful for lip sync, beat-matched motion, or narration-driven scenes. If no audio is provided, the model automatically generates matching background music or sound effects.
 
 <CodeGroup>
   ```py Python theme={null}
@@ -186,7 +186,7 @@ Drive video generation with an audio file using `media.audio_inputs`. The model 
   Audio constraints: WAV or MP3 format, 3-30 seconds, up to 15 MB. If the audio is longer than the video duration, it will be truncated. If shorter, the remaining portion of the video will be silent.
 </Note>
 
-## Image-to-Video
+## Image-to-video
 
 Animate a still image by using it as the first frame. Pass images via `media.frame_images` with `frame` set to `"first"` or `"last"`.
 
@@ -289,7 +289,7 @@ Animate a still image by using it as the first frame. Pass images via `media.fra
   ```
 </CodeGroup>
 
-## First and Last Frame Control
+## First and last frame control
 
 Provide both a starting and ending frame to control the video's transition. The model generates smooth motion between the two keyframes.
 
@@ -372,7 +372,7 @@ Provide both a starting and ending frame to control the video's transition. The 
   ```
 </CodeGroup>
 
-## Video Continuation
+## Video continuation
 
 Continue from an existing video clip using `media.frame_videos`. The model generates new content that seamlessly extends the input video.
 
@@ -453,7 +453,7 @@ Continue from an existing video clip using `media.frame_videos`. The model gener
   ```
 </CodeGroup>
 
-## Reference-to-Video
+## Reference-to-video
 
 Generate video featuring a specific person or object by providing reference images or videos via `media.reference_images` or `media.reference_videos`. The model maintains the character's appearance throughout the generated video. Multiple references can be passed for multi-character scenes.
 
@@ -551,7 +551,7 @@ Generate video featuring a specific person or object by providing reference imag
   ```
 </CodeGroup>
 
-## Video Editing
+## Video editing
 
 Edit an existing video with text instructions using `media.source_video`. Optionally pass `media.reference_images` to guide the edit with a visual reference.
 
@@ -653,7 +653,7 @@ Edit an existing video with text instructions using `media.source_video`. Option
 | `negative_prompt` | string  | Elements to exclude from generation (up to 500 characters)              | -            |
 | `media`           | object  | Media inputs for the request (see schema and compatibility below)       | -            |
 
-### Media Object
+### Media object
 
 The `media` object is the unified way to pass images, videos, and audio into video generation requests.
 
@@ -672,16 +672,16 @@ The `media` object is the unified way to pass images, videos, and audio into vid
 }
 ```
 
-| Field              | Type   | Description                                                                                                                               |
-| ------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `frame_images`     | array  | Keyframe images for I2V. Each item: `{input_image, frame}` where `frame` is `"first"` or `"last"`.                                        |
-| `frame_videos`     | array  | Input video clips for video continuation (I2V). Each item: `{video: "url"}`.                                                              |
-| `reference_images` | array  | Reference images for character/object consistency (R2V) or visual guidance (Video Edit).                                                  |
-| `reference_videos` | array  | Reference videos for character/object consistency (R2V). Each item: `{video: "url"}`.                                                     |
-| `source_video`     | string | Source video URL to edit (Video Edit).                                                                                                    |
-| `audio_inputs`     | array  | Audio file URLs to drive generation — lip sync, beat-matched motion, etc. (T2V, I2V). Each item: `"url"`. WAV or MP3, 3-30s, up to 15 MB. |
+| Field              | Type   | Description                                                                                                                              |
+| ------------------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `frame_images`     | array  | Keyframe images for I2V. Each item: `{input_image, frame}` where `frame` is `"first"` or `"last"`.                                       |
+| `frame_videos`     | array  | Input video clips for video continuation (I2V). Each item: `{video: "url"}`.                                                             |
+| `reference_images` | array  | Reference images for character/object consistency (R2V) or visual guidance (Video Edit).                                                 |
+| `reference_videos` | array  | Reference videos for character/object consistency (R2V). Each item: `{video: "url"}`.                                                    |
+| `source_video`     | string | Source video URL to edit (Video Edit).                                                                                                   |
+| `audio_inputs`     | array  | Audio file URLs to drive generation: lip sync, beat-matched motion, etc. (T2V, I2V). Each item: `"url"`. WAV or MP3, 3-30s, up to 15 MB. |
 
-### Media Compatibility by Model
+### Media compatibility by model
 
 Not all `media` fields are supported on every model. Unsupported fields are rejected.
 
@@ -694,10 +694,10 @@ Not all `media` fields are supported on every model. Unsupported fields are reje
 | `source_video`     | -      | -                       | -        | Single (required) |
 | `audio_inputs`     | Single | Single                  | -        | -                 |
 
-## Prompting Tips
+## Prompting tips
 
 <Tip>
-  Wan 2.7 supports both Chinese and English prompts. Detailed, descriptive prompts produce the best results — include subject, action, style, camera movement, and atmosphere.
+  Wan 2.7 supports both Chinese and English prompts. Detailed, descriptive prompts produce the best results. Include subject, action, style, camera movement, and atmosphere.
 </Tip>
 
 **Write descriptive prompts:** Instead of "a cat walking," try "A small black cat walks gracefully through a sunlit garden, soft bokeh background, gentle breeze rustling the flowers, cinematic slow motion."
@@ -718,8 +718,8 @@ low resolution, errors, worst quality, low quality, incomplete, extra fingers, b
 | 4:3          | 1104x832        | 1648x1248        |
 | 3:4          | 832x1104        | 1248x1648        |
 
-## Next Steps
+## Next steps
 
-* [Video Generation Overview](/docs/inference/videos/overview) — Full parameter reference and supported models
-* [API Reference: Create Video](/reference/create-videos) — REST API details
-* [API Reference: Get Video Status](/reference/get-videos-id) — Polling and status codes
+* [Video Generation Overview](/docs/inference/videos/overview): Full parameter reference and supported models.
+* [API Reference: Create Video](/reference/create-videos): REST API details.
+* [API Reference: Get Video Status](/reference/get-videos-id): Polling and status codes.

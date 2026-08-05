@@ -16,7 +16,7 @@ A common solution is Retrieval-Augmented Generation (RAG), which retrieves relev
   <img alt="" />
 </Frame>
 
-## RAG Explanation
+## RAG explanation
 
 RAG operates by preprocessing a large knowledge base and dynamically retrieving relevant information at runtime.
 
@@ -30,7 +30,7 @@ Here's a breakdown of the process:
   <img alt="" />
 </Frame>
 
-## Download and View the Dataset
+## Download and view the dataset
 
 ```bash Shell theme={null}
 wget https://raw.githubusercontent.com/togethercomputer/together-cookbook/refs/heads/main/datasets/movies.json
@@ -81,7 +81,7 @@ This dataset consists of movie information as below:
 ]
 ```
 
-## Implement Retrieval Pipeline - "R" part of RAG
+## Implement retrieval pipeline - "R" part of RAG
 
 Below we implement a simple retrieval pipeline:
 
@@ -223,7 +223,7 @@ Which returns an array of indices for movies that best match the query.
 array([172, 265, 768, 621, 929])
 ```
 
-## Generation Step - "G" part of RAG
+## Generation step - "G" part of RAG
 
 Below we will inject/augment the information the retrieval pipeline extracts into the prompt to the Llama3 8b Model.
 
@@ -281,4 +281,4 @@ The story concludes with Bob and his family returning to their normal lives, but
 
 Here we can see a simple RAG pipeline where we use semantic search to perform retrieval and pass relevant information into the prompt of an LLM to condition its generation.
 
-To learn more about the Together AI API please refer to the [docs here](/intro)!
+To learn more about the Together AI API refer to the [docs here](/intro)!

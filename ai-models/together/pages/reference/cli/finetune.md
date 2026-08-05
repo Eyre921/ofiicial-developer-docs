@@ -29,7 +29,7 @@ You must provide either `--model` (to start from a base model) or `--from-checkp
 | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--training-file/-t [string \| Path]`       | **required**<br />Training file ID from the Files API or a local path to upload. The maximum allowed file size is 25 GB.                                                                                                                                                                                                                                                                             |
 | `--model [string]`                          | Base model to fine-tune. See [supported models](/docs/fine-tuning/supported-models). Required unless `--from-checkpoint` is set.                                                                                                                                                                                                                                                                     |
-| `--from-checkpoint [string]`                | Continue training from a previous fine-tuning job. Format: `JOB_ID/OUTPUT_MODEL_NAME:STEP`. The step is optional; the final checkpoint is used when omitted. Mutually exclusive with `--model`.                                                                                                                                                                                                      |
+| `--from-checkpoint [string]`                | Continue training from a previous fine-tuning job. Format: `JOB_ID/OUTPUT_MODEL_NAME:STEP`. The step is optional. The final checkpoint is used when omitted. Mutually exclusive with `--model`.                                                                                                                                                                                                      |
 | `--validation-file/-v [string]`             | Validation file ID from the Files API or a local path to upload. Required when `--n-evals > 0`. The maximum allowed file size is 25 GB.                                                                                                                                                                                                                                                              |
 | `--suffix [string]`                         | Up to 40 characters appended to the fine-tuned model name. Recommended to differentiate fine-tuned models.                                                                                                                                                                                                                                                                                           |
 | `--packing/--no-packing`                    | Whether to use sequence packing for training. Default: enabled.                                                                                                                                                                                                                                                                                                                                      |
@@ -78,7 +78,7 @@ You must provide either `--model` (to start from a base model) or `--from-checkp
 
 | Flag                                  | Description                                                                                                                                                                    |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--training-method [sft \| dpo]`      | Training method. `sft` is supervised fine-tuning; `dpo` is Direct Preference Optimization. Default: `sft`. The DPO method also accepts the RPO and SimPO loss modifiers below. |
+| `--training-method [sft \| dpo]`      | Training method. `sft` is supervised fine-tuning. `dpo` is Direct Preference Optimization. Default: `sft`. The DPO method also accepts the RPO and SimPO loss modifiers below. |
 | `--dpo-beta [float]`                  | Beta parameter for DPO training. Only used when `--training-method dpo`.                                                                                                       |
 | `--dpo-normalize-logratios-by-length` | Normalize logratios by sample length. Only used when `--training-method dpo`. Default: `false`.                                                                                |
 | `--rpo-alpha [float]`                 | RPO alpha parameter (adds NLL term to the DPO loss). Only used when `--training-method dpo`.                                                                                   |
@@ -115,7 +115,7 @@ Completed jobs also include Together model registry IDs and human-readable objec
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `model_object_id`            | Registry object ID for the final model weights (for example, `ml_...`).                                                                                                                                                    |
 | `model_object_revision_id`   | Registry revision ID for the final model weights (for example, `rv_...`).                                                                                                                                                  |
-| `model_object_name`          | Qualified registry name in `<project_slug>/<model_name>` form (for example, `acme-corp/my-model-abc123`). Resolved on retrieve; omitted on list. Falls back to `model_object_id` when the project slug cannot be resolved. |
+| `model_object_name`          | Qualified registry name in `<project_slug>/<model_name>` form (for example, `acme-corp/my-model-abc123`). Resolved on retrieve. Omitted on list. Falls back to `model_object_id` when the project slug cannot be resolved. |
 | `adapter_object_id`          | Registry object ID for the final LoRA adapter weights on LoRA jobs.                                                                                                                                                        |
 | `adapter_object_revision_id` | Registry revision ID for the final LoRA adapter weights on LoRA jobs.                                                                                                                                                      |
 | `adapter_object_name`        | Qualified adapter name in `<project_slug>/<model_name>-adapter` form on LoRA jobs. Falls back to `adapter_object_id` when the project slug cannot be resolved.                                                             |
@@ -153,27 +153,27 @@ The command samples rows from your uploaded JSONL training file and shows how th
   ```bash Basic theme={null}
   tg fine-tuning preview \
     --model Qwen/Qwen2-1.5B \
-    --training-file <file-id>
+    --training-file <file_id>
   ```
 
   ```bash More rows theme={null}
   tg fine-tuning preview \
     --model Qwen/Qwen2-1.5B \
-    --training-file <file-id> \
+    --training-file <file_id> \
     --top-k 10
   ```
 
   ```bash Tokenized output if prompt tokens are included in loss theme={null}
   tg fine-tuning preview \
     --model Qwen/Qwen2-1.5B \
-    --training-file <file-id> \
+    --training-file <file_id> \
     --train-on-inputs
   ```
 
   ```bash JSON output theme={null}
   tg fine-tuning preview \
     --model Qwen/Qwen2-1.5B \
-    --training-file <file-id> \
+    --training-file <file_id> \
     --json > preview.json
   ```
 </CodeGroup>
@@ -250,7 +250,7 @@ The command downloads Zstandard-compressed (`.zst`) weights. To extract them, ru
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--output-dir/-o [Path]`                              | Output directory.                                                                                                                                                         |
 | `--checkpoint-step/-s [integer]`                      | Download a specific checkpoint's weights. Defaults to the latest checkpoint.                                                                                              |
-| `--checkpoint-type/-c [merged \| adapter \| default]` | Checkpoint type. `merged` and `adapter` apply to LoRA jobs only; `default` resolves to `merged` for LoRA jobs and to the full model for non-LoRA jobs. Default: `merged`. |
+| `--checkpoint-type/-c [merged \| adapter \| default]` | Checkpoint type. `merged` and `adapter` apply to LoRA jobs only. `default` resolves to `merged` for LoRA jobs and to the full model for non-LoRA jobs. Default: `merged`. |
 
 ## Delete
 

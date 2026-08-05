@@ -40,7 +40,7 @@ Create independent API keys for separate use cases, systems, or workloads. For e
 
 ## Best practices
 
-* **Name your keys descriptively** (for example, `prod-inference`, `ci-pipeline`, `dev-local`) so you can identify and rotate them easily.
+* **Name your keys descriptively** (for example, `prod-inference`, `ci-pipeline`, `dev-local`) so you can identify and rotate them.
 * **Set expiration dates** for keys used in temporary or testing contexts. To set the expiration date, select **the three-dot menu** next to the key and select **Set expiration**.
 * **Rotate keys regularly** and revoke any that are no longer in use.
 * **Never commit keys to source control.** Use environment variables or a secrets manager.

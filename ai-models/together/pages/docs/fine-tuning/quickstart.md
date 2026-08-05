@@ -471,7 +471,7 @@ tg beta endpoints rm "<ENDPOINT_ID>" --force
 </Note>
 
 <Check>
-  Congrats! You just fine-tuned a model, deployed it to a dedicated endpoint, and ran inference end-to-end.
+  Congrats! You fine-tuned a model, deployed it to a dedicated endpoint, and ran inference end-to-end.
 </Check>
 
 ## Step 5: Compare against the base model (optional)

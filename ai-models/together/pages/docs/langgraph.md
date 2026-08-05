@@ -8,7 +8,7 @@ Using LangGraph with Together AI
 
 LangGraph is an OSS library for building stateful, multi-actor applications with LLMs, specifically designed for agent and multi-agent workflows. The framework supports critical agent architecture features including persistent memory across conversations and human-in-the-loop capabilities through checkpointed states.
 
-## Installing Libraries
+## Installing libraries
 
 <CodeGroup>
   ```shell Python theme={null}
@@ -30,7 +30,7 @@ Set your Together AI API key:
 
 ## Example
 
-In this simple example we augment an LLM with a calculator tool!
+In this simple example you augment an LLM with a calculator tool!
 
 <CodeGroup>
   ```python Python theme={null}
@@ -98,12 +98,12 @@ In this simple example we augment an LLM with a calculator tool!
   ```
 </CodeGroup>
 
-## Next Steps
+## Next steps
 
 <Info>
   ### LangGraph - Together AI Notebook
 
-  Learn more about building agents using LangGraph with Together AI in our:
+  Learn more about building agents using LangGraph with Together AI in these notebooks:
 
   * [Agentic RAG Notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/LangGraph/Agentic_RAG_LangGraph.ipynb)
   * [Planning Agent Notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/LangGraph/LangGraph_Planning_Agent.ipynb)

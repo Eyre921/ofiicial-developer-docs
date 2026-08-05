@@ -56,5 +56,5 @@ from the list of the associated group and consumer.
 - [Serverless API with Java and Redis](https://upstash.com/docs/redis/tutorials/serverless_java_redis.md)
 - [TanStack AI Chat Persistance](https://upstash.com/docs/redis/tutorials/tanstack_chat_persistence.md): Use Upstash Redis to persist TanStack AI chat histories across reloads, navigation, and devices with a simple adapter.
 - [Using AWS SAM](https://upstash.com/docs/redis/tutorials/using_aws_sam.md)
-- [Serverless Redis on Google Cloud Functions](https://upstash.com/docs/redis/tutorials/using_google_cloud_functions.md)
+- [Serverless Redis on Google Cloud Run functions](https://upstash.com/docs/redis/tutorials/using_google_cloud_functions.md)
 - [Using Serverless Framework](https://upstash.com/docs/redis/tutorials/using_serverless_framework.md)

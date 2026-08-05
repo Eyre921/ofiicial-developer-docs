@@ -11,7 +11,7 @@ In this guide you'll learn how to use Together AI and Next.js to build two commo
 * Ask a question and get a response
 * Have a long-running chat with a bot
 
-We'll first build these features using the Together AI SDK directly, then show how to build a chat app using popular frameworks like Vercel AI SDK and Mastra.
+You'll first build these features using the Together AI SDK directly, then see how to build a chat app using popular frameworks like Vercel AI SDK and Mastra.
 
 [Here's the live demo](https://together-nextjs-chat.vercel.app/), and [here's the source on GitHub](https://github.com/samselikoff/together-nextjs-chat).
 
@@ -27,7 +27,7 @@ npm i together-ai
 
 ## Ask a single question
 
-To ask a question with Together AI, we'll need an API route, and a page with a form that lets the user submit their question.
+To ask a question with Together AI, you'll need an API route, and a page with a form that lets the user submit their question.
 
 **1. Create the API route**
 
@@ -112,7 +112,7 @@ That's it! Submitting the form will update the page with the LLM's response. You
 
 ## Have a long-running chat
 
-To build a chatbot with Together AI, we'll need an API route that accepts an array of messages, and a page with a form that lets the user submit new messages. The page will also need to store the entire history of messages between the user and the AI assistant.
+To build a chatbot with Together AI, you'll need an API route that accepts an array of messages, and a page with a form that lets the user submit new messages. The page will also need to store the entire history of messages between the user and the AI assistant.
 
 **1. Create an API route**
 
@@ -213,7 +213,7 @@ export default function Chat() {
 }
 ```
 
-You've just built a simple chatbot with Together AI!
+You've built a simple chatbot with Together AI!
 
 ***
 

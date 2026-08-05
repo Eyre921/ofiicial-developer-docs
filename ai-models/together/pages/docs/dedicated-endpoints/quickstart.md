@@ -4,7 +4,7 @@ source: https://docs.together.ai/docs/dedicated-endpoints/quickstart
 path: docs/dedicated-endpoints/quickstart
 ---
 
-Deploy a model on dedicated hardware in just a few minutes.
+Deploy a model on dedicated hardware in a few minutes.
 
 Follow this guide to deploy a model for dedicated inference, send it a request, and scale it down when you're done.
 

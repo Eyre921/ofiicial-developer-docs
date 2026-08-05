@@ -4225,6 +4225,10 @@ components:
         styles:
           $ref: '#/components/schemas/WidgetStyles'
           description: Styles for the widget
+        show_resize_button:
+          type: boolean
+          default: true
+          description: Whether to show the resize button
         language_selector:
           type: boolean
           default: false
@@ -7811,6 +7815,36 @@ components:
         - creator_email
         - role
       title: ResourceAccessInfo
+    ConflictSection:
+      type: string
+      enum:
+        - conversation_config
+        - platform_settings
+        - procedures
+        - workflow
+      title: ConflictSection
+    FieldConflict:
+      type: object
+      properties:
+        path:
+          type: string
+          description: >-
+            Identifier of the conflicting field relative to its section: a
+            dot-path within conversation_config/platform_settings, or a
+            procedure id.
+        section:
+          $ref: '#/components/schemas/ConflictSection'
+          description: Which config section this path belongs to.
+        base_value:
+          description: Value at the common ancestor (merge base).
+        source_value:
+          description: Value on the source branch tip.
+        target_value:
+          description: Value on the target branch tip.
+      required:
+        - path
+        - section
+      title: FieldConflict
     MergePreviewResponseModel:
       type: object
       properties:
@@ -7875,6 +7909,15 @@ components:
             Dot-paths of config fields where both branches modified the same
             field relative to their common ancestor (conflicts). Present
             regardless of which side wins the conflict.
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldConflict'
+          description: >-
+            Structured view of the same conflicts as overridden_fields, each
+            carrying the value on the base (common ancestor), source branch, and
+            target branch so the divergence can be presented and resolved
+            field-by-field.
         source_identical_to_target:
           type: boolean
           default: false

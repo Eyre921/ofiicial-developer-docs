@@ -8,7 +8,7 @@ Using CrewAI with Together
 
 CrewAI is an open source production-grade framework for orchestrating AI agent systems. It enables multiple AI agents to collaborate effectively by assuming roles and working toward shared goals. The framework supports both simple automations and complex applications that require coordinated agent behavior.
 
-## Installing Libraries
+## Installing libraries
 
 <CodeGroup>
   ```shell Shell theme={null}

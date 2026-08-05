@@ -610,5 +610,5 @@ Reasoning tokens can vary from a few hundred for simple problems to tens of thou
 * **Toggle reasoning on hybrid models**: Use `reasoning={"enabled": False}` for simple queries and only enable it when the task benefits from deeper analysis.
 * **Use reasoning effort levels**: On GPT-OSS, use `reasoning_effort="low"` for routine tasks and `"high"` for critical decisions.
 * **Use turn-level thinking**: On GLM-5, disable thinking for simple turns and enable it only for complex ones within the same session.
-* **Prompt for shorter reasoning**: Include instructions like "Please be succinct in your thinking" to reduce reasoning token usage on simpler problems. See [Controlling reasoning depth via prompting](#controlling-reasoning-depth-via-prompting).
+* **Prompt for shorter reasoning**: Include instructions like "Be succinct in your thinking" to reduce reasoning token usage on simpler problems. See [Controlling reasoning depth via prompting](#controlling-reasoning-depth-via-prompting).
 * **Stream responses**: Since reasoning models produce longer outputs, streaming with `stream=True` provides a better user experience by showing partial results as they arrive.

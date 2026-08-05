@@ -6,7 +6,7 @@ path: docs/how-to-use-opencode
 
 Learn how to power OpenCode (a powerful terminal-based AI coding agent) with Together AI models.
 
-OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. In this guide, we'll show you how to combine OpenCode with powerful open source models on Together AI like Kimi K2.7 Code and GLM 5.2 to supercharge your development workflow directly from your terminal.
+OpenCode is a powerful AI coding agent built specifically for the terminal, offering a native TUI experience with LSP support and multi-session capabilities. This guide shows you how to combine OpenCode with powerful open source models on Together AI like Kimi K2.7 Code and GLM 5.2 to supercharge your development workflow directly from your terminal.
 
 With OpenCode's agent, you can ask it to build features, fix bugs, explain codebases, and start new projects – all while maintaining full transparency in terms of cost and token usage. Here's how you can start using it with Together AI's models:
 
@@ -40,7 +40,7 @@ When you first run OpenCode, you'll need to configure it to use Together AI as y
 
 <img alt="image.png" />
 
-> To find the Together AI provider you will need to scroll the provider list or simply type together
+> To find the Together AI provider you will need to scroll the provider list or type together
 
 <img alt="Screenshot 2025-08-12 at 12.36.16.png" />
 
@@ -59,20 +59,20 @@ Install the extension: Search for "opencode" in the VS Code Extensions Marketpla
 
 * [https://open-vsx.org/extension/sst-dev/opencode](https://open-vsx.org/extension/sst-dev/opencode)
 
-## Key Features & Usage
+## Key features & usage
 
-### Native Terminal Experience
+### Native terminal experience
 
 OpenCode provides a responsive, native terminal UI that's fully themeable and integrated into your command-line workflow.
 
-### Plan Mode vs Build Mode
+### Plan mode vs build mode
 
 Switch between modes using the **Tab** key:
 
 * **Plan Mode**: Ask OpenCode to create implementation plans without making changes
 * **Build Mode**: Let OpenCode directly implement features and make code changes
 
-### File References with Fuzzy Search
+### File references with fuzzy search
 
 Use the `@` key to fuzzy search and reference files in your project:
 
@@ -80,9 +80,9 @@ Use the `@` key to fuzzy search and reference files in your project:
 How is authentication handled in @packages/functions/src/api/index.ts
 ```
 
-## Best Practices
+## Best practices
 
-### Give Detailed Context
+### Give detailed context
 
 Talk to OpenCode like you're talking to a junior developer:
 
@@ -92,7 +92,7 @@ Then create a "Recently Deleted" screen where users can restore or permanently d
 Use the same design patterns as our existing settings page.
 ```
 
-### Use Examples and References
+### Use examples and references
 
 Provide plenty of context and examples:
 
@@ -100,7 +100,7 @@ Provide plenty of context and examples:
 Add error handling to the API similar to how it's done in @src/utils/errorHandler.js
 ```
 
-### Iterate on Plans
+### Iterate on plans
 
 In Plan Mode, review and refine the approach before implementation:
 
@@ -108,7 +108,7 @@ In Plan Mode, review and refine the approach before implementation:
 That looks good, but let's also add input validation and rate limiting
 ```
 
-## Model Recommendations
+## Model recommendations
 
 * **Kimi K2.7 Code** (`moonshotai/Kimi-K2.7-Code`): Purpose-built for coding agents, with a 256K context window.
 * **GLM 5.2** (`zai-org/GLM-5.2`): Strong all-rounder for coding and agentic tasks.
@@ -116,7 +116,7 @@ That looks good, but let's also add input validation and rate limiting
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 
-## Getting Started
+## Getting started
 
 1. Install OpenCode: `curl -fsSL https://opencode.ai/install | bash`
 2. Navigate to your project: `cd your-project`

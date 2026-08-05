@@ -90,3 +90,6 @@ GitHub Actions can help you automate nearly every aspect of your application dev
 * For automating tasks and processes on GitHub, see [Managing your work with GitHub Actions](/en/actions/tutorials/manage-your-work).
 * For examples that demonstrate more complex features of GitHub Actions, see [Choosing what your workflow does](/en/actions/how-tos/write-workflows/choose-what-workflows-do). These detailed examples explain how to test your code on a runner, access the GitHub CLI, and use advanced features such as concurrency and test matrices.
 * To certify your proficiency in automating workflows and accelerating development with GitHub Actions, earn a GitHub Actions certificate with GitHub Certifications. For more information, see [About GitHub Certifications](/en/get-started/showcase-your-expertise-with-github-certifications/about-github-certifications).
+
+> \[!NOTE]
+> For automations that require contextual judgment about your repository's content, you can also author agentic workflows in natural language instead of a traditional GitHub Actions workflow. For more information, see [Your first agentic workflow](/en/copilot/how-tos/github-agentic-workflows/quickstart) and [Creating GitHub Agentic Workflows](/en/copilot/how-tos/github-agentic-workflows/creating-github-agentic-workflows).

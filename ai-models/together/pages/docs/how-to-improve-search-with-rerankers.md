@@ -6,7 +6,7 @@ path: docs/how-to-improve-search-with-rerankers
 
 Improve semantic search quality with reranker models.
 
-In this guide we will use a reranker model to improve the results produced from a simple semantic search workflow. To get a better understanding of how semantic search works please refer to the [Cookbook here](https://github.com/togethercomputer/together-cookbook/blob/main/Semantic_Search.ipynb).
+In this guide we will use a reranker model to improve the results produced from a simple semantic search workflow. To get a better understanding of how semantic search works, refer to the [Cookbook here](https://github.com/togethercomputer/together-cookbook/blob/main/Semantic_Search.ipynb).
 
 A reranker model operates by looking at the query and the retrieved results from the semantic search pipeline one by one and assesses how relevant the returned result is to the query. Because the reranker model can spend compute assessing the query with the returned result at the same time it can better judge how relevant the words and meanings in the query are to individual documents. This also means that rerankers are computationally expensive and slower - thus they cannot be used to rank every document in our database.
 
@@ -22,7 +22,7 @@ We will be using the [Mxbai Rerank](/docs/inference/embeddings/rerank) reranker 
   <img alt="How to improve search with rerankers" />
 </Frame>
 
-## Download and View the Dataset
+## Download and view the dataset
 
 ```bash Shell theme={null}
 wget https://raw.githubusercontent.com/togethercomputer/together-cookbook/refs/heads/main/datasets/movies.json
@@ -65,7 +65,7 @@ Our dataset contains information about popular movies:
   'tagline': 'The road to greatness can take you to the edge.'}]
 ```
 
-## Implement Semantic Search Pipeline
+## Implement semantic search pipeline
 
 Below we implement a simple semantic search pipeline:
 
@@ -195,7 +195,7 @@ Notice here that not all movies in our top 25 have to do with our query - super 
 
 The reranker can more closely determine the similarity between these 25 candidates and rerank which ones deserve to be atop our list.
 
-## Use Llama Rank to Rerank Top 25 Movies
+## Use Llama Rank to rerank top 25 movies
 
 Treating the top 25 matching movies as good candidate matches, potentially with irrelevant false positives, that might have snuck in we want to have the reranker model look and rerank each based on similarity to the query.
 

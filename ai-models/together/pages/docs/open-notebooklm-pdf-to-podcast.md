@@ -15,7 +15,7 @@ In doing so we will learn the following:
 1. How we can use JSON mode and structured generation with open models like Llama 3 70b to extract a script for the Podcast given text from the PDF.
 2. How we can use TTS models to bring this script to life as a conversation.
 
-## Define Dialogue Schema with Pydantic
+## Define dialogue schema with Pydantic
 
 We need a way of telling the LLM what the structure of the podcast script between the guest and host will look like. We will do this using `pydantic` models.
 
@@ -46,7 +46,7 @@ class Script(BaseModel):
 
 The inclusion of a scratchpad field is very important - it allows the LLM compute and tokens to generate an unstructured overview of the script prior to generating a structured line by line enactment.
 
-## System Prompt for Script Generation
+## System prompt for script generation
 
 Next we need to define a detailed prompt template engineered to guide the LLM through the generation of the script. Feel free to modify and update the prompt below.
 
@@ -108,7 +108,7 @@ Remember: Always reply in valid JSON format, without code blocks. Begin directly
 """
 ```
 
-## Download PDF and Extract Contents
+## Download PDF and extract contents
 
 Here we will load in an academic paper that proposes the use of many open source language models in a collaborative manner together to outperform proprietary models that are much larger!
 
@@ -152,7 +152,7 @@ def get_PDF_text(file: str):
 text = get_PDF_text("MoA.pdf")
 ```
 
-## Generate Podcast Script using JSON Mode
+## Generate podcast script using JSON mode
 
 Below we call Llama3.1 70B with JSON mode to generate a script for our podcast. JSON mode makes it so that the LLM will only generate responses in the format specified by the `Script` class. We will also be able to read its scratchpad and see how it structured the overall conversation.
 
@@ -226,7 +226,7 @@ Now we can have a look at the script that is generated:
  DialogueItem(speaker='Guest', text='Thanks for having me, Jane. It was a pleasure discussing MoA with you.')]
 ```
 
-## Generate Podcast Using TTS
+## Generate podcast using TTS
 
 Below we read through the script and choose the TTS voice depending on the speaker. We define a speaker and guest voice id.
 

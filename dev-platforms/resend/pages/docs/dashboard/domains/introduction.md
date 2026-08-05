@@ -255,4 +255,15 @@ The DKIM configuration is stored as a TXT DNS record that contains a public key 
     providers, and satisfy bulk sender requirements. Learn more about [DKIM key
     length](/docs/knowledge-base/do-i-need-2048-dkim).
   </Accordion>
+
+  <Accordion title="Where do the logos in the domain preview come from?">
+    While you add or configure a domain, the dashboard displays your brand's
+    logo as a decorative preview. It's illustrative only and does not change how
+    your emails appear in recipients' inboxes. Showing your logo in the inbox
+    requires [BIMI](/docs/dashboard/domains/bimi).
+
+    <a href="https://logo.dev" title="Logo API">
+      Logos are provided by Logo.dev.
+    </a>
+  </Accordion>
 </AccordionGroup>

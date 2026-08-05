@@ -6,13 +6,13 @@ path: docs/together-deployments
 
 Architecture, deployment lifecycle, and core concepts for dedicated container inference.
 
-Dedicated Containers provide a flexible way to run your own Dockerized workloads on managed GPU infrastructure. You supply the container image, and Together manages everything else—handling compute provisioning, autoscaling, networking, and observability for you.
+Dedicated Containers provide a flexible way to run your own Dockerized workloads on managed GPU infrastructure. You supply the container image, and Together manages everything else, handling compute provisioning, autoscaling, networking, and observability for you.
 
 The platform is designed for teams that need full control over their runtime environment while avoiding the operational complexity of managing GPU clusters directly.
 
 <Tip>
   **Looking for full example templates?** <br />
-  See our end-to-end deployment examples: [Image Generation with Flux2](/docs/dedicated_containers_image) and [Video Generation with Wan 2.1](/docs/dedicated_containers_video).
+  See the end-to-end deployment examples: [Image Generation with Flux2](/docs/dedicated_containers_image) and [Video Generation with Wan 2.1](/docs/dedicated_containers_video).
 </Tip>
 
 With Together Deployments, you can:
@@ -23,7 +23,7 @@ With Together Deployments, you can:
 * Securely manage secrets, environment variables, and configuration
 * Scale from a single replica to thousands of GPUs as traffic grows
 
-## Platform Components
+## Platform components
 
 <Frame>
   <img alt="Dedicated Containers Architecture" />
@@ -31,7 +31,7 @@ With Together Deployments, you can:
 
 Dedicated Containers include three core components:
 
-### Jig – Deployment CLI
+### Jig – deployment CLI
 
 A lightweight CLI for building, pushing, and deploying containers. Jig handles:
 
@@ -49,7 +49,7 @@ A lightweight CLI for building, pushing, and deploying containers. Jig handles:
 
 [See the Jig CLI docs →](/docs/deployments-jig)
 
-### Sprocket – Worker SDK
+### Sprocket – worker SDK
 
 A Python SDK for building inference workers that integrate with Together's job queue:
 
@@ -80,11 +80,11 @@ A Python SDK for building inference workers that integrate with Together's job q
 
 [See the Sprocket SDK docs →](/docs/deployments-sprocket)
 
-### Container Registry
+### Container registry
 
 A Together-hosted Docker registry at `registry.together.ai` for storing your container images. Images are private to your organization and referenced by digest for reproducible deployments.
 
-## Available Hardware
+## Available hardware
 
 Choose from high-performance NVIDIA GPU configurations:
 
@@ -92,11 +92,11 @@ Choose from high-performance NVIDIA GPU configurations:
 | ------------------- | ---------------- | ------ | ----------------------------------------------- |
 | **NVIDIA H100 SXM** | `h100-80gb`      | 80GB   | Large models, high throughput                   |
 | **NVIDIA B200**     | `b200-192gb`     | 192GB  | Next-generation hardware for the largest models |
-| **CPU-only**        | `none`           | —      | Lightweight preprocessing or embedding models   |
+| **CPU-only**        | `none`           | N/A    | Lightweight preprocessing or embedding models   |
 
 For models requiring multiple GPUs, configure `gpu_count` in your deployment and use `torchrun` for distributed inference.
 
-## When to Use Dedicated Containers
+## When to use dedicated containers
 
 Dedicated Containers are appropriate when:
 
@@ -106,7 +106,7 @@ Dedicated Containers are appropriate when:
 * **You need async or batch processing** – Long-running jobs that don't fit the request-response pattern
 * **You want full control** – Specific library versions, custom preprocessing, or non-standard runtimes
 
-## How It Works
+## How it works
 
 1. **Package your model as a Docker container**
 
@@ -132,7 +132,7 @@ Dedicated Containers are appropriate when:
   **Ready to deploy?** Follow the [Quickstart guide](/docs/containers-quickstart) for a step-by-step walkthrough, or explore the [Jig CLI](/docs/deployments-jig), [Sprocket SDK](/docs/deployments-sprocket), and [Queue API](/docs/deployments-queue) docs.
 </Tip>
 
-# Monitoring and Observability
+# Monitoring and observability
 
 ### Metrics
 
@@ -191,7 +191,7 @@ Use Python's logging module for structured output:
   ```
 </CodeGroup>
 
-### Health Checks
+### Health checks
 
 The platform monitors your deployment's `/health` endpoint. Ensure it:
 
@@ -223,9 +223,9 @@ Enable autoscaling in your `pyproject.toml`:
 
 Scales based on queue depth relative to worker count.
 
-* `target = 1.0` — Exact match (queue\_depth = workers)
-* `target = 1.05` — 5% overprovisioning (recommended)
-* `target = 0.9` — Aggressive scaling (more workers than needed)
+* `target = 1.0`: Exact match (queue\_depth = workers)
+* `target = 1.05`: 5% overprovisioning (recommended)
+* `target = 0.9`: Aggressive scaling (more workers than needed)
 
 **Formula:** `desired_replicas = queue_depth / target`
 
@@ -243,7 +243,7 @@ target = 80
 * `custom_metric_name` is required and must match `^[a-zA-Z_:][a-zA-Z0-9_:]*$`.
 * `target` defaults to `500` if not specified.
 
-### Scaling Behavior
+### Scaling behavior
 
 1. **Scale Up:** When the metric exceeds the target, new replicas are added
 2. **Scale Down:** When the metric drops below the target, replicas are removed (respecting `min_replicas`)
@@ -251,7 +251,7 @@ target = 80
 
 # Troubleshooting
 
-### Common Issues
+### Common issues
 
 **Container fails to start**
 
@@ -306,7 +306,7 @@ target = 80
 2. Check CUDA compatibility with base image
 3. Ensure PyTorch is installed with CUDA support
 
-### Debug Mode
+### Debug mode
 
 Enable debug logging:
 
@@ -323,7 +323,7 @@ Enable debug logging:
   ```
 </CodeGroup>
 
-### Getting Help
+### Getting help
 
 * View deployment status: `tg beta jig status`
 * Check queue: `tg beta jig queue-status`
@@ -336,7 +336,7 @@ Enable debug logging:
 
 **Q: What's the difference between Sprocket and a regular HTTP server?**
 
-A: Sprocket integrates with Together's managed job queue, providing automatic job distribution, status reporting, file handling, and graceful shutdown. Use Sprocket for batch/async workloads; use a regular HTTP server for low-latency request-response APIs.
+A: Sprocket integrates with Together's managed job queue, providing automatic job distribution, status reporting, file handling, and graceful shutdown. Use Sprocket for batch/async workloads. Use a regular HTTP server for low-latency request-response APIs.
 
 **Q: Can I use my own Dockerfile?**
 

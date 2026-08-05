@@ -381,6 +381,13 @@ components:
       required:
         - user_transcription_event
       title: UserTranscript
+    AgentResponseAgentResponseEventResponseType:
+      type: string
+      enum:
+        - text
+        - voice
+      default: text
+      title: AgentResponseAgentResponseEventResponseType
     AgentResponseAgentResponseEvent:
       type: object
       properties:
@@ -394,6 +401,9 @@ components:
           type: array
           items:
             type: string
+        response_type:
+          $ref: '#/components/schemas/AgentResponseAgentResponseEventResponseType'
+          default: text
       required:
         - agent_response
         - event_id
@@ -879,6 +889,14 @@ components:
       required:
         - event_id
       title: Feedback
+    UserMessageSourceMedium:
+      type: string
+      enum:
+        - audio
+        - text
+        - image
+        - file
+      title: UserMessageSourceMedium
     UserMessage:
       type: object
       properties:
@@ -892,6 +910,8 @@ components:
           type: string
         user_identifier:
           type: string
+        source_medium:
+          $ref: '#/components/schemas/UserMessageSourceMedium'
       title: UserMessage
     UserActivity:
       type: object
@@ -901,6 +921,14 @@ components:
           enum:
             - user_activity
       title: UserActivity
+    MultimodalMessageTextSourceMedium:
+      type: string
+      enum:
+        - audio
+        - text
+        - image
+        - file
+      title: MultimodalMessageTextSourceMedium
     MultimodalMessageText:
       type: object
       properties:
@@ -915,6 +943,8 @@ components:
           type: string
         user_identifier:
           type: string
+        source_medium:
+          $ref: '#/components/schemas/MultimodalMessageTextSourceMedium'
       title: MultimodalMessageText
     MultimodalMessageFile:
       type: object

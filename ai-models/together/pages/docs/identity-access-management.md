@@ -8,7 +8,7 @@ How users, credentials, and resources are organized across the Together platform
 
 Together's Identity and Access Management (IAM) model controls how your team collaborates on the platform, and how your workloads are authenticated. It determines who can access what, how credentials are scoped, and how resources are organized.
 
-## Core Concepts
+## Core concepts
 
 Together's IAM is built around five concepts that work together:
 
@@ -21,7 +21,7 @@ Together's IAM is built around five concepts that work together:
 | [Collaborator](#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user).                               |
 | [API key](/docs/api-keys-authentication)                        | A Project-scoped credential for authenticating API requests.                                                   |
 
-## How It All Fits Together
+## How it all fits together
 
 ```mermaid theme={null}
 flowchart TD
@@ -52,7 +52,7 @@ A resource is anything you create or provision on Together:
 
 Resources belong to a Project. Everyone with access to that Project can see and use those resources, subject to their [role permissions](/docs/roles-permissions).
 
-## Organization Members and Project Collaborators
+## Organization members and project collaborators
 
 Together uses different terminology at each level:
 
@@ -61,7 +61,7 @@ Together uses different terminology at each level:
 
 Each Collaborator is assigned an Admin or Editor role at the Project level. For a detailed breakdown of what each role can do, see [Roles & Permissions](/docs/roles-permissions).
 
-## Product-Specific Access Guides
+## Product-specific access guides
 
 Together's IAM model applies consistently across all products. These guides cover product-specific workflows:
 
@@ -75,7 +75,7 @@ Together's IAM model applies consistently across all products. These guides cove
   Projects and Project-level membership management are in early access. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable multi-Project support for your Organization.
 </Note>
 
-## Next Steps
+## Next steps
 
 <CardGroup>
   <Card title="Organizations" icon="building" href="/docs/organizations">

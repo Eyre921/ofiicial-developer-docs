@@ -18,7 +18,7 @@ They feature adjustable reasoning effort levels, allowing you to balance perform
 
 ## How to use GPT-OSS API
 
-Since reasoning models produce longer responses with chain-of-thought processing, we recommend streaming tokens for better user experience:
+Since reasoning models produce longer responses with chain-of-thought processing, stream tokens for a better user experience:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -117,7 +117,7 @@ This will produce the response below:
 }
 ```
 
-To access just the chain-of-thought reasoning you can look at the `reasoning` property:
+To access only the chain-of-thought reasoning you can look at the `reasoning` property:
 
 ```plain theme={null}
 We need to answer the logic puzzle. The premise: "All roses are flowers" (i.e., every rose is a flower). "Some flowers are red" (there exists at least one flower that is red). Does this entail that some roses are red? In standard syllogistic logic, no; you cannot infer that. Because the red flower could be a different type. The conclusion "Some roses are red" is not guaranteed. It's a classic syllogism: All R are F, Some F are R (actually some F are red). The conclusion "Some R are red" is not valid (invalid). So answer: No, we cannot conclude; we need additional assumption like "All red flowers are roses" or "All red things are roses". Provide explanation.
@@ -127,7 +127,7 @@ Hence final answer: no, not necessarily; situation possible where all roses are 
 Thus solve puzzle.
 ```
 
-## Available Models
+## Available models
 
 Two flexible open-weight models are available to meet different deployment needs:
 
@@ -147,7 +147,7 @@ Two flexible open-weight models are available to meet different deployment needs
 * **Context Length**: 128k tokens with RoPE
 * **Best for**: Research, development, and cost-efficient deployments
 
-## GPT-OSS Best Practices
+## GPT-OSS best practices
 
 Reasoning models like GPT-OSS should be used differently than standard instruct models to get optimal results:
 
@@ -166,7 +166,7 @@ Think of GPT-OSS as a senior problem-solver – provide high-level objectives an
 * **Avoid over-prompting**: Micromanaging steps can limit its advanced reasoning capabilities
 * **Provide clear objectives**: Balance clarity with flexibility for optimal results
 
-## GPT-OSS Use Cases
+## GPT-OSS use cases
 
 * **Code Review & Analysis:** Comprehensive code analysis across large codebases with detailed improvement suggestions
 * **Strategic Planning:** Multi-stage planning with reasoning about optimal approaches and resource allocation
@@ -181,9 +181,9 @@ Think of GPT-OSS as a senior problem-solver – provide high-level objectives an
 * **Problem Solving:** Handling ambiguous requirements and inferring unstated assumptions
 * **Ambiguity Resolution:** Interprets unclear instructions effectively and seeks clarification when needed
 
-## Managing Context and Costs
+## Managing context and costs
 
-#### **Reasoning Effort Control:**
+#### **Reasoning effort control:**
 
 GPT-OSS features adjustable reasoning effort levels to optimize for your specific use case:
 
@@ -191,7 +191,7 @@ GPT-OSS features adjustable reasoning effort levels to optimize for your specifi
 * **Medium effort:** Balanced performance for most use cases (recommended default)
 * **High effort:** Maximum reasoning for complex problems requiring deep analysis. You should also specify `max_tokens` of \~30,000 with this setting.
 
-#### **Token Management:**
+#### **Token management:**
 
 When working with reasoning models, it's crucial to maintain adequate space in the context window:
 
@@ -200,15 +200,15 @@ When working with reasoning models, it's crucial to maintain adequate space in t
 * Consider reasoning effort level based on task complexity and budget constraints
 * Simpler problems may only require a few hundred reasoning tokens, while complex challenges could generate extensive reasoning
 
-#### **Cost/Latency Optimization:**
+#### **Cost/latency optimization:**
 
 * Implement limits on total token generation using the `max_tokens` parameter
 * Balance thorough reasoning with resource utilization based on your specific requirements
 * Consider using lower reasoning effort for routine tasks and higher effort for critical decisions
 
-## Technical Architecture
+## Technical architecture
 
-#### **Model Architecture:**
+#### **Model architecture:**
 
 * **MoE Design:** Token-choice Mixture-of-Experts with SwiGLU activations for improved performance
 * **Expert Selection:** Softmax-after-topk approach for calculating MoE weights, ensuring optimal expert utilization
@@ -221,7 +221,7 @@ When working with reasoning models, it's crucial to maintain adequate space in t
 * **Standard Compatibility:** Uses the same tokenizer as GPT-4o
 * **Broad Support:** Ensures seamless integration with existing applications and tools
 
-#### **Context Handling:**
+#### **Context handling:**
 
 * **128k Context Window:** Large context capacity for processing extensive documents
 * **Efficient Patterns:** Optimized attention patterns for long-context scenarios

@@ -13,6 +13,12 @@ path: docs/changelog
 </Update>
 
 <Update label="July 31, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `thinkingmachines/Inkling-Small`: 524,288 context length. Pricing: \$0.50 input / \$1.20 output (per 1M tokens).
+
   ## Model upload progress in the console
 
   While a remote model upload is pending or running, the [Models](https://api.together.ai/models) page shows an **Uploading** badge on the model under **My models** and floats it to the top of the list. Opening the model shows a live **Upload progress** event log until the job finishes.
@@ -26,6 +32,12 @@ path: docs/changelog
   The [Models](https://api.together.ai/models) page now lists Internal-visibility models from every project in your organization under **My models**, not only from the selected project. A **Visibility** filter lets you show **Internal** models, **Private** models, or both.
 
   See [Upload a fine-tuned model](/docs/dedicated-endpoints/custom-models#create-the-model).
+
+  ## Project scoping in the console
+
+  Fine-tuning, Files, and Evaluations are now available in the Projects UI. Create and manage fine-tuning jobs, uploaded files, and evaluations within a project from the console, not just with project-scoped API keys.
+
+  See [Projects](/docs/projects).
 </Update>
 
 <Update label="July 29, 2026">
@@ -133,13 +145,18 @@ path: docs/changelog
   * `mistralai/Mistral-7B-v0.1`.
   * `togethercomputer/llama-2-7b-chat`.
 
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `Wan-AI/Wan2.2-I2V-A14B`.
+  * `Wan-AI/Wan2.2-T2V-A14B`.
+
   See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
 <Update label="July 28, 2026">
   ## A/B variant percent updates in the CLI
 
-  `tg beta endpoints update` now accepts `--ab-percent` to change a variant's traffic percentage in an existing A/B experiment. The flag takes percentage from or returns it to the control only; other variants stay unchanged. The control must remain at least 1%, and `--percent` on `tg beta endpoints ab` is limited to 1–99.
+  `tg beta endpoints update` now accepts `--ab-percent` to change a variant's traffic percentage in an existing A/B experiment. The flag takes percentage from or returns it to the control only. Other variants stay unchanged. The control must remain at least 1%, and `--percent` on `tg beta endpoints ab` is limited to 1–99.
 
   See [Ramp the variant](/docs/dedicated-endpoints/ab-tests#ramp-the-variant) and the [endpoints CLI reference](/reference/cli/endpoints-beta#update).
 
@@ -155,6 +172,12 @@ path: docs/changelog
 
   See [Get started](/reference/cli/getting-started#upgrade-notices).
 
+  ## Select dedicated endpoints in evaluations
+
+  In the [evaluations console](https://api.together.ai/evaluations), live [dedicated model inference](/docs/dedicated-endpoints/overview) endpoints now appear under **My Endpoints** in the model picker. Legacy dedicated endpoints appear under **My Legacy Endpoints**. Only endpoints with at least one live deployment are listed.
+
+  See [Supported models](/docs/evaluations-supported-models#dedicated-models).
+
   ## Model deprecations
 
   The following models have been deprecated and are no longer available on serverless:
@@ -165,6 +188,14 @@ path: docs/changelog
 </Update>
 
 <Update label="July 27, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `moonshotai/Kimi-K3`: 1,000,000 context length. Pricing: \$3.00 input / \$15.00 output / \$0.30 cached input (per 1M tokens). Supports function calling, structured outputs, and vision inputs.
+
+  See [Kimi K3 quickstart](/docs/kimi-k3-quickstart) for details.
+
   ## New models available for fine-tuning
 
   You can now fine-tune the following models:
@@ -183,7 +214,7 @@ path: docs/changelog
 
   ## Fine-tuning comparison metrics filtering
 
-  The [fine-tuning comparison view](https://api.together.ai/fine-tuning?view=comparison) now includes the same **Metrics filtering** control as the single-job Metrics tab. Adjust **Sampling rate** and **Step range**, then click **Apply** to re-fetch metrics for every selected job with matching filters.
+  The [fine-tuning comparison view](https://api.together.ai/fine-tuning?view=comparison) now includes the same **Metrics filtering** control as the single-job Metrics tab. Adjust **Sampling rate** and **Step range**, then select **Apply** to re-fetch metrics for every selected job with matching filters.
 
   See [View metrics in the dashboard](/docs/fine-tuning/monitoring#view-metrics-in-the-dashboard).
 </Update>
@@ -211,7 +242,7 @@ path: docs/changelog
 
   ## Fine-tuning preview CLI command
 
-  `tg fine-tuning preview` samples rows from an uploaded JSONL training file and shows how a base model tokenizes them before you start a job. The table output highlights masked tokens, trained spans, and truncation; pass `--json` for the full response.
+  `tg fine-tuning preview` samples rows from an uploaded JSONL training file and shows how a base model tokenizes them before you start a job. The table output highlights masked tokens, trained spans, and truncation. Pass `--json` for the full response.
 
   See [Preview](/reference/cli/finetune#preview).
 
@@ -282,7 +313,7 @@ path: docs/changelog
 
   ## Model revision validation status
 
-  Model and adapter revision APIs now return `validationStatus`, `lastValidatedAt`, and `validationErrors` on each revision. Poll validation before you pin a revision in a deployment — a revision must reach `REVISION_VALIDATION_STATUS_SUCCESS` before it can deploy when referenced explicitly.
+  Model and adapter revision APIs now return `validationStatus`, `lastValidatedAt`, and `validationErrors` on each revision. Poll validation before you pin a revision in a deployment. A revision must reach `REVISION_VALIDATION_STATUS_SUCCESS` before it can deploy when referenced explicitly.
 
   See [Check revision validation](/docs/dedicated-endpoints/custom-models#check-revision-validation).
 
@@ -331,7 +362,7 @@ path: docs/changelog
 
   ## Image inputs for evaluations
 
-  You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
+  You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset (a base64 image data URL, or a list of them) and the images are attached to the model and judge requests alongside the text prompt.
 
   See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
 
@@ -720,7 +751,7 @@ path: docs/changelog
 
   GPU clusters now support Slurm startup scripts (lifecycle hook scripts that run at node startup, job allocation, and job completion). Use them to install packages at boot, configure SSH sessions, or run per-job prolog and epilog actions across worker, login, and controller nodes. See [Slurm startup scripts](/docs/slurm-startup-scripts) for details.
 
-  ## Evaluations: Single-pass compare mode
+  ## Evaluations: single-pass compare mode
 
   The `compare` evaluator now accepts a `disable_position_bias_correction` parameter. By default, the judge runs each comparison twice (A→B then B→A) and reconciles verdicts to cancel position bias. Setting `disable_position_bias_correction` to `true` runs a single pass, cutting judge cost and latency in half. See [AI evaluations](/docs/ai-evaluations) for details.
 
@@ -795,9 +826,9 @@ path: docs/changelog
 </Update>
 
 <Update label="May 22, 2026">
-  ## GPU Clusters: External OIDC authentication and RBAC
+  ## GPU clusters: external OIDC authentication and RBAC
 
-  GPU clusters now support external OpenID Connect (OIDC) authentication, allowing each team member to access the cluster's Kubernetes API using their organization's identity provider — Google, Okta, Auth0, Microsoft Entra ID, and others.
+  GPU clusters now support external OpenID Connect (OIDC) authentication, allowing each team member to access the cluster's Kubernetes API using their organization's identity provider: Google, Okta, Auth0, Microsoft Entra ID, and others.
 
   With OIDC enabled, access is managed through standard Kubernetes RBAC: admins bind permissions to individual user identities, and each user authenticates via their browser using SSO. This replaces shared kubeconfig credentials with per-user tokens, per-user audit trails, and clean revocation. Currently this feature is only supported for Kubernetes clusters.
 
@@ -945,7 +976,7 @@ path: docs/changelog
 
   ## Pricing update: no-packing fine-tuning jobs
 
-  We rolled out a pricing update for no-packing fine-tuning jobs. When the no-packing option is chosen, the number of training dataset tokens is now calculated as `len(dataset) * max_seq_length` to account for the compute used by packing-free jobs.
+  Rolled out a pricing update for no-packing fine-tuning jobs. When the no-packing option is chosen, the number of training dataset tokens is now calculated as `len(dataset) * max_seq_length` to account for the compute used by packing-free jobs.
 
   * `max_seq_length` is configurable in both the SDK and UI.
   * Price prediction reflects these changes, so if no-packing is chosen you can control the cost of the job by adjusting the sequence length.
@@ -1090,7 +1121,7 @@ path: docs/changelog
 </Update>
 
 <Update label="February 12, 2026">
-  ## Dedicated Container Inference launch
+  ## Dedicated container inference launch
 
   Together AI has officially launched [Dedicated Container Inference](https://www.together.ai/dedicated-container-inference) (DCI), formerly known as BYOC. DCI lets you containerize, deploy, and scale custom models on Together AI.
 
@@ -1119,13 +1150,13 @@ path: docs/changelog
 <Update label="February 4, 2026">
   ## Python SDK v2.0 general availability
 
-  Together AI is releasing the **Python SDK v2.0**, a new, type-safe, OpenAPI-driven client designed to be faster, easier to maintain, and ready for everything we're building next.
+  Together AI is releasing the **Python SDK v2.0**, a new, type-safe, OpenAPI-driven client designed to be faster, easier to maintain, and ready for everything Together AI is building next.
 
   * **Install:** `pip install together` or `uv add together`.
   * **Migration guide:** A detailed [Python SDK Migration Guide](/docs/pythonv2-migration-guide) covers API-by-API changes, type updates, and troubleshooting tips.
   * **Code and docs:** Access the [Together Python v2 repo](https://github.com/togethercomputer/together-py) and [reference docs](/reference/chat-completions-1) with code examples.
   * **Main goal:** Replace the legacy v1 Python SDK with a modern, strongly-typed, OpenAPI-generated client that matches the API surface more closely and stays in lock-step with new features.
-  * **Net new:** All new features will be built in version 2 moving forward. This first version already includes beta APIs for our Instant Clusters.
+  * **Net new:** All new features will be built in version 2 moving forward. This first version already includes beta APIs for instant clusters.
 </Update>
 
 <Update label="February 3, 2026">
@@ -1145,7 +1176,7 @@ path: docs/changelog
 <Update label="January 29, 2026">
   ## Model redirects
 
-  The following models are now being automatically redirected to their upgraded versions. See our [Model Lifecycle Policy](/docs/deprecations#model-lifecycle-policy) for details.
+  The following models are now being automatically redirected to their upgraded versions. See the [Model Lifecycle Policy](/docs/deprecations#model-lifecycle-policy) for details.
 
   | Original model                       | Redirects to                              |
   | :----------------------------------- | :---------------------------------------- |
@@ -1166,7 +1197,7 @@ path: docs/changelog
 <Update label="January 23, 2026">
   ## Model redirects
 
-  The following models are now being automatically redirected to their upgraded versions. See our [Model Lifecycle Policy](/docs/deprecations#model-lifecycle-policy) for details.
+  The following models are now being automatically redirected to their upgraded versions. See the [Model Lifecycle Policy](/docs/deprecations#model-lifecycle-policy) for details.
 
   | Original model     | Redirects to    |
   | :----------------- | :-------------- |
@@ -1187,7 +1218,7 @@ path: docs/changelog
 
   **Timeline:**
 
-  * **Now:** Field is deprecated; setting it has no effect (prompt caching is always on).
+  * **Now:** Field is deprecated. Setting it has no effect (prompt caching is always on).
   * **February 2026:** Field will be removed.
 
   **Action required:**
@@ -1229,7 +1260,7 @@ path: docs/changelog
 <Update label="December 17, 2025">
   ## Model redirects
 
-  The following models are now being automatically redirected to their upgraded versions. See our [Model Lifecycle Policy](/docs/deprecations#model-lifecycle-policy) for details.
+  The following models are now being automatically redirected to their upgraded versions. See the [Model Lifecycle Policy](/docs/deprecations#model-lifecycle-policy) for details.
 
   | Original model | Redirects to       |
   | :------------- | :----------------- |
@@ -1246,15 +1277,15 @@ path: docs/changelog
   Together AI is releasing the **Python SDK v2.0 Release Candidate**, a new, OpenAPI-generated, strongly-typed client that replaces the legacy v1.0 package and brings the SDK into lock-step with the latest platform features.
 
   * **Install:** `pip install together==2.0.0a9`.
-  * **RC period:** The v2.0 RC window starts today and will run for approximately one month. During this time we'll iterate quickly based on developer feedback and may make a few small, well-documented breaking changes before GA.
+  * **RC period:** The v2.0 RC window starts today and will run for approximately one month. During this time Together will iterate quickly based on developer feedback and may make a few small, well-documented breaking changes before GA.
   * **Type-safe, modern client:** Stronger typing across parameters and responses, keyword-only arguments, explicit `NOT_GIVEN` handling for optional fields, and rich `together.types.*` definitions for chat messages, eval parameters, and more.
   * **Redesigned error model:** Replaces `TogetherException` with a new `TogetherError` hierarchy, including `APIStatusError` and specific HTTP status code errors such as `BadRequestError (400)`, `AuthenticationError (401)`, `RateLimitError (429)`, and `InternalServerError (5xx)`, plus transport (`APIConnectionError`, `APITimeoutError`) and validation (`APIResponseValidationError`) errors.
   * **New Jobs API:** Adds first-class support for the Jobs API (`client.jobs.*`) so you can create, list, and inspect asynchronous jobs directly from the SDK without custom HTTP wrappers.
   * **New Hardware API:** Adds the Hardware API (`client.hardware.*`) to discover available hardware, filter by model compatibility, and compute effective hourly pricing from `cents_per_minute`.
   * **Raw response and streaming helpers:** New `.with_raw_response` and `.with_streaming_response` helpers make it easier to debug, inspect headers and status codes, and stream completions via context managers with automatic cleanup.
-  * **Code Interpreter sessions:** Adds session management for the Code Interpreter (`client.code_interpreter.sessions.*`), enabling multi-step, stateful code-execution workflows that were not possible in the legacy SDK.
+  * **Code interpreter sessions:** Adds session management for the code interpreter (`client.code_interpreter.sessions.*`), enabling multi-step, stateful code-execution workflows that were not possible in the legacy SDK.
   * **High compatibility for core APIs:** Most core usage patterns, including `chat.completions`, `completions`, `embeddings`, `images.generate`, audio transcription/translation/speech, `rerank`, `fine_tuning.create/list/retrieve/cancel`, and `models.list`, are designed to be drop-in compatible between v1 and v2.
-  * **Targeted breaking changes:** Some APIs (Files, Batches, Endpoints, Evals, Code Interpreter, select fine-tuning helpers) have updated method names, parameters, or response shapes; these are fully documented in the Python SDK Migration Guide and Breaking Changes notes.
+  * **Targeted breaking changes:** Some APIs (Files, Batches, Endpoints, Evals, code interpreter, select fine-tuning helpers) have updated method names, parameters, or response shapes. These are fully documented in the Python SDK Migration Guide and Breaking Changes notes.
   * **Migration resources:** A dedicated Python SDK Migration Guide is available with API-by-API before/after examples, a feature parity matrix, and troubleshooting tips to help teams smoothly transition from v1 to v2 during the RC period.
 </Update>
 
@@ -1314,12 +1345,12 @@ path: docs/changelog
 </Update>
 
 <Update label="September 15, 2025">
-  ## Improved Batch Inference API
+  ## Improved batch inference API
 
   * **Streamlined UI:** Create and track batch jobs in an intuitive interface. No complex API calls required.
-  * **Universal model access:** The Batch Inference API now supports all serverless models and private deployments, so you can run batch workloads on exactly the models you need.
-  * **Massive scale jump:** Rate limits are up from 10M to 30B enqueued tokens per model per user, a 3,000x increase. Need more? We'll work with you to customize.
-  * **Lower cost:** For most serverless models, the Batch Inference API runs at 50% the cost of our real-time API, making it the most economical way to process high-throughput workloads.
+  * **Universal model access:** The batch inference API now supports all serverless models and private deployments, so you can run batch workloads on exactly the models you need.
+  * **Massive scale jump:** Rate limits are up from 10M to 30B enqueued tokens per model per user, a 3,000x increase. Need more? Together will work with you to customize.
+  * **Lower cost:** For most serverless models, the batch inference API runs at 50% the cost of the real-time API, making it the most economical way to process high-throughput workloads.
 </Update>
 
 <Update label="September 13, 2025">
@@ -1356,59 +1387,59 @@ path: docs/changelog
 
   ### DeepSeek models
 
-  * DeepSeek-R1-Distill-Llama-70B: SFT 8,192 → 24,576; DPO 8,192 → 8,192.
-  * DeepSeek-R1-Distill-Qwen-14B: SFT 8,192 → 65,536; DPO 8,192 → 12,288.
-  * DeepSeek-R1-Distill-Qwen-1.5B: SFT 8,192 → 131,072; DPO 8,192 → 16,384.
+  * DeepSeek-R1-Distill-Llama-70B: SFT 8,192 → 24,576. DPO 8,192 → 8,192.
+  * DeepSeek-R1-Distill-Qwen-14B: SFT 8,192 → 65,536. DPO 8,192 → 12,288.
+  * DeepSeek-R1-Distill-Qwen-1.5B: SFT 8,192 → 131,072. DPO 8,192 → 16,384.
 
   ### Google Gemma models
 
-  * gemma-3-1b-it: SFT 16,384 → 32,768; DPO 16,384 → 12,288.
-  * gemma-3-1b-pt: SFT 16,384 → 32,768; DPO 16,384 → 12,288.
-  * gemma-3-4b-it: SFT 16,384 → 131,072; DPO 16,384 → 12,288.
-  * gemma-3-4b-pt: SFT 16,384 → 131,072; DPO 16,384 → 12,288.
-  * gemma-3-12b-pt: SFT 16,384 → 65,536; DPO 16,384 → 8,192.
-  * gemma-3-27b-it: SFT 12,288 → 49,152; DPO 12,288 → 8,192.
-  * gemma-3-27b-pt: SFT 12,288 → 49,152; DPO 12,288 → 8,192.
+  * gemma-3-1b-it: SFT 16,384 → 32,768. DPO 16,384 → 12,288.
+  * gemma-3-1b-pt: SFT 16,384 → 32,768. DPO 16,384 → 12,288.
+  * gemma-3-4b-it: SFT 16,384 → 131,072. DPO 16,384 → 12,288.
+  * gemma-3-4b-pt: SFT 16,384 → 131,072. DPO 16,384 → 12,288.
+  * gemma-3-12b-pt: SFT 16,384 → 65,536. DPO 16,384 → 8,192.
+  * gemma-3-27b-it: SFT 12,288 → 49,152. DPO 12,288 → 8,192.
+  * gemma-3-27b-pt: SFT 12,288 → 49,152. DPO 12,288 → 8,192.
 
   ### Qwen models
 
-  * Qwen3-0.6B / Qwen3-0.6B-Base: SFT 8,192 → 32,768; DPO 8,192 → 24,576.
-  * Qwen3-1.7B / Qwen3-1.7B-Base: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen3-4B / Qwen3-4B-Base: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen3-8B / Qwen3-8B-Base: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen3-14B / Qwen3-14B-Base: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen3-32B: SFT 8,192 → 24,576; DPO 8,192 → 4,096.
-  * Qwen2.5-72B-Instruct: SFT 8,192 → 24,576; DPO 8,192 → 8,192.
-  * Qwen2.5-32B-Instruct: SFT 8,192 → 32,768; DPO 8,192 → 12,288.
-  * Qwen2.5-32B: SFT 8,192 → 49,152; DPO 8,192 → 12,288.
-  * Qwen2.5-14B-Instruct: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2.5-14B: SFT 8,192 → 65,536; DPO 8,192 → 16,384.
-  * Qwen2.5-7B-Instruct: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2.5-7B: SFT 8,192 → 131,072; DPO 8,192 → 16,384.
-  * Qwen2.5-3B-Instruct: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2.5-3B: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2.5-1.5B-Instruct: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2.5-1.5B: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2-72B-Instruct / Qwen2-72B: SFT 8,192 → 32,768; DPO 8,192 → 8,192.
-  * Qwen2-7B-Instruct: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2-7B: SFT 8,192 → 131,072; DPO 8,192 → 16,384.
-  * Qwen2-1.5B-Instruct: SFT 8,192 → 32,768; DPO 8,192 → 16,384.
-  * Qwen2-1.5B: SFT 8,192 → 131,072; DPO 8,192 → 16,384.
+  * Qwen3-0.6B / Qwen3-0.6B-Base: SFT 8,192 → 32,768. DPO 8,192 → 24,576.
+  * Qwen3-1.7B / Qwen3-1.7B-Base: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen3-4B / Qwen3-4B-Base: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen3-8B / Qwen3-8B-Base: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen3-14B / Qwen3-14B-Base: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen3-32B: SFT 8,192 → 24,576. DPO 8,192 → 4,096.
+  * Qwen2.5-72B-Instruct: SFT 8,192 → 24,576. DPO 8,192 → 8,192.
+  * Qwen2.5-32B-Instruct: SFT 8,192 → 32,768. DPO 8,192 → 12,288.
+  * Qwen2.5-32B: SFT 8,192 → 49,152. DPO 8,192 → 12,288.
+  * Qwen2.5-14B-Instruct: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2.5-14B: SFT 8,192 → 65,536. DPO 8,192 → 16,384.
+  * Qwen2.5-7B-Instruct: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2.5-7B: SFT 8,192 → 131,072. DPO 8,192 → 16,384.
+  * Qwen2.5-3B-Instruct: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2.5-3B: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2.5-1.5B-Instruct: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2.5-1.5B: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2-72B-Instruct / Qwen2-72B: SFT 8,192 → 32,768. DPO 8,192 → 8,192.
+  * Qwen2-7B-Instruct: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2-7B: SFT 8,192 → 131,072. DPO 8,192 → 16,384.
+  * Qwen2-1.5B-Instruct: SFT 8,192 → 32,768. DPO 8,192 → 16,384.
+  * Qwen2-1.5B: SFT 8,192 → 131,072. DPO 8,192 → 16,384.
 
   ### Meta Llama models
 
-  * Llama-3.3-70B-Instruct-Reference: SFT 8,192 → 24,576; DPO 8,192 → 8,192.
-  * Llama-3.2-3B-Instruct: SFT 8,192 → 131,072; DPO 8,192 → 24,576.
-  * Llama-3.2-1B-Instruct: SFT 8,192 → 131,072; DPO 8,192 → 24,576.
-  * Meta-Llama-3.1-8B-Instruct-Reference: SFT 8,192 → 131,072; DPO 8,192 → 16,384.
-  * Meta-Llama-3.1-8B-Reference: SFT 8,192 → 131,072; DPO 8,192 → 16,384.
-  * Meta-Llama-3.1-70B-Instruct-Reference: SFT 8,192 → 24,576; DPO 8,192 → 8,192.
-  * Meta-Llama-3.1-70B-Reference: SFT 8,192 → 24,576; DPO 8,192 → 8,192.
+  * Llama-3.3-70B-Instruct-Reference: SFT 8,192 → 24,576. DPO 8,192 → 8,192.
+  * Llama-3.2-3B-Instruct: SFT 8,192 → 131,072. DPO 8,192 → 24,576.
+  * Llama-3.2-1B-Instruct: SFT 8,192 → 131,072. DPO 8,192 → 24,576.
+  * Meta-Llama-3.1-8B-Instruct-Reference: SFT 8,192 → 131,072. DPO 8,192 → 16,384.
+  * Meta-Llama-3.1-8B-Reference: SFT 8,192 → 131,072. DPO 8,192 → 16,384.
+  * Meta-Llama-3.1-70B-Instruct-Reference: SFT 8,192 → 24,576. DPO 8,192 → 8,192.
+  * Meta-Llama-3.1-70B-Reference: SFT 8,192 → 24,576. DPO 8,192 → 8,192.
 
   ### Mistral models
 
-  * mistralai/Mistral-7B-v0.1: SFT 8,192 → 32,768; DPO 8,192 → 32,768.
-  * teknium/OpenHermes-2p5-Mistral-7B: SFT 8,192 → 32,768; DPO 8,192 → 32,768.
+  * mistralai/Mistral-7B-v0.1: SFT 8,192 → 32,768. DPO 8,192 → 32,768.
+  * teknium/OpenHermes-2p5-Mistral-7B: SFT 8,192 → 32,768. DPO 8,192 → 32,768.
 
   ## Fine-tuning: Hugging Face integrations
 
@@ -1420,7 +1451,7 @@ path: docs/changelog
 </Update>
 
 <Update label="September 9, 2025">
-  ## Together Instant Clusters general availability
+  ## Together instant clusters general availability
 
   Self-service NVIDIA GPU clusters with API-first provisioning. [Read more](https://www.together.ai/blog/together-instant-clusters-ga).
 
@@ -1455,7 +1486,7 @@ path: docs/changelog
 
   Upgraded version of DeepSeek-R1-0528 and DeepSeek-V3-0324. [Read more](https://www.together.ai/blog/deepseek-v3-1-hybrid-thinking-model-now-available-on-together-ai).
 
-  * **Dual modes:** Fast mode for quick responses; thinking mode for complex reasoning.
+  * **Dual modes:** Fast mode for quick responses, and thinking mode for complex reasoning.
   * **671B total parameters**, with 37B active parameters.
   * Model ID: `deepseek-ai/DeepSeek-V3.1`.
 
@@ -1516,7 +1547,7 @@ path: docs/changelog
 
   * Create custom LLM-as-a-judge evaluation suites for your domain.
   * Supports `compare`, `classify`, and `score` functionality.
-  * Compare models, prompts, and LLM configs; score and classify LLM outputs.
+  * Compare models, prompts, and LLM configs. Score and classify LLM outputs.
 </Update>
 
 <Update label="July 25, 2025">

@@ -31,7 +31,7 @@ You may see a privacy toggle on both your personal account profile and your orga
 * The **account** setting applies only to traffic you send under your personal account when it isn't attached to an organization.
 * The **organization** setting governs all traffic sent under that organization's projects and API keys, regardless of which member makes the request.
 
-When a request uses an organization's API key, the **organization setting is what applies**. To turn data sharing off for your team, change it in organization settings, not just on your personal profile.
+When a request uses an organization's API key, the **organization setting is what applies**. To turn data sharing off for your team, change it in organization settings, not on your personal profile.
 
 ## Passthrough third-party models
 
@@ -45,6 +45,6 @@ For customers with data-residency, regulatory, or compliance requirements (for e
 
 Models published by third-party authors (DeepSeek, Qwen, Mistral, etc.) and hosted on Together run on Together's own infrastructure. They do not call out to the model author. The model author has no access to your requests or API calls.
 
-For example, DeepSeek models are hosted in Together's secure North America data centers; DeepSeek itself receives no user requests or API traffic from this deployment.
+For example, DeepSeek models are hosted in Together's secure North America data centers. DeepSeek itself receives no user requests or API traffic from this deployment.
 
 Models on Together are hosted at full precision. Together does not distill them, force system prompts, or layer censorship on top. The version you call is the version the model author published.

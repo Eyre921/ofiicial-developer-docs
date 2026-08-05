@@ -211,50 +211,6 @@ def webhook():
         return jsonify(error=str(e)), 400
 ```
 
-#### Thin event handler (Acacia or Basil)
-
-When you create a thin event handler, use the `fetchRelatedObject()` method to retrieve the latest version of the object associated with the event. Thin events might contain [additional contextual data](https://docs.stripe.com/event-destinations.md#fetch-data) that you can only retrieve with the API. Use the `retrieve()` call with the thin event ID to access these additional payload fields.
-
-#### Python
-
-```python
-import os
-from stripe import StripeClient
-from stripe.events import V1BillingMeterErrorReportTriggeredEvent
-
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-api_key = os.environ.get('STRIPE_API_KEY')
-webhook_secret = os.environ.get('WEBHOOK_SECRET')
-
-client = StripeClient(api_key)
-
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    webhook_body = request.data
-    sig_header = request.headers.get('Stripe-Signature')
-
-try:
-    thin_event = client.parse_thin_event(webhook_body, sig_header, webhook_secret)
-
-    # Fetch the event data to understand the failure
-    event = client.v2.core.events.retrieve(thin_event.id)
-    if isinstance(event, V1BillingMeterErrorReportTriggeredEvent):
-        meter = event.fetch_related_object()
-        meter_id = meter.id
-
-        # Record the failures and alert your team
-        # Add your logic here
-
-    return jsonify(success=True), 200
-except Exception as e:
-    return jsonify(error=str(e)), 400
-
-if __name__ == '__main__':
-    app.run(port=4242)
-```
-
 #### Using `context` 
 
 #### Snapshot events
@@ -357,65 +313,6 @@ event_notification.fetch_event()
 
 # pass context manually for other API requests
 client.v1.invoices.list(stripe_context=event_notification.context)
-```
-
-#### Thin event handler (Acacia or Basil)
-
-This code snippet is a webhook function configured to receive thin events across an organization, verify the signature, determine the originating account with the `context` field, and use that account’s API key for subsequent API calls.
-
-#### Python
-
-```python
-import os
-from flask import Flask, request, jsonify
-from stripe import StripeClient
-from stripe.events import V1BillingMeterErrorReportTriggeredEvent
-
-app = Flask(__name__)
-
-org_api_key = os.environ.get("STRIPE_API_KEY")
-webhook_secret = os.environ.get("WEBHOOK_SECRET")
-client = StripeClient(org_api_key)
-
-account_api_keys = {
-    "account_123": os.environ.get("ACCOUNT_123_API_KEY"),
-    "account_456": os.environ.get("ACCOUNT_456_API_KEY"),
-}
-
-@app.route("/webhook", methods=["POST"])
-def webhook():
-    payload = request.data
-    sig_header = request.headers.get("Stripe-Signature")
-
-    try:
-        thin_event = client.parse_thin_event(payload, sig_header, webhook_secret)
-
-        # Retrieve the event using the org client to inspect context
-        event = client.v2.core.events.retrieve(thin_event.id)
-
-        context = getattr(event, "context", None)
-        if not context:
-            return jsonify(error="Missing context"), 400
-
-        account_key = account_api_keys.get(context)
-        if not account_key:
-            return jsonify(error="Unknown context"), 400
-
-        account_client = StripeClient(account_key)
-        full_event = account_client.v2.core.events.retrieve(thin_event.id)
-
-        if isinstance(full_event, V1BillingMeterErrorReportTriggeredEvent):
-            meter = full_event.fetch_related_object()
-            meter_id = meter.id
-            # Record the failures and alert your team
-            # Add your logic here
-
-        return jsonify(success=True), 200
-    except Exception as e:
-        return jsonify(error=str(e)), 400
-
-if __name__ == "__main__":
-    app.run(port=4242)
 ```
 
 ## Test your handler

@@ -17,7 +17,7 @@ Use the filter control (funnel icon) in the metrics toolbar to adjust how points
 * **Sampling rate:** Cap how many training points are plotted (maps to the `resolution` query parameter; default 100).
 * **Step range:** Limit the chart to a contiguous step window (maps to `global_step_from` and `global_step_to`).
 
-The same **Metrics filtering** controls are available when you [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side, so you can align sampling and step windows across selected jobs. Click **Apply** to re-fetch, or **Restore defaults** to clear custom filters.
+The same **Metrics filtering** controls are available when you [compare fine-tuning runs](https://api.together.ai/fine-tuning?view=comparison) side by side, so you can align sampling and step windows across selected jobs. Select **Apply** to re-fetch, or **Restore defaults** to clear custom filters.
 
 ## Poll until the job is done
 

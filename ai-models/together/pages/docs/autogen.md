@@ -38,7 +38,7 @@ Setup and configure AutoGen to use LLMs from Together AI
           "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
           # Provide your Together.AI API key here or put it into the TOGETHER_API_KEY environment variable.
           "api_key": os.environ.get("TOGETHER_API_KEY"),
-          # We specify the API Type as 'together' so it uses the Together.AI client class
+          # Specify the API Type as 'together' so it uses the Together.AI client class
           "api_type": "together",
           "stream": False,
       }

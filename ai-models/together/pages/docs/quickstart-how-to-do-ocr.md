@@ -6,11 +6,11 @@ path: docs/quickstart-how-to-do-ocr
 
 A step by step guide on how to do OCR with Together AI's vision models with structured outputs
 
-## Understanding OCR and Its Importance
+## Understanding OCR and its importance
 
 Optical Character Recognition (OCR) has become a crucial tool for many applications as it enables computers to read & understand text within images. With the advent of advanced AI vision models, OCR can now understand context, structure, and relationships within documents, making it particularly valuable for processing receipts, invoices, and other structured documents while reasoning on the content output format.
 
-In this guide, we're going to look at how you can take documents and images and extract text out of them in markdown (unstructured) or JSON (structured) formats.
+In this guide, you'll learn how to take documents and images and extract text out of them in markdown (unstructured) or JSON (structured) formats.
 
 ## How to do standard OCR with Together SDK
 
@@ -156,7 +156,7 @@ Here's the output from the code snippet above – we're simply giving it a recei
 
 ## How to do structured OCR and extract JSON from images
 
-For more complex applications like receipt processing (as seen on [usebillsplit.com](https://www.usebillsplit.com/)), we can leverage Together AI's vision models to extract structured data in JSON format. This approach is particularly powerful as it combines visual understanding with structured output.
+For more complex applications like receipt processing (as seen on [usebillsplit.com](https://www.usebillsplit.com/)), you can leverage Together AI's vision models to extract structured data in JSON format. This approach is particularly powerful as it combines visual understanding with structured output.
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
@@ -314,10 +314,10 @@ In this case, we passed in a schema to the model since we want specific informat
 }
 ```
 
-## Best Practices
+## Best practices
 
 1. **Structured Data Definition**: Define clear schemas for your expected output, making it easier to validate and process the extracted data.
-2. **Model Selection**: Choose the appropriate model based on your use case. Feel free to experiment with [our vision models](/docs/serverless/models#vision-models) to find the best one for you.
+2. **Model Selection**: Choose the appropriate model based on your use case. Feel free to experiment with [Together's vision models](/docs/serverless/models#vision-models) to find the best one for you.
 3. **Error Handling**: Always implement robust error handling for cases where the OCR might fail or return unexpected results.
 4. **Validation**: Implement validation for the extracted data to ensure accuracy and completeness.
 

@@ -8,7 +8,7 @@ Migrate from Together Python v1 to v2 - the new Together AI Python SDK with impr
 
 ## Overview
 
-We're excited to announce the release of Python v2, an upgrade to the Together AI Python SDK. This guide will help you migrate from the legacy (v1) SDK to the new version.
+Python v2 is an upgrade to the Together AI Python SDK. This guide will help you migrate from the legacy (v1) SDK to the new version.
 
 **Why Migrate?**
 
@@ -21,7 +21,7 @@ The new SDK offers several advantages:
 * **Faster Performance**: \~20ms faster per request on internal benchmarks
 * **uv Support**: Compatible with [uv](https://docs.astral.sh/uv/), the fast Python package installer - `uv add together`
 
-## Feature Parity Matrix
+## Feature parity matrix
 
 Use this table to quickly assess the migration effort for your specific use case:
 
@@ -29,11 +29,11 @@ Use this table to quickly assess the migration effort for your specific use case
 
 | Feature                         | Legacy SDK | New SDK | Migration Notes                                                |
 | :------------------------------ | :--------- | :------ | :------------------------------------------------------------- |
-| Chat Completions                | ✅          | ✅       | No changes required                                            |
+| Chat completions                | ✅          | ✅       | No changes required                                            |
 | Text Completions                | ✅          | ✅       | No changes required                                            |
 | Vision                          | ✅          | ✅       | No changes required                                            |
-| Function Calling                | ✅          | ✅       | No changes required                                            |
-| Structured Decoding (JSON Mode) | ✅          | ✅       | No changes required                                            |
+| Function calling                | ✅          | ✅       | No changes required                                            |
+| Structured Decoding (JSON mode) | ✅          | ✅       | No changes required                                            |
 | Embeddings                      | ✅          | ✅       | No changes required                                            |
 | Image Generation                | ✅          | ✅       | No changes required                                            |
 | Video Generation                | ✅          | ✅       | No changes required                                            |
@@ -49,10 +49,10 @@ Use this table to quickly assess the migration effort for your specific use case
 | Batches                         | ✅          | ✅       | ⚠️ Method names simplified, response shape changed             |
 | Endpoints                       | ✅          | ✅       | ⚠️ `get` → `retrieve`, response shapes changed                 |
 | Evaluations                     | ✅          | ✅       | ⚠️ Namespace changed to `evals`, parameters restructured       |
-| Code Interpreter                | ✅          | ✅       | ⚠️ `run` → `execute`                                           |
+| Code interpreter                | ✅          | ✅       | ⚠️ `run` → `execute`                                           |
 | **Raw Response Access**         | ❌          | ✅       | 🆕 New feature                                                 |
 
-## Installation & Setup
+## Installation & setup
 
 **1. Install the New SDK**
 
@@ -114,9 +114,9 @@ async_client = AsyncTogether()
   Some constructor parameters have changed. See [Constructor Parameters](#constructor-parameters) for details.
 </Note>
 
-## Global Breaking Changes
+## Global breaking changes
 
-### Constructor Parameters
+### Constructor parameters
 
 The client constructor has been updated with renamed and new parameters:
 
@@ -151,7 +151,7 @@ The client constructor has been updated with renamed and new parameters:
 * `supplied_headers` → `default_headers` (renamed)
 * New optional parameters: `default_query`, `http_client`
 
-### Keyword-Only Arguments
+### Keyword-only arguments
 
 All API method arguments must now be passed as keyword arguments. Positional arguments are no longer supported.
 
@@ -167,9 +167,9 @@ response = client.chat.completions.create(
 )
 ```
 
-### Optional Parameters
+### Optional parameters
 
-The new SDK uses `NOT_GIVEN` instead of `None` for omitted optional parameters. In most cases, you can simply omit the parameter entirely:
+The new SDK uses `NOT_GIVEN` instead of `None` for omitted optional parameters. In most cases, you can omit the parameter entirely:
 
 ```python theme={null}
 # ❌ Legacy approach
@@ -189,7 +189,7 @@ response = client.chat.completions.create(
 )
 ```
 
-### Extra Parameters
+### Extra parameters
 
 The legacy `**kwargs` pattern has been replaced with explicit parameters for passing additional data:
 
@@ -211,7 +211,7 @@ response = client.chat.completions.create(
 )
 ```
 
-### Response Type Names
+### Response type names
 
 Most API methods have renamed response type definitions. If you're importing response types for type hints, you'll need to update your imports:
 
@@ -223,7 +223,7 @@ from together.types import ChatCompletionResponse
 from together.types.chat.chat_completion import ChatCompletion
 ```
 
-### CLI Commands Removed
+### CLI commands removed
 
 The following CLI commands have been removed in the new SDK:
 
@@ -231,11 +231,11 @@ The following CLI commands have been removed in the new SDK:
 * `together completions`
 * `together images generate`
 
-## APIs with No Changes Required
+## APIs with no changes required
 
 The following APIs work identically in both SDKs. No code changes are needed:
 
-**Chat Completions**
+**Chat completions**
 
 ```python theme={null}
 response = client.chat.completions.create(
@@ -351,7 +351,7 @@ job = client.fine_tuning.retrieve(id="ft-abc123")
 client.fine_tuning.cancel(id="ft-abc123")
 ```
 
-## APIs with Changes Required
+## APIs with changes required
 
 **Batches**
 
@@ -400,7 +400,7 @@ Method names have been simplified, and the response structure has changed slight
 * `list_batches()` → `list()`
 * `cancel_batch()` → `cancel()`
 * `file_id` → `input_file_id`
-* `create()` returns full response; access `.job` for the job object
+* `create()` returns the full response. Access `.job` for the job object.
 
 **Endpoints**
 
@@ -492,7 +492,7 @@ Method names have been simplified, and the response structure has changed slight
 **Key Changes:**
 
 * `retrieve_content()` → `content()`
-* No longer writes to disk automatically; returns binary data for you to handle
+* No longer writes to disk automatically. Returns binary data for you to handle.
 
 **Fine-tuning Checkpoints**
 
@@ -528,7 +528,7 @@ Method names have been simplified, and the response structure has changed slight
 
 * Response is now an object with `.data` containing the list of checkpoints
 * Checkpoint properties renamed: `type` → `checkpoint_type`, `timestamp` → `created_at`
-* `name` no longer exists; construct from `ft_id` and `step`
+* `name` no longer exists. Construct it from `ft_id` and `step`.
 
 **Fine-tuning Download**
 
@@ -556,7 +556,7 @@ Method names have been simplified, and the response structure has changed slight
 * `download()` → `content()` with streaming response
 * No longer writes to disk automatically
 
-**Code Interpreter**
+**Code interpreter**
 
 <CodeGroup>
   ```python Legacy SDK theme={null}
@@ -759,7 +759,7 @@ with client.chat.completions.with_streaming_response.create(
 # Response automatically closed
 ```
 
-## Error Handling Migration
+## Error handling migration
 
 The exception hierarchy has been completely restructured with a new, more granular set of HTTP status-specific exceptions. Update your error handling code accordingly:
 
@@ -860,7 +860,7 @@ client.code_interpreter.run(...)  →  client.code_interpreter.execute(...)
 TypeError: Expected NotGiven, got None
 ```
 
-**Solution:** Don't pass `None` for optional parameters; omit them instead:
+**Solution:** Don't pass `None` for optional parameters. Omit them instead:
 
 ```python theme={null}
 # ❌ Wrong
@@ -888,7 +888,7 @@ client.evaluation.create(...)
 client.evals.create(...)
 ```
 
-## Best Practices
+## Best practices
 
 **Type Safety**
 
@@ -923,7 +923,7 @@ client = Together(
 )
 ```
 
-## Getting Help
+## Getting help
 
 If you encounter issues during migration:
 

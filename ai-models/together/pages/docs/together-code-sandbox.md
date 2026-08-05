@@ -19,7 +19,7 @@ Under the hood, the SDK uses the microVM infrastructure of CodeSandbox to spin u
 
 ## Accessing Together Code Sandbox
 
-Code Sandbox is a Together product that is currently available on our [custom plans](https://www.together.ai/contact-sales).\
+Code Sandbox is a Together product that is currently available on Together's [custom plans](https://www.together.ai/contact-sales).\
 A self-serve option is possible by creating an account with [CodeSandbox](https://codesandbox.io/pricing).
 
 > 📌 About CodeSandbox.io
@@ -28,7 +28,7 @@ A self-serve option is possible by creating an account with [CodeSandbox](https:
 >
 > Note that Together Code Sandbox is referred to as the SDK within the CodeSandbox.io
 
-## Getting Started
+## Getting started
 
 To get started, install the SDK:
 
@@ -58,16 +58,16 @@ console.log(output) // Hello World
 
 By default a Sandbox will be created from a template. A template is a memory/fs snapshot of a Sandbox, meaning it will be a direct continuation of the template. If the template was running a dev server, that dev server is running when the Sandbox is created.
 
-When you create, resume or restart a Sandbox you can access its `bootupType`. This value indicates how the Sandbox was started.
+When you create, resume, or restart a Sandbox you can access its `bootupType`. This value indicates how the Sandbox was started.
 
 **FORK**: The Sandbox was created from a template. This happens when you call `create` successfully.\
 **RUNNING**: The Sandbox was already running. This happens when you call `resume` and the Sandbox was already running.\
 **RESUME**: The Sandbox was resumed from hibernation. This happens when you call `resume` and the Sandbox was hibernated.\
 **CLEAN**: The Sandbox was created or resumed from scratch. This happens when you call `create` or `resume` and the Sandbox was not running and was missing a snapshot. This can happen if the Sandbox was shut down, restarted, the snapshot was expired (old snapshot) or if something went wrong.
 
-## Managing CLEAN bootups
+## Managing `CLEAN` bootups
 
-Whenever we boot a sandbox from scratch, we'll:
+Whenever a sandbox boots from scratch, the platform will:
 
 1. Start the Firecracker VM
 2. Create a default user (called pitcher-host)
@@ -101,7 +101,7 @@ for (const step of setupSteps) {
 
 ## Using templates
 
-Code Sandbox has default templates that you can use to create sandboxes. These templates are available in the Template Library and by default we use the "Universal" template. To create your own template you will need to use our CLI.
+Code Sandbox has default templates that you can use to create sandboxes. These templates are available in the Template Library, and the "Universal" template is used by default. To create your own template you will need to use the CodeSandbox CLI.
 
 ## Creating the template
 
@@ -111,7 +111,7 @@ Create a new folder in your project and add the files you want to have available
 npx create-vite@latest my-template
 ```
 
-Now we need to configure the template with tasks so that it will install dependencies and start the dev server. Create a my-template/.codesandbox/tasks.json file with the following content:
+Now configure the template with tasks so that it will install dependencies and start the dev server. Create a my-template/.codesandbox/tasks.json file with the following content:
 
 ```json JSON theme={null}
 {  
@@ -130,7 +130,7 @@ Now we need to configure the template with tasks so that it will install depende
 
 The `setupTasks` will run after the Sandbox has started, before any other tasks.
 
-Now we are ready to deploy the template to our clusters, run:
+Now you are ready to deploy the template to the clusters. Run:
 
 ```text Text theme={null}
 $ CSB_API_KEY=your-api-key npx @codesandbox/sdk build ./my-template --ports 5173
@@ -144,7 +144,7 @@ $ CSB_API_KEY=your-api-key npx @codesandbox/sdk build ./my-template --ports 5173
   The template will by default be built with Micro VM Tier unless you pass --vmTier to the build command.
 </Tip>
 
-This will start the process of creating Sandboxes for each of our clusters, write files, restart, wait for port 5173 to be available and then hibernate. This generates the snapshot that allows you to quickly create Sandboxes already running a dev server from the template.
+This will start the process of creating Sandboxes for each of the clusters, write files, restart, wait for port 5173 to be available and then hibernate. This generates the snapshot that allows you to quickly create Sandboxes already running a dev server from the template.
 
 When all clusters are updated successfully you will get a "Template Tag" back which you can use when you create your sandboxes.
 
@@ -230,7 +230,7 @@ const sandbox = await connectToSandbox({
 });
 ```
 
-## Disconnecting the Sandbox
+## Disconnecting the sandbox
 
 Disconnecting the session will end the session and automatically hibernate the sandbox after a timeout. You can also hibernate the sandbox explicitly from the server.
 
@@ -267,14 +267,14 @@ VM concurrency: This defines the maximum number of VMs you can run simultaneousl
 <Tip>
   ### Note
 
-  We use minutes as the smallest unit of measurement for VM credits. E.g.: if a VM runs for 3 minutes and 25 seconds, we bill the equivalent of 4 minutes of VM runtime.
+  Minutes are the smallest unit of measurement for VM credits. E.g.: if a VM runs for 3 minutes and 25 seconds, you are billed the equivalent of 4 minutes of VM runtime.
 </Tip>
 
 <br />
 
 ## VM credit prices by VM size
 
-Below is a summary of how many VM credits are used per hour of runtime in each of our available VM sizes. Note that, by default, we recommend using the Nano VM size, as it should provide enough resources for most simple workflows (Pico is mostly suitable for very simple code execution jobs).
+Below is a summary of how many VM credits are used per hour of runtime in each of the available VM sizes. Note that the Nano VM size is recommended by default, as it should provide enough resources for most simple workflows (Pico is mostly suitable for very simple code execution jobs).
 
 | VM size | Credits / hour | Cost / hour | CPU      | RAM    |
 | :------ | :------------- | :---------- | :------- | :----- |
@@ -296,7 +296,7 @@ To pick the most suitable plan for your use case, consider how many concurrent V
 * Scale plan: 250 concurrent VMs
 * Enterprise plan: custom concurrent VMs
 
-In case you expect a high volume of VM runtime, our Enterprise plan also provides special discounts on VM credits.
+In case you expect a high volume of VM runtime, the Enterprise plan also provides special discounts on VM credits.
 
 <Tip>
   ### For enterprise

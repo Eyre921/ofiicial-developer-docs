@@ -21895,9 +21895,11 @@ This automation step triggers a [Template](/docs/dashboard/templates/introductio
 
     <img alt="Add Send Email Action" />
 
-    Select a published template, then configure the subject and sender address.
+    Select a published template, then configure the sender address.
 
-    <img alt="Send Email Action Settings" />
+    <img alt="Send Email Action Sender Settings" />
+
+    *The subject always comes from the Template. To send a different subject, set `subject` when creating the step via the [API](#configuration).*
   </Tab>
 
   <Tab title="Using the API">
@@ -24170,6 +24172,17 @@ The DKIM configuration is stored as a TXT DNS record that contains a public key 
     1024-bit DKIM keys, which are RFC-compliant, accepted by major mailbox
     providers, and satisfy bulk sender requirements. Learn more about [DKIM key
     length](/docs/knowledge-base/do-i-need-2048-dkim).
+  </Accordion>
+
+  <Accordion title="Where do the logos in the domain preview come from?">
+    While you add or configure a domain, the dashboard displays your brand's
+    logo as a decorative preview. It's illustrative only and does not change how
+    your emails appear in recipients' inboxes. Showing your logo in the inbox
+    requires [BIMI](/docs/dashboard/domains/bimi).
+
+    <a href="https://logo.dev" title="Logo API">
+      Logos are provided by Logo.dev.
+    </a>
   </Accordion>
 </AccordionGroup>
 
@@ -35014,7 +35027,7 @@ Integrate Resend with the tools you already use.
     Build workflows using BuildShip
   </Card>
 
-  <Card title="viaSocket" href="https://viasocket.com/integrations/resend" icon={<ViaSocketIcon />}>
+  <Card title="viaSocket" href="https://viasocket.com/integrations/resend?utm_source=resend&utm_medium=marketplace&utm_campaign=resend_listing" icon={<ViaSocketIcon />}>
     Build automations using viaSocket
   </Card>
 
@@ -35028,6 +35041,10 @@ Integrate Resend with the tools you already use.
 
   <Card title="Post SMTP" href="https://postmansmtp.com/docs/mailers/how-to-setup-resend-with-post-smtp/" icon={<PostSmtpIcon />}>
     Send emails from WordPress with Post SMTP
+  </Card>
+
+  <Card title="Softr" href="https://docs.softr.io/workflows/integrations/resend" icon={<SoftrIcon />}>
+    Send emails from Softr workflows
   </Card>
 </CardGroup>
 
@@ -35148,6 +35165,10 @@ Integrate Resend with the tools you already use.
 
   <Card title="brin" href="https://brin.sh/docs/integrations/resend" icon={<BrinIcon />}>
     Scan inbound emails for phishing before your app processes them
+  </Card>
+
+  <Card title="Playrunner" href="https://playrunner.dev/docs/integration-packages/resend/" icon={<PlayrunnerIcon />}>
+    Send and receive email in Playrunner workflows
   </Card>
 </CardGroup>
 
@@ -52880,6 +52901,20 @@ Event triggered when a **domain was successfully created**.
     AWS region where the domain is configured.
   </ParamField>
 
+  <ParamField type="object">
+    Domain capabilities for sending and receiving emails.
+
+    <Expandable title="properties">
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to send emails.
+      </ParamField>
+
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to receive emails.
+      </ParamField>
+    </Expandable>
+  </ParamField>
+
   <ParamField type="array">
     Array of DNS record objects required for domain verification
 
@@ -52926,6 +52961,10 @@ Event triggered when a **domain was successfully created**.
       "status": "not_started",
       "created_at": "2026-04-26T20:21:26.347Z",
       "region": "us-east-1",
+      "capabilities": {
+        "sending": "enabled",
+        "receiving": "disabled"
+      },
       "records": [
         {
           "record": "SPF",
@@ -53008,6 +53047,20 @@ Event triggered when a **domain was successfully deleted**.
     AWS region where the domain is configured.
   </ParamField>
 
+  <ParamField type="object">
+    Domain capabilities for sending and receiving emails.
+
+    <Expandable title="properties">
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to send emails.
+      </ParamField>
+
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to receive emails.
+      </ParamField>
+    </Expandable>
+  </ParamField>
+
   <ParamField type="array">
     Array of DNS record objects required for domain verification
 
@@ -53054,6 +53107,10 @@ Event triggered when a **domain was successfully deleted**.
       "status": "not_started",
       "created_at": "2026-04-26T20:21:26.347Z",
       "region": "us-east-1",
+      "capabilities": {
+        "sending": "enabled",
+        "receiving": "disabled"
+      },
       "records": [
         {
           "record": "SPF",
@@ -53136,6 +53193,20 @@ Event triggered when a **domain was successfully updated**.
     AWS region where the domain is configured.
   </ParamField>
 
+  <ParamField type="object">
+    Domain capabilities for sending and receiving emails.
+
+    <Expandable title="properties">
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to send emails.
+      </ParamField>
+
+      <ParamField type="enabled | disabled">
+        Whether the domain can be used to receive emails.
+      </ParamField>
+    </Expandable>
+  </ParamField>
+
   <ParamField type="array">
     Array of DNS record objects required for domain verification
 
@@ -53182,6 +53253,10 @@ Event triggered when a **domain was successfully updated**.
       "status": "not_started",
       "created_at": "2026-04-26T20:21:26.347Z",
       "region": "us-east-1",
+      "capabilities": {
+        "sending": "enabled",
+        "receiving": "enabled"
+      },
       "records": [
         {
           "record": "SPF",

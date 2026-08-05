@@ -22,7 +22,7 @@ Before you start, make sure you have:
 * ngrok or another HTTPS tunnel for local testing
 * The [Silero VAD](https://github.com/snakers4/silero-vad) ONNX model saved in your project root as `silero_vad.onnx`
 
-## Step 1: Create the Project
+## Step 1: Create the project
 
 Create a new directory and install the dependencies:
 
@@ -67,7 +67,7 @@ Add a `tsconfig.json`:
 }
 ```
 
-## Step 2: Add Environment Variables
+## Step 2: Add environment variables
 
 Create a `.env` file:
 
@@ -87,7 +87,7 @@ The build below supports three personas:
 * `account_exec` - an account executive at Together AI
 * `marcus` - an engineer at Together AI
 
-## Step 3: Add the Audio Conversion Layer
+## Step 3: Add the audio conversion layer
 
 Create `audio-convert.ts`. This file handles:
 
@@ -452,7 +452,7 @@ Create `audio-convert.ts`. This file handles:
   ```
 </Accordion>
 
-## Step 4: Add Local Voice Activity Detection
+## Step 4: Add local voice activity detection
 
 <img alt="agent architecture diagram" />
 
@@ -460,8 +460,8 @@ Create `vad.ts`. This file wraps the [Silero VAD](https://github.com/snakers4/si
 
 Silero VAD is a lightweight voice activity detection model that takes a short window of audio and returns a probability between `0` and `1` indicating whether that window contains speech. In this project it serves two purposes:
 
-* **Turn-boundary detection** — while the server is listening, VAD probabilities decide when the caller has started speaking and when they have stopped. Once speech ends (probability drops below a threshold for long enough), the server commits the buffered STT audio and triggers a reply.
-* **Barge-in detection** — while the assistant is speaking, VAD probabilities detect whether the caller is trying to interrupt. If the probability exceeds a higher threshold for several consecutive frames, the server immediately clears Twilio's playback buffer and switches back to listening.
+* **Turn-boundary detection:** While the server is listening, VAD probabilities decide when the caller has started speaking and when they have stopped. Once speech ends (probability drops below a threshold for long enough), the server commits the buffered STT audio and triggers a reply.
+* **Barge-in detection:** While the assistant is speaking, VAD probabilities detect whether the caller is trying to interrupt. If the probability exceeds a higher threshold for several consecutive frames, the server immediately clears Twilio's playback buffer and switches back to listening.
 
 The wrapper loads the ONNX model once and shares the session across all concurrent calls. Each call gets its own `SileroVad` instance with independent RNN hidden state so one caller's audio never bleeds into another's detection.
 
@@ -581,7 +581,7 @@ The wrapper loads the ONNX model once and shares the session across all concurre
   ```
 </Accordion>
 
-## Step 5: Build the Realtime STT -> LLM -> TTS Pipeline
+## Step 5: Build the realtime STT -> LLM -> TTS pipeline
 
 <img alt="agent architecture diagram" />
 
@@ -1485,7 +1485,7 @@ Create `pipeline.ts`. This file does four jobs:
   ```
 </Accordion>
 
-## Step 6: Build the Twilio Media Stream Session
+## Step 6: Build the Twilio Media Stream session
 
 <img alt="agent architecture diagram" />
 
@@ -1833,7 +1833,7 @@ Create `media-stream.ts`. This is the per-call state machine. It handles:
   ```
 </Accordion>
 
-## Step 7: Add the HTTP Server and TwiML Endpoint
+## Step 7: Add the HTTP server and TwiML endpoint
 
 <img alt="agent architecture diagram" />
 
@@ -1908,7 +1908,7 @@ Create `server.ts`. This file serves two purposes:
   ```
 </Accordion>
 
-## Step 8: Check Your Project Layout
+## Step 8: Check your project layout
 
 At this point your project should look like this:
 
@@ -1925,7 +1925,7 @@ twilio-voice-agent/
   silero_vad.onnx
 ```
 
-## Step 9: Start the Server
+## Step 9: Start the server
 
 Run:
 
@@ -1950,7 +1950,7 @@ You should see startup output like this:
   └──────────────────────────────────────────┘
 ```
 
-## Step 10: Expose the App and Connect Twilio
+## Step 10: Expose the app and connect Twilio
 
 In another terminal:
 
@@ -1967,7 +1967,7 @@ Copy the `https://` forwarding URL and configure your Twilio number:
 
 When the call comes in, Twilio will request `/twiml`, receive a `<Connect><Stream>` response, and open a bidirectional Media Stream back to your `/media-stream` endpoint.
 
-## Step 11: Call the Number
+## Step 11: Call the number
 
 Dial your Twilio number from any phone.
 
@@ -1984,7 +1984,7 @@ The expected flow is:
 9. TTS audio is converted back to `audio/x-mulaw` and played to the caller
 10. If the caller interrupts, the server sends Twilio a `clear` event and starts listening again
 
-## How the Low-Latency Path Works
+## How the low-latency path works
 
 This architecture stays fast because it avoids unnecessary waits:
 
@@ -1994,7 +1994,7 @@ This architecture stays fast because it avoids unnecessary waits:
 * TTS starts on each completed sentence instead of waiting for the full reply
 * Twilio playback can be interrupted immediately with a `clear` event
 
-## Tuning the Voice Experience
+## Tuning the voice experience
 
 The behavior is mostly controlled by a few thresholds in `media-stream.ts`:
 

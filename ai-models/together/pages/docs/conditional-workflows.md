@@ -8,7 +8,7 @@ Adapt to different tasks by conditionally navigating to various LLMs and tools.
 
 A workflow where user input is classified and directed to a specific task (can be a specific LLM, specific custom prompt, different tool calls etc.). This allows you to handle many different inputs with the appropriate set of calls.
 
-## Workflow Architecture
+## Workflow architecture
 
 Create an agent that conditionally routes tasks to specialized models.
 
@@ -69,7 +69,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
         print(error_message)
 ```
 
-## Implement Workflow
+## Implement workflow
 
 <CodeGroup>
   ```py Python theme={null}
@@ -192,7 +192,7 @@ def JSON_llm(user_prompt: str, schema, system_prompt: str = None):
   ```
 </CodeGroup>
 
-## Example Usage
+## Example usage
 
 ```py Python theme={null}
 prompt_list = [

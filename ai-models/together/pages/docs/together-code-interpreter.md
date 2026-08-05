@@ -8,9 +8,9 @@ Execute LLM-generated code seamlessly with a simple API call.
 
 <Tip>Using a coding agent? Install the [together-sandboxes](https://github.com/togethercomputer/skills/tree/main/skills/together-sandboxes) skill to let your agent write correct sandbox code automatically. [Learn more](/docs/agent-skills).</Tip>
 
-Together Code Interpreter (TCI) enables you to execute Python code in a sandboxed environment.
+Together code interpreter (TCI) enables you to execute Python code in a sandboxed environment.
 
-The Code Interpreter currently only supports Python. We plan to expand the language options in the future.
+The code interpreter currently only supports Python. Together plans to expand the language options in the future.
 
 > ℹ️ MCP Server
 >
@@ -98,14 +98,14 @@ stdout: Welcome to Together Code Interpreter!
 >
 > TCI usage is billed at **\$0.03/session**. As detailed below, sessions have a lifespan of 60 minutes and can be used multiple times.
 
-## Example Use Cases
+## Example use cases
 
-<img alt="Overview of how Together Code Interpreter can be used in a code generation, execution and improvement iteration." />
+<img alt="Overview of how Together code interpreter can be used in a code generation, execution, and improvement iteration." />
 
-* **Reinforcement learning (RL) training**: TCI transforms code execution into an interactive RL environment where generated code is run and evaluated in real time, providing reward signals from successes or failures, integrating automated pass/fail tests, and scaling easily across parallel workers—thus creating a powerful feedback loop that refines coding models over many trials.
+* **Reinforcement learning (RL) training**: TCI transforms code execution into an interactive RL environment where generated code is run and evaluated in real time, providing reward signals from successes or failures, integrating automated pass/fail tests, and scaling across parallel workers, creating a powerful feedback loop that refines coding models over many trials.
 * **Developing agentic workflows**: TCI allows AI agents to seamlessly write and execute Python code, enabling robust, iterative, and secure computations within a closed-loop system.
 
-## Response Format
+## Response format
 
 The API returns:
 
@@ -149,7 +149,7 @@ A session is an active code execution environment that can be called to execute 
 Typical TCI usage follows this workflow:
 
 1. Start a session (create a TCI instance).
-2. Call that session to execute code; TCI outputs `stdout` and `stderr`.
+2. Call that session to execute code. TCI outputs `stdout` and `stderr`.
 3. Optionally reuse an existing session by calling its `session_id`.
 
 ## Reusing sessions and maintaining state between runs
@@ -265,9 +265,9 @@ Output
 stdout: The value of x is 42
 ```
 
-## Using the TCI for Data analysis
+## Using the TCI for data analysis
 
-Together Code Interpreter is a very powerful tool and gives you access to a fully functional coding environment. You can install Python libraries and conduct fully fledged data analysis experiments.
+Together code interpreter is a very powerful tool and gives you access to a fully functional coding environment. You can install Python libraries and conduct fully fledged data analysis experiments.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -545,7 +545,7 @@ TCI's Python sessions come pre-installed with the following dependencies, any ot
 - sympy
 ```
 
-## List Active Sessions
+## List active sessions
 
 To retrieve all your active sessions:
 
@@ -610,4 +610,4 @@ Output:
 
 ## Troubleshooting & questions
 
-If you have questions about integrating TCI into your workflow or encounter any issues, please [contact us](https://www.together.ai/contact).
+If you have questions about integrating TCI into your workflow or encounter any issues, [contact us](https://www.together.ai/contact).

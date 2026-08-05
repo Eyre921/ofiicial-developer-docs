@@ -15,7 +15,7 @@ There are many reasons that payments can be declined. If your payment isn't goin
 * Is the payment card in date?
 * Have you activated the card? (If recently replaced)
 * Have you entered the correct CVV number?
-* **Have you filled in all of the address information when adding the card?** Ensure the billing address exactly matches what's registered with your card provider, including the zip/post code. Even if your payment provider shows the transaction as approved, address mismatches can still cause declines on our end.
+* **Have you filled in all of the address information when adding the card?** Ensure the billing address exactly matches what's registered with your card provider, including the zip/post code. Even if your payment provider shows the transaction as approved, address mismatches can still cause the payment to be declined.
 * **Are you using a supported card type?** Together AI only accepts credit or debit cards linked to a bank account. Prepaid cards are not supported and will be declined. Virtual cards are also often blocked by issuing banks for certain types of transactions.
 * **Does your card support recurring payments?** Together AI requires payment cards that support recurring payments. Some prepaid cards or cards from certain banks may not support this feature, which can cause payment declines even with valid card information.
 * **Are you seeing a \$0 authorization hold from your bank?** This is a normal verification process to confirm your card is active before charging the actual amount. You need to approve this authorization hold in your banking app or with your bank for the real payment to go through.
@@ -41,17 +41,17 @@ If an ACH payment fails, no credits are deposited. Contact [Support](https://por
 
 There are a number of stages to every payment made on the Together AI platform.
 
-First, our payment processor contacts your bank or card issuer to approve the payment.
+First, Together AI's payment processor contacts your bank or card issuer to approve the payment.
 
-When it's approved and the payment has gone through we then generate an invoice which you can access from [your billing settings](https://api.together.ai/settings/organization/~current/billing).
+Once the payment has gone through, an invoice is generated, which you can access from [your billing settings](https://api.together.ai/settings/organization/~current/billing).
 
-Then our payment systems need to update your account balance to reflect the purchase.
+The payment systems then need to update your account balance to reflect the purchase.
 
 Once all of this has happened, your balance updates.
 
 ### Card payments
 
-For credit and debit card purchases, this usually completes within 60 seconds of you confirming the payment, often instantly. Sometimes there can be a delay in the process, either due to our systems or due to your bank taking longer than expected to confirm the payment.
+For credit and debit card purchases, this usually completes within 60 seconds of you confirming the payment, often instantly. Sometimes there can be a delay in the process, either on Together AI's side or due to your bank taking longer than expected to confirm the payment.
 
 ### ACH bank transfers
 
@@ -63,7 +63,7 @@ If the ACH payment ultimately fails, no credits are deposited. See [Payment meth
 
 ### What to do while a payment is pending
 
-If this happens, you will see a pending banner on your [billing settings](https://api.together.ai/settings/organization/~current/billing) page to let you know that we're aware of the transaction, but it's still in progress.
+If this happens, you will see a pending banner on your [billing settings](https://api.together.ai/settings/organization/~current/billing) page to let you know that the transaction has been received but is still in progress.
 
 If this is the case, don't make any further payments. Each further payment will be treated as an individual transaction, so you could end up buying more credit packs than you intended.
 

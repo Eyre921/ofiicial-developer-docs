@@ -21,7 +21,7 @@ See [Custom models](/docs/dedicated-endpoints/custom-models) for the end-to-end 
 
 ## Create
 
-Register a new model record. This creates metadata only; it does not upload any files. Upload the weights afterward with [`upload`](#upload) or [`remote-uploads create`](#remote-uploads-create).
+Register a new model record. This creates metadata only. It does not upload any files. Upload the weights afterward with [`upload`](#upload) or [`remote-uploads create`](#remote-uploads-create).
 
 ```bash Shell theme={null}
 tg beta models create my-custom-glm \
@@ -100,7 +100,7 @@ tg beta models update ml_abc123 \
 
 ## Delete
 
-Delete a model record. This removes the metadata; it does not delete uploaded files.
+Delete a model record. This removes the metadata. It does not delete uploaded files.
 
 ```bash Shell theme={null}
 tg beta models delete ml_abc123

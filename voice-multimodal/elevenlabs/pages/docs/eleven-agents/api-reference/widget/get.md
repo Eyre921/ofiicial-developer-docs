@@ -632,6 +632,10 @@ components:
         styles:
           $ref: '#/components/schemas/type_:WidgetStyles'
           description: Styles for the widget
+        show_resize_button:
+          type: boolean
+          default: true
+          description: Whether to show the resize button
         language:
           type: string
         supported_language_overrides:
@@ -840,6 +844,7 @@ components:
       "compact_sheet_radius": 1.1,
       "dropdown_sheet_radius": 1.1
     },
+    "show_resize_button": true,
     "supported_language_overrides": [
       "es",
       "fr"

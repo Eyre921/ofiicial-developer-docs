@@ -3691,6 +3691,10 @@ components:
         styles:
           $ref: '#/components/schemas/type_:WidgetStyles'
           description: Styles for the widget
+        show_resize_button:
+          type: boolean
+          default: true
+          description: Whether to show the resize button
         language_selector:
           type: boolean
           default: false
@@ -6882,6 +6886,36 @@ components:
         - creator_email
         - role
       title: ResourceAccessInfo
+    type_:ConflictSection:
+      type: string
+      enum:
+        - conversation_config
+        - platform_settings
+        - procedures
+        - workflow
+      title: ConflictSection
+    type_:FieldConflict:
+      type: object
+      properties:
+        path:
+          type: string
+          description: >-
+            Identifier of the conflicting field relative to its section: a
+            dot-path within conversation_config/platform_settings, or a
+            procedure id.
+        section:
+          $ref: '#/components/schemas/type_:ConflictSection'
+          description: Which config section this path belongs to.
+        base_value:
+          description: Value at the common ancestor (merge base).
+        source_value:
+          description: Value on the source branch tip.
+        target_value:
+          description: Value on the target branch tip.
+      required:
+        - path
+        - section
+      title: FieldConflict
     type_:MergePreviewResponseModel:
       type: object
       properties:
@@ -6939,6 +6973,15 @@ components:
             Dot-paths of config fields where both branches modified the same
             field relative to their common ancestor (conflicts). Present
             regardless of which side wins the conflict.
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:FieldConflict'
+          description: >-
+            Structured view of the same conflicts as overridden_fields, each
+            carrying the value on the base (common ancestor), source branch, and
+            target branch so the divergence can be presented and resolved
+            field-by-field.
         source_identical_to_target:
           type: boolean
           default: false
@@ -7326,6 +7369,7 @@ components:
       "show_conversation_id": true,
       "strip_audio_tags": true,
       "syntax_highlight_theme": "light",
+      "show_resize_button": true,
       "language_selector": false,
       "supports_text_only": true,
       "custom_avatar_path": "https://example.com/avatar.png",
@@ -8477,6 +8521,21 @@ components:
   "main_branch_id": "main_branch_id",
   "overridden_fields": [
     "overridden_fields"
+  ],
+  "conflicts": [
+    {
+      "path": "path",
+      "section": "conversation_config",
+      "base_value": {
+        "key": "value"
+      },
+      "source_value": {
+        "key": "value"
+      },
+      "target_value": {
+        "key": "value"
+      }
+    }
   ],
   "source_identical_to_target": true
 }

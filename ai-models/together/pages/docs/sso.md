@@ -12,7 +12,7 @@ Single Sign-On enables your company to authenticate to your Together Organizatio
   SSO is available for **Scale and Enterprise** accounts. [Contact sales](https://www.together.ai/contact-sales) to upgrade.
 </Info>
 
-## Supported Providers
+## Supported providers
 
 Together supports SSO via **SAML** and **OIDC** protocols with these Identity Providers:
 
@@ -33,14 +33,14 @@ For detailed setup instructions per provider, see the guides below:
 | Microsoft Entra  | SAML     | [Microsoft Entra SAML setup guide](https://stytch.com/docs/b2b/guides/sso/provider-setup#microsoft-entra-saml)   |
 | Microsoft Entra  | OIDC     | [Microsoft Entra OIDC setup guide](https://stytch.com/docs/b2b/guides/sso/provider-setup#microsoft-entra-oidc)   |
 
-## What SSO Enables
+## What SSO enables
 
 * **Automated provisioning.** Members are added to your [organization](https://api.together.ai/settings/organization/~current/members) automatically when they authenticate through your IdP.
 * **Centralized offboarding.** Deactivate a user in your IdP and their Together access is revoked.
 * **Shared resources.** SSO members can collaborate on fine-tuned models, inference analytics, clusters, and billing within their [projects](/docs/projects).
 * **Audit trail.** Individual authentication means you can track who did what.
 
-## Setting Up SSO
+## Setting up SSO
 
 Contact [support](https://portal.usepylon.com/together-ai/forms/support-request) or your Account Executive with:
 
@@ -49,11 +49,11 @@ Contact [support](https://portal.usepylon.com/together-ai/forms/support-request)
 3. Which Identity Provider you use
 4. The email address of the initial account owner
 
-Setup typically takes **24 to 48 working hours** from when we receive your request. Complex configurations (multiple domains, custom attribute mapping) may take longer.
+Setup typically takes **24 to 48 working hours** from when Together receives your request. Complex configurations (multiple domains, custom attribute mapping) may take longer.
 
-## Migrating from Legacy Enterprise Sign-On
+## Migrating from legacy enterprise sign-on
 
-If your team currently uses a shared username/password enterprise account, we recommend migrating to SSO. Shared credential accounts will be deprecated in the coming months.
+If your team currently uses a shared username/password enterprise account, migrate to SSO. Shared credential accounts will be deprecated in the coming months.
 
 Benefits of migrating:
 
@@ -62,7 +62,7 @@ Benefits of migrating:
 * Stronger security (no shared passwords)
 * Access to [role-based permissions](/docs/roles-permissions) and [multi-project support](/docs/projects)
 
-## Session Management
+## Session management
 
 Together manages its own session timeouts independently from your IdP's default settings. Session duration and re-authentication requirements are configured on the Together side.
 
@@ -82,7 +82,7 @@ Together manages its own session timeouts independently from your IdP's default 
   </Accordion>
 </AccordionGroup>
 
-## What's Coming
+## What's coming
 
 * Spend controls per member or project
 * Self-service SSO configuration

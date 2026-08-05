@@ -138,7 +138,7 @@ How your app stores historical messages is up to you.
 
 ## Add a system prompt
 
-You can query a model with just a user message, but you'll typically want to give the model a system prompt with context for how to respond. For example, if you're building a travel chatbot, you might tell the model to act like a helpful travel guide.
+You can query a model with only a user message, but you'll typically want to give the model a system prompt with context for how to respond. For example, if you're building a travel chatbot, you might tell the model to act like a helpful travel guide.
 
 To add a system prompt, provide an initial message with the `system` role:
 

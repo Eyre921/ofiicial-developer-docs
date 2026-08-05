@@ -3700,6 +3700,10 @@ components:
         styles:
           $ref: '#/components/schemas/type_:WidgetStyles'
           description: Styles for the widget
+        show_resize_button:
+          type: boolean
+          default: true
+          description: Whether to show the resize button
         language_selector:
           type: boolean
           default: false
@@ -9963,6 +9967,7 @@ components:
       "show_conversation_id": true,
       "strip_audio_tags": true,
       "syntax_highlight_theme": "light",
+      "show_resize_button": true,
       "language_selector": false,
       "supports_text_only": true,
       "custom_avatar_path": "https://example.com/avatar.png",

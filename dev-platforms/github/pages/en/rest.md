@@ -12,11 +12,11 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Quickstart for GitHub REST API](/en/rest/quickstart)
 
-  Learn how to get started with the GitHub REST API.
+  <p>Learn how to get started with the GitHub REST API.</p>
 
 * [Getting started with the REST API](/en/rest/using-the-rest-api/getting-started-with-the-rest-api)
 
-  Learn how to use the GitHub REST API.
+  <p>Learn how to use the GitHub REST API.</p>
 
 * [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api)
 
@@ -24,7 +24,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  Follow these best practices when using GitHub's API.
+  <p>Follow these best practices when using GitHub's API.</p>
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
@@ -40,7 +40,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 
-  Learn how to diagnose and resolve common problems for the REST API.
+  <p>Learn how to diagnose and resolve common problems for the REST API.</p>
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 

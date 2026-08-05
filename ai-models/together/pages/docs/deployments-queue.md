@@ -12,7 +12,7 @@ The Queue API provides asynchronous job processing for Dedicated Containers. Sub
   **New to Dedicated Containers?** Start with the [Overview](/docs/dedicated-container-inference) to understand the platform, or jump to the [Quickstart](/docs/containers-quickstart) to deploy your first container.
 </Tip>
 
-## Core Concepts
+## Core concepts
 
 ### Jobs
 
@@ -23,7 +23,7 @@ A **job** is a single unit of work submitted to your deployment. Jobs can run fo
 * Long-running inference tasks
 * Any workload that doesn't fit the request-response pattern
 
-### Job Lifecycle
+### Job lifecycle
 
 | Status     | Description                                     |
 | ---------- | ----------------------------------------------- |
@@ -49,16 +49,16 @@ client.beta.jig.queue.submit(model="my-model", payload={...}, priority=0)
 ```
 
 <Note>
-  By default, priority is **not** considered for autoscaling metrics—the autoscaler scales based on total queue depth regardless of priority. Contact [support@together.ai](mailto:support@together.ai) for advanced scaling policies that account for priority tiers.
+  By default, priority is **not** considered for autoscaling metrics: the autoscaler scales based on total queue depth regardless of priority. Contact [support@together.ai](mailto:support@together.ai) for advanced scaling policies that account for priority tiers.
 </Note>
 
-### Job State with `info`
+### Job state with `info`
 
 The `info` field provides persistent state that survives across the job lifecycle. You can:
 
 1. **Set initial state** when submitting a job via the `info` parameter
 2. **Update state** during processing using `emit()` in your Sprocket worker
-3. **Preserve state** across retries—`info` accumulates rather than resets
+3. **Preserve state** across retries: `info` accumulates rather than resets
 
 This is useful for tracking progress, storing metadata, or passing context between retries.
 
@@ -85,7 +85,7 @@ This is useful for tracking progress, storing metadata, or passing context betwe
 
 For full endpoint documentation (request parameters, response schemas, and error codes), see the [Queue REST API Reference](/reference/queue-submit): [submit](/reference/queue-submit), [status](/reference/queue-status), [cancel](/reference/queue-cancel), [clear](/reference/queue-clear), [metrics](/reference/queue-metrics).
 
-## Polling for Job Completion
+## Polling for job completion
 
 For jobs that take time to complete, poll the status endpoint until the job reaches a terminal state (`done`, `failed`, or `canceled`).
 
@@ -162,7 +162,7 @@ For jobs that take time to complete, poll the status endpoint until the job reac
 
 ## Clearing pending jobs
 
-To cancel every pending job for a model at once, for example to drain a backed-up queue, call `clear`. Only jobs still in the `pending` state are canceled; running jobs are left untouched. The response reports how many jobs were canceled.
+To cancel every pending job for a model at once, for example to drain a backed-up queue, call `clear`. Only jobs still in the `pending` state are canceled. Running jobs are left untouched. The response reports how many jobs were canceled.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -186,9 +186,9 @@ To cancel every pending job for a model at once, for example to drain a backed-u
 
 ***
 
-## Best Practices
+## Best practices
 
-### Use Priority for Tiered Service
+### Use priority for tiered service
 
 Implement different service tiers by assigning priority based on customer type:
 
@@ -203,7 +203,7 @@ def submit_job(user, payload):
     )
 ```
 
-### Track Progress for Long-Running Jobs
+### Track progress for long-running jobs
 
 For jobs that take more than a few seconds, emit progress updates so clients can show status:
 
@@ -224,7 +224,7 @@ class VideoGenerator(Sprocket):
         return {"video": FileOutput("output.mp4")}
 ```
 
-### Handle All Terminal States
+### Handle all terminal states
 
 Always check for `done`, `failed`, and `canceled` when polling:
 
@@ -236,7 +236,7 @@ while status.status not in terminal_states:
     status = client.beta.jig.queue.retrieve(...)
 ```
 
-### Store Metadata in `info`
+### Store metadata in `info`
 
 Use `info` to store job metadata that you'll need when the job completes:
 
@@ -254,7 +254,7 @@ job = client.beta.jig.queue.submit(
 
 ***
 
-## Error Codes
+## Error codes
 
 | Code  | Description                                                  |
 | ----- | ------------------------------------------------------------ |
@@ -266,7 +266,7 @@ job = client.beta.jig.queue.submit(
 
 ***
 
-## Related Resources
+## Related resources
 
 * [Dedicated Containers Overview](/docs/dedicated-container-inference) – Architecture and concepts
 * [Quickstart](/docs/containers-quickstart) – Deploy your first container

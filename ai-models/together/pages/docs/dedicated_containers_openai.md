@@ -239,7 +239,7 @@ The response is the standard OpenAI Images shape:
 | Parameter         | Notes                                                        |
 | ----------------- | ------------------------------------------------------------ |
 | `prompt`          | Required.                                                    |
-| `model`           | Accepted for compatibility; the deployment serves one model. |
+| `model`           | Accepted for compatibility. The deployment serves one model. |
 | `n`               | 1 to 10, default 1.                                          |
 | `size`            | `WIDTHxHEIGHT`, default `1024x1024`.                         |
 | `response_format` | Only `b64_json` is supported.                                |

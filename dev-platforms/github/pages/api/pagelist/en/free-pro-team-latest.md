@@ -778,6 +778,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/concepts/code-quality
 /en/code-security/concepts/code-quality/code-quality
 /en/code-security/concepts/code-quality/enablement-at-scale
+/en/code-security/concepts/code-quality/automatic-code-coverage-setup
 /en/code-security/concepts/vulnerability-reporting-and-management
 /en/code-security/concepts/vulnerability-reporting-and-management/github-advisory-database
 /en/code-security/concepts/vulnerability-reporting-and-management/innersource-advisories

@@ -3712,6 +3712,10 @@ components:
         styles:
           $ref: '#/components/schemas/type_:WidgetStyles'
           description: Styles for the widget
+        show_resize_button:
+          type: boolean
+          default: true
+          description: Whether to show the resize button
         language_selector:
           type: boolean
           default: false
@@ -7540,6 +7544,15 @@ components:
             result_type:
               type: string
               enum:
+                - dummy
+              description: 'Discriminator value: dummy'
+          required:
+            - result_type
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
                 - end_call_success
               description: 'Discriminator value: end_call_success'
             status:
@@ -7648,41 +7661,6 @@ components:
           required:
             - result_type
             - dtmf_tones
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - run_subagent_error
-              description: 'Discriminator value: run_subagent_error'
-            status:
-              type: string
-              enum:
-                - error
-            error:
-              type: string
-          required:
-            - result_type
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - run_subagent_success
-              description: 'Discriminator value: run_subagent_success'
-            status:
-              type: string
-              enum:
-                - success
-            query:
-              type: string
-            agent_response:
-              type: string
-          required:
-            - result_type
-            - query
-            - agent_response
         - type: object
           properties:
             result_type:
@@ -8260,6 +8238,37 @@ components:
         - image
         - file
       title: ChatSourceMedium
+    type_:GuardrailType:
+      type: string
+      enum:
+        - custom
+        - prompt_injection
+        - self_harm_intent
+        - violence_graphic
+        - sexual
+        - violence
+        - harassment
+        - sexual_minors
+        - self_harm
+        - self_harm_instructions
+        - harassment_threatening
+        - hate
+        - hate_threatening
+        - profanity
+        - religion_or_politics
+        - medical_and_legal
+        - guardrail
+      title: GuardrailType
+    type_:TriggeredGuardrailCommonModel:
+      type: object
+      properties:
+        guardrail_type:
+          $ref: '#/components/schemas/type_:GuardrailType'
+        guardrail_name:
+          type: string
+      required:
+        - guardrail_type
+      title: TriggeredGuardrailCommonModel
     type_:ConversationHistoryTranscriptCommonModelOutput:
       type: object
       properties:
@@ -8318,6 +8327,10 @@ components:
           type: string
         id:
           type: string
+        triggered_guardrails:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:TriggeredGuardrailCommonModel'
       required:
         - role
         - time_in_call_secs

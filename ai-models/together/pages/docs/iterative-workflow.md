@@ -8,7 +8,7 @@ Iteratively call LLMs to optimize task performance.
 
 The iterative workflow ensures task requirements are fully met through iterative refinement. An LLM performs a task, followed by a second LLM evaluating whether the result satisfies all specified criteria. If not, the process repeats with adjustments, continuing until the evaluator confirms all requirements are met.
 
-## Workflow Architecture
+## Workflow architecture
 
 Build an agent that iteratively improves responses.
 
@@ -16,7 +16,7 @@ Build an agent that iteratively improves responses.
   <img alt="" />
 </Frame>
 
-## Setup Client & Helper Functions
+## Setup client & helper functions
 
 <CodeGroup>
   ```py Python theme={null}
@@ -122,7 +122,7 @@ Build an agent that iteratively improves responses.
   ```
 </CodeGroup>
 
-## Implement Workflow
+## Implement workflow
 
 <CodeGroup>
   ```py Python theme={null}
@@ -369,7 +369,7 @@ Build an agent that iteratively improves responses.
   ```
 </CodeGroup>
 
-## Example Usage
+## Example usage
 
 <CodeGroup>
   ```py Python theme={null}

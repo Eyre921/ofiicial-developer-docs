@@ -8,7 +8,7 @@ Build a simple code editing agent from scratch in 400 lines of code.
 
 I recently read a great [blog post](https://ampcode.com/how-to-build-an-agent) by Thorsten Ball on how simple it is to build coding agents and was inspired to make a python version guide here!
 
-We'll create an LLM that can call tools that allow it to create, edit and read the contents of files and repos!
+We'll create an LLM that can call tools that allow it to create, edit, and read the contents of files and repos!
 
 ## Setup
 
@@ -26,7 +26,7 @@ First, let's import the necessary libraries. We'll be using the `together` libra
   ```
 </CodeGroup>
 
-## Basic Chat Interaction
+## Basic chat interaction
 
 Let's start with a simple loop that takes user input, sends it to a language model (LLM) using the Together AI client, and prints the LLM's response. We'll maintain a `messages_history` to keep track of the conversation context.
 
@@ -239,9 +239,9 @@ This will output a tool call from the model:
 ]
 ```
 
-## Calling Tools
+## Calling tools
 
-Now we need to run the function that the model has asked for and feed the response back to the model, this can be done by simply checking if the model asked for a tool call and executing the corresponding function and sending the response to the model:
+Now we need to run the function that the model has asked for and feed the response back to the model, this can be done by checking if the model asked for a tool call and executing the corresponding function and sending the response to the model:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -292,7 +292,7 @@ Output:
   ```
 </CodeGroup>
 
-Above, we simply did the following:
+Above, we did the following:
 
 1. See if the model wanted us to use a tool.
 2. If so, we used the tool for it.
@@ -446,7 +446,7 @@ We'll want our coding agent to be able to see what files exist in a repo and als
   ```
 </CodeGroup>
 
-## Incorporating Tools into the Coding Agent
+## Incorporating tools into the coding agent
 
 Now we can add all three of these tools into the simple looping chat function we made and call it!
 

@@ -15,7 +15,7 @@ Features
 * Self-improvement algorithms that optimize prompts and weights
 * Support for various applications from simple classifiers to RAG systems and agent loops
 
-## Installing Libraries
+## Installing libraries
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -90,10 +90,10 @@ Now we can set up a DSPy module, like `dspy.ReAct` with a task-specific signatur
   ```
 </CodeGroup>
 
-## Next Steps
+## Next steps
 
 <Info>
   ### DSPy - Together AI Notebook
 
-  Learn more about building agents using DSPy with Together AI in our [notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/DSPy/DSPy_Agents.ipynb).
+  Learn more about building agents using DSPy with Together AI in this [notebook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/DSPy/DSPy_Agents.ipynb).
 </Info>

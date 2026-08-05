@@ -25,7 +25,7 @@ Use LoRA when:
 
 Use full fine-tuning when:
 
-* **The base behavior needs a substantial change:** A model that doesn't know the task you're training for may need every weight updated, not just an adapter.
+* **The base behavior needs a substantial change:** A model that doesn't know the task you're training for may need every weight updated, not only an adapter.
 * **LoRA results plateau below your target:** Try increasing `lora_r` and `lora_alpha` first, and if quality still falls short, switch to full fine-tuning.
 
 ## Set the method on your job

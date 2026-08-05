@@ -56,7 +56,7 @@ This example deploys a Wan 2.1 text-to-video model as a Dedicated Container with
 * Context parallelism splits the sequence dimension across GPUs
 * 2x H100 allows comfortable generation without memory pressure
 
-## How It Works
+## How it works
 
 1. **Build** – Jig builds a Docker image from your `pyproject.toml` configuration
 2. **Push** – The image is pushed to Together's private container registry
@@ -64,7 +64,7 @@ This example deploys a Wan 2.1 text-to-video model as a Dedicated Container with
 4. **Torchrun** – Sprocket's `use_torchrun=True` launches child processes (one per GPU)
 5. **Queue** – Jobs are submitted to the managed queue, broadcast to all GPU ranks, and processed in parallel
 
-## Project Structure
+## Project structure
 
 ```
 sprocket_wan2.1/
@@ -74,7 +74,7 @@ sprocket_wan2.1/
 
 ## Implementation
 
-### Sprocket Worker Code
+### Sprocket worker code
 
 <CodeGroup>
   ```python run_wan.py theme={null}
@@ -172,9 +172,9 @@ sprocket_wan2.1/
   ```
 </CodeGroup>
 
-## Key Concepts
+## Key concepts
 
-### How `use_torchrun=True` Works
+### How `use_torchrun=True` works
 
 When you call `sprocket.run(..., use_torchrun=True)`, Sprocket handles multi-GPU orchestration automatically.
 
@@ -187,7 +187,7 @@ When you call `sprocket.run(..., use_torchrun=True)`, Sprocket handles multi-GPU
 5. Only rank 0 saves output and returns result
 6. Parent uploads `FileOutput` and reports job completion
 
-### Distributed Process Initialization
+### Distributed process initialization
 
 Each worker process must initialize its distributed context before loading the model:
 
@@ -204,7 +204,7 @@ def setup(self) -> None:
 
 When `use_torchrun=True` is passed to `sprocket.run()`, Sprocket launches torchrun internally, which sets `RANK`, `LOCAL_RANK`, `WORLD_SIZE`, and other environment variables.
 
-### Rank 0 Output Pattern
+### Rank 0 output pattern
 
 In distributed inference, only rank 0 should handle I/O and return results:
 
@@ -231,7 +231,7 @@ def predict(self, args: dict) -> Optional[dict]:
 * Reduces memory on non-rank-0 GPUs (tensor output vs PIL)
 * Sprocket collects output from rank 0 only
 
-### Automatic File Upload with `FileOutput`
+### Automatic file upload with `FileOutput`
 
 Wrapping a path in `FileOutput` triggers automatic upload:
 
@@ -257,7 +257,7 @@ The client receives (when polling job status):
 }
 ```
 
-### Multi-GPU Configuration
+### Multi-GPU configuration
 
 For multi-GPU deployments, configure `gpu_count` in your deployment settings and pass `use_torchrun=True` to `sprocket.run()`:
 
@@ -266,7 +266,7 @@ For multi-GPU deployments, configure `gpu_count` in your deployment settings and
 gpu_count = 2  # Sprocket launches one process per GPU automatically
 ```
 
-Sprocket handles launching `torchrun` internally — you don't need to include it in your `cmd`. It coordinates the parent process and GPU workers automatically.
+Sprocket handles launching `torchrun` internally. You don't need to include it in your `cmd`. It coordinates the parent process and GPU workers automatically.
 
 ## Deployment
 
@@ -285,7 +285,7 @@ Sprocket handles launching `torchrun` internally — you don't need to include i
   ```
 </CodeGroup>
 
-### Check Deployment Status
+### Check deployment status
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -296,7 +296,7 @@ Sprocket handles launching `torchrun` internally — you don't need to include i
 
 Wait until the deployment shows `running` and replicas are ready before submitting jobs.
 
-### Submit Jobs
+### Submit jobs
 
 Jobs are submitted to the managed queue and processed asynchronously. Video generation typically takes 30-75 seconds depending on settings.
 
@@ -402,7 +402,7 @@ Jobs are submitted to the managed queue and processed asynchronously. Video gene
   ```
 </CodeGroup>
 
-## Input Parameters
+## Input parameters
 
 | Parameter             | Type   | Default  | Description                                                 |
 | --------------------- | ------ | -------- | ----------------------------------------------------------- |
@@ -425,7 +425,7 @@ When the job completes, the status response contains:
 
 * `url`: URL to the generated MP4 video file (480×832, 81 frames, 15fps). Authenticated with your API key.
 
-### Scaling to More GPUs
+### Scaling to more GPUs
 
 To scale for higher throughput, increase `max_replicas` to add more workers:
 
@@ -451,7 +451,7 @@ When you're done, delete the deployment:
   ```
 </CodeGroup>
 
-## Next Steps
+## Next steps
 
 * [Image Generation Example](/docs/dedicated_containers_image) – Single-GPU inference with Flux2
 * [Quickstart](/docs/containers-quickstart) – Deploy your first container in 20 minutes

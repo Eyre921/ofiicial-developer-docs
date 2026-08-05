@@ -35,7 +35,7 @@ Set your API key:
   ```
 </CodeGroup>
 
-## Step 2: Clone the Sprocket Examples
+## Step 2: Clone the Sprocket examples
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -67,7 +67,7 @@ The hello-world worker, included in `sprocket/examples/hello_world`, is a minima
   ```
 </CodeGroup>
 
-## Step 3: Build and Deploy
+## Step 3: Build and deploy
 
 Deployments can be configured with a `pyproject.toml` file.
 
@@ -123,7 +123,7 @@ This command:
 2. Pushes it to Together's private registry
 3. Creates a deployment on Together's GPU infrastructure
 
-## Step 4: Watch Deployment Status
+## Step 4: Watch deployment status
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -137,7 +137,7 @@ Wait until the deployment shows `running` and replicas are ready. Press `Ctrl+C`
   You can also view the status of your deployments from the [Together AI web console](https://api.together.ai/containers).
 </Note>
 
-## Step 5: Test the Health Endpoint
+## Step 5: Test the health endpoint
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -152,7 +152,7 @@ Wait until the deployment shows `running` and replicas are ready. Press `Ctrl+C`
 {"status": "healthy"}
 ```
 
-## Step 6: Submit a Job
+## Step 6: Submit a job
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -177,7 +177,7 @@ Wait until the deployment shows `running` and replicas are ready. Press `Ctrl+C`
 
 Copy the `request_id` for the next step.
 
-## Step 7: Get the Job Result
+## Step 7: Get the job result
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -201,7 +201,7 @@ Copy the `request_id` for the next step.
 }
 ```
 
-## Step 8: View Logs
+## Step 8: View logs
 
 Stream logs from your deployment:
 
@@ -211,7 +211,7 @@ Stream logs from your deployment:
   ```
 </CodeGroup>
 
-## Step 9: Clean Up
+## Step 9: Clean up
 
 When you're done, delete the deployment:
 
@@ -221,7 +221,7 @@ When you're done, delete the deployment:
   ```
 </CodeGroup>
 
-## Next Steps
+## Next steps
 
 Now that you've deployed your first container, explore the full platform:
 
@@ -230,7 +230,7 @@ Now that you've deployed your first container, explore the full platform:
 * [**Sprocket SDK**](/docs/deployments-sprocket) – Build queue-integrated inference workers
 * [**API Reference**](/reference/deployments-list) – REST API for deployments, secrets, and queues
 
-### Example Guides
+### Example guides
 
 * [**Image Generation with Flux2**](/docs/dedicated_containers_image) – Single-GPU inference with 4-bit quantization
 * [**Video Generation with Wan 2.1**](/docs/dedicated_containers_video) – Multi-GPU inference with torchrun

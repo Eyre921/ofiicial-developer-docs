@@ -8,11 +8,11 @@ Learn how to power Qwen Code with Together AI models.
 
 Qwen Code is a powerful command-line AI workflow tool specifically optimized for code understanding, automated tasks, and intelligent development assistance. While it comes with built-in Qwen OAuth support, you can also configure it to use Together AI's extensive model selection for even more flexibility and control over your AI coding experience.
 
-In this guide, we'll show you how to set up Qwen Code with Together AI's powerful models like Kimi K2.7 Code, GLM 5.2, and specialized coding models to enhance your development workflow beyond traditional context window limits.
+This guide shows you how to set up Qwen Code with Together AI's powerful models like Kimi K2.7 Code, GLM 5.2, and specialized coding models to enhance your development workflow beyond traditional context window limits.
 
-## Why Use Qwen Code with Together AI?
+## Why use Qwen Code with Together AI?
 
-* **Model Choice**: Access to a wide variety of models beyond just Qwen models
+* **Model Choice**: Access to a wide variety of models beyond Qwen models
 * **Transparent Pricing**: Clear token-based pricing with no surprises
 * **Enterprise Control**: Use your own API keys and have full control over usage
 * **Specialized Models**: Access to coding-specific models like Kimi K2.7 Code and Qwen3 Coder Next
@@ -37,7 +37,7 @@ qwen --version
 
 Instead of using the default Qwen OAuth, you'll configure Qwen Code to use Together AI's OpenAI-compatible API.
 
-### Method 1: Environment Variables (Recommended)
+### Method 1: Environment variables (recommended)
 
 Set up your environment variables:
 
@@ -47,7 +47,7 @@ export OPENAI_BASE_URL="https://api.together.ai/v1"
 export OPENAI_MODEL="your_chosen_model"
 ```
 
-### Method 2: Project .env File
+### Method 2: Project .env file
 
 Create a `.env` file in your project root:
 
@@ -57,17 +57,17 @@ OPENAI_BASE_URL=https://api.together.ai/v1
 OPENAI_MODEL=your_chosen_model
 ```
 
-### Get Your Together AI Credentials
+### Get your Together AI credentials
 
 1. **API Key**: Get your [Together AI API key](https://api.together.ai/settings/projects/~current/api-keys)
 2. **Base URL**: Use `https://api.together.ai/v1` for Together AI
 3. **Model**: Choose from [Together AI's model catalog](https://www.together.ai/models)
 
-## 3. Choose Your Model
+## 3. Choose your model
 
 Select from Together AI's powerful model selection:
 
-### Recommended Models for Coding
+### Recommended models for coding
 
 **For General Development:**
 
@@ -81,7 +81,7 @@ Select from Together AI's powerful model selection:
 
 See the [pricing page](https://www.together.ai/pricing) for current per-token rates.
 
-### Example Configuration
+### Example configuration
 
 ```bash theme={null}
 export OPENAI_API_KEY="your_together_api_key"
@@ -89,7 +89,7 @@ export OPENAI_BASE_URL="https://api.together.ai/v1"
 export OPENAI_MODEL="moonshotai/Kimi-K2.7-Code"
 ```
 
-## 4. Launch and Use Qwen Code
+## 4. Launch and use Qwen Code
 
 Navigate to your project and start Qwen Code:
 
@@ -100,21 +100,21 @@ qwen
 
 You're now ready to use Qwen Code with Together AI models!
 
-## Advanced Tips
+## Advanced tips
 
-### Token Optimization
+### Token optimization
 
 * Use `/compress` to maintain context while reducing token usage
 * Set appropriate session limits based on your Together AI plan
 * Monitor usage with `/stats` command
 
-### Model Selection Strategy
+### Model selection strategy
 
 * Use **Kimi K2.7 Code** for general coding tasks.
 * Switch to **GLM 5.2** or **DeepSeek V4 Pro** for complex reasoning.
 * Use **Qwen3 Coder Next** for faster, cost-effective operations.
 
-### Context Window Management
+### Context window management
 
 Qwen Code is designed to handle large codebases beyond traditional context limits:
 
@@ -124,7 +124,7 @@ Qwen Code is designed to handle large codebases beyond traditional context limit
 
 ## Troubleshooting
 
-### Common Issues
+### Common issues
 
 **Authentication Errors:**
 
@@ -137,7 +137,7 @@ Qwen Code is designed to handle large codebases beyond traditional context limit
 * Verify the model name exists in [Together AI's catalog](https://www.together.ai/models)
 * Ensure the model name is exactly as listed (case-sensitive)
 
-## Getting Started Checklist
+## Getting started checklist
 
 1. ✅ Install Node.js 20+ and Qwen Code
 2. ✅ Get your Together AI API key

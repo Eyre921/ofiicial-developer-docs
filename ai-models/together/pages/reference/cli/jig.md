@@ -37,7 +37,7 @@ All commands are subcommands of `tg beta jig`. Use `--config <path>` to specify 
 
 ## Build
 
-### jig init
+### `jig init`
 
 Create a starter `pyproject.toml` with sensible defaults.
 
@@ -45,7 +45,7 @@ Create a starter `pyproject.toml` with sensible defaults.
 tg beta jig init
 ```
 
-### jig dockerfile
+### `jig dockerfile`
 
 Generate a Dockerfile from your `pyproject.toml` configuration. Useful for debugging the build.
 
@@ -53,7 +53,7 @@ Generate a Dockerfile from your `pyproject.toml` configuration. Useful for debug
 tg beta jig dockerfile
 ```
 
-### jig build
+### `jig build`
 
 Build the Docker image locally.
 
@@ -64,9 +64,9 @@ tg beta jig build [flags]
 | Flag          | Description                                                                                                      |
 | ------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `--tag <tag>` | Image tag. Default: content hash.                                                                                |
-| `--warmup`    | Pre-generate compile caches after build. Requires a GPU; see [Cache warmup](/docs/deployments-jig#cache-warmup). |
+| `--warmup`    | Pre-generate compile caches after build. Requires a GPU. See [Cache warmup](/docs/deployments-jig#cache-warmup). |
 
-### jig push
+### `jig push`
 
 Push the built image to Together's registry at `registry.together.xyz`.
 
@@ -80,7 +80,7 @@ tg beta jig push [flags]
 
 ## Deployments
 
-### jig deploy
+### `jig deploy`
 
 Build, push, and create or update the deployment. Combines `build`, `push`, and deployment creation into one step.
 
@@ -88,14 +88,14 @@ Build, push, and create or update the deployment. Combines `build`, `push`, and 
 tg beta jig deploy [flags]
 ```
 
-| Flag            | Description                                    |
-| --------------- | ---------------------------------------------- |
-| `--tag <tag>`   | Image tag.                                     |
-| `--warmup`      | Pre-generate compile caches. Requires a GPU.   |
-| `--build-only`  | Build and push only; skip deployment creation. |
-| `--image <ref>` | Deploy an existing image; skip build and push. |
+| Flag            | Description                                     |
+| --------------- | ----------------------------------------------- |
+| `--tag <tag>`   | Image tag.                                      |
+| `--warmup`      | Pre-generate compile caches. Requires a GPU.    |
+| `--build-only`  | Build and push only. Skips deployment creation. |
+| `--image <ref>` | Deploy an existing image. Skips build and push. |
 
-### jig status
+### `jig status`
 
 Show deployment status and configuration.
 
@@ -103,7 +103,7 @@ Show deployment status and configuration.
 tg beta jig status
 ```
 
-### jig list
+### `jig list`
 
 List all deployments in your organization.
 
@@ -111,7 +111,7 @@ List all deployments in your organization.
 tg beta jig list
 ```
 
-### jig logs
+### `jig logs`
 
 Retrieve deployment logs.
 
@@ -123,7 +123,7 @@ tg beta jig logs [flags]
 | ---------- | ------------------------- |
 | `--follow` | Stream logs in real time. |
 
-### jig destroy
+### `jig destroy`
 
 Delete the deployment.
 
@@ -131,7 +131,7 @@ Delete the deployment.
 tg beta jig destroy
 ```
 
-### jig endpoint
+### `jig endpoint`
 
 Print the deployment's endpoint URL.
 
@@ -141,7 +141,7 @@ tg beta jig endpoint
 
 ## Queue
 
-### jig submit
+### `jig submit`
 
 Submit a job to the deployment's queue.
 
@@ -155,7 +155,7 @@ tg beta jig submit [flags]
 | `--payload <json>` | Full JSON payload.                                 |
 | `--watch`          | Wait for the job to complete and print the result. |
 
-### jig job-status
+### `jig job-status`
 
 Get the status of a submitted job.
 
@@ -167,7 +167,7 @@ tg beta jig job-status --request-id <id>
 | ------------------- | ---------------------------------- |
 | `--request-id <id>` | The job's request ID. **required** |
 
-### jig queue-status
+### `jig queue-status`
 
 Show queue backlog and worker status.
 
@@ -183,7 +183,7 @@ Secrets are encrypted environment variables injected at runtime. Manage them wit
   A name cannot appear in both `[tool.jig.deploy.environment_variables]` and a secret. `jig deploy` fails and lists each colliding name if the same name is defined in both places. Remove the duplicate from your config or run `tg beta jig secrets unset --name <name>`.
 </Warning>
 
-### jig secrets set
+### `jig secrets set`
 
 ```bash theme={null}
 tg beta jig secrets set --name <name> --value <value> [flags]
@@ -195,7 +195,7 @@ tg beta jig secrets set --name <name> --value <value> [flags]
 | `--value <value>`      | Secret value. **required**  |
 | `--description <text>` | Human-readable description. |
 
-### jig secrets list
+### `jig secrets list`
 
 List all secrets for the deployment.
 
@@ -203,7 +203,7 @@ List all secrets for the deployment.
 tg beta jig secrets list
 ```
 
-### jig secrets unset
+### `jig secrets unset`
 
 Remove a secret from the local state without touching the deployment.
 
@@ -211,7 +211,7 @@ Remove a secret from the local state without touching the deployment.
 tg beta jig secrets unset --name <name>
 ```
 
-### jig secrets delete
+### `jig secrets delete`
 
 Delete a secret from the deployment and unset it locally.
 
@@ -223,7 +223,7 @@ tg beta jig secrets delete --name <name>
 
 Volumes mount read-only data, such as model weights, into your container without baking them into the image.
 
-### jig volumes create
+### `jig volumes create`
 
 Create a volume and upload files.
 
@@ -236,7 +236,7 @@ tg beta jig volumes create --name <name> --source <path>
 | `--name <name>`   | Volume name. **required**               |
 | `--source <path>` | Local directory to upload. **required** |
 
-### jig volumes update
+### `jig volumes update`
 
 Update a volume with new files.
 
@@ -255,7 +255,7 @@ version = 2
 
 If `version` is not specified, the initial version (version 0) of the volume is mounted. You can view current and historical volume versions using the `jig volumes describe` command.
 
-### jig volumes describe
+### `jig volumes describe`
 
 Show volume details and contents.
 
@@ -263,7 +263,7 @@ Show volume details and contents.
 tg beta jig volumes describe --name <name>
 ```
 
-### jig volumes list
+### `jig volumes list`
 
 List all volumes.
 
@@ -271,7 +271,7 @@ List all volumes.
 tg beta jig volumes list
 ```
 
-### jig volumes delete
+### `jig volumes delete`
 
 Delete a volume.
 
@@ -295,7 +295,7 @@ The configuration is split into three sections: build settings, deployment setti
 
 The `[tool.jig.image]` section controls how your container image is built.
 
-#### python\_version
+#### `python_version`
 
 Sets the Python version for the container. Jig uses this to select the appropriate base image.
 
@@ -306,7 +306,7 @@ python_version = "3.11"
 
 Default: `"3.11"`
 
-#### system\_packages
+#### `system_packages`
 
 A list of APT packages to install in the container. Useful for libraries that require system dependencies like FFmpeg for video processing or OpenGL for graphics.
 
@@ -317,7 +317,7 @@ system_packages = ["git", "ffmpeg", "libgl1", "libglib2.0-0"]
 
 Default: `[]`
 
-#### environment
+#### `environment`
 
 Environment variables are a part of the image (as `ENV` directives). These are available during the Docker build, the warmup step, and at runtime. Use this for build configuration like CUDA architecture targets.
 
@@ -330,7 +330,7 @@ For environment variables that should only be set at runtime use `[tool.jig.depl
 
 Default: `{}`
 
-#### run
+#### `run`
 
 Additional shell commands to run during the Docker build. Each command becomes a separate `RUN` instruction. Use this for custom installation steps that can't be expressed as Python dependencies.
 
@@ -344,7 +344,7 @@ run = [
 
 Default: `[]`
 
-#### cmd
+#### `cmd`
 
 The default command to run when the container starts. This becomes the Docker `CMD` instruction.
 
@@ -357,7 +357,7 @@ For queue-based workloads using Sprocket, include the `--queue` flag.
 
 Default: `"python app.py"`
 
-#### copy
+#### `copy`
 
 A list of files and directories to copy into the container. Paths are relative to your project root.
 
@@ -368,7 +368,7 @@ copy = ["app.py", "models/", "config.json"]
 
 Default: `[]`
 
-#### auto\_include\_git
+#### `auto_include_git`
 
 When enabled, automatically includes all git-tracked files in the container in addition to files specified in `copy`. Requires a clean git repository (no uncommitted changes).
 
@@ -385,7 +385,7 @@ Default: `false`
 
 The `[tool.jig.deploy]` section controls how your container runs on Together's infrastructure.
 
-#### description
+#### `description`
 
 A human-readable description of your deployment. This appears in the Together dashboard and API responses.
 
@@ -396,7 +396,7 @@ description = "Video generation model v2 with style transfer"
 
 Default: `""`
 
-#### gpu\_type
+#### `gpu_type`
 
 The type of GPU to allocate for each replica. Together supports NVIDIA H100, NVIDIA B200, or CPU-only deployments.
 
@@ -415,7 +415,7 @@ Default: `"h100-80gb"`
 
 Other hardware is available on request. [Contact sales](https://www.together.ai/contact-sales) to discuss options.
 
-#### gpu\_count
+#### `gpu_count`
 
 The number of GPUs to allocate per replica. For multi-GPU inference with tensor parallelism, set this higher and use `use_torchrun=True` in your Sprocket. See [Multi-GPU / Distributed Inference](/reference/dci-reference-sprocket#multi-gpu--distributed-inference).
 
@@ -427,7 +427,7 @@ gpu_count = 4
 
 Default: `1`
 
-#### cpu
+#### `cpu`
 
 CPU cores to allocate per replica. Supports fractional values for smaller workloads.
 
@@ -442,7 +442,7 @@ Examples:
 
 Default: `1.0`
 
-#### memory
+#### `memory`
 
 Memory to allocate per replica, in gigabytes. Supports fractional values. Set this high enough for your model weights plus inference overhead.
 
@@ -459,7 +459,7 @@ If you're seeing OOM (out of memory) errors, increase this value.
 
 Default: `8.0`
 
-#### storage
+#### `storage`
 
 Ephemeral storage to allocate per replica, in gigabytes. This is the disk space available to your container at runtime for temporary files, caches, and model artifacts.
 
@@ -470,7 +470,7 @@ storage = 200
 
 Default: `100`
 
-#### min\_replicas
+#### `min_replicas`
 
 The minimum number of replicas to keep running. Set to `0` to allow scaling to zero when idle (saves costs but adds cold start latency).
 
@@ -481,7 +481,7 @@ min_replicas = 1
 
 Default: `1`
 
-#### max\_replicas
+#### `max_replicas`
 
 The maximum number of replicas the autoscaler can create. Set this based on your expected peak load and budget.
 
@@ -493,7 +493,7 @@ max_replicas = 20
 
 Default: `1`
 
-#### port
+#### `port`
 
 The port your container listens on. Sprocket uses port 8000 by default.
 
@@ -504,7 +504,7 @@ port = 8000
 
 Default: `8000`
 
-#### health\_check\_path
+#### `health_check_path`
 
 The endpoint Together uses to check if your container is ready to accept traffic. The endpoint must return a `200` status when healthy.
 
@@ -517,7 +517,7 @@ Sprocket provides this endpoint automatically.
 
 Default: `"/health"`
 
-#### termination\_grace\_period\_seconds
+#### `termination_grace_period_seconds`
 
 How long to wait for a worker to finish its current job before forcefully terminating during shutdown or scale-down. Set this higher for long-running inference jobs.
 
@@ -528,7 +528,7 @@ termination_grace_period_seconds = 600
 
 Default: `300`
 
-#### command
+#### `command`
 
 Override the container's startup command at deploy time. This takes precedence over the `cmd` setting in `[tool.jig.image]`.
 
@@ -539,7 +539,7 @@ command = ["python", "app.py", "--queue", "--workers", "2"]
 
 Default: `null` (uses the image's CMD)
 
-#### environment\_variables
+#### `environment_variables`
 
 Runtime environment variables injected into your container. For sensitive values like API keys, use [secrets](#secrets) instead.
 
@@ -558,7 +558,7 @@ Default: `{}`
 
 The `[tool.jig.deploy.autoscaling]` section controls how your deployment scales based on demand. For all supported metrics and scaling behavior, see [Autoscaling](/docs/together-deployments#autoscaling).
 
-#### metric
+#### `metric`
 
 The autoscaling strategy to use. Currently, `QueueBacklogPerWorker` is the recommended metric for queue-based workloads.
 
@@ -569,7 +569,7 @@ metric = "QueueBacklogPerWorker"
 
 **QueueBacklogPerWorker** scales based on queue depth relative to worker count. When the queue grows, more replicas are added. When workers are idle, replicas are removed (down to `min_replicas`).
 
-#### target
+#### `target`
 
 The target ratio for the autoscaler. This controls how aggressively the system scales.
 

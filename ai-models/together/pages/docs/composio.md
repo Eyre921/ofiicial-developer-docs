@@ -10,7 +10,7 @@ Composio allows developers to integrate external tools and services into their A
 
 You need to register on a Composio account - Sign up here if you haven't already to get their API key [https://platform.composio.dev/](https://platform.composio.dev/)
 
-## Install Libraries
+## Install libraries
 
 <CodeGroup>
   ```shell Python theme={null}
@@ -31,7 +31,7 @@ export COMPOSIO_API_KEY=***
 
 ## Example
 
-In this example, we will use Together AI to star a repository on GitHub using Composio Tools.
+In this example, you will use Together AI to star a repository on GitHub using Composio Tools.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -83,7 +83,7 @@ You need to have an active GitHub Integration in Composio. Learn how to do this 
   ```
 </CodeGroup>
 
-### Get All Github Tools
+### Get all GitHub tools
 
 You can get all the tools for a given app as shown below, but you can get specific actions and filter actions using usecase & tags.
 
@@ -100,7 +100,7 @@ You can get all the tools for a given app as shown below, but you can get specif
   ```
 </CodeGroup>
 
-### Create a Chat Completion with Tools
+### Create a chat completion with tools
 
 <CodeGroup>
   ```python Python theme={null}
@@ -136,10 +136,10 @@ You can get all the tools for a given app as shown below, but you can get specif
   ```
 </CodeGroup>
 
-## Next Steps
+## Next steps
 
 <Note>
   ### Composio - Together AI Cookbook
 
-  Explore our in-depth [Composio Cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Composio/Agents_Composio.ipynb) to learn how to automate emails with LLMs.
+  Explore the in-depth [Composio Cookbook](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Composio/Agents_Composio.ipynb) to learn how to automate emails with LLMs.
 </Note>

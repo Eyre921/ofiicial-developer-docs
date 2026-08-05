@@ -28,7 +28,7 @@ Together AI offers three ways to run inference:
 
 ## Shared inference API
 
-Serverless, provisioned throughput, and dedicated model inference all use the same inference APIs for generating and retrieving model outputs. Apps work on any deployment mode without code changes; just swap the `model` parameter:
+Serverless, provisioned throughput, and dedicated model inference all use the same inference APIs for generating and retrieving model outputs. Apps work on any deployment mode without code changes. Swap the `model` parameter:
 
 <CodeGroup>
   ```python Python highlight={7,13} theme={null}

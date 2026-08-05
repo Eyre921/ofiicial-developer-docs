@@ -8,12 +8,12 @@ Use Together models with Hugging Face Inference.
 
 This documentation provides a concise guide for developers to integrate and use Together AI inference capabilities via the Hugging Face ecosystem.
 
-## Authentication and Billing
+## Authentication and billing
 
 When using Together AI through Hugging Face, you have two options for authentication:
 
 * Direct Requests: Use your Together AI API key in your Hugging Face user account settings. In this mode, inference requests are sent directly to Together AI, and billing is handled by your Together AI account.
-* Routed Requests: If you don't configure a Together AI API key, your requests will be routed through Hugging Face. In this case, you can use a Hugging Face token for authentication. Billing for routed requests is applied to your Hugging Face account at standard provider API rates. You don’t need an account on Together AI to do this, just use your HF one!
+* Routed Requests: If you don't configure a Together AI API key, your requests will be routed through Hugging Face. In this case, you can use a Hugging Face token for authentication. Billing for routed requests is applied to your Hugging Face account at standard provider API rates. You don’t need an account on Together AI to do this. Use your HF one!
 
 To add a Together AI API key to your Hugging Face settings, follow these steps:
 
@@ -26,7 +26,7 @@ To add a Together AI API key to your Hugging Face settings, follow these steps:
   You can search for all [Together AI models](https://huggingface.co/models?inference_provider=together\&sort=trending) on the hub and directly try out the available models via the Model Page widget too.
 </Info>
 
-## Usage Examples
+## Usage examples
 
 The examples below demonstrate how to interact with various models using Python and JavaScript.
 
@@ -42,9 +42,9 @@ First, ensure you have the `huggingface_hub` library installed (version v0.29.0 
   ```
 </CodeGroup>
 
-## 1. Text Generation - LLMs
+## 1. Text generation - LLMs
 
-### a. Chat Completion with Hugging Face Hub library
+### a. Chat completion with Hugging Face Hub library
 
 <CodeGroup>
   ```py Python theme={null}
@@ -125,7 +125,7 @@ completion = client.chat.completions.create(
 print(completion.choices[0].message)
 ```
 
-## 2. Text-to-Image Generation
+## 2. Text-to-image generation
 
 <CodeGroup>
   ```py Python theme={null}
@@ -170,4 +170,4 @@ Similar to LLMs, you can use any compatible text-to-image model from the [list h
 
 You can search for all [Together AI models](https://huggingface.co/models?inference_provider=together\&sort=trending) on the hub and directly try out the available models via the Model Page widget too.
 
-We’ll continue to increase the number of models and ways to try it out!
+The number of models and ways to try them out will continue to grow!

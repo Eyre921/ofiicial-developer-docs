@@ -1279,6 +1279,135 @@ Create a test *PaymentMethod* (PaymentMethods represent your customer's payment 
 
 With other payment methods, testing information is included with the documentation. [Find your payment method](https://docs.stripe.com/payments/payment-methods/overview.md) and read the associated guide to accept and test payments.
 
+## Test asynchronous payment methods
+
+Asynchronous, or “delayed notification,” payment methods don’t immediately confirm whether a payment succeeds or fails. After your customer submits payment details, the `PaymentIntent` can enter a `processing` state. The final outcome, such as `succeeded` or `requires_payment_method`, arrives later, from a few minutes in a sandbox to several business days in live mode.
+
+This behavior differs from most card payments, which usually receive an immediate authorization response from the issuer.
+
+Don’t rely on a client-side callback or redirect to determine the final status for these payment methods. Always use webhooks to drive fulfillment.
+
+### Understand the PaymentIntent lifecycle
+
+Payment methods that don’t require further action from your customer to authorize the payment, such as bank debits, move through these states after your customer submits payment:
+
+| Step | State | Description |
+| --- | --- | --- |
+| 1 | `processing` | Your customer submitted the payment, and the outcome isn’t yet known. |
+| 2a | `succeeded` | The payment is confirmed. |
+| 2b | `requires_payment_method` | The payment failed, for example because of insufficient funds or a closed account. |
+
+Payment methods that require further action from your customer to authorize the payment, such as voucher-based methods including Multibanco, Boleto, OXXO, and Konbini, add an earlier state before `processing`:
+
+| Step | State | Description |
+| --- | --- | --- |
+| 1 | `requires_action` | Stripe issued a voucher or payment code and is waiting for your customer to pay out of band. |
+| 2 | `processing` | Stripe is waiting for the final outcome, and your customer can no longer complete the voucher payment through the original flow. |
+| 3a | `succeeded` | Your customer paid the voucher. |
+| 3b | `requires_payment_method` | The voucher expired or the payment failed. |
+
+### Handle webhook events
+
+Register a webhook handler, or use the [Stripe CLI](https://docs.stripe.com/stripe-cli.md) to listen locally with `stripe listen --forward-to localhost:4242/webhook`, and handle these events:
+
+| Event | Description | Recommended action |
+| --- | --- | --- |
+| `payment_intent.processing` | Your customer successfully submitted payment and the result is pending. This is most common for bank debits. | Send a “payment pending” confirmation email and hold order fulfillment. |
+| `payment_intent.succeeded` | The payment is confirmed. | Fulfill the order. |
+| `payment_intent.payment_failed` | The payment failed, such as for insufficient funds, an expired voucher, or a closed account. | Notify your customer and request a new payment method. |
+| `payment_intent.requires_action` | Stripe issued a voucher or out-of-band action and is waiting for your customer. This applies to Multibanco, Boleto, OXXO, and Konbini. | Send your customer the voucher or payment instructions. |
+| `payment_intent.canceled` | The `PaymentIntent` was canceled before your customer completed payment. | Notify your customer. Don’t fulfill the order. |
+
+For Checkout-based integrations, these corresponding session-level events also trigger:
+
+- `checkout.session.async_payment_succeeded`
+- `checkout.session.async_payment_failed`
+
+### Review expected webhook sequence by payment method
+
+The test values for each method are in the [Test a non-card payment method](https://docs.stripe.com/testing.md#non-card-payments) section. Use the following tables to understand which webhook sequence to expect when you use those test values.
+
+### Review bank debit webhook sequence
+
+All bank debit methods follow the `processing` to `succeeded` or `payment_failed` pattern. In test mode, transitions happen after about 3 minutes for account numbers that simulate a delay. These use a `9` prefix or suffix. See the test values for each method in the referenced section.
+
+| Method | Test values | Expected webhooks for success | Expected webhooks for failure |
+| --- | --- | --- | --- |
+| SEPA Direct Debit | [See SEPA Direct Debit](https://docs.stripe.com/testing.md#sepa-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+| ACH Direct Debit | [See ACH Direct Debit](https://docs.stripe.com/testing.md#ach-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+| BACS Direct Debit | [See BACS Direct Debit](https://docs.stripe.com/testing.md#bacs-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+| AU BECS Direct Debit | [See AU BECS Direct Debit](https://docs.stripe.com/testing.md#au-becs-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+
+### Review voucher-based webhook sequence
+
+Voucher methods issue a payment code that your customer pays out of band. The `PaymentIntent` enters `requires_action` immediately after confirmation. The delayed outcome arrives when your customer pays or when the voucher expires.
+
+For Multibanco, Boleto, OXXO, and Konbini, use the email address patterns in [their respective test sections](https://docs.stripe.com/testing.md#non-card-payments) to control whether the simulated voucher is paid, expires, or never resolves.
+
+| Method | Expected webhooks for success | Expected webhooks for failure or expiry |
+| --- | --- | --- |
+| Multibanco | `payment_intent.requires_action`, then `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.requires_action`, then `payment_intent.processing`, then `payment_intent.payment_failed` |
+| Boleto, OXXO, and Konbini | `payment_intent.requires_action`, then `payment_intent.succeeded` | `payment_intent.requires_action`, then `payment_intent.payment_failed` |
+
+### Review redirect and delayed notification method
+
+Some payment methods redirect your customer for authentication. Depending on the payment method and configuration, Stripe might confirm the final outcome immediately after the redirect or deliver it asynchronously.
+
+Expected webhook events for a successful payment:
+
+- `payment_intent.processing`
+- `payment_intent.succeeded`
+
+BLIK can also fail asynchronously in two ways. Use the email patterns in the BLIK test section to simulate them:
+
+- **Delayed bank decline**: The bank declines the payment after your customer approves it, and `payment_intent.payment_failed` triggers after a delay.
+- **Timeout**: Your customer doesn’t respond in time, and `payment_intent.payment_failed` triggers after the timeout window.
+
+BLIK can also fail immediately, such as when a code is expired or invalid. These synchronous failures don’t involve a delayed webhook.
+
+### Test asynchronous flow end to end
+
+Use these tips to test your integration.
+
+Use the Stripe CLI to receive webhooks locally:
+
+```bash
+stripe listen --forward-to localhost:4242/webhook
+```
+
+Trigger specific events manually to test your handler in isolation without running a full payment flow:
+
+```bash
+stripe trigger payment_intent.processing
+stripe trigger payment_intent.succeeded
+stripe trigger payment_intent.payment_failed
+```
+
+Handle `processing` in your return URL UI. When Stripe redirects your customer back to your site, `paymentIntent.status` might be `processing`, not `succeeded`. Show a `payment pending` state instead of an error.
+
+Don’t fulfill physical goods on `processing`. Wait for `payment_intent.succeeded`. For digital goods, you might choose to grant access speculatively on `processing`, but your webhook handler must revoke access if `payment_intent.payment_failed` arrives later.
+
+Test expiration and timeout paths. Use the `expire_immediately` or `fill_never` email patterns, where available, to verify that your integration handles unpaid vouchers correctly.
+
+If you use the mobile PaymentSheet, enable `allowsDelayedPaymentMethods` to show delayed notification methods. The final payment status isn’t known when the sheet completes. Tell your customers their order is confirmed, and fulfill only after `payment_intent.succeeded` arrives.
+
+### Review asynchronous payment methods
+
+The following table summarizes the PaymentIntent state each method enters immediately after confirmation, and the webhook events your server should expect once the delayed outcome arrives.
+
+| Method | Category | State after confirm | Delayed success event | Delayed failure event |
+| --- | --- | --- | --- | --- |
+| SEPA Direct Debit | Bank debit | `processing` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| ACH Direct Debit | Bank debit | `processing` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| BACS Direct Debit | Bank debit | `processing` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| AU BECS Direct Debit | Bank debit | `processing` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| Multibanco | Voucher | `requires_action` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| Boleto | Voucher | `requires_action` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| OXXO | Voucher | `requires_action` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| Konbini | Voucher | `requires_action` | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| Pay by Bank | Redirect and delayed notification | `requires_action`, then usually `succeeded` or `requires_payment_method` after the redirect | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+| BLIK | Redirect and delayed notification or timeout | varies | `payment_intent.succeeded` | `payment_intent.payment_failed` |
+
 ## Test Link
 
 > Don’t store real user data in *sandbox* (A sandbox is an isolated test environment that allows you to test Stripe functionality in your account without affecting your live integration. Use sandboxes to safely experiment with new features and changes) Link accounts. Treat them as if they’re publicly available, because these test accounts are associated with your publishable key.

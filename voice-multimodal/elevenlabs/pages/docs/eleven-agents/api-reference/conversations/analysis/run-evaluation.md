@@ -270,6 +270,65 @@ components:
           default: 0
       description: Aggregated ASR usage for a conversation (analytics-only, not billing).
       title: ConversationAsrUsageModel
+    type_:AnalysisRunningTotal:
+      type: object
+      properties:
+        price:
+          type: number
+          format: double
+          default: 0
+        charge:
+          type: integer
+          default: 0
+        price_per_feature:
+          type: object
+          additionalProperties:
+            type: number
+            format: double
+        charge_per_feature:
+          type: object
+          additionalProperties:
+            type: integer
+      description: Cumulative LLM cost of running post-call analysis on this conversation.
+      title: AnalysisRunningTotal
+    type_:AnalysisRunSnapshot:
+      type: object
+      properties:
+        price:
+          type: number
+          format: double
+          default: 0
+        charge:
+          type: integer
+          default: 0
+        price_per_feature:
+          type: object
+          additionalProperties:
+            type: number
+            format: double
+        charge_per_feature:
+          type: object
+          additionalProperties:
+            type: integer
+      description: >-
+        LLM cost of the most recent post-call analysis pass on this
+        conversation.
+      title: AnalysisRunSnapshot
+    type_:AnalysisCharging:
+      type: object
+      properties:
+        total:
+          $ref: '#/components/schemas/type_:AnalysisRunningTotal'
+        last_run:
+          $ref: '#/components/schemas/type_:AnalysisRunSnapshot'
+      required:
+        - total
+      description: |-
+        Cost of running post-call analysis on this conversation.
+
+        Present once analysis has incurred a cost. `last_run` is null when the
+        most recent pass incurred none.
+      title: AnalysisCharging
     type_:ConversationChargingCommonModel:
       type: object
       properties:
@@ -309,6 +368,8 @@ components:
           $ref: '#/components/schemas/type_:ConversationTtsUsageModel'
         asr_usage:
           $ref: '#/components/schemas/type_:ConversationAsrUsageModel'
+        analysis:
+          $ref: '#/components/schemas/type_:AnalysisCharging'
       title: ConversationChargingCommonModel
     type_:TelephonyDirection:
       type: string
@@ -1629,6 +1690,15 @@ components:
             result_type:
               type: string
               enum:
+                - dummy
+              description: 'Discriminator value: dummy'
+          required:
+            - result_type
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
                 - end_call_success
               description: 'Discriminator value: end_call_success'
             status:
@@ -1737,41 +1807,6 @@ components:
           required:
             - result_type
             - dtmf_tones
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - run_subagent_error
-              description: 'Discriminator value: run_subagent_error'
-            status:
-              type: string
-              enum:
-                - error
-            error:
-              type: string
-          required:
-            - result_type
-            - error
-        - type: object
-          properties:
-            result_type:
-              type: string
-              enum:
-                - run_subagent_success
-              description: 'Discriminator value: run_subagent_success'
-            status:
-              type: string
-              enum:
-                - success
-            query:
-              type: string
-            agent_response:
-              type: string
-          required:
-            - result_type
-            - query
-            - agent_response
         - type: object
           properties:
             result_type:
@@ -2319,6 +2354,37 @@ components:
         - image
         - file
       title: ChatSourceMedium
+    type_:GuardrailType:
+      type: string
+      enum:
+        - custom
+        - prompt_injection
+        - self_harm_intent
+        - violence_graphic
+        - sexual
+        - violence
+        - harassment
+        - sexual_minors
+        - self_harm
+        - self_harm_instructions
+        - harassment_threatening
+        - hate
+        - hate_threatening
+        - profanity
+        - religion_or_politics
+        - medical_and_legal
+        - guardrail
+      title: GuardrailType
+    type_:TriggeredGuardrailCommonModel:
+      type: object
+      properties:
+        guardrail_type:
+          $ref: '#/components/schemas/type_:GuardrailType'
+        guardrail_name:
+          type: string
+      required:
+        - guardrail_type
+      title: TriggeredGuardrailCommonModel
     type_:ConversationHistoryTranscriptFileInputResponseModel:
       type: object
       properties:
@@ -2409,6 +2475,10 @@ components:
           type: string
         id:
           type: string
+        triggered_guardrails:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:TriggeredGuardrailCommonModel'
         file_input:
           $ref: >-
             #/components/schemas/type_:ConversationHistoryTranscriptFileInputResponseModel
@@ -2572,7 +2642,10 @@ components:
       "platform_charge": 1,
       "platform_price": 1.1,
       "free_minutes_consumed": 1.1,
-      "free_llm_dollars_consumed": 1.1
+      "free_llm_dollars_consumed": 1.1,
+      "analysis": {
+        "total": {}
+      }
     },
     "phone_call": {
       "type": "exotel",
@@ -2715,6 +2788,11 @@ components:
       ],
       "user_identifier": "user_identifier",
       "id": "id",
+      "triggered_guardrails": [
+        {
+          "guardrail_type": "custom"
+        }
+      ],
       "file_input": {
         "file_id": "file_id",
         "original_filename": "original_filename",

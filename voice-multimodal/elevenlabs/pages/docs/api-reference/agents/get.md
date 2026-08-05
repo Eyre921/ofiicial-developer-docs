@@ -4217,6 +4217,10 @@ components:
         styles:
           $ref: '#/components/schemas/WidgetStyles'
           description: Styles for the widget
+        show_resize_button:
+          type: boolean
+          default: true
+          description: Whether to show the resize button
         language_selector:
           type: boolean
           default: false

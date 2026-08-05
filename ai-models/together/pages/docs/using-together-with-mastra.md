@@ -102,7 +102,7 @@ Use Together models with Mastra.
 
    Open the [Mastra Playground and Mastra API](https://mastra.ai/docs) to test your agents, workflows, and tools.
 
-## Next Steps
+## Next steps
 
 * Explore the [Mastra documentation](https://mastra.ai) for more advanced features
 * Check out [Together AI's model documentation](https://docs.together.ai/docs/serverless/models) for the latest available models

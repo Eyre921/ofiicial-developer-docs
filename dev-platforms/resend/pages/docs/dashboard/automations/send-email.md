@@ -16,9 +16,11 @@ This automation step triggers a [Template](/docs/dashboard/templates/introductio
 
     <img alt="Add Send Email Action" />
 
-    Select a published template, then configure the subject and sender address.
+    Select a published template, then configure the sender address.
 
-    <img alt="Send Email Action Settings" />
+    <img alt="Send Email Action Sender Settings" />
+
+    *The subject always comes from the Template. To send a different subject, set `subject` when creating the step via the [API](#configuration).*
   </Tab>
 
   <Tab title="Using the API">

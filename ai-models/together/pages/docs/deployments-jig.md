@@ -9,17 +9,17 @@ Build, push, and deploy containers to Together's managed GPU infrastructure.
 Jig is a lightweight CLI for building Docker images from a `pyproject.toml`, pushing them to Together's private container registry, and managing deployments. It's included with the [Together Python library](https://github.com/togethercomputer/together-python).
 
 <Tip>
-  **See Jig in action:** Check out our end-to-end examples for [Image Generation with Flux2](/docs/dedicated_containers_image) and [Video Generation with Wan 2.1](/docs/dedicated_containers_video).
+  **See Jig in action:** Check out the end-to-end examples for [Image Generation with Flux2](/docs/dedicated_containers_image) and [Video Generation with Wan 2.1](/docs/dedicated_containers_video).
 </Tip>
 
-## The Deploy Workflow
+## The deploy workflow
 
 Jig combines several steps into a single `deploy` command:
 
-1. **Init** — `tg beta jig init` scaffolds a `pyproject.toml` with sensible defaults
-2. **Build** — Generates a Dockerfile from your config and builds the image locally
-3. **Push** — Pushes the image to Together's registry at `registry.together.ai`
-4. **Deploy** — Creates or updates the deployment on Together's infrastructure
+1. **Init:** `tg beta jig init` scaffolds a `pyproject.toml` with sensible defaults.
+2. **Build:** Generates a Dockerfile from your config and builds the image locally.
+3. **Push:** Pushes the image to Together's registry at `registry.together.ai`.
+4. **Deploy:** Creates or updates the deployment on Together's infrastructure.
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -48,9 +48,9 @@ For the full list of commands and flags, see the [Jig CLI reference](/reference/
   Jig builds images locally and pushes them to Together's registry. ML images can be 10GB+, so building on a machine with a fast network connection saves significant time compared to pushing from a laptop over wifi.
 </Tip>
 
-## Cache Warmup
+## Cache warmup
 
-The `--warmup` option lets you pre-generate inference engine compile caches — such as those created by `torch.compile` or TensorRT — at build time, rather than waiting for the first request in production. This can significantly reduce cold-start latency.
+The `--warmup` option lets you pre-generate inference engine compile caches (such as those created by `torch.compile` or TensorRT) at build time, rather than waiting for the first request in production. This can significantly reduce cold-start latency.
 
 <CodeGroup>
   ```shell Shell theme={null}
@@ -59,7 +59,7 @@ The `--warmup` option lets you pre-generate inference engine compile caches — 
   ```
 </CodeGroup>
 
-### How It Works
+### How it works
 
 1. **Build phase**: Jig builds the base image normally
 2. **Warmup phase**: Jig runs the container with GPU access, mounting your local workspace to `/app`
@@ -69,7 +69,7 @@ The `--warmup` option lets you pre-generate inference engine compile caches — 
 The cache location inside the container is controlled by `WARMUP_ENV_NAME` (default: `TORCHINDUCTOR_CACHE_DIR`) and `WARMUP_DEST` (default: `torch_cache`).
 Jig sets the environment variable to point to the cache directory during warmup and copies its contents into the final image.
 
-### Sprocket Integration
+### Sprocket integration
 
 Define `warmup_inputs` on your Sprocket class to specify what inputs to run during warmup:
 
@@ -136,7 +136,7 @@ Since the local workspace is mounted to `/app`, model weights and example inputs
 
 ### Requirements
 
-* A GPU on your build machine — warmup runs your model locally to generate caches. If you don't have a local GPU, [Together Instant Clusters](/docs/gpu-clusters-overview) provide on-demand H100s with fast connectivity to Together's container registry.
+* A GPU on your build machine: warmup runs your model locally to generate caches. If you don't have a local GPU, [Together instant clusters](/docs/gpu-clusters-overview) provide on-demand H100s with fast connectivity to Together's container registry.
 * `warmup_inputs` defined on your Sprocket with representative inputs
 * Weights and example inputs accessible in local workspace
 
@@ -160,7 +160,7 @@ Secrets are available to your container as environment variables at runtime. Do 
 
 ## Volumes
 
-Volumes let you mount read-only data — like model weights — into your container without baking them into the image. This keeps images small and lets you update weights independently of code.
+Volumes let you mount read-only data, like model weights, into your container without baking them into the image. This keeps images small and lets you update weights independently of code.
 
 Create a volume and upload files:
 

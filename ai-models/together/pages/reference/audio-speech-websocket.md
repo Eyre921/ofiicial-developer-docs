@@ -124,7 +124,7 @@ All client and server message types support an optional `context_id` field. This
 
 ### Additional client message types
 
-**`context.cancel`** — Cancel and clean up a specific context.
+**`context.cancel`:** Cancel and clean up a specific context.
 
 ```json theme={null}
 {
@@ -135,7 +135,7 @@ All client and server message types support an optional `context_id` field. This
 
 ### Additional server message types
 
-**`context.cancelled`** — Confirms a context was cancelled.
+**`context.cancelled`:** Confirms a context was cancelled.
 
 ```json theme={null}
 {

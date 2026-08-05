@@ -195,7 +195,7 @@ FLUX.2 \[dev] and FLUX.2 \[flex] support additional parameters:
 | `steps`    | integer | Number of inference steps (higher = better quality, slower) | Model default |
 | `guidance` | float   | Guidance scale (higher values follow prompt more closely)   | Model default |
 
-## Image-to-Image with Reference Images
+## Image-to-image with reference images
 
 FLUX.2 supports powerful image-to-image editing using the `reference_images` parameter. Pass one or more image URLs to guide generation.
 
@@ -429,12 +429,12 @@ print(response.data[0].url)
 
 **Best Practices for Reference Images**
 
-1. **Use image indexing** — Reference images by number ("image 1", "image 2") for precise control
-2. **Be descriptive** — Clearly describe what you want to change or combine
-3. **Use high-quality inputs** — Better input images lead to better results
-4. **Combine with HEX colors** — Use specific color codes or color swatch images for precise color changes
+1. **Use image indexing:** Reference images by number ("image 1", "image 2") for precise control.
+2. **Be descriptive:** Clearly describe what you want to change or combine.
+3. **Use high-quality inputs:** Better input images lead to better results.
+4. **Combine with HEX colors:** Use specific color codes or color swatch images for precise color changes.
 
-## JSON Structured Prompts
+## JSON structured prompts
 
 FLUX.2 is trained to understand structured JSON prompts, giving you precise control over subjects, composition, lighting, and camera settings.
 
@@ -539,7 +539,7 @@ Here's the recommended schema for structured prompts:
 | `worm's-eye`        | Dramatic, imposing             |
 | `over-the-shoulder` | Intimate, narrative            |
 
-## HEX Color Code Prompting
+## Hex color code prompting
 
 FLUX.2 supports precise color control using HEX codes. Include the keyword "color" or "hex" followed by the code:
 
@@ -573,7 +573,7 @@ response = client.images.generate(
 
 <img />
 
-## Advanced Use Cases
+## Advanced use cases
 
 **Infographics**
 
@@ -647,7 +647,7 @@ response = client.images.generate(
 
 <img />
 
-## Photography Styles
+## Photography styles
 
 FLUX.2 excels at various photography aesthetics. Add style keywords to your prompts:
 
@@ -671,7 +671,7 @@ response = client.images.generate(
 
 <img />
 
-## Multi-Language Support
+## Multi-language support
 
 FLUX.2 supports prompting in many languages without translation:
 
@@ -699,12 +699,12 @@ response = client.images.generate(
 
 <img />
 
-## Prompting Best Practices
+## Prompting best practices
 
 **Golden Rules**
 
-1. **Order by importance** — List the most important elements first in your prompt
-2. **Be specific** — The more detailed, the more controlled the output
+1. **Order by importance:** List the most important elements first in your prompt.
+2. **Be specific:** The more detailed, the more controlled the output.
 
 **Prompt Framework**
 

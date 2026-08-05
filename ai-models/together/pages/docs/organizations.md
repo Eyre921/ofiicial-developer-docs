@@ -10,17 +10,17 @@ An Organization is your company's account on Together. It's the top-level contai
 
 Manage your Organization from [**Organization Settings**](https://api.together.ai/settings/organization/~current) in the Together dashboard.
 
-## Organization Membership
+## Organization membership
 
 Members join your Organization using either Single Sign-On (SSO) or Invitation-Based (OAuth) authentication. These methods are mutually exclusive -- you must choose one or the other.
 
-### Single Sign-On (SSO)
+### Single sign-on (SSO)
 
 If your company uses an Identity Provider (Okta, Google Workspace, Microsoft Entra, JumpCloud) with SSO configured, Members authenticate through your IdP and are automatically provisioned into your Organization.
 
 See [Single Sign-On (SSO)](/docs/sso) for setup instructions.
 
-### Invitation-Based (OAuth)
+### Invitation-based (OAuth)
 
 Admins in paid tier Organizations can invite Members by email. Here is how:
 
@@ -31,13 +31,13 @@ Admins in paid tier Organizations can invite Members by email. Here is how:
 
 Invitations expire after **7 days**. The recipient will receive an email with a link to accept. A Together account will be created when they accept. If the user already has an existing Together account, [contact support](https://portal.usepylon.com/together-ai/forms/support-request) for assistance migrating it to your Organization.
 
-### Removing Members
+### Removing members
 
 Admins can remove Members at any time:
 
 1. Go to [**Organization > Member Settings**](https://api.together.ai/settings/organization/~current/members)
 2. Find the Member you want to remove
-3. Click the three-dot menu next to their name
+3. Select the three-dot menu next to their name
 4. Select **Remove Member**
 
 <Warning>

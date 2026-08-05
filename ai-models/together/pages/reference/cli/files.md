@@ -45,7 +45,7 @@ Here's a sample output:
 ```bash theme={null}
 $ tg files check ./local-file.jsonl
 Validating file: 1 lines [00:00, 7476.48 lines/s]
-✅ Checks passed
+OK Checks passed
 ```
 
 Pass `--json` to get the full structured report instead of the pass/fail summary:
@@ -69,7 +69,7 @@ $ tg files check ./local-file.jsonl --json
 }
 ```
 
-For fine-tuning JSONL files, this command verifies UTF-8 encoding, that each non-empty line is parseable JSON, and that there is one JSON object per line, along with the minimum sample count and maximum file size. Schema-level validation (such as required fields and role ordering) is performed on the server when the file is used; the Files API surfaces any errors at that point.
+For fine-tuning JSONL files, this command verifies UTF-8 encoding, that each non-empty line is parseable JSON, and that there is one JSON object per line, along with the minimum sample count and maximum file size. Schema-level validation (such as required fields and role ordering) is performed on the server when the file is used. The Files API surfaces any errors at that point.
 
 ## List
 

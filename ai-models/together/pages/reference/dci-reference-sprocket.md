@@ -102,7 +102,7 @@ Updates are batched and merged (later values overwrite earlier ones for the same
 
 Override for custom file download/upload behavior. Attach to your Sprocket via the `processor` class attribute.
 
-### Custom I/O Processing
+### Custom I/O processing
 
 | Method               | Signature                                                                    | Description                                                                    |
 | -------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
@@ -154,7 +154,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
   ```
 </CodeGroup>
 
-## HTTP Endpoints
+## HTTP endpoints
 
 | Endpoint    | Method | Response                                                                                                                           |
 | ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -162,14 +162,14 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 | `/metrics`  | GET    | `requests_inflight 0.0` or `1.0` (Prometheus format)                                                                               |
 | `/generate` | POST   | Direct HTTP inference (non-queue mode). Route is configurable via the `predict_path` parameter of [`sprocket.run`](#sprocket-run). |
 
-## CLI Arguments
+## CLI arguments
 
 | Argument  | Default | Description              |
 | --------- | ------- | ------------------------ |
 | `--queue` | `false` | Enable queue worker mode |
 | `--port`  | `8000`  | HTTP server port         |
 
-## Environment Variables
+## Environment variables
 
 | Variable                           | Default                   | Description                                                               |
 | ---------------------------------- | ------------------------- | ------------------------------------------------------------------------- |
@@ -180,9 +180,9 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
 | `TERMINATION_GRACE_PERIOD_SECONDS` | `300`                     | Max time for graceful shutdown and prediction timeout                     |
 | `WORLD_SIZE`                       | `1`                       | Number of GPU processes (set automatically by torchrun)                   |
 
-## Complete Examples
+## Complete examples
 
-### Image Classification
+### Image classification
 
 <CodeGroup>
   ```python Python theme={null}
@@ -209,7 +209,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
   ```
 </CodeGroup>
 
-### Video Generation with File Output
+### Video generation with file output
 
 <CodeGroup>
   ```python Python theme={null}
@@ -233,7 +233,7 @@ Override for custom file download/upload behavior. Attach to your Sprocket via t
   ```
 </CodeGroup>
 
-### Multi-Model Pipeline
+### Multi-model pipeline
 
 <CodeGroup>
   ```python Python theme={null}

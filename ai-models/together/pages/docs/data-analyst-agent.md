@@ -131,7 +131,7 @@ Generally, you follow these rules:
 
 ## 4. Add code interpreting capabilities and initialize the model
 
-Now we define the function that will use the E2B code interpreter. Every time the LLM assistant decides that it needs to execute code, this function will be used. Read more about the Code Interpreter SDK [here](https://e2b.dev/docs/legacy/code-interpreter/installation).
+Now we define the function that will use the E2B code interpreter. Every time the LLM assistant decides that it needs to execute code, this function will be used. Read more about the code interpreter SDK [here](https://e2b.dev/docs/legacy/code-interpreter/installation).
 
 We also initialize the Together AI client. The function for matching code blocks is important because we need to pick the right part of the output that contains the code produced by the LLM. The chat function takes care of the interaction with the LLM. It calls the E2B code interpreter anytime there is a code to be run.
 

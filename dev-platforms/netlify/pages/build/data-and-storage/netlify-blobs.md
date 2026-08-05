@@ -1433,6 +1433,10 @@ With file-based uploads, you can write blobs to [deploy-specific stores](#deploy
 
 To make file-based uploads, place blob files in `.netlify/blobs/deploy` in your site's [base directory](/build/configure-builds/overview#definitions). Netlify uploads these files to blob storage maintaining their directory structure. Here is an example file tree:
 
+### Caution - Create blob files during the build
+
+Netlify deletes the contents of `.netlify/blobs/deploy` before each build to avoid uploading leftover files from previous builds. This means files that exist before the build starts, such as files committed to your repository, are not uploaded. Create your blob files during the build, using your build command or a build plugin.
+
 ```
 .netlify/
 ├─ blobs/
@@ -1667,7 +1671,7 @@ export const onPostBuild = async () => {
 Keep the following requirements in mind while working with Netlify Blobs:
 
 - Netlify Blobs uses the [web platform `fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to make HTTP calls, so Fetch API support is required. This is included with Node.js 18. If for some reason you can't use Node.js 18, you can provide your own Fetch API support by supplying a `fetch` property to the `getStore` or `getDeployStore` method.
-- File-based uploads require [continuous deployment](/deploy/create-deploys#deploy-with-git) or [CLI deploys](/api-and-cli-guides/cli-guides/get-started-with-cli#manual-deploys).
+- File-based uploads require [continuous deployment](/deploy/create-deploys#deploy-with-git) or [CLI deploys](/api-and-cli-guides/cli-guides/get-started-with-cli#manual-deploys). Blob files must be created during the build. Any files in `.netlify/blobs/deploy` before the build starts are removed.
 
 ### Collapsible Component:
 

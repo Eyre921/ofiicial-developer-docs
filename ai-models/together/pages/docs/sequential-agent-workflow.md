@@ -8,7 +8,7 @@ Coordinating a chain of LLM calls to solve a complex task.
 
 A workflow where the output of one LLM call becomes the input for the next. This sequential design allows for structured reasoning and step-by-step task completion.
 
-## Workflow Architecture
+## Workflow architecture
 
 Chain multiple LLM calls sequentially to process complex tasks.
 
@@ -22,7 +22,7 @@ Chain multiple LLM calls sequentially to process complex tasks.
   For a more detailed walk-through refer to the [notebook here](https://github.com/togethercomputer/together-cookbook/blob/main/Agents/Serial_Chain_Agent_Workflow.ipynb)
 </Info>
 
-## Setup Client
+## Setup client
 
 <CodeGroup>
   ```python Python theme={null}
@@ -80,7 +80,7 @@ Chain multiple LLM calls sequentially to process complex tasks.
   ```
 </CodeGroup>
 
-## Implement Workflow
+## Implement workflow
 
 <CodeGroup>
   ```python Python theme={null}
@@ -132,7 +132,7 @@ Chain multiple LLM calls sequentially to process complex tasks.
   ```
 </CodeGroup>
 
-## Example Usage
+## Example usage
 
 <CodeGroup>
   ```python Python theme={null}

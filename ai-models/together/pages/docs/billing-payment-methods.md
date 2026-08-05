@@ -20,12 +20,12 @@ Together AI supports two payment methods to fund your account:
 Together AI accepts all major credit and debit cards on networks including Visa, Mastercard, and American Express. Prepaid cards are not supported.
 
 <Note>
-  In some territories, banks require authorization for every transaction. We send an authorization link to your account's registered email. Approve these promptly to avoid credit purchase failures.
+  In some territories, banks require authorization for every transaction. Together AI sends an authorization link to your account's registered email. Approve these promptly to avoid credit purchase failures.
 </Note>
 
 ### Managing payment methods
 
-You can save **multiple payment methods** on an organization—for example, a US bank account (ACH) and one or more credit cards. Choose which method is **default**; credit purchases and auto-recharge (if enabled) use the default.
+You can save **multiple payment methods** on an organization, for example a US bank account (ACH) and one or more credit cards. Choose which method is **default**. Credit purchases and auto-recharge (if enabled) use the default.
 
 1. Go to your [billing settings](https://api.together.ai/settings/organization/~current/billing)
 2. In the **Payment method** panel, select **Manage payment methods**
@@ -51,7 +51,7 @@ You can change your invoice address without updating your payment methods. The T
 
 ***
 
-## ACH Bank Transfers (Early Access)
+## ACH bank transfers (early access)
 
 <Note>
   ACH bank transfers are currently in early access and available to customers with an enterprise contract only. [Contact Support](https://portal.usepylon.com/together-ai/forms/support-request) to request access.
@@ -61,7 +61,7 @@ ACH (Automated Clearing House) payments allow you to purchase Together AI credit
 
 ### Adding a bank account
 
-We support most U.S. financial institutions with instant verification. Once your account has been enabled for ACH as a payment method, you can link your bank by following these steps:
+Together AI supports most U.S. financial institutions with instant verification. Once your account has been enabled for ACH as a payment method, you can link your bank by following these steps:
 
 1. Go to your [Billing settings](https://api.together.ai/settings/organization/~current/billing)
 2. In the **Payment method** panel, select **Manage payment methods** (or **Add payment method** if no method is on file)
@@ -99,7 +99,7 @@ If the payment fails, no credits are deposited. Contact [Support](https://portal
 Only U.S. banks that support instant verification are currently available. If your institution isn't listed, try searching by name or contact [Support](https://portal.usepylon.com/together-ai/forms/support-request).
 
 **I got an error during bank selection.**
-This can happen if your bank is temporarily unable to verify the account link. Contact [Support](https://portal.usepylon.com/together-ai/forms/support-request) and we'll help investigate.
+This can happen if your bank is temporarily unable to verify the account link. Contact [Support](https://portal.usepylon.com/together-ai/forms/support-request) for help investigating.
 
 **I got an error after clicking Save.**
 Try refreshing the page and attempting again. If the issue persists, reach out to [Support](https://portal.usepylon.com/together-ai/forms/support-request) with any error details.

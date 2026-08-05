@@ -30,7 +30,7 @@ Customers with an active Scale or Enterprise contract continue to be billed unde
 
 Together supports automatic credit purchases when your balance falls below a set threshold. When auto-recharge runs, your **default** payment method is charged in a **single transaction** to bring your balance up to your target.
 
-**Auto-recharge and ACH:** Auto-recharge is available only when your default payment method is a credit or debit card. If your default is a US bank account (ACH), auto-recharge is not available—even if you also have a card saved. If a card is your default, auto-recharge works normally even when ACH is also on file. Setting ACH as default turns auto-recharge off automatically.
+**Auto-recharge and ACH:** Auto-recharge is available only when your default payment method is a credit or debit card. If your default is a US bank account (ACH), auto-recharge is not available, even if you also have a card saved. If a card is your default, auto-recharge works normally even when ACH is also on file. Setting ACH as default turns auto-recharge off automatically.
 
 To enable auto-recharge:
 
@@ -51,7 +51,7 @@ No, prepaid balance credits in your Together.ai account do not currently have an
 
 If any changes to this policy are made in the future, Together.ai will notify customers in advance through official communications.
 
-At Together AI, we understand that everyone has their own circumstances and we want to make sure that none of our customers are ever put in a tricky situation as a result of an unexpected bill from us.
+Everyone's circumstances are different, and no customer should ever be put in a tricky situation by an unexpected bill.
 
 To try and avoid such a situation, we offer usage based billing and credit packs, which are charged at the time of purchase.
 

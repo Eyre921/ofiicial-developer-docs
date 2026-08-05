@@ -6,17 +6,17 @@ path: docs/dedicated-container-inference
 
 Deploy custom containers on Together's managed GPU infrastructure with automatic scaling, job queues, and built-in observability.
 
-<Note>Custom containers are available through our sales team. [Contact sales](https://www.together.ai/forms/contact-sales) to get access.</Note>
+<Note>Custom containers are available through the Together sales team. [Contact sales](https://www.together.ai/forms/contact-sales) to get access.</Note>
 
 <Tip>Using a coding agent? Install the [together-dedicated-containers](https://github.com/togethercomputer/skills/tree/main/skills/together-dedicated-containers) skill to let your agent write correct dedicated container code automatically. [Learn more](/docs/agent-skills).</Tip>
 
-Dedicated Containers let you run your own Dockerized inference workloads on Together's managed GPU infrastructure. You bring the container — Together handles compute provisioning, autoscaling, networking, and observability.
+Dedicated Containers let you run your own Dockerized inference workloads on Together's managed GPU infrastructure. You bring the container. Together handles compute provisioning, autoscaling, networking, and observability.
 
 You build and push a Docker image using the [Jig CLI](/docs/deployments-jig). Inside your container, the [Sprocket SDK](/docs/deployments-sprocket) connects your inference code to Together's managed [job queue](/docs/deployments-queue). Once deployed, your workers can receive requests.
 
 * Wrap and deploy your model in 20 minutes
 * Boost conversion and margins with fair priority queueing
-* Bottomless capacity just before you need it
+* Bottomless capacity right before you need it
 
 <Frame>
   <img alt="Dedicated Containers Architecture" />

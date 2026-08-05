@@ -13,7 +13,7 @@ OpenClaw is the first Jarvis-like agent that actually gets things done: writing 
 ### Prerequisites
 
 1. An OpenClaw installation ([install guide](https://docs.openclaw.ai/install))
-2. A Together AI API key — grab one at [api.together.ai](https://api.together.ai)
+2. A Together AI API key (grab one at [api.together.ai](https://api.together.ai))
 
 ### Step 1: Onboard with Together AI
 
@@ -33,7 +33,7 @@ This will prompt you for your `TOGETHER_API_KEY` and store it securely for the G
 
 Using the onboard command and "QuickStart" mode, OpenClaw selects a default model for you.
 
-We recommend setting Kimi K2.7 Code as your default model in your OpenClaw config. Remember to prefix the model name with "together/":
+Set Kimi K2.7 Code as your default model in your OpenClaw config. Remember to prefix the model name with "together/":
 
 ```json5 theme={null}
 {
@@ -47,7 +47,7 @@ We recommend setting Kimi K2.7 Code as your default model in your OpenClaw confi
 
 ### Step 3: Launch and chat
 
-Start the Gateway and begin chatting — via the web UI, CLI, Telegram, or WhatsApp:
+Start the Gateway and begin chatting via the web UI, CLI, Telegram, or WhatsApp:
 
 ```bash theme={null}
 openclaw gateway run
@@ -57,7 +57,7 @@ That's it. OpenClaw is now powered by open-source models on Together AI.
 
 ## Environment note
 
-If the Gateway runs as a daemon (launchd / systemd), make sure `TOGETHER_API_KEY` is available to that process — for example, in `~/.openclaw/.env` or via `env.shellEnv`.
+If the Gateway runs as a daemon (launchd / systemd), make sure `TOGETHER_API_KEY` is available to that process, for example in `~/.openclaw/.env` or via `env.shellEnv`.
 
 ## Why Together AI + OpenClaw?
 
@@ -71,7 +71,7 @@ All models are OpenAI API compatible, so OpenClaw works with them out of the box
 
 ## Use cases
 
-OpenClaw can help with both personal and work tasks — from automating daily workflows to powering complex business processes. Check out the [OpenClaw Showcase](https://openclaw.ai/showcase) for real-world examples and inspiration on how others are using OpenClaw for personal productivity and professional work.
+OpenClaw can help with both personal and work tasks, from automating daily workflows to powering complex business processes. Check out the [OpenClaw Showcase](https://openclaw.ai/showcase) for real-world examples and inspiration on how others are using OpenClaw for personal productivity and professional work.
 
 ## The bottom line
 

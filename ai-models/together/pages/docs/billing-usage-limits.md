@@ -16,7 +16,7 @@ Build Tiers (Build Tier 1–5), Scale, and Enterprise tier labels have been reti
 
 Every serverless inference API request returns response headers with the latest rate limits for the model you called, along with current usage and reset timing. See [Fetching latest serverless rate limits](/docs/serverless/rate-limits#fetching-latest-serverless-rate-limits) for details.
 
-We recommend planning workloads against the latest limits reported in response headers rather than fixed thresholds.
+Plan workloads against the latest limits reported in response headers rather than fixed thresholds.
 
 For the full mechanics of how limits scale, see [Dynamic rate limits](/docs/serverless/rate-limits#dynamic-rate-limits).
 
@@ -30,13 +30,13 @@ If your workload depends on predictable, reserved capacity, [dedicated model inf
 
 ### Exceptions
 
-Occasionally, due to the popularity of a specific model, we may apply custom rate limits or access restrictions. These exceptions are called out in the relevant model documentation.
+Occasionally, due to the popularity of a specific model, Together may apply custom rate limits or access restrictions. These exceptions are called out in the relevant model documentation.
 
 ## Cost analytics
 
 Together AI provides built-in spend analytics so you can track usage and costs across products and models over time.
 
-To access organization-level cost analytics, open your [billing settings](https://api.together.ai/settings/organization/~current/billing) and scroll to the **Usage** section. You can also click **See detailed cost analytics** on the monthly spend card, or open your [project's cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics) to scope the view to a single project. Click **Current Usage** on the billing page to see a draft view of your monthly invoice.
+To access organization-level cost analytics, open your [billing settings](https://api.together.ai/settings/organization/~current/billing) and scroll to the **Usage** section. You can also select **See detailed cost analytics** on the monthly spend card, or open your [project's cost analytics page](https://api.together.ai/settings/projects/~current/cost-analytics) to scope the view to a single project. Select **Current Usage** on the billing page to see a draft view of your monthly invoice.
 
 <img alt="Cost analytics dashboard showing daily spend by product" />
 
@@ -45,7 +45,7 @@ To access organization-level cost analytics, open your [billing settings](https:
 The chart toolbar lets you choose how to measure and group usage:
 
 * **Measure: Cost (\$)** - Chart daily spend in US dollars for the selected period. This is the default view.
-* **Measure: Units** - Chart daily billable units (for example, tokens) instead of dollar amounts. Totals and tooltips show unit counts; the chart subtitle updates to **Daily Units by …**.
+* **Measure: Units** - Chart daily billable units (for example, tokens) instead of dollar amounts. Totals and tooltips show unit counts. The chart subtitle updates to **Daily Units by …**.
 * **Group by Product** - Break down by product (Endpoints, Storage, Serverless Inference).
 * **Group by Line items** - Show individual usage line items.
 * **Group by Project** (beta) - Attribute spend or units to projects in your organization.

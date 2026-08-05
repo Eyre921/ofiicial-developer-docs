@@ -93,7 +93,7 @@ Integrate Resend with the tools you already use.
     Build workflows using BuildShip
   </Card>
 
-  <Card title="viaSocket" href="https://viasocket.com/integrations/resend" icon={<ViaSocketIcon />}>
+  <Card title="viaSocket" href="https://viasocket.com/integrations/resend?utm_source=resend&utm_medium=marketplace&utm_campaign=resend_listing" icon={<ViaSocketIcon />}>
     Build automations using viaSocket
   </Card>
 
@@ -107,6 +107,10 @@ Integrate Resend with the tools you already use.
 
   <Card title="Post SMTP" href="https://postmansmtp.com/docs/mailers/how-to-setup-resend-with-post-smtp/" icon={<PostSmtpIcon />}>
     Send emails from WordPress with Post SMTP
+  </Card>
+
+  <Card title="Softr" href="https://docs.softr.io/workflows/integrations/resend" icon={<SoftrIcon />}>
+    Send emails from Softr workflows
   </Card>
 </CardGroup>
 
@@ -227,6 +231,10 @@ Integrate Resend with the tools you already use.
 
   <Card title="brin" href="https://brin.sh/docs/integrations/resend" icon={<BrinIcon />}>
     Scan inbound emails for phishing before your app processes them
+  </Card>
+
+  <Card title="Playrunner" href="https://playrunner.dev/docs/integration-packages/resend/" icon={<PlayrunnerIcon />}>
+    Send and receive email in Playrunner workflows
   </Card>
 </CardGroup>
 

@@ -16,7 +16,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
-  Get started with your GitHub profile.
+  <p>Get started with your GitHub profile.</p>
 
 * [Quickstart for your personal dashboard](/en/account-and-profile/get-started/personal-dashboard-quickstart)
 
@@ -40,7 +40,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 
-  If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.
+  <p>If you use one workstation to contribute to projects for more than one account, you can modify your Git configuration to simplify the contribution process.</p>
 
 * [Viewing contributions on your profile](/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile)
 

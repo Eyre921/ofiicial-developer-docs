@@ -64,7 +64,7 @@ Projects have two roles: **Admin** and **Editor**.
 | Collaborators: Remove       | Yes   | No     |
 | Collaborators: Manage roles | Yes   | No     |
 
-## External Collaborators (Beta)
+## External collaborators (beta)
 
 <Info>
   This feature is in beta. [Contact support](https://portal.usepylon.com/together-ai/forms/support-request) to enable it.
@@ -85,7 +85,7 @@ What they cannot do:
 
 ## Product-specific permissions
 
-### GPU Clusters (control plane)
+### GPU clusters (control plane)
 
 The control plane covers infrastructure operations: creating, modifying, and deleting clusters and volumes.
 
@@ -99,7 +99,7 @@ The control plane covers infrastructure operations: creating, modifying, and del
 | View cluster status and details | Yes   | Yes    |
 | View volume details             | Yes   | Yes    |
 
-### GPU Clusters (data plane)
+### GPU clusters (data plane)
 
 The data plane covers using clusters for actual work: running jobs, accessing nodes, executing workloads.
 
@@ -112,19 +112,19 @@ The data plane covers using clusters for actual work: running jobs, accessing no
 | Read and write to volumes          | Yes   | Yes    |
 
 <Info>
-  **Control plane vs data plane:** Think of the control plane as "managing the infrastructure" and the data plane as "using the infrastructure." Editors have full access to use clusters for their work. They just cannot create, delete, or resize them.
+  **Control plane vs data plane:** Think of the control plane as "managing the infrastructure" and the data plane as "using the infrastructure." Editors have full access to use clusters for their work. Their only restriction is that they cannot create, delete, or resize clusters.
 </Info>
 
-### Fine-tuning, Endpoints, Serverless Inference & other products
+### Fine-tuning, endpoints, serverless inference & other products
 
-Role-based access control for Fine-Tuning, Endpoints, Serverless Inference, and other Together products is still being rolled out. Today, all Project Collaborators (both Admin and Editor) have full access to these services.
+Role-based access control for fine-tuning, endpoints, serverless inference, and other Together products is still being rolled out. Today, all Project Collaborators (both Admin and Editor) have full access to these services.
 
 ## What's coming
 
 Together is actively rolling out RBAC across more services. Granular permissions for fine-tuning, dedicated model inference, and serverless inference are coming soon.
 
 <Note>
-  Have a specific RBAC requirement? [Let us know](https://portal.usepylon.com/together-ai/forms/support-request). Customer feedback directly shapes our roadmap.
+  Have a specific RBAC requirement? [Let us know](https://portal.usepylon.com/together-ai/forms/support-request). Customer feedback directly shapes Together's roadmap.
 </Note>
 
 ## Related

@@ -8,7 +8,7 @@ Execute multiple LLM calls in parallel and aggregate afterwards.
 
 Parallelization takes advantage of tasks that can be broken up into discrete independent parts. The user's prompt is passed to multiple LLMs simultaneously. Once all the LLMs respond, their answers are all sent to a final LLM call to be aggregated for the final answer.
 
-## Parallel Architecture
+## Parallel architecture
 
 Run multiple LLMs in parallel and aggregate their solutions.
 
@@ -26,7 +26,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-parallelization).
 </Info>
 
-## Setup Client & Helper Functions
+## Setup client & helper functions
 
 <CodeGroup>
   ```python Python theme={null}
@@ -115,7 +115,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
   ```
 </CodeGroup>
 
-## Implement Workflow
+## Implement workflow
 
 <CodeGroup>
   ```python Python theme={null}
@@ -193,7 +193,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
   ```
 </CodeGroup>
 
-## Example Usage
+## Example usage
 
 <CodeGroup>
   ```python Python theme={null}
@@ -295,7 +295,7 @@ Run multiple LLMs in parallel and aggregate their solutions.
 * Simultaneously analyzing a text for emotional tone, intent, and potential biases, with each aspect handled by a dedicated LLM.
 * Translating a document into multiple languages at the same time by assigning each language to a separate LLM, then aggregating the results for multilingual output.
 
-## Subtask Agent Workflow
+## Subtask agent workflow
 
 An alternate and useful parallel workflow. This workflow begins with an LLM breaking down the task into subtasks that are dynamically determined based on the input. These subtasks are then processed in parallel by multiple worker LLMs. Finally, the orchestrator LLM synthesizes the workers' outputs into the final result.
 
@@ -309,7 +309,7 @@ An alternate and useful parallel workflow. This workflow begins with an LLM brea
   For a more detailed walk-through refer to the [notebook here](https://togetherai.link/agent-recipes-deep-dive-orchestrator).
 </Info>
 
-## Setup Client & Helper Functions
+## Setup client & helper functions
 
 <CodeGroup>
   ```python Python theme={null}
@@ -429,7 +429,7 @@ An alternate and useful parallel workflow. This workflow begins with an LLM brea
   ```
 </CodeGroup>
 
-## Implement Workflow
+## Implement workflow
 
 <CodeGroup>
   ```python Python theme={null}
@@ -615,7 +615,7 @@ An alternate and useful parallel workflow. This workflow begins with an LLM brea
   ````
 </CodeGroup>
 
-## Example Usage
+## Example usage
 
 <CodeGroup>
   ```typescript TypeScript theme={null}

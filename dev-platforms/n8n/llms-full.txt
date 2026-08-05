@@ -987,7 +987,7 @@ npm is a quick way to get started with n8n on your local machine. You must have 
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Try n8n with npx <a href="#try-n8n-with-npx" id="try-n8n-with-npx"></a>
@@ -1139,7 +1139,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1372,7 +1372,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -1597,7 +1597,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -1685,7 +1685,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -1898,7 +1898,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2091,7 +2091,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -2285,7 +2285,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -2554,7 +2554,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -3814,7 +3814,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.33.3 Current `beta`: 2.34.0
+Current `stable`: 2.33.4 Current `beta`: 2.34.1
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -4177,11 +4177,12 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 
 By default, n8n uses memory to store binary data. Enterprise users can choose to use an external service instead. Refer to [External storage](/deploy/host-n8n/configure-n8n/scaling/use-external-storage) for more information on using external storage for binary data.
 
-| Variable                          | Type   | Default                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| --------------------------------- | ------ | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `N8N_AVAILABLE_BINARY_DATA_MODES` | String | `filesystem`                 | A comma separated list of available binary data modes.                                                                                                                                                                                                                                                                                                                                                                                           |
-| `N8N_BINARY_DATA_STORAGE_PATH`    | String | `N8N_USER_FOLDER/binaryData` | The path where n8n stores binary data.                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `N8N_DEFAULT_BINARY_DATA_MODE`    | String | `default`                    | The default binary data mode. `default` keeps binary data in memory. Set to `filesystem` to use the filesystem, `s3` to use AWS S3, `azure` to use Azure Blob Storage, or `database` to use the DB. Note that binary data pruning operates on the active binary data mode. For example, if your instance stored data in S3, and you later switched to filesystem mode, n8n only prunes binary data in the filesystem. This may change in future. |
+| Variable                                 | Type   | Default                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ---------------------------------------- | ------ | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `N8N_AVAILABLE_BINARY_DATA_MODES`        | String | `filesystem`                 | A comma separated list of available binary data modes.                                                                                                                                                                                                                                                                                                                                                                                           |
+| `N8N_BINARY_DATA_DATABASE_MAX_FILE_SIZE` | Number | `512`                        | Maximum size (in MiB) of a single file n8n stores when `N8N_DEFAULT_BINARY_DATA_MODE` is `database`. Can't exceed `1024`, the limit of a database column. Storing a larger file fails.                                                                                                                                                                                                                                                           |
+| `N8N_BINARY_DATA_STORAGE_PATH`           | String | `N8N_USER_FOLDER/binaryData` | The path where n8n stores binary data.                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `N8N_DEFAULT_BINARY_DATA_MODE`           | String | `default`                    | The default binary data mode. `default` keeps binary data in memory. Set to `filesystem` to use the filesystem, `s3` to use AWS S3, `azure` to use Azure Blob Storage, or `database` to use the DB. Note that binary data pruning operates on the active binary data mode. For example, if your instance stored data in S3, and you later switched to filesystem mode, n8n only prunes binary data in the filesystem. This may change in future. |
 
 
 # Credentials
@@ -4778,6 +4779,15 @@ You can run n8n in different modes depending on your needs. Queue mode provides 
 | `QUEUE_WORKER_LOCK_RENEW_TIME`          | Number  | `10000`     | How frequently (in ms) should a worker renew the lease time.                                                                                                                                                                                                                                                                                      |
 | `QUEUE_WORKER_STALLED_INTERVAL`         | Number  | `30000`     | How often should a worker check for stalled jobs (use 0 for never).                                                                                                                                                                                                                                                                               |
 | `QUEUE_WORKER_MAX_STALLED_COUNT`        | Number  | `1`         | Maximum amount of times a stalled job will be re-processed.                                                                                                                                                                                                                                                                                       |
+
+## Webhook responses
+
+In queue mode, a worker sends a webhook response back to the main instance inside a queue message. These variables set how large that message can be, and whether n8n stores a larger response body in binary data storage instead of failing the node. Refer to [Large webhook responses](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode#large-webhook-responses) for details.
+
+| Variable                                     | Type    | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| -------------------------------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `N8N_WEBHOOK_RESPONSE_RELAY_SIZE_MAX`        | Number  | `64`    | Maximum size (in MiB) of a response a worker sends back to the main instance inside a queue message. Redis holds several copies of a response in flight, so budget about 1.5 times this value in Redis memory per response in flight. The same limit applies to a tool result an MCP Trigger workflow returns.                                                                                                                 |
+| `N8N_WEBHOOK_RESPONSE_RELAY_OFFLOAD_ENABLED` | Boolean | `false` | Whether a worker stores a response body above `N8N_WEBHOOK_RESPONSE_RELAY_SIZE_MAX` in binary data storage, so the main instance can stream it to the client, instead of failing the node. Needs a `N8N_DEFAULT_BINARY_DATA_MODE` that stores (`filesystem`, `database`, `s3`, or `azure`), and storage every instance can read. Set this on your workers only after every main and webhook instance runs n8n 2.34.0 or later. |
 
 ## Multi-main setup <a href="#multi-main-setup" id="multi-main-setup"></a>
 
