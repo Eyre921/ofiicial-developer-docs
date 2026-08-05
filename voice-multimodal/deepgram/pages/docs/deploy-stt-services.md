@@ -215,7 +215,7 @@ If you're using your own file, make sure to replace `bueller.wav` with the name 
 
 You should receive a JSON response with the transcription and associated metadata. Congratulations - your self-hosted setup is working!
 
----
+***
 
 What's Next
 

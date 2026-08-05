@@ -31,7 +31,7 @@ paths:
       summary: Create a Project Invite
       description: Generates an invite for a specific project
       tags:
-        - manage > v1 > projects > members > invites
+        - invites
       parameters:
         - name: project_id
           in: path
@@ -149,8 +149,8 @@ components:
 
 ```json
 {
-  "email": "jane.doe@example.com",
-  "scope": "read:transcripts write:projects"
+  "email": "string",
+  "scope": "string"
 }
 ```
 
@@ -158,7 +158,7 @@ components:
 
 ```json
 {
-  "message": "Invite successfully generated and sent to jane.doe@example.com"
+  "message": "string"
 }
 ```
 
@@ -170,8 +170,8 @@ import requests
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites"
 
 payload = {
-    "email": "jane.doe@example.com",
-    "scope": "read:transcripts write:projects"
+    "email": "string",
+    "scope": "string"
 }
 headers = {
     "Authorization": "Token <apiKey>",
@@ -188,7 +188,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/i
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"email":"jane.doe@example.com","scope":"read:transcripts write:projects"}'
+  body: '{"email":"string","scope":"string"}'
 };
 
 try {
@@ -214,7 +214,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites"
 
-	payload := strings.NewReader("{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}")
+	payload := strings.NewReader("{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -244,7 +244,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}"
+request.body = "{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -257,7 +257,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}")
+  .body("{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}")
   .asString();
 ```
 
@@ -269,8 +269,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/invites', [
   'body' => '{
-  "email": "jane.doe@example.com",
-  "scope": "read:transcripts write:projects"
+  "email": "string",
+  "scope": "string"
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -288,7 +288,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"email\": \"jane.doe@example.com\",\n  \"scope\": \"read:transcripts write:projects\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"email\": \"string\",\n  \"scope\": \"string\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -300,8 +300,8 @@ let headers = [
   "Content-Type": "application/json"
 ]
 let parameters = [
-  "email": "jane.doe@example.com",
-  "scope": "read:transcripts write:projects"
+  "email": "string",
+  "scope": "string"
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

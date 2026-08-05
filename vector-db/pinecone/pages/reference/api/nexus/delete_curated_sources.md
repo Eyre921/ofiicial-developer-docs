@@ -1,0 +1,7 @@
+---
+title: "Drop named sources from the index + ledger"
+source: https://docs.pinecone.io/reference/api/nexus/delete_curated_sources
+path: reference/api/nexus/delete_curated_sources
+---
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_2026-07.oas.yaml POST /contexts/{slug}/curate/delete-sources

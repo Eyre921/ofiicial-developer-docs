@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/payouts
 
 # Payouts
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T095349Z&X-Amz-Expires=604800&X-Amz-Signature=3ba3f7b6e4d395fdcdc9015c3934a7c0d48b4012a1b0929f8d8699e44e6070c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Payouts" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233228Z&X-Amz-Expires=604800&X-Amz-Signature=76f2cf3ff8fac23081cb5301ab6f7c0146491c9a5af4aaaa29fea36d38208225&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Payouts" />
 
 ## Overview
 
@@ -20,7 +20,7 @@ To set up your Payouts account:
 
 * Click on your profile icon in the top right corner and select ["Payouts"](https://elevenlabs.io/app/payouts).
 
-![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T095349Z&X-Amz-Expires=604800&X-Amz-Signature=58fdf309ce62be4b353cafb647bd6685e0b74184135787fb06302a3b934973a7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233228Z&X-Amz-Expires=604800&X-Amz-Signature=a1d22205e3bf4105d1f520c5273e4eaf81a6c5ee561d29e94a423af95ee92df1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Follow the prompts from Stripe Connect to complete the account setup.
 

@@ -168,4 +168,4 @@ Every error is fatal and is followed by a WebSocket close frame. Codes use Deepg
 * [The Speech Lifecycle](/docs/flux-tts/state) — how these events sequence across a turn
 * [Cross-Turn Context](/docs/flux-tts/context) — voice consistency across turns
 
----
+***

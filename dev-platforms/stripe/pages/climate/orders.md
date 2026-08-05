@@ -6,7 +6,7 @@ path: climate/orders
 
 # Climate Orders overview
 
-Pre-order carbon removal tons from Frontier's offtake portfolio
+Order carbon removal from Frontier's offtake portfolio
 Available in: US, EU, CA, GB, JP, LI, NO
 ## Get started
 

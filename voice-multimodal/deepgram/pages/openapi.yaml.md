@@ -15,7 +15,7 @@ paths:
       summary: List Agent Think Models
       description: Retrieves the available think models that can be used for AI agent processing
       tags:
-        - agent > v1 > settings > think > models
+        - models
       responses:
         '200':
           description: List of available think models
@@ -38,7 +38,7 @@ paths:
         `agent` block of a Settings message. The returned `agent_id` can be passed in place of the full `agent` object
         in future Settings messages.
       tags:
-        - voiceAgent > configurations
+        - configurations
       parameters:
         - name: project_id
           in: path
@@ -80,7 +80,7 @@ paths:
         Returns all agent configurations for the specified project. Configurations are returned in their uninterpolated
         form—template variable placeholders appear as-is rather than with their substituted values.
       tags:
-        - voiceAgent > configurations
+        - configurations
       parameters:
         - name: project_id
           in: path
@@ -115,7 +115,7 @@ paths:
       summary: Get an Agent Configuration
       description: Returns the specified agent configuration in its uninterpolated form
       tags:
-        - voiceAgent > configurations
+        - configurations
       parameters:
         - name: project_id
           in: path
@@ -157,7 +157,7 @@ paths:
         Updates the metadata associated with an agent configuration. The config itself is immutable—to change the
         configuration, delete the existing agent and create a new one.
       tags:
-        - voiceAgent > configurations
+        - configurations
       parameters:
         - name: project_id
           in: path
@@ -205,7 +205,7 @@ paths:
         Deletes the specified agent configuration. Deleting an agent configuration can cause a production outage if your
         service references this agent UUID. Migrate all active sessions to a new configuration before deleting.
       tags:
-        - voiceAgent > configurations
+        - configurations
       parameters:
         - name: project_id
           in: path
@@ -248,7 +248,7 @@ paths:
         Creates a new template variable. Variables follow the `DG_<VARIABLE_NAME>` naming format and can substitute any
         JSON value in an agent configuration.
       tags:
-        - voiceAgent > variables
+        - variables
       parameters:
         - name: project_id
           in: path
@@ -288,7 +288,7 @@ paths:
       summary: List Agent Variables
       description: Returns all template variables for the specified project
       tags:
-        - voiceAgent > variables
+        - variables
       parameters:
         - name: project_id
           in: path
@@ -323,7 +323,7 @@ paths:
       summary: Get an Agent Variable
       description: Returns the specified template variable
       tags:
-        - voiceAgent > variables
+        - variables
       parameters:
         - name: project_id
           in: path
@@ -363,7 +363,7 @@ paths:
       summary: Update an Agent Variable
       description: Updates the value of an existing template variable
       tags:
-        - voiceAgent > variables
+        - variables
       parameters:
         - name: project_id
           in: path
@@ -409,7 +409,7 @@ paths:
       summary: Delete an Agent Variable
       description: Deletes the specified template variable
       tags:
-        - voiceAgent > variables
+        - variables
       parameters:
         - name: project_id
           in: path
@@ -450,7 +450,7 @@ paths:
       summary: Transcribe and analyze pre-recorded audio and video
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       tags:
-        - listen > v1 > media
+        - media
       parameters:
         - name: callback
           in: query
@@ -766,7 +766,7 @@ paths:
       summary: Text to Speech transformation
       description: Convert text into natural-sounding speech using Deepgram's TTS REST API
       tags:
-        - speak > v1 > audio
+        - audio
       parameters:
         - name: callback
           in: query
@@ -880,7 +880,7 @@ paths:
       summary: Analyze text content
       description: Analyze text content using Deepgrams text analysis API
       tags:
-        - read > v1 > text
+        - text
       parameters:
         - name: callback
           in: query
@@ -1002,7 +1002,7 @@ paths:
       summary: List Projects
       description: Retrieves basic information about the projects associated with the API key
       tags:
-        - manage > v1 > projects
+        - projects
       parameters:
         - name: Authorization
           in: header
@@ -1031,7 +1031,7 @@ paths:
       summary: Get a Project
       description: Retrieves information about the specified project
       tags:
-        - manage > v1 > projects
+        - projects
       parameters:
         - name: project_id
           in: path
@@ -1080,7 +1080,7 @@ paths:
       summary: Update a Project
       description: Updates the name or other properties of an existing project
       tags:
-        - manage > v1 > projects
+        - projects
       parameters:
         - name: project_id
           in: path
@@ -1120,7 +1120,7 @@ paths:
       summary: Delete a Project
       description: Deletes the specified project
       tags:
-        - manage > v1 > projects
+        - projects
       parameters:
         - name: project_id
           in: path
@@ -1155,7 +1155,7 @@ paths:
       summary: Leave a Project
       description: Removes the authenticated account from the specific project
       tags:
-        - manage > v1 > projects
+        - projects
       parameters:
         - name: project_id
           in: path
@@ -1190,7 +1190,7 @@ paths:
       summary: List Project Models
       description: Returns metadata on all the latest models that a specific project has access to, including non-public models
       tags:
-        - manage > v1 > projects > models
+        - models
       parameters:
         - name: project_id
           in: path
@@ -1231,7 +1231,7 @@ paths:
       summary: Get a Project Model
       description: Returns metadata for a specific model
       tags:
-        - manage > v1 > projects > models
+        - models
       parameters:
         - name: project_id
           in: path
@@ -1272,7 +1272,7 @@ paths:
       summary: List Models
       description: Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
       tags:
-        - manage > v1 > models
+        - models
       parameters:
         - name: include_outdated
           in: query
@@ -1307,7 +1307,7 @@ paths:
       summary: Get a specific Model
       description: Returns metadata for a specific public model
       tags:
-        - manage > v1 > models
+        - models
       parameters:
         - name: model_id
           in: path
@@ -1342,7 +1342,7 @@ paths:
       summary: List Project Keys
       description: Retrieves all API keys associated with the specified project
       tags:
-        - manage > v1 > projects > keys
+        - keys
       parameters:
         - name: project_id
           in: path
@@ -1382,7 +1382,7 @@ paths:
       summary: Create a Project Key
       description: Creates a new API key with specified settings for the project
       tags:
-        - manage > v1 > projects > keys
+        - keys
       parameters:
         - name: project_id
           in: path
@@ -1423,7 +1423,7 @@ paths:
       summary: Get a Project Key
       description: Retrieves information about a specified API key
       tags:
-        - manage > v1 > projects > keys
+        - keys
       parameters:
         - name: project_id
           in: path
@@ -1463,7 +1463,7 @@ paths:
       summary: Delete a Project Key
       description: Deletes an API key for a specific project
       tags:
-        - manage > v1 > projects > keys
+        - keys
       parameters:
         - name: project_id
           in: path
@@ -1504,7 +1504,7 @@ paths:
       summary: List Project Members
       description: Retrieves a list of members for a given project
       tags:
-        - manage > v1 > projects > members
+        - members
       parameters:
         - name: project_id
           in: path
@@ -1539,7 +1539,7 @@ paths:
       summary: Delete a Project Member
       description: Removes a member from the project using their unique member ID
       tags:
-        - manage > v1 > projects > members
+        - members
       parameters:
         - name: project_id
           in: path
@@ -1580,7 +1580,7 @@ paths:
       summary: List Project Member Scopes
       description: Retrieves a list of scopes for a specific member
       tags:
-        - manage > v1 > projects > members > scopes
+        - scopes
       parameters:
         - name: project_id
           in: path
@@ -1620,7 +1620,7 @@ paths:
       summary: Update Project Member Scopes
       description: Updates the scopes for a specific member
       tags:
-        - manage > v1 > projects > members > scopes
+        - scopes
       parameters:
         - name: project_id
           in: path
@@ -1667,7 +1667,7 @@ paths:
       summary: List Project Invites
       description: Generates a list of invites for a specific project
       tags:
-        - manage > v1 > projects > members > invites
+        - invites
       parameters:
         - name: project_id
           in: path
@@ -1701,7 +1701,7 @@ paths:
       summary: Create a Project Invite
       description: Generates an invite for a specific project
       tags:
-        - manage > v1 > projects > members > invites
+        - invites
       parameters:
         - name: project_id
           in: path
@@ -1742,7 +1742,7 @@ paths:
       summary: Delete a Project Invite
       description: Deletes an invite for a specific project
       tags:
-        - manage > v1 > projects > members > invites
+        - invites
       parameters:
         - name: project_id
           in: path
@@ -1783,7 +1783,7 @@ paths:
       summary: List Project Requests
       description: Generates a list of requests for a specific project
       tags:
-        - manage > v1 > projects > requests
+        - requests
       parameters:
         - name: project_id
           in: path
@@ -1887,7 +1887,7 @@ paths:
       summary: Get a Project Request
       description: Retrieves a specific request for a specific project
       tags:
-        - manage > v1 > projects > requests
+        - requests
       parameters:
         - name: project_id
           in: path
@@ -1930,7 +1930,7 @@ paths:
         Retrieves the usage for a specific project. Use Get Project Usage Breakdown for a more comprehensive usage
         summary.
       tags:
-        - manage > v1 > projects > usage
+        - usage
       parameters:
         - name: project_id
           in: path
@@ -2231,7 +2231,7 @@ paths:
       summary: List Project Usage Fields
       description: Lists the features, models, tags, languages, and processing method used for requests in the specified project
       tags:
-        - manage > v1 > projects > usage > fields
+        - fields
       parameters:
         - name: project_id
           in: path
@@ -2284,7 +2284,7 @@ paths:
         excludes requests that used it. Multiple true filters are combined with OR logic, while false filters use AND
         logic.
       tags:
-        - manage > v1 > projects > usage > breakdown
+        - breakdown
       parameters:
         - name: project_id
           in: path
@@ -2591,7 +2591,7 @@ paths:
       summary: Get Project Balances
       description: Generates a list of outstanding balances for the specified project
       tags:
-        - manage > v1 > projects > billing > balances
+        - balances
       parameters:
         - name: project_id
           in: path
@@ -2626,7 +2626,7 @@ paths:
       summary: Get a Project Balance
       description: Retrieves details about the specified balance
       tags:
-        - manage > v1 > projects > billing > balances
+        - balances
       parameters:
         - name: project_id
           in: path
@@ -2667,7 +2667,7 @@ paths:
       summary: Get Project Billing Breakdown
       description: Retrieves the billing summary for a specific project, with various filter options or by grouping options.
       tags:
-        - manage > v1 > projects > billing > breakdown
+        - breakdown
       parameters:
         - name: project_id
           in: path
@@ -2751,7 +2751,7 @@ paths:
         Use this endpoint if you want to filter your results from the Billing Breakdown endpoint and want to know what
         filters are available.
       tags:
-        - manage > v1 > projects > billing > fields
+        - fields
       parameters:
         - name: project_id
           in: path
@@ -2800,7 +2800,7 @@ paths:
       summary: List Project Purchases
       description: Returns the original purchased amount on an order transaction
       tags:
-        - manage > v1 > projects > billing > purchases
+        - purchases
       parameters:
         - name: project_id
           in: path
@@ -2843,7 +2843,7 @@ paths:
       summary: List Project Self-Hosted Distribution Credentials
       description: Lists sets of distribution credentials for the specified project
       tags:
-        - selfHosted > v1 > distributionCredentials
+        - distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -2877,7 +2877,7 @@ paths:
       summary: Create a Project Self-Hosted Distribution Credential
       description: Creates a set of distribution credentials for the specified project
       tags:
-        - selfHosted > v1 > distributionCredentials
+        - distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -2935,7 +2935,7 @@ paths:
       summary: Get a Project Self-Hosted Distribution Credential
       description: Returns a set of distribution credentials for the specified project
       tags:
-        - selfHosted > v1 > distributionCredentials
+        - distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -2975,7 +2975,7 @@ paths:
       summary: Delete a Project Self-Hosted Distribution Credential
       description: Deletes a set of distribution credentials for the specified project
       tags:
-        - selfHosted > v1 > distributionCredentials
+        - distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -3019,7 +3019,7 @@ paths:
         core voice APIs, requiring an API key with Member or higher authorization. Tokens created with this endpoint
         will not work with the Manage APIs.
       tags:
-        - auth > v1 > tokens
+        - tokens
       parameters:
         - name: Authorization
           in: header
@@ -3057,7 +3057,7 @@ paths:
         this for pre-rendering fixed audio (IVR prompts, notifications, narration) where the whole text is known up
         front and you don't need incremental playback or interruption.
       tags:
-        - speak > v2 > audio
+        - audio
       parameters:
         - name: callback
           in: query
@@ -3795,14 +3795,14 @@ components:
       type: object
       properties:
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         snippet:
           type: string
       title: ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems
@@ -3822,14 +3822,14 @@ components:
         word:
           type: string
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems:
       type: object
@@ -3837,11 +3837,11 @@ components:
         text:
           type: string
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems:
       type: object
@@ -3856,11 +3856,11 @@ components:
         num_words:
           type: integer
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs:
       type: object
@@ -3882,14 +3882,14 @@ components:
         raw_value:
           type: string
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         start_word:
-          type: number
-          format: double
+          type: string
+          title: float
         end_word:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems:
       type: object
@@ -3897,11 +3897,11 @@ components:
         summary:
           type: string
         start_word:
-          type: number
-          format: double
+          type: string
+          title: float
         end_word:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems:
       type: object
@@ -3909,11 +3909,11 @@ components:
         text:
           type: string
         start_word:
-          type: number
-          format: double
+          type: string
+          title: float
         end_word:
-          type: number
-          format: double
+          type: string
+          title: float
         topics:
           type: array
           items:
@@ -3925,8 +3925,8 @@ components:
         transcript:
           type: string
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         words:
           type: array
           items:
@@ -3971,19 +3971,19 @@ components:
         word:
           type: string
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         speaker:
           type: integer
         speaker_confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         punctuated_word:
           type: string
       title: ListenV1ResponseResultsUtterancesItemsWordsItems
@@ -3991,14 +3991,14 @@ components:
       type: object
       properties:
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         channel:
           type: integer
         transcript:
@@ -4032,8 +4032,8 @@ components:
         topic:
           type: string
         confidence_score:
-          type: number
-          format: double
+          type: string
+          title: float
       title: SharedTopicsResultsTopicsSegmentsItemsTopicsItems
     SharedTopicsResultsTopicsSegmentsItems:
       type: object
@@ -4078,8 +4078,8 @@ components:
         intent:
           type: string
         confidence_score:
-          type: number
-          format: double
+          type: string
+          title: float
       title: SharedIntentsResultsIntentsSegmentsItemsIntentsItems
     SharedIntentsResultsIntentsSegmentsItems:
       type: object
@@ -5405,16 +5405,16 @@ components:
       type: object
       properties:
         hours:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Audio hours processed
         total_hours:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Total hours including all processing
         agent_hours:
-          type: number
-          format: double
+          type: string
+          title: float
           description: Agent hours used
         tokens_in:
           type: number
@@ -5579,8 +5579,8 @@ components:
       type: object
       properties:
         dollars:
-          type: number
-          format: double
+          type: string
+          title: float
           description: USD cost of the billing for this grouping
         grouping:
           $ref: '#/components/schemas/BillingBreakdownV1ResponseResultsItemsGrouping'
@@ -5657,8 +5657,8 @@ components:
           type: string
           format: date-time
         amount:
-          type: number
-          format: double
+          type: string
+          title: float
         units:
           type: string
         order_type:

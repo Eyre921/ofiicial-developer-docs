@@ -30,7 +30,7 @@ paths:
       summary: Get a Project Key
       description: Retrieves information about a specified API key
       tags:
-        - manage > v1 > projects > keys
+        - keys
       parameters:
         - name: project_id
           in: path

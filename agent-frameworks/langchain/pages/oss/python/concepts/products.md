@@ -1,5 +1,5 @@
 ---
-title: "Frameworks, runtimes, and harnesses"
+title: "Runtimes, frameworks, and harnesses"
 source: https://docs.langchain.com/oss/python/concepts/products
 path: oss/python/concepts/products
 ---
@@ -13,8 +13,8 @@ LangChain maintains several open source packages to help you build agents. Each 
     <tr>
       <th />
 
-      <th>Framework</th>
       <th>Runtime</th>
+      <th>Framework</th>
       <th>Harness</th>
     </tr>
   </thead>
@@ -22,22 +22,22 @@ LangChain maintains several open source packages to help you build agents. Each 
   <tbody>
     <tr>
       <td>Value add</td>
-      <td><ul><li>Abstractions</li><li>Integrations</li></ul></td>
       <td><ul><li>Durable execution</li><li>Streaming</li><li>HITL</li><li>Persistence</li></ul></td>
+      <td><ul><li>Abstractions</li><li>Integrations</li></ul></td>
       <td><ul><li>Predefined tools</li><li>Prompts</li><li>Subagents</li></ul></td>
     </tr>
 
     <tr>
       <td>When to use</td>
-      <td><ul><li>Getting started quickly</li><li>Standardizing how a team builds</li></ul></td>
       <td><ul><li>Low-level control</li><li>Long running, stateful workflows and agents</li></ul></td>
+      <td><ul><li>Getting started quickly</li><li>Standardizing how a team builds</li></ul></td>
       <td><ul><li>More autonomous agents</li><li>Agents faced with complex, non-deterministic tasks</li></ul></td>
     </tr>
 
     <tr>
       <td>Options</td>
-      <td><ul><li>LangChain</li><li>Vercel's AI SDK</li><li>CrewAI</li><li>OpenAI Agents SDK</li><li>Google ADK</li><li>LlamaIndex</li></ul></td>
       <td><ul><li>LangGraph</li><li>Temporal</li><li>Inngest</li></ul></td>
+      <td><ul><li>LangChain</li><li>Vercel's AI SDK</li><li>CrewAI</li><li>OpenAI Agents SDK</li><li>Google ADK</li><li>LlamaIndex</li></ul></td>
       <td><ul><li>Deep Agents SDK</li><li>Claude Agent SDK</li><li>Manus</li></ul></td>
     </tr>
   </tbody>
@@ -121,14 +121,14 @@ Use the [Deep Agents SDK](/oss/python/deepagents/overview) when:
 
 While you can accomplish similar tasks with LangChain, LangGraph, and Deep Agents, the level at which you integrate them differ:
 
-| Feature           | LangChain                                                               | LangGraph                                                                   | Deep Agents                                                                  |
-| ----------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Short-term memory | [Short-term memory](/oss/python/langchain/short-term-memory)            | [Short-term memory](/oss/python/langgraph/add-memory#add-short-term-memory) | [`StateBackend`](/oss/python/deepagents/backends#statebackend)               |
-| Long-term memory  | [Long-term memory](/oss/python/langchain/long-term-memory)              | [Long-term memory](/oss/python/langgraph/add-memory#add-long-term-memory)   | [Long-term memory](/oss/python/deepagents/memory)                            |
-| Skills            | [Multi-agent skills](/oss/python/langchain/multi-agent/skills)          | -                                                                           | [Skills](/oss/python/deepagents/skills)                                      |
-| Subagents         | [Multi-agent subagents](/oss/python/langchain/multi-agent/subagents)    | [Subgraphs](/oss/python/langgraph/use-subgraphs)                            | [Subagents](/oss/python/deepagents/subagents)                                |
-| Human-in-the-loop | [Human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop) | [Interrupts](/oss/python/langgraph/interrupts)                              | [`interrupt_on` parameter](/oss/python/deepagents/harness#human-in-the-loop) |
-| Streaming         | [Agent Streaming](/oss/python/langchain/event-streaming)                | [Streaming](/oss/python/langgraph/streaming)                                | [Streaming](/oss/python/deepagents/event-streaming)                          |
+| Feature           | LangGraph                                                                   | LangChain                                                               | Deep Agents                                                                  |
+| ----------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Short-term memory | [Short-term memory](/oss/python/langgraph/add-memory#add-short-term-memory) | [Short-term memory](/oss/python/langchain/short-term-memory)            | [`StateBackend`](/oss/python/deepagents/backends#statebackend)               |
+| Long-term memory  | [Long-term memory](/oss/python/langgraph/add-memory#add-long-term-memory)   | [Long-term memory](/oss/python/langchain/long-term-memory)              | [Long-term memory](/oss/python/deepagents/memory)                            |
+| Skills            | -                                                                           | [Multi-agent skills](/oss/python/langchain/multi-agent/skills)          | [Skills](/oss/python/deepagents/skills)                                      |
+| Subagents         | [Subgraphs](/oss/python/langgraph/use-subgraphs)                            | [Multi-agent subagents](/oss/python/langchain/multi-agent/subagents)    | [Subagents](/oss/python/deepagents/subagents)                                |
+| Human-in-the-loop | [Interrupts](/oss/python/langgraph/interrupts)                              | [Human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop) | [`interrupt_on` parameter](/oss/python/deepagents/harness#human-in-the-loop) |
+| Streaming         | [Streaming](/oss/python/langgraph/streaming)                                | [Agent Streaming](/oss/python/langchain/event-streaming)                | [Streaming](/oss/python/deepagents/event-streaming)                          |
 
 ## Learn more
 

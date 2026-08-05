@@ -34,7 +34,7 @@ paths:
         `DG_<VARIABLE_NAME>` naming format and can substitute any JSON value in
         an agent configuration.
       tags:
-        - voiceAgent > variables
+        - variables
       parameters:
         - name: project_id
           in: path
@@ -175,8 +175,8 @@ components:
 
 ```json
 {
-  "key": "DG_API_TIMEOUT",
-  "value": 30
+  "key": "string",
+  "value": null
 }
 ```
 
@@ -184,9 +184,9 @@ components:
 
 ```json
 {
-  "variable_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "key": "DG_API_TIMEOUT",
-  "value": 30,
+  "variable_id": "string",
+  "key": "string",
+  "value": null,
   "created_at": "2024-01-15T09:30:00Z",
   "updated_at": "2024-01-15T09:30:00Z"
 }
@@ -200,8 +200,8 @@ import requests
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables"
 
 payload = {
-    "key": "DG_API_TIMEOUT",
-    "value": 30
+    "key": "string",
+    "value": None
 }
 headers = {
     "Authorization": "Token <apiKey>",
@@ -218,7 +218,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/a
 const options = {
   method: 'POST',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"key":"DG_API_TIMEOUT","value":30}'
+  body: '{"key":"string","value":null}'
 };
 
 try {
@@ -244,7 +244,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables"
 
-	payload := strings.NewReader("{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}")
+	payload := strings.NewReader("{\n  \"key\": \"string\",\n  \"value\": null\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -274,7 +274,7 @@ http.use_ssl = true
 request = Net::HTTP::Post.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}"
+request.body = "{\n  \"key\": \"string\",\n  \"value\": null\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -287,7 +287,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.post("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}")
+  .body("{\n  \"key\": \"string\",\n  \"value\": null\n}")
   .asString();
 ```
 
@@ -299,8 +299,8 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/agent-variables', [
   'body' => '{
-  "key": "DG_API_TIMEOUT",
-  "value": 30
+  "key": "string",
+  "value": null
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -318,7 +318,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.POST);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"key\": \"DG_API_TIMEOUT\",\n  \"value\": 30\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"key\": \"string\",\n  \"value\": null\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -330,8 +330,8 @@ let headers = [
   "Content-Type": "application/json"
 ]
 let parameters = [
-  "key": "DG_API_TIMEOUT",
-  "value": 30
+  "key": "string",
+  "value": 
 ] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])

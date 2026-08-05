@@ -4,7 +4,9 @@ source: https://developers.notion.com/guides/mcp/common-mcp-clients
 path: guides/mcp/common-mcp-clients
 ---
 
-These AI tools support MCP and can connect to Notion.
+Find setup documentation for MCP clients that can connect to Notion MCP.
+
+These MCP clients can connect to Notion MCP. Follow the link for your client to learn how to add a remote MCP server.
 
 <CardGroup>
   <Card title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code/mcp" icon="angles-right" />
@@ -24,10 +26,10 @@ These AI tools support MCP and can connect to Notion.
   <Card title="Antigravity" href="https://antigravity.google/docs/mcp" icon="angles-right" />
 </CardGroup>
 
-To connect to the [remote Notion MCP](/guides/mcp/overview), many of these tools offer built-in directories or marketplaces where you can add **Notion**. For more setup instructions, see [Connecting to Notion MCP](/guides/mcp/get-started-with-mcp).
+Some clients include a directory or marketplace where you can add **Notion**. For setup instructions, see [Connect to Notion MCP](/guides/mcp/get-started-with-mcp).
 
 For the [local MCP server](/guides/mcp/hosting-open-source-mcp), see the [README for connection instructions](https://github.com/makenotion/notion-mcp-server?tab=readme-ov-file#3-adding-mcp-config-to-your-client).
 
 <Note>
-  Building your own MCP client? See the [MCP client connection guide](https://github.com/makenotion/notion-cookbook/blob/main/docs/mcp-client-integration.md) for step-by-step instructions on implementing OAuth and connecting to Notion MCP.
+  Building your own MCP client? See [Build an MCP client for Notion](/guides/mcp/build-mcp-client) for OAuth and connection requirements.
 </Note>

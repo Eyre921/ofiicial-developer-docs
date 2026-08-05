@@ -7,5 +7,7 @@ path: api-reference/auth-service-v2/oauth-callback-get
 https://api.host.langchain.com/openapi.json get /v2/auth/callback/{provider_id}
 Handle OAuth callback redirect from OAuth providers.
 
-Processes the OAuth token exchange, then redirects to the frontend callback
-page for a consistent UI experience.
+Always delegates to the frontend host-oauth-callback when LANGSMITH_URL is
+set — including agent-subject sessions — so finalize goes through the
+authenticated POST callback (org-scoped). Unauthenticated GET never mints
+or binds tokens for agent subjects.

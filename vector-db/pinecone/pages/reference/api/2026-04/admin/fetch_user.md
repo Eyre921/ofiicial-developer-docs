@@ -8,6 +8,61 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 Get a user in the caller's organization by ID.
 
 <RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const user = await admin.users.describe('YOUR_USER_ID');
+  console.log(user);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      user, err := adminClient.User.Describe(ctx, "YOUR_USER_ID")
+      if err != nil {
+          log.Fatalf("Failed to describe user: %v", err)
+      }
+      fmt.Printf("User: %v (%v)\n", user.Email, user.Id)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  # Look up a user by id or by email
+  data "pinecone_user" "example" {
+    id = "YOUR_USER_ID"
+  }
+
+  output "user_name" {
+    value = data.pinecone_user.example.name
+  }
+  ```
+
   ```bash curl theme={null}
   PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
   PINECONE_USER_ID="e2e92523-85dc-4142-b8c2-e681be8b78df"

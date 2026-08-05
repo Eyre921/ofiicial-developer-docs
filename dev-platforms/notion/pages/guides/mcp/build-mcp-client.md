@@ -1,32 +1,32 @@
 ---
-title: "Integrating your own MCP client"
+title: "Build an MCP client for Notion"
 source: https://developers.notion.com/guides/mcp/build-mcp-client
 path: guides/mcp/build-mcp-client
 ---
 
-Learn how your custom AI tool can connect to Notion MCP.
+Connect a custom MCP client to Notion MCP with OAuth 2.0 and PKCE.
 
-This guide walks you through building an
+Build an
 [MCP client](https://modelcontextprotocol.io/docs/develop/build-client) that
-connects to [Notion MCP](/guides/mcp/overview) using OAuth 2.0 authentication with
+connects to [Notion MCP](/guides/mcp/overview) using OAuth 2.0 with
 [PKCE](https://oauth.net/2/pkce/).
 
-## Overview
+## Connection requirements
 
 Notion provides a hosted
 [MCP (Model Context Protocol)](https://modelcontextprotocol.io/introduction)
-server that enables AI tools to interact with Notion workspaces. The server is
+server that lets MCP clients work with Notion workspaces. The server is
 available at:
 
-| Transport                         | URL                          | Notes                              |
-| --------------------------------- | ---------------------------- | ---------------------------------- |
-| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Modern transport, more efficient   |
-| **Server-Sent Events (SSE)**      | `https://mcp.notion.com/sse` | Fallback for broader compatibility |
+| Transport                         | URL                          | Notes                                          |
+| --------------------------------- | ---------------------------- | ---------------------------------------------- |
+| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Recommended for new clients                    |
+| **Server-Sent Events (SSE)**      | `https://mcp.notion.com/sse` | For clients that don't support Streamable HTTP |
 
 Both endpoints support the same MCP protocol and OAuth authentication. Your
 client should try Streamable HTTP first and fall back to SSE if needed.
 
-**Key requirements:**
+Your client must support:
 
 * OAuth 2.0 Authorization Code flow with PKCE
 * Support for Streamable HTTP (`/mcp`) or SSE (`/sse`) transports
@@ -1013,10 +1013,8 @@ connection, clear its tokens, and prompt re-authorization. See
 </Note>
 
 MCP clients can discover available MCP servers by checking for a
-`/.well-known/mcp.json` file on a website's domain. This enables a better
-experience when users paste links into an AI tool — the client can detect that
-an MCP server is available and suggest connecting to it instead of (or in
-addition to) fetching the web page.
+`/.well-known/mcp.json` file on a website's domain. When a user pastes a link,
+the client can detect the MCP server and offer to connect to it.
 
 For example, Notion hosts its discovery file at:
 

@@ -486,4 +486,4 @@ Each API service has different limitations to ensure performance. Known differen
 | Non-talk time             | We provide timestamps for the talk time, so non-talk time can easily be calculated.                                                                                                                  |
 | Talk speed                | Not currently analyzed                                                                                                                                                                               |
 
----
+***

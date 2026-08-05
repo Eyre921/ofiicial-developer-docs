@@ -1,36 +1,29 @@
 ---
-title: "Best practices for handling API keys"
+title: "Secure API tokens"
 source: https://developers.notion.com/guides/get-started/handling-api-keys
 path: guides/get-started/handling-api-keys
 ---
 
 Learn how to manage and secure your Notion API tokens.
 
-API keys are powerful credentials that provide access to Notion through our Public API. This guidance applies to internal connection tokens, OAuth access tokens, and [personal access tokens](/guides/get-started/personal-access-tokens). If these keys fall into the wrong hands, they can pose serious security risks to your connections, data, and workspace.
+Notion API tokens authorize requests to the Notion API. This guidance applies to internal connection tokens, OAuth access tokens, and [personal access tokens](/guides/get-started/personal-access-tokens).
 
-## Why leaked API keys are dangerous
+## Protect your tokens
 
-When your Notion API key is exposed, malicious actors could potentially:
+Anyone who obtains a token can make requests allowed by its capabilities and content permissions. Depending on the token, this could expose or change workspace content.
 
-* **Access sensitive data**: Read all pages, databases, and content in your workspace
-* **Modify or delete content**: Make unauthorized changes to your workspace data
-* **Export your data**: Download and steal your intellectual property
-* **Perform actions on your behalf**: Create, update, or delete pages and databases
-* **Access user information**: View workspace members and their permissions
+For a PAT, access is limited by the token's capabilities and the permissions of the person who created it. For an internal connection, access is limited to pages shared with the connection and its capabilities.
 
-The scope of access depends on the permissions granted to the connection or token. For PATs, the token acts as the user who created it, so leaked PATs can expose anything that user can access with the token's capabilities.
+* Don't share tokens in messages, support requests, issue trackers, or other public places.
+* Don't put tokens directly in source code or configuration files.
+* Store tokens in environment variables or an encrypted secret manager.
+* Use separate tokens for development, staging, and production.
+* Grant only the capabilities that each application needs.
+* Revoke tokens that you no longer use.
 
-## Best practices
+## Store tokens outside your code
 
-### *NEVER* share your API keys
-
-* Keep your API key private: Treat your API key like your personal password—don’t share it with anyone. If others need access, they should request their own key or create their own PAT.
-* Never post your key publicly: Avoid sharing your API key in public spaces such as forums, emails, or support tickets, with the Notion support team.
-* Be careful with third-party tools: Uploading your API key to external services will provide your key to those services. Only share your key with trusted services. Always store your API key as an encrypted secret when working with third-party platforms. Never put your key directly into code or configuration files - use environment variables!
-
-### Use environment variables
-
-Never hardcode API keys directly in your source code. Instead, use environment variables:
+Use an environment variable for local development. Add `.env` files to `.gitignore` and never commit them.
 
 ```bash theme={null}
 # .env file (never commit this file)
@@ -39,87 +32,60 @@ NOTION_API_KEY=ntn_abc123def456ghi789jkl012mno345pqr
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
-  // In your code
   const notion = new Client({
     auth: process.env.NOTION_API_KEY,
   });
   ```
 </CodeGroup>
 
-### Secure your environment files
+Use a secret manager for deployed applications. Limit who can read production secrets and keep an inventory of each token's owner and purpose.
 
-* Add `.env` files to your `.gitignore` to prevent accidental commits
-* Use different API keys for development, staging, and production environments
-* Store production keys in secure secret management systems like AWS Secrets Manager, Azure Key Vault, or HashiCorp Vault
+## Scan for exposed tokens
 
-### Implement secret scanning
+Enable secret scanning in your repository and CI system. Block commits that contain tokens, and alert the token owner if a token is detected.
 
-Use tools like [GitLeaks](https://github.com/gitleaks/gitleaks), [Detect Secrets](https://github.com/Yelp/detect-secrets), [Trufflehog](https://github.com/trufflesecurity/trufflehog), or [BitPatrol](https://bitpatrol.io/) to automatically detect and prevent the commitment of sensitive information like API keys to your repositories. These tools can:
+## Replace tokens regularly
 
-* Scan your codebase for potential secrets before commits
-* Integrate with CI/CD pipelines for continuous scanning
-* Alert developers when secrets are accidentally committed
+Replace long-lived tokens on a schedule and whenever someone with access to them leaves your team. PATs expire on the date chosen when the token is created, up to one year later. Replace a PAT before it expires.
 
-### Regular key rotation
+## Respond to an exposed token
 
-* Rotate API keys on a schedule and set calendar reminders to do so. PATs expire on a date chosen when the token is created (up to one year later), so plan replacements before they expire.
-* Immediately rotate keys when team members with access leave
-* Keep an inventory of all API keys and their purposes
+Revoke or replace a token immediately if it may have been exposed.
 
-## What should I do if I suspect my API key has been compromised?
-
-If you suspect that your API key may be compromised, we recommend taking action immediately:
-
-### Step 1 - Revoke the compromised key
+### 1. Disable the token
 
 <Steps>
   <Step>
-    Log into your Notion account
+    Log in to Notion.
   </Step>
 
   <Step>
-    Go to **Settings & members** → **Connections** → **Develop or manage connections**
+    Go to **Settings** → **Connections** → **Develop or manage connections**.
   </Step>
 
   <Step>
-    Find the connection or personal access token with the compromised key
+    Find the connection or personal access token that uses the exposed token.
   </Step>
 
   <Step>
-    Click **Refresh** on your connection, or revoke the personal access token
+    Select **Refresh** for an internal connection, or revoke the personal access token.
   </Step>
 </Steps>
 
-### Step 2 - Generate a new API key
-
-Rotate the compromised key by clicking **Refresh** in your <a href={developerConnectionsUrl}>connections page</a> and update your applications with your new key. For a compromised PAT, revoke the old token and create a new PAT.
+For a PAT, you can also revoke the token from <a href={personalAccessTokensUrl}>Personal access tokens</a> in the Developer portal. Create a new token if the application still needs access.
 
 <Frame>
-  <img />
+  <img alt="The Refresh button for an internal connection in the Developer portal." />
 </Frame>
 
-### Step 3 - review recent activity
+### 2. Update applications
 
-<Steps>
-  <Step>
-    Check your workspace for any suspicious activity
-  </Step>
+Replace the old token in every application and environment that used it. Test the new token, and remove the old value from configuration files and documentation.
 
-  <Step>
-    Review recent changes to pages and databases
-  </Step>
+### 3. Review activity
 
-  <Step>
-    Look for any unauthorized connections in **Settings & members** → **Connections**
-  </Step>
-</Steps>
-
-### Step 4 - update your applications
-
-* Replace the old API key in all your applications and environments
-* Test that your connections are working with the new key
-* Remove the old key from any configuration files or documentation
+Check recent changes to pages and databases. Look for connections you don't recognize in **Settings** → **Connections**.
 
 ## Getting help
 
-If you need assistance with API key security or suspect unauthorized access, contact [Notion support](https://www.notion.com/help) at [team@makenotion.com](mailto:team@makenotion.com)
+If you need help with an exposed token or unauthorized access, contact [Notion support](https://www.notion.com/help).

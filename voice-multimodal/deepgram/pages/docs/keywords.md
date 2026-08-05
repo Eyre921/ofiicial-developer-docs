@@ -122,4 +122,4 @@ The technology powering the keywords feature uses the same logic found in our se
 
 Every system is different. Whereas keyword boosting may have been necessary with another vendor, Deepgram's system may already perform well without the aid of keywords. Additional boosting may negatively affect results. Start without any keywords, add them as you see fit, and cautiously increase boosts using decimal values until you find the best fit for your data.
 
----
+***

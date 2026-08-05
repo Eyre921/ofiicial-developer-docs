@@ -6,11 +6,11 @@ path: guides/get-started/quick-start
 
 Create a page in your Notion workspace with a personal access token and a single API request.
 
-Get up and running in under two minutes. All you need is a Notion account and a terminal.
+You need a Notion account and a terminal.
 
 ## Step 1: Get a personal access token
 
-A personal access token (PAT) lets you authenticate API requests as yourself. No connection setup or OAuth flow required.
+A personal access token (PAT) lets you authenticate API requests as yourself without setting up a connection or completing an OAuth flow.
 
 <Steps>
   <Step>
@@ -18,11 +18,11 @@ A personal access token (PAT) lets you authenticate API requests as yourself. No
   </Step>
 
   <Step>
-    Click **New token**.
+    Select **New token**.
   </Step>
 
   <Step>
-    Enter a name (e.g. "Quickstart"), then click **Create token**. If a workspace picker appears, select a workspace first.
+    Enter a name, select the **Notion API** capability, and then select **Create token**. If a workspace picker appears, select a workspace first.
   </Step>
 
   <Step>
@@ -33,9 +33,9 @@ A personal access token (PAT) lets you authenticate API requests as yourself. No
 <Info>
   **Don't see the option to create a token?**
 
-  On Business and Enterprise plans, PAT creation is restricted by default. Ask a workspace owner to enable it in **Settings & members → Connections**.
+  On Business and Enterprise plans, PAT creation is restricted by default. Ask a workspace owner to enable it in **Settings → Connections**.
 
-  [Learn more about who can create PATs →](/guides/get-started/personal-access-tokens#who-can-create-pats)
+  See [Who can create PATs](/guides/get-started/personal-access-tokens#who-can-create-pats).
 </Info>
 
 Set the token as an environment variable so you can use it in the examples below. This lasts for your current terminal session — run it again if you open a new window.
@@ -79,8 +79,8 @@ Make a POST request to the [Create a page](/reference/post-page) endpoint with m
   ```
 
   ```javascript JavaScript theme={null}
-  // npm install @notionhq/client
-  const { Client } = require("@notionhq/client");
+  // Save as quickstart.mjs after running: npm install @notionhq/client
+  import { Client } from "@notionhq/client";
 
   const notion = new Client({ auth: process.env.NOTION_API_KEY });
 

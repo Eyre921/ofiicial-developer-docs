@@ -397,7 +397,7 @@ Your Deepgram services are accessible within your cluster via the `deepgram-api-
 
 You may consider configuring additional ingress with a GCP Load Balancer to access your services. Note that your installation will automatically load balance any received requests within the cluster to distribute load evenly. The load balancer would primarily serve as the ingress endpoint into the cluster.
 
----
+***
 
 What’s Next
 

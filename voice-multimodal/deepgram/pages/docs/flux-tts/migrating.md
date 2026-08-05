@@ -72,4 +72,4 @@ Inline pronunciations, markup handling, and their warning codes are planned for 
 * [The Speech Lifecycle](/docs/flux-tts/state) — the turn model that replaces v1's buffer model
 * [Aura (/v1/speak) docs](/docs/tts-websocket) — the endpoint you're migrating from
 
----
+***

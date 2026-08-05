@@ -63,4 +63,4 @@ Once applied, results will appear in the transcript.
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | uh-huh or you'd want something where uh so let's say you're trying to fine-tune a model to something very specific um so it's not as uh cut and dry as a more general task | uh-huh or you'd want something where uh so let's say you're trying to fine-tune a model to something very specific um so it's not as uh cut and dry as a more general task | uh-huh or you'd want something where so let's say you're trying to fine-tune a model to something very specific so it's not as cut and dry as a more general task |
 
----
+***

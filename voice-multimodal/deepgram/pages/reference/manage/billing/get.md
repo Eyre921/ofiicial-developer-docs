@@ -30,7 +30,7 @@ paths:
       summary: Get a Project Balance
       description: Retrieves details about the specified balance
       tags:
-        - manage > v1 > projects > billing > balances
+        - balances
       parameters:
         - name: project_id
           in: path
@@ -141,20 +141,14 @@ components:
 
 
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
-  "balance_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "amount": 1250.75,
-  "units": "USD",
-  "purchase_order_id": "PO-20240615-98765"
+  "balance_id": "string",
+  "amount": 0,
+  "units": "string",
+  "purchase_order_id": "string"
 }
 ```
 
@@ -165,24 +159,16 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances/123456-7890-1234-5678-901234"
 
-payload = {}
-headers = {
-    "Authorization": "Token <apiKey>",
-    "Content-Type": "application/json"
-}
+headers = {"Authorization": "Token <apiKey>"}
 
-response = requests.get(url, json=payload, headers=headers)
+response = requests.get(url, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances/123456-7890-1234-5678-901234';
-const options = {
-  method: 'GET',
-  headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{}'
-};
+const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
   const response = await fetch(url, options);
@@ -198,7 +184,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -207,12 +192,9 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances/123456-7890-1234-5678-901234"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("GET", url, payload)
+	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("Authorization", "Token <apiKey>")
-	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -236,8 +218,6 @@ http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
 request["Authorization"] = 'Token <apiKey>'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -249,8 +229,6 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances/123456-7890-1234-5678-901234")
   .header("Authorization", "Token <apiKey>")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -261,10 +239,8 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances/123456-7890-1234-5678-901234', [
-  'body' => '{}',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
-    'Content-Type' => 'application/json',
   ],
 ]);
 
@@ -277,28 +253,19 @@ using RestSharp;
 var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances/123456-7890-1234-5678-901234");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "Authorization": "Token <apiKey>",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+let headers = ["Authorization": "Token <apiKey>"]
 
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/balances/123456-7890-1234-5678-901234")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -152,6 +152,18 @@ Stripe offers an optional feature that lets you place a temporary hold on inboun
 
 For details about using inbound transfer holds, see [Manually review inbound transfers](https://docs.stripe.com/treasury/connect/moving-money/into/inbound-transfers.md#ibtholds)
 
+### Request to join the preview for inbound transfer holds.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/treasury/connect/examples/fraud-guide" \
+  -d '{"email": "EMAIL", "preview": "issuing_beta_feedback_treasury_inbound_transfers_preview"}'
+```
+
 ### Automatic blocking of same-day inbound transfers
 
 Same-day inbound transfers increase the risk of disbursing funds from a fraudulent debit before the fraud is detected. To mitigate this risk, the Stripe systems can prevent the creation of a same-day inbound transfer when they identify the transaction as having a high probability of fraud. When Stripe blocks an inbound transfer, the API returns an `inbound_transfer_not_same_day_eligible` error. This error indicates that we can’t guarantee same-day settlement for that transaction. Retry the transfer using standard ACH submission, which allows more time for the underlying ACH debit to clear, and reduces the platform’s exposure to fraud. For comprehensive details on handling this error and managing inbound transfers, see [inbound transfers](https://docs.stripe.com/treasury/connect/moving-money/into/inbound-transfers.md).
@@ -166,6 +178,18 @@ We recommend the following strategies for mitigating the risk of outbound debits
   - Debits attempted for amounts greater than the funds in the account
 - **Use push methods for outbound debits:** Encourage your connected accounts to use push methods, such as [Outbound transfers](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md), rather than pull methods that originate from external accounts.
 - **Reverse suspicious transactions:** If you suspect that a [ReceivedDebit](https://docs.stripe.com/treasury/connect/moving-money/out-of/received-debits.md) is fraudulent, reverse it by processing a [DebitReversal](https://docs.stripe.com/treasury/connect/moving-money/out-of/debit-reversals.md). You must reverse the debit within 2 business days of the original transaction.
+
+### Request to join the preview for received debit disablement.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/treasury/connect/examples/fraud-guide" \
+  -d '{"email": "EMAIL", "preview": "issuing_beta_feedback_treasury_received_debits_preview"}'
+```
 
 ## Respond to identified fraud
 

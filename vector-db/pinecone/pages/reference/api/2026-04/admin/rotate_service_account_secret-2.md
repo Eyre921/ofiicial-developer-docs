@@ -9,6 +9,62 @@ Rotate a service account's OAuth client secret; the previous secret and its toke
 
 
 <RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  // The previous secret is invalidated, and the new one is returned only once
+  const { serviceAccount, clientSecret } = await admin.serviceAccounts.rotateSecret(
+    'YOUR_SERVICE_ACCOUNT_ID'
+  );
+  console.log(serviceAccount);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      sa, err := adminClient.ServiceAccount.RotateSecret(ctx, "YOUR_SERVICE_ACCOUNT_ID")
+      if err != nil {
+          log.Fatalf("Failed to rotate service account secret: %v", err)
+      }
+      // ClientSecret is returned only once — store it securely and never log it
+      fmt.Printf("Successfully rotated secret for service account: %v\n", sa.ServiceAccount.Id)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  # Change rotate_trigger to any new value to issue and store a new secret
+  resource "pinecone_service_account" "ci_prod" {
+    name           = "ci-prod"
+    rotate_trigger = "2026-04-10"
+  }
+  ```
+
   ```bash curl theme={null}
   PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
   PINECONE_SERVICE_ACCOUNT_ID="f8a3b2c1-4d5e-6f7a-8b9c-0d1e2f3a4b5c"

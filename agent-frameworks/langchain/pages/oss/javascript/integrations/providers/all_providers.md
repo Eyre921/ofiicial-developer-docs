@@ -509,7 +509,7 @@ Connect LangGraph agents to front ends and observability platforms.
     Trace LangChain.js, LangGraph.js, and Langflow-style callback runs in Respan.
   </Card>
 
-  <Card title="SafePrompt" href="https://docs.safeprompt.dev" icon="link">
+  <Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
     Validate prompts for prompt injection before they reach your model.
   </Card>
 </Columns>

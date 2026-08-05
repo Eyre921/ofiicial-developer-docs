@@ -73,7 +73,7 @@ After you initiate the update, monitor progress in the [SageMaker AI console](ht
 
 Amazon SageMaker AI supports additional [deployment guardrails](https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails.html) — including blue/green deployments with [canary](https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails-blue-green-canary.html) and [linear](https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails-blue-green-linear.html) traffic shifting, and [rolling deployments](https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails-rolling.html) — that provide gradual traffic shifting, baking periods, and CloudWatch-based auto-rollback. These guardrails are not available for AWS Marketplace containers like Deepgram. Per the [deployment guardrails exclusions](https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails-exclusions.html), Endpoints that use Marketplace containers fall back to a blue/green deployment with all-at-once traffic shifting and no final baking period.
 
----
+***
 
 What's Next
 

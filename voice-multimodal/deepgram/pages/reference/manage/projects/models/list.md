@@ -32,7 +32,7 @@ paths:
         Returns metadata on all the latest models that a specific project has
         access to, including non-public models
       tags:
-        - manage > v1 > projects > models
+        - models
       parameters:
         - name: project_id
           in: path

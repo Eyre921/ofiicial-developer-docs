@@ -31,7 +31,7 @@ All agent configurations and template variables are visible to every member of y
 * **A/B testing voices or prompts** — Run two configurations in parallel and measure conversion, CSAT, or containment rate to pick a winner—no code deploy required.
 * **Multi-agent architectures** — Store and manage all of the agents used in your [multi-agent architecture](/docs/multi-agent-architecture) from a single project.
 
----
+***
 
 ## Using a reusable agent configuration
 
@@ -57,7 +57,7 @@ Once you've created an agent configuration (see [Create an Agent Configuration](
 
 Deepgram will look up the reusable configuration by UUID, interpolate any [template variables](#template-variables), and apply the resulting `agent` block to your session.
 
----
+***
 
 ## Agent Configuration API
 
@@ -111,7 +111,7 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agents \
 
 The returned `agent_id` is the UUID you'll pass in place of the `agent` block in future `Settings` messages.
 
----
+***
 
 ### List Agent Configurations
 
@@ -128,7 +128,7 @@ curl https://api.deepgram.com/v1/projects/{project_id}/agents \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY"
 ```
 
----
+***
 
 ### Get an Agent Configuration
 
@@ -145,7 +145,7 @@ curl https://api.deepgram.com/v1/projects/{project_id}/agents/{agent_id} \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY"
 ```
 
----
+***
 
 ### Update Agent Metadata
 
@@ -175,7 +175,7 @@ curl -X PUT https://api.deepgram.com/v1/projects/{project_id}/agents/{agent_id} 
   }'
 ```
 
----
+***
 
 ### Delete an Agent Configuration
 
@@ -194,7 +194,7 @@ curl -X DELETE https://api.deepgram.com/v1/projects/{project_id}/agents/{agent_i
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY"
 ```
 
----
+***
 
 ## Template Variables
 
@@ -295,7 +295,7 @@ PATCH /projects/{project_id}/agent-variables/{variable_id}
 DELETE /projects/{project_id}/agent-variables/{variable_id}
 ```
 
----
+***
 
 ## Full Example
 
@@ -352,7 +352,7 @@ This returns an `agent_id`, for example: `a1b2c3d4-e5f6-7890-abcd-ef1234567890`.
 
 Deepgram resolves the UUID to the reusable configuration, substitutes `DG_SYSTEM_PROMPT` with its value, and applies the fully resolved `agent` block to your session.
 
----
+***
 
 ## Next Steps
 

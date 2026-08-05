@@ -95,7 +95,7 @@ These appear in the Endpoint's CloudWatch Log Group, `/aws/sagemaker/Endpoints/Y
 
 To catch this before your users do, alarm on `Invocation5XXErrors` — see [Configure CloudWatch alarms](/docs/observability-sagemaker#configure-cloudwatch-alarms).
 
----
+***
 
 ## Related resources
 

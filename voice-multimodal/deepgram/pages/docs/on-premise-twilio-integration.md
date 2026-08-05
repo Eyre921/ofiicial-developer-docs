@@ -337,7 +337,7 @@ call = client.calls.create(
 * Replace the `url` variable with the URL to the Deepgram-Twilio proxy server, and the Dial number with person B's phone number.
 * Replace the `to` and `from_` variables with person A's phone number, and your Twilio voice number, respectively.
 
----
+***
 
 What’s Next
 

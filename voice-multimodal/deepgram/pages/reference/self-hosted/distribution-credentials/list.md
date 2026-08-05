@@ -30,7 +30,7 @@ paths:
       summary: List Project Self-Hosted Distribution Credentials
       description: Lists sets of distribution credentials for the specified project
       tags:
-        - selfHosted > v1 > distributionCredentials
+        - distributionCredentials
       parameters:
         - name: project_id
           in: path

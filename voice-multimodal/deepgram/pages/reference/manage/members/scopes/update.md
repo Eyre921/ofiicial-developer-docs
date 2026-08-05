@@ -31,7 +31,7 @@ paths:
       summary: Update Project Member Scopes
       description: Updates the scopes for a specific member
       tags:
-        - manage > v1 > projects > members > scopes
+        - scopes
       parameters:
         - name: project_id
           in: path
@@ -150,7 +150,7 @@ components:
 
 ```json
 {
-  "scope": "transcription:write"
+  "scope": "admin"
 }
 ```
 
@@ -158,7 +158,7 @@ components:
 
 ```json
 {
-  "message": "Scopes updated successfully for member 123456789012345678901234."
+  "message": "string"
 }
 ```
 
@@ -169,7 +169,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234/scopes"
 
-payload = { "scope": "transcription:write" }
+payload = { "scope": "admin" }
 headers = {
     "Authorization": "Token <apiKey>",
     "Content-Type": "application/json"
@@ -185,7 +185,7 @@ const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/m
 const options = {
   method: 'PUT',
   headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{"scope":"transcription:write"}'
+  body: '{"scope":"admin"}'
 };
 
 try {
@@ -211,7 +211,7 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234/scopes"
 
-	payload := strings.NewReader("{\n  \"scope\": \"transcription:write\"\n}")
+	payload := strings.NewReader("{\n  \"scope\": \"admin\"\n}")
 
 	req, _ := http.NewRequest("PUT", url, payload)
 
@@ -241,7 +241,7 @@ http.use_ssl = true
 request = Net::HTTP::Put.new(url)
 request["Authorization"] = 'Token <apiKey>'
 request["Content-Type"] = 'application/json'
-request.body = "{\n  \"scope\": \"transcription:write\"\n}"
+request.body = "{\n  \"scope\": \"admin\"\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -254,7 +254,7 @@ import com.mashape.unirest.http.Unirest;
 HttpResponse<String> response = Unirest.put("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234/scopes")
   .header("Authorization", "Token <apiKey>")
   .header("Content-Type", "application/json")
-  .body("{\n  \"scope\": \"transcription:write\"\n}")
+  .body("{\n  \"scope\": \"admin\"\n}")
   .asString();
 ```
 
@@ -266,7 +266,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = $client->request('PUT', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234/scopes', [
   'body' => '{
-  "scope": "transcription:write"
+  "scope": "admin"
 }',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
@@ -284,7 +284,7 @@ var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-12
 var request = new RestRequest(Method.PUT);
 request.AddHeader("Authorization", "Token <apiKey>");
 request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{\n  \"scope\": \"transcription:write\"\n}", ParameterType.RequestBody);
+request.AddParameter("application/json", "{\n  \"scope\": \"admin\"\n}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -295,7 +295,7 @@ let headers = [
   "Authorization": "Token <apiKey>",
   "Content-Type": "application/json"
 ]
-let parameters = ["scope": "transcription:write"] as [String : Any]
+let parameters = ["scope": "admin"] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 

@@ -32,7 +32,7 @@ paths:
         Lists the features, models, tags, languages, and processing method used
         for requests in the specified project
       tags:
-        - manage > v1 > projects > usage > fields
+        - fields
       parameters:
         - name: project_id
           in: path

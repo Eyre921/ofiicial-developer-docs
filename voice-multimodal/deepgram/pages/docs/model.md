@@ -200,4 +200,4 @@ curl \
 
 Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
----
+***

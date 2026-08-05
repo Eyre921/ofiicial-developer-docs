@@ -326,7 +326,7 @@ If you do not specify a `model`, the default voice model `aura-asteria-en` will 
 
 You should receive a response with the audio output. You can copy this file locally to manually evaluate the synthesized speech. Congratulations - your self-hosted TTS setup is working!
 
----
+***
 
 What's Next
 

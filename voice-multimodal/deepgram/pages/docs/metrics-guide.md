@@ -490,7 +490,7 @@ To access metrics for the API, Engine, and License Proxy containers, run the fol
 * Engine: `curl "http://localhost:9991/metrics"`
 * License Proxy: `curl "http://localhost:8080/v1/status"`
 
----
+***
 
 What's Next
 

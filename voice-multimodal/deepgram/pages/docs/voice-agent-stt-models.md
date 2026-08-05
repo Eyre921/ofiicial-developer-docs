@@ -109,7 +109,7 @@ For the full list of Nova models and supported languages see [Models & Languages
 }
 ```
 
----
+***
 
 ## What's Next
 

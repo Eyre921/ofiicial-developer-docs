@@ -186,7 +186,7 @@ Amazon CloudWatch automatically creates alarms when you apply a target tracking 
 
 Key metrics to watch in the `AWS/SageMaker` namespace:
 
-![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/https%3A//deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113258Z&X-Amz-Expires=604800&X-Amz-Signature=8a11ab6a3ba8c40f88e7e0747ae4605bec79ce4a14112098550f6a33af9a9d34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![CloudWatch Metrics console showing the ConcurrentRequestsPerModel metric for a SageMaker Endpoint Variant](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/deepgram.docs.buildwithfern.com/511832b235f0bf021547acd94375c1bb907c5cf7cdbdb6e6b94756b7436af1b6/images/cloudwatch-concurrent-requests-per-model.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233312Z&X-Amz-Expires=604800&X-Amz-Signature=9a39a94dfd7cddc97d66c44fe17819ff1a6c010c5e377e00224ed9757be439a6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 | Metric                       | Description                                                                                     |
 | ---------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -207,7 +207,7 @@ aws application-autoscaling describe-scaling-activities \
 
 Not for real-time endpoints. SageMaker managed auto-scaling for real-time endpoints requires a minimum of 1 instance and scales between your configured minimum and maximum (both ≥ 1). To reduce costs during idle periods, you can delete and recreate endpoints via scheduled orchestration or workload-triggered provisioning — or use [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async), which **do** support scaling to zero.
 
----
+***
 
 What's Next
 

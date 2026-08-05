@@ -31,7 +31,7 @@ paths:
       summary: Create a Project Key
       description: Creates a new API key with specified settings for the project
       tags:
-        - manage > v1 > projects > keys
+        - keys
       parameters:
         - name: project_id
           in: path

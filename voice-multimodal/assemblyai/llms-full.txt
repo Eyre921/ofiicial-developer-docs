@@ -1004,7 +1004,7 @@ curl -s "https://agents.assemblyai.com/v1/token?expires_in_seconds=300&max_sessi
          }
        },
        "output": {
-         "voice": "ivy",
+         "voice": "anna",
          "format": { "encoding": "audio/pcm" }
        },
        "tools": [ /* flat-schema tool defs, see step 5 */ ]
@@ -1040,13 +1040,13 @@ curl -s "https://agents.assemblyai.com/v1/token?expires_in_seconds=300&max_sessi
 
 ### Voices
 
-Voice IDs are **exact strings** — invented or remembered values silently fail. Pick from the catalog below or call `GET https://agents.assemblyai.com/v1/voices` for the live list. Default: `ivy`.
+Voice IDs are **exact strings** — invented or remembered values silently fail. Pick from the catalog below or call `GET https://agents.assemblyai.com/v1/voices` for the live list.
 
-**English (US)** — `ivy` (professional, deliberate, smooth), `james` (conversational, professional), `tyler` (theatrical, energetic, chatty), `winter` (empathetic, conversational), `bella` (high-pitched, chatty), `david` (deep, calming, conversational), `kyle` (chatty, nasal, expressive), `helen` (soft, older, calming), `martha` (southern, older, warm), `river` (slow, calming, ASMR), `emma` (lively, young, conversational), `victor` (deep, older), `eleanor` (deeper, older, calming).
+**English** — `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸 American), `paul`, `vera` (🇬🇧 British).
 
-**Multilingual** (each speaks the named language plus English): `arjun` (Hindi/Hinglish), `dmitri` (Russian), `pierre` (French), `giulia` (Italian), `luca` (Italian), `lucia` (Spanish), `mateo` (Spanish), `diego` (Spanish, Latin American).
+**Language-specific** (each speaks the named language plus English): `giovanni` (🇮🇹 Italian), `lola` (🇪🇸 Spanish), `juergen` (🇩🇪 German), `rafael` (🇵🇹 Portuguese), `estelle` (🇫🇷 French).
 
-If the developer needs a voice not in this list, *don't* substitute a similar-sounding name — say so and ask. Pre-Voice-Agent-API names like `claire`, `dawn`, `josh`, `grace`, `pete` are **no longer valid** and will be rejected at `session.update`.
+If the developer needs a voice not in this list, *don't* substitute a similar-sounding name — say so and ask. Pre-Voice-Agent-API names like `claire`, `dawn`, `josh`, `grace`, `pete` are **no longer valid** and will be rejected at `session.update`. The legacy voices `ivy`, `james`, `tyler`, `winter`, `bella`, `david`, `kyle`, `helen`, `martha`, `river`, `emma`, `victor`, `eleanor`, `arjun`, `dmitri`, `pierre`, `giulia`, `luca`, `lucia`, `mateo`, and `diego` have been removed — pick a current voice from the catalog above.
 
 ### Playback gotcha
 
@@ -1073,7 +1073,7 @@ async def main():
             "session": {
                 "system_prompt": "You are a helpful assistant.",
                 "greeting": "Hi! How can I help?",
-                "output": {"voice": "ivy"},
+                "output": {"voice": "anna"},
             },
         }))
 
@@ -53465,7 +53465,7 @@ The Voice Agent API officially supports the following output languages, each bac
 | Portuguese | 🇵🇹 | `rafael`                                                                                              |
 | French     | 🇫🇷 | `estelle`                                                                                             |
 
-See the [Voices](/voice-agents/voice-agent-api/voices) page for voice descriptions. Legacy voices such as `ivy`, `james`, `pierre`, `giulia`, `lucia`, `arjun`, and `dmitri` are [deprecated](/voice-agents/voice-agent-api/voices#deprecated-voices) and will be removed in a future release.
+See the [Voices](/voice-agents/voice-agent-api/voices) page for voice descriptions.
 
 ### Coming soon
 
@@ -55656,34 +55656,6 @@ These voices have a native accent in a specific non-English language and code-sw
 | `juergen`   | 🇩🇪 German        |
 | `rafael`    | 🇵🇹 Portuguese    |
 | `estelle`   | 🇫🇷 French        |
-
-## Deprecated voices
-
-  The voices below are deprecated and will be removed in a future release. Use one of the [Voices](#voices) or [language-specific voices](#language-specific-voices) above for new agents, and migrate existing agents when convenient.
-
-| Voice     | Accent                        | Description                                  |
-| --------- | ----------------------------- | -------------------------------------------- |
-| `ivy`     | 🇺🇸                            | Professional, deliberate, smooth             |
-| `james`   | 🇺🇸                            | Conversational, professional, male           |
-| `tyler`   | 🇺🇸                            | Theatrical, energetic, chatty, jagged        |
-| `winter`  | 🇺🇸                            | Empathetic, aesthetic, conversational        |
-| `bella`   | 🇺🇸                            | High-pitched, chatty                         |
-| `david`   | 🇺🇸                            | Deep, calming, conversational                |
-| `kyle`    | 🇺🇸                            | Chatty, nasal, expressive                    |
-| `helen`   | 🇺🇸                            | Soft, older, calming                         |
-| `martha`  | 🇺🇸                            | Southern, older, warm                        |
-| `river`   | 🇺🇸                            | Slow, calming, ASMR                          |
-| `emma`    | 🇺🇸                            | Lively, young, conversational                |
-| `victor`  | 🇺🇸                            | Deep, older                                  |
-| `eleanor` | 🇺🇸                            | Deeper, older, calming                       |
-| `arjun`   | 🇮🇳 Hindi/Hinglish             | Conversational                               |
-| `dmitri`  | 🇷🇺 Russian                    | Conversational                               |
-| `pierre`  | 🇫🇷 French                     | Conversational                               |
-| `giulia`  | 🇮🇹 Italian                    |                                              |
-| `luca`    | 🇮🇹 Italian                    |                                              |
-| `lucia`   | 🇪🇸 Spanish                    |                                              |
-| `mateo`   | 🇪🇸 Spanish                    |                                              |
-| `diego`   | 🇨🇴 Spanish (Latin American)   | Colombian                                    |
 
 ---
 
@@ -81046,7 +81018,7 @@ curl -s "https://agents.assemblyai.com/v1/token?expires_in_seconds=300&max_sessi
          }
        },
        "output": {
-         "voice": "ivy",
+         "voice": "anna",
          "format": { "encoding": "audio/pcm" }
        },
        "tools": [ /* flat-schema tool defs, see step 5 */ ]
@@ -81082,13 +81054,13 @@ curl -s "https://agents.assemblyai.com/v1/token?expires_in_seconds=300&max_sessi
 
 ### Voices
 
-Voice IDs are **exact strings** — invented or remembered values silently fail. Pick from the catalog below or call `GET https://agents.assemblyai.com/v1/voices` for the live list. Default: `ivy`.
+Voice IDs are **exact strings** — invented or remembered values silently fail. Pick from the catalog below or call `GET https://agents.assemblyai.com/v1/voices` for the live list.
 
-**English (US)** — `ivy` (professional, deliberate, smooth), `james` (conversational, professional), `tyler` (theatrical, energetic, chatty), `winter` (empathetic, conversational), `bella` (high-pitched, chatty), `david` (deep, calming, conversational), `kyle` (chatty, nasal, expressive), `helen` (soft, older, calming), `martha` (southern, older, warm), `river` (slow, calming, ASMR), `emma` (lively, young, conversational), `victor` (deep, older), `eleanor` (deeper, older, calming).
+**English** — `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸 American), `paul`, `vera` (🇬🇧 British).
 
-**Multilingual** (each speaks the named language plus English): `arjun` (Hindi/Hinglish), `dmitri` (Russian), `pierre` (French), `giulia` (Italian), `luca` (Italian), `lucia` (Spanish), `mateo` (Spanish), `diego` (Spanish, Latin American).
+**Language-specific** (each speaks the named language plus English): `giovanni` (🇮🇹 Italian), `lola` (🇪🇸 Spanish), `juergen` (🇩🇪 German), `rafael` (🇵🇹 Portuguese), `estelle` (🇫🇷 French).
 
-If the developer needs a voice not in this list, *don't* substitute a similar-sounding name — say so and ask. Pre-Voice-Agent-API names like `claire`, `dawn`, `josh`, `grace`, `pete` are **no longer valid** and will be rejected at `session.update`.
+If the developer needs a voice not in this list, *don't* substitute a similar-sounding name — say so and ask. Pre-Voice-Agent-API names like `claire`, `dawn`, `josh`, `grace`, `pete` are **no longer valid** and will be rejected at `session.update`. The legacy voices `ivy`, `james`, `tyler`, `winter`, `bella`, `david`, `kyle`, `helen`, `martha`, `river`, `emma`, `victor`, `eleanor`, `arjun`, `dmitri`, `pierre`, `giulia`, `luca`, `lucia`, `mateo`, and `diego` have been removed — pick a current voice from the catalog above.
 
 ### Playback gotcha
 
@@ -81115,7 +81087,7 @@ async def main():
             "session": {
                 "system_prompt": "You are a helpful assistant.",
                 "greeting": "Hi! How can I help?",
-                "output": {"voice": "ivy"},
+                "output": {"voice": "anna"},
             },
         }))
 
@@ -93542,7 +93514,7 @@ components:
                 turn_detection:
                   vad_threshold: 0.5
               output:
-                voice: ivy
+                voice: anna
                 format:
                   encoding: audio/pcm
                 volume: 100
@@ -93866,9 +93838,9 @@ components:
         voice:
           type: string
           description: Voice used for the agent's speech. See [Voices](/voice-agents/voice-agent-api/voices).
-          default: ivy
+          default: anna
           examples:
-            - ivy
+            - anna
         format:
           $ref: "#/components/schemas/AudioFormat"
         volume:

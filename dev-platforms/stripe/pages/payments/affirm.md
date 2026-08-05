@@ -18,7 +18,7 @@ Pricing: https://stripe.com/en-us/pricing/local-payment-methods#affirm
 ## Eligibility and availability 
 
 ### Account eligibility
-Business location: CA, US; Preview: GB
+Business location: CA, US; Private preview: GB
 Account type: ✓ Merchant, ✓ Platform/Marketplace (Connect)
 Business model: ✗ B2B, ✓ B2C
 Business category: View list of prohibited and restricted business categories

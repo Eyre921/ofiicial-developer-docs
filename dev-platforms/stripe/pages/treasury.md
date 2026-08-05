@@ -205,6 +205,18 @@ To let others debit your financial account, find your local account details on t
 
 When the debit settles, Stripe sends you an email notification that money was debited from your financial account. You can view the transaction on the [Balances](https://dashboard.stripe.com/balances) page.
 
+### Request to join the preview for received debits.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/treasury" \
+  -d '{"email": "EMAIL", "preview": "received_debits_treasury_preview"}'
+```
+
 ### Dispute a debit
 
 If you don’t recognize a debit transaction, you can dispute it in the Dashboard within 1 business day of its settlement date.
@@ -236,4 +248,16 @@ Enter your email address to learn about the following Treasury preview features:
 - Access to more currencies
 - Stripe credits on Treasury balances (US)
 - Interest and Financial Services Compensation Scheme (FSCS) protection on Treasury balances (UK)
+
+### Request to join the preview for expanded Treasury features.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/treasury" \
+  -d '{"email": "EMAIL", "preview": "preview_features_treasury_preview"}'
+```
 

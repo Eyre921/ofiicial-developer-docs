@@ -576,7 +576,7 @@ aws cloudwatch put-dashboard \
 
 After creating the dashboard, view it in the [CloudWatch console](https://console.aws.amazon.com/cloudwatch/home) under **Dashboards**.
 
----
+***
 
 ## Related resources
 

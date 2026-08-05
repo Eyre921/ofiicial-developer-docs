@@ -30,7 +30,7 @@ paths:
       summary: List Project Purchases
       description: Returns the original purchased amount on an order transaction
       tags:
-        - manage > v1 > projects > billing > purchases
+        - purchases
       parameters:
         - name: project_id
           in: path
@@ -85,8 +85,8 @@ components:
           type: string
           format: date-time
         amount:
-          type: number
-          format: double
+          type: string
+          title: float
         units:
           type: string
         order_type:

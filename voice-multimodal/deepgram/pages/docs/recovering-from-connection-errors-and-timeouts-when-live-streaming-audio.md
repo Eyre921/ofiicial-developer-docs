@@ -43,4 +43,4 @@ Deepgram returns transcripts that include timestamps for every transcribed word.
 
 Because of this, when you restart an interrupted streaming session, you'll need to be sure to realign the timestamps to the audio stream. We recommend that your application maintains a starting timestamp to offset all returned timestamps. When you process a timestamp returned from Deepgram, add your maintained starting timestamp to the returned timestamp to ensure that it is offset by the correct amount of time.
 
----
+***

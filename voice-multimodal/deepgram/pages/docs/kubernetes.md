@@ -20,7 +20,7 @@ The power of Kubernetes is bundled with a greater level of complexity when compa
 * Proof-of-concept implementations
 * Production environment handling low levels of API traffic
 
----
+***
 
 What’s Next
 

@@ -32,7 +32,7 @@ paths:
         Retrieves the usage for a specific project. Use Get Project Usage
         Breakdown for a more comprehensive usage summary.
       tags:
-        - manage > v1 > projects > usage
+        - usage
       parameters:
         - name: project_id
           in: path
@@ -453,7 +453,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage"
 
-querystring = {"accessor":"12345678-1234-1234-1234-123456789012","alternatives":"true","callback_method":"true","callback":"true","channels":"true","custom_intent_mode":"true","custom_intent":"true","custom_topic_mode":"true","custom_topic":"true","deployment":"hosted","detect_entities":"true","detect_language":"true","diarize":"true","dictation":"true","encoding":"true","endpoint":"listen","extra":"true","filler_words":"true","intents":"true","keyterm":"true","keywords":"true","language":"true","measurements":"true","method":"async","model":"6f548761-c9c0-429a-9315-11a1d28499c8","multichannel":"true","numerals":"true","paragraphs":"true","profanity_filter":"true","punctuate":"true","redact":"true","replace":"true","search":"true","sentiment":"true","smart_format":"true","summarize":"true","tag":"tag1","topics":"true","utt_split":"true","utterances":"true","version":"true"}
+querystring = {"accessor":"12345678-1234-1234-1234-123456789012","alternatives":"true","callback":"true","callback_method":"true","channels":"true","custom_intent":"true","custom_intent_mode":"true","custom_topic":"true","custom_topic_mode":"true","deployment":"hosted","detect_entities":"true","detect_language":"true","diarize":"true","dictation":"true","encoding":"true","endpoint":"listen","extra":"true","filler_words":"true","intents":"true","keyterm":"true","keywords":"true","language":"true","measurements":"true","method":"async","model":"6f548761-c9c0-429a-9315-11a1d28499c8","multichannel":"true","numerals":"true","paragraphs":"true","profanity_filter":"true","punctuate":"true","redact":"true","replace":"true","search":"true","sentiment":"true","smart_format":"true","summarize":"true","tag":"tag1","topics":"true","utt_split":"true","utterances":"true","version":"true"}
 
 headers = {"Authorization": "Token <apiKey>"}
 
@@ -463,7 +463,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true';
+const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true';
 const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
@@ -486,7 +486,7 @@ import (
 
 func main() {
 
-	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true"
+	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -507,7 +507,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
+url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -523,7 +523,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
+HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")
   .header("Authorization", "Token <apiKey>")
   .asString();
 ```
@@ -534,7 +534,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true', [
+$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true', [
   'headers' => [
     'Authorization' => 'Token <apiKey>',
   ],
@@ -546,7 +546,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true");
+var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
 IRestResponse response = client.Execute(request);
@@ -557,7 +557,7 @@ import Foundation
 
 let headers = ["Authorization": "Token <apiKey>"]
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback_method=true&callback=true&channels=true&custom_intent_mode=true&custom_intent=true&custom_topic_mode=true&custom_topic=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/usage?accessor=12345678-1234-1234-1234-123456789012&alternatives=true&callback=true&callback_method=true&channels=true&custom_intent=true&custom_intent_mode=true&custom_topic=true&custom_topic_mode=true&deployment=hosted&detect_entities=true&detect_language=true&diarize=true&dictation=true&encoding=true&endpoint=listen&extra=true&filler_words=true&intents=true&keyterm=true&keywords=true&language=true&measurements=true&method=async&model=6f548761-c9c0-429a-9315-11a1d28499c8&multichannel=true&numerals=true&paragraphs=true&profanity_filter=true&punctuate=true&redact=true&replace=true&search=true&sentiment=true&smart_format=true&summarize=true&tag=tag1&topics=true&utt_split=true&utterances=true&version=true")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

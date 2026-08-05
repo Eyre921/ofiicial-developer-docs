@@ -31,7 +31,7 @@ paths:
       summary: Text to Speech transformation
       description: Convert text into natural-sounding speech using Deepgram's TTS REST API
       tags:
-        - speak > v1 > audio
+        - audio
       parameters:
         - name: callback
           in: query

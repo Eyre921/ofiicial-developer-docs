@@ -13,5 +13,5 @@ MCP handshake. Caches the result before returning.
 Pass force_refresh=true to bypass the cache and always fetch from the
 remote server (the result is still cached via upsert for future requests).
 
-The ls_user_id query parameter allows service-key callers (which don't carry
-ls_user_id in auth) to specify the user for per-user OAuth cache lookups.
+``agent_id`` lets deployment/service-key callers name an agent OAuth
+subject. ``ls_user_id`` overrides are limited to service identities.

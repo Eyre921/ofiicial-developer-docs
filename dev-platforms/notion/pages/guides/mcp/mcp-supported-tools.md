@@ -6,9 +6,9 @@ path: guides/mcp/mcp-supported-tools
 
 Learn what you can do with Notion MCP tools.
 
-Now that you have installed the Notion MCP, let's explore how AI assistants can use Notion MCP tools to create, search, and manage content in your Notion workspace.
+Notion MCP provides tools for searching, reading, and changing content in your Notion workspace.
 
-These tools work seamlessly together through prompts, and their real power comes from combining them. With a single prompt, you can search your workspace, create new pages from the results, and update properties across multiple pages. Understanding these building blocks helps you craft efficient prompts that tackle complex tasks by combining multiple tools.
+An MCP client can call several tools in one task. For example, it can search for pages, create a page from the results, and then update page properties.
 
 ## MCP tools
 
@@ -106,6 +106,17 @@ These tools work seamlessly together through prompts, and their real power comes
 
     * "Create a new database to track our customer feedback with fields for customer name, feedback type, priority, and status"
     * "Set up a content calendar database with columns for publish date, content type, and approval status"
+  </Accordion>
+
+  <Accordion title="Create a folder">
+    `notion-create-folder`
+
+    Create an empty Folder under a parent page.
+
+    **Example prompts:**
+
+    * "Create a folder named 'Project files' under this page"
+    * "Create a folder named 'Supporting documents' under this project page"
   </Accordion>
 
   <Accordion title="Update a data source">

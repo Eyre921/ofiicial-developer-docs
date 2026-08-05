@@ -58,7 +58,7 @@ Stripe built Revenue Recognition on top of a double-entry accounting ledger that
 | Exclusion | Gains (credit) | Excluded funds that aren’t attributable to revenue. To exclude transactions, set up [exclusion rules](https://docs.stripe.com/revenue-recognition/rules/create-a-rule.md#treatments) or use [exclusion import](https://docs.stripe.com/revenue-recognition/data-import.md#exclusion-import). |
 | Fx loss | Losses (debit) | Total loss due to foreign currency exchange rates. |
 | Other loss | Losses (debit) | The portion of contra revenue that exceeds the total invoice represents an overcompensation in cash to the customer. For example, if a 100 USD invoice is partially refunded by 80 USD and then disputed for an additional 80 USD, 60 USD will be categorized as “Other loss.” |
-| Connect transfer loss | Losses (debit) | Total loss due to destination charge refund, and the transfer reversal will reverse the ConnectTransferLoss account. |
+| Connect transfer loss | Losses (debit) | Losses when your platform covers a connected account’s negative balance. This includes destination-charge refunds taken from the platform balance and Connect collection transfers from the platform reserve balance to the connected account balance. A transfer reversal reverses the ConnectTransferLoss account. |
 
 #### Balance sheet accounts
 

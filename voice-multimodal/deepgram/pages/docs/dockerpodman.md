@@ -22,7 +22,7 @@ Larger production environments often have certain security, availability, and sc
 
 If any of the above apply to you, a [Kubernetes cluster](/docs/kubernetes) may better fulfill these requirements.
 
----
+***
 
 What’s Next
 

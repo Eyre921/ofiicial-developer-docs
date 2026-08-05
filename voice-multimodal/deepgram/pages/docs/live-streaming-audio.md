@@ -629,4 +629,4 @@ Deepgram's features help you to customize your transcripts.
 
 * Now that you know how to transcribe streaming audio, check out how you can use Deepgram to transcribe pre-recorded audio. To learn more, see [Getting Started with Pre-recorded Audio](/docs/pre-recorded-audio).
 
----
+***

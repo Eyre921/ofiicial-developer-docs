@@ -109,6 +109,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Residential proxy for agents with native x402 payments (USDC on Base).
   </Card>
 
+  <Card title="arXiv" href="https://j1c.github.io/langchain-arxiv-retriever/" icon="link">
+    Open-access archive for scholarly articles.
+  </Card>
+
   <Card title="assistant-ui" icon="file-code" href="https://www.assistant-ui.com/docs/runtimes/langgraph">
     React framework for building AI chat interfaces with streaming support and LangGraph integration.
   </Card>
@@ -139,6 +143,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Baseten" href="/oss/python/integrations/providers/baseten" icon="link">
     ML model deployment and serving platform.
+  </Card>
+
+  <Card title="Bidda" href="https://bidda.com/developers" icon="link">
+    Source-verified regulatory and compliance intelligence for LangChain agents.
   </Card>
 
   <Card title="Bodo DataFrames" href="https://docs.bodo.ai/" icon="link">
@@ -277,6 +285,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Dell Technologies AI and computing solutions.
   </Card>
 
+  <Card title="DexPaprika" href="https://docs.dexpaprika.com" icon="link">
+    Keyless DEX market-data API from CoinPaprika: token search, market data, pool discovery, and OHLCV price history.
+  </Card>
+
   <Card title="Docling" href="/oss/python/integrations/providers/docling" icon="link">
     Document processing and AI integration.
   </Card>
@@ -329,6 +341,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Fast and efficient AI model serving.
   </Card>
 
+  <Card title="FiGuard" href="https://docs.figuard.io" icon="link">
+    Pre-flight spend authorization for LangChain agents.
+  </Card>
+
   <Card title="FMP Data" href="https://github.com/MehdiZare/langchain-fmp-data" icon="link">
     Financial market data and analytics API.
   </Card>
@@ -375,6 +391,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Fireworks" href="/oss/python/integrations/providers/fireworks" icon="https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/fireworks-icon.svg?fit=max&auto=format&n=ZPKed1feKJ8F6LVo&q=85&s=8e741f7b15c738a2fb3c44e8d62292e8">
     Fast inference for open and proprietary language models.
+  </Card>
+
+  <Card title="FoundryNet" href="https://mint.foundrynet.io" icon="link">
+    On-chain work attestation for AI agents via MINT Protocol.
   </Card>
 
   <Card title="FuturMix" href="https://futurmix.ai/" icon="link">
@@ -433,8 +453,16 @@ Browse the complete collection of integrations available for Python. LangChain P
     Zero-setup Postgres and webhook provisioning for AI agents.
   </Card>
 
+  <Card title="Interven" href="https://docs.intervensecurity.com" icon="link">
+    AI agent firewall — policy enforcement, PII redaction, human approval, and audit logs for tool calls.
+  </Card>
+
   <Card title="Isaacus" href="https://docs.isaacus.com/" icon="link">
     Legal AI models, apps, and data.
+  </Card>
+
+  <Card title="Islo" href="https://docs.islo.dev" icon="link">
+    Long-running Linux VM sandboxes with pause, resume, and snapshots.
   </Card>
 
   <Card title="Jenkins" href="https://github.com/Amitgb14/langchain_jenkins" icon="link">
@@ -459,6 +487,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Kuzu" href="/oss/python/integrations/providers/kuzu" icon="link">
     Embedded graph database management system.
+  </Card>
+
+  <Card title="Kyvvu" href="https://docs.kyvvu.com" icon="link">
+    Runtime AI governance: policy enforcement and tamper-evident audit trails for agents.
   </Card>
 
   <Card title="LambdaDB" href="https://docs.lambdadb.ai/guides/get-started/quickstart" icon="link">
@@ -519,6 +551,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Memstate AI" href="https://memstate.ai/docs/integrations/langchain" icon="link">
     Structured, versioned long-term memory for AI agents.
+  </Card>
+
+  <Card title="Mengram" href="https://mengram.io/docs" icon="link">
+    Long-term agent memory with semantic, episodic, and procedural types.
   </Card>
 
   <Card title="Metal" href="/oss/python/integrations/providers/metal" icon="link">
@@ -615,6 +651,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Nomic" href="https://atlas.nomic.ai/" icon="link">
     Open-source embedding models and tools.
+  </Card>
+
+  <Card title="Nuggets" href="https://nuggets.life" icon="link">
+    Pre-execution authority enforcement for LangChain and LangGraph tool calls.
   </Card>
 
   <Card title="NVIDIA" href="/oss/python/integrations/providers/nvidia" icon="link">
@@ -841,6 +881,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Unified search API across Google, Bing, Baidu, YouTube, and more.
   </Card>
 
+  <Card title="SERPdive" href="https://serpdive.com/docs" icon="link">
+    AI search API that returns extracted, answer-ready web content.
+  </Card>
+
   <Card title="Shale Protocol" href="/oss/python/integrations/providers/shaleprotocol" icon="link">
     Decentralized AI inference protocol.
   </Card>
@@ -961,6 +1005,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Entity resolution and data matching.
   </Card>
 
+  <Card title="Toolstem" href="https://toolstem.com" icon="link">
+    Finance and SEC EDGAR tools with x402 micropayments for LangChain agents.
+  </Card>
+
   <Card title="Tonic Textual" href="https://textual.tonic.ai" icon="link">
     Detect, extract, and transform PII in text, JSON, HTML, and files.
   </Card>
@@ -1002,7 +1050,7 @@ Browse the complete collection of integrations available for Python. LangChain P
   </Card>
 
   <Card title="Uniswap" href="https://github.com/Conrad-sudo/langchain-uniswap-v2" icon="link">
-    Live Uniswap V2 swap quotes and unsigned swap transactions for Ethereum and Base.
+    Live Uniswap V2 swap quotes and unsigned transactions for swaps, approvals, and liquidity, on any EVM chain.
   </Card>
 
   <Card title="Unstructured" href="/oss/python/integrations/providers/unstructured" icon="link">
@@ -1043,6 +1091,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Verifly" href="https://verifly.email/docs" icon="link">
     Agent-native email verification with deliverability verdicts for leads and signups.
+  </Card>
+
+  <Card title="Veritensor" href="https://github.com/arsbr/Veritensor" icon="link">
+    Security scanner for RAG document loaders to block data poisoning and prompt injection.
   </Card>
 
   <Card title="Vercel" href="https://vercel.com/docs/vercel-sandbox" icon="link">
@@ -1087,6 +1139,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="You.com" href="/oss/python/integrations/providers/you" icon="link">
     Real-time web search and content extraction APIs designed for LLM applications.
+  </Card>
+
+  <Card title="ZeroGPU" href="https://docs.zerogpu.ai" icon="link">
+    Ultra-fast, compute-efficient inference provider for apps and agents: purpose-built small and nano models on an edge network, with zero GPU infrastructure, serverless, and auto-scaling built in.
   </Card>
 
   <Card title="ZeusDB" href="https://docs.zeusdb.com" icon="link">

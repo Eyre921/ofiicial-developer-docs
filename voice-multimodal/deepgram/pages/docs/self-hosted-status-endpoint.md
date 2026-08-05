@@ -372,7 +372,7 @@ If the status endpoint is unreachable:
 * Ensure port 8080 is accessible and not blocked by firewall rules
 * Verify the API container has started successfully
 
----
+***
 
 ## What's Next
 

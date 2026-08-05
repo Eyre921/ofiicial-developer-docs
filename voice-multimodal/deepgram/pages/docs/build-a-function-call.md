@@ -203,7 +203,7 @@ func getWeather(location string) (string, error) {
 }
 ```
 
----
+***
 
 ## Advanced Example: Customer Management System
 

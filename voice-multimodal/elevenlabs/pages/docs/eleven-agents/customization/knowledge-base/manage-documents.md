@@ -11,7 +11,7 @@ path: docs/eleven-agents/customization/knowledge-base/manage-documents
 Manage your knowledge base from the [knowledge base dashboard](https://elevenlabs.io/app/agents/knowledge-base), the CLI, or the API. For what a knowledge base is and how agents use it, see [Knowledge base](/docs/eleven-agents/customization/knowledge-base).
 
 ![Knowledge base main interface showing a list of
-documents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0887213c4d8099240b7e5a8fec86fc75f4763e8fd80a6f7a6de33545c45f37a2/assets/images/conversational-ai/kb-content.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=75329b604cad99c1b679a650fb59ce671384f0e3f69e67872f7a5be106a277c8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+documents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0887213c4d8099240b7e5a8fec86fc75f4763e8fd80a6f7a6de33545c45f37a2/assets/images/conversational-ai/kb-content.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=bb8bede77fca3bdbe9fcc38c9436c8b571ca3b9e62e4e3ac684054c8c5dcb0b4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Add documents
 
@@ -25,7 +25,7 @@ From the [knowledge base dashboard](https://elevenlabs.io/app/agents/knowledge-b
 
 Upload a document in PDF, TXT, DOCX, HTML, EPUB, or Markdown format, up to 20MB per file.
 
-![File upload interface showing supported formats and the 20MB size limit](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b428874877d6aa2b24167c0293709e6a52a096a13b02244c0a5463139d3988e4/assets/images/conversational-ai/knowledge-file.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=8659201057d6fabdafd6de7bc30a818722be02927fb98dd458ebd57a8c1ef7e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![File upload interface showing supported formats and the 20MB size limit](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b428874877d6aa2b24167c0293709e6a52a096a13b02244c0a5463139d3988e4/assets/images/conversational-ai/knowledge-file.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=9eedd9d37cb25008cc1e9b822dc5c9987834ea3fd01a38fff99eaabdae13f9ec&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### URL
 
@@ -33,7 +33,7 @@ Import a webpage by pasting its URL. To ingest an entire site, use the crawl opt
 crawl the whole website by following links from the starting URL, or import pages from the
 site's sitemap.
 
-![URL import interface where users can paste a documentation link](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8523ea5c5ae0418007eb7042d4af3e792a111ca41b74a090357df34cd5b4a369/assets/images/conversational-ai/knowledge-url.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=217e354bbfb5ffe37c7cd8e31fb65e09a7307c1814be20439389bcbf200ea6dd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![URL import interface where users can paste a documentation link](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8523ea5c5ae0418007eb7042d4af3e792a111ca41b74a090357df34cd5b4a369/assets/images/conversational-ai/knowledge-url.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=c46013587aa5e5ac4f345da687168634e47fc6bef1751e59e4cf02996f121774&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Ensure you have permission to use the content from the URLs you provide.
 
@@ -41,7 +41,7 @@ Ensure you have permission to use the content from the URLs you provide.
 
 Enter text manually and give it a name.
 
-![Text input interface where users can name and add custom content](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4e44e310335dcea24b4832d38813992f1bdc55ef85b4e54353963dc47e9baa0a/assets/images/conversational-ai/knowledge-text.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=6adf879e5d241e48fd76943275fb45c0a729fd11ec33831685362000a9b8b1c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Text input interface where users can name and add custom content](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4e44e310335dcea24b4832d38813992f1bdc55ef85b4e54353963dc47e9baa0a/assets/images/conversational-ai/knowledge-text.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=f0dc2b4c5f813ec4f0d494b36b0bd19181ef7c8db9580082a94ece7de96ad13b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### CLI
 
@@ -201,7 +201,7 @@ Documents can be reused across agents, so shared knowledge only needs to be main
 3. Select an existing document from your knowledge base, or upload a new one.
 
 ![Interface for adding documents to an
-agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8e8a6a2df244ed20d1ab889c8ae5dda76aefed0d15f3dd2fe09c35b281c63673/assets/images/conversational-ai/kb-add-doc-items.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=8727a5f7fc0a5485c04f74713bb5c5166a80cc0698dd6f3b819546ad48b72478&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8e8a6a2df244ed20d1ab889c8ae5dda76aefed0d15f3dd2fe09c35b281c63673/assets/images/conversational-ai/kb-add-doc-items.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=6410c49ca25e6c91dfd96a3724e25e0a140b901a10e8b2e7525bab82daf294ca&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Reusing documents across agents keeps knowledge consistent and avoids duplicating uploads.
 
@@ -214,7 +214,7 @@ You can edit a document's content directly instead of deleting and re-uploading 
 * **URL documents**: Edit the content when auto-sync is off. When auto-sync is on, the sync cycle manages the document and manual edits are blocked.
 
 ![Editing a document's content inline in the knowledge
-base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4ea01bb2c13162f31f7610b049ae0db542e279a26da38f4c79f17fb89a8524f5/assets/images/conversational-ai/kb-edit-content.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=489e32f60ac6a201807384c61b1e508b0ea7a5f382c0af7066b80905ad278c33&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4ea01bb2c13162f31f7610b049ae0db542e279a26da38f4c79f17fb89a8524f5/assets/images/conversational-ai/kb-edit-content.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=507af0a7c21f279ecbfb8acf868b225976557fbab42c0ed45ddde2a589b0a57d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ```python
 # Update a document's name or content
@@ -273,7 +273,7 @@ Folders group related documents so they are easier to manage and attach in bulk.
 A folder attached to an agent makes all of its documents available through RAG, so the agent must have RAG enabled to use folders.
 
 ![Creating a folder and moving documents into
-it](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8267c0d4a36282c1fcaaacf0a665e5caf8c4cf6f2908451fc5a3b1cf6a8dd2e0/assets/images/conversational-ai/knowledge-folder.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=0b5ff2432f2bdb1766a17b62f587dd67c48ccc949280429a7f3ce8abcc559398&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+it](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8267c0d4a36282c1fcaaacf0a665e5caf8c4cf6f2908451fc5a3b1cf6a8dd2e0/assets/images/conversational-ai/knowledge-folder.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=1bd0213f1cb7d94b2e0805454af53321c107243ae2b977480fd6c7a677f5daf8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ```python
 # Create a folder
@@ -307,6 +307,6 @@ await elevenlabs.conversationalAi.knowledgeBase.documents.move("i2YYI6huwBmcgYyd
 Each document has a **Dependent agents** tab that lists the agents currently depending on it.
 
 ![Document detail view showing the Dependent agents
-tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/20ecce9f1db77d27bdf760b4a90c9bd2baacb612b48cf660e0f395c82aa3a725/assets/images/conversational-ai/kb-dependent-agents.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113220Z&X-Amz-Expires=604800&X-Amz-Signature=72b0a51e71d6a2a451f6eb4a3f72fbbc1b4a41619062390f22f1458af1bd1fbe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/20ecce9f1db77d27bdf760b4a90c9bd2baacb612b48cf660e0f395c82aa3a725/assets/images/conversational-ai/kb-dependent-agents.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233246Z&X-Amz-Expires=604800&X-Amz-Signature=28138c5d3bd73f762ccf8c2fce1917a8ed153fadbc89338b1d112d4a7d4ccd64&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 A document cannot be deleted while an agent depends on it. Remove the document from those agents first, or use force deletion to detach it from all dependents at once.

@@ -205,4 +205,4 @@ The batch path shares `model`, media-output settings, and inline pronunciations 
 * [Template Apps](/docs/flux-tts/template-apps)
 * [Migrating from /v1/speak](/docs/flux-tts/migrating)
 
----
+***

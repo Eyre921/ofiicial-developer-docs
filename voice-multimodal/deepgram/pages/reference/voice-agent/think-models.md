@@ -32,7 +32,7 @@ paths:
         Retrieves the available think models that can be used for AI agent
         processing
       tags:
-        - agent > v1 > settings > think > models
+        - models
       responses:
         '200':
           description: List of available think models

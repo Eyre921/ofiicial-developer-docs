@@ -31,7 +31,7 @@ paths:
       summary: Update a Project
       description: Updates the name or other properties of an existing project
       tags:
-        - manage > v1 > projects
+        - projects
       parameters:
         - name: project_id
           in: path

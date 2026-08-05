@@ -8,6 +8,60 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 List service accounts in the caller's organization.
 
 <RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const { data: serviceAccounts } = await admin.serviceAccounts.list();
+  console.log(serviceAccounts);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      serviceAccounts, err := adminClient.ServiceAccount.List(ctx, &pinecone.ListServiceAccountsParams{})
+      if err != nil {
+          log.Fatalf("Failed to list service accounts: %v", err)
+      }
+      for _, sa := range serviceAccounts.Data {
+          fmt.Printf("Service account: %v (%v)\n", sa.Name, sa.Id)
+      }
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  data "pinecone_service_accounts" "all" {}
+
+  output "service_account_names" {
+    value = [for sa in data.pinecone_service_accounts.all.service_accounts : sa.name]
+  }
+  ```
+
   ```bash curl theme={null}
   PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
 

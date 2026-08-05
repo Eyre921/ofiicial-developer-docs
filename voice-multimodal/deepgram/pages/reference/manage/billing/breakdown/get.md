@@ -32,7 +32,7 @@ paths:
         Retrieves the billing summary for a specific project, with various
         filter options or by grouping options.
       tags:
-        - manage > v1 > projects > billing > breakdown
+        - breakdown
       parameters:
         - name: project_id
           in: path
@@ -186,8 +186,8 @@ components:
       type: object
       properties:
         dollars:
-          type: number
-          format: double
+          type: string
+          title: float
           description: USD cost of the billing for this grouping
         grouping:
           $ref: '#/components/schemas/BillingBreakdownV1ResponseResultsItemsGrouping'
@@ -307,7 +307,7 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown"
 
-querystring = {"accessor":"12345678-1234-1234-1234-123456789012","deployment":"hosted","tag":"tag1","line_item":"streaming::nova-3","grouping":"[\"deployment\",\"line_item\"]"}
+querystring = {"accessor":"12345678-1234-1234-1234-123456789012","deployment":"hosted","grouping":"[\"deployment\",\"line_item\"]","line_item":"streaming::nova-3","tag":"tag1"}
 
 headers = {"Authorization": "Token <apiKey>"}
 
@@ -317,7 +317,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D';
+const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1';
 const options = {method: 'GET', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
@@ -340,7 +340,7 @@ import (
 
 func main() {
 
-	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D"
+	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -361,7 +361,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D")
+url = URI("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -377,7 +377,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D")
+HttpResponse<String> response = Unirest.get("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1")
   .header("Authorization", "Token <apiKey>")
   .asString();
 ```
@@ -388,7 +388,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D', [
+$response = $client->request('GET', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1', [
   'headers' => [
     'Authorization' => 'Token <apiKey>',
   ],
@@ -400,7 +400,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D");
+var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Authorization", "Token <apiKey>");
 IRestResponse response = client.Execute(request);
@@ -411,7 +411,7 @@ import Foundation
 
 let headers = ["Authorization": "Token <apiKey>"]
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&tag=tag1&line_item=streaming%3A%3Anova-3&grouping=%5B%22deployment%22%2C%22line_item%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/billing/breakdown?accessor=12345678-1234-1234-1234-123456789012&deployment=hosted&grouping=%5B%22deployment%22%2C%22line_item%22%5D&line_item=streaming%3A%3Anova-3&tag=tag1")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

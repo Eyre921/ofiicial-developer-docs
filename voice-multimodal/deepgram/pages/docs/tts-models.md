@@ -48,7 +48,7 @@ Deepgram's Aura text-to-speech supports the following languages:
 
 We're constantly adding additional language support and making improvements to our voice models. Check back regularly for updates.
 
----
+***
 
 ## Aura-2 English Voices
 
@@ -111,7 +111,7 @@ These are our featured English voices, selected for their versatility and qualit
 | `aura-2-vesta-en`     | vesta     |        | feminine         | Adult       | en-us    | American   | Natural, Expressive, Patient, Empathetic        | Customer service, interview, storytelling |
 | `aura-2-zeus-en`      | zeus      |        | masculine        | Adult       | en-us    | American   | Deep, Trustworthy, Smooth                       | IVR                                       |
 
----
+***
 
 ## Aura-2 Spanish Voices
 
@@ -149,7 +149,7 @@ These are our featured Spanish voices, selected for their versatility and qualit
 
 **Codeswitching Voices**: The following Spanish voices can seamlessly switch between English and Spanish: Aquila, Carina, Diana, Javier, and Selena.
 
----
+***
 
 ## Aura-2 Dutch Voices
 
@@ -177,7 +177,7 @@ These are our featured Dutch voices, selected for their versatility and quality:
 | `aura-2-rhea-nl`     | rhea     |        | feminine         | Adult | nl-nl    | Dutch  | Caring, Knowledgeable, Positive, Smooth, Warm             | Customer Service                              |
 | `aura-2-leda-nl`     | leda     |        | feminine         | Adult | nl-nl    | Dutch  | Caring, Comfortable, Empathetic, Friendly, Sincere        | Sales                                         |
 
----
+***
 
 ## Aura-2 French Voices
 
@@ -197,7 +197,7 @@ These are our featured French voices, selected for their versatility and quality
 | `aura-2-agathe-fr` | agathe |        | feminine         | Adult | fr-fr    | French | Charismatic, Cheerful, Enthusiastic, Friendly, Natural | Customer Service |
 | `aura-2-hector-fr` | hector |        | masculine        | Adult | fr-fr    | French | Confident, Empathetic, Expressive, Friendly, Patient   | Customer Service |
 
----
+***
 
 ## Aura-2 German Voices
 
@@ -222,7 +222,7 @@ These are our featured German voices, selected for their versatility and quality
 | `aura-2-kara-de`     | kara     |        | feminine         | Young Adult | de-de    | German | Caring, Empathetic, Expressive, Professional, Warm      | Healthcare, Customer Service, Sales, Financial Services |
 | `aura-2-viktoria-de` | viktoria |        | feminine         | Adult       | de-de    | German | Charismatic, Cheerful, Enthusiastic, Friendly, Warm     | Healthcare, Customer Service, Sales, Financial Services |
 
----
+***
 
 ## Aura-2 Italian Voices
 
@@ -250,7 +250,7 @@ These are our featured Italian voices, selected for their versatility and qualit
 | `aura-2-dionisio-it` | dionisio |        | masculine        | Adult       | it-it    | Italian | Confident, Engaging, Friendly, Melodic, Positive       | Interview, Casual Chat, Customer Service      |
 | `aura-2-demetra-it`  | demetra  |        | feminine         | Adult       | it-it    | Italian | Calm, Comfortable, Patient                             | Casual Chat, Interview, Narration             |
 
----
+***
 
 ## Aura-2 Japanese Voices
 
@@ -273,7 +273,7 @@ These are our featured Japanese voices, selected for their versatility and quali
 | `aura-2-izanami-ja` | izanami |        | feminine         | Adult       | ja-jp    | Japanese | Approachable, Clear, Knowledgeable, Polite, Professional | Casual Chat, Customer Service, Interview, IVR |
 | `aura-2-ama-ja`     | ama     |        | feminine         | Adult       | ja-jp    | Japanese | Casual, Comfortable, Confident, Knowledgeable, Natural   | Interview, IVR                                |
 
----
+***
 
 ## Aura 1: All Available English Voices
 
@@ -292,4 +292,4 @@ These are our featured Japanese voices, selected for their versatility and quali
 | `aura-helios-en`  | helios  |        | masculine        | Adult       | en-gb    | British  | Professional, Clear, Confident              | Customer service               |
 | `aura-zeus-en`    | zeus    |        | masculine        | Adult       | en-us    | American | Deep, Trustworthy, Smooth                   | IVR                            |
 
----
+***

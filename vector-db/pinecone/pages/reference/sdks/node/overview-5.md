@@ -22,6 +22,8 @@ The mappings between API versions and Node.js SDK versions are as follows:
 
 | API version | SDK version |
 | :---------- | :---------- |
+| `2026-04`   | v8.x        |
+| `2025-10`   | v7.x        |
 | `2025-04`   | v6.x        |
 | `2025-01`   | v5.x        |
 | `2024-10`   | v4.x        |
@@ -63,6 +65,17 @@ const pc = new Pinecone({
     apiKey: 'YOUR_API_KEY'
 });
 ```
+
+To manage organizations, projects, API keys, and [role-based access control](/guides/production/manage-rbac), initialize an `AdminClient` with [service account](/guides/organizations/manage-service-accounts) credentials instead. This requires v8.2.0 or later:
+
+```JavaScript theme={null}
+import { AdminClient } from '@pinecone-database/pinecone';
+
+// Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+const admin = new AdminClient();
+```
+
+You can also pass `clientId` and `clientSecret` directly to the constructor instead of setting environment variables.
 
 ## Proxy configuration
 

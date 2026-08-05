@@ -448,7 +448,6 @@ This endpoint accepts Google models only:
 | `gemini-3-5-flash`      |       |
 | `gemini-3-1-pro`        |       |
 | `gemini-3-1-flash-lite` |       |
-| `gemini-3-pro`          |       |
 | `gemini-3-flash`        |       |
 
 Sending a non-Google model ID returns `400 model "<model-id>" is not available on the gemini_generate_content endpoint`, naming whichever model you sent. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you want to call Gemini models alongside other providers from the same code.
@@ -841,145 +840,46 @@ Browse the full catalog below. Switch between the **Text** and **Image** tabs, f
 
 #### OpenAI
 
-| Model              | Model ID             | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License      |
-| ------------------ | -------------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ------------ |
-| GPT-5.4 mini       | `gpt-5-4-mini`       | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary  |
-| GPT-5.4 nano       | `gpt-5-4-nano`       | text, image      | 400K    | Yes       | $0.20    | $1.25     | chat/completions · openai/responses | Proprietary  |
-| GPT-5.4            | `gpt-5-4`            | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary  |
-| GPT-5.3 Codex      | `gpt-5-3-codex`      | text, image, pdf | 400K    | Yes       | $1.75    | $14       | openai/responses                    | Proprietary  |
-| GPT-5.2            | `gpt-5-2`            | text, image      | 400K    | Yes       | $1.75    | $14       | chat/completions · openai/responses | Proprietary  |
-| GPT-5.2 Codex      | `gpt-5-2-codex`      | text, image, pdf | 400K    | Yes       | $1.75    | $14       | openai/responses                    | Proprietary  |
-| GPT-5.1            | `gpt-5-1`            | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary  |
-| GPT-5.1 Codex Max  | `gpt-5-1-codex-max`  | text, image      | 400K    | Yes       | $1.25    | $10       | openai/responses                    | Proprietary  |
-| GPT-5.1 Codex mini | `gpt-5-1-codex-mini` | text, image      | 400K    | Yes       | $0.25    | $2        | openai/responses                    | Proprietary  |
-| GPT-5              | `gpt-5`              | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary  |
-| GPT-5 Mini         | `gpt-5-mini`         | text, image      | 400K    | Yes       | $0.25    | $2        | chat/completions · openai/responses | Proprietary  |
-| GPT-5 Nano         | `gpt-5-nano`         | text, image      | 400K    | Yes       | $0.05    | $0.40     | chat/completions · openai/responses | Proprietary  |
-| GPT OSS 120B       | `gpt-oss-120b`       | text             | 131K    | Yes       | $0.07    | $0.28     | chat/completions                    | Open weights |
-| GPT OSS 20B        | `gpt-oss-20b`        | text             | 131K    | Yes       | $0.05    | $0.20     | chat/completions                    | Open weights |
+| Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License      |
+| ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ------------ |
+| [GPT-5.4 mini](https://neon.com/docs/ai-gateway/models/gpt-5-4-mini.md)   | `gpt-5-4-mini`  | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.4 nano](https://neon.com/docs/ai-gateway/models/gpt-5-4-nano.md)   | `gpt-5-4-nano`  | text, image      | 400K    | Yes       | $0.20    | $1.25     | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.4](https://neon.com/docs/ai-gateway/models/gpt-5-4.md)             | `gpt-5-4`       | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.3 Codex](https://neon.com/docs/ai-gateway/models/gpt-5-3-codex.md) | `gpt-5-3-codex` | text, image, pdf | 400K    | Yes       | $1.75    | $14       | openai/responses                    | Proprietary  |
+| [GPT-5.2](https://neon.com/docs/ai-gateway/models/gpt-5-2.md)             | `gpt-5-2`       | text, image      | 400K    | Yes       | $1.75    | $14       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5.1](https://neon.com/docs/ai-gateway/models/gpt-5-1.md)             | `gpt-5-1`       | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5](https://neon.com/docs/ai-gateway/models/gpt-5.md)                 | `gpt-5`         | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary  |
+| [GPT-5 Mini](https://neon.com/docs/ai-gateway/models/gpt-5-mini.md)       | `gpt-5-mini`    | text, image      | 400K    | Yes       | $0.25    | $2        | chat/completions · openai/responses | Proprietary  |
+| [GPT-5 Nano](https://neon.com/docs/ai-gateway/models/gpt-5-nano.md)       | `gpt-5-nano`    | text, image      | 400K    | Yes       | $0.05    | $0.40     | chat/completions · openai/responses | Proprietary  |
+| [GPT OSS 120B](https://neon.com/docs/ai-gateway/models/gpt-oss-120b.md)   | `gpt-oss-120b`  | text             | 131K    | Yes       | $0.07    | $0.28     | chat/completions                    | Open weights |
+| [GPT OSS 20B](https://neon.com/docs/ai-gateway/models/gpt-oss-20b.md)     | `gpt-oss-20b`   | text             | 131K    | Yes       | $0.05    | $0.20     | chat/completions                    | Open weights |
 
 #### Google
 
-| Model                               | Model ID                | Inputs                         | Context | Reasoning | Input /M | Output /M | Endpoints                 | License      |
-| ----------------------------------- | ----------------------- | ------------------------------ | ------- | --------- | -------- | --------- | ------------------------- | ------------ |
-| Gemini 3.5 Flash                    | `gemini-3-5-flash`      | text, image, video, audio, pdf | 1M      | Yes       | $1.50    | $9        | chat/completions · gemini | Proprietary  |
-| Gemini 3.1 Flash Lite Preview       | `gemini-3-1-flash-lite` | text, image, video, audio, pdf | 1M      | Yes       | $0.25    | $1.50     | chat/completions · gemini | Proprietary  |
-| Gemini 3.1 Pro Preview Custom Tools | `gemini-3-1-pro`        | text, image, video, audio, pdf | 1M      | Yes       | $2       | $12       | chat/completions · gemini | Proprietary  |
-| Gemini 3 Flash Preview              | `gemini-3-flash`        | text, image, video, audio, pdf | 1M      | Yes       | $0.50    | $3        | chat/completions · gemini | Proprietary  |
-| Gemini 3 Pro Preview                | `gemini-3-pro`          | text, image, video, audio, pdf | 1M      | Yes       | $2       | $12       | chat/completions · gemini | Proprietary  |
-| Gemini 2.5 Flash                    | `gemini-2-5-flash`      | text, image, audio, video, pdf | 1M      | Yes       | $0.30    | $2.50     | chat/completions · gemini | Proprietary  |
-| Gemini 2.5 Pro                      | `gemini-2-5-pro`        | text, image, audio, video, pdf | 1M      | Yes       | $1.25    | $10       | chat/completions · gemini | Proprietary  |
-| Gemma 3 12B                         | `gemma-3-12b`           | text, image                    | 131K    | —         | $0.15    | $0.50     | chat/completions          | Open weights |
+| Model                                                                                             | Model ID                | Inputs                         | Context | Reasoning | Input /M | Output /M | Endpoints                 | License      |
+| ------------------------------------------------------------------------------------------------- | ----------------------- | ------------------------------ | ------- | --------- | -------- | --------- | ------------------------- | ------------ |
+| [Gemini 3.5 Flash](https://neon.com/docs/ai-gateway/models/gemini-3-5-flash.md)                   | `gemini-3-5-flash`      | text, image, video, audio, pdf | 1M      | Yes       | $1.50    | $9        | chat/completions · gemini | Proprietary  |
+| [Gemini 3.1 Flash Lite Preview](https://neon.com/docs/ai-gateway/models/gemini-3-1-flash-lite.md) | `gemini-3-1-flash-lite` | text, image, video, audio, pdf | 1M      | Yes       | $0.25    | $1.50     | chat/completions · gemini | Proprietary  |
+| [Gemini 3.1 Pro Preview Custom Tools](https://neon.com/docs/ai-gateway/models/gemini-3-1-pro.md)  | `gemini-3-1-pro`        | text, image, video, audio, pdf | 1M      | Yes       | $2       | $12       | chat/completions · gemini | Proprietary  |
+| [Gemini 3 Flash Preview](https://neon.com/docs/ai-gateway/models/gemini-3-flash.md)               | `gemini-3-flash`        | text, image, video, audio, pdf | 1M      | Yes       | $0.50    | $3        | chat/completions · gemini | Proprietary  |
+| [Gemma 3 12B](https://neon.com/docs/ai-gateway/models/gemma-3-12b.md)                             | `gemma-3-12b`           | text, image                    | 131K    | —         | $0.15    | $0.50     | chat/completions          | Open weights |
 
 #### Meta
 
-| Model                         | Model ID                      | Inputs      | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
-| ----------------------------- | ----------------------------- | ----------- | ------- | --------- | -------- | --------- | ---------------- | ------------ |
-| Llama 4 Maverick 17B Instruct | `llama-4-maverick`            | text, image | 1M      | —         | $0.50    | $1.50     | chat/completions | Open weights |
-| Llama-3.3-70B-Instruct        | `meta-llama-3-3-70b-instruct` | text        | 128K    | —         | $0.50    | $1.50     | chat/completions | Open weights |
-| Llama 3.1 8B Instruct         | `meta-llama-3-1-8b-instruct`  | text        | 131K    | —         | $0.15    | $0.45     | chat/completions | Open weights |
+| Model                                                                                            | Model ID                      | Inputs      | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
+| ------------------------------------------------------------------------------------------------ | ----------------------------- | ----------- | ------- | --------- | -------- | --------- | ---------------- | ------------ |
+| [Llama 4 Maverick 17B Instruct](https://neon.com/docs/ai-gateway/models/llama-4-maverick.md)     | `llama-4-maverick`            | text, image | 1M      | —         | $0.50    | $1.50     | chat/completions | Open weights |
+| [Llama-3.3-70B-Instruct](https://neon.com/docs/ai-gateway/models/meta-llama-3-3-70b-instruct.md) | `meta-llama-3-3-70b-instruct` | text        | 128K    | —         | $0.50    | $1.50     | chat/completions | Open weights |
+| [Llama 3.1 8B Instruct](https://neon.com/docs/ai-gateway/models/meta-llama-3-1-8b-instruct.md)   | `meta-llama-3-1-8b-instruct`  | text        | 131K    | —         | $0.15    | $0.45     | chat/completions | Open weights |
 
 #### Alibaba
 
-| Model                       | Model ID                      | Inputs | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
-| --------------------------- | ----------------------------- | ------ | ------- | --------- | -------- | --------- | ---------------- | ------------ |
-| Qwen3.5 122B-A10B           | `qwen35-122b-a10b`            | text   | 262K    | Yes       | $0.22    | $2.20     | chat/completions | Open weights |
-| Qwen3-Next 80B-A3B Instruct | `qwen3-next-80b-a3b-instruct` | text   | 131K    | —         | $0.15    | $1.20     | chat/completions | Open weights |
+| Model                                                                                                 | Model ID                      | Inputs | Context | Reasoning | Input /M | Output /M | Endpoints        | License      |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------- | ------ | ------- | --------- | -------- | --------- | ---------------- | ------------ |
+| [Qwen3.5 122B-A10B](https://neon.com/docs/ai-gateway/models/qwen35-122b-a10b.md)                      | `qwen35-122b-a10b`            | text   | 262K    | Yes       | $0.22    | $2.20     | chat/completions | Open weights |
+| [Qwen3-Next 80B-A3B Instruct](https://neon.com/docs/ai-gateway/models/qwen3-next-80b-a3b-instruct.md) | `qwen3-next-80b-a3b-instruct` | text   | 131K    | —         | $0.15    | $1.20     | chat/completions | Open weights |
 
-**Quickstart (text).** These snippets work for every model above — replace `__MODEL_ID__` with any model ID from the tables. Mastra can't reach Responses-only models through the OpenAI-compatible endpoint — use another language for `gpt-5-3-codex`, `gpt-5-2-codex`, `gpt-5-1-codex-max`, `gpt-5-1-codex-mini`.
-
-**AI SDK** — install: `npm i ai @neondatabase/ai-sdk-provider`
-
-```typescript
-import { generateText } from "ai";
-import { neon } from "@neondatabase/ai-sdk-provider";
-
-const { text } = await generateText({
-  model: neon("__MODEL_ID__"),
-  prompt: "Explain Serverless Postgres.",
-});
-
-console.log(text);
-```
-
-**Mastra** — install: `npm i @mastra/core`
-
-```typescript
-import { Agent } from "@mastra/core/agent";
-
-const agent = new Agent({
-  name: "neon-demo",
-  instructions: "You are a helpful assistant.",
-  model: "neon/__MODEL_ID__",
-});
-
-const { text } = await agent.generate("Explain Serverless Postgres.");
-console.log(text);
-```
-
-**TypeScript** — install: `npm i openai`
-
-```typescript
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
-});
-
-const resp = await client.chat.completions.create({
-  model: "__MODEL_ID__",
-  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
-});
-console.log(resp.choices[0].message.content);
-```
-
-**Python** — install: `pip install openai`
-
-```python
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
-)
-
-resp = client.chat.completions.create(
-    model="__MODEL_ID__",
-    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
-)
-print(resp.choices[0].message.content)
-```
-
-**curl**
-
-```bash
-# Chat completions live under the unified `/v1` route (every catalog model).
-curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
-  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "__MODEL_ID__",
-    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
-  }'
-```
-
-**.env**
-
-```bash
-# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
-# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
-# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
-#
-# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
-#   - `/v1`        — unified Chat Completions (every catalog model: claude, gpt, gemini, ...)
-#   - `/openai/v1` — OpenAI Responses API (image generation, gpt-5 / codex)
-# @neondatabase/ai-sdk-provider and Mastra's neon/ provider read the bare host and route themselves.
-
-NEON_AI_GATEWAY_TOKEN=nt_live_...
-NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
-```
+Select a linked model for code examples matched to its measured AI Gateway capabilities.
 
 ### Image models
 
@@ -987,95 +887,19 @@ These models support image generation through the Responses API (base URL `/open
 
 #### OpenAI
 
-| Model              | Model ID             | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License     |
-| ------------------ | -------------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ----------- |
-| GPT-5.4 mini       | `gpt-5-4-mini`       | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary |
-| GPT-5.4 nano       | `gpt-5-4-nano`       | text, image      | 400K    | Yes       | $0.20    | $1.25     | chat/completions · openai/responses | Proprietary |
-| GPT-5.4            | `gpt-5-4`            | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary |
-| GPT-5.3 Codex      | `gpt-5-3-codex`      | text, image, pdf | 400K    | Yes       | $1.75    | $14       | openai/responses                    | Proprietary |
-| GPT-5.2            | `gpt-5-2`            | text, image      | 400K    | Yes       | $1.75    | $14       | chat/completions · openai/responses | Proprietary |
-| GPT-5.2 Codex      | `gpt-5-2-codex`      | text, image, pdf | 400K    | Yes       | $1.75    | $14       | openai/responses                    | Proprietary |
-| GPT-5.1            | `gpt-5-1`            | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary |
-| GPT-5.1 Codex Max  | `gpt-5-1-codex-max`  | text, image      | 400K    | Yes       | $1.25    | $10       | openai/responses                    | Proprietary |
-| GPT-5.1 Codex mini | `gpt-5-1-codex-mini` | text, image      | 400K    | Yes       | $0.25    | $2        | openai/responses                    | Proprietary |
-| GPT-5              | `gpt-5`              | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary |
-| GPT-5 Mini         | `gpt-5-mini`         | text, image      | 400K    | Yes       | $0.25    | $2        | chat/completions · openai/responses | Proprietary |
-| GPT-5 Nano         | `gpt-5-nano`         | text, image      | 400K    | Yes       | $0.05    | $0.40     | chat/completions · openai/responses | Proprietary |
+| Model                                                                     | Model ID        | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                           | License     |
+| ------------------------------------------------------------------------- | --------------- | ---------------- | ------- | --------- | -------- | --------- | ----------------------------------- | ----------- |
+| [GPT-5.4 mini](https://neon.com/docs/ai-gateway/models/gpt-5-4-mini.md)   | `gpt-5-4-mini`  | text, image      | 400K    | Yes       | $0.75    | $4.50     | chat/completions · openai/responses | Proprietary |
+| [GPT-5.4 nano](https://neon.com/docs/ai-gateway/models/gpt-5-4-nano.md)   | `gpt-5-4-nano`  | text, image      | 400K    | Yes       | $0.20    | $1.25     | chat/completions · openai/responses | Proprietary |
+| [GPT-5.4](https://neon.com/docs/ai-gateway/models/gpt-5-4.md)             | `gpt-5-4`       | text, image, pdf | 1.1M    | Yes       | $2.50    | $15       | chat/completions · openai/responses | Proprietary |
+| [GPT-5.3 Codex](https://neon.com/docs/ai-gateway/models/gpt-5-3-codex.md) | `gpt-5-3-codex` | text, image, pdf | 400K    | Yes       | $1.75    | $14       | openai/responses                    | Proprietary |
+| [GPT-5.2](https://neon.com/docs/ai-gateway/models/gpt-5-2.md)             | `gpt-5-2`       | text, image      | 400K    | Yes       | $1.75    | $14       | chat/completions · openai/responses | Proprietary |
+| [GPT-5.1](https://neon.com/docs/ai-gateway/models/gpt-5-1.md)             | `gpt-5-1`       | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary |
+| [GPT-5](https://neon.com/docs/ai-gateway/models/gpt-5.md)                 | `gpt-5`         | text, image      | 400K    | Yes       | $1.25    | $10       | chat/completions · openai/responses | Proprietary |
+| [GPT-5 Mini](https://neon.com/docs/ai-gateway/models/gpt-5-mini.md)       | `gpt-5-mini`    | text, image      | 400K    | Yes       | $0.25    | $2        | chat/completions · openai/responses | Proprietary |
+| [GPT-5 Nano](https://neon.com/docs/ai-gateway/models/gpt-5-nano.md)       | `gpt-5-nano`    | text, image      | 400K    | Yes       | $0.05    | $0.40     | chat/completions · openai/responses | Proprietary |
 
-**Quickstart (image).** Replace `__MODEL_ID__` with any image model ID above. Environment variables are the same as the Text quickstart.
-
-**AI SDK** — install: `npm i ai @neondatabase/ai-sdk-provider`
-
-```typescript
-import { streamText } from "ai";
-import { neon } from "@neondatabase/ai-sdk-provider";
-
-const result = streamText({
-  model: neon("__MODEL_ID__"),
-  prompt: "A red apple on a wooden table.",
-  tools: {
-    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
-  },
-});
-
-for await (const _ of result.textStream) {}
-
-const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
-console.log(images.length);
-```
-
-**TypeScript** — install: `npm i openai`
-
-```typescript
-import OpenAI from "openai";
-
-const client = new OpenAI({
-  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
-});
-
-const stream = client.responses.stream({
-  model: "__MODEL_ID__",
-  input: "A red apple on a wooden table.",
-  tools: [{ type: "image_generation" }],
-});
-
-const response = await stream.finalResponse();
-const sizes = response.output.flatMap((item) => {
-  if (item.type !== "image_generation_call") return [];
-  if (!("result" in item) || typeof item.result !== "string") return [];
-  return [item.result.length];
-});
-console.log(sizes);
-```
-
-**Python** — install: `pip install openai`
-
-```python
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
-)
-
-with client.responses.stream(
-    model="__MODEL_ID__",
-    input="A red apple on a wooden table.",
-    tools=[{"type": "image_generation"}],
-) as stream:
-    for _ in stream:
-        pass
-    response = stream.get_final_response()
-
-sizes = [
-    len(item.result)
-    for item in response.output
-    if item.type == "image_generation_call" and getattr(item, "result", None)
-]
-print(sizes)
-```
+Select a linked model for image-generation examples matched to that model.
 
 For full request paths and when to prefer each endpoint, see [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
 
@@ -1173,6 +997,4048 @@ Models are hosted by Databricks and served through Neon AI Gateway. You are resp
 | Google Gemma  | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) · [Gemma Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy)                                          |
 | Meta          | Terms differ by Llama version. See the Notes column in the [Meta models table](https://neon.com/docs/ai-gateway/models#meta).                                                       |
 
+--- [Document source](https://neon.com/docs/ai-gateway/models/gemini-3-1-flash-lite.md) ---
+
+# Gemini 3.1 Flash Lite Preview
+
+## About
+
+Neon AI Gateway provides Gemini 3.1 Flash Lite Preview by Google. The model supports text, image, video, audio, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gemini-3-1-flash-lite"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gemini-3-1-flash-lite"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-1-flash-lite:generateContent" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {"role": "user", "parts": [{"text": "Explain Serverless Postgres."}]}
+    ]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gemini-3-1-flash-lite
+
+## Provider
+
+Google provides Gemini 3.1 Flash Lite Preview. Access the model through the Neon AI Gateway using chat/completions and gemini.
+
+## Inputs
+
+Text, image, video, audio, pdf
+
+## Context
+
+1M
+
+## Released
+
+Mar 2026
+
+## Input /M
+
+$0.25
+
+## Output /M
+
+$1.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gemini-3-1-pro.md) ---
+
+# Gemini 3.1 Pro Preview Custom Tools
+
+## About
+
+Neon AI Gateway provides Gemini 3.1 Pro Preview Custom Tools by Google. The model supports text, image, video, audio, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gemini-3-1-pro"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gemini-3-1-pro"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-1-pro:generateContent" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {"role": "user", "parts": [{"text": "Explain Serverless Postgres."}]}
+    ]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gemini-3-1-pro
+
+## Provider
+
+Google provides Gemini 3.1 Pro Preview Custom Tools. Access the model through the Neon AI Gateway using chat/completions and gemini.
+
+## Inputs
+
+Text, image, video, audio, pdf
+
+## Context
+
+1M
+
+## Released
+
+Feb 2026
+
+## Input /M
+
+$2
+
+## Output /M
+
+$12
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gemini-3-5-flash.md) ---
+
+# Gemini 3.5 Flash
+
+## About
+
+Neon AI Gateway provides Gemini 3.5 Flash by Google. The model supports text, image, video, audio, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gemini-3-5-flash"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gemini-3-5-flash"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-5-flash:generateContent" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {"role": "user", "parts": [{"text": "Explain Serverless Postgres."}]}
+    ]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gemini-3-5-flash
+
+## Provider
+
+Google provides Gemini 3.5 Flash. Access the model through the Neon AI Gateway using chat/completions and gemini.
+
+## Inputs
+
+Text, image, video, audio, pdf
+
+## Context
+
+1M
+
+## Released
+
+May 2026
+
+## Input /M
+
+$1.50
+
+## Output /M
+
+$9
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gemini-3-flash.md) ---
+
+# Gemini 3 Flash Preview
+
+## About
+
+Neon AI Gateway provides Gemini 3 Flash Preview by Google. The model supports text, image, video, audio, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gemini-3-flash"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gemini-3-flash"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini/v1beta/models/gemini-3-flash:generateContent" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {"role": "user", "parts": [{"text": "Explain Serverless Postgres."}]}
+    ]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gemini-3-flash
+
+## Provider
+
+Google provides Gemini 3 Flash Preview. Access the model through the Neon AI Gateway using chat/completions and gemini.
+
+## Inputs
+
+Text, image, video, audio, pdf
+
+## Context
+
+1M
+
+## Released
+
+Dec 2025
+
+## Input /M
+
+$0.50
+
+## Output /M
+
+$3
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gemma-3-12b.md) ---
+
+# Gemma 3 12B
+
+## About
+
+Neon AI Gateway provides Gemma 3 12B by Google. The model supports text, image inputs and a 131K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gemma-3-12b"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gemma-3-12b",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gemma-3-12b",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gemma-3-12b",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gemma-3-12b",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gemma-3-12b
+
+## Provider
+
+Google provides Gemma 3 12B. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text, image
+
+## Context
+
+131K
+
+## Released
+
+Mar 2025
+
+## Input /M
+
+$0.15
+
+## Output /M
+
+$0.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-1.md) ---
+
+# GPT-5.1
+
+## About
+
+Neon AI Gateway provides GPT-5.1 by OpenAI. The model supports text, image inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-1"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-1",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-1",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-1",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-1",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-1"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-1",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-1",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-1",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-1
+
+## Provider
+
+OpenAI provides GPT-5.1. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+400K
+
+## Released
+
+Nov 2025
+
+## Input /M
+
+$1.25
+
+## Output /M
+
+$10
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-2.md) ---
+
+# GPT-5.2
+
+## About
+
+Neon AI Gateway provides GPT-5.2 by OpenAI. The model supports text, image inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-2"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-2",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-2",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-2",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-2",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-2"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-2",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-2",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-2",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-2
+
+## Provider
+
+OpenAI provides GPT-5.2. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+400K
+
+## Released
+
+Dec 2025
+
+## Input /M
+
+$1.75
+
+## Output /M
+
+$14
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-3-codex.md) ---
+
+# GPT-5.3 Codex
+
+## About
+
+Neon AI Gateway provides GPT-5.3 Codex by OpenAI. The model supports text, image, pdf inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-3-codex"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gpt-5-3-codex"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const response = await client.responses.create({
+  model: "gpt-5-3-codex",
+  input: "Explain Serverless Postgres.",
+});
+console.log(response.output_text);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+response = client.responses.create(
+    model="gpt-5-3-codex",
+    input="Explain Serverless Postgres.",
+)
+print(response.output_text)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/openai/v1/responses" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-3-codex",
+    "input": "Explain Serverless Postgres."
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-3-codex"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-3-codex",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-3-codex",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-3-codex",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-3-codex
+
+## Provider
+
+OpenAI provides GPT-5.3 Codex. Access the model through the Neon AI Gateway using openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+400K
+
+## Released
+
+Feb 2026
+
+## Input /M
+
+$1.75
+
+## Output /M
+
+$14
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-4-mini.md) ---
+
+# GPT-5.4 mini
+
+## About
+
+Neon AI Gateway provides GPT-5.4 mini by OpenAI. The model supports text, image inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-4-mini"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-4-mini",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-4-mini",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-4-mini",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-4-mini",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-4-mini"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-4-mini",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-4-mini",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-4-mini",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-4-mini
+
+## Provider
+
+OpenAI provides GPT-5.4 mini. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+400K
+
+## Released
+
+Mar 2026
+
+## Input /M
+
+$0.75
+
+## Output /M
+
+$4.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-4-nano.md) ---
+
+# GPT-5.4 nano
+
+## About
+
+Neon AI Gateway provides GPT-5.4 nano by OpenAI. The model supports text, image inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-4-nano"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-4-nano",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-4-nano",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-4-nano",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-4-nano",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-4-nano"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-4-nano",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-4-nano",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-4-nano",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-4-nano
+
+## Provider
+
+OpenAI provides GPT-5.4 nano. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+400K
+
+## Released
+
+Mar 2026
+
+## Input /M
+
+$0.20
+
+## Output /M
+
+$1.25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-4.md) ---
+
+# GPT-5.4
+
+## About
+
+Neon AI Gateway provides GPT-5.4 by OpenAI. The model supports text, image, pdf inputs and a 1.1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-4"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-4",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-4",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-4",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-4",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-4"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-4",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-4",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-4",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-4
+
+## Provider
+
+OpenAI provides GPT-5.4. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1.1M
+
+## Released
+
+Mar 2026
+
+## Input /M
+
+$2.50
+
+## Output /M
+
+$15
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-mini.md) ---
+
+# GPT-5 Mini
+
+## About
+
+Neon AI Gateway provides GPT-5 Mini by OpenAI. The model supports text, image inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-mini"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-mini",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-mini",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-mini",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-mini",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-mini"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-mini",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-mini",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-mini",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-mini
+
+## Provider
+
+OpenAI provides GPT-5 Mini. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+400K
+
+## Released
+
+Aug 2025
+
+## Input /M
+
+$0.25
+
+## Output /M
+
+$2
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5-nano.md) ---
+
+# GPT-5 Nano
+
+## About
+
+Neon AI Gateway provides GPT-5 Nano by OpenAI. The model supports text, image inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5-nano"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5-nano",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5-nano",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5-nano",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5-nano",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5-nano"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5-nano",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5-nano",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5-nano",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5-nano
+
+## Provider
+
+OpenAI provides GPT-5 Nano. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+400K
+
+## Released
+
+Aug 2025
+
+## Input /M
+
+$0.05
+
+## Output /M
+
+$0.40
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-5.md) ---
+
+# GPT-5
+
+## About
+
+Neon AI Gateway provides GPT-5 by OpenAI. The model supports text, image inputs and a 400K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/gpt-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "gpt-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="gpt-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+### Image generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { streamText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const result = streamText({
+  model: neon("gpt-5"),
+  prompt: "A red apple on a wooden table.",
+  tools: {
+    image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }),
+  },
+});
+
+for await (const _ of result.textStream) {}
+
+const images = (await result.toolResults).filter((r) => r.toolName === "image_generation");
+console.log(images.length);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "Generate the image the user asks for.",
+  model: "neon/gpt-5",
+  tools: { image_generation: neon.tools.imageGeneration({ outputFormat: "jpeg" }) },
+});
+
+const { toolResults } = await agent.generate("A red apple on a wooden table.");
+const images = toolResults.filter((r) => r.payload.toolName === "image_generation");
+console.log(images.map((r) => r.payload.result.result.length));
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/openai/v1`,
+});
+
+const stream = client.responses.stream({
+  model: "gpt-5",
+  input: "A red apple on a wooden table.",
+  tools: [{ type: "image_generation" }],
+});
+
+const response = await stream.finalResponse();
+const sizes = response.output.flatMap((item) => {
+  if (item.type !== "image_generation_call") return [];
+  if (!("result" in item) || typeof item.result !== "string") return [];
+  return [item.result.length];
+});
+console.log(sizes);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/openai/v1",
+)
+
+with client.responses.stream(
+    model="gpt-5",
+    input="A red apple on a wooden table.",
+    tools=[{"type": "image_generation"}],
+) as stream:
+    for _ in stream:
+        pass
+    response = stream.get_final_response()
+
+sizes = [
+    len(item.result)
+    for item in response.output
+    if item.type == "image_generation_call" and getattr(item, "result", None)
+]
+print(sizes)
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-5
+
+## Provider
+
+OpenAI provides GPT-5. Access the model through the Neon AI Gateway using chat/completions and openai/responses.
+
+## Inputs
+
+Text, image
+
+## Context
+
+400K
+
+## Released
+
+Aug 2025
+
+## Input /M
+
+$1.25
+
+## Output /M
+
+$10
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-oss-120b.md) ---
+
+# GPT OSS 120B
+
+## About
+
+Neon AI Gateway provides GPT OSS 120B by OpenAI. The model supports text inputs and a 131K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-oss-120b"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gpt-oss-120b"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-oss-120b",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-oss-120b
+
+## Provider
+
+OpenAI provides GPT OSS 120B. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text
+
+## Context
+
+131K
+
+## Released
+
+Aug 2025
+
+## Input /M
+
+$0.07
+
+## Output /M
+
+$0.28
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gpt-oss-20b.md) ---
+
+# GPT OSS 20B
+
+## About
+
+Neon AI Gateway provides GPT OSS 20B by OpenAI. The model supports text inputs and a 131K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("gpt-oss-20b"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("gpt-oss-20b"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-oss-20b",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+gpt-oss-20b
+
+## Provider
+
+OpenAI provides GPT OSS 20B. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text
+
+## Context
+
+131K
+
+## Released
+
+Aug 2025
+
+## Input /M
+
+$0.05
+
+## Output /M
+
+$0.20
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/llama-4-maverick.md) ---
+
+# Llama 4 Maverick 17B Instruct
+
+## About
+
+Neon AI Gateway provides Llama 4 Maverick 17B Instruct by Meta. The model supports text, image inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("llama-4-maverick"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/llama-4-maverick",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "llama-4-maverick",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="llama-4-maverick",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama-4-maverick",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+llama-4-maverick
+
+## Provider
+
+Meta provides Llama 4 Maverick 17B Instruct. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text, image
+
+## Context
+
+1M
+
+## Released
+
+Apr 2025
+
+## Input /M
+
+$0.50
+
+## Output /M
+
+$1.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/meta-llama-3-1-8b-instruct.md) ---
+
+# Llama 3.1 8B Instruct
+
+## About
+
+Neon AI Gateway provides Llama 3.1 8B Instruct by Meta. The model supports text inputs and a 131K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("meta-llama-3-1-8b-instruct"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/meta-llama-3-1-8b-instruct",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "meta-llama-3-1-8b-instruct",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="meta-llama-3-1-8b-instruct",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama-3-1-8b-instruct",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+meta-llama-3-1-8b-instruct
+
+## Provider
+
+Meta provides Llama 3.1 8B Instruct. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text
+
+## Context
+
+131K
+
+## Released
+
+Jul 2024
+
+## Input /M
+
+$0.15
+
+## Output /M
+
+$0.45
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/meta-llama-3-3-70b-instruct.md) ---
+
+# Llama-3.3-70B-Instruct
+
+## About
+
+Neon AI Gateway provides Llama-3.3-70B-Instruct by Meta. The model supports text inputs and a 128K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("meta-llama-3-3-70b-instruct"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/meta-llama-3-3-70b-instruct",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "meta-llama-3-3-70b-instruct",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="meta-llama-3-3-70b-instruct",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama-3-3-70b-instruct",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+meta-llama-3-3-70b-instruct
+
+## Provider
+
+Meta provides Llama-3.3-70B-Instruct. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text
+
+## Context
+
+128K
+
+## Released
+
+Dec 2024
+
+## Input /M
+
+$0.50
+
+## Output /M
+
+$1.50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/qwen3-next-80b-a3b-instruct.md) ---
+
+# Qwen3-Next 80B-A3B Instruct
+
+## About
+
+Neon AI Gateway provides Qwen3-Next 80B-A3B Instruct by Alibaba. The model supports text inputs and a 131K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("qwen3-next-80b-a3b-instruct"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/qwen3-next-80b-a3b-instruct",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "qwen3-next-80b-a3b-instruct",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="qwen3-next-80b-a3b-instruct",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen3-next-80b-a3b-instruct",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+qwen3-next-80b-a3b-instruct
+
+## Provider
+
+Alibaba provides Qwen3-Next 80B-A3B Instruct. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text
+
+## Context
+
+131K
+
+## Released
+
+Sep 2025
+
+## Input /M
+
+$0.15
+
+## Output /M
+
+$1.20
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/qwen35-122b-a10b.md) ---
+
+# Qwen3.5 122B-A10B
+
+## About
+
+Neon AI Gateway provides Qwen3.5 122B-A10B by Alibaba. The model supports text inputs and a 262K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("qwen35-122b-a10b"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("qwen35-122b-a10b"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "qwen35-122b-a10b",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+qwen35-122b-a10b
+
+## Provider
+
+Alibaba provides Qwen3.5 122B-A10B. Access the model through the Neon AI Gateway using chat/completions.
+
+## Inputs
+
+Text
+
+## Context
+
+262K
+
+## Released
+
+Feb 2026
+
+## Input /M
+
+$0.22
+
+## Output /M
+
+$2.20
+
 --- [Document source](https://neon.com/docs/ai-gateway/openai-responses.md) ---
 
 > Summary: The OpenAI Responses endpoint exposes the OpenAI Responses API through Neon AI Gateway. Required for codex model variants, which do not work with the chat completions endpoint.
@@ -1193,7 +5059,7 @@ This endpoint is also reachable at the longer `/ai-gateway/openai/v1/responses` 
 
 If you're using an OpenAI-compatible client that accepts a base URL, set it to either `https://<branch-host>/openai/v1` or `https://<branch-host>/ai-gateway/openai/v1`. The request and response shapes are the standard OpenAI Responses API shape.
 
-**Warning:** All codex model variants (`gpt-5-3-codex`, `gpt-5-2-codex`, `gpt-5-1-codex-max`, `gpt-5-1-codex-mini`) **require this endpoint**. They do not work with the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions).
+**Warning:** Codex model variants such as `gpt-5-3-codex` **require this endpoint**. They don't work with the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions).
 
 ## Setup
 
@@ -1208,20 +5074,17 @@ NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aw
 
 This endpoint accepts OpenAI models only:
 
-| Model ID             | Notes                  |
-| -------------------- | ---------------------- |
-| `gpt-5-4`            |                        |
-| `gpt-5-4-mini`       |                        |
-| `gpt-5-4-nano`       |                        |
-| `gpt-5-3-codex`      | Requires this endpoint |
-| `gpt-5-2-codex`      | Requires this endpoint |
-| `gpt-5-2`            |                        |
-| `gpt-5-1-codex-max`  | Requires this endpoint |
-| `gpt-5-1-codex-mini` | Requires this endpoint |
-| `gpt-5-1`            |                        |
-| `gpt-5`              |                        |
-| `gpt-5-mini`         |                        |
-| `gpt-5-nano`         |                        |
+| Model ID        | Notes                  |
+| --------------- | ---------------------- |
+| `gpt-5-4`       |                        |
+| `gpt-5-4-mini`  |                        |
+| `gpt-5-4-nano`  |                        |
+| `gpt-5-3-codex` | Requires this endpoint |
+| `gpt-5-2`       |                        |
+| `gpt-5-1`       |                        |
+| `gpt-5`         |                        |
+| `gpt-5-mini`    |                        |
+| `gpt-5-nano`    |                        |
 
 Sending a non-OpenAI model ID returns `400 model "<model-id>" is not available on the openai_responses endpoint`.
 
@@ -17166,7 +21029,7 @@ Subcommands: [create](https://neon.com/docs/cli/snapshots#create), [delete](http
 
 ## neon snapshots create
 
-Creates a snapshot from a branch. By default, it snapshots the head of the branch from your context or the project's default branch. Use `--lsn` or `--timestamp` to capture an earlier point within the branch's [restore window](https://neon.com/docs/introduction/history-window); the two options are mutually exclusive.
+Creates a snapshot from a branch. By default, it snapshots the head of the branch from your context or the project's default branch. Use `--lsn` or `--timestamp` to capture an earlier point within the branch's [history window](https://neon.com/docs/introduction/history-window); the two options are mutually exclusive.
 
 ```bash
 neon snapshots create [options]
@@ -17190,7 +21053,7 @@ neon snapshots create --branch main --name pre-migration
 Snapshot a branch at a specific LSN and set an expiration:
 
 ```bash
-neon snapshots create --branch main --lsn 0/1F3C8A0 --expires-at 2025-12-31T23:59:59Z
+neon snapshots create --branch main --lsn 0/1F3C8A0 --expires-at 2027-12-31T23:59:59Z
 ```
 
 Snapshot a branch at a point in time:
@@ -17199,7 +21062,7 @@ Snapshot a branch at a point in time:
 neon snapshots create --branch main --timestamp 2025-01-01T00:00:00Z
 ```
 
-Timestamps and expiration times use RFC 3339 format. Omit `--expires-at` to keep the snapshot indefinitely.
+Timestamps and expiration times use RFC 3339 format. `--timestamp` must be in the past and `--expires-at` in the future. Omit `--expires-at` to keep the snapshot until you delete it; a manual snapshot's expiration has no maximum, unlike the 35-day cap on [scheduled snapshots](https://neon.com/docs/cli/snapshots#schedule-set). Snapshot names must be unique within a project.
 
 ## neon snapshots list
 
@@ -17363,6 +21226,8 @@ Pick one `--frequency`; that choice determines which of `--day` and `--hour` you
 | `weekly`      | `--day`, `--hour` | 1-7 (Monday-Sunday) |
 | `monthly`     | `--day`, `--hour` | 1-31                |
 
+The server enforces these combinations, so a schedule missing a value its frequency needs is rejected with an error such as `daily schedules must specify the hour of the day`.
+
 Use `--retention` with any frequency to set how long each snapshot is kept.
 
 ```bash
@@ -17379,6 +21244,8 @@ neon snapshots schedule set [options]
 | `--retention`    | How long to keep each snapshot, in seconds (min 3600). Omit to keep indefinitely.                                                                          | number | —       |    No    |
 | `--schedule`     | Full schedule as JSON, for multi-entry schedules, e.g. '\[\{"frequency":"daily","hour":3,"retention\_seconds":604800}]'. Overrides the single-entry flags. | string | —       |    No    |
 | `--project-id`   | Project ID                                                                                                                                                 | string | —       |    No    |
+
+Of the options above, `--month` is the exception: none of the supported frequencies read it, so setting it has no effect on when snapshots are taken.
 
 Set a daily 03:00 snapshot kept for 7 days (604800 seconds):
 
@@ -17398,7 +21265,7 @@ Set a multi-entry schedule with JSON:
 neon snapshots schedule set --branch main --schedule '[{"frequency":"daily","hour":3},{"frequency":"weekly","day":1,"hour":4}]'
 ```
 
-Retention is set in seconds (minimum 3600). Omit `--retention` to keep snapshots indefinitely.
+`--retention` is in seconds, from 3600 (1 hour) to 3024000 (35 days). Omit it and scheduled snapshots are kept for 35 days, the maximum. Manual snapshots created with [snapshots create](https://neon.com/docs/cli/snapshots#create) follow the opposite rule: they never expire unless you set `--expires-at`. See [Snapshot retention](https://neon.com/docs/guides/backup-restore#snapshot-retention).
 
 --- [Document source](https://neon.com/docs/cli/status.md) ---
 
@@ -57952,6 +61819,8 @@ Use the **Backup & restore** page in the Neon Console to instantly restore a bra
 
 The **Enhanced view** toggle in the Neon Console lets you access the Backup & Restore page with snapshot capabilities. When enabled, you can create and manage snapshots alongside instant point-in-time restore. Toggle it off to return to the original Restore page if needed.
 
+You can also manage snapshots from the terminal with the Neon CLI. For every subcommand, flag, and default, see the [snapshots](https://neon.com/docs/cli/snapshots) CLI reference.
+
 ![Backup and restore UI](https://neon.com/docs/guides/backup_restore_ui.png)
 
 ---
@@ -58069,26 +61938,68 @@ To create a snapshot manually, click **Create snapshot**. This captures the curr
 
 ![Backup branch on the Branches page](https://neon.com/docs/guides/backup_restore_create_snapshot.png)
 
+**CLI**
+
+Use the [snapshots create](https://neon.com/docs/cli/snapshots#create) command to snapshot a branch. By default, it captures the head of the branch:
+
+```bash
+neon snapshots create --branch main --name pre-migration
+```
+
+To capture an earlier point within the branch's [history window](https://neon.com/docs/introduction/history-window), pass `--timestamp` or `--lsn`. The two options are mutually exclusive.
+
+```bash
+neon snapshots create --branch main --timestamp 2025-07-29T21:00:00Z
+```
+
+Use `--expires-at` to have the snapshot deleted automatically. It must be a future time. Omit it to keep the snapshot until you delete it.
+
+```bash
+neon snapshots create --branch main --name pre-upgrade --expires-at 2027-08-05T22:00:00Z
+```
+
+Both options use RFC 3339 format. Snapshot names must be unique within a project.
+
+#### Update a snapshot's expiration
+
+Use [snapshots update](https://neon.com/docs/cli/snapshots#update) to change a snapshot's expiration after it's created, or `--clear-expiration` to remove the expiration so it never expires:
+
+```bash
+neon snapshots update snap-1234 --expires-at 2027-12-31T00:00:00Z
+```
+
+```bash
+neon snapshots update snap-1234 --clear-expiration
+```
+
+#### List and inspect snapshots
+
+```bash
+neon snapshots list
+```
+
+```bash
+neon snapshots get snap-1234
+```
+
+For all subcommands and flags, see the [snapshots](https://neon.com/docs/cli/snapshots) CLI reference.
+
 **API**
 
 You can create a snapshot from a branch using the [Create snapshot](https://neon.com/docs/reference/api/snapshots/create-snapshot) endpoint. A snapshot can be created from a specific timestamp (RFC 3339 format) or LSN (for example 16/B3733C50) within the branch's [history window](https://neon.com/docs/introduction/history-window). The `timestamp` and `lsn` parameters are mutually exclusive; you can use one or the other, not both.
 
+This endpoint takes its parameters in the query string. It has no request body, and a body you send is ignored without an error.
+
 ```bash
-curl -X POST "https://console.neon.tech/api/v2/projects/project_id/branches/branch_id/snapshot" \
-  -H "Content-Type: application/json" \
-  -H 'authorization: Bearer $NEON_API_KEY' \
-  -d '{
-    "timestamp": "2025-07-29T21:00:00Z",
-    "name": "my_snapshot",
-    "expires_at": "2025-08-05T22:00:00Z"
-  }' |jq
+curl -X POST "https://console.neon.tech/api/v2/projects/project_id/branches/branch_id/snapshot?name=my_snapshot&timestamp=2025-07-29T21:00:00Z&expires_at=2027-08-05T22:00:00Z" \
+  -H 'authorization: Bearer $NEON_API_KEY' |jq
 ```
 
 The parameters used in the example above:
 
 - `timestamp`: A point in time to create the snapshot from (RFC 3339 format).
 - `name`: A user-defined name for the snapshot.
-- `expires_at`: The timestamp when the snapshot will be automatically deleted (RFC 3339 format).
+- `expires_at`: The timestamp when the snapshot will be automatically deleted (RFC 3339 format). Omit it to keep the snapshot until you delete it. Manual snapshots have no maximum expiration.
 
 #### Update a snapshot's expiration
 
@@ -58162,6 +62073,42 @@ To create a backup schedule:
 
 Once configured, snapshots created by the backup schedule will appear on the **Backup & restore** page with a label indicating they were created automatically.
 
+**CLI**
+
+Use [snapshots schedule set](https://neon.com/docs/cli/snapshots#schedule-set) to set a branch's schedule. Pick a `--frequency`, then set the companion flags it requires:
+
+| `--frequency` | Also required     | `--day` range       |
+| ------------- | ----------------- | ------------------- |
+| `daily`       | `--hour` (0-23)   | not used            |
+| `weekly`      | `--day`, `--hour` | 1-7 (Monday-Sunday) |
+| `monthly`     | `--day`, `--hour` | 1-31                |
+
+Set a daily snapshot at 23:00 UTC, kept for 7 days:
+
+```bash
+neon snapshots schedule set --branch main --frequency daily --hour 23 --retention 604800
+```
+
+Set a weekly snapshot on Mondays at 04:00:
+
+```bash
+neon snapshots schedule set --branch main --frequency weekly --day 1 --hour 4
+```
+
+For a multi-entry schedule, pass JSON with `--schedule`, which overrides the single-entry flags:
+
+```bash
+neon snapshots schedule set --branch main --schedule '[{"frequency":"daily","hour":3},{"frequency":"weekly","day":1,"hour":4}]'
+```
+
+`--retention` is in seconds, from 3600 (1 hour) to 3024000 (35 days). See [Snapshot retention](https://neon.com/docs/guides/backup-restore#snapshot-retention) for what happens when you omit it.
+
+To view the current schedule, use [snapshots schedule get](https://neon.com/docs/cli/snapshots#schedule-get):
+
+```bash
+neon snapshots schedule get --branch main
+```
+
 **API**
 
 You can view and set backup schedules for branches using the Neon API. For complete API documentation, refer to the [Neon API Reference](https://neon.com/docs/reference/api).
@@ -58204,10 +62151,11 @@ PUT /projects/{project_id}/branches/{branch_id}/backup_schedule
 The request body must include a `schedule` array. Each item in the array can specify:
 
 - `frequency` (required): `daily`, `weekly`, or `monthly`
-- `hour` (optional): Hour of the day (0–23) to take the snapshot
-- `day` (optional): Day of the week or month (1–31) to take the snapshot
-- `month` (optional): Month of the year (1–12) to take the snapshot
-- `retention_seconds` (optional): How long to keep the snapshot before it is automatically deleted (minimum 3600). If not set, the snapshot is kept indefinitely.
+- `hour`: Hour of the day (0–23) to take the snapshot. Required for every frequency.
+- `day`: Day of the week (1–7, Monday to Sunday) for `weekly`, or day of the month (1–31) for `monthly`. Required for those two frequencies, and setting it also requires `hour`.
+- `retention_seconds` (optional): How long to keep each snapshot before it is automatically deleted, from 3600 (1 hour) to 3024000 (35 days). See [Snapshot retention](https://neon.com/docs/guides/backup-restore#snapshot-retention) for what happens when you omit it.
+
+Although the schema marks `hour` and `day` optional, the server rejects a schedule that leaves out the values its frequency needs, with an error such as `daily schedules must specify the hour of the day`.
 
 **Example: set a daily schedule**
 
@@ -58230,11 +62178,12 @@ This example creates a daily snapshot at 23:00 (11:00 PM) UTC and keeps it for 7
 
 ### Snapshot retention
 
-Snapshots are automatically deleted after their retention period expires. You can adjust retention settings at any time by editing the schedule. Note that:
+Manual and scheduled snapshots expire on different rules:
 
-- Shorter retention periods help manage storage; on paid plans, the per-plan snapshot limit applies only to manual snapshots (scheduled backup snapshots do not count)
-- Deleted snapshots cannot be recovered
-- Manual snapshots are not affected by backup schedule retention settings
+- **Scheduled snapshots** are kept for 35 days unless you set a shorter retention, and 35 days is also the maximum. The Console shows this per frequency as 35 days, 5 weeks, or 1 month.
+- **Manual snapshots** never expire unless you give them an expiration, which has no maximum. Backup schedule retention settings do not apply to them.
+
+You can adjust retention at any time by editing the schedule. Shorter retention periods help manage storage. On paid plans, the per-plan snapshot limit applies only to manual snapshots; scheduled backup snapshots do not count. Deleted snapshots cannot be recovered.
 
 ## Update backup schedules
 
@@ -58247,6 +62196,20 @@ From the **Backup & restore** page, click **Edit schedule** to open the **Edit b
 **To turn off a snapshot schedule:** Select **No schedule** from the dropdown in the **Edit backup schedule** modal, then click **Update schedule**. No snapshots will be created until you set a schedule again.
 
 ![Edit backup schedule modal](https://neon.com/docs/guides/edit_backup_schedule_modal.png)
+
+**CLI**
+
+To change a schedule, run [snapshots schedule set](https://neon.com/docs/cli/snapshots#schedule-set) again with the new values. The command replaces the existing schedule rather than adding to it.
+
+```bash
+neon snapshots schedule set --branch main --frequency weekly --day 1 --hour 4
+```
+
+**To turn off a backup schedule:** pass an empty JSON array with `--schedule`:
+
+```bash
+neon snapshots schedule set --branch main --schedule '[]'
+```
 
 **API**
 
@@ -58284,35 +62247,51 @@ Use this option if you want to restore the snapshot data immediately without ins
 
    - The restore operation will occur instantly.
    - The current branch will be restored to the snapshot state.
-   - A branch named `<branch_name (old)>` will be created as a backup. Other snapshots you may have taken previously remain attached to this branch.
+   - A branch named `<branch_name> (old)` will be created as a backup. Other snapshots you may have taken previously remain attached to this branch.
 
    ![One step restore confirmation modal](https://neon.com/docs/guides/one_step_restore_modal.png)
 
    Click **Restore** to proceed with the operation.
 
-3. Your branch is immediately restored to the snapshot state, and the `<branch_name>_old` branch is created, which you'll find on the **Branches** page in the Neon Console, as shown here:
+3. Your branch is immediately restored to the snapshot state, and the `<branch_name> (old)` branch is created, which you'll find on the **Branches** page in the Neon Console, as shown here:
    ![Branches page that shows the backup branch](https://neon.com/docs/guides/one_step_restore_branches_page.png)
 
    After you verify that the restore operation was successful, you can delete the backup branch if you no longer need it.
+
+**CLI**
+
+Use [snapshots restore](https://neon.com/docs/cli/snapshots#restore) with `--finalize` to restore and swap the branch in one step. This restores the snapshot to a new branch, moves your computes onto it, and replaces the target branch, so your connection details stay the same.
+
+```bash
+neon snapshots restore snap-1234 --target-branch main --finalize
+```
+
+Options:
+
+- `--target-branch`: The branch to restore onto. Defaults to the snapshot's source branch. Recommended whenever you finalize, and especially if you apply several snapshots in succession, so the restore doesn't target a branch renamed by an earlier restore.
+- `--name`: Name for the newly restored branch. Auto-generated when omitted.
+
+Find the snapshot ID with `neon snapshots list`. The replaced branch is kept as a backup, renamed to `<branch_name> (old)`. If the branch being replaced was **protected**, that protection is **moved** to the branch with the restored data, not left on both branches.
 
 **API**
 
 A one-step restore operation is performed using the [Restore snapshot](https://neon.com/docs/reference/api/snapshots/restore-snapshot) endpoint. This operation creates a new branch, restores the snapshot to the new branch, and moves computes from your current branch to the new branch.
 
 ```bash
-curl -X POST "https://console.neon.tech/api/v2/projects/project_id/snapshots/snapshot_id/restore?name=restored_branch" \
+curl -X POST "https://console.neon.tech/api/v2/projects/project_id/snapshots/snapshot_id/restore" \
   -H "Content-Type: application/json" \
   -H 'authorization: Bearer $NEON_API_KEY' \
   -d '{
     "name": "restored_branch",
-    "finalize_restore": false
+    "target_branch_id": "br-twilight-river-31791249",
+    "finalize_restore": true
   }' |jq
 ```
 
 Parameters:
 
-- `name`: (Optional) Name of the new branch with the restored snapshot data. If not provided, a default branch name will be generated.
-- `finalize_restore`: Set to `true` to finalize the restore immediately. Finalizing the restore moves computes from your current branch to the new branch with the restored snapshot data for a seamless restore operation; no need to change the connection details in your application. If the branch being replaced was **protected**, that protection is **moved** to the branch with the restored data (it is not left on both branches).
+- `name`: (Optional) Name of the new branch with the restored snapshot data. If not provided, a default branch name will be generated. Pass this in the request body; the `name` query parameter is deprecated.
+- `finalize_restore`: Set to `true` to finalize the restore immediately, which is what makes this a one-step restore. Finalizing the restore moves computes from your current branch to the new branch with the restored snapshot data for a seamless restore operation; no need to change the connection details in your application. If the branch being replaced was **protected**, that protection is **moved** to the branch with the restored data (it is not left on both branches). Set it to `false` for a [multi-step restore](https://neon.com/docs/guides/backup-restore#multi-step-restore) instead.
 - `target_branch_id`: (Optional but recommended) The ID of the branch you want to replace when finalizing the restore. If omitted, subsequent snapshot restores may target the branch renamed to `<branch_name> (old)` from a previous restore, not your intended production branch.
 
 **Note:** If you plan to apply multiple snapshots in succession, always supply `target_branch_id` to ensure the restore is finalized against the correct branch (typically your current production branch). Without it, a second snapshot may be applied to the previously renamed "(old)" branch.
@@ -58345,6 +62324,41 @@ Use this option if you need to inspect the restored data before you switch over 
    - **Migrate connections and settings** to move your database URLs and compute settings from the old branch to the new branch so you don't have to update the connection configuration in your application
 
    ![Branch overview page](https://neon.com/docs/guides/branch_overview_page.png)
+
+**CLI**
+
+1. **Restore the snapshot to a new branch**
+
+   Run [snapshots restore](https://neon.com/docs/cli/snapshots#restore) without `--finalize`, which leaves the restore un-finalized so you can inspect the new branch first:
+
+   ```bash
+   neon snapshots restore snap-1234 --target-branch main --name my_restored_branch
+   ```
+
+   Options:
+
+   - `--name`: (Optional) Name for the newly restored branch. Auto-generated when omitted.
+   - `--target-branch`: (Optional but recommended) The branch you intend to replace when you later finalize (typically your production branch). Providing this avoids finalizing against the `<branch_name> (old)` branch created by an earlier restore.
+
+   Find the snapshot ID with `neon snapshots list`. The command prints the ID of the restored branch along with the exact `finalize` command to run.
+
+2. **Inspect the new branch**
+
+   Connect to the restored branch and query it to confirm the data is what you expect:
+
+   ```bash
+   neon connection-string my_restored_branch
+   ```
+
+3. **Finalize the restore**
+
+   Pass the restored branch, not the target branch, to [snapshots finalize](https://neon.com/docs/cli/snapshots#finalize):
+
+   ```bash
+   neon snapshots finalize br-twilight-river-31791249
+   ```
+
+   This performs the same actions as the API's finalize step: it moves the original branch's computes to the restored branch, renames the restored branch to the original's name, and renames the original to `<branch_name> (old)`. Any backup schedule moves to the restored branch, and if the original was **protected**, that protection is **moved** rather than left on both branches. Use `--name` to choose the replaced branch's name instead of the generated one.
 
 **API**
 
@@ -113432,7 +117446,7 @@ Interface-specific indexes:
 
 [All storage endpoints](https://neon.com/docs/reference/api/storage.md)
 
-- [Get branch storage state](https://neon.com/docs/reference/api/storage/get-project-branch-storage.md) `GET /projects/{project_id}/branches/{branch_id}/storage`
+- [Get branch object storage state](https://neon.com/docs/reference/api/storage/get-project-branch-storage.md) `GET /projects/{project_id}/branches/{branch_id}/storage`
 
 ## AI Gateway
 

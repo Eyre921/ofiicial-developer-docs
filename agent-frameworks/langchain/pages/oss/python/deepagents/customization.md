@@ -94,22 +94,22 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
   ```
 </CodeGroup>
 
-| Parameter                                                                         | What it does                                                                                                                                                                                                                                               |
-| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`model=`](#model)                                                                | Which model to use                                                                                                                                                                                                                                         |
-| [`system_prompt=`](#system-prompt)                                                | Custom instructions for the agent                                                                                                                                                                                                                          |
-| [`tools=`](#tools)                                                                | Domain tools the agent can call                                                                                                                                                                                                                            |
-| [`memory=`](#memory)                                                              | AGENTS.md files loaded at startup                                                                                                                                                                                                                          |
-| [`skills=`](#skills)                                                              | Skills directory for on-demand knowledge                                                                                                                                                                                                                   |
-| [`backend=`](#backends)                                                           | Filesystem backend (StateBackend by default)                                                                                                                                                                                                               |
-| [`permissions=`](/oss/python/deepagents/permissions)                              | Path-level access control for the filesystem                                                                                                                                                                                                               |
-| [`subagents=`](#subagents)                                                        | Custom subagents for delegated tasks                                                                                                                                                                                                                       |
-| [`middleware=`](#middleware)                                                      | Extra middleware merged into the [default stack](#default-stack-main-agent); an instance whose `.name` matches a default replaces it in place, anything else lands after the last core middleware entry and before the profile, prompt-caching, and memory |
-| [`interrupt_on=`](#human-in-the-loop)                                             | Pause before tool calls for human approval                                                                                                                                                                                                                 |
-| [`response_format=`](#structured-output)                                          | Structured output schema                                                                                                                                                                                                                                   |
-| [`state_schema=`](/oss/python/deepagents/context-engineering#custom-state-schema) | Custom graph state schema                                                                                                                                                                                                                                  |
-| [`context_schema=`](/oss/python/deepagents/context-engineering#runtime-context)   | Per-run runtime context schema (user IDs, API keys, feature flags)                                                                                                                                                                                         |
-| [profiles](#profiles)                                                             | Per-model defaults as a reusable bundle                                                                                                                                                                                                                    |
+| Parameter                                                                         | What it does                                                                                                                                                                                                                                                   |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`model=`](#model)                                                                | Which model to use                                                                                                                                                                                                                                             |
+| [`system_prompt=`](#system-prompt)                                                | Custom instructions for the agent                                                                                                                                                                                                                              |
+| [`tools=`](#tools)                                                                | Domain tools the agent can call                                                                                                                                                                                                                                |
+| [`memory=`](#memory)                                                              | AGENTS.md files loaded at startup                                                                                                                                                                                                                              |
+| [`skills=`](#skills)                                                              | Skills directory for on-demand knowledge                                                                                                                                                                                                                       |
+| [`backend=`](#backends)                                                           | Filesystem backend (StateBackend by default)                                                                                                                                                                                                                   |
+| [`permissions=`](/oss/python/deepagents/permissions)                              | Path-level access control for the filesystem                                                                                                                                                                                                                   |
+| [`subagents=`](#subagents)                                                        | Custom subagents for delegated tasks                                                                                                                                                                                                                           |
+| [`middleware=`](#middleware)                                                      | Extra middleware merged into the [Deep Agents stack](#deep-agents-stack); an instance whose `.name` matches a built-in entry replaces it in place, anything else lands after the last core middleware entry and before the profile, prompt-caching, and memory |
+| [`interrupt_on=`](#human-in-the-loop)                                             | Pause before tool calls for human approval                                                                                                                                                                                                                     |
+| [`response_format=`](#structured-output)                                          | Structured output schema                                                                                                                                                                                                                                       |
+| [`state_schema=`](/oss/python/deepagents/context-engineering#custom-state-schema) | Custom graph state schema                                                                                                                                                                                                                                      |
+| [`context_schema=`](/oss/python/deepagents/context-engineering#runtime-context)   | Per-run runtime context schema (user IDs, API keys, feature flags)                                                                                                                                                                                             |
+| [profiles](#profiles)                                                             | Per-model defaults as a reusable bundle                                                                                                                                                                                                                        |
 
 <Accordion title="Full function signature">
   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1073,11 +1073,24 @@ Pass `system_prompt=` to give the agent your own instructions:
 
 Deep Agents support any [middleware](/oss/python/langchain/middleware/overview), including the built-in middleware listed below, prebuilt middleware from LangChain, provider-specific middleware, and custom middleware you write yourself.
 
-Pass middleware to the `middleware` argument of `create_deep_agent`. Each instance is merged into the [default stack](#default-stack-main-agent) by matching its `.name` against the defaults already in the stack: a match replaces the default instance in place, and anything that does not match is inserted after [`PatchToolCallsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware). See [Override a default middleware instance](#override-a-default-middleware-instance).
+Pass middleware to the `middleware` argument of `create_deep_agent`. Each instance is merged into the [Deep Agents stack](#deep-agents-stack) by matching its `.name` against built-in entries already in the stack: a match replaces that instance in place, and anything that does not match is inserted after [`PatchToolCallsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware). See [Override a default middleware instance](#override-a-default-middleware-instance).
 
-By default, Deep Agents have access to the following middleware:
+### Deep Agents stack
 
-### Default stack (main agent)
+`create_deep_agent` builds middleware in a fixed order. The [bare stack](#bare-stack) is what you get with only a model. The [full stack](#full-stack) is the complete assembly order, including slots that appear only when you pass optional arguments or when the resolved [harness profile](/oss/python/deepagents/profiles) contributes them.
+
+#### Bare stack
+
+With only a `model` (no other optional arguments), the main agent typically includes:
+
+1. [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware)
+2. [`SubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware) (because the [general-purpose subagent](/oss/python/deepagents/subagents#default-subagent) is auto-added unless a harness profile disables it)
+3. [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware)
+4. [`PatchToolCallsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware)
+5. **Prompt caching** middleware (always registered; each entry no-ops on models it does not support)
+6. **Harness profile extras** and **excluded-tool filtering**, if the resolved model profile defines them
+
+#### Full stack
 
 From first to last:
 
@@ -1085,7 +1098,7 @@ From first to last:
 
 2. [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware): Handles file system operations such as reading, writing, and navigating directories. When you pass `permissions`, filesystem permissions enforcement is included here so it can evaluate every tool the agent might call.
 
-3. [`SubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware): Spawns and coordinates subagents for delegating tasks to specialized agents.
+3. [`SubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgentMiddleware): Only when at least one synchronous subagent is available. Spawns and coordinates subagents for delegating tasks. Included in the [bare stack](#bare-stack) because the general-purpose subagent is auto-added by default; omit it by disabling that subagent and passing no synchronous `subagents`. See [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents).
 
 4. [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware): Condenses message history to stay within context limits when conversations grow long (via [create\_summarization\_middleware](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_middleware)).
 
@@ -1093,7 +1106,7 @@ From first to last:
 
 6. [`AsyncSubAgentMiddleware`](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware): Only when you configure async subagents.
 
-7. **Your middleware argument**: Optional middleware you pass as the `middleware` argument is merged after Patch but before the rest of the stack. An instance whose `.name` matches one of the defaults above replaces that default in place instead of duplicating it; anything else lands here. See [Override a default middleware instance](#override-a-default-middleware-instance).
+7. **Your middleware argument**: Optional middleware you pass as the `middleware` argument is merged after Patch but before the rest of the stack. An instance whose `.name` matches one of the built-in entries above replaces that instance in place instead of duplicating it; anything else lands here. See [Override a default middleware instance](#override-a-default-middleware-instance).
 
 8. **Harness profile extras**: Provider-specific middleware from the resolved model profile, if any.
 
@@ -1109,7 +1122,7 @@ From first to last:
 
 12. `HumanInTheLoopMiddleware`: Only when you pass `interrupt_on`. Pauses for human approval or input at configured tool calls.
 
-### Default stack (synchronous subagents)
+### Synchronous subagent stack
 
 The built-in **general-purpose** subagent and each declarative synchronous `SubAgent` graph use a stack that `create_deep_agent` builds in code. It matches the main agent in broad shape (filesystem, summarization, Patch, profile extras, Anthropic and Bedrock caching, optional permissions) but differs in two ways:
 
@@ -1458,7 +1471,7 @@ You can provide additional middleware to extend functionality, add tools, or imp
   Overriding a default middleware by matching `.name` requires `deepagents>=0.7`.
 </Note>
 
-Pass a middleware instance whose `.name` matches an entry in the [default stack](#default-stack-main-agent), such as [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware), to replace that default in place instead of appending a duplicate. Any middleware you pass whose `.name` does **not** match a default is not replaced, it lands after the last core middleware entry and before the profile, prompt-caching, and memory. See [Default stack (main agent)](#default-stack-main-agent) for the full ordering.
+Pass a middleware instance whose `.name` matches an entry in the [Deep Agents stack](#deep-agents-stack), such as [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware), to replace that built-in instance in place instead of appending a duplicate. Any middleware you pass whose `.name` does **not** match a built-in entry is not replaced, it lands after the last core middleware entry and before the profile, prompt-caching, and memory. See [Full stack](#full-stack) for the complete ordering.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -1486,7 +1499,7 @@ agent = create_deep_agent(
 
 The general-purpose subagent, which Deep Agents adds automatically, inherits overrides for its default middleware from the main agent, without carrying over middleware that's specific to the main agent.
 
-Declarative subagents defined via `subagents=` do not inherit the main agent's middleware customization. Pass the override directly in that subagent's own [`middleware`](/oss/python/deepagents/subagents#subagent-dictionary-based) field to apply it there; that field is matched against the subagent's own default stack, the same way `middleware=` is matched against the main agent's.
+Declarative subagents defined via `subagents=` do not inherit the main agent's middleware customization. Pass the override directly in that subagent's own [`middleware`](/oss/python/deepagents/subagents#subagent-dictionary-based) field to apply it there; that field is matched against the [synchronous subagent stack](#synchronous-subagent-stack), the same way `middleware=` is matched against the main agent's.
 
 #### Examples
 

@@ -35,7 +35,7 @@ paths:
         key with Member or higher authorization. Tokens created with this
         endpoint will not work with the Manage APIs.
       tags:
-        - auth > v1 > tokens
+        - tokens
       parameters:
         - name: Authorization
           in: header

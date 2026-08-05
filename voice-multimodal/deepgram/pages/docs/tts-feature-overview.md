@@ -40,4 +40,4 @@ For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Li
 
 Having challenges with performance and latency? Check out Deepgram's [Self-Hosted Solution](/docs/self-hosted-introduction) to get the benefits of running your own hosted instance of Deepgram.
 
----
+***

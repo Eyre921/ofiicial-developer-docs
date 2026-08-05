@@ -47,4 +47,4 @@ To create additional API keys, be sure that the API key you are using to authent
 
 Make sure you are sending API requests over HTTPS. Calls made over plain HTTP will fail. API requests made without authentication will also fail.
 
----
+***

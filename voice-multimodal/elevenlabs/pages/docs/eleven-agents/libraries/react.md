@@ -558,7 +558,7 @@ return (
 );
 ```
 
----
+***
 
 ## Granular Hooks
 
@@ -675,7 +675,7 @@ function Advanced() {
 }
 ```
 
----
+***
 
 ## useConversationClientTool
 

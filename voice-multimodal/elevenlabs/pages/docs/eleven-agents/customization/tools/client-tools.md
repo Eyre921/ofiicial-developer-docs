@@ -51,7 +51,7 @@ Then create a new parameter `message` with the following configuration:
 | Required    | true                                                                               |
 | Description | The message to log in the console. Ensure the message is informative and relevant. |
 
-![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113221Z&X-Amz-Expires=604800&X-Amz-Signature=f1284c520c52df99fb63f2d437a7e2042508e69fe05526129d32c2ab6575d197&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![logMessage client-tool setup](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f7ed25d49a2a814b76112f3e385d471e0dc8444705e11f2f6fad0bd23f1eae12/assets/images/conversational-ai/client-tool-example.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233248Z&X-Amz-Expires=604800&X-Amz-Signature=b6f04bc389ffcd37c9ecfabef48ec17c6d2d96599f0c7f8a1c3a930dd155ec89&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add via the CLI
 
@@ -230,7 +230,7 @@ Now that you've set up a basic client-side event, you can:
 
 When you want your agent to receive data back from a client tool, ensure that you tick the **Wait for response** option in the tool configuration.
 
-<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T113221Z&X-Amz-Expires=604800&X-Amz-Signature=e966ad681190efc76a90e930f9988895a086dda4dc3859fe108f68f65cf0f793&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Wait for response option in client tool configuration" />
+<img src="https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0ecc615fc9f25446b67369fd3e010e34b39549a22146a2483ea17251206caf1e/assets/images/conversational-ai/wait-until-tool-result.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260805T233248Z&X-Amz-Expires=604800&X-Amz-Signature=c08b0f3ca37f9fb5f60d720097c4cacc558ce00e03653d204b0e25fcd673908e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject" alt="Wait for response option in client tool configuration" />
 
 Once the client tool is added, when the function is called the agent will wait for its response and append the response to the conversation context.
 

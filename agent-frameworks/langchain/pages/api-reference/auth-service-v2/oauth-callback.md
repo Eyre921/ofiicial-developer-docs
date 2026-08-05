@@ -9,6 +9,10 @@ Finalize an OAuth flow.
 
 Claims the auth request, verifies the caller, exchanges the code, and saves the token.
 Used by both the frontend bridge and the headless flow (where a customer-owned service
-forwards the code/state, optionally proxied through smith-go). In all cases the auth
-request is user-initiated and the caller presents the end user's own credentials, so
-the authenticated user must match the user who initiated the flow.
+forwards the code/state, optionally proxied through smith-go).
+
+User-subject sessions require the authenticated caller to match the initiator.
+Agent-subject sessions (MDA Connect) skip that match — start is gated by
+``deployments:create`` / service key, and the FE bridge may present a different
+same-org workspace session to complete consent — then bind via
+``host_oauth_agent_connections``.

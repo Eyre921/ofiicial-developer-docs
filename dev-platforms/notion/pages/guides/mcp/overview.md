@@ -4,28 +4,30 @@ source: https://developers.notion.com/guides/mcp/overview
 path: guides/mcp/overview
 ---
 
-Learn how to connect AI agents to your Notion workspace.
+Learn how MCP clients connect to your Notion workspace.
 
-Connect your AI tools to Notion using the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction), an open standard that lets AI assistants interact with your Notion workspace.
+Notion MCP lets an [MCP client](/guides/mcp/common-mcp-clients), such as Claude Code, Cursor, or Codex, connect to your Notion workspace through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction).
 
-## What is Notion MCP?
+## How Notion MCP works
 
-Notion MCP is our hosted server that gives AI tools secure access to your Notion workspace. It's designed to work seamlessly with popular AI assistants like Claude Code, Cursor, VS Code, ChatGPT, and more.
+Notion MCP is a remote MCP server hosted by Notion. After you authorize a connection with OAuth, the MCP client can use Notion MCP tools to read and update content that you can access.
 
 <Frame>
-  <img />
+  <img alt="Diagram showing an MCP client connecting to Notion's remote MCP server, which uses the Notion API." />
 </Frame>
 
-### Why use Notion MCP?
+## What you can do
 
-* **Easy setup** — Connect through simple OAuth, with one-click installation for supported AI tools
-* **Full workspace access** — AI tools can read and write to your Notion pages just like you can
-* **Optimized for AI** — Built specifically for AI agents with efficient data formatting
+MCP clients can combine Notion MCP tools to:
 
-### What can you do with Notion MCP?
+* Search content in Notion and connected sources.
+* Read, create, and update Notion content.
+* Create pages and databases.
 
-* **Create documentation** — Generate PRDs, tech specs, and architecture docs from your research and project data
-* **Search and find answers** — Let AI search across all your Notion and connected workspace content
-* **Manage tasks** — Generate code snippets from task descriptions and update project status automatically
-* **Build reports** — Create release notes, project updates, and performance reports from multiple sources
-* **Plan campaigns** — Generate comprehensive briefs and track progress across marketing channels
+See [Supported tools](/guides/mcp/mcp-supported-tools) for the current tool list, or [connect an MCP client](/guides/mcp/get-started-with-mcp).
+
+## Admin controls
+
+Workspace owners can manage MCP client access in **Settings** → **Connections**. Organization owners can also use the Admin API to [list](/reference/admin/list-mcp-client-connections) and [revoke](/reference/admin/revoke-mcp-client-connection) members' connections.
+
+See [Admin controls for MCP](https://www.notion.com/help/notion-mcp#admin-controls-for-mcp) in the Notion Help Center for workspace settings and allowlists.

@@ -239,7 +239,7 @@ if __name__ == '__main__':
 
 To learn more about sending Twilio phone call audio to Deepgram for Speech-to-Text (STT) see the following guide.
 
----
+***
 
 What’s Next
 

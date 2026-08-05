@@ -354,7 +354,7 @@ Your Deepgram services are accessible within your cluster via the `deepgram-api-
 
 You may consider configuring additional ingress with an [AWS Application Load Balancer](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html) to access your services. Note that your installation will automatically load balance any received requests within the cluster to distribute load evenly. The load balancer would primarily serve as the ingress endpoint into the cluster.
 
----
+***
 
 What’s Next
 

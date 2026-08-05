@@ -406,19 +406,19 @@ For full control, use the `DeepAgentsServer` class directly:
 
 #### Agent configuration
 
-| Option         | Type                                           | Description                                                                                                          |
-| -------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `name`         | `string`                                       | Unique agent name (required)                                                                                         |
-| `description`  | `string`                                       | Agent description                                                                                                    |
-| `model`        | `string`                                       | LLM model (default: `"claude-sonnet-4-5-20250929"`)                                                                  |
-| `tools`        | `StructuredTool[]`                             | Custom LangChain tools                                                                                               |
-| `systemPrompt` | `string`                                       | Custom system prompt                                                                                                 |
-| `middleware`   | `AgentMiddleware[]`                            | Custom middleware appended to the [default stack](/oss/javascript/deepagents/customization#default-stack-main-agent) |
-| `backend`      | `AnyBackendProtocol`                           | Filesystem backend                                                                                                   |
-| `skills`       | `string[]`                                     | Skill source paths                                                                                                   |
-| `memory`       | `string[]`                                     | Memory source paths (AGENTS.md)                                                                                      |
-| `interruptOn`  | `Record<string, boolean \| InterruptOnConfig>` | Tools requiring user approval (HITL)                                                                                 |
-| `commands`     | `Array<{ name, description, input? }>`         | Custom slash commands                                                                                                |
+| Option         | Type                                           | Description                                                                                                       |
+| -------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `name`         | `string`                                       | Unique agent name (required)                                                                                      |
+| `description`  | `string`                                       | Agent description                                                                                                 |
+| `model`        | `string`                                       | LLM model (default: `"claude-sonnet-4-5-20250929"`)                                                               |
+| `tools`        | `StructuredTool[]`                             | Custom LangChain tools                                                                                            |
+| `systemPrompt` | `string`                                       | Custom system prompt                                                                                              |
+| `middleware`   | `AgentMiddleware[]`                            | Custom middleware appended to the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) |
+| `backend`      | `AnyBackendProtocol`                           | Filesystem backend                                                                                                |
+| `skills`       | `string[]`                                     | Skill source paths                                                                                                |
+| `memory`       | `string[]`                                     | Memory source paths (AGENTS.md)                                                                                   |
+| `interruptOn`  | `Record<string, boolean \| InterruptOnConfig>` | Tools requiring user approval (HITL)                                                                              |
+| `commands`     | `Array<{ name, description, input? }>`         | Custom slash commands                                                                                             |
 
 ## Customization
 

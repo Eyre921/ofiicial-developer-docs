@@ -51,6 +51,10 @@ To receive notifications when a connected account closes its own account, set up
 - **Accounts v1**: Listen for the `account.application.deauthorized` event using a [Connect webhook](https://docs.stripe.com/connect/webhooks.md).
 - **Accounts v2**: Listen for the `v2.core.account.closed` event using an [Account webhook](https://docs.stripe.com/event-destinations.md).
 
+### Reports
+
+The Reports section lets connected accounts view and download financial reports directly in the Express Dashboard. The **Balance summary** tab shows an overview of account balance activity for a selected date range. The **Payout reconciliation** tab shows a breakdown of automatic payouts and the transactions they contain. Connected accounts on a manual payout schedule can only view the **Balance summary** tab.
+
 ### View the task list
 
 The task list shows a connected account’s outstanding tasks, such as confirming an email address. If **Collect eventually due requirements** is enabled, connected accounts also see a task that prompts them to submit any missing eventually due requirements.

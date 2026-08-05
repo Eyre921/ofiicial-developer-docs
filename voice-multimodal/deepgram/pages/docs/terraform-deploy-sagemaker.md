@@ -704,7 +704,7 @@ terraform destroy
 
 This removes the SageMaker Endpoint, Endpoint Configuration, Model, auto-scaling resources (if enabled), and the IAM execution role. You are no longer billed for SageMaker compute after the endpoint is deleted. Your AWS Marketplace subscription remains active.
 
----
+***
 
 ## Related resources
 

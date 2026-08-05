@@ -23,7 +23,7 @@ The Deepgram Voice Agent will:
 * Invoke backend APIs using **function calling**
 * Generate spoken responses streamed back to the caller
 
----
+***
 
 ## Overview
 
@@ -38,7 +38,7 @@ In this architecture:
 
 The Voice Agent API operates over a **bidirectional WebSocket connection**, allowing clients to continuously stream audio and receive responses in real time.
 
----
+***
 
 ## Reference Architecture
 
@@ -82,7 +82,7 @@ Caller
 (optional) transfer back to Amazon Connect queue/agent
 ```
 
----
+***
 
 ### Before You Begin
 

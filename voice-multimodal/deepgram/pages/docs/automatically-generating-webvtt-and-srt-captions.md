@@ -260,4 +260,4 @@ The differences between the non-SDK WebVTT and SRT code include:
 * The millisecond separator is `.` for WebVTT whereas it is `,` for SRT.
 * In the WebVTT file, there is a `-` before the utterance, whereas in the SRT code, there is not.
 
----
+***

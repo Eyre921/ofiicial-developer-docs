@@ -35,7 +35,7 @@ paths:
         audio (IVR prompts, notifications, narration) where the whole text is
         known up front and you don't need incremental playback or interruption.
       tags:
-        - speak > v2 > audio
+        - audio
       parameters:
         - name: callback
           in: query
@@ -446,7 +446,7 @@ components:
 
 ```json
 {
-  "request_id": "a1b2c3d4-e5f6-7890-ab12-cd34ef567890"
+  "request_id": "string"
 }
 ```
 

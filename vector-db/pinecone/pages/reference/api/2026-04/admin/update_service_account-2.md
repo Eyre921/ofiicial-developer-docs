@@ -9,6 +9,62 @@ Update a service account's name; role bindings are managed through the role-bind
 
 
 <RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const serviceAccount = await admin.serviceAccounts.update('YOUR_SERVICE_ACCOUNT_ID', {
+    name: 'ci-prod-renamed',
+  });
+  console.log(serviceAccount);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      name := "ci-prod-renamed"
+      sa, err := adminClient.ServiceAccount.Update(ctx, "YOUR_SERVICE_ACCOUNT_ID", &pinecone.UpdateServiceAccountParams{
+          Name: &name,
+      })
+      if err != nil {
+          log.Fatalf("Failed to update service account: %v", err)
+      }
+      fmt.Printf("Successfully updated service account: %v\n", sa.Name)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  # Change the name on an existing resource, then run `terraform apply`
+  resource "pinecone_service_account" "ci_prod" {
+    name = "ci-prod-renamed"
+  }
+  ```
+
   ```bash curl theme={null}
   PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
   PINECONE_SERVICE_ACCOUNT_ID="YOUR_SERVICE_ACCOUNT_ID"

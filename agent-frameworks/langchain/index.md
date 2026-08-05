@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1520 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1522 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -12,6 +12,7 @@
 - `api-reference/agent-connections-v2/create-connection` — [Create Connection](pages/api-reference/agent-connections-v2/create-connection.md) · [原文](https://docs.langchain.com/api-reference/agent-connections-v2/create-connection)
 - `api-reference/agent-connections-v2/list-connections` — [List Connections](pages/api-reference/agent-connections-v2/list-connections.md) · [原文](https://docs.langchain.com/api-reference/agent-connections-v2/list-connections)
 - `api-reference/agent-connections-v2/remove-connection` — [Remove Connection](pages/api-reference/agent-connections-v2/remove-connection.md) · [原文](https://docs.langchain.com/api-reference/agent-connections-v2/remove-connection)
+- `api-reference/agent-connections-v2/upsert-agent-provider-token` — [Upsert Agent Provider Token](pages/api-reference/agent-connections-v2/upsert-agent-provider-token.md) · [原文](https://docs.langchain.com/api-reference/agent-connections-v2/upsert-agent-provider-token)
 - `api-reference/auth-service-v2/authenticate` — [Authenticate](pages/api-reference/auth-service-v2/authenticate.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/authenticate)
 - `api-reference/auth-service-v2/check-oauth-token-exists` — [Check Oauth Token Exists](pages/api-reference/auth-service-v2/check-oauth-token-exists.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/check-oauth-token-exists)
 - `api-reference/auth-service-v2/check-oauth-tokens-exist-batch` — [Check Oauth Tokens Exist Batch](pages/api-reference/auth-service-v2/check-oauth-tokens-exist-batch.md) · [原文](https://docs.langchain.com/api-reference/auth-service-v2/check-oauth-tokens-exist-batch)
@@ -225,7 +226,7 @@
 - `langsmith/deploy-nuxt` — [Deploy with Nuxt](pages/langsmith/deploy-nuxt.md) · [原文](https://docs.langchain.com/langsmith/deploy-nuxt)
 - `langsmith/deploy-other-frameworks` — [Deploy other frameworks](pages/langsmith/deploy-other-frameworks.md) · [原文](https://docs.langchain.com/langsmith/deploy-other-frameworks)
 - `langsmith/deploy-reference-overview` — [Reference](pages/langsmith/deploy-reference-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-reference-overview)
-- `langsmith/deploy-self-hosted-full-platform` — [Enable LangSmith Deployment, Fleet, Insights, and Chat](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
+- `langsmith/deploy-self-hosted-full-platform` — [Enable LangSmith Deployment, Fleet, Insights, Chat, and Sandboxes](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
 - `langsmith/deploy-standalone-server` — [Self-host standalone servers](pages/langsmith/deploy-standalone-server.md) · [原文](https://docs.langchain.com/langsmith/deploy-standalone-server)
 - `langsmith/deploy-sveltekit` — [Deploy with SvelteKit](pages/langsmith/deploy-sveltekit.md) · [原文](https://docs.langchain.com/langsmith/deploy-sveltekit)
 - `langsmith/deploy-to-cloud` — [Deploy on Cloud](pages/langsmith/deploy-to-cloud.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-cloud)
@@ -1056,6 +1057,7 @@
 - `langsmith/smith-java-sdk` — [LangSmith Java SDK](pages/langsmith/smith-java-sdk.md) · [原文](https://docs.langchain.com/langsmith/smith-java-sdk)
 - `langsmith/smith-js-ts-sdk` — [LangSmith JS/TS SDK](pages/langsmith/smith-js-ts-sdk.md) · [原文](https://docs.langchain.com/langsmith/smith-js-ts-sdk)
 - `langsmith/smith-python-sdk` — [LangSmith Python SDK](pages/langsmith/smith-python-sdk.md) · [原文](https://docs.langchain.com/langsmith/smith-python-sdk)
+- `langsmith/smithdb-sdk-migration` — [Migrate to SmithDB-backed SDK methods](pages/langsmith/smithdb-sdk-migration.md) · [原文](https://docs.langchain.com/langsmith/smithdb-sdk-migration)
 - `langsmith/stateless-runs` — [Stateless runs](pages/langsmith/stateless-runs.md) · [原文](https://docs.langchain.com/langsmith/stateless-runs)
 - `langsmith/status` — [LangSmith status](pages/langsmith/status.md) · [原文](https://docs.langchain.com/langsmith/status)
 - `langsmith/store-auth` — [Isolate store data per user](pages/langsmith/store-auth.md) · [原文](https://docs.langchain.com/langsmith/store-auth)
@@ -1149,7 +1151,7 @@
 - `oss/javascript/common-errors` — [Errors](pages/oss/javascript/common-errors.md) · [原文](https://docs.langchain.com/oss/javascript/common-errors)
 - `oss/javascript/concepts/context` — [Context overview](pages/oss/javascript/concepts/context.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/context)
 - `oss/javascript/concepts/memory` — [Memory overview](pages/oss/javascript/concepts/memory.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/memory)
-- `oss/javascript/concepts/products` — [Frameworks, runtimes, and harnesses](pages/oss/javascript/concepts/products.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/products)
+- `oss/javascript/concepts/products` — [Runtimes, frameworks, and harnesses](pages/oss/javascript/concepts/products.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/products)
 - `oss/javascript/concepts/providers-and-models` — [Providers and models](pages/oss/javascript/concepts/providers-and-models.md) · [原文](https://docs.langchain.com/oss/javascript/concepts/providers-and-models)
 - `oss/javascript/contributing/code` — [Contributing to code](pages/oss/javascript/contributing/code.md) · [原文](https://docs.langchain.com/oss/javascript/contributing/code)
 - `oss/javascript/contributing/comarketing` — [Co-marketing](pages/oss/javascript/contributing/comarketing.md) · [原文](https://docs.langchain.com/oss/javascript/contributing/comarketing)
@@ -1346,7 +1348,7 @@
 - `oss/python/common-errors` — [Errors](pages/oss/python/common-errors.md) · [原文](https://docs.langchain.com/oss/python/common-errors)
 - `oss/python/concepts/context` — [Context overview](pages/oss/python/concepts/context.md) · [原文](https://docs.langchain.com/oss/python/concepts/context)
 - `oss/python/concepts/memory` — [Memory overview](pages/oss/python/concepts/memory.md) · [原文](https://docs.langchain.com/oss/python/concepts/memory)
-- `oss/python/concepts/products` — [Frameworks, runtimes, and harnesses](pages/oss/python/concepts/products.md) · [原文](https://docs.langchain.com/oss/python/concepts/products)
+- `oss/python/concepts/products` — [Runtimes, frameworks, and harnesses](pages/oss/python/concepts/products.md) · [原文](https://docs.langchain.com/oss/python/concepts/products)
 - `oss/python/concepts/providers-and-models` — [Providers and models](pages/oss/python/concepts/providers-and-models.md) · [原文](https://docs.langchain.com/oss/python/concepts/providers-and-models)
 - `oss/python/contributing/code` — [Contributing to code](pages/oss/python/contributing/code.md) · [原文](https://docs.langchain.com/oss/python/contributing/code)
 - `oss/python/contributing/comarketing` — [Co-marketing](pages/oss/python/contributing/comarketing.md) · [原文](https://docs.langchain.com/oss/python/contributing/comarketing)

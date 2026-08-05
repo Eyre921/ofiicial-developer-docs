@@ -291,4 +291,4 @@ By adopting object-oriented programming (OOP), the pseudo-code above provides a 
 
 As you implement and refine your SDK, remember that the essence of good software design lies in solving the problem at hand and crafting a solution that's maintainable, extensible, and easy to use.
 
----
+***

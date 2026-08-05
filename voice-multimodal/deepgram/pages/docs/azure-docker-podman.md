@@ -84,7 +84,7 @@ To complete the rest of the installation, including configuring your environment
 1. In the VM resource overview, select "Connect" in the top-level menu.
 2. Select one of the available connection options, and follow the listed instructions to connect to your VM.
 
----
+***
 
 What’s Next
 

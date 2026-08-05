@@ -456,4 +456,4 @@ Deepgram's features help you to customize your request to produce the output tha
 
 * Watch this [video](https://www.youtube.com/watch?v=J2sbC8X5Pp8) to learn how you can use Deepgram Aura with [Groq](https://groq.com/) to build a blazing fast Conversational AI application.
 
----
+***

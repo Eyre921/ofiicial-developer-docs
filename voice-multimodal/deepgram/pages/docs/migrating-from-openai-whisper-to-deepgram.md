@@ -593,4 +593,4 @@ OpenAI provides:
 
 * Whisper-1 (*Whisper v2-large*)
 
----
+***

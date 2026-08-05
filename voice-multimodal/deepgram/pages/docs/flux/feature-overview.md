@@ -76,4 +76,4 @@ Flux is now available for self-hosted deployments!
 
 For setup instructions, see [Using the Flux Model](/docs/flux-self-hosted). For more information about Deepgram's self-hosted solution, visit our [Self-Hosted Introduction](/docs/self-hosted-introduction).
 
----
+***

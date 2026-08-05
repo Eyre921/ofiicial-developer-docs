@@ -36,10 +36,7 @@ langsmith --format pretty sandbox list
 Create a sandbox, then run commands inside it:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith sandbox create my-vm \
-  --vcpus 2 \
-  --memory 1gb \
-  --wait
+langsmith sandbox create my-vm --wait
 
 langsmith sandbox exec my-vm -- python --version
 ```
@@ -93,8 +90,6 @@ Create a sandbox with the default runtime. Add `--snapshot-id` only when you wan
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith sandbox create my-vm \
-  --vcpus 4 \
-  --memory 1gb \
   --rootfs-capacity 8gb \
   --wait
 ```
@@ -117,7 +112,7 @@ langsmith sandbox start my-vm --wait
 Update resources or proxy configuration:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith sandbox update my-vm --vcpus 8 --memory 2gb
+langsmith sandbox update my-vm --rootfs-capacity 16gb
 langsmith sandbox update my-vm --proxy-config @proxy.json
 ```
 

@@ -6,7 +6,7 @@ path: climate/orders/order-carbon-removal
 
 # Order carbon removal
 
-Pre-order carbon removal tons from Frontier's offtake portfolio.
+Order carbon removal from Frontier's offtake portfolio.
 
 ## Index
 

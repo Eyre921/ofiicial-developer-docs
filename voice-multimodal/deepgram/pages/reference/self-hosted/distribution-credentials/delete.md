@@ -30,7 +30,7 @@ paths:
       summary: Delete a Project Self-Hosted Distribution Credential
       description: Deletes a set of distribution credentials for the specified project
       tags:
-        - selfHosted > v1 > distributionCredentials
+        - distributionCredentials
       parameters:
         - name: project_id
           in: path

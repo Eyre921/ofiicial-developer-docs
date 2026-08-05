@@ -10,7 +10,7 @@ path: docs/scaling-and-deployment-strategies
 
 # Scaling and Deployment Strategies
 
----
+***
 
 What's Next
 

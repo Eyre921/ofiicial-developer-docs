@@ -6,7 +6,7 @@ path: oss/javascript/deepagents/human-in-the-loop
 
 Learn how to configure human approval for sensitive tool operations
 
-Some tool operations may be sensitive and require human approval before execution. Deep Agents support human-in-the-loop workflows through LangGraph's interrupt capabilities. You can configure which tools require approval using the `interrupt_on` parameter. When `interrupt_on` is set, `HumanInTheLoopMiddleware` is added to the [default middleware stack](/oss/javascript/deepagents/customization#default-stack-main-agent). If a run is cancelled or interrupted before a tool returns a result, [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) in the same stack repairs the message history automatically.
+Some tool operations may be sensitive and require human approval before execution. Deep Agents support human-in-the-loop workflows through LangGraph's interrupt capabilities. You can configure which tools require approval using the `interrupt_on` parameter. When `interrupt_on` is set, `HumanInTheLoopMiddleware` is added to the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack). If a run is cancelled or interrupted before a tool returns a result, [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) in the same stack repairs the message history automatically.
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR

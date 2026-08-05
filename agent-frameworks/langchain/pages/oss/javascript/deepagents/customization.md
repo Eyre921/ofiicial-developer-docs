@@ -8,7 +8,7 @@ Learn how to customize Deep Agents with system prompts, tools, subagents, and mo
 
 Build the harness around your goal. `create_deep_agent` gives you a production-ready foundation: connect it to your data, shape its behavior, and add the capabilities your use case needs.
 
-`createDeepAgent` ships with a pre-assembled harness: filesystem, summarization, subagents, and prompt caching by default. The parameters below let you define the agent's persona, connect it to your data and tools, and extend the [default middleware stack](#default-stack-main-agent) with additional middleware.
+`createDeepAgent` ships with a pre-assembled harness: filesystem, summarization, subagents, and prompt caching by default. The parameters below let you define the agent's persona, connect it to your data and tools, and extend the [Deep Agents stack](#deep-agents-stack) with additional middleware.
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -96,20 +96,20 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
   ```
 </CodeGroup>
 
-| Parameter                                                                         | What it does                                                                |
-| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `model`                                                                           | Which model to use                                                          |
-| `systemPrompt`                                                                    | Custom instructions for the agent                                           |
-| `tools`                                                                           | Domain tools the agent can call                                             |
-| `memory`                                                                          | AGENTS.md files loaded at startup                                           |
-| `skills`                                                                          | Skills directory for on-demand knowledge                                    |
-| `backend`                                                                         | Filesystem backend (StateBackend by default)                                |
-| `permissions`                                                                     | Path-level access control for the filesystem                                |
-| `subagents`                                                                       | Custom subagents for delegated tasks                                        |
-| `middleware`                                                                      | Extra middleware appended to the [default stack](#default-stack-main-agent) |
-| `interruptOn`                                                                     | Pause before tool calls for human approval                                  |
-| `responseFormat`                                                                  | Structured output schema                                                    |
-| [`contextSchema`](/oss/javascript/deepagents/context-engineering#runtime-context) | Per-run runtime context schema (user IDs, API keys, feature flags)          |
+| Parameter                                                                         | What it does                                                             |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `model`                                                                           | Which model to use                                                       |
+| `systemPrompt`                                                                    | Custom instructions for the agent                                        |
+| `tools`                                                                           | Domain tools the agent can call                                          |
+| `memory`                                                                          | AGENTS.md files loaded at startup                                        |
+| `skills`                                                                          | Skills directory for on-demand knowledge                                 |
+| `backend`                                                                         | Filesystem backend (StateBackend by default)                             |
+| `permissions`                                                                     | Path-level access control for the filesystem                             |
+| `subagents`                                                                       | Custom subagents for delegated tasks                                     |
+| `middleware`                                                                      | Extra middleware appended to the [Deep Agents stack](#deep-agents-stack) |
+| `interruptOn`                                                                     | Pause before tool calls for human approval                               |
+| `responseFormat`                                                                  | Structured output schema                                                 |
+| [`contextSchema`](/oss/javascript/deepagents/context-engineering#runtime-context) | Per-run runtime context schema (user IDs, API keys, feature flags)       |
 
 For the full parameter list, see the [`createDeepAgent`](https://reference.langchain.com/javascript/deepagents/types/CreateDeepAgentParams) API reference. To compose a fully custom harness from scratch, see [Configure the harness](/oss/javascript/langchain/agents#configure-the-harness).
 
@@ -1121,11 +1121,24 @@ Pass `system_prompt=` to give the agent your own instructions:
 
 Deep Agents support any [middleware](/oss/javascript/langchain/middleware/overview), including the built-in middleware listed below, prebuilt middleware from LangChain, provider-specific middleware, and custom middleware you write yourself.
 
-Pass middleware to the `middleware` argument of `createDeepAgent`. Custom middleware is appended after [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) in the [default stack](#default-stack-main-agent).
+Pass middleware to the `middleware` argument of `createDeepAgent`. Custom middleware is appended after [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware) in the [Deep Agents stack](#deep-agents-stack).
 
-By default, Deep Agents have access to the following middleware:
+### Deep Agents stack
 
-### Default stack (main agent)
+`createDeepAgent` builds middleware in a fixed order. The [bare stack](#bare-stack) is what you get with only a model. The [full stack](#full-stack) is the complete assembly order, including slots that appear only when you pass optional arguments or when the resolved [harness profile](/oss/javascript/deepagents/profiles) contributes them.
+
+#### Bare stack
+
+With only a `model` (no other optional arguments), the main agent typically includes:
+
+1. [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)
+2. [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware) (because the [general-purpose subagent](/oss/javascript/deepagents/subagents#default-subagent) is auto-added unless a harness profile disables it)
+3. [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)
+4. [`PatchToolCallsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)
+5. **Prompt caching** middleware (added for supported providers; no-ops elsewhere)
+6. **Harness profile extras** and **excluded-tool filtering**, if the resolved model profile defines them
+
+#### Full stack
 
 From first to last:
 
@@ -1133,7 +1146,7 @@ From first to last:
 
 2. [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware): Handles file system operations such as reading, writing, and navigating directories. When you pass `permissions`, filesystem permissions enforcement is included here so it can evaluate every tool the agent might call.
 
-3. [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware): Spawns and coordinates subagents for delegating tasks to specialized agents.
+3. [`SubAgentMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware): Only when at least one synchronous subagent is available. Spawns and coordinates subagents for delegating tasks. Included in the [bare stack](#bare-stack) because the general-purpose subagent is auto-added by default; omit it by disabling that subagent and passing no synchronous `subagents`. See [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents).
 
 4. [`SummarizationMiddleware`](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware): Condenses message history to stay within context limits when conversations grow long (via [createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)).
 
@@ -1157,7 +1170,7 @@ From first to last:
 
 12. `HumanInTheLoopMiddleware`: Only when you pass `interruptOn`. Pauses for human approval or input at configured tool calls.
 
-### Default stack (synchronous subagents)
+### Synchronous subagent stack
 
 The built-in **general-purpose** subagent and each declarative synchronous `SubAgent` graph use a stack that `createDeepAgent` builds in code. It matches the main agent in broad shape (filesystem, summarization, Patch, profile extras, Anthropic and Bedrock caching, optional permissions) but differs in two ways:
 

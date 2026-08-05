@@ -4,50 +4,67 @@ source: https://docs.langchain.com/langsmith/observability-concepts
 path: langsmith/observability-concepts
 ---
 
-LangSmith Observability lets you record, inspect, and analyze every step your LLM application takes. This page explains how data is structured in LangSmith and how to send traces.
+How LangSmith structures observability data as runs, traces, threads, and trajectories, and how to send traces.
 
-## How LangSmith structures data
+LangSmith Observability lets you record, inspect, and analyze every step your AI agent takes. This page explains how that data is structured and visualized in LangSmith as well as how to start sending traces.
 
-LangSmith groups multiple [*traces*](#traces) within a [*project*](#projects). Each trace records the sequence of steps your application takes for a single operation, which are made up of individual [*runs*](#runs). You can link together traces from multi-turn conversations as a [*thread*](#threads).
+## How LangSmith structures and visualizes data
 
-```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-graph TB
-    Project -->|contains| Trace1[Trace]
-    Project -->|contains| Trace2[Trace]
-    Trace1 -->|contains| Run1[Run]
-    Trace1 -->|contains| Run2[Run]
-    Trace1 -->|contains| Run3[Run]
-    Trace1 -->|part of| Thread
-    Trace2 -->|part of| Thread
-```
+In LangSmith, every unit of work an agent performs, such as a model call, tool invocation, or information retrieval, is recorded as a [*run*](#runs). The runs for a single operation are collected into a [*trace*](#traces). You can link together traces from multi-turn sessions as a [*thread*](#threads).
+
+A [*trajectory*](#trajectories) is another way to structure and visualize that data. While a thread groups the traces of a session and keeps their nested structure, a trajectory flattens the entire session into an ordered list of messages that shows the path an agent took from start to finish.
+
+<img alt="A thread groups a session's traces and keeps their nesting, while a trajectory flattens the same session into an ordered list of messages" />
+
+<img alt="A thread groups a session's traces and keeps their nesting, while a trajectory flattens the same session into an ordered list of messages" />
+
+### Runs
+
+A *run* represents a single unit of work executed by an agent, such as calling an LLM, formatting a prompt, or retrieving documents. If you are familiar with [OpenTelemetry](https://opentelemetry.io/), you can think of a run as a span.
+
+### Traces
+
+A *trace* is a collection of runs for a single operation. For example, if a user request triggers an agent that calls a model, runs a tool, and then calls the model again, all of those runs belong to the same trace. Runs are bound to a trace by a unique trace ID.
+
+<Note>
+  Each trace is limited to a maximum of 25,000 runs. Once the trace reaches this limit, LangSmith will reject any additional runs that you send for that trace.
+</Note>
+
+### Threads
+
+A *thread* is a sequence of traces representing a single multi-turn session. A turn is one exchange in that session: a user's message and everything the agent does in response. Each turn is recorded as its own trace. To group traces into a thread, pass a `thread_id` metadata key with a unique value.
+
+[Learn how to configure threads](/langsmith/threads).
+
+### Trajectories
+
+A *trajectory* is a flat, ordered list of messages that shows the path an agent took from start to finish.
+
+In LangSmith, a trajectory is a projection over the traces in a thread. It contains the human, AI, and tool messages exchanged during the session, each appearing once, in the order it first appeared, with the nesting of runs removed.
+
+<Note>
+  The [Messages view](/langsmith/view-traces#messages-view), which renders trajectories in the LangSmith UI, is in **[beta](/langsmith/release-stages)**.
+</Note>
+
+[Learn how trajectories render in the Messages view](/langsmith/messages-view-integrations).
+
+### Compare traces, threads, and trajectories
+
+|                   | Trace                                                  | Thread                                                                                | Trajectory                                                                      |
+| ----------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Shape             | Tree of runs                                           | Sequence of traces                                                                    | Flat, ordered list of messages                                                  |
+| Contains          | Every run, with full inputs and outputs                | Every run in every linked trace                                                       | Every message in every linked trace, deduplicated                               |
+| Reach for it when | You are debugging why one operation failed or ran slow | You are inspecting how the agent behaved across turns, with timing and nesting intact | You are reading what was exchanged in the session, without the execution detail |
+
+<Callout type="info" icon="feather">
+  Use **[Chat](/langsmith/chat)** to analyze traces, runs, and threads. Chat helps you understand agent performance, debug issues, and gain insights from conversation threads without manually digging through data.
+</Callout>
 
 ### Projects
 
 A *project* is a container for all the traces related to a single application or service.
 
 [Log traces to a project](/langsmith/log-traces-to-project).
-
-### Traces
-
-A *trace* is a collection of runs for a single operation. For example, if a user request triggers a chain that calls an LLM and then an output parser, all of those runs belong to the same trace. Runs are bound to a trace by a unique trace ID. If you are familiar with [OpenTelemetry](https://opentelemetry.io/), you can think of a LangSmith trace as a collection of spans.
-
-<Note>
-  Each trace is limited to a maximum of 25,000 runs. Once the trace reaches this limit, LangSmith will reject any additional runs that you send for that trace.
-</Note>
-
-### Runs
-
-A *run* is a span representing a single unit of work within your LLM application: a call to an LLM, a prompt formatting step, a retrieval call, or any other discrete operation. If you are familiar with [OpenTelemetry](https://opentelemetry.io/), you can think of a run as a span.
-
-### Threads
-
-A *thread* is a sequence of traces representing a single conversation. Each turn in a multi-turn conversation is its own trace, but traces are linked by a shared identifier. To group traces into threads, pass a special metadata key (`session_id` or `thread_id`) with a unique value.
-
-[Learn how to configure threads](/langsmith/threads).
-
-<Callout type="info" icon="feather">
-  Use **[Chat](/langsmith/chat)** to analyze traces, runs, and threads. Chat helps you understand agent performance, debug issues, and gain insights from conversation threads without manually digging through data.
-</Callout>
 
 ## Trace enrichment
 
@@ -91,7 +108,7 @@ LangSmith *integrations* provide automatic tracing for popular LLM providers and
 
 ## Data retention
 
-LangSmith (SaaS) retains trace data for 400 days from ingestion. After that, traces are permanently deleted, with limited metadata retained for usage statistics. For details on retention tiers and pricing, refer to [Usage and billing: Data retention](/langsmith/usage-and-billing#data-retention).
+LangSmith (SaaS) retains trace data for 180 days from ingestion. After that, traces are permanently deleted, with limited metadata retained for usage statistics. For details on retention tiers and pricing, refer to [Usage and billing: Data retention](/langsmith/usage-and-billing#data-retention).
 
 <Note>
   To keep data beyond the retention period, add it to a [dataset](/langsmith/manage-datasets). Datasets persist indefinitely, even after the source trace is deleted.

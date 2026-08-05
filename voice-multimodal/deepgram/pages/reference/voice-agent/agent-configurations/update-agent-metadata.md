@@ -34,7 +34,7 @@ paths:
         itself is immutable—to change the configuration, delete the existing
         agent and create a new one.
       tags:
-        - voiceAgent > configurations
+        - configurations
       parameters:
         - name: project_id
           in: path
@@ -191,7 +191,7 @@ components:
 
 ```json
 {
-  "agent_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "agent_id": "string",
   "config": {},
   "metadata": {},
   "created_at": "2024-01-15T09:30:00Z",

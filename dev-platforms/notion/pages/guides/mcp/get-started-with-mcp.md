@@ -1,12 +1,12 @@
 ---
-title: "Connecting to Notion MCP"
+title: "Connect to Notion MCP"
 source: https://developers.notion.com/guides/mcp/get-started-with-mcp
 path: guides/mcp/get-started-with-mcp
 ---
 
-Learn how to connect your AI tool to Notion using MCP.
+Connect an MCP client to your Notion workspace.
 
-This guide walks you through connecting your AI tool to Notion using the Model Context Protocol (MCP). Once connected, your tool can read and write to your Notion workspace based on your access and permissions.
+Follow the instructions for your MCP client. After you authorize the connection, the client can read and update content that you can access in the selected Notion workspace.
 
 ## Claude Code
 
@@ -27,7 +27,7 @@ Then authenticate by running `/mcp` in Claude Code and following the OAuth flow.
 Use the `/mcp` command to list and manage the MCP servers you have installed, and use the `/context` command to understand the context token usage of your current session, including the number of tokens used by each MCP server that's enabled.
 
 <Tip>
-  For a richer experience, install the [Notion plugin for Claude Code](https://github.com/makenotion/claude-code-notion-plugin). It bundles the MCP server along with pre-built Skills and slash commands for common Notion workflows.
+  Install the [Notion plugin for Claude Code](https://github.com/makenotion/claude-code-notion-plugin) to add the MCP server, Skills, and slash commands for common Notion workflows.
 </Tip>
 
 ## Cursor
@@ -109,7 +109,7 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   </Step>
 
   <Step>
-    Click **Add Connector** and enter the URL:
+    Select **Add Connector** and enter the URL:
 
     ```
     https://mcp.notion.com/mcp
@@ -133,7 +133,7 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   </Step>
 
   <Step>
-    Click **View raw config** to open `mcp_config.json`
+    Select **View raw config** to open `mcp_config.json`
   </Step>
 
   <Step>
@@ -163,7 +163,7 @@ Use the `/mcp` command to list and manage the MCP servers you have installed, an
   </Step>
 
   <Step>
-    Click **Add Connector** and enter the URL:
+    Select **Add Connector** and enter the URL:
 
     ```
     https://mcp.notion.com/mcp
@@ -228,18 +228,18 @@ We recommend connecting to Notion MCP as a custom server rather than using the p
   </Step>
 </Steps>
 
-## Other tools
+## Other MCP clients
 
-If your AI tool isn't listed above but supports MCP, you can connect using one of these URLs:
+If your MCP client isn't listed above, use one of these URLs:
 
-| Transport                         | URL                          | Notes                              |
-| :-------------------------------- | :--------------------------- | :--------------------------------- |
-| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Modern transport, widely supported |
-| **SSE** (Server-Sent Events)      | `https://mcp.notion.com/sse` | Legacy transport for older clients |
+| Transport                         | URL                          | Notes                                          |
+| :-------------------------------- | :--------------------------- | :--------------------------------------------- |
+| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Recommended for new clients                    |
+| **SSE** (Server-Sent Events)      | `https://mcp.notion.com/sse` | For clients that don't support Streamable HTTP |
 
 ### JSON configuration format
 
-Most MCP clients accept a JSON configuration. Use the appropriate format for your tool:
+Most MCP clients accept a JSON configuration. Use the format supported by your client:
 
 <CodeGroup>
   ```json Streamable HTTP theme={null}
@@ -275,11 +275,11 @@ Most MCP clients accept a JSON configuration. Use the appropriate format for you
   ```
 </CodeGroup>
 
-Use the STDIO configuration if your tool doesn't support remote HTTP connections directly.
+Use the STDIO configuration if your client doesn't support remote HTTP connections.
 
 ## Connect through the Notion app
 
-As an alternative to configuring your AI tool directly, you can initiate the connection from within Notion:
+You can also start the connection from Notion:
 
 <Steps>
   <Step>
@@ -291,14 +291,14 @@ As an alternative to configuring your AI tool directly, you can initiate the con
   </Step>
 
   <Step>
-    Choose your AI tool from the list and complete the OAuth flow
+    Choose your MCP client from the list and complete the OAuth flow
   </Step>
 </Steps>
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="My tool doesn't support remote MCP servers">
+  <Accordion title="My MCP client doesn't support remote MCP servers">
     Some MCP clients only support local stdio servers. You can still connect to Notion MCP using the [mcp-remote](https://www.npmjs.com/package/mcp-remote) bridge:
 
     ```json theme={null}
@@ -316,25 +316,31 @@ As an alternative to configuring your AI tool directly, you can initiate the con
   </Accordion>
 
   <Accordion title="Authentication issues">
-    * Make sure you complete the OAuth flow when prompted
-    * Try disconnecting and reconnecting: look for a "Clear authentication" or "Disconnect" option in your tool's MCP settings
-    * Check that you have the correct permissions in the Notion workspace you're trying to access
+    * Complete the OAuth flow when prompted.
+    * Disconnect and reconnect the client. Look for **Clear authentication** or **Disconnect** in its MCP settings.
+    * Check your permissions in the Notion workspace that you're trying to access.
   </Accordion>
 
-  <Accordion title="My tool isn't listed here">
-    Check your tool's documentation for how to add a remote MCP server. Most tools accept either a URL directly or a JSON configuration. If your tool doesn't support MCP yet, consider reaching out to the developers to request MCP support.
+  <Accordion title="My MCP client isn't listed here">
+    Check the client's documentation for how to add a remote MCP server. Most MCP clients accept a URL or JSON configuration. If the client doesn't support MCP, contact its developer.
   </Accordion>
 </AccordionGroup>
 
 ## FAQ
 
 <AccordionGroup>
-  <Accordion title="Can I use Notion MCP without a human in the loop?">
-    Notion MCP requires user-based OAuth authentication and does not support bearer token authentication. This means a user must complete the OAuth flow to authorize access, which may not be suitable for fully automated workflows or cloud-based coding agents that run without human interaction.
+  <Accordion title="Can I use Notion MCP without interactive authorization?">
+    Yes. Notion MCP accepts a [personal access token (PAT)](/guides/get-started/personal-access-tokens) from MCP clients that can send custom HTTP headers. Connect to `https://mcp.notion.com/mcp` and send the PAT in the authorization header:
 
-    If you need headless or fully automated access, you can use the [open-source MCP server](https://github.com/makenotion/notion-mcp-server) with a Notion API token, though this package is no longer actively maintained. Notion may explore supporting token-based authentication for remote MCP in the future.
+    ```http theme={null}
+    Authorization: Bearer {PERSONAL_ACCESS_TOKEN}
+    ```
 
-    For [security reasons](/guides/mcp/mcp-security-best-practices), we recommend carefully reviewing actions performed by any MCP server before they're executed.
+    The PAT must have the **Notion API** capability. It uses the permissions of the person who created it, so store it in an environment variable or secret manager and don't put it in shared client configuration.
+
+    Not every MCP client supports custom HTTP headers. PAT-authenticated requests also don't appear in [List MCP client connections](/reference/admin/list-mcp-client-connections). Organization owners can manage these credentials with [List personal access tokens](/reference/admin/list-personal-access-tokens) and [Revoke a personal access token](/reference/admin/revoke-personal-access-token).
+
+    Review [security best practices](/guides/mcp/mcp-security-best-practices) before allowing an MCP client to take actions without confirmation.
   </Accordion>
 
   <Accordion title="Does Notion MCP support file uploads?">
@@ -342,7 +348,7 @@ As an alternative to configuring your AI tool directly, you can initiate the con
   </Accordion>
 
   <Accordion title="What's the difference between Notion MCP and the open-source server?">
-    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It uses OAuth for authentication, requires no infrastructure setup, and includes tools optimized for AI agents.
+    **Notion MCP** (`https://mcp.notion.com/mcp`) is our hosted, actively maintained server. It supports OAuth and PAT bearer authentication and requires no infrastructure setup.
 
     The **open-source server** ([`notion-mcp-server`](https://github.com/makenotion/notion-mcp-server)) is no longer actively maintained. It supports bearer token authentication and the original JSON-based v1 APIs, which may be useful for automated workflows, but requires you to manage your own connection and deployment.
 
@@ -350,14 +356,12 @@ As an alternative to configuring your AI tool directly, you can initiate the con
   </Accordion>
 
   <Accordion title="I'm building my own MCP client">
-    If you're integrating Notion MCP into your own application or building a
-    custom AI tool, see our
-    [MCP client connection guide](/guides/mcp/build-mcp-client) for
-    step-by-step instructions on implementing OAuth and connecting to
-    Notion MCP.
+    If you're integrating Notion MCP into your own application, see
+    [Build an MCP client for Notion](/guides/mcp/build-mcp-client) for OAuth
+    and connection requirements.
   </Accordion>
 </AccordionGroup>
 
-**What's Next**
+## Next steps
 
-Learn what you can do with Notion MCP using the tools we provide:
+See the [Notion MCP tools](/guides/mcp/mcp-supported-tools) that a connected client can use.

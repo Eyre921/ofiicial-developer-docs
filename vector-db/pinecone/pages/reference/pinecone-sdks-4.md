@@ -29,14 +29,14 @@ The mappings between API versions and SDK versions are as follows:
 |                                               | `2026-04`   | `2025-10` | `2025-04` | `2025-01` | `2024-10` | `2024-07`     | `2024-04` |
 | --------------------------------------------- | :---------- | :-------- | :-------- | :-------- | :-------- | :------------ | :-------- |
 | [Python SDK](/reference/sdks/python/overview) | v9.x        | v8.x      | v7.x      | v6.x      | v5.3.x    | v5.0.x-v5.2.x | v4.x      |
-| [Node.js SDK](/reference/sdks/node/overview)  | Coming soon | v7.x      | v6.x      | v5.x      | v4.x      | v3.x          | v2.x      |
+| [Node.js SDK](/reference/sdks/node/overview)  | v8.x        | v7.x      | v6.x      | v5.x      | v4.x      | v3.x          | v2.x      |
 | [Java SDK](/reference/sdks/java/overview)     | Coming soon | v6.x      | v5.x      | v4.x      | v3.x      | v2.x          | v1.x      |
-| [Go SDK](/reference/sdks/go/overview)         | Coming soon | v5.x      | v4.x      | v3.x      | v2.x      | v1.x          | v0.x      |
+| [Go SDK](/reference/sdks/go/overview)         | v6.x        | v5.x      | v4.x      | v3.x      | v2.x      | v1.x          | v0.x      |
 
 When a new stable API version is released, you should upgrade your SDK to the latest version to ensure compatibility with the latest API changes.
 
 <Note>
-  The Python SDK is the first to support API version `2026-04`. SDKs for the other languages targeting `2026-04` will be available soon.
+  The Java SDK targeting API version `2026-04` will be available soon.
 </Note>
 
 ## Limitations

@@ -52,4 +52,4 @@ Flux TTS is served on `/v2/speak` over two transports against the same voices. T
 * [Batch (REST) Getting Started](/docs/flux-tts/batch)
 * [Build a Flux TTS Voice Agent](/docs/flux-tts/voice-agent)
 
----
+***

@@ -30,7 +30,7 @@ paths:
       summary: Delete a Project Member
       description: Removes a member from the project using their unique member ID
       tags:
-        - manage > v1 > projects > members
+        - members
       parameters:
         - name: project_id
           in: path
@@ -130,17 +130,11 @@ components:
 
 
 
-**Request**
-
-```json
-{}
-```
-
 **Response**
 
 ```json
 {
-  "message": "Member with ID 123456789012345678901234 has been successfully removed from project 123456-7890-1234-5678-901234."
+  "message": "string"
 }
 ```
 
@@ -151,24 +145,16 @@ import requests
 
 url = "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234"
 
-payload = {}
-headers = {
-    "Authorization": "Token <apiKey>",
-    "Content-Type": "application/json"
-}
+headers = {"Authorization": "Token <apiKey>"}
 
-response = requests.delete(url, json=payload, headers=headers)
+response = requests.delete(url, headers=headers)
 
 print(response.json())
 ```
 
 ```javascript
 const url = 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234';
-const options = {
-  method: 'DELETE',
-  headers: {Authorization: 'Token <apiKey>', 'Content-Type': 'application/json'},
-  body: '{}'
-};
+const options = {method: 'DELETE', headers: {Authorization: 'Token <apiKey>'}};
 
 try {
   const response = await fetch(url, options);
@@ -184,7 +170,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"io"
 )
@@ -193,12 +178,9 @@ func main() {
 
 	url := "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234"
 
-	payload := strings.NewReader("{}")
-
-	req, _ := http.NewRequest("DELETE", url, payload)
+	req, _ := http.NewRequest("DELETE", url, nil)
 
 	req.Header.Add("Authorization", "Token <apiKey>")
-	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -222,8 +204,6 @@ http.use_ssl = true
 
 request = Net::HTTP::Delete.new(url)
 request["Authorization"] = 'Token <apiKey>'
-request["Content-Type"] = 'application/json'
-request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -235,8 +215,6 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.delete("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234")
   .header("Authorization", "Token <apiKey>")
-  .header("Content-Type", "application/json")
-  .body("{}")
   .asString();
 ```
 
@@ -247,10 +225,8 @@ require_once('vendor/autoload.php');
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('DELETE', 'https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234', [
-  'body' => '{}',
   'headers' => [
     'Authorization' => 'Token <apiKey>',
-    'Content-Type' => 'application/json',
   ],
 ]);
 
@@ -263,28 +239,19 @@ using RestSharp;
 var client = new RestClient("https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234");
 var request = new RestRequest(Method.DELETE);
 request.AddHeader("Authorization", "Token <apiKey>");
-request.AddHeader("Content-Type", "application/json");
-request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "Authorization": "Token <apiKey>",
-  "Content-Type": "application/json"
-]
-let parameters = [] as [String : Any]
-
-let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+let headers = ["Authorization": "Token <apiKey>"]
 
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.deepgram.com/v1/projects/123456-7890-1234-5678-901234/members/123456789012345678901234")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "DELETE"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

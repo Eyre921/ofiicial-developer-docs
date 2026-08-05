@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="August 3, 2026">
+  ### Notion MCP supports MCP protocol version 2026-07-28
+
+  The Notion MCP Streamable HTTP endpoint at [`https://mcp.notion.com/mcp`](https://mcp.notion.com/mcp) now supports [MCP protocol version 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28). Existing MCP clients that negotiate the earlier 2025-era protocol on the same endpoint continue to work unchanged, so no client updates are required.
+</Update>
+
 <Update label="July 27, 2026">
   ### Clearer per-tool access status
 

@@ -4,30 +4,31 @@ source: https://developers.notion.com/reference/admin/scopes
 path: reference/admin/scopes
 ---
 
-Learn about customizing the capabilities for an organization bot token.
+Admin API scopes control an organization bot token's access.
 
-When organization bot tokens are created, they are assigned some collection of unique scopes. These scopes determine which resources in your organization the bot token can access and how it can access them.
+When you create an organization bot token, you assign scopes that control which resources the token can access and which actions it can take.
 
-Scopes are structured by combining a `resource` and a `capability` (for example, `legal-hold:read`).
+Each scope combines a resource and a capability, such as `legal-hold:read`.
 
-### List of Admin API scope resources
+## Scope resources
 
-| Scope resource          | Description                                                         |
-| :---------------------- | :------------------------------------------------------------------ |
-| `legal-hold`            | Ability to manage legal hold data and members                       |
-| `managed-user-session`  | Ability to control managed users' active sessions                   |
-| `mcp-client-connection` | Ability to view and govern members' MCP client connections          |
-| `workspace`             | Ability to manage your organization's workspaces' data and settings |
+| Scope resource          | Controls access to                                      |
+| :---------------------- | :------------------------------------------------------ |
+| `legal-hold`            | Legal hold data and members                             |
+| `managed-user-session`  | Managed users' active sessions                          |
+| `mcp-client-connection` | Members' MCP client connections                         |
+| `personal-access-token` | Personal access tokens in the organization's workspaces |
+| `workspace`             | Workspace data and settings                             |
 
 <Warning>
-  These scope resources may not be exhaustive. Please consult the API reference you wish to use to see the most accurate scope required to manage the resource you want.
+  This table may not include every scope. Each endpoint's reference lists the exact scope it requires.
 </Warning>
 
-### List of Admin API scope capabilities
+## Scope capabilities
 
-| Scope capability    | Description                                                                                 |
-| :------------------ | :------------------------------------------------------------------------------------------ |
-| `read`              | Ability to view a resource                                                                  |
-| `write`             | Ability to modify a resource                                                                |
-| `write-high-impact` | Ability to make sensitive changes, including revoking credentials or changing member access |
-| `export`            | Ability to export a resource                                                                |
+| Scope capability    | Allows the token to                                            |
+| :------------------ | :------------------------------------------------------------- |
+| `read`              | View a resource                                                |
+| `write`             | Modify a resource                                              |
+| `write-high-impact` | Make sensitive changes, such as revoking credentials or access |
+| `export`            | Export a resource                                              |

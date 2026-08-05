@@ -25,7 +25,7 @@ For your convenience, we have provided a script that will mirror the images for 
 To use the script, you will need to run the script with the following command specifying your registry and platform:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bash mirror_images.sh <your-registry> [<platform>]
+bash mirror_langsmith_images.sh <your-registry> [<platform>]
 ```
 
 Where `<your-registry>` is the URL of your Docker registry (e.g. `myregistry.com`) and `<platform>` is the platform you are using (e.g. `linux/amd64`, `linux/arm64`, etc.). If you do not specify a platform, it will default to `linux/amd64`.
@@ -88,6 +88,49 @@ images:
     pullPolicy: Always
     tag: "24.8"
 ```
+
+## Additional images for Sandboxes
+
+If you enable [Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes), also mirror the sandbox runtime image. The sandbox runtime image is published for `linux/amd64`.
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bash mirror_langsmith_images.sh --registry myregistry --platform linux/amd64 --version 0.16.0 --include-sandboxes
+```
+
+Then, configure the sandbox runtime image in your `values.yaml`:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+images:
+  sandboxHostImage:
+    repository: "(your-registry)/langchain/sandbox-host"
+    pullPolicy: IfNotPresent
+    tag: "0.16.0"
+```
+
+If your mirrored registry requires authentication, configure `images.imagePullSecrets`. The sandbox runtime uses the same image pull secrets as the other LangSmith images.
+
+The `--include-sandboxes` flag mirrors the LangSmith-owned sandbox runtime image. If your cluster cannot pull public images at all, also mirror the JuiceFS images used by the sandbox storage driver:
+
+* `docker.io/juicedata/juicefs-csi-driver:v0.31.4`
+* `registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.9.0`
+* `docker.io/juicedata/mount:ce-v1.3.1` for JuiceFS mount pods
+
+Then, configure the corresponding image overrides:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+images:
+  juicefsCSIImage:
+    repository: "(your-registry)/juicedata/juicefs-csi-driver"
+    tag: "v0.31.4"
+  juicefsCSINodeDriverRegistrarImage:
+    repository: "(your-registry)/sig-storage/csi-node-driver-registrar"
+    tag: "v2.9.0"
+  juicefsMountImage:
+    repository: "(your-registry)/juicedata/mount"
+    tag: "ce-v1.3.1"
+```
+
+The chart does not set `images.juicefsMountImage` by default. When it is unset, the JuiceFS CSI driver uses the `JUICEFS_CE_MOUNT_IMAGE` fallback baked into the CSI driver image. For the chart's current `docker.io/juicedata/juicefs-csi-driver:v0.31.4` default, that fallback is `juicedata/mount:ce-v1.3.1`. In private-registry or air-gapped environments, set both `images.juicefsMountImage.repository` and `images.juicefsMountImage.tag` so mount pods pull from your mirrored registry instead of the public default.
 
 ## Additional images for Fleet and Insights
 

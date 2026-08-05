@@ -82,7 +82,7 @@ Any time your connection interacts with your workspace, include the installation
 
 If you receive an error response from the API, check if the connection has been properly [added to the page](https://www.notion.com/help/add-and-manage-connections-with-the-api#manage-connections-in-your-workspace). If this does not solve the problem, refer to our [Status codes](/reference/status-codes) page for more information.
 
-## Personal access token auth flow set-up
+## Personal access token authentication
 
 Personal access tokens (PATs) are created directly by a Notion user in the <a href={developerPortalUrl}>Developer portal</a>. There is no OAuth flow and no page picker. A PAT acts as the user who created it and uses that user's permissions in the selected workspace.
 

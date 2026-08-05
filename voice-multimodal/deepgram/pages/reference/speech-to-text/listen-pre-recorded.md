@@ -31,7 +31,7 @@ paths:
       summary: Transcribe and analyze pre-recorded audio and video
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       tags:
-        - listen > v1 > media
+        - media
       parameters:
         - name: callback
           in: query
@@ -657,14 +657,14 @@ components:
       type: object
       properties:
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         snippet:
           type: string
       title: ListenV1ResponseResultsChannelsItemsSearchItemsHitsItems
@@ -685,14 +685,14 @@ components:
         word:
           type: string
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsWordsItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems:
       type: object
@@ -700,11 +700,11 @@ components:
         text:
           type: string
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
       title: >-
         ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems:
@@ -720,11 +720,11 @@ components:
         num_words:
           type: integer
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
       title: >-
         ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphs:
@@ -748,14 +748,14 @@ components:
         raw_value:
           type: string
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         start_word:
-          type: number
-          format: double
+          type: string
+          title: float
         end_word:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsEntitiesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems:
       type: object
@@ -763,11 +763,11 @@ components:
         summary:
           type: string
         start_word:
-          type: number
-          format: double
+          type: string
+          title: float
         end_word:
-          type: number
-          format: double
+          type: string
+          title: float
       title: ListenV1ResponseResultsChannelsItemsAlternativesItemsSummariesItems
     ListenV1ResponseResultsChannelsItemsAlternativesItemsTopicsItems:
       type: object
@@ -775,11 +775,11 @@ components:
         text:
           type: string
         start_word:
-          type: number
-          format: double
+          type: string
+          title: float
         end_word:
-          type: number
-          format: double
+          type: string
+          title: float
         topics:
           type: array
           items:
@@ -791,8 +791,8 @@ components:
         transcript:
           type: string
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         words:
           type: array
           items:
@@ -844,19 +844,19 @@ components:
         word:
           type: string
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         speaker:
           type: integer
         speaker_confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         punctuated_word:
           type: string
       title: ListenV1ResponseResultsUtterancesItemsWordsItems
@@ -864,14 +864,14 @@ components:
       type: object
       properties:
         start:
-          type: number
-          format: double
+          type: string
+          title: float
         end:
-          type: number
-          format: double
+          type: string
+          title: float
         confidence:
-          type: number
-          format: double
+          type: string
+          title: float
         channel:
           type: integer
         transcript:
@@ -906,8 +906,8 @@ components:
         topic:
           type: string
         confidence_score:
-          type: number
-          format: double
+          type: string
+          title: float
       title: SharedTopicsResultsTopicsSegmentsItemsTopicsItems
     SharedTopicsResultsTopicsSegmentsItems:
       type: object
@@ -953,8 +953,8 @@ components:
         intent:
           type: string
         confidence_score:
-          type: number
-          format: double
+          type: string
+          title: float
       title: SharedIntentsResultsIntentsSegmentsItemsIntentsItems
     SharedIntentsResultsIntentsSegmentsItems:
       type: object
@@ -1111,233 +1111,203 @@ components:
 ```json
 {
   "metadata": {
-    "transaction_key": "deprecated",
-    "request_id": "a847f427-4ad5-4d67-9b95-db801e58251c",
-    "sha256": "154e291ecfa8be6ab8343560bcc109008fa7853eb5372533e8efdefc9b504c33",
+    "channels": 1,
     "created": "2024-05-12T18:57:13.426Z",
     "duration": 25.933313,
-    "channels": 1,
+    "intents_info": {
+      "input_tokens": 105,
+      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
+      "output_tokens": 4
+    },
+    "model_info": {
+      "30089e05-99d1-4376-b32e-c263170674af": {
+        "arch": "nova-2",
+        "name": "2-general-nova",
+        "version": "2024-01-09.29447"
+      }
+    },
     "models": [
       "30089e05-99d1-4376-b32e-c263170674af"
     ],
-    "model_info": {
-      "30089e05-99d1-4376-b32e-c263170674af": {
-        "name": "2-general-nova",
-        "version": "2024-01-09.29447",
-        "arch": "nova-2"
-      }
-    },
-    "summary_info": {
-      "model_uuid": "67875a7f-c9c4-48a0-aa55-5bdb8a91c34a",
-      "input_tokens": 95,
-      "output_tokens": 63
-    },
+    "request_id": "a847f427-4ad5-4d67-9b95-db801e58251c",
     "sentiment_info": {
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
       "input_tokens": 105,
+      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
       "output_tokens": 105
     },
-    "topics_info": {
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
-      "input_tokens": 105,
-      "output_tokens": 7
-    },
-    "intents_info": {
-      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
-      "input_tokens": 105,
-      "output_tokens": 4
+    "sha256": "154e291ecfa8be6ab8343560bcc109008fa7853eb5372533e8efdefc9b504c33",
+    "summary_info": {
+      "input_tokens": 95,
+      "model_uuid": "67875a7f-c9c4-48a0-aa55-5bdb8a91c34a",
+      "output_tokens": 63
     },
     "tags": [
       "test"
-    ]
+    ],
+    "topics_info": {
+      "input_tokens": 105,
+      "model_uuid": "80ab3179-d113-4254-bd6b-4a2f96498695",
+      "output_tokens": 7
+    },
+    "transaction_key": "deprecated"
   },
   "results": {
     "channels": [
       {
-        "search": [
-          {
-            "query": "spacewalk",
-            "hits": [
-              {
-                "confidence": 0.98,
-                "start": 5.2,
-                "end": 5.8,
-                "snippet": "the first all-female spacewalk"
-              }
-            ]
-          }
-        ],
         "alternatives": [
           {
-            "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
-            "confidence": 0.95,
-            "words": [
+            "confidence": 1.1,
+            "entities": [
               {
-                "word": "This",
-                "start": 0,
-                "end": 0.3,
-                "confidence": 0.98
-              },
-              {
-                "word": "historic",
-                "start": 0.3,
-                "end": 0.7,
-                "confidence": 0.97
-              },
-              {
-                "word": "spacewalk",
-                "start": 5.2,
-                "end": 5.8,
-                "confidence": 0.99
+                "confidence": 1.1,
+                "end_word": 1.1,
+                "label": "string",
+                "raw_value": "string",
+                "start_word": 1.1,
+                "value": "string"
               }
             ],
             "paragraphs": {
-              "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
               "paragraphs": [
                 {
+                  "end": 1.1,
+                  "num_words": 1,
                   "sentences": [
                     {
-                      "text": "This historic spacewalk marks a significant milestone for women in space exploration.",
-                      "start": 0,
-                      "end": 6
+                      "end": 1.1,
+                      "start": 1.1,
+                      "text": "string"
                     }
                   ],
                   "speaker": 1,
-                  "num_words": 12,
-                  "start": 0,
-                  "end": 6
+                  "start": 1.1
                 }
-              ]
+              ],
+              "transcript": "string"
             },
-            "entities": [
-              {
-                "label": "Event",
-                "value": "spacewalk",
-                "raw_value": "spacewalk",
-                "confidence": 0.95,
-                "start_word": 2,
-                "end_word": 3
-              }
-            ],
             "summaries": [
               {
-                "summary": "The transcript highlights the importance of the first all-female spacewalk.",
-                "start_word": 0,
-                "end_word": 12
+                "end_word": 1.1,
+                "start_word": 1.1,
+                "summary": "string"
               }
             ],
             "topics": [
               {
-                "text": "This historic spacewalk marks a significant milestone for women in space exploration.",
-                "start_word": 0,
-                "end_word": 12,
+                "end_word": 1.1,
+                "start_word": 1.1,
+                "text": "string",
                 "topics": [
-                  "Space Exploration"
+                  "string"
                 ]
+              }
+            ],
+            "transcript": "string",
+            "words": [
+              {
+                "confidence": 1.1,
+                "end": 1.1,
+                "start": 1.1,
+                "word": "string"
               }
             ]
           }
         ],
-        "detected_language": "en"
-      }
-    ],
-    "utterances": [
-      {
-        "start": 0,
-        "end": 6,
-        "confidence": 0.95,
-        "channel": 1,
-        "transcript": "This historic spacewalk marks a significant milestone for women in space exploration.",
-        "words": [
+        "detected_language": "string",
+        "search": [
           {
-            "word": "This",
-            "start": 0,
-            "end": 0.3,
-            "confidence": 0.98,
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "punctuated_word": "This"
-          },
-          {
-            "word": "historic",
-            "start": 0.3,
-            "end": 0.7,
-            "confidence": 0.97,
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "punctuated_word": "historic"
-          },
-          {
-            "word": "spacewalk",
-            "start": 5.2,
-            "end": 5.8,
-            "confidence": 0.99,
-            "speaker": 1,
-            "speaker_confidence": 0.99,
-            "punctuated_word": "spacewalk."
+            "hits": [
+              {
+                "confidence": 1.1,
+                "end": 1.1,
+                "snippet": "string",
+                "start": 1.1
+              }
+            ],
+            "query": "string"
           }
-        ],
-        "speaker": 1,
-        "id": "utt-001"
+        ]
       }
     ],
-    "summary": {
-      "result": "success",
-      "short": "Speaker 1 highlights the historic significance of the first all-female spacewalk as a milestone for women in space exploration."
-    },
-    "topics": {
-      "results": {
-        "topics": {
-          "segments": [
-            {
-              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
-              "start_word": 32,
-              "end_word": 69,
-              "topics": [
-                {
-                  "topic": "Spacewalk",
-                  "confidence_score": 0.91581345
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
     "intents": {
       "results": {
         "intents": {
           "segments": [
             {
-              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app.",
-              "start_word": 354,
               "end_word": 414,
               "intents": [
                 {
-                  "intent": "Encourage podcasting",
-                  "confidence_score": 0.0038975573
+                  "confidence_score": 0.0038975573,
+                  "intent": "Encourage podcasting"
                 }
-              ]
+              ],
+              "start_word": 354,
+              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app."
             }
           ]
         }
       }
     },
     "sentiments": {
-      "segments": [
-        {
-          "text": "Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it_signf",
-          "start_word": 0,
-          "end_word": 69,
-          "sentiment": "positive",
-          "sentiment_score": 0.5810546875
-        }
-      ],
       "average": {
         "sentiment": "positive",
         "sentiment_score": 0.5810185185185185
+      },
+      "segments": [
+        {
+          "end_word": 69,
+          "sentiment": "positive",
+          "sentiment_score": 0.5810546875,
+          "start_word": 0,
+          "text": "Yeah. As as much as, um, it's worth celebrating, uh, the first, uh, spacewalk, um, with an all-female team, I think many of us are looking forward to it just being normal. And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today."
+        }
+      ]
+    },
+    "summary": {
+      "result": "success",
+      "short": "Speaker 0 discusses the significance of the first all-female spacewalk with an all-female team, stating that it is a tribute to the skilled and qualified women who were denied opportunities in the past."
+    },
+    "topics": {
+      "results": {
+        "topics": {
+          "segments": [
+            {
+              "end_word": 69,
+              "start_word": 32,
+              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
+              "topics": [
+                {
+                  "confidence_score": 0.91581345,
+                  "topic": "Spacewalk"
+                }
+              ]
+            }
+          ]
+        }
       }
-    }
+    },
+    "utterances": [
+      {
+        "channel": 1,
+        "confidence": 1.1,
+        "end": 1.1,
+        "id": "string",
+        "speaker": 1,
+        "start": 1.1,
+        "transcript": "string",
+        "words": [
+          {
+            "confidence": 1.1,
+            "end": 1.1,
+            "punctuated_word": "string",
+            "speaker": 1,
+            "speaker_confidence": 1.1,
+            "start": 1.1,
+            "word": "string"
+          }
+        ]
+      }
+    ]
   }
 }
 ```
